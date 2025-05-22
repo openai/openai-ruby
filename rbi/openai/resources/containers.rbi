@@ -70,7 +70,11 @@ module OpenAI
           request_options: OpenAI::RequestOptions::OrHash
         ).void
       end
-      def delete(container_id, request_options: {})
+      def delete(
+        # The ID of the container to delete.
+        container_id,
+        request_options: {}
+      )
       end
 
       # @api private

@@ -85,7 +85,8 @@ module OpenAI
       #
       # @overload delete(container_id, request_options: {})
       #
-      # @param container_id [String]
+      # @param container_id [String] The ID of the container to delete.
+      #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [nil]

@@ -89,8 +89,7 @@ module OpenAI
             type mcp_tool_approval_filter =
               {
                 always: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always,
-                never: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never,
-                tool_names: ::Array[String]
+                never: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never
               }
 
             class McpToolApprovalFilter < OpenAI::Internal::Type::BaseModel
@@ -106,20 +105,14 @@ module OpenAI
                 OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never
               ) -> OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never
 
-              attr_reader tool_names: ::Array[String]?
-
-              def tool_names=: (::Array[String]) -> ::Array[String]
-
               def initialize: (
                 ?always: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always,
-                ?never: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never,
-                ?tool_names: ::Array[String]
+                ?never: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never
               ) -> void
 
               def to_hash: -> {
                 always: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always,
-                never: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never,
-                tool_names: ::Array[String]
+                never: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never
               }
 
               type always = { tool_names: ::Array[String] }

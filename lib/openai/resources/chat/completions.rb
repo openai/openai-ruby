@@ -88,7 +88,7 @@ module OpenAI
         #
         # @param top_p [Float, nil] An alternative to sampling with temperature, called nucleus sampling,
         #
-        # @param user [String] A unique identifier representing your end-user, which can help OpenAI to monitor
+        # @param user [String] A stable identifier for your end-users.
         #
         # @param web_search_options [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions] This tool searches the web for relevant results to use in a response.
         #
@@ -193,7 +193,7 @@ module OpenAI
         #
         # @param top_p [Float, nil] An alternative to sampling with temperature, called nucleus sampling,
         #
-        # @param user [String] A unique identifier representing your end-user, which can help OpenAI to monitor
+        # @param user [String] A stable identifier for your end-users.
         #
         # @param web_search_options [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions] This tool searches the web for relevant results to use in a response.
         #

@@ -156,13 +156,7 @@ module OpenAI
                          OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never
                        }
 
-              # @!attribute tool_names
-              #   List of allowed tool names.
-              #
-              #   @return [Array<String>, nil]
-              optional :tool_names, OpenAI::Internal::Type::ArrayOf[String]
-
-              # @!method initialize(always: nil, never: nil, tool_names: nil)
+              # @!method initialize(always: nil, never: nil)
               #   Some parameter documentations has been truncated, see
               #   {OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter}
               #   for more details.
@@ -170,8 +164,6 @@ module OpenAI
               #   @param always [OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always] A list of tools that always require approval.
               #
               #   @param never [OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never] A list of tools that never require approval.
-              #
-              #   @param tool_names [Array<String>] List of allowed tool names.
 
               # @see OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter#always
               class Always < OpenAI::Internal::Type::BaseModel
