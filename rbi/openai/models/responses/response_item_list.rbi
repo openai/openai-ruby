@@ -15,22 +15,7 @@ module OpenAI
           end
 
         # A list of items used to generate this response.
-        sig do
-          returns(
-            T::Array[
-              T.any(
-                OpenAI::Responses::ResponseInputMessageItem,
-                OpenAI::Responses::ResponseOutputMessage,
-                OpenAI::Responses::ResponseFileSearchToolCall,
-                OpenAI::Responses::ResponseComputerToolCall,
-                OpenAI::Responses::ResponseComputerToolCallOutputItem,
-                OpenAI::Responses::ResponseFunctionWebSearch,
-                OpenAI::Responses::ResponseFunctionToolCallItem,
-                OpenAI::Responses::ResponseFunctionToolCallOutputItem
-              )
-            ]
-          )
-        end
+        sig { returns(T::Array[OpenAI::Responses::ResponseItem::Variants]) }
         attr_accessor :data
 
         # The ID of the first item in the list.
@@ -62,7 +47,15 @@ module OpenAI
                   OpenAI::Responses::ResponseComputerToolCallOutputItem::OrHash,
                   OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
                   OpenAI::Responses::ResponseFunctionToolCallItem::OrHash,
-                  OpenAI::Responses::ResponseFunctionToolCallOutputItem::OrHash
+                  OpenAI::Responses::ResponseFunctionToolCallOutputItem::OrHash,
+                  OpenAI::Responses::ResponseItem::ImageGenerationCall::OrHash,
+                  OpenAI::Responses::ResponseCodeInterpreterToolCall::OrHash,
+                  OpenAI::Responses::ResponseItem::LocalShellCall::OrHash,
+                  OpenAI::Responses::ResponseItem::LocalShellCallOutput::OrHash,
+                  OpenAI::Responses::ResponseItem::McpListTools::OrHash,
+                  OpenAI::Responses::ResponseItem::McpApprovalRequest::OrHash,
+                  OpenAI::Responses::ResponseItem::McpApprovalResponse::OrHash,
+                  OpenAI::Responses::ResponseItem::McpCall::OrHash
                 )
               ],
             first_id: String,
@@ -88,19 +81,7 @@ module OpenAI
         sig do
           override.returns(
             {
-              data:
-                T::Array[
-                  T.any(
-                    OpenAI::Responses::ResponseInputMessageItem,
-                    OpenAI::Responses::ResponseOutputMessage,
-                    OpenAI::Responses::ResponseFileSearchToolCall,
-                    OpenAI::Responses::ResponseComputerToolCall,
-                    OpenAI::Responses::ResponseComputerToolCallOutputItem,
-                    OpenAI::Responses::ResponseFunctionWebSearch,
-                    OpenAI::Responses::ResponseFunctionToolCallItem,
-                    OpenAI::Responses::ResponseFunctionToolCallOutputItem
-                  )
-                ],
+              data: T::Array[OpenAI::Responses::ResponseItem::Variants],
               first_id: String,
               has_more: T::Boolean,
               last_id: String,

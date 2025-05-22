@@ -7,7 +7,7 @@ module OpenAI
         class TextDelta < OpenAI::Internal::Type::BaseModel
           # @!attribute annotations
           #
-          #   @return [Array<OpenAI::Beta::Threads::FileCitationDeltaAnnotation, OpenAI::Beta::Threads::FilePathDeltaAnnotation>, nil]
+          #   @return [Array<OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation, OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation>, nil]
           optional :annotations,
                    -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::AnnotationDelta] }
 
@@ -18,7 +18,7 @@ module OpenAI
           optional :value, String
 
           # @!method initialize(annotations: nil, value: nil)
-          #   @param annotations [Array<OpenAI::Beta::Threads::FileCitationDeltaAnnotation, OpenAI::Beta::Threads::FilePathDeltaAnnotation>]
+          #   @param annotations [Array<OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation, OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation>]
           #
           #   @param value [String] The data that makes up the text.
         end

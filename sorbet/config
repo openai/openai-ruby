@@ -1,2 +1,2 @@
---dir=rbi
+--dir=rbi/
 --ignore=test/

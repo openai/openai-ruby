@@ -45,6 +45,15 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> void
 
+      def to_hash: -> {
+        query: OpenAI::Models::VectorStoreSearchParams::query,
+        filters: OpenAI::Models::VectorStoreSearchParams::filters,
+        max_num_results: Integer,
+        ranking_options: OpenAI::VectorStoreSearchParams::RankingOptions,
+        rewrite_query: bool,
+        request_options: OpenAI::RequestOptions
+      }
+
       type query = String | ::Array[String]
 
       module Query
@@ -65,25 +74,30 @@ module OpenAI
 
       type ranking_options =
         {
-          ranker: OpenAI::VectorStoreSearchParams::RankingOptions::ranker,
+          ranker: OpenAI::Models::VectorStoreSearchParams::RankingOptions::ranker,
           score_threshold: Float
         }
 
       class RankingOptions < OpenAI::Internal::Type::BaseModel
-        attr_reader ranker: OpenAI::VectorStoreSearchParams::RankingOptions::ranker?
+        attr_reader ranker: OpenAI::Models::VectorStoreSearchParams::RankingOptions::ranker?
 
         def ranker=: (
-          OpenAI::VectorStoreSearchParams::RankingOptions::ranker
-        ) -> OpenAI::VectorStoreSearchParams::RankingOptions::ranker
+          OpenAI::Models::VectorStoreSearchParams::RankingOptions::ranker
+        ) -> OpenAI::Models::VectorStoreSearchParams::RankingOptions::ranker
 
         attr_reader score_threshold: Float?
 
         def score_threshold=: (Float) -> Float
 
         def initialize: (
-          ?ranker: OpenAI::VectorStoreSearchParams::RankingOptions::ranker,
+          ?ranker: OpenAI::Models::VectorStoreSearchParams::RankingOptions::ranker,
           ?score_threshold: Float
         ) -> void
+
+        def to_hash: -> {
+          ranker: OpenAI::Models::VectorStoreSearchParams::RankingOptions::ranker,
+          score_threshold: Float
+        }
 
         type ranker = :auto | :"default-2024-11-15"
 
@@ -93,7 +107,7 @@ module OpenAI
           AUTO: :auto
           DEFAULT_2024_11_15: :"default-2024-11-15"
 
-          def self?.values: -> ::Array[OpenAI::VectorStoreSearchParams::RankingOptions::ranker]
+          def self?.values: -> ::Array[OpenAI::Models::VectorStoreSearchParams::RankingOptions::ranker]
         end
       end
     end

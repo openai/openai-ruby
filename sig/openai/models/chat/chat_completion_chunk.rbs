@@ -10,7 +10,7 @@ module OpenAI
           created: Integer,
           model: String,
           object: :"chat.completion.chunk",
-          service_tier: OpenAI::Chat::ChatCompletionChunk::service_tier?,
+          service_tier: OpenAI::Models::Chat::ChatCompletionChunk::service_tier?,
           system_fingerprint: String,
           usage: OpenAI::CompletionUsage?
         }
@@ -26,7 +26,7 @@ module OpenAI
 
         attr_accessor object: :"chat.completion.chunk"
 
-        attr_accessor service_tier: OpenAI::Chat::ChatCompletionChunk::service_tier?
+        attr_accessor service_tier: OpenAI::Models::Chat::ChatCompletionChunk::service_tier?
 
         attr_reader system_fingerprint: String?
 
@@ -39,16 +39,27 @@ module OpenAI
           choices: ::Array[OpenAI::Chat::ChatCompletionChunk::Choice],
           created: Integer,
           model: String,
-          ?service_tier: OpenAI::Chat::ChatCompletionChunk::service_tier?,
+          ?service_tier: OpenAI::Models::Chat::ChatCompletionChunk::service_tier?,
           ?system_fingerprint: String,
           ?usage: OpenAI::CompletionUsage?,
           ?object: :"chat.completion.chunk"
         ) -> void
 
+        def to_hash: -> {
+          id: String,
+          choices: ::Array[OpenAI::Chat::ChatCompletionChunk::Choice],
+          created: Integer,
+          model: String,
+          object: :"chat.completion.chunk",
+          service_tier: OpenAI::Models::Chat::ChatCompletionChunk::service_tier?,
+          system_fingerprint: String,
+          usage: OpenAI::CompletionUsage?
+        }
+
         type choice =
           {
             delta: OpenAI::Chat::ChatCompletionChunk::Choice::Delta,
-            finish_reason: OpenAI::Chat::ChatCompletionChunk::Choice::finish_reason?,
+            finish_reason: OpenAI::Models::Chat::ChatCompletionChunk::Choice::finish_reason?,
             index: Integer,
             logprobs: OpenAI::Chat::ChatCompletionChunk::Choice::Logprobs?
           }
@@ -56,7 +67,7 @@ module OpenAI
         class Choice < OpenAI::Internal::Type::BaseModel
           attr_accessor delta: OpenAI::Chat::ChatCompletionChunk::Choice::Delta
 
-          attr_accessor finish_reason: OpenAI::Chat::ChatCompletionChunk::Choice::finish_reason?
+          attr_accessor finish_reason: OpenAI::Models::Chat::ChatCompletionChunk::Choice::finish_reason?
 
           attr_accessor index: Integer
 
@@ -64,17 +75,24 @@ module OpenAI
 
           def initialize: (
             delta: OpenAI::Chat::ChatCompletionChunk::Choice::Delta,
-            finish_reason: OpenAI::Chat::ChatCompletionChunk::Choice::finish_reason?,
+            finish_reason: OpenAI::Models::Chat::ChatCompletionChunk::Choice::finish_reason?,
             index: Integer,
             ?logprobs: OpenAI::Chat::ChatCompletionChunk::Choice::Logprobs?
           ) -> void
+
+          def to_hash: -> {
+            delta: OpenAI::Chat::ChatCompletionChunk::Choice::Delta,
+            finish_reason: OpenAI::Models::Chat::ChatCompletionChunk::Choice::finish_reason?,
+            index: Integer,
+            logprobs: OpenAI::Chat::ChatCompletionChunk::Choice::Logprobs?
+          }
 
           type delta =
             {
               content: String?,
               function_call: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall,
               refusal: String?,
-              role: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::role,
+              role: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::role,
               tool_calls: ::Array[OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall]
             }
 
@@ -89,11 +107,11 @@ module OpenAI
 
             attr_accessor refusal: String?
 
-            attr_reader role: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::role?
+            attr_reader role: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::role?
 
             def role=: (
-              OpenAI::Chat::ChatCompletionChunk::Choice::Delta::role
-            ) -> OpenAI::Chat::ChatCompletionChunk::Choice::Delta::role
+              OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::role
+            ) -> OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::role
 
             attr_reader tool_calls: ::Array[OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall]?
 
@@ -105,9 +123,17 @@ module OpenAI
               ?content: String?,
               ?function_call: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall,
               ?refusal: String?,
-              ?role: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::role,
+              ?role: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::role,
               ?tool_calls: ::Array[OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall]
             ) -> void
+
+            def to_hash: -> {
+              content: String?,
+              function_call: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall,
+              refusal: String?,
+              role: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::role,
+              tool_calls: ::Array[OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall]
+            }
 
             type function_call = { arguments: String, name: String }
 
@@ -121,6 +147,8 @@ module OpenAI
               def name=: (String) -> String
 
               def initialize: (?arguments: String, ?name: String) -> void
+
+              def to_hash: -> { arguments: String, name: String }
             end
 
             type role = :developer | :system | :user | :assistant | :tool
@@ -134,7 +162,7 @@ module OpenAI
               ASSISTANT: :assistant
               TOOL: :tool
 
-              def self?.values: -> ::Array[OpenAI::Chat::ChatCompletionChunk::Choice::Delta::role]
+              def self?.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::role]
             end
 
             type tool_call =
@@ -142,7 +170,7 @@ module OpenAI
                 index: Integer,
                 id: String,
                 function: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function,
-                type: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_
+                type: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_
               }
 
             class ToolCall < OpenAI::Internal::Type::BaseModel
@@ -158,18 +186,25 @@ module OpenAI
                 OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function
               ) -> OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function
 
-              attr_reader type: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_?
+              attr_reader type: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_?
 
               def type=: (
-                OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_
-              ) -> OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_
+                OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_
+              ) -> OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_
 
               def initialize: (
                 index: Integer,
                 ?id: String,
                 ?function: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function,
-                ?type: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_
+                ?type: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_
               ) -> void
+
+              def to_hash: -> {
+                index: Integer,
+                id: String,
+                function: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function,
+                type: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_
+              }
 
               type function = { arguments: String, name: String }
 
@@ -183,6 +218,8 @@ module OpenAI
                 def name=: (String) -> String
 
                 def initialize: (?arguments: String, ?name: String) -> void
+
+                def to_hash: -> { arguments: String, name: String }
               end
 
               type type_ = :function
@@ -192,7 +229,7 @@ module OpenAI
 
                 FUNCTION: :function
 
-                def self?.values: -> ::Array[OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_]
+                def self?.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_]
               end
             end
           end
@@ -209,7 +246,7 @@ module OpenAI
             CONTENT_FILTER: :content_filter
             FUNCTION_CALL: :function_call
 
-            def self?.values: -> ::Array[OpenAI::Chat::ChatCompletionChunk::Choice::finish_reason]
+            def self?.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::finish_reason]
           end
 
           type logprobs =
@@ -227,6 +264,11 @@ module OpenAI
               content: ::Array[OpenAI::Chat::ChatCompletionTokenLogprob]?,
               refusal: ::Array[OpenAI::Chat::ChatCompletionTokenLogprob]?
             ) -> void
+
+            def to_hash: -> {
+              content: ::Array[OpenAI::Chat::ChatCompletionTokenLogprob]?,
+              refusal: ::Array[OpenAI::Chat::ChatCompletionTokenLogprob]?
+            }
           end
         end
 
@@ -239,7 +281,7 @@ module OpenAI
           DEFAULT: :default
           FLEX: :flex
 
-          def self?.values: -> ::Array[OpenAI::Chat::ChatCompletionChunk::service_tier]
+          def self?.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionChunk::service_tier]
         end
       end
     end

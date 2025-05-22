@@ -3,23 +3,29 @@ module OpenAI
     module Responses
       type response_output_text =
         {
-          annotations: ::Array[OpenAI::Responses::ResponseOutputText::annotation],
+          annotations: ::Array[OpenAI::Models::Responses::ResponseOutputText::annotation],
           text: String,
           type: :output_text
         }
 
       class ResponseOutputText < OpenAI::Internal::Type::BaseModel
-        attr_accessor annotations: ::Array[OpenAI::Responses::ResponseOutputText::annotation]
+        attr_accessor annotations: ::Array[OpenAI::Models::Responses::ResponseOutputText::annotation]
 
         attr_accessor text: String
 
         attr_accessor type: :output_text
 
         def initialize: (
-          annotations: ::Array[OpenAI::Responses::ResponseOutputText::annotation],
+          annotations: ::Array[OpenAI::Models::Responses::ResponseOutputText::annotation],
           text: String,
           ?type: :output_text
         ) -> void
+
+        def to_hash: -> {
+          annotations: ::Array[OpenAI::Models::Responses::ResponseOutputText::annotation],
+          text: String,
+          type: :output_text
+        }
 
         type annotation =
           OpenAI::Responses::ResponseOutputText::Annotation::FileCitation
@@ -44,6 +50,12 @@ module OpenAI
               index: Integer,
               ?type: :file_citation
             ) -> void
+
+            def to_hash: -> {
+              file_id: String,
+              index: Integer,
+              type: :file_citation
+            }
           end
 
           type url_citation =
@@ -73,6 +85,14 @@ module OpenAI
               url: String,
               ?type: :url_citation
             ) -> void
+
+            def to_hash: -> {
+              end_index: Integer,
+              start_index: Integer,
+              title: String,
+              type: :url_citation,
+              url: String
+            }
           end
 
           type file_path = { file_id: String, index: Integer, type: :file_path }
@@ -89,9 +109,15 @@ module OpenAI
               index: Integer,
               ?type: :file_path
             ) -> void
+
+            def to_hash: -> {
+              file_id: String,
+              index: Integer,
+              type: :file_path
+            }
           end
 
-          def self?.variants: -> ::Array[OpenAI::Responses::ResponseOutputText::annotation]
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseOutputText::annotation]
         end
       end
     end

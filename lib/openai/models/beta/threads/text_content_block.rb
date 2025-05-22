@@ -7,7 +7,7 @@ module OpenAI
         class TextContentBlock < OpenAI::Internal::Type::BaseModel
           # @!attribute text
           #
-          #   @return [OpenAI::Beta::Threads::Text]
+          #   @return [OpenAI::Models::Beta::Threads::Text]
           required :text, -> { OpenAI::Beta::Threads::Text }
 
           # @!attribute type
@@ -19,7 +19,7 @@ module OpenAI
           # @!method initialize(text:, type: :text)
           #   The text content that is part of a message.
           #
-          #   @param text [OpenAI::Beta::Threads::Text]
+          #   @param text [OpenAI::Models::Beta::Threads::Text]
           #
           #   @param type [Symbol, :text] Always `text`.
         end

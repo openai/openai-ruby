@@ -10,13 +10,15 @@ module OpenAI
         # Some parameter documentations has been truncated, see
         # {OpenAI::Models::Evals::RunCreateParams} for more details.
         #
-        # Create a new evaluation run. This is the endpoint that will kick off grading.
+        # Kicks off a new run for a given evaluation, specifying the data source, and what
+        # model configuration to use to test. The datasource will be validated against the
+        # schema specified in the config of the evaluation.
         #
         # @overload create(eval_id, data_source:, metadata: nil, name: nil, request_options: {})
         #
         # @param eval_id [String] The ID of the evaluation to create a run for.
         #
-        # @param data_source [OpenAI::Evals::CreateEvalJSONLRunDataSource, OpenAI::Evals::CreateEvalCompletionsRunDataSource, OpenAI::Evals::CreateEvalResponsesRunDataSource] Details about the run's data source.
+        # @param data_source [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource] Details about the run's data source.
         #
         # @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #
@@ -78,9 +80,9 @@ module OpenAI
         #
         # @param limit [Integer] Number of runs to retrieve.
         #
-        # @param order [Symbol, OpenAI::Evals::RunListParams::Order] Sort order for runs by timestamp. Use `asc` for ascending order or `desc` for de
+        # @param order [Symbol, OpenAI::Models::Evals::RunListParams::Order] Sort order for runs by timestamp. Use `asc` for ascending order or `desc` for de
         #
-        # @param status [Symbol, OpenAI::Evals::RunListParams::Status] Filter runs by status. One of `queued` | `in_progress` | `failed` | `completed`
+        # @param status [Symbol, OpenAI::Models::Evals::RunListParams::Status] Filter runs by status. One of `queued` | `in_progress` | `failed` | `completed`
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #

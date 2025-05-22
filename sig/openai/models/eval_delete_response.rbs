@@ -11,6 +11,8 @@ module OpenAI
       attr_accessor object: String
 
       def initialize: (deleted: bool, eval_id: String, object: String) -> void
+
+      def to_hash: -> { deleted: bool, eval_id: String, object: String }
     end
   end
 end

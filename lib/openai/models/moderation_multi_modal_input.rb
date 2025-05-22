@@ -15,11 +15,7 @@ module OpenAI
       variant :text, -> { OpenAI::ModerationTextInput }
 
       # @!method self.variants
-      #   @return [Array(OpenAI::ModerationImageURLInput, OpenAI::ModerationTextInput)]
-
-      define_sorbet_constant!(:Variants) do
-        T.type_alias { T.any(OpenAI::ModerationImageURLInput, OpenAI::ModerationTextInput) }
-      end
+      #   @return [Array(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)]
     end
   end
 end

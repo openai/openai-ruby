@@ -20,6 +20,12 @@ module OpenAI
           ?image_url: String,
           ?type: :computer_screenshot
         ) -> void
+
+        def to_hash: -> {
+          type: :computer_screenshot,
+          file_id: String,
+          image_url: String
+        }
       end
     end
   end

@@ -12,7 +12,7 @@ module OpenAI
       #
       # @overload create(model:, prompt:, best_of: nil, echo: nil, frequency_penalty: nil, logit_bias: nil, logprobs: nil, max_tokens: nil, n: nil, presence_penalty: nil, seed: nil, stop: nil, stream_options: nil, suffix: nil, temperature: nil, top_p: nil, user: nil, request_options: {})
       #
-      # @param model [String, Symbol, OpenAI::CompletionCreateParams::Model] ID of the model to use. You can use the [List models](https://platform.openai.co
+      # @param model [String, Symbol, OpenAI::Models::CompletionCreateParams::Model] ID of the model to use. You can use the [List models](https://platform.openai.co
       #
       # @param prompt [String, Array<String>, Array<Integer>, Array<Array<Integer>>, nil] The prompt(s) to generate completions for, encoded as a string, array of strings
       #
@@ -36,7 +36,7 @@ module OpenAI
       #
       # @param stop [String, Array<String>, nil] Not supported with latest reasoning models `o3` and `o4-mini`.
       #
-      # @param stream_options [OpenAI::Chat::ChatCompletionStreamOptions, nil] Options for streaming response. Only set this when you set `stream: true`.
+      # @param stream_options [OpenAI::Models::Chat::ChatCompletionStreamOptions, nil] Options for streaming response. Only set this when you set `stream: true`.
       #
       # @param suffix [String, nil] The suffix that comes after a completion of inserted text.
       #
@@ -48,7 +48,7 @@ module OpenAI
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::Completion]
+      # @return [OpenAI::Models::Completion]
       #
       # @see OpenAI::Models::CompletionCreateParams
       def create(params)
@@ -75,7 +75,7 @@ module OpenAI
       #
       # @overload create_streaming(model:, prompt:, best_of: nil, echo: nil, frequency_penalty: nil, logit_bias: nil, logprobs: nil, max_tokens: nil, n: nil, presence_penalty: nil, seed: nil, stop: nil, stream_options: nil, suffix: nil, temperature: nil, top_p: nil, user: nil, request_options: {})
       #
-      # @param model [String, Symbol, OpenAI::CompletionCreateParams::Model] ID of the model to use. You can use the [List models](https://platform.openai.co
+      # @param model [String, Symbol, OpenAI::Models::CompletionCreateParams::Model] ID of the model to use. You can use the [List models](https://platform.openai.co
       #
       # @param prompt [String, Array<String>, Array<Integer>, Array<Array<Integer>>, nil] The prompt(s) to generate completions for, encoded as a string, array of strings
       #
@@ -99,7 +99,7 @@ module OpenAI
       #
       # @param stop [String, Array<String>, nil] Not supported with latest reasoning models `o3` and `o4-mini`.
       #
-      # @param stream_options [OpenAI::Chat::ChatCompletionStreamOptions, nil] Options for streaming response. Only set this when you set `stream: true`.
+      # @param stream_options [OpenAI::Models::Chat::ChatCompletionStreamOptions, nil] Options for streaming response. Only set this when you set `stream: true`.
       #
       # @param suffix [String, nil] The suffix that comes after a completion of inserted text.
       #
@@ -111,7 +111,7 @@ module OpenAI
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::Internal::Stream<OpenAI::Completion>]
+      # @return [OpenAI::Internal::Stream<OpenAI::Models::Completion>]
       #
       # @see OpenAI::Models::CompletionCreateParams
       def create_streaming(params)

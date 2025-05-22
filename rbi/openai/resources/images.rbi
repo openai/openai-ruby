@@ -6,7 +6,7 @@ module OpenAI
       # Creates a variation of a given image. This endpoint only supports `dall-e-2`.
       sig do
         params(
-          image: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
+          image: OpenAI::Internal::FileInput,
           model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
           n: T.nilable(Integer),
           response_format:
@@ -46,17 +46,10 @@ module OpenAI
       # prompt. This endpoint only supports `gpt-image-1` and `dall-e-2`.
       sig do
         params(
-          image:
-            T.any(
-              Pathname,
-              StringIO,
-              IO,
-              OpenAI::FilePart,
-              T::Array[T.any(Pathname, StringIO, IO, OpenAI::FilePart)]
-            ),
+          image: OpenAI::ImageEditParams::Image::Variants,
           prompt: String,
           background: T.nilable(OpenAI::ImageEditParams::Background::OrSymbol),
-          mask: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
+          mask: OpenAI::Internal::FileInput,
           model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
           n: T.nilable(Integer),
           quality: T.nilable(OpenAI::ImageEditParams::Quality::OrSymbol),

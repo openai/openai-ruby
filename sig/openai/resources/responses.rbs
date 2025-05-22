@@ -6,6 +6,7 @@ module OpenAI
       def create: (
         input: OpenAI::Models::Responses::ResponseCreateParams::input,
         model: OpenAI::Models::responses_model,
+        ?background: bool?,
         ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
         ?instructions: String?,
         ?max_output_tokens: Integer?,
@@ -28,6 +29,7 @@ module OpenAI
       def stream_raw: (
         input: OpenAI::Models::Responses::ResponseCreateParams::input,
         model: OpenAI::Models::responses_model,
+        ?background: bool?,
         ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
         ?instructions: String?,
         ?max_output_tokens: Integer?,
@@ -54,6 +56,11 @@ module OpenAI
       ) -> OpenAI::Responses::Response
 
       def delete: (
+        String response_id,
+        ?request_options: OpenAI::request_opts
+      ) -> nil
+
+      def cancel: (
         String response_id,
         ?request_options: OpenAI::request_opts
       ) -> nil

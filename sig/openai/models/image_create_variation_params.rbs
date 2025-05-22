@@ -2,7 +2,7 @@ module OpenAI
   module Models
     type image_create_variation_params =
       {
-        image: (Pathname | StringIO | IO | OpenAI::FilePart),
+        image: OpenAI::Internal::file_input,
         model: OpenAI::Models::ImageCreateVariationParams::model?,
         n: Integer?,
         response_format: OpenAI::Models::ImageCreateVariationParams::response_format?,
@@ -15,7 +15,7 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      attr_accessor image: Pathname | StringIO | IO | OpenAI::FilePart
+      attr_accessor image: OpenAI::Internal::file_input
 
       attr_accessor model: OpenAI::Models::ImageCreateVariationParams::model?
 
@@ -30,7 +30,7 @@ module OpenAI
       def user=: (String) -> String
 
       def initialize: (
-        image: Pathname | StringIO | IO | OpenAI::FilePart,
+        image: OpenAI::Internal::file_input,
         ?model: OpenAI::Models::ImageCreateVariationParams::model?,
         ?n: Integer?,
         ?response_format: OpenAI::Models::ImageCreateVariationParams::response_format?,
@@ -38,6 +38,16 @@ module OpenAI
         ?user: String,
         ?request_options: OpenAI::request_opts
       ) -> void
+
+      def to_hash: -> {
+        image: OpenAI::Internal::file_input,
+        model: OpenAI::Models::ImageCreateVariationParams::model?,
+        n: Integer?,
+        response_format: OpenAI::Models::ImageCreateVariationParams::response_format?,
+        size: OpenAI::Models::ImageCreateVariationParams::size?,
+        user: String,
+        request_options: OpenAI::RequestOptions
+      }
 
       type model = String | OpenAI::Models::image_model
 

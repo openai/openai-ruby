@@ -5,7 +5,7 @@ module OpenAI
         image: OpenAI::Models::ImageEditParams::image,
         prompt: String,
         background: OpenAI::Models::ImageEditParams::background?,
-        mask: (Pathname | StringIO | IO | OpenAI::FilePart),
+        mask: OpenAI::Internal::file_input,
         model: OpenAI::Models::ImageEditParams::model?,
         n: Integer?,
         quality: OpenAI::Models::ImageEditParams::quality?,
@@ -25,11 +25,9 @@ module OpenAI
 
       attr_accessor background: OpenAI::Models::ImageEditParams::background?
 
-      attr_reader mask: (Pathname | StringIO | IO | OpenAI::FilePart)?
+      attr_reader mask: OpenAI::Internal::file_input?
 
-      def mask=: (
-        Pathname | StringIO | IO | OpenAI::FilePart
-      ) -> (Pathname | StringIO | IO | OpenAI::FilePart)
+      def mask=: (OpenAI::Internal::file_input) -> OpenAI::Internal::file_input
 
       attr_accessor model: OpenAI::Models::ImageEditParams::model?
 
@@ -49,7 +47,7 @@ module OpenAI
         image: OpenAI::Models::ImageEditParams::image,
         prompt: String,
         ?background: OpenAI::Models::ImageEditParams::background?,
-        ?mask: Pathname | StringIO | IO | OpenAI::FilePart,
+        ?mask: OpenAI::Internal::file_input,
         ?model: OpenAI::Models::ImageEditParams::model?,
         ?n: Integer?,
         ?quality: OpenAI::Models::ImageEditParams::quality?,
@@ -59,12 +57,22 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> void
 
+      def to_hash: -> {
+        image: OpenAI::Models::ImageEditParams::image,
+        prompt: String,
+        background: OpenAI::Models::ImageEditParams::background?,
+        mask: OpenAI::Internal::file_input,
+        model: OpenAI::Models::ImageEditParams::model?,
+        n: Integer?,
+        quality: OpenAI::Models::ImageEditParams::quality?,
+        response_format: OpenAI::Models::ImageEditParams::response_format?,
+        size: OpenAI::Models::ImageEditParams::size?,
+        user: String,
+        request_options: OpenAI::RequestOptions
+      }
+
       type image =
-        Pathname
-        | StringIO
-        | IO
-        | OpenAI::FilePart
-        | ::Array[Pathname | StringIO | IO | OpenAI::FilePart]
+        OpenAI::Internal::file_input | ::Array[OpenAI::Internal::file_input]
 
       module Image
         extend OpenAI::Internal::Type::Union

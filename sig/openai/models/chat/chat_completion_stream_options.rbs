@@ -11,6 +11,8 @@ module OpenAI
         def include_usage=: (bool) -> bool
 
         def initialize: (?include_usage: bool) -> void
+
+        def to_hash: -> { include_usage: bool }
       end
     end
   end

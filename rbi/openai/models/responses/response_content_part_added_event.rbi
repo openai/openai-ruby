@@ -27,13 +27,14 @@ module OpenAI
         # The content part that was added.
         sig do
           returns(
-            T.any(
-              OpenAI::Responses::ResponseOutputText,
-              OpenAI::Responses::ResponseOutputRefusal
-            )
+            OpenAI::Responses::ResponseContentPartAddedEvent::Part::Variants
           )
         end
         attr_accessor :part
+
+        # The sequence number of this event.
+        sig { returns(Integer) }
+        attr_accessor :sequence_number
 
         # The type of the event. Always `response.content_part.added`.
         sig { returns(Symbol) }
@@ -50,6 +51,7 @@ module OpenAI
                 OpenAI::Responses::ResponseOutputText::OrHash,
                 OpenAI::Responses::ResponseOutputRefusal::OrHash
               ),
+            sequence_number: Integer,
             type: Symbol
           ).returns(T.attached_class)
         end
@@ -62,6 +64,8 @@ module OpenAI
           output_index:,
           # The content part that was added.
           part:,
+          # The sequence number of this event.
+          sequence_number:,
           # The type of the event. Always `response.content_part.added`.
           type: :"response.content_part.added"
         )
@@ -74,10 +78,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               part:
-                T.any(
-                  OpenAI::Responses::ResponseOutputText,
-                  OpenAI::Responses::ResponseOutputRefusal
-                ),
+                OpenAI::Responses::ResponseContentPartAddedEvent::Part::Variants,
+              sequence_number: Integer,
               type: Symbol
             }
           )

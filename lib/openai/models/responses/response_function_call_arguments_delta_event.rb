@@ -22,15 +22,22 @@ module OpenAI
         #   @return [Integer]
         required :output_index, Integer
 
+        # @!attribute sequence_number
+        #   The sequence number of this event.
+        #
+        #   @return [Integer]
+        required :sequence_number, Integer
+
         # @!attribute type
         #   The type of the event. Always `response.function_call_arguments.delta`.
         #
         #   @return [Symbol, :"response.function_call_arguments.delta"]
         required :type, const: :"response.function_call_arguments.delta"
 
-        # @!method initialize(delta:, item_id:, output_index:, type: :"response.function_call_arguments.delta")
+        # @!method initialize(delta:, item_id:, output_index:, sequence_number:, type: :"response.function_call_arguments.delta")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseFunctionCallArgumentsDeltaEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseFunctionCallArgumentsDeltaEvent} for more
+        #   details.
         #
         #   Emitted when there is a partial function-call arguments delta.
         #
@@ -39,6 +46,8 @@ module OpenAI
         #   @param item_id [String] The ID of the output item that the function-call arguments delta is added to.
         #
         #   @param output_index [Integer] The index of the output item that the function-call arguments delta is added to.
+        #
+        #   @param sequence_number [Integer] The sequence number of this event.
         #
         #   @param type [Symbol, :"response.function_call_arguments.delta"] The type of the event. Always `response.function_call_arguments.delta`.
       end

@@ -18,6 +18,13 @@ module OpenAI
         param: String?,
         type: String
       ) -> void
+
+      def to_hash: -> {
+        code: String?,
+        message: String,
+        param: String?,
+        type: String
+      }
     end
   end
 end

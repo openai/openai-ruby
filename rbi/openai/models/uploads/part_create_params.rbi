@@ -13,12 +13,12 @@ module OpenAI
           end
 
         # The chunk of bytes for this Part.
-        sig { returns(T.any(Pathname, StringIO, IO, OpenAI::FilePart)) }
+        sig { returns(OpenAI::Internal::FileInput) }
         attr_accessor :data
 
         sig do
           params(
-            data: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
+            data: OpenAI::Internal::FileInput,
             request_options: OpenAI::RequestOptions::OrHash
           ).returns(T.attached_class)
         end
@@ -32,7 +32,7 @@ module OpenAI
         sig do
           override.returns(
             {
-              data: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
+              data: OpenAI::Internal::FileInput,
               request_options: OpenAI::RequestOptions
             }
           )

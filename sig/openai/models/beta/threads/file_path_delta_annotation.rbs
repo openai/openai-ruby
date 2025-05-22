@@ -44,6 +44,15 @@ module OpenAI
             ?type: :file_path
           ) -> void
 
+          def to_hash: -> {
+            index: Integer,
+            type: :file_path,
+            end_index: Integer,
+            file_path: OpenAI::Beta::Threads::FilePathDeltaAnnotation::FilePath,
+            start_index: Integer,
+            text: String
+          }
+
           type file_path = { file_id: String }
 
           class FilePath < OpenAI::Internal::Type::BaseModel
@@ -52,6 +61,8 @@ module OpenAI
             def file_id=: (String) -> String
 
             def initialize: (?file_id: String) -> void
+
+            def to_hash: -> { file_id: String }
           end
         end
       end

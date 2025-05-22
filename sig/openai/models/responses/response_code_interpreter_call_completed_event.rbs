@@ -5,6 +5,7 @@ module OpenAI
         {
           code_interpreter_call: OpenAI::Responses::ResponseCodeInterpreterToolCall,
           output_index: Integer,
+          sequence_number: Integer,
           type: :"response.code_interpreter_call.completed"
         }
 
@@ -13,13 +14,23 @@ module OpenAI
 
         attr_accessor output_index: Integer
 
+        attr_accessor sequence_number: Integer
+
         attr_accessor type: :"response.code_interpreter_call.completed"
 
         def initialize: (
           code_interpreter_call: OpenAI::Responses::ResponseCodeInterpreterToolCall,
           output_index: Integer,
+          sequence_number: Integer,
           ?type: :"response.code_interpreter_call.completed"
         ) -> void
+
+        def to_hash: -> {
+          code_interpreter_call: OpenAI::Responses::ResponseCodeInterpreterToolCall,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.code_interpreter_call.completed"
+        }
       end
     end
   end

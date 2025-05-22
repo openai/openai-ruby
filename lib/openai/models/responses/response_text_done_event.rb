@@ -22,6 +22,12 @@ module OpenAI
         #   @return [Integer]
         required :output_index, Integer
 
+        # @!attribute sequence_number
+        #   The sequence number for this event.
+        #
+        #   @return [Integer]
+        required :sequence_number, Integer
+
         # @!attribute text
         #   The text content that is finalized.
         #
@@ -34,9 +40,9 @@ module OpenAI
         #   @return [Symbol, :"response.output_text.done"]
         required :type, const: :"response.output_text.done"
 
-        # @!method initialize(content_index:, item_id:, output_index:, text:, type: :"response.output_text.done")
+        # @!method initialize(content_index:, item_id:, output_index:, sequence_number:, text:, type: :"response.output_text.done")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseTextDoneEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseTextDoneEvent} for more details.
         #
         #   Emitted when text content is finalized.
         #
@@ -45,6 +51,8 @@ module OpenAI
         #   @param item_id [String] The ID of the output item that the text content is finalized.
         #
         #   @param output_index [Integer] The index of the output item that the text content is finalized.
+        #
+        #   @param sequence_number [Integer] The sequence number for this event.
         #
         #   @param text [String] The text content that is finalized.
         #

@@ -67,6 +67,9 @@ module OpenAI
     sig { returns(OpenAI::Resources::Evals) }
     attr_reader :evals
 
+    sig { returns(OpenAI::Resources::Containers) }
+    attr_reader :containers
+
     # @api private
     sig { override.returns(T::Hash[String, String]) }
     private def auth_headers

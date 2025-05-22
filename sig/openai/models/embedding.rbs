@@ -15,6 +15,12 @@ module OpenAI
         index: Integer,
         ?object: :embedding
       ) -> void
+
+      def to_hash: -> {
+        embedding: ::Array[Float],
+        index: Integer,
+        object: :embedding
+      }
     end
   end
 end

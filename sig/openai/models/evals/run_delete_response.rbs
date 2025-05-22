@@ -22,6 +22,8 @@ module OpenAI
           ?object: String,
           ?run_id: String
         ) -> void
+
+        def to_hash: -> { deleted: bool, object: String, run_id: String }
       end
     end
   end

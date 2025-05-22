@@ -7,8 +7,8 @@ module OpenAI
         created_at: Integer,
         filename: String,
         object: :file,
-        purpose: OpenAI::FileObject::purpose,
-        status: OpenAI::FileObject::status,
+        purpose: OpenAI::Models::FileObject::purpose,
+        status: OpenAI::Models::FileObject::status,
         expires_at: Integer,
         status_details: String
       }
@@ -24,9 +24,9 @@ module OpenAI
 
       attr_accessor object: :file
 
-      attr_accessor purpose: OpenAI::FileObject::purpose
+      attr_accessor purpose: OpenAI::Models::FileObject::purpose
 
-      attr_accessor status: OpenAI::FileObject::status
+      attr_accessor status: OpenAI::Models::FileObject::status
 
       attr_reader expires_at: Integer?
 
@@ -41,12 +41,24 @@ module OpenAI
         bytes: Integer,
         created_at: Integer,
         filename: String,
-        purpose: OpenAI::FileObject::purpose,
-        status: OpenAI::FileObject::status,
+        purpose: OpenAI::Models::FileObject::purpose,
+        status: OpenAI::Models::FileObject::status,
         ?expires_at: Integer,
         ?status_details: String,
         ?object: :file
       ) -> void
+
+      def to_hash: -> {
+        id: String,
+        bytes: Integer,
+        created_at: Integer,
+        filename: String,
+        object: :file,
+        purpose: OpenAI::Models::FileObject::purpose,
+        status: OpenAI::Models::FileObject::status,
+        expires_at: Integer,
+        status_details: String
+      }
 
       type purpose =
         :assistants
@@ -68,7 +80,7 @@ module OpenAI
         FINE_TUNE_RESULTS: :"fine-tune-results"
         VISION: :vision
 
-        def self?.values: -> ::Array[OpenAI::FileObject::purpose]
+        def self?.values: -> ::Array[OpenAI::Models::FileObject::purpose]
       end
 
       type status = :uploaded | :processed | :error
@@ -80,7 +92,7 @@ module OpenAI
         PROCESSED: :processed
         ERROR: :error
 
-        def self?.values: -> ::Array[OpenAI::FileObject::status]
+        def self?.values: -> ::Array[OpenAI::Models::FileObject::status]
       end
     end
   end

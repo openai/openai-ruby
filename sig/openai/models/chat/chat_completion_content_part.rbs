@@ -28,6 +28,11 @@ module OpenAI
             ?type: :file
           ) -> void
 
+          def to_hash: -> {
+            file: OpenAI::Chat::ChatCompletionContentPart::File::File,
+            type: :file
+          }
+
           type file = { file_data: String, file_id: String, filename: String }
 
           class File < OpenAI::Internal::Type::BaseModel
@@ -48,6 +53,12 @@ module OpenAI
               ?file_id: String,
               ?filename: String
             ) -> void
+
+            def to_hash: -> {
+              file_data: String,
+              file_id: String,
+              filename: String
+            }
           end
         end
 

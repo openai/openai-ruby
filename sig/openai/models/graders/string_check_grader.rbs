@@ -7,7 +7,7 @@ module OpenAI
         {
           input: String,
           name: String,
-          operation: OpenAI::Graders::StringCheckGrader::operation,
+          operation: OpenAI::Models::Graders::StringCheckGrader::operation,
           reference: String,
           type: :string_check
         }
@@ -17,7 +17,7 @@ module OpenAI
 
         attr_accessor name: String
 
-        attr_accessor operation: OpenAI::Graders::StringCheckGrader::operation
+        attr_accessor operation: OpenAI::Models::Graders::StringCheckGrader::operation
 
         attr_accessor reference: String
 
@@ -26,10 +26,18 @@ module OpenAI
         def initialize: (
           input: String,
           name: String,
-          operation: OpenAI::Graders::StringCheckGrader::operation,
+          operation: OpenAI::Models::Graders::StringCheckGrader::operation,
           reference: String,
           ?type: :string_check
         ) -> void
+
+        def to_hash: -> {
+          input: String,
+          name: String,
+          operation: OpenAI::Models::Graders::StringCheckGrader::operation,
+          reference: String,
+          type: :string_check
+        }
 
         type operation = :eq | :ne | :like | :ilike
 
@@ -41,7 +49,7 @@ module OpenAI
           LIKE: :like
           ILIKE: :ilike
 
-          def self?.values: -> ::Array[OpenAI::Graders::StringCheckGrader::operation]
+          def self?.values: -> ::Array[OpenAI::Models::Graders::StringCheckGrader::operation]
         end
       end
     end

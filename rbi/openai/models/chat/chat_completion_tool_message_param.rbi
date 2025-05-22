@@ -17,7 +17,7 @@ module OpenAI
         # The contents of the tool message.
         sig do
           returns(
-            T.any(String, T::Array[OpenAI::Chat::ChatCompletionContentPartText])
+            OpenAI::Chat::ChatCompletionToolMessageParam::Content::Variants
           )
         end
         attr_accessor :content
@@ -33,10 +33,7 @@ module OpenAI
         sig do
           params(
             content:
-              T.any(
-                String,
-                T::Array[OpenAI::Chat::ChatCompletionContentPartText::OrHash]
-              ),
+              OpenAI::Chat::ChatCompletionToolMessageParam::Content::Variants,
             tool_call_id: String,
             role: Symbol
           ).returns(T.attached_class)
@@ -55,10 +52,7 @@ module OpenAI
           override.returns(
             {
               content:
-                T.any(
-                  String,
-                  T::Array[OpenAI::Chat::ChatCompletionContentPartText]
-                ),
+                OpenAI::Chat::ChatCompletionToolMessageParam::Content::Variants,
               role: Symbol,
               tool_call_id: String
             }

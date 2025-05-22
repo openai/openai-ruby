@@ -17,6 +17,12 @@ module OpenAI
             deleted: bool,
             ?object: :"checkpoint.permission"
           ) -> void
+
+          def to_hash: -> {
+            id: String,
+            deleted: bool,
+            object: :"checkpoint.permission"
+          }
         end
       end
     end

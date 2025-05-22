@@ -17,14 +17,7 @@ module OpenAI
           sig do
             returns(
               T.nilable(
-                T::Array[
-                  T.any(
-                    OpenAI::Beta::Threads::ImageFileDeltaBlock,
-                    OpenAI::Beta::Threads::TextDeltaBlock,
-                    OpenAI::Beta::Threads::RefusalDeltaBlock,
-                    OpenAI::Beta::Threads::ImageURLDeltaBlock
-                  )
-                ]
+                T::Array[OpenAI::Beta::Threads::MessageContentDelta::Variants]
               )
             )
           end
@@ -88,12 +81,7 @@ module OpenAI
               {
                 content:
                   T::Array[
-                    T.any(
-                      OpenAI::Beta::Threads::ImageFileDeltaBlock,
-                      OpenAI::Beta::Threads::TextDeltaBlock,
-                      OpenAI::Beta::Threads::RefusalDeltaBlock,
-                      OpenAI::Beta::Threads::ImageURLDeltaBlock
-                    )
+                    OpenAI::Beta::Threads::MessageContentDelta::Variants
                   ],
                 role: OpenAI::Beta::Threads::MessageDelta::Role::TaggedSymbol
               }

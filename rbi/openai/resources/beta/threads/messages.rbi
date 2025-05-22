@@ -10,16 +10,7 @@ module OpenAI
             params(
               thread_id: String,
               content:
-                T.any(
-                  String,
-                  T::Array[
-                    T.any(
-                      OpenAI::Beta::Threads::ImageFileContentBlock::OrHash,
-                      OpenAI::Beta::Threads::ImageURLContentBlock::OrHash,
-                      OpenAI::Beta::Threads::TextContentBlockParam::OrHash
-                    )
-                  ]
-                ),
+                OpenAI::Beta::Threads::MessageCreateParams::Content::Variants,
               role: OpenAI::Beta::Threads::MessageCreateParams::Role::OrSymbol,
               attachments:
                 T.nilable(

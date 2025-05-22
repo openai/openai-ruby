@@ -21,6 +21,11 @@ module OpenAI
           ?logprobs: ::Array[OpenAI::Audio::Transcription::Logprob]
         ) -> void
 
+        def to_hash: -> {
+          text: String,
+          logprobs: ::Array[OpenAI::Audio::Transcription::Logprob]
+        }
+
         type logprob = { token: String, bytes: ::Array[Float], logprob: Float }
 
         class Logprob < OpenAI::Internal::Type::BaseModel
@@ -41,6 +46,12 @@ module OpenAI
             ?bytes: ::Array[Float],
             ?logprob: Float
           ) -> void
+
+          def to_hash: -> {
+            token: String,
+            bytes: ::Array[Float],
+            logprob: Float
+          }
         end
       end
     end

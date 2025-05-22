@@ -18,6 +18,11 @@ module OpenAI
           wandb: OpenAI::FineTuning::FineTuningJobWandbIntegration,
           ?type: :wandb
         ) -> void
+
+        def to_hash: -> {
+          type: :wandb,
+          wandb: OpenAI::FineTuning::FineTuningJobWandbIntegration
+        }
       end
     end
   end

@@ -9,6 +9,8 @@ module OpenAI
       attr_accessor type: :custom
 
       def initialize: (schema: ::Hash[Symbol, top], ?type: :custom) -> void
+
+      def to_hash: -> { schema: ::Hash[Symbol, top], type: :custom }
     end
   end
 end

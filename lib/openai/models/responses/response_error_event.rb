@@ -22,15 +22,21 @@ module OpenAI
         #   @return [String, nil]
         required :param, String, nil?: true
 
+        # @!attribute sequence_number
+        #   The sequence number of this event.
+        #
+        #   @return [Integer]
+        required :sequence_number, Integer
+
         # @!attribute type
         #   The type of the event. Always `error`.
         #
         #   @return [Symbol, :error]
         required :type, const: :error
 
-        # @!method initialize(code:, message:, param:, type: :error)
+        # @!method initialize(code:, message:, param:, sequence_number:, type: :error)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseErrorEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseErrorEvent} for more details.
         #
         #   Emitted when an error occurs.
         #
@@ -39,6 +45,8 @@ module OpenAI
         #   @param message [String] The error message.
         #
         #   @param param [String, nil] The error parameter.
+        #
+        #   @param sequence_number [Integer] The sequence number of this event.
         #
         #   @param type [Symbol, :error] The type of the event. Always `error`.
       end

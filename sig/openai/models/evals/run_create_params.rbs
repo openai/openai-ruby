@@ -28,13 +28,403 @@ module OpenAI
           ?request_options: OpenAI::request_opts
         ) -> void
 
+        def to_hash: -> {
+          data_source: OpenAI::Models::Evals::RunCreateParams::data_source,
+          metadata: OpenAI::Models::metadata?,
+          name: String,
+          request_options: OpenAI::RequestOptions
+        }
+
         type data_source =
           OpenAI::Evals::CreateEvalJSONLRunDataSource
           | OpenAI::Evals::CreateEvalCompletionsRunDataSource
-          | OpenAI::Evals::CreateEvalResponsesRunDataSource
+          | OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource
 
         module DataSource
           extend OpenAI::Internal::Type::Union
+
+          type create_eval_responses_run_data_source =
+            {
+              source: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::source,
+              type: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::type_,
+              input_messages: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::input_messages,
+              model: String,
+              sampling_params: OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams
+            }
+
+          class CreateEvalResponsesRunDataSource < OpenAI::Internal::Type::BaseModel
+            attr_accessor source: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::source
+
+            attr_accessor type: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::type_
+
+            attr_reader input_messages: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::input_messages?
+
+            def input_messages=: (
+              OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::input_messages
+            ) -> OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::input_messages
+
+            attr_reader model: String?
+
+            def model=: (String) -> String
+
+            attr_reader sampling_params: OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams?
+
+            def sampling_params=: (
+              OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams
+            ) -> OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams
+
+            def initialize: (
+              source: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::source,
+              type: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::type_,
+              ?input_messages: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::input_messages,
+              ?model: String,
+              ?sampling_params: OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams
+            ) -> void
+
+            def to_hash: -> {
+              source: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::source,
+              type: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::type_,
+              input_messages: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::input_messages,
+              model: String,
+              sampling_params: OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams
+            }
+
+            type source =
+              OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent
+              | OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileID
+              | OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::Responses
+
+            module Source
+              extend OpenAI::Internal::Type::Union
+
+              type file_content =
+                {
+                  content: ::Array[OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent::Content],
+                  type: :file_content
+                }
+
+              class FileContent < OpenAI::Internal::Type::BaseModel
+                attr_accessor content: ::Array[OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent::Content]
+
+                attr_accessor type: :file_content
+
+                def initialize: (
+                  content: ::Array[OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent::Content],
+                  ?type: :file_content
+                ) -> void
+
+                def to_hash: -> {
+                  content: ::Array[OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent::Content],
+                  type: :file_content
+                }
+
+                type content =
+                  { item: ::Hash[Symbol, top], sample: ::Hash[Symbol, top] }
+
+                class Content < OpenAI::Internal::Type::BaseModel
+                  attr_accessor item: ::Hash[Symbol, top]
+
+                  attr_reader sample: ::Hash[Symbol, top]?
+
+                  def sample=: (::Hash[Symbol, top]) -> ::Hash[Symbol, top]
+
+                  def initialize: (
+                    item: ::Hash[Symbol, top],
+                    ?sample: ::Hash[Symbol, top]
+                  ) -> void
+
+                  def to_hash: -> {
+                    item: ::Hash[Symbol, top],
+                    sample: ::Hash[Symbol, top]
+                  }
+                end
+              end
+
+              type file_id = { id: String, type: :file_id }
+
+              class FileID < OpenAI::Internal::Type::BaseModel
+                attr_accessor id: String
+
+                attr_accessor type: :file_id
+
+                def initialize: (id: String, ?type: :file_id) -> void
+
+                def to_hash: -> { id: String, type: :file_id }
+              end
+
+              type responses =
+                {
+                  type: :responses,
+                  created_after: Integer?,
+                  created_before: Integer?,
+                  instructions_search: String?,
+                  metadata: top?,
+                  model: String?,
+                  reasoning_effort: OpenAI::Models::reasoning_effort?,
+                  temperature: Float?,
+                  tools: ::Array[String]?,
+                  top_p: Float?,
+                  users: ::Array[String]?
+                }
+
+              class Responses < OpenAI::Internal::Type::BaseModel
+                attr_accessor type: :responses
+
+                attr_accessor created_after: Integer?
+
+                attr_accessor created_before: Integer?
+
+                attr_accessor instructions_search: String?
+
+                attr_accessor metadata: top?
+
+                attr_accessor model: String?
+
+                attr_accessor reasoning_effort: OpenAI::Models::reasoning_effort?
+
+                attr_accessor temperature: Float?
+
+                attr_accessor tools: ::Array[String]?
+
+                attr_accessor top_p: Float?
+
+                attr_accessor users: ::Array[String]?
+
+                def initialize: (
+                  ?created_after: Integer?,
+                  ?created_before: Integer?,
+                  ?instructions_search: String?,
+                  ?metadata: top?,
+                  ?model: String?,
+                  ?reasoning_effort: OpenAI::Models::reasoning_effort?,
+                  ?temperature: Float?,
+                  ?tools: ::Array[String]?,
+                  ?top_p: Float?,
+                  ?users: ::Array[String]?,
+                  ?type: :responses
+                ) -> void
+
+                def to_hash: -> {
+                  type: :responses,
+                  created_after: Integer?,
+                  created_before: Integer?,
+                  instructions_search: String?,
+                  metadata: top?,
+                  model: String?,
+                  reasoning_effort: OpenAI::Models::reasoning_effort?,
+                  temperature: Float?,
+                  tools: ::Array[String]?,
+                  top_p: Float?,
+                  users: ::Array[String]?
+                }
+              end
+
+              def self?.variants: -> ::Array[OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::source]
+            end
+
+            type type_ = :responses
+
+            module Type
+              extend OpenAI::Internal::Type::Enum
+
+              RESPONSES: :responses
+
+              def self?.values: -> ::Array[OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::type_]
+            end
+
+            type input_messages =
+              OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template
+              | OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::ItemReference
+
+            module InputMessages
+              extend OpenAI::Internal::Type::Union
+
+              type template =
+                {
+                  template: ::Array[OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::template],
+                  type: :template
+                }
+
+              class Template < OpenAI::Internal::Type::BaseModel
+                attr_accessor template: ::Array[OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::template]
+
+                attr_accessor type: :template
+
+                def initialize: (
+                  template: ::Array[OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::template],
+                  ?type: :template
+                ) -> void
+
+                def to_hash: -> {
+                  template: ::Array[OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::template],
+                  type: :template
+                }
+
+                type template =
+                  OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::ChatMessage
+                  | OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem
+
+                module Template
+                  extend OpenAI::Internal::Type::Union
+
+                  type chat_message = { content: String, role: String }
+
+                  class ChatMessage < OpenAI::Internal::Type::BaseModel
+                    attr_accessor content: String
+
+                    attr_accessor role: String
+
+                    def initialize: (content: String, role: String) -> void
+
+                    def to_hash: -> { content: String, role: String }
+                  end
+
+                  type eval_item =
+                    {
+                      content: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::content,
+                      role: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::role,
+                      type: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::type_
+                    }
+
+                  class EvalItem < OpenAI::Internal::Type::BaseModel
+                    attr_accessor content: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::content
+
+                    attr_accessor role: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::role
+
+                    attr_reader type: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::type_?
+
+                    def type=: (
+                      OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::type_
+                    ) -> OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::type_
+
+                    def initialize: (
+                      content: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::content,
+                      role: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::role,
+                      ?type: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::type_
+                    ) -> void
+
+                    def to_hash: -> {
+                      content: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::content,
+                      role: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::role,
+                      type: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::type_
+                    }
+
+                    type content =
+                      String
+                      | OpenAI::Responses::ResponseInputText
+                      | OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText
+
+                    module Content
+                      extend OpenAI::Internal::Type::Union
+
+                      type output_text = { text: String, type: :output_text }
+
+                      class OutputText < OpenAI::Internal::Type::BaseModel
+                        attr_accessor text: String
+
+                        attr_accessor type: :output_text
+
+                        def initialize: (
+                          text: String,
+                          ?type: :output_text
+                        ) -> void
+
+                        def to_hash: -> { text: String, type: :output_text }
+                      end
+
+                      def self?.variants: -> ::Array[OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::content]
+                    end
+
+                    type role = :user | :assistant | :system | :developer
+
+                    module Role
+                      extend OpenAI::Internal::Type::Enum
+
+                      USER: :user
+                      ASSISTANT: :assistant
+                      SYSTEM: :system
+                      DEVELOPER: :developer
+
+                      def self?.values: -> ::Array[OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::role]
+                    end
+
+                    type type_ = :message
+
+                    module Type
+                      extend OpenAI::Internal::Type::Enum
+
+                      MESSAGE: :message
+
+                      def self?.values: -> ::Array[OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::type_]
+                    end
+                  end
+
+                  def self?.variants: -> ::Array[OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::template]
+                end
+              end
+
+              type item_reference =
+                { item_reference: String, type: :item_reference }
+
+              class ItemReference < OpenAI::Internal::Type::BaseModel
+                attr_accessor item_reference: String
+
+                attr_accessor type: :item_reference
+
+                def initialize: (
+                  item_reference: String,
+                  ?type: :item_reference
+                ) -> void
+
+                def to_hash: -> {
+                  item_reference: String,
+                  type: :item_reference
+                }
+              end
+
+              def self?.variants: -> ::Array[OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::input_messages]
+            end
+
+            type sampling_params =
+              {
+                max_completion_tokens: Integer,
+                seed: Integer,
+                temperature: Float,
+                top_p: Float
+              }
+
+            class SamplingParams < OpenAI::Internal::Type::BaseModel
+              attr_reader max_completion_tokens: Integer?
+
+              def max_completion_tokens=: (Integer) -> Integer
+
+              attr_reader seed: Integer?
+
+              def seed=: (Integer) -> Integer
+
+              attr_reader temperature: Float?
+
+              def temperature=: (Float) -> Float
+
+              attr_reader top_p: Float?
+
+              def top_p=: (Float) -> Float
+
+              def initialize: (
+                ?max_completion_tokens: Integer,
+                ?seed: Integer,
+                ?temperature: Float,
+                ?top_p: Float
+              ) -> void
+
+              def to_hash: -> {
+                max_completion_tokens: Integer,
+                seed: Integer,
+                temperature: Float,
+                top_p: Float
+              }
+            end
+          end
 
           def self?.variants: -> ::Array[OpenAI::Models::Evals::RunCreateParams::data_source]
         end

@@ -18,13 +18,7 @@ module OpenAI
 
       # Configuration of data sources used in runs of the evaluation.
       sig do
-        returns(
-          T.any(
-            OpenAI::EvalCustomDataSourceConfig,
-            OpenAI::EvalLogsDataSourceConfig,
-            OpenAI::EvalStoredCompletionsDataSourceConfig
-          )
-        )
+        returns(OpenAI::Models::EvalListResponse::DataSourceConfig::Variants)
       end
       attr_accessor :data_source_config
 
@@ -48,15 +42,7 @@ module OpenAI
       # A list of testing criteria.
       sig do
         returns(
-          T::Array[
-            T.any(
-              OpenAI::Graders::LabelModelGrader,
-              OpenAI::Graders::StringCheckGrader,
-              OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderTextSimilarity,
-              OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderPython,
-              OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderScoreModel
-            )
-          ]
+          T::Array[OpenAI::Models::EvalListResponse::TestingCriterion::Variants]
         )
       end
       attr_accessor :testing_criteria
@@ -66,7 +52,7 @@ module OpenAI
       #
       # - Improve the quality of my chatbot
       # - See how well my chatbot handles customer support
-      # - Check if o3-mini is better at my usecase than gpt-4o
+      # - Check if o4-mini is better at my usecase than gpt-4o
       sig do
         params(
           id: String,
@@ -74,7 +60,7 @@ module OpenAI
           data_source_config:
             T.any(
               OpenAI::EvalCustomDataSourceConfig::OrHash,
-              OpenAI::EvalLogsDataSourceConfig::OrHash,
+              OpenAI::Models::EvalListResponse::DataSourceConfig::Logs::OrHash,
               OpenAI::EvalStoredCompletionsDataSourceConfig::OrHash
             ),
           metadata: T.nilable(T::Hash[Symbol, String]),
@@ -82,8 +68,8 @@ module OpenAI
           testing_criteria:
             T::Array[
               T.any(
-                OpenAI::Graders::LabelModelGrader::OrHash,
-                OpenAI::Graders::StringCheckGrader::OrHash,
+                OpenAI::Models::Graders::LabelModelGrader::OrHash,
+                OpenAI::Models::Graders::StringCheckGrader::OrHash,
                 OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderTextSimilarity::OrHash,
                 OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderPython::OrHash,
                 OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderScoreModel::OrHash
@@ -121,23 +107,13 @@ module OpenAI
             id: String,
             created_at: Integer,
             data_source_config:
-              T.any(
-                OpenAI::EvalCustomDataSourceConfig,
-                OpenAI::EvalLogsDataSourceConfig,
-                OpenAI::EvalStoredCompletionsDataSourceConfig
-              ),
+              OpenAI::Models::EvalListResponse::DataSourceConfig::Variants,
             metadata: T.nilable(T::Hash[Symbol, String]),
             name: String,
             object: Symbol,
             testing_criteria:
               T::Array[
-                T.any(
-                  OpenAI::Graders::LabelModelGrader,
-                  OpenAI::Graders::StringCheckGrader,
-                  OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderTextSimilarity,
-                  OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderPython,
-                  OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderScoreModel
-                )
+                OpenAI::Models::EvalListResponse::TestingCriterion::Variants
               ]
           }
         )
@@ -153,10 +129,78 @@ module OpenAI
           T.type_alias do
             T.any(
               OpenAI::EvalCustomDataSourceConfig,
-              OpenAI::EvalLogsDataSourceConfig,
+              OpenAI::Models::EvalListResponse::DataSourceConfig::Logs,
               OpenAI::EvalStoredCompletionsDataSourceConfig
             )
           end
+
+        class Logs < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Models::EvalListResponse::DataSourceConfig::Logs,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The json schema for the run data source items. Learn how to build JSON schemas
+          # [here](https://json-schema.org/).
+          sig { returns(T::Hash[Symbol, T.anything]) }
+          attr_accessor :schema
+
+          # The type of data source. Always `logs`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # Set of 16 key-value pairs that can be attached to an object. This can be useful
+          # for storing additional information about the object in a structured format, and
+          # querying for objects via API or the dashboard.
+          #
+          # Keys are strings with a maximum length of 64 characters. Values are strings with
+          # a maximum length of 512 characters.
+          sig { returns(T.nilable(T::Hash[Symbol, String])) }
+          attr_accessor :metadata
+
+          # A LogsDataSourceConfig which specifies the metadata property of your logs query.
+          # This is usually metadata like `usecase=chatbot` or `prompt-version=v2`, etc. The
+          # schema returned by this data source config is used to defined what variables are
+          # available in your evals. `item` and `sample` are both defined when using this
+          # data source config.
+          sig do
+            params(
+              schema: T::Hash[Symbol, T.anything],
+              metadata: T.nilable(T::Hash[Symbol, String]),
+              type: Symbol
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # The json schema for the run data source items. Learn how to build JSON schemas
+            # [here](https://json-schema.org/).
+            schema:,
+            # Set of 16 key-value pairs that can be attached to an object. This can be useful
+            # for storing additional information about the object in a structured format, and
+            # querying for objects via API or the dashboard.
+            #
+            # Keys are strings with a maximum length of 64 characters. Values are strings with
+            # a maximum length of 512 characters.
+            metadata: nil,
+            # The type of data source. Always `logs`.
+            type: :logs
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                schema: T::Hash[Symbol, T.anything],
+                type: Symbol,
+                metadata: T.nilable(T::Hash[Symbol, String])
+              }
+            )
+          end
+          def to_hash
+          end
+        end
 
         sig do
           override.returns(
@@ -177,8 +221,8 @@ module OpenAI
         Variants =
           T.type_alias do
             T.any(
-              OpenAI::Graders::LabelModelGrader,
-              OpenAI::Graders::StringCheckGrader,
+              OpenAI::Models::Graders::LabelModelGrader,
+              OpenAI::Models::Graders::StringCheckGrader,
               OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderTextSimilarity,
               OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderPython,
               OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderScoreModel

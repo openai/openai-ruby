@@ -70,6 +70,7 @@ module OpenAI
               T.any(
                 OpenAI::ResponseFormatText::OrHash,
                 OpenAI::ResponseFormatJSONSchema::OrHash,
+                OpenAI::StructuredOutput::JsonSchemaConverter,
                 OpenAI::ResponseFormatJSONObject::OrHash
               ),
             seed: T.nilable(Integer),
@@ -77,7 +78,8 @@ module OpenAI
               T.nilable(
                 OpenAI::Chat::CompletionCreateParams::ServiceTier::OrSymbol
               ),
-            stop: T.nilable(T.any(String, T::Array[String])),
+            stop:
+              T.nilable(OpenAI::Chat::CompletionCreateParams::Stop::Variants),
             store: T.nilable(T::Boolean),
             stream_options:
               T.nilable(OpenAI::Chat::ChatCompletionStreamOptions::OrHash),
@@ -87,7 +89,13 @@ module OpenAI
                 OpenAI::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
                 OpenAI::Chat::ChatCompletionNamedToolChoice::OrHash
               ),
-            tools: T::Array[OpenAI::Chat::ChatCompletionTool::OrHash],
+            tools:
+              T::Array[
+                T.any(
+                  OpenAI::Chat::ChatCompletionTool::OrHash,
+                  OpenAI::StructuredOutput::JsonSchemaConverter
+                )
+              ],
             top_logprobs: T.nilable(Integer),
             top_p: T.nilable(Float),
             user: String,
@@ -278,8 +286,8 @@ module OpenAI
           #
           # We generally recommend altering this or `temperature` but not both.
           top_p: nil,
-          # A unique identifier representing your end-user, which can help OpenAI to monitor
-          # and detect abuse.
+          # A stable identifier for your end-users. Used to boost cache hit rates by better
+          # bucketing similar requests and to help OpenAI detect and prevent abuse.
           # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
           user: nil,
           # This tool searches the web for relevant results to use in a response. Learn more
@@ -363,7 +371,8 @@ module OpenAI
               T.nilable(
                 OpenAI::Chat::CompletionCreateParams::ServiceTier::OrSymbol
               ),
-            stop: T.nilable(T.any(String, T::Array[String])),
+            stop:
+              T.nilable(OpenAI::Chat::CompletionCreateParams::Stop::Variants),
             store: T.nilable(T::Boolean),
             stream_options:
               T.nilable(OpenAI::Chat::ChatCompletionStreamOptions::OrHash),
@@ -564,8 +573,8 @@ module OpenAI
           #
           # We generally recommend altering this or `temperature` but not both.
           top_p: nil,
-          # A unique identifier representing your end-user, which can help OpenAI to monitor
-          # and detect abuse.
+          # A stable identifier for your end-users. Used to boost cache hit rates by better
+          # bucketing similar requests and to help OpenAI detect and prevent abuse.
           # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
           user: nil,
           # This tool searches the web for relevant results to use in a response. Learn more

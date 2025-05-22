@@ -12,7 +12,7 @@ module OpenAI
 
         # @!attribute graders
         #
-        #   @return [Hash{Symbol=>OpenAI::Graders::StringCheckGrader, OpenAI::Graders::TextSimilarityGrader, OpenAI::Graders::PythonGrader, OpenAI::Graders::ScoreModelGrader, OpenAI::Graders::LabelModelGrader}]
+        #   @return [Hash{Symbol=>OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::LabelModelGrader}]
         required :graders, -> { OpenAI::Internal::Type::HashOf[union: OpenAI::Graders::MultiGrader::Grader] }
 
         # @!attribute name
@@ -22,7 +22,7 @@ module OpenAI
         required :name, String
 
         # @!attribute type
-        #   The type of grader.
+        #   The object type, which is always `multi`.
         #
         #   @return [Symbol, :multi]
         required :type, const: :multi
@@ -33,11 +33,11 @@ module OpenAI
         #
         #   @param calculate_output [String] A formula to calculate the output based on grader results.
         #
-        #   @param graders [Hash{Symbol=>OpenAI::Graders::StringCheckGrader, OpenAI::Graders::TextSimilarityGrader, OpenAI::Graders::PythonGrader, OpenAI::Graders::ScoreModelGrader, OpenAI::Graders::LabelModelGrader}]
+        #   @param graders [Hash{Symbol=>OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::LabelModelGrader}]
         #
         #   @param name [String] The name of the grader.
         #
-        #   @param type [Symbol, :multi] The type of grader.
+        #   @param type [Symbol, :multi] The object type, which is always `multi`.
 
         # A StringCheckGrader object that performs a string comparison between input and
         # reference using a specified operation.
@@ -61,19 +61,7 @@ module OpenAI
           variant -> { OpenAI::Graders::LabelModelGrader }
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Graders::StringCheckGrader, OpenAI::Graders::TextSimilarityGrader, OpenAI::Graders::PythonGrader, OpenAI::Graders::ScoreModelGrader, OpenAI::Graders::LabelModelGrader)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias do
-              T.any(
-                OpenAI::Graders::StringCheckGrader,
-                OpenAI::Graders::TextSimilarityGrader,
-                OpenAI::Graders::PythonGrader,
-                OpenAI::Graders::ScoreModelGrader,
-                OpenAI::Graders::LabelModelGrader
-              )
-            end
-          end
+          #   @return [Array(OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::LabelModelGrader)]
         end
       end
     end

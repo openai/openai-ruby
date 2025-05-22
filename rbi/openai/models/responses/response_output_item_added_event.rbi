@@ -13,23 +13,16 @@ module OpenAI
           end
 
         # The output item that was added.
-        sig do
-          returns(
-            T.any(
-              OpenAI::Responses::ResponseOutputMessage,
-              OpenAI::Responses::ResponseFileSearchToolCall,
-              OpenAI::Responses::ResponseFunctionToolCall,
-              OpenAI::Responses::ResponseFunctionWebSearch,
-              OpenAI::Responses::ResponseComputerToolCall,
-              OpenAI::Responses::ResponseReasoningItem
-            )
-          )
-        end
+        sig { returns(OpenAI::Responses::ResponseOutputItem::Variants) }
         attr_accessor :item
 
         # The index of the output item that was added.
         sig { returns(Integer) }
         attr_accessor :output_index
+
+        # The sequence number of this event.
+        sig { returns(Integer) }
+        attr_accessor :sequence_number
 
         # The type of the event. Always `response.output_item.added`.
         sig { returns(Symbol) }
@@ -45,9 +38,16 @@ module OpenAI
                 OpenAI::Responses::ResponseFunctionToolCall::OrHash,
                 OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
                 OpenAI::Responses::ResponseComputerToolCall::OrHash,
-                OpenAI::Responses::ResponseReasoningItem::OrHash
+                OpenAI::Responses::ResponseReasoningItem::OrHash,
+                OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::OrHash,
+                OpenAI::Responses::ResponseCodeInterpreterToolCall::OrHash,
+                OpenAI::Responses::ResponseOutputItem::LocalShellCall::OrHash,
+                OpenAI::Responses::ResponseOutputItem::McpCall::OrHash,
+                OpenAI::Responses::ResponseOutputItem::McpListTools::OrHash,
+                OpenAI::Responses::ResponseOutputItem::McpApprovalRequest::OrHash
               ),
             output_index: Integer,
+            sequence_number: Integer,
             type: Symbol
           ).returns(T.attached_class)
         end
@@ -56,6 +56,8 @@ module OpenAI
           item:,
           # The index of the output item that was added.
           output_index:,
+          # The sequence number of this event.
+          sequence_number:,
           # The type of the event. Always `response.output_item.added`.
           type: :"response.output_item.added"
         )
@@ -64,16 +66,9 @@ module OpenAI
         sig do
           override.returns(
             {
-              item:
-                T.any(
-                  OpenAI::Responses::ResponseOutputMessage,
-                  OpenAI::Responses::ResponseFileSearchToolCall,
-                  OpenAI::Responses::ResponseFunctionToolCall,
-                  OpenAI::Responses::ResponseFunctionWebSearch,
-                  OpenAI::Responses::ResponseComputerToolCall,
-                  OpenAI::Responses::ResponseReasoningItem
-                ),
+              item: OpenAI::Responses::ResponseOutputItem::Variants,
               output_index: Integer,
+              sequence_number: Integer,
               type: Symbol
             }
           )

@@ -43,6 +43,16 @@ module OpenAI
 
   CompoundFilter = OpenAI::Models::CompoundFilter
 
+  ContainerCreateParams = OpenAI::Models::ContainerCreateParams
+
+  ContainerDeleteParams = OpenAI::Models::ContainerDeleteParams
+
+  ContainerListParams = OpenAI::Models::ContainerListParams
+
+  ContainerRetrieveParams = OpenAI::Models::ContainerRetrieveParams
+
+  Containers = OpenAI::Models::Containers
+
   CreateEmbeddingResponse = OpenAI::Models::CreateEmbeddingResponse
 
   Embedding = OpenAI::Models::Embedding
@@ -59,11 +69,7 @@ module OpenAI
 
   EvalDeleteParams = OpenAI::Models::EvalDeleteParams
 
-  EvalItem = OpenAI::Models::EvalItem
-
   EvalListParams = OpenAI::Models::EvalListParams
-
-  EvalLogsDataSourceConfig = OpenAI::Models::EvalLogsDataSourceConfig
 
   EvalRetrieveParams = OpenAI::Models::EvalRetrieveParams
 
@@ -183,8 +189,6 @@ module OpenAI
   VectorStoreDeleted = OpenAI::Models::VectorStoreDeleted
 
   VectorStoreDeleteParams = OpenAI::Models::VectorStoreDeleteParams
-
-  VectorStoreExpirationAfter = OpenAI::Models::VectorStoreExpirationAfter
 
   VectorStoreListParams = OpenAI::Models::VectorStoreListParams
 

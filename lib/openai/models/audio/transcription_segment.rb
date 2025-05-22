@@ -69,7 +69,7 @@ module OpenAI
 
         # @!method initialize(id:, avg_logprob:, compression_ratio:, end_:, no_speech_prob:, seek:, start:, temperature:, text:, tokens:)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Audio::TranscriptionSegment} for more details.
+        #   {OpenAI::Models::Audio::TranscriptionSegment} for more details.
         #
         #   @param id [Integer] Unique identifier of the segment.
         #

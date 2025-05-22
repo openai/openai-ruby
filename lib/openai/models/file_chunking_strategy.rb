@@ -14,13 +14,7 @@ module OpenAI
       variant :other, -> { OpenAI::OtherFileChunkingStrategyObject }
 
       # @!method self.variants
-      #   @return [Array(OpenAI::StaticFileChunkingStrategyObject, OpenAI::OtherFileChunkingStrategyObject)]
-
-      define_sorbet_constant!(:Variants) do
-        T.type_alias do
-          T.any(OpenAI::StaticFileChunkingStrategyObject, OpenAI::OtherFileChunkingStrategyObject)
-        end
-      end
+      #   @return [Array(OpenAI::Models::StaticFileChunkingStrategyObject, OpenAI::Models::OtherFileChunkingStrategyObject)]
     end
   end
 end

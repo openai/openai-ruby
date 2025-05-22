@@ -17,13 +17,7 @@ module OpenAI
           sig do
             returns(
               T.nilable(
-                T.any(
-                  OpenAI::Graders::StringCheckGrader,
-                  OpenAI::Graders::TextSimilarityGrader,
-                  OpenAI::Graders::PythonGrader,
-                  OpenAI::Graders::ScoreModelGrader,
-                  OpenAI::Graders::MultiGrader
-                )
+                OpenAI::Models::FineTuning::Alpha::GraderValidateResponse::Grader::Variants
               )
             )
           end
@@ -65,13 +59,7 @@ module OpenAI
             override.returns(
               {
                 grader:
-                  T.any(
-                    OpenAI::Graders::StringCheckGrader,
-                    OpenAI::Graders::TextSimilarityGrader,
-                    OpenAI::Graders::PythonGrader,
-                    OpenAI::Graders::ScoreModelGrader,
-                    OpenAI::Graders::MultiGrader
-                  )
+                  OpenAI::Models::FineTuning::Alpha::GraderValidateResponse::Grader::Variants
               }
             )
           end

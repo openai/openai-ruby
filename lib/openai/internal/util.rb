@@ -9,6 +9,23 @@ module OpenAI
       # @return [Float]
       def self.monotonic_secs = Process.clock_gettime(Process::CLOCK_MONOTONIC)
 
+      # @api private
+      #
+      # @param ns [Module, Class]
+      #
+      # @return [Enumerable<Module, Class>]
+      def self.walk_namespaces(ns)
+        ns.constants(false).lazy.flat_map do
+          case (c = ns.const_get(_1, false))
+          in Module | Class
+            walk_namespaces(c)
+          else
+            []
+          end
+        end
+          .chain([ns])
+      end
+
       class << self
         # @api private
         #
@@ -829,8 +846,36 @@ module OpenAI
         # @api private
         #
         # @param name [Symbol]
+        #
+        # @return [Boolean]
+        def sorbet_constant_defined?(name) = sorbet_runtime_constants.key?(name)
+
+        # @api private
+        #
+        # @param name [Symbol]
         # @param blk [Proc]
         def define_sorbet_constant!(name, &blk) = sorbet_runtime_constants.store(name, blk)
+
+        # @api private
+        #
+        # @return [Object]
+        def to_sorbet_type = raise NotImplementedError
+
+        class << self
+          # @api private
+          #
+          # @param type [OpenAI::Internal::Util::SorbetRuntimeSupport, Object]
+          #
+          # @return [Object]
+          def to_sorbet_type(type)
+            case type
+            in OpenAI::Internal::Util::SorbetRuntimeSupport
+              type.to_sorbet_type
+            else
+              type
+            end
+          end
+        end
       end
 
       extend OpenAI::Internal::Util::SorbetRuntimeSupport

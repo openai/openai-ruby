@@ -28,6 +28,14 @@ module OpenAI
           ?description: String?,
           ?type: :function
         ) -> void
+
+        def to_hash: -> {
+          name: String,
+          parameters: ::Hash[Symbol, top]?,
+          strict: bool?,
+          type: :function,
+          description: String?
+        }
       end
     end
   end

@@ -30,12 +30,22 @@ module OpenAI
             ?type: :file_citation
           ) -> void
 
+          def to_hash: -> {
+            end_index: Integer,
+            file_citation: OpenAI::Beta::Threads::FileCitationAnnotation::FileCitation,
+            start_index: Integer,
+            text: String,
+            type: :file_citation
+          }
+
           type file_citation = { file_id: String }
 
           class FileCitation < OpenAI::Internal::Type::BaseModel
             attr_accessor file_id: String
 
             def initialize: (file_id: String) -> void
+
+            def to_hash: -> { file_id: String }
           end
         end
       end

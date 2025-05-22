@@ -19,11 +19,11 @@ module OpenAI
         #
         # @param attributes [Hash{Symbol=>String, Float, Boolean}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #
-        # @param chunking_strategy [OpenAI::AutoFileChunkingStrategyParam, OpenAI::StaticFileChunkingStrategyObjectParam] The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+        # @param chunking_strategy [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam] The chunking strategy used to chunk the file(s). If not set, will use the `auto`
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::VectorStores::VectorStoreFile]
+        # @return [OpenAI::Models::VectorStores::VectorStoreFile]
         #
         # @see OpenAI::Models::VectorStores::FileCreateParams
         def create(vector_store_id, params)
@@ -47,7 +47,7 @@ module OpenAI
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::VectorStores::VectorStoreFile]
+        # @return [OpenAI::Models::VectorStores::VectorStoreFile]
         #
         # @see OpenAI::Models::VectorStores::FileRetrieveParams
         def retrieve(file_id, params)
@@ -79,7 +79,7 @@ module OpenAI
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::VectorStores::VectorStoreFile]
+        # @return [OpenAI::Models::VectorStores::VectorStoreFile]
         #
         # @see OpenAI::Models::VectorStores::FileUpdateParams
         def update(file_id, params)
@@ -110,15 +110,15 @@ module OpenAI
         #
         # @param before [String] A cursor for use in pagination. `before` is an object ID that defines your place
         #
-        # @param filter [Symbol, OpenAI::VectorStores::FileListParams::Filter] Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
+        # @param filter [Symbol, OpenAI::Models::VectorStores::FileListParams::Filter] Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
         #
         # @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
         #
-        # @param order [Symbol, OpenAI::VectorStores::FileListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
+        # @param order [Symbol, OpenAI::Models::VectorStores::FileListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::Internal::CursorPage<OpenAI::VectorStores::VectorStoreFile>]
+        # @return [OpenAI::Internal::CursorPage<OpenAI::Models::VectorStores::VectorStoreFile>]
         #
         # @see OpenAI::Models::VectorStores::FileListParams
         def list(vector_store_id, params = {})
@@ -146,7 +146,7 @@ module OpenAI
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::VectorStores::VectorStoreFileDeleted]
+        # @return [OpenAI::Models::VectorStores::VectorStoreFileDeleted]
         #
         # @see OpenAI::Models::VectorStores::FileDeleteParams
         def delete(file_id, params)

@@ -28,6 +28,13 @@ module OpenAI
           ?filename: String,
           ?type: :input_file
         ) -> void
+
+        def to_hash: -> {
+          type: :input_file,
+          file_data: String,
+          file_id: String?,
+          filename: String
+        }
       end
     end
   end

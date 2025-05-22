@@ -25,7 +25,7 @@ module OpenAI
         class File < OpenAI::Internal::Type::BaseModel
           # @!attribute file
           #
-          #   @return [OpenAI::Chat::ChatCompletionContentPart::File::File]
+          #   @return [OpenAI::Models::Chat::ChatCompletionContentPart::File::File]
           required :file, -> { OpenAI::Chat::ChatCompletionContentPart::File::File }
 
           # @!attribute type
@@ -38,11 +38,11 @@ module OpenAI
           #   Learn about [file inputs](https://platform.openai.com/docs/guides/text) for text
           #   generation.
           #
-          #   @param file [OpenAI::Chat::ChatCompletionContentPart::File::File]
+          #   @param file [OpenAI::Models::Chat::ChatCompletionContentPart::File::File]
           #
           #   @param type [Symbol, :file] The type of the content part. Always `file`.
 
-          # @see OpenAI::Chat::ChatCompletionContentPart::File#file
+          # @see OpenAI::Models::Chat::ChatCompletionContentPart::File#file
           class File < OpenAI::Internal::Type::BaseModel
             # @!attribute file_data
             #   The base64 encoded file data, used when passing the file to the model as a
@@ -65,7 +65,7 @@ module OpenAI
 
             # @!method initialize(file_data: nil, file_id: nil, filename: nil)
             #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Chat::ChatCompletionContentPart::File::File} for more details.
+            #   {OpenAI::Models::Chat::ChatCompletionContentPart::File::File} for more details.
             #
             #   @param file_data [String] The base64 encoded file data, used when passing the file to the model
             #
@@ -76,18 +76,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Chat::ChatCompletionContentPartText, OpenAI::Chat::ChatCompletionContentPartImage, OpenAI::Chat::ChatCompletionContentPartInputAudio, OpenAI::Chat::ChatCompletionContentPart::File)]
-
-        define_sorbet_constant!(:Variants) do
-          T.type_alias do
-            T.any(
-              OpenAI::Chat::ChatCompletionContentPartText,
-              OpenAI::Chat::ChatCompletionContentPartImage,
-              OpenAI::Chat::ChatCompletionContentPartInputAudio,
-              OpenAI::Chat::ChatCompletionContentPart::File
-            )
-          end
-        end
+        #   @return [Array(OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File)]
       end
     end
 

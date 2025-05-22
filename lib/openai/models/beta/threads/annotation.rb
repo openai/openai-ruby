@@ -19,13 +19,7 @@ module OpenAI
           variant :file_path, -> { OpenAI::Beta::Threads::FilePathAnnotation }
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Beta::Threads::FileCitationAnnotation, OpenAI::Beta::Threads::FilePathAnnotation)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias do
-              T.any(OpenAI::Beta::Threads::FileCitationAnnotation, OpenAI::Beta::Threads::FilePathAnnotation)
-            end
-          end
+          #   @return [Array(OpenAI::Models::Beta::Threads::FileCitationAnnotation, OpenAI::Models::Beta::Threads::FilePathAnnotation)]
         end
       end
     end

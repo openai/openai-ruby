@@ -18,17 +18,7 @@ module OpenAI
       #
       # For `dall-e-2`, you can only provide one image, and it should be a square `png`
       # file less than 4MB.
-      sig do
-        returns(
-          T.any(
-            Pathname,
-            StringIO,
-            IO,
-            OpenAI::FilePart,
-            T::Array[T.any(Pathname, StringIO, IO, OpenAI::FilePart)]
-          )
-        )
-      end
+      sig { returns(OpenAI::ImageEditParams::Image::Variants) }
       attr_accessor :image
 
       # A text description of the desired image(s). The maximum length is 1000
@@ -50,12 +40,10 @@ module OpenAI
       # indicate where `image` should be edited. If there are multiple images provided,
       # the mask will be applied on the first image. Must be a valid PNG file, less than
       # 4MB, and have the same dimensions as `image`.
-      sig do
-        returns(T.nilable(T.any(Pathname, StringIO, IO, OpenAI::FilePart)))
-      end
+      sig { returns(T.nilable(OpenAI::Internal::FileInput)) }
       attr_reader :mask
 
-      sig { params(mask: T.any(Pathname, StringIO, IO, OpenAI::FilePart)).void }
+      sig { params(mask: OpenAI::Internal::FileInput).void }
       attr_writer :mask
 
       # The model to use for image generation. Only `dall-e-2` and `gpt-image-1` are
@@ -100,17 +88,10 @@ module OpenAI
 
       sig do
         params(
-          image:
-            T.any(
-              Pathname,
-              StringIO,
-              IO,
-              OpenAI::FilePart,
-              T::Array[T.any(Pathname, StringIO, IO, OpenAI::FilePart)]
-            ),
+          image: OpenAI::ImageEditParams::Image::Variants,
           prompt: String,
           background: T.nilable(OpenAI::ImageEditParams::Background::OrSymbol),
-          mask: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
+          mask: OpenAI::Internal::FileInput,
           model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
           n: T.nilable(Integer),
           quality: T.nilable(OpenAI::ImageEditParams::Quality::OrSymbol),
@@ -176,18 +157,11 @@ module OpenAI
       sig do
         override.returns(
           {
-            image:
-              T.any(
-                Pathname,
-                StringIO,
-                IO,
-                OpenAI::FilePart,
-                T::Array[T.any(Pathname, StringIO, IO, OpenAI::FilePart)]
-              ),
+            image: OpenAI::ImageEditParams::Image::Variants,
             prompt: String,
             background:
               T.nilable(OpenAI::ImageEditParams::Background::OrSymbol),
-            mask: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
+            mask: OpenAI::Internal::FileInput,
             model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
             n: T.nilable(Integer),
             quality: T.nilable(OpenAI::ImageEditParams::Quality::OrSymbol),

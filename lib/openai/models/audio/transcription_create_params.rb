@@ -14,7 +14,7 @@ module OpenAI
         #   The audio file object (not file name) to transcribe, in one of these formats:
         #   flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.
         #
-        #   @return [Pathname, StringIO, IO, OpenAI::FilePart]
+        #   @return [Pathname, StringIO, IO, String, OpenAI::FilePart]
         required :file, OpenAI::Internal::Type::FileInput
 
         # @!attribute model
@@ -22,7 +22,7 @@ module OpenAI
         #   `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source
         #   Whisper V2 model).
         #
-        #   @return [String, Symbol, OpenAI::AudioModel]
+        #   @return [String, Symbol, OpenAI::Models::AudioModel]
         required :model, union: -> { OpenAI::Audio::TranscriptionCreateParams::Model }
 
         # @!attribute chunking_strategy
@@ -31,7 +31,7 @@ module OpenAI
         #   boundaries. `server_vad` object can be provided to tweak VAD detection
         #   parameters manually. If unset, the audio is transcribed as a single block.
         #
-        #   @return [Symbol, :auto, OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig, nil]
+        #   @return [Symbol, :auto, OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig, nil]
         optional :chunking_strategy,
                  union: -> { OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy },
                  nil?: true
@@ -43,7 +43,7 @@ module OpenAI
         #   response_format set to `json` and only with the models `gpt-4o-transcribe` and
         #   `gpt-4o-mini-transcribe`.
         #
-        #   @return [Array<Symbol, OpenAI::Audio::TranscriptionInclude>, nil]
+        #   @return [Array<Symbol, OpenAI::Models::Audio::TranscriptionInclude>, nil]
         optional :include, -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Audio::TranscriptionInclude] }
 
         # @!attribute language
@@ -68,7 +68,7 @@ module OpenAI
         #   `verbose_json`, or `vtt`. For `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`,
         #   the only supported format is `json`.
         #
-        #   @return [Symbol, OpenAI::AudioResponseFormat, nil]
+        #   @return [Symbol, OpenAI::Models::AudioResponseFormat, nil]
         optional :response_format, enum: -> { OpenAI::AudioResponseFormat }
 
         # @!attribute temperature
@@ -88,7 +88,7 @@ module OpenAI
         #   is no additional latency for segment timestamps, but generating word timestamps
         #   incurs additional latency.
         #
-        #   @return [Array<Symbol, OpenAI::Audio::TranscriptionCreateParams::TimestampGranularity>, nil]
+        #   @return [Array<Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity>, nil]
         optional :timestamp_granularities,
                  -> {
                    OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Audio::TranscriptionCreateParams::TimestampGranularity]
@@ -98,23 +98,23 @@ module OpenAI
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Audio::TranscriptionCreateParams} for more details.
         #
-        #   @param file [Pathname, StringIO, IO, OpenAI::FilePart] The audio file object (not file name) to transcribe, in one of these formats: fl
+        #   @param file [Pathname, StringIO, IO, String, OpenAI::FilePart] The audio file object (not file name) to transcribe, in one of these formats: fl
         #
-        #   @param model [String, Symbol, OpenAI::AudioModel] ID of the model to use. The options are `gpt-4o-transcribe`, `gpt-4o-mini-transc
+        #   @param model [String, Symbol, OpenAI::Models::AudioModel] ID of the model to use. The options are `gpt-4o-transcribe`, `gpt-4o-mini-transc
         #
-        #   @param chunking_strategy [Symbol, :auto, OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig, nil] Controls how the audio is cut into chunks. When set to `"auto"`, the server firs
+        #   @param chunking_strategy [Symbol, :auto, OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig, nil] Controls how the audio is cut into chunks. When set to `"auto"`, the server firs
         #
-        #   @param include [Array<Symbol, OpenAI::Audio::TranscriptionInclude>] Additional information to include in the transcription response.
+        #   @param include [Array<Symbol, OpenAI::Models::Audio::TranscriptionInclude>] Additional information to include in the transcription response.
         #
         #   @param language [String] The language of the input audio. Supplying the input language in [ISO-639-1](htt
         #
         #   @param prompt [String] An optional text to guide the model's style or continue a previous audio segment
         #
-        #   @param response_format [Symbol, OpenAI::AudioResponseFormat] The format of the output, in one of these options: `json`, `text`, `srt`, `verbo
+        #   @param response_format [Symbol, OpenAI::Models::AudioResponseFormat] The format of the output, in one of these options: `json`, `text`, `srt`, `verbo
         #
         #   @param temperature [Float] The sampling temperature, between 0 and 1. Higher values like 0.8 will make the
         #
-        #   @param timestamp_granularities [Array<Symbol, OpenAI::Audio::TranscriptionCreateParams::TimestampGranularity>] The timestamp granularities to populate for this transcription. `response_format
+        #   @param timestamp_granularities [Array<Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity>] The timestamp granularities to populate for this transcription. `response_format
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -130,11 +130,7 @@ module OpenAI
           variant enum: -> { OpenAI::AudioModel }
 
           # @!method self.variants
-          #   @return [Array(String, Symbol, OpenAI::AudioModel)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias { T.any(String, OpenAI::AudioModel::TaggedSymbol) }
-          end
+          #   @return [Array(String, Symbol, OpenAI::Models::AudioModel)]
         end
 
         # Controls how the audio is cut into chunks. When set to `"auto"`, the server
@@ -153,7 +149,7 @@ module OpenAI
             # @!attribute type
             #   Must be set to `server_vad` to enable manual chunking using server side VAD.
             #
-            #   @return [Symbol, OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::Type]
+            #   @return [Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::Type]
             required :type,
                      enum: -> {
                        OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::Type
@@ -183,10 +179,10 @@ module OpenAI
 
             # @!method initialize(type:, prefix_padding_ms: nil, silence_duration_ms: nil, threshold: nil)
             #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig} for more
-            #   details.
+            #   {OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig}
+            #   for more details.
             #
-            #   @param type [Symbol, OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::Type] Must be set to `server_vad` to enable manual chunking using server side VAD.
+            #   @param type [Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::Type] Must be set to `server_vad` to enable manual chunking using server side VAD.
             #
             #   @param prefix_padding_ms [Integer] Amount of audio to include before the VAD detected speech (in
             #
@@ -196,7 +192,7 @@ module OpenAI
 
             # Must be set to `server_vad` to enable manual chunking using server side VAD.
             #
-            # @see OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig#type
+            # @see OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig#type
             module Type
               extend OpenAI::Internal::Type::Enum
 
@@ -208,13 +204,7 @@ module OpenAI
           end
 
           # @!method self.variants
-          #   @return [Array(Symbol, :auto, OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias do
-              T.any(Symbol, OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig)
-            end
-          end
+          #   @return [Array(Symbol, :auto, OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig)]
         end
 
         module TimestampGranularity

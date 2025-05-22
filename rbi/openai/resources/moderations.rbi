@@ -7,17 +7,7 @@ module OpenAI
       # the [moderation guide](https://platform.openai.com/docs/guides/moderation).
       sig do
         params(
-          input:
-            T.any(
-              String,
-              T::Array[String],
-              T::Array[
-                T.any(
-                  OpenAI::ModerationImageURLInput::OrHash,
-                  OpenAI::ModerationTextInput::OrHash
-                )
-              ]
-            ),
+          input: OpenAI::ModerationCreateParams::Input::Variants,
           model: T.any(String, OpenAI::ModerationModel::OrSymbol),
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(OpenAI::Models::ModerationCreateResponse)

@@ -1,5 +1,41 @@
 # Changelog
 
+## 0.1.0-beta.2 (2025-05-22)
+
+Full Changelog: [v0.1.0-beta.1...v0.1.0-beta.2](https://github.com/openai/openai-ruby/compare/v0.1.0-beta.1...v0.1.0-beta.2)
+
+### Features
+
+* **api:** add container endpoint ([8be52a2](https://github.com/openai/openai-ruby/commit/8be52a2bd618da97c79cb35ada46717965664a08))
+* **api:** further updates for evals API ([ae7a8b8](https://github.com/openai/openai-ruby/commit/ae7a8b8fc1611aa6f645c75f865d9ae6906d9a20))
+* **api:** new API tools ([9105b8b](https://github.com/openai/openai-ruby/commit/9105b8b80d2d381ed58b2b92ecfe644e7596c9a3))
+* **api:** new streaming helpers for background responses ([91a278e](https://github.com/openai/openai-ruby/commit/91a278e6ac4db19c66a89d5f610c22ad3c82a1f7))
+* **api:** Updating Assistants and Evals API schemas ([690b6a7](https://github.com/openai/openai-ruby/commit/690b6a78de30845f974695d0cc36a59a04adf65b))
+* RBI type defs for structured output ([#684](https://github.com/openai/openai-ruby/issues/684)) ([00b25bd](https://github.com/openai/openai-ruby/commit/00b25bdb3aa8a2999114389d699cc3dc59c4089e))
+
+
+### Bug Fixes
+
+* correctly instantiate sorbet type aliases for enums and unions ([15a2b2b](https://github.com/openai/openai-ruby/commit/15a2b2bab52948f9dac83560dea419006589bd81))
+* structured output union decorations ([05b69d1](https://github.com/openai/openai-ruby/commit/05b69d1be85f813e1bddf04e4042665383c1be04))
+
+
+### Chores
+
+* disable sorbet typecheck for WIP sorbet annotations in examples ([#678](https://github.com/openai/openai-ruby/issues/678)) ([a340356](https://github.com/openai/openai-ruby/commit/a3403566253a74a9f1c69a874568000eca1da656))
+* **docs:** grammar improvements ([c4ef024](https://github.com/openai/openai-ruby/commit/c4ef024f3513e1d64e55960b45660e50d9bf9039))
+* force utf-8 locale via `RUBYOPT` when formatting ([746abf4](https://github.com/openai/openai-ruby/commit/746abf447c01290ad3061ef77c54d3b5d781a6b7))
+* **internal:** version bump ([b35ea63](https://github.com/openai/openai-ruby/commit/b35ea63d9758c4e96dd665013be2edb78ebaa8e6))
+* refine Yard and Sorbet types and ensure linting is turned on for examples ([a16dd00](https://github.com/openai/openai-ruby/commit/a16dd00f99176184da0710a0fbce652718a3d067))
+* use fully qualified names for yard annotations and rbs aliases ([26db76d](https://github.com/openai/openai-ruby/commit/26db76de24d82ebb593997fab8fd8df43c5f2372))
+* use sorbet union aliases where available ([600f499](https://github.com/openai/openai-ruby/commit/600f499dcf61b4d3c3a8cf092ff18cb712711dc0))
+
+
+### Documentation
+
+* grammar improvements ([15511fc](https://github.com/openai/openai-ruby/commit/15511fc1e80f61abe64375b0a7eb22c5447d5288))
+* grammar improvements in README.md ([d43db56](https://github.com/openai/openai-ruby/commit/d43db56ba239f91c6fb1344156e88feaee802f0c))
+
 ## 0.1.0-beta.1 (2025-05-16)
 
 Full Changelog: [v0.1.0-alpha.5...v0.1.0-beta.1](https://github.com/openai/openai-ruby/compare/v0.1.0-alpha.5...v0.1.0-beta.1)

@@ -17,7 +17,7 @@ module OpenAI
 
         # The audio file object (not file name) to transcribe, in one of these formats:
         # flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.
-        sig { returns(T.any(Pathname, StringIO, IO, OpenAI::FilePart)) }
+        sig { returns(OpenAI::Internal::FileInput) }
         attr_accessor :file
 
         # ID of the model to use. The options are `gpt-4o-transcribe`,
@@ -130,7 +130,7 @@ module OpenAI
 
         sig do
           params(
-            file: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
+            file: OpenAI::Internal::FileInput,
             model: T.any(String, OpenAI::AudioModel::OrSymbol),
             chunking_strategy:
               T.nilable(
@@ -202,7 +202,7 @@ module OpenAI
         sig do
           override.returns(
             {
-              file: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
+              file: OpenAI::Internal::FileInput,
               model: T.any(String, OpenAI::AudioModel::OrSymbol),
               chunking_strategy:
                 T.nilable(

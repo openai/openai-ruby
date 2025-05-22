@@ -16,6 +16,12 @@ module OpenAI
           deleted: bool,
           ?object: :"assistant.deleted"
         ) -> void
+
+        def to_hash: -> {
+          id: String,
+          deleted: bool,
+          object: :"assistant.deleted"
+        }
       end
     end
   end

@@ -23,6 +23,13 @@ module OpenAI
           ?image_tag: String,
           ?type: :python
         ) -> void
+
+        def to_hash: -> {
+          name: String,
+          source: String,
+          type: :python,
+          image_tag: String
+        }
       end
     end
   end

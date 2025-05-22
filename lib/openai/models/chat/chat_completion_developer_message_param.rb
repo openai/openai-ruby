@@ -7,7 +7,7 @@ module OpenAI
         # @!attribute content
         #   The contents of the developer message.
         #
-        #   @return [String, Array<OpenAI::Chat::ChatCompletionContentPartText>]
+        #   @return [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>]
         required :content, union: -> { OpenAI::Chat::ChatCompletionDeveloperMessageParam::Content }
 
         # @!attribute role
@@ -25,13 +25,13 @@ module OpenAI
 
         # @!method initialize(content:, name: nil, role: :developer)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Chat::ChatCompletionDeveloperMessageParam} for more details.
+        #   {OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam} for more details.
         #
         #   Developer-provided instructions that the model should follow, regardless of
         #   messages sent by the user. With o1 models and newer, `developer` messages
         #   replace the previous `system` messages.
         #
-        #   @param content [String, Array<OpenAI::Chat::ChatCompletionContentPartText>] The contents of the developer message.
+        #   @param content [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>] The contents of the developer message.
         #
         #   @param name [String] An optional name for the participant. Provides the model information to differen
         #
@@ -39,7 +39,7 @@ module OpenAI
 
         # The contents of the developer message.
         #
-        # @see OpenAI::Chat::ChatCompletionDeveloperMessageParam#content
+        # @see OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam#content
         module Content
           extend OpenAI::Internal::Type::Union
 
@@ -47,16 +47,10 @@ module OpenAI
           variant String
 
           # An array of content parts with a defined type. For developer messages, only type `text` is supported.
-          variant -> {
-            OpenAI::Chat::ChatCompletionDeveloperMessageParam::Content::ChatCompletionContentPartTextArray
-          }
+          variant -> { OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam::Content::ChatCompletionContentPartTextArray }
 
           # @!method self.variants
-          #   @return [Array(String, Array<OpenAI::Chat::ChatCompletionContentPartText>)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias { T.any(String, T::Array[OpenAI::Chat::ChatCompletionContentPartText]) }
-          end
+          #   @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>)]
 
           # @type [OpenAI::Internal::Type::Converter]
           ChatCompletionContentPartTextArray =

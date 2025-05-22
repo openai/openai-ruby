@@ -12,7 +12,7 @@ module OpenAI
         #   The name of the model to fine-tune. You can select one of the
         #   [supported models](https://platform.openai.com/docs/guides/fine-tuning#which-models-can-be-fine-tuned).
         #
-        #   @return [String, Symbol, OpenAI::FineTuning::JobCreateParams::Model]
+        #   @return [String, Symbol, OpenAI::Models::FineTuning::JobCreateParams::Model]
         required :model, union: -> { OpenAI::FineTuning::JobCreateParams::Model }
 
         # @!attribute training_file
@@ -43,13 +43,13 @@ module OpenAI
         #   The hyperparameters used for the fine-tuning job. This value is now deprecated
         #   in favor of `method`, and should be passed in under the `method` parameter.
         #
-        #   @return [OpenAI::FineTuning::JobCreateParams::Hyperparameters, nil]
+        #   @return [OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters, nil]
         optional :hyperparameters, -> { OpenAI::FineTuning::JobCreateParams::Hyperparameters }
 
         # @!attribute integrations
         #   A list of integrations to enable for your fine-tuning job.
         #
-        #   @return [Array<OpenAI::FineTuning::JobCreateParams::Integration>, nil]
+        #   @return [Array<OpenAI::Models::FineTuning::JobCreateParams::Integration>, nil]
         optional :integrations,
                  -> { OpenAI::Internal::Type::ArrayOf[OpenAI::FineTuning::JobCreateParams::Integration] },
                  nil?: true
@@ -68,7 +68,7 @@ module OpenAI
         # @!attribute method_
         #   The method used for fine-tuning.
         #
-        #   @return [OpenAI::FineTuning::JobCreateParams::Method, nil]
+        #   @return [OpenAI::Models::FineTuning::JobCreateParams::Method, nil]
         optional :method_, -> { OpenAI::FineTuning::JobCreateParams::Method }, api_name: :method
 
         # @!attribute seed
@@ -110,17 +110,17 @@ module OpenAI
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::FineTuning::JobCreateParams} for more details.
         #
-        #   @param model [String, Symbol, OpenAI::FineTuning::JobCreateParams::Model] The name of the model to fine-tune. You can select one of the
+        #   @param model [String, Symbol, OpenAI::Models::FineTuning::JobCreateParams::Model] The name of the model to fine-tune. You can select one of the
         #
         #   @param training_file [String] The ID of an uploaded file that contains training data.
         #
-        #   @param hyperparameters [OpenAI::FineTuning::JobCreateParams::Hyperparameters] The hyperparameters used for the fine-tuning job.
+        #   @param hyperparameters [OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters] The hyperparameters used for the fine-tuning job.
         #
-        #   @param integrations [Array<OpenAI::FineTuning::JobCreateParams::Integration>, nil] A list of integrations to enable for your fine-tuning job.
+        #   @param integrations [Array<OpenAI::Models::FineTuning::JobCreateParams::Integration>, nil] A list of integrations to enable for your fine-tuning job.
         #
         #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #
-        #   @param method_ [OpenAI::FineTuning::JobCreateParams::Method] The method used for fine-tuning.
+        #   @param method_ [OpenAI::Models::FineTuning::JobCreateParams::Method] The method used for fine-tuning.
         #
         #   @param seed [Integer, nil] The seed controls the reproducibility of the job. Passing in the same seed and j
         #
@@ -137,13 +137,13 @@ module OpenAI
 
           variant String
 
-          variant const: -> { OpenAI::FineTuning::JobCreateParams::Model::BABBAGE_002 }
+          variant const: -> { OpenAI::Models::FineTuning::JobCreateParams::Model::BABBAGE_002 }
 
-          variant const: -> { OpenAI::FineTuning::JobCreateParams::Model::DAVINCI_002 }
+          variant const: -> { OpenAI::Models::FineTuning::JobCreateParams::Model::DAVINCI_002 }
 
-          variant const: -> { OpenAI::FineTuning::JobCreateParams::Model::GPT_3_5_TURBO }
+          variant const: -> { OpenAI::Models::FineTuning::JobCreateParams::Model::GPT_3_5_TURBO }
 
-          variant const: -> { OpenAI::FineTuning::JobCreateParams::Model::GPT_4O_MINI }
+          variant const: -> { OpenAI::Models::FineTuning::JobCreateParams::Model::GPT_4O_MINI }
 
           # @!method self.variants
           #   @return [Array(String, Symbol)]
@@ -188,7 +188,7 @@ module OpenAI
 
           # @!method initialize(batch_size: nil, learning_rate_multiplier: nil, n_epochs: nil)
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::FineTuning::JobCreateParams::Hyperparameters} for more details.
+          #   {OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters} for more details.
           #
           #   The hyperparameters used for the fine-tuning job. This value is now deprecated
           #   in favor of `method`, and should be passed in under the `method` parameter.
@@ -202,7 +202,7 @@ module OpenAI
           # Number of examples in each batch. A larger batch size means that model
           # parameters are updated less frequently, but with lower variance.
           #
-          # @see OpenAI::FineTuning::JobCreateParams::Hyperparameters#batch_size
+          # @see OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters#batch_size
           module BatchSize
             extend OpenAI::Internal::Type::Union
 
@@ -212,16 +212,12 @@ module OpenAI
 
             # @!method self.variants
             #   @return [Array(Symbol, :auto, Integer)]
-
-            define_sorbet_constant!(:Variants) do
-              T.type_alias { T.any(Symbol, Integer) }
-            end
           end
 
           # Scaling factor for the learning rate. A smaller learning rate may be useful to
           # avoid overfitting.
           #
-          # @see OpenAI::FineTuning::JobCreateParams::Hyperparameters#learning_rate_multiplier
+          # @see OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters#learning_rate_multiplier
           module LearningRateMultiplier
             extend OpenAI::Internal::Type::Union
 
@@ -231,16 +227,12 @@ module OpenAI
 
             # @!method self.variants
             #   @return [Array(Symbol, :auto, Float)]
-
-            define_sorbet_constant!(:Variants) do
-              T.type_alias { T.any(Symbol, Float) }
-            end
           end
 
           # The number of epochs to train the model for. An epoch refers to one full cycle
           # through the training dataset.
           #
-          # @see OpenAI::FineTuning::JobCreateParams::Hyperparameters#n_epochs
+          # @see OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters#n_epochs
           module NEpochs
             extend OpenAI::Internal::Type::Union
 
@@ -250,10 +242,6 @@ module OpenAI
 
             # @!method self.variants
             #   @return [Array(Symbol, :auto, Integer)]
-
-            define_sorbet_constant!(:Variants) do
-              T.type_alias { T.any(Symbol, Integer) }
-            end
           end
         end
 
@@ -271,18 +259,18 @@ module OpenAI
           #   explicit display name for your run, add tags to your run, and set a default
           #   entity (team, username, etc) to be associated with your run.
           #
-          #   @return [OpenAI::FineTuning::JobCreateParams::Integration::Wandb]
+          #   @return [OpenAI::Models::FineTuning::JobCreateParams::Integration::Wandb]
           required :wandb, -> { OpenAI::FineTuning::JobCreateParams::Integration::Wandb }
 
           # @!method initialize(wandb:, type: :wandb)
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::FineTuning::JobCreateParams::Integration} for more details.
+          #   {OpenAI::Models::FineTuning::JobCreateParams::Integration} for more details.
           #
-          #   @param wandb [OpenAI::FineTuning::JobCreateParams::Integration::Wandb] The settings for your integration with Weights and Biases. This payload specifie
+          #   @param wandb [OpenAI::Models::FineTuning::JobCreateParams::Integration::Wandb] The settings for your integration with Weights and Biases. This payload specifie
           #
           #   @param type [Symbol, :wandb] The type of integration to enable. Currently, only "wandb" (Weights and Biases)
 
-          # @see OpenAI::FineTuning::JobCreateParams::Integration#wandb
+          # @see OpenAI::Models::FineTuning::JobCreateParams::Integration#wandb
           class Wandb < OpenAI::Internal::Type::BaseModel
             # @!attribute project
             #   The name of the project that the new run will be created under.
@@ -315,7 +303,8 @@ module OpenAI
 
             # @!method initialize(project:, entity: nil, name: nil, tags: nil)
             #   Some parameter documentations has been truncated, see
-            #   {OpenAI::FineTuning::JobCreateParams::Integration::Wandb} for more details.
+            #   {OpenAI::Models::FineTuning::JobCreateParams::Integration::Wandb} for more
+            #   details.
             #
             #   The settings for your integration with Weights and Biases. This payload
             #   specifies the project that metrics will be sent to. Optionally, you can set an
@@ -336,41 +325,41 @@ module OpenAI
           # @!attribute type
           #   The type of method. Is either `supervised`, `dpo`, or `reinforcement`.
           #
-          #   @return [Symbol, OpenAI::FineTuning::JobCreateParams::Method::Type]
+          #   @return [Symbol, OpenAI::Models::FineTuning::JobCreateParams::Method::Type]
           required :type, enum: -> { OpenAI::FineTuning::JobCreateParams::Method::Type }
 
           # @!attribute dpo
           #   Configuration for the DPO fine-tuning method.
           #
-          #   @return [OpenAI::FineTuning::DpoMethod, nil]
+          #   @return [OpenAI::Models::FineTuning::DpoMethod, nil]
           optional :dpo, -> { OpenAI::FineTuning::DpoMethod }
 
           # @!attribute reinforcement
           #   Configuration for the reinforcement fine-tuning method.
           #
-          #   @return [OpenAI::FineTuning::ReinforcementMethod, nil]
+          #   @return [OpenAI::Models::FineTuning::ReinforcementMethod, nil]
           optional :reinforcement, -> { OpenAI::FineTuning::ReinforcementMethod }
 
           # @!attribute supervised
           #   Configuration for the supervised fine-tuning method.
           #
-          #   @return [OpenAI::FineTuning::SupervisedMethod, nil]
+          #   @return [OpenAI::Models::FineTuning::SupervisedMethod, nil]
           optional :supervised, -> { OpenAI::FineTuning::SupervisedMethod }
 
           # @!method initialize(type:, dpo: nil, reinforcement: nil, supervised: nil)
           #   The method used for fine-tuning.
           #
-          #   @param type [Symbol, OpenAI::FineTuning::JobCreateParams::Method::Type] The type of method. Is either `supervised`, `dpo`, or `reinforcement`.
+          #   @param type [Symbol, OpenAI::Models::FineTuning::JobCreateParams::Method::Type] The type of method. Is either `supervised`, `dpo`, or `reinforcement`.
           #
-          #   @param dpo [OpenAI::FineTuning::DpoMethod] Configuration for the DPO fine-tuning method.
+          #   @param dpo [OpenAI::Models::FineTuning::DpoMethod] Configuration for the DPO fine-tuning method.
           #
-          #   @param reinforcement [OpenAI::FineTuning::ReinforcementMethod] Configuration for the reinforcement fine-tuning method.
+          #   @param reinforcement [OpenAI::Models::FineTuning::ReinforcementMethod] Configuration for the reinforcement fine-tuning method.
           #
-          #   @param supervised [OpenAI::FineTuning::SupervisedMethod] Configuration for the supervised fine-tuning method.
+          #   @param supervised [OpenAI::Models::FineTuning::SupervisedMethod] Configuration for the supervised fine-tuning method.
 
           # The type of method. Is either `supervised`, `dpo`, or `reinforcement`.
           #
-          # @see OpenAI::FineTuning::JobCreateParams::Method#type
+          # @see OpenAI::Models::FineTuning::JobCreateParams::Method#type
           module Type
             extend OpenAI::Internal::Type::Enum
 

@@ -6,13 +6,7 @@ module OpenAI
       # Creates an embedding vector representing the input text.
       sig do
         params(
-          input:
-            T.any(
-              String,
-              T::Array[String],
-              T::Array[Integer],
-              T::Array[T::Array[Integer]]
-            ),
+          input: OpenAI::EmbeddingCreateParams::Input::Variants,
           model: T.any(String, OpenAI::EmbeddingModel::OrSymbol),
           dimensions: Integer,
           encoding_format:

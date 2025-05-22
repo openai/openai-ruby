@@ -15,7 +15,7 @@ module OpenAI
             # @!attribute function
             #   The definition of the function that was called.
             #
-            #   @return [OpenAI::Beta::Threads::Runs::FunctionToolCall::Function]
+            #   @return [OpenAI::Models::Beta::Threads::Runs::FunctionToolCall::Function]
             required :function, -> { OpenAI::Beta::Threads::Runs::FunctionToolCall::Function }
 
             # @!attribute type
@@ -27,15 +27,15 @@ module OpenAI
 
             # @!method initialize(id:, function:, type: :function)
             #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Beta::Threads::Runs::FunctionToolCall} for more details.
+            #   {OpenAI::Models::Beta::Threads::Runs::FunctionToolCall} for more details.
             #
             #   @param id [String] The ID of the tool call object.
             #
-            #   @param function [OpenAI::Beta::Threads::Runs::FunctionToolCall::Function] The definition of the function that was called.
+            #   @param function [OpenAI::Models::Beta::Threads::Runs::FunctionToolCall::Function] The definition of the function that was called.
             #
             #   @param type [Symbol, :function] The type of tool call. This is always going to be `function` for this type of to
 
-            # @see OpenAI::Beta::Threads::Runs::FunctionToolCall#function
+            # @see OpenAI::Models::Beta::Threads::Runs::FunctionToolCall#function
             class Function < OpenAI::Internal::Type::BaseModel
               # @!attribute arguments
               #   The arguments passed to the function.
@@ -59,7 +59,8 @@ module OpenAI
 
               # @!method initialize(arguments:, name:, output:)
               #   Some parameter documentations has been truncated, see
-              #   {OpenAI::Beta::Threads::Runs::FunctionToolCall::Function} for more details.
+              #   {OpenAI::Models::Beta::Threads::Runs::FunctionToolCall::Function} for more
+              #   details.
               #
               #   The definition of the function that was called.
               #

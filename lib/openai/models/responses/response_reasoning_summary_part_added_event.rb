@@ -19,8 +19,14 @@ module OpenAI
         # @!attribute part
         #   The summary part that was added.
         #
-        #   @return [OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent::Part]
+        #   @return [OpenAI::Models::Responses::ResponseReasoningSummaryPartAddedEvent::Part]
         required :part, -> { OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent::Part }
+
+        # @!attribute sequence_number
+        #   The sequence number of this event.
+        #
+        #   @return [Integer]
+        required :sequence_number, Integer
 
         # @!attribute summary_index
         #   The index of the summary part within the reasoning summary.
@@ -34,9 +40,10 @@ module OpenAI
         #   @return [Symbol, :"response.reasoning_summary_part.added"]
         required :type, const: :"response.reasoning_summary_part.added"
 
-        # @!method initialize(item_id:, output_index:, part:, summary_index:, type: :"response.reasoning_summary_part.added")
+        # @!method initialize(item_id:, output_index:, part:, sequence_number:, summary_index:, type: :"response.reasoning_summary_part.added")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseReasoningSummaryPartAddedEvent} for more
+        #   details.
         #
         #   Emitted when a new reasoning summary part is added.
         #
@@ -44,13 +51,15 @@ module OpenAI
         #
         #   @param output_index [Integer] The index of the output item this summary part is associated with.
         #
-        #   @param part [OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent::Part] The summary part that was added.
+        #   @param part [OpenAI::Models::Responses::ResponseReasoningSummaryPartAddedEvent::Part] The summary part that was added.
+        #
+        #   @param sequence_number [Integer] The sequence number of this event.
         #
         #   @param summary_index [Integer] The index of the summary part within the reasoning summary.
         #
         #   @param type [Symbol, :"response.reasoning_summary_part.added"] The type of the event. Always `response.reasoning_summary_part.added`.
 
-        # @see OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent#part
+        # @see OpenAI::Models::Responses::ResponseReasoningSummaryPartAddedEvent#part
         class Part < OpenAI::Internal::Type::BaseModel
           # @!attribute text
           #   The text of the summary part.

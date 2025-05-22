@@ -108,10 +108,7 @@ module OpenAI
                 returns(
                   T.nilable(
                     T::Array[
-                      T.any(
-                        OpenAI::Beta::Threads::Runs::CodeInterpreterLogs,
-                        OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage
-                      )
+                      OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::Output::Variants
                     ]
                   )
                 )
@@ -160,10 +157,7 @@ module OpenAI
                     input: String,
                     outputs:
                       T::Array[
-                        T.any(
-                          OpenAI::Beta::Threads::Runs::CodeInterpreterLogs,
-                          OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage
-                        )
+                        OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::Output::Variants
                       ]
                   }
                 )

@@ -18,6 +18,12 @@ module OpenAI
           deleted: bool,
           ?object: :"chat.completion.deleted"
         ) -> void
+
+        def to_hash: -> {
+          id: String,
+          deleted: bool,
+          object: :"chat.completion.deleted"
+        }
       end
     end
   end

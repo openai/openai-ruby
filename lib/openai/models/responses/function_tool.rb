@@ -37,7 +37,7 @@ module OpenAI
 
         # @!method initialize(name:, parameters:, strict:, description: nil, type: :function)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::FunctionTool} for more details.
+        #   {OpenAI::Models::Responses::FunctionTool} for more details.
         #
         #   Defines a function in your own code the model can choose to call. Learn more
         #   about

@@ -19,11 +19,11 @@ module OpenAI
             #
             # @param run_id [String] Path param: The ID of the run to which the run step belongs.
             #
-            # @param include [Array<Symbol, OpenAI::Beta::Threads::Runs::RunStepInclude>] Query param: A list of additional fields to include in the response. Currently t
+            # @param include [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>] Query param: A list of additional fields to include in the response. Currently t
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
-            # @return [OpenAI::Beta::Threads::Runs::RunStep]
+            # @return [OpenAI::Models::Beta::Threads::Runs::RunStep]
             #
             # @see OpenAI::Models::Beta::Threads::Runs::StepRetrieveParams
             def retrieve(step_id, params)
@@ -60,15 +60,15 @@ module OpenAI
             #
             # @param before [String] Query param: A cursor for use in pagination. `before` is an object ID that defin
             #
-            # @param include [Array<Symbol, OpenAI::Beta::Threads::Runs::RunStepInclude>] Query param: A list of additional fields to include in the response. Currently t
+            # @param include [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>] Query param: A list of additional fields to include in the response. Currently t
             #
             # @param limit [Integer] Query param: A limit on the number of objects to be returned. Limit can range be
             #
-            # @param order [Symbol, OpenAI::Beta::Threads::Runs::StepListParams::Order] Query param: Sort order by the `created_at` timestamp of the objects. `asc` for
+            # @param order [Symbol, OpenAI::Models::Beta::Threads::Runs::StepListParams::Order] Query param: Sort order by the `created_at` timestamp of the objects. `asc` for
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
-            # @return [OpenAI::Internal::CursorPage<OpenAI::Beta::Threads::Runs::RunStep>]
+            # @return [OpenAI::Internal::CursorPage<OpenAI::Models::Beta::Threads::Runs::RunStep>]
             #
             # @see OpenAI::Models::Beta::Threads::Runs::StepListParams
             def list(run_id, params)

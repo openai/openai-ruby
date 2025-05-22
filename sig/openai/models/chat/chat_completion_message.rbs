@@ -51,6 +51,16 @@ module OpenAI
           ?role: :assistant
         ) -> void
 
+        def to_hash: -> {
+          content: String?,
+          refusal: String?,
+          role: :assistant,
+          annotations: ::Array[OpenAI::Chat::ChatCompletionMessage::Annotation],
+          audio: OpenAI::Chat::ChatCompletionAudio?,
+          function_call: OpenAI::Chat::ChatCompletionMessage::FunctionCall,
+          tool_calls: ::Array[OpenAI::Chat::ChatCompletionMessageToolCall]
+        }
+
         type annotation =
           {
             type: :url_citation,
@@ -66,6 +76,11 @@ module OpenAI
             url_citation: OpenAI::Chat::ChatCompletionMessage::Annotation::URLCitation,
             ?type: :url_citation
           ) -> void
+
+          def to_hash: -> {
+            type: :url_citation,
+            url_citation: OpenAI::Chat::ChatCompletionMessage::Annotation::URLCitation
+          }
 
           type url_citation =
             {
@@ -90,6 +105,13 @@ module OpenAI
               title: String,
               url: String
             ) -> void
+
+            def to_hash: -> {
+              end_index: Integer,
+              start_index: Integer,
+              title: String,
+              url: String
+            }
           end
         end
 
@@ -101,6 +123,8 @@ module OpenAI
           attr_accessor name: String
 
           def initialize: (arguments: String, name: String) -> void
+
+          def to_hash: -> { arguments: String, name: String }
         end
       end
     end

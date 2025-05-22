@@ -35,17 +35,7 @@ module OpenAI
         variant :json_object, -> { OpenAI::ResponseFormatJSONObject }
 
         # @!method self.variants
-        #   @return [Array(OpenAI::ResponseFormatText, OpenAI::Responses::ResponseFormatTextJSONSchemaConfig, OpenAI::ResponseFormatJSONObject)]
-
-        define_sorbet_constant!(:Variants) do
-          T.type_alias do
-            T.any(
-              OpenAI::ResponseFormatText,
-              OpenAI::Responses::ResponseFormatTextJSONSchemaConfig,
-              OpenAI::ResponseFormatJSONObject
-            )
-          end
-        end
+        #   @return [Array(OpenAI::Models::ResponseFormatText, OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig, OpenAI::Models::ResponseFormatJSONObject)]
       end
     end
   end

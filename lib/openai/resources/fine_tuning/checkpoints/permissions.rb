@@ -54,7 +54,7 @@ module OpenAI
           #
           # @param limit [Integer] Number of permissions to retrieve.
           #
-          # @param order [Symbol, OpenAI::FineTuning::Checkpoints::PermissionRetrieveParams::Order] The order in which to retrieve permissions.
+          # @param order [Symbol, OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::Order] The order in which to retrieve permissions.
           #
           # @param project_id [String] The ID of the project to get permissions for.
           #

@@ -10,7 +10,7 @@ module OpenAI
           created: Integer,
           model: String,
           object: :"chat.completion",
-          service_tier: OpenAI::Chat::ChatCompletion::service_tier?,
+          service_tier: OpenAI::Models::Chat::ChatCompletion::service_tier?,
           system_fingerprint: String,
           usage: OpenAI::CompletionUsage
         }
@@ -26,7 +26,7 @@ module OpenAI
 
         attr_accessor object: :"chat.completion"
 
-        attr_accessor service_tier: OpenAI::Chat::ChatCompletion::service_tier?
+        attr_accessor service_tier: OpenAI::Models::Chat::ChatCompletion::service_tier?
 
         attr_reader system_fingerprint: String?
 
@@ -41,22 +41,33 @@ module OpenAI
           choices: ::Array[OpenAI::Chat::ChatCompletion::Choice],
           created: Integer,
           model: String,
-          ?service_tier: OpenAI::Chat::ChatCompletion::service_tier?,
+          ?service_tier: OpenAI::Models::Chat::ChatCompletion::service_tier?,
           ?system_fingerprint: String,
           ?usage: OpenAI::CompletionUsage,
           ?object: :"chat.completion"
         ) -> void
 
+        def to_hash: -> {
+          id: String,
+          choices: ::Array[OpenAI::Chat::ChatCompletion::Choice],
+          created: Integer,
+          model: String,
+          object: :"chat.completion",
+          service_tier: OpenAI::Models::Chat::ChatCompletion::service_tier?,
+          system_fingerprint: String,
+          usage: OpenAI::CompletionUsage
+        }
+
         type choice =
           {
-            finish_reason: OpenAI::Chat::ChatCompletion::Choice::finish_reason,
+            finish_reason: OpenAI::Models::Chat::ChatCompletion::Choice::finish_reason,
             index: Integer,
             logprobs: OpenAI::Chat::ChatCompletion::Choice::Logprobs?,
             message: OpenAI::Chat::ChatCompletionMessage
           }
 
         class Choice < OpenAI::Internal::Type::BaseModel
-          attr_accessor finish_reason: OpenAI::Chat::ChatCompletion::Choice::finish_reason
+          attr_accessor finish_reason: OpenAI::Models::Chat::ChatCompletion::Choice::finish_reason
 
           attr_accessor index: Integer
 
@@ -65,11 +76,18 @@ module OpenAI
           attr_accessor message: OpenAI::Chat::ChatCompletionMessage
 
           def initialize: (
-            finish_reason: OpenAI::Chat::ChatCompletion::Choice::finish_reason,
+            finish_reason: OpenAI::Models::Chat::ChatCompletion::Choice::finish_reason,
             index: Integer,
             logprobs: OpenAI::Chat::ChatCompletion::Choice::Logprobs?,
             message: OpenAI::Chat::ChatCompletionMessage
           ) -> void
+
+          def to_hash: -> {
+            finish_reason: OpenAI::Models::Chat::ChatCompletion::Choice::finish_reason,
+            index: Integer,
+            logprobs: OpenAI::Chat::ChatCompletion::Choice::Logprobs?,
+            message: OpenAI::Chat::ChatCompletionMessage
+          }
 
           type finish_reason =
             :stop | :length | :tool_calls | :content_filter | :function_call
@@ -83,7 +101,7 @@ module OpenAI
             CONTENT_FILTER: :content_filter
             FUNCTION_CALL: :function_call
 
-            def self?.values: -> ::Array[OpenAI::Chat::ChatCompletion::Choice::finish_reason]
+            def self?.values: -> ::Array[OpenAI::Models::Chat::ChatCompletion::Choice::finish_reason]
           end
 
           type logprobs =
@@ -101,6 +119,11 @@ module OpenAI
               content: ::Array[OpenAI::Chat::ChatCompletionTokenLogprob]?,
               refusal: ::Array[OpenAI::Chat::ChatCompletionTokenLogprob]?
             ) -> void
+
+            def to_hash: -> {
+              content: ::Array[OpenAI::Chat::ChatCompletionTokenLogprob]?,
+              refusal: ::Array[OpenAI::Chat::ChatCompletionTokenLogprob]?
+            }
           end
         end
 
@@ -113,7 +136,7 @@ module OpenAI
           DEFAULT: :default
           FLEX: :flex
 
-          def self?.values: -> ::Array[OpenAI::Chat::ChatCompletion::service_tier]
+          def self?.values: -> ::Array[OpenAI::Models::Chat::ChatCompletion::service_tier]
         end
       end
     end

@@ -7,6 +7,8 @@ module OpenAI
         attr_accessor text: String
 
         def initialize: (text: String) -> void
+
+        def to_hash: -> { text: String }
       end
     end
   end

@@ -12,7 +12,7 @@ module OpenAI
 
         # @!method initialize(id:)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseFunctionToolCallItem} for more details.
+        #   {OpenAI::Models::Responses::ResponseFunctionToolCallItem} for more details.
         #
         #   A tool call to run a function. See the
         #   [function calling guide](https://platform.openai.com/docs/guides/function-calling)

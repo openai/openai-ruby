@@ -28,6 +28,13 @@ module OpenAI
           ?name: String?,
           ?tags: ::Array[String]
         ) -> void
+
+        def to_hash: -> {
+          project: String,
+          entity: String?,
+          name: String?,
+          tags: ::Array[String]
+        }
       end
     end
   end

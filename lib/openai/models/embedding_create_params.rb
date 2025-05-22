@@ -28,7 +28,7 @@ module OpenAI
       #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
       #   them.
       #
-      #   @return [String, Symbol, OpenAI::EmbeddingModel]
+      #   @return [String, Symbol, OpenAI::Models::EmbeddingModel]
       required :model, union: -> { OpenAI::EmbeddingCreateParams::Model }
 
       # @!attribute dimensions
@@ -42,7 +42,7 @@ module OpenAI
       #   The format to return the embeddings in. Can be either `float` or
       #   [`base64`](https://pypi.org/project/pybase64/).
       #
-      #   @return [Symbol, OpenAI::EmbeddingCreateParams::EncodingFormat, nil]
+      #   @return [Symbol, OpenAI::Models::EmbeddingCreateParams::EncodingFormat, nil]
       optional :encoding_format, enum: -> { OpenAI::EmbeddingCreateParams::EncodingFormat }
 
       # @!attribute user
@@ -59,11 +59,11 @@ module OpenAI
       #
       #   @param input [String, Array<String>, Array<Integer>, Array<Array<Integer>>] Input text to embed, encoded as a string or array of tokens. To embed multiple i
       #
-      #   @param model [String, Symbol, OpenAI::EmbeddingModel] ID of the model to use. You can use the [List models](https://platform.openai.co
+      #   @param model [String, Symbol, OpenAI::Models::EmbeddingModel] ID of the model to use. You can use the [List models](https://platform.openai.co
       #
       #   @param dimensions [Integer] The number of dimensions the resulting output embeddings should have. Only suppo
       #
-      #   @param encoding_format [Symbol, OpenAI::EmbeddingCreateParams::EncodingFormat] The format to return the embeddings in. Can be either `float` or [`base64`](http
+      #   @param encoding_format [Symbol, OpenAI::Models::EmbeddingCreateParams::EncodingFormat] The format to return the embeddings in. Can be either `float` or [`base64`](http
       #
       #   @param user [String] A unique identifier representing your end-user, which can help OpenAI to monitor
       #
@@ -85,20 +85,16 @@ module OpenAI
         variant String
 
         # The array of strings that will be turned into an embedding.
-        variant -> { OpenAI::EmbeddingCreateParams::Input::StringArray }
+        variant -> { OpenAI::Models::EmbeddingCreateParams::Input::StringArray }
 
         # The array of integers that will be turned into an embedding.
-        variant -> { OpenAI::EmbeddingCreateParams::Input::IntegerArray }
+        variant -> { OpenAI::Models::EmbeddingCreateParams::Input::IntegerArray }
 
         # The array of arrays containing integers that will be turned into an embedding.
-        variant -> { OpenAI::EmbeddingCreateParams::Input::ArrayOfToken2DArray }
+        variant -> { OpenAI::Models::EmbeddingCreateParams::Input::ArrayOfToken2DArray }
 
         # @!method self.variants
         #   @return [Array(String, Array<String>, Array<Integer>, Array<Array<Integer>>)]
-
-        define_sorbet_constant!(:Variants) do
-          T.type_alias { T.any(String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]) }
-        end
 
         # @type [OpenAI::Internal::Type::Converter]
         StringArray = OpenAI::Internal::Type::ArrayOf[String]
@@ -124,11 +120,7 @@ module OpenAI
         variant enum: -> { OpenAI::EmbeddingModel }
 
         # @!method self.variants
-        #   @return [Array(String, Symbol, OpenAI::EmbeddingModel)]
-
-        define_sorbet_constant!(:Variants) do
-          T.type_alias { T.any(String, OpenAI::EmbeddingModel::TaggedSymbol) }
-        end
+        #   @return [Array(String, Symbol, OpenAI::Models::EmbeddingModel)]
       end
 
       # The format to return the embeddings in. Can be either `float` or

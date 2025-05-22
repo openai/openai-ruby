@@ -29,7 +29,7 @@ module OpenAI
         # @!attribute filter
         #   Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
         #
-        #   @return [Symbol, OpenAI::VectorStores::FileListParams::Filter, nil]
+        #   @return [Symbol, OpenAI::Models::VectorStores::FileListParams::Filter, nil]
         optional :filter, enum: -> { OpenAI::VectorStores::FileListParams::Filter }
 
         # @!attribute limit
@@ -43,7 +43,7 @@ module OpenAI
         #   Sort order by the `created_at` timestamp of the objects. `asc` for ascending
         #   order and `desc` for descending order.
         #
-        #   @return [Symbol, OpenAI::VectorStores::FileListParams::Order, nil]
+        #   @return [Symbol, OpenAI::Models::VectorStores::FileListParams::Order, nil]
         optional :order, enum: -> { OpenAI::VectorStores::FileListParams::Order }
 
         # @!method initialize(after: nil, before: nil, filter: nil, limit: nil, order: nil, request_options: {})
@@ -54,11 +54,11 @@ module OpenAI
         #
         #   @param before [String] A cursor for use in pagination. `before` is an object ID that defines your place
         #
-        #   @param filter [Symbol, OpenAI::VectorStores::FileListParams::Filter] Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
+        #   @param filter [Symbol, OpenAI::Models::VectorStores::FileListParams::Filter] Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
         #
         #   @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
         #
-        #   @param order [Symbol, OpenAI::VectorStores::FileListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
+        #   @param order [Symbol, OpenAI::Models::VectorStores::FileListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

@@ -75,6 +75,8 @@ module OpenAI
         )
       CHATGPT_4O_LATEST =
         T.let(:"chatgpt-4o-latest", OpenAI::ChatModel::TaggedSymbol)
+      CODEX_MINI_LATEST =
+        T.let(:"codex-mini-latest", OpenAI::ChatModel::TaggedSymbol)
       GPT_4O_MINI = T.let(:"gpt-4o-mini", OpenAI::ChatModel::TaggedSymbol)
       GPT_4O_MINI_2024_07_18 =
         T.let(:"gpt-4o-mini-2024-07-18", OpenAI::ChatModel::TaggedSymbol)

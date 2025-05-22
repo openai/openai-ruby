@@ -19,7 +19,7 @@ module OpenAI
 
           # @!attribute image_url
           #
-          #   @return [OpenAI::Beta::Threads::ImageURLDelta, nil]
+          #   @return [OpenAI::Models::Beta::Threads::ImageURLDelta, nil]
           optional :image_url, -> { OpenAI::Beta::Threads::ImageURLDelta }
 
           # @!method initialize(index:, image_url: nil, type: :image_url)
@@ -27,7 +27,7 @@ module OpenAI
           #
           #   @param index [Integer] The index of the content part in the message.
           #
-          #   @param image_url [OpenAI::Beta::Threads::ImageURLDelta]
+          #   @param image_url [OpenAI::Models::Beta::Threads::ImageURLDelta]
           #
           #   @param type [Symbol, :image_url] Always `image_url`.
         end

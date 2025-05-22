@@ -2,17 +2,30 @@ module OpenAI
   module Models
     module Responses
       type response_completed_event =
-        { response: OpenAI::Responses::Response, type: :"response.completed" }
+        {
+          response: OpenAI::Responses::Response,
+          sequence_number: Integer,
+          type: :"response.completed"
+        }
 
       class ResponseCompletedEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor response: OpenAI::Responses::Response
+
+        attr_accessor sequence_number: Integer
 
         attr_accessor type: :"response.completed"
 
         def initialize: (
           response: OpenAI::Responses::Response,
+          sequence_number: Integer,
           ?type: :"response.completed"
         ) -> void
+
+        def to_hash: -> {
+          response: OpenAI::Responses::Response,
+          sequence_number: Integer,
+          type: :"response.completed"
+        }
       end
     end
   end

@@ -28,6 +28,14 @@ module OpenAI
         score: Float
       ) -> void
 
+      def to_hash: -> {
+        attributes: ::Hash[Symbol, OpenAI::Models::VectorStoreSearchResponse::attribute]?,
+        content: ::Array[OpenAI::Models::VectorStoreSearchResponse::Content],
+        file_id: String,
+        filename: String,
+        score: Float
+      }
+
       type attribute = String | Float | bool
 
       module Attribute
@@ -51,6 +59,11 @@ module OpenAI
           text: String,
           type: OpenAI::Models::VectorStoreSearchResponse::Content::type_
         ) -> void
+
+        def to_hash: -> {
+          text: String,
+          type: OpenAI::Models::VectorStoreSearchResponse::Content::type_
+        }
 
         type type_ = :text
 

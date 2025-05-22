@@ -12,19 +12,29 @@ module OpenAI
             )
           end
 
+        # The sequence number of this event.
+        sig { returns(Integer) }
+        attr_accessor :sequence_number
+
         # The type of the event. Always `response.audio.transcript.done`.
         sig { returns(Symbol) }
         attr_accessor :type
 
         # Emitted when the full audio transcript is completed.
-        sig { params(type: Symbol).returns(T.attached_class) }
+        sig do
+          params(sequence_number: Integer, type: Symbol).returns(
+            T.attached_class
+          )
+        end
         def self.new(
+          # The sequence number of this event.
+          sequence_number:,
           # The type of the event. Always `response.audio.transcript.done`.
           type: :"response.audio.transcript.done"
         )
         end
 
-        sig { override.returns({ type: Symbol }) }
+        sig { override.returns({ sequence_number: Integer, type: Symbol }) }
         def to_hash
         end
       end

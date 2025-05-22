@@ -3,7 +3,7 @@ module OpenAI
     module Audio
       type transcription_create_params =
         {
-          file: (Pathname | StringIO | IO | OpenAI::FilePart),
+          file: OpenAI::Internal::file_input,
           model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
           chunking_strategy: OpenAI::Models::Audio::TranscriptionCreateParams::chunking_strategy?,
           include: ::Array[OpenAI::Models::Audio::transcription_include],
@@ -11,7 +11,7 @@ module OpenAI
           prompt: String,
           response_format: OpenAI::Models::audio_response_format,
           temperature: Float,
-          timestamp_granularities: ::Array[OpenAI::Audio::TranscriptionCreateParams::timestamp_granularity]
+          timestamp_granularities: ::Array[OpenAI::Models::Audio::TranscriptionCreateParams::timestamp_granularity]
         }
         & OpenAI::Internal::Type::request_parameters
 
@@ -19,7 +19,7 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        attr_accessor file: Pathname | StringIO | IO | OpenAI::FilePart
+        attr_accessor file: OpenAI::Internal::file_input
 
         attr_accessor model: OpenAI::Models::Audio::TranscriptionCreateParams::model
 
@@ -49,14 +49,14 @@ module OpenAI
 
         def temperature=: (Float) -> Float
 
-        attr_reader timestamp_granularities: ::Array[OpenAI::Audio::TranscriptionCreateParams::timestamp_granularity]?
+        attr_reader timestamp_granularities: ::Array[OpenAI::Models::Audio::TranscriptionCreateParams::timestamp_granularity]?
 
         def timestamp_granularities=: (
-          ::Array[OpenAI::Audio::TranscriptionCreateParams::timestamp_granularity]
-        ) -> ::Array[OpenAI::Audio::TranscriptionCreateParams::timestamp_granularity]
+          ::Array[OpenAI::Models::Audio::TranscriptionCreateParams::timestamp_granularity]
+        ) -> ::Array[OpenAI::Models::Audio::TranscriptionCreateParams::timestamp_granularity]
 
         def initialize: (
-          file: Pathname | StringIO | IO | OpenAI::FilePart,
+          file: OpenAI::Internal::file_input,
           model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
           ?chunking_strategy: OpenAI::Models::Audio::TranscriptionCreateParams::chunking_strategy?,
           ?include: ::Array[OpenAI::Models::Audio::transcription_include],
@@ -64,9 +64,22 @@ module OpenAI
           ?prompt: String,
           ?response_format: OpenAI::Models::audio_response_format,
           ?temperature: Float,
-          ?timestamp_granularities: ::Array[OpenAI::Audio::TranscriptionCreateParams::timestamp_granularity],
+          ?timestamp_granularities: ::Array[OpenAI::Models::Audio::TranscriptionCreateParams::timestamp_granularity],
           ?request_options: OpenAI::request_opts
         ) -> void
+
+        def to_hash: -> {
+          file: OpenAI::Internal::file_input,
+          model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
+          chunking_strategy: OpenAI::Models::Audio::TranscriptionCreateParams::chunking_strategy?,
+          include: ::Array[OpenAI::Models::Audio::transcription_include],
+          language: String,
+          prompt: String,
+          response_format: OpenAI::Models::audio_response_format,
+          temperature: Float,
+          timestamp_granularities: ::Array[OpenAI::Models::Audio::TranscriptionCreateParams::timestamp_granularity],
+          request_options: OpenAI::RequestOptions
+        }
 
         type model = String | OpenAI::Models::audio_model
 
@@ -85,14 +98,14 @@ module OpenAI
 
           type vad_config =
             {
-              type: OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::type_,
+              type: OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::type_,
               prefix_padding_ms: Integer,
               silence_duration_ms: Integer,
               threshold: Float
             }
 
           class VadConfig < OpenAI::Internal::Type::BaseModel
-            attr_accessor type: OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::type_
+            attr_accessor type: OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::type_
 
             attr_reader prefix_padding_ms: Integer?
 
@@ -107,11 +120,18 @@ module OpenAI
             def threshold=: (Float) -> Float
 
             def initialize: (
-              type: OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::type_,
+              type: OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::type_,
               ?prefix_padding_ms: Integer,
               ?silence_duration_ms: Integer,
               ?threshold: Float
             ) -> void
+
+            def to_hash: -> {
+              type: OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::type_,
+              prefix_padding_ms: Integer,
+              silence_duration_ms: Integer,
+              threshold: Float
+            }
 
             type type_ = :server_vad
 
@@ -120,7 +140,7 @@ module OpenAI
 
               SERVER_VAD: :server_vad
 
-              def self?.values: -> ::Array[OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::type_]
+              def self?.values: -> ::Array[OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::type_]
             end
           end
 
@@ -135,7 +155,7 @@ module OpenAI
           WORD: :word
           SEGMENT: :segment
 
-          def self?.values: -> ::Array[OpenAI::Audio::TranscriptionCreateParams::timestamp_granularity]
+          def self?.values: -> ::Array[OpenAI::Models::Audio::TranscriptionCreateParams::timestamp_granularity]
         end
       end
     end

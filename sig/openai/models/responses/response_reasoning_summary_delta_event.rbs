@@ -1,0 +1,47 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_reasoning_summary_delta_event =
+        {
+          delta: top,
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          summary_index: Integer,
+          type: :"response.reasoning_summary.delta"
+        }
+
+      class ResponseReasoningSummaryDeltaEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor delta: top
+
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor summary_index: Integer
+
+        attr_accessor type: :"response.reasoning_summary.delta"
+
+        def initialize: (
+          delta: top,
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          summary_index: Integer,
+          ?type: :"response.reasoning_summary.delta"
+        ) -> void
+
+        def to_hash: -> {
+          delta: top,
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          summary_index: Integer,
+          type: :"response.reasoning_summary.delta"
+        }
+      end
+    end
+  end
+end

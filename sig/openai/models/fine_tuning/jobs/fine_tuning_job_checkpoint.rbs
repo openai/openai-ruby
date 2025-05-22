@@ -38,6 +38,16 @@ module OpenAI
             ?object: :"fine_tuning.job.checkpoint"
           ) -> void
 
+          def to_hash: -> {
+            id: String,
+            created_at: Integer,
+            fine_tuned_model_checkpoint: String,
+            fine_tuning_job_id: String,
+            metrics: OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics,
+            object: :"fine_tuning.job.checkpoint",
+            step_number: Integer
+          }
+
           type metrics =
             {
               full_valid_loss: Float,
@@ -87,6 +97,16 @@ module OpenAI
               ?valid_loss: Float,
               ?valid_mean_token_accuracy: Float
             ) -> void
+
+            def to_hash: -> {
+              full_valid_loss: Float,
+              full_valid_mean_token_accuracy: Float,
+              step: Float,
+              train_loss: Float,
+              train_mean_token_accuracy: Float,
+              valid_loss: Float,
+              valid_mean_token_accuracy: Float
+            }
           end
         end
       end

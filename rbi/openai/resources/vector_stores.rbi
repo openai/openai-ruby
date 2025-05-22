@@ -17,7 +17,7 @@ module OpenAI
               OpenAI::AutoFileChunkingStrategyParam::OrHash,
               OpenAI::StaticFileChunkingStrategyObjectParam::OrHash
             ),
-          expires_after: OpenAI::VectorStoreExpirationAfter::OrHash,
+          expires_after: OpenAI::VectorStoreCreateParams::ExpiresAfter::OrHash,
           file_ids: T::Array[String],
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: String,
@@ -65,7 +65,8 @@ module OpenAI
       sig do
         params(
           vector_store_id: String,
-          expires_after: T.nilable(OpenAI::VectorStoreExpirationAfter::OrHash),
+          expires_after:
+            T.nilable(OpenAI::VectorStoreUpdateParams::ExpiresAfter::OrHash),
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: T.nilable(String),
           request_options: OpenAI::RequestOptions::OrHash
@@ -139,7 +140,7 @@ module OpenAI
       sig do
         params(
           vector_store_id: String,
-          query: T.any(String, T::Array[String]),
+          query: OpenAI::VectorStoreSearchParams::Query::Variants,
           filters:
             T.any(
               OpenAI::ComparisonFilter::OrHash,

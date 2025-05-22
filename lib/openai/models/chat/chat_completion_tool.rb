@@ -6,7 +6,7 @@ module OpenAI
       class ChatCompletionTool < OpenAI::Internal::Type::BaseModel
         # @!attribute function
         #
-        #   @return [OpenAI::FunctionDefinition]
+        #   @return [OpenAI::Models::FunctionDefinition]
         required :function, -> { OpenAI::FunctionDefinition }
 
         # @!attribute type
@@ -16,7 +16,7 @@ module OpenAI
         required :type, const: :function
 
         # @!method initialize(function:, type: :function)
-        #   @param function [OpenAI::FunctionDefinition]
+        #   @param function [OpenAI::Models::FunctionDefinition]
         #
         #   @param type [Symbol, :function] The type of the tool. Currently, only `function` is supported.
       end

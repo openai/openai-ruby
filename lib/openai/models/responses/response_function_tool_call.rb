@@ -38,12 +38,12 @@ module OpenAI
         #   The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
         #
-        #   @return [Symbol, OpenAI::Responses::ResponseFunctionToolCall::Status, nil]
+        #   @return [Symbol, OpenAI::Models::Responses::ResponseFunctionToolCall::Status, nil]
         optional :status, enum: -> { OpenAI::Responses::ResponseFunctionToolCall::Status }
 
         # @!method initialize(arguments:, call_id:, name:, id: nil, status: nil, type: :function_call)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseFunctionToolCall} for more details.
+        #   {OpenAI::Models::Responses::ResponseFunctionToolCall} for more details.
         #
         #   A tool call to run a function. See the
         #   [function calling guide](https://platform.openai.com/docs/guides/function-calling)
@@ -57,14 +57,14 @@ module OpenAI
         #
         #   @param id [String] The unique ID of the function tool call.
         #
-        #   @param status [Symbol, OpenAI::Responses::ResponseFunctionToolCall::Status] The status of the item. One of `in_progress`, `completed`, or
+        #   @param status [Symbol, OpenAI::Models::Responses::ResponseFunctionToolCall::Status] The status of the item. One of `in_progress`, `completed`, or
         #
         #   @param type [Symbol, :function_call] The type of the function tool call. Always `function_call`.
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         # Populated when items are returned via API.
         #
-        # @see OpenAI::Responses::ResponseFunctionToolCall#status
+        # @see OpenAI::Models::Responses::ResponseFunctionToolCall#status
         module Status
           extend OpenAI::Internal::Type::Enum
 

@@ -30,6 +30,14 @@ module OpenAI
             ?object: :list
           ) -> void
 
+          def to_hash: -> {
+            data: ::Array[OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse::Data],
+            has_more: bool,
+            object: :list,
+            first_id: String?,
+            last_id: String?
+          }
+
           type data =
             {
               id: String,
@@ -53,6 +61,13 @@ module OpenAI
               project_id: String,
               ?object: :"checkpoint.permission"
             ) -> void
+
+            def to_hash: -> {
+              id: String,
+              created_at: Integer,
+              object: :"checkpoint.permission",
+              project_id: String
+            }
           end
         end
       end

@@ -34,16 +34,7 @@ module OpenAI
 
           # The content of the message in array of text and/or images.
           sig do
-            returns(
-              T::Array[
-                T.any(
-                  OpenAI::Beta::Threads::ImageFileContentBlock,
-                  OpenAI::Beta::Threads::ImageURLContentBlock,
-                  OpenAI::Beta::Threads::TextContentBlock,
-                  OpenAI::Beta::Threads::RefusalContentBlock
-                )
-              ]
-            )
+            returns(T::Array[OpenAI::Beta::Threads::MessageContent::Variants])
           end
           attr_accessor :content
 
@@ -194,14 +185,7 @@ module OpenAI
                   ),
                 completed_at: T.nilable(Integer),
                 content:
-                  T::Array[
-                    T.any(
-                      OpenAI::Beta::Threads::ImageFileContentBlock,
-                      OpenAI::Beta::Threads::ImageURLContentBlock,
-                      OpenAI::Beta::Threads::TextContentBlock,
-                      OpenAI::Beta::Threads::RefusalContentBlock
-                    )
-                  ],
+                  T::Array[OpenAI::Beta::Threads::MessageContent::Variants],
                 created_at: Integer,
                 incomplete_at: T.nilable(Integer),
                 incomplete_details:
@@ -239,10 +223,7 @@ module OpenAI
               returns(
                 T.nilable(
                   T::Array[
-                    T.any(
-                      OpenAI::Beta::CodeInterpreterTool,
-                      OpenAI::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly
-                    )
+                    OpenAI::Beta::Threads::Message::Attachment::Tool::Variants
                   ]
                 )
               )
@@ -288,10 +269,7 @@ module OpenAI
                   file_id: String,
                   tools:
                     T::Array[
-                      T.any(
-                        OpenAI::Beta::CodeInterpreterTool,
-                        OpenAI::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly
-                      )
+                      OpenAI::Beta::Threads::Message::Attachment::Tool::Variants
                     ]
                 }
               )

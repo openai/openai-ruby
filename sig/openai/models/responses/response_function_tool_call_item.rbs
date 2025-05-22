@@ -9,6 +9,8 @@ module OpenAI
         def id=: (String _) -> String
 
         def initialize: (id: String) -> void
+
+        def to_hash: -> { id: String }
       end
     end
   end

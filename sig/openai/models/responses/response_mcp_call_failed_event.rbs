@@ -1,0 +1,24 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_mcp_call_failed_event =
+        { sequence_number: Integer, type: :"response.mcp_call.failed" }
+
+      class ResponseMcpCallFailedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor sequence_number: Integer
+
+        attr_accessor type: :"response.mcp_call.failed"
+
+        def initialize: (
+          sequence_number: Integer,
+          ?type: :"response.mcp_call.failed"
+        ) -> void
+
+        def to_hash: -> {
+          sequence_number: Integer,
+          type: :"response.mcp_call.failed"
+        }
+      end
+    end
+  end
+end

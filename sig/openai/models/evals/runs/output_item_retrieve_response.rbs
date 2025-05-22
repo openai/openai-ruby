@@ -50,6 +50,19 @@ module OpenAI
             ?object: :"eval.run.output_item"
           ) -> void
 
+          def to_hash: -> {
+            id: String,
+            created_at: Integer,
+            datasource_item: ::Hash[Symbol, top],
+            datasource_item_id: Integer,
+            eval_id: String,
+            object: :"eval.run.output_item",
+            results: ::Array[::Hash[Symbol, top]],
+            run_id: String,
+            sample: OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample,
+            status: String
+          }
+
           type sample =
             {
               error: OpenAI::Evals::EvalAPIError,
@@ -98,6 +111,19 @@ module OpenAI
               usage: OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Usage
             ) -> void
 
+            def to_hash: -> {
+              error: OpenAI::Evals::EvalAPIError,
+              finish_reason: String,
+              input: ::Array[OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Input],
+              max_completion_tokens: Integer,
+              model: String,
+              output: ::Array[OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Output],
+              seed: Integer,
+              temperature: Float,
+              top_p: Float,
+              usage: OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Usage
+            }
+
             type input = { content: String, role: String }
 
             class Input < OpenAI::Internal::Type::BaseModel
@@ -106,6 +132,8 @@ module OpenAI
               attr_accessor role: String
 
               def initialize: (content: String, role: String) -> void
+
+              def to_hash: -> { content: String, role: String }
             end
 
             type output = { content: String, role: String }
@@ -120,6 +148,8 @@ module OpenAI
               def role=: (String) -> String
 
               def initialize: (?content: String, ?role: String) -> void
+
+              def to_hash: -> { content: String, role: String }
             end
 
             type usage =
@@ -145,6 +175,13 @@ module OpenAI
                 prompt_tokens: Integer,
                 total_tokens: Integer
               ) -> void
+
+              def to_hash: -> {
+                cached_tokens: Integer,
+                completion_tokens: Integer,
+                prompt_tokens: Integer,
+                total_tokens: Integer
+              }
             end
           end
         end

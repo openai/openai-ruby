@@ -9,11 +9,11 @@ module OpenAI
           # @!attribute grader
           #   The grader used for the fine-tuning job.
           #
-          #   @return [OpenAI::Graders::StringCheckGrader, OpenAI::Graders::TextSimilarityGrader, OpenAI::Graders::PythonGrader, OpenAI::Graders::ScoreModelGrader, OpenAI::Graders::MultiGrader, nil]
+          #   @return [OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::MultiGrader, nil]
           optional :grader, union: -> { OpenAI::Models::FineTuning::Alpha::GraderValidateResponse::Grader }
 
           # @!method initialize(grader: nil)
-          #   @param grader [OpenAI::Graders::StringCheckGrader, OpenAI::Graders::TextSimilarityGrader, OpenAI::Graders::PythonGrader, OpenAI::Graders::ScoreModelGrader, OpenAI::Graders::MultiGrader] The grader used for the fine-tuning job.
+          #   @param grader [OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::MultiGrader] The grader used for the fine-tuning job.
 
           # The grader used for the fine-tuning job.
           #
@@ -37,19 +37,7 @@ module OpenAI
             variant -> { OpenAI::Graders::MultiGrader }
 
             # @!method self.variants
-            #   @return [Array(OpenAI::Graders::StringCheckGrader, OpenAI::Graders::TextSimilarityGrader, OpenAI::Graders::PythonGrader, OpenAI::Graders::ScoreModelGrader, OpenAI::Graders::MultiGrader)]
-
-            define_sorbet_constant!(:Variants) do
-              T.type_alias do
-                T.any(
-                  OpenAI::Graders::StringCheckGrader,
-                  OpenAI::Graders::TextSimilarityGrader,
-                  OpenAI::Graders::PythonGrader,
-                  OpenAI::Graders::ScoreModelGrader,
-                  OpenAI::Graders::MultiGrader
-                )
-              end
-            end
+            #   @return [Array(OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::MultiGrader)]
           end
         end
       end

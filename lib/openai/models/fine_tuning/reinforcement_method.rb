@@ -7,25 +7,25 @@ module OpenAI
         # @!attribute grader
         #   The grader used for the fine-tuning job.
         #
-        #   @return [OpenAI::Graders::StringCheckGrader, OpenAI::Graders::TextSimilarityGrader, OpenAI::Graders::PythonGrader, OpenAI::Graders::ScoreModelGrader, OpenAI::Graders::MultiGrader]
+        #   @return [OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::MultiGrader]
         required :grader, union: -> { OpenAI::FineTuning::ReinforcementMethod::Grader }
 
         # @!attribute hyperparameters
         #   The hyperparameters used for the reinforcement fine-tuning job.
         #
-        #   @return [OpenAI::FineTuning::ReinforcementHyperparameters, nil]
+        #   @return [OpenAI::Models::FineTuning::ReinforcementHyperparameters, nil]
         optional :hyperparameters, -> { OpenAI::FineTuning::ReinforcementHyperparameters }
 
         # @!method initialize(grader:, hyperparameters: nil)
         #   Configuration for the reinforcement fine-tuning method.
         #
-        #   @param grader [OpenAI::Graders::StringCheckGrader, OpenAI::Graders::TextSimilarityGrader, OpenAI::Graders::PythonGrader, OpenAI::Graders::ScoreModelGrader, OpenAI::Graders::MultiGrader] The grader used for the fine-tuning job.
+        #   @param grader [OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::MultiGrader] The grader used for the fine-tuning job.
         #
-        #   @param hyperparameters [OpenAI::FineTuning::ReinforcementHyperparameters] The hyperparameters used for the reinforcement fine-tuning job.
+        #   @param hyperparameters [OpenAI::Models::FineTuning::ReinforcementHyperparameters] The hyperparameters used for the reinforcement fine-tuning job.
 
         # The grader used for the fine-tuning job.
         #
-        # @see OpenAI::FineTuning::ReinforcementMethod#grader
+        # @see OpenAI::Models::FineTuning::ReinforcementMethod#grader
         module Grader
           extend OpenAI::Internal::Type::Union
 
@@ -45,19 +45,7 @@ module OpenAI
           variant -> { OpenAI::Graders::MultiGrader }
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Graders::StringCheckGrader, OpenAI::Graders::TextSimilarityGrader, OpenAI::Graders::PythonGrader, OpenAI::Graders::ScoreModelGrader, OpenAI::Graders::MultiGrader)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias do
-              T.any(
-                OpenAI::Graders::StringCheckGrader,
-                OpenAI::Graders::TextSimilarityGrader,
-                OpenAI::Graders::PythonGrader,
-                OpenAI::Graders::ScoreModelGrader,
-                OpenAI::Graders::MultiGrader
-              )
-            end
-          end
+          #   @return [Array(OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::MultiGrader)]
         end
       end
     end

@@ -25,26 +25,7 @@ module OpenAI
         # - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
         # - [Function calling](https://platform.openai.com/docs/guides/function-calling)
         sig do
-          returns(
-            T.any(
-              String,
-              T::Array[
-                T.any(
-                  OpenAI::Responses::EasyInputMessage,
-                  OpenAI::Responses::ResponseInputItem::Message,
-                  OpenAI::Responses::ResponseOutputMessage,
-                  OpenAI::Responses::ResponseFileSearchToolCall,
-                  OpenAI::Responses::ResponseComputerToolCall,
-                  OpenAI::Responses::ResponseInputItem::ComputerCallOutput,
-                  OpenAI::Responses::ResponseFunctionWebSearch,
-                  OpenAI::Responses::ResponseFunctionToolCall,
-                  OpenAI::Responses::ResponseInputItem::FunctionCallOutput,
-                  OpenAI::Responses::ResponseReasoningItem,
-                  OpenAI::Responses::ResponseInputItem::ItemReference
-                )
-              ]
-            )
-          )
+          returns(OpenAI::Responses::ResponseCreateParams::Input::Variants)
         end
         attr_accessor :input
 
@@ -63,6 +44,11 @@ module OpenAI
           )
         end
         attr_accessor :model
+
+        # Whether to run the model response in the background.
+        # [Learn more](https://platform.openai.com/docs/guides/background).
+        sig { returns(T.nilable(T::Boolean)) }
+        attr_accessor :background
 
         # Specify additional output data to include in the model response. Currently
         # supported values are:
@@ -223,9 +209,13 @@ module OpenAI
             T.nilable(
               T::Array[
                 T.any(
-                  OpenAI::Responses::FileSearchTool,
                   OpenAI::Responses::FunctionTool,
+                  OpenAI::Responses::FileSearchTool,
                   OpenAI::Responses::ComputerTool,
+                  OpenAI::Responses::Tool::Mcp,
+                  OpenAI::Responses::Tool::CodeInterpreter,
+                  OpenAI::Responses::Tool::ImageGeneration,
+                  OpenAI::Responses::Tool::LocalShell,
                   OpenAI::Responses::WebSearchTool
                 )
               ]
@@ -239,9 +229,13 @@ module OpenAI
             tools:
               T::Array[
                 T.any(
-                  OpenAI::Responses::FileSearchTool::OrHash,
                   OpenAI::Responses::FunctionTool::OrHash,
+                  OpenAI::Responses::FileSearchTool::OrHash,
                   OpenAI::Responses::ComputerTool::OrHash,
+                  OpenAI::Responses::Tool::Mcp::OrHash,
+                  OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                  OpenAI::Responses::Tool::ImageGeneration::OrHash,
+                  OpenAI::Responses::Tool::LocalShell::OrHash,
                   OpenAI::Responses::WebSearchTool::OrHash
                 )
               ]
@@ -273,8 +267,8 @@ module OpenAI
         end
         attr_accessor :truncation
 
-        # A unique identifier representing your end-user, which can help OpenAI to monitor
-        # and detect abuse.
+        # A stable identifier for your end-users. Used to boost cache hit rates by better
+        # bucketing similar requests and to help OpenAI detect and prevent abuse.
         # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         sig { returns(T.nilable(String)) }
         attr_reader :user
@@ -284,31 +278,14 @@ module OpenAI
 
         sig do
           params(
-            input:
-              T.any(
-                String,
-                T::Array[
-                  T.any(
-                    OpenAI::Responses::EasyInputMessage::OrHash,
-                    OpenAI::Responses::ResponseInputItem::Message::OrHash,
-                    OpenAI::Responses::ResponseOutputMessage::OrHash,
-                    OpenAI::Responses::ResponseFileSearchToolCall::OrHash,
-                    OpenAI::Responses::ResponseComputerToolCall::OrHash,
-                    OpenAI::Responses::ResponseInputItem::ComputerCallOutput::OrHash,
-                    OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
-                    OpenAI::Responses::ResponseFunctionToolCall::OrHash,
-                    OpenAI::Responses::ResponseInputItem::FunctionCallOutput::OrHash,
-                    OpenAI::Responses::ResponseReasoningItem::OrHash,
-                    OpenAI::Responses::ResponseInputItem::ItemReference::OrHash
-                  )
-                ]
-              ),
+            input: OpenAI::Responses::ResponseCreateParams::Input::Variants,
             model:
               T.any(
                 String,
                 OpenAI::ChatModel::OrSymbol,
                 OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
               ),
+            background: T.nilable(T::Boolean),
             include:
               T.nilable(
                 T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
@@ -335,9 +312,13 @@ module OpenAI
             tools:
               T::Array[
                 T.any(
-                  OpenAI::Responses::FileSearchTool::OrHash,
                   OpenAI::Responses::FunctionTool::OrHash,
+                  OpenAI::Responses::FileSearchTool::OrHash,
                   OpenAI::Responses::ComputerTool::OrHash,
+                  OpenAI::Responses::Tool::Mcp::OrHash,
+                  OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                  OpenAI::Responses::Tool::ImageGeneration::OrHash,
+                  OpenAI::Responses::Tool::LocalShell::OrHash,
                   OpenAI::Responses::WebSearchTool::OrHash
                 )
               ],
@@ -367,6 +348,9 @@ module OpenAI
           # [model guide](https://platform.openai.com/docs/models) to browse and compare
           # available models.
           model:,
+          # Whether to run the model response in the background.
+          # [Learn more](https://platform.openai.com/docs/guides/background).
+          background: nil,
           # Specify additional output data to include in the model response. Currently
           # supported values are:
           #
@@ -474,8 +458,8 @@ module OpenAI
           # - `disabled` (default): If a model response will exceed the context window size
           #   for a model, the request will fail with a 400 error.
           truncation: nil,
-          # A unique identifier representing your end-user, which can help OpenAI to monitor
-          # and detect abuse.
+          # A stable identifier for your end-users. Used to boost cache hit rates by better
+          # bucketing similar requests and to help OpenAI detect and prevent abuse.
           # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
           user: nil,
           request_options: {}
@@ -485,31 +469,14 @@ module OpenAI
         sig do
           override.returns(
             {
-              input:
-                T.any(
-                  String,
-                  T::Array[
-                    T.any(
-                      OpenAI::Responses::EasyInputMessage,
-                      OpenAI::Responses::ResponseInputItem::Message,
-                      OpenAI::Responses::ResponseOutputMessage,
-                      OpenAI::Responses::ResponseFileSearchToolCall,
-                      OpenAI::Responses::ResponseComputerToolCall,
-                      OpenAI::Responses::ResponseInputItem::ComputerCallOutput,
-                      OpenAI::Responses::ResponseFunctionWebSearch,
-                      OpenAI::Responses::ResponseFunctionToolCall,
-                      OpenAI::Responses::ResponseInputItem::FunctionCallOutput,
-                      OpenAI::Responses::ResponseReasoningItem,
-                      OpenAI::Responses::ResponseInputItem::ItemReference
-                    )
-                  ]
-                ),
+              input: OpenAI::Responses::ResponseCreateParams::Input::Variants,
               model:
                 T.any(
                   String,
                   OpenAI::ChatModel::OrSymbol,
                   OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
                 ),
+              background: T.nilable(T::Boolean),
               include:
                 T.nilable(
                   T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
@@ -536,9 +503,13 @@ module OpenAI
               tools:
                 T::Array[
                   T.any(
-                    OpenAI::Responses::FileSearchTool,
                     OpenAI::Responses::FunctionTool,
+                    OpenAI::Responses::FileSearchTool,
                     OpenAI::Responses::ComputerTool,
+                    OpenAI::Responses::Tool::Mcp,
+                    OpenAI::Responses::Tool::CodeInterpreter,
+                    OpenAI::Responses::Tool::ImageGeneration,
+                    OpenAI::Responses::Tool::LocalShell,
                     OpenAI::Responses::WebSearchTool
                   )
                 ],
@@ -571,21 +542,7 @@ module OpenAI
             T.type_alias do
               T.any(
                 String,
-                T::Array[
-                  T.any(
-                    OpenAI::Responses::EasyInputMessage,
-                    OpenAI::Responses::ResponseInputItem::Message,
-                    OpenAI::Responses::ResponseOutputMessage,
-                    OpenAI::Responses::ResponseFileSearchToolCall,
-                    OpenAI::Responses::ResponseComputerToolCall,
-                    OpenAI::Responses::ResponseInputItem::ComputerCallOutput,
-                    OpenAI::Responses::ResponseFunctionWebSearch,
-                    OpenAI::Responses::ResponseFunctionToolCall,
-                    OpenAI::Responses::ResponseInputItem::FunctionCallOutput,
-                    OpenAI::Responses::ResponseReasoningItem,
-                    OpenAI::Responses::ResponseInputItem::ItemReference
-                  )
-                ]
+                T::Array[OpenAI::Responses::ResponseInputItem::Variants]
               )
             end
 

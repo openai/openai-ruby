@@ -21,7 +21,7 @@ module OpenAI
         #   The last error associated with this vector store file. Will be `null` if there
         #   are no errors.
         #
-        #   @return [OpenAI::VectorStores::VectorStoreFile::LastError, nil]
+        #   @return [OpenAI::Models::VectorStores::VectorStoreFile::LastError, nil]
         required :last_error, -> { OpenAI::VectorStores::VectorStoreFile::LastError }, nil?: true
 
         # @!attribute object
@@ -35,7 +35,7 @@ module OpenAI
         #   `completed`, `cancelled`, or `failed`. The status `completed` indicates that the
         #   vector store file is ready for use.
         #
-        #   @return [Symbol, OpenAI::VectorStores::VectorStoreFile::Status]
+        #   @return [Symbol, OpenAI::Models::VectorStores::VectorStoreFile::Status]
         required :status, enum: -> { OpenAI::VectorStores::VectorStoreFile::Status }
 
         # @!attribute usage_bytes
@@ -71,12 +71,12 @@ module OpenAI
         # @!attribute chunking_strategy
         #   The strategy used to chunk the file.
         #
-        #   @return [OpenAI::StaticFileChunkingStrategyObject, OpenAI::OtherFileChunkingStrategyObject, nil]
+        #   @return [OpenAI::Models::StaticFileChunkingStrategyObject, OpenAI::Models::OtherFileChunkingStrategyObject, nil]
         optional :chunking_strategy, union: -> { OpenAI::FileChunkingStrategy }
 
         # @!method initialize(id:, created_at:, last_error:, status:, usage_bytes:, vector_store_id:, attributes: nil, chunking_strategy: nil, object: :"vector_store.file")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::VectorStores::VectorStoreFile} for more details.
+        #   {OpenAI::Models::VectorStores::VectorStoreFile} for more details.
         #
         #   A list of files attached to a vector store.
         #
@@ -84,9 +84,9 @@ module OpenAI
         #
         #   @param created_at [Integer] The Unix timestamp (in seconds) for when the vector store file was created.
         #
-        #   @param last_error [OpenAI::VectorStores::VectorStoreFile::LastError, nil] The last error associated with this vector store file. Will be `null` if there a
+        #   @param last_error [OpenAI::Models::VectorStores::VectorStoreFile::LastError, nil] The last error associated with this vector store file. Will be `null` if there a
         #
-        #   @param status [Symbol, OpenAI::VectorStores::VectorStoreFile::Status] The status of the vector store file, which can be either `in_progress`, `complet
+        #   @param status [Symbol, OpenAI::Models::VectorStores::VectorStoreFile::Status] The status of the vector store file, which can be either `in_progress`, `complet
         #
         #   @param usage_bytes [Integer] The total vector store usage in bytes. Note that this may be different from the
         #
@@ -94,16 +94,16 @@ module OpenAI
         #
         #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #
-        #   @param chunking_strategy [OpenAI::StaticFileChunkingStrategyObject, OpenAI::OtherFileChunkingStrategyObject] The strategy used to chunk the file.
+        #   @param chunking_strategy [OpenAI::Models::StaticFileChunkingStrategyObject, OpenAI::Models::OtherFileChunkingStrategyObject] The strategy used to chunk the file.
         #
         #   @param object [Symbol, :"vector_store.file"] The object type, which is always `vector_store.file`.
 
-        # @see OpenAI::VectorStores::VectorStoreFile#last_error
+        # @see OpenAI::Models::VectorStores::VectorStoreFile#last_error
         class LastError < OpenAI::Internal::Type::BaseModel
           # @!attribute code
           #   One of `server_error` or `rate_limit_exceeded`.
           #
-          #   @return [Symbol, OpenAI::VectorStores::VectorStoreFile::LastError::Code]
+          #   @return [Symbol, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code]
           required :code, enum: -> { OpenAI::VectorStores::VectorStoreFile::LastError::Code }
 
           # @!attribute message
@@ -116,13 +116,13 @@ module OpenAI
           #   The last error associated with this vector store file. Will be `null` if there
           #   are no errors.
           #
-          #   @param code [Symbol, OpenAI::VectorStores::VectorStoreFile::LastError::Code] One of `server_error` or `rate_limit_exceeded`.
+          #   @param code [Symbol, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code] One of `server_error` or `rate_limit_exceeded`.
           #
           #   @param message [String] A human-readable description of the error.
 
           # One of `server_error` or `rate_limit_exceeded`.
           #
-          # @see OpenAI::VectorStores::VectorStoreFile::LastError#code
+          # @see OpenAI::Models::VectorStores::VectorStoreFile::LastError#code
           module Code
             extend OpenAI::Internal::Type::Enum
 
@@ -139,7 +139,7 @@ module OpenAI
         # `completed`, `cancelled`, or `failed`. The status `completed` indicates that the
         # vector store file is ready for use.
         #
-        # @see OpenAI::VectorStores::VectorStoreFile#status
+        # @see OpenAI::Models::VectorStores::VectorStoreFile#status
         module Status
           extend OpenAI::Internal::Type::Enum
 
@@ -163,10 +163,6 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(String, Float, Boolean)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias { T.any(String, Float, T::Boolean) }
-          end
         end
       end
     end

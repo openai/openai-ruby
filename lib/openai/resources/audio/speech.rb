@@ -13,13 +13,13 @@ module OpenAI
         #
         # @param input [String] The text to generate audio for. The maximum length is 4096 characters.
         #
-        # @param model [String, Symbol, OpenAI::Audio::SpeechModel] One of the available [TTS models](https://platform.openai.com/docs/models#tts):
+        # @param model [String, Symbol, OpenAI::Models::Audio::SpeechModel] One of the available [TTS models](https://platform.openai.com/docs/models#tts):
         #
-        # @param voice [String, Symbol, OpenAI::Audio::SpeechCreateParams::Voice] The voice to use when generating the audio. Supported voices are `alloy`, `ash`,
+        # @param voice [String, Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice] The voice to use when generating the audio. Supported voices are `alloy`, `ash`,
         #
         # @param instructions [String] Control the voice of your generated audio with additional instructions. Does not
         #
-        # @param response_format [Symbol, OpenAI::Audio::SpeechCreateParams::ResponseFormat] The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`, `wav
+        # @param response_format [Symbol, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat] The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`, `wav
         #
         # @param speed [Float] The speed of the generated audio. Select a value from `0.25` to `4.0`. `1.0` is
         #

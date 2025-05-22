@@ -318,12 +318,24 @@ module OpenAI
 
           # Number of examples in each batch. A larger batch size means that model
           # parameters are updated less frequently, but with lower variance.
-          sig { returns(T.nilable(T.any(T.anything, Symbol, Integer))) }
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::FineTuning::FineTuningJob::Hyperparameters::BatchSize::Variants
+              )
+            )
+          end
           attr_accessor :batch_size
 
           # Scaling factor for the learning rate. A smaller learning rate may be useful to
           # avoid overfitting.
-          sig { returns(T.nilable(T.any(Symbol, Float))) }
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::FineTuning::FineTuningJob::Hyperparameters::LearningRateMultiplier::Variants
+              )
+            )
+          end
           attr_reader :learning_rate_multiplier
 
           sig { params(learning_rate_multiplier: T.any(Symbol, Float)).void }
@@ -331,7 +343,13 @@ module OpenAI
 
           # The number of epochs to train the model for. An epoch refers to one full cycle
           # through the training dataset.
-          sig { returns(T.nilable(T.any(Symbol, Integer))) }
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::FineTuning::FineTuningJob::Hyperparameters::NEpochs::Variants
+              )
+            )
+          end
           attr_reader :n_epochs
 
           sig { params(n_epochs: T.any(Symbol, Integer)).void }
@@ -362,9 +380,14 @@ module OpenAI
           sig do
             override.returns(
               {
-                batch_size: T.nilable(T.any(T.anything, Symbol, Integer)),
-                learning_rate_multiplier: T.any(Symbol, Float),
-                n_epochs: T.any(Symbol, Integer)
+                batch_size:
+                  T.nilable(
+                    OpenAI::FineTuning::FineTuningJob::Hyperparameters::BatchSize::Variants
+                  ),
+                learning_rate_multiplier:
+                  OpenAI::FineTuning::FineTuningJob::Hyperparameters::LearningRateMultiplier::Variants,
+                n_epochs:
+                  OpenAI::FineTuning::FineTuningJob::Hyperparameters::NEpochs::Variants
               }
             )
           end

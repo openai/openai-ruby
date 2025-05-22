@@ -1,0 +1,87 @@
+module OpenAI
+  module Models
+    type container_create_response =
+      {
+        id: String,
+        created_at: Integer,
+        name: String,
+        object: String,
+        status: String,
+        expires_after: OpenAI::Models::ContainerCreateResponse::ExpiresAfter
+      }
+
+    class ContainerCreateResponse < OpenAI::Internal::Type::BaseModel
+      attr_accessor id: String
+
+      attr_accessor created_at: Integer
+
+      attr_accessor name: String
+
+      attr_accessor object: String
+
+      attr_accessor status: String
+
+      attr_reader expires_after: OpenAI::Models::ContainerCreateResponse::ExpiresAfter?
+
+      def expires_after=: (
+        OpenAI::Models::ContainerCreateResponse::ExpiresAfter
+      ) -> OpenAI::Models::ContainerCreateResponse::ExpiresAfter
+
+      def initialize: (
+        id: String,
+        created_at: Integer,
+        name: String,
+        object: String,
+        status: String,
+        ?expires_after: OpenAI::Models::ContainerCreateResponse::ExpiresAfter
+      ) -> void
+
+      def to_hash: -> {
+        id: String,
+        created_at: Integer,
+        name: String,
+        object: String,
+        status: String,
+        expires_after: OpenAI::Models::ContainerCreateResponse::ExpiresAfter
+      }
+
+      type expires_after =
+        {
+          anchor: OpenAI::Models::ContainerCreateResponse::ExpiresAfter::anchor,
+          minutes: Integer
+        }
+
+      class ExpiresAfter < OpenAI::Internal::Type::BaseModel
+        attr_reader anchor: OpenAI::Models::ContainerCreateResponse::ExpiresAfter::anchor?
+
+        def anchor=: (
+          OpenAI::Models::ContainerCreateResponse::ExpiresAfter::anchor
+        ) -> OpenAI::Models::ContainerCreateResponse::ExpiresAfter::anchor
+
+        attr_reader minutes: Integer?
+
+        def minutes=: (Integer) -> Integer
+
+        def initialize: (
+          ?anchor: OpenAI::Models::ContainerCreateResponse::ExpiresAfter::anchor,
+          ?minutes: Integer
+        ) -> void
+
+        def to_hash: -> {
+          anchor: OpenAI::Models::ContainerCreateResponse::ExpiresAfter::anchor,
+          minutes: Integer
+        }
+
+        type anchor = :last_active_at
+
+        module Anchor
+          extend OpenAI::Internal::Type::Enum
+
+          LAST_ACTIVE_AT: :last_active_at
+
+          def self?.values: -> ::Array[OpenAI::Models::ContainerCreateResponse::ExpiresAfter::anchor]
+        end
+      end
+    end
+  end
+end

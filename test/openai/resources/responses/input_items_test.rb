@@ -27,6 +27,14 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
       in OpenAI::Responses::ResponseFunctionWebSearch
       in OpenAI::Responses::ResponseFunctionToolCallItem
       in OpenAI::Responses::ResponseFunctionToolCallOutputItem
+      in OpenAI::Responses::ResponseItem::ImageGenerationCall
+      in OpenAI::Responses::ResponseCodeInterpreterToolCall
+      in OpenAI::Responses::ResponseItem::LocalShellCall
+      in OpenAI::Responses::ResponseItem::LocalShellCallOutput
+      in OpenAI::Responses::ResponseItem::McpListTools
+      in OpenAI::Responses::ResponseItem::McpApprovalRequest
+      in OpenAI::Responses::ResponseItem::McpApprovalResponse
+      in OpenAI::Responses::ResponseItem::McpCall
       end
     end
 
@@ -76,6 +84,57 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
         call_id: String,
         output: String,
         status: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Status | nil
+      }
+      in {
+        type: :image_generation_call,
+        id: String,
+        result: String | nil,
+        status: OpenAI::Responses::ResponseItem::ImageGenerationCall::Status
+      }
+      in {
+        type: :code_interpreter_call,
+        id: String,
+        code: String,
+        results: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseCodeInterpreterToolCall::Result]),
+        status: OpenAI::Responses::ResponseCodeInterpreterToolCall::Status,
+        container_id: String | nil
+      }
+      in {
+        type: :local_shell_call,
+        id: String,
+        action: OpenAI::Responses::ResponseItem::LocalShellCall::Action,
+        call_id: String,
+        status: OpenAI::Responses::ResponseItem::LocalShellCall::Status
+      }
+      in {
+        type: :local_shell_call_output,
+        id: String,
+        output: String,
+        status: OpenAI::Responses::ResponseItem::LocalShellCallOutput::Status | nil
+      }
+      in {
+        type: :mcp_list_tools,
+        id: String,
+        server_label: String,
+        tools: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseItem::McpListTools::Tool]),
+        error: String | nil
+      }
+      in {type: :mcp_approval_request, id: String, arguments: String, name: String, server_label: String}
+      in {
+        type: :mcp_approval_response,
+        id: String,
+        approval_request_id: String,
+        approve: OpenAI::Internal::Type::Boolean,
+        reason: String | nil
+      }
+      in {
+        type: :mcp_call,
+        id: String,
+        arguments: String,
+        name: String,
+        server_label: String,
+        error: String | nil,
+        output: String | nil
       }
       end
     end

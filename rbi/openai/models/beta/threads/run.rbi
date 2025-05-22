@@ -143,14 +143,7 @@ module OpenAI
           # max context length.
           sig do
             returns(
-              T.nilable(
-                T.any(
-                  Symbol,
-                  OpenAI::ResponseFormatText,
-                  OpenAI::ResponseFormatJSONObject,
-                  OpenAI::ResponseFormatJSONSchema
-                )
-              )
+              T.nilable(OpenAI::Beta::AssistantResponseFormatOption::Variants)
             )
           end
           attr_accessor :response_format
@@ -179,12 +172,7 @@ module OpenAI
           # call that tool.
           sig do
             returns(
-              T.nilable(
-                T.any(
-                  OpenAI::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol,
-                  OpenAI::Beta::AssistantToolChoice
-                )
-              )
+              T.nilable(OpenAI::Beta::AssistantToolChoiceOption::Variants)
             )
           end
           attr_accessor :tool_choice
@@ -192,28 +180,22 @@ module OpenAI
           # The list of tools that the
           # [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
           # this run.
-          sig do
-            returns(
-              T::Array[
-                T.any(
-                  OpenAI::Beta::CodeInterpreterTool,
-                  OpenAI::Beta::FileSearchTool,
-                  OpenAI::Beta::FunctionTool
-                )
-              ]
-            )
-          end
+          sig { returns(T::Array[OpenAI::Beta::AssistantTool::Variants]) }
           attr_accessor :tools
 
           # Controls for how a thread will be truncated prior to the run. Use this to
           # control the intial context window of the run.
-          sig { returns(T.nilable(OpenAI::Beta::TruncationObject)) }
+          sig do
+            returns(T.nilable(OpenAI::Beta::Threads::Run::TruncationStrategy))
+          end
           attr_reader :truncation_strategy
 
           sig do
             params(
               truncation_strategy:
-                T.nilable(OpenAI::Beta::TruncationObject::OrHash)
+                T.nilable(
+                  OpenAI::Beta::Threads::Run::TruncationStrategy::OrHash
+                )
             ).void
           end
           attr_writer :truncation_strategy
@@ -291,7 +273,9 @@ module OpenAI
                   )
                 ],
               truncation_strategy:
-                T.nilable(OpenAI::Beta::TruncationObject::OrHash),
+                T.nilable(
+                  OpenAI::Beta::Threads::Run::TruncationStrategy::OrHash
+                ),
               usage: T.nilable(OpenAI::Beta::Threads::Run::Usage::OrHash),
               temperature: T.nilable(Float),
               top_p: T.nilable(Float),
@@ -429,32 +413,16 @@ module OpenAI
                   T.nilable(OpenAI::Beta::Threads::Run::RequiredAction),
                 response_format:
                   T.nilable(
-                    T.any(
-                      Symbol,
-                      OpenAI::ResponseFormatText,
-                      OpenAI::ResponseFormatJSONObject,
-                      OpenAI::ResponseFormatJSONSchema
-                    )
+                    OpenAI::Beta::AssistantResponseFormatOption::Variants
                   ),
                 started_at: T.nilable(Integer),
                 status: OpenAI::Beta::Threads::RunStatus::TaggedSymbol,
                 thread_id: String,
                 tool_choice:
-                  T.nilable(
-                    T.any(
-                      OpenAI::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol,
-                      OpenAI::Beta::AssistantToolChoice
-                    )
-                  ),
-                tools:
-                  T::Array[
-                    T.any(
-                      OpenAI::Beta::CodeInterpreterTool,
-                      OpenAI::Beta::FileSearchTool,
-                      OpenAI::Beta::FunctionTool
-                    )
-                  ],
-                truncation_strategy: T.nilable(OpenAI::Beta::TruncationObject),
+                  T.nilable(OpenAI::Beta::AssistantToolChoiceOption::Variants),
+                tools: T::Array[OpenAI::Beta::AssistantTool::Variants],
+                truncation_strategy:
+                  T.nilable(OpenAI::Beta::Threads::Run::TruncationStrategy),
                 usage: T.nilable(OpenAI::Beta::Threads::Run::Usage),
                 temperature: T.nilable(Float),
                 top_p: T.nilable(Float)
@@ -742,6 +710,103 @@ module OpenAI
                 )
               end
               def to_hash
+              end
+            end
+          end
+
+          class TruncationStrategy < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::Run::TruncationStrategy,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The truncation strategy to use for the thread. The default is `auto`. If set to
+            # `last_messages`, the thread will be truncated to the n most recent messages in
+            # the thread. When set to `auto`, messages in the middle of the thread will be
+            # dropped to fit the context length of the model, `max_prompt_tokens`.
+            sig do
+              returns(
+                OpenAI::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol
+              )
+            end
+            attr_accessor :type
+
+            # The number of most recent messages from the thread when constructing the context
+            # for the run.
+            sig { returns(T.nilable(Integer)) }
+            attr_accessor :last_messages
+
+            # Controls for how a thread will be truncated prior to the run. Use this to
+            # control the intial context window of the run.
+            sig do
+              params(
+                type:
+                  OpenAI::Beta::Threads::Run::TruncationStrategy::Type::OrSymbol,
+                last_messages: T.nilable(Integer)
+              ).returns(T.attached_class)
+            end
+            def self.new(
+              # The truncation strategy to use for the thread. The default is `auto`. If set to
+              # `last_messages`, the thread will be truncated to the n most recent messages in
+              # the thread. When set to `auto`, messages in the middle of the thread will be
+              # dropped to fit the context length of the model, `max_prompt_tokens`.
+              type:,
+              # The number of most recent messages from the thread when constructing the context
+              # for the run.
+              last_messages: nil
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  type:
+                    OpenAI::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol,
+                  last_messages: T.nilable(Integer)
+                }
+              )
+            end
+            def to_hash
+            end
+
+            # The truncation strategy to use for the thread. The default is `auto`. If set to
+            # `last_messages`, the thread will be truncated to the n most recent messages in
+            # the thread. When set to `auto`, messages in the middle of the thread will be
+            # dropped to fit the context length of the model, `max_prompt_tokens`.
+            module Type
+              extend OpenAI::Internal::Type::Enum
+
+              TaggedSymbol =
+                T.type_alias do
+                  T.all(
+                    Symbol,
+                    OpenAI::Beta::Threads::Run::TruncationStrategy::Type
+                  )
+                end
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+              AUTO =
+                T.let(
+                  :auto,
+                  OpenAI::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol
+                )
+              LAST_MESSAGES =
+                T.let(
+                  :last_messages,
+                  OpenAI::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol
+                )
+
+              sig do
+                override.returns(
+                  T::Array[
+                    OpenAI::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol
+                  ]
+                )
+              end
+              def self.values
               end
             end
           end

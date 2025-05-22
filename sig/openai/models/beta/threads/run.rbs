@@ -27,7 +27,7 @@ module OpenAI
             thread_id: String,
             tool_choice: OpenAI::Models::Beta::assistant_tool_choice_option?,
             tools: ::Array[OpenAI::Models::Beta::assistant_tool],
-            truncation_strategy: OpenAI::Beta::TruncationObject?,
+            truncation_strategy: OpenAI::Beta::Threads::Run::TruncationStrategy?,
             usage: OpenAI::Beta::Threads::Run::Usage?,
             temperature: Float?,
             top_p: Float?
@@ -80,7 +80,7 @@ module OpenAI
 
           attr_accessor tools: ::Array[OpenAI::Models::Beta::assistant_tool]
 
-          attr_accessor truncation_strategy: OpenAI::Beta::TruncationObject?
+          attr_accessor truncation_strategy: OpenAI::Beta::Threads::Run::TruncationStrategy?
 
           attr_accessor usage: OpenAI::Beta::Threads::Run::Usage?
 
@@ -111,26 +111,62 @@ module OpenAI
             thread_id: String,
             tool_choice: OpenAI::Models::Beta::assistant_tool_choice_option?,
             tools: ::Array[OpenAI::Models::Beta::assistant_tool],
-            truncation_strategy: OpenAI::Beta::TruncationObject?,
+            truncation_strategy: OpenAI::Beta::Threads::Run::TruncationStrategy?,
             usage: OpenAI::Beta::Threads::Run::Usage?,
             ?temperature: Float?,
             ?top_p: Float?,
             ?object: :"thread.run"
           ) -> void
 
+          def to_hash: -> {
+            id: String,
+            assistant_id: String,
+            cancelled_at: Integer?,
+            completed_at: Integer?,
+            created_at: Integer,
+            expires_at: Integer?,
+            failed_at: Integer?,
+            incomplete_details: OpenAI::Beta::Threads::Run::IncompleteDetails?,
+            instructions: String,
+            last_error: OpenAI::Beta::Threads::Run::LastError?,
+            max_completion_tokens: Integer?,
+            max_prompt_tokens: Integer?,
+            metadata: OpenAI::Models::metadata?,
+            model: String,
+            object: :"thread.run",
+            parallel_tool_calls: bool,
+            required_action: OpenAI::Beta::Threads::Run::RequiredAction?,
+            response_format: OpenAI::Models::Beta::assistant_response_format_option?,
+            started_at: Integer?,
+            status: OpenAI::Models::Beta::Threads::run_status,
+            thread_id: String,
+            tool_choice: OpenAI::Models::Beta::assistant_tool_choice_option?,
+            tools: ::Array[OpenAI::Models::Beta::assistant_tool],
+            truncation_strategy: OpenAI::Beta::Threads::Run::TruncationStrategy?,
+            usage: OpenAI::Beta::Threads::Run::Usage?,
+            temperature: Float?,
+            top_p: Float?
+          }
+
           type incomplete_details =
-            { reason: OpenAI::Beta::Threads::Run::IncompleteDetails::reason }
+            {
+              reason: OpenAI::Models::Beta::Threads::Run::IncompleteDetails::reason
+            }
 
           class IncompleteDetails < OpenAI::Internal::Type::BaseModel
-            attr_reader reason: OpenAI::Beta::Threads::Run::IncompleteDetails::reason?
+            attr_reader reason: OpenAI::Models::Beta::Threads::Run::IncompleteDetails::reason?
 
             def reason=: (
-              OpenAI::Beta::Threads::Run::IncompleteDetails::reason
-            ) -> OpenAI::Beta::Threads::Run::IncompleteDetails::reason
+              OpenAI::Models::Beta::Threads::Run::IncompleteDetails::reason
+            ) -> OpenAI::Models::Beta::Threads::Run::IncompleteDetails::reason
 
             def initialize: (
-              ?reason: OpenAI::Beta::Threads::Run::IncompleteDetails::reason
+              ?reason: OpenAI::Models::Beta::Threads::Run::IncompleteDetails::reason
             ) -> void
+
+            def to_hash: -> {
+              reason: OpenAI::Models::Beta::Threads::Run::IncompleteDetails::reason
+            }
 
             type reason = :max_completion_tokens | :max_prompt_tokens
 
@@ -140,25 +176,30 @@ module OpenAI
               MAX_COMPLETION_TOKENS: :max_completion_tokens
               MAX_PROMPT_TOKENS: :max_prompt_tokens
 
-              def self?.values: -> ::Array[OpenAI::Beta::Threads::Run::IncompleteDetails::reason]
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::Run::IncompleteDetails::reason]
             end
           end
 
           type last_error =
             {
-              code: OpenAI::Beta::Threads::Run::LastError::code,
+              code: OpenAI::Models::Beta::Threads::Run::LastError::code,
               message: String
             }
 
           class LastError < OpenAI::Internal::Type::BaseModel
-            attr_accessor code: OpenAI::Beta::Threads::Run::LastError::code
+            attr_accessor code: OpenAI::Models::Beta::Threads::Run::LastError::code
 
             attr_accessor message: String
 
             def initialize: (
-              code: OpenAI::Beta::Threads::Run::LastError::code,
+              code: OpenAI::Models::Beta::Threads::Run::LastError::code,
               message: String
             ) -> void
+
+            def to_hash: -> {
+              code: OpenAI::Models::Beta::Threads::Run::LastError::code,
+              message: String
+            }
 
             type code = :server_error | :rate_limit_exceeded | :invalid_prompt
 
@@ -169,7 +210,7 @@ module OpenAI
               RATE_LIMIT_EXCEEDED: :rate_limit_exceeded
               INVALID_PROMPT: :invalid_prompt
 
-              def self?.values: -> ::Array[OpenAI::Beta::Threads::Run::LastError::code]
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::Run::LastError::code]
             end
           end
 
@@ -189,6 +230,11 @@ module OpenAI
               ?type: :submit_tool_outputs
             ) -> void
 
+            def to_hash: -> {
+              submit_tool_outputs: OpenAI::Beta::Threads::Run::RequiredAction::SubmitToolOutputs,
+              type: :submit_tool_outputs
+            }
+
             type submit_tool_outputs =
               {
                 tool_calls: ::Array[OpenAI::Beta::Threads::RequiredActionFunctionToolCall]
@@ -200,6 +246,43 @@ module OpenAI
               def initialize: (
                 tool_calls: ::Array[OpenAI::Beta::Threads::RequiredActionFunctionToolCall]
               ) -> void
+
+              def to_hash: -> {
+                tool_calls: ::Array[OpenAI::Beta::Threads::RequiredActionFunctionToolCall]
+              }
+            end
+          end
+
+          type truncation_strategy =
+            {
+              type: OpenAI::Models::Beta::Threads::Run::TruncationStrategy::type_,
+              last_messages: Integer?
+            }
+
+          class TruncationStrategy < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: OpenAI::Models::Beta::Threads::Run::TruncationStrategy::type_
+
+            attr_accessor last_messages: Integer?
+
+            def initialize: (
+              type: OpenAI::Models::Beta::Threads::Run::TruncationStrategy::type_,
+              ?last_messages: Integer?
+            ) -> void
+
+            def to_hash: -> {
+              type: OpenAI::Models::Beta::Threads::Run::TruncationStrategy::type_,
+              last_messages: Integer?
+            }
+
+            type type_ = :auto | :last_messages
+
+            module Type
+              extend OpenAI::Internal::Type::Enum
+
+              AUTO: :auto
+              LAST_MESSAGES: :last_messages
+
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::Run::TruncationStrategy::type_]
             end
           end
 
@@ -222,6 +305,12 @@ module OpenAI
               prompt_tokens: Integer,
               total_tokens: Integer
             ) -> void
+
+            def to_hash: -> {
+              completion_tokens: Integer,
+              prompt_tokens: Integer,
+              total_tokens: Integer
+            }
           end
         end
       end

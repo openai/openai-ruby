@@ -5,7 +5,7 @@ module OpenAI
         {
           type: :file_search,
           vector_store_ids: ::Array[String],
-          filters: OpenAI::Responses::FileSearchTool::filters?,
+          filters: OpenAI::Models::Responses::FileSearchTool::filters?,
           max_num_results: Integer,
           ranking_options: OpenAI::Responses::FileSearchTool::RankingOptions
         }
@@ -15,7 +15,7 @@ module OpenAI
 
         attr_accessor vector_store_ids: ::Array[String]
 
-        attr_accessor filters: OpenAI::Responses::FileSearchTool::filters?
+        attr_accessor filters: OpenAI::Models::Responses::FileSearchTool::filters?
 
         attr_reader max_num_results: Integer?
 
@@ -29,41 +29,54 @@ module OpenAI
 
         def initialize: (
           vector_store_ids: ::Array[String],
-          ?filters: OpenAI::Responses::FileSearchTool::filters?,
+          ?filters: OpenAI::Models::Responses::FileSearchTool::filters?,
           ?max_num_results: Integer,
           ?ranking_options: OpenAI::Responses::FileSearchTool::RankingOptions,
           ?type: :file_search
         ) -> void
+
+        def to_hash: -> {
+          type: :file_search,
+          vector_store_ids: ::Array[String],
+          filters: OpenAI::Models::Responses::FileSearchTool::filters?,
+          max_num_results: Integer,
+          ranking_options: OpenAI::Responses::FileSearchTool::RankingOptions
+        }
 
         type filters = OpenAI::ComparisonFilter | OpenAI::CompoundFilter
 
         module Filters
           extend OpenAI::Internal::Type::Union
 
-          def self?.variants: -> ::Array[OpenAI::Responses::FileSearchTool::filters]
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::FileSearchTool::filters]
         end
 
         type ranking_options =
           {
-            ranker: OpenAI::Responses::FileSearchTool::RankingOptions::ranker,
+            ranker: OpenAI::Models::Responses::FileSearchTool::RankingOptions::ranker,
             score_threshold: Float
           }
 
         class RankingOptions < OpenAI::Internal::Type::BaseModel
-          attr_reader ranker: OpenAI::Responses::FileSearchTool::RankingOptions::ranker?
+          attr_reader ranker: OpenAI::Models::Responses::FileSearchTool::RankingOptions::ranker?
 
           def ranker=: (
-            OpenAI::Responses::FileSearchTool::RankingOptions::ranker
-          ) -> OpenAI::Responses::FileSearchTool::RankingOptions::ranker
+            OpenAI::Models::Responses::FileSearchTool::RankingOptions::ranker
+          ) -> OpenAI::Models::Responses::FileSearchTool::RankingOptions::ranker
 
           attr_reader score_threshold: Float?
 
           def score_threshold=: (Float) -> Float
 
           def initialize: (
-            ?ranker: OpenAI::Responses::FileSearchTool::RankingOptions::ranker,
+            ?ranker: OpenAI::Models::Responses::FileSearchTool::RankingOptions::ranker,
             ?score_threshold: Float
           ) -> void
+
+          def to_hash: -> {
+            ranker: OpenAI::Models::Responses::FileSearchTool::RankingOptions::ranker,
+            score_threshold: Float
+          }
 
           type ranker = :auto | :"default-2024-11-15"
 
@@ -73,7 +86,7 @@ module OpenAI
             AUTO: :auto
             DEFAULT_2024_11_15: :"default-2024-11-15"
 
-            def self?.values: -> ::Array[OpenAI::Responses::FileSearchTool::RankingOptions::ranker]
+            def self?.values: -> ::Array[OpenAI::Models::Responses::FileSearchTool::RankingOptions::ranker]
           end
         end
       end

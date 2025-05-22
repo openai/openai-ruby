@@ -18,15 +18,7 @@ module OpenAI
             # with one of three types of tools: `code_interpreter`, `file_search`, or
             # `function`.
             sig do
-              returns(
-                T::Array[
-                  T.any(
-                    OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall,
-                    OpenAI::Beta::Threads::Runs::FileSearchToolCall,
-                    OpenAI::Beta::Threads::Runs::FunctionToolCall
-                  )
-                ]
-              )
+              returns(T::Array[OpenAI::Beta::Threads::Runs::ToolCall::Variants])
             end
             attr_accessor :tool_calls
 
@@ -62,13 +54,7 @@ module OpenAI
               override.returns(
                 {
                   tool_calls:
-                    T::Array[
-                      T.any(
-                        OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall,
-                        OpenAI::Beta::Threads::Runs::FileSearchToolCall,
-                        OpenAI::Beta::Threads::Runs::FunctionToolCall
-                      )
-                    ],
+                    T::Array[OpenAI::Beta::Threads::Runs::ToolCall::Variants],
                   type: Symbol
                 }
               )

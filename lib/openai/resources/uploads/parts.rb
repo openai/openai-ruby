@@ -23,11 +23,11 @@ module OpenAI
         #
         # @param upload_id [String] The ID of the Upload.
         #
-        # @param data [Pathname, StringIO, IO, OpenAI::FilePart] The chunk of bytes for this Part.
+        # @param data [Pathname, StringIO, IO, String, OpenAI::FilePart] The chunk of bytes for this Part.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::Uploads::UploadPart]
+        # @return [OpenAI::Models::Uploads::UploadPart]
         #
         # @see OpenAI::Models::Uploads::PartCreateParams
         def create(upload_id, params)

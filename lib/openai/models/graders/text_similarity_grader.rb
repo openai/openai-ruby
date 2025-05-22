@@ -8,7 +8,7 @@ module OpenAI
         #   The evaluation metric to use. One of `fuzzy_match`, `bleu`, `gleu`, `meteor`,
         #   `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.
         #
-        #   @return [Symbol, OpenAI::Graders::TextSimilarityGrader::EvaluationMetric]
+        #   @return [Symbol, OpenAI::Models::Graders::TextSimilarityGrader::EvaluationMetric]
         required :evaluation_metric, enum: -> { OpenAI::Graders::TextSimilarityGrader::EvaluationMetric }
 
         # @!attribute input
@@ -37,11 +37,11 @@ module OpenAI
 
         # @!method initialize(evaluation_metric:, input:, name:, reference:, type: :text_similarity)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Graders::TextSimilarityGrader} for more details.
+        #   {OpenAI::Models::Graders::TextSimilarityGrader} for more details.
         #
         #   A TextSimilarityGrader object which grades text based on similarity metrics.
         #
-        #   @param evaluation_metric [Symbol, OpenAI::Graders::TextSimilarityGrader::EvaluationMetric] The evaluation metric to use. One of `fuzzy_match`, `bleu`, `gleu`, `meteor`, `r
+        #   @param evaluation_metric [Symbol, OpenAI::Models::Graders::TextSimilarityGrader::EvaluationMetric] The evaluation metric to use. One of `fuzzy_match`, `bleu`, `gleu`, `meteor`, `r
         #
         #   @param input [String] The text being graded.
         #
@@ -54,7 +54,7 @@ module OpenAI
         # The evaluation metric to use. One of `fuzzy_match`, `bleu`, `gleu`, `meteor`,
         # `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.
         #
-        # @see OpenAI::Graders::TextSimilarityGrader#evaluation_metric
+        # @see OpenAI::Models::Graders::TextSimilarityGrader#evaluation_metric
         module EvaluationMetric
           extend OpenAI::Internal::Type::Enum
 

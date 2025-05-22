@@ -8,7 +8,7 @@ module OpenAI
           output: OpenAI::Responses::ResponseComputerToolCallOutputScreenshot,
           type: :computer_call_output,
           acknowledged_safety_checks: ::Array[OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck],
-          status: OpenAI::Responses::ResponseComputerToolCallOutputItem::status
+          status: OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::status
         }
 
       class ResponseComputerToolCallOutputItem < OpenAI::Internal::Type::BaseModel
@@ -26,20 +26,29 @@ module OpenAI
           ::Array[OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck]
         ) -> ::Array[OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck]
 
-        attr_reader status: OpenAI::Responses::ResponseComputerToolCallOutputItem::status?
+        attr_reader status: OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::status?
 
         def status=: (
-          OpenAI::Responses::ResponseComputerToolCallOutputItem::status
-        ) -> OpenAI::Responses::ResponseComputerToolCallOutputItem::status
+          OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::status
+        ) -> OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::status
 
         def initialize: (
           id: String,
           call_id: String,
           output: OpenAI::Responses::ResponseComputerToolCallOutputScreenshot,
           ?acknowledged_safety_checks: ::Array[OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck],
-          ?status: OpenAI::Responses::ResponseComputerToolCallOutputItem::status,
+          ?status: OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::status,
           ?type: :computer_call_output
         ) -> void
+
+        def to_hash: -> {
+          id: String,
+          call_id: String,
+          output: OpenAI::Responses::ResponseComputerToolCallOutputScreenshot,
+          type: :computer_call_output,
+          acknowledged_safety_checks: ::Array[OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck],
+          status: OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::status
+        }
 
         type acknowledged_safety_check =
           { id: String, code: String, message: String }
@@ -52,6 +61,8 @@ module OpenAI
           attr_accessor message: String
 
           def initialize: (id: String, code: String, message: String) -> void
+
+          def to_hash: -> { id: String, code: String, message: String }
         end
 
         type status = :in_progress | :completed | :incomplete
@@ -63,7 +74,7 @@ module OpenAI
           COMPLETED: :completed
           INCOMPLETE: :incomplete
 
-          def self?.values: -> ::Array[OpenAI::Responses::ResponseComputerToolCallOutputItem::status]
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::status]
         end
       end
     end

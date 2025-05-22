@@ -7,6 +7,7 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           refusal: String,
+          sequence_number: Integer,
           type: :"response.refusal.done"
         }
 
@@ -19,6 +20,8 @@ module OpenAI
 
         attr_accessor refusal: String
 
+        attr_accessor sequence_number: Integer
+
         attr_accessor type: :"response.refusal.done"
 
         def initialize: (
@@ -26,8 +29,18 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           refusal: String,
+          sequence_number: Integer,
           ?type: :"response.refusal.done"
         ) -> void
+
+        def to_hash: -> {
+          content_index: Integer,
+          item_id: String,
+          output_index: Integer,
+          refusal: String,
+          sequence_number: Integer,
+          type: :"response.refusal.done"
+        }
       end
     end
   end

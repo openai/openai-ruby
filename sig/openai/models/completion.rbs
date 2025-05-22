@@ -39,6 +39,16 @@ module OpenAI
         ?usage: OpenAI::CompletionUsage,
         ?object: :text_completion
       ) -> void
+
+      def to_hash: -> {
+        id: String,
+        choices: ::Array[OpenAI::CompletionChoice],
+        created: Integer,
+        model: String,
+        object: :text_completion,
+        system_fingerprint: String,
+        usage: OpenAI::CompletionUsage
+      }
     end
   end
 end

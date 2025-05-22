@@ -6,6 +6,8 @@ module OpenAI
       attr_accessor type: :other
 
       def initialize: (?type: :other) -> void
+
+      def to_hash: -> { type: :other }
     end
   end
 end

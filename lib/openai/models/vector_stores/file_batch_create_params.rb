@@ -34,7 +34,7 @@ module OpenAI
         #   The chunking strategy used to chunk the file(s). If not set, will use the `auto`
         #   strategy. Only applicable if `file_ids` is non-empty.
         #
-        #   @return [OpenAI::AutoFileChunkingStrategyParam, OpenAI::StaticFileChunkingStrategyObjectParam, nil]
+        #   @return [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam, nil]
         optional :chunking_strategy, union: -> { OpenAI::FileChunkingStrategyParam }
 
         # @!method initialize(file_ids:, attributes: nil, chunking_strategy: nil, request_options: {})
@@ -45,7 +45,7 @@ module OpenAI
         #
         #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #
-        #   @param chunking_strategy [OpenAI::AutoFileChunkingStrategyParam, OpenAI::StaticFileChunkingStrategyObjectParam] The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+        #   @param chunking_strategy [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam] The chunking strategy used to chunk the file(s). If not set, will use the `auto`
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -60,10 +60,6 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(String, Float, Boolean)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias { T.any(String, Float, T::Boolean) }
-          end
         end
       end
     end

@@ -7,8 +7,14 @@ module OpenAI
         # @!attribute response
         #   The response that is in progress.
         #
-        #   @return [OpenAI::Responses::Response]
+        #   @return [OpenAI::Models::Responses::Response]
         required :response, -> { OpenAI::Responses::Response }
+
+        # @!attribute sequence_number
+        #   The sequence number of this event.
+        #
+        #   @return [Integer]
+        required :sequence_number, Integer
 
         # @!attribute type
         #   The type of the event. Always `response.in_progress`.
@@ -16,13 +22,15 @@ module OpenAI
         #   @return [Symbol, :"response.in_progress"]
         required :type, const: :"response.in_progress"
 
-        # @!method initialize(response:, type: :"response.in_progress")
+        # @!method initialize(response:, sequence_number:, type: :"response.in_progress")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseInProgressEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseInProgressEvent} for more details.
         #
         #   Emitted when the response is in progress.
         #
-        #   @param response [OpenAI::Responses::Response] The response that is in progress.
+        #   @param response [OpenAI::Models::Responses::Response] The response that is in progress.
+        #
+        #   @param sequence_number [Integer] The sequence number of this event.
         #
         #   @param type [Symbol, :"response.in_progress"] The type of the event. Always `response.in_progress`.
       end

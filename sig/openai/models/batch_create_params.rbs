@@ -29,6 +29,14 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> void
 
+      def to_hash: -> {
+        completion_window: OpenAI::Models::BatchCreateParams::completion_window,
+        endpoint: OpenAI::Models::BatchCreateParams::endpoint,
+        input_file_id: String,
+        metadata: OpenAI::Models::metadata?,
+        request_options: OpenAI::RequestOptions
+      }
+
       type completion_window = :"24h"
 
       module CompletionWindow

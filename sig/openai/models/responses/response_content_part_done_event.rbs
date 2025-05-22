@@ -6,7 +6,8 @@ module OpenAI
           content_index: Integer,
           item_id: String,
           output_index: Integer,
-          part: OpenAI::Responses::ResponseContentPartDoneEvent::part,
+          part: OpenAI::Models::Responses::ResponseContentPartDoneEvent::part,
+          sequence_number: Integer,
           type: :"response.content_part.done"
         }
 
@@ -17,7 +18,9 @@ module OpenAI
 
         attr_accessor output_index: Integer
 
-        attr_accessor part: OpenAI::Responses::ResponseContentPartDoneEvent::part
+        attr_accessor part: OpenAI::Models::Responses::ResponseContentPartDoneEvent::part
+
+        attr_accessor sequence_number: Integer
 
         attr_accessor type: :"response.content_part.done"
 
@@ -25,9 +28,19 @@ module OpenAI
           content_index: Integer,
           item_id: String,
           output_index: Integer,
-          part: OpenAI::Responses::ResponseContentPartDoneEvent::part,
+          part: OpenAI::Models::Responses::ResponseContentPartDoneEvent::part,
+          sequence_number: Integer,
           ?type: :"response.content_part.done"
         ) -> void
+
+        def to_hash: -> {
+          content_index: Integer,
+          item_id: String,
+          output_index: Integer,
+          part: OpenAI::Models::Responses::ResponseContentPartDoneEvent::part,
+          sequence_number: Integer,
+          type: :"response.content_part.done"
+        }
 
         type part =
           OpenAI::Responses::ResponseOutputText
@@ -36,7 +49,7 @@ module OpenAI
         module Part
           extend OpenAI::Internal::Type::Union
 
-          def self?.variants: -> ::Array[OpenAI::Responses::ResponseContentPartDoneEvent::part]
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseContentPartDoneEvent::part]
         end
       end
     end

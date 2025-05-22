@@ -9,6 +9,8 @@ module OpenAI
         attr_accessor type: :function
 
         def initialize: (name: String, ?type: :function) -> void
+
+        def to_hash: -> { name: String, type: :function }
       end
     end
   end

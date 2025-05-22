@@ -20,7 +20,7 @@ module OpenAI
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
-          # @return [OpenAI::Internal::CursorPage<OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint>]
+          # @return [OpenAI::Internal::CursorPage<OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint>]
           #
           # @see OpenAI::Models::FineTuning::Jobs::CheckpointListParams
           def list(fine_tuning_job_id, params = {})

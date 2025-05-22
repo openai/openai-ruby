@@ -16,21 +16,30 @@ module OpenAI
         #   @return [Integer]
         required :output_index, Integer
 
+        # @!attribute sequence_number
+        #   The sequence number of this event.
+        #
+        #   @return [Integer]
+        required :sequence_number, Integer
+
         # @!attribute type
         #   The type of the event. Always `response.file_search_call.completed`.
         #
         #   @return [Symbol, :"response.file_search_call.completed"]
         required :type, const: :"response.file_search_call.completed"
 
-        # @!method initialize(item_id:, output_index:, type: :"response.file_search_call.completed")
+        # @!method initialize(item_id:, output_index:, sequence_number:, type: :"response.file_search_call.completed")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseFileSearchCallCompletedEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseFileSearchCallCompletedEvent} for more
+        #   details.
         #
         #   Emitted when a file search call is completed (results found).
         #
         #   @param item_id [String] The ID of the output item that the file search call is initiated.
         #
         #   @param output_index [Integer] The index of the output item that the file search call is initiated.
+        #
+        #   @param sequence_number [Integer] The sequence number of this event.
         #
         #   @param type [Symbol, :"response.file_search_call.completed"] The type of the event. Always `response.file_search_call.completed`.
       end

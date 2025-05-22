@@ -21,6 +21,11 @@ module OpenAI
           ?type: :file_search
         ) -> void
 
+        def to_hash: -> {
+          type: :file_search,
+          file_search: OpenAI::Beta::FileSearchTool::FileSearch
+        }
+
         type file_search =
           {
             max_num_results: Integer,
@@ -43,25 +48,35 @@ module OpenAI
             ?ranking_options: OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions
           ) -> void
 
+          def to_hash: -> {
+            max_num_results: Integer,
+            ranking_options: OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions
+          }
+
           type ranking_options =
             {
               score_threshold: Float,
-              ranker: OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions::ranker
+              ranker: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker
             }
 
           class RankingOptions < OpenAI::Internal::Type::BaseModel
             attr_accessor score_threshold: Float
 
-            attr_reader ranker: OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions::ranker?
+            attr_reader ranker: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker?
 
             def ranker=: (
-              OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions::ranker
-            ) -> OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions::ranker
+              OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker
+            ) -> OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker
 
             def initialize: (
               score_threshold: Float,
-              ?ranker: OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions::ranker
+              ?ranker: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker
             ) -> void
+
+            def to_hash: -> {
+              score_threshold: Float,
+              ranker: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker
+            }
 
             type ranker = :auto | :default_2024_08_21
 
@@ -71,7 +86,7 @@ module OpenAI
               AUTO: :auto
               DEFAULT_2024_08_21: :default_2024_08_21
 
-              def self?.values: -> ::Array[OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions::ranker]
+              def self?.values: -> ::Array[OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker]
             end
           end
         end

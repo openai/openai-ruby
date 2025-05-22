@@ -14,7 +14,7 @@ module OpenAI
           max_completion_tokens: Integer?,
           max_tokens: Integer?,
           metadata: OpenAI::Models::metadata?,
-          modalities: ::Array[OpenAI::Chat::CompletionCreateParams::modality]?,
+          modalities: ::Array[OpenAI::Models::Chat::CompletionCreateParams::modality]?,
           n: Integer?,
           parallel_tool_calls: bool,
           prediction: OpenAI::Chat::ChatCompletionPredictionContent?,
@@ -70,7 +70,7 @@ module OpenAI
 
         attr_accessor metadata: OpenAI::Models::metadata?
 
-        attr_accessor modalities: ::Array[OpenAI::Chat::CompletionCreateParams::modality]?
+        attr_accessor modalities: ::Array[OpenAI::Models::Chat::CompletionCreateParams::modality]?
 
         attr_accessor n: Integer?
 
@@ -140,7 +140,7 @@ module OpenAI
           ?max_completion_tokens: Integer?,
           ?max_tokens: Integer?,
           ?metadata: OpenAI::Models::metadata?,
-          ?modalities: ::Array[OpenAI::Chat::CompletionCreateParams::modality]?,
+          ?modalities: ::Array[OpenAI::Models::Chat::CompletionCreateParams::modality]?,
           ?n: Integer?,
           ?parallel_tool_calls: bool,
           ?prediction: OpenAI::Chat::ChatCompletionPredictionContent?,
@@ -162,6 +162,40 @@ module OpenAI
           ?request_options: OpenAI::request_opts
         ) -> void
 
+        def to_hash: -> {
+          messages: ::Array[OpenAI::Models::Chat::chat_completion_message_param],
+          model: OpenAI::Models::Chat::CompletionCreateParams::model,
+          audio: OpenAI::Chat::ChatCompletionAudioParam?,
+          frequency_penalty: Float?,
+          function_call: OpenAI::Models::Chat::CompletionCreateParams::function_call,
+          functions: ::Array[OpenAI::Chat::CompletionCreateParams::Function],
+          logit_bias: ::Hash[Symbol, Integer]?,
+          logprobs: bool?,
+          max_completion_tokens: Integer?,
+          max_tokens: Integer?,
+          metadata: OpenAI::Models::metadata?,
+          modalities: ::Array[OpenAI::Models::Chat::CompletionCreateParams::modality]?,
+          n: Integer?,
+          parallel_tool_calls: bool,
+          prediction: OpenAI::Chat::ChatCompletionPredictionContent?,
+          presence_penalty: Float?,
+          reasoning_effort: OpenAI::Models::reasoning_effort?,
+          response_format: OpenAI::Models::Chat::CompletionCreateParams::response_format,
+          seed: Integer?,
+          service_tier: OpenAI::Models::Chat::CompletionCreateParams::service_tier?,
+          stop: OpenAI::Models::Chat::CompletionCreateParams::stop?,
+          store: bool?,
+          stream_options: OpenAI::Chat::ChatCompletionStreamOptions?,
+          temperature: Float?,
+          tool_choice: OpenAI::Models::Chat::chat_completion_tool_choice_option,
+          tools: ::Array[OpenAI::Chat::ChatCompletionTool],
+          top_logprobs: Integer?,
+          top_p: Float?,
+          user: String,
+          web_search_options: OpenAI::Chat::CompletionCreateParams::WebSearchOptions,
+          request_options: OpenAI::RequestOptions
+        }
+
         type model = String | OpenAI::Models::chat_model
 
         module Model
@@ -171,7 +205,7 @@ module OpenAI
         end
 
         type function_call =
-          OpenAI::Chat::CompletionCreateParams::FunctionCall::function_call_mode
+          OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::function_call_mode
           | OpenAI::Chat::ChatCompletionFunctionCallOption
 
         module FunctionCall
@@ -185,7 +219,7 @@ module OpenAI
             NONE: :none
             AUTO: :auto
 
-            def self?.values: -> ::Array[OpenAI::Chat::CompletionCreateParams::FunctionCall::function_call_mode]
+            def self?.values: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::function_call_mode]
           end
 
           def self?.variants: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::function_call]
@@ -216,6 +250,12 @@ module OpenAI
             ?description: String,
             ?parameters: OpenAI::Models::function_parameters
           ) -> void
+
+          def to_hash: -> {
+            name: String,
+            description: String,
+            parameters: OpenAI::Models::function_parameters
+          }
         end
 
         type modality = :text | :audio
@@ -226,7 +266,7 @@ module OpenAI
           TEXT: :text
           AUDIO: :audio
 
-          def self?.values: -> ::Array[OpenAI::Chat::CompletionCreateParams::modality]
+          def self?.values: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::modality]
         end
 
         type response_format =
@@ -264,23 +304,28 @@ module OpenAI
 
         type web_search_options =
           {
-            search_context_size: OpenAI::Chat::CompletionCreateParams::WebSearchOptions::search_context_size,
+            search_context_size: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::search_context_size,
             user_location: OpenAI::Chat::CompletionCreateParams::WebSearchOptions::UserLocation?
           }
 
         class WebSearchOptions < OpenAI::Internal::Type::BaseModel
-          attr_reader search_context_size: OpenAI::Chat::CompletionCreateParams::WebSearchOptions::search_context_size?
+          attr_reader search_context_size: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::search_context_size?
 
           def search_context_size=: (
-            OpenAI::Chat::CompletionCreateParams::WebSearchOptions::search_context_size
-          ) -> OpenAI::Chat::CompletionCreateParams::WebSearchOptions::search_context_size
+            OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::search_context_size
+          ) -> OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::search_context_size
 
           attr_accessor user_location: OpenAI::Chat::CompletionCreateParams::WebSearchOptions::UserLocation?
 
           def initialize: (
-            ?search_context_size: OpenAI::Chat::CompletionCreateParams::WebSearchOptions::search_context_size,
+            ?search_context_size: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::search_context_size,
             ?user_location: OpenAI::Chat::CompletionCreateParams::WebSearchOptions::UserLocation?
           ) -> void
+
+          def to_hash: -> {
+            search_context_size: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::search_context_size,
+            user_location: OpenAI::Chat::CompletionCreateParams::WebSearchOptions::UserLocation?
+          }
 
           type search_context_size = :low | :medium | :high
 
@@ -291,7 +336,7 @@ module OpenAI
             MEDIUM: :medium
             HIGH: :high
 
-            def self?.values: -> ::Array[OpenAI::Chat::CompletionCreateParams::WebSearchOptions::search_context_size]
+            def self?.values: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::search_context_size]
           end
 
           type user_location =
@@ -309,6 +354,11 @@ module OpenAI
               approximate: OpenAI::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate,
               ?type: :approximate
             ) -> void
+
+            def to_hash: -> {
+              approximate: OpenAI::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate,
+              type: :approximate
+            }
 
             type approximate =
               {
@@ -341,6 +391,13 @@ module OpenAI
                 ?region: String,
                 ?timezone: String
               ) -> void
+
+              def to_hash: -> {
+                city: String,
+                country: String,
+                region: String,
+                timezone: String
+              }
             end
           end
         end

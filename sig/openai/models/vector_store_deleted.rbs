@@ -15,6 +15,12 @@ module OpenAI
         deleted: bool,
         ?object: :"vector_store.deleted"
       ) -> void
+
+      def to_hash: -> {
+        id: String,
+        deleted: bool,
+        object: :"vector_store.deleted"
+      }
     end
   end
 end

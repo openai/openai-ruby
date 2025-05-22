@@ -1,0 +1,52 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_output_text_annotation_added_event =
+        {
+          annotation: top,
+          annotation_index: Integer,
+          content_index: Integer,
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.output_text_annotation.added"
+        }
+
+      class ResponseOutputTextAnnotationAddedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor annotation: top
+
+        attr_accessor annotation_index: Integer
+
+        attr_accessor content_index: Integer
+
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor type: :"response.output_text_annotation.added"
+
+        def initialize: (
+          annotation: top,
+          annotation_index: Integer,
+          content_index: Integer,
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          ?type: :"response.output_text_annotation.added"
+        ) -> void
+
+        def to_hash: -> {
+          annotation: top,
+          annotation_index: Integer,
+          content_index: Integer,
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.output_text_annotation.added"
+        }
+      end
+    end
+  end
+end

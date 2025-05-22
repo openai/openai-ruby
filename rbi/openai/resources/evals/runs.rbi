@@ -7,7 +7,9 @@ module OpenAI
         sig { returns(OpenAI::Resources::Evals::Runs::OutputItems) }
         attr_reader :output_items
 
-        # Create a new evaluation run. This is the endpoint that will kick off grading.
+        # Kicks off a new run for a given evaluation, specifying the data source, and what
+        # model configuration to use to test. The datasource will be validated against the
+        # schema specified in the config of the evaluation.
         sig do
           params(
             eval_id: String,
@@ -15,7 +17,7 @@ module OpenAI
               T.any(
                 OpenAI::Evals::CreateEvalJSONLRunDataSource::OrHash,
                 OpenAI::Evals::CreateEvalCompletionsRunDataSource::OrHash,
-                OpenAI::Evals::CreateEvalResponsesRunDataSource::OrHash
+                OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::OrHash
               ),
             metadata: T.nilable(T::Hash[Symbol, String]),
             name: String,

@@ -8,9 +8,304 @@ module OpenAI
         | OpenAI::Responses::ResponseFunctionWebSearch
         | OpenAI::Responses::ResponseComputerToolCall
         | OpenAI::Responses::ResponseReasoningItem
+        | OpenAI::Responses::ResponseOutputItem::ImageGenerationCall
+        | OpenAI::Responses::ResponseCodeInterpreterToolCall
+        | OpenAI::Responses::ResponseOutputItem::LocalShellCall
+        | OpenAI::Responses::ResponseOutputItem::McpCall
+        | OpenAI::Responses::ResponseOutputItem::McpListTools
+        | OpenAI::Responses::ResponseOutputItem::McpApprovalRequest
 
       module ResponseOutputItem
         extend OpenAI::Internal::Type::Union
+
+        type image_generation_call =
+          {
+            id: String,
+            result: String?,
+            status: OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::status,
+            type: :image_generation_call
+          }
+
+        class ImageGenerationCall < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor result: String?
+
+          attr_accessor status: OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::status
+
+          attr_accessor type: :image_generation_call
+
+          def initialize: (
+            id: String,
+            result: String?,
+            status: OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::status,
+            ?type: :image_generation_call
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            result: String?,
+            status: OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::status,
+            type: :image_generation_call
+          }
+
+          type status = :in_progress | :completed | :generating | :failed
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            IN_PROGRESS: :in_progress
+            COMPLETED: :completed
+            GENERATING: :generating
+            FAILED: :failed
+
+            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::status]
+          end
+        end
+
+        type local_shell_call =
+          {
+            id: String,
+            action: OpenAI::Responses::ResponseOutputItem::LocalShellCall::Action,
+            call_id: String,
+            status: OpenAI::Models::Responses::ResponseOutputItem::LocalShellCall::status,
+            type: :local_shell_call
+          }
+
+        class LocalShellCall < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor action: OpenAI::Responses::ResponseOutputItem::LocalShellCall::Action
+
+          attr_accessor call_id: String
+
+          attr_accessor status: OpenAI::Models::Responses::ResponseOutputItem::LocalShellCall::status
+
+          attr_accessor type: :local_shell_call
+
+          def initialize: (
+            id: String,
+            action: OpenAI::Responses::ResponseOutputItem::LocalShellCall::Action,
+            call_id: String,
+            status: OpenAI::Models::Responses::ResponseOutputItem::LocalShellCall::status,
+            ?type: :local_shell_call
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            action: OpenAI::Responses::ResponseOutputItem::LocalShellCall::Action,
+            call_id: String,
+            status: OpenAI::Models::Responses::ResponseOutputItem::LocalShellCall::status,
+            type: :local_shell_call
+          }
+
+          type action =
+            {
+              command: ::Array[String],
+              env: ::Hash[Symbol, String],
+              type: :exec,
+              timeout_ms: Integer?,
+              user: String?,
+              working_directory: String?
+            }
+
+          class Action < OpenAI::Internal::Type::BaseModel
+            attr_accessor command: ::Array[String]
+
+            attr_accessor env: ::Hash[Symbol, String]
+
+            attr_accessor type: :exec
+
+            attr_accessor timeout_ms: Integer?
+
+            attr_accessor user: String?
+
+            attr_accessor working_directory: String?
+
+            def initialize: (
+              command: ::Array[String],
+              env: ::Hash[Symbol, String],
+              ?timeout_ms: Integer?,
+              ?user: String?,
+              ?working_directory: String?,
+              ?type: :exec
+            ) -> void
+
+            def to_hash: -> {
+              command: ::Array[String],
+              env: ::Hash[Symbol, String],
+              type: :exec,
+              timeout_ms: Integer?,
+              user: String?,
+              working_directory: String?
+            }
+          end
+
+          type status = :in_progress | :completed | :incomplete
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            IN_PROGRESS: :in_progress
+            COMPLETED: :completed
+            INCOMPLETE: :incomplete
+
+            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseOutputItem::LocalShellCall::status]
+          end
+        end
+
+        type mcp_call =
+          {
+            id: String,
+            arguments: String,
+            name: String,
+            server_label: String,
+            type: :mcp_call,
+            error: String?,
+            output: String?
+          }
+
+        class McpCall < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor arguments: String
+
+          attr_accessor name: String
+
+          attr_accessor server_label: String
+
+          attr_accessor type: :mcp_call
+
+          attr_accessor error: String?
+
+          attr_accessor output: String?
+
+          def initialize: (
+            id: String,
+            arguments: String,
+            name: String,
+            server_label: String,
+            ?error: String?,
+            ?output: String?,
+            ?type: :mcp_call
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            arguments: String,
+            name: String,
+            server_label: String,
+            type: :mcp_call,
+            error: String?,
+            output: String?
+          }
+        end
+
+        type mcp_list_tools =
+          {
+            id: String,
+            server_label: String,
+            tools: ::Array[OpenAI::Responses::ResponseOutputItem::McpListTools::Tool],
+            type: :mcp_list_tools,
+            error: String?
+          }
+
+        class McpListTools < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor server_label: String
+
+          attr_accessor tools: ::Array[OpenAI::Responses::ResponseOutputItem::McpListTools::Tool]
+
+          attr_accessor type: :mcp_list_tools
+
+          attr_accessor error: String?
+
+          def initialize: (
+            id: String,
+            server_label: String,
+            tools: ::Array[OpenAI::Responses::ResponseOutputItem::McpListTools::Tool],
+            ?error: String?,
+            ?type: :mcp_list_tools
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            server_label: String,
+            tools: ::Array[OpenAI::Responses::ResponseOutputItem::McpListTools::Tool],
+            type: :mcp_list_tools,
+            error: String?
+          }
+
+          type tool =
+            {
+              input_schema: top,
+              name: String,
+              annotations: top?,
+              description: String?
+            }
+
+          class Tool < OpenAI::Internal::Type::BaseModel
+            attr_accessor input_schema: top
+
+            attr_accessor name: String
+
+            attr_accessor annotations: top?
+
+            attr_accessor description: String?
+
+            def initialize: (
+              input_schema: top,
+              name: String,
+              ?annotations: top?,
+              ?description: String?
+            ) -> void
+
+            def to_hash: -> {
+              input_schema: top,
+              name: String,
+              annotations: top?,
+              description: String?
+            }
+          end
+        end
+
+        type mcp_approval_request =
+          {
+            id: String,
+            arguments: String,
+            name: String,
+            server_label: String,
+            type: :mcp_approval_request
+          }
+
+        class McpApprovalRequest < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor arguments: String
+
+          attr_accessor name: String
+
+          attr_accessor server_label: String
+
+          attr_accessor type: :mcp_approval_request
+
+          def initialize: (
+            id: String,
+            arguments: String,
+            name: String,
+            server_label: String,
+            ?type: :mcp_approval_request
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            arguments: String,
+            name: String,
+            server_label: String,
+            type: :mcp_approval_request
+          }
+        end
 
         def self?.variants: -> ::Array[OpenAI::Models::Responses::response_output_item]
       end

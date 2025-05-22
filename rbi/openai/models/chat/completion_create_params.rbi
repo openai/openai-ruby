@@ -241,6 +241,7 @@ module OpenAI
               T.any(
                 OpenAI::ResponseFormatText,
                 OpenAI::ResponseFormatJSONSchema,
+                OpenAI::StructuredOutput::JsonSchemaConverter,
                 OpenAI::ResponseFormatJSONObject
               )
             )
@@ -254,6 +255,7 @@ module OpenAI
               T.any(
                 OpenAI::ResponseFormatText::OrHash,
                 OpenAI::ResponseFormatJSONSchema::OrHash,
+                OpenAI::StructuredOutput::JsonSchemaConverter,
                 OpenAI::ResponseFormatJSONObject::OrHash
               )
           ).void
@@ -298,7 +300,11 @@ module OpenAI
         #
         # Up to 4 sequences where the API will stop generating further tokens. The
         # returned text will not contain the stop sequence.
-        sig { returns(T.nilable(T.any(String, T::Array[String]))) }
+        sig do
+          returns(
+            T.nilable(OpenAI::Chat::CompletionCreateParams::Stop::Variants)
+          )
+        end
         attr_accessor :stop
 
         # Whether or not to store the output of this chat completion request for use in
@@ -365,7 +371,15 @@ module OpenAI
         attr_reader :tools
 
         sig do
-          params(tools: T::Array[OpenAI::Chat::ChatCompletionTool::OrHash]).void
+          params(
+            tools:
+              T::Array[
+                T.any(
+                  OpenAI::Chat::ChatCompletionTool::OrHash,
+                  OpenAI::StructuredOutput::JsonSchemaConverter
+                )
+              ]
+          ).void
         end
         attr_writer :tools
 
@@ -383,8 +397,8 @@ module OpenAI
         sig { returns(T.nilable(Float)) }
         attr_accessor :top_p
 
-        # A unique identifier representing your end-user, which can help OpenAI to monitor
-        # and detect abuse.
+        # A stable identifier for your end-users. Used to boost cache hit rates by better
+        # bucketing similar requests and to help OpenAI detect and prevent abuse.
         # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         sig { returns(T.nilable(String)) }
         attr_reader :user
@@ -454,6 +468,7 @@ module OpenAI
               T.any(
                 OpenAI::ResponseFormatText::OrHash,
                 OpenAI::ResponseFormatJSONSchema::OrHash,
+                OpenAI::StructuredOutput::JsonSchemaConverter,
                 OpenAI::ResponseFormatJSONObject::OrHash
               ),
             seed: T.nilable(Integer),
@@ -461,7 +476,8 @@ module OpenAI
               T.nilable(
                 OpenAI::Chat::CompletionCreateParams::ServiceTier::OrSymbol
               ),
-            stop: T.nilable(T.any(String, T::Array[String])),
+            stop:
+              T.nilable(OpenAI::Chat::CompletionCreateParams::Stop::Variants),
             store: T.nilable(T::Boolean),
             stream_options:
               T.nilable(OpenAI::Chat::ChatCompletionStreamOptions::OrHash),
@@ -471,7 +487,13 @@ module OpenAI
                 OpenAI::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
                 OpenAI::Chat::ChatCompletionNamedToolChoice::OrHash
               ),
-            tools: T::Array[OpenAI::Chat::ChatCompletionTool::OrHash],
+            tools:
+              T::Array[
+                T.any(
+                  OpenAI::Chat::ChatCompletionTool::OrHash,
+                  OpenAI::StructuredOutput::JsonSchemaConverter
+                )
+              ],
             top_logprobs: T.nilable(Integer),
             top_p: T.nilable(Float),
             user: String,
@@ -661,8 +683,8 @@ module OpenAI
           #
           # We generally recommend altering this or `temperature` but not both.
           top_p: nil,
-          # A unique identifier representing your end-user, which can help OpenAI to monitor
-          # and detect abuse.
+          # A stable identifier for your end-users. Used to boost cache hit rates by better
+          # bucketing similar requests and to help OpenAI detect and prevent abuse.
           # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
           user: nil,
           # This tool searches the web for relevant results to use in a response. Learn more
@@ -725,7 +747,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Chat::CompletionCreateParams::ServiceTier::OrSymbol
                 ),
-              stop: T.nilable(T.any(String, T::Array[String])),
+              stop:
+                T.nilable(OpenAI::Chat::CompletionCreateParams::Stop::Variants),
               store: T.nilable(T::Boolean),
               stream_options:
                 T.nilable(OpenAI::Chat::ChatCompletionStreamOptions),
@@ -735,7 +758,13 @@ module OpenAI
                   OpenAI::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
                   OpenAI::Chat::ChatCompletionNamedToolChoice
                 ),
-              tools: T::Array[OpenAI::Chat::ChatCompletionTool],
+              tools:
+                T::Array[
+                  T.any(
+                    OpenAI::Chat::ChatCompletionTool,
+                    OpenAI::StructuredOutput::JsonSchemaConverter
+                  )
+                ],
               top_logprobs: T.nilable(Integer),
               top_p: T.nilable(Float),
               user: String,
@@ -963,6 +992,7 @@ module OpenAI
               T.any(
                 OpenAI::ResponseFormatText,
                 OpenAI::ResponseFormatJSONSchema,
+                OpenAI::StructuredOutput::JsonSchemaConverter,
                 OpenAI::ResponseFormatJSONObject
               )
             end

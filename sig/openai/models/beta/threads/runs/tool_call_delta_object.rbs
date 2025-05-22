@@ -22,6 +22,11 @@ module OpenAI
               ?tool_calls: ::Array[OpenAI::Models::Beta::Threads::Runs::tool_call_delta],
               ?type: :tool_calls
             ) -> void
+
+            def to_hash: -> {
+              type: :tool_calls,
+              tool_calls: ::Array[OpenAI::Models::Beta::Threads::Runs::tool_call_delta]
+            }
           end
         end
       end

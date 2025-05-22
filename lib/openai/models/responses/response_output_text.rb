@@ -7,7 +7,7 @@ module OpenAI
         # @!attribute annotations
         #   The annotations of the text output.
         #
-        #   @return [Array<OpenAI::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Responses::ResponseOutputText::Annotation::FilePath>]
+        #   @return [Array<OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath>]
         required :annotations,
                  -> {
                    OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseOutputText::Annotation]
@@ -28,7 +28,7 @@ module OpenAI
         # @!method initialize(annotations:, text:, type: :output_text)
         #   A text output from the model.
         #
-        #   @param annotations [Array<OpenAI::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Responses::ResponseOutputText::Annotation::FilePath>] The annotations of the text output.
+        #   @param annotations [Array<OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath>] The annotations of the text output.
         #
         #   @param text [String] The text output from the model.
         #
@@ -144,7 +144,8 @@ module OpenAI
 
             # @!method initialize(file_id:, index:, type: :file_path)
             #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Responses::ResponseOutputText::Annotation::FilePath} for more details.
+            #   {OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath} for more
+            #   details.
             #
             #   A path to a file.
             #
@@ -156,17 +157,7 @@ module OpenAI
           end
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Responses::ResponseOutputText::Annotation::FilePath)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseOutputText::Annotation::FileCitation,
-                OpenAI::Responses::ResponseOutputText::Annotation::URLCitation,
-                OpenAI::Responses::ResponseOutputText::Annotation::FilePath
-              )
-            end
-          end
+          #   @return [Array(OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath)]
         end
       end
     end

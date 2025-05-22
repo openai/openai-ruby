@@ -3,74 +3,84 @@ module OpenAI
     module FineTuning
       type reinforcement_hyperparameters =
         {
-          batch_size: OpenAI::FineTuning::ReinforcementHyperparameters::batch_size,
-          compute_multiplier: OpenAI::FineTuning::ReinforcementHyperparameters::compute_multiplier,
-          eval_interval: OpenAI::FineTuning::ReinforcementHyperparameters::eval_interval,
-          eval_samples: OpenAI::FineTuning::ReinforcementHyperparameters::eval_samples,
-          learning_rate_multiplier: OpenAI::FineTuning::ReinforcementHyperparameters::learning_rate_multiplier,
-          n_epochs: OpenAI::FineTuning::ReinforcementHyperparameters::n_epochs,
-          reasoning_effort: OpenAI::FineTuning::ReinforcementHyperparameters::reasoning_effort
+          batch_size: OpenAI::Models::FineTuning::ReinforcementHyperparameters::batch_size,
+          compute_multiplier: OpenAI::Models::FineTuning::ReinforcementHyperparameters::compute_multiplier,
+          eval_interval: OpenAI::Models::FineTuning::ReinforcementHyperparameters::eval_interval,
+          eval_samples: OpenAI::Models::FineTuning::ReinforcementHyperparameters::eval_samples,
+          learning_rate_multiplier: OpenAI::Models::FineTuning::ReinforcementHyperparameters::learning_rate_multiplier,
+          n_epochs: OpenAI::Models::FineTuning::ReinforcementHyperparameters::n_epochs,
+          reasoning_effort: OpenAI::Models::FineTuning::ReinforcementHyperparameters::reasoning_effort
         }
 
       class ReinforcementHyperparameters < OpenAI::Internal::Type::BaseModel
-        attr_reader batch_size: OpenAI::FineTuning::ReinforcementHyperparameters::batch_size?
+        attr_reader batch_size: OpenAI::Models::FineTuning::ReinforcementHyperparameters::batch_size?
 
         def batch_size=: (
-          OpenAI::FineTuning::ReinforcementHyperparameters::batch_size
-        ) -> OpenAI::FineTuning::ReinforcementHyperparameters::batch_size
+          OpenAI::Models::FineTuning::ReinforcementHyperparameters::batch_size
+        ) -> OpenAI::Models::FineTuning::ReinforcementHyperparameters::batch_size
 
-        attr_reader compute_multiplier: OpenAI::FineTuning::ReinforcementHyperparameters::compute_multiplier?
+        attr_reader compute_multiplier: OpenAI::Models::FineTuning::ReinforcementHyperparameters::compute_multiplier?
 
         def compute_multiplier=: (
-          OpenAI::FineTuning::ReinforcementHyperparameters::compute_multiplier
-        ) -> OpenAI::FineTuning::ReinforcementHyperparameters::compute_multiplier
+          OpenAI::Models::FineTuning::ReinforcementHyperparameters::compute_multiplier
+        ) -> OpenAI::Models::FineTuning::ReinforcementHyperparameters::compute_multiplier
 
-        attr_reader eval_interval: OpenAI::FineTuning::ReinforcementHyperparameters::eval_interval?
+        attr_reader eval_interval: OpenAI::Models::FineTuning::ReinforcementHyperparameters::eval_interval?
 
         def eval_interval=: (
-          OpenAI::FineTuning::ReinforcementHyperparameters::eval_interval
-        ) -> OpenAI::FineTuning::ReinforcementHyperparameters::eval_interval
+          OpenAI::Models::FineTuning::ReinforcementHyperparameters::eval_interval
+        ) -> OpenAI::Models::FineTuning::ReinforcementHyperparameters::eval_interval
 
-        attr_reader eval_samples: OpenAI::FineTuning::ReinforcementHyperparameters::eval_samples?
+        attr_reader eval_samples: OpenAI::Models::FineTuning::ReinforcementHyperparameters::eval_samples?
 
         def eval_samples=: (
-          OpenAI::FineTuning::ReinforcementHyperparameters::eval_samples
-        ) -> OpenAI::FineTuning::ReinforcementHyperparameters::eval_samples
+          OpenAI::Models::FineTuning::ReinforcementHyperparameters::eval_samples
+        ) -> OpenAI::Models::FineTuning::ReinforcementHyperparameters::eval_samples
 
-        attr_reader learning_rate_multiplier: OpenAI::FineTuning::ReinforcementHyperparameters::learning_rate_multiplier?
+        attr_reader learning_rate_multiplier: OpenAI::Models::FineTuning::ReinforcementHyperparameters::learning_rate_multiplier?
 
         def learning_rate_multiplier=: (
-          OpenAI::FineTuning::ReinforcementHyperparameters::learning_rate_multiplier
-        ) -> OpenAI::FineTuning::ReinforcementHyperparameters::learning_rate_multiplier
+          OpenAI::Models::FineTuning::ReinforcementHyperparameters::learning_rate_multiplier
+        ) -> OpenAI::Models::FineTuning::ReinforcementHyperparameters::learning_rate_multiplier
 
-        attr_reader n_epochs: OpenAI::FineTuning::ReinforcementHyperparameters::n_epochs?
+        attr_reader n_epochs: OpenAI::Models::FineTuning::ReinforcementHyperparameters::n_epochs?
 
         def n_epochs=: (
-          OpenAI::FineTuning::ReinforcementHyperparameters::n_epochs
-        ) -> OpenAI::FineTuning::ReinforcementHyperparameters::n_epochs
+          OpenAI::Models::FineTuning::ReinforcementHyperparameters::n_epochs
+        ) -> OpenAI::Models::FineTuning::ReinforcementHyperparameters::n_epochs
 
-        attr_reader reasoning_effort: OpenAI::FineTuning::ReinforcementHyperparameters::reasoning_effort?
+        attr_reader reasoning_effort: OpenAI::Models::FineTuning::ReinforcementHyperparameters::reasoning_effort?
 
         def reasoning_effort=: (
-          OpenAI::FineTuning::ReinforcementHyperparameters::reasoning_effort
-        ) -> OpenAI::FineTuning::ReinforcementHyperparameters::reasoning_effort
+          OpenAI::Models::FineTuning::ReinforcementHyperparameters::reasoning_effort
+        ) -> OpenAI::Models::FineTuning::ReinforcementHyperparameters::reasoning_effort
 
         def initialize: (
-          ?batch_size: OpenAI::FineTuning::ReinforcementHyperparameters::batch_size,
-          ?compute_multiplier: OpenAI::FineTuning::ReinforcementHyperparameters::compute_multiplier,
-          ?eval_interval: OpenAI::FineTuning::ReinforcementHyperparameters::eval_interval,
-          ?eval_samples: OpenAI::FineTuning::ReinforcementHyperparameters::eval_samples,
-          ?learning_rate_multiplier: OpenAI::FineTuning::ReinforcementHyperparameters::learning_rate_multiplier,
-          ?n_epochs: OpenAI::FineTuning::ReinforcementHyperparameters::n_epochs,
-          ?reasoning_effort: OpenAI::FineTuning::ReinforcementHyperparameters::reasoning_effort
+          ?batch_size: OpenAI::Models::FineTuning::ReinforcementHyperparameters::batch_size,
+          ?compute_multiplier: OpenAI::Models::FineTuning::ReinforcementHyperparameters::compute_multiplier,
+          ?eval_interval: OpenAI::Models::FineTuning::ReinforcementHyperparameters::eval_interval,
+          ?eval_samples: OpenAI::Models::FineTuning::ReinforcementHyperparameters::eval_samples,
+          ?learning_rate_multiplier: OpenAI::Models::FineTuning::ReinforcementHyperparameters::learning_rate_multiplier,
+          ?n_epochs: OpenAI::Models::FineTuning::ReinforcementHyperparameters::n_epochs,
+          ?reasoning_effort: OpenAI::Models::FineTuning::ReinforcementHyperparameters::reasoning_effort
         ) -> void
+
+        def to_hash: -> {
+          batch_size: OpenAI::Models::FineTuning::ReinforcementHyperparameters::batch_size,
+          compute_multiplier: OpenAI::Models::FineTuning::ReinforcementHyperparameters::compute_multiplier,
+          eval_interval: OpenAI::Models::FineTuning::ReinforcementHyperparameters::eval_interval,
+          eval_samples: OpenAI::Models::FineTuning::ReinforcementHyperparameters::eval_samples,
+          learning_rate_multiplier: OpenAI::Models::FineTuning::ReinforcementHyperparameters::learning_rate_multiplier,
+          n_epochs: OpenAI::Models::FineTuning::ReinforcementHyperparameters::n_epochs,
+          reasoning_effort: OpenAI::Models::FineTuning::ReinforcementHyperparameters::reasoning_effort
+        }
 
         type batch_size = :auto | Integer
 
         module BatchSize
           extend OpenAI::Internal::Type::Union
 
-          def self?.variants: -> ::Array[OpenAI::FineTuning::ReinforcementHyperparameters::batch_size]
+          def self?.variants: -> ::Array[OpenAI::Models::FineTuning::ReinforcementHyperparameters::batch_size]
         end
 
         type compute_multiplier = :auto | Float
@@ -78,7 +88,7 @@ module OpenAI
         module ComputeMultiplier
           extend OpenAI::Internal::Type::Union
 
-          def self?.variants: -> ::Array[OpenAI::FineTuning::ReinforcementHyperparameters::compute_multiplier]
+          def self?.variants: -> ::Array[OpenAI::Models::FineTuning::ReinforcementHyperparameters::compute_multiplier]
         end
 
         type eval_interval = :auto | Integer
@@ -86,7 +96,7 @@ module OpenAI
         module EvalInterval
           extend OpenAI::Internal::Type::Union
 
-          def self?.variants: -> ::Array[OpenAI::FineTuning::ReinforcementHyperparameters::eval_interval]
+          def self?.variants: -> ::Array[OpenAI::Models::FineTuning::ReinforcementHyperparameters::eval_interval]
         end
 
         type eval_samples = :auto | Integer
@@ -94,7 +104,7 @@ module OpenAI
         module EvalSamples
           extend OpenAI::Internal::Type::Union
 
-          def self?.variants: -> ::Array[OpenAI::FineTuning::ReinforcementHyperparameters::eval_samples]
+          def self?.variants: -> ::Array[OpenAI::Models::FineTuning::ReinforcementHyperparameters::eval_samples]
         end
 
         type learning_rate_multiplier = :auto | Float
@@ -102,7 +112,7 @@ module OpenAI
         module LearningRateMultiplier
           extend OpenAI::Internal::Type::Union
 
-          def self?.variants: -> ::Array[OpenAI::FineTuning::ReinforcementHyperparameters::learning_rate_multiplier]
+          def self?.variants: -> ::Array[OpenAI::Models::FineTuning::ReinforcementHyperparameters::learning_rate_multiplier]
         end
 
         type n_epochs = :auto | Integer
@@ -110,7 +120,7 @@ module OpenAI
         module NEpochs
           extend OpenAI::Internal::Type::Union
 
-          def self?.variants: -> ::Array[OpenAI::FineTuning::ReinforcementHyperparameters::n_epochs]
+          def self?.variants: -> ::Array[OpenAI::Models::FineTuning::ReinforcementHyperparameters::n_epochs]
         end
 
         type reasoning_effort = :default | :low | :medium | :high
@@ -123,7 +133,7 @@ module OpenAI
           MEDIUM: :medium
           HIGH: :high
 
-          def self?.values: -> ::Array[OpenAI::FineTuning::ReinforcementHyperparameters::reasoning_effort]
+          def self?.values: -> ::Array[OpenAI::Models::FineTuning::ReinforcementHyperparameters::reasoning_effort]
         end
       end
     end

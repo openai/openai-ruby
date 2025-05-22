@@ -2,14 +2,30 @@ module OpenAI
   module Models
     module Responses
       type response_audio_delta_event =
-        { delta: String, type: :"response.audio.delta" }
+        {
+          delta: String,
+          sequence_number: Integer,
+          type: :"response.audio.delta"
+        }
 
       class ResponseAudioDeltaEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor delta: String
 
+        attr_accessor sequence_number: Integer
+
         attr_accessor type: :"response.audio.delta"
 
-        def initialize: (delta: String, ?type: :"response.audio.delta") -> void
+        def initialize: (
+          delta: String,
+          sequence_number: Integer,
+          ?type: :"response.audio.delta"
+        ) -> void
+
+        def to_hash: -> {
+          delta: String,
+          sequence_number: Integer,
+          type: :"response.audio.delta"
+        }
       end
     end
   end

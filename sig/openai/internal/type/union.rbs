@@ -43,6 +43,8 @@ module OpenAI
           state: OpenAI::Internal::Type::Converter::dump_state
         ) -> top
 
+        def to_sorbet_type: -> top
+
         def inspect: (?depth: Integer) -> String
       end
     end

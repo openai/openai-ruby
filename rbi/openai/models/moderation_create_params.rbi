@@ -13,20 +13,7 @@ module OpenAI
 
       # Input (or inputs) to classify. Can be a single string, an array of strings, or
       # an array of multi-modal input objects similar to other models.
-      sig do
-        returns(
-          T.any(
-            String,
-            T::Array[String],
-            T::Array[
-              T.any(
-                OpenAI::ModerationImageURLInput,
-                OpenAI::ModerationTextInput
-              )
-            ]
-          )
-        )
-      end
+      sig { returns(OpenAI::ModerationCreateParams::Input::Variants) }
       attr_accessor :input
 
       # The content moderation model you would like to use. Learn more in
@@ -45,17 +32,7 @@ module OpenAI
 
       sig do
         params(
-          input:
-            T.any(
-              String,
-              T::Array[String],
-              T::Array[
-                T.any(
-                  OpenAI::ModerationImageURLInput::OrHash,
-                  OpenAI::ModerationTextInput::OrHash
-                )
-              ]
-            ),
+          input: OpenAI::ModerationCreateParams::Input::Variants,
           model: T.any(String, OpenAI::ModerationModel::OrSymbol),
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(T.attached_class)
@@ -76,17 +53,7 @@ module OpenAI
       sig do
         override.returns(
           {
-            input:
-              T.any(
-                String,
-                T::Array[String],
-                T::Array[
-                  T.any(
-                    OpenAI::ModerationImageURLInput,
-                    OpenAI::ModerationTextInput
-                  )
-                ]
-              ),
+            input: OpenAI::ModerationCreateParams::Input::Variants,
             model: T.any(String, OpenAI::ModerationModel::OrSymbol),
             request_options: OpenAI::RequestOptions
           }
@@ -105,12 +72,7 @@ module OpenAI
             T.any(
               String,
               T::Array[String],
-              T::Array[
-                T.any(
-                  OpenAI::ModerationImageURLInput,
-                  OpenAI::ModerationTextInput
-                )
-              ]
+              T::Array[OpenAI::ModerationMultiModalInput::Variants]
             )
           end
 

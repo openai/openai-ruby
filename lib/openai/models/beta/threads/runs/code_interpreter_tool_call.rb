@@ -15,7 +15,7 @@ module OpenAI
             # @!attribute code_interpreter
             #   The Code Interpreter tool call definition.
             #
-            #   @return [OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter]
+            #   @return [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter]
             required :code_interpreter,
                      -> {
                        OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter
@@ -30,17 +30,17 @@ module OpenAI
 
             # @!method initialize(id:, code_interpreter:, type: :code_interpreter)
             #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall} for more details.
+            #   {OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall} for more details.
             #
             #   Details of the Code Interpreter tool call the run step was involved in.
             #
             #   @param id [String] The ID of the tool call.
             #
-            #   @param code_interpreter [OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter] The Code Interpreter tool call definition.
+            #   @param code_interpreter [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter] The Code Interpreter tool call definition.
             #
             #   @param type [Symbol, :code_interpreter] The type of tool call. This is always going to be `code_interpreter` for this ty
 
-            # @see OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall#code_interpreter
+            # @see OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall#code_interpreter
             class CodeInterpreter < OpenAI::Internal::Type::BaseModel
               # @!attribute input
               #   The input to the Code Interpreter tool call.
@@ -53,7 +53,7 @@ module OpenAI
               #   or more items, including text (`logs`) or images (`image`). Each of these are
               #   represented by a different object type.
               #
-              #   @return [Array<OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs, OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image>]
+              #   @return [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image>]
               required :outputs,
                        -> {
                          OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output]
@@ -61,14 +61,14 @@ module OpenAI
 
               # @!method initialize(input:, outputs:)
               #   Some parameter documentations has been truncated, see
-              #   {OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter} for more
-              #   details.
+              #   {OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter}
+              #   for more details.
               #
               #   The Code Interpreter tool call definition.
               #
               #   @param input [String] The input to the Code Interpreter tool call.
               #
-              #   @param outputs [Array<OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs, OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image>] The outputs from the Code Interpreter tool call. Code Interpreter can output one
+              #   @param outputs [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image>] The outputs from the Code Interpreter tool call. Code Interpreter can output one
 
               # Text output from the Code Interpreter tool call as part of a run step.
               module Output
@@ -111,7 +111,7 @@ module OpenAI
                 class Image < OpenAI::Internal::Type::BaseModel
                   # @!attribute image
                   #
-                  #   @return [OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image]
+                  #   @return [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image]
                   required :image,
                            -> {
                              OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image
@@ -124,11 +124,11 @@ module OpenAI
                   required :type, const: :image
 
                   # @!method initialize(image:, type: :image)
-                  #   @param image [OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image]
+                  #   @param image [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image]
                   #
                   #   @param type [Symbol, :image] Always `image`.
 
-                  # @see OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image#image
+                  # @see OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image#image
                   class Image < OpenAI::Internal::Type::BaseModel
                     # @!attribute file_id
                     #   The [file](https://platform.openai.com/docs/api-reference/files) ID of the
@@ -139,7 +139,7 @@ module OpenAI
 
                     # @!method initialize(file_id:)
                     #   Some parameter documentations has been truncated, see
-                    #   {OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image}
+                    #   {OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image}
                     #   for more details.
                     #
                     #   @param file_id [String] The [file](https://platform.openai.com/docs/api-reference/files) ID of the image
@@ -147,16 +147,7 @@ module OpenAI
                 end
 
                 # @!method self.variants
-                #   @return [Array(OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs, OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image)]
-
-                define_sorbet_constant!(:Variants) do
-                  T.type_alias do
-                    T.any(
-                      OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs,
-                      OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image
-                    )
-                  end
-                end
+                #   @return [Array(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image)]
               end
             end
           end

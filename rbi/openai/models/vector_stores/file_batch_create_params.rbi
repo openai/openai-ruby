@@ -27,7 +27,14 @@ module OpenAI
         # length of 64 characters. Values are strings with a maximum length of 512
         # characters, booleans, or numbers.
         sig do
-          returns(T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]))
+          returns(
+            T.nilable(
+              T::Hash[
+                Symbol,
+                OpenAI::VectorStores::FileBatchCreateParams::Attribute::Variants
+              ]
+            )
+          )
         end
         attr_accessor :attributes
 
@@ -60,7 +67,12 @@ module OpenAI
           params(
             file_ids: T::Array[String],
             attributes:
-              T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
+              T.nilable(
+                T::Hash[
+                  Symbol,
+                  OpenAI::VectorStores::FileBatchCreateParams::Attribute::Variants
+                ]
+              ),
             chunking_strategy:
               T.any(
                 OpenAI::AutoFileChunkingStrategyParam::OrHash,
@@ -92,7 +104,12 @@ module OpenAI
             {
               file_ids: T::Array[String],
               attributes:
-                T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
+                T.nilable(
+                  T::Hash[
+                    Symbol,
+                    OpenAI::VectorStores::FileBatchCreateParams::Attribute::Variants
+                  ]
+                ),
               chunking_strategy:
                 T.any(
                   OpenAI::AutoFileChunkingStrategyParam,

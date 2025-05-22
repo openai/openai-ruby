@@ -13,7 +13,7 @@ module OpenAI
 
       # The image to use as the basis for the variation(s). Must be a valid PNG file,
       # less than 4MB, and square.
-      sig { returns(T.any(Pathname, StringIO, IO, OpenAI::FilePart)) }
+      sig { returns(OpenAI::Internal::FileInput) }
       attr_accessor :image
 
       # The model to use for image generation. Only `dall-e-2` is supported at this
@@ -55,7 +55,7 @@ module OpenAI
 
       sig do
         params(
-          image: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
+          image: OpenAI::Internal::FileInput,
           model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
           n: T.nilable(Integer),
           response_format:
@@ -94,7 +94,7 @@ module OpenAI
       sig do
         override.returns(
           {
-            image: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
+            image: OpenAI::Internal::FileInput,
             model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
             n: T.nilable(Integer),
             response_format:

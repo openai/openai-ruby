@@ -26,6 +26,13 @@ module OpenAI
           upload_id: String,
           ?object: :"upload.part"
         ) -> void
+
+        def to_hash: -> {
+          id: String,
+          created_at: Integer,
+          object: :"upload.part",
+          upload_id: String
+        }
       end
     end
   end

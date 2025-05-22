@@ -20,16 +20,7 @@ module OpenAI
       # for counting tokens. In addition to the per-input token limit, all embedding
       # models enforce a maximum of 300,000 tokens summed across all inputs in a single
       # request.
-      sig do
-        returns(
-          T.any(
-            String,
-            T::Array[String],
-            T::Array[Integer],
-            T::Array[T::Array[Integer]]
-          )
-        )
-      end
+      sig { returns(OpenAI::EmbeddingCreateParams::Input::Variants) }
       attr_accessor :input
 
       # ID of the model to use. You can use the
@@ -76,13 +67,7 @@ module OpenAI
 
       sig do
         params(
-          input:
-            T.any(
-              String,
-              T::Array[String],
-              T::Array[Integer],
-              T::Array[T::Array[Integer]]
-            ),
+          input: OpenAI::EmbeddingCreateParams::Input::Variants,
           model: T.any(String, OpenAI::EmbeddingModel::OrSymbol),
           dimensions: Integer,
           encoding_format:
@@ -125,13 +110,7 @@ module OpenAI
       sig do
         override.returns(
           {
-            input:
-              T.any(
-                String,
-                T::Array[String],
-                T::Array[Integer],
-                T::Array[T::Array[Integer]]
-              ),
+            input: OpenAI::EmbeddingCreateParams::Input::Variants,
             model: T.any(String, OpenAI::EmbeddingModel::OrSymbol),
             dimensions: Integer,
             encoding_format:

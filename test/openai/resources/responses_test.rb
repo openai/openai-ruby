@@ -26,6 +26,7 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
         tool_choice: OpenAI::Responses::Response::ToolChoice,
         tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool]),
         top_p: Float | nil,
+        background: OpenAI::Internal::Type::Boolean | nil,
         max_output_tokens: Integer | nil,
         previous_response_id: String | nil,
         reasoning: OpenAI::Reasoning | nil,
@@ -62,6 +63,7 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
         tool_choice: OpenAI::Responses::Response::ToolChoice,
         tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool]),
         top_p: Float | nil,
+        background: OpenAI::Internal::Type::Boolean | nil,
         max_output_tokens: Integer | nil,
         previous_response_id: String | nil,
         reasoning: OpenAI::Reasoning | nil,
@@ -77,6 +79,14 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
 
   def test_delete
     response = @openai.responses.delete("resp_677efb5139a88190b512bc3fef8e535d")
+
+    assert_pattern do
+      response => nil
+    end
+  end
+
+  def test_cancel
+    response = @openai.responses.cancel("resp_677efb5139a88190b512bc3fef8e535d")
 
     assert_pattern do
       response => nil

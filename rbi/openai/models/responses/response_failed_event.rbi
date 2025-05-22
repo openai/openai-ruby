@@ -19,6 +19,10 @@ module OpenAI
         sig { params(response: OpenAI::Responses::Response::OrHash).void }
         attr_writer :response
 
+        # The sequence number of this event.
+        sig { returns(Integer) }
+        attr_accessor :sequence_number
+
         # The type of the event. Always `response.failed`.
         sig { returns(Symbol) }
         attr_accessor :type
@@ -27,12 +31,15 @@ module OpenAI
         sig do
           params(
             response: OpenAI::Responses::Response::OrHash,
+            sequence_number: Integer,
             type: Symbol
           ).returns(T.attached_class)
         end
         def self.new(
           # The response that failed.
           response:,
+          # The sequence number of this event.
+          sequence_number:,
           # The type of the event. Always `response.failed`.
           type: :"response.failed"
         )
@@ -40,7 +47,11 @@ module OpenAI
 
         sig do
           override.returns(
-            { response: OpenAI::Responses::Response, type: Symbol }
+            {
+              response: OpenAI::Responses::Response,
+              sequence_number: Integer,
+              type: Symbol
+            }
           )
         end
         def to_hash

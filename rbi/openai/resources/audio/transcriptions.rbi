@@ -10,7 +10,7 @@ module OpenAI
         # Transcribes audio into the input language.
         sig do
           params(
-            file: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
+            file: OpenAI::Internal::FileInput,
             model: T.any(String, OpenAI::AudioModel::OrSymbol),
             chunking_strategy:
               T.nilable(
@@ -31,10 +31,7 @@ module OpenAI
             stream: T.noreturn,
             request_options: OpenAI::RequestOptions::OrHash
           ).returns(
-            T.any(
-              OpenAI::Audio::Transcription,
-              OpenAI::Audio::TranscriptionVerbose
-            )
+            OpenAI::Models::Audio::TranscriptionCreateResponse::Variants
           )
         end
         def create(
@@ -94,7 +91,7 @@ module OpenAI
         # Transcribes audio into the input language.
         sig do
           params(
-            file: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
+            file: OpenAI::Internal::FileInput,
             model: T.any(String, OpenAI::AudioModel::OrSymbol),
             chunking_strategy:
               T.nilable(
@@ -116,10 +113,7 @@ module OpenAI
             request_options: OpenAI::RequestOptions::OrHash
           ).returns(
             OpenAI::Internal::Stream[
-              T.any(
-                OpenAI::Audio::TranscriptionTextDeltaEvent,
-                OpenAI::Audio::TranscriptionTextDoneEvent
-              )
+              OpenAI::Audio::TranscriptionStreamEvent::Variants
             ]
           )
         end

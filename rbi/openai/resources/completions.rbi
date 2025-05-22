@@ -9,15 +9,7 @@ module OpenAI
       sig do
         params(
           model: T.any(String, OpenAI::CompletionCreateParams::Model::OrSymbol),
-          prompt:
-            T.nilable(
-              T.any(
-                String,
-                T::Array[String],
-                T::Array[Integer],
-                T::Array[T::Array[Integer]]
-              )
-            ),
+          prompt: T.nilable(OpenAI::CompletionCreateParams::Prompt::Variants),
           best_of: T.nilable(Integer),
           echo: T.nilable(T::Boolean),
           frequency_penalty: T.nilable(Float),
@@ -27,7 +19,7 @@ module OpenAI
           n: T.nilable(Integer),
           presence_penalty: T.nilable(Float),
           seed: T.nilable(Integer),
-          stop: T.nilable(T.any(String, T::Array[String])),
+          stop: T.nilable(OpenAI::CompletionCreateParams::Stop::Variants),
           stream_options:
             T.nilable(OpenAI::Chat::ChatCompletionStreamOptions::OrHash),
           suffix: T.nilable(String),
@@ -157,15 +149,7 @@ module OpenAI
       sig do
         params(
           model: T.any(String, OpenAI::CompletionCreateParams::Model::OrSymbol),
-          prompt:
-            T.nilable(
-              T.any(
-                String,
-                T::Array[String],
-                T::Array[Integer],
-                T::Array[T::Array[Integer]]
-              )
-            ),
+          prompt: T.nilable(OpenAI::CompletionCreateParams::Prompt::Variants),
           best_of: T.nilable(Integer),
           echo: T.nilable(T::Boolean),
           frequency_penalty: T.nilable(Float),
@@ -175,7 +159,7 @@ module OpenAI
           n: T.nilable(Integer),
           presence_penalty: T.nilable(Float),
           seed: T.nilable(Integer),
-          stop: T.nilable(T.any(String, T::Array[String])),
+          stop: T.nilable(OpenAI::CompletionCreateParams::Stop::Variants),
           stream_options:
             T.nilable(OpenAI::Chat::ChatCompletionStreamOptions::OrHash),
           suffix: T.nilable(String),

@@ -7,16 +7,14 @@ module OpenAI
         # Translates audio into English.
         sig do
           params(
-            file: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
+            file: OpenAI::Internal::FileInput,
             model: T.any(String, OpenAI::AudioModel::OrSymbol),
             prompt: String,
             response_format:
               OpenAI::Audio::TranslationCreateParams::ResponseFormat::OrSymbol,
             temperature: Float,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(
-            T.any(OpenAI::Audio::Translation, OpenAI::Audio::TranslationVerbose)
-          )
+          ).returns(OpenAI::Models::Audio::TranslationCreateResponse::Variants)
         end
         def create(
           # The audio file object (not file name) translate, in one of these formats: flac,

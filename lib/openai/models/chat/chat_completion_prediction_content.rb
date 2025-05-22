@@ -9,7 +9,7 @@ module OpenAI
         #   generated tokens would match this content, the entire model response can be
         #   returned much more quickly.
         #
-        #   @return [String, Array<OpenAI::Chat::ChatCompletionContentPartText>]
+        #   @return [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>]
         required :content, union: -> { OpenAI::Chat::ChatCompletionPredictionContent::Content }
 
         # @!attribute type
@@ -21,12 +21,12 @@ module OpenAI
 
         # @!method initialize(content:, type: :content)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Chat::ChatCompletionPredictionContent} for more details.
+        #   {OpenAI::Models::Chat::ChatCompletionPredictionContent} for more details.
         #
         #   Static predicted output content, such as the content of a text file that is
         #   being regenerated.
         #
-        #   @param content [String, Array<OpenAI::Chat::ChatCompletionContentPartText>] The content that should be matched when generating a model response.
+        #   @param content [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>] The content that should be matched when generating a model response.
         #
         #   @param type [Symbol, :content] The type of the predicted content you want to provide. This type is
 
@@ -34,7 +34,7 @@ module OpenAI
         # generated tokens would match this content, the entire model response can be
         # returned much more quickly.
         #
-        # @see OpenAI::Chat::ChatCompletionPredictionContent#content
+        # @see OpenAI::Models::Chat::ChatCompletionPredictionContent#content
         module Content
           extend OpenAI::Internal::Type::Union
 
@@ -43,16 +43,10 @@ module OpenAI
           variant String
 
           # An array of content parts with a defined type. Supported options differ based on the [model](https://platform.openai.com/docs/models) being used to generate the response. Can contain text inputs.
-          variant -> {
-            OpenAI::Chat::ChatCompletionPredictionContent::Content::ChatCompletionContentPartTextArray
-          }
+          variant -> { OpenAI::Models::Chat::ChatCompletionPredictionContent::Content::ChatCompletionContentPartTextArray }
 
           # @!method self.variants
-          #   @return [Array(String, Array<OpenAI::Chat::ChatCompletionContentPartText>)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias { T.any(String, T::Array[OpenAI::Chat::ChatCompletionContentPartText]) }
-          end
+          #   @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>)]
 
           # @type [OpenAI::Internal::Type::Converter]
           ChatCompletionContentPartTextArray =

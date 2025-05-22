@@ -7,8 +7,14 @@ module OpenAI
         # @!attribute response
         #   The response that was created.
         #
-        #   @return [OpenAI::Responses::Response]
+        #   @return [OpenAI::Models::Responses::Response]
         required :response, -> { OpenAI::Responses::Response }
+
+        # @!attribute sequence_number
+        #   The sequence number for this event.
+        #
+        #   @return [Integer]
+        required :sequence_number, Integer
 
         # @!attribute type
         #   The type of the event. Always `response.created`.
@@ -16,13 +22,15 @@ module OpenAI
         #   @return [Symbol, :"response.created"]
         required :type, const: :"response.created"
 
-        # @!method initialize(response:, type: :"response.created")
+        # @!method initialize(response:, sequence_number:, type: :"response.created")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseCreatedEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseCreatedEvent} for more details.
         #
         #   An event that is emitted when a response is created.
         #
-        #   @param response [OpenAI::Responses::Response] The response that was created.
+        #   @param response [OpenAI::Models::Responses::Response] The response that was created.
+        #
+        #   @param sequence_number [Integer] The sequence number for this event.
         #
         #   @param type [Symbol, :"response.created"] The type of the event. Always `response.created`.
       end

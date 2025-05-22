@@ -1,0 +1,32 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_queued_event =
+        {
+          response: OpenAI::Responses::Response,
+          sequence_number: Integer,
+          type: :"response.queued"
+        }
+
+      class ResponseQueuedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor response: OpenAI::Responses::Response
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor type: :"response.queued"
+
+        def initialize: (
+          response: OpenAI::Responses::Response,
+          sequence_number: Integer,
+          ?type: :"response.queued"
+        ) -> void
+
+        def to_hash: -> {
+          response: OpenAI::Responses::Response,
+          sequence_number: Integer,
+          type: :"response.queued"
+        }
+      end
+    end
+  end
+end

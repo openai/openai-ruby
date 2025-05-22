@@ -21,31 +21,14 @@ module OpenAI
       # your own data as input for the model's response.
       sig do
         params(
-          input:
-            T.any(
-              String,
-              T::Array[
-                T.any(
-                  OpenAI::Responses::EasyInputMessage::OrHash,
-                  OpenAI::Responses::ResponseInputItem::Message::OrHash,
-                  OpenAI::Responses::ResponseOutputMessage::OrHash,
-                  OpenAI::Responses::ResponseFileSearchToolCall::OrHash,
-                  OpenAI::Responses::ResponseComputerToolCall::OrHash,
-                  OpenAI::Responses::ResponseInputItem::ComputerCallOutput::OrHash,
-                  OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
-                  OpenAI::Responses::ResponseFunctionToolCall::OrHash,
-                  OpenAI::Responses::ResponseInputItem::FunctionCallOutput::OrHash,
-                  OpenAI::Responses::ResponseReasoningItem::OrHash,
-                  OpenAI::Responses::ResponseInputItem::ItemReference::OrHash
-                )
-              ]
-            ),
+          input: OpenAI::Responses::ResponseCreateParams::Input::Variants,
           model:
             T.any(
               String,
               OpenAI::ChatModel::OrSymbol,
               OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
             ),
+          background: T.nilable(T::Boolean),
           include:
             T.nilable(
               T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
@@ -72,9 +55,13 @@ module OpenAI
           tools:
             T::Array[
               T.any(
-                OpenAI::Responses::FileSearchTool::OrHash,
                 OpenAI::Responses::FunctionTool::OrHash,
+                OpenAI::Responses::FileSearchTool::OrHash,
                 OpenAI::Responses::ComputerTool::OrHash,
+                OpenAI::Responses::Tool::Mcp::OrHash,
+                OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                OpenAI::Responses::Tool::ImageGeneration::OrHash,
+                OpenAI::Responses::Tool::LocalShell::OrHash,
                 OpenAI::Responses::WebSearchTool::OrHash
               )
             ],
@@ -105,6 +92,9 @@ module OpenAI
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
         # available models.
         model:,
+        # Whether to run the model response in the background.
+        # [Learn more](https://platform.openai.com/docs/guides/background).
+        background: nil,
         # Specify additional output data to include in the model response. Currently
         # supported values are:
         #
@@ -212,8 +202,8 @@ module OpenAI
         # - `disabled` (default): If a model response will exceed the context window size
         #   for a model, the request will fail with a 400 error.
         truncation: nil,
-        # A unique identifier representing your end-user, which can help OpenAI to monitor
-        # and detect abuse.
+        # A stable identifier for your end-users. Used to boost cache hit rates by better
+        # bucketing similar requests and to help OpenAI detect and prevent abuse.
         # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         user: nil,
         # There is no need to provide `stream:`. Instead, use `#stream_raw` or `#create`
@@ -238,31 +228,14 @@ module OpenAI
       # your own data as input for the model's response.
       sig do
         params(
-          input:
-            T.any(
-              String,
-              T::Array[
-                T.any(
-                  OpenAI::Responses::EasyInputMessage::OrHash,
-                  OpenAI::Responses::ResponseInputItem::Message::OrHash,
-                  OpenAI::Responses::ResponseOutputMessage::OrHash,
-                  OpenAI::Responses::ResponseFileSearchToolCall::OrHash,
-                  OpenAI::Responses::ResponseComputerToolCall::OrHash,
-                  OpenAI::Responses::ResponseInputItem::ComputerCallOutput::OrHash,
-                  OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
-                  OpenAI::Responses::ResponseFunctionToolCall::OrHash,
-                  OpenAI::Responses::ResponseInputItem::FunctionCallOutput::OrHash,
-                  OpenAI::Responses::ResponseReasoningItem::OrHash,
-                  OpenAI::Responses::ResponseInputItem::ItemReference::OrHash
-                )
-              ]
-            ),
+          input: OpenAI::Responses::ResponseCreateParams::Input::Variants,
           model:
             T.any(
               String,
               OpenAI::ChatModel::OrSymbol,
               OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
             ),
+          background: T.nilable(T::Boolean),
           include:
             T.nilable(
               T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
@@ -289,9 +262,13 @@ module OpenAI
           tools:
             T::Array[
               T.any(
-                OpenAI::Responses::FileSearchTool::OrHash,
                 OpenAI::Responses::FunctionTool::OrHash,
+                OpenAI::Responses::FileSearchTool::OrHash,
                 OpenAI::Responses::ComputerTool::OrHash,
+                OpenAI::Responses::Tool::Mcp::OrHash,
+                OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                OpenAI::Responses::Tool::ImageGeneration::OrHash,
+                OpenAI::Responses::Tool::LocalShell::OrHash,
                 OpenAI::Responses::WebSearchTool::OrHash
               )
             ],
@@ -305,44 +282,7 @@ module OpenAI
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(
           OpenAI::Internal::Stream[
-            T.any(
-              OpenAI::Responses::ResponseAudioDeltaEvent,
-              OpenAI::Responses::ResponseAudioDoneEvent,
-              OpenAI::Responses::ResponseAudioTranscriptDeltaEvent,
-              OpenAI::Responses::ResponseAudioTranscriptDoneEvent,
-              OpenAI::Responses::ResponseCodeInterpreterCallCodeDeltaEvent,
-              OpenAI::Responses::ResponseCodeInterpreterCallCodeDoneEvent,
-              OpenAI::Responses::ResponseCodeInterpreterCallCompletedEvent,
-              OpenAI::Responses::ResponseCodeInterpreterCallInProgressEvent,
-              OpenAI::Responses::ResponseCodeInterpreterCallInterpretingEvent,
-              OpenAI::Responses::ResponseCompletedEvent,
-              OpenAI::Responses::ResponseContentPartAddedEvent,
-              OpenAI::Responses::ResponseContentPartDoneEvent,
-              OpenAI::Responses::ResponseCreatedEvent,
-              OpenAI::Responses::ResponseErrorEvent,
-              OpenAI::Responses::ResponseFileSearchCallCompletedEvent,
-              OpenAI::Responses::ResponseFileSearchCallInProgressEvent,
-              OpenAI::Responses::ResponseFileSearchCallSearchingEvent,
-              OpenAI::Responses::ResponseFunctionCallArgumentsDeltaEvent,
-              OpenAI::Responses::ResponseFunctionCallArgumentsDoneEvent,
-              OpenAI::Responses::ResponseInProgressEvent,
-              OpenAI::Responses::ResponseFailedEvent,
-              OpenAI::Responses::ResponseIncompleteEvent,
-              OpenAI::Responses::ResponseOutputItemAddedEvent,
-              OpenAI::Responses::ResponseOutputItemDoneEvent,
-              OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent,
-              OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent,
-              OpenAI::Responses::ResponseReasoningSummaryTextDeltaEvent,
-              OpenAI::Responses::ResponseReasoningSummaryTextDoneEvent,
-              OpenAI::Responses::ResponseRefusalDeltaEvent,
-              OpenAI::Responses::ResponseRefusalDoneEvent,
-              OpenAI::Responses::ResponseTextAnnotationDeltaEvent,
-              OpenAI::Responses::ResponseTextDeltaEvent,
-              OpenAI::Responses::ResponseTextDoneEvent,
-              OpenAI::Responses::ResponseWebSearchCallCompletedEvent,
-              OpenAI::Responses::ResponseWebSearchCallInProgressEvent,
-              OpenAI::Responses::ResponseWebSearchCallSearchingEvent
-            )
+            OpenAI::Responses::ResponseStreamEvent::Variants
           ]
         )
       end
@@ -363,6 +303,9 @@ module OpenAI
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
         # available models.
         model:,
+        # Whether to run the model response in the background.
+        # [Learn more](https://platform.openai.com/docs/guides/background).
+        background: nil,
         # Specify additional output data to include in the model response. Currently
         # supported values are:
         #
@@ -470,8 +413,8 @@ module OpenAI
         # - `disabled` (default): If a model response will exceed the context window size
         #   for a model, the request will fail with a 400 error.
         truncation: nil,
-        # A unique identifier representing your end-user, which can help OpenAI to monitor
-        # and detect abuse.
+        # A stable identifier for your end-users. Used to boost cache hit rates by better
+        # bucketing similar requests and to help OpenAI detect and prevent abuse.
         # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         user: nil,
         # There is no need to provide `stream:`. Instead, use `#stream_raw` or `#create`
@@ -508,6 +451,22 @@ module OpenAI
       end
       def delete(
         # The ID of the response to delete.
+        response_id,
+        request_options: {}
+      )
+      end
+
+      # Cancels a model response with the given ID. Only responses created with the
+      # `background` parameter set to `true` can be cancelled.
+      # [Learn more](https://platform.openai.com/docs/guides/background).
+      sig do
+        params(
+          response_id: String,
+          request_options: OpenAI::RequestOptions::OrHash
+        ).void
+      end
+      def cancel(
+        # The ID of the response to cancel.
         response_id,
         request_options: {}
       )

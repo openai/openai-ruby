@@ -105,7 +105,7 @@ class OpenAI::Test::Resources::Beta::ThreadsTest < OpenAI::Test::ResourceTest
         thread_id: String,
         tool_choice: OpenAI::Beta::AssistantToolChoiceOption | nil,
         tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AssistantTool]),
-        truncation_strategy: OpenAI::Beta::TruncationObject | nil,
+        truncation_strategy: OpenAI::Beta::Threads::Run::TruncationStrategy | nil,
         usage: OpenAI::Beta::Threads::Run::Usage | nil,
         temperature: Float | nil,
         top_p: Float | nil

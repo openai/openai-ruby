@@ -14,17 +14,17 @@ module OpenAI
           #
           # @param thread_id [String] The ID of the [thread](https://platform.openai.com/docs/api-reference/threads) t
           #
-          # @param content [String, Array<OpenAI::Beta::Threads::ImageFileContentBlock, OpenAI::Beta::Threads::ImageURLContentBlock, OpenAI::Beta::Threads::TextContentBlockParam>] The text contents of the message.
+          # @param content [String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>] The text contents of the message.
           #
-          # @param role [Symbol, OpenAI::Beta::Threads::MessageCreateParams::Role] The role of the entity that is creating the message. Allowed values include:
+          # @param role [Symbol, OpenAI::Models::Beta::Threads::MessageCreateParams::Role] The role of the entity that is creating the message. Allowed values include:
           #
-          # @param attachments [Array<OpenAI::Beta::Threads::MessageCreateParams::Attachment>, nil] A list of files attached to the message, and the tools they should be added to.
+          # @param attachments [Array<OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment>, nil] A list of files attached to the message, and the tools they should be added to.
           #
           # @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
-          # @return [OpenAI::Beta::Threads::Message]
+          # @return [OpenAI::Models::Beta::Threads::Message]
           #
           # @see OpenAI::Models::Beta::Threads::MessageCreateParams
           def create(thread_id, params)
@@ -51,7 +51,7 @@ module OpenAI
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
-          # @return [OpenAI::Beta::Threads::Message]
+          # @return [OpenAI::Models::Beta::Threads::Message]
           #
           # @see OpenAI::Models::Beta::Threads::MessageRetrieveParams
           def retrieve(message_id, params)
@@ -83,7 +83,7 @@ module OpenAI
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
-          # @return [OpenAI::Beta::Threads::Message]
+          # @return [OpenAI::Models::Beta::Threads::Message]
           #
           # @see OpenAI::Models::Beta::Threads::MessageUpdateParams
           def update(message_id, params)
@@ -116,13 +116,13 @@ module OpenAI
           #
           # @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
           #
-          # @param order [Symbol, OpenAI::Beta::Threads::MessageListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
+          # @param order [Symbol, OpenAI::Models::Beta::Threads::MessageListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
           #
           # @param run_id [String] Filter messages by the run ID that generated them.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
-          # @return [OpenAI::Internal::CursorPage<OpenAI::Beta::Threads::Message>]
+          # @return [OpenAI::Internal::CursorPage<OpenAI::Models::Beta::Threads::Message>]
           #
           # @see OpenAI::Models::Beta::Threads::MessageListParams
           def list(thread_id, params = {})
@@ -147,7 +147,7 @@ module OpenAI
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
-          # @return [OpenAI::Beta::Threads::MessageDeleted]
+          # @return [OpenAI::Models::Beta::Threads::MessageDeleted]
           #
           # @see OpenAI::Models::Beta::Threads::MessageDeleteParams
           def delete(message_id, params)

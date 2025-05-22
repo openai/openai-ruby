@@ -89,6 +89,13 @@ module OpenAI
 
             value
           end
+
+          # @api private
+          #
+          # @return [Object]
+          def to_sorbet_type
+            T.any(Pathname, StringIO, IO, String, OpenAI::FilePart)
+          end
         end
       end
     end

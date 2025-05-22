@@ -18,7 +18,7 @@ module OpenAI
 
       # @!method initialize(schema:, type: :custom)
       #   Some parameter documentations has been truncated, see
-      #   {OpenAI::EvalCustomDataSourceConfig} for more details.
+      #   {OpenAI::Models::EvalCustomDataSourceConfig} for more details.
       #
       #   A CustomDataSourceConfig which specifies the schema of your `item` and
       #   optionally `sample` namespaces. The response schema defines the shape of the

@@ -18,7 +18,7 @@ module OpenAI
         # The contents of the developer message.
         sig do
           returns(
-            T.any(String, T::Array[OpenAI::Chat::ChatCompletionContentPartText])
+            OpenAI::Chat::ChatCompletionDeveloperMessageParam::Content::Variants
           )
         end
         attr_accessor :content
@@ -41,10 +41,7 @@ module OpenAI
         sig do
           params(
             content:
-              T.any(
-                String,
-                T::Array[OpenAI::Chat::ChatCompletionContentPartText::OrHash]
-              ),
+              OpenAI::Chat::ChatCompletionDeveloperMessageParam::Content::Variants,
             name: String,
             role: Symbol
           ).returns(T.attached_class)
@@ -64,10 +61,7 @@ module OpenAI
           override.returns(
             {
               content:
-                T.any(
-                  String,
-                  T::Array[OpenAI::Chat::ChatCompletionContentPartText]
-                ),
+                OpenAI::Chat::ChatCompletionDeveloperMessageParam::Content::Variants,
               role: Symbol,
               name: String
             }

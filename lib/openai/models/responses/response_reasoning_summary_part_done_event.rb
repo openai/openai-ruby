@@ -19,8 +19,14 @@ module OpenAI
         # @!attribute part
         #   The completed summary part.
         #
-        #   @return [OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part]
+        #   @return [OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent::Part]
         required :part, -> { OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part }
+
+        # @!attribute sequence_number
+        #   The sequence number of this event.
+        #
+        #   @return [Integer]
+        required :sequence_number, Integer
 
         # @!attribute summary_index
         #   The index of the summary part within the reasoning summary.
@@ -34,9 +40,10 @@ module OpenAI
         #   @return [Symbol, :"response.reasoning_summary_part.done"]
         required :type, const: :"response.reasoning_summary_part.done"
 
-        # @!method initialize(item_id:, output_index:, part:, summary_index:, type: :"response.reasoning_summary_part.done")
+        # @!method initialize(item_id:, output_index:, part:, sequence_number:, summary_index:, type: :"response.reasoning_summary_part.done")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent} for more
+        #   details.
         #
         #   Emitted when a reasoning summary part is completed.
         #
@@ -44,13 +51,15 @@ module OpenAI
         #
         #   @param output_index [Integer] The index of the output item this summary part is associated with.
         #
-        #   @param part [OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part] The completed summary part.
+        #   @param part [OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent::Part] The completed summary part.
+        #
+        #   @param sequence_number [Integer] The sequence number of this event.
         #
         #   @param summary_index [Integer] The index of the summary part within the reasoning summary.
         #
         #   @param type [Symbol, :"response.reasoning_summary_part.done"] The type of the event. Always `response.reasoning_summary_part.done`.
 
-        # @see OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent#part
+        # @see OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent#part
         class Part < OpenAI::Internal::Type::BaseModel
           # @!attribute text
           #   The text of the summary part.

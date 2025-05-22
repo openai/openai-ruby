@@ -14,7 +14,7 @@ module OpenAI
         #   A list of one or many input items to the model, containing different content
         #   types.
         #
-        #   @return [Array<OpenAI::Responses::ResponseInputText, OpenAI::Responses::ResponseInputImage, OpenAI::Responses::ResponseInputFile>]
+        #   @return [Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile>]
         required :content,
                  -> {
                    OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseInputContent]
@@ -23,39 +23,39 @@ module OpenAI
         # @!attribute role
         #   The role of the message input. One of `user`, `system`, or `developer`.
         #
-        #   @return [Symbol, OpenAI::Responses::ResponseInputMessageItem::Role]
+        #   @return [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Role]
         required :role, enum: -> { OpenAI::Responses::ResponseInputMessageItem::Role }
 
         # @!attribute status
         #   The status of item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
         #
-        #   @return [Symbol, OpenAI::Responses::ResponseInputMessageItem::Status, nil]
+        #   @return [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Status, nil]
         optional :status, enum: -> { OpenAI::Responses::ResponseInputMessageItem::Status }
 
         # @!attribute type
         #   The type of the message input. Always set to `message`.
         #
-        #   @return [Symbol, OpenAI::Responses::ResponseInputMessageItem::Type, nil]
+        #   @return [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Type, nil]
         optional :type, enum: -> { OpenAI::Responses::ResponseInputMessageItem::Type }
 
         # @!method initialize(id:, content:, role:, status: nil, type: nil)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseInputMessageItem} for more details.
+        #   {OpenAI::Models::Responses::ResponseInputMessageItem} for more details.
         #
         #   @param id [String] The unique ID of the message input.
         #
-        #   @param content [Array<OpenAI::Responses::ResponseInputText, OpenAI::Responses::ResponseInputImage, OpenAI::Responses::ResponseInputFile>] A list of one or many input items to the model, containing different content
+        #   @param content [Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile>] A list of one or many input items to the model, containing different content
         #
-        #   @param role [Symbol, OpenAI::Responses::ResponseInputMessageItem::Role] The role of the message input. One of `user`, `system`, or `developer`.
+        #   @param role [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Role] The role of the message input. One of `user`, `system`, or `developer`.
         #
-        #   @param status [Symbol, OpenAI::Responses::ResponseInputMessageItem::Status] The status of item. One of `in_progress`, `completed`, or
+        #   @param status [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Status] The status of item. One of `in_progress`, `completed`, or
         #
-        #   @param type [Symbol, OpenAI::Responses::ResponseInputMessageItem::Type] The type of the message input. Always set to `message`.
+        #   @param type [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Type] The type of the message input. Always set to `message`.
 
         # The role of the message input. One of `user`, `system`, or `developer`.
         #
-        # @see OpenAI::Responses::ResponseInputMessageItem#role
+        # @see OpenAI::Models::Responses::ResponseInputMessageItem#role
         module Role
           extend OpenAI::Internal::Type::Enum
 
@@ -70,7 +70,7 @@ module OpenAI
         # The status of item. One of `in_progress`, `completed`, or `incomplete`.
         # Populated when items are returned via API.
         #
-        # @see OpenAI::Responses::ResponseInputMessageItem#status
+        # @see OpenAI::Models::Responses::ResponseInputMessageItem#status
         module Status
           extend OpenAI::Internal::Type::Enum
 
@@ -84,7 +84,7 @@ module OpenAI
 
         # The type of the message input. Always set to `message`.
         #
-        # @see OpenAI::Responses::ResponseInputMessageItem#type
+        # @see OpenAI::Models::Responses::ResponseInputMessageItem#type
         module Type
           extend OpenAI::Internal::Type::Enum
 

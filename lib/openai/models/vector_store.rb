@@ -18,7 +18,7 @@ module OpenAI
 
       # @!attribute file_counts
       #
-      #   @return [OpenAI::VectorStore::FileCounts]
+      #   @return [OpenAI::Models::VectorStore::FileCounts]
       required :file_counts, -> { OpenAI::VectorStore::FileCounts }
 
       # @!attribute last_active_at
@@ -55,7 +55,7 @@ module OpenAI
       #   `completed`. A status of `completed` indicates that the vector store is ready
       #   for use.
       #
-      #   @return [Symbol, OpenAI::VectorStore::Status]
+      #   @return [Symbol, OpenAI::Models::VectorStore::Status]
       required :status, enum: -> { OpenAI::VectorStore::Status }
 
       # @!attribute usage_bytes
@@ -67,8 +67,8 @@ module OpenAI
       # @!attribute expires_after
       #   The expiration policy for a vector store.
       #
-      #   @return [OpenAI::VectorStoreExpirationAfter, nil]
-      optional :expires_after, -> { OpenAI::VectorStoreExpirationAfter }
+      #   @return [OpenAI::Models::VectorStore::ExpiresAfter, nil]
+      optional :expires_after, -> { OpenAI::VectorStore::ExpiresAfter }
 
       # @!attribute expires_at
       #   The Unix timestamp (in seconds) for when the vector store will expire.
@@ -77,8 +77,8 @@ module OpenAI
       optional :expires_at, Integer, nil?: true
 
       # @!method initialize(id:, created_at:, file_counts:, last_active_at:, metadata:, name:, status:, usage_bytes:, expires_after: nil, expires_at: nil, object: :vector_store)
-      #   Some parameter documentations has been truncated, see {OpenAI::VectorStore} for
-      #   more details.
+      #   Some parameter documentations has been truncated, see
+      #   {OpenAI::Models::VectorStore} for more details.
       #
       #   A vector store is a collection of processed files can be used by the
       #   `file_search` tool.
@@ -87,7 +87,7 @@ module OpenAI
       #
       #   @param created_at [Integer] The Unix timestamp (in seconds) for when the vector store was created.
       #
-      #   @param file_counts [OpenAI::VectorStore::FileCounts]
+      #   @param file_counts [OpenAI::Models::VectorStore::FileCounts]
       #
       #   @param last_active_at [Integer, nil] The Unix timestamp (in seconds) for when the vector store was last active.
       #
@@ -95,17 +95,17 @@ module OpenAI
       #
       #   @param name [String] The name of the vector store.
       #
-      #   @param status [Symbol, OpenAI::VectorStore::Status] The status of the vector store, which can be either `expired`, `in_progress`, or
+      #   @param status [Symbol, OpenAI::Models::VectorStore::Status] The status of the vector store, which can be either `expired`, `in_progress`, or
       #
       #   @param usage_bytes [Integer] The total number of bytes used by the files in the vector store.
       #
-      #   @param expires_after [OpenAI::VectorStoreExpirationAfter] The expiration policy for a vector store.
+      #   @param expires_after [OpenAI::Models::VectorStore::ExpiresAfter] The expiration policy for a vector store.
       #
       #   @param expires_at [Integer, nil] The Unix timestamp (in seconds) for when the vector store will expire.
       #
       #   @param object [Symbol, :vector_store] The object type, which is always `vector_store`.
 
-      # @see OpenAI::VectorStore#file_counts
+      # @see OpenAI::Models::VectorStore#file_counts
       class FileCounts < OpenAI::Internal::Type::BaseModel
         # @!attribute cancelled
         #   The number of files that were cancelled.
@@ -153,7 +153,7 @@ module OpenAI
       # `completed`. A status of `completed` indicates that the vector store is ready
       # for use.
       #
-      # @see OpenAI::VectorStore#status
+      # @see OpenAI::Models::VectorStore#status
       module Status
         extend OpenAI::Internal::Type::Enum
 
@@ -163,6 +163,32 @@ module OpenAI
 
         # @!method self.values
         #   @return [Array<Symbol>]
+      end
+
+      # @see OpenAI::Models::VectorStore#expires_after
+      class ExpiresAfter < OpenAI::Internal::Type::BaseModel
+        # @!attribute anchor
+        #   Anchor timestamp after which the expiration policy applies. Supported anchors:
+        #   `last_active_at`.
+        #
+        #   @return [Symbol, :last_active_at]
+        required :anchor, const: :last_active_at
+
+        # @!attribute days
+        #   The number of days after the anchor time that the vector store will expire.
+        #
+        #   @return [Integer]
+        required :days, Integer
+
+        # @!method initialize(days:, anchor: :last_active_at)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::VectorStore::ExpiresAfter} for more details.
+        #
+        #   The expiration policy for a vector store.
+        #
+        #   @param days [Integer] The number of days after the anchor time that the vector store will expire.
+        #
+        #   @param anchor [Symbol, :last_active_at] Anchor timestamp after which the expiration policy applies. Supported anchors: `
       end
     end
   end
