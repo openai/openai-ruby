@@ -1,0 +1,28 @@
+name: Create releases
+on:
+  schedule:
+    - cron: '0 5 * * *' # every day at 5am UTC
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    name: release
+    if: github.ref == 'refs/heads/main' && github.repository == 'openai/openai-ruby'
+    runs-on: ubuntu-latest
+    environment: publish
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: stainless-api/trigger-release-please@v1
+        id: release
+        with:
+          repo: ${{ github.event.repository.full_name }}
+          stainless-api-key: ${{ secrets.STAINLESS_API_KEY }}
+
+      - name: Update RubyDocs
+        if: ${{ steps.release.outputs.releases_created }}
+        run: |
+          curl --request POST --include --header 'Content-Type: application/json' --data '{"repository":{"url":"https://github.com/openai/openai-ruby"}}' -- https://www.rubydoc.info/checkout
