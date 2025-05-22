@@ -25,6 +25,11 @@ module OpenAI
               ?type: :message_creation
             ) -> void
 
+            def to_hash: -> {
+              type: :message_creation,
+              message_creation: OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation
+            }
+
             type message_creation = { message_id: String }
 
             class MessageCreation < OpenAI::Internal::Type::BaseModel
@@ -33,6 +38,8 @@ module OpenAI
               def message_id=: (String) -> String
 
               def initialize: (?message_id: String) -> void
+
+              def to_hash: -> { message_id: String }
             end
           end
         end

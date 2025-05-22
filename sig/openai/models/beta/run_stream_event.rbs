@@ -28,6 +28,11 @@ module OpenAI
             data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.created"
           ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Run,
+            event: :"thread.run.created"
+          }
         end
 
         type thread_run_queued =
@@ -42,6 +47,11 @@ module OpenAI
             data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.queued"
           ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Run,
+            event: :"thread.run.queued"
+          }
         end
 
         type thread_run_in_progress =
@@ -56,6 +66,11 @@ module OpenAI
             data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.in_progress"
           ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Run,
+            event: :"thread.run.in_progress"
+          }
         end
 
         type thread_run_requires_action =
@@ -73,6 +88,11 @@ module OpenAI
             data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.requires_action"
           ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Run,
+            event: :"thread.run.requires_action"
+          }
         end
 
         type thread_run_completed =
@@ -87,6 +107,11 @@ module OpenAI
             data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.completed"
           ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Run,
+            event: :"thread.run.completed"
+          }
         end
 
         type thread_run_incomplete =
@@ -101,6 +126,11 @@ module OpenAI
             data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.incomplete"
           ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Run,
+            event: :"thread.run.incomplete"
+          }
         end
 
         type thread_run_failed =
@@ -115,6 +145,11 @@ module OpenAI
             data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.failed"
           ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Run,
+            event: :"thread.run.failed"
+          }
         end
 
         type thread_run_cancelling =
@@ -129,6 +164,11 @@ module OpenAI
             data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.cancelling"
           ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Run,
+            event: :"thread.run.cancelling"
+          }
         end
 
         type thread_run_cancelled =
@@ -143,6 +183,11 @@ module OpenAI
             data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.cancelled"
           ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Run,
+            event: :"thread.run.cancelled"
+          }
         end
 
         type thread_run_expired =
@@ -157,6 +202,11 @@ module OpenAI
             data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.expired"
           ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Run,
+            event: :"thread.run.expired"
+          }
         end
 
         def self?.variants: -> ::Array[OpenAI::Models::Beta::run_stream_event]

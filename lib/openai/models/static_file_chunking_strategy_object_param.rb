@@ -5,7 +5,7 @@ module OpenAI
     class StaticFileChunkingStrategyObjectParam < OpenAI::Internal::Type::BaseModel
       # @!attribute static
       #
-      #   @return [OpenAI::StaticFileChunkingStrategy]
+      #   @return [OpenAI::Models::StaticFileChunkingStrategy]
       required :static, -> { OpenAI::StaticFileChunkingStrategy }
 
       # @!attribute type
@@ -17,7 +17,7 @@ module OpenAI
       # @!method initialize(static:, type: :static)
       #   Customize your own chunking strategy by setting chunk size and chunk overlap.
       #
-      #   @param static [OpenAI::StaticFileChunkingStrategy]
+      #   @param static [OpenAI::Models::StaticFileChunkingStrategy]
       #
       #   @param type [Symbol, :static] Always `static`.
     end

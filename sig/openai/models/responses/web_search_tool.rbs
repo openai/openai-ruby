@@ -3,27 +3,33 @@ module OpenAI
     module Responses
       type web_search_tool =
         {
-          type: OpenAI::Responses::WebSearchTool::type_,
-          search_context_size: OpenAI::Responses::WebSearchTool::search_context_size,
+          type: OpenAI::Models::Responses::WebSearchTool::type_,
+          search_context_size: OpenAI::Models::Responses::WebSearchTool::search_context_size,
           user_location: OpenAI::Responses::WebSearchTool::UserLocation?
         }
 
       class WebSearchTool < OpenAI::Internal::Type::BaseModel
-        attr_accessor type: OpenAI::Responses::WebSearchTool::type_
+        attr_accessor type: OpenAI::Models::Responses::WebSearchTool::type_
 
-        attr_reader search_context_size: OpenAI::Responses::WebSearchTool::search_context_size?
+        attr_reader search_context_size: OpenAI::Models::Responses::WebSearchTool::search_context_size?
 
         def search_context_size=: (
-          OpenAI::Responses::WebSearchTool::search_context_size
-        ) -> OpenAI::Responses::WebSearchTool::search_context_size
+          OpenAI::Models::Responses::WebSearchTool::search_context_size
+        ) -> OpenAI::Models::Responses::WebSearchTool::search_context_size
 
         attr_accessor user_location: OpenAI::Responses::WebSearchTool::UserLocation?
 
         def initialize: (
-          type: OpenAI::Responses::WebSearchTool::type_,
-          ?search_context_size: OpenAI::Responses::WebSearchTool::search_context_size,
+          type: OpenAI::Models::Responses::WebSearchTool::type_,
+          ?search_context_size: OpenAI::Models::Responses::WebSearchTool::search_context_size,
           ?user_location: OpenAI::Responses::WebSearchTool::UserLocation?
         ) -> void
+
+        def to_hash: -> {
+          type: OpenAI::Models::Responses::WebSearchTool::type_,
+          search_context_size: OpenAI::Models::Responses::WebSearchTool::search_context_size,
+          user_location: OpenAI::Responses::WebSearchTool::UserLocation?
+        }
 
         type type_ = :web_search_preview | :web_search_preview_2025_03_11
 
@@ -33,7 +39,7 @@ module OpenAI
           WEB_SEARCH_PREVIEW: :web_search_preview
           WEB_SEARCH_PREVIEW_2025_03_11: :web_search_preview_2025_03_11
 
-          def self?.values: -> ::Array[OpenAI::Responses::WebSearchTool::type_]
+          def self?.values: -> ::Array[OpenAI::Models::Responses::WebSearchTool::type_]
         end
 
         type search_context_size = :low | :medium | :high
@@ -45,7 +51,7 @@ module OpenAI
           MEDIUM: :medium
           HIGH: :high
 
-          def self?.values: -> ::Array[OpenAI::Responses::WebSearchTool::search_context_size]
+          def self?.values: -> ::Array[OpenAI::Models::Responses::WebSearchTool::search_context_size]
         end
 
         type user_location =
@@ -75,6 +81,14 @@ module OpenAI
             ?timezone: String?,
             ?type: :approximate
           ) -> void
+
+          def to_hash: -> {
+            type: :approximate,
+            city: String?,
+            country: String?,
+            region: String?,
+            timezone: String?
+          }
         end
       end
     end

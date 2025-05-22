@@ -83,6 +83,27 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> void
 
+      def to_hash: -> {
+        model: OpenAI::Models::CompletionCreateParams::model,
+        prompt: OpenAI::Models::CompletionCreateParams::prompt?,
+        best_of: Integer?,
+        echo: bool?,
+        frequency_penalty: Float?,
+        logit_bias: ::Hash[Symbol, Integer]?,
+        logprobs: Integer?,
+        max_tokens: Integer?,
+        n: Integer?,
+        presence_penalty: Float?,
+        seed: Integer?,
+        stop: OpenAI::Models::CompletionCreateParams::stop?,
+        stream_options: OpenAI::Chat::ChatCompletionStreamOptions?,
+        suffix: String?,
+        temperature: Float?,
+        top_p: Float?,
+        user: String,
+        request_options: OpenAI::RequestOptions
+      }
+
       type model =
         String | :"gpt-3.5-turbo-instruct" | :"davinci-002" | :"babbage-002"
 

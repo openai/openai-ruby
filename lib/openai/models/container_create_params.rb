@@ -16,7 +16,7 @@ module OpenAI
       # @!attribute expires_after
       #   Container expiration time in seconds relative to the 'anchor' time.
       #
-      #   @return [OpenAI::ContainerCreateParams::ExpiresAfter, nil]
+      #   @return [OpenAI::Models::ContainerCreateParams::ExpiresAfter, nil]
       optional :expires_after, -> { OpenAI::ContainerCreateParams::ExpiresAfter }
 
       # @!attribute file_ids
@@ -28,7 +28,7 @@ module OpenAI
       # @!method initialize(name:, expires_after: nil, file_ids: nil, request_options: {})
       #   @param name [String] Name of the container to create.
       #
-      #   @param expires_after [OpenAI::ContainerCreateParams::ExpiresAfter] Container expiration time in seconds relative to the 'anchor' time.
+      #   @param expires_after [OpenAI::Models::ContainerCreateParams::ExpiresAfter] Container expiration time in seconds relative to the 'anchor' time.
       #
       #   @param file_ids [Array<String>] IDs of files to copy to the container.
       #
@@ -39,7 +39,7 @@ module OpenAI
         #   Time anchor for the expiration time. Currently only 'last_active_at' is
         #   supported.
         #
-        #   @return [Symbol, OpenAI::ContainerCreateParams::ExpiresAfter::Anchor]
+        #   @return [Symbol, OpenAI::Models::ContainerCreateParams::ExpiresAfter::Anchor]
         required :anchor, enum: -> { OpenAI::ContainerCreateParams::ExpiresAfter::Anchor }
 
         # @!attribute minutes
@@ -49,18 +49,18 @@ module OpenAI
 
         # @!method initialize(anchor:, minutes:)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::ContainerCreateParams::ExpiresAfter} for more details.
+        #   {OpenAI::Models::ContainerCreateParams::ExpiresAfter} for more details.
         #
         #   Container expiration time in seconds relative to the 'anchor' time.
         #
-        #   @param anchor [Symbol, OpenAI::ContainerCreateParams::ExpiresAfter::Anchor] Time anchor for the expiration time. Currently only 'last_active_at' is supporte
+        #   @param anchor [Symbol, OpenAI::Models::ContainerCreateParams::ExpiresAfter::Anchor] Time anchor for the expiration time. Currently only 'last_active_at' is supporte
         #
         #   @param minutes [Integer]
 
         # Time anchor for the expiration time. Currently only 'last_active_at' is
         # supported.
         #
-        # @see OpenAI::ContainerCreateParams::ExpiresAfter#anchor
+        # @see OpenAI::Models::ContainerCreateParams::ExpiresAfter#anchor
         module Anchor
           extend OpenAI::Internal::Type::Enum
 

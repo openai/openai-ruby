@@ -20,6 +20,12 @@ module OpenAI
         purpose: OpenAI::Models::file_purpose,
         ?request_options: OpenAI::request_opts
       ) -> void
+
+      def to_hash: -> {
+        file: OpenAI::Internal::file_input,
+        purpose: OpenAI::Models::file_purpose,
+        request_options: OpenAI::RequestOptions
+      }
     end
   end
 end

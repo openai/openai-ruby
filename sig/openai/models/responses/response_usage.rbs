@@ -29,12 +29,22 @@ module OpenAI
           total_tokens: Integer
         ) -> void
 
+        def to_hash: -> {
+          input_tokens: Integer,
+          input_tokens_details: OpenAI::Responses::ResponseUsage::InputTokensDetails,
+          output_tokens: Integer,
+          output_tokens_details: OpenAI::Responses::ResponseUsage::OutputTokensDetails,
+          total_tokens: Integer
+        }
+
         type input_tokens_details = { cached_tokens: Integer }
 
         class InputTokensDetails < OpenAI::Internal::Type::BaseModel
           attr_accessor cached_tokens: Integer
 
           def initialize: (cached_tokens: Integer) -> void
+
+          def to_hash: -> { cached_tokens: Integer }
         end
 
         type output_tokens_details = { reasoning_tokens: Integer }
@@ -43,6 +53,8 @@ module OpenAI
           attr_accessor reasoning_tokens: Integer
 
           def initialize: (reasoning_tokens: Integer) -> void
+
+          def to_hash: -> { reasoning_tokens: Integer }
         end
       end
     end

@@ -11,6 +11,8 @@ module OpenAI
         attr_accessor message: String
 
         def initialize: (code: String, message: String) -> void
+
+        def to_hash: -> { code: String, message: String }
       end
     end
   end

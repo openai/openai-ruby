@@ -42,7 +42,7 @@ module OpenAI
 
         # @!method initialize(content_index:, delta:, item_id:, output_index:, sequence_number:, type: :"response.refusal.delta")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseRefusalDeltaEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseRefusalDeltaEvent} for more details.
         #
         #   Emitted when there is a partial refusal text.
         #

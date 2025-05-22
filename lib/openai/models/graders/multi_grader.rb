@@ -12,7 +12,7 @@ module OpenAI
 
         # @!attribute graders
         #
-        #   @return [Hash{Symbol=>OpenAI::Graders::StringCheckGrader, OpenAI::Graders::TextSimilarityGrader, OpenAI::Graders::PythonGrader, OpenAI::Graders::ScoreModelGrader, OpenAI::Graders::LabelModelGrader}]
+        #   @return [Hash{Symbol=>OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::LabelModelGrader}]
         required :graders, -> { OpenAI::Internal::Type::HashOf[union: OpenAI::Graders::MultiGrader::Grader] }
 
         # @!attribute name
@@ -33,7 +33,7 @@ module OpenAI
         #
         #   @param calculate_output [String] A formula to calculate the output based on grader results.
         #
-        #   @param graders [Hash{Symbol=>OpenAI::Graders::StringCheckGrader, OpenAI::Graders::TextSimilarityGrader, OpenAI::Graders::PythonGrader, OpenAI::Graders::ScoreModelGrader, OpenAI::Graders::LabelModelGrader}]
+        #   @param graders [Hash{Symbol=>OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::LabelModelGrader}]
         #
         #   @param name [String] The name of the grader.
         #
@@ -61,7 +61,7 @@ module OpenAI
           variant -> { OpenAI::Graders::LabelModelGrader }
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Graders::StringCheckGrader, OpenAI::Graders::TextSimilarityGrader, OpenAI::Graders::PythonGrader, OpenAI::Graders::ScoreModelGrader, OpenAI::Graders::LabelModelGrader)]
+          #   @return [Array(OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::LabelModelGrader)]
         end
       end
     end

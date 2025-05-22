@@ -88,7 +88,7 @@ module OpenAI
           #   A list of one or many input items to the model, containing different content
           #   types.
           #
-          #   @return [Array<OpenAI::Responses::ResponseInputText, OpenAI::Responses::ResponseInputImage, OpenAI::Responses::ResponseInputFile>]
+          #   @return [Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile>]
           required :content,
                    -> {
                      OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseInputContent]
@@ -97,41 +97,41 @@ module OpenAI
           # @!attribute role
           #   The role of the message input. One of `user`, `system`, or `developer`.
           #
-          #   @return [Symbol, OpenAI::Responses::ResponseInputItem::Message::Role]
+          #   @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::Message::Role]
           required :role, enum: -> { OpenAI::Responses::ResponseInputItem::Message::Role }
 
           # @!attribute status
           #   The status of item. One of `in_progress`, `completed`, or `incomplete`.
           #   Populated when items are returned via API.
           #
-          #   @return [Symbol, OpenAI::Responses::ResponseInputItem::Message::Status, nil]
+          #   @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::Message::Status, nil]
           optional :status, enum: -> { OpenAI::Responses::ResponseInputItem::Message::Status }
 
           # @!attribute type
           #   The type of the message input. Always set to `message`.
           #
-          #   @return [Symbol, OpenAI::Responses::ResponseInputItem::Message::Type, nil]
+          #   @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::Message::Type, nil]
           optional :type, enum: -> { OpenAI::Responses::ResponseInputItem::Message::Type }
 
           # @!method initialize(content:, role:, status: nil, type: nil)
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Responses::ResponseInputItem::Message} for more details.
+          #   {OpenAI::Models::Responses::ResponseInputItem::Message} for more details.
           #
           #   A message input to the model with a role indicating instruction following
           #   hierarchy. Instructions given with the `developer` or `system` role take
           #   precedence over instructions given with the `user` role.
           #
-          #   @param content [Array<OpenAI::Responses::ResponseInputText, OpenAI::Responses::ResponseInputImage, OpenAI::Responses::ResponseInputFile>] A list of one or many input items to the model, containing different content
+          #   @param content [Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile>] A list of one or many input items to the model, containing different content
           #
-          #   @param role [Symbol, OpenAI::Responses::ResponseInputItem::Message::Role] The role of the message input. One of `user`, `system`, or `developer`.
+          #   @param role [Symbol, OpenAI::Models::Responses::ResponseInputItem::Message::Role] The role of the message input. One of `user`, `system`, or `developer`.
           #
-          #   @param status [Symbol, OpenAI::Responses::ResponseInputItem::Message::Status] The status of item. One of `in_progress`, `completed`, or
+          #   @param status [Symbol, OpenAI::Models::Responses::ResponseInputItem::Message::Status] The status of item. One of `in_progress`, `completed`, or
           #
-          #   @param type [Symbol, OpenAI::Responses::ResponseInputItem::Message::Type] The type of the message input. Always set to `message`.
+          #   @param type [Symbol, OpenAI::Models::Responses::ResponseInputItem::Message::Type] The type of the message input. Always set to `message`.
 
           # The role of the message input. One of `user`, `system`, or `developer`.
           #
-          # @see OpenAI::Responses::ResponseInputItem::Message#role
+          # @see OpenAI::Models::Responses::ResponseInputItem::Message#role
           module Role
             extend OpenAI::Internal::Type::Enum
 
@@ -146,7 +146,7 @@ module OpenAI
           # The status of item. One of `in_progress`, `completed`, or `incomplete`.
           # Populated when items are returned via API.
           #
-          # @see OpenAI::Responses::ResponseInputItem::Message#status
+          # @see OpenAI::Models::Responses::ResponseInputItem::Message#status
           module Status
             extend OpenAI::Internal::Type::Enum
 
@@ -160,7 +160,7 @@ module OpenAI
 
           # The type of the message input. Always set to `message`.
           #
-          # @see OpenAI::Responses::ResponseInputItem::Message#type
+          # @see OpenAI::Models::Responses::ResponseInputItem::Message#type
           module Type
             extend OpenAI::Internal::Type::Enum
 
@@ -181,7 +181,7 @@ module OpenAI
           # @!attribute output
           #   A computer screenshot image used with the computer use tool.
           #
-          #   @return [OpenAI::Responses::ResponseComputerToolCallOutputScreenshot]
+          #   @return [OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot]
           required :output, -> { OpenAI::Responses::ResponseComputerToolCallOutputScreenshot }
 
           # @!attribute type
@@ -200,7 +200,7 @@ module OpenAI
           #   The safety checks reported by the API that have been acknowledged by the
           #   developer.
           #
-          #   @return [Array<OpenAI::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck>, nil]
+          #   @return [Array<OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck>, nil]
           optional :acknowledged_safety_checks,
                    -> {
                      OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck]
@@ -211,26 +211,27 @@ module OpenAI
           #   The status of the message input. One of `in_progress`, `completed`, or
           #   `incomplete`. Populated when input items are returned via API.
           #
-          #   @return [Symbol, OpenAI::Responses::ResponseInputItem::ComputerCallOutput::Status, nil]
+          #   @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status, nil]
           optional :status,
                    enum: -> { OpenAI::Responses::ResponseInputItem::ComputerCallOutput::Status },
                    nil?: true
 
           # @!method initialize(call_id:, output:, id: nil, acknowledged_safety_checks: nil, status: nil, type: :computer_call_output)
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Responses::ResponseInputItem::ComputerCallOutput} for more details.
+          #   {OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput} for more
+          #   details.
           #
           #   The output of a computer tool call.
           #
           #   @param call_id [String] The ID of the computer tool call that produced the output.
           #
-          #   @param output [OpenAI::Responses::ResponseComputerToolCallOutputScreenshot] A computer screenshot image used with the computer use tool.
+          #   @param output [OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot] A computer screenshot image used with the computer use tool.
           #
           #   @param id [String, nil] The ID of the computer tool call output.
           #
-          #   @param acknowledged_safety_checks [Array<OpenAI::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck>, nil] The safety checks reported by the API that have been acknowledged by the develop
+          #   @param acknowledged_safety_checks [Array<OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck>, nil] The safety checks reported by the API that have been acknowledged by the develop
           #
-          #   @param status [Symbol, OpenAI::Responses::ResponseInputItem::ComputerCallOutput::Status, nil] The status of the message input. One of `in_progress`, `completed`, or `incomple
+          #   @param status [Symbol, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status, nil] The status of the message input. One of `in_progress`, `completed`, or `incomple
           #
           #   @param type [Symbol, :computer_call_output] The type of the computer tool call output. Always `computer_call_output`.
 
@@ -266,7 +267,7 @@ module OpenAI
           # The status of the message input. One of `in_progress`, `completed`, or
           # `incomplete`. Populated when input items are returned via API.
           #
-          # @see OpenAI::Responses::ResponseInputItem::ComputerCallOutput#status
+          # @see OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput#status
           module Status
             extend OpenAI::Internal::Type::Enum
 
@@ -309,14 +310,15 @@ module OpenAI
           #   The status of the item. One of `in_progress`, `completed`, or `incomplete`.
           #   Populated when items are returned via API.
           #
-          #   @return [Symbol, OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Status, nil]
+          #   @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status, nil]
           optional :status,
                    enum: -> { OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Status },
                    nil?: true
 
           # @!method initialize(call_id:, output:, id: nil, status: nil, type: :function_call_output)
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Responses::ResponseInputItem::FunctionCallOutput} for more details.
+          #   {OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput} for more
+          #   details.
           #
           #   The output of a function tool call.
           #
@@ -326,14 +328,14 @@ module OpenAI
           #
           #   @param id [String, nil] The unique ID of the function tool call output. Populated when this item is retu
           #
-          #   @param status [Symbol, OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Status, nil] The status of the item. One of `in_progress`, `completed`, or `incomplete`. Popu
+          #   @param status [Symbol, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status, nil] The status of the item. One of `in_progress`, `completed`, or `incomplete`. Popu
           #
           #   @param type [Symbol, :function_call_output] The type of the function tool call output. Always `function_call_output`.
 
           # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
           # Populated when items are returned via API.
           #
-          # @see OpenAI::Responses::ResponseInputItem::FunctionCallOutput#status
+          # @see OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput#status
           module Status
             extend OpenAI::Internal::Type::Enum
 
@@ -362,7 +364,7 @@ module OpenAI
           # @!attribute status
           #   The status of the image generation call.
           #
-          #   @return [Symbol, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Status]
+          #   @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall::Status]
           required :status, enum: -> { OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Status }
 
           # @!attribute type
@@ -373,7 +375,8 @@ module OpenAI
 
           # @!method initialize(id:, result:, status:, type: :image_generation_call)
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Responses::ResponseInputItem::ImageGenerationCall} for more details.
+          #   {OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall} for more
+          #   details.
           #
           #   An image generation request made by the model.
           #
@@ -381,13 +384,13 @@ module OpenAI
           #
           #   @param result [String, nil] The generated image encoded in base64.
           #
-          #   @param status [Symbol, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Status] The status of the image generation call.
+          #   @param status [Symbol, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall::Status] The status of the image generation call.
           #
           #   @param type [Symbol, :image_generation_call] The type of the image generation call. Always `image_generation_call`.
 
           # The status of the image generation call.
           #
-          # @see OpenAI::Responses::ResponseInputItem::ImageGenerationCall#status
+          # @see OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall#status
           module Status
             extend OpenAI::Internal::Type::Enum
 
@@ -411,7 +414,7 @@ module OpenAI
           # @!attribute action
           #   Execute a shell command on the server.
           #
-          #   @return [OpenAI::Responses::ResponseInputItem::LocalShellCall::Action]
+          #   @return [OpenAI::Models::Responses::ResponseInputItem::LocalShellCall::Action]
           required :action, -> { OpenAI::Responses::ResponseInputItem::LocalShellCall::Action }
 
           # @!attribute call_id
@@ -423,7 +426,7 @@ module OpenAI
           # @!attribute status
           #   The status of the local shell call.
           #
-          #   @return [Symbol, OpenAI::Responses::ResponseInputItem::LocalShellCall::Status]
+          #   @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall::Status]
           required :status, enum: -> { OpenAI::Responses::ResponseInputItem::LocalShellCall::Status }
 
           # @!attribute type
@@ -434,21 +437,21 @@ module OpenAI
 
           # @!method initialize(id:, action:, call_id:, status:, type: :local_shell_call)
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Responses::ResponseInputItem::LocalShellCall} for more details.
+          #   {OpenAI::Models::Responses::ResponseInputItem::LocalShellCall} for more details.
           #
           #   A tool call to run a command on the local shell.
           #
           #   @param id [String] The unique ID of the local shell call.
           #
-          #   @param action [OpenAI::Responses::ResponseInputItem::LocalShellCall::Action] Execute a shell command on the server.
+          #   @param action [OpenAI::Models::Responses::ResponseInputItem::LocalShellCall::Action] Execute a shell command on the server.
           #
           #   @param call_id [String] The unique ID of the local shell tool call generated by the model.
           #
-          #   @param status [Symbol, OpenAI::Responses::ResponseInputItem::LocalShellCall::Status] The status of the local shell call.
+          #   @param status [Symbol, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall::Status] The status of the local shell call.
           #
           #   @param type [Symbol, :local_shell_call] The type of the local shell call. Always `local_shell_call`.
 
-          # @see OpenAI::Responses::ResponseInputItem::LocalShellCall#action
+          # @see OpenAI::Models::Responses::ResponseInputItem::LocalShellCall#action
           class Action < OpenAI::Internal::Type::BaseModel
             # @!attribute command
             #   The command to run.
@@ -488,7 +491,8 @@ module OpenAI
 
             # @!method initialize(command:, env:, timeout_ms: nil, user: nil, working_directory: nil, type: :exec)
             #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Responses::ResponseInputItem::LocalShellCall::Action} for more details.
+            #   {OpenAI::Models::Responses::ResponseInputItem::LocalShellCall::Action} for more
+            #   details.
             #
             #   Execute a shell command on the server.
             #
@@ -507,7 +511,7 @@ module OpenAI
 
           # The status of the local shell call.
           #
-          # @see OpenAI::Responses::ResponseInputItem::LocalShellCall#status
+          # @see OpenAI::Models::Responses::ResponseInputItem::LocalShellCall#status
           module Status
             extend OpenAI::Internal::Type::Enum
 
@@ -542,14 +546,15 @@ module OpenAI
           # @!attribute status
           #   The status of the item. One of `in_progress`, `completed`, or `incomplete`.
           #
-          #   @return [Symbol, OpenAI::Responses::ResponseInputItem::LocalShellCallOutput::Status, nil]
+          #   @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput::Status, nil]
           optional :status,
                    enum: -> { OpenAI::Responses::ResponseInputItem::LocalShellCallOutput::Status },
                    nil?: true
 
           # @!method initialize(id:, output:, status: nil, type: :local_shell_call_output)
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Responses::ResponseInputItem::LocalShellCallOutput} for more details.
+          #   {OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput} for more
+          #   details.
           #
           #   The output of a local shell tool call.
           #
@@ -557,13 +562,13 @@ module OpenAI
           #
           #   @param output [String] A JSON string of the output of the local shell tool call.
           #
-          #   @param status [Symbol, OpenAI::Responses::ResponseInputItem::LocalShellCallOutput::Status, nil] The status of the item. One of `in_progress`, `completed`, or `incomplete`.
+          #   @param status [Symbol, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput::Status, nil] The status of the item. One of `in_progress`, `completed`, or `incomplete`.
           #
           #   @param type [Symbol, :local_shell_call_output] The type of the local shell tool call output. Always `local_shell_call_output`.
 
           # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
           #
-          # @see OpenAI::Responses::ResponseInputItem::LocalShellCallOutput#status
+          # @see OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput#status
           module Status
             extend OpenAI::Internal::Type::Enum
 
@@ -592,7 +597,7 @@ module OpenAI
           # @!attribute tools
           #   The tools available on the server.
           #
-          #   @return [Array<OpenAI::Responses::ResponseInputItem::McpListTools::Tool>]
+          #   @return [Array<OpenAI::Models::Responses::ResponseInputItem::McpListTools::Tool>]
           required :tools,
                    -> {
                      OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseInputItem::McpListTools::Tool]
@@ -612,7 +617,7 @@ module OpenAI
 
           # @!method initialize(id:, server_label:, tools:, error: nil, type: :mcp_list_tools)
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Responses::ResponseInputItem::McpListTools} for more details.
+          #   {OpenAI::Models::Responses::ResponseInputItem::McpListTools} for more details.
           #
           #   A list of tools available on an MCP server.
           #
@@ -620,7 +625,7 @@ module OpenAI
           #
           #   @param server_label [String] The label of the MCP server.
           #
-          #   @param tools [Array<OpenAI::Responses::ResponseInputItem::McpListTools::Tool>] The tools available on the server.
+          #   @param tools [Array<OpenAI::Models::Responses::ResponseInputItem::McpListTools::Tool>] The tools available on the server.
           #
           #   @param error [String, nil] Error message if the server could not list tools.
           #
@@ -653,7 +658,8 @@ module OpenAI
 
             # @!method initialize(input_schema:, name:, annotations: nil, description: nil)
             #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Responses::ResponseInputItem::McpListTools::Tool} for more details.
+            #   {OpenAI::Models::Responses::ResponseInputItem::McpListTools::Tool} for more
+            #   details.
             #
             #   A tool available on an MCP server.
             #
@@ -700,7 +706,8 @@ module OpenAI
 
           # @!method initialize(id:, arguments:, name:, server_label:, type: :mcp_approval_request)
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Responses::ResponseInputItem::McpApprovalRequest} for more details.
+          #   {OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest} for more
+          #   details.
           #
           #   A request for human approval of a tool invocation.
           #
@@ -748,7 +755,8 @@ module OpenAI
 
           # @!method initialize(approval_request_id:, approve:, id: nil, reason: nil, type: :mcp_approval_response)
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Responses::ResponseInputItem::McpApprovalResponse} for more details.
+          #   {OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse} for more
+          #   details.
           #
           #   A response to an MCP approval request.
           #
@@ -808,7 +816,7 @@ module OpenAI
 
           # @!method initialize(id:, arguments:, name:, server_label:, error: nil, output: nil, type: :mcp_call)
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Responses::ResponseInputItem::McpCall} for more details.
+          #   {OpenAI::Models::Responses::ResponseInputItem::McpCall} for more details.
           #
           #   An invocation of a tool on an MCP server.
           #
@@ -837,7 +845,7 @@ module OpenAI
           # @!attribute type
           #   The type of item to reference. Always `item_reference`.
           #
-          #   @return [Symbol, OpenAI::Responses::ResponseInputItem::ItemReference::Type, nil]
+          #   @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::ItemReference::Type, nil]
           optional :type, enum: -> { OpenAI::Responses::ResponseInputItem::ItemReference::Type }, nil?: true
 
           # @!method initialize(id:, type: nil)
@@ -845,11 +853,11 @@ module OpenAI
           #
           #   @param id [String] The ID of the item to reference.
           #
-          #   @param type [Symbol, OpenAI::Responses::ResponseInputItem::ItemReference::Type, nil] The type of item to reference. Always `item_reference`.
+          #   @param type [Symbol, OpenAI::Models::Responses::ResponseInputItem::ItemReference::Type, nil] The type of item to reference. Always `item_reference`.
 
           # The type of item to reference. Always `item_reference`.
           #
-          # @see OpenAI::Responses::ResponseInputItem::ItemReference#type
+          # @see OpenAI::Models::Responses::ResponseInputItem::ItemReference#type
           module Type
             extend OpenAI::Internal::Type::Enum
 
@@ -861,7 +869,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Responses::EasyInputMessage, OpenAI::Responses::ResponseInputItem::Message, OpenAI::Responses::ResponseOutputMessage, OpenAI::Responses::ResponseFileSearchToolCall, OpenAI::Responses::ResponseComputerToolCall, OpenAI::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Responses::ResponseFunctionWebSearch, OpenAI::Responses::ResponseFunctionToolCall, OpenAI::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Responses::ResponseReasoningItem, OpenAI::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Responses::ResponseCodeInterpreterToolCall, OpenAI::Responses::ResponseInputItem::LocalShellCall, OpenAI::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Responses::ResponseInputItem::McpListTools, OpenAI::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Responses::ResponseInputItem::McpCall, OpenAI::Responses::ResponseInputItem::ItemReference)]
+        #   @return [Array(OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseInputItem::ItemReference)]
       end
     end
   end

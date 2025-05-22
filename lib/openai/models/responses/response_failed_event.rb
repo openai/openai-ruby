@@ -7,7 +7,7 @@ module OpenAI
         # @!attribute response
         #   The response that failed.
         #
-        #   @return [OpenAI::Responses::Response]
+        #   @return [OpenAI::Models::Responses::Response]
         required :response, -> { OpenAI::Responses::Response }
 
         # @!attribute sequence_number
@@ -24,11 +24,11 @@ module OpenAI
 
         # @!method initialize(response:, sequence_number:, type: :"response.failed")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseFailedEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseFailedEvent} for more details.
         #
         #   An event that is emitted when a response fails.
         #
-        #   @param response [OpenAI::Responses::Response] The response that failed.
+        #   @param response [OpenAI::Models::Responses::Response] The response that failed.
         #
         #   @param sequence_number [Integer] The sequence number of this event.
         #

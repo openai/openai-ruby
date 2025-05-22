@@ -25,6 +25,13 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> void
 
+      def to_hash: -> {
+        expires_after: OpenAI::VectorStoreUpdateParams::ExpiresAfter?,
+        metadata: OpenAI::Models::metadata?,
+        name: String?,
+        request_options: OpenAI::RequestOptions
+      }
+
       type expires_after = { anchor: :last_active_at, days: Integer }
 
       class ExpiresAfter < OpenAI::Internal::Type::BaseModel
@@ -33,6 +40,8 @@ module OpenAI
         attr_accessor days: Integer
 
         def initialize: (days: Integer, ?anchor: :last_active_at) -> void
+
+        def to_hash: -> { anchor: :last_active_at, days: Integer }
       end
     end
   end

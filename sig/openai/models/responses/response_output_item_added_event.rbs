@@ -24,6 +24,13 @@ module OpenAI
           sequence_number: Integer,
           ?type: :"response.output_item.added"
         ) -> void
+
+        def to_hash: -> {
+          item: OpenAI::Models::Responses::response_output_item,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.output_item.added"
+        }
       end
     end
   end

@@ -36,7 +36,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(Symbol, OpenAI::Chat::ChatCompletionToolChoiceOption::Auto, OpenAI::Chat::ChatCompletionNamedToolChoice)]
+        #   @return [Array(Symbol, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto, OpenAI::Models::Chat::ChatCompletionNamedToolChoice)]
       end
     end
 

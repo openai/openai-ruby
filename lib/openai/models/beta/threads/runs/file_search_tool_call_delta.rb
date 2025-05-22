@@ -33,7 +33,7 @@ module OpenAI
 
             # @!method initialize(file_search:, index:, id: nil, type: :file_search)
             #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Beta::Threads::Runs::FileSearchToolCallDelta} for more details.
+            #   {OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta} for more details.
             #
             #   @param file_search [Object] For now, this is always going to be an empty object.
             #

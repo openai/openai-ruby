@@ -19,7 +19,7 @@ module OpenAI
         # @!attribute results
         #   The results of the code interpreter tool call.
         #
-        #   @return [Array<OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Logs, OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Files>]
+        #   @return [Array<OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files>]
         required :results,
                  -> {
                    OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseCodeInterpreterToolCall::Result]
@@ -28,7 +28,7 @@ module OpenAI
         # @!attribute status
         #   The status of the code interpreter tool call.
         #
-        #   @return [Symbol, OpenAI::Responses::ResponseCodeInterpreterToolCall::Status]
+        #   @return [Symbol, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status]
         required :status, enum: -> { OpenAI::Responses::ResponseCodeInterpreterToolCall::Status }
 
         # @!attribute type
@@ -45,7 +45,7 @@ module OpenAI
 
         # @!method initialize(id:, code:, results:, status:, container_id: nil, type: :code_interpreter_call)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseCodeInterpreterToolCall} for more details.
+        #   {OpenAI::Models::Responses::ResponseCodeInterpreterToolCall} for more details.
         #
         #   A tool call to run code.
         #
@@ -53,9 +53,9 @@ module OpenAI
         #
         #   @param code [String] The code to run.
         #
-        #   @param results [Array<OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Logs, OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Files>] The results of the code interpreter tool call.
+        #   @param results [Array<OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files>] The results of the code interpreter tool call.
         #
-        #   @param status [Symbol, OpenAI::Responses::ResponseCodeInterpreterToolCall::Status] The status of the code interpreter tool call.
+        #   @param status [Symbol, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status] The status of the code interpreter tool call.
         #
         #   @param container_id [String] The ID of the container used to run the code.
         #
@@ -88,8 +88,8 @@ module OpenAI
 
             # @!method initialize(logs:, type: :logs)
             #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Logs} for more
-            #   details.
+            #   {OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs} for
+            #   more details.
             #
             #   The output of a code interpreter tool call that is text.
             #
@@ -101,7 +101,7 @@ module OpenAI
           class Files < OpenAI::Internal::Type::BaseModel
             # @!attribute files
             #
-            #   @return [Array<OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Files::File>]
+            #   @return [Array<OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::File>]
             required :files,
                      -> {
                        OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Files::File]
@@ -115,12 +115,12 @@ module OpenAI
 
             # @!method initialize(files:, type: :files)
             #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Files} for more
-            #   details.
+            #   {OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files} for
+            #   more details.
             #
             #   The output of a code interpreter tool call that is a file.
             #
-            #   @param files [Array<OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Files::File>]
+            #   @param files [Array<OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::File>]
             #
             #   @param type [Symbol, :files] The type of the code interpreter file output. Always `files`.
 
@@ -139,8 +139,8 @@ module OpenAI
 
               # @!method initialize(file_id:, mime_type:)
               #   Some parameter documentations has been truncated, see
-              #   {OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Files::File} for
-              #   more details.
+              #   {OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::File}
+              #   for more details.
               #
               #   @param file_id [String] The ID of the file.
               #
@@ -149,12 +149,12 @@ module OpenAI
           end
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Logs, OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Files)]
+          #   @return [Array(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files)]
         end
 
         # The status of the code interpreter tool call.
         #
-        # @see OpenAI::Responses::ResponseCodeInterpreterToolCall#status
+        # @see OpenAI::Models::Responses::ResponseCodeInterpreterToolCall#status
         module Status
           extend OpenAI::Internal::Type::Enum
 

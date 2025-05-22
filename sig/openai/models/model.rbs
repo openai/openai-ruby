@@ -18,6 +18,13 @@ module OpenAI
         owned_by: String,
         ?object: :model
       ) -> void
+
+      def to_hash: -> {
+        id: String,
+        created: Integer,
+        object: :model,
+        owned_by: String
+      }
     end
   end
 end

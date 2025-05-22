@@ -12,19 +12,19 @@ module OpenAI
       #
       # @param image [Pathname, StringIO, IO, String, OpenAI::FilePart] The image to use as the basis for the variation(s). Must be a valid PNG file, le
       #
-      # @param model [String, Symbol, OpenAI::ImageModel, nil] The model to use for image generation. Only `dall-e-2` is supported at this time
+      # @param model [String, Symbol, OpenAI::Models::ImageModel, nil] The model to use for image generation. Only `dall-e-2` is supported at this time
       #
       # @param n [Integer, nil] The number of images to generate. Must be between 1 and 10.
       #
-      # @param response_format [Symbol, OpenAI::ImageCreateVariationParams::ResponseFormat, nil] The format in which the generated images are returned. Must be one of `url` or `
+      # @param response_format [Symbol, OpenAI::Models::ImageCreateVariationParams::ResponseFormat, nil] The format in which the generated images are returned. Must be one of `url` or `
       #
-      # @param size [Symbol, OpenAI::ImageCreateVariationParams::Size, nil] The size of the generated images. Must be one of `256x256`, `512x512`, or `1024x
+      # @param size [Symbol, OpenAI::Models::ImageCreateVariationParams::Size, nil] The size of the generated images. Must be one of `256x256`, `512x512`, or `1024x
       #
       # @param user [String] A unique identifier representing your end-user, which can help OpenAI to monitor
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::ImagesResponse]
+      # @return [OpenAI::Models::ImagesResponse]
       #
       # @see OpenAI::Models::ImageCreateVariationParams
       def create_variation(params)
@@ -51,25 +51,25 @@ module OpenAI
       #
       # @param prompt [String] A text description of the desired image(s). The maximum length is 1000 character
       #
-      # @param background [Symbol, OpenAI::ImageEditParams::Background, nil] Allows to set transparency for the background of the generated image(s).
+      # @param background [Symbol, OpenAI::Models::ImageEditParams::Background, nil] Allows to set transparency for the background of the generated image(s).
       #
       # @param mask [Pathname, StringIO, IO, String, OpenAI::FilePart] An additional image whose fully transparent areas (e.g. where alpha is zero) ind
       #
-      # @param model [String, Symbol, OpenAI::ImageModel, nil] The model to use for image generation. Only `dall-e-2` and `gpt-image-1` are sup
+      # @param model [String, Symbol, OpenAI::Models::ImageModel, nil] The model to use for image generation. Only `dall-e-2` and `gpt-image-1` are sup
       #
       # @param n [Integer, nil] The number of images to generate. Must be between 1 and 10.
       #
-      # @param quality [Symbol, OpenAI::ImageEditParams::Quality, nil] The quality of the image that will be generated. `high`, `medium` and `low` are
+      # @param quality [Symbol, OpenAI::Models::ImageEditParams::Quality, nil] The quality of the image that will be generated. `high`, `medium` and `low` are
       #
-      # @param response_format [Symbol, OpenAI::ImageEditParams::ResponseFormat, nil] The format in which the generated images are returned. Must be one of `url` or `
+      # @param response_format [Symbol, OpenAI::Models::ImageEditParams::ResponseFormat, nil] The format in which the generated images are returned. Must be one of `url` or `
       #
-      # @param size [Symbol, OpenAI::ImageEditParams::Size, nil] The size of the generated images. Must be one of `1024x1024`, `1536x1024` (lands
+      # @param size [Symbol, OpenAI::Models::ImageEditParams::Size, nil] The size of the generated images. Must be one of `1024x1024`, `1536x1024` (lands
       #
       # @param user [String] A unique identifier representing your end-user, which can help OpenAI to monitor
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::ImagesResponse]
+      # @return [OpenAI::Models::ImagesResponse]
       #
       # @see OpenAI::Models::ImageEditParams
       def edit(params)
@@ -94,31 +94,31 @@ module OpenAI
       #
       # @param prompt [String] A text description of the desired image(s). The maximum length is 32000 characte
       #
-      # @param background [Symbol, OpenAI::ImageGenerateParams::Background, nil] Allows to set transparency for the background of the generated image(s).
+      # @param background [Symbol, OpenAI::Models::ImageGenerateParams::Background, nil] Allows to set transparency for the background of the generated image(s).
       #
-      # @param model [String, Symbol, OpenAI::ImageModel, nil] The model to use for image generation. One of `dall-e-2`, `dall-e-3`, or `gpt-im
+      # @param model [String, Symbol, OpenAI::Models::ImageModel, nil] The model to use for image generation. One of `dall-e-2`, `dall-e-3`, or `gpt-im
       #
-      # @param moderation [Symbol, OpenAI::ImageGenerateParams::Moderation, nil] Control the content-moderation level for images generated by `gpt-image-1`. Must
+      # @param moderation [Symbol, OpenAI::Models::ImageGenerateParams::Moderation, nil] Control the content-moderation level for images generated by `gpt-image-1`. Must
       #
       # @param n [Integer, nil] The number of images to generate. Must be between 1 and 10. For `dall-e-3`, only
       #
       # @param output_compression [Integer, nil] The compression level (0-100%) for the generated images. This parameter is only
       #
-      # @param output_format [Symbol, OpenAI::ImageGenerateParams::OutputFormat, nil] The format in which the generated images are returned. This parameter is only su
+      # @param output_format [Symbol, OpenAI::Models::ImageGenerateParams::OutputFormat, nil] The format in which the generated images are returned. This parameter is only su
       #
-      # @param quality [Symbol, OpenAI::ImageGenerateParams::Quality, nil] The quality of the image that will be generated.
+      # @param quality [Symbol, OpenAI::Models::ImageGenerateParams::Quality, nil] The quality of the image that will be generated.
       #
-      # @param response_format [Symbol, OpenAI::ImageGenerateParams::ResponseFormat, nil] The format in which generated images with `dall-e-2` and `dall-e-3` are returned
+      # @param response_format [Symbol, OpenAI::Models::ImageGenerateParams::ResponseFormat, nil] The format in which generated images with `dall-e-2` and `dall-e-3` are returned
       #
-      # @param size [Symbol, OpenAI::ImageGenerateParams::Size, nil] The size of the generated images. Must be one of `1024x1024`, `1536x1024` (lands
+      # @param size [Symbol, OpenAI::Models::ImageGenerateParams::Size, nil] The size of the generated images. Must be one of `1024x1024`, `1536x1024` (lands
       #
-      # @param style [Symbol, OpenAI::ImageGenerateParams::Style, nil] The style of the generated images. This parameter is only supported for `dall-e-
+      # @param style [Symbol, OpenAI::Models::ImageGenerateParams::Style, nil] The style of the generated images. This parameter is only supported for `dall-e-
       #
       # @param user [String] A unique identifier representing your end-user, which can help OpenAI to monitor
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::ImagesResponse]
+      # @return [OpenAI::Models::ImagesResponse]
       #
       # @see OpenAI::Models::ImageGenerateParams
       def generate(params)

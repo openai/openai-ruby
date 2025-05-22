@@ -19,7 +19,7 @@ module OpenAI
         #   ID of the model to use. Only `whisper-1` (which is powered by our open source
         #   Whisper V2 model) is currently available.
         #
-        #   @return [String, Symbol, OpenAI::AudioModel]
+        #   @return [String, Symbol, OpenAI::Models::AudioModel]
         required :model, union: -> { OpenAI::Audio::TranslationCreateParams::Model }
 
         # @!attribute prompt
@@ -35,7 +35,7 @@ module OpenAI
         #   The format of the output, in one of these options: `json`, `text`, `srt`,
         #   `verbose_json`, or `vtt`.
         #
-        #   @return [Symbol, OpenAI::Audio::TranslationCreateParams::ResponseFormat, nil]
+        #   @return [Symbol, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat, nil]
         optional :response_format, enum: -> { OpenAI::Audio::TranslationCreateParams::ResponseFormat }
 
         # @!attribute temperature
@@ -54,11 +54,11 @@ module OpenAI
         #
         #   @param file [Pathname, StringIO, IO, String, OpenAI::FilePart] The audio file object (not file name) translate, in one of these formats: flac,
         #
-        #   @param model [String, Symbol, OpenAI::AudioModel] ID of the model to use. Only `whisper-1` (which is powered by our open source Wh
+        #   @param model [String, Symbol, OpenAI::Models::AudioModel] ID of the model to use. Only `whisper-1` (which is powered by our open source Wh
         #
         #   @param prompt [String] An optional text to guide the model's style or continue a previous audio segment
         #
-        #   @param response_format [Symbol, OpenAI::Audio::TranslationCreateParams::ResponseFormat] The format of the output, in one of these options: `json`, `text`, `srt`, `verbo
+        #   @param response_format [Symbol, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat] The format of the output, in one of these options: `json`, `text`, `srt`, `verbo
         #
         #   @param temperature [Float] The sampling temperature, between 0 and 1. Higher values like 0.8 will make the
         #
@@ -75,7 +75,7 @@ module OpenAI
           variant enum: -> { OpenAI::AudioModel }
 
           # @!method self.variants
-          #   @return [Array(String, Symbol, OpenAI::AudioModel)]
+          #   @return [Array(String, Symbol, OpenAI::Models::AudioModel)]
         end
 
         # The format of the output, in one of these options: `json`, `text`, `srt`,

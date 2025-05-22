@@ -33,7 +33,7 @@ module OpenAI
         variant :function, -> { OpenAI::Chat::ChatCompletionFunctionMessageParam }
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Chat::ChatCompletionDeveloperMessageParam, OpenAI::Chat::ChatCompletionSystemMessageParam, OpenAI::Chat::ChatCompletionUserMessageParam, OpenAI::Chat::ChatCompletionAssistantMessageParam, OpenAI::Chat::ChatCompletionToolMessageParam, OpenAI::Chat::ChatCompletionFunctionMessageParam)]
+        #   @return [Array(OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam, OpenAI::Models::Chat::ChatCompletionSystemMessageParam, OpenAI::Models::Chat::ChatCompletionUserMessageParam, OpenAI::Models::Chat::ChatCompletionAssistantMessageParam, OpenAI::Models::Chat::ChatCompletionToolMessageParam, OpenAI::Models::Chat::ChatCompletionFunctionMessageParam)]
       end
     end
 

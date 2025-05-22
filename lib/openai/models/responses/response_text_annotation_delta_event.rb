@@ -7,7 +7,7 @@ module OpenAI
         # @!attribute annotation
         #   A citation to a file.
         #
-        #   @return [OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation, OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation, OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath]
+        #   @return [OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath]
         required :annotation, union: -> { OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation }
 
         # @!attribute annotation_index
@@ -48,11 +48,11 @@ module OpenAI
 
         # @!method initialize(annotation:, annotation_index:, content_index:, item_id:, output_index:, sequence_number:, type: :"response.output_text.annotation.added")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseTextAnnotationDeltaEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent} for more details.
         #
         #   Emitted when a text annotation is added.
         #
-        #   @param annotation [OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation, OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation, OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath] A citation to a file.
+        #   @param annotation [OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath] A citation to a file.
         #
         #   @param annotation_index [Integer] The index of the annotation that was added.
         #
@@ -68,7 +68,7 @@ module OpenAI
 
         # A citation to a file.
         #
-        # @see OpenAI::Responses::ResponseTextAnnotationDeltaEvent#annotation
+        # @see OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent#annotation
         module Annotation
           extend OpenAI::Internal::Type::Union
 
@@ -182,8 +182,8 @@ module OpenAI
 
             # @!method initialize(file_id:, index:, type: :file_path)
             #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath} for
-            #   more details.
+            #   {OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath}
+            #   for more details.
             #
             #   A path to a file.
             #
@@ -195,7 +195,7 @@ module OpenAI
           end
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation, OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation, OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath)]
+          #   @return [Array(OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath)]
         end
       end
     end

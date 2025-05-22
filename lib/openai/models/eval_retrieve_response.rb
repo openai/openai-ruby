@@ -19,7 +19,7 @@ module OpenAI
       # @!attribute data_source_config
       #   Configuration of data sources used in runs of the evaluation.
       #
-      #   @return [OpenAI::EvalCustomDataSourceConfig, OpenAI::Models::EvalRetrieveResponse::DataSourceConfig::Logs, OpenAI::EvalStoredCompletionsDataSourceConfig]
+      #   @return [OpenAI::Models::EvalCustomDataSourceConfig, OpenAI::Models::EvalRetrieveResponse::DataSourceConfig::Logs, OpenAI::Models::EvalStoredCompletionsDataSourceConfig]
       required :data_source_config, union: -> { OpenAI::Models::EvalRetrieveResponse::DataSourceConfig }
 
       # @!attribute metadata
@@ -48,7 +48,7 @@ module OpenAI
       # @!attribute testing_criteria
       #   A list of testing criteria.
       #
-      #   @return [Array<OpenAI::Graders::LabelModelGrader, OpenAI::Graders::StringCheckGrader, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderTextSimilarity, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderPython, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderScoreModel>]
+      #   @return [Array<OpenAI::Models::Graders::LabelModelGrader, OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderTextSimilarity, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderPython, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderScoreModel>]
       required :testing_criteria,
                -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::EvalRetrieveResponse::TestingCriterion] }
 
@@ -67,13 +67,13 @@ module OpenAI
       #
       #   @param created_at [Integer] The Unix timestamp (in seconds) for when the eval was created.
       #
-      #   @param data_source_config [OpenAI::EvalCustomDataSourceConfig, OpenAI::Models::EvalRetrieveResponse::DataSourceConfig::Logs, OpenAI::EvalStoredCompletionsDataSourceConfig] Configuration of data sources used in runs of the evaluation.
+      #   @param data_source_config [OpenAI::Models::EvalCustomDataSourceConfig, OpenAI::Models::EvalRetrieveResponse::DataSourceConfig::Logs, OpenAI::Models::EvalStoredCompletionsDataSourceConfig] Configuration of data sources used in runs of the evaluation.
       #
       #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
       #
       #   @param name [String] The name of the evaluation.
       #
-      #   @param testing_criteria [Array<OpenAI::Graders::LabelModelGrader, OpenAI::Graders::StringCheckGrader, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderTextSimilarity, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderPython, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderScoreModel>] A list of testing criteria.
+      #   @param testing_criteria [Array<OpenAI::Models::Graders::LabelModelGrader, OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderTextSimilarity, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderPython, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderScoreModel>] A list of testing criteria.
       #
       #   @param object [Symbol, :eval] The object type.
 
@@ -143,7 +143,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::EvalCustomDataSourceConfig, OpenAI::Models::EvalRetrieveResponse::DataSourceConfig::Logs, OpenAI::EvalStoredCompletionsDataSourceConfig)]
+        #   @return [Array(OpenAI::Models::EvalCustomDataSourceConfig, OpenAI::Models::EvalRetrieveResponse::DataSourceConfig::Logs, OpenAI::Models::EvalStoredCompletionsDataSourceConfig)]
       end
 
       # A LabelModelGrader object which uses a model to assign labels to each item in
@@ -207,7 +207,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Graders::LabelModelGrader, OpenAI::Graders::StringCheckGrader, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderTextSimilarity, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderPython, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderScoreModel)]
+        #   @return [Array(OpenAI::Models::Graders::LabelModelGrader, OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderTextSimilarity, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderPython, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderScoreModel)]
       end
     end
   end

@@ -7,19 +7,23 @@ module OpenAI
         module Runs
           type run_step_delta =
             {
-              step_details: OpenAI::Beta::Threads::Runs::RunStepDelta::step_details
+              step_details: OpenAI::Models::Beta::Threads::Runs::RunStepDelta::step_details
             }
 
           class RunStepDelta < OpenAI::Internal::Type::BaseModel
-            attr_reader step_details: OpenAI::Beta::Threads::Runs::RunStepDelta::step_details?
+            attr_reader step_details: OpenAI::Models::Beta::Threads::Runs::RunStepDelta::step_details?
 
             def step_details=: (
-              OpenAI::Beta::Threads::Runs::RunStepDelta::step_details
-            ) -> OpenAI::Beta::Threads::Runs::RunStepDelta::step_details
+              OpenAI::Models::Beta::Threads::Runs::RunStepDelta::step_details
+            ) -> OpenAI::Models::Beta::Threads::Runs::RunStepDelta::step_details
 
             def initialize: (
-              ?step_details: OpenAI::Beta::Threads::Runs::RunStepDelta::step_details
+              ?step_details: OpenAI::Models::Beta::Threads::Runs::RunStepDelta::step_details
             ) -> void
+
+            def to_hash: -> {
+              step_details: OpenAI::Models::Beta::Threads::Runs::RunStepDelta::step_details
+            }
 
             type step_details =
               OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta
@@ -28,7 +32,7 @@ module OpenAI
             module StepDetails
               extend OpenAI::Internal::Type::Union
 
-              def self?.variants: -> ::Array[OpenAI::Beta::Threads::Runs::RunStepDelta::step_details]
+              def self?.variants: -> ::Array[OpenAI::Models::Beta::Threads::Runs::RunStepDelta::step_details]
             end
           end
         end

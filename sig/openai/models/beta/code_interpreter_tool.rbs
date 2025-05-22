@@ -7,6 +7,8 @@ module OpenAI
         attr_accessor type: :code_interpreter
 
         def initialize: (?type: :code_interpreter) -> void
+
+        def to_hash: -> { type: :code_interpreter }
       end
     end
   end

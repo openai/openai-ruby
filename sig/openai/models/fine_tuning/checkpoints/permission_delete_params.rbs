@@ -16,6 +16,11 @@ module OpenAI
             fine_tuned_model_checkpoint: String,
             ?request_options: OpenAI::request_opts
           ) -> void
+
+          def to_hash: -> {
+            fine_tuned_model_checkpoint: String,
+            request_options: OpenAI::RequestOptions
+          }
         end
       end
     end

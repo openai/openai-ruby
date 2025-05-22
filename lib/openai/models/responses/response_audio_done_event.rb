@@ -18,7 +18,7 @@ module OpenAI
 
         # @!method initialize(sequence_number:, type: :"response.audio.done")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseAudioDoneEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseAudioDoneEvent} for more details.
         #
         #   Emitted when the audio response is complete.
         #

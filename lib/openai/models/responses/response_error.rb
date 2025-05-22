@@ -7,7 +7,7 @@ module OpenAI
         # @!attribute code
         #   The error code for the response.
         #
-        #   @return [Symbol, OpenAI::Responses::ResponseError::Code]
+        #   @return [Symbol, OpenAI::Models::Responses::ResponseError::Code]
         required :code, enum: -> { OpenAI::Responses::ResponseError::Code }
 
         # @!attribute message
@@ -18,17 +18,17 @@ module OpenAI
 
         # @!method initialize(code:, message:)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseError} for more details.
+        #   {OpenAI::Models::Responses::ResponseError} for more details.
         #
         #   An error object returned when the model fails to generate a Response.
         #
-        #   @param code [Symbol, OpenAI::Responses::ResponseError::Code] The error code for the response.
+        #   @param code [Symbol, OpenAI::Models::Responses::ResponseError::Code] The error code for the response.
         #
         #   @param message [String] A human-readable description of the error.
 
         # The error code for the response.
         #
-        # @see OpenAI::Responses::ResponseError#code
+        # @see OpenAI::Models::Responses::ResponseError#code
         module Code
           extend OpenAI::Internal::Type::Enum
 

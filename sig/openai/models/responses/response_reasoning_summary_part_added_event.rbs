@@ -33,6 +33,15 @@ module OpenAI
           ?type: :"response.reasoning_summary_part.added"
         ) -> void
 
+        def to_hash: -> {
+          item_id: String,
+          output_index: Integer,
+          part: OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent::Part,
+          sequence_number: Integer,
+          summary_index: Integer,
+          type: :"response.reasoning_summary_part.added"
+        }
+
         type part = { text: String, type: :summary_text }
 
         class Part < OpenAI::Internal::Type::BaseModel
@@ -41,6 +50,8 @@ module OpenAI
           attr_accessor type: :summary_text
 
           def initialize: (text: String, ?type: :summary_text) -> void
+
+          def to_hash: -> { text: String, type: :summary_text }
         end
       end
     end

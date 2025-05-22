@@ -7,7 +7,7 @@ module OpenAI
         class ImageURLContentBlock < OpenAI::Internal::Type::BaseModel
           # @!attribute image_url
           #
-          #   @return [OpenAI::Beta::Threads::ImageURL]
+          #   @return [OpenAI::Models::Beta::Threads::ImageURL]
           required :image_url, -> { OpenAI::Beta::Threads::ImageURL }
 
           # @!attribute type
@@ -19,7 +19,7 @@ module OpenAI
           # @!method initialize(image_url:, type: :image_url)
           #   References an image URL in the content of a message.
           #
-          #   @param image_url [OpenAI::Beta::Threads::ImageURL]
+          #   @param image_url [OpenAI::Models::Beta::Threads::ImageURL]
           #
           #   @param type [Symbol, :image_url] The type of the content part.
         end

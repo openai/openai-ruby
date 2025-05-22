@@ -30,7 +30,8 @@ module OpenAI
 
         # @!method initialize(code:, output_index:, sequence_number:, type: :"response.code_interpreter_call.code.done")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseCodeInterpreterCallCodeDoneEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseCodeInterpreterCallCodeDoneEvent} for more
+        #   details.
         #
         #   Emitted when code snippet output is finalized by the code interpreter.
         #

@@ -42,7 +42,8 @@ module OpenAI
 
         # @!method initialize(delta:, item_id:, output_index:, sequence_number:, summary_index:, type: :"response.reasoning_summary_text.delta")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseReasoningSummaryTextDeltaEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseReasoningSummaryTextDeltaEvent} for more
+        #   details.
         #
         #   Emitted when a delta is added to a reasoning summary text.
         #

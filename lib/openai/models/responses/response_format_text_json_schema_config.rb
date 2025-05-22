@@ -43,7 +43,8 @@ module OpenAI
 
         # @!method initialize(name:, schema:, description: nil, strict: nil, type: :json_schema)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseFormatTextJSONSchemaConfig} for more details.
+        #   {OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig} for more
+        #   details.
         #
         #   JSON Schema response format. Used to generate structured JSON responses. Learn
         #   more about

@@ -12,7 +12,7 @@ module OpenAI
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::Model]
+      # @return [OpenAI::Models::Model]
       #
       # @see OpenAI::Models::ModelRetrieveParams
       def retrieve(model, params = {})
@@ -31,7 +31,7 @@ module OpenAI
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::Internal::Page<OpenAI::Model>]
+      # @return [OpenAI::Internal::Page<OpenAI::Models::Model>]
       #
       # @see OpenAI::Models::ModelListParams
       def list(params = {})
@@ -53,7 +53,7 @@ module OpenAI
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::ModelDeleted]
+      # @return [OpenAI::Models::ModelDeleted]
       #
       # @see OpenAI::Models::ModelDeleteParams
       def delete(model, params = {})

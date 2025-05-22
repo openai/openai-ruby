@@ -36,6 +36,15 @@ module OpenAI
         ?expires_after: OpenAI::Models::ContainerCreateResponse::ExpiresAfter
       ) -> void
 
+      def to_hash: -> {
+        id: String,
+        created_at: Integer,
+        name: String,
+        object: String,
+        status: String,
+        expires_after: OpenAI::Models::ContainerCreateResponse::ExpiresAfter
+      }
+
       type expires_after =
         {
           anchor: OpenAI::Models::ContainerCreateResponse::ExpiresAfter::anchor,
@@ -57,6 +66,11 @@ module OpenAI
           ?anchor: OpenAI::Models::ContainerCreateResponse::ExpiresAfter::anchor,
           ?minutes: Integer
         ) -> void
+
+        def to_hash: -> {
+          anchor: OpenAI::Models::ContainerCreateResponse::ExpiresAfter::anchor,
+          minutes: Integer
+        }
 
         type anchor = :last_active_at
 

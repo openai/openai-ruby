@@ -32,17 +32,17 @@ module OpenAI
         #
         # @overload create(messages:, model:, audio: nil, frequency_penalty: nil, function_call: nil, functions: nil, logit_bias: nil, logprobs: nil, max_completion_tokens: nil, max_tokens: nil, metadata: nil, modalities: nil, n: nil, parallel_tool_calls: nil, prediction: nil, presence_penalty: nil, reasoning_effort: nil, response_format: nil, seed: nil, service_tier: nil, stop: nil, store: nil, stream_options: nil, temperature: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, user: nil, web_search_options: nil, request_options: {})
         #
-        # @param messages [Array<OpenAI::Chat::ChatCompletionDeveloperMessageParam, OpenAI::Chat::ChatCompletionSystemMessageParam, OpenAI::Chat::ChatCompletionUserMessageParam, OpenAI::Chat::ChatCompletionAssistantMessageParam, OpenAI::Chat::ChatCompletionToolMessageParam, OpenAI::Chat::ChatCompletionFunctionMessageParam>] A list of messages comprising the conversation so far. Depending on the
+        # @param messages [Array<OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam, OpenAI::Models::Chat::ChatCompletionSystemMessageParam, OpenAI::Models::Chat::ChatCompletionUserMessageParam, OpenAI::Models::Chat::ChatCompletionAssistantMessageParam, OpenAI::Models::Chat::ChatCompletionToolMessageParam, OpenAI::Models::Chat::ChatCompletionFunctionMessageParam>] A list of messages comprising the conversation so far. Depending on the
         #
-        # @param model [String, Symbol, OpenAI::ChatModel] Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI
+        # @param model [String, Symbol, OpenAI::Models::ChatModel] Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI
         #
-        # @param audio [OpenAI::Chat::ChatCompletionAudioParam, nil] Parameters for audio output. Required when audio output is requested with
+        # @param audio [OpenAI::Models::Chat::ChatCompletionAudioParam, nil] Parameters for audio output. Required when audio output is requested with
         #
         # @param frequency_penalty [Float, nil] Number between -2.0 and 2.0. Positive values penalize new tokens based on
         #
-        # @param function_call [Symbol, OpenAI::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode, OpenAI::Chat::ChatCompletionFunctionCallOption] Deprecated in favor of `tool_choice`.
+        # @param function_call [Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode, OpenAI::Models::Chat::ChatCompletionFunctionCallOption] Deprecated in favor of `tool_choice`.
         #
-        # @param functions [Array<OpenAI::Chat::CompletionCreateParams::Function>] Deprecated in favor of `tools`.
+        # @param functions [Array<OpenAI::Models::Chat::CompletionCreateParams::Function>] Deprecated in favor of `tools`.
         #
         # @param logit_bias [Hash{Symbol=>Integer}, nil] Modify the likelihood of specified tokens appearing in the completion.
         #
@@ -54,35 +54,35 @@ module OpenAI
         #
         # @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #
-        # @param modalities [Array<Symbol, OpenAI::Chat::CompletionCreateParams::Modality>, nil] Output types that you would like the model to generate.
+        # @param modalities [Array<Symbol, OpenAI::Models::Chat::CompletionCreateParams::Modality>, nil] Output types that you would like the model to generate.
         #
         # @param n [Integer, nil] How many chat completion choices to generate for each input message. Note that y
         #
         # @param parallel_tool_calls [Boolean] Whether to enable [parallel function calling](https://platform.openai.com/docs/g
         #
-        # @param prediction [OpenAI::Chat::ChatCompletionPredictionContent, nil] Static predicted output content, such as the content of a text file that is
+        # @param prediction [OpenAI::Models::Chat::ChatCompletionPredictionContent, nil] Static predicted output content, such as the content of a text file that is
         #
         # @param presence_penalty [Float, nil] Number between -2.0 and 2.0. Positive values penalize new tokens based on
         #
-        # @param reasoning_effort [Symbol, OpenAI::ReasoningEffort, nil] **o-series models only**
+        # @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] **o-series models only**
         #
-        # @param response_format [OpenAI::ResponseFormatText, OpenAI::ResponseFormatJSONSchema, OpenAI::ResponseFormatJSONObject] An object specifying the format that the model must output.
+        # @param response_format [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject] An object specifying the format that the model must output.
         #
         # @param seed [Integer, nil] This feature is in Beta.
         #
-        # @param service_tier [Symbol, OpenAI::Chat::CompletionCreateParams::ServiceTier, nil] Specifies the latency tier to use for processing the request. This parameter is
+        # @param service_tier [Symbol, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier, nil] Specifies the latency tier to use for processing the request. This parameter is
         #
         # @param stop [String, Array<String>, nil] Not supported with latest reasoning models `o3` and `o4-mini`.
         #
         # @param store [Boolean, nil] Whether or not to store the output of this chat completion request for
         #
-        # @param stream_options [OpenAI::Chat::ChatCompletionStreamOptions, nil] Options for streaming response. Only set this when you set `stream: true`.
+        # @param stream_options [OpenAI::Models::Chat::ChatCompletionStreamOptions, nil] Options for streaming response. Only set this when you set `stream: true`.
         #
         # @param temperature [Float, nil] What sampling temperature to use, between 0 and 2. Higher values like 0.8 will m
         #
-        # @param tool_choice [Symbol, OpenAI::Chat::ChatCompletionToolChoiceOption::Auto, OpenAI::Chat::ChatCompletionNamedToolChoice] Controls which (if any) tool is called by the model.
+        # @param tool_choice [Symbol, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto, OpenAI::Models::Chat::ChatCompletionNamedToolChoice] Controls which (if any) tool is called by the model.
         #
-        # @param tools [Array<OpenAI::Chat::ChatCompletionTool>] A list of tools the model may call. Currently, only functions are supported as a
+        # @param tools [Array<OpenAI::Models::Chat::ChatCompletionTool>] A list of tools the model may call. Currently, only functions are supported as a
         #
         # @param top_logprobs [Integer, nil] An integer between 0 and 20 specifying the number of most likely tokens to
         #
@@ -90,11 +90,11 @@ module OpenAI
         #
         # @param user [String] A unique identifier representing your end-user, which can help OpenAI to monitor
         #
-        # @param web_search_options [OpenAI::Chat::CompletionCreateParams::WebSearchOptions] This tool searches the web for relevant results to use in a response.
+        # @param web_search_options [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions] This tool searches the web for relevant results to use in a response.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::Chat::ChatCompletion]
+        # @return [OpenAI::Models::Chat::ChatCompletion]
         #
         # @see OpenAI::Models::Chat::CompletionCreateParams
         def create(params)
@@ -210,17 +210,17 @@ module OpenAI
         #
         # @overload stream_raw(messages:, model:, audio: nil, frequency_penalty: nil, function_call: nil, functions: nil, logit_bias: nil, logprobs: nil, max_completion_tokens: nil, max_tokens: nil, metadata: nil, modalities: nil, n: nil, parallel_tool_calls: nil, prediction: nil, presence_penalty: nil, reasoning_effort: nil, response_format: nil, seed: nil, service_tier: nil, stop: nil, store: nil, stream_options: nil, temperature: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, user: nil, web_search_options: nil, request_options: {})
         #
-        # @param messages [Array<OpenAI::Chat::ChatCompletionDeveloperMessageParam, OpenAI::Chat::ChatCompletionSystemMessageParam, OpenAI::Chat::ChatCompletionUserMessageParam, OpenAI::Chat::ChatCompletionAssistantMessageParam, OpenAI::Chat::ChatCompletionToolMessageParam, OpenAI::Chat::ChatCompletionFunctionMessageParam>] A list of messages comprising the conversation so far. Depending on the
+        # @param messages [Array<OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam, OpenAI::Models::Chat::ChatCompletionSystemMessageParam, OpenAI::Models::Chat::ChatCompletionUserMessageParam, OpenAI::Models::Chat::ChatCompletionAssistantMessageParam, OpenAI::Models::Chat::ChatCompletionToolMessageParam, OpenAI::Models::Chat::ChatCompletionFunctionMessageParam>] A list of messages comprising the conversation so far. Depending on the
         #
-        # @param model [String, Symbol, OpenAI::ChatModel] Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI
+        # @param model [String, Symbol, OpenAI::Models::ChatModel] Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI
         #
-        # @param audio [OpenAI::Chat::ChatCompletionAudioParam, nil] Parameters for audio output. Required when audio output is requested with
+        # @param audio [OpenAI::Models::Chat::ChatCompletionAudioParam, nil] Parameters for audio output. Required when audio output is requested with
         #
         # @param frequency_penalty [Float, nil] Number between -2.0 and 2.0. Positive values penalize new tokens based on
         #
-        # @param function_call [Symbol, OpenAI::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode, OpenAI::Chat::ChatCompletionFunctionCallOption] Deprecated in favor of `tool_choice`.
+        # @param function_call [Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode, OpenAI::Models::Chat::ChatCompletionFunctionCallOption] Deprecated in favor of `tool_choice`.
         #
-        # @param functions [Array<OpenAI::Chat::CompletionCreateParams::Function>] Deprecated in favor of `tools`.
+        # @param functions [Array<OpenAI::Models::Chat::CompletionCreateParams::Function>] Deprecated in favor of `tools`.
         #
         # @param logit_bias [Hash{Symbol=>Integer}, nil] Modify the likelihood of specified tokens appearing in the completion.
         #
@@ -232,35 +232,35 @@ module OpenAI
         #
         # @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #
-        # @param modalities [Array<Symbol, OpenAI::Chat::CompletionCreateParams::Modality>, nil] Output types that you would like the model to generate.
+        # @param modalities [Array<Symbol, OpenAI::Models::Chat::CompletionCreateParams::Modality>, nil] Output types that you would like the model to generate.
         #
         # @param n [Integer, nil] How many chat completion choices to generate for each input message. Note that y
         #
         # @param parallel_tool_calls [Boolean] Whether to enable [parallel function calling](https://platform.openai.com/docs/g
         #
-        # @param prediction [OpenAI::Chat::ChatCompletionPredictionContent, nil] Static predicted output content, such as the content of a text file that is
+        # @param prediction [OpenAI::Models::Chat::ChatCompletionPredictionContent, nil] Static predicted output content, such as the content of a text file that is
         #
         # @param presence_penalty [Float, nil] Number between -2.0 and 2.0. Positive values penalize new tokens based on
         #
-        # @param reasoning_effort [Symbol, OpenAI::ReasoningEffort, nil] **o-series models only**
+        # @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] **o-series models only**
         #
-        # @param response_format [OpenAI::ResponseFormatText, OpenAI::ResponseFormatJSONSchema, OpenAI::ResponseFormatJSONObject] An object specifying the format that the model must output.
+        # @param response_format [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject] An object specifying the format that the model must output.
         #
         # @param seed [Integer, nil] This feature is in Beta.
         #
-        # @param service_tier [Symbol, OpenAI::Chat::CompletionCreateParams::ServiceTier, nil] Specifies the latency tier to use for processing the request. This parameter is
+        # @param service_tier [Symbol, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier, nil] Specifies the latency tier to use for processing the request. This parameter is
         #
         # @param stop [String, Array<String>, nil] Not supported with latest reasoning models `o3` and `o4-mini`.
         #
         # @param store [Boolean, nil] Whether or not to store the output of this chat completion request for
         #
-        # @param stream_options [OpenAI::Chat::ChatCompletionStreamOptions, nil] Options for streaming response. Only set this when you set `stream: true`.
+        # @param stream_options [OpenAI::Models::Chat::ChatCompletionStreamOptions, nil] Options for streaming response. Only set this when you set `stream: true`.
         #
         # @param temperature [Float, nil] What sampling temperature to use, between 0 and 2. Higher values like 0.8 will m
         #
-        # @param tool_choice [Symbol, OpenAI::Chat::ChatCompletionToolChoiceOption::Auto, OpenAI::Chat::ChatCompletionNamedToolChoice] Controls which (if any) tool is called by the model.
+        # @param tool_choice [Symbol, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto, OpenAI::Models::Chat::ChatCompletionNamedToolChoice] Controls which (if any) tool is called by the model.
         #
-        # @param tools [Array<OpenAI::Chat::ChatCompletionTool>] A list of tools the model may call. Currently, only functions are supported as a
+        # @param tools [Array<OpenAI::Models::Chat::ChatCompletionTool>] A list of tools the model may call. Currently, only functions are supported as a
         #
         # @param top_logprobs [Integer, nil] An integer between 0 and 20 specifying the number of most likely tokens to
         #
@@ -268,11 +268,11 @@ module OpenAI
         #
         # @param user [String] A unique identifier representing your end-user, which can help OpenAI to monitor
         #
-        # @param web_search_options [OpenAI::Chat::CompletionCreateParams::WebSearchOptions] This tool searches the web for relevant results to use in a response.
+        # @param web_search_options [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions] This tool searches the web for relevant results to use in a response.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::Internal::Stream<OpenAI::Chat::ChatCompletionChunk>]
+        # @return [OpenAI::Internal::Stream<OpenAI::Models::Chat::ChatCompletionChunk>]
         #
         # @see OpenAI::Models::Chat::CompletionCreateParams
         def stream_raw(params)
@@ -302,7 +302,7 @@ module OpenAI
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::Chat::ChatCompletion]
+        # @return [OpenAI::Models::Chat::ChatCompletion]
         #
         # @see OpenAI::Models::Chat::CompletionRetrieveParams
         def retrieve(completion_id, params = {})
@@ -329,7 +329,7 @@ module OpenAI
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::Chat::ChatCompletion]
+        # @return [OpenAI::Models::Chat::ChatCompletion]
         #
         # @see OpenAI::Models::Chat::CompletionUpdateParams
         def update(completion_id, params)
@@ -359,11 +359,11 @@ module OpenAI
         #
         # @param model [String] The model used to generate the Chat Completions.
         #
-        # @param order [Symbol, OpenAI::Chat::CompletionListParams::Order] Sort order for Chat Completions by timestamp. Use `asc` for ascending order or `
+        # @param order [Symbol, OpenAI::Models::Chat::CompletionListParams::Order] Sort order for Chat Completions by timestamp. Use `asc` for ascending order or `
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::Internal::CursorPage<OpenAI::Chat::ChatCompletion>]
+        # @return [OpenAI::Internal::CursorPage<OpenAI::Models::Chat::ChatCompletion>]
         #
         # @see OpenAI::Models::Chat::CompletionListParams
         def list(params = {})
@@ -387,7 +387,7 @@ module OpenAI
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::Chat::ChatCompletionDeleted]
+        # @return [OpenAI::Models::Chat::ChatCompletionDeleted]
         #
         # @see OpenAI::Models::Chat::CompletionDeleteParams
         def delete(completion_id, params = {})

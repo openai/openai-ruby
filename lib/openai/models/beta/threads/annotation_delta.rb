@@ -19,7 +19,7 @@ module OpenAI
           variant :file_path, -> { OpenAI::Beta::Threads::FilePathDeltaAnnotation }
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Beta::Threads::FileCitationDeltaAnnotation, OpenAI::Beta::Threads::FilePathDeltaAnnotation)]
+          #   @return [Array(OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation, OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation)]
         end
       end
     end

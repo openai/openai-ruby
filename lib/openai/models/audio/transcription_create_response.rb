@@ -19,7 +19,7 @@ module OpenAI
         variant -> { OpenAI::Audio::TranscriptionVerbose }
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Audio::Transcription, OpenAI::Audio::TranscriptionVerbose)]
+        #   @return [Array(OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionVerbose)]
       end
     end
   end

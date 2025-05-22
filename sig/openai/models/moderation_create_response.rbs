@@ -15,6 +15,12 @@ module OpenAI
         model: String,
         results: ::Array[OpenAI::Moderation]
       ) -> void
+
+      def to_hash: -> {
+        id: String,
+        model: String,
+        results: ::Array[OpenAI::Moderation]
+      }
     end
   end
 end

@@ -43,7 +43,8 @@ module OpenAI
 
         # @!method initialize(item_id:, output_index:, partial_image_b64:, partial_image_index:, sequence_number:, type: :"response.image_generation_call.partial_image")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseImageGenCallPartialImageEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseImageGenCallPartialImageEvent} for more
+        #   details.
         #
         #   Emitted when a partial image is available during image generation streaming.
         #

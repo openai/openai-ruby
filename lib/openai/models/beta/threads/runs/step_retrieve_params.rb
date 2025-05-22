@@ -29,7 +29,7 @@ module OpenAI
             #   [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
             #   for more information.
             #
-            #   @return [Array<Symbol, OpenAI::Beta::Threads::Runs::RunStepInclude>, nil]
+            #   @return [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>, nil]
             optional :include,
                      -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::Threads::Runs::RunStepInclude] }
 
@@ -41,7 +41,7 @@ module OpenAI
             #
             #   @param run_id [String]
             #
-            #   @param include [Array<Symbol, OpenAI::Beta::Threads::Runs::RunStepInclude>] A list of additional fields to include in the response. Currently the only suppo
+            #   @param include [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>] A list of additional fields to include in the response. Currently the only suppo
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
           end

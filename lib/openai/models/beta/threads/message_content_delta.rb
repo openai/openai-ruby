@@ -24,7 +24,7 @@ module OpenAI
           variant :image_url, -> { OpenAI::Beta::Threads::ImageURLDeltaBlock }
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Beta::Threads::ImageFileDeltaBlock, OpenAI::Beta::Threads::TextDeltaBlock, OpenAI::Beta::Threads::RefusalDeltaBlock, OpenAI::Beta::Threads::ImageURLDeltaBlock)]
+          #   @return [Array(OpenAI::Models::Beta::Threads::ImageFileDeltaBlock, OpenAI::Models::Beta::Threads::TextDeltaBlock, OpenAI::Models::Beta::Threads::RefusalDeltaBlock, OpenAI::Models::Beta::Threads::ImageURLDeltaBlock)]
         end
       end
     end

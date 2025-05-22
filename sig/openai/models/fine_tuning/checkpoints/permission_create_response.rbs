@@ -25,6 +25,13 @@ module OpenAI
             project_id: String,
             ?object: :"checkpoint.permission"
           ) -> void
+
+          def to_hash: -> {
+            id: String,
+            created_at: Integer,
+            object: :"checkpoint.permission",
+            project_id: String
+          }
         end
       end
     end

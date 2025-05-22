@@ -24,7 +24,7 @@ module OpenAI
         #   Additional fields to include in the response. See the `include` parameter for
         #   Response creation above for more information.
         #
-        #   @return [Array<Symbol, OpenAI::Responses::ResponseIncludable>, nil]
+        #   @return [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>, nil]
         optional :include, -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Responses::ResponseIncludable] }
 
         # @!attribute limit
@@ -40,7 +40,7 @@ module OpenAI
         #   - `asc`: Return the input items in ascending order.
         #   - `desc`: Return the input items in descending order.
         #
-        #   @return [Symbol, OpenAI::Responses::InputItemListParams::Order, nil]
+        #   @return [Symbol, OpenAI::Models::Responses::InputItemListParams::Order, nil]
         optional :order, enum: -> { OpenAI::Responses::InputItemListParams::Order }
 
         # @!method initialize(after: nil, before: nil, include: nil, limit: nil, order: nil, request_options: {})
@@ -51,11 +51,11 @@ module OpenAI
         #
         #   @param before [String] An item ID to list items before, used in pagination.
         #
-        #   @param include [Array<Symbol, OpenAI::Responses::ResponseIncludable>] Additional fields to include in the response. See the `include`
+        #   @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>] Additional fields to include in the response. See the `include`
         #
         #   @param limit [Integer] A limit on the number of objects to be returned. Limit can range between
         #
-        #   @param order [Symbol, OpenAI::Responses::InputItemListParams::Order] The order to return the input items in. Default is `asc`.
+        #   @param order [Symbol, OpenAI::Models::Responses::InputItemListParams::Order] The order to return the input items in. Default is `asc`.
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

@@ -24,7 +24,7 @@ module OpenAI
       end
 
       # @!method self.variants
-      #   @return [Array(String, Symbol, OpenAI::ChatModel, Symbol, OpenAI::AllModels::ResponsesOnlyModel)]
+      #   @return [Array(String, Symbol, OpenAI::Models::ChatModel, Symbol, OpenAI::Models::AllModels::ResponsesOnlyModel)]
     end
   end
 end

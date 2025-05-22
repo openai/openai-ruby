@@ -7,7 +7,7 @@ module OpenAI
         # @!attribute source
         #   Determines what populates the `item` namespace in the data source.
         #
-        #   @return [OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent, OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileID]
+        #   @return [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent, OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileID]
         required :source, union: -> { OpenAI::Evals::CreateEvalJSONLRunDataSource::Source }
 
         # @!attribute type
@@ -20,13 +20,13 @@ module OpenAI
         #   A JsonlRunDataSource object with that specifies a JSONL file that matches the
         #   eval
         #
-        #   @param source [OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent, OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileID] Determines what populates the `item` namespace in the data source.
+        #   @param source [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent, OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileID] Determines what populates the `item` namespace in the data source.
         #
         #   @param type [Symbol, :jsonl] The type of data source. Always `jsonl`.
 
         # Determines what populates the `item` namespace in the data source.
         #
-        # @see OpenAI::Evals::CreateEvalJSONLRunDataSource#source
+        # @see OpenAI::Models::Evals::CreateEvalJSONLRunDataSource#source
         module Source
           extend OpenAI::Internal::Type::Union
 
@@ -40,7 +40,7 @@ module OpenAI
             # @!attribute content
             #   The content of the jsonl file.
             #
-            #   @return [Array<OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content>]
+            #   @return [Array<OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content>]
             required :content,
                      -> {
                        OpenAI::Internal::Type::ArrayOf[OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content]
@@ -53,7 +53,7 @@ module OpenAI
             required :type, const: :file_content
 
             # @!method initialize(content:, type: :file_content)
-            #   @param content [Array<OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content>] The content of the jsonl file.
+            #   @param content [Array<OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content>] The content of the jsonl file.
             #
             #   @param type [Symbol, :file_content] The type of jsonl source. Always `file_content`.
 
@@ -94,7 +94,7 @@ module OpenAI
           end
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent, OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileID)]
+          #   @return [Array(OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent, OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileID)]
         end
       end
     end

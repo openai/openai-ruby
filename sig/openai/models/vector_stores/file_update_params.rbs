@@ -4,7 +4,7 @@ module OpenAI
       type file_update_params =
         {
           vector_store_id: String,
-          attributes: ::Hash[Symbol, OpenAI::VectorStores::FileUpdateParams::attribute]?
+          attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileUpdateParams::attribute]?
         }
         & OpenAI::Internal::Type::request_parameters
 
@@ -14,20 +14,26 @@ module OpenAI
 
         attr_accessor vector_store_id: String
 
-        attr_accessor attributes: ::Hash[Symbol, OpenAI::VectorStores::FileUpdateParams::attribute]?
+        attr_accessor attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileUpdateParams::attribute]?
 
         def initialize: (
           vector_store_id: String,
-          attributes: ::Hash[Symbol, OpenAI::VectorStores::FileUpdateParams::attribute]?,
+          attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileUpdateParams::attribute]?,
           ?request_options: OpenAI::request_opts
         ) -> void
+
+        def to_hash: -> {
+          vector_store_id: String,
+          attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileUpdateParams::attribute]?,
+          request_options: OpenAI::RequestOptions
+        }
 
         type attribute = String | Float | bool
 
         module Attribute
           extend OpenAI::Internal::Type::Union
 
-          def self?.variants: -> ::Array[OpenAI::VectorStores::FileUpdateParams::attribute]
+          def self?.variants: -> ::Array[OpenAI::Models::VectorStores::FileUpdateParams::attribute]
         end
       end
     end

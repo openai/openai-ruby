@@ -33,7 +33,7 @@ module OpenAI
           # @!attribute metrics
           #   Metrics at the step number during the fine-tuning job.
           #
-          #   @return [OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics]
+          #   @return [OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics]
           required :metrics, -> { OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics }
 
           # @!attribute object
@@ -60,13 +60,13 @@ module OpenAI
           #
           #   @param fine_tuning_job_id [String] The name of the fine-tuning job that this checkpoint was created from.
           #
-          #   @param metrics [OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics] Metrics at the step number during the fine-tuning job.
+          #   @param metrics [OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics] Metrics at the step number during the fine-tuning job.
           #
           #   @param step_number [Integer] The step number that the checkpoint was created at.
           #
           #   @param object [Symbol, :"fine_tuning.job.checkpoint"] The object type, which is always "fine_tuning.job.checkpoint".
 
-          # @see OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint#metrics
+          # @see OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint#metrics
           class Metrics < OpenAI::Internal::Type::BaseModel
             # @!attribute full_valid_loss
             #

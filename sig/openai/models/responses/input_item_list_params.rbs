@@ -48,6 +48,15 @@ module OpenAI
           ?request_options: OpenAI::request_opts
         ) -> void
 
+        def to_hash: -> {
+          after: String,
+          before: String,
+          include: ::Array[OpenAI::Models::Responses::response_includable],
+          limit: Integer,
+          order: OpenAI::Models::Responses::InputItemListParams::order,
+          request_options: OpenAI::RequestOptions
+        }
+
         type order = :asc | :desc
 
         module Order

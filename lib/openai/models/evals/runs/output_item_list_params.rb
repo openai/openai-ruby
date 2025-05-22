@@ -30,14 +30,14 @@ module OpenAI
           #   Sort order for output items by timestamp. Use `asc` for ascending order or
           #   `desc` for descending order. Defaults to `asc`.
           #
-          #   @return [Symbol, OpenAI::Evals::Runs::OutputItemListParams::Order, nil]
+          #   @return [Symbol, OpenAI::Models::Evals::Runs::OutputItemListParams::Order, nil]
           optional :order, enum: -> { OpenAI::Evals::Runs::OutputItemListParams::Order }
 
           # @!attribute status
           #   Filter output items by status. Use `failed` to filter by failed output items or
           #   `pass` to filter by passed output items.
           #
-          #   @return [Symbol, OpenAI::Evals::Runs::OutputItemListParams::Status, nil]
+          #   @return [Symbol, OpenAI::Models::Evals::Runs::OutputItemListParams::Status, nil]
           optional :status, enum: -> { OpenAI::Evals::Runs::OutputItemListParams::Status }
 
           # @!method initialize(eval_id:, after: nil, limit: nil, order: nil, status: nil, request_options: {})
@@ -50,9 +50,9 @@ module OpenAI
           #
           #   @param limit [Integer] Number of output items to retrieve.
           #
-          #   @param order [Symbol, OpenAI::Evals::Runs::OutputItemListParams::Order] Sort order for output items by timestamp. Use `asc` for ascending order or `desc
+          #   @param order [Symbol, OpenAI::Models::Evals::Runs::OutputItemListParams::Order] Sort order for output items by timestamp. Use `asc` for ascending order or `desc
           #
-          #   @param status [Symbol, OpenAI::Evals::Runs::OutputItemListParams::Status] Filter output items by status. Use `failed` to filter by failed output
+          #   @param status [Symbol, OpenAI::Models::Evals::Runs::OutputItemListParams::Status] Filter output items by status. Use `failed` to filter by failed output
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

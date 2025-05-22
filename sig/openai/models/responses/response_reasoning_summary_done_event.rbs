@@ -32,6 +32,15 @@ module OpenAI
           text: String,
           ?type: :"response.reasoning_summary.done"
         ) -> void
+
+        def to_hash: -> {
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          summary_index: Integer,
+          text: String,
+          type: :"response.reasoning_summary.done"
+        }
       end
     end
   end

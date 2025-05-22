@@ -27,6 +27,13 @@ module OpenAI
           top_logprobs: ::Array[OpenAI::Chat::ChatCompletionTokenLogprob::TopLogprob]
         ) -> void
 
+        def to_hash: -> {
+          token: String,
+          bytes: ::Array[Integer]?,
+          logprob: Float,
+          top_logprobs: ::Array[OpenAI::Chat::ChatCompletionTokenLogprob::TopLogprob]
+        }
+
         type top_logprob =
           { token: String, bytes: ::Array[Integer]?, logprob: Float }
 
@@ -42,6 +49,12 @@ module OpenAI
             bytes: ::Array[Integer]?,
             logprob: Float
           ) -> void
+
+          def to_hash: -> {
+            token: String,
+            bytes: ::Array[Integer]?,
+            logprob: Float
+          }
         end
       end
     end

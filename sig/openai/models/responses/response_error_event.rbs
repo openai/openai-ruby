@@ -28,6 +28,14 @@ module OpenAI
           sequence_number: Integer,
           ?type: :error
         ) -> void
+
+        def to_hash: -> {
+          code: String?,
+          message: String,
+          param: String?,
+          sequence_number: Integer,
+          type: :error
+        }
       end
     end
   end

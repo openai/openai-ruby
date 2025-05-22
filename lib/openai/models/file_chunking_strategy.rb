@@ -14,7 +14,7 @@ module OpenAI
       variant :other, -> { OpenAI::OtherFileChunkingStrategyObject }
 
       # @!method self.variants
-      #   @return [Array(OpenAI::StaticFileChunkingStrategyObject, OpenAI::OtherFileChunkingStrategyObject)]
+      #   @return [Array(OpenAI::Models::StaticFileChunkingStrategyObject, OpenAI::Models::OtherFileChunkingStrategyObject)]
     end
   end
 end

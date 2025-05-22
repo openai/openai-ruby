@@ -38,7 +38,7 @@ module OpenAI
           #   Sort order by the `created_at` timestamp of the objects. `asc` for ascending
           #   order and `desc` for descending order.
           #
-          #   @return [Symbol, OpenAI::Beta::Threads::MessageListParams::Order, nil]
+          #   @return [Symbol, OpenAI::Models::Beta::Threads::MessageListParams::Order, nil]
           optional :order, enum: -> { OpenAI::Beta::Threads::MessageListParams::Order }
 
           # @!attribute run_id
@@ -57,7 +57,7 @@ module OpenAI
           #
           #   @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
           #
-          #   @param order [Symbol, OpenAI::Beta::Threads::MessageListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
+          #   @param order [Symbol, OpenAI::Models::Beta::Threads::MessageListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
           #
           #   @param run_id [String] Filter messages by the run ID that generated them.
           #

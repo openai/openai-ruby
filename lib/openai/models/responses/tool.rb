@@ -56,7 +56,7 @@ module OpenAI
           # @!attribute allowed_tools
           #   List of allowed tool names or a filter object.
           #
-          #   @return [Array<String>, OpenAI::Responses::Tool::Mcp::AllowedTools::McpAllowedToolsFilter, nil]
+          #   @return [Array<String>, OpenAI::Models::Responses::Tool::Mcp::AllowedTools::McpAllowedToolsFilter, nil]
           optional :allowed_tools, union: -> { OpenAI::Responses::Tool::Mcp::AllowedTools }, nil?: true
 
           # @!attribute headers
@@ -69,12 +69,12 @@ module OpenAI
           # @!attribute require_approval
           #   Specify which of the MCP server's tools require approval.
           #
-          #   @return [OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter, Symbol, OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalSetting, nil]
+          #   @return [OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter, Symbol, OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalSetting, nil]
           optional :require_approval, union: -> { OpenAI::Responses::Tool::Mcp::RequireApproval }, nil?: true
 
           # @!method initialize(server_label:, server_url:, allowed_tools: nil, headers: nil, require_approval: nil, type: :mcp)
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Responses::Tool::Mcp} for more details.
+          #   {OpenAI::Models::Responses::Tool::Mcp} for more details.
           #
           #   Give the model access to additional tools via remote Model Context Protocol
           #   (MCP) servers.
@@ -84,22 +84,22 @@ module OpenAI
           #
           #   @param server_url [String] The URL for the MCP server.
           #
-          #   @param allowed_tools [Array<String>, OpenAI::Responses::Tool::Mcp::AllowedTools::McpAllowedToolsFilter, nil] List of allowed tool names or a filter object.
+          #   @param allowed_tools [Array<String>, OpenAI::Models::Responses::Tool::Mcp::AllowedTools::McpAllowedToolsFilter, nil] List of allowed tool names or a filter object.
           #
           #   @param headers [Hash{Symbol=>String}, nil] Optional HTTP headers to send to the MCP server. Use for authentication
           #
-          #   @param require_approval [OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter, Symbol, OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalSetting, nil] Specify which of the MCP server's tools require approval.
+          #   @param require_approval [OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter, Symbol, OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalSetting, nil] Specify which of the MCP server's tools require approval.
           #
           #   @param type [Symbol, :mcp] The type of the MCP tool. Always `mcp`.
 
           # List of allowed tool names or a filter object.
           #
-          # @see OpenAI::Responses::Tool::Mcp#allowed_tools
+          # @see OpenAI::Models::Responses::Tool::Mcp#allowed_tools
           module AllowedTools
             extend OpenAI::Internal::Type::Union
 
             # A string array of allowed tool names
-            variant -> { OpenAI::Responses::Tool::Mcp::AllowedTools::StringArray }
+            variant -> { OpenAI::Models::Responses::Tool::Mcp::AllowedTools::StringArray }
 
             # A filter object to specify which tools are allowed.
             variant -> { OpenAI::Responses::Tool::Mcp::AllowedTools::McpAllowedToolsFilter }
@@ -118,7 +118,7 @@ module OpenAI
             end
 
             # @!method self.variants
-            #   @return [Array(Array<String>, OpenAI::Responses::Tool::Mcp::AllowedTools::McpAllowedToolsFilter)]
+            #   @return [Array(Array<String>, OpenAI::Models::Responses::Tool::Mcp::AllowedTools::McpAllowedToolsFilter)]
 
             # @type [OpenAI::Internal::Type::Converter]
             StringArray = OpenAI::Internal::Type::ArrayOf[String]
@@ -126,7 +126,7 @@ module OpenAI
 
           # Specify which of the MCP server's tools require approval.
           #
-          # @see OpenAI::Responses::Tool::Mcp#require_approval
+          # @see OpenAI::Models::Responses::Tool::Mcp#require_approval
           module RequireApproval
             extend OpenAI::Internal::Type::Union
 
@@ -141,7 +141,7 @@ module OpenAI
               # @!attribute always
               #   A list of tools that always require approval.
               #
-              #   @return [OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always, nil]
+              #   @return [OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always, nil]
               optional :always,
                        -> {
                          OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always
@@ -150,7 +150,7 @@ module OpenAI
               # @!attribute never
               #   A list of tools that never require approval.
               #
-              #   @return [OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never, nil]
+              #   @return [OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never, nil]
               optional :never,
                        -> {
                          OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never
@@ -164,16 +164,16 @@ module OpenAI
 
               # @!method initialize(always: nil, never: nil, tool_names: nil)
               #   Some parameter documentations has been truncated, see
-              #   {OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter} for more
-              #   details.
+              #   {OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter}
+              #   for more details.
               #
-              #   @param always [OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always] A list of tools that always require approval.
+              #   @param always [OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always] A list of tools that always require approval.
               #
-              #   @param never [OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never] A list of tools that never require approval.
+              #   @param never [OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never] A list of tools that never require approval.
               #
               #   @param tool_names [Array<String>] List of allowed tool names.
 
-              # @see OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter#always
+              # @see OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter#always
               class Always < OpenAI::Internal::Type::BaseModel
                 # @!attribute tool_names
                 #   List of tools that require approval.
@@ -187,7 +187,7 @@ module OpenAI
                 #   @param tool_names [Array<String>] List of tools that require approval.
               end
 
-              # @see OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter#never
+              # @see OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter#never
               class Never < OpenAI::Internal::Type::BaseModel
                 # @!attribute tool_names
                 #   List of tools that do not require approval.
@@ -216,7 +216,7 @@ module OpenAI
             end
 
             # @!method self.variants
-            #   @return [Array(OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter, Symbol, OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalSetting)]
+            #   @return [Array(OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter, Symbol, OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalSetting)]
           end
         end
 
@@ -225,7 +225,7 @@ module OpenAI
           #   The code interpreter container. Can be a container ID or an object that
           #   specifies uploaded file IDs to make available to your code.
           #
-          #   @return [String, OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto]
+          #   @return [String, OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto]
           required :container, union: -> { OpenAI::Responses::Tool::CodeInterpreter::Container }
 
           # @!attribute type
@@ -236,18 +236,18 @@ module OpenAI
 
           # @!method initialize(container:, type: :code_interpreter)
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Responses::Tool::CodeInterpreter} for more details.
+          #   {OpenAI::Models::Responses::Tool::CodeInterpreter} for more details.
           #
           #   A tool that runs Python code to help generate a response to a prompt.
           #
-          #   @param container [String, OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto] The code interpreter container. Can be a container ID or an object that
+          #   @param container [String, OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto] The code interpreter container. Can be a container ID or an object that
           #
           #   @param type [Symbol, :code_interpreter] The type of the code interpreter tool. Always `code_interpreter`.
 
           # The code interpreter container. Can be a container ID or an object that
           # specifies uploaded file IDs to make available to your code.
           #
-          # @see OpenAI::Responses::Tool::CodeInterpreter#container
+          # @see OpenAI::Models::Responses::Tool::CodeInterpreter#container
           module Container
             extend OpenAI::Internal::Type::Union
 
@@ -273,7 +273,7 @@ module OpenAI
 
               # @!method initialize(file_ids: nil, type: :auto)
               #   Some parameter documentations has been truncated, see
-              #   {OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto}
+              #   {OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto}
               #   for more details.
               #
               #   Configuration for a code interpreter container. Optionally specify the IDs of
@@ -285,7 +285,7 @@ module OpenAI
             end
 
             # @!method self.variants
-            #   @return [Array(String, OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto)]
+            #   @return [Array(String, OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto)]
           end
         end
 
@@ -300,26 +300,26 @@ module OpenAI
           #   Background type for the generated image. One of `transparent`, `opaque`, or
           #   `auto`. Default: `auto`.
           #
-          #   @return [Symbol, OpenAI::Responses::Tool::ImageGeneration::Background, nil]
+          #   @return [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Background, nil]
           optional :background, enum: -> { OpenAI::Responses::Tool::ImageGeneration::Background }
 
           # @!attribute input_image_mask
           #   Optional mask for inpainting. Contains `image_url` (string, optional) and
           #   `file_id` (string, optional).
           #
-          #   @return [OpenAI::Responses::Tool::ImageGeneration::InputImageMask, nil]
+          #   @return [OpenAI::Models::Responses::Tool::ImageGeneration::InputImageMask, nil]
           optional :input_image_mask, -> { OpenAI::Responses::Tool::ImageGeneration::InputImageMask }
 
           # @!attribute model
           #   The image generation model to use. Default: `gpt-image-1`.
           #
-          #   @return [Symbol, OpenAI::Responses::Tool::ImageGeneration::Model, nil]
+          #   @return [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Model, nil]
           optional :model, enum: -> { OpenAI::Responses::Tool::ImageGeneration::Model }
 
           # @!attribute moderation
           #   Moderation level for the generated image. Default: `auto`.
           #
-          #   @return [Symbol, OpenAI::Responses::Tool::ImageGeneration::Moderation, nil]
+          #   @return [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Moderation, nil]
           optional :moderation, enum: -> { OpenAI::Responses::Tool::ImageGeneration::Moderation }
 
           # @!attribute output_compression
@@ -332,7 +332,7 @@ module OpenAI
           #   The output format of the generated image. One of `png`, `webp`, or `jpeg`.
           #   Default: `png`.
           #
-          #   @return [Symbol, OpenAI::Responses::Tool::ImageGeneration::OutputFormat, nil]
+          #   @return [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::OutputFormat, nil]
           optional :output_format, enum: -> { OpenAI::Responses::Tool::ImageGeneration::OutputFormat }
 
           # @!attribute partial_images
@@ -346,46 +346,46 @@ module OpenAI
           #   The quality of the generated image. One of `low`, `medium`, `high`, or `auto`.
           #   Default: `auto`.
           #
-          #   @return [Symbol, OpenAI::Responses::Tool::ImageGeneration::Quality, nil]
+          #   @return [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Quality, nil]
           optional :quality, enum: -> { OpenAI::Responses::Tool::ImageGeneration::Quality }
 
           # @!attribute size
           #   The size of the generated image. One of `1024x1024`, `1024x1536`, `1536x1024`,
           #   or `auto`. Default: `auto`.
           #
-          #   @return [Symbol, OpenAI::Responses::Tool::ImageGeneration::Size, nil]
+          #   @return [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Size, nil]
           optional :size, enum: -> { OpenAI::Responses::Tool::ImageGeneration::Size }
 
           # @!method initialize(background: nil, input_image_mask: nil, model: nil, moderation: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, size: nil, type: :image_generation)
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Responses::Tool::ImageGeneration} for more details.
+          #   {OpenAI::Models::Responses::Tool::ImageGeneration} for more details.
           #
           #   A tool that generates images using a model like `gpt-image-1`.
           #
-          #   @param background [Symbol, OpenAI::Responses::Tool::ImageGeneration::Background] Background type for the generated image. One of `transparent`,
+          #   @param background [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Background] Background type for the generated image. One of `transparent`,
           #
-          #   @param input_image_mask [OpenAI::Responses::Tool::ImageGeneration::InputImageMask] Optional mask for inpainting. Contains `image_url`
+          #   @param input_image_mask [OpenAI::Models::Responses::Tool::ImageGeneration::InputImageMask] Optional mask for inpainting. Contains `image_url`
           #
-          #   @param model [Symbol, OpenAI::Responses::Tool::ImageGeneration::Model] The image generation model to use. Default: `gpt-image-1`.
+          #   @param model [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Model] The image generation model to use. Default: `gpt-image-1`.
           #
-          #   @param moderation [Symbol, OpenAI::Responses::Tool::ImageGeneration::Moderation] Moderation level for the generated image. Default: `auto`.
+          #   @param moderation [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Moderation] Moderation level for the generated image. Default: `auto`.
           #
           #   @param output_compression [Integer] Compression level for the output image. Default: 100.
           #
-          #   @param output_format [Symbol, OpenAI::Responses::Tool::ImageGeneration::OutputFormat] The output format of the generated image. One of `png`, `webp`, or
+          #   @param output_format [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::OutputFormat] The output format of the generated image. One of `png`, `webp`, or
           #
           #   @param partial_images [Integer] Number of partial images to generate in streaming mode, from 0 (default value) t
           #
-          #   @param quality [Symbol, OpenAI::Responses::Tool::ImageGeneration::Quality] The quality of the generated image. One of `low`, `medium`, `high`,
+          #   @param quality [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Quality] The quality of the generated image. One of `low`, `medium`, `high`,
           #
-          #   @param size [Symbol, OpenAI::Responses::Tool::ImageGeneration::Size] The size of the generated image. One of `1024x1024`, `1024x1536`,
+          #   @param size [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Size] The size of the generated image. One of `1024x1024`, `1024x1536`,
           #
           #   @param type [Symbol, :image_generation] The type of the image generation tool. Always `image_generation`.
 
           # Background type for the generated image. One of `transparent`, `opaque`, or
           # `auto`. Default: `auto`.
           #
-          # @see OpenAI::Responses::Tool::ImageGeneration#background
+          # @see OpenAI::Models::Responses::Tool::ImageGeneration#background
           module Background
             extend OpenAI::Internal::Type::Enum
 
@@ -397,7 +397,7 @@ module OpenAI
             #   @return [Array<Symbol>]
           end
 
-          # @see OpenAI::Responses::Tool::ImageGeneration#input_image_mask
+          # @see OpenAI::Models::Responses::Tool::ImageGeneration#input_image_mask
           class InputImageMask < OpenAI::Internal::Type::BaseModel
             # @!attribute file_id
             #   File ID for the mask image.
@@ -413,7 +413,8 @@ module OpenAI
 
             # @!method initialize(file_id: nil, image_url: nil)
             #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Responses::Tool::ImageGeneration::InputImageMask} for more details.
+            #   {OpenAI::Models::Responses::Tool::ImageGeneration::InputImageMask} for more
+            #   details.
             #
             #   Optional mask for inpainting. Contains `image_url` (string, optional) and
             #   `file_id` (string, optional).
@@ -425,7 +426,7 @@ module OpenAI
 
           # The image generation model to use. Default: `gpt-image-1`.
           #
-          # @see OpenAI::Responses::Tool::ImageGeneration#model
+          # @see OpenAI::Models::Responses::Tool::ImageGeneration#model
           module Model
             extend OpenAI::Internal::Type::Enum
 
@@ -437,7 +438,7 @@ module OpenAI
 
           # Moderation level for the generated image. Default: `auto`.
           #
-          # @see OpenAI::Responses::Tool::ImageGeneration#moderation
+          # @see OpenAI::Models::Responses::Tool::ImageGeneration#moderation
           module Moderation
             extend OpenAI::Internal::Type::Enum
 
@@ -451,7 +452,7 @@ module OpenAI
           # The output format of the generated image. One of `png`, `webp`, or `jpeg`.
           # Default: `png`.
           #
-          # @see OpenAI::Responses::Tool::ImageGeneration#output_format
+          # @see OpenAI::Models::Responses::Tool::ImageGeneration#output_format
           module OutputFormat
             extend OpenAI::Internal::Type::Enum
 
@@ -466,7 +467,7 @@ module OpenAI
           # The quality of the generated image. One of `low`, `medium`, `high`, or `auto`.
           # Default: `auto`.
           #
-          # @see OpenAI::Responses::Tool::ImageGeneration#quality
+          # @see OpenAI::Models::Responses::Tool::ImageGeneration#quality
           module Quality
             extend OpenAI::Internal::Type::Enum
 
@@ -482,7 +483,7 @@ module OpenAI
           # The size of the generated image. One of `1024x1024`, `1024x1536`, `1536x1024`,
           # or `auto`. Default: `auto`.
           #
-          # @see OpenAI::Responses::Tool::ImageGeneration#size
+          # @see OpenAI::Models::Responses::Tool::ImageGeneration#size
           module Size
             extend OpenAI::Internal::Type::Enum
 
@@ -510,7 +511,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Responses::FunctionTool, OpenAI::Responses::FileSearchTool, OpenAI::Responses::ComputerTool, OpenAI::Responses::Tool::Mcp, OpenAI::Responses::Tool::CodeInterpreter, OpenAI::Responses::Tool::ImageGeneration, OpenAI::Responses::Tool::LocalShell, OpenAI::Responses::WebSearchTool)]
+        #   @return [Array(OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::WebSearchTool)]
       end
     end
   end

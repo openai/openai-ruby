@@ -35,7 +35,7 @@ module OpenAI
 
         # @!method initialize(project:, entity: nil, name: nil, tags: nil)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::FineTuning::FineTuningJobWandbIntegration} for more details.
+        #   {OpenAI::Models::FineTuning::FineTuningJobWandbIntegration} for more details.
         #
         #   The settings for your integration with Weights and Biases. This payload
         #   specifies the project that metrics will be sent to. Optionally, you can set an

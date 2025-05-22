@@ -19,6 +19,11 @@ module OpenAI
             ?request_options: OpenAI::request_opts
           ) -> void
 
+          def to_hash: -> {
+            grader: OpenAI::Models::FineTuning::Alpha::GraderValidateParams::grader,
+            request_options: OpenAI::RequestOptions
+          }
+
           type grader =
             OpenAI::Graders::StringCheckGrader
             | OpenAI::Graders::TextSimilarityGrader

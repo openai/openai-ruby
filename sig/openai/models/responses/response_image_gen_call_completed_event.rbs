@@ -24,6 +24,13 @@ module OpenAI
           sequence_number: Integer,
           ?type: :"response.image_generation_call.completed"
         ) -> void
+
+        def to_hash: -> {
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.image_generation_call.completed"
+        }
       end
     end
   end

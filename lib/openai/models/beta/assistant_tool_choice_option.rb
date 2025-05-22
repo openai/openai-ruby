@@ -35,7 +35,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(Symbol, OpenAI::Beta::AssistantToolChoiceOption::Auto, OpenAI::Beta::AssistantToolChoice)]
+        #   @return [Array(Symbol, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto, OpenAI::Models::Beta::AssistantToolChoice)]
       end
     end
   end

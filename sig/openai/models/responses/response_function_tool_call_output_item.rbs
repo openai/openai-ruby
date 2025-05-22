@@ -7,7 +7,7 @@ module OpenAI
           call_id: String,
           output: String,
           type: :function_call_output,
-          status: OpenAI::Responses::ResponseFunctionToolCallOutputItem::status
+          status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status
         }
 
       class ResponseFunctionToolCallOutputItem < OpenAI::Internal::Type::BaseModel
@@ -19,19 +19,27 @@ module OpenAI
 
         attr_accessor type: :function_call_output
 
-        attr_reader status: OpenAI::Responses::ResponseFunctionToolCallOutputItem::status?
+        attr_reader status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status?
 
         def status=: (
-          OpenAI::Responses::ResponseFunctionToolCallOutputItem::status
-        ) -> OpenAI::Responses::ResponseFunctionToolCallOutputItem::status
+          OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status
+        ) -> OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status
 
         def initialize: (
           id: String,
           call_id: String,
           output: String,
-          ?status: OpenAI::Responses::ResponseFunctionToolCallOutputItem::status,
+          ?status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status,
           ?type: :function_call_output
         ) -> void
+
+        def to_hash: -> {
+          id: String,
+          call_id: String,
+          output: String,
+          type: :function_call_output,
+          status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status
+        }
 
         type status = :in_progress | :completed | :incomplete
 
@@ -42,7 +50,7 @@ module OpenAI
           COMPLETED: :completed
           INCOMPLETE: :incomplete
 
-          def self?.values: -> ::Array[OpenAI::Responses::ResponseFunctionToolCallOutputItem::status]
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status]
         end
       end
     end

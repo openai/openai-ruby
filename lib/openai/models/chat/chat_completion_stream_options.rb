@@ -18,7 +18,7 @@ module OpenAI
 
         # @!method initialize(include_usage: nil)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Chat::ChatCompletionStreamOptions} for more details.
+        #   {OpenAI::Models::Chat::ChatCompletionStreamOptions} for more details.
         #
         #   Options for streaming response. Only set this when you set `stream: true`.
         #

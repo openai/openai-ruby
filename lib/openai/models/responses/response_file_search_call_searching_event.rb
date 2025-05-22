@@ -30,7 +30,8 @@ module OpenAI
 
         # @!method initialize(item_id:, output_index:, sequence_number:, type: :"response.file_search_call.searching")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseFileSearchCallSearchingEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseFileSearchCallSearchingEvent} for more
+        #   details.
         #
         #   Emitted when a file search is currently searching.
         #

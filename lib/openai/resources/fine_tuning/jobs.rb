@@ -20,17 +20,17 @@ module OpenAI
         #
         # @overload create(model:, training_file:, hyperparameters: nil, integrations: nil, metadata: nil, method_: nil, seed: nil, suffix: nil, validation_file: nil, request_options: {})
         #
-        # @param model [String, Symbol, OpenAI::FineTuning::JobCreateParams::Model] The name of the model to fine-tune. You can select one of the
+        # @param model [String, Symbol, OpenAI::Models::FineTuning::JobCreateParams::Model] The name of the model to fine-tune. You can select one of the
         #
         # @param training_file [String] The ID of an uploaded file that contains training data.
         #
-        # @param hyperparameters [OpenAI::FineTuning::JobCreateParams::Hyperparameters] The hyperparameters used for the fine-tuning job.
+        # @param hyperparameters [OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters] The hyperparameters used for the fine-tuning job.
         #
-        # @param integrations [Array<OpenAI::FineTuning::JobCreateParams::Integration>, nil] A list of integrations to enable for your fine-tuning job.
+        # @param integrations [Array<OpenAI::Models::FineTuning::JobCreateParams::Integration>, nil] A list of integrations to enable for your fine-tuning job.
         #
         # @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #
-        # @param method_ [OpenAI::FineTuning::JobCreateParams::Method] The method used for fine-tuning.
+        # @param method_ [OpenAI::Models::FineTuning::JobCreateParams::Method] The method used for fine-tuning.
         #
         # @param seed [Integer, nil] The seed controls the reproducibility of the job. Passing in the same seed and j
         #
@@ -40,7 +40,7 @@ module OpenAI
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::FineTuning::FineTuningJob]
+        # @return [OpenAI::Models::FineTuning::FineTuningJob]
         #
         # @see OpenAI::Models::FineTuning::JobCreateParams
         def create(params)
@@ -67,7 +67,7 @@ module OpenAI
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::FineTuning::FineTuningJob]
+        # @return [OpenAI::Models::FineTuning::FineTuningJob]
         #
         # @see OpenAI::Models::FineTuning::JobRetrieveParams
         def retrieve(fine_tuning_job_id, params = {})
@@ -94,7 +94,7 @@ module OpenAI
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::Internal::CursorPage<OpenAI::FineTuning::FineTuningJob>]
+        # @return [OpenAI::Internal::CursorPage<OpenAI::Models::FineTuning::FineTuningJob>]
         #
         # @see OpenAI::Models::FineTuning::JobListParams
         def list(params = {})
@@ -120,7 +120,7 @@ module OpenAI
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::FineTuning::FineTuningJob]
+        # @return [OpenAI::Models::FineTuning::FineTuningJob]
         #
         # @see OpenAI::Models::FineTuning::JobCancelParams
         def cancel(fine_tuning_job_id, params = {})
@@ -147,7 +147,7 @@ module OpenAI
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::Internal::CursorPage<OpenAI::FineTuning::FineTuningJobEvent>]
+        # @return [OpenAI::Internal::CursorPage<OpenAI::Models::FineTuning::FineTuningJobEvent>]
         #
         # @see OpenAI::Models::FineTuning::JobListEventsParams
         def list_events(fine_tuning_job_id, params = {})
@@ -173,7 +173,7 @@ module OpenAI
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::FineTuning::FineTuningJob]
+        # @return [OpenAI::Models::FineTuning::FineTuningJob]
         #
         # @see OpenAI::Models::FineTuning::JobPauseParams
         def pause(fine_tuning_job_id, params = {})
@@ -196,7 +196,7 @@ module OpenAI
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::FineTuning::FineTuningJob]
+        # @return [OpenAI::Models::FineTuning::FineTuningJob]
         #
         # @see OpenAI::Models::FineTuning::JobResumeParams
         def resume(fine_tuning_job_id, params = {})

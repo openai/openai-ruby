@@ -26,6 +26,13 @@ module OpenAI
             sub_rewards: ::Hash[Symbol, top]
           ) -> void
 
+          def to_hash: -> {
+            metadata: OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata,
+            model_grader_token_usage_per_model: ::Hash[Symbol, top],
+            reward: Float,
+            sub_rewards: ::Hash[Symbol, top]
+          }
+
           type metadata =
             {
               errors: OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata::Errors,
@@ -61,6 +68,16 @@ module OpenAI
               token_usage: Integer?,
               type: String
             ) -> void
+
+            def to_hash: -> {
+              errors: OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata::Errors,
+              execution_time: Float,
+              name: String,
+              sampled_model_name: String?,
+              scores: ::Hash[Symbol, top],
+              token_usage: Integer?,
+              type: String
+            }
 
             type errors =
               {
@@ -125,6 +142,23 @@ module OpenAI
                 truncated_observation_error: bool,
                 unresponsive_reward_error: bool
               ) -> void
+
+              def to_hash: -> {
+                formula_parse_error: bool,
+                invalid_variable_error: bool,
+                model_grader_parse_error: bool,
+                model_grader_refusal_error: bool,
+                model_grader_server_error: bool,
+                model_grader_server_error_details: String?,
+                other_error: bool,
+                python_grader_runtime_error: bool,
+                python_grader_runtime_error_details: String?,
+                python_grader_server_error: bool,
+                python_grader_server_error_type: String?,
+                sample_parse_error: bool,
+                truncated_observation_error: bool,
+                unresponsive_reward_error: bool
+              }
             end
           end
         end

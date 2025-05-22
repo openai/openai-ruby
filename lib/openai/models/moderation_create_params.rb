@@ -11,7 +11,7 @@ module OpenAI
       #   Input (or inputs) to classify. Can be a single string, an array of strings, or
       #   an array of multi-modal input objects similar to other models.
       #
-      #   @return [String, Array<String>, Array<OpenAI::ModerationImageURLInput, OpenAI::ModerationTextInput>]
+      #   @return [String, Array<String>, Array<OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput>]
       required :input, union: -> { OpenAI::ModerationCreateParams::Input }
 
       # @!attribute model
@@ -20,16 +20,16 @@ module OpenAI
       #   learn about available models
       #   [here](https://platform.openai.com/docs/models#moderation).
       #
-      #   @return [String, Symbol, OpenAI::ModerationModel, nil]
+      #   @return [String, Symbol, OpenAI::Models::ModerationModel, nil]
       optional :model, union: -> { OpenAI::ModerationCreateParams::Model }
 
       # @!method initialize(input:, model: nil, request_options: {})
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::ModerationCreateParams} for more details.
       #
-      #   @param input [String, Array<String>, Array<OpenAI::ModerationImageURLInput, OpenAI::ModerationTextInput>] Input (or inputs) to classify. Can be a single string, an array of strings, or
+      #   @param input [String, Array<String>, Array<OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput>] Input (or inputs) to classify. Can be a single string, an array of strings, or
       #
-      #   @param model [String, Symbol, OpenAI::ModerationModel] The content moderation model you would like to use. Learn more in
+      #   @param model [String, Symbol, OpenAI::Models::ModerationModel] The content moderation model you would like to use. Learn more in
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -42,13 +42,13 @@ module OpenAI
         variant String
 
         # An array of strings to classify for moderation.
-        variant -> { OpenAI::ModerationCreateParams::Input::StringArray }
+        variant -> { OpenAI::Models::ModerationCreateParams::Input::StringArray }
 
         # An array of multi-modal inputs to the moderation model.
-        variant -> { OpenAI::ModerationCreateParams::Input::ModerationMultiModalInputArray }
+        variant -> { OpenAI::Models::ModerationCreateParams::Input::ModerationMultiModalInputArray }
 
         # @!method self.variants
-        #   @return [Array(String, Array<String>, Array<OpenAI::ModerationImageURLInput, OpenAI::ModerationTextInput>)]
+        #   @return [Array(String, Array<String>, Array<OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput>)]
 
         # @type [OpenAI::Internal::Type::Converter]
         StringArray = OpenAI::Internal::Type::ArrayOf[String]
@@ -73,7 +73,7 @@ module OpenAI
         variant enum: -> { OpenAI::ModerationModel }
 
         # @!method self.variants
-        #   @return [Array(String, Symbol, OpenAI::ModerationModel)]
+        #   @return [Array(String, Symbol, OpenAI::Models::ModerationModel)]
       end
     end
   end

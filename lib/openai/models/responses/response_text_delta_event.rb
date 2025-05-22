@@ -42,7 +42,7 @@ module OpenAI
 
         # @!method initialize(content_index:, delta:, item_id:, output_index:, sequence_number:, type: :"response.output_text.delta")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseTextDeltaEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseTextDeltaEvent} for more details.
         #
         #   Emitted when there is an additional text delta.
         #

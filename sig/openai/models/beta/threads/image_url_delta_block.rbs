@@ -25,6 +25,12 @@ module OpenAI
             ?image_url: OpenAI::Beta::Threads::ImageURLDelta,
             ?type: :image_url
           ) -> void
+
+          def to_hash: -> {
+            index: Integer,
+            type: :image_url,
+            image_url: OpenAI::Beta::Threads::ImageURLDelta
+          }
         end
       end
     end

@@ -13,6 +13,11 @@ module OpenAI
           sequence_number: Integer,
           ?type: :"response.mcp_list_tools.failed"
         ) -> void
+
+        def to_hash: -> {
+          sequence_number: Integer,
+          type: :"response.mcp_list_tools.failed"
+        }
       end
     end
   end

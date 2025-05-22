@@ -13,7 +13,7 @@ module OpenAI
         # @!attribute format_
         #   The format of the audio data. Currently supported formats are `mp3` and `wav`.
         #
-        #   @return [Symbol, OpenAI::Responses::ResponseInputAudio::Format]
+        #   @return [Symbol, OpenAI::Models::Responses::ResponseInputAudio::Format]
         required :format_, enum: -> { OpenAI::Responses::ResponseInputAudio::Format }, api_name: :format
 
         # @!attribute type
@@ -24,19 +24,19 @@ module OpenAI
 
         # @!method initialize(data:, format_:, type: :input_audio)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseInputAudio} for more details.
+        #   {OpenAI::Models::Responses::ResponseInputAudio} for more details.
         #
         #   An audio input to the model.
         #
         #   @param data [String] Base64-encoded audio data.
         #
-        #   @param format_ [Symbol, OpenAI::Responses::ResponseInputAudio::Format] The format of the audio data. Currently supported formats are `mp3` and
+        #   @param format_ [Symbol, OpenAI::Models::Responses::ResponseInputAudio::Format] The format of the audio data. Currently supported formats are `mp3` and
         #
         #   @param type [Symbol, :input_audio] The type of the input item. Always `input_audio`.
 
         # The format of the audio data. Currently supported formats are `mp3` and `wav`.
         #
-        # @see OpenAI::Responses::ResponseInputAudio#format_
+        # @see OpenAI::Models::Responses::ResponseInputAudio#format_
         module Format
           extend OpenAI::Internal::Type::Enum
 

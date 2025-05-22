@@ -25,7 +25,7 @@ module OpenAI
         # @!attribute part
         #   The content part that is done.
         #
-        #   @return [OpenAI::Responses::ResponseOutputText, OpenAI::Responses::ResponseOutputRefusal]
+        #   @return [OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal]
         required :part, union: -> { OpenAI::Responses::ResponseContentPartDoneEvent::Part }
 
         # @!attribute sequence_number
@@ -42,7 +42,7 @@ module OpenAI
 
         # @!method initialize(content_index:, item_id:, output_index:, part:, sequence_number:, type: :"response.content_part.done")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseContentPartDoneEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseContentPartDoneEvent} for more details.
         #
         #   Emitted when a content part is done.
         #
@@ -52,7 +52,7 @@ module OpenAI
         #
         #   @param output_index [Integer] The index of the output item that the content part was added to.
         #
-        #   @param part [OpenAI::Responses::ResponseOutputText, OpenAI::Responses::ResponseOutputRefusal] The content part that is done.
+        #   @param part [OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal] The content part that is done.
         #
         #   @param sequence_number [Integer] The sequence number of this event.
         #
@@ -60,7 +60,7 @@ module OpenAI
 
         # The content part that is done.
         #
-        # @see OpenAI::Responses::ResponseContentPartDoneEvent#part
+        # @see OpenAI::Models::Responses::ResponseContentPartDoneEvent#part
         module Part
           extend OpenAI::Internal::Type::Union
 
@@ -73,7 +73,7 @@ module OpenAI
           variant :refusal, -> { OpenAI::Responses::ResponseOutputRefusal }
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Responses::ResponseOutputText, OpenAI::Responses::ResponseOutputRefusal)]
+          #   @return [Array(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)]
         end
       end
     end

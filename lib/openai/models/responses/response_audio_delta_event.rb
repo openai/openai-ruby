@@ -24,7 +24,7 @@ module OpenAI
 
         # @!method initialize(delta:, sequence_number:, type: :"response.audio.delta")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseAudioDeltaEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseAudioDeltaEvent} for more details.
         #
         #   Emitted when there is a partial audio response.
         #

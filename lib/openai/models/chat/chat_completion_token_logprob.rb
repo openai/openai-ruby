@@ -32,13 +32,13 @@ module OpenAI
         #   position. In rare cases, there may be fewer than the number of requested
         #   `top_logprobs` returned.
         #
-        #   @return [Array<OpenAI::Chat::ChatCompletionTokenLogprob::TopLogprob>]
+        #   @return [Array<OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob>]
         required :top_logprobs,
                  -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletionTokenLogprob::TopLogprob] }
 
         # @!method initialize(token:, bytes:, logprob:, top_logprobs:)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Chat::ChatCompletionTokenLogprob} for more details.
+        #   {OpenAI::Models::Chat::ChatCompletionTokenLogprob} for more details.
         #
         #   @param token [String] The token.
         #
@@ -46,7 +46,7 @@ module OpenAI
         #
         #   @param logprob [Float] The log probability of this token, if it is within the top 20 most likely tokens
         #
-        #   @param top_logprobs [Array<OpenAI::Chat::ChatCompletionTokenLogprob::TopLogprob>] List of the most likely tokens and their log probability, at this token position
+        #   @param top_logprobs [Array<OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob>] List of the most likely tokens and their log probability, at this token position
 
         class TopLogprob < OpenAI::Internal::Type::BaseModel
           # @!attribute token
@@ -74,7 +74,7 @@ module OpenAI
 
           # @!method initialize(token:, bytes:, logprob:)
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Chat::ChatCompletionTokenLogprob::TopLogprob} for more details.
+          #   {OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob} for more details.
           #
           #   @param token [String] The token.
           #

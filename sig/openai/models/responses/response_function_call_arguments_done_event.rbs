@@ -28,6 +28,14 @@ module OpenAI
           sequence_number: Integer,
           ?type: :"response.function_call_arguments.done"
         ) -> void
+
+        def to_hash: -> {
+          arguments: String,
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.function_call_arguments.done"
+        }
       end
     end
   end

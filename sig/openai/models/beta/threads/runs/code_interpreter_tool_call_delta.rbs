@@ -33,10 +33,17 @@ module OpenAI
               ?type: :code_interpreter
             ) -> void
 
+            def to_hash: -> {
+              index: Integer,
+              type: :code_interpreter,
+              id: String,
+              code_interpreter: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter
+            }
+
             type code_interpreter =
               {
                 input: String,
-                outputs: ::Array[OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]
+                outputs: ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]
               }
 
             class CodeInterpreter < OpenAI::Internal::Type::BaseModel
@@ -44,16 +51,21 @@ module OpenAI
 
               def input=: (String) -> String
 
-              attr_reader outputs: ::Array[OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]?
+              attr_reader outputs: ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]?
 
               def outputs=: (
-                ::Array[OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]
-              ) -> ::Array[OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]
+                ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]
+              ) -> ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]
 
               def initialize: (
                 ?input: String,
-                ?outputs: ::Array[OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]
+                ?outputs: ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]
               ) -> void
+
+              def to_hash: -> {
+                input: String,
+                outputs: ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]
+              }
 
               type output =
                 OpenAI::Beta::Threads::Runs::CodeInterpreterLogs
@@ -62,7 +74,7 @@ module OpenAI
               module Output
                 extend OpenAI::Internal::Type::Union
 
-                def self?.variants: -> ::Array[OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]
+                def self?.variants: -> ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]
               end
             end
           end

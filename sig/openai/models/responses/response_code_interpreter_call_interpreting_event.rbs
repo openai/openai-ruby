@@ -24,6 +24,13 @@ module OpenAI
           sequence_number: Integer,
           ?type: :"response.code_interpreter_call.interpreting"
         ) -> void
+
+        def to_hash: -> {
+          code_interpreter_call: OpenAI::Responses::ResponseCodeInterpreterToolCall,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.code_interpreter_call.interpreting"
+        }
       end
     end
   end

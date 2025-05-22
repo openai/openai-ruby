@@ -24,7 +24,7 @@ module OpenAI
 
         # @!method initialize(delta:, sequence_number:, type: :"response.audio.transcript.delta")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseAudioTranscriptDeltaEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseAudioTranscriptDeltaEvent} for more details.
         #
         #   Emitted when there is a partial transcript of audio.
         #

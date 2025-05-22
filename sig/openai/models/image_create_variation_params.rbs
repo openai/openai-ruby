@@ -39,6 +39,16 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> void
 
+      def to_hash: -> {
+        image: OpenAI::Internal::file_input,
+        model: OpenAI::Models::ImageCreateVariationParams::model?,
+        n: Integer?,
+        response_format: OpenAI::Models::ImageCreateVariationParams::response_format?,
+        size: OpenAI::Models::ImageCreateVariationParams::size?,
+        user: String,
+        request_options: OpenAI::RequestOptions
+      }
+
       type model = String | OpenAI::Models::image_model
 
       module Model

@@ -20,6 +20,8 @@ module OpenAI
               ?logs: String,
               ?type: :logs
             ) -> void
+
+            def to_hash: -> { index: Integer, type: :logs, logs: String }
           end
         end
       end

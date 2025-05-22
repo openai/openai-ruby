@@ -27,7 +27,7 @@ module OpenAI
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::Uploads::UploadPart]
+        # @return [OpenAI::Models::Uploads::UploadPart]
         #
         # @see OpenAI::Models::Uploads::PartCreateParams
         def create(upload_id, params)

@@ -42,7 +42,7 @@ module OpenAI
 
         # @!method initialize(content_index:, item_id:, output_index:, sequence_number:, text:, type: :"response.output_text.done")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseTextDoneEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseTextDoneEvent} for more details.
         #
         #   Emitted when text content is finalized.
         #

@@ -18,7 +18,7 @@ module OpenAI
 
         # @!method initialize(sequence_number:, type: :"response.audio.transcript.done")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseAudioTranscriptDoneEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseAudioTranscriptDoneEvent} for more details.
         #
         #   Emitted when the full audio transcript is completed.
         #

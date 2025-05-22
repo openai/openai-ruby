@@ -15,6 +15,11 @@ module OpenAI
           function: OpenAI::FunctionDefinition,
           ?type: :function
         ) -> void
+
+        def to_hash: -> {
+          function: OpenAI::FunctionDefinition,
+          type: :function
+        }
       end
     end
   end

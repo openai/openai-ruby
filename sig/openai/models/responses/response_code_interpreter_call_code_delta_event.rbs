@@ -24,6 +24,13 @@ module OpenAI
           sequence_number: Integer,
           ?type: :"response.code_interpreter_call.code.delta"
         ) -> void
+
+        def to_hash: -> {
+          delta: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.code_interpreter_call.code.delta"
+        }
       end
     end
   end

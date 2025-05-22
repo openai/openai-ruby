@@ -24,6 +24,12 @@ module OpenAI
               delta: OpenAI::Beta::Threads::Runs::RunStepDelta,
               ?object: :"thread.run.step.delta"
             ) -> void
+
+            def to_hash: -> {
+              id: String,
+              delta: OpenAI::Beta::Threads::Runs::RunStepDelta,
+              object: :"thread.run.step.delta"
+            }
           end
         end
       end

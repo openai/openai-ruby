@@ -63,6 +63,22 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> void
 
+      def to_hash: -> {
+        prompt: String,
+        background: OpenAI::Models::ImageGenerateParams::background?,
+        model: OpenAI::Models::ImageGenerateParams::model?,
+        moderation: OpenAI::Models::ImageGenerateParams::moderation?,
+        n: Integer?,
+        output_compression: Integer?,
+        output_format: OpenAI::Models::ImageGenerateParams::output_format?,
+        quality: OpenAI::Models::ImageGenerateParams::quality?,
+        response_format: OpenAI::Models::ImageGenerateParams::response_format?,
+        size: OpenAI::Models::ImageGenerateParams::size?,
+        style: OpenAI::Models::ImageGenerateParams::style?,
+        user: String,
+        request_options: OpenAI::RequestOptions
+      }
+
       type background = :transparent | :opaque | :auto
 
       module Background

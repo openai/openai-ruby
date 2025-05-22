@@ -19,21 +19,31 @@ module OpenAI
           ?type: :input_audio
         ) -> void
 
+        def to_hash: -> {
+          input_audio: OpenAI::Chat::ChatCompletionContentPartInputAudio::InputAudio,
+          type: :input_audio
+        }
+
         type input_audio =
           {
             data: String,
-            format_: OpenAI::Chat::ChatCompletionContentPartInputAudio::InputAudio::format_
+            format_: OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::format_
           }
 
         class InputAudio < OpenAI::Internal::Type::BaseModel
           attr_accessor data: String
 
-          attr_accessor format_: OpenAI::Chat::ChatCompletionContentPartInputAudio::InputAudio::format_
+          attr_accessor format_: OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::format_
 
           def initialize: (
             data: String,
-            format_: OpenAI::Chat::ChatCompletionContentPartInputAudio::InputAudio::format_
+            format_: OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::format_
           ) -> void
+
+          def to_hash: -> {
+            data: String,
+            format_: OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::format_
+          }
 
           type format_ = :wav | :mp3
 
@@ -43,7 +53,7 @@ module OpenAI
             WAV: :wav
             MP3: :mp3
 
-            def self?.values: -> ::Array[OpenAI::Chat::ChatCompletionContentPartInputAudio::InputAudio::format_]
+            def self?.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::format_]
           end
         end
       end

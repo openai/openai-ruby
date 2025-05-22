@@ -12,7 +12,7 @@ module OpenAI
         variant -> { OpenAI::Audio::TranslationVerbose }
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Audio::Translation, OpenAI::Audio::TranslationVerbose)]
+        #   @return [Array(OpenAI::Models::Audio::Translation, OpenAI::Models::Audio::TranslationVerbose)]
       end
     end
   end

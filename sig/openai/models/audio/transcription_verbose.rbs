@@ -36,6 +36,14 @@ module OpenAI
           ?segments: ::Array[OpenAI::Audio::TranscriptionSegment],
           ?words: ::Array[OpenAI::Audio::TranscriptionWord]
         ) -> void
+
+        def to_hash: -> {
+          duration: Float,
+          language: String,
+          text: String,
+          segments: ::Array[OpenAI::Audio::TranscriptionSegment],
+          words: ::Array[OpenAI::Audio::TranscriptionWord]
+        }
       end
     end
   end

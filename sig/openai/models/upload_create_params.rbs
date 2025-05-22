@@ -28,6 +28,14 @@ module OpenAI
         purpose: OpenAI::Models::file_purpose,
         ?request_options: OpenAI::request_opts
       ) -> void
+
+      def to_hash: -> {
+        bytes: Integer,
+        filename: String,
+        mime_type: String,
+        purpose: OpenAI::Models::file_purpose,
+        request_options: OpenAI::RequestOptions
+      }
     end
   end
 end

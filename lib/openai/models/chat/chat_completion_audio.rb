@@ -32,7 +32,7 @@ module OpenAI
 
         # @!method initialize(id:, data:, expires_at:, transcript:)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Chat::ChatCompletionAudio} for more details.
+        #   {OpenAI::Models::Chat::ChatCompletionAudio} for more details.
         #
         #   If the audio output modality is requested, this object contains data about the
         #   audio response from the model.

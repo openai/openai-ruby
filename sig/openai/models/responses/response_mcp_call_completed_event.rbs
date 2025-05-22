@@ -13,6 +13,11 @@ module OpenAI
           sequence_number: Integer,
           ?type: :"response.mcp_call.completed"
         ) -> void
+
+        def to_hash: -> {
+          sequence_number: Integer,
+          type: :"response.mcp_call.completed"
+        }
       end
     end
   end

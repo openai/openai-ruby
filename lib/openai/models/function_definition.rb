@@ -41,7 +41,7 @@ module OpenAI
 
       # @!method initialize(name:, description: nil, parameters: nil, strict: nil)
       #   Some parameter documentations has been truncated, see
-      #   {OpenAI::FunctionDefinition} for more details.
+      #   {OpenAI::Models::FunctionDefinition} for more details.
       #
       #   @param name [String] The name of the function to be called. Must be a-z, A-Z, 0-9, or contain undersc
       #

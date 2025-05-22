@@ -11,6 +11,8 @@ module OpenAI
         attr_accessor word: String
 
         def initialize: (end_: Float, start: Float, word: String) -> void
+
+        def to_hash: -> { end_: Float, start: Float, word: String }
       end
     end
   end

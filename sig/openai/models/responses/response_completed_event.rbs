@@ -20,6 +20,12 @@ module OpenAI
           sequence_number: Integer,
           ?type: :"response.completed"
         ) -> void
+
+        def to_hash: -> {
+          response: OpenAI::Responses::Response,
+          sequence_number: Integer,
+          type: :"response.completed"
+        }
       end
     end
   end

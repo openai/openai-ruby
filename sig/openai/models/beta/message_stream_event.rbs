@@ -26,6 +26,11 @@ module OpenAI
             data: OpenAI::Beta::Threads::Message,
             ?event: :"thread.message.created"
           ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Message,
+            event: :"thread.message.created"
+          }
         end
 
         type thread_message_in_progress =
@@ -43,6 +48,11 @@ module OpenAI
             data: OpenAI::Beta::Threads::Message,
             ?event: :"thread.message.in_progress"
           ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Message,
+            event: :"thread.message.in_progress"
+          }
         end
 
         type thread_message_delta =
@@ -60,6 +70,11 @@ module OpenAI
             data: OpenAI::Beta::Threads::MessageDeltaEvent,
             ?event: :"thread.message.delta"
           ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::MessageDeltaEvent,
+            event: :"thread.message.delta"
+          }
         end
 
         type thread_message_completed =
@@ -77,6 +92,11 @@ module OpenAI
             data: OpenAI::Beta::Threads::Message,
             ?event: :"thread.message.completed"
           ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Message,
+            event: :"thread.message.completed"
+          }
         end
 
         type thread_message_incomplete =
@@ -94,6 +114,11 @@ module OpenAI
             data: OpenAI::Beta::Threads::Message,
             ?event: :"thread.message.incomplete"
           ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Message,
+            event: :"thread.message.incomplete"
+          }
         end
 
         def self?.variants: -> ::Array[OpenAI::Models::Beta::message_stream_event]

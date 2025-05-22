@@ -9,6 +9,8 @@ module OpenAI
         include OpenAI::Internal::Type::RequestParameters
 
         def initialize: (?request_options: OpenAI::request_opts) -> void
+
+        def to_hash: -> { request_options: OpenAI::RequestOptions }
       end
     end
   end

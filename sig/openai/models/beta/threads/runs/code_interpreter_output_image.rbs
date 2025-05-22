@@ -27,6 +27,12 @@ module OpenAI
               ?type: :image
             ) -> void
 
+            def to_hash: -> {
+              index: Integer,
+              type: :image,
+              image: OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::Image
+            }
+
             type image = { file_id: String }
 
             class Image < OpenAI::Internal::Type::BaseModel
@@ -35,6 +41,8 @@ module OpenAI
               def file_id=: (String) -> String
 
               def initialize: (?file_id: String) -> void
+
+              def to_hash: -> { file_id: String }
             end
           end
         end

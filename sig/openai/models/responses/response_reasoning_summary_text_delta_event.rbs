@@ -32,6 +32,15 @@ module OpenAI
           summary_index: Integer,
           ?type: :"response.reasoning_summary_text.delta"
         ) -> void
+
+        def to_hash: -> {
+          delta: String,
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          summary_index: Integer,
+          type: :"response.reasoning_summary_text.delta"
+        }
       end
     end
   end

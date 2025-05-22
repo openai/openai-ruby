@@ -22,7 +22,7 @@ module OpenAI
           {
             id: String,
             result: String?,
-            status: OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::status,
+            status: OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::status,
             type: :image_generation_call
           }
 
@@ -31,16 +31,23 @@ module OpenAI
 
           attr_accessor result: String?
 
-          attr_accessor status: OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::status
+          attr_accessor status: OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::status
 
           attr_accessor type: :image_generation_call
 
           def initialize: (
             id: String,
             result: String?,
-            status: OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::status,
+            status: OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::status,
             ?type: :image_generation_call
           ) -> void
+
+          def to_hash: -> {
+            id: String,
+            result: String?,
+            status: OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::status,
+            type: :image_generation_call
+          }
 
           type status = :in_progress | :completed | :generating | :failed
 
@@ -52,7 +59,7 @@ module OpenAI
             GENERATING: :generating
             FAILED: :failed
 
-            def self?.values: -> ::Array[OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::status]
+            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::status]
           end
         end
 
@@ -61,7 +68,7 @@ module OpenAI
             id: String,
             action: OpenAI::Responses::ResponseOutputItem::LocalShellCall::Action,
             call_id: String,
-            status: OpenAI::Responses::ResponseOutputItem::LocalShellCall::status,
+            status: OpenAI::Models::Responses::ResponseOutputItem::LocalShellCall::status,
             type: :local_shell_call
           }
 
@@ -72,7 +79,7 @@ module OpenAI
 
           attr_accessor call_id: String
 
-          attr_accessor status: OpenAI::Responses::ResponseOutputItem::LocalShellCall::status
+          attr_accessor status: OpenAI::Models::Responses::ResponseOutputItem::LocalShellCall::status
 
           attr_accessor type: :local_shell_call
 
@@ -80,9 +87,17 @@ module OpenAI
             id: String,
             action: OpenAI::Responses::ResponseOutputItem::LocalShellCall::Action,
             call_id: String,
-            status: OpenAI::Responses::ResponseOutputItem::LocalShellCall::status,
+            status: OpenAI::Models::Responses::ResponseOutputItem::LocalShellCall::status,
             ?type: :local_shell_call
           ) -> void
+
+          def to_hash: -> {
+            id: String,
+            action: OpenAI::Responses::ResponseOutputItem::LocalShellCall::Action,
+            call_id: String,
+            status: OpenAI::Models::Responses::ResponseOutputItem::LocalShellCall::status,
+            type: :local_shell_call
+          }
 
           type action =
             {
@@ -115,6 +130,15 @@ module OpenAI
               ?working_directory: String?,
               ?type: :exec
             ) -> void
+
+            def to_hash: -> {
+              command: ::Array[String],
+              env: ::Hash[Symbol, String],
+              type: :exec,
+              timeout_ms: Integer?,
+              user: String?,
+              working_directory: String?
+            }
           end
 
           type status = :in_progress | :completed | :incomplete
@@ -126,7 +150,7 @@ module OpenAI
             COMPLETED: :completed
             INCOMPLETE: :incomplete
 
-            def self?.values: -> ::Array[OpenAI::Responses::ResponseOutputItem::LocalShellCall::status]
+            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseOutputItem::LocalShellCall::status]
           end
         end
 
@@ -165,6 +189,16 @@ module OpenAI
             ?output: String?,
             ?type: :mcp_call
           ) -> void
+
+          def to_hash: -> {
+            id: String,
+            arguments: String,
+            name: String,
+            server_label: String,
+            type: :mcp_call,
+            error: String?,
+            output: String?
+          }
         end
 
         type mcp_list_tools =
@@ -195,6 +229,14 @@ module OpenAI
             ?type: :mcp_list_tools
           ) -> void
 
+          def to_hash: -> {
+            id: String,
+            server_label: String,
+            tools: ::Array[OpenAI::Responses::ResponseOutputItem::McpListTools::Tool],
+            type: :mcp_list_tools,
+            error: String?
+          }
+
           type tool =
             {
               input_schema: top,
@@ -218,6 +260,13 @@ module OpenAI
               ?annotations: top?,
               ?description: String?
             ) -> void
+
+            def to_hash: -> {
+              input_schema: top,
+              name: String,
+              annotations: top?,
+              description: String?
+            }
           end
         end
 
@@ -248,6 +297,14 @@ module OpenAI
             server_label: String,
             ?type: :mcp_approval_request
           ) -> void
+
+          def to_hash: -> {
+            id: String,
+            arguments: String,
+            name: String,
+            server_label: String,
+            type: :mcp_approval_request
+          }
         end
 
         def self?.variants: -> ::Array[OpenAI::Models::Responses::response_output_item]

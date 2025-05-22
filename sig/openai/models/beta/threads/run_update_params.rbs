@@ -19,6 +19,12 @@ module OpenAI
             ?metadata: OpenAI::Models::metadata?,
             ?request_options: OpenAI::request_opts
           ) -> void
+
+          def to_hash: -> {
+            thread_id: String,
+            metadata: OpenAI::Models::metadata?,
+            request_options: OpenAI::RequestOptions
+          }
         end
       end
     end

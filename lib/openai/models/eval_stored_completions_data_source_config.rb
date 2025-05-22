@@ -30,7 +30,7 @@ module OpenAI
 
       # @!method initialize(schema:, metadata: nil, type: :stored_completions)
       #   Some parameter documentations has been truncated, see
-      #   {OpenAI::EvalStoredCompletionsDataSourceConfig} for more details.
+      #   {OpenAI::Models::EvalStoredCompletionsDataSourceConfig} for more details.
       #
       #   Deprecated in favor of LogsDataSourceConfig.
       #

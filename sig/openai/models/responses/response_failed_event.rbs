@@ -20,6 +20,12 @@ module OpenAI
           sequence_number: Integer,
           ?type: :"response.failed"
         ) -> void
+
+        def to_hash: -> {
+          response: OpenAI::Responses::Response,
+          sequence_number: Integer,
+          type: :"response.failed"
+        }
       end
     end
   end

@@ -18,6 +18,8 @@ module OpenAI
           name: String,
           ?role: :function
         ) -> void
+
+        def to_hash: -> { content: String?, name: String, role: :function }
       end
     end
   end

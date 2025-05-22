@@ -20,17 +20,17 @@ module OpenAI
 
             # @!attribute image
             #
-            #   @return [OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::Image, nil]
+            #   @return [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image, nil]
             optional :image, -> { OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::Image }
 
             # @!method initialize(index:, image: nil, type: :image)
             #   @param index [Integer] The index of the output in the outputs array.
             #
-            #   @param image [OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::Image]
+            #   @param image [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image]
             #
             #   @param type [Symbol, :image] Always `image`.
 
-            # @see OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage#image
+            # @see OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage#image
             class Image < OpenAI::Internal::Type::BaseModel
               # @!attribute file_id
               #   The [file](https://platform.openai.com/docs/api-reference/files) ID of the
@@ -41,8 +41,8 @@ module OpenAI
 
               # @!method initialize(file_id: nil)
               #   Some parameter documentations has been truncated, see
-              #   {OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::Image} for more
-              #   details.
+              #   {OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image} for
+              #   more details.
               #
               #   @param file_id [String] The [file](https://platform.openai.com/docs/api-reference/files) ID of the image
             end

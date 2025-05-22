@@ -14,6 +14,11 @@ module OpenAI
           vector_store_id: String,
           ?request_options: OpenAI::request_opts
         ) -> void
+
+        def to_hash: -> {
+          vector_store_id: String,
+          request_options: OpenAI::RequestOptions
+        }
       end
     end
   end

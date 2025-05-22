@@ -25,6 +25,12 @@ module OpenAI
             ?image_file: OpenAI::Beta::Threads::ImageFileDelta,
             ?type: :image_file
           ) -> void
+
+          def to_hash: -> {
+            index: Integer,
+            type: :image_file,
+            image_file: OpenAI::Beta::Threads::ImageFileDelta
+          }
         end
       end
     end

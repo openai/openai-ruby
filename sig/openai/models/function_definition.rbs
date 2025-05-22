@@ -29,6 +29,13 @@ module OpenAI
         ?parameters: OpenAI::Models::function_parameters,
         ?strict: bool?
       ) -> void
+
+      def to_hash: -> {
+        name: String,
+        description: String,
+        parameters: OpenAI::Models::function_parameters,
+        strict: bool?
+      }
     end
   end
 end

@@ -26,6 +26,12 @@ module OpenAI
         ?usage: OpenAI::ImagesResponse::Usage
       ) -> void
 
+      def to_hash: -> {
+        created: Integer,
+        data: ::Array[OpenAI::Image],
+        usage: OpenAI::ImagesResponse::Usage
+      }
+
       type usage =
         {
           input_tokens: Integer,
@@ -50,6 +56,13 @@ module OpenAI
           total_tokens: Integer
         ) -> void
 
+        def to_hash: -> {
+          input_tokens: Integer,
+          input_tokens_details: OpenAI::ImagesResponse::Usage::InputTokensDetails,
+          output_tokens: Integer,
+          total_tokens: Integer
+        }
+
         type input_tokens_details =
           { image_tokens: Integer, text_tokens: Integer }
 
@@ -59,6 +72,8 @@ module OpenAI
           attr_accessor text_tokens: Integer
 
           def initialize: (image_tokens: Integer, text_tokens: Integer) -> void
+
+          def to_hash: -> { image_tokens: Integer, text_tokens: Integer }
         end
       end
     end

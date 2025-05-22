@@ -36,7 +36,7 @@ module OpenAI
 
         # @!method initialize(code:, message:, param:, sequence_number:, type: :error)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseErrorEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseErrorEvent} for more details.
         #
         #   Emitted when an error occurs.
         #

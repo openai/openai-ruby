@@ -20,6 +20,12 @@ module OpenAI
         ?revised_prompt: String,
         ?url: String
       ) -> void
+
+      def to_hash: -> {
+        :b64_json => String,
+        revised_prompt: String,
+        url: String
+      }
     end
   end
 end

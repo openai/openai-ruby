@@ -25,6 +25,13 @@ module OpenAI
           ?metadata: ::Hash[Symbol, String]?,
           ?request_options: OpenAI::request_opts
         ) -> void
+
+        def to_hash: -> {
+          after: String,
+          limit: Integer,
+          metadata: ::Hash[Symbol, String]?,
+          request_options: OpenAI::RequestOptions
+        }
       end
     end
   end

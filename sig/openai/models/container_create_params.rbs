@@ -31,21 +31,33 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> void
 
+      def to_hash: -> {
+        name: String,
+        expires_after: OpenAI::ContainerCreateParams::ExpiresAfter,
+        file_ids: ::Array[String],
+        request_options: OpenAI::RequestOptions
+      }
+
       type expires_after =
         {
-          anchor: OpenAI::ContainerCreateParams::ExpiresAfter::anchor,
+          anchor: OpenAI::Models::ContainerCreateParams::ExpiresAfter::anchor,
           minutes: Integer
         }
 
       class ExpiresAfter < OpenAI::Internal::Type::BaseModel
-        attr_accessor anchor: OpenAI::ContainerCreateParams::ExpiresAfter::anchor
+        attr_accessor anchor: OpenAI::Models::ContainerCreateParams::ExpiresAfter::anchor
 
         attr_accessor minutes: Integer
 
         def initialize: (
-          anchor: OpenAI::ContainerCreateParams::ExpiresAfter::anchor,
+          anchor: OpenAI::Models::ContainerCreateParams::ExpiresAfter::anchor,
           minutes: Integer
         ) -> void
+
+        def to_hash: -> {
+          anchor: OpenAI::Models::ContainerCreateParams::ExpiresAfter::anchor,
+          minutes: Integer
+        }
 
         type anchor = :last_active_at
 
@@ -54,7 +66,7 @@ module OpenAI
 
           LAST_ACTIVE_AT: :last_active_at
 
-          def self?.values: -> ::Array[OpenAI::ContainerCreateParams::ExpiresAfter::anchor]
+          def self?.values: -> ::Array[OpenAI::Models::ContainerCreateParams::ExpiresAfter::anchor]
         end
       end
     end
