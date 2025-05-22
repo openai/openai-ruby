@@ -33,7 +33,7 @@ module OpenAI
           # A limit on the number of objects to be returned. Limit can range between 1 and
           # 100, and the default is 20.
           limit: nil,
-          # The order to return the input items in. Default is `asc`.
+          # The order to return the input items in. Default is `desc`.
           #
           # - `asc`: Return the input items in ascending order.
           # - `desc`: Return the input items in descending order.

@@ -224,8 +224,8 @@ module OpenAI
         optional :usage, -> { OpenAI::Responses::ResponseUsage }
 
         # @!attribute user
-        #   A unique identifier representing your end-user, which can help OpenAI to monitor
-        #   and detect abuse.
+        #   A stable identifier for your end-users. Used to boost cache hit rates by better
+        #   bucketing similar requests and to help OpenAI detect and prevent abuse.
         #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         #
         #   @return [String, nil]
@@ -279,7 +279,7 @@ module OpenAI
         #
         #   @param usage [OpenAI::Models::Responses::ResponseUsage] Represents token usage details including input tokens, output tokens,
         #
-        #   @param user [String] A unique identifier representing your end-user, which can help OpenAI to monitor
+        #   @param user [String] A stable identifier for your end-users.
         #
         #   @param object [Symbol, :response] The object type of this resource - always set to `response`.
 

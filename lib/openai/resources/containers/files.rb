@@ -33,6 +33,7 @@ module OpenAI
           @client.request(
             method: :post,
             path: ["containers/%1$s/files", container_id],
+            headers: {"content-type" => "multipart/form-data"},
             body: parsed,
             model: OpenAI::Models::Containers::FileCreateResponse,
             options: options

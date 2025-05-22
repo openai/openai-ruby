@@ -40,7 +40,6 @@ module OpenAI
               OpenAI::Responses::ResponseReasoningSummaryTextDoneEvent,
               OpenAI::Responses::ResponseRefusalDeltaEvent,
               OpenAI::Responses::ResponseRefusalDoneEvent,
-              OpenAI::Responses::ResponseTextAnnotationDeltaEvent,
               OpenAI::Responses::ResponseTextDeltaEvent,
               OpenAI::Responses::ResponseTextDoneEvent,
               OpenAI::Responses::ResponseWebSearchCallCompletedEvent,

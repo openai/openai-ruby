@@ -254,29 +254,19 @@ module OpenAI
               end
               attr_writer :never
 
-              # List of allowed tool names.
-              sig { returns(T.nilable(T::Array[String])) }
-              attr_reader :tool_names
-
-              sig { params(tool_names: T::Array[String]).void }
-              attr_writer :tool_names
-
               sig do
                 params(
                   always:
                     OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always::OrHash,
                   never:
-                    OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never::OrHash,
-                  tool_names: T::Array[String]
+                    OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never::OrHash
                 ).returns(T.attached_class)
               end
               def self.new(
                 # A list of tools that always require approval.
                 always: nil,
                 # A list of tools that never require approval.
-                never: nil,
-                # List of allowed tool names.
-                tool_names: nil
+                never: nil
               )
               end
 
@@ -286,8 +276,7 @@ module OpenAI
                     always:
                       OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always,
                     never:
-                      OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never,
-                    tool_names: T::Array[String]
+                      OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never
                   }
                 )
               end

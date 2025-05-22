@@ -35,7 +35,7 @@ module OpenAI
         optional :limit, Integer
 
         # @!attribute order
-        #   The order to return the input items in. Default is `asc`.
+        #   The order to return the input items in. Default is `desc`.
         #
         #   - `asc`: Return the input items in ascending order.
         #   - `desc`: Return the input items in descending order.
@@ -55,11 +55,11 @@ module OpenAI
         #
         #   @param limit [Integer] A limit on the number of objects to be returned. Limit can range between
         #
-        #   @param order [Symbol, OpenAI::Models::Responses::InputItemListParams::Order] The order to return the input items in. Default is `asc`.
+        #   @param order [Symbol, OpenAI::Models::Responses::InputItemListParams::Order] The order to return the input items in. Default is `desc`.
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
-        # The order to return the input items in. Default is `asc`.
+        # The order to return the input items in. Default is `desc`.
         #
         # - `asc`: Return the input items in ascending order.
         # - `desc`: Return the input items in descending order.

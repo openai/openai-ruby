@@ -211,8 +211,8 @@ module OpenAI
         optional :truncation, enum: -> { OpenAI::Responses::ResponseCreateParams::Truncation }, nil?: true
 
         # @!attribute user
-        #   A unique identifier representing your end-user, which can help OpenAI to monitor
-        #   and detect abuse.
+        #   A stable identifier for your end-users. Used to boost cache hit rates by better
+        #   bucketing similar requests and to help OpenAI detect and prevent abuse.
         #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         #
         #   @return [String, nil]
@@ -258,7 +258,7 @@ module OpenAI
         #
         #   @param truncation [Symbol, OpenAI::Models::Responses::ResponseCreateParams::Truncation, nil] The truncation strategy to use for the model response.
         #
-        #   @param user [String] A unique identifier representing your end-user, which can help OpenAI to monitor
+        #   @param user [String] A stable identifier for your end-users.
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

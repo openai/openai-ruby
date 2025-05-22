@@ -21,7 +21,7 @@ module OpenAI
         #
         # @param limit [Integer] A limit on the number of objects to be returned. Limit can range between
         #
-        # @param order [Symbol, OpenAI::Models::Responses::InputItemListParams::Order] The order to return the input items in. Default is `asc`.
+        # @param order [Symbol, OpenAI::Models::Responses::InputItemListParams::Order] The order to return the input items in. Default is `desc`.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
