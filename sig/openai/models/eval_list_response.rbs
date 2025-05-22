@@ -36,6 +36,16 @@ module OpenAI
         ?object: :eval
       ) -> void
 
+      def to_hash: -> {
+        id: String,
+        created_at: Integer,
+        data_source_config: OpenAI::Models::EvalListResponse::data_source_config,
+        metadata: OpenAI::Models::metadata?,
+        name: String,
+        object: :eval,
+        testing_criteria: ::Array[OpenAI::Models::EvalListResponse::testing_criterion]
+      }
+
       type data_source_config =
         OpenAI::EvalCustomDataSourceConfig
         | OpenAI::Models::EvalListResponse::DataSourceConfig::Logs
@@ -63,14 +73,20 @@ module OpenAI
             ?metadata: OpenAI::Models::metadata?,
             ?type: :logs
           ) -> void
+
+          def to_hash: -> {
+            schema: ::Hash[Symbol, top],
+            type: :logs,
+            metadata: OpenAI::Models::metadata?
+          }
         end
 
         def self?.variants: -> ::Array[OpenAI::Models::EvalListResponse::data_source_config]
       end
 
       type testing_criterion =
-        OpenAI::Graders::LabelModelGrader
-        | OpenAI::Graders::StringCheckGrader
+        OpenAI::Models::Graders::LabelModelGrader
+        | OpenAI::Models::Graders::StringCheckGrader
         | OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderTextSimilarity
         | OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderPython
         | OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderScoreModel
@@ -86,6 +102,8 @@ module OpenAI
           def pass_threshold=: (Float _) -> Float
 
           def initialize: (pass_threshold: Float) -> void
+
+          def to_hash: -> { pass_threshold: Float }
         end
 
         type eval_grader_python = { pass_threshold: Float }
@@ -96,6 +114,8 @@ module OpenAI
           def pass_threshold=: (Float _) -> Float
 
           def initialize: (?pass_threshold: Float) -> void
+
+          def to_hash: -> { pass_threshold: Float }
         end
 
         type eval_grader_score_model = { pass_threshold: Float }
@@ -106,6 +126,8 @@ module OpenAI
           def pass_threshold=: (Float _) -> Float
 
           def initialize: (?pass_threshold: Float) -> void
+
+          def to_hash: -> { pass_threshold: Float }
         end
 
         def self?.variants: -> ::Array[OpenAI::Models::EvalListResponse::testing_criterion]

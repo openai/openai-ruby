@@ -35,7 +35,7 @@ module OpenAI
       #   If `transparent`, the output format needs to support transparency, so it should
       #   be set to either `png` (default value) or `webp`.
       #
-      #   @return [Symbol, OpenAI::ImageEditParams::Background, nil]
+      #   @return [Symbol, OpenAI::Models::ImageEditParams::Background, nil]
       optional :background, enum: -> { OpenAI::ImageEditParams::Background }, nil?: true
 
       # @!attribute mask
@@ -52,7 +52,7 @@ module OpenAI
       #   supported. Defaults to `dall-e-2` unless a parameter specific to `gpt-image-1`
       #   is used.
       #
-      #   @return [String, Symbol, OpenAI::ImageModel, nil]
+      #   @return [String, Symbol, OpenAI::Models::ImageModel, nil]
       optional :model, union: -> { OpenAI::ImageEditParams::Model }, nil?: true
 
       # @!attribute n
@@ -66,7 +66,7 @@ module OpenAI
       #   only supported for `gpt-image-1`. `dall-e-2` only supports `standard` quality.
       #   Defaults to `auto`.
       #
-      #   @return [Symbol, OpenAI::ImageEditParams::Quality, nil]
+      #   @return [Symbol, OpenAI::Models::ImageEditParams::Quality, nil]
       optional :quality, enum: -> { OpenAI::ImageEditParams::Quality }, nil?: true
 
       # @!attribute response_format
@@ -75,7 +75,7 @@ module OpenAI
       #   generated. This parameter is only supported for `dall-e-2`, as `gpt-image-1`
       #   will always return base64-encoded images.
       #
-      #   @return [Symbol, OpenAI::ImageEditParams::ResponseFormat, nil]
+      #   @return [Symbol, OpenAI::Models::ImageEditParams::ResponseFormat, nil]
       optional :response_format, enum: -> { OpenAI::ImageEditParams::ResponseFormat }, nil?: true
 
       # @!attribute size
@@ -83,7 +83,7 @@ module OpenAI
       #   (landscape), `1024x1536` (portrait), or `auto` (default value) for
       #   `gpt-image-1`, and one of `256x256`, `512x512`, or `1024x1024` for `dall-e-2`.
       #
-      #   @return [Symbol, OpenAI::ImageEditParams::Size, nil]
+      #   @return [Symbol, OpenAI::Models::ImageEditParams::Size, nil]
       optional :size, enum: -> { OpenAI::ImageEditParams::Size }, nil?: true
 
       # @!attribute user
@@ -102,19 +102,19 @@ module OpenAI
       #
       #   @param prompt [String] A text description of the desired image(s). The maximum length is 1000 character
       #
-      #   @param background [Symbol, OpenAI::ImageEditParams::Background, nil] Allows to set transparency for the background of the generated image(s).
+      #   @param background [Symbol, OpenAI::Models::ImageEditParams::Background, nil] Allows to set transparency for the background of the generated image(s).
       #
       #   @param mask [Pathname, StringIO, IO, String, OpenAI::FilePart] An additional image whose fully transparent areas (e.g. where alpha is zero) ind
       #
-      #   @param model [String, Symbol, OpenAI::ImageModel, nil] The model to use for image generation. Only `dall-e-2` and `gpt-image-1` are sup
+      #   @param model [String, Symbol, OpenAI::Models::ImageModel, nil] The model to use for image generation. Only `dall-e-2` and `gpt-image-1` are sup
       #
       #   @param n [Integer, nil] The number of images to generate. Must be between 1 and 10.
       #
-      #   @param quality [Symbol, OpenAI::ImageEditParams::Quality, nil] The quality of the image that will be generated. `high`, `medium` and `low` are
+      #   @param quality [Symbol, OpenAI::Models::ImageEditParams::Quality, nil] The quality of the image that will be generated. `high`, `medium` and `low` are
       #
-      #   @param response_format [Symbol, OpenAI::ImageEditParams::ResponseFormat, nil] The format in which the generated images are returned. Must be one of `url` or `
+      #   @param response_format [Symbol, OpenAI::Models::ImageEditParams::ResponseFormat, nil] The format in which the generated images are returned. Must be one of `url` or `
       #
-      #   @param size [Symbol, OpenAI::ImageEditParams::Size, nil] The size of the generated images. Must be one of `1024x1024`, `1536x1024` (lands
+      #   @param size [Symbol, OpenAI::Models::ImageEditParams::Size, nil] The size of the generated images. Must be one of `1024x1024`, `1536x1024` (lands
       #
       #   @param user [String] A unique identifier representing your end-user, which can help OpenAI to monitor
       #
@@ -132,7 +132,7 @@ module OpenAI
 
         variant OpenAI::Internal::Type::FileInput
 
-        variant -> { OpenAI::ImageEditParams::Image::StringArray }
+        variant -> { OpenAI::Models::ImageEditParams::Image::StringArray }
 
         # @!method self.variants
         #   @return [Array(StringIO, Array<StringIO>)]
@@ -171,7 +171,7 @@ module OpenAI
         variant enum: -> { OpenAI::ImageModel }
 
         # @!method self.variants
-        #   @return [Array(String, Symbol, OpenAI::ImageModel)]
+        #   @return [Array(String, Symbol, OpenAI::Models::ImageModel)]
       end
 
       # The quality of the image that will be generated. `high`, `medium` and `low` are

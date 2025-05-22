@@ -9,7 +9,7 @@ module OpenAI
         metadata: OpenAI::Models::metadata?,
         name: String,
         object: :vector_store,
-        status: OpenAI::VectorStore::status,
+        status: OpenAI::Models::VectorStore::status,
         usage_bytes: Integer,
         expires_after: OpenAI::VectorStore::ExpiresAfter,
         expires_at: Integer?
@@ -30,7 +30,7 @@ module OpenAI
 
       attr_accessor object: :vector_store
 
-      attr_accessor status: OpenAI::VectorStore::status
+      attr_accessor status: OpenAI::Models::VectorStore::status
 
       attr_accessor usage_bytes: Integer
 
@@ -49,12 +49,26 @@ module OpenAI
         last_active_at: Integer?,
         metadata: OpenAI::Models::metadata?,
         name: String,
-        status: OpenAI::VectorStore::status,
+        status: OpenAI::Models::VectorStore::status,
         usage_bytes: Integer,
         ?expires_after: OpenAI::VectorStore::ExpiresAfter,
         ?expires_at: Integer?,
         ?object: :vector_store
       ) -> void
+
+      def to_hash: -> {
+        id: String,
+        created_at: Integer,
+        file_counts: OpenAI::VectorStore::FileCounts,
+        last_active_at: Integer?,
+        metadata: OpenAI::Models::metadata?,
+        name: String,
+        object: :vector_store,
+        status: OpenAI::Models::VectorStore::status,
+        usage_bytes: Integer,
+        expires_after: OpenAI::VectorStore::ExpiresAfter,
+        expires_at: Integer?
+      }
 
       type file_counts =
         {
@@ -83,6 +97,14 @@ module OpenAI
           in_progress: Integer,
           total: Integer
         ) -> void
+
+        def to_hash: -> {
+          cancelled: Integer,
+          completed: Integer,
+          failed: Integer,
+          in_progress: Integer,
+          total: Integer
+        }
       end
 
       type status = :expired | :in_progress | :completed
@@ -94,7 +116,7 @@ module OpenAI
         IN_PROGRESS: :in_progress
         COMPLETED: :completed
 
-        def self?.values: -> ::Array[OpenAI::VectorStore::status]
+        def self?.values: -> ::Array[OpenAI::Models::VectorStore::status]
       end
 
       type expires_after = { anchor: :last_active_at, days: Integer }
@@ -105,6 +127,8 @@ module OpenAI
         attr_accessor days: Integer
 
         def initialize: (days: Integer, ?anchor: :last_active_at) -> void
+
+        def to_hash: -> { anchor: :last_active_at, days: Integer }
       end
     end
   end

@@ -20,6 +20,12 @@ module OpenAI
           sequence_number: Integer,
           ?type: :"response.audio.transcript.delta"
         ) -> void
+
+        def to_hash: -> {
+          delta: String,
+          sequence_number: Integer,
+          type: :"response.audio.transcript.delta"
+        }
       end
     end
   end

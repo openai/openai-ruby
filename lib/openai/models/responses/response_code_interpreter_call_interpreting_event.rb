@@ -7,7 +7,7 @@ module OpenAI
         # @!attribute code_interpreter_call
         #   A tool call to run code.
         #
-        #   @return [OpenAI::Responses::ResponseCodeInterpreterToolCall]
+        #   @return [OpenAI::Models::Responses::ResponseCodeInterpreterToolCall]
         required :code_interpreter_call, -> { OpenAI::Responses::ResponseCodeInterpreterToolCall }
 
         # @!attribute output_index
@@ -30,12 +30,12 @@ module OpenAI
 
         # @!method initialize(code_interpreter_call:, output_index:, sequence_number:, type: :"response.code_interpreter_call.interpreting")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseCodeInterpreterCallInterpretingEvent} for more
-        #   details.
+        #   {OpenAI::Models::Responses::ResponseCodeInterpreterCallInterpretingEvent} for
+        #   more details.
         #
         #   Emitted when the code interpreter is actively interpreting the code snippet.
         #
-        #   @param code_interpreter_call [OpenAI::Responses::ResponseCodeInterpreterToolCall] A tool call to run code.
+        #   @param code_interpreter_call [OpenAI::Models::Responses::ResponseCodeInterpreterToolCall] A tool call to run code.
         #
         #   @param output_index [Integer] The index of the output item that the code interpreter call is in progress.
         #

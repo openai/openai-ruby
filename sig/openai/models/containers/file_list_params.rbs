@@ -34,6 +34,13 @@ module OpenAI
           ?request_options: OpenAI::request_opts
         ) -> void
 
+        def to_hash: -> {
+          after: String,
+          limit: Integer,
+          order: OpenAI::Models::Containers::FileListParams::order,
+          request_options: OpenAI::RequestOptions
+        }
+
         type order = :asc | :desc
 
         module Order

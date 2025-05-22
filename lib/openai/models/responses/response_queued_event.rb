@@ -7,7 +7,7 @@ module OpenAI
         # @!attribute response
         #   The full response object that is queued.
         #
-        #   @return [OpenAI::Responses::Response]
+        #   @return [OpenAI::Models::Responses::Response]
         required :response, -> { OpenAI::Responses::Response }
 
         # @!attribute sequence_number
@@ -25,7 +25,7 @@ module OpenAI
         # @!method initialize(response:, sequence_number:, type: :"response.queued")
         #   Emitted when a response is queued and waiting to be processed.
         #
-        #   @param response [OpenAI::Responses::Response] The full response object that is queued.
+        #   @param response [OpenAI::Models::Responses::Response] The full response object that is queued.
         #
         #   @param sequence_number [Integer] The sequence number for this event.
         #

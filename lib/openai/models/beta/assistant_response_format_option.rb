@@ -43,7 +43,7 @@ module OpenAI
         variant -> { OpenAI::ResponseFormatJSONSchema }
 
         # @!method self.variants
-        #   @return [Array(Symbol, :auto, OpenAI::ResponseFormatText, OpenAI::ResponseFormatJSONObject, OpenAI::ResponseFormatJSONSchema)]
+        #   @return [Array(Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema)]
       end
     end
   end

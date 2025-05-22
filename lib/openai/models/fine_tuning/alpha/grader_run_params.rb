@@ -12,7 +12,7 @@ module OpenAI
           # @!attribute grader
           #   The grader used for the fine-tuning job.
           #
-          #   @return [OpenAI::Graders::StringCheckGrader, OpenAI::Graders::TextSimilarityGrader, OpenAI::Graders::PythonGrader, OpenAI::Graders::ScoreModelGrader, OpenAI::Graders::MultiGrader]
+          #   @return [OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::MultiGrader]
           required :grader, union: -> { OpenAI::FineTuning::Alpha::GraderRunParams::Grader }
 
           # @!attribute model_sample
@@ -31,7 +31,7 @@ module OpenAI
                    }
 
           # @!method initialize(grader:, model_sample:, reference_answer:, request_options: {})
-          #   @param grader [OpenAI::Graders::StringCheckGrader, OpenAI::Graders::TextSimilarityGrader, OpenAI::Graders::PythonGrader, OpenAI::Graders::ScoreModelGrader, OpenAI::Graders::MultiGrader] The grader used for the fine-tuning job.
+          #   @param grader [OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::MultiGrader] The grader used for the fine-tuning job.
           #
           #   @param model_sample [String] The model sample to be evaluated.
           #
@@ -61,7 +61,7 @@ module OpenAI
             variant :multi, -> { OpenAI::Graders::MultiGrader }
 
             # @!method self.variants
-            #   @return [Array(OpenAI::Graders::StringCheckGrader, OpenAI::Graders::TextSimilarityGrader, OpenAI::Graders::PythonGrader, OpenAI::Graders::ScoreModelGrader, OpenAI::Graders::MultiGrader)]
+            #   @return [Array(OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::MultiGrader)]
           end
 
           # The reference answer for the evaluation.
@@ -72,7 +72,7 @@ module OpenAI
 
             variant OpenAI::Internal::Type::Unknown
 
-            variant -> { OpenAI::FineTuning::Alpha::GraderRunParams::ReferenceAnswer::UnionMember2Array }
+            variant -> { OpenAI::Models::FineTuning::Alpha::GraderRunParams::ReferenceAnswer::UnionMember2Array }
 
             variant Float
 

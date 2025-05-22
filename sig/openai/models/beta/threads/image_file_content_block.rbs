@@ -14,6 +14,11 @@ module OpenAI
             image_file: OpenAI::Beta::Threads::ImageFile,
             ?type: :image_file
           ) -> void
+
+          def to_hash: -> {
+            image_file: OpenAI::Beta::Threads::ImageFile,
+            type: :image_file
+          }
         end
       end
     end

@@ -19,7 +19,7 @@ module OpenAI
         variant :input_file, -> { OpenAI::Responses::ResponseInputFile }
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Responses::ResponseInputText, OpenAI::Responses::ResponseInputImage, OpenAI::Responses::ResponseInputFile)]
+        #   @return [Array(OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile)]
       end
     end
   end

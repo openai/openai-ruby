@@ -3,14 +3,14 @@ module OpenAI
     module Responses
       type response_input_image =
         {
-          detail: OpenAI::Responses::ResponseInputImage::detail,
+          detail: OpenAI::Models::Responses::ResponseInputImage::detail,
           type: :input_image,
           file_id: String?,
           image_url: String?
         }
 
       class ResponseInputImage < OpenAI::Internal::Type::BaseModel
-        attr_accessor detail: OpenAI::Responses::ResponseInputImage::detail
+        attr_accessor detail: OpenAI::Models::Responses::ResponseInputImage::detail
 
         attr_accessor type: :input_image
 
@@ -19,11 +19,18 @@ module OpenAI
         attr_accessor image_url: String?
 
         def initialize: (
-          detail: OpenAI::Responses::ResponseInputImage::detail,
+          detail: OpenAI::Models::Responses::ResponseInputImage::detail,
           ?file_id: String?,
           ?image_url: String?,
           ?type: :input_image
         ) -> void
+
+        def to_hash: -> {
+          detail: OpenAI::Models::Responses::ResponseInputImage::detail,
+          type: :input_image,
+          file_id: String?,
+          image_url: String?
+        }
 
         type detail = :low | :high | :auto
 
@@ -34,7 +41,7 @@ module OpenAI
           HIGH: :high
           AUTO: :auto
 
-          def self?.values: -> ::Array[OpenAI::Responses::ResponseInputImage::detail]
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputImage::detail]
         end
       end
     end

@@ -42,7 +42,8 @@ module OpenAI
 
         # @!method initialize(item_id:, output_index:, sequence_number:, summary_index:, text:, type: :"response.reasoning_summary_text.done")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseReasoningSummaryTextDoneEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseReasoningSummaryTextDoneEvent} for more
+        #   details.
         #
         #   Emitted when a reasoning summary text is completed.
         #

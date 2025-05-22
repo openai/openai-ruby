@@ -25,6 +25,12 @@ module OpenAI
             ?text: OpenAI::Beta::Threads::TextDelta,
             ?type: :text
           ) -> void
+
+          def to_hash: -> {
+            index: Integer,
+            type: :text,
+            text: OpenAI::Beta::Threads::TextDelta
+          }
         end
       end
     end

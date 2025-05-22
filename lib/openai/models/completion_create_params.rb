@@ -16,7 +16,7 @@ module OpenAI
       #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
       #   them.
       #
-      #   @return [String, Symbol, OpenAI::CompletionCreateParams::Model]
+      #   @return [String, Symbol, OpenAI::Models::CompletionCreateParams::Model]
       required :model, union: -> { OpenAI::CompletionCreateParams::Model }
 
       # @!attribute prompt
@@ -143,7 +143,7 @@ module OpenAI
       # @!attribute stream_options
       #   Options for streaming response. Only set this when you set `stream: true`.
       #
-      #   @return [OpenAI::Chat::ChatCompletionStreamOptions, nil]
+      #   @return [OpenAI::Models::Chat::ChatCompletionStreamOptions, nil]
       optional :stream_options, -> { OpenAI::Chat::ChatCompletionStreamOptions }, nil?: true
 
       # @!attribute suffix
@@ -186,7 +186,7 @@ module OpenAI
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::CompletionCreateParams} for more details.
       #
-      #   @param model [String, Symbol, OpenAI::CompletionCreateParams::Model] ID of the model to use. You can use the [List models](https://platform.openai.co
+      #   @param model [String, Symbol, OpenAI::Models::CompletionCreateParams::Model] ID of the model to use. You can use the [List models](https://platform.openai.co
       #
       #   @param prompt [String, Array<String>, Array<Integer>, Array<Array<Integer>>, nil] The prompt(s) to generate completions for, encoded as a string, array of strings
       #
@@ -210,7 +210,7 @@ module OpenAI
       #
       #   @param stop [String, Array<String>, nil] Not supported with latest reasoning models `o3` and `o4-mini`.
       #
-      #   @param stream_options [OpenAI::Chat::ChatCompletionStreamOptions, nil] Options for streaming response. Only set this when you set `stream: true`.
+      #   @param stream_options [OpenAI::Models::Chat::ChatCompletionStreamOptions, nil] Options for streaming response. Only set this when you set `stream: true`.
       #
       #   @param suffix [String, nil] The suffix that comes after a completion of inserted text.
       #
@@ -232,11 +232,11 @@ module OpenAI
 
         variant String
 
-        variant const: -> { OpenAI::CompletionCreateParams::Model::GPT_3_5_TURBO_INSTRUCT }
+        variant const: -> { OpenAI::Models::CompletionCreateParams::Model::GPT_3_5_TURBO_INSTRUCT }
 
-        variant const: -> { OpenAI::CompletionCreateParams::Model::DAVINCI_002 }
+        variant const: -> { OpenAI::Models::CompletionCreateParams::Model::DAVINCI_002 }
 
-        variant const: -> { OpenAI::CompletionCreateParams::Model::BABBAGE_002 }
+        variant const: -> { OpenAI::Models::CompletionCreateParams::Model::BABBAGE_002 }
 
         # @!method self.variants
         #   @return [Array(String, Symbol)]
@@ -265,11 +265,11 @@ module OpenAI
 
         variant String
 
-        variant -> { OpenAI::CompletionCreateParams::Prompt::StringArray }
+        variant -> { OpenAI::Models::CompletionCreateParams::Prompt::StringArray }
 
-        variant -> { OpenAI::CompletionCreateParams::Prompt::IntegerArray }
+        variant -> { OpenAI::Models::CompletionCreateParams::Prompt::IntegerArray }
 
-        variant -> { OpenAI::CompletionCreateParams::Prompt::ArrayOfToken2DArray }
+        variant -> { OpenAI::Models::CompletionCreateParams::Prompt::ArrayOfToken2DArray }
 
         # @!method self.variants
         #   @return [Array(String, Array<String>, Array<Integer>, Array<Array<Integer>>)]
@@ -293,7 +293,7 @@ module OpenAI
 
         variant String
 
-        variant -> { OpenAI::CompletionCreateParams::Stop::StringArray }
+        variant -> { OpenAI::Models::CompletionCreateParams::Stop::StringArray }
 
         # @!method self.variants
         #   @return [Array(String, Array<String>)]

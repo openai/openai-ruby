@@ -9,7 +9,7 @@ module OpenAI
         filename: String,
         object: :upload,
         purpose: String,
-        status: OpenAI::Upload::status,
+        status: OpenAI::Models::Upload::status,
         file: OpenAI::FileObject?
       }
 
@@ -28,7 +28,7 @@ module OpenAI
 
       attr_accessor purpose: String
 
-      attr_accessor status: OpenAI::Upload::status
+      attr_accessor status: OpenAI::Models::Upload::status
 
       attr_accessor file: OpenAI::FileObject?
 
@@ -39,10 +39,22 @@ module OpenAI
         expires_at: Integer,
         filename: String,
         purpose: String,
-        status: OpenAI::Upload::status,
+        status: OpenAI::Models::Upload::status,
         ?file: OpenAI::FileObject?,
         ?object: :upload
       ) -> void
+
+      def to_hash: -> {
+        id: String,
+        bytes: Integer,
+        created_at: Integer,
+        expires_at: Integer,
+        filename: String,
+        object: :upload,
+        purpose: String,
+        status: OpenAI::Models::Upload::status,
+        file: OpenAI::FileObject?
+      }
 
       type status = :pending | :completed | :cancelled | :expired
 
@@ -54,7 +66,7 @@ module OpenAI
         CANCELLED: :cancelled
         EXPIRED: :expired
 
-        def self?.values: -> ::Array[OpenAI::Upload::status]
+        def self?.values: -> ::Array[OpenAI::Models::Upload::status]
       end
     end
   end

@@ -12,6 +12,11 @@ module OpenAI
         chunk_overlap_tokens: Integer,
         max_chunk_size_tokens: Integer
       ) -> void
+
+      def to_hash: -> {
+        chunk_overlap_tokens: Integer,
+        max_chunk_size_tokens: Integer
+      }
     end
   end
 end

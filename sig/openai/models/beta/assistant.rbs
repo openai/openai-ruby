@@ -61,6 +61,22 @@ module OpenAI
           ?object: :assistant
         ) -> void
 
+        def to_hash: -> {
+          id: String,
+          created_at: Integer,
+          description: String?,
+          instructions: String?,
+          metadata: OpenAI::Models::metadata?,
+          model: String,
+          name: String?,
+          object: :assistant,
+          tools: ::Array[OpenAI::Models::Beta::assistant_tool],
+          response_format: OpenAI::Models::Beta::assistant_response_format_option?,
+          temperature: Float?,
+          tool_resources: OpenAI::Beta::Assistant::ToolResources?,
+          top_p: Float?
+        }
+
         type tool_resources =
           {
             code_interpreter: OpenAI::Beta::Assistant::ToolResources::CodeInterpreter,
@@ -85,6 +101,11 @@ module OpenAI
             ?file_search: OpenAI::Beta::Assistant::ToolResources::FileSearch
           ) -> void
 
+          def to_hash: -> {
+            code_interpreter: OpenAI::Beta::Assistant::ToolResources::CodeInterpreter,
+            file_search: OpenAI::Beta::Assistant::ToolResources::FileSearch
+          }
+
           type code_interpreter = { file_ids: ::Array[String] }
 
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
@@ -93,6 +114,8 @@ module OpenAI
             def file_ids=: (::Array[String]) -> ::Array[String]
 
             def initialize: (?file_ids: ::Array[String]) -> void
+
+            def to_hash: -> { file_ids: ::Array[String] }
           end
 
           type file_search = { vector_store_ids: ::Array[String] }
@@ -103,6 +126,8 @@ module OpenAI
             def vector_store_ids=: (::Array[String]) -> ::Array[String]
 
             def initialize: (?vector_store_ids: ::Array[String]) -> void
+
+            def to_hash: -> { vector_store_ids: ::Array[String] }
           end
         end
       end

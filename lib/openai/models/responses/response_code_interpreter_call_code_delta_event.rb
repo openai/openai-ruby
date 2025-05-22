@@ -30,7 +30,8 @@ module OpenAI
 
         # @!method initialize(delta:, output_index:, sequence_number:, type: :"response.code_interpreter_call.code.delta")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseCodeInterpreterCallCodeDeltaEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseCodeInterpreterCallCodeDeltaEvent} for more
+        #   details.
         #
         #   Emitted when a partial code snippet is added by the code interpreter.
         #

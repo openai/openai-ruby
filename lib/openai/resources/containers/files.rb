@@ -77,7 +77,7 @@ module OpenAI
         #
         # @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
         #
-        # @param order [Symbol, OpenAI::Containers::FileListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
+        # @param order [Symbol, OpenAI::Models::Containers::FileListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #

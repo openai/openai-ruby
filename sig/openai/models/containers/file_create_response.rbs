@@ -36,6 +36,16 @@ module OpenAI
           source: String,
           ?object: :"container.file"
         ) -> void
+
+        def to_hash: -> {
+          id: String,
+          bytes: Integer,
+          container_id: String,
+          created_at: Integer,
+          object: :"container.file",
+          path: String,
+          source: String
+        }
       end
     end
   end

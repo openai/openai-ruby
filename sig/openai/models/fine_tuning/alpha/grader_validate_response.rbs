@@ -18,6 +18,10 @@ module OpenAI
             ?grader: OpenAI::Models::FineTuning::Alpha::GraderValidateResponse::grader
           ) -> void
 
+          def to_hash: -> {
+            grader: OpenAI::Models::FineTuning::Alpha::GraderValidateResponse::grader
+          }
+
           type grader =
             OpenAI::Graders::StringCheckGrader
             | OpenAI::Graders::TextSimilarityGrader

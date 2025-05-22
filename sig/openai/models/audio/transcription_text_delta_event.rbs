@@ -25,6 +25,12 @@ module OpenAI
           ?type: :"transcript.text.delta"
         ) -> void
 
+        def to_hash: -> {
+          delta: String,
+          type: :"transcript.text.delta",
+          logprobs: ::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob]
+        }
+
         type logprob = { token: String, bytes: ::Array[top], logprob: Float }
 
         class Logprob < OpenAI::Internal::Type::BaseModel
@@ -45,6 +51,8 @@ module OpenAI
             ?bytes: ::Array[top],
             ?logprob: Float
           ) -> void
+
+          def to_hash: -> { token: String, bytes: ::Array[top], logprob: Float }
         end
       end
     end

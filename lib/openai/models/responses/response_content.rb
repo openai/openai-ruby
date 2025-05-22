@@ -23,7 +23,7 @@ module OpenAI
         variant -> { OpenAI::Responses::ResponseOutputRefusal }
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Responses::ResponseInputText, OpenAI::Responses::ResponseInputImage, OpenAI::Responses::ResponseInputFile, OpenAI::Responses::ResponseOutputText, OpenAI::Responses::ResponseOutputRefusal)]
+        #   @return [Array(OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile, OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)]
       end
     end
   end

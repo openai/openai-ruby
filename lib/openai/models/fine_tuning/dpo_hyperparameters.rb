@@ -35,7 +35,7 @@ module OpenAI
 
         # @!method initialize(batch_size: nil, beta: nil, learning_rate_multiplier: nil, n_epochs: nil)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::FineTuning::DpoHyperparameters} for more details.
+        #   {OpenAI::Models::FineTuning::DpoHyperparameters} for more details.
         #
         #   The hyperparameters used for the DPO fine-tuning job.
         #
@@ -50,7 +50,7 @@ module OpenAI
         # Number of examples in each batch. A larger batch size means that model
         # parameters are updated less frequently, but with lower variance.
         #
-        # @see OpenAI::FineTuning::DpoHyperparameters#batch_size
+        # @see OpenAI::Models::FineTuning::DpoHyperparameters#batch_size
         module BatchSize
           extend OpenAI::Internal::Type::Union
 
@@ -65,7 +65,7 @@ module OpenAI
         # The beta value for the DPO method. A higher beta value will increase the weight
         # of the penalty between the policy and reference model.
         #
-        # @see OpenAI::FineTuning::DpoHyperparameters#beta
+        # @see OpenAI::Models::FineTuning::DpoHyperparameters#beta
         module Beta
           extend OpenAI::Internal::Type::Union
 
@@ -80,7 +80,7 @@ module OpenAI
         # Scaling factor for the learning rate. A smaller learning rate may be useful to
         # avoid overfitting.
         #
-        # @see OpenAI::FineTuning::DpoHyperparameters#learning_rate_multiplier
+        # @see OpenAI::Models::FineTuning::DpoHyperparameters#learning_rate_multiplier
         module LearningRateMultiplier
           extend OpenAI::Internal::Type::Union
 
@@ -95,7 +95,7 @@ module OpenAI
         # The number of epochs to train the model for. An epoch refers to one full cycle
         # through the training dataset.
         #
-        # @see OpenAI::FineTuning::DpoHyperparameters#n_epochs
+        # @see OpenAI::Models::FineTuning::DpoHyperparameters#n_epochs
         module NEpochs
           extend OpenAI::Internal::Type::Union
 

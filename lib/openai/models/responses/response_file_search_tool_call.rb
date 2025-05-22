@@ -20,7 +20,7 @@ module OpenAI
         #   The status of the file search tool call. One of `in_progress`, `searching`,
         #   `incomplete` or `failed`,
         #
-        #   @return [Symbol, OpenAI::Responses::ResponseFileSearchToolCall::Status]
+        #   @return [Symbol, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status]
         required :status, enum: -> { OpenAI::Responses::ResponseFileSearchToolCall::Status }
 
         # @!attribute type
@@ -32,7 +32,7 @@ module OpenAI
         # @!attribute results
         #   The results of the file search tool call.
         #
-        #   @return [Array<OpenAI::Responses::ResponseFileSearchToolCall::Result>, nil]
+        #   @return [Array<OpenAI::Models::Responses::ResponseFileSearchToolCall::Result>, nil]
         optional :results,
                  -> {
                    OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseFileSearchToolCall::Result]
@@ -41,7 +41,7 @@ module OpenAI
 
         # @!method initialize(id:, queries:, status:, results: nil, type: :file_search_call)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseFileSearchToolCall} for more details.
+        #   {OpenAI::Models::Responses::ResponseFileSearchToolCall} for more details.
         #
         #   The results of a file search tool call. See the
         #   [file search guide](https://platform.openai.com/docs/guides/tools-file-search)
@@ -51,16 +51,16 @@ module OpenAI
         #
         #   @param queries [Array<String>] The queries used to search for files.
         #
-        #   @param status [Symbol, OpenAI::Responses::ResponseFileSearchToolCall::Status] The status of the file search tool call. One of `in_progress`,
+        #   @param status [Symbol, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status] The status of the file search tool call. One of `in_progress`,
         #
-        #   @param results [Array<OpenAI::Responses::ResponseFileSearchToolCall::Result>, nil] The results of the file search tool call.
+        #   @param results [Array<OpenAI::Models::Responses::ResponseFileSearchToolCall::Result>, nil] The results of the file search tool call.
         #
         #   @param type [Symbol, :file_search_call] The type of the file search tool call. Always `file_search_call`.
 
         # The status of the file search tool call. One of `in_progress`, `searching`,
         # `incomplete` or `failed`,
         #
-        # @see OpenAI::Responses::ResponseFileSearchToolCall#status
+        # @see OpenAI::Models::Responses::ResponseFileSearchToolCall#status
         module Status
           extend OpenAI::Internal::Type::Enum
 
@@ -115,7 +115,8 @@ module OpenAI
 
           # @!method initialize(attributes: nil, file_id: nil, filename: nil, score: nil, text: nil)
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Responses::ResponseFileSearchToolCall::Result} for more details.
+          #   {OpenAI::Models::Responses::ResponseFileSearchToolCall::Result} for more
+          #   details.
           #
           #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
           #

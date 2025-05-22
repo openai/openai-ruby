@@ -21,6 +21,13 @@ module OpenAI
           expires_at: Integer,
           transcript: String
         ) -> void
+
+        def to_hash: -> {
+          id: String,
+          data: String,
+          expires_at: Integer,
+          transcript: String
+        }
       end
     end
   end

@@ -3,7 +3,7 @@ module OpenAI
     type all_models =
       String
       | OpenAI::Models::chat_model
-      | OpenAI::AllModels::responses_only_model
+      | OpenAI::Models::AllModels::responses_only_model
 
     module AllModels
       extend OpenAI::Internal::Type::Union
@@ -22,7 +22,7 @@ module OpenAI
         COMPUTER_USE_PREVIEW: :"computer-use-preview"
         COMPUTER_USE_PREVIEW_2025_03_11: :"computer-use-preview-2025-03-11"
 
-        def self?.values: -> ::Array[OpenAI::AllModels::responses_only_model]
+        def self?.values: -> ::Array[OpenAI::Models::AllModels::responses_only_model]
       end
 
       def self?.variants: -> ::Array[OpenAI::Models::all_models]

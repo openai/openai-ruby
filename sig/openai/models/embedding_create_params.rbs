@@ -41,6 +41,15 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> void
 
+      def to_hash: -> {
+        input: OpenAI::Models::EmbeddingCreateParams::input,
+        model: OpenAI::Models::EmbeddingCreateParams::model,
+        dimensions: Integer,
+        encoding_format: OpenAI::Models::EmbeddingCreateParams::encoding_format,
+        user: String,
+        request_options: OpenAI::RequestOptions
+      }
+
       type input =
         String | ::Array[String] | ::Array[Integer] | ::Array[::Array[Integer]]
 

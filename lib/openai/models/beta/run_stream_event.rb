@@ -45,7 +45,7 @@ module OpenAI
           #   Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           #
-          #   @return [OpenAI::Beta::Threads::Run]
+          #   @return [OpenAI::Models::Beta::Threads::Run]
           required :data, -> { OpenAI::Beta::Threads::Run }
 
           # @!attribute event
@@ -55,12 +55,12 @@ module OpenAI
 
           # @!method initialize(data:, event: :"thread.run.created")
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Beta::RunStreamEvent::ThreadRunCreated} for more details.
+          #   {OpenAI::Models::Beta::RunStreamEvent::ThreadRunCreated} for more details.
           #
           #   Occurs when a new
           #   [run](https://platform.openai.com/docs/api-reference/runs/object) is created.
           #
-          #   @param data [OpenAI::Beta::Threads::Run] Represents an execution run on a [thread](https://platform.openai.com/docs/api-r
+          #   @param data [OpenAI::Models::Beta::Threads::Run] Represents an execution run on a [thread](https://platform.openai.com/docs/api-r
           #
           #   @param event [Symbol, :"thread.run.created"]
         end
@@ -70,7 +70,7 @@ module OpenAI
           #   Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           #
-          #   @return [OpenAI::Beta::Threads::Run]
+          #   @return [OpenAI::Models::Beta::Threads::Run]
           required :data, -> { OpenAI::Beta::Threads::Run }
 
           # @!attribute event
@@ -80,12 +80,12 @@ module OpenAI
 
           # @!method initialize(data:, event: :"thread.run.queued")
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Beta::RunStreamEvent::ThreadRunQueued} for more details.
+          #   {OpenAI::Models::Beta::RunStreamEvent::ThreadRunQueued} for more details.
           #
           #   Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   moves to a `queued` status.
           #
-          #   @param data [OpenAI::Beta::Threads::Run] Represents an execution run on a [thread](https://platform.openai.com/docs/api-r
+          #   @param data [OpenAI::Models::Beta::Threads::Run] Represents an execution run on a [thread](https://platform.openai.com/docs/api-r
           #
           #   @param event [Symbol, :"thread.run.queued"]
         end
@@ -95,7 +95,7 @@ module OpenAI
           #   Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           #
-          #   @return [OpenAI::Beta::Threads::Run]
+          #   @return [OpenAI::Models::Beta::Threads::Run]
           required :data, -> { OpenAI::Beta::Threads::Run }
 
           # @!attribute event
@@ -105,12 +105,12 @@ module OpenAI
 
           # @!method initialize(data:, event: :"thread.run.in_progress")
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Beta::RunStreamEvent::ThreadRunInProgress} for more details.
+          #   {OpenAI::Models::Beta::RunStreamEvent::ThreadRunInProgress} for more details.
           #
           #   Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   moves to an `in_progress` status.
           #
-          #   @param data [OpenAI::Beta::Threads::Run] Represents an execution run on a [thread](https://platform.openai.com/docs/api-r
+          #   @param data [OpenAI::Models::Beta::Threads::Run] Represents an execution run on a [thread](https://platform.openai.com/docs/api-r
           #
           #   @param event [Symbol, :"thread.run.in_progress"]
         end
@@ -120,7 +120,7 @@ module OpenAI
           #   Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           #
-          #   @return [OpenAI::Beta::Threads::Run]
+          #   @return [OpenAI::Models::Beta::Threads::Run]
           required :data, -> { OpenAI::Beta::Threads::Run }
 
           # @!attribute event
@@ -130,12 +130,13 @@ module OpenAI
 
           # @!method initialize(data:, event: :"thread.run.requires_action")
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Beta::RunStreamEvent::ThreadRunRequiresAction} for more details.
+          #   {OpenAI::Models::Beta::RunStreamEvent::ThreadRunRequiresAction} for more
+          #   details.
           #
           #   Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   moves to a `requires_action` status.
           #
-          #   @param data [OpenAI::Beta::Threads::Run] Represents an execution run on a [thread](https://platform.openai.com/docs/api-r
+          #   @param data [OpenAI::Models::Beta::Threads::Run] Represents an execution run on a [thread](https://platform.openai.com/docs/api-r
           #
           #   @param event [Symbol, :"thread.run.requires_action"]
         end
@@ -145,7 +146,7 @@ module OpenAI
           #   Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           #
-          #   @return [OpenAI::Beta::Threads::Run]
+          #   @return [OpenAI::Models::Beta::Threads::Run]
           required :data, -> { OpenAI::Beta::Threads::Run }
 
           # @!attribute event
@@ -155,12 +156,12 @@ module OpenAI
 
           # @!method initialize(data:, event: :"thread.run.completed")
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Beta::RunStreamEvent::ThreadRunCompleted} for more details.
+          #   {OpenAI::Models::Beta::RunStreamEvent::ThreadRunCompleted} for more details.
           #
           #   Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   is completed.
           #
-          #   @param data [OpenAI::Beta::Threads::Run] Represents an execution run on a [thread](https://platform.openai.com/docs/api-r
+          #   @param data [OpenAI::Models::Beta::Threads::Run] Represents an execution run on a [thread](https://platform.openai.com/docs/api-r
           #
           #   @param event [Symbol, :"thread.run.completed"]
         end
@@ -170,7 +171,7 @@ module OpenAI
           #   Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           #
-          #   @return [OpenAI::Beta::Threads::Run]
+          #   @return [OpenAI::Models::Beta::Threads::Run]
           required :data, -> { OpenAI::Beta::Threads::Run }
 
           # @!attribute event
@@ -180,12 +181,12 @@ module OpenAI
 
           # @!method initialize(data:, event: :"thread.run.incomplete")
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Beta::RunStreamEvent::ThreadRunIncomplete} for more details.
+          #   {OpenAI::Models::Beta::RunStreamEvent::ThreadRunIncomplete} for more details.
           #
           #   Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   ends with status `incomplete`.
           #
-          #   @param data [OpenAI::Beta::Threads::Run] Represents an execution run on a [thread](https://platform.openai.com/docs/api-r
+          #   @param data [OpenAI::Models::Beta::Threads::Run] Represents an execution run on a [thread](https://platform.openai.com/docs/api-r
           #
           #   @param event [Symbol, :"thread.run.incomplete"]
         end
@@ -195,7 +196,7 @@ module OpenAI
           #   Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           #
-          #   @return [OpenAI::Beta::Threads::Run]
+          #   @return [OpenAI::Models::Beta::Threads::Run]
           required :data, -> { OpenAI::Beta::Threads::Run }
 
           # @!attribute event
@@ -205,12 +206,12 @@ module OpenAI
 
           # @!method initialize(data:, event: :"thread.run.failed")
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Beta::RunStreamEvent::ThreadRunFailed} for more details.
+          #   {OpenAI::Models::Beta::RunStreamEvent::ThreadRunFailed} for more details.
           #
           #   Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   fails.
           #
-          #   @param data [OpenAI::Beta::Threads::Run] Represents an execution run on a [thread](https://platform.openai.com/docs/api-r
+          #   @param data [OpenAI::Models::Beta::Threads::Run] Represents an execution run on a [thread](https://platform.openai.com/docs/api-r
           #
           #   @param event [Symbol, :"thread.run.failed"]
         end
@@ -220,7 +221,7 @@ module OpenAI
           #   Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           #
-          #   @return [OpenAI::Beta::Threads::Run]
+          #   @return [OpenAI::Models::Beta::Threads::Run]
           required :data, -> { OpenAI::Beta::Threads::Run }
 
           # @!attribute event
@@ -230,12 +231,12 @@ module OpenAI
 
           # @!method initialize(data:, event: :"thread.run.cancelling")
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Beta::RunStreamEvent::ThreadRunCancelling} for more details.
+          #   {OpenAI::Models::Beta::RunStreamEvent::ThreadRunCancelling} for more details.
           #
           #   Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   moves to a `cancelling` status.
           #
-          #   @param data [OpenAI::Beta::Threads::Run] Represents an execution run on a [thread](https://platform.openai.com/docs/api-r
+          #   @param data [OpenAI::Models::Beta::Threads::Run] Represents an execution run on a [thread](https://platform.openai.com/docs/api-r
           #
           #   @param event [Symbol, :"thread.run.cancelling"]
         end
@@ -245,7 +246,7 @@ module OpenAI
           #   Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           #
-          #   @return [OpenAI::Beta::Threads::Run]
+          #   @return [OpenAI::Models::Beta::Threads::Run]
           required :data, -> { OpenAI::Beta::Threads::Run }
 
           # @!attribute event
@@ -255,12 +256,12 @@ module OpenAI
 
           # @!method initialize(data:, event: :"thread.run.cancelled")
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Beta::RunStreamEvent::ThreadRunCancelled} for more details.
+          #   {OpenAI::Models::Beta::RunStreamEvent::ThreadRunCancelled} for more details.
           #
           #   Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   is cancelled.
           #
-          #   @param data [OpenAI::Beta::Threads::Run] Represents an execution run on a [thread](https://platform.openai.com/docs/api-r
+          #   @param data [OpenAI::Models::Beta::Threads::Run] Represents an execution run on a [thread](https://platform.openai.com/docs/api-r
           #
           #   @param event [Symbol, :"thread.run.cancelled"]
         end
@@ -270,7 +271,7 @@ module OpenAI
           #   Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           #
-          #   @return [OpenAI::Beta::Threads::Run]
+          #   @return [OpenAI::Models::Beta::Threads::Run]
           required :data, -> { OpenAI::Beta::Threads::Run }
 
           # @!attribute event
@@ -280,18 +281,18 @@ module OpenAI
 
           # @!method initialize(data:, event: :"thread.run.expired")
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Beta::RunStreamEvent::ThreadRunExpired} for more details.
+          #   {OpenAI::Models::Beta::RunStreamEvent::ThreadRunExpired} for more details.
           #
           #   Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   expires.
           #
-          #   @param data [OpenAI::Beta::Threads::Run] Represents an execution run on a [thread](https://platform.openai.com/docs/api-r
+          #   @param data [OpenAI::Models::Beta::Threads::Run] Represents an execution run on a [thread](https://platform.openai.com/docs/api-r
           #
           #   @param event [Symbol, :"thread.run.expired"]
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Beta::RunStreamEvent::ThreadRunCreated, OpenAI::Beta::RunStreamEvent::ThreadRunQueued, OpenAI::Beta::RunStreamEvent::ThreadRunInProgress, OpenAI::Beta::RunStreamEvent::ThreadRunRequiresAction, OpenAI::Beta::RunStreamEvent::ThreadRunCompleted, OpenAI::Beta::RunStreamEvent::ThreadRunIncomplete, OpenAI::Beta::RunStreamEvent::ThreadRunFailed, OpenAI::Beta::RunStreamEvent::ThreadRunCancelling, OpenAI::Beta::RunStreamEvent::ThreadRunCancelled, OpenAI::Beta::RunStreamEvent::ThreadRunExpired)]
+        #   @return [Array(OpenAI::Models::Beta::RunStreamEvent::ThreadRunCreated, OpenAI::Models::Beta::RunStreamEvent::ThreadRunQueued, OpenAI::Models::Beta::RunStreamEvent::ThreadRunInProgress, OpenAI::Models::Beta::RunStreamEvent::ThreadRunRequiresAction, OpenAI::Models::Beta::RunStreamEvent::ThreadRunCompleted, OpenAI::Models::Beta::RunStreamEvent::ThreadRunIncomplete, OpenAI::Models::Beta::RunStreamEvent::ThreadRunFailed, OpenAI::Models::Beta::RunStreamEvent::ThreadRunCancelling, OpenAI::Models::Beta::RunStreamEvent::ThreadRunCancelled, OpenAI::Models::Beta::RunStreamEvent::ThreadRunExpired)]
       end
     end
   end

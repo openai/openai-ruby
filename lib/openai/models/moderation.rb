@@ -6,19 +6,19 @@ module OpenAI
       # @!attribute categories
       #   A list of the categories, and whether they are flagged or not.
       #
-      #   @return [OpenAI::Moderation::Categories]
+      #   @return [OpenAI::Models::Moderation::Categories]
       required :categories, -> { OpenAI::Moderation::Categories }
 
       # @!attribute category_applied_input_types
       #   A list of the categories along with the input type(s) that the score applies to.
       #
-      #   @return [OpenAI::Moderation::CategoryAppliedInputTypes]
+      #   @return [OpenAI::Models::Moderation::CategoryAppliedInputTypes]
       required :category_applied_input_types, -> { OpenAI::Moderation::CategoryAppliedInputTypes }
 
       # @!attribute category_scores
       #   A list of the categories along with their scores as predicted by model.
       #
-      #   @return [OpenAI::Moderation::CategoryScores]
+      #   @return [OpenAI::Models::Moderation::CategoryScores]
       required :category_scores, -> { OpenAI::Moderation::CategoryScores }
 
       # @!attribute flagged
@@ -28,18 +28,18 @@ module OpenAI
       required :flagged, OpenAI::Internal::Type::Boolean
 
       # @!method initialize(categories:, category_applied_input_types:, category_scores:, flagged:)
-      #   Some parameter documentations has been truncated, see {OpenAI::Moderation} for
-      #   more details.
+      #   Some parameter documentations has been truncated, see
+      #   {OpenAI::Models::Moderation} for more details.
       #
-      #   @param categories [OpenAI::Moderation::Categories] A list of the categories, and whether they are flagged or not.
+      #   @param categories [OpenAI::Models::Moderation::Categories] A list of the categories, and whether they are flagged or not.
       #
-      #   @param category_applied_input_types [OpenAI::Moderation::CategoryAppliedInputTypes] A list of the categories along with the input type(s) that the score applies to.
+      #   @param category_applied_input_types [OpenAI::Models::Moderation::CategoryAppliedInputTypes] A list of the categories along with the input type(s) that the score applies to.
       #
-      #   @param category_scores [OpenAI::Moderation::CategoryScores] A list of the categories along with their scores as predicted by model.
+      #   @param category_scores [OpenAI::Models::Moderation::CategoryScores] A list of the categories along with their scores as predicted by model.
       #
       #   @param flagged [Boolean] Whether any of the below categories are flagged.
 
-      # @see OpenAI::Moderation#categories
+      # @see OpenAI::Models::Moderation#categories
       class Categories < OpenAI::Internal::Type::BaseModel
         # @!attribute harassment
         #   Content that expresses, incites, or promotes harassing language towards any
@@ -138,7 +138,7 @@ module OpenAI
 
         # @!method initialize(harassment:, harassment_threatening:, hate:, hate_threatening:, illicit:, illicit_violent:, self_harm:, self_harm_instructions:, self_harm_intent:, sexual:, sexual_minors:, violence:, violence_graphic:)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Moderation::Categories} for more details.
+        #   {OpenAI::Models::Moderation::Categories} for more details.
         #
         #   A list of the categories, and whether they are flagged or not.
         #
@@ -169,12 +169,12 @@ module OpenAI
         #   @param violence_graphic [Boolean] Content that depicts death, violence, or physical injury in graphic detail.
       end
 
-      # @see OpenAI::Moderation#category_applied_input_types
+      # @see OpenAI::Models::Moderation#category_applied_input_types
       class CategoryAppliedInputTypes < OpenAI::Internal::Type::BaseModel
         # @!attribute harassment
         #   The applied input type(s) for the category 'harassment'.
         #
-        #   @return [Array<Symbol, OpenAI::Moderation::CategoryAppliedInputTypes::Harassment>]
+        #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment>]
         required :harassment,
                  -> {
                    OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Moderation::CategoryAppliedInputTypes::Harassment]
@@ -183,7 +183,7 @@ module OpenAI
         # @!attribute harassment_threatening
         #   The applied input type(s) for the category 'harassment/threatening'.
         #
-        #   @return [Array<Symbol, OpenAI::Moderation::CategoryAppliedInputTypes::HarassmentThreatening>]
+        #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening>]
         required :harassment_threatening,
                  -> {
                    OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Moderation::CategoryAppliedInputTypes::HarassmentThreatening]
@@ -193,7 +193,7 @@ module OpenAI
         # @!attribute hate
         #   The applied input type(s) for the category 'hate'.
         #
-        #   @return [Array<Symbol, OpenAI::Moderation::CategoryAppliedInputTypes::Hate>]
+        #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate>]
         required :hate,
                  -> {
                    OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Moderation::CategoryAppliedInputTypes::Hate]
@@ -202,7 +202,7 @@ module OpenAI
         # @!attribute hate_threatening
         #   The applied input type(s) for the category 'hate/threatening'.
         #
-        #   @return [Array<Symbol, OpenAI::Moderation::CategoryAppliedInputTypes::HateThreatening>]
+        #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening>]
         required :hate_threatening,
                  -> {
                    OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Moderation::CategoryAppliedInputTypes::HateThreatening]
@@ -212,7 +212,7 @@ module OpenAI
         # @!attribute illicit
         #   The applied input type(s) for the category 'illicit'.
         #
-        #   @return [Array<Symbol, OpenAI::Moderation::CategoryAppliedInputTypes::Illicit>]
+        #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit>]
         required :illicit,
                  -> {
                    OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Moderation::CategoryAppliedInputTypes::Illicit]
@@ -221,7 +221,7 @@ module OpenAI
         # @!attribute illicit_violent
         #   The applied input type(s) for the category 'illicit/violent'.
         #
-        #   @return [Array<Symbol, OpenAI::Moderation::CategoryAppliedInputTypes::IllicitViolent>]
+        #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent>]
         required :illicit_violent,
                  -> {
                    OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Moderation::CategoryAppliedInputTypes::IllicitViolent]
@@ -231,7 +231,7 @@ module OpenAI
         # @!attribute self_harm
         #   The applied input type(s) for the category 'self-harm'.
         #
-        #   @return [Array<Symbol, OpenAI::Moderation::CategoryAppliedInputTypes::SelfHarm>]
+        #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm>]
         required :self_harm,
                  -> {
                    OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Moderation::CategoryAppliedInputTypes::SelfHarm]
@@ -241,7 +241,7 @@ module OpenAI
         # @!attribute self_harm_instructions
         #   The applied input type(s) for the category 'self-harm/instructions'.
         #
-        #   @return [Array<Symbol, OpenAI::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction>]
+        #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction>]
         required :self_harm_instructions,
                  -> {
                    OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction]
@@ -251,7 +251,7 @@ module OpenAI
         # @!attribute self_harm_intent
         #   The applied input type(s) for the category 'self-harm/intent'.
         #
-        #   @return [Array<Symbol, OpenAI::Moderation::CategoryAppliedInputTypes::SelfHarmIntent>]
+        #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent>]
         required :self_harm_intent,
                  -> {
                    OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Moderation::CategoryAppliedInputTypes::SelfHarmIntent]
@@ -261,7 +261,7 @@ module OpenAI
         # @!attribute sexual
         #   The applied input type(s) for the category 'sexual'.
         #
-        #   @return [Array<Symbol, OpenAI::Moderation::CategoryAppliedInputTypes::Sexual>]
+        #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual>]
         required :sexual,
                  -> {
                    OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Moderation::CategoryAppliedInputTypes::Sexual]
@@ -270,7 +270,7 @@ module OpenAI
         # @!attribute sexual_minors
         #   The applied input type(s) for the category 'sexual/minors'.
         #
-        #   @return [Array<Symbol, OpenAI::Moderation::CategoryAppliedInputTypes::SexualMinor>]
+        #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor>]
         required :sexual_minors,
                  -> {
                    OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Moderation::CategoryAppliedInputTypes::SexualMinor]
@@ -280,7 +280,7 @@ module OpenAI
         # @!attribute violence
         #   The applied input type(s) for the category 'violence'.
         #
-        #   @return [Array<Symbol, OpenAI::Moderation::CategoryAppliedInputTypes::Violence>]
+        #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence>]
         required :violence,
                  -> {
                    OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Moderation::CategoryAppliedInputTypes::Violence]
@@ -289,7 +289,7 @@ module OpenAI
         # @!attribute violence_graphic
         #   The applied input type(s) for the category 'violence/graphic'.
         #
-        #   @return [Array<Symbol, OpenAI::Moderation::CategoryAppliedInputTypes::ViolenceGraphic>]
+        #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic>]
         required :violence_graphic,
                  -> {
                    OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Moderation::CategoryAppliedInputTypes::ViolenceGraphic]
@@ -299,31 +299,31 @@ module OpenAI
         # @!method initialize(harassment:, harassment_threatening:, hate:, hate_threatening:, illicit:, illicit_violent:, self_harm:, self_harm_instructions:, self_harm_intent:, sexual:, sexual_minors:, violence:, violence_graphic:)
         #   A list of the categories along with the input type(s) that the score applies to.
         #
-        #   @param harassment [Array<Symbol, OpenAI::Moderation::CategoryAppliedInputTypes::Harassment>] The applied input type(s) for the category 'harassment'.
+        #   @param harassment [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment>] The applied input type(s) for the category 'harassment'.
         #
-        #   @param harassment_threatening [Array<Symbol, OpenAI::Moderation::CategoryAppliedInputTypes::HarassmentThreatening>] The applied input type(s) for the category 'harassment/threatening'.
+        #   @param harassment_threatening [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening>] The applied input type(s) for the category 'harassment/threatening'.
         #
-        #   @param hate [Array<Symbol, OpenAI::Moderation::CategoryAppliedInputTypes::Hate>] The applied input type(s) for the category 'hate'.
+        #   @param hate [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate>] The applied input type(s) for the category 'hate'.
         #
-        #   @param hate_threatening [Array<Symbol, OpenAI::Moderation::CategoryAppliedInputTypes::HateThreatening>] The applied input type(s) for the category 'hate/threatening'.
+        #   @param hate_threatening [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening>] The applied input type(s) for the category 'hate/threatening'.
         #
-        #   @param illicit [Array<Symbol, OpenAI::Moderation::CategoryAppliedInputTypes::Illicit>] The applied input type(s) for the category 'illicit'.
+        #   @param illicit [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit>] The applied input type(s) for the category 'illicit'.
         #
-        #   @param illicit_violent [Array<Symbol, OpenAI::Moderation::CategoryAppliedInputTypes::IllicitViolent>] The applied input type(s) for the category 'illicit/violent'.
+        #   @param illicit_violent [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent>] The applied input type(s) for the category 'illicit/violent'.
         #
-        #   @param self_harm [Array<Symbol, OpenAI::Moderation::CategoryAppliedInputTypes::SelfHarm>] The applied input type(s) for the category 'self-harm'.
+        #   @param self_harm [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm>] The applied input type(s) for the category 'self-harm'.
         #
-        #   @param self_harm_instructions [Array<Symbol, OpenAI::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction>] The applied input type(s) for the category 'self-harm/instructions'.
+        #   @param self_harm_instructions [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction>] The applied input type(s) for the category 'self-harm/instructions'.
         #
-        #   @param self_harm_intent [Array<Symbol, OpenAI::Moderation::CategoryAppliedInputTypes::SelfHarmIntent>] The applied input type(s) for the category 'self-harm/intent'.
+        #   @param self_harm_intent [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent>] The applied input type(s) for the category 'self-harm/intent'.
         #
-        #   @param sexual [Array<Symbol, OpenAI::Moderation::CategoryAppliedInputTypes::Sexual>] The applied input type(s) for the category 'sexual'.
+        #   @param sexual [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual>] The applied input type(s) for the category 'sexual'.
         #
-        #   @param sexual_minors [Array<Symbol, OpenAI::Moderation::CategoryAppliedInputTypes::SexualMinor>] The applied input type(s) for the category 'sexual/minors'.
+        #   @param sexual_minors [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor>] The applied input type(s) for the category 'sexual/minors'.
         #
-        #   @param violence [Array<Symbol, OpenAI::Moderation::CategoryAppliedInputTypes::Violence>] The applied input type(s) for the category 'violence'.
+        #   @param violence [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence>] The applied input type(s) for the category 'violence'.
         #
-        #   @param violence_graphic [Array<Symbol, OpenAI::Moderation::CategoryAppliedInputTypes::ViolenceGraphic>] The applied input type(s) for the category 'violence/graphic'.
+        #   @param violence_graphic [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic>] The applied input type(s) for the category 'violence/graphic'.
 
         module Harassment
           extend OpenAI::Internal::Type::Enum
@@ -449,7 +449,7 @@ module OpenAI
         end
       end
 
-      # @see OpenAI::Moderation#category_scores
+      # @see OpenAI::Models::Moderation#category_scores
       class CategoryScores < OpenAI::Internal::Type::BaseModel
         # @!attribute harassment
         #   The score for the category 'harassment'.

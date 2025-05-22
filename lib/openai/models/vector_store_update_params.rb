@@ -10,7 +10,7 @@ module OpenAI
       # @!attribute expires_after
       #   The expiration policy for a vector store.
       #
-      #   @return [OpenAI::VectorStoreUpdateParams::ExpiresAfter, nil]
+      #   @return [OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter, nil]
       optional :expires_after, -> { OpenAI::VectorStoreUpdateParams::ExpiresAfter }, nil?: true
 
       # @!attribute metadata
@@ -34,7 +34,7 @@ module OpenAI
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::VectorStoreUpdateParams} for more details.
       #
-      #   @param expires_after [OpenAI::VectorStoreUpdateParams::ExpiresAfter, nil] The expiration policy for a vector store.
+      #   @param expires_after [OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter, nil] The expiration policy for a vector store.
       #
       #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
       #
@@ -58,7 +58,7 @@ module OpenAI
 
         # @!method initialize(days:, anchor: :last_active_at)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::VectorStoreUpdateParams::ExpiresAfter} for more details.
+        #   {OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter} for more details.
         #
         #   The expiration policy for a vector store.
         #

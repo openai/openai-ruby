@@ -3,22 +3,28 @@ module OpenAI
     type reasoning =
       {
         effort: OpenAI::Models::reasoning_effort?,
-        generate_summary: OpenAI::Reasoning::generate_summary?,
-        summary: OpenAI::Reasoning::summary?
+        generate_summary: OpenAI::Models::Reasoning::generate_summary?,
+        summary: OpenAI::Models::Reasoning::summary?
       }
 
     class Reasoning < OpenAI::Internal::Type::BaseModel
       attr_accessor effort: OpenAI::Models::reasoning_effort?
 
-      attr_accessor generate_summary: OpenAI::Reasoning::generate_summary?
+      attr_accessor generate_summary: OpenAI::Models::Reasoning::generate_summary?
 
-      attr_accessor summary: OpenAI::Reasoning::summary?
+      attr_accessor summary: OpenAI::Models::Reasoning::summary?
 
       def initialize: (
         ?effort: OpenAI::Models::reasoning_effort?,
-        ?generate_summary: OpenAI::Reasoning::generate_summary?,
-        ?summary: OpenAI::Reasoning::summary?
+        ?generate_summary: OpenAI::Models::Reasoning::generate_summary?,
+        ?summary: OpenAI::Models::Reasoning::summary?
       ) -> void
+
+      def to_hash: -> {
+        effort: OpenAI::Models::reasoning_effort?,
+        generate_summary: OpenAI::Models::Reasoning::generate_summary?,
+        summary: OpenAI::Models::Reasoning::summary?
+      }
 
       type generate_summary = :auto | :concise | :detailed
 
@@ -29,7 +35,7 @@ module OpenAI
         CONCISE: :concise
         DETAILED: :detailed
 
-        def self?.values: -> ::Array[OpenAI::Reasoning::generate_summary]
+        def self?.values: -> ::Array[OpenAI::Models::Reasoning::generate_summary]
       end
 
       type summary = :auto | :concise | :detailed
@@ -41,7 +47,7 @@ module OpenAI
         CONCISE: :concise
         DETAILED: :detailed
 
-        def self?.values: -> ::Array[OpenAI::Reasoning::summary]
+        def self?.values: -> ::Array[OpenAI::Models::Reasoning::summary]
       end
     end
   end

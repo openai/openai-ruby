@@ -7,13 +7,13 @@ module OpenAI
         # @!attribute hyperparameters
         #   The hyperparameters used for the DPO fine-tuning job.
         #
-        #   @return [OpenAI::FineTuning::DpoHyperparameters, nil]
+        #   @return [OpenAI::Models::FineTuning::DpoHyperparameters, nil]
         optional :hyperparameters, -> { OpenAI::FineTuning::DpoHyperparameters }
 
         # @!method initialize(hyperparameters: nil)
         #   Configuration for the DPO fine-tuning method.
         #
-        #   @param hyperparameters [OpenAI::FineTuning::DpoHyperparameters] The hyperparameters used for the DPO fine-tuning job.
+        #   @param hyperparameters [OpenAI::Models::FineTuning::DpoHyperparameters] The hyperparameters used for the DPO fine-tuning job.
       end
     end
   end

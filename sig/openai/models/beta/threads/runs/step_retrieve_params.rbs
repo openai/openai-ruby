@@ -31,6 +31,13 @@ module OpenAI
               ?include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
               ?request_options: OpenAI::request_opts
             ) -> void
+
+            def to_hash: -> {
+              thread_id: String,
+              run_id: String,
+              include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
+              request_options: OpenAI::RequestOptions
+            }
           end
         end
       end

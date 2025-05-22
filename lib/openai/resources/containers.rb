@@ -12,7 +12,7 @@ module OpenAI
       #
       # @param name [String] Name of the container to create.
       #
-      # @param expires_after [OpenAI::ContainerCreateParams::ExpiresAfter] Container expiration time in seconds relative to the 'anchor' time.
+      # @param expires_after [OpenAI::Models::ContainerCreateParams::ExpiresAfter] Container expiration time in seconds relative to the 'anchor' time.
       #
       # @param file_ids [Array<String>] IDs of files to copy to the container.
       #
@@ -62,7 +62,7 @@ module OpenAI
       #
       # @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
       #
-      # @param order [Symbol, OpenAI::ContainerListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
+      # @param order [Symbol, OpenAI::Models::ContainerListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #

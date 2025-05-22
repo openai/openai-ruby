@@ -28,7 +28,7 @@ module OpenAI
         #   Sort order by the `created_at` timestamp of the objects. `asc` for ascending
         #   order and `desc` for descending order.
         #
-        #   @return [Symbol, OpenAI::Containers::FileListParams::Order, nil]
+        #   @return [Symbol, OpenAI::Models::Containers::FileListParams::Order, nil]
         optional :order, enum: -> { OpenAI::Containers::FileListParams::Order }
 
         # @!method initialize(after: nil, limit: nil, order: nil, request_options: {})
@@ -39,7 +39,7 @@ module OpenAI
         #
         #   @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
         #
-        #   @param order [Symbol, OpenAI::Containers::FileListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
+        #   @param order [Symbol, OpenAI::Models::Containers::FileListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

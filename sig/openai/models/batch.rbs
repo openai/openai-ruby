@@ -8,7 +8,7 @@ module OpenAI
         endpoint: String,
         input_file_id: String,
         object: :batch,
-        status: OpenAI::Batch::status,
+        status: OpenAI::Models::Batch::status,
         cancelled_at: Integer,
         cancelling_at: Integer,
         completed_at: Integer,
@@ -37,7 +37,7 @@ module OpenAI
 
       attr_accessor object: :batch
 
-      attr_accessor status: OpenAI::Batch::status
+      attr_accessor status: OpenAI::Models::Batch::status
 
       attr_reader cancelled_at: Integer?
 
@@ -97,7 +97,7 @@ module OpenAI
         created_at: Integer,
         endpoint: String,
         input_file_id: String,
-        status: OpenAI::Batch::status,
+        status: OpenAI::Models::Batch::status,
         ?cancelled_at: Integer,
         ?cancelling_at: Integer,
         ?completed_at: Integer,
@@ -113,6 +113,29 @@ module OpenAI
         ?request_counts: OpenAI::BatchRequestCounts,
         ?object: :batch
       ) -> void
+
+      def to_hash: -> {
+        id: String,
+        completion_window: String,
+        created_at: Integer,
+        endpoint: String,
+        input_file_id: String,
+        object: :batch,
+        status: OpenAI::Models::Batch::status,
+        cancelled_at: Integer,
+        cancelling_at: Integer,
+        completed_at: Integer,
+        error_file_id: String,
+        errors: OpenAI::Batch::Errors,
+        expired_at: Integer,
+        expires_at: Integer,
+        failed_at: Integer,
+        finalizing_at: Integer,
+        in_progress_at: Integer,
+        metadata: OpenAI::Models::metadata?,
+        output_file_id: String,
+        request_counts: OpenAI::BatchRequestCounts
+      }
 
       type status =
         :validating
@@ -136,7 +159,7 @@ module OpenAI
         CANCELLING: :cancelling
         CANCELLED: :cancelled
 
-        def self?.values: -> ::Array[OpenAI::Batch::status]
+        def self?.values: -> ::Array[OpenAI::Models::Batch::status]
       end
 
       type errors = { data: ::Array[OpenAI::BatchError], object: String }
@@ -154,6 +177,8 @@ module OpenAI
           ?data: ::Array[OpenAI::BatchError],
           ?object: String
         ) -> void
+
+        def to_hash: -> { data: ::Array[OpenAI::BatchError], object: String }
       end
     end
   end

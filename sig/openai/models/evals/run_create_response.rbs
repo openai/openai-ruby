@@ -65,6 +65,23 @@ module OpenAI
           ?object: :"eval.run"
         ) -> void
 
+        def to_hash: -> {
+          id: String,
+          created_at: Integer,
+          data_source: OpenAI::Models::Evals::RunCreateResponse::data_source,
+          error: OpenAI::Evals::EvalAPIError,
+          eval_id: String,
+          metadata: OpenAI::Models::metadata?,
+          model: String,
+          name: String,
+          object: :"eval.run",
+          per_model_usage: ::Array[OpenAI::Models::Evals::RunCreateResponse::PerModelUsage],
+          per_testing_criteria_results: ::Array[OpenAI::Models::Evals::RunCreateResponse::PerTestingCriteriaResult],
+          report_url: String,
+          result_counts: OpenAI::Models::Evals::RunCreateResponse::ResultCounts,
+          status: String
+        }
+
         type data_source =
           OpenAI::Evals::CreateEvalJSONLRunDataSource
           | OpenAI::Evals::CreateEvalCompletionsRunDataSource
@@ -111,6 +128,14 @@ module OpenAI
               ?type: :responses
             ) -> void
 
+            def to_hash: -> {
+              source: OpenAI::Models::Evals::RunCreateResponse::DataSource::Responses::source,
+              type: :responses,
+              input_messages: OpenAI::Models::Evals::RunCreateResponse::DataSource::Responses::input_messages,
+              model: String,
+              sampling_params: OpenAI::Models::Evals::RunCreateResponse::DataSource::Responses::SamplingParams
+            }
+
             type source =
               OpenAI::Models::Evals::RunCreateResponse::DataSource::Responses::Source::FileContent
               | OpenAI::Models::Evals::RunCreateResponse::DataSource::Responses::Source::FileID
@@ -135,6 +160,11 @@ module OpenAI
                   ?type: :file_content
                 ) -> void
 
+                def to_hash: -> {
+                  content: ::Array[OpenAI::Models::Evals::RunCreateResponse::DataSource::Responses::Source::FileContent::Content],
+                  type: :file_content
+                }
+
                 type content =
                   { item: ::Hash[Symbol, top], sample: ::Hash[Symbol, top] }
 
@@ -149,6 +179,11 @@ module OpenAI
                     item: ::Hash[Symbol, top],
                     ?sample: ::Hash[Symbol, top]
                   ) -> void
+
+                  def to_hash: -> {
+                    item: ::Hash[Symbol, top],
+                    sample: ::Hash[Symbol, top]
+                  }
                 end
               end
 
@@ -160,6 +195,8 @@ module OpenAI
                 attr_accessor type: :file_id
 
                 def initialize: (id: String, ?type: :file_id) -> void
+
+                def to_hash: -> { id: String, type: :file_id }
               end
 
               type responses =
@@ -213,6 +250,20 @@ module OpenAI
                   ?users: ::Array[String]?,
                   ?type: :responses
                 ) -> void
+
+                def to_hash: -> {
+                  type: :responses,
+                  created_after: Integer?,
+                  created_before: Integer?,
+                  instructions_search: String?,
+                  metadata: top?,
+                  model: String?,
+                  reasoning_effort: OpenAI::Models::reasoning_effort?,
+                  temperature: Float?,
+                  tools: ::Array[String]?,
+                  top_p: Float?,
+                  users: ::Array[String]?
+                }
               end
 
               def self?.variants: -> ::Array[OpenAI::Models::Evals::RunCreateResponse::DataSource::Responses::source]
@@ -241,6 +292,11 @@ module OpenAI
                   ?type: :template
                 ) -> void
 
+                def to_hash: -> {
+                  template: ::Array[OpenAI::Models::Evals::RunCreateResponse::DataSource::Responses::InputMessages::Template::template],
+                  type: :template
+                }
+
                 type template =
                   OpenAI::Models::Evals::RunCreateResponse::DataSource::Responses::InputMessages::Template::Template::ChatMessage
                   | OpenAI::Models::Evals::RunCreateResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem
@@ -256,6 +312,8 @@ module OpenAI
                     attr_accessor role: String
 
                     def initialize: (content: String, role: String) -> void
+
+                    def to_hash: -> { content: String, role: String }
                   end
 
                   type eval_item =
@@ -282,6 +340,12 @@ module OpenAI
                       ?type: OpenAI::Models::Evals::RunCreateResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::type_
                     ) -> void
 
+                    def to_hash: -> {
+                      content: OpenAI::Models::Evals::RunCreateResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::content,
+                      role: OpenAI::Models::Evals::RunCreateResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::role,
+                      type: OpenAI::Models::Evals::RunCreateResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::type_
+                    }
+
                     type content =
                       String
                       | OpenAI::Responses::ResponseInputText
@@ -301,6 +365,8 @@ module OpenAI
                           text: String,
                           ?type: :output_text
                         ) -> void
+
+                        def to_hash: -> { text: String, type: :output_text }
                       end
 
                       def self?.variants: -> ::Array[OpenAI::Models::Evals::RunCreateResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::content]
@@ -346,6 +412,11 @@ module OpenAI
                   item_reference: String,
                   ?type: :item_reference
                 ) -> void
+
+                def to_hash: -> {
+                  item_reference: String,
+                  type: :item_reference
+                }
               end
 
               def self?.variants: -> ::Array[OpenAI::Models::Evals::RunCreateResponse::DataSource::Responses::input_messages]
@@ -382,6 +453,13 @@ module OpenAI
                 ?temperature: Float,
                 ?top_p: Float
               ) -> void
+
+              def to_hash: -> {
+                max_completion_tokens: Integer,
+                seed: Integer,
+                temperature: Float,
+                top_p: Float
+              }
             end
           end
 
@@ -419,6 +497,15 @@ module OpenAI
             prompt_tokens: Integer,
             total_tokens: Integer
           ) -> void
+
+          def to_hash: -> {
+            cached_tokens: Integer,
+            completion_tokens: Integer,
+            invocation_count: Integer,
+            model_name: String,
+            prompt_tokens: Integer,
+            total_tokens: Integer
+          }
         end
 
         type per_testing_criteria_result =
@@ -436,6 +523,12 @@ module OpenAI
             passed: Integer,
             testing_criteria: String
           ) -> void
+
+          def to_hash: -> {
+            failed: Integer,
+            passed: Integer,
+            testing_criteria: String
+          }
         end
 
         type result_counts =
@@ -456,6 +549,13 @@ module OpenAI
             passed: Integer,
             total: Integer
           ) -> void
+
+          def to_hash: -> {
+            errored: Integer,
+            failed: Integer,
+            passed: Integer,
+            total: Integer
+          }
         end
       end
     end

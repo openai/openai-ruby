@@ -48,6 +48,19 @@ module OpenAI
           text: String,
           tokens: ::Array[Integer]
         ) -> void
+
+        def to_hash: -> {
+          id: Integer,
+          avg_logprob: Float,
+          compression_ratio: Float,
+          end_: Float,
+          no_speech_prob: Float,
+          seek: Integer,
+          start: Float,
+          temperature: Float,
+          text: String,
+          tokens: ::Array[Integer]
+        }
       end
     end
   end

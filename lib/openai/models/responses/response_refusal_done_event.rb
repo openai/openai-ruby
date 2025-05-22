@@ -42,7 +42,7 @@ module OpenAI
 
         # @!method initialize(content_index:, item_id:, output_index:, refusal:, sequence_number:, type: :"response.refusal.done")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseRefusalDoneEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseRefusalDoneEvent} for more details.
         #
         #   Emitted when refusal text is finalized.
         #

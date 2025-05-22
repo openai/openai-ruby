@@ -13,12 +13,19 @@ module OpenAI
         ?type: :image_url
       ) -> void
 
+      def to_hash: -> {
+        image_url: OpenAI::ModerationImageURLInput::ImageURL,
+        type: :image_url
+      }
+
       type image_url = { url: String }
 
       class ImageURL < OpenAI::Internal::Type::BaseModel
         attr_accessor url: String
 
         def initialize: (url: String) -> void
+
+        def to_hash: -> { url: String }
       end
     end
   end

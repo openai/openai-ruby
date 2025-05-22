@@ -19,7 +19,7 @@ module OpenAI
         # @!attribute output
         #   A computer screenshot image used with the computer use tool.
         #
-        #   @return [OpenAI::Responses::ResponseComputerToolCallOutputScreenshot]
+        #   @return [OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot]
         required :output, -> { OpenAI::Responses::ResponseComputerToolCallOutputScreenshot }
 
         # @!attribute type
@@ -32,7 +32,7 @@ module OpenAI
         #   The safety checks reported by the API that have been acknowledged by the
         #   developer.
         #
-        #   @return [Array<OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck>, nil]
+        #   @return [Array<OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck>, nil]
         optional :acknowledged_safety_checks,
                  -> {
                    OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck]
@@ -42,22 +42,23 @@ module OpenAI
         #   The status of the message input. One of `in_progress`, `completed`, or
         #   `incomplete`. Populated when input items are returned via API.
         #
-        #   @return [Symbol, OpenAI::Responses::ResponseComputerToolCallOutputItem::Status, nil]
+        #   @return [Symbol, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status, nil]
         optional :status, enum: -> { OpenAI::Responses::ResponseComputerToolCallOutputItem::Status }
 
         # @!method initialize(id:, call_id:, output:, acknowledged_safety_checks: nil, status: nil, type: :computer_call_output)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseComputerToolCallOutputItem} for more details.
+        #   {OpenAI::Models::Responses::ResponseComputerToolCallOutputItem} for more
+        #   details.
         #
         #   @param id [String] The unique ID of the computer call tool output.
         #
         #   @param call_id [String] The ID of the computer tool call that produced the output.
         #
-        #   @param output [OpenAI::Responses::ResponseComputerToolCallOutputScreenshot] A computer screenshot image used with the computer use tool.
+        #   @param output [OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot] A computer screenshot image used with the computer use tool.
         #
-        #   @param acknowledged_safety_checks [Array<OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck>] The safety checks reported by the API that have been acknowledged by the
+        #   @param acknowledged_safety_checks [Array<OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck>] The safety checks reported by the API that have been acknowledged by the
         #
-        #   @param status [Symbol, OpenAI::Responses::ResponseComputerToolCallOutputItem::Status] The status of the message input. One of `in_progress`, `completed`, or
+        #   @param status [Symbol, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status] The status of the message input. One of `in_progress`, `completed`, or
         #
         #   @param type [Symbol, :computer_call_output] The type of the computer tool call output. Always `computer_call_output`.
 
@@ -93,7 +94,7 @@ module OpenAI
         # The status of the message input. One of `in_progress`, `completed`, or
         # `incomplete`. Populated when input items are returned via API.
         #
-        # @see OpenAI::Responses::ResponseComputerToolCallOutputItem#status
+        # @see OpenAI::Models::Responses::ResponseComputerToolCallOutputItem#status
         module Status
           extend OpenAI::Internal::Type::Enum
 

@@ -20,6 +20,12 @@ module OpenAI
           output_index: Integer,
           ?type: :"response.web_search_call.in_progress"
         ) -> void
+
+        def to_hash: -> {
+          item_id: String,
+          output_index: Integer,
+          type: :"response.web_search_call.in_progress"
+        }
       end
     end
   end

@@ -7,7 +7,7 @@ module OpenAI
         class ImageFileContentBlock < OpenAI::Internal::Type::BaseModel
           # @!attribute image_file
           #
-          #   @return [OpenAI::Beta::Threads::ImageFile]
+          #   @return [OpenAI::Models::Beta::Threads::ImageFile]
           required :image_file, -> { OpenAI::Beta::Threads::ImageFile }
 
           # @!attribute type
@@ -20,7 +20,7 @@ module OpenAI
           #   References an image [File](https://platform.openai.com/docs/api-reference/files)
           #   in the content of a message.
           #
-          #   @param image_file [OpenAI::Beta::Threads::ImageFile]
+          #   @param image_file [OpenAI::Models::Beta::Threads::ImageFile]
           #
           #   @param type [Symbol, :image_file] Always `image_file`.
         end

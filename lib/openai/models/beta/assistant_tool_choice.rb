@@ -7,25 +7,25 @@ module OpenAI
         # @!attribute type
         #   The type of the tool. If type is `function`, the function name must be set
         #
-        #   @return [Symbol, OpenAI::Beta::AssistantToolChoice::Type]
+        #   @return [Symbol, OpenAI::Models::Beta::AssistantToolChoice::Type]
         required :type, enum: -> { OpenAI::Beta::AssistantToolChoice::Type }
 
         # @!attribute function
         #
-        #   @return [OpenAI::Beta::AssistantToolChoiceFunction, nil]
+        #   @return [OpenAI::Models::Beta::AssistantToolChoiceFunction, nil]
         optional :function, -> { OpenAI::Beta::AssistantToolChoiceFunction }
 
         # @!method initialize(type:, function: nil)
         #   Specifies a tool the model should use. Use to force the model to call a specific
         #   tool.
         #
-        #   @param type [Symbol, OpenAI::Beta::AssistantToolChoice::Type] The type of the tool. If type is `function`, the function name must be set
+        #   @param type [Symbol, OpenAI::Models::Beta::AssistantToolChoice::Type] The type of the tool. If type is `function`, the function name must be set
         #
-        #   @param function [OpenAI::Beta::AssistantToolChoiceFunction]
+        #   @param function [OpenAI::Models::Beta::AssistantToolChoiceFunction]
 
         # The type of the tool. If type is `function`, the function name must be set
         #
-        # @see OpenAI::Beta::AssistantToolChoice#type
+        # @see OpenAI::Models::Beta::AssistantToolChoice#type
         module Type
           extend OpenAI::Internal::Type::Enum
 

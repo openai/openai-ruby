@@ -53,9 +53,9 @@ module OpenAI
           #
           # @param limit [Integer] Query param: Number of output items to retrieve.
           #
-          # @param order [Symbol, OpenAI::Evals::Runs::OutputItemListParams::Order] Query param: Sort order for output items by timestamp. Use `asc` for ascending o
+          # @param order [Symbol, OpenAI::Models::Evals::Runs::OutputItemListParams::Order] Query param: Sort order for output items by timestamp. Use `asc` for ascending o
           #
-          # @param status [Symbol, OpenAI::Evals::Runs::OutputItemListParams::Status] Query param: Filter output items by status. Use `failed` to filter by failed out
+          # @param status [Symbol, OpenAI::Models::Evals::Runs::OutputItemListParams::Status] Query param: Filter output items by status. Use `failed` to filter by failed out
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #

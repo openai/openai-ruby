@@ -3,19 +3,24 @@ module OpenAI
     module Evals
       type create_eval_jsonl_run_data_source =
         {
-          source: OpenAI::Evals::CreateEvalJSONLRunDataSource::source,
+          source: OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::source,
           type: :jsonl
         }
 
       class CreateEvalJSONLRunDataSource < OpenAI::Internal::Type::BaseModel
-        attr_accessor source: OpenAI::Evals::CreateEvalJSONLRunDataSource::source
+        attr_accessor source: OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::source
 
         attr_accessor type: :jsonl
 
         def initialize: (
-          source: OpenAI::Evals::CreateEvalJSONLRunDataSource::source,
+          source: OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::source,
           ?type: :jsonl
         ) -> void
+
+        def to_hash: -> {
+          source: OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::source,
+          type: :jsonl
+        }
 
         type source =
           OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent
@@ -40,6 +45,11 @@ module OpenAI
               ?type: :file_content
             ) -> void
 
+            def to_hash: -> {
+              content: ::Array[OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content],
+              type: :file_content
+            }
+
             type content =
               { item: ::Hash[Symbol, top], sample: ::Hash[Symbol, top] }
 
@@ -54,6 +64,11 @@ module OpenAI
                 item: ::Hash[Symbol, top],
                 ?sample: ::Hash[Symbol, top]
               ) -> void
+
+              def to_hash: -> {
+                item: ::Hash[Symbol, top],
+                sample: ::Hash[Symbol, top]
+              }
             end
           end
 
@@ -65,9 +80,11 @@ module OpenAI
             attr_accessor type: :file_id
 
             def initialize: (id: String, ?type: :file_id) -> void
+
+            def to_hash: -> { id: String, type: :file_id }
           end
 
-          def self?.variants: -> ::Array[OpenAI::Evals::CreateEvalJSONLRunDataSource::source]
+          def self?.variants: -> ::Array[OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::source]
         end
       end
     end

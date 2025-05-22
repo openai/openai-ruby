@@ -23,6 +23,12 @@ module OpenAI
               ?type: :function
             ) -> void
 
+            def to_hash: -> {
+              id: String,
+              function: OpenAI::Beta::Threads::Runs::FunctionToolCall::Function,
+              type: :function
+            }
+
             type function = { arguments: String, name: String, output: String? }
 
             class Function < OpenAI::Internal::Type::BaseModel
@@ -37,6 +43,12 @@ module OpenAI
                 name: String,
                 output: String?
               ) -> void
+
+              def to_hash: -> {
+                arguments: String,
+                name: String,
+                output: String?
+              }
             end
           end
         end

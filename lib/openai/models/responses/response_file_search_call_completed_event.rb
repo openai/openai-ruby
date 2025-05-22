@@ -30,7 +30,8 @@ module OpenAI
 
         # @!method initialize(item_id:, output_index:, sequence_number:, type: :"response.file_search_call.completed")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseFileSearchCallCompletedEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseFileSearchCallCompletedEvent} for more
+        #   details.
         #
         #   Emitted when a file search call is completed (results found).
         #

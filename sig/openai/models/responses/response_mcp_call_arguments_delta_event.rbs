@@ -28,6 +28,14 @@ module OpenAI
           sequence_number: Integer,
           ?type: :"response.mcp_call.arguments_delta"
         ) -> void
+
+        def to_hash: -> {
+          delta: top,
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.mcp_call.arguments_delta"
+        }
       end
     end
   end

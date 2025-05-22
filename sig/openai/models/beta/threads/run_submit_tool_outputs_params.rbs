@@ -23,6 +23,12 @@ module OpenAI
             ?request_options: OpenAI::request_opts
           ) -> void
 
+          def to_hash: -> {
+            thread_id: String,
+            tool_outputs: ::Array[OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput],
+            request_options: OpenAI::RequestOptions
+          }
+
           type tool_output = { output: String, tool_call_id: String }
 
           class ToolOutput < OpenAI::Internal::Type::BaseModel
@@ -35,6 +41,8 @@ module OpenAI
             def tool_call_id=: (String) -> String
 
             def initialize: (?output: String, ?tool_call_id: String) -> void
+
+            def to_hash: -> { output: String, tool_call_id: String }
           end
         end
       end

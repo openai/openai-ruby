@@ -7,24 +7,24 @@ module OpenAI
       #   Array of filters to combine. Items can be `ComparisonFilter` or
       #   `CompoundFilter`.
       #
-      #   @return [Array<OpenAI::ComparisonFilter, Object>]
+      #   @return [Array<OpenAI::Models::ComparisonFilter, Object>]
       required :filters, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::CompoundFilter::Filter] }
 
       # @!attribute type
       #   Type of operation: `and` or `or`.
       #
-      #   @return [Symbol, OpenAI::CompoundFilter::Type]
+      #   @return [Symbol, OpenAI::Models::CompoundFilter::Type]
       required :type, enum: -> { OpenAI::CompoundFilter::Type }
 
       # @!method initialize(filters:, type:)
-      #   Some parameter documentations has been truncated, see {OpenAI::CompoundFilter}
-      #   for more details.
+      #   Some parameter documentations has been truncated, see
+      #   {OpenAI::Models::CompoundFilter} for more details.
       #
       #   Combine multiple filters using `and` or `or`.
       #
-      #   @param filters [Array<OpenAI::ComparisonFilter, Object>] Array of filters to combine. Items can be `ComparisonFilter` or `CompoundFilter`
+      #   @param filters [Array<OpenAI::Models::ComparisonFilter, Object>] Array of filters to combine. Items can be `ComparisonFilter` or `CompoundFilter`
       #
-      #   @param type [Symbol, OpenAI::CompoundFilter::Type] Type of operation: `and` or `or`.
+      #   @param type [Symbol, OpenAI::Models::CompoundFilter::Type] Type of operation: `and` or `or`.
 
       # A filter used to compare a specified attribute key to a given value using a
       # defined comparison operation.
@@ -37,12 +37,12 @@ module OpenAI
         variant OpenAI::Internal::Type::Unknown
 
         # @!method self.variants
-        #   @return [Array(OpenAI::ComparisonFilter, Object)]
+        #   @return [Array(OpenAI::Models::ComparisonFilter, Object)]
       end
 
       # Type of operation: `and` or `or`.
       #
-      # @see OpenAI::CompoundFilter#type
+      # @see OpenAI::Models::CompoundFilter#type
       module Type
         extend OpenAI::Internal::Type::Enum
 

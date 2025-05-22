@@ -8,7 +8,7 @@ module OpenAI
         #   The detail level of the image to be sent to the model. One of `high`, `low`, or
         #   `auto`. Defaults to `auto`.
         #
-        #   @return [Symbol, OpenAI::Responses::ResponseInputImage::Detail]
+        #   @return [Symbol, OpenAI::Models::Responses::ResponseInputImage::Detail]
         required :detail, enum: -> { OpenAI::Responses::ResponseInputImage::Detail }
 
         # @!attribute type
@@ -32,12 +32,12 @@ module OpenAI
 
         # @!method initialize(detail:, file_id: nil, image_url: nil, type: :input_image)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseInputImage} for more details.
+        #   {OpenAI::Models::Responses::ResponseInputImage} for more details.
         #
         #   An image input to the model. Learn about
         #   [image inputs](https://platform.openai.com/docs/guides/vision).
         #
-        #   @param detail [Symbol, OpenAI::Responses::ResponseInputImage::Detail] The detail level of the image to be sent to the model. One of `high`, `low`, or
+        #   @param detail [Symbol, OpenAI::Models::Responses::ResponseInputImage::Detail] The detail level of the image to be sent to the model. One of `high`, `low`, or
         #
         #   @param file_id [String, nil] The ID of the file to be sent to the model.
         #
@@ -48,7 +48,7 @@ module OpenAI
         # The detail level of the image to be sent to the model. One of `high`, `low`, or
         # `auto`. Defaults to `auto`.
         #
-        # @see OpenAI::Responses::ResponseInputImage#detail
+        # @see OpenAI::Models::Responses::ResponseInputImage#detail
         module Detail
           extend OpenAI::Internal::Type::Enum
 

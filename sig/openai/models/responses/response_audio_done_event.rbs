@@ -13,6 +13,11 @@ module OpenAI
           sequence_number: Integer,
           ?type: :"response.audio.done"
         ) -> void
+
+        def to_hash: -> {
+          sequence_number: Integer,
+          type: :"response.audio.done"
+        }
       end
     end
   end

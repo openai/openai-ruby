@@ -19,7 +19,7 @@ module OpenAI
       # @!attribute results
       #   A list of moderation objects.
       #
-      #   @return [Array<OpenAI::Moderation>]
+      #   @return [Array<OpenAI::Models::Moderation>]
       required :results, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Moderation] }
 
       # @!method initialize(id:, model:, results:)
@@ -29,7 +29,7 @@ module OpenAI
       #
       #   @param model [String] The model used to generate the moderation results.
       #
-      #   @param results [Array<OpenAI::Moderation>] A list of moderation objects.
+      #   @param results [Array<OpenAI::Models::Moderation>] A list of moderation objects.
     end
   end
 end

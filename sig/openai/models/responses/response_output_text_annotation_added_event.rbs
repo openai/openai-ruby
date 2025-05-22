@@ -36,6 +36,16 @@ module OpenAI
           sequence_number: Integer,
           ?type: :"response.output_text_annotation.added"
         ) -> void
+
+        def to_hash: -> {
+          annotation: top,
+          annotation_index: Integer,
+          content_index: Integer,
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.output_text_annotation.added"
+        }
       end
     end
   end

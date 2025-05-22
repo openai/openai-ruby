@@ -11,7 +11,7 @@ module OpenAI
       #   The configuration for the data source used for the evaluation runs. Dictates the
       #   schema of the data used in the evaluation.
       #
-      #   @return [OpenAI::EvalCreateParams::DataSourceConfig::Custom, OpenAI::EvalCreateParams::DataSourceConfig::Logs, OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions]
+      #   @return [OpenAI::Models::EvalCreateParams::DataSourceConfig::Custom, OpenAI::Models::EvalCreateParams::DataSourceConfig::Logs, OpenAI::Models::EvalCreateParams::DataSourceConfig::StoredCompletions]
       required :data_source_config, union: -> { OpenAI::EvalCreateParams::DataSourceConfig }
 
       # @!attribute testing_criteria
@@ -20,7 +20,7 @@ module OpenAI
       #   `{{item.variable_name}}`. To reference the model's output, use the `sample`
       #   namespace (ie, `{{sample.output_text}}`).
       #
-      #   @return [Array<OpenAI::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Graders::StringCheckGrader, OpenAI::EvalCreateParams::TestingCriterion::TextSimilarity, OpenAI::EvalCreateParams::TestingCriterion::Python, OpenAI::EvalCreateParams::TestingCriterion::ScoreModel>]
+      #   @return [Array<OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::EvalCreateParams::TestingCriterion::TextSimilarity, OpenAI::Models::EvalCreateParams::TestingCriterion::Python, OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel>]
       required :testing_criteria,
                -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::EvalCreateParams::TestingCriterion] }
 
@@ -45,9 +45,9 @@ module OpenAI
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::EvalCreateParams} for more details.
       #
-      #   @param data_source_config [OpenAI::EvalCreateParams::DataSourceConfig::Custom, OpenAI::EvalCreateParams::DataSourceConfig::Logs, OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions] The configuration for the data source used for the evaluation runs. Dictates the
+      #   @param data_source_config [OpenAI::Models::EvalCreateParams::DataSourceConfig::Custom, OpenAI::Models::EvalCreateParams::DataSourceConfig::Logs, OpenAI::Models::EvalCreateParams::DataSourceConfig::StoredCompletions] The configuration for the data source used for the evaluation runs. Dictates the
       #
-      #   @param testing_criteria [Array<OpenAI::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Graders::StringCheckGrader, OpenAI::EvalCreateParams::TestingCriterion::TextSimilarity, OpenAI::EvalCreateParams::TestingCriterion::Python, OpenAI::EvalCreateParams::TestingCriterion::ScoreModel>] A list of graders for all eval runs in this group. Graders can reference variabl
+      #   @param testing_criteria [Array<OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::EvalCreateParams::TestingCriterion::TextSimilarity, OpenAI::Models::EvalCreateParams::TestingCriterion::Python, OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel>] A list of graders for all eval runs in this group. Graders can reference variabl
       #
       #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
       #
@@ -97,7 +97,7 @@ module OpenAI
 
           # @!method initialize(item_schema:, include_sample_schema: nil, type: :custom)
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::EvalCreateParams::DataSourceConfig::Custom} for more details.
+          #   {OpenAI::Models::EvalCreateParams::DataSourceConfig::Custom} for more details.
           #
           #   A CustomDataSourceConfig object that defines the schema for the data source used
           #   for the evaluation runs. This schema is used to define the shape of the data
@@ -158,7 +158,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::EvalCreateParams::DataSourceConfig::Custom, OpenAI::EvalCreateParams::DataSourceConfig::Logs, OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions)]
+        #   @return [Array(OpenAI::Models::EvalCreateParams::DataSourceConfig::Custom, OpenAI::Models::EvalCreateParams::DataSourceConfig::Logs, OpenAI::Models::EvalCreateParams::DataSourceConfig::StoredCompletions)]
       end
 
       # A LabelModelGrader object which uses a model to assign labels to each item in
@@ -189,7 +189,7 @@ module OpenAI
           #   A list of chat messages forming the prompt or context. May include variable
           #   references to the `item` namespace, ie {{item.name}}.
           #
-          #   @return [Array<OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage, OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem>]
+          #   @return [Array<OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem>]
           required :input,
                    -> {
                      OpenAI::Internal::Type::ArrayOf[union: OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input]
@@ -227,12 +227,13 @@ module OpenAI
 
           # @!method initialize(input:, labels:, model:, name:, passing_labels:, type: :label_model)
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::EvalCreateParams::TestingCriterion::LabelModel} for more details.
+          #   {OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel} for more
+          #   details.
           #
           #   A LabelModelGrader object which uses a model to assign labels to each item in
           #   the evaluation.
           #
-          #   @param input [Array<OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage, OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem>] A list of chat messages forming the prompt or context. May include variable refe
+          #   @param input [Array<OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem>] A list of chat messages forming the prompt or context. May include variable refe
           #
           #   @param labels [Array<String>] The labels to classify to each item in the evaluation.
           #
@@ -281,7 +282,7 @@ module OpenAI
               # @!attribute content
               #   Text inputs to the model - can contain template strings.
               #
-              #   @return [String, OpenAI::Responses::ResponseInputText, OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText]
+              #   @return [String, OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText]
               required :content,
                        union: -> {
                          OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content
@@ -291,7 +292,7 @@ module OpenAI
               #   The role of the message input. One of `user`, `assistant`, `system`, or
               #   `developer`.
               #
-              #   @return [Symbol, OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Role]
+              #   @return [Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Role]
               required :role,
                        enum: -> {
                          OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Role
@@ -300,7 +301,7 @@ module OpenAI
               # @!attribute type
               #   The type of the message input. Always `message`.
               #
-              #   @return [Symbol, OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Type, nil]
+              #   @return [Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Type, nil]
               optional :type,
                        enum: -> {
                          OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Type
@@ -308,8 +309,8 @@ module OpenAI
 
               # @!method initialize(content:, role:, type: nil)
               #   Some parameter documentations has been truncated, see
-              #   {OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem} for
-              #   more details.
+              #   {OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem}
+              #   for more details.
               #
               #   A message input to the model with a role indicating instruction following
               #   hierarchy. Instructions given with the `developer` or `system` role take
@@ -317,15 +318,15 @@ module OpenAI
               #   `assistant` role are presumed to have been generated by the model in previous
               #   interactions.
               #
-              #   @param content [String, OpenAI::Responses::ResponseInputText, OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText] Text inputs to the model - can contain template strings.
+              #   @param content [String, OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText] Text inputs to the model - can contain template strings.
               #
-              #   @param role [Symbol, OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Role] The role of the message input. One of `user`, `assistant`, `system`, or
+              #   @param role [Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Role] The role of the message input. One of `user`, `assistant`, `system`, or
               #
-              #   @param type [Symbol, OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Type] The type of the message input. Always `message`.
+              #   @param type [Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Type] The type of the message input. Always `message`.
 
               # Text inputs to the model - can contain template strings.
               #
-              # @see OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem#content
+              # @see OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem#content
               module Content
                 extend OpenAI::Internal::Type::Union
 
@@ -355,7 +356,7 @@ module OpenAI
 
                   # @!method initialize(text:, type: :output_text)
                   #   Some parameter documentations has been truncated, see
-                  #   {OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText}
+                  #   {OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText}
                   #   for more details.
                   #
                   #   A text output from the model.
@@ -366,13 +367,13 @@ module OpenAI
                 end
 
                 # @!method self.variants
-                #   @return [Array(String, OpenAI::Responses::ResponseInputText, OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText)]
+                #   @return [Array(String, OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText)]
               end
 
               # The role of the message input. One of `user`, `assistant`, `system`, or
               # `developer`.
               #
-              # @see OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem#role
+              # @see OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem#role
               module Role
                 extend OpenAI::Internal::Type::Enum
 
@@ -387,7 +388,7 @@ module OpenAI
 
               # The type of the message input. Always `message`.
               #
-              # @see OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem#type
+              # @see OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem#type
               module Type
                 extend OpenAI::Internal::Type::Enum
 
@@ -399,7 +400,7 @@ module OpenAI
             end
 
             # @!method self.variants
-            #   @return [Array(OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage, OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem)]
+            #   @return [Array(OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem)]
           end
         end
 
@@ -443,7 +444,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Graders::StringCheckGrader, OpenAI::EvalCreateParams::TestingCriterion::TextSimilarity, OpenAI::EvalCreateParams::TestingCriterion::Python, OpenAI::EvalCreateParams::TestingCriterion::ScoreModel)]
+        #   @return [Array(OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::EvalCreateParams::TestingCriterion::TextSimilarity, OpenAI::Models::EvalCreateParams::TestingCriterion::Python, OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel)]
       end
     end
   end

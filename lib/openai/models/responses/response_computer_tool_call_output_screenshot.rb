@@ -25,7 +25,8 @@ module OpenAI
 
         # @!method initialize(file_id: nil, image_url: nil, type: :computer_screenshot)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseComputerToolCallOutputScreenshot} for more details.
+        #   {OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot} for more
+        #   details.
         #
         #   A computer screenshot image used with the computer use tool.
         #

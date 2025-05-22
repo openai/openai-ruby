@@ -19,12 +19,19 @@ module OpenAI
               ?type: :message_creation
             ) -> void
 
+            def to_hash: -> {
+              message_creation: OpenAI::Beta::Threads::Runs::MessageCreationStepDetails::MessageCreation,
+              type: :message_creation
+            }
+
             type message_creation = { message_id: String }
 
             class MessageCreation < OpenAI::Internal::Type::BaseModel
               attr_accessor message_id: String
 
               def initialize: (message_id: String) -> void
+
+              def to_hash: -> { message_id: String }
             end
           end
         end

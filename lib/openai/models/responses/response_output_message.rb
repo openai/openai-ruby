@@ -13,7 +13,7 @@ module OpenAI
         # @!attribute content
         #   The content of the output message.
         #
-        #   @return [Array<OpenAI::Responses::ResponseOutputText, OpenAI::Responses::ResponseOutputRefusal>]
+        #   @return [Array<OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal>]
         required :content,
                  -> {
                    OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseOutputMessage::Content]
@@ -29,7 +29,7 @@ module OpenAI
         #   The status of the message input. One of `in_progress`, `completed`, or
         #   `incomplete`. Populated when input items are returned via API.
         #
-        #   @return [Symbol, OpenAI::Responses::ResponseOutputMessage::Status]
+        #   @return [Symbol, OpenAI::Models::Responses::ResponseOutputMessage::Status]
         required :status, enum: -> { OpenAI::Responses::ResponseOutputMessage::Status }
 
         # @!attribute type
@@ -40,15 +40,15 @@ module OpenAI
 
         # @!method initialize(id:, content:, status:, role: :assistant, type: :message)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseOutputMessage} for more details.
+        #   {OpenAI::Models::Responses::ResponseOutputMessage} for more details.
         #
         #   An output message from the model.
         #
         #   @param id [String] The unique ID of the output message.
         #
-        #   @param content [Array<OpenAI::Responses::ResponseOutputText, OpenAI::Responses::ResponseOutputRefusal>] The content of the output message.
+        #   @param content [Array<OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal>] The content of the output message.
         #
-        #   @param status [Symbol, OpenAI::Responses::ResponseOutputMessage::Status] The status of the message input. One of `in_progress`, `completed`, or
+        #   @param status [Symbol, OpenAI::Models::Responses::ResponseOutputMessage::Status] The status of the message input. One of `in_progress`, `completed`, or
         #
         #   @param role [Symbol, :assistant] The role of the output message. Always `assistant`.
         #
@@ -67,13 +67,13 @@ module OpenAI
           variant :refusal, -> { OpenAI::Responses::ResponseOutputRefusal }
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Responses::ResponseOutputText, OpenAI::Responses::ResponseOutputRefusal)]
+          #   @return [Array(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)]
         end
 
         # The status of the message input. One of `in_progress`, `completed`, or
         # `incomplete`. Populated when input items are returned via API.
         #
-        # @see OpenAI::Responses::ResponseOutputMessage#status
+        # @see OpenAI::Models::Responses::ResponseOutputMessage#status
         module Status
           extend OpenAI::Internal::Type::Enum
 

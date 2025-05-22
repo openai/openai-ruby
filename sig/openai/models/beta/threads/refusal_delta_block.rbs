@@ -19,6 +19,8 @@ module OpenAI
             ?refusal: String,
             ?type: :refusal
           ) -> void
+
+          def to_hash: -> { index: Integer, type: :refusal, refusal: String }
         end
       end
     end

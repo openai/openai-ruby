@@ -10,9 +10,9 @@ module OpenAI
       #
       # @overload create(completion_window:, endpoint:, input_file_id:, metadata: nil, request_options: {})
       #
-      # @param completion_window [Symbol, OpenAI::BatchCreateParams::CompletionWindow] The time frame within which the batch should be processed. Currently only `24h`
+      # @param completion_window [Symbol, OpenAI::Models::BatchCreateParams::CompletionWindow] The time frame within which the batch should be processed. Currently only `24h`
       #
-      # @param endpoint [Symbol, OpenAI::BatchCreateParams::Endpoint] The endpoint to be used for all requests in the batch. Currently `/v1/responses`
+      # @param endpoint [Symbol, OpenAI::Models::BatchCreateParams::Endpoint] The endpoint to be used for all requests in the batch. Currently `/v1/responses`
       #
       # @param input_file_id [String] The ID of an uploaded file that contains requests for the new batch.
       #
@@ -20,7 +20,7 @@ module OpenAI
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::Batch]
+      # @return [OpenAI::Models::Batch]
       #
       # @see OpenAI::Models::BatchCreateParams
       def create(params)
@@ -36,7 +36,7 @@ module OpenAI
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::Batch]
+      # @return [OpenAI::Models::Batch]
       #
       # @see OpenAI::Models::BatchRetrieveParams
       def retrieve(batch_id, params = {})
@@ -61,7 +61,7 @@ module OpenAI
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::Internal::CursorPage<OpenAI::Batch>]
+      # @return [OpenAI::Internal::CursorPage<OpenAI::Models::Batch>]
       #
       # @see OpenAI::Models::BatchListParams
       def list(params = {})
@@ -86,7 +86,7 @@ module OpenAI
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::Batch]
+      # @return [OpenAI::Models::Batch]
       #
       # @see OpenAI::Models::BatchCancelParams
       def cancel(batch_id, params = {})

@@ -19,12 +19,19 @@ module OpenAI
           ?type: :function
         ) -> void
 
+        def to_hash: -> {
+          function: OpenAI::Chat::ChatCompletionNamedToolChoice::Function,
+          type: :function
+        }
+
         type function = { name: String }
 
         class Function < OpenAI::Internal::Type::BaseModel
           attr_accessor name: String
 
           def initialize: (name: String) -> void
+
+          def to_hash: -> { name: String }
         end
       end
     end

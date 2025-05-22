@@ -19,25 +19,35 @@ module OpenAI
           ?type: :image_url
         ) -> void
 
+        def to_hash: -> {
+          image_url: OpenAI::Chat::ChatCompletionContentPartImage::ImageURL,
+          type: :image_url
+        }
+
         type image_url =
           {
             url: String,
-            detail: OpenAI::Chat::ChatCompletionContentPartImage::ImageURL::detail
+            detail: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::detail
           }
 
         class ImageURL < OpenAI::Internal::Type::BaseModel
           attr_accessor url: String
 
-          attr_reader detail: OpenAI::Chat::ChatCompletionContentPartImage::ImageURL::detail?
+          attr_reader detail: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::detail?
 
           def detail=: (
-            OpenAI::Chat::ChatCompletionContentPartImage::ImageURL::detail
-          ) -> OpenAI::Chat::ChatCompletionContentPartImage::ImageURL::detail
+            OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::detail
+          ) -> OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::detail
 
           def initialize: (
             url: String,
-            ?detail: OpenAI::Chat::ChatCompletionContentPartImage::ImageURL::detail
+            ?detail: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::detail
           ) -> void
+
+          def to_hash: -> {
+            url: String,
+            detail: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::detail
+          }
 
           type detail = :auto | :low | :high
 
@@ -48,7 +58,7 @@ module OpenAI
             LOW: :low
             HIGH: :high
 
-            def self?.values: -> ::Array[OpenAI::Chat::ChatCompletionContentPartImage::ImageURL::detail]
+            def self?.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::detail]
           end
         end
       end

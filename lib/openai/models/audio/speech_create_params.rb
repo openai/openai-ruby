@@ -18,7 +18,7 @@ module OpenAI
         #   One of the available [TTS models](https://platform.openai.com/docs/models#tts):
         #   `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.
         #
-        #   @return [String, Symbol, OpenAI::Audio::SpeechModel]
+        #   @return [String, Symbol, OpenAI::Models::Audio::SpeechModel]
         required :model, union: -> { OpenAI::Audio::SpeechCreateParams::Model }
 
         # @!attribute voice
@@ -27,7 +27,7 @@ module OpenAI
         #   `verse`. Previews of the voices are available in the
         #   [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
         #
-        #   @return [String, Symbol, OpenAI::Audio::SpeechCreateParams::Voice]
+        #   @return [String, Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice]
         required :voice, union: -> { OpenAI::Audio::SpeechCreateParams::Voice }
 
         # @!attribute instructions
@@ -41,7 +41,7 @@ module OpenAI
         #   The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`,
         #   `wav`, and `pcm`.
         #
-        #   @return [Symbol, OpenAI::Audio::SpeechCreateParams::ResponseFormat, nil]
+        #   @return [Symbol, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat, nil]
         optional :response_format, enum: -> { OpenAI::Audio::SpeechCreateParams::ResponseFormat }
 
         # @!attribute speed
@@ -57,13 +57,13 @@ module OpenAI
         #
         #   @param input [String] The text to generate audio for. The maximum length is 4096 characters.
         #
-        #   @param model [String, Symbol, OpenAI::Audio::SpeechModel] One of the available [TTS models](https://platform.openai.com/docs/models#tts):
+        #   @param model [String, Symbol, OpenAI::Models::Audio::SpeechModel] One of the available [TTS models](https://platform.openai.com/docs/models#tts):
         #
-        #   @param voice [String, Symbol, OpenAI::Audio::SpeechCreateParams::Voice] The voice to use when generating the audio. Supported voices are `alloy`, `ash`,
+        #   @param voice [String, Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice] The voice to use when generating the audio. Supported voices are `alloy`, `ash`,
         #
         #   @param instructions [String] Control the voice of your generated audio with additional instructions. Does not
         #
-        #   @param response_format [Symbol, OpenAI::Audio::SpeechCreateParams::ResponseFormat] The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`, `wav
+        #   @param response_format [Symbol, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat] The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`, `wav
         #
         #   @param speed [Float] The speed of the generated audio. Select a value from `0.25` to `4.0`. `1.0` is
         #
@@ -80,7 +80,7 @@ module OpenAI
           variant enum: -> { OpenAI::Audio::SpeechModel }
 
           # @!method self.variants
-          #   @return [Array(String, Symbol, OpenAI::Audio::SpeechModel)]
+          #   @return [Array(String, Symbol, OpenAI::Models::Audio::SpeechModel)]
         end
 
         # The voice to use when generating the audio. Supported voices are `alloy`, `ash`,
@@ -92,27 +92,27 @@ module OpenAI
 
           variant String
 
-          variant const: -> { OpenAI::Audio::SpeechCreateParams::Voice::ALLOY }
+          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::ALLOY }
 
-          variant const: -> { OpenAI::Audio::SpeechCreateParams::Voice::ASH }
+          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::ASH }
 
-          variant const: -> { OpenAI::Audio::SpeechCreateParams::Voice::BALLAD }
+          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::BALLAD }
 
-          variant const: -> { OpenAI::Audio::SpeechCreateParams::Voice::CORAL }
+          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::CORAL }
 
-          variant const: -> { OpenAI::Audio::SpeechCreateParams::Voice::ECHO }
+          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::ECHO }
 
-          variant const: -> { OpenAI::Audio::SpeechCreateParams::Voice::FABLE }
+          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::FABLE }
 
-          variant const: -> { OpenAI::Audio::SpeechCreateParams::Voice::ONYX }
+          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::ONYX }
 
-          variant const: -> { OpenAI::Audio::SpeechCreateParams::Voice::NOVA }
+          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::NOVA }
 
-          variant const: -> { OpenAI::Audio::SpeechCreateParams::Voice::SAGE }
+          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::SAGE }
 
-          variant const: -> { OpenAI::Audio::SpeechCreateParams::Voice::SHIMMER }
+          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::SHIMMER }
 
-          variant const: -> { OpenAI::Audio::SpeechCreateParams::Voice::VERSE }
+          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::VERSE }
 
           # @!method self.variants
           #   @return [Array(String, Symbol)]

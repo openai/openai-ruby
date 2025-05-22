@@ -56,7 +56,7 @@ module OpenAI
             #   The last error associated with this run step. Will be `null` if there are no
             #   errors.
             #
-            #   @return [OpenAI::Beta::Threads::Runs::RunStep::LastError, nil]
+            #   @return [OpenAI::Models::Beta::Threads::Runs::RunStep::LastError, nil]
             required :last_error, -> { OpenAI::Beta::Threads::Runs::RunStep::LastError }, nil?: true
 
             # @!attribute metadata
@@ -87,13 +87,13 @@ module OpenAI
             #   The status of the run step, which can be either `in_progress`, `cancelled`,
             #   `failed`, `completed`, or `expired`.
             #
-            #   @return [Symbol, OpenAI::Beta::Threads::Runs::RunStep::Status]
+            #   @return [Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::Status]
             required :status, enum: -> { OpenAI::Beta::Threads::Runs::RunStep::Status }
 
             # @!attribute step_details
             #   The details of the run step.
             #
-            #   @return [OpenAI::Beta::Threads::Runs::MessageCreationStepDetails, OpenAI::Beta::Threads::Runs::ToolCallsStepDetails]
+            #   @return [OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails, OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails]
             required :step_details, union: -> { OpenAI::Beta::Threads::Runs::RunStep::StepDetails }
 
             # @!attribute thread_id
@@ -106,19 +106,19 @@ module OpenAI
             # @!attribute type
             #   The type of run step, which can be either `message_creation` or `tool_calls`.
             #
-            #   @return [Symbol, OpenAI::Beta::Threads::Runs::RunStep::Type]
+            #   @return [Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::Type]
             required :type, enum: -> { OpenAI::Beta::Threads::Runs::RunStep::Type }
 
             # @!attribute usage
             #   Usage statistics related to the run step. This value will be `null` while the
             #   run step's status is `in_progress`.
             #
-            #   @return [OpenAI::Beta::Threads::Runs::RunStep::Usage, nil]
+            #   @return [OpenAI::Models::Beta::Threads::Runs::RunStep::Usage, nil]
             required :usage, -> { OpenAI::Beta::Threads::Runs::RunStep::Usage }, nil?: true
 
             # @!method initialize(id:, assistant_id:, cancelled_at:, completed_at:, created_at:, expired_at:, failed_at:, last_error:, metadata:, run_id:, status:, step_details:, thread_id:, type:, usage:, object: :"thread.run.step")
             #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Beta::Threads::Runs::RunStep} for more details.
+            #   {OpenAI::Models::Beta::Threads::Runs::RunStep} for more details.
             #
             #   Represents a step in execution of a run.
             #
@@ -136,30 +136,30 @@ module OpenAI
             #
             #   @param failed_at [Integer, nil] The Unix timestamp (in seconds) for when the run step failed.
             #
-            #   @param last_error [OpenAI::Beta::Threads::Runs::RunStep::LastError, nil] The last error associated with this run step. Will be `null` if there are no err
+            #   @param last_error [OpenAI::Models::Beta::Threads::Runs::RunStep::LastError, nil] The last error associated with this run step. Will be `null` if there are no err
             #
             #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
             #
             #   @param run_id [String] The ID of the [run](https://platform.openai.com/docs/api-reference/runs) that th
             #
-            #   @param status [Symbol, OpenAI::Beta::Threads::Runs::RunStep::Status] The status of the run step, which can be either `in_progress`, `cancelled`, `fai
+            #   @param status [Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::Status] The status of the run step, which can be either `in_progress`, `cancelled`, `fai
             #
-            #   @param step_details [OpenAI::Beta::Threads::Runs::MessageCreationStepDetails, OpenAI::Beta::Threads::Runs::ToolCallsStepDetails] The details of the run step.
+            #   @param step_details [OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails, OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails] The details of the run step.
             #
             #   @param thread_id [String] The ID of the [thread](https://platform.openai.com/docs/api-reference/threads) t
             #
-            #   @param type [Symbol, OpenAI::Beta::Threads::Runs::RunStep::Type] The type of run step, which can be either `message_creation` or `tool_calls`.
+            #   @param type [Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::Type] The type of run step, which can be either `message_creation` or `tool_calls`.
             #
-            #   @param usage [OpenAI::Beta::Threads::Runs::RunStep::Usage, nil] Usage statistics related to the run step. This value will be `null` while the ru
+            #   @param usage [OpenAI::Models::Beta::Threads::Runs::RunStep::Usage, nil] Usage statistics related to the run step. This value will be `null` while the ru
             #
             #   @param object [Symbol, :"thread.run.step"] The object type, which is always `thread.run.step`.
 
-            # @see OpenAI::Beta::Threads::Runs::RunStep#last_error
+            # @see OpenAI::Models::Beta::Threads::Runs::RunStep#last_error
             class LastError < OpenAI::Internal::Type::BaseModel
               # @!attribute code
               #   One of `server_error` or `rate_limit_exceeded`.
               #
-              #   @return [Symbol, OpenAI::Beta::Threads::Runs::RunStep::LastError::Code]
+              #   @return [Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code]
               required :code, enum: -> { OpenAI::Beta::Threads::Runs::RunStep::LastError::Code }
 
               # @!attribute message
@@ -172,13 +172,13 @@ module OpenAI
               #   The last error associated with this run step. Will be `null` if there are no
               #   errors.
               #
-              #   @param code [Symbol, OpenAI::Beta::Threads::Runs::RunStep::LastError::Code] One of `server_error` or `rate_limit_exceeded`.
+              #   @param code [Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code] One of `server_error` or `rate_limit_exceeded`.
               #
               #   @param message [String] A human-readable description of the error.
 
               # One of `server_error` or `rate_limit_exceeded`.
               #
-              # @see OpenAI::Beta::Threads::Runs::RunStep::LastError#code
+              # @see OpenAI::Models::Beta::Threads::Runs::RunStep::LastError#code
               module Code
                 extend OpenAI::Internal::Type::Enum
 
@@ -193,7 +193,7 @@ module OpenAI
             # The status of the run step, which can be either `in_progress`, `cancelled`,
             # `failed`, `completed`, or `expired`.
             #
-            # @see OpenAI::Beta::Threads::Runs::RunStep#status
+            # @see OpenAI::Models::Beta::Threads::Runs::RunStep#status
             module Status
               extend OpenAI::Internal::Type::Enum
 
@@ -209,7 +209,7 @@ module OpenAI
 
             # The details of the run step.
             #
-            # @see OpenAI::Beta::Threads::Runs::RunStep#step_details
+            # @see OpenAI::Models::Beta::Threads::Runs::RunStep#step_details
             module StepDetails
               extend OpenAI::Internal::Type::Union
 
@@ -222,12 +222,12 @@ module OpenAI
               variant :tool_calls, -> { OpenAI::Beta::Threads::Runs::ToolCallsStepDetails }
 
               # @!method self.variants
-              #   @return [Array(OpenAI::Beta::Threads::Runs::MessageCreationStepDetails, OpenAI::Beta::Threads::Runs::ToolCallsStepDetails)]
+              #   @return [Array(OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails, OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails)]
             end
 
             # The type of run step, which can be either `message_creation` or `tool_calls`.
             #
-            # @see OpenAI::Beta::Threads::Runs::RunStep#type
+            # @see OpenAI::Models::Beta::Threads::Runs::RunStep#type
             module Type
               extend OpenAI::Internal::Type::Enum
 
@@ -238,7 +238,7 @@ module OpenAI
               #   @return [Array<Symbol>]
             end
 
-            # @see OpenAI::Beta::Threads::Runs::RunStep#usage
+            # @see OpenAI::Models::Beta::Threads::Runs::RunStep#usage
             class Usage < OpenAI::Internal::Type::BaseModel
               # @!attribute completion_tokens
               #   Number of completion tokens used over the course of the run step.

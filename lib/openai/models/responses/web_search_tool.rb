@@ -8,40 +8,40 @@ module OpenAI
         #   The type of the web search tool. One of `web_search_preview` or
         #   `web_search_preview_2025_03_11`.
         #
-        #   @return [Symbol, OpenAI::Responses::WebSearchTool::Type]
+        #   @return [Symbol, OpenAI::Models::Responses::WebSearchTool::Type]
         required :type, enum: -> { OpenAI::Responses::WebSearchTool::Type }
 
         # @!attribute search_context_size
         #   High level guidance for the amount of context window space to use for the
         #   search. One of `low`, `medium`, or `high`. `medium` is the default.
         #
-        #   @return [Symbol, OpenAI::Responses::WebSearchTool::SearchContextSize, nil]
+        #   @return [Symbol, OpenAI::Models::Responses::WebSearchTool::SearchContextSize, nil]
         optional :search_context_size, enum: -> { OpenAI::Responses::WebSearchTool::SearchContextSize }
 
         # @!attribute user_location
         #   The user's location.
         #
-        #   @return [OpenAI::Responses::WebSearchTool::UserLocation, nil]
+        #   @return [OpenAI::Models::Responses::WebSearchTool::UserLocation, nil]
         optional :user_location, -> { OpenAI::Responses::WebSearchTool::UserLocation }, nil?: true
 
         # @!method initialize(type:, search_context_size: nil, user_location: nil)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::WebSearchTool} for more details.
+        #   {OpenAI::Models::Responses::WebSearchTool} for more details.
         #
         #   This tool searches the web for relevant results to use in a response. Learn more
         #   about the
         #   [web search tool](https://platform.openai.com/docs/guides/tools-web-search).
         #
-        #   @param type [Symbol, OpenAI::Responses::WebSearchTool::Type] The type of the web search tool. One of `web_search_preview` or `web_search_prev
+        #   @param type [Symbol, OpenAI::Models::Responses::WebSearchTool::Type] The type of the web search tool. One of `web_search_preview` or `web_search_prev
         #
-        #   @param search_context_size [Symbol, OpenAI::Responses::WebSearchTool::SearchContextSize] High level guidance for the amount of context window space to use for the search
+        #   @param search_context_size [Symbol, OpenAI::Models::Responses::WebSearchTool::SearchContextSize] High level guidance for the amount of context window space to use for the search
         #
-        #   @param user_location [OpenAI::Responses::WebSearchTool::UserLocation, nil] The user's location.
+        #   @param user_location [OpenAI::Models::Responses::WebSearchTool::UserLocation, nil] The user's location.
 
         # The type of the web search tool. One of `web_search_preview` or
         # `web_search_preview_2025_03_11`.
         #
-        # @see OpenAI::Responses::WebSearchTool#type
+        # @see OpenAI::Models::Responses::WebSearchTool#type
         module Type
           extend OpenAI::Internal::Type::Enum
 
@@ -55,7 +55,7 @@ module OpenAI
         # High level guidance for the amount of context window space to use for the
         # search. One of `low`, `medium`, or `high`. `medium` is the default.
         #
-        # @see OpenAI::Responses::WebSearchTool#search_context_size
+        # @see OpenAI::Models::Responses::WebSearchTool#search_context_size
         module SearchContextSize
           extend OpenAI::Internal::Type::Enum
 
@@ -67,7 +67,7 @@ module OpenAI
           #   @return [Array<Symbol>]
         end
 
-        # @see OpenAI::Responses::WebSearchTool#user_location
+        # @see OpenAI::Models::Responses::WebSearchTool#user_location
         class UserLocation < OpenAI::Internal::Type::BaseModel
           # @!attribute type
           #   The type of location approximation. Always `approximate`.
@@ -103,7 +103,7 @@ module OpenAI
 
           # @!method initialize(city: nil, country: nil, region: nil, timezone: nil, type: :approximate)
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Responses::WebSearchTool::UserLocation} for more details.
+          #   {OpenAI::Models::Responses::WebSearchTool::UserLocation} for more details.
           #
           #   The user's location.
           #

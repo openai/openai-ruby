@@ -80,6 +80,25 @@ module OpenAI
           ?request_options: OpenAI::request_opts
         ) -> void
 
+        def to_hash: -> {
+          assistant_id: String,
+          instructions: String?,
+          max_completion_tokens: Integer?,
+          max_prompt_tokens: Integer?,
+          metadata: OpenAI::Models::metadata?,
+          model: OpenAI::Models::Beta::ThreadCreateAndRunParams::model?,
+          parallel_tool_calls: bool,
+          response_format: OpenAI::Models::Beta::assistant_response_format_option?,
+          temperature: Float?,
+          thread: OpenAI::Beta::ThreadCreateAndRunParams::Thread,
+          tool_choice: OpenAI::Models::Beta::assistant_tool_choice_option?,
+          tool_resources: OpenAI::Beta::ThreadCreateAndRunParams::ToolResources?,
+          tools: ::Array[OpenAI::Models::Beta::assistant_tool]?,
+          top_p: Float?,
+          truncation_strategy: OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy?,
+          request_options: OpenAI::RequestOptions
+        }
+
         type model = String | OpenAI::Models::chat_model
 
         module Model
@@ -112,29 +131,42 @@ module OpenAI
             ?tool_resources: OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources?
           ) -> void
 
+          def to_hash: -> {
+            messages: ::Array[OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message],
+            metadata: OpenAI::Models::metadata?,
+            tool_resources: OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources?
+          }
+
           type message =
             {
-              content: OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::content,
-              role: OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::role,
+              content: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::content,
+              role: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::role,
               attachments: ::Array[OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment]?,
               metadata: OpenAI::Models::metadata?
             }
 
           class Message < OpenAI::Internal::Type::BaseModel
-            attr_accessor content: OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::content
+            attr_accessor content: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::content
 
-            attr_accessor role: OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::role
+            attr_accessor role: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::role
 
             attr_accessor attachments: ::Array[OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment]?
 
             attr_accessor metadata: OpenAI::Models::metadata?
 
             def initialize: (
-              content: OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::content,
-              role: OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::role,
+              content: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::content,
+              role: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::role,
               ?attachments: ::Array[OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment]?,
               ?metadata: OpenAI::Models::metadata?
             ) -> void
+
+            def to_hash: -> {
+              content: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::content,
+              role: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::role,
+              attachments: ::Array[OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment]?,
+              metadata: OpenAI::Models::metadata?
+            }
 
             type content =
               String
@@ -143,7 +175,7 @@ module OpenAI
             module Content
               extend OpenAI::Internal::Type::Union
 
-              def self?.variants: -> ::Array[OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::content]
+              def self?.variants: -> ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::content]
 
               MessageContentPartParamArray: OpenAI::Internal::Type::Converter
             end
@@ -156,13 +188,13 @@ module OpenAI
               USER: :user
               ASSISTANT: :assistant
 
-              def self?.values: -> ::Array[OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::role]
+              def self?.values: -> ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::role]
             end
 
             type attachment =
               {
                 file_id: String,
-                tools: ::Array[OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::tool]
+                tools: ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::tool]
               }
 
             class Attachment < OpenAI::Internal::Type::BaseModel
@@ -170,16 +202,21 @@ module OpenAI
 
               def file_id=: (String) -> String
 
-              attr_reader tools: ::Array[OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::tool]?
+              attr_reader tools: ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::tool]?
 
               def tools=: (
-                ::Array[OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::tool]
-              ) -> ::Array[OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::tool]
+                ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::tool]
+              ) -> ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::tool]
 
               def initialize: (
                 ?file_id: String,
-                ?tools: ::Array[OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::tool]
+                ?tools: ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::tool]
               ) -> void
+
+              def to_hash: -> {
+                file_id: String,
+                tools: ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::tool]
+              }
 
               type tool =
                 OpenAI::Beta::CodeInterpreterTool
@@ -194,9 +231,11 @@ module OpenAI
                   attr_accessor type: :file_search
 
                   def initialize: (?type: :file_search) -> void
+
+                  def to_hash: -> { type: :file_search }
                 end
 
-                def self?.variants: -> ::Array[OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::tool]
+                def self?.variants: -> ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::tool]
               end
             end
           end
@@ -225,6 +264,11 @@ module OpenAI
               ?file_search: OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch
             ) -> void
 
+            def to_hash: -> {
+              code_interpreter: OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources::CodeInterpreter,
+              file_search: OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch
+            }
+
             type code_interpreter = { file_ids: ::Array[String] }
 
             class CodeInterpreter < OpenAI::Internal::Type::BaseModel
@@ -233,6 +277,8 @@ module OpenAI
               def file_ids=: (::Array[String]) -> ::Array[String]
 
               def initialize: (?file_ids: ::Array[String]) -> void
+
+              def to_hash: -> { file_ids: ::Array[String] }
             end
 
             type file_search =
@@ -257,19 +303,24 @@ module OpenAI
                 ?vector_stores: ::Array[OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore]
               ) -> void
 
+              def to_hash: -> {
+                vector_store_ids: ::Array[String],
+                vector_stores: ::Array[OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore]
+              }
+
               type vector_store =
                 {
-                  chunking_strategy: OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy,
+                  chunking_strategy: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy,
                   file_ids: ::Array[String],
                   metadata: OpenAI::Models::metadata?
                 }
 
               class VectorStore < OpenAI::Internal::Type::BaseModel
-                attr_reader chunking_strategy: OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy?
+                attr_reader chunking_strategy: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy?
 
                 def chunking_strategy=: (
-                  OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy
-                ) -> OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy
+                  OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy
+                ) -> OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy
 
                 attr_reader file_ids: ::Array[String]?
 
@@ -278,10 +329,16 @@ module OpenAI
                 attr_accessor metadata: OpenAI::Models::metadata?
 
                 def initialize: (
-                  ?chunking_strategy: OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy,
+                  ?chunking_strategy: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy,
                   ?file_ids: ::Array[String],
                   ?metadata: OpenAI::Models::metadata?
                 ) -> void
+
+                def to_hash: -> {
+                  chunking_strategy: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy,
+                  file_ids: ::Array[String],
+                  metadata: OpenAI::Models::metadata?
+                }
 
                 type chunking_strategy =
                   OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto
@@ -296,6 +353,8 @@ module OpenAI
                     attr_accessor type: :auto
 
                     def initialize: (?type: :auto) -> void
+
+                    def to_hash: -> { type: :auto }
                   end
 
                   type static =
@@ -314,6 +373,11 @@ module OpenAI
                       ?type: :static
                     ) -> void
 
+                    def to_hash: -> {
+                      static: OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
+                      type: :static
+                    }
+
                     type static =
                       {
                         chunk_overlap_tokens: Integer,
@@ -329,10 +393,15 @@ module OpenAI
                         chunk_overlap_tokens: Integer,
                         max_chunk_size_tokens: Integer
                       ) -> void
+
+                      def to_hash: -> {
+                        chunk_overlap_tokens: Integer,
+                        max_chunk_size_tokens: Integer
+                      }
                     end
                   end
 
-                  def self?.variants: -> ::Array[OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy]
+                  def self?.variants: -> ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy]
                 end
               end
             end
@@ -363,6 +432,11 @@ module OpenAI
             ?file_search: OpenAI::Beta::ThreadCreateAndRunParams::ToolResources::FileSearch
           ) -> void
 
+          def to_hash: -> {
+            code_interpreter: OpenAI::Beta::ThreadCreateAndRunParams::ToolResources::CodeInterpreter,
+            file_search: OpenAI::Beta::ThreadCreateAndRunParams::ToolResources::FileSearch
+          }
+
           type code_interpreter = { file_ids: ::Array[String] }
 
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
@@ -371,6 +445,8 @@ module OpenAI
             def file_ids=: (::Array[String]) -> ::Array[String]
 
             def initialize: (?file_ids: ::Array[String]) -> void
+
+            def to_hash: -> { file_ids: ::Array[String] }
           end
 
           type file_search = { vector_store_ids: ::Array[String] }
@@ -381,24 +457,31 @@ module OpenAI
             def vector_store_ids=: (::Array[String]) -> ::Array[String]
 
             def initialize: (?vector_store_ids: ::Array[String]) -> void
+
+            def to_hash: -> { vector_store_ids: ::Array[String] }
           end
         end
 
         type truncation_strategy =
           {
-            type: OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy::type_,
+            type: OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::type_,
             last_messages: Integer?
           }
 
         class TruncationStrategy < OpenAI::Internal::Type::BaseModel
-          attr_accessor type: OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy::type_
+          attr_accessor type: OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::type_
 
           attr_accessor last_messages: Integer?
 
           def initialize: (
-            type: OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy::type_,
+            type: OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::type_,
             ?last_messages: Integer?
           ) -> void
+
+          def to_hash: -> {
+            type: OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::type_,
+            last_messages: Integer?
+          }
 
           type type_ = :auto | :last_messages
 
@@ -408,7 +491,7 @@ module OpenAI
             AUTO: :auto
             LAST_MESSAGES: :last_messages
 
-            def self?.values: -> ::Array[OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy::type_]
+            def self?.values: -> ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::type_]
           end
         end
       end

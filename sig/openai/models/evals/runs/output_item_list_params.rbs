@@ -47,6 +47,15 @@ module OpenAI
             ?request_options: OpenAI::request_opts
           ) -> void
 
+          def to_hash: -> {
+            eval_id: String,
+            after: String,
+            limit: Integer,
+            order: OpenAI::Models::Evals::Runs::OutputItemListParams::order,
+            status: OpenAI::Models::Evals::Runs::OutputItemListParams::status,
+            request_options: OpenAI::RequestOptions
+          }
+
           type order = :asc | :desc
 
           module Order

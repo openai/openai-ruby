@@ -19,7 +19,7 @@ module OpenAI
         variant :"transcript.text.done", -> { OpenAI::Audio::TranscriptionTextDoneEvent }
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Audio::TranscriptionTextDeltaEvent, OpenAI::Audio::TranscriptionTextDoneEvent)]
+        #   @return [Array(OpenAI::Models::Audio::TranscriptionTextDeltaEvent, OpenAI::Models::Audio::TranscriptionTextDoneEvent)]
       end
     end
   end

@@ -16,6 +16,12 @@ module OpenAI
           transcript: String,
           ?type: :output_audio
         ) -> void
+
+        def to_hash: -> {
+          data: String,
+          transcript: String,
+          type: :output_audio
+        }
       end
     end
   end

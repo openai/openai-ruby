@@ -24,7 +24,8 @@ module OpenAI
 
         # @!method initialize(item_id:, output_index:, type: :"response.web_search_call.searching")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseWebSearchCallSearchingEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseWebSearchCallSearchingEvent} for more
+        #   details.
         #
         #   Emitted when a web search call is executing.
         #

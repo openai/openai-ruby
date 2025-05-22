@@ -18,10 +18,10 @@ module OpenAI
               metadata: OpenAI::Models::metadata?,
               object: :"thread.run.step",
               run_id: String,
-              status: OpenAI::Beta::Threads::Runs::RunStep::status,
-              step_details: OpenAI::Beta::Threads::Runs::RunStep::step_details,
+              status: OpenAI::Models::Beta::Threads::Runs::RunStep::status,
+              step_details: OpenAI::Models::Beta::Threads::Runs::RunStep::step_details,
               thread_id: String,
-              type: OpenAI::Beta::Threads::Runs::RunStep::type_,
+              type: OpenAI::Models::Beta::Threads::Runs::RunStep::type_,
               usage: OpenAI::Beta::Threads::Runs::RunStep::Usage?
             }
 
@@ -48,13 +48,13 @@ module OpenAI
 
             attr_accessor run_id: String
 
-            attr_accessor status: OpenAI::Beta::Threads::Runs::RunStep::status
+            attr_accessor status: OpenAI::Models::Beta::Threads::Runs::RunStep::status
 
-            attr_accessor step_details: OpenAI::Beta::Threads::Runs::RunStep::step_details
+            attr_accessor step_details: OpenAI::Models::Beta::Threads::Runs::RunStep::step_details
 
             attr_accessor thread_id: String
 
-            attr_accessor type: OpenAI::Beta::Threads::Runs::RunStep::type_
+            attr_accessor type: OpenAI::Models::Beta::Threads::Runs::RunStep::type_
 
             attr_accessor usage: OpenAI::Beta::Threads::Runs::RunStep::Usage?
 
@@ -69,29 +69,53 @@ module OpenAI
               last_error: OpenAI::Beta::Threads::Runs::RunStep::LastError?,
               metadata: OpenAI::Models::metadata?,
               run_id: String,
-              status: OpenAI::Beta::Threads::Runs::RunStep::status,
-              step_details: OpenAI::Beta::Threads::Runs::RunStep::step_details,
+              status: OpenAI::Models::Beta::Threads::Runs::RunStep::status,
+              step_details: OpenAI::Models::Beta::Threads::Runs::RunStep::step_details,
               thread_id: String,
-              type: OpenAI::Beta::Threads::Runs::RunStep::type_,
+              type: OpenAI::Models::Beta::Threads::Runs::RunStep::type_,
               usage: OpenAI::Beta::Threads::Runs::RunStep::Usage?,
               ?object: :"thread.run.step"
             ) -> void
 
+            def to_hash: -> {
+              id: String,
+              assistant_id: String,
+              cancelled_at: Integer?,
+              completed_at: Integer?,
+              created_at: Integer,
+              expired_at: Integer?,
+              failed_at: Integer?,
+              last_error: OpenAI::Beta::Threads::Runs::RunStep::LastError?,
+              metadata: OpenAI::Models::metadata?,
+              object: :"thread.run.step",
+              run_id: String,
+              status: OpenAI::Models::Beta::Threads::Runs::RunStep::status,
+              step_details: OpenAI::Models::Beta::Threads::Runs::RunStep::step_details,
+              thread_id: String,
+              type: OpenAI::Models::Beta::Threads::Runs::RunStep::type_,
+              usage: OpenAI::Beta::Threads::Runs::RunStep::Usage?
+            }
+
             type last_error =
               {
-                code: OpenAI::Beta::Threads::Runs::RunStep::LastError::code,
+                code: OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::code,
                 message: String
               }
 
             class LastError < OpenAI::Internal::Type::BaseModel
-              attr_accessor code: OpenAI::Beta::Threads::Runs::RunStep::LastError::code
+              attr_accessor code: OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::code
 
               attr_accessor message: String
 
               def initialize: (
-                code: OpenAI::Beta::Threads::Runs::RunStep::LastError::code,
+                code: OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::code,
                 message: String
               ) -> void
+
+              def to_hash: -> {
+                code: OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::code,
+                message: String
+              }
 
               type code = :server_error | :rate_limit_exceeded
 
@@ -101,7 +125,7 @@ module OpenAI
                 SERVER_ERROR: :server_error
                 RATE_LIMIT_EXCEEDED: :rate_limit_exceeded
 
-                def self?.values: -> ::Array[OpenAI::Beta::Threads::Runs::RunStep::LastError::code]
+                def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::code]
               end
             end
 
@@ -117,7 +141,7 @@ module OpenAI
               COMPLETED: :completed
               EXPIRED: :expired
 
-              def self?.values: -> ::Array[OpenAI::Beta::Threads::Runs::RunStep::status]
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::Runs::RunStep::status]
             end
 
             type step_details =
@@ -127,7 +151,7 @@ module OpenAI
             module StepDetails
               extend OpenAI::Internal::Type::Union
 
-              def self?.variants: -> ::Array[OpenAI::Beta::Threads::Runs::RunStep::step_details]
+              def self?.variants: -> ::Array[OpenAI::Models::Beta::Threads::Runs::RunStep::step_details]
             end
 
             type type_ = :message_creation | :tool_calls
@@ -138,7 +162,7 @@ module OpenAI
               MESSAGE_CREATION: :message_creation
               TOOL_CALLS: :tool_calls
 
-              def self?.values: -> ::Array[OpenAI::Beta::Threads::Runs::RunStep::type_]
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::Runs::RunStep::type_]
             end
 
             type usage =
@@ -160,6 +184,12 @@ module OpenAI
                 prompt_tokens: Integer,
                 total_tokens: Integer
               ) -> void
+
+              def to_hash: -> {
+                completion_tokens: Integer,
+                prompt_tokens: Integer,
+                total_tokens: Integer
+              }
             end
           end
         end

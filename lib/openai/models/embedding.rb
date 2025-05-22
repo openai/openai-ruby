@@ -24,8 +24,8 @@ module OpenAI
       required :object, const: :embedding
 
       # @!method initialize(embedding:, index:, object: :embedding)
-      #   Some parameter documentations has been truncated, see {OpenAI::Embedding} for
-      #   more details.
+      #   Some parameter documentations has been truncated, see
+      #   {OpenAI::Models::Embedding} for more details.
       #
       #   Represents an embedding vector returned by embedding endpoint.
       #

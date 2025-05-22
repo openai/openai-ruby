@@ -3,7 +3,7 @@ module OpenAI
     module Responses
       type response_text_annotation_delta_event =
         {
-          annotation: OpenAI::Responses::ResponseTextAnnotationDeltaEvent::annotation,
+          annotation: OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::annotation,
           annotation_index: Integer,
           content_index: Integer,
           item_id: String,
@@ -13,7 +13,7 @@ module OpenAI
         }
 
       class ResponseTextAnnotationDeltaEvent < OpenAI::Internal::Type::BaseModel
-        attr_accessor annotation: OpenAI::Responses::ResponseTextAnnotationDeltaEvent::annotation
+        attr_accessor annotation: OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::annotation
 
         attr_accessor annotation_index: Integer
 
@@ -28,7 +28,7 @@ module OpenAI
         attr_accessor type: :"response.output_text.annotation.added"
 
         def initialize: (
-          annotation: OpenAI::Responses::ResponseTextAnnotationDeltaEvent::annotation,
+          annotation: OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::annotation,
           annotation_index: Integer,
           content_index: Integer,
           item_id: String,
@@ -36,6 +36,16 @@ module OpenAI
           sequence_number: Integer,
           ?type: :"response.output_text.annotation.added"
         ) -> void
+
+        def to_hash: -> {
+          annotation: OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::annotation,
+          annotation_index: Integer,
+          content_index: Integer,
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.output_text.annotation.added"
+        }
 
         type annotation =
           OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation
@@ -60,6 +70,12 @@ module OpenAI
               index: Integer,
               ?type: :file_citation
             ) -> void
+
+            def to_hash: -> {
+              file_id: String,
+              index: Integer,
+              type: :file_citation
+            }
           end
 
           type url_citation =
@@ -89,6 +105,14 @@ module OpenAI
               url: String,
               ?type: :url_citation
             ) -> void
+
+            def to_hash: -> {
+              end_index: Integer,
+              start_index: Integer,
+              title: String,
+              type: :url_citation,
+              url: String
+            }
           end
 
           type file_path = { file_id: String, index: Integer, type: :file_path }
@@ -105,9 +129,15 @@ module OpenAI
               index: Integer,
               ?type: :file_path
             ) -> void
+
+            def to_hash: -> {
+              file_id: String,
+              index: Integer,
+              type: :file_path
+            }
           end
 
-          def self?.variants: -> ::Array[OpenAI::Responses::ResponseTextAnnotationDeltaEvent::annotation]
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::annotation]
         end
       end
     end

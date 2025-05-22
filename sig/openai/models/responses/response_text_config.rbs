@@ -14,6 +14,10 @@ module OpenAI
         def initialize: (
           ?format_: OpenAI::Models::Responses::response_format_text_config
         ) -> void
+
+        def to_hash: -> {
+          format_: OpenAI::Models::Responses::response_format_text_config
+        }
       end
     end
   end

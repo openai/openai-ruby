@@ -22,13 +22,13 @@ module OpenAI
         #   [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
         #   with the `include[]` parameter set to `logprobs`.
         #
-        #   @return [Array<OpenAI::Audio::TranscriptionTextDoneEvent::Logprob>, nil]
+        #   @return [Array<OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob>, nil]
         optional :logprobs,
                  -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Audio::TranscriptionTextDoneEvent::Logprob] }
 
         # @!method initialize(text:, logprobs: nil, type: :"transcript.text.done")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Audio::TranscriptionTextDoneEvent} for more details.
+        #   {OpenAI::Models::Audio::TranscriptionTextDoneEvent} for more details.
         #
         #   Emitted when the transcription is complete. Contains the complete transcription
         #   text. Only emitted when you
@@ -37,7 +37,7 @@ module OpenAI
         #
         #   @param text [String] The text that was transcribed.
         #
-        #   @param logprobs [Array<OpenAI::Audio::TranscriptionTextDoneEvent::Logprob>] The log probabilities of the individual tokens in the transcription. Only includ
+        #   @param logprobs [Array<OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob>] The log probabilities of the individual tokens in the transcription. Only includ
         #
         #   @param type [Symbol, :"transcript.text.done"] The type of the event. Always `transcript.text.done`.
 
@@ -62,7 +62,7 @@ module OpenAI
 
           # @!method initialize(token: nil, bytes: nil, logprob: nil)
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Audio::TranscriptionTextDoneEvent::Logprob} for more details.
+          #   {OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob} for more details.
           #
           #   @param token [String] The token that was used to generate the log probability.
           #

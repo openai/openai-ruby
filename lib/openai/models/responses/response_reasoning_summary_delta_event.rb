@@ -43,7 +43,8 @@ module OpenAI
 
         # @!method initialize(delta:, item_id:, output_index:, sequence_number:, summary_index:, type: :"response.reasoning_summary.delta")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseReasoningSummaryDeltaEvent} for more details.
+        #   {OpenAI::Models::Responses::ResponseReasoningSummaryDeltaEvent} for more
+        #   details.
         #
         #   Emitted when there is a delta (partial update) to the reasoning summary content.
         #

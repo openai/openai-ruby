@@ -20,6 +20,12 @@ module OpenAI
           sequence_number: Integer,
           ?type: :"response.queued"
         ) -> void
+
+        def to_hash: -> {
+          response: OpenAI::Responses::Response,
+          sequence_number: Integer,
+          type: :"response.queued"
+        }
       end
     end
   end

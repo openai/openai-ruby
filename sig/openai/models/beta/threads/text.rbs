@@ -17,6 +17,11 @@ module OpenAI
             annotations: ::Array[OpenAI::Models::Beta::Threads::annotation],
             value: String
           ) -> void
+
+          def to_hash: -> {
+            annotations: ::Array[OpenAI::Models::Beta::Threads::annotation],
+            value: String
+          }
         end
       end
     end

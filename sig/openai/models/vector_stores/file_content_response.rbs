@@ -13,6 +13,8 @@ module OpenAI
         def type=: (String) -> String
 
         def initialize: (?text: String, ?type: String) -> void
+
+        def to_hash: -> { text: String, type: String }
       end
     end
   end

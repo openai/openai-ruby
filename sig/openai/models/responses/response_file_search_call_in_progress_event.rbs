@@ -24,6 +24,13 @@ module OpenAI
           sequence_number: Integer,
           ?type: :"response.file_search_call.in_progress"
         ) -> void
+
+        def to_hash: -> {
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.file_search_call.in_progress"
+        }
       end
     end
   end

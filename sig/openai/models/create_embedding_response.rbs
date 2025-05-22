@@ -24,6 +24,13 @@ module OpenAI
         ?object: :list
       ) -> void
 
+      def to_hash: -> {
+        data: ::Array[OpenAI::Embedding],
+        model: String,
+        object: :list,
+        usage: OpenAI::CreateEmbeddingResponse::Usage
+      }
+
       type usage = { prompt_tokens: Integer, total_tokens: Integer }
 
       class Usage < OpenAI::Internal::Type::BaseModel
@@ -32,6 +39,8 @@ module OpenAI
         attr_accessor total_tokens: Integer
 
         def initialize: (prompt_tokens: Integer, total_tokens: Integer) -> void
+
+        def to_hash: -> { prompt_tokens: Integer, total_tokens: Integer }
       end
     end
   end

@@ -40,12 +40,12 @@ module OpenAI
         #   `code_interpreter` tool requires a list of file IDs, while the `file_search`
         #   tool requires a list of vector store IDs.
         #
-        #   @return [OpenAI::Beta::Thread::ToolResources, nil]
+        #   @return [OpenAI::Models::Beta::Thread::ToolResources, nil]
         required :tool_resources, -> { OpenAI::Beta::Thread::ToolResources }, nil?: true
 
         # @!method initialize(id:, created_at:, metadata:, tool_resources:, object: :thread)
-        #   Some parameter documentations has been truncated, see {OpenAI::Beta::Thread} for
-        #   more details.
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Beta::Thread} for more details.
         #
         #   Represents a thread that contains
         #   [messages](https://platform.openai.com/docs/api-reference/messages).
@@ -56,20 +56,20 @@ module OpenAI
         #
         #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #
-        #   @param tool_resources [OpenAI::Beta::Thread::ToolResources, nil] A set of resources that are made available to the assistant's tools in this thre
+        #   @param tool_resources [OpenAI::Models::Beta::Thread::ToolResources, nil] A set of resources that are made available to the assistant's tools in this thre
         #
         #   @param object [Symbol, :thread] The object type, which is always `thread`.
 
-        # @see OpenAI::Beta::Thread#tool_resources
+        # @see OpenAI::Models::Beta::Thread#tool_resources
         class ToolResources < OpenAI::Internal::Type::BaseModel
           # @!attribute code_interpreter
           #
-          #   @return [OpenAI::Beta::Thread::ToolResources::CodeInterpreter, nil]
+          #   @return [OpenAI::Models::Beta::Thread::ToolResources::CodeInterpreter, nil]
           optional :code_interpreter, -> { OpenAI::Beta::Thread::ToolResources::CodeInterpreter }
 
           # @!attribute file_search
           #
-          #   @return [OpenAI::Beta::Thread::ToolResources::FileSearch, nil]
+          #   @return [OpenAI::Models::Beta::Thread::ToolResources::FileSearch, nil]
           optional :file_search, -> { OpenAI::Beta::Thread::ToolResources::FileSearch }
 
           # @!method initialize(code_interpreter: nil, file_search: nil)
@@ -78,10 +78,10 @@ module OpenAI
           #   `code_interpreter` tool requires a list of file IDs, while the `file_search`
           #   tool requires a list of vector store IDs.
           #
-          #   @param code_interpreter [OpenAI::Beta::Thread::ToolResources::CodeInterpreter]
-          #   @param file_search [OpenAI::Beta::Thread::ToolResources::FileSearch]
+          #   @param code_interpreter [OpenAI::Models::Beta::Thread::ToolResources::CodeInterpreter]
+          #   @param file_search [OpenAI::Models::Beta::Thread::ToolResources::FileSearch]
 
-          # @see OpenAI::Beta::Thread::ToolResources#code_interpreter
+          # @see OpenAI::Models::Beta::Thread::ToolResources#code_interpreter
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
             # @!attribute file_ids
             #   A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
@@ -93,12 +93,12 @@ module OpenAI
 
             # @!method initialize(file_ids: nil)
             #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Beta::Thread::ToolResources::CodeInterpreter} for more details.
+            #   {OpenAI::Models::Beta::Thread::ToolResources::CodeInterpreter} for more details.
             #
             #   @param file_ids [Array<String>] A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
           end
 
-          # @see OpenAI::Beta::Thread::ToolResources#file_search
+          # @see OpenAI::Models::Beta::Thread::ToolResources#file_search
           class FileSearch < OpenAI::Internal::Type::BaseModel
             # @!attribute vector_store_ids
             #   The
@@ -111,7 +111,7 @@ module OpenAI
 
             # @!method initialize(vector_store_ids: nil)
             #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Beta::Thread::ToolResources::FileSearch} for more details.
+            #   {OpenAI::Models::Beta::Thread::ToolResources::FileSearch} for more details.
             #
             #   @param vector_store_ids [Array<String>] The [vector store](https://platform.openai.com/docs/api-reference/vector-stores/
           end

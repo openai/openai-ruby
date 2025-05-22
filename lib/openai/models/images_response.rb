@@ -13,28 +13,28 @@ module OpenAI
       # @!attribute data
       #   The list of generated images.
       #
-      #   @return [Array<OpenAI::Image>, nil]
+      #   @return [Array<OpenAI::Models::Image>, nil]
       optional :data, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Image] }
 
       # @!attribute usage
       #   For `gpt-image-1` only, the token usage information for the image generation.
       #
-      #   @return [OpenAI::ImagesResponse::Usage, nil]
+      #   @return [OpenAI::Models::ImagesResponse::Usage, nil]
       optional :usage, -> { OpenAI::ImagesResponse::Usage }
 
       # @!method initialize(created:, data: nil, usage: nil)
-      #   Some parameter documentations has been truncated, see {OpenAI::ImagesResponse}
-      #   for more details.
+      #   Some parameter documentations has been truncated, see
+      #   {OpenAI::Models::ImagesResponse} for more details.
       #
       #   The response from the image generation endpoint.
       #
       #   @param created [Integer] The Unix timestamp (in seconds) of when the image was created.
       #
-      #   @param data [Array<OpenAI::Image>] The list of generated images.
+      #   @param data [Array<OpenAI::Models::Image>] The list of generated images.
       #
-      #   @param usage [OpenAI::ImagesResponse::Usage] For `gpt-image-1` only, the token usage information for the image generation.
+      #   @param usage [OpenAI::Models::ImagesResponse::Usage] For `gpt-image-1` only, the token usage information for the image generation.
 
-      # @see OpenAI::ImagesResponse#usage
+      # @see OpenAI::Models::ImagesResponse#usage
       class Usage < OpenAI::Internal::Type::BaseModel
         # @!attribute input_tokens
         #   The number of tokens (images and text) in the input prompt.
@@ -45,7 +45,7 @@ module OpenAI
         # @!attribute input_tokens_details
         #   The input tokens detailed information for the image generation.
         #
-        #   @return [OpenAI::ImagesResponse::Usage::InputTokensDetails]
+        #   @return [OpenAI::Models::ImagesResponse::Usage::InputTokensDetails]
         required :input_tokens_details, -> { OpenAI::ImagesResponse::Usage::InputTokensDetails }
 
         # @!attribute output_tokens
@@ -65,13 +65,13 @@ module OpenAI
         #
         #   @param input_tokens [Integer] The number of tokens (images and text) in the input prompt.
         #
-        #   @param input_tokens_details [OpenAI::ImagesResponse::Usage::InputTokensDetails] The input tokens detailed information for the image generation.
+        #   @param input_tokens_details [OpenAI::Models::ImagesResponse::Usage::InputTokensDetails] The input tokens detailed information for the image generation.
         #
         #   @param output_tokens [Integer] The number of image tokens in the output image.
         #
         #   @param total_tokens [Integer] The total number of tokens (images and text) used for the image generation.
 
-        # @see OpenAI::ImagesResponse::Usage#input_tokens_details
+        # @see OpenAI::Models::ImagesResponse::Usage#input_tokens_details
         class InputTokensDetails < OpenAI::Internal::Type::BaseModel
           # @!attribute image_tokens
           #   The number of image tokens in the input prompt.

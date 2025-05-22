@@ -24,7 +24,7 @@ module OpenAI
 
         # @!method initialize(data:, transcript:, type: :output_audio)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseOutputAudio} for more details.
+        #   {OpenAI::Models::Responses::ResponseOutputAudio} for more details.
         #
         #   An audio output from the model.
         #

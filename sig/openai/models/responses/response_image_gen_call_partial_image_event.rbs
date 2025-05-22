@@ -32,6 +32,15 @@ module OpenAI
           sequence_number: Integer,
           ?type: :"response.image_generation_call.partial_image"
         ) -> void
+
+        def to_hash: -> {
+          item_id: String,
+          output_index: Integer,
+          :partial_image_b64 => String,
+          partial_image_index: Integer,
+          sequence_number: Integer,
+          type: :"response.image_generation_call.partial_image"
+        }
       end
     end
   end

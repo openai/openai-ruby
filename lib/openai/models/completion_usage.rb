@@ -24,13 +24,13 @@ module OpenAI
       # @!attribute completion_tokens_details
       #   Breakdown of tokens used in a completion.
       #
-      #   @return [OpenAI::CompletionUsage::CompletionTokensDetails, nil]
+      #   @return [OpenAI::Models::CompletionUsage::CompletionTokensDetails, nil]
       optional :completion_tokens_details, -> { OpenAI::CompletionUsage::CompletionTokensDetails }
 
       # @!attribute prompt_tokens_details
       #   Breakdown of tokens used in the prompt.
       #
-      #   @return [OpenAI::CompletionUsage::PromptTokensDetails, nil]
+      #   @return [OpenAI::Models::CompletionUsage::PromptTokensDetails, nil]
       optional :prompt_tokens_details, -> { OpenAI::CompletionUsage::PromptTokensDetails }
 
       # @!method initialize(completion_tokens:, prompt_tokens:, total_tokens:, completion_tokens_details: nil, prompt_tokens_details: nil)
@@ -42,11 +42,11 @@ module OpenAI
       #
       #   @param total_tokens [Integer] Total number of tokens used in the request (prompt + completion).
       #
-      #   @param completion_tokens_details [OpenAI::CompletionUsage::CompletionTokensDetails] Breakdown of tokens used in a completion.
+      #   @param completion_tokens_details [OpenAI::Models::CompletionUsage::CompletionTokensDetails] Breakdown of tokens used in a completion.
       #
-      #   @param prompt_tokens_details [OpenAI::CompletionUsage::PromptTokensDetails] Breakdown of tokens used in the prompt.
+      #   @param prompt_tokens_details [OpenAI::Models::CompletionUsage::PromptTokensDetails] Breakdown of tokens used in the prompt.
 
-      # @see OpenAI::CompletionUsage#completion_tokens_details
+      # @see OpenAI::Models::CompletionUsage#completion_tokens_details
       class CompletionTokensDetails < OpenAI::Internal::Type::BaseModel
         # @!attribute accepted_prediction_tokens
         #   When using Predicted Outputs, the number of tokens in the prediction that
@@ -78,7 +78,7 @@ module OpenAI
 
         # @!method initialize(accepted_prediction_tokens: nil, audio_tokens: nil, reasoning_tokens: nil, rejected_prediction_tokens: nil)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::CompletionUsage::CompletionTokensDetails} for more details.
+        #   {OpenAI::Models::CompletionUsage::CompletionTokensDetails} for more details.
         #
         #   Breakdown of tokens used in a completion.
         #
@@ -91,7 +91,7 @@ module OpenAI
         #   @param rejected_prediction_tokens [Integer] When using Predicted Outputs, the number of tokens in the
       end
 
-      # @see OpenAI::CompletionUsage#prompt_tokens_details
+      # @see OpenAI::Models::CompletionUsage#prompt_tokens_details
       class PromptTokensDetails < OpenAI::Internal::Type::BaseModel
         # @!attribute audio_tokens
         #   Audio input tokens present in the prompt.

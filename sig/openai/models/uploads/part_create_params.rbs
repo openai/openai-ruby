@@ -15,6 +15,11 @@ module OpenAI
           data: OpenAI::Internal::file_input,
           ?request_options: OpenAI::request_opts
         ) -> void
+
+        def to_hash: -> {
+          data: OpenAI::Internal::file_input,
+          request_options: OpenAI::RequestOptions
+        }
       end
     end
   end

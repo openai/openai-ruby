@@ -11,7 +11,7 @@ module OpenAI
       #   supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
       #   result in faster responses and fewer tokens used on reasoning in a response.
       #
-      #   @return [Symbol, OpenAI::ReasoningEffort, nil]
+      #   @return [Symbol, OpenAI::Models::ReasoningEffort, nil]
       optional :effort, enum: -> { OpenAI::ReasoningEffort }, nil?: true
 
       # @!attribute generate_summary
@@ -23,7 +23,7 @@ module OpenAI
       #   debugging and understanding the model's reasoning process. One of `auto`,
       #   `concise`, or `detailed`.
       #
-      #   @return [Symbol, OpenAI::Reasoning::GenerateSummary, nil]
+      #   @return [Symbol, OpenAI::Models::Reasoning::GenerateSummary, nil]
       optional :generate_summary, enum: -> { OpenAI::Reasoning::GenerateSummary }, nil?: true
 
       # @!attribute summary
@@ -31,23 +31,23 @@ module OpenAI
       #   debugging and understanding the model's reasoning process. One of `auto`,
       #   `concise`, or `detailed`.
       #
-      #   @return [Symbol, OpenAI::Reasoning::Summary, nil]
+      #   @return [Symbol, OpenAI::Models::Reasoning::Summary, nil]
       optional :summary, enum: -> { OpenAI::Reasoning::Summary }, nil?: true
 
       # @!method initialize(effort: nil, generate_summary: nil, summary: nil)
-      #   Some parameter documentations has been truncated, see {OpenAI::Reasoning} for
-      #   more details.
+      #   Some parameter documentations has been truncated, see
+      #   {OpenAI::Models::Reasoning} for more details.
       #
       #   **o-series models only**
       #
       #   Configuration options for
       #   [reasoning models](https://platform.openai.com/docs/guides/reasoning).
       #
-      #   @param effort [Symbol, OpenAI::ReasoningEffort, nil] **o-series models only**
+      #   @param effort [Symbol, OpenAI::Models::ReasoningEffort, nil] **o-series models only**
       #
-      #   @param generate_summary [Symbol, OpenAI::Reasoning::GenerateSummary, nil] **Deprecated:** use `summary` instead.
+      #   @param generate_summary [Symbol, OpenAI::Models::Reasoning::GenerateSummary, nil] **Deprecated:** use `summary` instead.
       #
-      #   @param summary [Symbol, OpenAI::Reasoning::Summary, nil] A summary of the reasoning performed by the model. This can be
+      #   @param summary [Symbol, OpenAI::Models::Reasoning::Summary, nil] A summary of the reasoning performed by the model. This can be
 
       # @deprecated
       #
@@ -57,7 +57,7 @@ module OpenAI
       # debugging and understanding the model's reasoning process. One of `auto`,
       # `concise`, or `detailed`.
       #
-      # @see OpenAI::Reasoning#generate_summary
+      # @see OpenAI::Models::Reasoning#generate_summary
       module GenerateSummary
         extend OpenAI::Internal::Type::Enum
 
@@ -73,7 +73,7 @@ module OpenAI
       # debugging and understanding the model's reasoning process. One of `auto`,
       # `concise`, or `detailed`.
       #
-      # @see OpenAI::Reasoning#summary
+      # @see OpenAI::Models::Reasoning#summary
       module Summary
         extend OpenAI::Internal::Type::Enum
 

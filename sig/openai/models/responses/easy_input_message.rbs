@@ -3,27 +3,33 @@ module OpenAI
     module Responses
       type easy_input_message =
         {
-          content: OpenAI::Responses::EasyInputMessage::content,
-          role: OpenAI::Responses::EasyInputMessage::role,
-          type: OpenAI::Responses::EasyInputMessage::type_
+          content: OpenAI::Models::Responses::EasyInputMessage::content,
+          role: OpenAI::Models::Responses::EasyInputMessage::role,
+          type: OpenAI::Models::Responses::EasyInputMessage::type_
         }
 
       class EasyInputMessage < OpenAI::Internal::Type::BaseModel
-        attr_accessor content: OpenAI::Responses::EasyInputMessage::content
+        attr_accessor content: OpenAI::Models::Responses::EasyInputMessage::content
 
-        attr_accessor role: OpenAI::Responses::EasyInputMessage::role
+        attr_accessor role: OpenAI::Models::Responses::EasyInputMessage::role
 
-        attr_reader type: OpenAI::Responses::EasyInputMessage::type_?
+        attr_reader type: OpenAI::Models::Responses::EasyInputMessage::type_?
 
         def type=: (
-          OpenAI::Responses::EasyInputMessage::type_
-        ) -> OpenAI::Responses::EasyInputMessage::type_
+          OpenAI::Models::Responses::EasyInputMessage::type_
+        ) -> OpenAI::Models::Responses::EasyInputMessage::type_
 
         def initialize: (
-          content: OpenAI::Responses::EasyInputMessage::content,
-          role: OpenAI::Responses::EasyInputMessage::role,
-          ?type: OpenAI::Responses::EasyInputMessage::type_
+          content: OpenAI::Models::Responses::EasyInputMessage::content,
+          role: OpenAI::Models::Responses::EasyInputMessage::role,
+          ?type: OpenAI::Models::Responses::EasyInputMessage::type_
         ) -> void
+
+        def to_hash: -> {
+          content: OpenAI::Models::Responses::EasyInputMessage::content,
+          role: OpenAI::Models::Responses::EasyInputMessage::role,
+          type: OpenAI::Models::Responses::EasyInputMessage::type_
+        }
 
         type content =
           String
@@ -32,7 +38,7 @@ module OpenAI
         module Content
           extend OpenAI::Internal::Type::Union
 
-          def self?.variants: -> ::Array[OpenAI::Responses::EasyInputMessage::content]
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::EasyInputMessage::content]
         end
 
         type role = :user | :assistant | :system | :developer
@@ -45,7 +51,7 @@ module OpenAI
           SYSTEM: :system
           DEVELOPER: :developer
 
-          def self?.values: -> ::Array[OpenAI::Responses::EasyInputMessage::role]
+          def self?.values: -> ::Array[OpenAI::Models::Responses::EasyInputMessage::role]
         end
 
         type type_ = :message
@@ -55,7 +61,7 @@ module OpenAI
 
           MESSAGE: :message
 
-          def self?.values: -> ::Array[OpenAI::Responses::EasyInputMessage::type_]
+          def self?.values: -> ::Array[OpenAI::Models::Responses::EasyInputMessage::type_]
         end
       end
     end

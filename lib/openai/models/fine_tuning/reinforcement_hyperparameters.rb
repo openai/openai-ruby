@@ -48,7 +48,7 @@ module OpenAI
         # @!attribute reasoning_effort
         #   Level of reasoning effort.
         #
-        #   @return [Symbol, OpenAI::FineTuning::ReinforcementHyperparameters::ReasoningEffort, nil]
+        #   @return [Symbol, OpenAI::Models::FineTuning::ReinforcementHyperparameters::ReasoningEffort, nil]
         optional :reasoning_effort,
                  enum: -> {
                    OpenAI::FineTuning::ReinforcementHyperparameters::ReasoningEffort
@@ -56,7 +56,7 @@ module OpenAI
 
         # @!method initialize(batch_size: nil, compute_multiplier: nil, eval_interval: nil, eval_samples: nil, learning_rate_multiplier: nil, n_epochs: nil, reasoning_effort: nil)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::FineTuning::ReinforcementHyperparameters} for more details.
+        #   {OpenAI::Models::FineTuning::ReinforcementHyperparameters} for more details.
         #
         #   The hyperparameters used for the reinforcement fine-tuning job.
         #
@@ -72,12 +72,12 @@ module OpenAI
         #
         #   @param n_epochs [Symbol, :auto, Integer] The number of epochs to train the model for. An epoch refers to one full cycle t
         #
-        #   @param reasoning_effort [Symbol, OpenAI::FineTuning::ReinforcementHyperparameters::ReasoningEffort] Level of reasoning effort.
+        #   @param reasoning_effort [Symbol, OpenAI::Models::FineTuning::ReinforcementHyperparameters::ReasoningEffort] Level of reasoning effort.
 
         # Number of examples in each batch. A larger batch size means that model
         # parameters are updated less frequently, but with lower variance.
         #
-        # @see OpenAI::FineTuning::ReinforcementHyperparameters#batch_size
+        # @see OpenAI::Models::FineTuning::ReinforcementHyperparameters#batch_size
         module BatchSize
           extend OpenAI::Internal::Type::Union
 
@@ -91,7 +91,7 @@ module OpenAI
 
         # Multiplier on amount of compute used for exploring search space during training.
         #
-        # @see OpenAI::FineTuning::ReinforcementHyperparameters#compute_multiplier
+        # @see OpenAI::Models::FineTuning::ReinforcementHyperparameters#compute_multiplier
         module ComputeMultiplier
           extend OpenAI::Internal::Type::Union
 
@@ -105,7 +105,7 @@ module OpenAI
 
         # The number of training steps between evaluation runs.
         #
-        # @see OpenAI::FineTuning::ReinforcementHyperparameters#eval_interval
+        # @see OpenAI::Models::FineTuning::ReinforcementHyperparameters#eval_interval
         module EvalInterval
           extend OpenAI::Internal::Type::Union
 
@@ -119,7 +119,7 @@ module OpenAI
 
         # Number of evaluation samples to generate per training step.
         #
-        # @see OpenAI::FineTuning::ReinforcementHyperparameters#eval_samples
+        # @see OpenAI::Models::FineTuning::ReinforcementHyperparameters#eval_samples
         module EvalSamples
           extend OpenAI::Internal::Type::Union
 
@@ -134,7 +134,7 @@ module OpenAI
         # Scaling factor for the learning rate. A smaller learning rate may be useful to
         # avoid overfitting.
         #
-        # @see OpenAI::FineTuning::ReinforcementHyperparameters#learning_rate_multiplier
+        # @see OpenAI::Models::FineTuning::ReinforcementHyperparameters#learning_rate_multiplier
         module LearningRateMultiplier
           extend OpenAI::Internal::Type::Union
 
@@ -149,7 +149,7 @@ module OpenAI
         # The number of epochs to train the model for. An epoch refers to one full cycle
         # through the training dataset.
         #
-        # @see OpenAI::FineTuning::ReinforcementHyperparameters#n_epochs
+        # @see OpenAI::Models::FineTuning::ReinforcementHyperparameters#n_epochs
         module NEpochs
           extend OpenAI::Internal::Type::Union
 
@@ -163,7 +163,7 @@ module OpenAI
 
         # Level of reasoning effort.
         #
-        # @see OpenAI::FineTuning::ReinforcementHyperparameters#reasoning_effort
+        # @see OpenAI::Models::FineTuning::ReinforcementHyperparameters#reasoning_effort
         module ReasoningEffort
           extend OpenAI::Internal::Type::Enum
 

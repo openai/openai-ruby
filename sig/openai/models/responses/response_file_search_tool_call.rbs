@@ -5,7 +5,7 @@ module OpenAI
         {
           id: String,
           queries: ::Array[String],
-          status: OpenAI::Responses::ResponseFileSearchToolCall::status,
+          status: OpenAI::Models::Responses::ResponseFileSearchToolCall::status,
           type: :file_search_call,
           results: ::Array[OpenAI::Responses::ResponseFileSearchToolCall::Result]?
         }
@@ -15,7 +15,7 @@ module OpenAI
 
         attr_accessor queries: ::Array[String]
 
-        attr_accessor status: OpenAI::Responses::ResponseFileSearchToolCall::status
+        attr_accessor status: OpenAI::Models::Responses::ResponseFileSearchToolCall::status
 
         attr_accessor type: :file_search_call
 
@@ -24,10 +24,18 @@ module OpenAI
         def initialize: (
           id: String,
           queries: ::Array[String],
-          status: OpenAI::Responses::ResponseFileSearchToolCall::status,
+          status: OpenAI::Models::Responses::ResponseFileSearchToolCall::status,
           ?results: ::Array[OpenAI::Responses::ResponseFileSearchToolCall::Result]?,
           ?type: :file_search_call
         ) -> void
+
+        def to_hash: -> {
+          id: String,
+          queries: ::Array[String],
+          status: OpenAI::Models::Responses::ResponseFileSearchToolCall::status,
+          type: :file_search_call,
+          results: ::Array[OpenAI::Responses::ResponseFileSearchToolCall::Result]?
+        }
 
         type status =
           :in_progress | :searching | :completed | :incomplete | :failed
@@ -41,12 +49,12 @@ module OpenAI
           INCOMPLETE: :incomplete
           FAILED: :failed
 
-          def self?.values: -> ::Array[OpenAI::Responses::ResponseFileSearchToolCall::status]
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseFileSearchToolCall::status]
         end
 
         type result =
           {
-            attributes: ::Hash[Symbol, OpenAI::Responses::ResponseFileSearchToolCall::Result::attribute]?,
+            attributes: ::Hash[Symbol, OpenAI::Models::Responses::ResponseFileSearchToolCall::Result::attribute]?,
             file_id: String,
             filename: String,
             score: Float,
@@ -54,7 +62,7 @@ module OpenAI
           }
 
         class Result < OpenAI::Internal::Type::BaseModel
-          attr_accessor attributes: ::Hash[Symbol, OpenAI::Responses::ResponseFileSearchToolCall::Result::attribute]?
+          attr_accessor attributes: ::Hash[Symbol, OpenAI::Models::Responses::ResponseFileSearchToolCall::Result::attribute]?
 
           attr_reader file_id: String?
 
@@ -73,19 +81,27 @@ module OpenAI
           def text=: (String) -> String
 
           def initialize: (
-            ?attributes: ::Hash[Symbol, OpenAI::Responses::ResponseFileSearchToolCall::Result::attribute]?,
+            ?attributes: ::Hash[Symbol, OpenAI::Models::Responses::ResponseFileSearchToolCall::Result::attribute]?,
             ?file_id: String,
             ?filename: String,
             ?score: Float,
             ?text: String
           ) -> void
 
+          def to_hash: -> {
+            attributes: ::Hash[Symbol, OpenAI::Models::Responses::ResponseFileSearchToolCall::Result::attribute]?,
+            file_id: String,
+            filename: String,
+            score: Float,
+            text: String
+          }
+
           type attribute = String | Float | bool
 
           module Attribute
             extend OpenAI::Internal::Type::Union
 
-            def self?.variants: -> ::Array[OpenAI::Responses::ResponseFileSearchToolCall::Result::attribute]
+            def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseFileSearchToolCall::Result::attribute]
           end
         end
       end

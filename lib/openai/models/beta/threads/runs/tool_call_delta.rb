@@ -19,7 +19,7 @@ module OpenAI
             variant :function, -> { OpenAI::Beta::Threads::Runs::FunctionToolCallDelta }
 
             # @!method self.variants
-            #   @return [Array(OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta, OpenAI::Beta::Threads::Runs::FileSearchToolCallDelta, OpenAI::Beta::Threads::Runs::FunctionToolCallDelta)]
+            #   @return [Array(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta)]
           end
         end
       end

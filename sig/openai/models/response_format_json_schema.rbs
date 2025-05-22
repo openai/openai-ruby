@@ -16,6 +16,11 @@ module OpenAI
         ?type: :json_schema
       ) -> void
 
+      def to_hash: -> {
+        json_schema: OpenAI::ResponseFormatJSONSchema::JSONSchema,
+        type: :json_schema
+      }
+
       type json_schema =
         {
           name: String,
@@ -43,6 +48,13 @@ module OpenAI
           ?schema: ::Hash[Symbol, top],
           ?strict: bool?
         ) -> void
+
+        def to_hash: -> {
+          name: String,
+          description: String,
+          schema: ::Hash[Symbol, top],
+          strict: bool?
+        }
       end
     end
   end

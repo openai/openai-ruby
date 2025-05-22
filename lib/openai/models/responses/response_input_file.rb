@@ -30,7 +30,7 @@ module OpenAI
 
         # @!method initialize(file_data: nil, file_id: nil, filename: nil, type: :input_file)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Responses::ResponseInputFile} for more details.
+        #   {OpenAI::Models::Responses::ResponseInputFile} for more details.
         #
         #   A file input to the model.
         #

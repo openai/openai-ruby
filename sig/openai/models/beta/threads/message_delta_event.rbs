@@ -21,6 +21,12 @@ module OpenAI
             delta: OpenAI::Beta::Threads::MessageDelta,
             ?object: :"thread.message.delta"
           ) -> void
+
+          def to_hash: -> {
+            id: String,
+            delta: OpenAI::Beta::Threads::MessageDelta,
+            object: :"thread.message.delta"
+          }
         end
       end
     end

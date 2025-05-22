@@ -14,6 +14,10 @@ module OpenAI
         def initialize: (
           ?hyperparameters: OpenAI::FineTuning::DpoHyperparameters
         ) -> void
+
+        def to_hash: -> {
+          hyperparameters: OpenAI::FineTuning::DpoHyperparameters
+        }
       end
     end
   end

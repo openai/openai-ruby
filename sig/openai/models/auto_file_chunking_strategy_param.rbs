@@ -6,6 +6,8 @@ module OpenAI
       attr_accessor type: :auto
 
       def initialize: (?type: :auto) -> void
+
+      def to_hash: -> { type: :auto }
     end
   end
 end

@@ -12,6 +12,11 @@ module OpenAI
         static: OpenAI::StaticFileChunkingStrategy,
         ?type: :static
       ) -> void
+
+      def to_hash: -> {
+        static: OpenAI::StaticFileChunkingStrategy,
+        type: :static
+      }
     end
   end
 end

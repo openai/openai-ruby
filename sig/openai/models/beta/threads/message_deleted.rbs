@@ -17,6 +17,12 @@ module OpenAI
             deleted: bool,
             ?object: :"thread.message.deleted"
           ) -> void
+
+          def to_hash: -> {
+            id: String,
+            deleted: bool,
+            object: :"thread.message.deleted"
+          }
         end
       end
     end

@@ -35,29 +35,44 @@ module OpenAI
           ?type: :label_model
         ) -> void
 
+        def to_hash: -> {
+          input: ::Array[OpenAI::Graders::LabelModelGrader::Input],
+          labels: ::Array[String],
+          model: String,
+          name: String,
+          passing_labels: ::Array[String],
+          type: :label_model
+        }
+
         type input =
           {
-            content: OpenAI::Graders::LabelModelGrader::Input::content,
-            role: OpenAI::Graders::LabelModelGrader::Input::role,
-            type: OpenAI::Graders::LabelModelGrader::Input::type_
+            content: OpenAI::Models::Graders::LabelModelGrader::Input::content,
+            role: OpenAI::Models::Graders::LabelModelGrader::Input::role,
+            type: OpenAI::Models::Graders::LabelModelGrader::Input::type_
           }
 
         class Input < OpenAI::Internal::Type::BaseModel
-          attr_accessor content: OpenAI::Graders::LabelModelGrader::Input::content
+          attr_accessor content: OpenAI::Models::Graders::LabelModelGrader::Input::content
 
-          attr_accessor role: OpenAI::Graders::LabelModelGrader::Input::role
+          attr_accessor role: OpenAI::Models::Graders::LabelModelGrader::Input::role
 
-          attr_reader type: OpenAI::Graders::LabelModelGrader::Input::type_?
+          attr_reader type: OpenAI::Models::Graders::LabelModelGrader::Input::type_?
 
           def type=: (
-            OpenAI::Graders::LabelModelGrader::Input::type_
-          ) -> OpenAI::Graders::LabelModelGrader::Input::type_
+            OpenAI::Models::Graders::LabelModelGrader::Input::type_
+          ) -> OpenAI::Models::Graders::LabelModelGrader::Input::type_
 
           def initialize: (
-            content: OpenAI::Graders::LabelModelGrader::Input::content,
-            role: OpenAI::Graders::LabelModelGrader::Input::role,
-            ?type: OpenAI::Graders::LabelModelGrader::Input::type_
+            content: OpenAI::Models::Graders::LabelModelGrader::Input::content,
+            role: OpenAI::Models::Graders::LabelModelGrader::Input::role,
+            ?type: OpenAI::Models::Graders::LabelModelGrader::Input::type_
           ) -> void
+
+          def to_hash: -> {
+            content: OpenAI::Models::Graders::LabelModelGrader::Input::content,
+            role: OpenAI::Models::Graders::LabelModelGrader::Input::role,
+            type: OpenAI::Models::Graders::LabelModelGrader::Input::type_
+          }
 
           type content =
             String
@@ -75,9 +90,11 @@ module OpenAI
               attr_accessor type: :output_text
 
               def initialize: (text: String, ?type: :output_text) -> void
+
+              def to_hash: -> { text: String, type: :output_text }
             end
 
-            def self?.variants: -> ::Array[OpenAI::Graders::LabelModelGrader::Input::content]
+            def self?.variants: -> ::Array[OpenAI::Models::Graders::LabelModelGrader::Input::content]
           end
 
           type role = :user | :assistant | :system | :developer
@@ -90,7 +107,7 @@ module OpenAI
             SYSTEM: :system
             DEVELOPER: :developer
 
-            def self?.values: -> ::Array[OpenAI::Graders::LabelModelGrader::Input::role]
+            def self?.values: -> ::Array[OpenAI::Models::Graders::LabelModelGrader::Input::role]
           end
 
           type type_ = :message
@@ -100,7 +117,7 @@ module OpenAI
 
             MESSAGE: :message
 
-            def self?.values: -> ::Array[OpenAI::Graders::LabelModelGrader::Input::type_]
+            def self?.values: -> ::Array[OpenAI::Models::Graders::LabelModelGrader::Input::type_]
           end
         end
       end

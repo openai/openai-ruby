@@ -22,11 +22,11 @@ module OpenAI
           #
           # @param assistant_id [String] Body param: The ID of the [assistant](https://platform.openai.com/docs/api-refer
           #
-          # @param include [Array<Symbol, OpenAI::Beta::Threads::Runs::RunStepInclude>] Query param: A list of additional fields to include in the response. Currently t
+          # @param include [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>] Query param: A list of additional fields to include in the response. Currently t
           #
           # @param additional_instructions [String, nil] Body param: Appends additional instructions at the end of the instructions for t
           #
-          # @param additional_messages [Array<OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage>, nil] Body param: Adds additional messages to the thread before creating the run.
+          # @param additional_messages [Array<OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage>, nil] Body param: Adds additional messages to the thread before creating the run.
           #
           # @param instructions [String, nil] Body param: Overrides the [instructions](https://platform.openai.com/docs/api-re
           #
@@ -36,27 +36,27 @@ module OpenAI
           #
           # @param metadata [Hash{Symbol=>String}, nil] Body param: Set of 16 key-value pairs that can be attached to an object. This ca
           #
-          # @param model [String, Symbol, OpenAI::ChatModel, nil] Body param: The ID of the [Model](https://platform.openai.com/docs/api-reference
+          # @param model [String, Symbol, OpenAI::Models::ChatModel, nil] Body param: The ID of the [Model](https://platform.openai.com/docs/api-reference
           #
           # @param parallel_tool_calls [Boolean] Body param: Whether to enable [parallel function calling](https://platform.opena
           #
-          # @param reasoning_effort [Symbol, OpenAI::ReasoningEffort, nil] Body param: **o-series models only**
+          # @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] Body param: **o-series models only**
           #
-          # @param response_format [Symbol, :auto, OpenAI::ResponseFormatText, OpenAI::ResponseFormatJSONObject, OpenAI::ResponseFormatJSONSchema, nil] Body param: Specifies the format that the model must output. Compatible with [GP
+          # @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil] Body param: Specifies the format that the model must output. Compatible with [GP
           #
           # @param temperature [Float, nil] Body param: What sampling temperature to use, between 0 and 2. Higher values lik
           #
-          # @param tool_choice [Symbol, OpenAI::Beta::AssistantToolChoiceOption::Auto, OpenAI::Beta::AssistantToolChoice, nil] Body param: Controls which (if any) tool is called by the model.
+          # @param tool_choice [Symbol, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto, OpenAI::Models::Beta::AssistantToolChoice, nil] Body param: Controls which (if any) tool is called by the model.
           #
-          # @param tools [Array<OpenAI::Beta::CodeInterpreterTool, OpenAI::Beta::FileSearchTool, OpenAI::Beta::FunctionTool>, nil] Body param: Override the tools the assistant can use for this run. This is usefu
+          # @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>, nil] Body param: Override the tools the assistant can use for this run. This is usefu
           #
           # @param top_p [Float, nil] Body param: An alternative to sampling with temperature, called nucleus sampling
           #
-          # @param truncation_strategy [OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy, nil] Body param: Controls for how a thread will be truncated prior to the run. Use th
+          # @param truncation_strategy [OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy, nil] Body param: Controls for how a thread will be truncated prior to the run. Use th
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
-          # @return [OpenAI::Beta::Threads::Run]
+          # @return [OpenAI::Models::Beta::Threads::Run]
           #
           # @see OpenAI::Models::Beta::Threads::RunCreateParams
           def create(thread_id, params)
@@ -90,11 +90,11 @@ module OpenAI
           #
           # @param assistant_id [String] Body param: The ID of the [assistant](https://platform.openai.com/docs/api-refer
           #
-          # @param include [Array<Symbol, OpenAI::Beta::Threads::Runs::RunStepInclude>] Query param: A list of additional fields to include in the response. Currently t
+          # @param include [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>] Query param: A list of additional fields to include in the response. Currently t
           #
           # @param additional_instructions [String, nil] Body param: Appends additional instructions at the end of the instructions for t
           #
-          # @param additional_messages [Array<OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage>, nil] Body param: Adds additional messages to the thread before creating the run.
+          # @param additional_messages [Array<OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage>, nil] Body param: Adds additional messages to the thread before creating the run.
           #
           # @param instructions [String, nil] Body param: Overrides the [instructions](https://platform.openai.com/docs/api-re
           #
@@ -104,27 +104,27 @@ module OpenAI
           #
           # @param metadata [Hash{Symbol=>String}, nil] Body param: Set of 16 key-value pairs that can be attached to an object. This ca
           #
-          # @param model [String, Symbol, OpenAI::ChatModel, nil] Body param: The ID of the [Model](https://platform.openai.com/docs/api-reference
+          # @param model [String, Symbol, OpenAI::Models::ChatModel, nil] Body param: The ID of the [Model](https://platform.openai.com/docs/api-reference
           #
           # @param parallel_tool_calls [Boolean] Body param: Whether to enable [parallel function calling](https://platform.opena
           #
-          # @param reasoning_effort [Symbol, OpenAI::ReasoningEffort, nil] Body param: **o-series models only**
+          # @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] Body param: **o-series models only**
           #
-          # @param response_format [Symbol, :auto, OpenAI::ResponseFormatText, OpenAI::ResponseFormatJSONObject, OpenAI::ResponseFormatJSONSchema, nil] Body param: Specifies the format that the model must output. Compatible with [GP
+          # @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil] Body param: Specifies the format that the model must output. Compatible with [GP
           #
           # @param temperature [Float, nil] Body param: What sampling temperature to use, between 0 and 2. Higher values lik
           #
-          # @param tool_choice [Symbol, OpenAI::Beta::AssistantToolChoiceOption::Auto, OpenAI::Beta::AssistantToolChoice, nil] Body param: Controls which (if any) tool is called by the model.
+          # @param tool_choice [Symbol, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto, OpenAI::Models::Beta::AssistantToolChoice, nil] Body param: Controls which (if any) tool is called by the model.
           #
-          # @param tools [Array<OpenAI::Beta::CodeInterpreterTool, OpenAI::Beta::FileSearchTool, OpenAI::Beta::FunctionTool>, nil] Body param: Override the tools the assistant can use for this run. This is usefu
+          # @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>, nil] Body param: Override the tools the assistant can use for this run. This is usefu
           #
           # @param top_p [Float, nil] Body param: An alternative to sampling with temperature, called nucleus sampling
           #
-          # @param truncation_strategy [OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy, nil] Body param: Controls for how a thread will be truncated prior to the run. Use th
+          # @param truncation_strategy [OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy, nil] Body param: Controls for how a thread will be truncated prior to the run. Use th
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
-          # @return [OpenAI::Internal::Stream<OpenAI::Beta::AssistantStreamEvent::ThreadCreated, OpenAI::Beta::AssistantStreamEvent::ThreadRunCreated, OpenAI::Beta::AssistantStreamEvent::ThreadRunQueued, OpenAI::Beta::AssistantStreamEvent::ThreadRunInProgress, OpenAI::Beta::AssistantStreamEvent::ThreadRunRequiresAction, OpenAI::Beta::AssistantStreamEvent::ThreadRunCompleted, OpenAI::Beta::AssistantStreamEvent::ThreadRunIncomplete, OpenAI::Beta::AssistantStreamEvent::ThreadRunFailed, OpenAI::Beta::AssistantStreamEvent::ThreadRunCancelling, OpenAI::Beta::AssistantStreamEvent::ThreadRunCancelled, OpenAI::Beta::AssistantStreamEvent::ThreadRunExpired, OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCreated, OpenAI::Beta::AssistantStreamEvent::ThreadRunStepInProgress, OpenAI::Beta::AssistantStreamEvent::ThreadRunStepDelta, OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCompleted, OpenAI::Beta::AssistantStreamEvent::ThreadRunStepFailed, OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCancelled, OpenAI::Beta::AssistantStreamEvent::ThreadRunStepExpired, OpenAI::Beta::AssistantStreamEvent::ThreadMessageCreated, OpenAI::Beta::AssistantStreamEvent::ThreadMessageInProgress, OpenAI::Beta::AssistantStreamEvent::ThreadMessageDelta, OpenAI::Beta::AssistantStreamEvent::ThreadMessageCompleted, OpenAI::Beta::AssistantStreamEvent::ThreadMessageIncomplete, OpenAI::Beta::AssistantStreamEvent::ErrorEvent>]
+          # @return [OpenAI::Internal::Stream<OpenAI::Models::Beta::AssistantStreamEvent::ThreadCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunQueued, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunRequiresAction, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunIncomplete, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunFailed, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelling, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelled, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunExpired, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepDelta, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepFailed, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCancelled, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepExpired, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageDelta, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageIncomplete, OpenAI::Models::Beta::AssistantStreamEvent::ErrorEvent>]
           #
           # @see OpenAI::Models::Beta::Threads::RunCreateParams
           def create_stream_raw(thread_id, params)
@@ -160,7 +160,7 @@ module OpenAI
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
-          # @return [OpenAI::Beta::Threads::Run]
+          # @return [OpenAI::Models::Beta::Threads::Run]
           #
           # @see OpenAI::Models::Beta::Threads::RunRetrieveParams
           def retrieve(run_id, params)
@@ -192,7 +192,7 @@ module OpenAI
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
-          # @return [OpenAI::Beta::Threads::Run]
+          # @return [OpenAI::Models::Beta::Threads::Run]
           #
           # @see OpenAI::Models::Beta::Threads::RunUpdateParams
           def update(run_id, params)
@@ -225,11 +225,11 @@ module OpenAI
           #
           # @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
           #
-          # @param order [Symbol, OpenAI::Beta::Threads::RunListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
+          # @param order [Symbol, OpenAI::Models::Beta::Threads::RunListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
-          # @return [OpenAI::Internal::CursorPage<OpenAI::Beta::Threads::Run>]
+          # @return [OpenAI::Internal::CursorPage<OpenAI::Models::Beta::Threads::Run>]
           #
           # @see OpenAI::Models::Beta::Threads::RunListParams
           def list(thread_id, params = {})
@@ -254,7 +254,7 @@ module OpenAI
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
-          # @return [OpenAI::Beta::Threads::Run]
+          # @return [OpenAI::Models::Beta::Threads::Run]
           #
           # @see OpenAI::Models::Beta::Threads::RunCancelParams
           def cancel(run_id, params)
@@ -288,11 +288,11 @@ module OpenAI
           #
           # @param thread_id [String] Path param: The ID of the [thread](https://platform.openai.com/docs/api-referenc
           #
-          # @param tool_outputs [Array<OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput>] Body param: A list of tools for which the outputs are being submitted.
+          # @param tool_outputs [Array<OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput>] Body param: A list of tools for which the outputs are being submitted.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
-          # @return [OpenAI::Beta::Threads::Run]
+          # @return [OpenAI::Models::Beta::Threads::Run]
           #
           # @see OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams
           def submit_tool_outputs(run_id, params)
@@ -331,11 +331,11 @@ module OpenAI
           #
           # @param thread_id [String] Path param: The ID of the [thread](https://platform.openai.com/docs/api-referenc
           #
-          # @param tool_outputs [Array<OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput>] Body param: A list of tools for which the outputs are being submitted.
+          # @param tool_outputs [Array<OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput>] Body param: A list of tools for which the outputs are being submitted.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
-          # @return [OpenAI::Internal::Stream<OpenAI::Beta::AssistantStreamEvent::ThreadCreated, OpenAI::Beta::AssistantStreamEvent::ThreadRunCreated, OpenAI::Beta::AssistantStreamEvent::ThreadRunQueued, OpenAI::Beta::AssistantStreamEvent::ThreadRunInProgress, OpenAI::Beta::AssistantStreamEvent::ThreadRunRequiresAction, OpenAI::Beta::AssistantStreamEvent::ThreadRunCompleted, OpenAI::Beta::AssistantStreamEvent::ThreadRunIncomplete, OpenAI::Beta::AssistantStreamEvent::ThreadRunFailed, OpenAI::Beta::AssistantStreamEvent::ThreadRunCancelling, OpenAI::Beta::AssistantStreamEvent::ThreadRunCancelled, OpenAI::Beta::AssistantStreamEvent::ThreadRunExpired, OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCreated, OpenAI::Beta::AssistantStreamEvent::ThreadRunStepInProgress, OpenAI::Beta::AssistantStreamEvent::ThreadRunStepDelta, OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCompleted, OpenAI::Beta::AssistantStreamEvent::ThreadRunStepFailed, OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCancelled, OpenAI::Beta::AssistantStreamEvent::ThreadRunStepExpired, OpenAI::Beta::AssistantStreamEvent::ThreadMessageCreated, OpenAI::Beta::AssistantStreamEvent::ThreadMessageInProgress, OpenAI::Beta::AssistantStreamEvent::ThreadMessageDelta, OpenAI::Beta::AssistantStreamEvent::ThreadMessageCompleted, OpenAI::Beta::AssistantStreamEvent::ThreadMessageIncomplete, OpenAI::Beta::AssistantStreamEvent::ErrorEvent>]
+          # @return [OpenAI::Internal::Stream<OpenAI::Models::Beta::AssistantStreamEvent::ThreadCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunQueued, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunRequiresAction, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunIncomplete, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunFailed, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelling, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelled, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunExpired, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepDelta, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepFailed, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCancelled, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepExpired, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageDelta, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageIncomplete, OpenAI::Models::Beta::AssistantStreamEvent::ErrorEvent>]
           #
           # @see OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams
           def submit_tool_outputs_stream_raw(run_id, params)

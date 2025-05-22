@@ -37,11 +37,11 @@ module OpenAI
       #
       # @param mime_type [String] The MIME type of the file.
       #
-      # @param purpose [Symbol, OpenAI::FilePurpose] The intended purpose of the uploaded file.
+      # @param purpose [Symbol, OpenAI::Models::FilePurpose] The intended purpose of the uploaded file.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::Upload]
+      # @return [OpenAI::Models::Upload]
       #
       # @see OpenAI::Models::UploadCreateParams
       def create(params)
@@ -60,7 +60,7 @@ module OpenAI
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::Upload]
+      # @return [OpenAI::Models::Upload]
       #
       # @see OpenAI::Models::UploadCancelParams
       def cancel(upload_id, params = {})
@@ -99,7 +99,7 @@ module OpenAI
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::Upload]
+      # @return [OpenAI::Models::Upload]
       #
       # @see OpenAI::Models::UploadCompleteParams
       def complete(upload_id, params)

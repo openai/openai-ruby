@@ -34,7 +34,7 @@ module OpenAI
         # @!attribute filter
         #   Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
         #
-        #   @return [Symbol, OpenAI::VectorStores::FileBatchListFilesParams::Filter, nil]
+        #   @return [Symbol, OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter, nil]
         optional :filter, enum: -> { OpenAI::VectorStores::FileBatchListFilesParams::Filter }
 
         # @!attribute limit
@@ -48,7 +48,7 @@ module OpenAI
         #   Sort order by the `created_at` timestamp of the objects. `asc` for ascending
         #   order and `desc` for descending order.
         #
-        #   @return [Symbol, OpenAI::VectorStores::FileBatchListFilesParams::Order, nil]
+        #   @return [Symbol, OpenAI::Models::VectorStores::FileBatchListFilesParams::Order, nil]
         optional :order, enum: -> { OpenAI::VectorStores::FileBatchListFilesParams::Order }
 
         # @!method initialize(vector_store_id:, after: nil, before: nil, filter: nil, limit: nil, order: nil, request_options: {})
@@ -61,11 +61,11 @@ module OpenAI
         #
         #   @param before [String] A cursor for use in pagination. `before` is an object ID that defines your place
         #
-        #   @param filter [Symbol, OpenAI::VectorStores::FileBatchListFilesParams::Filter] Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
+        #   @param filter [Symbol, OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter] Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
         #
         #   @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
         #
-        #   @param order [Symbol, OpenAI::VectorStores::FileBatchListFilesParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
+        #   @param order [Symbol, OpenAI::Models::VectorStores::FileBatchListFilesParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

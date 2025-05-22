@@ -17,11 +17,11 @@ module OpenAI
         #
         # @param attributes [Hash{Symbol=>String, Float, Boolean}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #
-        # @param chunking_strategy [OpenAI::AutoFileChunkingStrategyParam, OpenAI::StaticFileChunkingStrategyObjectParam] The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+        # @param chunking_strategy [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam] The chunking strategy used to chunk the file(s). If not set, will use the `auto`
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::VectorStores::VectorStoreFileBatch]
+        # @return [OpenAI::Models::VectorStores::VectorStoreFileBatch]
         #
         # @see OpenAI::Models::VectorStores::FileBatchCreateParams
         def create(vector_store_id, params)
@@ -45,7 +45,7 @@ module OpenAI
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::VectorStores::VectorStoreFileBatch]
+        # @return [OpenAI::Models::VectorStores::VectorStoreFileBatch]
         #
         # @see OpenAI::Models::VectorStores::FileBatchRetrieveParams
         def retrieve(batch_id, params)
@@ -73,7 +73,7 @@ module OpenAI
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::VectorStores::VectorStoreFileBatch]
+        # @return [OpenAI::Models::VectorStores::VectorStoreFileBatch]
         #
         # @see OpenAI::Models::VectorStores::FileBatchCancelParams
         def cancel(batch_id, params)
@@ -105,15 +105,15 @@ module OpenAI
         #
         # @param before [String] Query param: A cursor for use in pagination. `before` is an object ID that defin
         #
-        # @param filter [Symbol, OpenAI::VectorStores::FileBatchListFilesParams::Filter] Query param: Filter by file status. One of `in_progress`, `completed`, `failed`,
+        # @param filter [Symbol, OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter] Query param: Filter by file status. One of `in_progress`, `completed`, `failed`,
         #
         # @param limit [Integer] Query param: A limit on the number of objects to be returned. Limit can range be
         #
-        # @param order [Symbol, OpenAI::VectorStores::FileBatchListFilesParams::Order] Query param: Sort order by the `created_at` timestamp of the objects. `asc` for
+        # @param order [Symbol, OpenAI::Models::VectorStores::FileBatchListFilesParams::Order] Query param: Sort order by the `created_at` timestamp of the objects. `asc` for
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::Internal::CursorPage<OpenAI::VectorStores::VectorStoreFile>]
+        # @return [OpenAI::Internal::CursorPage<OpenAI::Models::VectorStores::VectorStoreFile>]
         #
         # @see OpenAI::Models::VectorStores::FileBatchListFilesParams
         def list_files(batch_id, params)

@@ -19,7 +19,7 @@ module OpenAI
       #   fine-tuning - `vision`: Images used for vision fine-tuning - `user_data`:
       #   Flexible file type for any purpose - `evals`: Used for eval data sets
       #
-      #   @return [Symbol, OpenAI::FilePurpose]
+      #   @return [Symbol, OpenAI::Models::FilePurpose]
       required :purpose, enum: -> { OpenAI::FilePurpose }
 
       # @!method initialize(file:, purpose:, request_options: {})
@@ -28,7 +28,7 @@ module OpenAI
       #
       #   @param file [Pathname, StringIO, IO, String, OpenAI::FilePart] The File object (not file name) to be uploaded.
       #
-      #   @param purpose [Symbol, OpenAI::FilePurpose] The intended purpose of the uploaded file. One of: - `assistants`: Used in the A
+      #   @param purpose [Symbol, OpenAI::Models::FilePurpose] The intended purpose of the uploaded file. One of: - `assistants`: Used in the A
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
     end

@@ -23,6 +23,13 @@ module OpenAI
               ?id: String,
               ?type: :file_search
             ) -> void
+
+            def to_hash: -> {
+              file_search: top,
+              index: Integer,
+              type: :file_search,
+              id: String
+            }
           end
         end
       end

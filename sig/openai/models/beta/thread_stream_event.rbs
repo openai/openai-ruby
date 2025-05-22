@@ -18,6 +18,12 @@ module OpenAI
           ?enabled: bool,
           ?event: :"thread.created"
         ) -> void
+
+        def to_hash: -> {
+          data: OpenAI::Beta::Thread,
+          event: :"thread.created",
+          enabled: bool
+        }
       end
     end
   end

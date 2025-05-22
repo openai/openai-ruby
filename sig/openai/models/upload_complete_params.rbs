@@ -19,6 +19,12 @@ module OpenAI
         ?md5: String,
         ?request_options: OpenAI::request_opts
       ) -> void
+
+      def to_hash: -> {
+        part_ids: ::Array[String],
+        :md5 => String,
+        request_options: OpenAI::RequestOptions
+      }
     end
   end
 end

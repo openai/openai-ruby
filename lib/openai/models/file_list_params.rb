@@ -27,7 +27,7 @@ module OpenAI
       #   Sort order by the `created_at` timestamp of the objects. `asc` for ascending
       #   order and `desc` for descending order.
       #
-      #   @return [Symbol, OpenAI::FileListParams::Order, nil]
+      #   @return [Symbol, OpenAI::Models::FileListParams::Order, nil]
       optional :order, enum: -> { OpenAI::FileListParams::Order }
 
       # @!attribute purpose
@@ -44,7 +44,7 @@ module OpenAI
       #
       #   @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
       #
-      #   @param order [Symbol, OpenAI::FileListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
+      #   @param order [Symbol, OpenAI::Models::FileListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
       #
       #   @param purpose [String] Only return files with the given purpose.
       #
