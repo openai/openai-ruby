@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.1 (2025-05-23)
+
+Full Changelog: [v0.4.0-beta.1...v0.4.1](https://github.com/openai/openai-ruby/compare/v0.4.0-beta.1...v0.4.1)
+
+### Bug Fixes
+
+* prevent rubocop from mangling `===` to `is_a?` check ([c3a61c9](https://github.com/openai/openai-ruby/commit/c3a61c9f83b8cb79b41edadadca1a241de03d10f))
+
 ## 0.4.0-beta.1 (2025-05-23)
 
 Full Changelog: [v0.1.0-beta.2...v0.4.0-beta.1](https://github.com/openai/openai-ruby/compare/v0.1.0-beta.2...v0.4.0-beta.1)
