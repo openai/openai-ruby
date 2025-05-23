@@ -159,7 +159,13 @@ module OpenAI
         #   - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
         #
         #   @return [OpenAI::Models::Responses::ResponseTextConfig, nil]
-        optional :text, -> { OpenAI::Responses::ResponseTextConfig }
+        optional :text,
+                 union: -> {
+                   OpenAI::UnionOf[
+                     OpenAI::Responses::ResponseTextConfig,
+                     OpenAI::StructuredOutput::JsonSchemaConverter
+                   ]
+                 }
 
         # @!attribute tool_choice
         #   How the model should select which tool (or tools) to use when generating a

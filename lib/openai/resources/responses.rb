@@ -74,10 +74,56 @@ module OpenAI
           message = "Please use `#stream_raw` for the streaming use case."
           raise ArgumentError.new(message)
         end
+
+        model = nil
+        case parsed
+        in {text: OpenAI::StructuredOutput::JsonSchemaConverter => model}
+          parsed.update(
+            text: {
+              format: {
+                type: :json_schema,
+                strict: true,
+                name: model.name.split("::").last,
+                schema: model.to_json_schema
+              }
+            }
+          )
+        in {text: {format: OpenAI::StructuredOutput::JsonSchemaConverter => model}}
+          parsed.fetch(:text).update(
+            format: {
+              type: :json_schema,
+              strict: true,
+              name: model.name.split("::").last,
+              schema: model.to_json_schema
+            }
+          )
+        in {text: {format: {type: :json_schema, schema: OpenAI::StructuredOutput::JsonSchemaConverter => model}}}
+          parsed.dig(:text, :format).store(:schema, model.to_json_schema)
+        else
+        end
+
+        unwrap = ->(raw) do
+          if model.is_a?(OpenAI::StructuredOutput::JsonSchemaConverter)
+            raw[:output]
+              &.flat_map do |output|
+                next [] unless output[:type] == "message"
+                output[:content].to_a
+              end
+              &.each do |content|
+                next unless content[:type] == "output_text"
+                parsed = JSON.parse(content.fetch(:text), symbolize_names: true)
+                coerced = OpenAI::Internal::Type::Converter.coerce(model, parsed)
+                content.store(:parsed, coerced)
+              end
+          end
+
+          raw
+        end
         @client.request(
           method: :post,
           path: "responses",
           body: parsed,
+          unwrap: unwrap,
           model: OpenAI::Responses::Response,
           options: options
         )

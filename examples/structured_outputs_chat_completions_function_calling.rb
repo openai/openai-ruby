@@ -24,7 +24,7 @@ chat_completion = client.chat.completions.create(
 
 chat_completion
   .choices
-  .filter { !_1.message.refusal }
+  .reject { _1.message.refusal }
   .flat_map { _1.message.tool_calls.to_a }
   .each do |tool_call|
     pp(tool_call.function.parsed)

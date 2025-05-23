@@ -530,7 +530,7 @@ module OpenAI
           # Learn more about [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
           variant -> { OpenAI::ResponseFormatJSONSchema }
 
-          # An {OpenAI::BaseModel} can be provided and implicitly converted into {OpenAI::ResponseFormatJSONSchema}.
+          # An {OpenAI::BaseModel} can be provided and implicitly converted into {OpenAI::Models::ResponseFormatJSONSchema}.
           # See examples for more details.
           #
           # Learn more about [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).

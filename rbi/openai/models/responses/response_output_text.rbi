@@ -30,6 +30,10 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :text
 
+        # The parsed contents of the output, if JSON schema is specified.
+        sig { returns(T.anything) }
+        attr_accessor :parsed
+
         # The type of the output text. Always `output_text`.
         sig { returns(Symbol) }
         attr_accessor :type
