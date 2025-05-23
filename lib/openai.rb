@@ -14,10 +14,15 @@ require "securerandom"
 require "stringio"
 require "time"
 require "uri"
+
 # We already ship the preferred sorbet manifests in the package itself.
 # `tapioca` currently does not offer us a way to opt out of unnecessary compilation.
-if Object.const_defined?(:Tapioca) && caller.chain([$PROGRAM_NAME]).chain(ARGV).grep(/tapioca/)
-  return
+if Object.const_defined?(:Tapioca)
+  call_stack_array = caller.chain([$PROGRAM_NAME]).chain(ARGV).to_a
+  last_tapioca_index = call_stack_array.rindex { |line| line.include?("tapioca") }
+  if last_tapioca_index && last_tapioca_index < call_stack_array.length - 1 && call_stack_array[last_tapioca_index + 1].strip == "gem"
+    return
+  end
 end
 
 # Gems.
