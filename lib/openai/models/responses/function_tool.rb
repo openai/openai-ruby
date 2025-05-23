@@ -14,7 +14,12 @@ module OpenAI
         #   A JSON schema object describing the parameters of the function.
         #
         #   @return [Hash{Symbol=>Object}, nil]
-        required :parameters, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown], nil?: true
+        required :parameters,
+                 union: OpenAI::UnionOf[
+                   OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown],
+                   OpenAI::StructuredOutput::JsonSchemaConverter
+                 ],
+                 nil?: true
 
         # @!attribute strict
         #   Whether to enforce strict parameter validation. Default `true`.
