@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
-# typed: strong
 
 require_relative "../lib/openai"
 
@@ -11,9 +10,9 @@ end
 # gets API Key from environment variable `OPENAI_API_KEY`
 client = OpenAI::Client.new
 
-chat_completion = client.chat.completions.create(
+response = client.responses.create(
   model: "gpt-4o-2024-08-06",
-  messages: [
+  input: [
     {
       role: :user,
       content: "What's the weather like in Paris today?"
@@ -22,10 +21,8 @@ chat_completion = client.chat.completions.create(
   tools: [GetWeather]
 )
 
-chat_completion
-  .choices
-  .reject { _1.message.refusal }
-  .flat_map { _1.message.tool_calls.to_a }
-  .each do |tool_call|
-    pp(tool_call.function.parsed)
+response
+  .output
+  .each do |output|
+    pp(output.parsed)
   end

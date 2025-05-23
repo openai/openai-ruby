@@ -50,7 +50,7 @@ module OpenAI
         #   @return [Hash{Symbol=>Object}, nil]
         optional :schema,
                  union: -> {
-                   OpenAI::StructuredOutput::UnionOf[
+                   OpenAI::UnionOf[
                      OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown],
                      OpenAI::StructuredOutput::JsonSchemaConverter
                    ]

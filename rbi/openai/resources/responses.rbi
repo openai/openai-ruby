@@ -45,7 +45,11 @@ module OpenAI
             ),
           store: T.nilable(T::Boolean),
           temperature: T.nilable(Float),
-          text: OpenAI::Responses::ResponseTextConfig::OrHash,
+          text:
+            T.any(
+              OpenAI::Responses::ResponseTextConfig::OrHash,
+              OpenAI::StructuredOutput::JsonSchemaConverter
+            ),
           tool_choice:
             T.any(
               OpenAI::Responses::ToolChoiceOptions::OrSymbol,

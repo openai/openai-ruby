@@ -74,10 +74,85 @@ module OpenAI
           message = "Please use `#stream_raw` for the streaming use case."
           raise ArgumentError.new(message)
         end
+
+        model = nil
+        tool_models = {}
+        case parsed
+        in {text: OpenAI::StructuredOutput::JsonSchemaConverter => model}
+          parsed.update(
+            text: {
+              format: {
+                type: :json_schema,
+                strict: true,
+                name: model.name.split("::").last,
+                schema: model.to_json_schema
+              }
+            }
+          )
+        in {text: {format: OpenAI::StructuredOutput::JsonSchemaConverter => model}}
+          parsed.fetch(:text).update(
+            format: {
+              type: :json_schema,
+              strict: true,
+              name: model.name.split("::").last,
+              schema: model.to_json_schema
+            }
+          )
+        in {text: {format: {type: :json_schema, schema: OpenAI::StructuredOutput::JsonSchemaConverter => model}}}
+          parsed.dig(:text, :format).store(:schema, model.to_json_schema)
+        in {tools: Array => tools}
+          mapped = tools.map do |tool|
+            case tool
+            in OpenAI::StructuredOutput::JsonSchemaConverter
+              name = tool.name.split("::").last
+              tool_models.store(name, tool)
+              {
+                type: :function,
+                strict: true,
+                name: name,
+                parameters: tool.to_json_schema
+              }
+            in {type: :function, parameters: OpenAI::StructuredOutput::JsonSchemaConverter => params}
+              func = tool.fetch(:function)
+              name = func[:name] ||= params.name.split("::").last
+              tool_models.store(name, params)
+              func.update(parameters: params.to_json_schema)
+            else
+            end
+          end
+          tools.replace(mapped)
+        else
+        end
+
+        unwrap = ->(raw) do
+          if model.is_a?(OpenAI::StructuredOutput::JsonSchemaConverter)
+            raw[:output]
+              &.flat_map do |output|
+                next [] unless output[:type] == "message"
+                output[:content].to_a
+              end
+              &.each do |content|
+                next unless content[:type] == "output_text"
+                parsed = JSON.parse(content.fetch(:text), symbolize_names: true)
+                coerced = OpenAI::Internal::Type::Converter.coerce(model, parsed)
+                content.store(:parsed, coerced)
+              end
+          end
+          raw[:output]&.each do |output|
+            next unless output[:type] == "function_call"
+            next if (model = tool_models[output.fetch(:name)]).nil?
+            parsed = JSON.parse(output.fetch(:arguments), symbolize_names: true)
+            coerced = OpenAI::Internal::Type::Converter.coerce(model, parsed)
+            output.store(:parsed, coerced)
+          end
+
+          raw
+        end
         @client.request(
           method: :post,
           path: "responses",
           body: parsed,
+          unwrap: unwrap,
           model: OpenAI::Responses::Response,
           options: options
         )

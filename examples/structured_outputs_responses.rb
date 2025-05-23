@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
-# typed: strong
 
 require_relative "../lib/openai"
 
@@ -29,12 +28,11 @@ class CalendarEvent < OpenAI::BaseModel
            doc: "Event location"
 end
 
-# gets API Key from environment variable `OPENAI_API_KEY`
 client = OpenAI::Client.new
 
-chat_completion = client.chat.completions.create(
+response = client.responses.create(
   model: "gpt-4o-2024-08-06",
-  messages: [
+  input: [
     {role: :system, content: "Extract the event information."},
     {
       role: :user,
@@ -44,12 +42,14 @@ chat_completion = client.chat.completions.create(
       CONTENT
     }
   ],
-  response_format: CalendarEvent
+  text: CalendarEvent
 )
 
-chat_completion
-  .choices
-  .reject { _1.message.refusal }
-  .each do |choice|
-    pp(choice.message.parsed)
+response
+  .output
+  .flat_map { _1.content }
+  # filter out refusal responses
+  .grep_v(OpenAI::Models::Responses::ResponseOutputRefusal)
+  .each do |content|
+    pp(content.parsed)
   end

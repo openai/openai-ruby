@@ -12,6 +12,8 @@ module OpenAI
         # Defines a function in your own code the model can choose to call. Learn more about [function calling](https://platform.openai.com/docs/guides/function-calling).
         variant :function, -> { OpenAI::Responses::FunctionTool }
 
+        variant -> { OpenAI::StructuredOutput::JsonSchemaConverter }
+
         # A tool that searches for relevant content from uploaded files. Learn more about the [file search tool](https://platform.openai.com/docs/guides/tools-file-search).
         variant :file_search, -> { OpenAI::Responses::FileSearchTool }
 

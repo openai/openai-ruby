@@ -15,8 +15,13 @@ module OpenAI
         #   The schema for the response format, described as a JSON Schema object. Learn how
         #   to build JSON schemas [here](https://json-schema.org/).
         #
-        #   @return [Hash{Symbol=>Object}]
-        required :schema, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
+        #   @return [Hash{Symbol=>Object}, OpenAI::StructuredOutput::JsonSchemaConverter]
+        required :schema,
+                 union: -> {
+                   OpenAI::UnionOf[
+                     OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown], OpenAI::StructuredOutput::JsonSchemaConverter
+                   ]
+                 }
 
         # @!attribute type
         #   The type of response format being defined. Always `json_schema`.
@@ -52,7 +57,7 @@ module OpenAI
         #
         #   @param name [String] The name of the response format. Must be a-z, A-Z, 0-9, or contain
         #
-        #   @param schema [Hash{Symbol=>Object}] The schema for the response format, described as a JSON Schema object.
+        #   @param schema [Hash{Symbol=>Object}, OpenAI::StructuredOutput::JsonSchemaConverter] The schema for the response format, described as a JSON Schema object.
         #
         #   @param description [String] A description of what the response format is for, used by the model to
         #
