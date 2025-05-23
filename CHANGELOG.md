@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.4.0-beta.1 (2025-05-23)
+
+Full Changelog: [v0.1.0-beta.2...v0.4.0-beta.1](https://github.com/openai/openai-ruby/compare/v0.1.0-beta.2...v0.4.0-beta.1)
+
+### Features
+
+* structured output for responses API (text) ([#688](https://github.com/openai/openai-ruby/issues/688)) ([282ec24](https://github.com/openai/openai-ruby/commit/282ec24c89511c1cd50029fe154e10d772e23239))
+* structured output for responses API (tools) ([#691](https://github.com/openai/openai-ruby/issues/691)) ([5e524ea](https://github.com/openai/openai-ruby/commit/5e524ea48020125911204c8050b49e360d7513d7))
+
+
+### Chores
+
+* **internal:** fix release workflows ([e1b31a6](https://github.com/openai/openai-ruby/commit/e1b31a6d6c3064f57e82aa1c3f48f2c797619b5a))
+* **internal:** version bump ([b2dd8dd](https://github.com/openai/openai-ruby/commit/b2dd8dd1aac3ff9acf69953a0d04c74721b47e36))
+* update README for public release ([#145](https://github.com/openai/openai-ruby/issues/145)) ([64e3849](https://github.com/openai/openai-ruby/commit/64e384933c2f80508002dfacf89efe74510c1330))
+
 ## 0.1.0-beta.2 (2025-05-22)
 
 Full Changelog: [v0.1.0-beta.1...v0.1.0-beta.2](https://github.com/openai/openai-ruby/compare/v0.1.0-beta.1...v0.1.0-beta.2)
