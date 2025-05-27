@@ -20,7 +20,9 @@ require "uri"
 
 # We already ship the preferred sorbet manifests in the package itself.
 # `tapioca` currently does not offer us a way to opt out of unnecessary compilation.
-if Object.const_defined?(:Tapioca) && caller.chain([$PROGRAM_NAME]).chain(ARGV).grep(/tapioca/)
+if Object.const_defined?(:Tapioca) &&
+   caller.chain([$PROGRAM_NAME]).chain(ARGV).any?(/tapioca/) &&
+   ARGV.none?(/dsl/)
   return
 end
 
