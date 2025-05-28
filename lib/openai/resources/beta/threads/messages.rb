@@ -4,7 +4,10 @@ module OpenAI
   module Resources
     class Beta
       class Threads
+        # @deprecated The Assistants API is deprecated in favor of the Responses API
         class Messages
+          # @deprecated The Assistants API is deprecated in favor of the Responses API
+          #
           # Some parameter documentations has been truncated, see
           # {OpenAI::Models::Beta::Threads::MessageCreateParams} for more details.
           #
@@ -38,6 +41,8 @@ module OpenAI
             )
           end
 
+          # @deprecated The Assistants API is deprecated in favor of the Responses API
+          #
           # Some parameter documentations has been truncated, see
           # {OpenAI::Models::Beta::Threads::MessageRetrieveParams} for more details.
           #
@@ -68,6 +73,8 @@ module OpenAI
             )
           end
 
+          # @deprecated The Assistants API is deprecated in favor of the Responses API
+          #
           # Some parameter documentations has been truncated, see
           # {OpenAI::Models::Beta::Threads::MessageUpdateParams} for more details.
           #
@@ -101,6 +108,8 @@ module OpenAI
             )
           end
 
+          # @deprecated The Assistants API is deprecated in favor of the Responses API
+          #
           # Some parameter documentations has been truncated, see
           # {OpenAI::Models::Beta::Threads::MessageListParams} for more details.
           #
@@ -137,6 +146,8 @@ module OpenAI
             )
           end
 
+          # @deprecated The Assistants API is deprecated in favor of the Responses API
+          #
           # Deletes a message.
           #
           # @overload delete(message_id, thread_id:, request_options: {})

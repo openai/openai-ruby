@@ -3,6 +3,7 @@
 module OpenAI
   module Resources
     class Beta
+      # @deprecated The Assistants API is deprecated in favor of the Responses API
       class Threads
         # @return [OpenAI::Resources::Beta::Threads::Runs]
         attr_reader :runs
@@ -10,6 +11,8 @@ module OpenAI
         # @return [OpenAI::Resources::Beta::Threads::Messages]
         attr_reader :messages
 
+        # @deprecated The Assistants API is deprecated in favor of the Responses API
+        #
         # Some parameter documentations has been truncated, see
         # {OpenAI::Models::Beta::ThreadCreateParams} for more details.
         #
@@ -39,6 +42,8 @@ module OpenAI
           )
         end
 
+        # @deprecated The Assistants API is deprecated in favor of the Responses API
+        #
         # Retrieves a thread.
         #
         # @overload retrieve(thread_id, request_options: {})
@@ -59,6 +64,8 @@ module OpenAI
           )
         end
 
+        # @deprecated The Assistants API is deprecated in favor of the Responses API
+        #
         # Some parameter documentations has been truncated, see
         # {OpenAI::Models::Beta::ThreadUpdateParams} for more details.
         #
@@ -88,6 +95,8 @@ module OpenAI
           )
         end
 
+        # @deprecated The Assistants API is deprecated in favor of the Responses API
+        #
         # Delete a thread.
         #
         # @overload delete(thread_id, request_options: {})
@@ -108,6 +117,8 @@ module OpenAI
           )
         end
 
+        # @deprecated The Assistants API is deprecated in favor of the Responses API
+        #
         # See {OpenAI::Resources::Beta::Threads#stream_raw} for streaming counterpart.
         #
         # Some parameter documentations has been truncated, see
@@ -167,6 +178,8 @@ module OpenAI
           )
         end
 
+        # @deprecated The Assistants API is deprecated in favor of the Responses API
+        #
         # See {OpenAI::Resources::Beta::Threads#create_and_run} for non-streaming
         # counterpart.
         #
