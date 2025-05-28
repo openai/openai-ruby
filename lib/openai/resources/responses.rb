@@ -242,16 +242,20 @@ module OpenAI
         )
       end
 
+      # See {OpenAI::Resources::Responses#retrieve_streaming} for streaming counterpart.
+      #
       # Some parameter documentations has been truncated, see
       # {OpenAI::Models::Responses::ResponseRetrieveParams} for more details.
       #
       # Retrieves a model response with the given ID.
       #
-      # @overload retrieve(response_id, include: nil, request_options: {})
+      # @overload retrieve(response_id, include: nil, starting_after: nil, request_options: {})
       #
       # @param response_id [String] The ID of the response to retrieve.
       #
       # @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>] Additional fields to include in the response. See the `include`
+      #
+      # @param starting_after [Integer] The sequence number of the event after which to start streaming.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -260,11 +264,53 @@ module OpenAI
       # @see OpenAI::Models::Responses::ResponseRetrieveParams
       def retrieve(response_id, params = {})
         parsed, options = OpenAI::Responses::ResponseRetrieveParams.dump_request(params)
+        if parsed[:stream]
+          message = "Please use `#retrieve_streaming` for the streaming use case."
+          raise ArgumentError.new(message)
+        end
         @client.request(
           method: :get,
           path: ["responses/%1$s", response_id],
           query: parsed,
           model: OpenAI::Responses::Response,
+          options: options
+        )
+      end
+
+      # See {OpenAI::Resources::Responses#retrieve} for non-streaming counterpart.
+      #
+      # Some parameter documentations has been truncated, see
+      # {OpenAI::Models::Responses::ResponseRetrieveParams} for more details.
+      #
+      # Retrieves a model response with the given ID.
+      #
+      # @overload retrieve_streaming(response_id, include: nil, starting_after: nil, request_options: {})
+      #
+      # @param response_id [String] The ID of the response to retrieve.
+      #
+      # @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>] Additional fields to include in the response. See the `include`
+      #
+      # @param starting_after [Integer] The sequence number of the event after which to start streaming.
+      #
+      # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+      #
+      # @return [OpenAI::Internal::Stream<OpenAI::Models::Responses::ResponseAudioDeltaEvent, OpenAI::Models::Responses::ResponseAudioDoneEvent, OpenAI::Models::Responses::ResponseAudioTranscriptDeltaEvent, OpenAI::Models::Responses::ResponseAudioTranscriptDoneEvent, OpenAI::Models::Responses::ResponseCodeInterpreterCallCodeDeltaEvent, OpenAI::Models::Responses::ResponseCodeInterpreterCallCodeDoneEvent, OpenAI::Models::Responses::ResponseCodeInterpreterCallCompletedEvent, OpenAI::Models::Responses::ResponseCodeInterpreterCallInProgressEvent, OpenAI::Models::Responses::ResponseCodeInterpreterCallInterpretingEvent, OpenAI::Models::Responses::ResponseCompletedEvent, OpenAI::Models::Responses::ResponseContentPartAddedEvent, OpenAI::Models::Responses::ResponseContentPartDoneEvent, OpenAI::Models::Responses::ResponseCreatedEvent, OpenAI::Models::Responses::ResponseErrorEvent, OpenAI::Models::Responses::ResponseFileSearchCallCompletedEvent, OpenAI::Models::Responses::ResponseFileSearchCallInProgressEvent, OpenAI::Models::Responses::ResponseFileSearchCallSearchingEvent, OpenAI::Models::Responses::ResponseFunctionCallArgumentsDeltaEvent, OpenAI::Models::Responses::ResponseFunctionCallArgumentsDoneEvent, OpenAI::Models::Responses::ResponseInProgressEvent, OpenAI::Models::Responses::ResponseFailedEvent, OpenAI::Models::Responses::ResponseIncompleteEvent, OpenAI::Models::Responses::ResponseOutputItemAddedEvent, OpenAI::Models::Responses::ResponseOutputItemDoneEvent, OpenAI::Models::Responses::ResponseReasoningSummaryPartAddedEvent, OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent, OpenAI::Models::Responses::ResponseReasoningSummaryTextDeltaEvent, OpenAI::Models::Responses::ResponseReasoningSummaryTextDoneEvent, OpenAI::Models::Responses::ResponseRefusalDeltaEvent, OpenAI::Models::Responses::ResponseRefusalDoneEvent, OpenAI::Models::Responses::ResponseTextDeltaEvent, OpenAI::Models::Responses::ResponseTextDoneEvent, OpenAI::Models::Responses::ResponseWebSearchCallCompletedEvent, OpenAI::Models::Responses::ResponseWebSearchCallInProgressEvent, OpenAI::Models::Responses::ResponseWebSearchCallSearchingEvent, OpenAI::Models::Responses::ResponseImageGenCallCompletedEvent, OpenAI::Models::Responses::ResponseImageGenCallGeneratingEvent, OpenAI::Models::Responses::ResponseImageGenCallInProgressEvent, OpenAI::Models::Responses::ResponseImageGenCallPartialImageEvent, OpenAI::Models::Responses::ResponseMcpCallArgumentsDeltaEvent, OpenAI::Models::Responses::ResponseMcpCallArgumentsDoneEvent, OpenAI::Models::Responses::ResponseMcpCallCompletedEvent, OpenAI::Models::Responses::ResponseMcpCallFailedEvent, OpenAI::Models::Responses::ResponseMcpCallInProgressEvent, OpenAI::Models::Responses::ResponseMcpListToolsCompletedEvent, OpenAI::Models::Responses::ResponseMcpListToolsFailedEvent, OpenAI::Models::Responses::ResponseMcpListToolsInProgressEvent, OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent, OpenAI::Models::Responses::ResponseQueuedEvent, OpenAI::Models::Responses::ResponseReasoningDeltaEvent, OpenAI::Models::Responses::ResponseReasoningDoneEvent, OpenAI::Models::Responses::ResponseReasoningSummaryDeltaEvent, OpenAI::Models::Responses::ResponseReasoningSummaryDoneEvent>]
+      #
+      # @see OpenAI::Models::Responses::ResponseRetrieveParams
+      def retrieve_streaming(response_id, params = {})
+        parsed, options = OpenAI::Responses::ResponseRetrieveParams.dump_request(params)
+        unless parsed.fetch(:stream, true)
+          message = "Please use `#retrieve` for the non-streaming use case."
+          raise ArgumentError.new(message)
+        end
+        parsed.store(:stream, true)
+        @client.request(
+          method: :get,
+          path: ["responses/%1$s", response_id],
+          query: parsed,
+          headers: {"accept" => "text/event-stream"},
+          stream: OpenAI::Internal::Stream,
+          model: OpenAI::Responses::ResponseStreamEvent,
           options: options
         )
       end
