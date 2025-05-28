@@ -52,8 +52,16 @@ module OpenAI
       def retrieve: (
         String response_id,
         ?include: ::Array[OpenAI::Models::Responses::response_includable],
+        ?starting_after: Integer,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Responses::Response
+
+      def retrieve_streaming: (
+        String response_id,
+        ?include: ::Array[OpenAI::Models::Responses::response_includable],
+        ?starting_after: Integer,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Internal::Stream[OpenAI::Models::Responses::response_stream_event]
 
       def delete: (
         String response_id,

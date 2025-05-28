@@ -25,12 +25,22 @@ module OpenAI
         #   @return [Symbol, :output_text]
         required :type, const: :output_text
 
-        # @!method initialize(annotations:, text:, type: :output_text)
+        # @!attribute logprobs
+        #
+        #   @return [Array<OpenAI::Models::Responses::ResponseOutputText::Logprob>, nil]
+        optional :logprobs,
+                 -> {
+                   OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseOutputText::Logprob]
+                 }
+
+        # @!method initialize(annotations:, text:, logprobs: nil, type: :output_text)
         #   A text output from the model.
         #
         #   @param annotations [Array<OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath>] The annotations of the text output.
         #
         #   @param text [String] The text output from the model.
+        #
+        #   @param logprobs [Array<OpenAI::Models::Responses::ResponseOutputText::Logprob>]
         #
         #   @param type [Symbol, :output_text] The type of the output text. Always `output_text`.
 
@@ -158,6 +168,63 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath)]
+        end
+
+        class Logprob < OpenAI::Internal::Type::BaseModel
+          # @!attribute token
+          #
+          #   @return [String]
+          required :token, String
+
+          # @!attribute bytes
+          #
+          #   @return [Array<Integer>]
+          required :bytes, OpenAI::Internal::Type::ArrayOf[Integer]
+
+          # @!attribute logprob
+          #
+          #   @return [Float]
+          required :logprob, Float
+
+          # @!attribute top_logprobs
+          #
+          #   @return [Array<OpenAI::Models::Responses::ResponseOutputText::Logprob::TopLogprob>]
+          required :top_logprobs,
+                   -> {
+                     OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseOutputText::Logprob::TopLogprob]
+                   }
+
+          # @!method initialize(token:, bytes:, logprob:, top_logprobs:)
+          #   The log probability of a token.
+          #
+          #   @param token [String]
+          #   @param bytes [Array<Integer>]
+          #   @param logprob [Float]
+          #   @param top_logprobs [Array<OpenAI::Models::Responses::ResponseOutputText::Logprob::TopLogprob>]
+
+          class TopLogprob < OpenAI::Internal::Type::BaseModel
+            # @!attribute token
+            #
+            #   @return [String]
+            required :token, String
+
+            # @!attribute bytes
+            #
+            #   @return [Array<Integer>]
+            required :bytes, OpenAI::Internal::Type::ArrayOf[Integer]
+
+            # @!attribute logprob
+            #
+            #   @return [Float]
+            required :logprob, Float
+
+            # @!method initialize(token:, bytes:, logprob:)
+            #   The top log probability of a token.
+            #
+            #   @param token [String]
+            #   @param bytes [Array<Integer>]
+            #   @param logprob [Float]
+          end
         end
       end
     end
