@@ -38,6 +38,21 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
+        sig do
+          returns(
+            T.nilable(T::Array[OpenAI::Responses::ResponseOutputText::Logprob])
+          )
+        end
+        attr_reader :logprobs
+
+        sig do
+          params(
+            logprobs:
+              T::Array[OpenAI::Responses::ResponseOutputText::Logprob::OrHash]
+          ).void
+        end
+        attr_writer :logprobs
+
         # A text output from the model.
         sig do
           params(
@@ -50,6 +65,8 @@ module OpenAI
                 )
               ],
             text: String,
+            logprobs:
+              T::Array[OpenAI::Responses::ResponseOutputText::Logprob::OrHash],
             type: Symbol
           ).returns(T.attached_class)
         end
@@ -58,6 +75,7 @@ module OpenAI
           annotations:,
           # The text output from the model.
           text:,
+          logprobs: nil,
           # The type of the output text. Always `output_text`.
           type: :output_text
         )
@@ -75,7 +93,8 @@ module OpenAI
                   )
                 ],
               text: String,
-              type: Symbol
+              type: Symbol,
+              logprobs: T::Array[OpenAI::Responses::ResponseOutputText::Logprob]
             }
           )
         end
@@ -263,6 +282,103 @@ module OpenAI
             )
           end
           def self.variants
+          end
+        end
+
+        class Logprob < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseOutputText::Logprob,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          sig { returns(String) }
+          attr_accessor :token
+
+          sig { returns(T::Array[Integer]) }
+          attr_accessor :bytes
+
+          sig { returns(Float) }
+          attr_accessor :logprob
+
+          sig do
+            returns(
+              T::Array[
+                OpenAI::Responses::ResponseOutputText::Logprob::TopLogprob
+              ]
+            )
+          end
+          attr_accessor :top_logprobs
+
+          # The log probability of a token.
+          sig do
+            params(
+              token: String,
+              bytes: T::Array[Integer],
+              logprob: Float,
+              top_logprobs:
+                T::Array[
+                  OpenAI::Responses::ResponseOutputText::Logprob::TopLogprob::OrHash
+                ]
+            ).returns(T.attached_class)
+          end
+          def self.new(token:, bytes:, logprob:, top_logprobs:)
+          end
+
+          sig do
+            override.returns(
+              {
+                token: String,
+                bytes: T::Array[Integer],
+                logprob: Float,
+                top_logprobs:
+                  T::Array[
+                    OpenAI::Responses::ResponseOutputText::Logprob::TopLogprob
+                  ]
+              }
+            )
+          end
+          def to_hash
+          end
+
+          class TopLogprob < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseOutputText::Logprob::TopLogprob,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            sig { returns(String) }
+            attr_accessor :token
+
+            sig { returns(T::Array[Integer]) }
+            attr_accessor :bytes
+
+            sig { returns(Float) }
+            attr_accessor :logprob
+
+            # The top log probability of a token.
+            sig do
+              params(
+                token: String,
+                bytes: T::Array[Integer],
+                logprob: Float
+              ).returns(T.attached_class)
+            end
+            def self.new(token:, bytes:, logprob:)
+            end
+
+            sig do
+              override.returns(
+                { token: String, bytes: T::Array[Integer], logprob: Float }
+              )
+            end
+            def to_hash
+            end
           end
         end
       end

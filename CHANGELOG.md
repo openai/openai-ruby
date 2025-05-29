@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.5.0 (2025-05-29)
+
+Full Changelog: [v0.4.1...v0.5.0](https://github.com/openai/openai-ruby/compare/v0.4.1...v0.5.0)
+
+### Features
+
+* **api:** Config update for pakrym-stream-param ([214e516](https://github.com/openai/openai-ruby/commit/214e516f286a026e5b040ffd76b930cad7d5eabf))
+
+
+### Bug Fixes
+
+* **client:** return binary content from `get /containers/{container_id}/files/{file_id}/content` ([2b7122a](https://github.com/openai/openai-ruby/commit/2b7122ad724620269c3b403d5a584d710bed5b5c))
+* sorbet types for enums, and make tapioca detection ignore `tapioca dsl` ([0e24b3e](https://github.com/openai/openai-ruby/commit/0e24b3e0a574de5c0544067c53b9e693e4cec3b1))
+
+
+### Chores
+
+* deprecate Assistants API ([4ce7530](https://github.com/openai/openai-ruby/commit/4ce753088e18a3331fccf6608889243809ce187b))
+
 ## 0.4.1 (2025-05-23)
 
 Full Changelog: [v0.4.0-beta.1...v0.4.1](https://github.com/openai/openai-ruby/compare/v0.4.0-beta.1...v0.4.1)

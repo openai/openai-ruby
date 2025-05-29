@@ -11,7 +11,7 @@ module OpenAI
               file_id: String,
               container_id: String,
               request_options: OpenAI::RequestOptions::OrHash
-            ).void
+            ).returns(StringIO)
           end
           def retrieve(file_id, container_id:, request_options: {})
           end

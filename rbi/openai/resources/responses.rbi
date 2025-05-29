@@ -428,11 +428,15 @@ module OpenAI
       )
       end
 
+      # See {OpenAI::Resources::Responses#retrieve_streaming} for streaming counterpart.
+      #
       # Retrieves a model response with the given ID.
       sig do
         params(
           response_id: String,
           include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
+          starting_after: Integer,
+          stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(OpenAI::Responses::Response)
       end
@@ -442,6 +446,42 @@ module OpenAI
         # Additional fields to include in the response. See the `include` parameter for
         # Response creation above for more information.
         include: nil,
+        # The sequence number of the event after which to start streaming.
+        starting_after: nil,
+        # There is no need to provide `stream:`. Instead, use `#retrieve_streaming` or
+        # `#retrieve` for streaming and non-streaming use cases, respectively.
+        stream: false,
+        request_options: {}
+      )
+      end
+
+      # See {OpenAI::Resources::Responses#retrieve} for non-streaming counterpart.
+      #
+      # Retrieves a model response with the given ID.
+      sig do
+        params(
+          response_id: String,
+          include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
+          starting_after: Integer,
+          stream: T.noreturn,
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(
+          OpenAI::Internal::Stream[
+            OpenAI::Responses::ResponseStreamEvent::Variants
+          ]
+        )
+      end
+      def retrieve_streaming(
+        # The ID of the response to retrieve.
+        response_id,
+        # Additional fields to include in the response. See the `include` parameter for
+        # Response creation above for more information.
+        include: nil,
+        # The sequence number of the event after which to start streaming.
+        starting_after: nil,
+        # There is no need to provide `stream:`. Instead, use `#retrieve_streaming` or
+        # `#retrieve` for streaming and non-streaming use cases, respectively.
+        stream: true,
         request_options: {}
       )
       end
