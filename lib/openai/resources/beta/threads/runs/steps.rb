@@ -5,7 +5,10 @@ module OpenAI
     class Beta
       class Threads
         class Runs
+          # @deprecated The Assistants API is deprecated in favor of the Responses API
           class Steps
+            # @deprecated The Assistants API is deprecated in favor of the Responses API
+            #
             # Some parameter documentations has been truncated, see
             # {OpenAI::Models::Beta::Threads::Runs::StepRetrieveParams} for more details.
             #
@@ -45,6 +48,8 @@ module OpenAI
               )
             end
 
+            # @deprecated The Assistants API is deprecated in favor of the Responses API
+            #
             # Some parameter documentations has been truncated, see
             # {OpenAI::Models::Beta::Threads::Runs::StepListParams} for more details.
             #

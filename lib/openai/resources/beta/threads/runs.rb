@@ -4,10 +4,13 @@ module OpenAI
   module Resources
     class Beta
       class Threads
+        # @deprecated The Assistants API is deprecated in favor of the Responses API
         class Runs
           # @return [OpenAI::Resources::Beta::Threads::Runs::Steps]
           attr_reader :steps
 
+          # @deprecated The Assistants API is deprecated in favor of the Responses API
+          #
           # See {OpenAI::Resources::Beta::Threads::Runs#create_stream_raw} for streaming
           # counterpart.
           #
@@ -76,6 +79,8 @@ module OpenAI
             )
           end
 
+          # @deprecated The Assistants API is deprecated in favor of the Responses API
+          #
           # See {OpenAI::Resources::Beta::Threads::Runs#create} for non-streaming
           # counterpart.
           #
@@ -147,6 +152,8 @@ module OpenAI
             )
           end
 
+          # @deprecated The Assistants API is deprecated in favor of the Responses API
+          #
           # Some parameter documentations has been truncated, see
           # {OpenAI::Models::Beta::Threads::RunRetrieveParams} for more details.
           #
@@ -177,6 +184,8 @@ module OpenAI
             )
           end
 
+          # @deprecated The Assistants API is deprecated in favor of the Responses API
+          #
           # Some parameter documentations has been truncated, see
           # {OpenAI::Models::Beta::Threads::RunUpdateParams} for more details.
           #
@@ -210,6 +219,8 @@ module OpenAI
             )
           end
 
+          # @deprecated The Assistants API is deprecated in favor of the Responses API
+          #
           # Some parameter documentations has been truncated, see
           # {OpenAI::Models::Beta::Threads::RunListParams} for more details.
           #
@@ -244,6 +255,8 @@ module OpenAI
             )
           end
 
+          # @deprecated The Assistants API is deprecated in favor of the Responses API
+          #
           # Cancels a run that is `in_progress`.
           #
           # @overload cancel(run_id, thread_id:, request_options: {})
@@ -271,6 +284,8 @@ module OpenAI
             )
           end
 
+          # @deprecated The Assistants API is deprecated in favor of the Responses API
+          #
           # See {OpenAI::Resources::Beta::Threads::Runs#submit_tool_outputs_stream_raw} for
           # streaming counterpart.
           #
@@ -314,6 +329,8 @@ module OpenAI
             )
           end
 
+          # @deprecated The Assistants API is deprecated in favor of the Responses API
+          #
           # See {OpenAI::Resources::Beta::Threads::Runs#submit_tool_outputs} for
           # non-streaming counterpart.
           #
