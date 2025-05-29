@@ -13,7 +13,7 @@ module OpenAI
           # @param container_id [String]
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
-          # @return [nil]
+          # @return [StringIO]
           #
           # @see OpenAI::Models::Containers::Files::ContentRetrieveParams
           def retrieve(file_id, params)
@@ -25,7 +25,8 @@ module OpenAI
             @client.request(
               method: :get,
               path: ["containers/%1$s/files/%2$s/content", container_id, file_id],
-              model: NilClass,
+              headers: {"accept" => "application/binary"},
+              model: StringIO,
               options: options
             )
           end

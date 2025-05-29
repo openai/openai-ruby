@@ -7,7 +7,7 @@ module OpenAI
             String file_id,
             container_id: String,
             ?request_options: OpenAI::request_opts
-          ) -> nil
+          ) -> StringIO
 
           def initialize: (client: OpenAI::Client) -> void
         end
