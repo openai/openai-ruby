@@ -16,6 +16,8 @@ module OpenAI
       #   multi-turn conversations when using the Responses API statelessly (like when
       #   the `store` parameter is set to `false`, or when an organization is enrolled
       #   in the zero data retention program).
+      # - `code_interpreter_call.outputs`: Includes the outputs of python code execution
+      #   in code interpreter tool call items.
       module ResponseIncludable
         extend OpenAI::Internal::Type::Enum
 
@@ -23,6 +25,7 @@ module OpenAI
         MESSAGE_INPUT_IMAGE_IMAGE_URL = :"message.input_image.image_url"
         COMPUTER_CALL_OUTPUT_OUTPUT_IMAGE_URL = :"computer_call_output.output.image_url"
         REASONING_ENCRYPTED_CONTENT = :"reasoning.encrypted_content"
+        CODE_INTERPRETER_CALL_OUTPUTS = :"code_interpreter_call.outputs"
 
         # @!method self.values
         #   @return [Array<Symbol>]

@@ -23,12 +23,12 @@ module OpenAI
         required :sequence_number, Integer
 
         # @!attribute type
-        #   The type of the event. Always `response.code_interpreter_call.code.delta`.
+        #   The type of the event. Always `response.code_interpreter_call_code.delta`.
         #
-        #   @return [Symbol, :"response.code_interpreter_call.code.delta"]
-        required :type, const: :"response.code_interpreter_call.code.delta"
+        #   @return [Symbol, :"response.code_interpreter_call_code.delta"]
+        required :type, const: :"response.code_interpreter_call_code.delta"
 
-        # @!method initialize(delta:, output_index:, sequence_number:, type: :"response.code_interpreter_call.code.delta")
+        # @!method initialize(delta:, output_index:, sequence_number:, type: :"response.code_interpreter_call_code.delta")
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseCodeInterpreterCallCodeDeltaEvent} for more
         #   details.
@@ -41,7 +41,7 @@ module OpenAI
         #
         #   @param sequence_number [Integer] The sequence number of this event.
         #
-        #   @param type [Symbol, :"response.code_interpreter_call.code.delta"] The type of the event. Always `response.code_interpreter_call.code.delta`.
+        #   @param type [Symbol, :"response.code_interpreter_call_code.delta"] The type of the event. Always `response.code_interpreter_call_code.delta`.
       end
     end
   end

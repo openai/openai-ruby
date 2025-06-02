@@ -63,6 +63,8 @@ module OpenAI
         #   multi-turn conversations when using the Responses API statelessly (like when
         #   the `store` parameter is set to `false`, or when an organization is enrolled
         #   in the zero data retention program).
+        # - `code_interpreter_call.outputs`: Includes the outputs of python code execution
+        #   in code interpreter tool call items.
         sig do
           returns(
             T.nilable(T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol])
@@ -121,9 +123,9 @@ module OpenAI
         #   utilize scale tier credits until they are exhausted.
         # - If set to 'auto', and the Project is not Scale tier enabled, the request will
         #   be processed using the default service tier with a lower uptime SLA and no
-        #   latency guarentee.
+        #   latency guarantee.
         # - If set to 'default', the request will be processed using the default service
-        #   tier with a lower uptime SLA and no latency guarentee.
+        #   tier with a lower uptime SLA and no latency guarantee.
         # - If set to 'flex', the request will be processed with the Flex Processing
         #   service tier.
         #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
@@ -364,6 +366,8 @@ module OpenAI
           #   multi-turn conversations when using the Responses API statelessly (like when
           #   the `store` parameter is set to `false`, or when an organization is enrolled
           #   in the zero data retention program).
+          # - `code_interpreter_call.outputs`: Includes the outputs of python code execution
+          #   in code interpreter tool call items.
           include: nil,
           # Inserts a system (or developer) message as the first item in the model's
           # context.
@@ -401,9 +405,9 @@ module OpenAI
           #   utilize scale tier credits until they are exhausted.
           # - If set to 'auto', and the Project is not Scale tier enabled, the request will
           #   be processed using the default service tier with a lower uptime SLA and no
-          #   latency guarentee.
+          #   latency guarantee.
           # - If set to 'default', the request will be processed using the default service
-          #   tier with a lower uptime SLA and no latency guarentee.
+          #   tier with a lower uptime SLA and no latency guarantee.
           # - If set to 'flex', the request will be processed with the Flex Processing
           #   service tier.
           #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
@@ -562,9 +566,9 @@ module OpenAI
         #   utilize scale tier credits until they are exhausted.
         # - If set to 'auto', and the Project is not Scale tier enabled, the request will
         #   be processed using the default service tier with a lower uptime SLA and no
-        #   latency guarentee.
+        #   latency guarantee.
         # - If set to 'default', the request will be processed using the default service
-        #   tier with a lower uptime SLA and no latency guarentee.
+        #   tier with a lower uptime SLA and no latency guarantee.
         # - If set to 'flex', the request will be processed with the Flex Processing
         #   service tier.
         #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).

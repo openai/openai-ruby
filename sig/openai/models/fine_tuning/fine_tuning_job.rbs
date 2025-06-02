@@ -165,7 +165,7 @@ module OpenAI
             n_epochs: OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::n_epochs
           }
 
-          type batch_size = (top | :auto | Integer)?
+          type batch_size = :auto | Integer
 
           module BatchSize
             extend OpenAI::Internal::Type::Union

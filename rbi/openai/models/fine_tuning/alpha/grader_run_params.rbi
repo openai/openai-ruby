@@ -30,17 +30,22 @@ module OpenAI
           end
           attr_accessor :grader
 
-          # The model sample to be evaluated.
+          # The model sample to be evaluated. This value will be used to populate the
+          # `sample` namespace. See
+          # [the guide](https://platform.openai.com/docs/guides/graders) for more details.
+          # The `output_json` variable will be populated if the model sample is a valid JSON
+          # string.
           sig { returns(String) }
           attr_accessor :model_sample
 
-          # The reference answer for the evaluation.
-          sig do
-            returns(
-              OpenAI::FineTuning::Alpha::GraderRunParams::ReferenceAnswer::Variants
-            )
-          end
-          attr_accessor :reference_answer
+          # The dataset item provided to the grader. This will be used to populate the
+          # `item` namespace. See
+          # [the guide](https://platform.openai.com/docs/guides/graders) for more details.
+          sig { returns(T.nilable(T.anything)) }
+          attr_reader :item
+
+          sig { params(item: T.anything).void }
+          attr_writer :item
 
           sig do
             params(
@@ -53,18 +58,23 @@ module OpenAI
                   OpenAI::Graders::MultiGrader::OrHash
                 ),
               model_sample: String,
-              reference_answer:
-                OpenAI::FineTuning::Alpha::GraderRunParams::ReferenceAnswer::Variants,
+              item: T.anything,
               request_options: OpenAI::RequestOptions::OrHash
             ).returns(T.attached_class)
           end
           def self.new(
             # The grader used for the fine-tuning job.
             grader:,
-            # The model sample to be evaluated.
+            # The model sample to be evaluated. This value will be used to populate the
+            # `sample` namespace. See
+            # [the guide](https://platform.openai.com/docs/guides/graders) for more details.
+            # The `output_json` variable will be populated if the model sample is a valid JSON
+            # string.
             model_sample:,
-            # The reference answer for the evaluation.
-            reference_answer:,
+            # The dataset item provided to the grader. This will be used to populate the
+            # `item` namespace. See
+            # [the guide](https://platform.openai.com/docs/guides/graders) for more details.
+            item: nil,
             request_options: {}
           )
           end
@@ -81,8 +91,7 @@ module OpenAI
                     OpenAI::Graders::MultiGrader
                   ),
                 model_sample: String,
-                reference_answer:
-                  OpenAI::FineTuning::Alpha::GraderRunParams::ReferenceAnswer::Variants,
+                item: T.anything,
                 request_options: OpenAI::RequestOptions
               }
             )
@@ -114,34 +123,6 @@ module OpenAI
             end
             def self.variants
             end
-          end
-
-          # The reference answer for the evaluation.
-          module ReferenceAnswer
-            extend OpenAI::Internal::Type::Union
-
-            Variants =
-              T.type_alias do
-                T.any(String, T.anything, T::Array[T.anything], Float)
-              end
-
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::FineTuning::Alpha::GraderRunParams::ReferenceAnswer::Variants
-                ]
-              )
-            end
-            def self.variants
-            end
-
-            UnionMember2Array =
-              T.let(
-                OpenAI::Internal::Type::ArrayOf[
-                  OpenAI::Internal::Type::Unknown
-                ],
-                OpenAI::Internal::Type::Converter
-              )
           end
         end
       end

@@ -50,8 +50,8 @@ module OpenAI
           # @!attribute bytes
           #   The bytes that were used to generate the log probability.
           #
-          #   @return [Array<Object>, nil]
-          optional :bytes, OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::Unknown]
+          #   @return [Array<Integer>, nil]
+          optional :bytes, OpenAI::Internal::Type::ArrayOf[Integer]
 
           # @!attribute logprob
           #   The log probability of the token.
@@ -65,7 +65,7 @@ module OpenAI
           #
           #   @param token [String] The token that was used to generate the log probability.
           #
-          #   @param bytes [Array<Object>] The bytes that were used to generate the log probability.
+          #   @param bytes [Array<Integer>] The bytes that were used to generate the log probability.
           #
           #   @param logprob [Float] The log probability of the token.
         end
