@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.1 (2025-06-02)
+
+Full Changelog: [v0.5.0...v0.5.1](https://github.com/openai/openai-ruby/compare/v0.5.0...v0.5.1)
+
+### Bug Fixes
+
+* **api:** Fix evals and code interpreter interfaces ([24a9100](https://github.com/openai/openai-ruby/commit/24a910015e6885fc19a2ad689fe70a148bed5787))
+
 ## 0.5.0 (2025-05-29)
 
 Full Changelog: [v0.4.1...v0.5.0](https://github.com/openai/openai-ruby/compare/v0.4.1...v0.5.0)
