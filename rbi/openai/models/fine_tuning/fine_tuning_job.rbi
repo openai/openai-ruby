@@ -359,7 +359,7 @@ module OpenAI
           # returned when running `supervised` jobs.
           sig do
             params(
-              batch_size: T.nilable(T.any(T.anything, Symbol, Integer)),
+              batch_size: T.nilable(T.any(Symbol, Integer)),
               learning_rate_multiplier: T.any(Symbol, Float),
               n_epochs: T.any(Symbol, Integer)
             ).returns(T.attached_class)
@@ -399,8 +399,7 @@ module OpenAI
           module BatchSize
             extend OpenAI::Internal::Type::Union
 
-            Variants =
-              T.type_alias { T.nilable(T.any(T.anything, Symbol, Integer)) }
+            Variants = T.type_alias { T.any(Symbol, Integer) }
 
             sig do
               override.returns(

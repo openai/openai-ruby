@@ -6,7 +6,7 @@ module OpenAI
           code: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.code_interpreter_call.code.done"
+          type: :"response.code_interpreter_call_code.done"
         }
 
       class ResponseCodeInterpreterCallCodeDoneEvent < OpenAI::Internal::Type::BaseModel
@@ -16,20 +16,20 @@ module OpenAI
 
         attr_accessor sequence_number: Integer
 
-        attr_accessor type: :"response.code_interpreter_call.code.done"
+        attr_accessor type: :"response.code_interpreter_call_code.done"
 
         def initialize: (
           code: String,
           output_index: Integer,
           sequence_number: Integer,
-          ?type: :"response.code_interpreter_call.code.done"
+          ?type: :"response.code_interpreter_call_code.done"
         ) -> void
 
         def to_hash: -> {
           code: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.code_interpreter_call.code.done"
+          type: :"response.code_interpreter_call_code.done"
         }
       end
     end

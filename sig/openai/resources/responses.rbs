@@ -71,7 +71,7 @@ module OpenAI
       def cancel: (
         String response_id,
         ?request_options: OpenAI::request_opts
-      ) -> nil
+      ) -> OpenAI::Responses::Response
 
       def initialize: (client: OpenAI::Client) -> void
     end

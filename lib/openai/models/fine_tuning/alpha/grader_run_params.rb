@@ -16,26 +16,32 @@ module OpenAI
           required :grader, union: -> { OpenAI::FineTuning::Alpha::GraderRunParams::Grader }
 
           # @!attribute model_sample
-          #   The model sample to be evaluated.
+          #   The model sample to be evaluated. This value will be used to populate the
+          #   `sample` namespace. See
+          #   [the guide](https://platform.openai.com/docs/guides/graders) for more details.
+          #   The `output_json` variable will be populated if the model sample is a valid JSON
+          #   string.
           #
           #   @return [String]
           required :model_sample, String
 
-          # @!attribute reference_answer
-          #   The reference answer for the evaluation.
+          # @!attribute item
+          #   The dataset item provided to the grader. This will be used to populate the
+          #   `item` namespace. See
+          #   [the guide](https://platform.openai.com/docs/guides/graders) for more details.
           #
-          #   @return [String, Object, Array<Object>, Float]
-          required :reference_answer,
-                   union: -> {
-                     OpenAI::FineTuning::Alpha::GraderRunParams::ReferenceAnswer
-                   }
+          #   @return [Object, nil]
+          optional :item, OpenAI::Internal::Type::Unknown
 
-          # @!method initialize(grader:, model_sample:, reference_answer:, request_options: {})
+          # @!method initialize(grader:, model_sample:, item: nil, request_options: {})
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::FineTuning::Alpha::GraderRunParams} for more details.
+          #
           #   @param grader [OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::MultiGrader] The grader used for the fine-tuning job.
           #
-          #   @param model_sample [String] The model sample to be evaluated.
+          #   @param model_sample [String] The model sample to be evaluated. This value will be used to populate
           #
-          #   @param reference_answer [String, Object, Array<Object>, Float] The reference answer for the evaluation.
+          #   @param item [Object] The dataset item provided to the grader. This will be used to populate
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -62,25 +68,6 @@ module OpenAI
 
             # @!method self.variants
             #   @return [Array(OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::MultiGrader)]
-          end
-
-          # The reference answer for the evaluation.
-          module ReferenceAnswer
-            extend OpenAI::Internal::Type::Union
-
-            variant String
-
-            variant OpenAI::Internal::Type::Unknown
-
-            variant -> { OpenAI::Models::FineTuning::Alpha::GraderRunParams::ReferenceAnswer::UnionMember2Array }
-
-            variant Float
-
-            # @!method self.variants
-            #   @return [Array(String, Object, Array<Object>, Float)]
-
-            # @type [OpenAI::Internal::Type::Converter]
-            UnionMember2Array = OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::Unknown]
           end
         end
       end

@@ -23,12 +23,12 @@ module OpenAI
         required :sequence_number, Integer
 
         # @!attribute type
-        #   The type of the event. Always `response.code_interpreter_call.code.done`.
+        #   The type of the event. Always `response.code_interpreter_call_code.done`.
         #
-        #   @return [Symbol, :"response.code_interpreter_call.code.done"]
-        required :type, const: :"response.code_interpreter_call.code.done"
+        #   @return [Symbol, :"response.code_interpreter_call_code.done"]
+        required :type, const: :"response.code_interpreter_call_code.done"
 
-        # @!method initialize(code:, output_index:, sequence_number:, type: :"response.code_interpreter_call.code.done")
+        # @!method initialize(code:, output_index:, sequence_number:, type: :"response.code_interpreter_call_code.done")
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseCodeInterpreterCallCodeDoneEvent} for more
         #   details.
@@ -41,7 +41,7 @@ module OpenAI
         #
         #   @param sequence_number [Integer] The sequence number of this event.
         #
-        #   @param type [Symbol, :"response.code_interpreter_call.code.done"] The type of the event. Always `response.code_interpreter_call.code.done`.
+        #   @param type [Symbol, :"response.code_interpreter_call_code.done"] The type of the event. Always `response.code_interpreter_call_code.done`.
       end
     end
   end

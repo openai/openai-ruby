@@ -7,7 +7,7 @@ module OpenAI
         # @!attribute annotations
         #   The annotations of the text output.
         #
-        #   @return [Array<OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath>]
+        #   @return [Array<OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::ContainerFileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath>]
         required :annotations,
                  -> {
                    OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseOutputText::Annotation]
@@ -42,7 +42,7 @@ module OpenAI
         # @!method initialize(annotations:, text:, logprobs: nil, type: :output_text)
         #   A text output from the model.
         #
-        #   @param annotations [Array<OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath>] The annotations of the text output.
+        #   @param annotations [Array<OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::ContainerFileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath>] The annotations of the text output.
         #
         #   @param text [String] The text output from the model.
         #
@@ -61,6 +61,10 @@ module OpenAI
 
           # A citation for a web resource used to generate a model response.
           variant :url_citation, -> { OpenAI::Responses::ResponseOutputText::Annotation::URLCitation }
+
+          # A citation for a container file used to generate a model response.
+          variant :container_file_citation,
+                  -> { OpenAI::Responses::ResponseOutputText::Annotation::ContainerFileCitation }
 
           # A path to a file.
           variant :file_path, -> { OpenAI::Responses::ResponseOutputText::Annotation::FilePath }
@@ -139,6 +143,51 @@ module OpenAI
             #   @param type [Symbol, :url_citation] The type of the URL citation. Always `url_citation`.
           end
 
+          class ContainerFileCitation < OpenAI::Internal::Type::BaseModel
+            # @!attribute container_id
+            #   The ID of the container file.
+            #
+            #   @return [String]
+            required :container_id, String
+
+            # @!attribute end_index
+            #   The index of the last character of the container file citation in the message.
+            #
+            #   @return [Integer]
+            required :end_index, Integer
+
+            # @!attribute file_id
+            #   The ID of the file.
+            #
+            #   @return [String]
+            required :file_id, String
+
+            # @!attribute start_index
+            #   The index of the first character of the container file citation in the message.
+            #
+            #   @return [Integer]
+            required :start_index, Integer
+
+            # @!attribute type
+            #   The type of the container file citation. Always `container_file_citation`.
+            #
+            #   @return [Symbol, :container_file_citation]
+            required :type, const: :container_file_citation
+
+            # @!method initialize(container_id:, end_index:, file_id:, start_index:, type: :container_file_citation)
+            #   A citation for a container file used to generate a model response.
+            #
+            #   @param container_id [String] The ID of the container file.
+            #
+            #   @param end_index [Integer] The index of the last character of the container file citation in the message.
+            #
+            #   @param file_id [String] The ID of the file.
+            #
+            #   @param start_index [Integer] The index of the first character of the container file citation in the message.
+            #
+            #   @param type [Symbol, :container_file_citation] The type of the container file citation. Always `container_file_citation`.
+          end
+
           class FilePath < OpenAI::Internal::Type::BaseModel
             # @!attribute file_id
             #   The ID of the file.
@@ -173,7 +222,7 @@ module OpenAI
           end
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath)]
+          #   @return [Array(OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::ContainerFileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath)]
         end
 
         class Logprob < OpenAI::Internal::Type::BaseModel

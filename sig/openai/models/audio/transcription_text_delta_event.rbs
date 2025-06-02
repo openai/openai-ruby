@@ -31,16 +31,17 @@ module OpenAI
           logprobs: ::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob]
         }
 
-        type logprob = { token: String, bytes: ::Array[top], logprob: Float }
+        type logprob =
+          { token: String, bytes: ::Array[Integer], logprob: Float }
 
         class Logprob < OpenAI::Internal::Type::BaseModel
           attr_reader token: String?
 
           def token=: (String) -> String
 
-          attr_reader bytes: ::Array[top]?
+          attr_reader bytes: ::Array[Integer]?
 
-          def bytes=: (::Array[top]) -> ::Array[top]
+          def bytes=: (::Array[Integer]) -> ::Array[Integer]
 
           attr_reader logprob: Float?
 
@@ -48,11 +49,15 @@ module OpenAI
 
           def initialize: (
             ?token: String,
-            ?bytes: ::Array[top],
+            ?bytes: ::Array[Integer],
             ?logprob: Float
           ) -> void
 
-          def to_hash: -> { token: String, bytes: ::Array[top], logprob: Float }
+          def to_hash: -> {
+            token: String,
+            bytes: ::Array[Integer],
+            logprob: Float
+          }
         end
       end
     end
