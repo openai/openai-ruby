@@ -15,18 +15,17 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :calculate_output
 
+        # A StringCheckGrader object that performs a string comparison between input and
+        # reference using a specified operation.
         sig do
           returns(
-            T::Hash[
-              Symbol,
-              T.any(
-                OpenAI::Graders::StringCheckGrader,
-                OpenAI::Graders::TextSimilarityGrader,
-                OpenAI::Graders::PythonGrader,
-                OpenAI::Graders::ScoreModelGrader,
-                OpenAI::Graders::LabelModelGrader
-              )
-            ]
+            T.any(
+              OpenAI::Graders::StringCheckGrader,
+              OpenAI::Graders::TextSimilarityGrader,
+              OpenAI::Graders::PythonGrader,
+              OpenAI::Graders::ScoreModelGrader,
+              OpenAI::Graders::LabelModelGrader
+            )
           )
         end
         attr_accessor :graders
@@ -45,16 +44,13 @@ module OpenAI
           params(
             calculate_output: String,
             graders:
-              T::Hash[
-                Symbol,
-                T.any(
-                  OpenAI::Graders::StringCheckGrader::OrHash,
-                  OpenAI::Graders::TextSimilarityGrader::OrHash,
-                  OpenAI::Graders::PythonGrader::OrHash,
-                  OpenAI::Graders::ScoreModelGrader::OrHash,
-                  OpenAI::Graders::LabelModelGrader::OrHash
-                )
-              ],
+              T.any(
+                OpenAI::Graders::StringCheckGrader::OrHash,
+                OpenAI::Graders::TextSimilarityGrader::OrHash,
+                OpenAI::Graders::PythonGrader::OrHash,
+                OpenAI::Graders::ScoreModelGrader::OrHash,
+                OpenAI::Graders::LabelModelGrader::OrHash
+              ),
             name: String,
             type: Symbol
           ).returns(T.attached_class)
@@ -62,6 +58,8 @@ module OpenAI
         def self.new(
           # A formula to calculate the output based on grader results.
           calculate_output:,
+          # A StringCheckGrader object that performs a string comparison between input and
+          # reference using a specified operation.
           graders:,
           # The name of the grader.
           name:,
@@ -75,16 +73,13 @@ module OpenAI
             {
               calculate_output: String,
               graders:
-                T::Hash[
-                  Symbol,
-                  T.any(
-                    OpenAI::Graders::StringCheckGrader,
-                    OpenAI::Graders::TextSimilarityGrader,
-                    OpenAI::Graders::PythonGrader,
-                    OpenAI::Graders::ScoreModelGrader,
-                    OpenAI::Graders::LabelModelGrader
-                  )
-                ],
+                T.any(
+                  OpenAI::Graders::StringCheckGrader,
+                  OpenAI::Graders::TextSimilarityGrader,
+                  OpenAI::Graders::PythonGrader,
+                  OpenAI::Graders::ScoreModelGrader,
+                  OpenAI::Graders::LabelModelGrader
+                ),
               name: String,
               type: Symbol
             }
@@ -95,7 +90,7 @@ module OpenAI
 
         # A StringCheckGrader object that performs a string comparison between input and
         # reference using a specified operation.
-        module Grader
+        module Graders
           extend OpenAI::Internal::Type::Union
 
           Variants =
@@ -111,7 +106,7 @@ module OpenAI
 
           sig do
             override.returns(
-              T::Array[OpenAI::Graders::MultiGrader::Grader::Variants]
+              T::Array[OpenAI::Graders::MultiGrader::Graders::Variants]
             )
           end
           def self.variants

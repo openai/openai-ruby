@@ -345,14 +345,14 @@ module OpenAI
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [nil]
+      # @return [OpenAI::Models::Responses::Response]
       #
       # @see OpenAI::Models::Responses::ResponseCancelParams
       def cancel(response_id, params = {})
         @client.request(
           method: :post,
           path: ["responses/%1$s/cancel", response_id],
-          model: NilClass,
+          model: OpenAI::Responses::Response,
           options: params[:request_options]
         )
       end

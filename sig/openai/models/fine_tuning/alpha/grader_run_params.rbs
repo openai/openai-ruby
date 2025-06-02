@@ -6,7 +6,7 @@ module OpenAI
           {
             grader: OpenAI::Models::FineTuning::Alpha::GraderRunParams::grader,
             model_sample: String,
-            reference_answer: OpenAI::Models::FineTuning::Alpha::GraderRunParams::reference_answer
+            item: top
           }
           & OpenAI::Internal::Type::request_parameters
 
@@ -18,19 +18,21 @@ module OpenAI
 
           attr_accessor model_sample: String
 
-          attr_accessor reference_answer: OpenAI::Models::FineTuning::Alpha::GraderRunParams::reference_answer
+          attr_reader item: top?
+
+          def item=: (top) -> top
 
           def initialize: (
             grader: OpenAI::Models::FineTuning::Alpha::GraderRunParams::grader,
             model_sample: String,
-            reference_answer: OpenAI::Models::FineTuning::Alpha::GraderRunParams::reference_answer,
+            ?item: top,
             ?request_options: OpenAI::request_opts
           ) -> void
 
           def to_hash: -> {
             grader: OpenAI::Models::FineTuning::Alpha::GraderRunParams::grader,
             model_sample: String,
-            reference_answer: OpenAI::Models::FineTuning::Alpha::GraderRunParams::reference_answer,
+            item: top,
             request_options: OpenAI::RequestOptions
           }
 
@@ -45,16 +47,6 @@ module OpenAI
             extend OpenAI::Internal::Type::Union
 
             def self?.variants: -> ::Array[OpenAI::Models::FineTuning::Alpha::GraderRunParams::grader]
-          end
-
-          type reference_answer = String | top | ::Array[top] | Float
-
-          module ReferenceAnswer
-            extend OpenAI::Internal::Type::Union
-
-            def self?.variants: -> ::Array[OpenAI::Models::FineTuning::Alpha::GraderRunParams::reference_answer]
-
-            UnionMember2Array: OpenAI::Internal::Type::Converter
           end
         end
       end

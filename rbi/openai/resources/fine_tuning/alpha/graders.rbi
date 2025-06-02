@@ -17,18 +17,23 @@ module OpenAI
                   OpenAI::Graders::MultiGrader::OrHash
                 ),
               model_sample: String,
-              reference_answer:
-                OpenAI::FineTuning::Alpha::GraderRunParams::ReferenceAnswer::Variants,
+              item: T.anything,
               request_options: OpenAI::RequestOptions::OrHash
             ).returns(OpenAI::Models::FineTuning::Alpha::GraderRunResponse)
           end
           def run(
             # The grader used for the fine-tuning job.
             grader:,
-            # The model sample to be evaluated.
+            # The model sample to be evaluated. This value will be used to populate the
+            # `sample` namespace. See
+            # [the guide](https://platform.openai.com/docs/guides/graders) for more details.
+            # The `output_json` variable will be populated if the model sample is a valid JSON
+            # string.
             model_sample:,
-            # The reference answer for the evaluation.
-            reference_answer:,
+            # The dataset item provided to the grader. This will be used to populate the
+            # `item` namespace. See
+            # [the guide](https://platform.openai.com/docs/guides/graders) for more details.
+            item: nil,
             request_options: {}
           )
           end

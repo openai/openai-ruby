@@ -5,15 +5,18 @@ module OpenAI
     class FineTuning
       class Alpha
         class Graders
+          # Some parameter documentations has been truncated, see
+          # {OpenAI::Models::FineTuning::Alpha::GraderRunParams} for more details.
+          #
           # Run a grader.
           #
-          # @overload run(grader:, model_sample:, reference_answer:, request_options: {})
+          # @overload run(grader:, model_sample:, item: nil, request_options: {})
           #
           # @param grader [OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::MultiGrader] The grader used for the fine-tuning job.
           #
-          # @param model_sample [String] The model sample to be evaluated.
+          # @param model_sample [String] The model sample to be evaluated. This value will be used to populate
           #
-          # @param reference_answer [String, Object, Array<Object>, Float] The reference answer for the evaluation.
+          # @param item [Object] The dataset item provided to the grader. This will be used to populate
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #

@@ -226,7 +226,7 @@ module OpenAI
           #   Number of examples in each batch. A larger batch size means that model
           #   parameters are updated less frequently, but with lower variance.
           #
-          #   @return [Object, Symbol, :auto, Integer, nil]
+          #   @return [Symbol, :auto, Integer, nil]
           optional :batch_size,
                    union: -> { OpenAI::FineTuning::FineTuningJob::Hyperparameters::BatchSize },
                    nil?: true
@@ -253,7 +253,7 @@ module OpenAI
           #   The hyperparameters used for the fine-tuning job. This value will only be
           #   returned when running `supervised` jobs.
           #
-          #   @param batch_size [Object, Symbol, :auto, Integer, nil] Number of examples in each batch. A larger batch size means that model parameter
+          #   @param batch_size [Symbol, :auto, Integer, nil] Number of examples in each batch. A larger batch size means that model parameter
           #
           #   @param learning_rate_multiplier [Symbol, :auto, Float] Scaling factor for the learning rate. A smaller learning rate may be useful to a
           #
@@ -266,14 +266,12 @@ module OpenAI
           module BatchSize
             extend OpenAI::Internal::Type::Union
 
-            variant OpenAI::Internal::Type::Unknown
-
             variant const: :auto
 
             variant Integer
 
             # @!method self.variants
-            #   @return [Array(Object, Symbol, :auto, Integer)]
+            #   @return [Array(Symbol, :auto, Integer)]
           end
 
           # Scaling factor for the learning rate. A smaller learning rate may be useful to

@@ -6,7 +6,7 @@ module OpenAI
           def run: (
             grader: OpenAI::Models::FineTuning::Alpha::GraderRunParams::grader,
             model_sample: String,
-            reference_answer: OpenAI::Models::FineTuning::Alpha::GraderRunParams::reference_answer,
+            ?item: top,
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::FineTuning::Alpha::GraderRunResponse
 

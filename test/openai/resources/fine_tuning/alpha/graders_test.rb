@@ -7,8 +7,7 @@ class OpenAI::Test::Resources::FineTuning::Alpha::GradersTest < OpenAI::Test::Re
     response =
       @openai.fine_tuning.alpha.graders.run(
         grader: {input: "input", name: "name", operation: :eq, reference: "reference", type: :string_check},
-        model_sample: "model_sample",
-        reference_answer: "string"
+        model_sample: "model_sample"
       )
 
     assert_pattern do

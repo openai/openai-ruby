@@ -19,6 +19,7 @@ module OpenAI
               T.any(
                 OpenAI::Responses::ResponseOutputText::Annotation::FileCitation,
                 OpenAI::Responses::ResponseOutputText::Annotation::URLCitation,
+                OpenAI::Responses::ResponseOutputText::Annotation::ContainerFileCitation,
                 OpenAI::Responses::ResponseOutputText::Annotation::FilePath
               )
             ]
@@ -61,6 +62,7 @@ module OpenAI
                 T.any(
                   OpenAI::Responses::ResponseOutputText::Annotation::FileCitation::OrHash,
                   OpenAI::Responses::ResponseOutputText::Annotation::URLCitation::OrHash,
+                  OpenAI::Responses::ResponseOutputText::Annotation::ContainerFileCitation::OrHash,
                   OpenAI::Responses::ResponseOutputText::Annotation::FilePath::OrHash
                 )
               ],
@@ -89,6 +91,7 @@ module OpenAI
                   T.any(
                     OpenAI::Responses::ResponseOutputText::Annotation::FileCitation,
                     OpenAI::Responses::ResponseOutputText::Annotation::URLCitation,
+                    OpenAI::Responses::ResponseOutputText::Annotation::ContainerFileCitation,
                     OpenAI::Responses::ResponseOutputText::Annotation::FilePath
                   )
                 ],
@@ -110,6 +113,7 @@ module OpenAI
               T.any(
                 OpenAI::Responses::ResponseOutputText::Annotation::FileCitation,
                 OpenAI::Responses::ResponseOutputText::Annotation::URLCitation,
+                OpenAI::Responses::ResponseOutputText::Annotation::ContainerFileCitation,
                 OpenAI::Responses::ResponseOutputText::Annotation::FilePath
               )
             end
@@ -221,6 +225,74 @@ module OpenAI
                   title: String,
                   type: Symbol,
                   url: String
+                }
+              )
+            end
+            def to_hash
+            end
+          end
+
+          class ContainerFileCitation < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseOutputText::Annotation::ContainerFileCitation,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The ID of the container file.
+            sig { returns(String) }
+            attr_accessor :container_id
+
+            # The index of the last character of the container file citation in the message.
+            sig { returns(Integer) }
+            attr_accessor :end_index
+
+            # The ID of the file.
+            sig { returns(String) }
+            attr_accessor :file_id
+
+            # The index of the first character of the container file citation in the message.
+            sig { returns(Integer) }
+            attr_accessor :start_index
+
+            # The type of the container file citation. Always `container_file_citation`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            # A citation for a container file used to generate a model response.
+            sig do
+              params(
+                container_id: String,
+                end_index: Integer,
+                file_id: String,
+                start_index: Integer,
+                type: Symbol
+              ).returns(T.attached_class)
+            end
+            def self.new(
+              # The ID of the container file.
+              container_id:,
+              # The index of the last character of the container file citation in the message.
+              end_index:,
+              # The ID of the file.
+              file_id:,
+              # The index of the first character of the container file citation in the message.
+              start_index:,
+              # The type of the container file citation. Always `container_file_citation`.
+              type: :container_file_citation
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  container_id: String,
+                  end_index: Integer,
+                  file_id: String,
+                  start_index: Integer,
+                  type: Symbol
                 }
               )
             end

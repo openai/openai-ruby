@@ -24,7 +24,7 @@ module OpenAI
         sig { returns(Integer) }
         attr_accessor :sequence_number
 
-        # The type of the event. Always `response.code_interpreter_call.code.delta`.
+        # The type of the event. Always `response.code_interpreter_call_code.delta`.
         sig { returns(Symbol) }
         attr_accessor :type
 
@@ -44,8 +44,8 @@ module OpenAI
           output_index:,
           # The sequence number of this event.
           sequence_number:,
-          # The type of the event. Always `response.code_interpreter_call.code.delta`.
-          type: :"response.code_interpreter_call.code.delta"
+          # The type of the event. Always `response.code_interpreter_call_code.delta`.
+          type: :"response.code_interpreter_call_code.delta"
         )
         end
 
