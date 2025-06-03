@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.6.0 (2025-06-03)
+
+Full Changelog: [v0.5.1...v0.6.0](https://github.com/openai/openai-ruby/compare/v0.5.1...v0.6.0)
+
+### Features
+
+* **api:** add new realtime and audio models, realtime session options ([315f0b0](https://github.com/openai/openai-ruby/commit/315f0b0ec3a663a7bc1f2c05ecc6ebfe8af99796))
+
+
+### Bug Fixes
+
+* `to_sorbet_type` should not return branded types ([4a1f14b](https://github.com/openai/openai-ruby/commit/4a1f14beeea6f1ef08d753fb3c3fa8607ebbe2c2))
+
+
+### Chores
+
+* prune whitespace ([d7335ac](https://github.com/openai/openai-ruby/commit/d7335ac4942eeccfa341eaf2fb2d45ec83df4dd3))
+
 ## 0.5.1 (2025-06-02)
 
 Full Changelog: [v0.5.0...v0.5.1](https://github.com/openai/openai-ruby/compare/v0.5.0...v0.5.1)
