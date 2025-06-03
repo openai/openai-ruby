@@ -30,6 +30,7 @@ module OpenAI
       GPT_4O_AUDIO_PREVIEW = :"gpt-4o-audio-preview"
       GPT_4O_AUDIO_PREVIEW_2024_10_01 = :"gpt-4o-audio-preview-2024-10-01"
       GPT_4O_AUDIO_PREVIEW_2024_12_17 = :"gpt-4o-audio-preview-2024-12-17"
+      GPT_4O_AUDIO_PREVIEW_2025_06_03 = :"gpt-4o-audio-preview-2025-06-03"
       GPT_4O_MINI_AUDIO_PREVIEW = :"gpt-4o-mini-audio-preview"
       GPT_4O_MINI_AUDIO_PREVIEW_2024_12_17 = :"gpt-4o-mini-audio-preview-2024-12-17"
       GPT_4O_SEARCH_PREVIEW = :"gpt-4o-search-preview"

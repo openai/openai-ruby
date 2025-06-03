@@ -52,6 +52,11 @@ module OpenAI
           :"gpt-4o-audio-preview-2024-12-17",
           OpenAI::ChatModel::TaggedSymbol
         )
+      GPT_4O_AUDIO_PREVIEW_2025_06_03 =
+        T.let(
+          :"gpt-4o-audio-preview-2025-06-03",
+          OpenAI::ChatModel::TaggedSymbol
+        )
       GPT_4O_MINI_AUDIO_PREVIEW =
         T.let(:"gpt-4o-mini-audio-preview", OpenAI::ChatModel::TaggedSymbol)
       GPT_4O_MINI_AUDIO_PREVIEW_2024_12_17 =
