@@ -140,7 +140,6 @@ module OpenAI
                 name = func[:name] ||= params.name.split("::").last
                 tool_models.store(name, params)
                 func.update(parameters: params.to_json_schema)
-
                 tool
               else
                 tool
