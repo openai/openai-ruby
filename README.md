@@ -47,7 +47,7 @@ We provide support for streaming responses using Server-Sent Events (SSE).
 ```ruby
 stream = openai.chat.completions.stream_raw(
   messages: [{role: "user", content: "Say this is a test"}],
-  model: :"gpt-4.1"
+  model: "gpt-4.1"
 )
 
 stream.each do |completion|
