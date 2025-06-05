@@ -497,7 +497,7 @@ module OpenAI
         # @param closing [Array<Proc>]
         # @param content_type [String, nil]
         private def write_multipart_content(y, val:, closing:, content_type: nil)
-          content_type ||= "application/octet-stream"
+          content_line = "Content-Type: %s\r\n\r\n"
 
           case val
           in OpenAI::FilePart
@@ -508,24 +508,21 @@ module OpenAI
               content_type: val.content_type
             )
           in Pathname
-            y << "Content-Type: #{content_type}\r\n\r\n"
+            y << format(content_line, content_type || "application/octet-stream")
             io = val.open(binmode: true)
             closing << io.method(:close)
             IO.copy_stream(io, y)
           in IO
-            y << "Content-Type: #{content_type}\r\n\r\n"
+            y << format(content_line, content_type || "application/octet-stream")
             IO.copy_stream(val, y)
           in StringIO
-            y << "Content-Type: #{content_type}\r\n\r\n"
+            y << format(content_line, content_type || "application/octet-stream")
             y << val.string
-          in String
-            y << "Content-Type: #{content_type}\r\n\r\n"
-            y << val.to_s
           in -> { primitive?(_1) }
-            y << "Content-Type: text/plain\r\n\r\n"
+            y << format(content_line, content_type || "text/plain")
             y << val.to_s
           else
-            y << "Content-Type: application/json\r\n\r\n"
+            y << format(content_line, content_type || "application/json")
             y << JSON.generate(val)
           end
           y << "\r\n"
@@ -562,6 +559,8 @@ module OpenAI
         end
 
         # @api private
+        #
+        # https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.1.md#special-considerations-for-multipart-content
         #
         # @param body [Object]
         #
