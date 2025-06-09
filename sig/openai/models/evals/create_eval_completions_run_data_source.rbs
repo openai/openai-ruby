@@ -303,8 +303,10 @@ module OpenAI
         type sampling_params =
           {
             max_completion_tokens: Integer,
+            response_format: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams::response_format,
             seed: Integer,
             temperature: Float,
+            tools: ::Array[OpenAI::Chat::ChatCompletionTool],
             top_p: Float
           }
 
@@ -312,6 +314,12 @@ module OpenAI
           attr_reader max_completion_tokens: Integer?
 
           def max_completion_tokens=: (Integer) -> Integer
+
+          attr_reader response_format: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams::response_format?
+
+          def response_format=: (
+            OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams::response_format
+          ) -> OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams::response_format
 
           attr_reader seed: Integer?
 
@@ -321,23 +329,44 @@ module OpenAI
 
           def temperature=: (Float) -> Float
 
+          attr_reader tools: ::Array[OpenAI::Chat::ChatCompletionTool]?
+
+          def tools=: (
+            ::Array[OpenAI::Chat::ChatCompletionTool]
+          ) -> ::Array[OpenAI::Chat::ChatCompletionTool]
+
           attr_reader top_p: Float?
 
           def top_p=: (Float) -> Float
 
           def initialize: (
             ?max_completion_tokens: Integer,
+            ?response_format: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams::response_format,
             ?seed: Integer,
             ?temperature: Float,
+            ?tools: ::Array[OpenAI::Chat::ChatCompletionTool],
             ?top_p: Float
           ) -> void
 
           def to_hash: -> {
             max_completion_tokens: Integer,
+            response_format: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams::response_format,
             seed: Integer,
             temperature: Float,
+            tools: ::Array[OpenAI::Chat::ChatCompletionTool],
             top_p: Float
           }
+
+          type response_format =
+            OpenAI::ResponseFormatText
+            | OpenAI::ResponseFormatJSONSchema
+            | OpenAI::ResponseFormatJSONObject
+
+          module ResponseFormat
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams::response_format]
+          end
         end
       end
     end
