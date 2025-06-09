@@ -616,20 +616,95 @@ module OpenAI
               #   @return [Float, nil]
               optional :temperature, Float
 
+              # @!attribute text
+              #   Configuration options for a text response from the model. Can be plain text or
+              #   structured JSON data. Learn more:
+              #
+              #   - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
+              #   - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
+              #
+              #   @return [OpenAI::Models::Evals::RunListResponse::DataSource::Responses::SamplingParams::Text, nil]
+              optional :text, -> { OpenAI::Models::Evals::RunListResponse::DataSource::Responses::SamplingParams::Text }
+
+              # @!attribute tools
+              #   An array of tools the model may call while generating a response. You can
+              #   specify which tool to use by setting the `tool_choice` parameter.
+              #
+              #   The two categories of tools you can provide the model are:
+              #
+              #   - **Built-in tools**: Tools that are provided by OpenAI that extend the model's
+              #     capabilities, like
+              #     [web search](https://platform.openai.com/docs/guides/tools-web-search) or
+              #     [file search](https://platform.openai.com/docs/guides/tools-file-search).
+              #     Learn more about
+              #     [built-in tools](https://platform.openai.com/docs/guides/tools).
+              #   - **Function calls (custom tools)**: Functions that are defined by you, enabling
+              #     the model to call your own code. Learn more about
+              #     [function calling](https://platform.openai.com/docs/guides/function-calling).
+              #
+              #   @return [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::WebSearchTool>, nil]
+              optional :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool] }
+
               # @!attribute top_p
               #   An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
               #
               #   @return [Float, nil]
               optional :top_p, Float
 
-              # @!method initialize(max_completion_tokens: nil, seed: nil, temperature: nil, top_p: nil)
+              # @!method initialize(max_completion_tokens: nil, seed: nil, temperature: nil, text: nil, tools: nil, top_p: nil)
+              #   Some parameter documentations has been truncated, see
+              #   {OpenAI::Models::Evals::RunListResponse::DataSource::Responses::SamplingParams}
+              #   for more details.
+              #
               #   @param max_completion_tokens [Integer] The maximum number of tokens in the generated output.
               #
               #   @param seed [Integer] A seed value to initialize the randomness, during sampling.
               #
               #   @param temperature [Float] A higher temperature increases randomness in the outputs.
               #
+              #   @param text [OpenAI::Models::Evals::RunListResponse::DataSource::Responses::SamplingParams::Text] Configuration options for a text response from the model. Can be plain
+              #
+              #   @param tools [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::WebSearchTool>] An array of tools the model may call while generating a response. You
+              #
               #   @param top_p [Float] An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
+
+              # @see OpenAI::Models::Evals::RunListResponse::DataSource::Responses::SamplingParams#text
+              class Text < OpenAI::Internal::Type::BaseModel
+                # @!attribute format_
+                #   An object specifying the format that the model must output.
+                #
+                #   Configuring `{ "type": "json_schema" }` enables Structured Outputs, which
+                #   ensures the model will match your supplied JSON schema. Learn more in the
+                #   [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+                #
+                #   The default format is `{ "type": "text" }` with no additional options.
+                #
+                #   **Not recommended for gpt-4o and newer models:**
+                #
+                #   Setting to `{ "type": "json_object" }` enables the older JSON mode, which
+                #   ensures the message the model generates is valid JSON. Using `json_schema` is
+                #   preferred for models that support it.
+                #
+                #   @return [OpenAI::Models::ResponseFormatText, OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig, OpenAI::Models::ResponseFormatJSONObject, nil]
+                optional :format_,
+                         union: -> {
+                           OpenAI::Responses::ResponseFormatTextConfig
+                         },
+                         api_name: :format
+
+                # @!method initialize(format_: nil)
+                #   Some parameter documentations has been truncated, see
+                #   {OpenAI::Models::Evals::RunListResponse::DataSource::Responses::SamplingParams::Text}
+                #   for more details.
+                #
+                #   Configuration options for a text response from the model. Can be plain text or
+                #   structured JSON data. Learn more:
+                #
+                #   - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
+                #   - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
+                #
+                #   @param format_ [OpenAI::Models::ResponseFormatText, OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig, OpenAI::Models::ResponseFormatJSONObject] An object specifying the format that the model must output.
+              end
             end
           end
 

@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.7.0 (2025-06-09)
+
+Full Changelog: [v0.6.0...v0.7.0](https://github.com/openai/openai-ruby/compare/v0.6.0...v0.7.0)
+
+### Features
+
+* **api:** Add tools and structured outputs to evals ([6ee3392](https://github.com/openai/openai-ruby/commit/6ee33924e9146e2450e9c43d052886ed3214cbde))
+
+
+### Bug Fixes
+
+* default content-type for text in multi-part formdata uploads should be text/plain ([105cf47](https://github.com/openai/openai-ruby/commit/105cf4717993c744ee6c453d2a99ae03f51035d4))
+* tool parameter mapping for chat completions ([#156](https://github.com/openai/openai-ruby/issues/156)) ([5999b9f](https://github.com/openai/openai-ruby/commit/5999b9f6ad6dc73a290a8ef7b1b52bd89897039c))
+* tool parameter mapping for responses ([#704](https://github.com/openai/openai-ruby/issues/704)) ([ac8bf11](https://github.com/openai/openai-ruby/commit/ac8bf11cf59fcc778f1658429a1fc06eaca79bba))
+
 ## 0.6.0 (2025-06-03)
 
 Full Changelog: [v0.5.1...v0.6.0](https://github.com/openai/openai-ruby/compare/v0.5.1...v0.6.0)
