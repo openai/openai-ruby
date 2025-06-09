@@ -1056,6 +1056,66 @@ module OpenAI
               sig { params(temperature: Float).void }
               attr_writer :temperature
 
+              # Configuration options for a text response from the model. Can be plain text or
+              # structured JSON data. Learn more:
+              #
+              # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
+              # - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
+              sig do
+                returns(
+                  T.nilable(
+                    OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::SamplingParams::Text
+                  )
+                )
+              end
+              attr_reader :text
+
+              sig do
+                params(
+                  text:
+                    OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::SamplingParams::Text::OrHash
+                ).void
+              end
+              attr_writer :text
+
+              # An array of tools the model may call while generating a response. You can
+              # specify which tool to use by setting the `tool_choice` parameter.
+              #
+              # The two categories of tools you can provide the model are:
+              #
+              # - **Built-in tools**: Tools that are provided by OpenAI that extend the model's
+              #   capabilities, like
+              #   [web search](https://platform.openai.com/docs/guides/tools-web-search) or
+              #   [file search](https://platform.openai.com/docs/guides/tools-file-search).
+              #   Learn more about
+              #   [built-in tools](https://platform.openai.com/docs/guides/tools).
+              # - **Function calls (custom tools)**: Functions that are defined by you, enabling
+              #   the model to call your own code. Learn more about
+              #   [function calling](https://platform.openai.com/docs/guides/function-calling).
+              sig do
+                returns(T.nilable(T::Array[OpenAI::Responses::Tool::Variants]))
+              end
+              attr_reader :tools
+
+              sig do
+                params(
+                  tools:
+                    T::Array[
+                      T.any(
+                        OpenAI::Responses::FunctionTool::OrHash,
+                        OpenAI::Responses::FileSearchTool::OrHash,
+                        OpenAI::Responses::ComputerTool::OrHash,
+                        OpenAI::Responses::Tool::Mcp::OrHash,
+                        OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                        OpenAI::Responses::Tool::ImageGeneration::OrHash,
+                        OpenAI::Responses::Tool::LocalShell::OrHash,
+                        OpenAI::Responses::WebSearchTool::OrHash
+                      )
+                    ]
+                ).void
+              end
+              attr_writer :tools
+
               # An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
               sig { returns(T.nilable(Float)) }
               attr_reader :top_p
@@ -1068,6 +1128,21 @@ module OpenAI
                   max_completion_tokens: Integer,
                   seed: Integer,
                   temperature: Float,
+                  text:
+                    OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::SamplingParams::Text::OrHash,
+                  tools:
+                    T::Array[
+                      T.any(
+                        OpenAI::Responses::FunctionTool::OrHash,
+                        OpenAI::Responses::FileSearchTool::OrHash,
+                        OpenAI::Responses::ComputerTool::OrHash,
+                        OpenAI::Responses::Tool::Mcp::OrHash,
+                        OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                        OpenAI::Responses::Tool::ImageGeneration::OrHash,
+                        OpenAI::Responses::Tool::LocalShell::OrHash,
+                        OpenAI::Responses::WebSearchTool::OrHash
+                      )
+                    ],
                   top_p: Float
                 ).returns(T.attached_class)
               end
@@ -1078,6 +1153,27 @@ module OpenAI
                 seed: nil,
                 # A higher temperature increases randomness in the outputs.
                 temperature: nil,
+                # Configuration options for a text response from the model. Can be plain text or
+                # structured JSON data. Learn more:
+                #
+                # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
+                # - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
+                text: nil,
+                # An array of tools the model may call while generating a response. You can
+                # specify which tool to use by setting the `tool_choice` parameter.
+                #
+                # The two categories of tools you can provide the model are:
+                #
+                # - **Built-in tools**: Tools that are provided by OpenAI that extend the model's
+                #   capabilities, like
+                #   [web search](https://platform.openai.com/docs/guides/tools-web-search) or
+                #   [file search](https://platform.openai.com/docs/guides/tools-file-search).
+                #   Learn more about
+                #   [built-in tools](https://platform.openai.com/docs/guides/tools).
+                # - **Function calls (custom tools)**: Functions that are defined by you, enabling
+                #   the model to call your own code. Learn more about
+                #   [function calling](https://platform.openai.com/docs/guides/function-calling).
+                tools: nil,
                 # An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
                 top_p: nil
               )
@@ -1089,11 +1185,102 @@ module OpenAI
                     max_completion_tokens: Integer,
                     seed: Integer,
                     temperature: Float,
+                    text:
+                      OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::SamplingParams::Text,
+                    tools: T::Array[OpenAI::Responses::Tool::Variants],
                     top_p: Float
                   }
                 )
               end
               def to_hash
+              end
+
+              class Text < OpenAI::Internal::Type::BaseModel
+                OrHash =
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::SamplingParams::Text,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
+
+                # An object specifying the format that the model must output.
+                #
+                # Configuring `{ "type": "json_schema" }` enables Structured Outputs, which
+                # ensures the model will match your supplied JSON schema. Learn more in the
+                # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+                #
+                # The default format is `{ "type": "text" }` with no additional options.
+                #
+                # **Not recommended for gpt-4o and newer models:**
+                #
+                # Setting to `{ "type": "json_object" }` enables the older JSON mode, which
+                # ensures the message the model generates is valid JSON. Using `json_schema` is
+                # preferred for models that support it.
+                sig do
+                  returns(
+                    T.nilable(
+                      OpenAI::Responses::ResponseFormatTextConfig::Variants
+                    )
+                  )
+                end
+                attr_reader :format_
+
+                sig do
+                  params(
+                    format_:
+                      T.any(
+                        OpenAI::ResponseFormatText::OrHash,
+                        OpenAI::Responses::ResponseFormatTextJSONSchemaConfig::OrHash,
+                        OpenAI::ResponseFormatJSONObject::OrHash
+                      )
+                  ).void
+                end
+                attr_writer :format_
+
+                # Configuration options for a text response from the model. Can be plain text or
+                # structured JSON data. Learn more:
+                #
+                # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
+                # - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
+                sig do
+                  params(
+                    format_:
+                      T.any(
+                        OpenAI::ResponseFormatText::OrHash,
+                        OpenAI::Responses::ResponseFormatTextJSONSchemaConfig::OrHash,
+                        OpenAI::ResponseFormatJSONObject::OrHash
+                      )
+                  ).returns(T.attached_class)
+                end
+                def self.new(
+                  # An object specifying the format that the model must output.
+                  #
+                  # Configuring `{ "type": "json_schema" }` enables Structured Outputs, which
+                  # ensures the model will match your supplied JSON schema. Learn more in the
+                  # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+                  #
+                  # The default format is `{ "type": "text" }` with no additional options.
+                  #
+                  # **Not recommended for gpt-4o and newer models:**
+                  #
+                  # Setting to `{ "type": "json_object" }` enables the older JSON mode, which
+                  # ensures the message the model generates is valid JSON. Using `json_schema` is
+                  # preferred for models that support it.
+                  format_: nil
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {
+                      format_:
+                        OpenAI::Responses::ResponseFormatTextConfig::Variants
+                    }
+                  )
+                end
+                def to_hash
+                end
               end
             end
           end

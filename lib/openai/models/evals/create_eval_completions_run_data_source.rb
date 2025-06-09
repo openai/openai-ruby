@@ -432,6 +432,24 @@ module OpenAI
           #   @return [Integer, nil]
           optional :max_completion_tokens, Integer
 
+          # @!attribute response_format
+          #   An object specifying the format that the model must output.
+          #
+          #   Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
+          #   Outputs which ensures the model will match your supplied JSON schema. Learn more
+          #   in the
+          #   [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+          #
+          #   Setting to `{ "type": "json_object" }` enables the older JSON mode, which
+          #   ensures the message the model generates is valid JSON. Using `json_schema` is
+          #   preferred for models that support it.
+          #
+          #   @return [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject, nil]
+          optional :response_format,
+                   union: -> {
+                     OpenAI::Evals::CreateEvalCompletionsRunDataSource::SamplingParams::ResponseFormat
+                   }
+
           # @!attribute seed
           #   A seed value to initialize the randomness, during sampling.
           #
@@ -444,20 +462,68 @@ module OpenAI
           #   @return [Float, nil]
           optional :temperature, Float
 
+          # @!attribute tools
+          #   A list of tools the model may call. Currently, only functions are supported as a
+          #   tool. Use this to provide a list of functions the model may generate JSON inputs
+          #   for. A max of 128 functions are supported.
+          #
+          #   @return [Array<OpenAI::Models::Chat::ChatCompletionTool>, nil]
+          optional :tools, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletionTool] }
+
           # @!attribute top_p
           #   An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
           #
           #   @return [Float, nil]
           optional :top_p, Float
 
-          # @!method initialize(max_completion_tokens: nil, seed: nil, temperature: nil, top_p: nil)
+          # @!method initialize(max_completion_tokens: nil, response_format: nil, seed: nil, temperature: nil, tools: nil, top_p: nil)
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams} for
+          #   more details.
+          #
           #   @param max_completion_tokens [Integer] The maximum number of tokens in the generated output.
+          #
+          #   @param response_format [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject] An object specifying the format that the model must output.
           #
           #   @param seed [Integer] A seed value to initialize the randomness, during sampling.
           #
           #   @param temperature [Float] A higher temperature increases randomness in the outputs.
           #
+          #   @param tools [Array<OpenAI::Models::Chat::ChatCompletionTool>] A list of tools the model may call. Currently, only functions are supported as a
+          #
           #   @param top_p [Float] An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
+
+          # An object specifying the format that the model must output.
+          #
+          # Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
+          # Outputs which ensures the model will match your supplied JSON schema. Learn more
+          # in the
+          # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+          #
+          # Setting to `{ "type": "json_object" }` enables the older JSON mode, which
+          # ensures the message the model generates is valid JSON. Using `json_schema` is
+          # preferred for models that support it.
+          #
+          # @see OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams#response_format
+          module ResponseFormat
+            extend OpenAI::Internal::Type::Union
+
+            # Default response format. Used to generate text responses.
+            variant -> { OpenAI::ResponseFormatText }
+
+            # JSON Schema response format. Used to generate structured JSON responses.
+            # Learn more about [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
+            variant -> { OpenAI::ResponseFormatJSONSchema }
+
+            # JSON object response format. An older method of generating JSON responses.
+            # Using `json_schema` is recommended for models that support it. Note that the
+            # model will not generate JSON without a system or user message instructing it
+            # to do so.
+            variant -> { OpenAI::ResponseFormatJSONObject }
+
+            # @!method self.variants
+            #   @return [Array(OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject)]
+          end
         end
       end
     end

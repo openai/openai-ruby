@@ -390,6 +390,8 @@ module OpenAI
                 max_completion_tokens: Integer,
                 seed: Integer,
                 temperature: Float,
+                text: OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams::Text,
+                tools: ::Array[OpenAI::Models::Responses::tool],
                 top_p: Float
               }
 
@@ -406,6 +408,18 @@ module OpenAI
 
               def temperature=: (Float) -> Float
 
+              attr_reader text: OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams::Text?
+
+              def text=: (
+                OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams::Text
+              ) -> OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams::Text
+
+              attr_reader tools: ::Array[OpenAI::Models::Responses::tool]?
+
+              def tools=: (
+                ::Array[OpenAI::Models::Responses::tool]
+              ) -> ::Array[OpenAI::Models::Responses::tool]
+
               attr_reader top_p: Float?
 
               def top_p=: (Float) -> Float
@@ -414,6 +428,8 @@ module OpenAI
                 ?max_completion_tokens: Integer,
                 ?seed: Integer,
                 ?temperature: Float,
+                ?text: OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams::Text,
+                ?tools: ::Array[OpenAI::Models::Responses::tool],
                 ?top_p: Float
               ) -> void
 
@@ -421,8 +437,31 @@ module OpenAI
                 max_completion_tokens: Integer,
                 seed: Integer,
                 temperature: Float,
+                text: OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams::Text,
+                tools: ::Array[OpenAI::Models::Responses::tool],
                 top_p: Float
               }
+
+              type text =
+                {
+                  format_: OpenAI::Models::Responses::response_format_text_config
+                }
+
+              class Text < OpenAI::Internal::Type::BaseModel
+                attr_reader format_: OpenAI::Models::Responses::response_format_text_config?
+
+                def format_=: (
+                  OpenAI::Models::Responses::response_format_text_config
+                ) -> OpenAI::Models::Responses::response_format_text_config
+
+                def initialize: (
+                  ?format_: OpenAI::Models::Responses::response_format_text_config
+                ) -> void
+
+                def to_hash: -> {
+                  format_: OpenAI::Models::Responses::response_format_text_config
+                }
+              end
             end
           end
 
