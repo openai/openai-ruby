@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.8.0 (2025-06-10)
+
+Full Changelog: [v0.7.0...v0.8.0](https://github.com/openai/openai-ruby/compare/v0.7.0...v0.8.0)
+
+### Features
+
+* **api:** Add o3-pro model IDs ([025845a](https://github.com/openai/openai-ruby/commit/025845ad3999aa9d2571de649af2d5902658a6d5))
+
 ## 0.7.0 (2025-06-09)
 
 Full Changelog: [v0.6.0...v0.7.0](https://github.com/openai/openai-ruby/compare/v0.6.0...v0.7.0)
