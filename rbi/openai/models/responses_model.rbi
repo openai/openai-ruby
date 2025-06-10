@@ -33,6 +33,16 @@ module OpenAI
             :"o1-pro-2025-03-19",
             OpenAI::ResponsesModel::ResponsesOnlyModel::TaggedSymbol
           )
+        O3_PRO =
+          T.let(
+            :"o3-pro",
+            OpenAI::ResponsesModel::ResponsesOnlyModel::TaggedSymbol
+          )
+        O3_PRO_2025_06_10 =
+          T.let(
+            :"o3-pro-2025-06-10",
+            OpenAI::ResponsesModel::ResponsesOnlyModel::TaggedSymbol
+          )
         COMPUTER_USE_PREVIEW =
           T.let(
             :"computer-use-preview",
