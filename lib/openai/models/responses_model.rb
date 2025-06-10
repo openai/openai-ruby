@@ -16,6 +16,8 @@ module OpenAI
 
         O1_PRO = :"o1-pro"
         O1_PRO_2025_03_19 = :"o1-pro-2025-03-19"
+        O3_PRO = :"o3-pro"
+        O3_PRO_2025_06_10 = :"o3-pro-2025-06-10"
         COMPUTER_USE_PREVIEW = :"computer-use-preview"
         COMPUTER_USE_PREVIEW_2025_03_11 = :"computer-use-preview-2025-03-11"
 
