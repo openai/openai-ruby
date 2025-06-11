@@ -1,5 +1,5 @@
 # workflow for re-running publishing to rubygems.org in case it fails for some reason
-# you can run this workflow by navigating to https://www.github.com/openai/openai-python/actions/workflows/publish-gem.yml
+# you can run this workflow by navigating to https://www.github.com/openai/openai-ruby/actions/workflows/publish-gem.yml
 name: Publish Gem
 on:
   workflow_dispatch:
