@@ -8,19 +8,15 @@ module OpenAI
       include OpenAI::Internal::Type::RequestParameters
 
       # @!attribute data_source_config
-      #   The configuration for the data source used for the evaluation runs. Dictates the
-      #   schema of the data used in the evaluation.
+      #   The configuration for the data source used for the evaluation runs.
       #
-      #   @return [OpenAI::Models::EvalCreateParams::DataSourceConfig::Custom, OpenAI::Models::EvalCreateParams::DataSourceConfig::Logs, OpenAI::Models::EvalCreateParams::DataSourceConfig::StoredCompletions]
+      #   @return [OpenAI::Models::EvalCreateParams::DataSourceConfig::Custom, OpenAI::Models::EvalCreateParams::DataSourceConfig::Logs]
       required :data_source_config, union: -> { OpenAI::EvalCreateParams::DataSourceConfig }
 
       # @!attribute testing_criteria
-      #   A list of graders for all eval runs in this group. Graders can reference
-      #   variables in the data source using double curly braces notation, like
-      #   `{{item.variable_name}}`. To reference the model's output, use the `sample`
-      #   namespace (ie, `{{sample.output_text}}`).
+      #   A list of graders for all eval runs in this group.
       #
-      #   @return [Array<OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::EvalCreateParams::TestingCriterion::TextSimilarity, OpenAI::Models::EvalCreateParams::TestingCriterion::Python, OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel>]
+      #   @return [Array<OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Models::EvalCreateParams::TestingCriterion::StringCheck, OpenAI::Models::EvalCreateParams::TestingCriterion::TextSimilarity, OpenAI::Models::EvalCreateParams::TestingCriterion::Python, OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel>]
       required :testing_criteria,
                -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::EvalCreateParams::TestingCriterion] }
 
@@ -45,9 +41,9 @@ module OpenAI
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::EvalCreateParams} for more details.
       #
-      #   @param data_source_config [OpenAI::Models::EvalCreateParams::DataSourceConfig::Custom, OpenAI::Models::EvalCreateParams::DataSourceConfig::Logs, OpenAI::Models::EvalCreateParams::DataSourceConfig::StoredCompletions] The configuration for the data source used for the evaluation runs. Dictates the
+      #   @param data_source_config [OpenAI::Models::EvalCreateParams::DataSourceConfig::Custom, OpenAI::Models::EvalCreateParams::DataSourceConfig::Logs] The configuration for the data source used for the evaluation runs.
       #
-      #   @param testing_criteria [Array<OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::EvalCreateParams::TestingCriterion::TextSimilarity, OpenAI::Models::EvalCreateParams::TestingCriterion::Python, OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel>] A list of graders for all eval runs in this group. Graders can reference variabl
+      #   @param testing_criteria [Array<OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Models::EvalCreateParams::TestingCriterion::StringCheck, OpenAI::Models::EvalCreateParams::TestingCriterion::TextSimilarity, OpenAI::Models::EvalCreateParams::TestingCriterion::Python, OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel>] A list of graders for all eval runs in this group.
       #
       #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
       #
@@ -55,8 +51,7 @@ module OpenAI
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
-      # The configuration for the data source used for the evaluation runs. Dictates the
-      # schema of the data used in the evaluation.
+      # The configuration for the data source used for the evaluation runs.
       module DataSourceConfig
         extend OpenAI::Internal::Type::Union
 
@@ -68,12 +63,9 @@ module OpenAI
         # - What data is required when creating a run
         variant :custom, -> { OpenAI::EvalCreateParams::DataSourceConfig::Custom }
 
-        # A data source config which specifies the metadata property of your logs query.
+        # A data source config which specifies the metadata property of your stored completions query.
         # This is usually metadata like `usecase=chatbot` or `prompt-version=v2`, etc.
         variant :logs, -> { OpenAI::EvalCreateParams::DataSourceConfig::Logs }
-
-        # Deprecated in favor of LogsDataSourceConfig.
-        variant :stored_completions, -> { OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions }
 
         class Custom < OpenAI::Internal::Type::BaseModel
           # @!attribute item_schema
@@ -127,38 +119,17 @@ module OpenAI
           optional :metadata, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
 
           # @!method initialize(metadata: nil, type: :logs)
-          #   A data source config which specifies the metadata property of your logs query.
-          #   This is usually metadata like `usecase=chatbot` or `prompt-version=v2`, etc.
+          #   A data source config which specifies the metadata property of your stored
+          #   completions query. This is usually metadata like `usecase=chatbot` or
+          #   `prompt-version=v2`, etc.
           #
           #   @param metadata [Hash{Symbol=>Object}] Metadata filters for the logs data source.
           #
           #   @param type [Symbol, :logs] The type of data source. Always `logs`.
         end
 
-        # @deprecated
-        class StoredCompletions < OpenAI::Internal::Type::BaseModel
-          # @!attribute type
-          #   The type of data source. Always `stored_completions`.
-          #
-          #   @return [Symbol, :stored_completions]
-          required :type, const: :stored_completions
-
-          # @!attribute metadata
-          #   Metadata filters for the stored completions data source.
-          #
-          #   @return [Hash{Symbol=>Object}, nil]
-          optional :metadata, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
-
-          # @!method initialize(metadata: nil, type: :stored_completions)
-          #   Deprecated in favor of LogsDataSourceConfig.
-          #
-          #   @param metadata [Hash{Symbol=>Object}] Metadata filters for the stored completions data source.
-          #
-          #   @param type [Symbol, :stored_completions] The type of data source. Always `stored_completions`.
-        end
-
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::EvalCreateParams::DataSourceConfig::Custom, OpenAI::Models::EvalCreateParams::DataSourceConfig::Logs, OpenAI::Models::EvalCreateParams::DataSourceConfig::StoredCompletions)]
+        #   @return [Array(OpenAI::Models::EvalCreateParams::DataSourceConfig::Custom, OpenAI::Models::EvalCreateParams::DataSourceConfig::Logs)]
       end
 
       # A LabelModelGrader object which uses a model to assign labels to each item in
@@ -173,7 +144,7 @@ module OpenAI
         variant :label_model, -> { OpenAI::EvalCreateParams::TestingCriterion::LabelModel }
 
         # A StringCheckGrader object that performs a string comparison between input and reference using a specified operation.
-        variant :string_check, -> { OpenAI::Graders::StringCheckGrader }
+        variant :string_check, -> { OpenAI::EvalCreateParams::TestingCriterion::StringCheck }
 
         # A TextSimilarityGrader object which grades text based on similarity metrics.
         variant :text_similarity, -> { OpenAI::EvalCreateParams::TestingCriterion::TextSimilarity }
@@ -187,7 +158,7 @@ module OpenAI
         class LabelModel < OpenAI::Internal::Type::BaseModel
           # @!attribute input
           #   A list of chat messages forming the prompt or context. May include variable
-          #   references to the `item` namespace, ie {{item.name}}.
+          #   references to the "item" namespace, ie {{item.name}}.
           #
           #   @return [Array<OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem>]
           required :input,
@@ -246,7 +217,7 @@ module OpenAI
           #   @param type [Symbol, :label_model] The object type, which is always `label_model`.
 
           # A chat message that makes up the prompt or context. May include variable
-          # references to the `item` namespace, ie {{item.name}}.
+          # references to the "item" namespace, ie {{item.name}}.
           module Input
             extend OpenAI::Internal::Type::Union
 
@@ -404,47 +375,374 @@ module OpenAI
           end
         end
 
-        class TextSimilarity < OpenAI::Models::Graders::TextSimilarityGrader
+        class StringCheck < OpenAI::Internal::Type::BaseModel
+          # @!attribute input
+          #   The input text. This may include template strings.
+          #
+          #   @return [String]
+          required :input, String
+
+          # @!attribute name
+          #   The name of the grader.
+          #
+          #   @return [String]
+          required :name, String
+
+          # @!attribute operation
+          #   The string check operation to perform. One of `eq`, `ne`, `like`, or `ilike`.
+          #
+          #   @return [Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::StringCheck::Operation]
+          required :operation, enum: -> { OpenAI::EvalCreateParams::TestingCriterion::StringCheck::Operation }
+
+          # @!attribute reference
+          #   The reference text. This may include template strings.
+          #
+          #   @return [String]
+          required :reference, String
+
+          # @!attribute type
+          #   The object type, which is always `string_check`.
+          #
+          #   @return [Symbol, :string_check]
+          required :type, const: :string_check
+
+          # @!method initialize(input:, name:, operation:, reference:, type: :string_check)
+          #   A StringCheckGrader object that performs a string comparison between input and
+          #   reference using a specified operation.
+          #
+          #   @param input [String] The input text. This may include template strings.
+          #
+          #   @param name [String] The name of the grader.
+          #
+          #   @param operation [Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::StringCheck::Operation] The string check operation to perform. One of `eq`, `ne`, `like`, or `ilike`.
+          #
+          #   @param reference [String] The reference text. This may include template strings.
+          #
+          #   @param type [Symbol, :string_check] The object type, which is always `string_check`.
+
+          # The string check operation to perform. One of `eq`, `ne`, `like`, or `ilike`.
+          #
+          # @see OpenAI::Models::EvalCreateParams::TestingCriterion::StringCheck#operation
+          module Operation
+            extend OpenAI::Internal::Type::Enum
+
+            EQ = :eq
+            NE = :ne
+            LIKE = :like
+            ILIKE = :ilike
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
+        end
+
+        class TextSimilarity < OpenAI::Internal::Type::BaseModel
+          # @!attribute evaluation_metric
+          #   The evaluation metric to use. One of `fuzzy_match`, `bleu`, `gleu`, `meteor`,
+          #   `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.
+          #
+          #   @return [Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::TextSimilarity::EvaluationMetric]
+          required :evaluation_metric,
+                   enum: -> { OpenAI::EvalCreateParams::TestingCriterion::TextSimilarity::EvaluationMetric }
+
+          # @!attribute input
+          #   The text being graded.
+          #
+          #   @return [String]
+          required :input, String
+
           # @!attribute pass_threshold
-          #   The threshold for the score.
+          #   A float score where a value greater than or equal indicates a passing grade.
           #
           #   @return [Float]
           required :pass_threshold, Float
 
-          # @!method initialize(pass_threshold:)
+          # @!attribute reference
+          #   The text being graded against.
+          #
+          #   @return [String]
+          required :reference, String
+
+          # @!attribute type
+          #   The type of grader.
+          #
+          #   @return [Symbol, :text_similarity]
+          required :type, const: :text_similarity
+
+          # @!attribute name
+          #   The name of the grader.
+          #
+          #   @return [String, nil]
+          optional :name, String
+
+          # @!method initialize(evaluation_metric:, input:, pass_threshold:, reference:, name: nil, type: :text_similarity)
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::EvalCreateParams::TestingCriterion::TextSimilarity} for more
+          #   details.
+          #
           #   A TextSimilarityGrader object which grades text based on similarity metrics.
           #
-          #   @param pass_threshold [Float] The threshold for the score.
+          #   @param evaluation_metric [Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::TextSimilarity::EvaluationMetric] The evaluation metric to use. One of `fuzzy_match`, `bleu`, `gleu`, `meteor`, `r
+          #
+          #   @param input [String] The text being graded.
+          #
+          #   @param pass_threshold [Float] A float score where a value greater than or equal indicates a passing grade.
+          #
+          #   @param reference [String] The text being graded against.
+          #
+          #   @param name [String] The name of the grader.
+          #
+          #   @param type [Symbol, :text_similarity] The type of grader.
+
+          # The evaluation metric to use. One of `fuzzy_match`, `bleu`, `gleu`, `meteor`,
+          # `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.
+          #
+          # @see OpenAI::Models::EvalCreateParams::TestingCriterion::TextSimilarity#evaluation_metric
+          module EvaluationMetric
+            extend OpenAI::Internal::Type::Enum
+
+            FUZZY_MATCH = :fuzzy_match
+            BLEU = :bleu
+            GLEU = :gleu
+            METEOR = :meteor
+            ROUGE_1 = :rouge_1
+            ROUGE_2 = :rouge_2
+            ROUGE_3 = :rouge_3
+            ROUGE_4 = :rouge_4
+            ROUGE_5 = :rouge_5
+            ROUGE_L = :rouge_l
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
         end
 
-        class Python < OpenAI::Models::Graders::PythonGrader
+        class Python < OpenAI::Internal::Type::BaseModel
+          # @!attribute name
+          #   The name of the grader.
+          #
+          #   @return [String]
+          required :name, String
+
+          # @!attribute source
+          #   The source code of the python script.
+          #
+          #   @return [String]
+          required :source, String
+
+          # @!attribute type
+          #   The object type, which is always `python`.
+          #
+          #   @return [Symbol, :python]
+          required :type, const: :python
+
+          # @!attribute image_tag
+          #   The image tag to use for the python script.
+          #
+          #   @return [String, nil]
+          optional :image_tag, String
+
           # @!attribute pass_threshold
           #   The threshold for the score.
           #
           #   @return [Float, nil]
           optional :pass_threshold, Float
 
-          # @!method initialize(pass_threshold: nil)
+          # @!method initialize(name:, source:, image_tag: nil, pass_threshold: nil, type: :python)
           #   A PythonGrader object that runs a python script on the input.
           #
+          #   @param name [String] The name of the grader.
+          #
+          #   @param source [String] The source code of the python script.
+          #
+          #   @param image_tag [String] The image tag to use for the python script.
+          #
           #   @param pass_threshold [Float] The threshold for the score.
+          #
+          #   @param type [Symbol, :python] The object type, which is always `python`.
         end
 
-        class ScoreModel < OpenAI::Models::Graders::ScoreModelGrader
+        class ScoreModel < OpenAI::Internal::Type::BaseModel
+          # @!attribute input
+          #   The input text. This may include template strings.
+          #
+          #   @return [Array<OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input>]
+          required :input,
+                   -> {
+                     OpenAI::Internal::Type::ArrayOf[OpenAI::EvalCreateParams::TestingCriterion::ScoreModel::Input]
+                   }
+
+          # @!attribute model
+          #   The model to use for the evaluation.
+          #
+          #   @return [String]
+          required :model, String
+
+          # @!attribute name
+          #   The name of the grader.
+          #
+          #   @return [String]
+          required :name, String
+
+          # @!attribute type
+          #   The object type, which is always `score_model`.
+          #
+          #   @return [Symbol, :score_model]
+          required :type, const: :score_model
+
           # @!attribute pass_threshold
           #   The threshold for the score.
           #
           #   @return [Float, nil]
           optional :pass_threshold, Float
 
-          # @!method initialize(pass_threshold: nil)
+          # @!attribute range
+          #   The range of the score. Defaults to `[0, 1]`.
+          #
+          #   @return [Array<Float>, nil]
+          optional :range, OpenAI::Internal::Type::ArrayOf[Float]
+
+          # @!attribute sampling_params
+          #   The sampling parameters for the model.
+          #
+          #   @return [Object, nil]
+          optional :sampling_params, OpenAI::Internal::Type::Unknown
+
+          # @!method initialize(input:, model:, name:, pass_threshold: nil, range: nil, sampling_params: nil, type: :score_model)
           #   A ScoreModelGrader object that uses a model to assign a score to the input.
           #
+          #   @param input [Array<OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input>] The input text. This may include template strings.
+          #
+          #   @param model [String] The model to use for the evaluation.
+          #
+          #   @param name [String] The name of the grader.
+          #
           #   @param pass_threshold [Float] The threshold for the score.
+          #
+          #   @param range [Array<Float>] The range of the score. Defaults to `[0, 1]`.
+          #
+          #   @param sampling_params [Object] The sampling parameters for the model.
+          #
+          #   @param type [Symbol, :score_model] The object type, which is always `score_model`.
+
+          class Input < OpenAI::Internal::Type::BaseModel
+            # @!attribute content
+            #   Text inputs to the model - can contain template strings.
+            #
+            #   @return [String, OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input::Content::OutputText]
+            required :content,
+                     union: -> {
+                       OpenAI::EvalCreateParams::TestingCriterion::ScoreModel::Input::Content
+                     }
+
+            # @!attribute role
+            #   The role of the message input. One of `user`, `assistant`, `system`, or
+            #   `developer`.
+            #
+            #   @return [Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input::Role]
+            required :role, enum: -> { OpenAI::EvalCreateParams::TestingCriterion::ScoreModel::Input::Role }
+
+            # @!attribute type
+            #   The type of the message input. Always `message`.
+            #
+            #   @return [Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input::Type, nil]
+            optional :type, enum: -> { OpenAI::EvalCreateParams::TestingCriterion::ScoreModel::Input::Type }
+
+            # @!method initialize(content:, role:, type: nil)
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input} for more
+            #   details.
+            #
+            #   A message input to the model with a role indicating instruction following
+            #   hierarchy. Instructions given with the `developer` or `system` role take
+            #   precedence over instructions given with the `user` role. Messages with the
+            #   `assistant` role are presumed to have been generated by the model in previous
+            #   interactions.
+            #
+            #   @param content [String, OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input::Content::OutputText] Text inputs to the model - can contain template strings.
+            #
+            #   @param role [Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input::Role] The role of the message input. One of `user`, `assistant`, `system`, or
+            #
+            #   @param type [Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input::Type] The type of the message input. Always `message`.
+
+            # Text inputs to the model - can contain template strings.
+            #
+            # @see OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input#content
+            module Content
+              extend OpenAI::Internal::Type::Union
+
+              # A text input to the model.
+              variant String
+
+              # A text input to the model.
+              variant -> { OpenAI::Responses::ResponseInputText }
+
+              # A text output from the model.
+              variant -> {
+                OpenAI::EvalCreateParams::TestingCriterion::ScoreModel::Input::Content::OutputText
+              }
+
+              class OutputText < OpenAI::Internal::Type::BaseModel
+                # @!attribute text
+                #   The text output from the model.
+                #
+                #   @return [String]
+                required :text, String
+
+                # @!attribute type
+                #   The type of the output text. Always `output_text`.
+                #
+                #   @return [Symbol, :output_text]
+                required :type, const: :output_text
+
+                # @!method initialize(text:, type: :output_text)
+                #   Some parameter documentations has been truncated, see
+                #   {OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input::Content::OutputText}
+                #   for more details.
+                #
+                #   A text output from the model.
+                #
+                #   @param text [String] The text output from the model.
+                #
+                #   @param type [Symbol, :output_text] The type of the output text. Always `output_text`.
+              end
+
+              # @!method self.variants
+              #   @return [Array(String, OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input::Content::OutputText)]
+            end
+
+            # The role of the message input. One of `user`, `assistant`, `system`, or
+            # `developer`.
+            #
+            # @see OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input#role
+            module Role
+              extend OpenAI::Internal::Type::Enum
+
+              USER = :user
+              ASSISTANT = :assistant
+              SYSTEM = :system
+              DEVELOPER = :developer
+
+              # @!method self.values
+              #   @return [Array<Symbol>]
+            end
+
+            # The type of the message input. Always `message`.
+            #
+            # @see OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input#type
+            module Type
+              extend OpenAI::Internal::Type::Enum
+
+              MESSAGE = :message
+
+              # @!method self.values
+              #   @return [Array<Symbol>]
+            end
+          end
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::EvalCreateParams::TestingCriterion::TextSimilarity, OpenAI::Models::EvalCreateParams::TestingCriterion::Python, OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel)]
+        #   @return [Array(OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Models::EvalCreateParams::TestingCriterion::StringCheck, OpenAI::Models::EvalCreateParams::TestingCriterion::TextSimilarity, OpenAI::Models::EvalCreateParams::TestingCriterion::Python, OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel)]
       end
     end
   end

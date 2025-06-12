@@ -11,13 +11,6 @@ module OpenAI
       # - `message.input_image.image_url`: Include image urls from the input message.
       # - `computer_call_output.output.image_url`: Include image urls from the computer
       #   call output.
-      # - `reasoning.encrypted_content`: Includes an encrypted version of reasoning
-      #   tokens in reasoning item outputs. This enables reasoning items to be used in
-      #   multi-turn conversations when using the Responses API statelessly (like when
-      #   the `store` parameter is set to `false`, or when an organization is enrolled
-      #   in the zero data retention program).
-      # - `code_interpreter_call.outputs`: Includes the outputs of python code execution
-      #   in code interpreter tool call items.
       module ResponseIncludable
         extend OpenAI::Internal::Type::Enum
 
@@ -38,16 +31,6 @@ module OpenAI
         COMPUTER_CALL_OUTPUT_OUTPUT_IMAGE_URL =
           T.let(
             :"computer_call_output.output.image_url",
-            OpenAI::Responses::ResponseIncludable::TaggedSymbol
-          )
-        REASONING_ENCRYPTED_CONTENT =
-          T.let(
-            :"reasoning.encrypted_content",
-            OpenAI::Responses::ResponseIncludable::TaggedSymbol
-          )
-        CODE_INTERPRETER_CALL_OUTPUTS =
-          T.let(
-            :"code_interpreter_call.outputs",
             OpenAI::Responses::ResponseIncludable::TaggedSymbol
           )
 

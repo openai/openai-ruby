@@ -10,17 +10,16 @@ module OpenAI
       # {OpenAI::Models::EvalCreateParams} for more details.
       #
       # Create the structure of an evaluation that can be used to test a model's
-      # performance. An evaluation is a set of testing criteria and the config for a
-      # data source, which dictates the schema of the data used in the evaluation. After
+      # performance. An evaluation is a set of testing criteria and a datasource. After
       # creating an evaluation, you can run it on different models and model parameters.
       # We support several types of graders and datasources. For more information, see
       # the [Evals guide](https://platform.openai.com/docs/guides/evals).
       #
       # @overload create(data_source_config:, testing_criteria:, metadata: nil, name: nil, request_options: {})
       #
-      # @param data_source_config [OpenAI::Models::EvalCreateParams::DataSourceConfig::Custom, OpenAI::Models::EvalCreateParams::DataSourceConfig::Logs, OpenAI::Models::EvalCreateParams::DataSourceConfig::StoredCompletions] The configuration for the data source used for the evaluation runs. Dictates the
+      # @param data_source_config [OpenAI::Models::EvalCreateParams::DataSourceConfig::Custom, OpenAI::Models::EvalCreateParams::DataSourceConfig::Logs] The configuration for the data source used for the evaluation runs.
       #
-      # @param testing_criteria [Array<OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::EvalCreateParams::TestingCriterion::TextSimilarity, OpenAI::Models::EvalCreateParams::TestingCriterion::Python, OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel>] A list of graders for all eval runs in this group. Graders can reference variabl
+      # @param testing_criteria [Array<OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Models::EvalCreateParams::TestingCriterion::StringCheck, OpenAI::Models::EvalCreateParams::TestingCriterion::TextSimilarity, OpenAI::Models::EvalCreateParams::TestingCriterion::Python, OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel>] A list of graders for all eval runs in this group.
       #
       # @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
       #

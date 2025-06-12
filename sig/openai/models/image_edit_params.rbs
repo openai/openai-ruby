@@ -4,7 +4,6 @@ module OpenAI
       {
         image: OpenAI::Models::ImageEditParams::image,
         prompt: String,
-        background: OpenAI::Models::ImageEditParams::background?,
         mask: OpenAI::Internal::file_input,
         model: OpenAI::Models::ImageEditParams::model?,
         n: Integer?,
@@ -22,8 +21,6 @@ module OpenAI
       attr_accessor image: OpenAI::Models::ImageEditParams::image
 
       attr_accessor prompt: String
-
-      attr_accessor background: OpenAI::Models::ImageEditParams::background?
 
       attr_reader mask: OpenAI::Internal::file_input?
 
@@ -46,7 +43,6 @@ module OpenAI
       def initialize: (
         image: OpenAI::Models::ImageEditParams::image,
         prompt: String,
-        ?background: OpenAI::Models::ImageEditParams::background?,
         ?mask: OpenAI::Internal::file_input,
         ?model: OpenAI::Models::ImageEditParams::model?,
         ?n: Integer?,
@@ -60,7 +56,6 @@ module OpenAI
       def to_hash: -> {
         image: OpenAI::Models::ImageEditParams::image,
         prompt: String,
-        background: OpenAI::Models::ImageEditParams::background?,
         mask: OpenAI::Internal::file_input,
         model: OpenAI::Models::ImageEditParams::model?,
         n: Integer?,
@@ -80,18 +75,6 @@ module OpenAI
         def self?.variants: -> ::Array[OpenAI::Models::ImageEditParams::image]
 
         StringArray: OpenAI::Internal::Type::Converter
-      end
-
-      type background = :transparent | :opaque | :auto
-
-      module Background
-        extend OpenAI::Internal::Type::Enum
-
-        TRANSPARENT: :transparent
-        OPAQUE: :opaque
-        AUTO: :auto
-
-        def self?.values: -> ::Array[OpenAI::Models::ImageEditParams::background]
       end
 
       type model = String | OpenAI::Models::image_model

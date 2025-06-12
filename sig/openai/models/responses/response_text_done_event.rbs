@@ -6,7 +6,6 @@ module OpenAI
           content_index: Integer,
           item_id: String,
           output_index: Integer,
-          sequence_number: Integer,
           text: String,
           type: :"response.output_text.done"
         }
@@ -18,8 +17,6 @@ module OpenAI
 
         attr_accessor output_index: Integer
 
-        attr_accessor sequence_number: Integer
-
         attr_accessor text: String
 
         attr_accessor type: :"response.output_text.done"
@@ -28,7 +25,6 @@ module OpenAI
           content_index: Integer,
           item_id: String,
           output_index: Integer,
-          sequence_number: Integer,
           text: String,
           ?type: :"response.output_text.done"
         ) -> void
@@ -37,7 +33,6 @@ module OpenAI
           content_index: Integer,
           item_id: String,
           output_index: Integer,
-          sequence_number: Integer,
           text: String,
           type: :"response.output_text.done"
         }

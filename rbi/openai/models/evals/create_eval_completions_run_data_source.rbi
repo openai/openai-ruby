@@ -12,7 +12,7 @@ module OpenAI
             )
           end
 
-        # Determines what populates the `item` namespace in this run's data source.
+        # A StoredCompletionsRunDataSource configuration describing a set of filters
         sig do
           returns(
             T.any(
@@ -32,10 +32,6 @@ module OpenAI
         end
         attr_accessor :type
 
-        # Used when sampling from a model. Dictates the structure of the messages passed
-        # into the model. Can either be a reference to a prebuilt trajectory (ie,
-        # `item.input_trajectory`), or a template with variable references to the `item`
-        # namespace.
         sig do
           returns(
             T.nilable(
@@ -105,14 +101,10 @@ module OpenAI
           ).returns(T.attached_class)
         end
         def self.new(
-          # Determines what populates the `item` namespace in this run's data source.
+          # A StoredCompletionsRunDataSource configuration describing a set of filters
           source:,
           # The type of run data source. Always `completions`.
           type:,
-          # Used when sampling from a model. Dictates the structure of the messages passed
-          # into the model. Can either be a reference to a prebuilt trajectory (ie,
-          # `item.input_trajectory`), or a template with variable references to the `item`
-          # namespace.
           input_messages: nil,
           # The name of the model to use for generating completions (e.g. "o3-mini").
           model: nil,
@@ -145,7 +137,7 @@ module OpenAI
         def to_hash
         end
 
-        # Determines what populates the `item` namespace in this run's data source.
+        # A StoredCompletionsRunDataSource configuration describing a set of filters
         module Source
           extend OpenAI::Internal::Type::Union
 
@@ -410,10 +402,6 @@ module OpenAI
           end
         end
 
-        # Used when sampling from a model. Dictates the structure of the messages passed
-        # into the model. Can either be a reference to a prebuilt trajectory (ie,
-        # `item.input_trajectory`), or a template with variable references to the `item`
-        # namespace.
         module InputMessages
           extend OpenAI::Internal::Type::Union
 
@@ -435,7 +423,7 @@ module OpenAI
               end
 
             # A list of chat messages forming the prompt or context. May include variable
-            # references to the `item` namespace, ie {{item.name}}.
+            # references to the "item" namespace, ie {{item.name}}.
             sig do
               returns(
                 T::Array[
@@ -466,7 +454,7 @@ module OpenAI
             end
             def self.new(
               # A list of chat messages forming the prompt or context. May include variable
-              # references to the `item` namespace, ie {{item.name}}.
+              # references to the "item" namespace, ie {{item.name}}.
               template:,
               # The type of input messages. Always `template`.
               type: :template
@@ -761,7 +749,7 @@ module OpenAI
                 )
               end
 
-            # A reference to a variable in the `item` namespace. Ie, "item.input_trajectory"
+            # A reference to a variable in the "item" namespace. Ie, "item.name"
             sig { returns(String) }
             attr_accessor :item_reference
 
@@ -775,7 +763,7 @@ module OpenAI
               )
             end
             def self.new(
-              # A reference to a variable in the `item` namespace. Ie, "item.input_trajectory"
+              # A reference to a variable in the "item" namespace. Ie, "item.name"
               item_reference:,
               # The type of input messages. Always `item_reference`.
               type: :item_reference
@@ -814,41 +802,6 @@ module OpenAI
           sig { params(max_completion_tokens: Integer).void }
           attr_writer :max_completion_tokens
 
-          # An object specifying the format that the model must output.
-          #
-          # Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
-          # Outputs which ensures the model will match your supplied JSON schema. Learn more
-          # in the
-          # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
-          #
-          # Setting to `{ "type": "json_object" }` enables the older JSON mode, which
-          # ensures the message the model generates is valid JSON. Using `json_schema` is
-          # preferred for models that support it.
-          sig do
-            returns(
-              T.nilable(
-                T.any(
-                  OpenAI::ResponseFormatText,
-                  OpenAI::ResponseFormatJSONSchema,
-                  OpenAI::ResponseFormatJSONObject
-                )
-              )
-            )
-          end
-          attr_reader :response_format
-
-          sig do
-            params(
-              response_format:
-                T.any(
-                  OpenAI::ResponseFormatText::OrHash,
-                  OpenAI::ResponseFormatJSONSchema::OrHash,
-                  OpenAI::ResponseFormatJSONObject::OrHash
-                )
-            ).void
-          end
-          attr_writer :response_format
-
           # A seed value to initialize the randomness, during sampling.
           sig { returns(T.nilable(Integer)) }
           attr_reader :seed
@@ -863,19 +816,6 @@ module OpenAI
           sig { params(temperature: Float).void }
           attr_writer :temperature
 
-          # A list of tools the model may call. Currently, only functions are supported as a
-          # tool. Use this to provide a list of functions the model may generate JSON inputs
-          # for. A max of 128 functions are supported.
-          sig { returns(T.nilable(T::Array[OpenAI::Chat::ChatCompletionTool])) }
-          attr_reader :tools
-
-          sig do
-            params(
-              tools: T::Array[OpenAI::Chat::ChatCompletionTool::OrHash]
-            ).void
-          end
-          attr_writer :tools
-
           # An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
           sig { returns(T.nilable(Float)) }
           attr_reader :top_p
@@ -886,40 +826,18 @@ module OpenAI
           sig do
             params(
               max_completion_tokens: Integer,
-              response_format:
-                T.any(
-                  OpenAI::ResponseFormatText::OrHash,
-                  OpenAI::ResponseFormatJSONSchema::OrHash,
-                  OpenAI::ResponseFormatJSONObject::OrHash
-                ),
               seed: Integer,
               temperature: Float,
-              tools: T::Array[OpenAI::Chat::ChatCompletionTool::OrHash],
               top_p: Float
             ).returns(T.attached_class)
           end
           def self.new(
             # The maximum number of tokens in the generated output.
             max_completion_tokens: nil,
-            # An object specifying the format that the model must output.
-            #
-            # Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
-            # Outputs which ensures the model will match your supplied JSON schema. Learn more
-            # in the
-            # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
-            #
-            # Setting to `{ "type": "json_object" }` enables the older JSON mode, which
-            # ensures the message the model generates is valid JSON. Using `json_schema` is
-            # preferred for models that support it.
-            response_format: nil,
             # A seed value to initialize the randomness, during sampling.
             seed: nil,
             # A higher temperature increases randomness in the outputs.
             temperature: nil,
-            # A list of tools the model may call. Currently, only functions are supported as a
-            # tool. Use this to provide a list of functions the model may generate JSON inputs
-            # for. A max of 128 functions are supported.
-            tools: nil,
             # An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
             top_p: nil
           )
@@ -929,53 +847,13 @@ module OpenAI
             override.returns(
               {
                 max_completion_tokens: Integer,
-                response_format:
-                  T.any(
-                    OpenAI::ResponseFormatText,
-                    OpenAI::ResponseFormatJSONSchema,
-                    OpenAI::ResponseFormatJSONObject
-                  ),
                 seed: Integer,
                 temperature: Float,
-                tools: T::Array[OpenAI::Chat::ChatCompletionTool],
                 top_p: Float
               }
             )
           end
           def to_hash
-          end
-
-          # An object specifying the format that the model must output.
-          #
-          # Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
-          # Outputs which ensures the model will match your supplied JSON schema. Learn more
-          # in the
-          # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
-          #
-          # Setting to `{ "type": "json_object" }` enables the older JSON mode, which
-          # ensures the message the model generates is valid JSON. Using `json_schema` is
-          # preferred for models that support it.
-          module ResponseFormat
-            extend OpenAI::Internal::Type::Union
-
-            Variants =
-              T.type_alias do
-                T.any(
-                  OpenAI::ResponseFormatText,
-                  OpenAI::ResponseFormatJSONSchema,
-                  OpenAI::ResponseFormatJSONObject
-                )
-              end
-
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Evals::CreateEvalCompletionsRunDataSource::SamplingParams::ResponseFormat::Variants
-                ]
-              )
-            end
-            def self.variants
-            end
           end
         end
       end

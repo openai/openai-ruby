@@ -20,10 +20,6 @@ module OpenAI
         sig { returns(Integer) }
         attr_accessor :output_index
 
-        # The sequence number of this event.
-        sig { returns(Integer) }
-        attr_accessor :sequence_number
-
         # The index of the summary part within the reasoning summary.
         sig { returns(Integer) }
         attr_accessor :summary_index
@@ -41,7 +37,6 @@ module OpenAI
           params(
             item_id: String,
             output_index: Integer,
-            sequence_number: Integer,
             summary_index: Integer,
             text: String,
             type: Symbol
@@ -52,8 +47,6 @@ module OpenAI
           item_id:,
           # The index of the output item this summary text is associated with.
           output_index:,
-          # The sequence number of this event.
-          sequence_number:,
           # The index of the summary part within the reasoning summary.
           summary_index:,
           # The full text of the completed reasoning summary.
@@ -68,7 +61,6 @@ module OpenAI
             {
               item_id: String,
               output_index: Integer,
-              sequence_number: Integer,
               summary_index: Integer,
               text: String,
               type: Symbol

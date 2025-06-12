@@ -226,9 +226,9 @@ module OpenAI
         #     utilize scale tier credits until they are exhausted.
         #   - If set to 'auto', and the Project is not Scale tier enabled, the request will
         #     be processed using the default service tier with a lower uptime SLA and no
-        #     latency guarantee.
+        #     latency guarentee.
         #   - If set to 'default', the request will be processed using the default service
-        #     tier with a lower uptime SLA and no latency guarantee.
+        #     tier with a lower uptime SLA and no latency guarentee.
         #   - If set to 'flex', the request will be processed with the Flex Processing
         #     service tier.
         #     [Learn more](https://platform.openai.com/docs/guides/flex-processing).
@@ -318,8 +318,8 @@ module OpenAI
         optional :top_p, Float, nil?: true
 
         # @!attribute user
-        #   A stable identifier for your end-users. Used to boost cache hit rates by better
-        #   bucketing similar requests and to help OpenAI detect and prevent abuse.
+        #   A unique identifier representing your end-user, which can help OpenAI to monitor
+        #   and detect abuse.
         #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         #
         #   @return [String, nil]
@@ -393,7 +393,7 @@ module OpenAI
         #
         #   @param top_p [Float, nil] An alternative to sampling with temperature, called nucleus sampling,
         #
-        #   @param user [String] A stable identifier for your end-users.
+        #   @param user [String] A unique identifier representing your end-user, which can help OpenAI to monitor
         #
         #   @param web_search_options [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions] This tool searches the web for relevant results to use in a response.
         #
@@ -553,9 +553,9 @@ module OpenAI
         #   utilize scale tier credits until they are exhausted.
         # - If set to 'auto', and the Project is not Scale tier enabled, the request will
         #   be processed using the default service tier with a lower uptime SLA and no
-        #   latency guarantee.
+        #   latency guarentee.
         # - If set to 'default', the request will be processed using the default service
-        #   tier with a lower uptime SLA and no latency guarantee.
+        #   tier with a lower uptime SLA and no latency guarentee.
         # - If set to 'flex', the request will be processed with the Flex Processing
         #   service tier.
         #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).

@@ -2,10 +2,7 @@ module OpenAI
   module Models
     module Responses
       type response_retrieve_params =
-        {
-          include: ::Array[OpenAI::Models::Responses::response_includable],
-          starting_after: Integer
-        }
+        { include: ::Array[OpenAI::Models::Responses::response_includable] }
         & OpenAI::Internal::Type::request_parameters
 
       class ResponseRetrieveParams < OpenAI::Internal::Type::BaseModel
@@ -18,19 +15,13 @@ module OpenAI
           ::Array[OpenAI::Models::Responses::response_includable]
         ) -> ::Array[OpenAI::Models::Responses::response_includable]
 
-        attr_reader starting_after: Integer?
-
-        def starting_after=: (Integer) -> Integer
-
         def initialize: (
           ?include: ::Array[OpenAI::Models::Responses::response_includable],
-          ?starting_after: Integer,
           ?request_options: OpenAI::request_opts
         ) -> void
 
         def to_hash: -> {
           include: ::Array[OpenAI::Models::Responses::response_includable],
-          starting_after: Integer,
           request_options: OpenAI::RequestOptions
         }
       end

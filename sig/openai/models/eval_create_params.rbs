@@ -42,7 +42,6 @@ module OpenAI
       type data_source_config =
         OpenAI::EvalCreateParams::DataSourceConfig::Custom
         | OpenAI::EvalCreateParams::DataSourceConfig::Logs
-        | OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions
 
       module DataSourceConfig
         extend OpenAI::Internal::Type::Union
@@ -90,33 +89,12 @@ module OpenAI
           def to_hash: -> { type: :logs, metadata: ::Hash[Symbol, top] }
         end
 
-        type stored_completions =
-          { type: :stored_completions, metadata: ::Hash[Symbol, top] }
-
-        class StoredCompletions < OpenAI::Internal::Type::BaseModel
-          attr_accessor type: :stored_completions
-
-          attr_reader metadata: ::Hash[Symbol, top]?
-
-          def metadata=: (::Hash[Symbol, top]) -> ::Hash[Symbol, top]
-
-          def initialize: (
-            ?metadata: ::Hash[Symbol, top],
-            ?type: :stored_completions
-          ) -> void
-
-          def to_hash: -> {
-            type: :stored_completions,
-            metadata: ::Hash[Symbol, top]
-          }
-        end
-
         def self?.variants: -> ::Array[OpenAI::Models::EvalCreateParams::data_source_config]
       end
 
       type testing_criterion =
         OpenAI::EvalCreateParams::TestingCriterion::LabelModel
-        | OpenAI::Graders::StringCheckGrader
+        | OpenAI::EvalCreateParams::TestingCriterion::StringCheck
         | OpenAI::EvalCreateParams::TestingCriterion::TextSimilarity
         | OpenAI::EvalCreateParams::TestingCriterion::Python
         | OpenAI::EvalCreateParams::TestingCriterion::ScoreModel
@@ -265,40 +243,298 @@ module OpenAI
           end
         end
 
-        type text_similarity = { pass_threshold: Float }
+        type string_check =
+          {
+            input: String,
+            name: String,
+            operation: OpenAI::Models::EvalCreateParams::TestingCriterion::StringCheck::operation,
+            reference: String,
+            type: :string_check
+          }
 
-        class TextSimilarity < OpenAI::Models::Graders::TextSimilarityGrader
-          def pass_threshold: -> Float
+        class StringCheck < OpenAI::Internal::Type::BaseModel
+          attr_accessor input: String
 
-          def pass_threshold=: (Float _) -> Float
+          attr_accessor name: String
 
-          def initialize: (pass_threshold: Float) -> void
+          attr_accessor operation: OpenAI::Models::EvalCreateParams::TestingCriterion::StringCheck::operation
 
-          def to_hash: -> { pass_threshold: Float }
+          attr_accessor reference: String
+
+          attr_accessor type: :string_check
+
+          def initialize: (
+            input: String,
+            name: String,
+            operation: OpenAI::Models::EvalCreateParams::TestingCriterion::StringCheck::operation,
+            reference: String,
+            ?type: :string_check
+          ) -> void
+
+          def to_hash: -> {
+            input: String,
+            name: String,
+            operation: OpenAI::Models::EvalCreateParams::TestingCriterion::StringCheck::operation,
+            reference: String,
+            type: :string_check
+          }
+
+          type operation = :eq | :ne | :like | :ilike
+
+          module Operation
+            extend OpenAI::Internal::Type::Enum
+
+            EQ: :eq
+            NE: :ne
+            LIKE: :like
+            ILIKE: :ilike
+
+            def self?.values: -> ::Array[OpenAI::Models::EvalCreateParams::TestingCriterion::StringCheck::operation]
+          end
         end
 
-        type python = { pass_threshold: Float }
+        type text_similarity =
+          {
+            evaluation_metric: OpenAI::Models::EvalCreateParams::TestingCriterion::TextSimilarity::evaluation_metric,
+            input: String,
+            pass_threshold: Float,
+            reference: String,
+            type: :text_similarity,
+            name: String
+          }
 
-        class Python < OpenAI::Models::Graders::PythonGrader
-          def pass_threshold: -> Float?
+        class TextSimilarity < OpenAI::Internal::Type::BaseModel
+          attr_accessor evaluation_metric: OpenAI::Models::EvalCreateParams::TestingCriterion::TextSimilarity::evaluation_metric
 
-          def pass_threshold=: (Float _) -> Float
+          attr_accessor input: String
 
-          def initialize: (?pass_threshold: Float) -> void
+          attr_accessor pass_threshold: Float
 
-          def to_hash: -> { pass_threshold: Float }
+          attr_accessor reference: String
+
+          attr_accessor type: :text_similarity
+
+          attr_reader name: String?
+
+          def name=: (String) -> String
+
+          def initialize: (
+            evaluation_metric: OpenAI::Models::EvalCreateParams::TestingCriterion::TextSimilarity::evaluation_metric,
+            input: String,
+            pass_threshold: Float,
+            reference: String,
+            ?name: String,
+            ?type: :text_similarity
+          ) -> void
+
+          def to_hash: -> {
+            evaluation_metric: OpenAI::Models::EvalCreateParams::TestingCriterion::TextSimilarity::evaluation_metric,
+            input: String,
+            pass_threshold: Float,
+            reference: String,
+            type: :text_similarity,
+            name: String
+          }
+
+          type evaluation_metric =
+            :fuzzy_match
+            | :bleu
+            | :gleu
+            | :meteor
+            | :rouge_1
+            | :rouge_2
+            | :rouge_3
+            | :rouge_4
+            | :rouge_5
+            | :rouge_l
+
+          module EvaluationMetric
+            extend OpenAI::Internal::Type::Enum
+
+            FUZZY_MATCH: :fuzzy_match
+            BLEU: :bleu
+            GLEU: :gleu
+            METEOR: :meteor
+            ROUGE_1: :rouge_1
+            ROUGE_2: :rouge_2
+            ROUGE_3: :rouge_3
+            ROUGE_4: :rouge_4
+            ROUGE_5: :rouge_5
+            ROUGE_L: :rouge_l
+
+            def self?.values: -> ::Array[OpenAI::Models::EvalCreateParams::TestingCriterion::TextSimilarity::evaluation_metric]
+          end
         end
 
-        type score_model = { pass_threshold: Float }
+        type python =
+          {
+            name: String,
+            source: String,
+            type: :python,
+            image_tag: String,
+            pass_threshold: Float
+          }
 
-        class ScoreModel < OpenAI::Models::Graders::ScoreModelGrader
-          def pass_threshold: -> Float?
+        class Python < OpenAI::Internal::Type::BaseModel
+          attr_accessor name: String
 
-          def pass_threshold=: (Float _) -> Float
+          attr_accessor source: String
 
-          def initialize: (?pass_threshold: Float) -> void
+          attr_accessor type: :python
 
-          def to_hash: -> { pass_threshold: Float }
+          attr_reader image_tag: String?
+
+          def image_tag=: (String) -> String
+
+          attr_reader pass_threshold: Float?
+
+          def pass_threshold=: (Float) -> Float
+
+          def initialize: (
+            name: String,
+            source: String,
+            ?image_tag: String,
+            ?pass_threshold: Float,
+            ?type: :python
+          ) -> void
+
+          def to_hash: -> {
+            name: String,
+            source: String,
+            type: :python,
+            image_tag: String,
+            pass_threshold: Float
+          }
+        end
+
+        type score_model =
+          {
+            input: ::Array[OpenAI::EvalCreateParams::TestingCriterion::ScoreModel::Input],
+            model: String,
+            name: String,
+            type: :score_model,
+            pass_threshold: Float,
+            range: ::Array[Float],
+            sampling_params: top
+          }
+
+        class ScoreModel < OpenAI::Internal::Type::BaseModel
+          attr_accessor input: ::Array[OpenAI::EvalCreateParams::TestingCriterion::ScoreModel::Input]
+
+          attr_accessor model: String
+
+          attr_accessor name: String
+
+          attr_accessor type: :score_model
+
+          attr_reader pass_threshold: Float?
+
+          def pass_threshold=: (Float) -> Float
+
+          attr_reader range: ::Array[Float]?
+
+          def range=: (::Array[Float]) -> ::Array[Float]
+
+          attr_reader sampling_params: top?
+
+          def sampling_params=: (top) -> top
+
+          def initialize: (
+            input: ::Array[OpenAI::EvalCreateParams::TestingCriterion::ScoreModel::Input],
+            model: String,
+            name: String,
+            ?pass_threshold: Float,
+            ?range: ::Array[Float],
+            ?sampling_params: top,
+            ?type: :score_model
+          ) -> void
+
+          def to_hash: -> {
+            input: ::Array[OpenAI::EvalCreateParams::TestingCriterion::ScoreModel::Input],
+            model: String,
+            name: String,
+            type: :score_model,
+            pass_threshold: Float,
+            range: ::Array[Float],
+            sampling_params: top
+          }
+
+          type input =
+            {
+              content: OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input::content,
+              role: OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input::role,
+              type: OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input::type_
+            }
+
+          class Input < OpenAI::Internal::Type::BaseModel
+            attr_accessor content: OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input::content
+
+            attr_accessor role: OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input::role
+
+            attr_reader type: OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input::type_?
+
+            def type=: (
+              OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input::type_
+            ) -> OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input::type_
+
+            def initialize: (
+              content: OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input::content,
+              role: OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input::role,
+              ?type: OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input::type_
+            ) -> void
+
+            def to_hash: -> {
+              content: OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input::content,
+              role: OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input::role,
+              type: OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input::type_
+            }
+
+            type content =
+              String
+              | OpenAI::Responses::ResponseInputText
+              | OpenAI::EvalCreateParams::TestingCriterion::ScoreModel::Input::Content::OutputText
+
+            module Content
+              extend OpenAI::Internal::Type::Union
+
+              type output_text = { text: String, type: :output_text }
+
+              class OutputText < OpenAI::Internal::Type::BaseModel
+                attr_accessor text: String
+
+                attr_accessor type: :output_text
+
+                def initialize: (text: String, ?type: :output_text) -> void
+
+                def to_hash: -> { text: String, type: :output_text }
+              end
+
+              def self?.variants: -> ::Array[OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input::content]
+            end
+
+            type role = :user | :assistant | :system | :developer
+
+            module Role
+              extend OpenAI::Internal::Type::Enum
+
+              USER: :user
+              ASSISTANT: :assistant
+              SYSTEM: :system
+              DEVELOPER: :developer
+
+              def self?.values: -> ::Array[OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input::role]
+            end
+
+            type type_ = :message
+
+            module Type
+              extend OpenAI::Internal::Type::Enum
+
+              MESSAGE: :message
+
+              def self?.values: -> ::Array[OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel::Input::type_]
+            end
+          end
         end
 
         def self?.variants: -> ::Array[OpenAI::Models::EvalCreateParams::testing_criterion]

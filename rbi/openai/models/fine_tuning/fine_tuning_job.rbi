@@ -325,7 +325,10 @@ module OpenAI
               )
             )
           end
-          attr_accessor :batch_size
+          attr_reader :batch_size
+
+          sig { params(batch_size: T.any(Symbol, Integer)).void }
+          attr_writer :batch_size
 
           # Scaling factor for the learning rate. A smaller learning rate may be useful to
           # avoid overfitting.
@@ -359,7 +362,7 @@ module OpenAI
           # returned when running `supervised` jobs.
           sig do
             params(
-              batch_size: T.nilable(T.any(Symbol, Integer)),
+              batch_size: T.any(Symbol, Integer),
               learning_rate_multiplier: T.any(Symbol, Float),
               n_epochs: T.any(Symbol, Integer)
             ).returns(T.attached_class)
@@ -381,9 +384,7 @@ module OpenAI
             override.returns(
               {
                 batch_size:
-                  T.nilable(
-                    OpenAI::FineTuning::FineTuningJob::Hyperparameters::BatchSize::Variants
-                  ),
+                  OpenAI::FineTuning::FineTuningJob::Hyperparameters::BatchSize::Variants,
                 learning_rate_multiplier:
                   OpenAI::FineTuning::FineTuningJob::Hyperparameters::LearningRateMultiplier::Variants,
                 n_epochs:
@@ -509,31 +510,12 @@ module OpenAI
               )
             end
 
-          # The type of method. Is either `supervised`, `dpo`, or `reinforcement`.
-          sig do
-            returns(
-              OpenAI::FineTuning::FineTuningJob::Method::Type::TaggedSymbol
-            )
-          end
-          attr_accessor :type
-
           # Configuration for the DPO fine-tuning method.
           sig { returns(T.nilable(OpenAI::FineTuning::DpoMethod)) }
           attr_reader :dpo
 
           sig { params(dpo: OpenAI::FineTuning::DpoMethod::OrHash).void }
           attr_writer :dpo
-
-          # Configuration for the reinforcement fine-tuning method.
-          sig { returns(T.nilable(OpenAI::FineTuning::ReinforcementMethod)) }
-          attr_reader :reinforcement
-
-          sig do
-            params(
-              reinforcement: OpenAI::FineTuning::ReinforcementMethod::OrHash
-            ).void
-          end
-          attr_writer :reinforcement
 
           # Configuration for the supervised fine-tuning method.
           sig { returns(T.nilable(OpenAI::FineTuning::SupervisedMethod)) }
@@ -546,42 +528,55 @@ module OpenAI
           end
           attr_writer :supervised
 
+          # The type of method. Is either `supervised` or `dpo`.
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::FineTuning::FineTuningJob::Method::Type::TaggedSymbol
+              )
+            )
+          end
+          attr_reader :type
+
+          sig do
+            params(
+              type: OpenAI::FineTuning::FineTuningJob::Method::Type::OrSymbol
+            ).void
+          end
+          attr_writer :type
+
           # The method used for fine-tuning.
           sig do
             params(
-              type: OpenAI::FineTuning::FineTuningJob::Method::Type::OrSymbol,
               dpo: OpenAI::FineTuning::DpoMethod::OrHash,
-              reinforcement: OpenAI::FineTuning::ReinforcementMethod::OrHash,
-              supervised: OpenAI::FineTuning::SupervisedMethod::OrHash
+              supervised: OpenAI::FineTuning::SupervisedMethod::OrHash,
+              type: OpenAI::FineTuning::FineTuningJob::Method::Type::OrSymbol
             ).returns(T.attached_class)
           end
           def self.new(
-            # The type of method. Is either `supervised`, `dpo`, or `reinforcement`.
-            type:,
             # Configuration for the DPO fine-tuning method.
             dpo: nil,
-            # Configuration for the reinforcement fine-tuning method.
-            reinforcement: nil,
             # Configuration for the supervised fine-tuning method.
-            supervised: nil
+            supervised: nil,
+            # The type of method. Is either `supervised` or `dpo`.
+            type: nil
           )
           end
 
           sig do
             override.returns(
               {
-                type:
-                  OpenAI::FineTuning::FineTuningJob::Method::Type::TaggedSymbol,
                 dpo: OpenAI::FineTuning::DpoMethod,
-                reinforcement: OpenAI::FineTuning::ReinforcementMethod,
-                supervised: OpenAI::FineTuning::SupervisedMethod
+                supervised: OpenAI::FineTuning::SupervisedMethod,
+                type:
+                  OpenAI::FineTuning::FineTuningJob::Method::Type::TaggedSymbol
               }
             )
           end
           def to_hash
           end
 
-          # The type of method. Is either `supervised`, `dpo`, or `reinforcement`.
+          # The type of method. Is either `supervised` or `dpo`.
           module Type
             extend OpenAI::Internal::Type::Enum
 
@@ -599,11 +594,6 @@ module OpenAI
             DPO =
               T.let(
                 :dpo,
-                OpenAI::FineTuning::FineTuningJob::Method::Type::TaggedSymbol
-              )
-            REINFORCEMENT =
-              T.let(
-                :reinforcement,
                 OpenAI::FineTuning::FineTuningJob::Method::Type::TaggedSymbol
               )
 

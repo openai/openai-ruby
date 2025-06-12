@@ -133,13 +133,17 @@ module OpenAI
 
         type hyperparameters =
           {
-            batch_size: OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::batch_size?,
+            batch_size: OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::batch_size,
             learning_rate_multiplier: OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::learning_rate_multiplier,
             n_epochs: OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::n_epochs
           }
 
         class Hyperparameters < OpenAI::Internal::Type::BaseModel
-          attr_accessor batch_size: OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::batch_size?
+          attr_reader batch_size: OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::batch_size?
+
+          def batch_size=: (
+            OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::batch_size
+          ) -> OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::batch_size
 
           attr_reader learning_rate_multiplier: OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::learning_rate_multiplier?
 
@@ -154,13 +158,13 @@ module OpenAI
           ) -> OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::n_epochs
 
           def initialize: (
-            ?batch_size: OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::batch_size?,
+            ?batch_size: OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::batch_size,
             ?learning_rate_multiplier: OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::learning_rate_multiplier,
             ?n_epochs: OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::n_epochs
           ) -> void
 
           def to_hash: -> {
-            batch_size: OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::batch_size?,
+            batch_size: OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::batch_size,
             learning_rate_multiplier: OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::learning_rate_multiplier,
             n_epochs: OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::n_epochs
           }
@@ -213,26 +217,17 @@ module OpenAI
 
         type method_ =
           {
-            type: OpenAI::Models::FineTuning::FineTuningJob::Method::type_,
             dpo: OpenAI::FineTuning::DpoMethod,
-            reinforcement: OpenAI::FineTuning::ReinforcementMethod,
-            supervised: OpenAI::FineTuning::SupervisedMethod
+            supervised: OpenAI::FineTuning::SupervisedMethod,
+            type: OpenAI::Models::FineTuning::FineTuningJob::Method::type_
           }
 
         class Method < OpenAI::Internal::Type::BaseModel
-          attr_accessor type: OpenAI::Models::FineTuning::FineTuningJob::Method::type_
-
           attr_reader dpo: OpenAI::FineTuning::DpoMethod?
 
           def dpo=: (
             OpenAI::FineTuning::DpoMethod
           ) -> OpenAI::FineTuning::DpoMethod
-
-          attr_reader reinforcement: OpenAI::FineTuning::ReinforcementMethod?
-
-          def reinforcement=: (
-            OpenAI::FineTuning::ReinforcementMethod
-          ) -> OpenAI::FineTuning::ReinforcementMethod
 
           attr_reader supervised: OpenAI::FineTuning::SupervisedMethod?
 
@@ -240,28 +235,31 @@ module OpenAI
             OpenAI::FineTuning::SupervisedMethod
           ) -> OpenAI::FineTuning::SupervisedMethod
 
+          attr_reader type: OpenAI::Models::FineTuning::FineTuningJob::Method::type_?
+
+          def type=: (
+            OpenAI::Models::FineTuning::FineTuningJob::Method::type_
+          ) -> OpenAI::Models::FineTuning::FineTuningJob::Method::type_
+
           def initialize: (
-            type: OpenAI::Models::FineTuning::FineTuningJob::Method::type_,
             ?dpo: OpenAI::FineTuning::DpoMethod,
-            ?reinforcement: OpenAI::FineTuning::ReinforcementMethod,
-            ?supervised: OpenAI::FineTuning::SupervisedMethod
+            ?supervised: OpenAI::FineTuning::SupervisedMethod,
+            ?type: OpenAI::Models::FineTuning::FineTuningJob::Method::type_
           ) -> void
 
           def to_hash: -> {
-            type: OpenAI::Models::FineTuning::FineTuningJob::Method::type_,
             dpo: OpenAI::FineTuning::DpoMethod,
-            reinforcement: OpenAI::FineTuning::ReinforcementMethod,
-            supervised: OpenAI::FineTuning::SupervisedMethod
+            supervised: OpenAI::FineTuning::SupervisedMethod,
+            type: OpenAI::Models::FineTuning::FineTuningJob::Method::type_
           }
 
-          type type_ = :supervised | :dpo | :reinforcement
+          type type_ = :supervised | :dpo
 
           module Type
             extend OpenAI::Internal::Type::Enum
 
             SUPERVISED: :supervised
             DPO: :dpo
-            REINFORCEMENT: :reinforcement
 
             def self?.values: -> ::Array[OpenAI::Models::FineTuning::FineTuningJob::Method::type_]
           end

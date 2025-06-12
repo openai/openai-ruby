@@ -227,9 +227,7 @@ module OpenAI
           #   parameters are updated less frequently, but with lower variance.
           #
           #   @return [Symbol, :auto, Integer, nil]
-          optional :batch_size,
-                   union: -> { OpenAI::FineTuning::FineTuningJob::Hyperparameters::BatchSize },
-                   nil?: true
+          optional :batch_size, union: -> { OpenAI::FineTuning::FineTuningJob::Hyperparameters::BatchSize }
 
           # @!attribute learning_rate_multiplier
           #   Scaling factor for the learning rate. A smaller learning rate may be useful to
@@ -253,7 +251,7 @@ module OpenAI
           #   The hyperparameters used for the fine-tuning job. This value will only be
           #   returned when running `supervised` jobs.
           #
-          #   @param batch_size [Symbol, :auto, Integer, nil] Number of examples in each batch. A larger batch size means that model parameter
+          #   @param batch_size [Symbol, :auto, Integer] Number of examples in each batch. A larger batch size means that model parameter
           #
           #   @param learning_rate_multiplier [Symbol, :auto, Float] Scaling factor for the learning rate. A smaller learning rate may be useful to a
           #
@@ -325,23 +323,11 @@ module OpenAI
 
         # @see OpenAI::Models::FineTuning::FineTuningJob#method_
         class Method < OpenAI::Internal::Type::BaseModel
-          # @!attribute type
-          #   The type of method. Is either `supervised`, `dpo`, or `reinforcement`.
-          #
-          #   @return [Symbol, OpenAI::Models::FineTuning::FineTuningJob::Method::Type]
-          required :type, enum: -> { OpenAI::FineTuning::FineTuningJob::Method::Type }
-
           # @!attribute dpo
           #   Configuration for the DPO fine-tuning method.
           #
           #   @return [OpenAI::Models::FineTuning::DpoMethod, nil]
           optional :dpo, -> { OpenAI::FineTuning::DpoMethod }
-
-          # @!attribute reinforcement
-          #   Configuration for the reinforcement fine-tuning method.
-          #
-          #   @return [OpenAI::Models::FineTuning::ReinforcementMethod, nil]
-          optional :reinforcement, -> { OpenAI::FineTuning::ReinforcementMethod }
 
           # @!attribute supervised
           #   Configuration for the supervised fine-tuning method.
@@ -349,18 +335,22 @@ module OpenAI
           #   @return [OpenAI::Models::FineTuning::SupervisedMethod, nil]
           optional :supervised, -> { OpenAI::FineTuning::SupervisedMethod }
 
-          # @!method initialize(type:, dpo: nil, reinforcement: nil, supervised: nil)
-          #   The method used for fine-tuning.
+          # @!attribute type
+          #   The type of method. Is either `supervised` or `dpo`.
           #
-          #   @param type [Symbol, OpenAI::Models::FineTuning::FineTuningJob::Method::Type] The type of method. Is either `supervised`, `dpo`, or `reinforcement`.
+          #   @return [Symbol, OpenAI::Models::FineTuning::FineTuningJob::Method::Type, nil]
+          optional :type, enum: -> { OpenAI::FineTuning::FineTuningJob::Method::Type }
+
+          # @!method initialize(dpo: nil, supervised: nil, type: nil)
+          #   The method used for fine-tuning.
           #
           #   @param dpo [OpenAI::Models::FineTuning::DpoMethod] Configuration for the DPO fine-tuning method.
           #
-          #   @param reinforcement [OpenAI::Models::FineTuning::ReinforcementMethod] Configuration for the reinforcement fine-tuning method.
-          #
           #   @param supervised [OpenAI::Models::FineTuning::SupervisedMethod] Configuration for the supervised fine-tuning method.
+          #
+          #   @param type [Symbol, OpenAI::Models::FineTuning::FineTuningJob::Method::Type] The type of method. Is either `supervised` or `dpo`.
 
-          # The type of method. Is either `supervised`, `dpo`, or `reinforcement`.
+          # The type of method. Is either `supervised` or `dpo`.
           #
           # @see OpenAI::Models::FineTuning::FineTuningJob::Method#type
           module Type
@@ -368,7 +358,6 @@ module OpenAI
 
             SUPERVISED = :supervised
             DPO = :dpo
-            REINFORCEMENT = :reinforcement
 
             # @!method self.values
             #   @return [Array<Symbol>]

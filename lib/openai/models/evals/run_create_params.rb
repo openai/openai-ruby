@@ -58,7 +58,7 @@ module OpenAI
 
           class CreateEvalResponsesRunDataSource < OpenAI::Internal::Type::BaseModel
             # @!attribute source
-            #   Determines what populates the `item` namespace in this run's data source.
+            #   A EvalResponsesSource object describing a run data source configuration.
             #
             #   @return [OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileID, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::Responses]
             required :source,
@@ -67,7 +67,7 @@ module OpenAI
                      }
 
             # @!attribute type
-            #   The type of run data source. Always `responses`.
+            #   The type of run data source. Always `completions`.
             #
             #   @return [Symbol, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Type]
             required :type,
@@ -76,10 +76,6 @@ module OpenAI
                      }
 
             # @!attribute input_messages
-            #   Used when sampling from a model. Dictates the structure of the messages passed
-            #   into the model. Can either be a reference to a prebuilt trajectory (ie,
-            #   `item.input_trajectory`), or a template with variable references to the `item`
-            #   namespace.
             #
             #   @return [OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::ItemReference, nil]
             optional :input_messages,
@@ -108,17 +104,17 @@ module OpenAI
             #
             #   A ResponsesRunDataSource object describing a model sampling configuration.
             #
-            #   @param source [OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileID, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::Responses] Determines what populates the `item` namespace in this run's data source.
+            #   @param source [OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileID, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::Responses] A EvalResponsesSource object describing a run data source configuration.
             #
-            #   @param type [Symbol, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Type] The type of run data source. Always `responses`.
+            #   @param type [Symbol, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Type] The type of run data source. Always `completions`.
             #
-            #   @param input_messages [OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::ItemReference] Used when sampling from a model. Dictates the structure of the messages passed i
+            #   @param input_messages [OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::ItemReference]
             #
             #   @param model [String] The name of the model to use for generating completions (e.g. "o3-mini").
             #
             #   @param sampling_params [OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams]
 
-            # Determines what populates the `item` namespace in this run's data source.
+            # A EvalResponsesSource object describing a run data source configuration.
             #
             # @see OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource#source
             module Source
@@ -206,6 +202,13 @@ module OpenAI
                 #   @return [Symbol, :responses]
                 required :type, const: :responses
 
+                # @!attribute allow_parallel_tool_calls
+                #   Whether to allow parallel tool calls. This is a query parameter used to select
+                #   responses.
+                #
+                #   @return [Boolean, nil]
+                optional :allow_parallel_tool_calls, OpenAI::Internal::Type::Boolean, nil?: true
+
                 # @!attribute created_after
                 #   Only include items created after this timestamp (inclusive). This is a query
                 #   parameter used to select responses.
@@ -220,9 +223,16 @@ module OpenAI
                 #   @return [Integer, nil]
                 optional :created_before, Integer, nil?: true
 
+                # @!attribute has_tool_calls
+                #   Whether the response has tool calls. This is a query parameter used to select
+                #   responses.
+                #
+                #   @return [Boolean, nil]
+                optional :has_tool_calls, OpenAI::Internal::Type::Boolean, nil?: true
+
                 # @!attribute instructions_search
-                #   Optional string to search the 'instructions' field. This is a query parameter
-                #   used to select responses.
+                #   Optional search string for instructions. This is a query parameter used to
+                #   select responses.
                 #
                 #   @return [String, nil]
                 optional :instructions_search, String, nil?: true
@@ -254,12 +264,6 @@ module OpenAI
                 #   @return [Float, nil]
                 optional :temperature, Float, nil?: true
 
-                # @!attribute tools
-                #   List of tool names. This is a query parameter used to select responses.
-                #
-                #   @return [Array<String>, nil]
-                optional :tools, OpenAI::Internal::Type::ArrayOf[String], nil?: true
-
                 # @!attribute top_p
                 #   Nucleus sampling parameter. This is a query parameter used to select responses.
                 #
@@ -272,18 +276,22 @@ module OpenAI
                 #   @return [Array<String>, nil]
                 optional :users, OpenAI::Internal::Type::ArrayOf[String], nil?: true
 
-                # @!method initialize(created_after: nil, created_before: nil, instructions_search: nil, metadata: nil, model: nil, reasoning_effort: nil, temperature: nil, tools: nil, top_p: nil, users: nil, type: :responses)
+                # @!method initialize(allow_parallel_tool_calls: nil, created_after: nil, created_before: nil, has_tool_calls: nil, instructions_search: nil, metadata: nil, model: nil, reasoning_effort: nil, temperature: nil, top_p: nil, users: nil, type: :responses)
                 #   Some parameter documentations has been truncated, see
                 #   {OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::Responses}
                 #   for more details.
                 #
                 #   A EvalResponsesSource object describing a run data source configuration.
                 #
+                #   @param allow_parallel_tool_calls [Boolean, nil] Whether to allow parallel tool calls. This is a query parameter used to select r
+                #
                 #   @param created_after [Integer, nil] Only include items created after this timestamp (inclusive). This is a query par
                 #
                 #   @param created_before [Integer, nil] Only include items created before this timestamp (inclusive). This is a query pa
                 #
-                #   @param instructions_search [String, nil] Optional string to search the 'instructions' field. This is a query parameter us
+                #   @param has_tool_calls [Boolean, nil] Whether the response has tool calls. This is a query parameter used to select re
+                #
+                #   @param instructions_search [String, nil] Optional search string for instructions. This is a query parameter used to selec
                 #
                 #   @param metadata [Object, nil] Metadata filter for the responses. This is a query parameter used to select resp
                 #
@@ -292,8 +300,6 @@ module OpenAI
                 #   @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] Optional reasoning effort parameter. This is a query parameter used to select re
                 #
                 #   @param temperature [Float, nil] Sampling temperature. This is a query parameter used to select responses.
-                #
-                #   @param tools [Array<String>, nil] List of tool names. This is a query parameter used to select responses.
                 #
                 #   @param top_p [Float, nil] Nucleus sampling parameter. This is a query parameter used to select responses.
                 #
@@ -306,23 +312,18 @@ module OpenAI
               #   @return [Array(OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileID, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::Responses)]
             end
 
-            # The type of run data source. Always `responses`.
+            # The type of run data source. Always `completions`.
             #
             # @see OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource#type
             module Type
               extend OpenAI::Internal::Type::Enum
 
-              RESPONSES = :responses
+              COMPLETIONS = :completions
 
               # @!method self.values
               #   @return [Array<Symbol>]
             end
 
-            # Used when sampling from a model. Dictates the structure of the messages passed
-            # into the model. Can either be a reference to a prebuilt trajectory (ie,
-            # `item.input_trajectory`), or a template with variable references to the `item`
-            # namespace.
-            #
             # @see OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource#input_messages
             module InputMessages
               extend OpenAI::Internal::Type::Union
@@ -342,7 +343,7 @@ module OpenAI
               class Template < OpenAI::Internal::Type::BaseModel
                 # @!attribute template
                 #   A list of chat messages forming the prompt or context. May include variable
-                #   references to the `item` namespace, ie {{item.name}}.
+                #   references to the "item" namespace, ie {{item.name}}.
                 #
                 #   @return [Array<OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::ChatMessage, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem>]
                 required :template,
@@ -535,7 +536,7 @@ module OpenAI
 
               class ItemReference < OpenAI::Internal::Type::BaseModel
                 # @!attribute item_reference
-                #   A reference to a variable in the `item` namespace. Ie, "item.name"
+                #   A reference to a variable in the "item" namespace. Ie, "item.name"
                 #
                 #   @return [String]
                 required :item_reference, String
@@ -547,7 +548,7 @@ module OpenAI
                 required :type, const: :item_reference
 
                 # @!method initialize(item_reference:, type: :item_reference)
-                #   @param item_reference [String] A reference to a variable in the `item` namespace. Ie, "item.name"
+                #   @param item_reference [String] A reference to a variable in the "item" namespace. Ie, "item.name"
                 #
                 #   @param type [Symbol, :item_reference] The type of input messages. Always `item_reference`.
               end
@@ -576,98 +577,20 @@ module OpenAI
               #   @return [Float, nil]
               optional :temperature, Float
 
-              # @!attribute text
-              #   Configuration options for a text response from the model. Can be plain text or
-              #   structured JSON data. Learn more:
-              #
-              #   - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-              #   - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
-              #
-              #   @return [OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams::Text, nil]
-              optional :text,
-                       -> {
-                         OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams::Text
-                       }
-
-              # @!attribute tools
-              #   An array of tools the model may call while generating a response. You can
-              #   specify which tool to use by setting the `tool_choice` parameter.
-              #
-              #   The two categories of tools you can provide the model are:
-              #
-              #   - **Built-in tools**: Tools that are provided by OpenAI that extend the model's
-              #     capabilities, like
-              #     [web search](https://platform.openai.com/docs/guides/tools-web-search) or
-              #     [file search](https://platform.openai.com/docs/guides/tools-file-search).
-              #     Learn more about
-              #     [built-in tools](https://platform.openai.com/docs/guides/tools).
-              #   - **Function calls (custom tools)**: Functions that are defined by you, enabling
-              #     the model to call your own code. Learn more about
-              #     [function calling](https://platform.openai.com/docs/guides/function-calling).
-              #
-              #   @return [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::WebSearchTool>, nil]
-              optional :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool] }
-
               # @!attribute top_p
               #   An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
               #
               #   @return [Float, nil]
               optional :top_p, Float
 
-              # @!method initialize(max_completion_tokens: nil, seed: nil, temperature: nil, text: nil, tools: nil, top_p: nil)
-              #   Some parameter documentations has been truncated, see
-              #   {OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams}
-              #   for more details.
-              #
+              # @!method initialize(max_completion_tokens: nil, seed: nil, temperature: nil, top_p: nil)
               #   @param max_completion_tokens [Integer] The maximum number of tokens in the generated output.
               #
               #   @param seed [Integer] A seed value to initialize the randomness, during sampling.
               #
               #   @param temperature [Float] A higher temperature increases randomness in the outputs.
               #
-              #   @param text [OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams::Text] Configuration options for a text response from the model. Can be plain
-              #
-              #   @param tools [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::WebSearchTool>] An array of tools the model may call while generating a response. You
-              #
               #   @param top_p [Float] An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
-
-              # @see OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams#text
-              class Text < OpenAI::Internal::Type::BaseModel
-                # @!attribute format_
-                #   An object specifying the format that the model must output.
-                #
-                #   Configuring `{ "type": "json_schema" }` enables Structured Outputs, which
-                #   ensures the model will match your supplied JSON schema. Learn more in the
-                #   [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
-                #
-                #   The default format is `{ "type": "text" }` with no additional options.
-                #
-                #   **Not recommended for gpt-4o and newer models:**
-                #
-                #   Setting to `{ "type": "json_object" }` enables the older JSON mode, which
-                #   ensures the message the model generates is valid JSON. Using `json_schema` is
-                #   preferred for models that support it.
-                #
-                #   @return [OpenAI::Models::ResponseFormatText, OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig, OpenAI::Models::ResponseFormatJSONObject, nil]
-                optional :format_,
-                         union: -> {
-                           OpenAI::Responses::ResponseFormatTextConfig
-                         },
-                         api_name: :format
-
-                # @!method initialize(format_: nil)
-                #   Some parameter documentations has been truncated, see
-                #   {OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams::Text}
-                #   for more details.
-                #
-                #   Configuration options for a text response from the model. Can be plain text or
-                #   structured JSON data. Learn more:
-                #
-                #   - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-                #   - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
-                #
-                #   @param format_ [OpenAI::Models::ResponseFormatText, OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig, OpenAI::Models::ResponseFormatJSONObject] An object specifying the format that the model must output.
-              end
             end
           end
 

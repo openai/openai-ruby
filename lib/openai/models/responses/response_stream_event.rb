@@ -25,11 +25,11 @@ module OpenAI
         variant :"response.audio.transcript.done", -> { OpenAI::Responses::ResponseAudioTranscriptDoneEvent }
 
         # Emitted when a partial code snippet is added by the code interpreter.
-        variant :"response.code_interpreter_call_code.delta",
+        variant :"response.code_interpreter_call.code.delta",
                 -> { OpenAI::Responses::ResponseCodeInterpreterCallCodeDeltaEvent }
 
         # Emitted when code snippet output is finalized by the code interpreter.
-        variant :"response.code_interpreter_call_code.done",
+        variant :"response.code_interpreter_call.code.done",
                 -> { OpenAI::Responses::ResponseCodeInterpreterCallCodeDoneEvent }
 
         # Emitted when the code interpreter call is completed.
@@ -116,6 +116,10 @@ module OpenAI
         # Emitted when refusal text is finalized.
         variant :"response.refusal.done", -> { OpenAI::Responses::ResponseRefusalDoneEvent }
 
+        # Emitted when a text annotation is added.
+        variant :"response.output_text.annotation.added",
+                -> { OpenAI::Responses::ResponseStreamEvent::ResponseOutputTextAnnotationAdded }
+
         # Emitted when there is an additional text delta.
         variant :"response.output_text.delta", -> { OpenAI::Responses::ResponseTextDeltaEvent }
 
@@ -134,83 +138,205 @@ module OpenAI
         variant :"response.web_search_call.searching",
                 -> { OpenAI::Responses::ResponseWebSearchCallSearchingEvent }
 
-        # Emitted when an image generation tool call has completed and the final image is available.
-        variant :"response.image_generation_call.completed",
-                -> { OpenAI::Responses::ResponseImageGenCallCompletedEvent }
+        class ResponseOutputTextAnnotationAdded < OpenAI::Internal::Type::BaseModel
+          # @!attribute annotation
+          #   A citation to a file.
+          #
+          #   @return [OpenAI::Models::Responses::ResponseStreamEvent::ResponseOutputTextAnnotationAdded::Annotation::FileCitation, OpenAI::Models::Responses::ResponseStreamEvent::ResponseOutputTextAnnotationAdded::Annotation::URLCitation, OpenAI::Models::Responses::ResponseStreamEvent::ResponseOutputTextAnnotationAdded::Annotation::FilePath]
+          required :annotation,
+                   union: -> {
+                     OpenAI::Responses::ResponseStreamEvent::ResponseOutputTextAnnotationAdded::Annotation
+                   }
 
-        # Emitted when an image generation tool call is actively generating an image (intermediate state).
-        variant :"response.image_generation_call.generating",
-                -> { OpenAI::Responses::ResponseImageGenCallGeneratingEvent }
+          # @!attribute annotation_index
+          #   The index of the annotation that was added.
+          #
+          #   @return [Integer]
+          required :annotation_index, Integer
 
-        # Emitted when an image generation tool call is in progress.
-        variant :"response.image_generation_call.in_progress",
-                -> { OpenAI::Responses::ResponseImageGenCallInProgressEvent }
+          # @!attribute content_index
+          #   The index of the content part that the text annotation was added to.
+          #
+          #   @return [Integer]
+          required :content_index, Integer
 
-        # Emitted when a partial image is available during image generation streaming.
-        variant :"response.image_generation_call.partial_image",
-                -> { OpenAI::Responses::ResponseImageGenCallPartialImageEvent }
+          # @!attribute item_id
+          #   The ID of the output item that the text annotation was added to.
+          #
+          #   @return [String]
+          required :item_id, String
 
-        # Emitted when there is a delta (partial update) to the arguments of an MCP tool call.
-        variant :"response.mcp_call.arguments_delta",
-                -> {
-                  OpenAI::Responses::ResponseMcpCallArgumentsDeltaEvent
-                }
+          # @!attribute output_index
+          #   The index of the output item that the text annotation was added to.
+          #
+          #   @return [Integer]
+          required :output_index, Integer
 
-        # Emitted when the arguments for an MCP tool call are finalized.
-        variant :"response.mcp_call.arguments_done",
-                -> {
-                  OpenAI::Responses::ResponseMcpCallArgumentsDoneEvent
-                }
+          # @!attribute type
+          #   The type of the event. Always `response.output_text.annotation.added`.
+          #
+          #   @return [Symbol, :"response.output_text.annotation.added"]
+          required :type, const: :"response.output_text.annotation.added"
 
-        # Emitted when an MCP  tool call has completed successfully.
-        variant :"response.mcp_call.completed", -> { OpenAI::Responses::ResponseMcpCallCompletedEvent }
+          # @!method initialize(annotation:, annotation_index:, content_index:, item_id:, output_index:, type: :"response.output_text.annotation.added")
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Responses::ResponseStreamEvent::ResponseOutputTextAnnotationAdded}
+          #   for more details.
+          #
+          #   Emitted when a text annotation is added.
+          #
+          #   @param annotation [OpenAI::Models::Responses::ResponseStreamEvent::ResponseOutputTextAnnotationAdded::Annotation::FileCitation, OpenAI::Models::Responses::ResponseStreamEvent::ResponseOutputTextAnnotationAdded::Annotation::URLCitation, OpenAI::Models::Responses::ResponseStreamEvent::ResponseOutputTextAnnotationAdded::Annotation::FilePath] A citation to a file.
+          #
+          #   @param annotation_index [Integer] The index of the annotation that was added.
+          #
+          #   @param content_index [Integer] The index of the content part that the text annotation was added to.
+          #
+          #   @param item_id [String] The ID of the output item that the text annotation was added to.
+          #
+          #   @param output_index [Integer] The index of the output item that the text annotation was added to.
+          #
+          #   @param type [Symbol, :"response.output_text.annotation.added"] The type of the event. Always `response.output_text.annotation.added`.
 
-        # Emitted when an MCP  tool call has failed.
-        variant :"response.mcp_call.failed", -> { OpenAI::Responses::ResponseMcpCallFailedEvent }
+          # A citation to a file.
+          #
+          # @see OpenAI::Models::Responses::ResponseStreamEvent::ResponseOutputTextAnnotationAdded#annotation
+          module Annotation
+            extend OpenAI::Internal::Type::Union
 
-        # Emitted when an MCP  tool call is in progress.
-        variant :"response.mcp_call.in_progress", -> { OpenAI::Responses::ResponseMcpCallInProgressEvent }
+            discriminator :type
 
-        # Emitted when the list of available MCP tools has been successfully retrieved.
-        variant :"response.mcp_list_tools.completed",
-                -> {
-                  OpenAI::Responses::ResponseMcpListToolsCompletedEvent
-                }
+            # A citation to a file.
+            variant :file_citation,
+                    -> {
+                      OpenAI::Responses::ResponseStreamEvent::ResponseOutputTextAnnotationAdded::Annotation::FileCitation
+                    }
 
-        # Emitted when the attempt to list available MCP tools has failed.
-        variant :"response.mcp_list_tools.failed", -> { OpenAI::Responses::ResponseMcpListToolsFailedEvent }
+            # A citation for a web resource used to generate a model response.
+            variant :url_citation,
+                    -> {
+                      OpenAI::Responses::ResponseStreamEvent::ResponseOutputTextAnnotationAdded::Annotation::URLCitation
+                    }
 
-        # Emitted when the system is in the process of retrieving the list of available MCP tools.
-        variant :"response.mcp_list_tools.in_progress",
-                -> { OpenAI::Responses::ResponseMcpListToolsInProgressEvent }
+            # A path to a file.
+            variant :file_path,
+                    -> {
+                      OpenAI::Responses::ResponseStreamEvent::ResponseOutputTextAnnotationAdded::Annotation::FilePath
+                    }
 
-        # Emitted when an annotation is added to output text content.
-        variant :"response.output_text_annotation.added",
-                -> { OpenAI::Responses::ResponseOutputTextAnnotationAddedEvent }
+            class FileCitation < OpenAI::Internal::Type::BaseModel
+              # @!attribute file_id
+              #   The ID of the file.
+              #
+              #   @return [String]
+              required :file_id, String
 
-        # Emitted when a response is queued and waiting to be processed.
-        variant :"response.queued", -> { OpenAI::Responses::ResponseQueuedEvent }
+              # @!attribute index
+              #   The index of the file in the list of files.
+              #
+              #   @return [Integer]
+              required :index, Integer
 
-        # Emitted when there is a delta (partial update) to the reasoning content.
-        variant :"response.reasoning.delta", -> { OpenAI::Responses::ResponseReasoningDeltaEvent }
+              # @!attribute type
+              #   The type of the file citation. Always `file_citation`.
+              #
+              #   @return [Symbol, :file_citation]
+              required :type, const: :file_citation
 
-        # Emitted when the reasoning content is finalized for an item.
-        variant :"response.reasoning.done", -> { OpenAI::Responses::ResponseReasoningDoneEvent }
+              # @!method initialize(file_id:, index:, type: :file_citation)
+              #   A citation to a file.
+              #
+              #   @param file_id [String] The ID of the file.
+              #
+              #   @param index [Integer] The index of the file in the list of files.
+              #
+              #   @param type [Symbol, :file_citation] The type of the file citation. Always `file_citation`.
+            end
 
-        # Emitted when there is a delta (partial update) to the reasoning summary content.
-        variant :"response.reasoning_summary.delta",
-                -> {
-                  OpenAI::Responses::ResponseReasoningSummaryDeltaEvent
-                }
+            class URLCitation < OpenAI::Internal::Type::BaseModel
+              # @!attribute end_index
+              #   The index of the last character of the URL citation in the message.
+              #
+              #   @return [Integer]
+              required :end_index, Integer
 
-        # Emitted when the reasoning summary content is finalized for an item.
-        variant :"response.reasoning_summary.done",
-                -> {
-                  OpenAI::Responses::ResponseReasoningSummaryDoneEvent
-                }
+              # @!attribute start_index
+              #   The index of the first character of the URL citation in the message.
+              #
+              #   @return [Integer]
+              required :start_index, Integer
+
+              # @!attribute title
+              #   The title of the web resource.
+              #
+              #   @return [String]
+              required :title, String
+
+              # @!attribute type
+              #   The type of the URL citation. Always `url_citation`.
+              #
+              #   @return [Symbol, :url_citation]
+              required :type, const: :url_citation
+
+              # @!attribute url
+              #   The URL of the web resource.
+              #
+              #   @return [String]
+              required :url, String
+
+              # @!method initialize(end_index:, start_index:, title:, url:, type: :url_citation)
+              #   A citation for a web resource used to generate a model response.
+              #
+              #   @param end_index [Integer] The index of the last character of the URL citation in the message.
+              #
+              #   @param start_index [Integer] The index of the first character of the URL citation in the message.
+              #
+              #   @param title [String] The title of the web resource.
+              #
+              #   @param url [String] The URL of the web resource.
+              #
+              #   @param type [Symbol, :url_citation] The type of the URL citation. Always `url_citation`.
+            end
+
+            class FilePath < OpenAI::Internal::Type::BaseModel
+              # @!attribute file_id
+              #   The ID of the file.
+              #
+              #   @return [String]
+              required :file_id, String
+
+              # @!attribute index
+              #   The index of the file in the list of files.
+              #
+              #   @return [Integer]
+              required :index, Integer
+
+              # @!attribute type
+              #   The type of the file path. Always `file_path`.
+              #
+              #   @return [Symbol, :file_path]
+              required :type, const: :file_path
+
+              # @!method initialize(file_id:, index:, type: :file_path)
+              #   Some parameter documentations has been truncated, see
+              #   {OpenAI::Models::Responses::ResponseStreamEvent::ResponseOutputTextAnnotationAdded::Annotation::FilePath}
+              #   for more details.
+              #
+              #   A path to a file.
+              #
+              #   @param file_id [String] The ID of the file.
+              #
+              #   @param index [Integer] The index of the file in the list of files.
+              #
+              #   @param type [Symbol, :file_path] The type of the file path. Always `file_path`.
+            end
+
+            # @!method self.variants
+            #   @return [Array(OpenAI::Models::Responses::ResponseStreamEvent::ResponseOutputTextAnnotationAdded::Annotation::FileCitation, OpenAI::Models::Responses::ResponseStreamEvent::ResponseOutputTextAnnotationAdded::Annotation::URLCitation, OpenAI::Models::Responses::ResponseStreamEvent::ResponseOutputTextAnnotationAdded::Annotation::FilePath)]
+          end
+        end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Responses::ResponseAudioDeltaEvent, OpenAI::Models::Responses::ResponseAudioDoneEvent, OpenAI::Models::Responses::ResponseAudioTranscriptDeltaEvent, OpenAI::Models::Responses::ResponseAudioTranscriptDoneEvent, OpenAI::Models::Responses::ResponseCodeInterpreterCallCodeDeltaEvent, OpenAI::Models::Responses::ResponseCodeInterpreterCallCodeDoneEvent, OpenAI::Models::Responses::ResponseCodeInterpreterCallCompletedEvent, OpenAI::Models::Responses::ResponseCodeInterpreterCallInProgressEvent, OpenAI::Models::Responses::ResponseCodeInterpreterCallInterpretingEvent, OpenAI::Models::Responses::ResponseCompletedEvent, OpenAI::Models::Responses::ResponseContentPartAddedEvent, OpenAI::Models::Responses::ResponseContentPartDoneEvent, OpenAI::Models::Responses::ResponseCreatedEvent, OpenAI::Models::Responses::ResponseErrorEvent, OpenAI::Models::Responses::ResponseFileSearchCallCompletedEvent, OpenAI::Models::Responses::ResponseFileSearchCallInProgressEvent, OpenAI::Models::Responses::ResponseFileSearchCallSearchingEvent, OpenAI::Models::Responses::ResponseFunctionCallArgumentsDeltaEvent, OpenAI::Models::Responses::ResponseFunctionCallArgumentsDoneEvent, OpenAI::Models::Responses::ResponseInProgressEvent, OpenAI::Models::Responses::ResponseFailedEvent, OpenAI::Models::Responses::ResponseIncompleteEvent, OpenAI::Models::Responses::ResponseOutputItemAddedEvent, OpenAI::Models::Responses::ResponseOutputItemDoneEvent, OpenAI::Models::Responses::ResponseReasoningSummaryPartAddedEvent, OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent, OpenAI::Models::Responses::ResponseReasoningSummaryTextDeltaEvent, OpenAI::Models::Responses::ResponseReasoningSummaryTextDoneEvent, OpenAI::Models::Responses::ResponseRefusalDeltaEvent, OpenAI::Models::Responses::ResponseRefusalDoneEvent, OpenAI::Models::Responses::ResponseTextDeltaEvent, OpenAI::Models::Responses::ResponseTextDoneEvent, OpenAI::Models::Responses::ResponseWebSearchCallCompletedEvent, OpenAI::Models::Responses::ResponseWebSearchCallInProgressEvent, OpenAI::Models::Responses::ResponseWebSearchCallSearchingEvent, OpenAI::Models::Responses::ResponseImageGenCallCompletedEvent, OpenAI::Models::Responses::ResponseImageGenCallGeneratingEvent, OpenAI::Models::Responses::ResponseImageGenCallInProgressEvent, OpenAI::Models::Responses::ResponseImageGenCallPartialImageEvent, OpenAI::Models::Responses::ResponseMcpCallArgumentsDeltaEvent, OpenAI::Models::Responses::ResponseMcpCallArgumentsDoneEvent, OpenAI::Models::Responses::ResponseMcpCallCompletedEvent, OpenAI::Models::Responses::ResponseMcpCallFailedEvent, OpenAI::Models::Responses::ResponseMcpCallInProgressEvent, OpenAI::Models::Responses::ResponseMcpListToolsCompletedEvent, OpenAI::Models::Responses::ResponseMcpListToolsFailedEvent, OpenAI::Models::Responses::ResponseMcpListToolsInProgressEvent, OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent, OpenAI::Models::Responses::ResponseQueuedEvent, OpenAI::Models::Responses::ResponseReasoningDeltaEvent, OpenAI::Models::Responses::ResponseReasoningDoneEvent, OpenAI::Models::Responses::ResponseReasoningSummaryDeltaEvent, OpenAI::Models::Responses::ResponseReasoningSummaryDoneEvent)]
+        #   @return [Array(OpenAI::Models::Responses::ResponseAudioDeltaEvent, OpenAI::Models::Responses::ResponseAudioDoneEvent, OpenAI::Models::Responses::ResponseAudioTranscriptDeltaEvent, OpenAI::Models::Responses::ResponseAudioTranscriptDoneEvent, OpenAI::Models::Responses::ResponseCodeInterpreterCallCodeDeltaEvent, OpenAI::Models::Responses::ResponseCodeInterpreterCallCodeDoneEvent, OpenAI::Models::Responses::ResponseCodeInterpreterCallCompletedEvent, OpenAI::Models::Responses::ResponseCodeInterpreterCallInProgressEvent, OpenAI::Models::Responses::ResponseCodeInterpreterCallInterpretingEvent, OpenAI::Models::Responses::ResponseCompletedEvent, OpenAI::Models::Responses::ResponseContentPartAddedEvent, OpenAI::Models::Responses::ResponseContentPartDoneEvent, OpenAI::Models::Responses::ResponseCreatedEvent, OpenAI::Models::Responses::ResponseErrorEvent, OpenAI::Models::Responses::ResponseFileSearchCallCompletedEvent, OpenAI::Models::Responses::ResponseFileSearchCallInProgressEvent, OpenAI::Models::Responses::ResponseFileSearchCallSearchingEvent, OpenAI::Models::Responses::ResponseFunctionCallArgumentsDeltaEvent, OpenAI::Models::Responses::ResponseFunctionCallArgumentsDoneEvent, OpenAI::Models::Responses::ResponseInProgressEvent, OpenAI::Models::Responses::ResponseFailedEvent, OpenAI::Models::Responses::ResponseIncompleteEvent, OpenAI::Models::Responses::ResponseOutputItemAddedEvent, OpenAI::Models::Responses::ResponseOutputItemDoneEvent, OpenAI::Models::Responses::ResponseReasoningSummaryPartAddedEvent, OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent, OpenAI::Models::Responses::ResponseReasoningSummaryTextDeltaEvent, OpenAI::Models::Responses::ResponseReasoningSummaryTextDoneEvent, OpenAI::Models::Responses::ResponseRefusalDeltaEvent, OpenAI::Models::Responses::ResponseRefusalDoneEvent, OpenAI::Models::Responses::ResponseStreamEvent::ResponseOutputTextAnnotationAdded, OpenAI::Models::Responses::ResponseTextDeltaEvent, OpenAI::Models::Responses::ResponseTextDoneEvent, OpenAI::Models::Responses::ResponseWebSearchCallCompletedEvent, OpenAI::Models::Responses::ResponseWebSearchCallInProgressEvent, OpenAI::Models::Responses::ResponseWebSearchCallSearchingEvent)]
       end
     end
   end

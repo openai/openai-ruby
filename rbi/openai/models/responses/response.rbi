@@ -126,11 +126,6 @@ module OpenAI
         sig { returns(T.nilable(Float)) }
         attr_accessor :top_p
 
-        # Whether to run the model response in the background.
-        # [Learn more](https://platform.openai.com/docs/guides/background).
-        sig { returns(T.nilable(T::Boolean)) }
-        attr_accessor :background
-
         # An upper bound for the number of tokens that can be generated for a response,
         # including visible output tokens and
         # [reasoning tokens](https://platform.openai.com/docs/guides/reasoning).
@@ -160,9 +155,9 @@ module OpenAI
         #   utilize scale tier credits until they are exhausted.
         # - If set to 'auto', and the Project is not Scale tier enabled, the request will
         #   be processed using the default service tier with a lower uptime SLA and no
-        #   latency guarantee.
+        #   latency guarentee.
         # - If set to 'default', the request will be processed using the default service
-        #   tier with a lower uptime SLA and no latency guarantee.
+        #   tier with a lower uptime SLA and no latency guarentee.
         # - If set to 'flex', the request will be processed with the Flex Processing
         #   service tier.
         #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
@@ -178,7 +173,7 @@ module OpenAI
         attr_accessor :service_tier
 
         # The status of the response generation. One of `completed`, `failed`,
-        # `in_progress`, `cancelled`, `queued`, or `incomplete`.
+        # `in_progress`, or `incomplete`.
         sig do
           returns(T.nilable(OpenAI::Responses::ResponseStatus::TaggedSymbol))
         end
@@ -220,8 +215,8 @@ module OpenAI
         sig { params(usage: OpenAI::Responses::ResponseUsage::OrHash).void }
         attr_writer :usage
 
-        # A stable identifier for your end-users. Used to boost cache hit rates by better
-        # bucketing similar requests and to help OpenAI detect and prevent abuse.
+        # A unique identifier representing your end-user, which can help OpenAI to monitor
+        # and detect abuse.
         # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         sig { returns(T.nilable(String)) }
         attr_reader :user
@@ -252,13 +247,7 @@ module OpenAI
                   OpenAI::Responses::ResponseFunctionToolCall::OrHash,
                   OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
                   OpenAI::Responses::ResponseComputerToolCall::OrHash,
-                  OpenAI::Responses::ResponseReasoningItem::OrHash,
-                  OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::OrHash,
-                  OpenAI::Responses::ResponseCodeInterpreterToolCall::OrHash,
-                  OpenAI::Responses::ResponseOutputItem::LocalShellCall::OrHash,
-                  OpenAI::Responses::ResponseOutputItem::McpCall::OrHash,
-                  OpenAI::Responses::ResponseOutputItem::McpListTools::OrHash,
-                  OpenAI::Responses::ResponseOutputItem::McpApprovalRequest::OrHash
+                  OpenAI::Responses::ResponseReasoningItem::OrHash
                 )
               ],
             parallel_tool_calls: T::Boolean,
@@ -272,18 +261,13 @@ module OpenAI
             tools:
               T::Array[
                 T.any(
-                  OpenAI::Responses::FunctionTool::OrHash,
                   OpenAI::Responses::FileSearchTool::OrHash,
+                  OpenAI::Responses::FunctionTool::OrHash,
                   OpenAI::Responses::ComputerTool::OrHash,
-                  OpenAI::Responses::Tool::Mcp::OrHash,
-                  OpenAI::Responses::Tool::CodeInterpreter::OrHash,
-                  OpenAI::Responses::Tool::ImageGeneration::OrHash,
-                  OpenAI::Responses::Tool::LocalShell::OrHash,
                   OpenAI::Responses::WebSearchTool::OrHash
                 )
               ],
             top_p: T.nilable(Float),
-            background: T.nilable(T::Boolean),
             max_output_tokens: T.nilable(Integer),
             previous_response_id: T.nilable(String),
             reasoning: T.nilable(OpenAI::Reasoning::OrHash),
@@ -367,9 +351,6 @@ module OpenAI
           #
           # We generally recommend altering this or `temperature` but not both.
           top_p:,
-          # Whether to run the model response in the background.
-          # [Learn more](https://platform.openai.com/docs/guides/background).
-          background: nil,
           # An upper bound for the number of tokens that can be generated for a response,
           # including visible output tokens and
           # [reasoning tokens](https://platform.openai.com/docs/guides/reasoning).
@@ -390,9 +371,9 @@ module OpenAI
           #   utilize scale tier credits until they are exhausted.
           # - If set to 'auto', and the Project is not Scale tier enabled, the request will
           #   be processed using the default service tier with a lower uptime SLA and no
-          #   latency guarantee.
+          #   latency guarentee.
           # - If set to 'default', the request will be processed using the default service
-          #   tier with a lower uptime SLA and no latency guarantee.
+          #   tier with a lower uptime SLA and no latency guarentee.
           # - If set to 'flex', the request will be processed with the Flex Processing
           #   service tier.
           #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
@@ -402,7 +383,7 @@ module OpenAI
           # utilized.
           service_tier: nil,
           # The status of the response generation. One of `completed`, `failed`,
-          # `in_progress`, `cancelled`, `queued`, or `incomplete`.
+          # `in_progress`, or `incomplete`.
           status: nil,
           # Configuration options for a text response from the model. Can be plain text or
           # structured JSON data. Learn more:
@@ -421,8 +402,8 @@ module OpenAI
           # Represents token usage details including input tokens, output tokens, a
           # breakdown of output tokens, and the total tokens used.
           usage: nil,
-          # A stable identifier for your end-users. Used to boost cache hit rates by better
-          # bucketing similar requests and to help OpenAI detect and prevent abuse.
+          # A unique identifier representing your end-user, which can help OpenAI to monitor
+          # and detect abuse.
           # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
           user: nil,
           # The object type of this resource - always set to `response`.
@@ -448,7 +429,6 @@ module OpenAI
               tool_choice: OpenAI::Responses::Response::ToolChoice::Variants,
               tools: T::Array[OpenAI::Responses::Tool::Variants],
               top_p: T.nilable(Float),
-              background: T.nilable(T::Boolean),
               max_output_tokens: T.nilable(Integer),
               previous_response_id: T.nilable(String),
               reasoning: T.nilable(OpenAI::Reasoning),
@@ -588,9 +568,9 @@ module OpenAI
         #   utilize scale tier credits until they are exhausted.
         # - If set to 'auto', and the Project is not Scale tier enabled, the request will
         #   be processed using the default service tier with a lower uptime SLA and no
-        #   latency guarantee.
+        #   latency guarentee.
         # - If set to 'default', the request will be processed using the default service
-        #   tier with a lower uptime SLA and no latency guarantee.
+        #   tier with a lower uptime SLA and no latency guarentee.
         # - If set to 'flex', the request will be processed with the Flex Processing
         #   service tier.
         #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).

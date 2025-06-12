@@ -3,12 +3,6 @@ module OpenAI
     class Containers
       class Files
         class Content
-          def retrieve: (
-            String file_id,
-            container_id: String,
-            ?request_options: OpenAI::request_opts
-          ) -> StringIO
-
           def initialize: (client: OpenAI::Client) -> void
         end
       end

@@ -45,11 +45,6 @@ module OpenAI
         end
         attr_accessor :model
 
-        # Whether to run the model response in the background.
-        # [Learn more](https://platform.openai.com/docs/guides/background).
-        sig { returns(T.nilable(T::Boolean)) }
-        attr_accessor :background
-
         # Specify additional output data to include in the model response. Currently
         # supported values are:
         #
@@ -58,13 +53,6 @@ module OpenAI
         # - `message.input_image.image_url`: Include image urls from the input message.
         # - `computer_call_output.output.image_url`: Include image urls from the computer
         #   call output.
-        # - `reasoning.encrypted_content`: Includes an encrypted version of reasoning
-        #   tokens in reasoning item outputs. This enables reasoning items to be used in
-        #   multi-turn conversations when using the Responses API statelessly (like when
-        #   the `store` parameter is set to `false`, or when an organization is enrolled
-        #   in the zero data retention program).
-        # - `code_interpreter_call.outputs`: Includes the outputs of python code execution
-        #   in code interpreter tool call items.
         sig do
           returns(
             T.nilable(T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol])
@@ -123,9 +111,9 @@ module OpenAI
         #   utilize scale tier credits until they are exhausted.
         # - If set to 'auto', and the Project is not Scale tier enabled, the request will
         #   be processed using the default service tier with a lower uptime SLA and no
-        #   latency guarantee.
+        #   latency guarentee.
         # - If set to 'default', the request will be processed using the default service
-        #   tier with a lower uptime SLA and no latency guarantee.
+        #   tier with a lower uptime SLA and no latency guarentee.
         # - If set to 'flex', the request will be processed with the Flex Processing
         #   service tier.
         #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
@@ -219,13 +207,9 @@ module OpenAI
             T.nilable(
               T::Array[
                 T.any(
-                  OpenAI::Responses::FunctionTool,
                   OpenAI::Responses::FileSearchTool,
+                  OpenAI::Responses::FunctionTool,
                   OpenAI::Responses::ComputerTool,
-                  OpenAI::Responses::Tool::Mcp,
-                  OpenAI::Responses::Tool::CodeInterpreter,
-                  OpenAI::Responses::Tool::ImageGeneration,
-                  OpenAI::Responses::Tool::LocalShell,
                   OpenAI::Responses::WebSearchTool
                 )
               ]
@@ -239,13 +223,9 @@ module OpenAI
             tools:
               T::Array[
                 T.any(
-                  OpenAI::Responses::FunctionTool::OrHash,
                   OpenAI::Responses::FileSearchTool::OrHash,
+                  OpenAI::Responses::FunctionTool::OrHash,
                   OpenAI::Responses::ComputerTool::OrHash,
-                  OpenAI::Responses::Tool::Mcp::OrHash,
-                  OpenAI::Responses::Tool::CodeInterpreter::OrHash,
-                  OpenAI::Responses::Tool::ImageGeneration::OrHash,
-                  OpenAI::Responses::Tool::LocalShell::OrHash,
                   OpenAI::Responses::WebSearchTool::OrHash
                 )
               ]
@@ -277,8 +257,8 @@ module OpenAI
         end
         attr_accessor :truncation
 
-        # A stable identifier for your end-users. Used to boost cache hit rates by better
-        # bucketing similar requests and to help OpenAI detect and prevent abuse.
+        # A unique identifier representing your end-user, which can help OpenAI to monitor
+        # and detect abuse.
         # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         sig { returns(T.nilable(String)) }
         attr_reader :user
@@ -295,7 +275,6 @@ module OpenAI
                 OpenAI::ChatModel::OrSymbol,
                 OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
               ),
-            background: T.nilable(T::Boolean),
             include:
               T.nilable(
                 T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
@@ -322,13 +301,9 @@ module OpenAI
             tools:
               T::Array[
                 T.any(
-                  OpenAI::Responses::FunctionTool::OrHash,
                   OpenAI::Responses::FileSearchTool::OrHash,
+                  OpenAI::Responses::FunctionTool::OrHash,
                   OpenAI::Responses::ComputerTool::OrHash,
-                  OpenAI::Responses::Tool::Mcp::OrHash,
-                  OpenAI::Responses::Tool::CodeInterpreter::OrHash,
-                  OpenAI::Responses::Tool::ImageGeneration::OrHash,
-                  OpenAI::Responses::Tool::LocalShell::OrHash,
                   OpenAI::Responses::WebSearchTool::OrHash
                 )
               ],
@@ -358,9 +333,6 @@ module OpenAI
           # [model guide](https://platform.openai.com/docs/models) to browse and compare
           # available models.
           model:,
-          # Whether to run the model response in the background.
-          # [Learn more](https://platform.openai.com/docs/guides/background).
-          background: nil,
           # Specify additional output data to include in the model response. Currently
           # supported values are:
           #
@@ -369,13 +341,6 @@ module OpenAI
           # - `message.input_image.image_url`: Include image urls from the input message.
           # - `computer_call_output.output.image_url`: Include image urls from the computer
           #   call output.
-          # - `reasoning.encrypted_content`: Includes an encrypted version of reasoning
-          #   tokens in reasoning item outputs. This enables reasoning items to be used in
-          #   multi-turn conversations when using the Responses API statelessly (like when
-          #   the `store` parameter is set to `false`, or when an organization is enrolled
-          #   in the zero data retention program).
-          # - `code_interpreter_call.outputs`: Includes the outputs of python code execution
-          #   in code interpreter tool call items.
           include: nil,
           # Inserts a system (or developer) message as the first item in the model's
           # context.
@@ -413,9 +378,9 @@ module OpenAI
           #   utilize scale tier credits until they are exhausted.
           # - If set to 'auto', and the Project is not Scale tier enabled, the request will
           #   be processed using the default service tier with a lower uptime SLA and no
-          #   latency guarantee.
+          #   latency guarentee.
           # - If set to 'default', the request will be processed using the default service
-          #   tier with a lower uptime SLA and no latency guarantee.
+          #   tier with a lower uptime SLA and no latency guarentee.
           # - If set to 'flex', the request will be processed with the Flex Processing
           #   service tier.
           #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
@@ -470,8 +435,8 @@ module OpenAI
           # - `disabled` (default): If a model response will exceed the context window size
           #   for a model, the request will fail with a 400 error.
           truncation: nil,
-          # A stable identifier for your end-users. Used to boost cache hit rates by better
-          # bucketing similar requests and to help OpenAI detect and prevent abuse.
+          # A unique identifier representing your end-user, which can help OpenAI to monitor
+          # and detect abuse.
           # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
           user: nil,
           request_options: {}
@@ -488,7 +453,6 @@ module OpenAI
                   OpenAI::ChatModel::OrSymbol,
                   OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
                 ),
-              background: T.nilable(T::Boolean),
               include:
                 T.nilable(
                   T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
@@ -515,13 +479,9 @@ module OpenAI
               tools:
                 T::Array[
                   T.any(
-                    OpenAI::Responses::FunctionTool,
                     OpenAI::Responses::FileSearchTool,
+                    OpenAI::Responses::FunctionTool,
                     OpenAI::Responses::ComputerTool,
-                    OpenAI::Responses::Tool::Mcp,
-                    OpenAI::Responses::Tool::CodeInterpreter,
-                    OpenAI::Responses::Tool::ImageGeneration,
-                    OpenAI::Responses::Tool::LocalShell,
                     OpenAI::Responses::WebSearchTool
                   )
                 ],
@@ -574,9 +534,9 @@ module OpenAI
         #   utilize scale tier credits until they are exhausted.
         # - If set to 'auto', and the Project is not Scale tier enabled, the request will
         #   be processed using the default service tier with a lower uptime SLA and no
-        #   latency guarantee.
+        #   latency guarentee.
         # - If set to 'default', the request will be processed using the default service
-        #   tier with a lower uptime SLA and no latency guarantee.
+        #   tier with a lower uptime SLA and no latency guarentee.
         # - If set to 'flex', the request will be processed with the Flex Processing
         #   service tier.
         #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).

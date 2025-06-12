@@ -24,10 +24,7 @@ module OpenAI
         sig do
           returns(
             T::Array[
-              T.any(
-                OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Logs,
-                OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Files
-              )
+              OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Variants
             ]
           )
         end
@@ -36,7 +33,7 @@ module OpenAI
         # The status of the code interpreter tool call.
         sig do
           returns(
-            OpenAI::Responses::ResponseCodeInterpreterToolCall::Status::OrSymbol
+            OpenAI::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol
           )
         end
         attr_accessor :status
@@ -44,13 +41,6 @@ module OpenAI
         # The type of the code interpreter tool call. Always `code_interpreter_call`.
         sig { returns(Symbol) }
         attr_accessor :type
-
-        # The ID of the container used to run the code.
-        sig { returns(T.nilable(String)) }
-        attr_reader :container_id
-
-        sig { params(container_id: String).void }
-        attr_writer :container_id
 
         # A tool call to run code.
         sig do
@@ -66,7 +56,6 @@ module OpenAI
               ],
             status:
               OpenAI::Responses::ResponseCodeInterpreterToolCall::Status::OrSymbol,
-            container_id: String,
             type: Symbol
           ).returns(T.attached_class)
         end
@@ -79,8 +68,6 @@ module OpenAI
           results:,
           # The status of the code interpreter tool call.
           status:,
-          # The ID of the container used to run the code.
-          container_id: nil,
           # The type of the code interpreter tool call. Always `code_interpreter_call`.
           type: :code_interpreter_call
         )
@@ -93,22 +80,18 @@ module OpenAI
               code: String,
               results:
                 T::Array[
-                  T.any(
-                    OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Logs,
-                    OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Files
-                  )
+                  OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Variants
                 ],
               status:
-                OpenAI::Responses::ResponseCodeInterpreterToolCall::Status::OrSymbol,
-              type: Symbol,
-              container_id: String
+                OpenAI::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol,
+              type: Symbol
             }
           )
         end
         def to_hash
         end
 
-        # The output of a code interpreter tool.
+        # The output of a code interpreter tool call that is text.
         module Result
           extend OpenAI::Internal::Type::Union
 
