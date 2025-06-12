@@ -24,10 +24,6 @@ module OpenAI
         sig { returns(Integer) }
         attr_accessor :output_index
 
-        # The sequence number of this event.
-        sig { returns(Integer) }
-        attr_accessor :sequence_number
-
         # The type of the event. Always `response.function_call_arguments.delta`.
         sig { returns(Symbol) }
         attr_accessor :type
@@ -38,7 +34,6 @@ module OpenAI
             delta: String,
             item_id: String,
             output_index: Integer,
-            sequence_number: Integer,
             type: Symbol
           ).returns(T.attached_class)
         end
@@ -49,8 +44,6 @@ module OpenAI
           item_id:,
           # The index of the output item that the function-call arguments delta is added to.
           output_index:,
-          # The sequence number of this event.
-          sequence_number:,
           # The type of the event. Always `response.function_call_arguments.delta`.
           type: :"response.function_call_arguments.delta"
         )
@@ -62,7 +55,6 @@ module OpenAI
               delta: String,
               item_id: String,
               output_index: Integer,
-              sequence_number: Integer,
               type: Symbol
             }
           )

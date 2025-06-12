@@ -47,15 +47,7 @@ module OpenAI
                   OpenAI::Responses::ResponseComputerToolCallOutputItem::OrHash,
                   OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
                   OpenAI::Responses::ResponseFunctionToolCallItem::OrHash,
-                  OpenAI::Responses::ResponseFunctionToolCallOutputItem::OrHash,
-                  OpenAI::Responses::ResponseItem::ImageGenerationCall::OrHash,
-                  OpenAI::Responses::ResponseCodeInterpreterToolCall::OrHash,
-                  OpenAI::Responses::ResponseItem::LocalShellCall::OrHash,
-                  OpenAI::Responses::ResponseItem::LocalShellCallOutput::OrHash,
-                  OpenAI::Responses::ResponseItem::McpListTools::OrHash,
-                  OpenAI::Responses::ResponseItem::McpApprovalRequest::OrHash,
-                  OpenAI::Responses::ResponseItem::McpApprovalResponse::OrHash,
-                  OpenAI::Responses::ResponseItem::McpCall::OrHash
+                  OpenAI::Responses::ResponseFunctionToolCallOutputItem::OrHash
                 )
               ],
             first_id: String,

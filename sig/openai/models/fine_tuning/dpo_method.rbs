@@ -2,22 +2,102 @@ module OpenAI
   module Models
     module FineTuning
       type dpo_method =
-        { hyperparameters: OpenAI::FineTuning::DpoHyperparameters }
+        { hyperparameters: OpenAI::FineTuning::DpoMethod::Hyperparameters }
 
       class DpoMethod < OpenAI::Internal::Type::BaseModel
-        attr_reader hyperparameters: OpenAI::FineTuning::DpoHyperparameters?
+        attr_reader hyperparameters: OpenAI::FineTuning::DpoMethod::Hyperparameters?
 
         def hyperparameters=: (
-          OpenAI::FineTuning::DpoHyperparameters
-        ) -> OpenAI::FineTuning::DpoHyperparameters
+          OpenAI::FineTuning::DpoMethod::Hyperparameters
+        ) -> OpenAI::FineTuning::DpoMethod::Hyperparameters
 
         def initialize: (
-          ?hyperparameters: OpenAI::FineTuning::DpoHyperparameters
+          ?hyperparameters: OpenAI::FineTuning::DpoMethod::Hyperparameters
         ) -> void
 
         def to_hash: -> {
-          hyperparameters: OpenAI::FineTuning::DpoHyperparameters
+          hyperparameters: OpenAI::FineTuning::DpoMethod::Hyperparameters
         }
+
+        type hyperparameters =
+          {
+            batch_size: OpenAI::Models::FineTuning::DpoMethod::Hyperparameters::batch_size,
+            beta: OpenAI::Models::FineTuning::DpoMethod::Hyperparameters::beta,
+            learning_rate_multiplier: OpenAI::Models::FineTuning::DpoMethod::Hyperparameters::learning_rate_multiplier,
+            n_epochs: OpenAI::Models::FineTuning::DpoMethod::Hyperparameters::n_epochs
+          }
+
+        class Hyperparameters < OpenAI::Internal::Type::BaseModel
+          attr_reader batch_size: OpenAI::Models::FineTuning::DpoMethod::Hyperparameters::batch_size?
+
+          def batch_size=: (
+            OpenAI::Models::FineTuning::DpoMethod::Hyperparameters::batch_size
+          ) -> OpenAI::Models::FineTuning::DpoMethod::Hyperparameters::batch_size
+
+          attr_reader beta: OpenAI::Models::FineTuning::DpoMethod::Hyperparameters::beta?
+
+          def beta=: (
+            OpenAI::Models::FineTuning::DpoMethod::Hyperparameters::beta
+          ) -> OpenAI::Models::FineTuning::DpoMethod::Hyperparameters::beta
+
+          attr_reader learning_rate_multiplier: OpenAI::Models::FineTuning::DpoMethod::Hyperparameters::learning_rate_multiplier?
+
+          def learning_rate_multiplier=: (
+            OpenAI::Models::FineTuning::DpoMethod::Hyperparameters::learning_rate_multiplier
+          ) -> OpenAI::Models::FineTuning::DpoMethod::Hyperparameters::learning_rate_multiplier
+
+          attr_reader n_epochs: OpenAI::Models::FineTuning::DpoMethod::Hyperparameters::n_epochs?
+
+          def n_epochs=: (
+            OpenAI::Models::FineTuning::DpoMethod::Hyperparameters::n_epochs
+          ) -> OpenAI::Models::FineTuning::DpoMethod::Hyperparameters::n_epochs
+
+          def initialize: (
+            ?batch_size: OpenAI::Models::FineTuning::DpoMethod::Hyperparameters::batch_size,
+            ?beta: OpenAI::Models::FineTuning::DpoMethod::Hyperparameters::beta,
+            ?learning_rate_multiplier: OpenAI::Models::FineTuning::DpoMethod::Hyperparameters::learning_rate_multiplier,
+            ?n_epochs: OpenAI::Models::FineTuning::DpoMethod::Hyperparameters::n_epochs
+          ) -> void
+
+          def to_hash: -> {
+            batch_size: OpenAI::Models::FineTuning::DpoMethod::Hyperparameters::batch_size,
+            beta: OpenAI::Models::FineTuning::DpoMethod::Hyperparameters::beta,
+            learning_rate_multiplier: OpenAI::Models::FineTuning::DpoMethod::Hyperparameters::learning_rate_multiplier,
+            n_epochs: OpenAI::Models::FineTuning::DpoMethod::Hyperparameters::n_epochs
+          }
+
+          type batch_size = :auto | Integer
+
+          module BatchSize
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::FineTuning::DpoMethod::Hyperparameters::batch_size]
+          end
+
+          type beta = :auto | Float
+
+          module Beta
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::FineTuning::DpoMethod::Hyperparameters::beta]
+          end
+
+          type learning_rate_multiplier = :auto | Float
+
+          module LearningRateMultiplier
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::FineTuning::DpoMethod::Hyperparameters::learning_rate_multiplier]
+          end
+
+          type n_epochs = :auto | Integer
+
+          module NEpochs
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::FineTuning::DpoMethod::Hyperparameters::n_epochs]
+          end
+        end
       end
     end
   end

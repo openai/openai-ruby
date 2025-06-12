@@ -5,7 +5,6 @@ module OpenAI
     module Evals
       class CreateEvalJSONLRunDataSource < OpenAI::Internal::Type::BaseModel
         # @!attribute source
-        #   Determines what populates the `item` namespace in the data source.
         #
         #   @return [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent, OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileID]
         required :source, union: -> { OpenAI::Evals::CreateEvalJSONLRunDataSource::Source }
@@ -20,12 +19,10 @@ module OpenAI
         #   A JsonlRunDataSource object with that specifies a JSONL file that matches the
         #   eval
         #
-        #   @param source [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent, OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileID] Determines what populates the `item` namespace in the data source.
+        #   @param source [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent, OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileID]
         #
         #   @param type [Symbol, :jsonl] The type of data source. Always `jsonl`.
 
-        # Determines what populates the `item` namespace in the data source.
-        #
         # @see OpenAI::Models::Evals::CreateEvalJSONLRunDataSource#source
         module Source
           extend OpenAI::Internal::Type::Union

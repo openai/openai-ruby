@@ -32,10 +32,6 @@ module OpenAI
         end
         attr_accessor :part
 
-        # The sequence number of this event.
-        sig { returns(Integer) }
-        attr_accessor :sequence_number
-
         # The type of the event. Always `response.content_part.done`.
         sig { returns(Symbol) }
         attr_accessor :type
@@ -51,7 +47,6 @@ module OpenAI
                 OpenAI::Responses::ResponseOutputText::OrHash,
                 OpenAI::Responses::ResponseOutputRefusal::OrHash
               ),
-            sequence_number: Integer,
             type: Symbol
           ).returns(T.attached_class)
         end
@@ -64,8 +59,6 @@ module OpenAI
           output_index:,
           # The content part that is done.
           part:,
-          # The sequence number of this event.
-          sequence_number:,
           # The type of the event. Always `response.content_part.done`.
           type: :"response.content_part.done"
         )
@@ -79,7 +72,6 @@ module OpenAI
               output_index: Integer,
               part:
                 OpenAI::Responses::ResponseContentPartDoneEvent::Part::Variants,
-              sequence_number: Integer,
               type: Symbol
             }
           )

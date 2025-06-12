@@ -25,17 +25,6 @@ module OpenAI
         #   @return [String, Symbol, OpenAI::Models::AudioModel]
         required :model, union: -> { OpenAI::Audio::TranscriptionCreateParams::Model }
 
-        # @!attribute chunking_strategy
-        #   Controls how the audio is cut into chunks. When set to `"auto"`, the server
-        #   first normalizes loudness and then uses voice activity detection (VAD) to choose
-        #   boundaries. `server_vad` object can be provided to tweak VAD detection
-        #   parameters manually. If unset, the audio is transcribed as a single block.
-        #
-        #   @return [Symbol, :auto, OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig, nil]
-        optional :chunking_strategy,
-                 union: -> { OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy },
-                 nil?: true
-
         # @!attribute include
         #   Additional information to include in the transcription response. `logprobs` will
         #   return the log probabilities of the tokens in the response to understand the
@@ -94,15 +83,13 @@ module OpenAI
                    OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Audio::TranscriptionCreateParams::TimestampGranularity]
                  }
 
-        # @!method initialize(file:, model:, chunking_strategy: nil, include: nil, language: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
+        # @!method initialize(file:, model:, include: nil, language: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Audio::TranscriptionCreateParams} for more details.
         #
         #   @param file [Pathname, StringIO, IO, String, OpenAI::FilePart] The audio file object (not file name) to transcribe, in one of these formats: fl
         #
         #   @param model [String, Symbol, OpenAI::Models::AudioModel] ID of the model to use. The options are `gpt-4o-transcribe`, `gpt-4o-mini-transc
-        #
-        #   @param chunking_strategy [Symbol, :auto, OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig, nil] Controls how the audio is cut into chunks. When set to `"auto"`, the server firs
         #
         #   @param include [Array<Symbol, OpenAI::Models::Audio::TranscriptionInclude>] Additional information to include in the transcription response.
         #
@@ -131,80 +118,6 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(String, Symbol, OpenAI::Models::AudioModel)]
-        end
-
-        # Controls how the audio is cut into chunks. When set to `"auto"`, the server
-        # first normalizes loudness and then uses voice activity detection (VAD) to choose
-        # boundaries. `server_vad` object can be provided to tweak VAD detection
-        # parameters manually. If unset, the audio is transcribed as a single block.
-        module ChunkingStrategy
-          extend OpenAI::Internal::Type::Union
-
-          # Automatically set chunking parameters based on the audio. Must be set to `"auto"`.
-          variant const: :auto
-
-          variant -> { OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig }
-
-          class VadConfig < OpenAI::Internal::Type::BaseModel
-            # @!attribute type
-            #   Must be set to `server_vad` to enable manual chunking using server side VAD.
-            #
-            #   @return [Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::Type]
-            required :type,
-                     enum: -> {
-                       OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::Type
-                     }
-
-            # @!attribute prefix_padding_ms
-            #   Amount of audio to include before the VAD detected speech (in milliseconds).
-            #
-            #   @return [Integer, nil]
-            optional :prefix_padding_ms, Integer
-
-            # @!attribute silence_duration_ms
-            #   Duration of silence to detect speech stop (in milliseconds). With shorter values
-            #   the model will respond more quickly, but may jump in on short pauses from the
-            #   user.
-            #
-            #   @return [Integer, nil]
-            optional :silence_duration_ms, Integer
-
-            # @!attribute threshold
-            #   Sensitivity threshold (0.0 to 1.0) for voice activity detection. A higher
-            #   threshold will require louder audio to activate the model, and thus might
-            #   perform better in noisy environments.
-            #
-            #   @return [Float, nil]
-            optional :threshold, Float
-
-            # @!method initialize(type:, prefix_padding_ms: nil, silence_duration_ms: nil, threshold: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig}
-            #   for more details.
-            #
-            #   @param type [Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::Type] Must be set to `server_vad` to enable manual chunking using server side VAD.
-            #
-            #   @param prefix_padding_ms [Integer] Amount of audio to include before the VAD detected speech (in
-            #
-            #   @param silence_duration_ms [Integer] Duration of silence to detect speech stop (in milliseconds).
-            #
-            #   @param threshold [Float] Sensitivity threshold (0.0 to 1.0) for voice activity detection. A
-
-            # Must be set to `server_vad` to enable manual chunking using server side VAD.
-            #
-            # @see OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig#type
-            module Type
-              extend OpenAI::Internal::Type::Enum
-
-              SERVER_VAD = :server_vad
-
-              # @!method self.values
-              #   @return [Array<Symbol>]
-            end
-          end
-
-          # @!method self.variants
-          #   @return [Array(Symbol, :auto, OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig)]
         end
 
         module TimestampGranularity

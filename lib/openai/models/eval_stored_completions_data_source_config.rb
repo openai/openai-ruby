@@ -2,7 +2,6 @@
 
 module OpenAI
   module Models
-    # @deprecated
     class EvalStoredCompletionsDataSourceConfig < OpenAI::Internal::Type::BaseModel
       # @!attribute schema
       #   The json schema for the run data source items. Learn how to build JSON schemas
@@ -32,7 +31,11 @@ module OpenAI
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::EvalStoredCompletionsDataSourceConfig} for more details.
       #
-      #   Deprecated in favor of LogsDataSourceConfig.
+      #   A StoredCompletionsDataSourceConfig which specifies the metadata property of
+      #   your stored completions query. This is usually metadata like `usecase=chatbot`
+      #   or `prompt-version=v2`, etc. The schema returned by this data source config is
+      #   used to defined what variables are available in your evals. `item` and `sample`
+      #   are both defined when using this data source config.
       #
       #   @param schema [Hash{Symbol=>Object}] The json schema for the run data source items.
       #

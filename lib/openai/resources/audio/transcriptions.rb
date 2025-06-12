@@ -12,13 +12,11 @@ module OpenAI
         #
         # Transcribes audio into the input language.
         #
-        # @overload create(file:, model:, chunking_strategy: nil, include: nil, language: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
+        # @overload create(file:, model:, include: nil, language: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
         #
         # @param file [Pathname, StringIO, IO, String, OpenAI::FilePart] The audio file object (not file name) to transcribe, in one of these formats: fl
         #
         # @param model [String, Symbol, OpenAI::Models::AudioModel] ID of the model to use. The options are `gpt-4o-transcribe`, `gpt-4o-mini-transc
-        #
-        # @param chunking_strategy [Symbol, :auto, OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig, nil] Controls how the audio is cut into chunks. When set to `"auto"`, the server firs
         #
         # @param include [Array<Symbol, OpenAI::Models::Audio::TranscriptionInclude>] Additional information to include in the transcription response.
         #
@@ -61,13 +59,11 @@ module OpenAI
         #
         # Transcribes audio into the input language.
         #
-        # @overload create_streaming(file:, model:, chunking_strategy: nil, include: nil, language: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
+        # @overload create_streaming(file:, model:, include: nil, language: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
         #
         # @param file [Pathname, StringIO, IO, String, OpenAI::FilePart] The audio file object (not file name) to transcribe, in one of these formats: fl
         #
         # @param model [String, Symbol, OpenAI::Models::AudioModel] ID of the model to use. The options are `gpt-4o-transcribe`, `gpt-4o-mini-transc
-        #
-        # @param chunking_strategy [Symbol, :auto, OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig, nil] Controls how the audio is cut into chunks. When set to `"auto"`, the server firs
         #
         # @param include [Array<Symbol, OpenAI::Models::Audio::TranscriptionInclude>] Additional information to include in the transcription response.
         #

@@ -37,13 +37,7 @@ module OpenAI
         #   @return [Symbol, :code_interpreter_call]
         required :type, const: :code_interpreter_call
 
-        # @!attribute container_id
-        #   The ID of the container used to run the code.
-        #
-        #   @return [String, nil]
-        optional :container_id, String
-
-        # @!method initialize(id:, code:, results:, status:, container_id: nil, type: :code_interpreter_call)
+        # @!method initialize(id:, code:, results:, status:, type: :code_interpreter_call)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseCodeInterpreterToolCall} for more details.
         #
@@ -57,11 +51,9 @@ module OpenAI
         #
         #   @param status [Symbol, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status] The status of the code interpreter tool call.
         #
-        #   @param container_id [String] The ID of the container used to run the code.
-        #
         #   @param type [Symbol, :code_interpreter_call] The type of the code interpreter tool call. Always `code_interpreter_call`.
 
-        # The output of a code interpreter tool.
+        # The output of a code interpreter tool call that is text.
         module Result
           extend OpenAI::Internal::Type::Union
 

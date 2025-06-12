@@ -12,13 +12,6 @@ module OpenAI
           params(
             file: OpenAI::Internal::FileInput,
             model: T.any(String, OpenAI::AudioModel::OrSymbol),
-            chunking_strategy:
-              T.nilable(
-                T.any(
-                  Symbol,
-                  OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::OrHash
-                )
-              ),
             include: T::Array[OpenAI::Audio::TranscriptionInclude::OrSymbol],
             language: String,
             prompt: String,
@@ -42,11 +35,6 @@ module OpenAI
           # `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source
           # Whisper V2 model).
           model:,
-          # Controls how the audio is cut into chunks. When set to `"auto"`, the server
-          # first normalizes loudness and then uses voice activity detection (VAD) to choose
-          # boundaries. `server_vad` object can be provided to tweak VAD detection
-          # parameters manually. If unset, the audio is transcribed as a single block.
-          chunking_strategy: nil,
           # Additional information to include in the transcription response. `logprobs` will
           # return the log probabilities of the tokens in the response to understand the
           # model's confidence in the transcription. `logprobs` only works with
@@ -93,13 +81,6 @@ module OpenAI
           params(
             file: OpenAI::Internal::FileInput,
             model: T.any(String, OpenAI::AudioModel::OrSymbol),
-            chunking_strategy:
-              T.nilable(
-                T.any(
-                  Symbol,
-                  OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::OrHash
-                )
-              ),
             include: T::Array[OpenAI::Audio::TranscriptionInclude::OrSymbol],
             language: String,
             prompt: String,
@@ -125,11 +106,6 @@ module OpenAI
           # `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source
           # Whisper V2 model).
           model:,
-          # Controls how the audio is cut into chunks. When set to `"auto"`, the server
-          # first normalizes loudness and then uses voice activity detection (VAD) to choose
-          # boundaries. `server_vad` object can be provided to tweak VAD detection
-          # parameters manually. If unset, the audio is transcribed as a single block.
-          chunking_strategy: nil,
           # Additional information to include in the transcription response. `logprobs` will
           # return the log probabilities of the tokens in the response to understand the
           # model's confidence in the transcription. `logprobs` only works with

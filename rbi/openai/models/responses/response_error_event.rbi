@@ -24,10 +24,6 @@ module OpenAI
         sig { returns(T.nilable(String)) }
         attr_accessor :param
 
-        # The sequence number of this event.
-        sig { returns(Integer) }
-        attr_accessor :sequence_number
-
         # The type of the event. Always `error`.
         sig { returns(Symbol) }
         attr_accessor :type
@@ -38,7 +34,6 @@ module OpenAI
             code: T.nilable(String),
             message: String,
             param: T.nilable(String),
-            sequence_number: Integer,
             type: Symbol
           ).returns(T.attached_class)
         end
@@ -49,8 +44,6 @@ module OpenAI
           message:,
           # The error parameter.
           param:,
-          # The sequence number of this event.
-          sequence_number:,
           # The type of the event. Always `error`.
           type: :error
         )
@@ -62,7 +55,6 @@ module OpenAI
               code: T.nilable(String),
               message: String,
               param: T.nilable(String),
-              sequence_number: Integer,
               type: Symbol
             }
           )

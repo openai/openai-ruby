@@ -5,7 +5,7 @@ module OpenAI
     module Evals
       class CreateEvalCompletionsRunDataSource < OpenAI::Internal::Type::BaseModel
         # @!attribute source
-        #   Determines what populates the `item` namespace in this run's data source.
+        #   A StoredCompletionsRunDataSource configuration describing a set of filters
         #
         #   @return [OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::FileID, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions]
         required :source, union: -> { OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source }
@@ -17,10 +17,6 @@ module OpenAI
         required :type, enum: -> { OpenAI::Evals::CreateEvalCompletionsRunDataSource::Type }
 
         # @!attribute input_messages
-        #   Used when sampling from a model. Dictates the structure of the messages passed
-        #   into the model. Can either be a reference to a prebuilt trajectory (ie,
-        #   `item.input_trajectory`), or a template with variable references to the `item`
-        #   namespace.
         #
         #   @return [OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::ItemReference, nil]
         optional :input_messages,
@@ -45,17 +41,17 @@ module OpenAI
         #
         #   A CompletionsRunDataSource object describing a model sampling configuration.
         #
-        #   @param source [OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::FileID, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions] Determines what populates the `item` namespace in this run's data source.
+        #   @param source [OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::FileID, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions] A StoredCompletionsRunDataSource configuration describing a set of filters
         #
         #   @param type [Symbol, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Type] The type of run data source. Always `completions`.
         #
-        #   @param input_messages [OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::ItemReference] Used when sampling from a model. Dictates the structure of the messages passed i
+        #   @param input_messages [OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::ItemReference]
         #
         #   @param model [String] The name of the model to use for generating completions (e.g. "o3-mini").
         #
         #   @param sampling_params [OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams]
 
-        # Determines what populates the `item` namespace in this run's data source.
+        # A StoredCompletionsRunDataSource configuration describing a set of filters
         #
         # @see OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource#source
         module Source
@@ -206,11 +202,6 @@ module OpenAI
           #   @return [Array<Symbol>]
         end
 
-        # Used when sampling from a model. Dictates the structure of the messages passed
-        # into the model. Can either be a reference to a prebuilt trajectory (ie,
-        # `item.input_trajectory`), or a template with variable references to the `item`
-        # namespace.
-        #
         # @see OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource#input_messages
         module InputMessages
           extend OpenAI::Internal::Type::Union
@@ -225,7 +216,7 @@ module OpenAI
           class Template < OpenAI::Internal::Type::BaseModel
             # @!attribute template
             #   A list of chat messages forming the prompt or context. May include variable
-            #   references to the `item` namespace, ie {{item.name}}.
+            #   references to the "item" namespace, ie {{item.name}}.
             #
             #   @return [Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message>]
             required :template,
@@ -403,7 +394,7 @@ module OpenAI
 
           class ItemReference < OpenAI::Internal::Type::BaseModel
             # @!attribute item_reference
-            #   A reference to a variable in the `item` namespace. Ie, "item.input_trajectory"
+            #   A reference to a variable in the "item" namespace. Ie, "item.name"
             #
             #   @return [String]
             required :item_reference, String
@@ -415,7 +406,7 @@ module OpenAI
             required :type, const: :item_reference
 
             # @!method initialize(item_reference:, type: :item_reference)
-            #   @param item_reference [String] A reference to a variable in the `item` namespace. Ie, "item.input_trajectory"
+            #   @param item_reference [String] A reference to a variable in the "item" namespace. Ie, "item.name"
             #
             #   @param type [Symbol, :item_reference] The type of input messages. Always `item_reference`.
           end
@@ -432,24 +423,6 @@ module OpenAI
           #   @return [Integer, nil]
           optional :max_completion_tokens, Integer
 
-          # @!attribute response_format
-          #   An object specifying the format that the model must output.
-          #
-          #   Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
-          #   Outputs which ensures the model will match your supplied JSON schema. Learn more
-          #   in the
-          #   [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
-          #
-          #   Setting to `{ "type": "json_object" }` enables the older JSON mode, which
-          #   ensures the message the model generates is valid JSON. Using `json_schema` is
-          #   preferred for models that support it.
-          #
-          #   @return [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject, nil]
-          optional :response_format,
-                   union: -> {
-                     OpenAI::Evals::CreateEvalCompletionsRunDataSource::SamplingParams::ResponseFormat
-                   }
-
           # @!attribute seed
           #   A seed value to initialize the randomness, during sampling.
           #
@@ -462,68 +435,20 @@ module OpenAI
           #   @return [Float, nil]
           optional :temperature, Float
 
-          # @!attribute tools
-          #   A list of tools the model may call. Currently, only functions are supported as a
-          #   tool. Use this to provide a list of functions the model may generate JSON inputs
-          #   for. A max of 128 functions are supported.
-          #
-          #   @return [Array<OpenAI::Models::Chat::ChatCompletionTool>, nil]
-          optional :tools, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletionTool] }
-
           # @!attribute top_p
           #   An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
           #
           #   @return [Float, nil]
           optional :top_p, Float
 
-          # @!method initialize(max_completion_tokens: nil, response_format: nil, seed: nil, temperature: nil, tools: nil, top_p: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams} for
-          #   more details.
-          #
+          # @!method initialize(max_completion_tokens: nil, seed: nil, temperature: nil, top_p: nil)
           #   @param max_completion_tokens [Integer] The maximum number of tokens in the generated output.
-          #
-          #   @param response_format [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject] An object specifying the format that the model must output.
           #
           #   @param seed [Integer] A seed value to initialize the randomness, during sampling.
           #
           #   @param temperature [Float] A higher temperature increases randomness in the outputs.
           #
-          #   @param tools [Array<OpenAI::Models::Chat::ChatCompletionTool>] A list of tools the model may call. Currently, only functions are supported as a
-          #
           #   @param top_p [Float] An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
-
-          # An object specifying the format that the model must output.
-          #
-          # Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
-          # Outputs which ensures the model will match your supplied JSON schema. Learn more
-          # in the
-          # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
-          #
-          # Setting to `{ "type": "json_object" }` enables the older JSON mode, which
-          # ensures the message the model generates is valid JSON. Using `json_schema` is
-          # preferred for models that support it.
-          #
-          # @see OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams#response_format
-          module ResponseFormat
-            extend OpenAI::Internal::Type::Union
-
-            # Default response format. Used to generate text responses.
-            variant -> { OpenAI::ResponseFormatText }
-
-            # JSON Schema response format. Used to generate structured JSON responses.
-            # Learn more about [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
-            variant -> { OpenAI::ResponseFormatJSONSchema }
-
-            # JSON object response format. An older method of generating JSON responses.
-            # Using `json_schema` is recommended for models that support it. Note that the
-            # model will not generate JSON without a system or user message instructing it
-            # to do so.
-            variant -> { OpenAI::ResponseFormatJSONObject }
-
-            # @!method self.variants
-            #   @return [Array(OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject)]
-          end
         end
       end
     end

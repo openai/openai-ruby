@@ -28,10 +28,6 @@ module OpenAI
         sig { returns(Integer) }
         attr_accessor :output_index
 
-        # The sequence number of this event.
-        sig { returns(Integer) }
-        attr_accessor :sequence_number
-
         # The type of the event. Always `response.refusal.delta`.
         sig { returns(Symbol) }
         attr_accessor :type
@@ -43,7 +39,6 @@ module OpenAI
             delta: String,
             item_id: String,
             output_index: Integer,
-            sequence_number: Integer,
             type: Symbol
           ).returns(T.attached_class)
         end
@@ -56,8 +51,6 @@ module OpenAI
           item_id:,
           # The index of the output item that the refusal text is added to.
           output_index:,
-          # The sequence number of this event.
-          sequence_number:,
           # The type of the event. Always `response.refusal.delta`.
           type: :"response.refusal.delta"
         )
@@ -70,7 +63,6 @@ module OpenAI
               delta: String,
               item_id: String,
               output_index: Integer,
-              sequence_number: Integer,
               type: Symbol
             }
           )

@@ -28,7 +28,6 @@ module OpenAI
               OpenAI::ChatModel::OrSymbol,
               OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
             ),
-          background: T.nilable(T::Boolean),
           include:
             T.nilable(
               T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
@@ -59,13 +58,9 @@ module OpenAI
           tools:
             T::Array[
               T.any(
-                OpenAI::Responses::FunctionTool::OrHash,
                 OpenAI::Responses::FileSearchTool::OrHash,
+                OpenAI::Responses::FunctionTool::OrHash,
                 OpenAI::Responses::ComputerTool::OrHash,
-                OpenAI::Responses::Tool::Mcp::OrHash,
-                OpenAI::Responses::Tool::CodeInterpreter::OrHash,
-                OpenAI::Responses::Tool::ImageGeneration::OrHash,
-                OpenAI::Responses::Tool::LocalShell::OrHash,
                 OpenAI::Responses::WebSearchTool::OrHash
               )
             ],
@@ -96,9 +91,6 @@ module OpenAI
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
         # available models.
         model:,
-        # Whether to run the model response in the background.
-        # [Learn more](https://platform.openai.com/docs/guides/background).
-        background: nil,
         # Specify additional output data to include in the model response. Currently
         # supported values are:
         #
@@ -107,13 +99,6 @@ module OpenAI
         # - `message.input_image.image_url`: Include image urls from the input message.
         # - `computer_call_output.output.image_url`: Include image urls from the computer
         #   call output.
-        # - `reasoning.encrypted_content`: Includes an encrypted version of reasoning
-        #   tokens in reasoning item outputs. This enables reasoning items to be used in
-        #   multi-turn conversations when using the Responses API statelessly (like when
-        #   the `store` parameter is set to `false`, or when an organization is enrolled
-        #   in the zero data retention program).
-        # - `code_interpreter_call.outputs`: Includes the outputs of python code execution
-        #   in code interpreter tool call items.
         include: nil,
         # Inserts a system (or developer) message as the first item in the model's
         # context.
@@ -151,9 +136,9 @@ module OpenAI
         #   utilize scale tier credits until they are exhausted.
         # - If set to 'auto', and the Project is not Scale tier enabled, the request will
         #   be processed using the default service tier with a lower uptime SLA and no
-        #   latency guarantee.
+        #   latency guarentee.
         # - If set to 'default', the request will be processed using the default service
-        #   tier with a lower uptime SLA and no latency guarantee.
+        #   tier with a lower uptime SLA and no latency guarentee.
         # - If set to 'flex', the request will be processed with the Flex Processing
         #   service tier.
         #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
@@ -208,8 +193,8 @@ module OpenAI
         # - `disabled` (default): If a model response will exceed the context window size
         #   for a model, the request will fail with a 400 error.
         truncation: nil,
-        # A stable identifier for your end-users. Used to boost cache hit rates by better
-        # bucketing similar requests and to help OpenAI detect and prevent abuse.
+        # A unique identifier representing your end-user, which can help OpenAI to monitor
+        # and detect abuse.
         # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         user: nil,
         # There is no need to provide `stream:`. Instead, use `#stream_raw` or `#create`
@@ -241,7 +226,6 @@ module OpenAI
               OpenAI::ChatModel::OrSymbol,
               OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
             ),
-          background: T.nilable(T::Boolean),
           include:
             T.nilable(
               T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
@@ -268,13 +252,9 @@ module OpenAI
           tools:
             T::Array[
               T.any(
-                OpenAI::Responses::FunctionTool::OrHash,
                 OpenAI::Responses::FileSearchTool::OrHash,
+                OpenAI::Responses::FunctionTool::OrHash,
                 OpenAI::Responses::ComputerTool::OrHash,
-                OpenAI::Responses::Tool::Mcp::OrHash,
-                OpenAI::Responses::Tool::CodeInterpreter::OrHash,
-                OpenAI::Responses::Tool::ImageGeneration::OrHash,
-                OpenAI::Responses::Tool::LocalShell::OrHash,
                 OpenAI::Responses::WebSearchTool::OrHash
               )
             ],
@@ -309,9 +289,6 @@ module OpenAI
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
         # available models.
         model:,
-        # Whether to run the model response in the background.
-        # [Learn more](https://platform.openai.com/docs/guides/background).
-        background: nil,
         # Specify additional output data to include in the model response. Currently
         # supported values are:
         #
@@ -320,13 +297,6 @@ module OpenAI
         # - `message.input_image.image_url`: Include image urls from the input message.
         # - `computer_call_output.output.image_url`: Include image urls from the computer
         #   call output.
-        # - `reasoning.encrypted_content`: Includes an encrypted version of reasoning
-        #   tokens in reasoning item outputs. This enables reasoning items to be used in
-        #   multi-turn conversations when using the Responses API statelessly (like when
-        #   the `store` parameter is set to `false`, or when an organization is enrolled
-        #   in the zero data retention program).
-        # - `code_interpreter_call.outputs`: Includes the outputs of python code execution
-        #   in code interpreter tool call items.
         include: nil,
         # Inserts a system (or developer) message as the first item in the model's
         # context.
@@ -364,9 +334,9 @@ module OpenAI
         #   utilize scale tier credits until they are exhausted.
         # - If set to 'auto', and the Project is not Scale tier enabled, the request will
         #   be processed using the default service tier with a lower uptime SLA and no
-        #   latency guarantee.
+        #   latency guarentee.
         # - If set to 'default', the request will be processed using the default service
-        #   tier with a lower uptime SLA and no latency guarantee.
+        #   tier with a lower uptime SLA and no latency guarentee.
         # - If set to 'flex', the request will be processed with the Flex Processing
         #   service tier.
         #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
@@ -421,8 +391,8 @@ module OpenAI
         # - `disabled` (default): If a model response will exceed the context window size
         #   for a model, the request will fail with a 400 error.
         truncation: nil,
-        # A stable identifier for your end-users. Used to boost cache hit rates by better
-        # bucketing similar requests and to help OpenAI detect and prevent abuse.
+        # A unique identifier representing your end-user, which can help OpenAI to monitor
+        # and detect abuse.
         # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         user: nil,
         # There is no need to provide `stream:`. Instead, use `#stream_raw` or `#create`
@@ -439,8 +409,6 @@ module OpenAI
         params(
           response_id: String,
           include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
-          starting_after: Integer,
-          stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(OpenAI::Responses::Response)
       end
@@ -450,11 +418,6 @@ module OpenAI
         # Additional fields to include in the response. See the `include` parameter for
         # Response creation above for more information.
         include: nil,
-        # The sequence number of the event after which to start streaming.
-        starting_after: nil,
-        # There is no need to provide `stream:`. Instead, use `#retrieve_streaming` or
-        # `#retrieve` for streaming and non-streaming use cases, respectively.
-        stream: false,
         request_options: {}
       )
       end
@@ -466,8 +429,6 @@ module OpenAI
         params(
           response_id: String,
           include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
-          starting_after: Integer,
-          stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(
           OpenAI::Internal::Stream[
@@ -481,11 +442,6 @@ module OpenAI
         # Additional fields to include in the response. See the `include` parameter for
         # Response creation above for more information.
         include: nil,
-        # The sequence number of the event after which to start streaming.
-        starting_after: nil,
-        # There is no need to provide `stream:`. Instead, use `#retrieve_streaming` or
-        # `#retrieve` for streaming and non-streaming use cases, respectively.
-        stream: true,
         request_options: {}
       )
       end
@@ -499,22 +455,6 @@ module OpenAI
       end
       def delete(
         # The ID of the response to delete.
-        response_id,
-        request_options: {}
-      )
-      end
-
-      # Cancels a model response with the given ID. Only responses created with the
-      # `background` parameter set to `true` can be cancelled.
-      # [Learn more](https://platform.openai.com/docs/guides/background).
-      sig do
-        params(
-          response_id: String,
-          request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::Responses::Response)
-      end
-      def cancel(
-        # The ID of the response to cancel.
         response_id,
         request_options: {}
       )

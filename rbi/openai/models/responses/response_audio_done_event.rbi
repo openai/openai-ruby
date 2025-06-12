@@ -12,29 +12,19 @@ module OpenAI
             )
           end
 
-        # The sequence number of the delta.
-        sig { returns(Integer) }
-        attr_accessor :sequence_number
-
         # The type of the event. Always `response.audio.done`.
         sig { returns(Symbol) }
         attr_accessor :type
 
         # Emitted when the audio response is complete.
-        sig do
-          params(sequence_number: Integer, type: Symbol).returns(
-            T.attached_class
-          )
-        end
+        sig { params(type: Symbol).returns(T.attached_class) }
         def self.new(
-          # The sequence number of the delta.
-          sequence_number:,
           # The type of the event. Always `response.audio.done`.
           type: :"response.audio.done"
         )
         end
 
-        sig { override.returns({ sequence_number: Integer, type: Symbol }) }
+        sig { override.returns({ type: Symbol }) }
         def to_hash
         end
       end

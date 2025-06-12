@@ -21,11 +21,11 @@ module OpenAI
         #
         # @param limit [Integer] A limit on the number of objects to be returned. Limit can range between
         #
-        # @param order [Symbol, OpenAI::Models::Responses::InputItemListParams::Order] The order to return the input items in. Default is `desc`.
+        # @param order [Symbol, OpenAI::Models::Responses::InputItemListParams::Order] The order to return the input items in. Default is `asc`.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::Internal::CursorPage<OpenAI::Models::Responses::ResponseInputMessageItem, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCallItem, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem, OpenAI::Models::Responses::ResponseItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseItem::LocalShellCall, OpenAI::Models::Responses::ResponseItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseItem::McpListTools, OpenAI::Models::Responses::ResponseItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseItem::McpCall>]
+        # @return [OpenAI::Internal::CursorPage<OpenAI::Models::Responses::ResponseInputMessageItem, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCallItem, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem>]
         #
         # @see OpenAI::Models::Responses::InputItemListParams
         def list(response_id, params = {})

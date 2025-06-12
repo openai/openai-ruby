@@ -12,7 +12,6 @@ module OpenAI
             )
           end
 
-        # Determines what populates the `item` namespace in the data source.
         sig do
           returns(
             T.any(
@@ -40,7 +39,6 @@ module OpenAI
           ).returns(T.attached_class)
         end
         def self.new(
-          # Determines what populates the `item` namespace in the data source.
           source:,
           # The type of data source. Always `jsonl`.
           type: :jsonl
@@ -62,7 +60,6 @@ module OpenAI
         def to_hash
         end
 
-        # Determines what populates the `item` namespace in the data source.
         module Source
           extend OpenAI::Internal::Type::Union
 

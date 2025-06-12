@@ -17,7 +17,6 @@ module OpenAI
           tool_choice: OpenAI::Models::Responses::Response::tool_choice,
           tools: ::Array[OpenAI::Models::Responses::tool],
           top_p: Float?,
-          background: bool?,
           max_output_tokens: Integer?,
           previous_response_id: String?,
           reasoning: OpenAI::Reasoning?,
@@ -57,8 +56,6 @@ module OpenAI
         attr_accessor tools: ::Array[OpenAI::Models::Responses::tool]
 
         attr_accessor top_p: Float?
-
-        attr_accessor background: bool?
 
         attr_accessor max_output_tokens: Integer?
 
@@ -106,7 +103,6 @@ module OpenAI
           tool_choice: OpenAI::Models::Responses::Response::tool_choice,
           tools: ::Array[OpenAI::Models::Responses::tool],
           top_p: Float?,
-          ?background: bool?,
           ?max_output_tokens: Integer?,
           ?previous_response_id: String?,
           ?reasoning: OpenAI::Reasoning?,
@@ -134,7 +130,6 @@ module OpenAI
           tool_choice: OpenAI::Models::Responses::Response::tool_choice,
           tools: ::Array[OpenAI::Models::Responses::tool],
           top_p: Float?,
-          background: bool?,
           max_output_tokens: Integer?,
           previous_response_id: String?,
           reasoning: OpenAI::Reasoning?,

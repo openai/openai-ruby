@@ -6,7 +6,6 @@ module OpenAI
       def create: (
         input: OpenAI::Models::Responses::ResponseCreateParams::input,
         model: OpenAI::Models::responses_model,
-        ?background: bool?,
         ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
         ?instructions: String?,
         ?max_output_tokens: Integer?,
@@ -29,7 +28,6 @@ module OpenAI
       def stream_raw: (
         input: OpenAI::Models::Responses::ResponseCreateParams::input,
         model: OpenAI::Models::responses_model,
-        ?background: bool?,
         ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
         ?instructions: String?,
         ?max_output_tokens: Integer?,
@@ -52,14 +50,12 @@ module OpenAI
       def retrieve: (
         String response_id,
         ?include: ::Array[OpenAI::Models::Responses::response_includable],
-        ?starting_after: Integer,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Responses::Response
 
       def retrieve_streaming: (
         String response_id,
         ?include: ::Array[OpenAI::Models::Responses::response_includable],
-        ?starting_after: Integer,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Internal::Stream[OpenAI::Models::Responses::response_stream_event]
 
@@ -67,11 +63,6 @@ module OpenAI
         String response_id,
         ?request_options: OpenAI::request_opts
       ) -> nil
-
-      def cancel: (
-        String response_id,
-        ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Responses::Response
 
       def initialize: (client: OpenAI::Client) -> void
     end

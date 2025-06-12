@@ -28,19 +28,13 @@ module OpenAI
         #   @return [OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal]
         required :part, union: -> { OpenAI::Responses::ResponseContentPartDoneEvent::Part }
 
-        # @!attribute sequence_number
-        #   The sequence number of this event.
-        #
-        #   @return [Integer]
-        required :sequence_number, Integer
-
         # @!attribute type
         #   The type of the event. Always `response.content_part.done`.
         #
         #   @return [Symbol, :"response.content_part.done"]
         required :type, const: :"response.content_part.done"
 
-        # @!method initialize(content_index:, item_id:, output_index:, part:, sequence_number:, type: :"response.content_part.done")
+        # @!method initialize(content_index:, item_id:, output_index:, part:, type: :"response.content_part.done")
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseContentPartDoneEvent} for more details.
         #
@@ -53,8 +47,6 @@ module OpenAI
         #   @param output_index [Integer] The index of the output item that the content part was added to.
         #
         #   @param part [OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal] The content part that is done.
-        #
-        #   @param sequence_number [Integer] The sequence number of this event.
         #
         #   @param type [Symbol, :"response.content_part.done"] The type of the event. Always `response.content_part.done`.
 

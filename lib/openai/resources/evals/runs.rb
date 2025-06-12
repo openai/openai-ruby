@@ -10,9 +10,7 @@ module OpenAI
         # Some parameter documentations has been truncated, see
         # {OpenAI::Models::Evals::RunCreateParams} for more details.
         #
-        # Kicks off a new run for a given evaluation, specifying the data source, and what
-        # model configuration to use to test. The datasource will be validated against the
-        # schema specified in the config of the evaluation.
+        # Create a new evaluation run. This is the endpoint that will kick off grading.
         #
         # @overload create(eval_id, data_source:, metadata: nil, name: nil, request_options: {})
         #

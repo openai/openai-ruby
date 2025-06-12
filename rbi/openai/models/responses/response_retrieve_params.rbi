@@ -31,17 +31,9 @@ module OpenAI
         end
         attr_writer :include
 
-        # The sequence number of the event after which to start streaming.
-        sig { returns(T.nilable(Integer)) }
-        attr_reader :starting_after
-
-        sig { params(starting_after: Integer).void }
-        attr_writer :starting_after
-
         sig do
           params(
             include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
-            starting_after: Integer,
             request_options: OpenAI::RequestOptions::OrHash
           ).returns(T.attached_class)
         end
@@ -49,8 +41,6 @@ module OpenAI
           # Additional fields to include in the response. See the `include` parameter for
           # Response creation above for more information.
           include: nil,
-          # The sequence number of the event after which to start streaming.
-          starting_after: nil,
           request_options: {}
         )
         end
@@ -60,7 +50,6 @@ module OpenAI
             {
               include:
                 T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
-              starting_after: Integer,
               request_options: OpenAI::RequestOptions
             }
           )

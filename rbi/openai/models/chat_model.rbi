@@ -52,11 +52,6 @@ module OpenAI
           :"gpt-4o-audio-preview-2024-12-17",
           OpenAI::ChatModel::TaggedSymbol
         )
-      GPT_4O_AUDIO_PREVIEW_2025_06_03 =
-        T.let(
-          :"gpt-4o-audio-preview-2025-06-03",
-          OpenAI::ChatModel::TaggedSymbol
-        )
       GPT_4O_MINI_AUDIO_PREVIEW =
         T.let(:"gpt-4o-mini-audio-preview", OpenAI::ChatModel::TaggedSymbol)
       GPT_4O_MINI_AUDIO_PREVIEW_2024_12_17 =
@@ -80,8 +75,6 @@ module OpenAI
         )
       CHATGPT_4O_LATEST =
         T.let(:"chatgpt-4o-latest", OpenAI::ChatModel::TaggedSymbol)
-      CODEX_MINI_LATEST =
-        T.let(:"codex-mini-latest", OpenAI::ChatModel::TaggedSymbol)
       GPT_4O_MINI = T.let(:"gpt-4o-mini", OpenAI::ChatModel::TaggedSymbol)
       GPT_4O_MINI_2024_07_18 =
         T.let(:"gpt-4o-mini-2024-07-18", OpenAI::ChatModel::TaggedSymbol)

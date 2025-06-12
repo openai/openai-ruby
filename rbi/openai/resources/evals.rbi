@@ -7,8 +7,7 @@ module OpenAI
       attr_reader :runs
 
       # Create the structure of an evaluation that can be used to test a model's
-      # performance. An evaluation is a set of testing criteria and the config for a
-      # data source, which dictates the schema of the data used in the evaluation. After
+      # performance. An evaluation is a set of testing criteria and a datasource. After
       # creating an evaluation, you can run it on different models and model parameters.
       # We support several types of graders and datasources. For more information, see
       # the [Evals guide](https://platform.openai.com/docs/guides/evals).
@@ -17,14 +16,13 @@ module OpenAI
           data_source_config:
             T.any(
               OpenAI::EvalCreateParams::DataSourceConfig::Custom::OrHash,
-              OpenAI::EvalCreateParams::DataSourceConfig::Logs::OrHash,
-              OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions::OrHash
+              OpenAI::EvalCreateParams::DataSourceConfig::Logs::OrHash
             ),
           testing_criteria:
             T::Array[
               T.any(
                 OpenAI::EvalCreateParams::TestingCriterion::LabelModel::OrHash,
-                OpenAI::Graders::StringCheckGrader::OrHash,
+                OpenAI::EvalCreateParams::TestingCriterion::StringCheck::OrHash,
                 OpenAI::EvalCreateParams::TestingCriterion::TextSimilarity::OrHash,
                 OpenAI::EvalCreateParams::TestingCriterion::Python::OrHash,
                 OpenAI::EvalCreateParams::TestingCriterion::ScoreModel::OrHash
@@ -36,13 +34,9 @@ module OpenAI
         ).returns(OpenAI::Models::EvalCreateResponse)
       end
       def create(
-        # The configuration for the data source used for the evaluation runs. Dictates the
-        # schema of the data used in the evaluation.
+        # The configuration for the data source used for the evaluation runs.
         data_source_config:,
-        # A list of graders for all eval runs in this group. Graders can reference
-        # variables in the data source using double curly braces notation, like
-        # `{{item.variable_name}}`. To reference the model's output, use the `sample`
-        # namespace (ie, `{{sample.output_text}}`).
+        # A list of graders for all eval runs in this group.
         testing_criteria:,
         # Set of 16 key-value pairs that can be attached to an object. This can be useful
         # for storing additional information about the object in a structured format, and

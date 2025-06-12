@@ -85,83 +85,83 @@ module OpenAI
         type data_source =
           OpenAI::Evals::CreateEvalJSONLRunDataSource
           | OpenAI::Evals::CreateEvalCompletionsRunDataSource
-          | OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses
+          | OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions
 
         module DataSource
           extend OpenAI::Internal::Type::Union
 
-          type responses =
+          type completions =
             {
-              source: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::source,
-              type: :responses,
-              input_messages: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::input_messages,
+              source: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::source,
+              type: :completions,
+              input_messages: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::input_messages,
               model: String,
-              sampling_params: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::SamplingParams
+              sampling_params: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::SamplingParams
             }
 
-          class Responses < OpenAI::Internal::Type::BaseModel
-            attr_accessor source: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::source
+          class Completions < OpenAI::Internal::Type::BaseModel
+            attr_accessor source: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::source
 
-            attr_accessor type: :responses
+            attr_accessor type: :completions
 
-            attr_reader input_messages: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::input_messages?
+            attr_reader input_messages: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::input_messages?
 
             def input_messages=: (
-              OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::input_messages
-            ) -> OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::input_messages
+              OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::input_messages
+            ) -> OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::input_messages
 
             attr_reader model: String?
 
             def model=: (String) -> String
 
-            attr_reader sampling_params: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::SamplingParams?
+            attr_reader sampling_params: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::SamplingParams?
 
             def sampling_params=: (
-              OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::SamplingParams
-            ) -> OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::SamplingParams
+              OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::SamplingParams
+            ) -> OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::SamplingParams
 
             def initialize: (
-              source: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::source,
-              ?input_messages: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::input_messages,
+              source: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::source,
+              ?input_messages: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::input_messages,
               ?model: String,
-              ?sampling_params: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::SamplingParams,
-              ?type: :responses
+              ?sampling_params: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::SamplingParams,
+              ?type: :completions
             ) -> void
 
             def to_hash: -> {
-              source: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::source,
-              type: :responses,
-              input_messages: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::input_messages,
+              source: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::source,
+              type: :completions,
+              input_messages: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::input_messages,
               model: String,
-              sampling_params: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::SamplingParams
+              sampling_params: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::SamplingParams
             }
 
             type source =
-              OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::Source::FileContent
-              | OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::Source::FileID
-              | OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::Source::Responses
+              OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::Source::FileContent
+              | OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::Source::FileID
+              | OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::Source::Responses
 
             module Source
               extend OpenAI::Internal::Type::Union
 
               type file_content =
                 {
-                  content: ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::Source::FileContent::Content],
+                  content: ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::Source::FileContent::Content],
                   type: :file_content
                 }
 
               class FileContent < OpenAI::Internal::Type::BaseModel
-                attr_accessor content: ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::Source::FileContent::Content]
+                attr_accessor content: ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::Source::FileContent::Content]
 
                 attr_accessor type: :file_content
 
                 def initialize: (
-                  content: ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::Source::FileContent::Content],
+                  content: ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::Source::FileContent::Content],
                   ?type: :file_content
                 ) -> void
 
                 def to_hash: -> {
-                  content: ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::Source::FileContent::Content],
+                  content: ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::Source::FileContent::Content],
                   type: :file_content
                 }
 
@@ -202,14 +202,15 @@ module OpenAI
               type responses =
                 {
                   type: :responses,
+                  allow_parallel_tool_calls: bool?,
                   created_after: Integer?,
                   created_before: Integer?,
+                  has_tool_calls: bool?,
                   instructions_search: String?,
                   metadata: top?,
                   model: String?,
                   reasoning_effort: OpenAI::Models::reasoning_effort?,
                   temperature: Float?,
-                  tools: ::Array[String]?,
                   top_p: Float?,
                   users: ::Array[String]?
                 }
@@ -217,9 +218,13 @@ module OpenAI
               class Responses < OpenAI::Internal::Type::BaseModel
                 attr_accessor type: :responses
 
+                attr_accessor allow_parallel_tool_calls: bool?
+
                 attr_accessor created_after: Integer?
 
                 attr_accessor created_before: Integer?
+
+                attr_accessor has_tool_calls: bool?
 
                 attr_accessor instructions_search: String?
 
@@ -231,21 +236,20 @@ module OpenAI
 
                 attr_accessor temperature: Float?
 
-                attr_accessor tools: ::Array[String]?
-
                 attr_accessor top_p: Float?
 
                 attr_accessor users: ::Array[String]?
 
                 def initialize: (
+                  ?allow_parallel_tool_calls: bool?,
                   ?created_after: Integer?,
                   ?created_before: Integer?,
+                  ?has_tool_calls: bool?,
                   ?instructions_search: String?,
                   ?metadata: top?,
                   ?model: String?,
                   ?reasoning_effort: OpenAI::Models::reasoning_effort?,
                   ?temperature: Float?,
-                  ?tools: ::Array[String]?,
                   ?top_p: Float?,
                   ?users: ::Array[String]?,
                   ?type: :responses
@@ -253,53 +257,54 @@ module OpenAI
 
                 def to_hash: -> {
                   type: :responses,
+                  allow_parallel_tool_calls: bool?,
                   created_after: Integer?,
                   created_before: Integer?,
+                  has_tool_calls: bool?,
                   instructions_search: String?,
                   metadata: top?,
                   model: String?,
                   reasoning_effort: OpenAI::Models::reasoning_effort?,
                   temperature: Float?,
-                  tools: ::Array[String]?,
                   top_p: Float?,
                   users: ::Array[String]?
                 }
               end
 
-              def self?.variants: -> ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::source]
+              def self?.variants: -> ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::source]
             end
 
             type input_messages =
-              OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template
-              | OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::ItemReference
+              OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::InputMessages::Template
+              | OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::InputMessages::ItemReference
 
             module InputMessages
               extend OpenAI::Internal::Type::Union
 
               type template =
                 {
-                  template: ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::template],
+                  template: ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::InputMessages::Template::template],
                   type: :template
                 }
 
               class Template < OpenAI::Internal::Type::BaseModel
-                attr_accessor template: ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::template]
+                attr_accessor template: ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::InputMessages::Template::template]
 
                 attr_accessor type: :template
 
                 def initialize: (
-                  template: ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::template],
+                  template: ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::InputMessages::Template::template],
                   ?type: :template
                 ) -> void
 
                 def to_hash: -> {
-                  template: ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::template],
+                  template: ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::InputMessages::Template::template],
                   type: :template
                 }
 
                 type template =
-                  OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::ChatMessage
-                  | OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem
+                  OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::InputMessages::Template::Template::ChatMessage
+                  | OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::InputMessages::Template::Template::EvalItem
 
                 module Template
                   extend OpenAI::Internal::Type::Union
@@ -318,38 +323,38 @@ module OpenAI
 
                   type eval_item =
                     {
-                      content: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::content,
-                      role: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::role,
-                      type: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::type_
+                      content: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::InputMessages::Template::Template::EvalItem::content,
+                      role: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::InputMessages::Template::Template::EvalItem::role,
+                      type: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::InputMessages::Template::Template::EvalItem::type_
                     }
 
                   class EvalItem < OpenAI::Internal::Type::BaseModel
-                    attr_accessor content: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::content
+                    attr_accessor content: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::InputMessages::Template::Template::EvalItem::content
 
-                    attr_accessor role: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::role
+                    attr_accessor role: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::InputMessages::Template::Template::EvalItem::role
 
-                    attr_reader type: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::type_?
+                    attr_reader type: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::InputMessages::Template::Template::EvalItem::type_?
 
                     def type=: (
-                      OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::type_
-                    ) -> OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::type_
+                      OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::InputMessages::Template::Template::EvalItem::type_
+                    ) -> OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::InputMessages::Template::Template::EvalItem::type_
 
                     def initialize: (
-                      content: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::content,
-                      role: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::role,
-                      ?type: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::type_
+                      content: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::InputMessages::Template::Template::EvalItem::content,
+                      role: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::InputMessages::Template::Template::EvalItem::role,
+                      ?type: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::InputMessages::Template::Template::EvalItem::type_
                     ) -> void
 
                     def to_hash: -> {
-                      content: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::content,
-                      role: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::role,
-                      type: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::type_
+                      content: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::InputMessages::Template::Template::EvalItem::content,
+                      role: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::InputMessages::Template::Template::EvalItem::role,
+                      type: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::InputMessages::Template::Template::EvalItem::type_
                     }
 
                     type content =
                       String
                       | OpenAI::Responses::ResponseInputText
-                      | OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::OutputText
+                      | OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::InputMessages::Template::Template::EvalItem::Content::OutputText
 
                     module Content
                       extend OpenAI::Internal::Type::Union
@@ -369,7 +374,7 @@ module OpenAI
                         def to_hash: -> { text: String, type: :output_text }
                       end
 
-                      def self?.variants: -> ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::content]
+                      def self?.variants: -> ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::InputMessages::Template::Template::EvalItem::content]
                     end
 
                     type role = :user | :assistant | :system | :developer
@@ -382,7 +387,7 @@ module OpenAI
                       SYSTEM: :system
                       DEVELOPER: :developer
 
-                      def self?.values: -> ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::role]
+                      def self?.values: -> ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::InputMessages::Template::Template::EvalItem::role]
                     end
 
                     type type_ = :message
@@ -392,11 +397,11 @@ module OpenAI
 
                       MESSAGE: :message
 
-                      def self?.values: -> ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::type_]
+                      def self?.values: -> ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::InputMessages::Template::Template::EvalItem::type_]
                     end
                   end
 
-                  def self?.variants: -> ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::template]
+                  def self?.variants: -> ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::InputMessages::Template::template]
                 end
               end
 
@@ -419,7 +424,7 @@ module OpenAI
                 }
               end
 
-              def self?.variants: -> ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::input_messages]
+              def self?.variants: -> ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Completions::input_messages]
             end
 
             type sampling_params =
@@ -427,8 +432,6 @@ module OpenAI
                 max_completion_tokens: Integer,
                 seed: Integer,
                 temperature: Float,
-                text: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::SamplingParams::Text,
-                tools: ::Array[OpenAI::Models::Responses::tool],
                 top_p: Float
               }
 
@@ -445,18 +448,6 @@ module OpenAI
 
               def temperature=: (Float) -> Float
 
-              attr_reader text: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::SamplingParams::Text?
-
-              def text=: (
-                OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::SamplingParams::Text
-              ) -> OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::SamplingParams::Text
-
-              attr_reader tools: ::Array[OpenAI::Models::Responses::tool]?
-
-              def tools=: (
-                ::Array[OpenAI::Models::Responses::tool]
-              ) -> ::Array[OpenAI::Models::Responses::tool]
-
               attr_reader top_p: Float?
 
               def top_p=: (Float) -> Float
@@ -465,8 +456,6 @@ module OpenAI
                 ?max_completion_tokens: Integer,
                 ?seed: Integer,
                 ?temperature: Float,
-                ?text: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::SamplingParams::Text,
-                ?tools: ::Array[OpenAI::Models::Responses::tool],
                 ?top_p: Float
               ) -> void
 
@@ -474,31 +463,8 @@ module OpenAI
                 max_completion_tokens: Integer,
                 seed: Integer,
                 temperature: Float,
-                text: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::SamplingParams::Text,
-                tools: ::Array[OpenAI::Models::Responses::tool],
                 top_p: Float
               }
-
-              type text =
-                {
-                  format_: OpenAI::Models::Responses::response_format_text_config
-                }
-
-              class Text < OpenAI::Internal::Type::BaseModel
-                attr_reader format_: OpenAI::Models::Responses::response_format_text_config?
-
-                def format_=: (
-                  OpenAI::Models::Responses::response_format_text_config
-                ) -> OpenAI::Models::Responses::response_format_text_config
-
-                def initialize: (
-                  ?format_: OpenAI::Models::Responses::response_format_text_config
-                ) -> void
-
-                def to_hash: -> {
-                  format_: OpenAI::Models::Responses::response_format_text_config
-                }
-              end
             end
           end
 

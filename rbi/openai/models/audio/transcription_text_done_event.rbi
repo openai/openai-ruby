@@ -100,10 +100,10 @@ module OpenAI
           attr_writer :token
 
           # The bytes that were used to generate the log probability.
-          sig { returns(T.nilable(T::Array[Integer])) }
+          sig { returns(T.nilable(T::Array[T.anything])) }
           attr_reader :bytes
 
-          sig { params(bytes: T::Array[Integer]).void }
+          sig { params(bytes: T::Array[T.anything]).void }
           attr_writer :bytes
 
           # The log probability of the token.
@@ -116,7 +116,7 @@ module OpenAI
           sig do
             params(
               token: String,
-              bytes: T::Array[Integer],
+              bytes: T::Array[T.anything],
               logprob: Float
             ).returns(T.attached_class)
           end
@@ -132,7 +132,7 @@ module OpenAI
 
           sig do
             override.returns(
-              { token: String, bytes: T::Array[Integer], logprob: Float }
+              { token: String, bytes: T::Array[T.anything], logprob: Float }
             )
           end
           def to_hash

@@ -155,14 +155,15 @@ module OpenAI
               type responses =
                 {
                   type: :responses,
+                  allow_parallel_tool_calls: bool?,
                   created_after: Integer?,
                   created_before: Integer?,
+                  has_tool_calls: bool?,
                   instructions_search: String?,
                   metadata: top?,
                   model: String?,
                   reasoning_effort: OpenAI::Models::reasoning_effort?,
                   temperature: Float?,
-                  tools: ::Array[String]?,
                   top_p: Float?,
                   users: ::Array[String]?
                 }
@@ -170,9 +171,13 @@ module OpenAI
               class Responses < OpenAI::Internal::Type::BaseModel
                 attr_accessor type: :responses
 
+                attr_accessor allow_parallel_tool_calls: bool?
+
                 attr_accessor created_after: Integer?
 
                 attr_accessor created_before: Integer?
+
+                attr_accessor has_tool_calls: bool?
 
                 attr_accessor instructions_search: String?
 
@@ -184,21 +189,20 @@ module OpenAI
 
                 attr_accessor temperature: Float?
 
-                attr_accessor tools: ::Array[String]?
-
                 attr_accessor top_p: Float?
 
                 attr_accessor users: ::Array[String]?
 
                 def initialize: (
+                  ?allow_parallel_tool_calls: bool?,
                   ?created_after: Integer?,
                   ?created_before: Integer?,
+                  ?has_tool_calls: bool?,
                   ?instructions_search: String?,
                   ?metadata: top?,
                   ?model: String?,
                   ?reasoning_effort: OpenAI::Models::reasoning_effort?,
                   ?temperature: Float?,
-                  ?tools: ::Array[String]?,
                   ?top_p: Float?,
                   ?users: ::Array[String]?,
                   ?type: :responses
@@ -206,14 +210,15 @@ module OpenAI
 
                 def to_hash: -> {
                   type: :responses,
+                  allow_parallel_tool_calls: bool?,
                   created_after: Integer?,
                   created_before: Integer?,
+                  has_tool_calls: bool?,
                   instructions_search: String?,
                   metadata: top?,
                   model: String?,
                   reasoning_effort: OpenAI::Models::reasoning_effort?,
                   temperature: Float?,
-                  tools: ::Array[String]?,
                   top_p: Float?,
                   users: ::Array[String]?
                 }
@@ -222,12 +227,12 @@ module OpenAI
               def self?.variants: -> ::Array[OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::source]
             end
 
-            type type_ = :responses
+            type type_ = :completions
 
             module Type
               extend OpenAI::Internal::Type::Enum
 
-              RESPONSES: :responses
+              COMPLETIONS: :completions
 
               def self?.values: -> ::Array[OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::type_]
             end
@@ -390,8 +395,6 @@ module OpenAI
                 max_completion_tokens: Integer,
                 seed: Integer,
                 temperature: Float,
-                text: OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams::Text,
-                tools: ::Array[OpenAI::Models::Responses::tool],
                 top_p: Float
               }
 
@@ -408,18 +411,6 @@ module OpenAI
 
               def temperature=: (Float) -> Float
 
-              attr_reader text: OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams::Text?
-
-              def text=: (
-                OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams::Text
-              ) -> OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams::Text
-
-              attr_reader tools: ::Array[OpenAI::Models::Responses::tool]?
-
-              def tools=: (
-                ::Array[OpenAI::Models::Responses::tool]
-              ) -> ::Array[OpenAI::Models::Responses::tool]
-
               attr_reader top_p: Float?
 
               def top_p=: (Float) -> Float
@@ -428,8 +419,6 @@ module OpenAI
                 ?max_completion_tokens: Integer,
                 ?seed: Integer,
                 ?temperature: Float,
-                ?text: OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams::Text,
-                ?tools: ::Array[OpenAI::Models::Responses::tool],
                 ?top_p: Float
               ) -> void
 
@@ -437,31 +426,8 @@ module OpenAI
                 max_completion_tokens: Integer,
                 seed: Integer,
                 temperature: Float,
-                text: OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams::Text,
-                tools: ::Array[OpenAI::Models::Responses::tool],
                 top_p: Float
               }
-
-              type text =
-                {
-                  format_: OpenAI::Models::Responses::response_format_text_config
-                }
-
-              class Text < OpenAI::Internal::Type::BaseModel
-                attr_reader format_: OpenAI::Models::Responses::response_format_text_config?
-
-                def format_=: (
-                  OpenAI::Models::Responses::response_format_text_config
-                ) -> OpenAI::Models::Responses::response_format_text_config
-
-                def initialize: (
-                  ?format_: OpenAI::Models::Responses::response_format_text_config
-                ) -> void
-
-                def to_hash: -> {
-                  format_: OpenAI::Models::Responses::response_format_text_config
-                }
-              end
             end
           end
 

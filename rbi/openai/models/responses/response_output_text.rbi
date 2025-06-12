@@ -19,7 +19,6 @@ module OpenAI
               T.any(
                 OpenAI::Responses::ResponseOutputText::Annotation::FileCitation,
                 OpenAI::Responses::ResponseOutputText::Annotation::URLCitation,
-                OpenAI::Responses::ResponseOutputText::Annotation::ContainerFileCitation,
                 OpenAI::Responses::ResponseOutputText::Annotation::FilePath
               )
             ]
@@ -39,21 +38,6 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
-        sig do
-          returns(
-            T.nilable(T::Array[OpenAI::Responses::ResponseOutputText::Logprob])
-          )
-        end
-        attr_reader :logprobs
-
-        sig do
-          params(
-            logprobs:
-              T::Array[OpenAI::Responses::ResponseOutputText::Logprob::OrHash]
-          ).void
-        end
-        attr_writer :logprobs
-
         # A text output from the model.
         sig do
           params(
@@ -62,13 +46,10 @@ module OpenAI
                 T.any(
                   OpenAI::Responses::ResponseOutputText::Annotation::FileCitation::OrHash,
                   OpenAI::Responses::ResponseOutputText::Annotation::URLCitation::OrHash,
-                  OpenAI::Responses::ResponseOutputText::Annotation::ContainerFileCitation::OrHash,
                   OpenAI::Responses::ResponseOutputText::Annotation::FilePath::OrHash
                 )
               ],
             text: String,
-            logprobs:
-              T::Array[OpenAI::Responses::ResponseOutputText::Logprob::OrHash],
             type: Symbol
           ).returns(T.attached_class)
         end
@@ -77,7 +58,6 @@ module OpenAI
           annotations:,
           # The text output from the model.
           text:,
-          logprobs: nil,
           # The type of the output text. Always `output_text`.
           type: :output_text
         )
@@ -91,13 +71,11 @@ module OpenAI
                   T.any(
                     OpenAI::Responses::ResponseOutputText::Annotation::FileCitation,
                     OpenAI::Responses::ResponseOutputText::Annotation::URLCitation,
-                    OpenAI::Responses::ResponseOutputText::Annotation::ContainerFileCitation,
                     OpenAI::Responses::ResponseOutputText::Annotation::FilePath
                   )
                 ],
               text: String,
-              type: Symbol,
-              logprobs: T::Array[OpenAI::Responses::ResponseOutputText::Logprob]
+              type: Symbol
             }
           )
         end
@@ -113,7 +91,6 @@ module OpenAI
               T.any(
                 OpenAI::Responses::ResponseOutputText::Annotation::FileCitation,
                 OpenAI::Responses::ResponseOutputText::Annotation::URLCitation,
-                OpenAI::Responses::ResponseOutputText::Annotation::ContainerFileCitation,
                 OpenAI::Responses::ResponseOutputText::Annotation::FilePath
               )
             end
@@ -232,74 +209,6 @@ module OpenAI
             end
           end
 
-          class ContainerFileCitation < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Responses::ResponseOutputText::Annotation::ContainerFileCitation,
-                  OpenAI::Internal::AnyHash
-                )
-              end
-
-            # The ID of the container file.
-            sig { returns(String) }
-            attr_accessor :container_id
-
-            # The index of the last character of the container file citation in the message.
-            sig { returns(Integer) }
-            attr_accessor :end_index
-
-            # The ID of the file.
-            sig { returns(String) }
-            attr_accessor :file_id
-
-            # The index of the first character of the container file citation in the message.
-            sig { returns(Integer) }
-            attr_accessor :start_index
-
-            # The type of the container file citation. Always `container_file_citation`.
-            sig { returns(Symbol) }
-            attr_accessor :type
-
-            # A citation for a container file used to generate a model response.
-            sig do
-              params(
-                container_id: String,
-                end_index: Integer,
-                file_id: String,
-                start_index: Integer,
-                type: Symbol
-              ).returns(T.attached_class)
-            end
-            def self.new(
-              # The ID of the container file.
-              container_id:,
-              # The index of the last character of the container file citation in the message.
-              end_index:,
-              # The ID of the file.
-              file_id:,
-              # The index of the first character of the container file citation in the message.
-              start_index:,
-              # The type of the container file citation. Always `container_file_citation`.
-              type: :container_file_citation
-            )
-            end
-
-            sig do
-              override.returns(
-                {
-                  container_id: String,
-                  end_index: Integer,
-                  file_id: String,
-                  start_index: Integer,
-                  type: Symbol
-                }
-              )
-            end
-            def to_hash
-            end
-          end
-
           class FilePath < OpenAI::Internal::Type::BaseModel
             OrHash =
               T.type_alias do
@@ -354,103 +263,6 @@ module OpenAI
             )
           end
           def self.variants
-          end
-        end
-
-        class Logprob < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseOutputText::Logprob,
-                OpenAI::Internal::AnyHash
-              )
-            end
-
-          sig { returns(String) }
-          attr_accessor :token
-
-          sig { returns(T::Array[Integer]) }
-          attr_accessor :bytes
-
-          sig { returns(Float) }
-          attr_accessor :logprob
-
-          sig do
-            returns(
-              T::Array[
-                OpenAI::Responses::ResponseOutputText::Logprob::TopLogprob
-              ]
-            )
-          end
-          attr_accessor :top_logprobs
-
-          # The log probability of a token.
-          sig do
-            params(
-              token: String,
-              bytes: T::Array[Integer],
-              logprob: Float,
-              top_logprobs:
-                T::Array[
-                  OpenAI::Responses::ResponseOutputText::Logprob::TopLogprob::OrHash
-                ]
-            ).returns(T.attached_class)
-          end
-          def self.new(token:, bytes:, logprob:, top_logprobs:)
-          end
-
-          sig do
-            override.returns(
-              {
-                token: String,
-                bytes: T::Array[Integer],
-                logprob: Float,
-                top_logprobs:
-                  T::Array[
-                    OpenAI::Responses::ResponseOutputText::Logprob::TopLogprob
-                  ]
-              }
-            )
-          end
-          def to_hash
-          end
-
-          class TopLogprob < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Responses::ResponseOutputText::Logprob::TopLogprob,
-                  OpenAI::Internal::AnyHash
-                )
-              end
-
-            sig { returns(String) }
-            attr_accessor :token
-
-            sig { returns(T::Array[Integer]) }
-            attr_accessor :bytes
-
-            sig { returns(Float) }
-            attr_accessor :logprob
-
-            # The top log probability of a token.
-            sig do
-              params(
-                token: String,
-                bytes: T::Array[Integer],
-                logprob: Float
-              ).returns(T.attached_class)
-            end
-            def self.new(token:, bytes:, logprob:)
-            end
-
-            sig do
-              override.returns(
-                { token: String, bytes: T::Array[Integer], logprob: Float }
-              )
-            end
-            def to_hash
-            end
           end
         end
       end

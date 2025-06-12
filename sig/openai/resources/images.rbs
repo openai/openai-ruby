@@ -14,7 +14,6 @@ module OpenAI
       def edit: (
         image: OpenAI::Models::ImageEditParams::image,
         prompt: String,
-        ?background: OpenAI::Models::ImageEditParams::background?,
         ?mask: OpenAI::Internal::file_input,
         ?model: OpenAI::Models::ImageEditParams::model?,
         ?n: Integer?,

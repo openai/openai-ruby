@@ -29,7 +29,11 @@ module OpenAI
       sig { returns(T.nilable(T::Hash[Symbol, String])) }
       attr_accessor :metadata
 
-      # Deprecated in favor of LogsDataSourceConfig.
+      # A StoredCompletionsDataSourceConfig which specifies the metadata property of
+      # your stored completions query. This is usually metadata like `usecase=chatbot`
+      # or `prompt-version=v2`, etc. The schema returned by this data source config is
+      # used to defined what variables are available in your evals. `item` and `sample`
+      # are both defined when using this data source config.
       sig do
         params(
           schema: T::Hash[Symbol, T.anything],
