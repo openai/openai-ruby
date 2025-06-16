@@ -72,8 +72,7 @@ module OpenAI
         end
         attr_accessor :include
 
-        # Inserts a system (or developer) message as the first item in the model's
-        # context.
+        # A system (or developer) message inserted into the model's context.
         #
         # When using along with `previous_response_id`, the instructions from a previous
         # response will not be carried over to the next response. This makes it simple to
@@ -105,6 +104,18 @@ module OpenAI
         # [conversation state](https://platform.openai.com/docs/guides/conversation-state).
         sig { returns(T.nilable(String)) }
         attr_accessor :previous_response_id
+
+        # Reference to a prompt template and its variables.
+        # [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
+        sig { returns(T.nilable(OpenAI::Responses::ResponsePrompt)) }
+        attr_reader :prompt
+
+        sig do
+          params(
+            prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash)
+          ).void
+        end
+        attr_writer :prompt
 
         # **o-series models only**
         #
@@ -297,6 +308,7 @@ module OpenAI
             metadata: T.nilable(T::Hash[Symbol, String]),
             parallel_tool_calls: T.nilable(T::Boolean),
             previous_response_id: T.nilable(String),
+            prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
             reasoning: T.nilable(OpenAI::Reasoning::OrHash),
             service_tier:
               T.nilable(
@@ -369,8 +381,7 @@ module OpenAI
           # - `code_interpreter_call.outputs`: Includes the outputs of python code execution
           #   in code interpreter tool call items.
           include: nil,
-          # Inserts a system (or developer) message as the first item in the model's
-          # context.
+          # A system (or developer) message inserted into the model's context.
           #
           # When using along with `previous_response_id`, the instructions from a previous
           # response will not be carried over to the next response. This makes it simple to
@@ -393,6 +404,9 @@ module OpenAI
           # multi-turn conversations. Learn more about
           # [conversation state](https://platform.openai.com/docs/guides/conversation-state).
           previous_response_id: nil,
+          # Reference to a prompt template and its variables.
+          # [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
+          prompt: nil,
           # **o-series models only**
           #
           # Configuration options for
@@ -490,6 +504,7 @@ module OpenAI
               metadata: T.nilable(T::Hash[Symbol, String]),
               parallel_tool_calls: T.nilable(T::Boolean),
               previous_response_id: T.nilable(String),
+              prompt: T.nilable(OpenAI::Responses::ResponsePrompt),
               reasoning: T.nilable(OpenAI::Reasoning),
               service_tier:
                 T.nilable(
@@ -601,6 +616,11 @@ module OpenAI
           FLEX =
             T.let(
               :flex,
+              OpenAI::Responses::ResponseCreateParams::ServiceTier::TaggedSymbol
+            )
+          SCALE =
+            T.let(
+              :scale,
               OpenAI::Responses::ResponseCreateParams::ServiceTier::TaggedSymbol
             )
 

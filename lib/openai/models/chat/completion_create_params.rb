@@ -558,6 +558,7 @@ module OpenAI
           AUTO = :auto
           DEFAULT = :default
           FLEX = :flex
+          SCALE = :scale
 
           # @!method self.values
           #   @return [Array<Symbol>]

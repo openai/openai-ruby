@@ -1025,6 +1025,11 @@ module OpenAI
               :flex,
               OpenAI::Chat::CompletionCreateParams::ServiceTier::TaggedSymbol
             )
+          SCALE =
+            T.let(
+              :scale,
+              OpenAI::Chat::CompletionCreateParams::ServiceTier::TaggedSymbol
+            )
 
           sig do
             override.returns(

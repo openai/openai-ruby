@@ -7,7 +7,7 @@ module OpenAI
           created_at: Float,
           error: OpenAI::Responses::ResponseError?,
           incomplete_details: OpenAI::Responses::Response::IncompleteDetails?,
-          instructions: String?,
+          instructions: OpenAI::Models::Responses::Response::instructions?,
           metadata: OpenAI::Models::metadata?,
           model: OpenAI::Models::responses_model,
           object: :response,
@@ -20,6 +20,7 @@ module OpenAI
           background: bool?,
           max_output_tokens: Integer?,
           previous_response_id: String?,
+          prompt: OpenAI::Responses::ResponsePrompt?,
           reasoning: OpenAI::Reasoning?,
           service_tier: OpenAI::Models::Responses::Response::service_tier?,
           status: OpenAI::Models::Responses::response_status,
@@ -38,7 +39,7 @@ module OpenAI
 
         attr_accessor incomplete_details: OpenAI::Responses::Response::IncompleteDetails?
 
-        attr_accessor instructions: String?
+        attr_accessor instructions: OpenAI::Models::Responses::Response::instructions?
 
         attr_accessor metadata: OpenAI::Models::metadata?
 
@@ -63,6 +64,8 @@ module OpenAI
         attr_accessor max_output_tokens: Integer?
 
         attr_accessor previous_response_id: String?
+
+        attr_accessor prompt: OpenAI::Responses::ResponsePrompt?
 
         attr_accessor reasoning: OpenAI::Reasoning?
 
@@ -97,7 +100,7 @@ module OpenAI
           created_at: Float,
           error: OpenAI::Responses::ResponseError?,
           incomplete_details: OpenAI::Responses::Response::IncompleteDetails?,
-          instructions: String?,
+          instructions: OpenAI::Models::Responses::Response::instructions?,
           metadata: OpenAI::Models::metadata?,
           model: OpenAI::Models::responses_model,
           output: ::Array[OpenAI::Models::Responses::response_output_item],
@@ -109,6 +112,7 @@ module OpenAI
           ?background: bool?,
           ?max_output_tokens: Integer?,
           ?previous_response_id: String?,
+          ?prompt: OpenAI::Responses::ResponsePrompt?,
           ?reasoning: OpenAI::Reasoning?,
           ?service_tier: OpenAI::Models::Responses::Response::service_tier?,
           ?status: OpenAI::Models::Responses::response_status,
@@ -124,7 +128,7 @@ module OpenAI
           created_at: Float,
           error: OpenAI::Responses::ResponseError?,
           incomplete_details: OpenAI::Responses::Response::IncompleteDetails?,
-          instructions: String?,
+          instructions: OpenAI::Models::Responses::Response::instructions?,
           metadata: OpenAI::Models::metadata?,
           model: OpenAI::Models::responses_model,
           object: :response,
@@ -137,6 +141,7 @@ module OpenAI
           background: bool?,
           max_output_tokens: Integer?,
           previous_response_id: String?,
+          prompt: OpenAI::Responses::ResponsePrompt?,
           reasoning: OpenAI::Reasoning?,
           service_tier: OpenAI::Models::Responses::Response::service_tier?,
           status: OpenAI::Models::Responses::response_status,
@@ -178,6 +183,17 @@ module OpenAI
           end
         end
 
+        type instructions =
+          String | ::Array[OpenAI::Models::Responses::response_input_item]
+
+        module Instructions
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::Response::instructions]
+
+          ResponseInputItemArray: OpenAI::Internal::Type::Converter
+        end
+
         type tool_choice =
           OpenAI::Models::Responses::tool_choice_options
           | OpenAI::Responses::ToolChoiceTypes
@@ -189,7 +205,7 @@ module OpenAI
           def self?.variants: -> ::Array[OpenAI::Models::Responses::Response::tool_choice]
         end
 
-        type service_tier = :auto | :default | :flex
+        type service_tier = :auto | :default | :flex | :scale
 
         module ServiceTier
           extend OpenAI::Internal::Type::Enum
@@ -197,6 +213,7 @@ module OpenAI
           AUTO: :auto
           DEFAULT: :default
           FLEX: :flex
+          SCALE: :scale
 
           def self?.values: -> ::Array[OpenAI::Models::Responses::Response::service_tier]
         end

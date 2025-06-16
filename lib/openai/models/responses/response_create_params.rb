@@ -64,8 +64,7 @@ module OpenAI
                  nil?: true
 
         # @!attribute instructions
-        #   Inserts a system (or developer) message as the first item in the model's
-        #   context.
+        #   A system (or developer) message inserted into the model's context.
         #
         #   When using along with `previous_response_id`, the instructions from a previous
         #   response will not be carried over to the next response. This makes it simple to
@@ -106,6 +105,13 @@ module OpenAI
         #
         #   @return [String, nil]
         optional :previous_response_id, String, nil?: true
+
+        # @!attribute prompt
+        #   Reference to a prompt template and its variables.
+        #   [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
+        #
+        #   @return [OpenAI::Models::Responses::ResponsePrompt, nil]
+        optional :prompt, -> { OpenAI::Responses::ResponsePrompt }, nil?: true
 
         # @!attribute reasoning
         #   **o-series models only**
@@ -220,7 +226,7 @@ module OpenAI
         #   @return [String, nil]
         optional :user, String
 
-        # @!method initialize(input:, model:, background: nil, include: nil, instructions: nil, max_output_tokens: nil, metadata: nil, parallel_tool_calls: nil, previous_response_id: nil, reasoning: nil, service_tier: nil, store: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
+        # @!method initialize(input:, model:, background: nil, include: nil, instructions: nil, max_output_tokens: nil, metadata: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, reasoning: nil, service_tier: nil, store: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseCreateParams} for more details.
         #
@@ -232,7 +238,7 @@ module OpenAI
         #
         #   @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>, nil] Specify additional output data to include in the model response. Currently
         #
-        #   @param instructions [String, nil] Inserts a system (or developer) message as the first item in the model's context
+        #   @param instructions [String, nil] A system (or developer) message inserted into the model's context.
         #
         #   @param max_output_tokens [Integer, nil] An upper bound for the number of tokens that can be generated for a response, in
         #
@@ -241,6 +247,8 @@ module OpenAI
         #   @param parallel_tool_calls [Boolean, nil] Whether to allow the model to run tool calls in parallel.
         #
         #   @param previous_response_id [String, nil] The unique ID of the previous response to the model. Use this to
+        #
+        #   @param prompt [OpenAI::Models::Responses::ResponsePrompt, nil] Reference to a prompt template and its variables.
         #
         #   @param reasoning [OpenAI::Models::Reasoning, nil] **o-series models only**
         #
@@ -311,6 +319,7 @@ module OpenAI
           AUTO = :auto
           DEFAULT = :default
           FLEX = :flex
+          SCALE = :scale
 
           # @!method self.values
           #   @return [Array<Symbol>]
