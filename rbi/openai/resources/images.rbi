@@ -52,6 +52,9 @@ module OpenAI
           mask: OpenAI::Internal::FileInput,
           model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
           n: T.nilable(Integer),
+          output_compression: T.nilable(Integer),
+          output_format:
+            T.nilable(OpenAI::ImageEditParams::OutputFormat::OrSymbol),
           quality: T.nilable(OpenAI::ImageEditParams::Quality::OrSymbol),
           response_format:
             T.nilable(OpenAI::ImageEditParams::ResponseFormat::OrSymbol),
@@ -91,6 +94,14 @@ module OpenAI
         model: nil,
         # The number of images to generate. Must be between 1 and 10.
         n: nil,
+        # The compression level (0-100%) for the generated images. This parameter is only
+        # supported for `gpt-image-1` with the `webp` or `jpeg` output formats, and
+        # defaults to 100.
+        output_compression: nil,
+        # The format in which the generated images are returned. This parameter is only
+        # supported for `gpt-image-1`. Must be one of `png`, `jpeg`, or `webp`. The
+        # default value is `png`.
+        output_format: nil,
         # The quality of the image that will be generated. `high`, `medium` and `low` are
         # only supported for `gpt-image-1`. `dall-e-2` only supports `standard` quality.
         # Defaults to `auto`.

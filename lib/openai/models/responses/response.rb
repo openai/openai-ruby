@@ -32,15 +32,14 @@ module OpenAI
         required :incomplete_details, -> { OpenAI::Responses::Response::IncompleteDetails }, nil?: true
 
         # @!attribute instructions
-        #   Inserts a system (or developer) message as the first item in the model's
-        #   context.
+        #   A system (or developer) message inserted into the model's context.
         #
         #   When using along with `previous_response_id`, the instructions from a previous
         #   response will not be carried over to the next response. This makes it simple to
         #   swap out system (or developer) messages in new responses.
         #
-        #   @return [String, nil]
-        required :instructions, String, nil?: true
+        #   @return [String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseInputItem::ItemReference>, nil]
+        required :instructions, union: -> { OpenAI::Responses::Response::Instructions }, nil?: true
 
         # @!attribute metadata
         #   Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -156,6 +155,13 @@ module OpenAI
         #   @return [String, nil]
         optional :previous_response_id, String, nil?: true
 
+        # @!attribute prompt
+        #   Reference to a prompt template and its variables.
+        #   [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
+        #
+        #   @return [OpenAI::Models::Responses::ResponsePrompt, nil]
+        optional :prompt, -> { OpenAI::Responses::ResponsePrompt }, nil?: true
+
         # @!attribute reasoning
         #   **o-series models only**
         #
@@ -231,7 +237,7 @@ module OpenAI
         #   @return [String, nil]
         optional :user, String
 
-        # @!method initialize(id:, created_at:, error:, incomplete_details:, instructions:, metadata:, model:, output:, parallel_tool_calls:, temperature:, tool_choice:, tools:, top_p:, background: nil, max_output_tokens: nil, previous_response_id: nil, reasoning: nil, service_tier: nil, status: nil, text: nil, truncation: nil, usage: nil, user: nil, object: :response)
+        # @!method initialize(id:, created_at:, error:, incomplete_details:, instructions:, metadata:, model:, output:, parallel_tool_calls:, temperature:, tool_choice:, tools:, top_p:, background: nil, max_output_tokens: nil, previous_response_id: nil, prompt: nil, reasoning: nil, service_tier: nil, status: nil, text: nil, truncation: nil, usage: nil, user: nil, object: :response)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::Response} for more details.
         #
@@ -243,7 +249,7 @@ module OpenAI
         #
         #   @param incomplete_details [OpenAI::Models::Responses::Response::IncompleteDetails, nil] Details about why the response is incomplete.
         #
-        #   @param instructions [String, nil] Inserts a system (or developer) message as the first item in the model's context
+        #   @param instructions [String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseInputItem::ItemReference>, nil] A system (or developer) message inserted into the model's context.
         #
         #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #
@@ -266,6 +272,8 @@ module OpenAI
         #   @param max_output_tokens [Integer, nil] An upper bound for the number of tokens that can be generated for a response, in
         #
         #   @param previous_response_id [String, nil] The unique ID of the previous response to the model. Use this to
+        #
+        #   @param prompt [OpenAI::Models::Responses::ResponsePrompt, nil] Reference to a prompt template and its variables.
         #
         #   @param reasoning [OpenAI::Models::Reasoning, nil] **o-series models only**
         #
@@ -308,6 +316,32 @@ module OpenAI
             # @!method self.values
             #   @return [Array<Symbol>]
           end
+        end
+
+        # A system (or developer) message inserted into the model's context.
+        #
+        # When using along with `previous_response_id`, the instructions from a previous
+        # response will not be carried over to the next response. This makes it simple to
+        # swap out system (or developer) messages in new responses.
+        #
+        # @see OpenAI::Models::Responses::Response#instructions
+        module Instructions
+          extend OpenAI::Internal::Type::Union
+
+          # A text input to the model, equivalent to a text input with the
+          # `developer` role.
+          variant String
+
+          # A list of one or many input items to the model, containing
+          # different content types.
+          variant -> { OpenAI::Models::Responses::Response::Instructions::ResponseInputItemArray }
+
+          # @!method self.variants
+          #   @return [Array(String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseInputItem::ItemReference>)]
+
+          # @type [OpenAI::Internal::Type::Converter]
+          ResponseInputItemArray =
+            OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Responses::ResponseInputItem }]
         end
 
         # How the model should select which tool (or tools) to use when generating a
@@ -364,6 +398,7 @@ module OpenAI
           AUTO = :auto
           DEFAULT = :default
           FLEX = :flex
+          SCALE = :scale
 
           # @!method self.values
           #   @return [Array<Symbol>]

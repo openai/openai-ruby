@@ -39,7 +39,8 @@ module OpenAI
         # [preference](https://platform.openai.com/docs/api-reference/fine-tuning/preference-input)
         # format.
         #
-        # See the [fine-tuning guide](https://platform.openai.com/docs/guides/fine-tuning)
+        # See the
+        # [fine-tuning guide](https://platform.openai.com/docs/guides/model-optimization)
         # for more details.
         sig { returns(String) }
         attr_accessor :training_file
@@ -115,7 +116,8 @@ module OpenAI
         # Your dataset must be formatted as a JSONL file. You must upload your file with
         # the purpose `fine-tune`.
         #
-        # See the [fine-tuning guide](https://platform.openai.com/docs/guides/fine-tuning)
+        # See the
+        # [fine-tuning guide](https://platform.openai.com/docs/guides/model-optimization)
         # for more details.
         sig { returns(T.nilable(String)) }
         attr_accessor :validation_file
@@ -163,7 +165,8 @@ module OpenAI
           # [preference](https://platform.openai.com/docs/api-reference/fine-tuning/preference-input)
           # format.
           #
-          # See the [fine-tuning guide](https://platform.openai.com/docs/guides/fine-tuning)
+          # See the
+          # [fine-tuning guide](https://platform.openai.com/docs/guides/model-optimization)
           # for more details.
           training_file:,
           # The hyperparameters used for the fine-tuning job. This value is now deprecated
@@ -200,7 +203,8 @@ module OpenAI
           # Your dataset must be formatted as a JSONL file. You must upload your file with
           # the purpose `fine-tune`.
           #
-          # See the [fine-tuning guide](https://platform.openai.com/docs/guides/fine-tuning)
+          # See the
+          # [fine-tuning guide](https://platform.openai.com/docs/guides/model-optimization)
           # for more details.
           validation_file: nil,
           request_options: {}

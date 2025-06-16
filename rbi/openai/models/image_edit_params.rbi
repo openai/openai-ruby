@@ -56,6 +56,20 @@ module OpenAI
       sig { returns(T.nilable(Integer)) }
       attr_accessor :n
 
+      # The compression level (0-100%) for the generated images. This parameter is only
+      # supported for `gpt-image-1` with the `webp` or `jpeg` output formats, and
+      # defaults to 100.
+      sig { returns(T.nilable(Integer)) }
+      attr_accessor :output_compression
+
+      # The format in which the generated images are returned. This parameter is only
+      # supported for `gpt-image-1`. Must be one of `png`, `jpeg`, or `webp`. The
+      # default value is `png`.
+      sig do
+        returns(T.nilable(OpenAI::ImageEditParams::OutputFormat::OrSymbol))
+      end
+      attr_accessor :output_format
+
       # The quality of the image that will be generated. `high`, `medium` and `low` are
       # only supported for `gpt-image-1`. `dall-e-2` only supports `standard` quality.
       # Defaults to `auto`.
@@ -94,6 +108,9 @@ module OpenAI
           mask: OpenAI::Internal::FileInput,
           model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
           n: T.nilable(Integer),
+          output_compression: T.nilable(Integer),
+          output_format:
+            T.nilable(OpenAI::ImageEditParams::OutputFormat::OrSymbol),
           quality: T.nilable(OpenAI::ImageEditParams::Quality::OrSymbol),
           response_format:
             T.nilable(OpenAI::ImageEditParams::ResponseFormat::OrSymbol),
@@ -133,6 +150,14 @@ module OpenAI
         model: nil,
         # The number of images to generate. Must be between 1 and 10.
         n: nil,
+        # The compression level (0-100%) for the generated images. This parameter is only
+        # supported for `gpt-image-1` with the `webp` or `jpeg` output formats, and
+        # defaults to 100.
+        output_compression: nil,
+        # The format in which the generated images are returned. This parameter is only
+        # supported for `gpt-image-1`. Must be one of `png`, `jpeg`, or `webp`. The
+        # default value is `png`.
+        output_format: nil,
         # The quality of the image that will be generated. `high`, `medium` and `low` are
         # only supported for `gpt-image-1`. `dall-e-2` only supports `standard` quality.
         # Defaults to `auto`.
@@ -164,6 +189,9 @@ module OpenAI
             mask: OpenAI::Internal::FileInput,
             model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
             n: T.nilable(Integer),
+            output_compression: T.nilable(Integer),
+            output_format:
+              T.nilable(OpenAI::ImageEditParams::OutputFormat::OrSymbol),
             quality: T.nilable(OpenAI::ImageEditParams::Quality::OrSymbol),
             response_format:
               T.nilable(OpenAI::ImageEditParams::ResponseFormat::OrSymbol),
@@ -243,6 +271,29 @@ module OpenAI
           override.returns(T::Array[OpenAI::ImageEditParams::Model::Variants])
         end
         def self.variants
+        end
+      end
+
+      # The format in which the generated images are returned. This parameter is only
+      # supported for `gpt-image-1`. Must be one of `png`, `jpeg`, or `webp`. The
+      # default value is `png`.
+      module OutputFormat
+        extend OpenAI::Internal::Type::Enum
+
+        TaggedSymbol =
+          T.type_alias { T.all(Symbol, OpenAI::ImageEditParams::OutputFormat) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+        PNG = T.let(:png, OpenAI::ImageEditParams::OutputFormat::TaggedSymbol)
+        JPEG = T.let(:jpeg, OpenAI::ImageEditParams::OutputFormat::TaggedSymbol)
+        WEBP = T.let(:webp, OpenAI::ImageEditParams::OutputFormat::TaggedSymbol)
+
+        sig do
+          override.returns(
+            T::Array[OpenAI::ImageEditParams::OutputFormat::TaggedSymbol]
+          )
+        end
+        def self.values
         end
       end
 

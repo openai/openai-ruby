@@ -61,6 +61,22 @@ module OpenAI
       #   @return [Integer, nil]
       optional :n, Integer, nil?: true
 
+      # @!attribute output_compression
+      #   The compression level (0-100%) for the generated images. This parameter is only
+      #   supported for `gpt-image-1` with the `webp` or `jpeg` output formats, and
+      #   defaults to 100.
+      #
+      #   @return [Integer, nil]
+      optional :output_compression, Integer, nil?: true
+
+      # @!attribute output_format
+      #   The format in which the generated images are returned. This parameter is only
+      #   supported for `gpt-image-1`. Must be one of `png`, `jpeg`, or `webp`. The
+      #   default value is `png`.
+      #
+      #   @return [Symbol, OpenAI::Models::ImageEditParams::OutputFormat, nil]
+      optional :output_format, enum: -> { OpenAI::ImageEditParams::OutputFormat }, nil?: true
+
       # @!attribute quality
       #   The quality of the image that will be generated. `high`, `medium` and `low` are
       #   only supported for `gpt-image-1`. `dall-e-2` only supports `standard` quality.
@@ -94,7 +110,7 @@ module OpenAI
       #   @return [String, nil]
       optional :user, String
 
-      # @!method initialize(image:, prompt:, background: nil, mask: nil, model: nil, n: nil, quality: nil, response_format: nil, size: nil, user: nil, request_options: {})
+      # @!method initialize(image:, prompt:, background: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, quality: nil, response_format: nil, size: nil, user: nil, request_options: {})
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::ImageEditParams} for more details.
       #
@@ -109,6 +125,10 @@ module OpenAI
       #   @param model [String, Symbol, OpenAI::Models::ImageModel, nil] The model to use for image generation. Only `dall-e-2` and `gpt-image-1` are sup
       #
       #   @param n [Integer, nil] The number of images to generate. Must be between 1 and 10.
+      #
+      #   @param output_compression [Integer, nil] The compression level (0-100%) for the generated images. This parameter
+      #
+      #   @param output_format [Symbol, OpenAI::Models::ImageEditParams::OutputFormat, nil] The format in which the generated images are returned. This parameter is
       #
       #   @param quality [Symbol, OpenAI::Models::ImageEditParams::Quality, nil] The quality of the image that will be generated. `high`, `medium` and `low` are
       #
@@ -172,6 +192,20 @@ module OpenAI
 
         # @!method self.variants
         #   @return [Array(String, Symbol, OpenAI::Models::ImageModel)]
+      end
+
+      # The format in which the generated images are returned. This parameter is only
+      # supported for `gpt-image-1`. Must be one of `png`, `jpeg`, or `webp`. The
+      # default value is `png`.
+      module OutputFormat
+        extend OpenAI::Internal::Type::Enum
+
+        PNG = :png
+        JPEG = :jpeg
+        WEBP = :webp
+
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
 
       # The quality of the image that will be generated. `high`, `medium` and `low` are

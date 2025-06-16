@@ -45,7 +45,7 @@ module OpenAI
       # Creates an edited or extended image given one or more source images and a
       # prompt. This endpoint only supports `gpt-image-1` and `dall-e-2`.
       #
-      # @overload edit(image:, prompt:, background: nil, mask: nil, model: nil, n: nil, quality: nil, response_format: nil, size: nil, user: nil, request_options: {})
+      # @overload edit(image:, prompt:, background: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, quality: nil, response_format: nil, size: nil, user: nil, request_options: {})
       #
       # @param image [Pathname, StringIO, IO, String, OpenAI::FilePart, Array<Pathname, StringIO, IO, String, OpenAI::FilePart>] The image(s) to edit. Must be a supported image file or an array of images.
       #
@@ -58,6 +58,10 @@ module OpenAI
       # @param model [String, Symbol, OpenAI::Models::ImageModel, nil] The model to use for image generation. Only `dall-e-2` and `gpt-image-1` are sup
       #
       # @param n [Integer, nil] The number of images to generate. Must be between 1 and 10.
+      #
+      # @param output_compression [Integer, nil] The compression level (0-100%) for the generated images. This parameter
+      #
+      # @param output_format [Symbol, OpenAI::Models::ImageEditParams::OutputFormat, nil] The format in which the generated images are returned. This parameter is
       #
       # @param quality [Symbol, OpenAI::Models::ImageEditParams::Quality, nil] The quality of the image that will be generated. `high`, `medium` and `low` are
       #

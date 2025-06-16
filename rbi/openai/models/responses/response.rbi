@@ -42,13 +42,16 @@ module OpenAI
         end
         attr_writer :incomplete_details
 
-        # Inserts a system (or developer) message as the first item in the model's
-        # context.
+        # A system (or developer) message inserted into the model's context.
         #
         # When using along with `previous_response_id`, the instructions from a previous
         # response will not be carried over to the next response. This makes it simple to
         # swap out system (or developer) messages in new responses.
-        sig { returns(T.nilable(String)) }
+        sig do
+          returns(
+            T.nilable(OpenAI::Responses::Response::Instructions::Variants)
+          )
+        end
         attr_accessor :instructions
 
         # Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -143,6 +146,18 @@ module OpenAI
         sig { returns(T.nilable(String)) }
         attr_accessor :previous_response_id
 
+        # Reference to a prompt template and its variables.
+        # [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
+        sig { returns(T.nilable(OpenAI::Responses::ResponsePrompt)) }
+        attr_reader :prompt
+
+        sig do
+          params(
+            prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash)
+          ).void
+        end
+        attr_writer :prompt
+
         # **o-series models only**
         #
         # Configuration options for
@@ -236,7 +251,8 @@ module OpenAI
             error: T.nilable(OpenAI::Responses::ResponseError::OrHash),
             incomplete_details:
               T.nilable(OpenAI::Responses::Response::IncompleteDetails::OrHash),
-            instructions: T.nilable(String),
+            instructions:
+              T.nilable(OpenAI::Responses::Response::Instructions::Variants),
             metadata: T.nilable(T::Hash[Symbol, String]),
             model:
               T.any(
@@ -286,6 +302,7 @@ module OpenAI
             background: T.nilable(T::Boolean),
             max_output_tokens: T.nilable(Integer),
             previous_response_id: T.nilable(String),
+            prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
             reasoning: T.nilable(OpenAI::Reasoning::OrHash),
             service_tier:
               T.nilable(OpenAI::Responses::Response::ServiceTier::OrSymbol),
@@ -307,8 +324,7 @@ module OpenAI
           error:,
           # Details about why the response is incomplete.
           incomplete_details:,
-          # Inserts a system (or developer) message as the first item in the model's
-          # context.
+          # A system (or developer) message inserted into the model's context.
           #
           # When using along with `previous_response_id`, the instructions from a previous
           # response will not be carried over to the next response. This makes it simple to
@@ -378,6 +394,9 @@ module OpenAI
           # multi-turn conversations. Learn more about
           # [conversation state](https://platform.openai.com/docs/guides/conversation-state).
           previous_response_id: nil,
+          # Reference to a prompt template and its variables.
+          # [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
+          prompt: nil,
           # **o-series models only**
           #
           # Configuration options for
@@ -438,7 +457,8 @@ module OpenAI
               error: T.nilable(OpenAI::Responses::ResponseError),
               incomplete_details:
                 T.nilable(OpenAI::Responses::Response::IncompleteDetails),
-              instructions: T.nilable(String),
+              instructions:
+                T.nilable(OpenAI::Responses::Response::Instructions::Variants),
               metadata: T.nilable(T::Hash[Symbol, String]),
               model: OpenAI::ResponsesModel::Variants,
               object: Symbol,
@@ -451,6 +471,7 @@ module OpenAI
               background: T.nilable(T::Boolean),
               max_output_tokens: T.nilable(Integer),
               previous_response_id: T.nilable(String),
+              prompt: T.nilable(OpenAI::Responses::ResponsePrompt),
               reasoning: T.nilable(OpenAI::Reasoning),
               service_tier:
                 T.nilable(
@@ -557,6 +578,39 @@ module OpenAI
           end
         end
 
+        # A system (or developer) message inserted into the model's context.
+        #
+        # When using along with `previous_response_id`, the instructions from a previous
+        # response will not be carried over to the next response. This makes it simple to
+        # swap out system (or developer) messages in new responses.
+        module Instructions
+          extend OpenAI::Internal::Type::Union
+
+          Variants =
+            T.type_alias do
+              T.any(
+                String,
+                T::Array[OpenAI::Responses::ResponseInputItem::Variants]
+              )
+            end
+
+          sig do
+            override.returns(
+              T::Array[OpenAI::Responses::Response::Instructions::Variants]
+            )
+          end
+          def self.variants
+          end
+
+          ResponseInputItemArray =
+            T.let(
+              OpenAI::Internal::Type::ArrayOf[
+                union: OpenAI::Responses::ResponseInputItem
+              ],
+              OpenAI::Internal::Type::Converter
+            )
+        end
+
         # How the model should select which tool (or tools) to use when generating a
         # response. See the `tools` parameter to see how to specify which tools the model
         # can call.
@@ -616,6 +670,11 @@ module OpenAI
             )
           FLEX =
             T.let(:flex, OpenAI::Responses::Response::ServiceTier::TaggedSymbol)
+          SCALE =
+            T.let(
+              :scale,
+              OpenAI::Responses::Response::ServiceTier::TaggedSymbol
+            )
 
           sig do
             override.returns(
