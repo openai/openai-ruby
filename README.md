@@ -96,11 +96,18 @@ file_object = openai.files.create(file: Pathname("input.jsonl"), purpose: "fine-
 # Alternatively, pass file contents or a `StringIO` directly:
 file_object = openai.files.create(file: File.read("input.jsonl"), purpose: "fine-tune")
 
-# Or, to control the filename and/or content type:
-file = OpenAI::FilePart.new(File.read("input.jsonl"), filename: "input.jsonl", content_type: "…")
-file_object = openai.files.create(file: file, purpose: "fine-tune")
-
 puts(file_object.id)
+
+# Or, to control the filename and/or content type:
+image = OpenAI::FilePart.new(Pathname('dog.jpg'), content_type: 'image/jpeg')
+edited = openai.images.edit(
+  prompt: "make this image look like a painting",
+  model: "gpt-image-1",
+  size: '1024x1024',
+  image: image
+)
+
+puts(edited.data.first)
 ```
 
 Note that you can also pass a raw `IO` descriptor, but this disables retries, as the library can't be sure if the descriptor is a file or pipe (which cannot be rewound).
