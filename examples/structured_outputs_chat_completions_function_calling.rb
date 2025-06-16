@@ -27,5 +27,6 @@ chat_completion
   .reject { _1.message.refusal }
   .flat_map { _1.message.tool_calls.to_a }
   .each do |tool_call|
+    # parsed is an instance of `GetWeather`
     pp(tool_call.function.parsed)
   end

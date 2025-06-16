@@ -112,6 +112,110 @@ puts(edited.data.first)
 
 Note that you can also pass a raw `IO` descriptor, but this disables retries, as the library can't be sure if the descriptor is a file or pipe (which cannot be rewound).
 
+### [Structured outputs](https://platform.openai.com/docs/guides/structured-outputs) and function calling
+
+This SDK ships with helpers in `OpenAI::BaseModel`, `OpenAI::ArrayOf`, `OpenAI::EnumOf`, and `OpenAI::UnionOf` to help you define the supported JSON schemas used in making structured outputs and function calling requests.
+
+<details>
+<summary>Snippet</summary>
+
+```ruby
+# Participant model with an optional last_name and an enum for status
+class Participant < OpenAI::BaseModel
+  required :first_name, String
+  required :last_name, String, nil?: true
+  required :status, OpenAI::EnumOf[:confirmed, :unconfirmed, :tentative]
+end
+
+# CalendarEvent model with a list of participants.
+class CalendarEvent < OpenAI::BaseModel
+  required :name, String
+  required :date, String
+  required :participants, OpenAI::ArrayOf[Participant]
+end
+
+
+client = OpenAI::Client.new
+
+response = client.responses.create(
+  model: "gpt-4o-2024-08-06",
+  input: [
+    {role: :system, content: "Extract the event information."},
+    {
+      role: :user,
+      content: <<~CONTENT
+        Alice Shah and Lena are going to a science fair on Friday at 123 Main St. in San Diego.
+        They have also invited Jasper Vellani and Talia Groves - Jasper has not responded and Talia said she is thinking about it.
+      CONTENT
+    }
+  ],
+  text: CalendarEvent
+)
+
+response
+  .output
+  .flat_map { _1.content }
+  # filter out refusal responses
+  .grep_v(OpenAI::Models::Responses::ResponseOutputRefusal)
+  .each do |content|
+    # parsed is an instance of `CalendarEvent`
+    pp(content.parsed)
+  end
+```
+
+</details>
+
+See the [examples](https://github.com/openai/openai-ruby/tree/main/examples) directory for more usage examples for helper usage.
+
+To make the equivalent request using raw JSON schema format, you would do the following:
+
+<details>
+<summary>Snippet</summary>
+
+```ruby
+response = client.responses.create(
+  model: "gpt-4o-2024-08-06",
+  input: [
+    {role: :system, content: "Extract the event information."},
+    {
+      role: :user,
+      content: "..."
+    }
+  ],
+  text: {
+    format: {
+      type: :json_schema,
+      name: "CalendarEvent",
+      strict: true,
+      schema: {
+        type: "object",
+        properties: {
+          name: {type: "string"},
+          date: {type: "string"},
+          participants: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                first_name: {type: "string"},
+                last_name: {type: %w[string null]},
+                status: {type: "string", enum: %w[confirmed unconfirmed tentative]}
+              },
+              required: %w[first_name last_name status],
+              additionalProperties: false
+            }
+          }
+        },
+        required: %w[name date participants],
+        additionalProperties: false
+      }
+    }
+  }
+)
+```
+
+</details>
+
 ### Handling errors
 
 When the library is unable to connect to the API, or if the API returns a non-success status code (i.e., 4xx or 5xx response), a subclass of `OpenAI::Errors::APIError` will be thrown:

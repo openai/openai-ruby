@@ -24,5 +24,6 @@ response = client.responses.create(
 response
   .output
   .each do |output|
+    # parsed is an instance of `GetWeather`
     pp(output.parsed)
   end
