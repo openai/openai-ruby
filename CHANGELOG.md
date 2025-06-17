@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.9.0 (2025-06-17)
+
+Full Changelog: [v0.8.0...v0.9.0](https://github.com/openai/openai-ruby/compare/v0.8.0...v0.9.0)
+
+### Features
+
+* **api:** add reusable prompt IDs ([72e35ad](https://github.com/openai/openai-ruby/commit/72e35ad4a677a70a98db291a20aa212e53c367ea))
+* **api:** manual updates ([a4bcab7](https://github.com/openai/openai-ruby/commit/a4bcab736d59404c61b148a468d3bf0bc570fa39))
+
+
+### Chores
+
+* **ci:** enable for pull requests ([e8dfcf9](https://github.com/openai/openai-ruby/commit/e8dfcf97f3af426d3ad83472fa6eaac718acbd4d))
+* **ci:** link to correct github repo ([7b34316](https://github.com/openai/openai-ruby/commit/7b3431612ea66d123bc114ec55bdf07f6081439e))
+
+
+### Documentation
+
+* structured outputs in README ([#723](https://github.com/openai/openai-ruby/issues/723)) ([7212e61](https://github.com/openai/openai-ruby/commit/7212e61ee2fb9ebff0576b0bff4424f43ae54af2))
+* use image edit example in readme ([#722](https://github.com/openai/openai-ruby/issues/722)) ([eaa5055](https://github.com/openai/openai-ruby/commit/eaa5055eebca620c261c749ae4945845532c012d))
+
 ## 0.8.0 (2025-06-10)
 
 Full Changelog: [v0.7.0...v0.8.0](https://github.com/openai/openai-ruby/compare/v0.7.0...v0.8.0)
