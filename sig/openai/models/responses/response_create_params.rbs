@@ -12,6 +12,7 @@ module OpenAI
           metadata: OpenAI::Models::metadata?,
           parallel_tool_calls: bool?,
           previous_response_id: String?,
+          prompt: OpenAI::Responses::ResponsePrompt?,
           reasoning: OpenAI::Reasoning?,
           service_tier: OpenAI::Models::Responses::ResponseCreateParams::service_tier?,
           store: bool?,
@@ -46,6 +47,8 @@ module OpenAI
         attr_accessor parallel_tool_calls: bool?
 
         attr_accessor previous_response_id: String?
+
+        attr_accessor prompt: OpenAI::Responses::ResponsePrompt?
 
         attr_accessor reasoning: OpenAI::Reasoning?
 
@@ -91,6 +94,7 @@ module OpenAI
           ?metadata: OpenAI::Models::metadata?,
           ?parallel_tool_calls: bool?,
           ?previous_response_id: String?,
+          ?prompt: OpenAI::Responses::ResponsePrompt?,
           ?reasoning: OpenAI::Reasoning?,
           ?service_tier: OpenAI::Models::Responses::ResponseCreateParams::service_tier?,
           ?store: bool?,
@@ -114,6 +118,7 @@ module OpenAI
           metadata: OpenAI::Models::metadata?,
           parallel_tool_calls: bool?,
           previous_response_id: String?,
+          prompt: OpenAI::Responses::ResponsePrompt?,
           reasoning: OpenAI::Reasoning?,
           service_tier: OpenAI::Models::Responses::ResponseCreateParams::service_tier?,
           store: bool?,
@@ -135,7 +140,7 @@ module OpenAI
           def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseCreateParams::input]
         end
 
-        type service_tier = :auto | :default | :flex
+        type service_tier = :auto | :default | :flex | :scale
 
         module ServiceTier
           extend OpenAI::Internal::Type::Enum
@@ -143,6 +148,7 @@ module OpenAI
           AUTO: :auto
           DEFAULT: :default
           FLEX: :flex
+          SCALE: :scale
 
           def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseCreateParams::service_tier]
         end

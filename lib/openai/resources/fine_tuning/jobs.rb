@@ -16,7 +16,7 @@ module OpenAI
         # Response includes details of the enqueued job including job status and the name
         # of the fine-tuned models once complete.
         #
-        # [Learn more about fine-tuning](https://platform.openai.com/docs/guides/fine-tuning)
+        # [Learn more about fine-tuning](https://platform.openai.com/docs/guides/model-optimization)
         #
         # @overload create(model:, training_file:, hyperparameters: nil, integrations: nil, metadata: nil, method_: nil, seed: nil, suffix: nil, validation_file: nil, request_options: {})
         #
@@ -59,7 +59,7 @@ module OpenAI
         #
         # Get info about a fine-tuning job.
         #
-        # [Learn more about fine-tuning](https://platform.openai.com/docs/guides/fine-tuning)
+        # [Learn more about fine-tuning](https://platform.openai.com/docs/guides/model-optimization)
         #
         # @overload retrieve(fine_tuning_job_id, request_options: {})
         #

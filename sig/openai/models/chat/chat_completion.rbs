@@ -127,7 +127,7 @@ module OpenAI
           end
         end
 
-        type service_tier = :auto | :default | :flex
+        type service_tier = :auto | :default | :flex | :scale
 
         module ServiceTier
           extend OpenAI::Internal::Type::Enum
@@ -135,6 +135,7 @@ module OpenAI
           AUTO: :auto
           DEFAULT: :default
           FLEX: :flex
+          SCALE: :scale
 
           def self?.values: -> ::Array[OpenAI::Models::Chat::ChatCompletion::service_tier]
         end

@@ -15,7 +15,7 @@ To use this gem, install via Bundler by adding the following to your application
 <!-- x-release-please-start-version -->
 
 ```ruby
-gem "openai", "~> 0.8.0"
+gem "openai", "~> 0.9.0"
 ```
 
 <!-- x-release-please-end -->
@@ -96,14 +96,125 @@ file_object = openai.files.create(file: Pathname("input.jsonl"), purpose: "fine-
 # Alternatively, pass file contents or a `StringIO` directly:
 file_object = openai.files.create(file: File.read("input.jsonl"), purpose: "fine-tune")
 
-# Or, to control the filename and/or content type:
-file = OpenAI::FilePart.new(File.read("input.jsonl"), filename: "input.jsonl", content_type: "…")
-file_object = openai.files.create(file: file, purpose: "fine-tune")
-
 puts(file_object.id)
+
+# Or, to control the filename and/or content type:
+image = OpenAI::FilePart.new(Pathname('dog.jpg'), content_type: 'image/jpeg')
+edited = openai.images.edit(
+  prompt: "make this image look like a painting",
+  model: "gpt-image-1",
+  size: '1024x1024',
+  image: image
+)
+
+puts(edited.data.first)
 ```
 
 Note that you can also pass a raw `IO` descriptor, but this disables retries, as the library can't be sure if the descriptor is a file or pipe (which cannot be rewound).
+
+### [Structured outputs](https://platform.openai.com/docs/guides/structured-outputs) and function calling
+
+This SDK ships with helpers in `OpenAI::BaseModel`, `OpenAI::ArrayOf`, `OpenAI::EnumOf`, and `OpenAI::UnionOf` to help you define the supported JSON schemas used in making structured outputs and function calling requests.
+
+<details>
+<summary>Snippet</summary>
+
+```ruby
+# Participant model with an optional last_name and an enum for status
+class Participant < OpenAI::BaseModel
+  required :first_name, String
+  required :last_name, String, nil?: true
+  required :status, OpenAI::EnumOf[:confirmed, :unconfirmed, :tentative]
+end
+
+# CalendarEvent model with a list of participants.
+class CalendarEvent < OpenAI::BaseModel
+  required :name, String
+  required :date, String
+  required :participants, OpenAI::ArrayOf[Participant]
+end
+
+
+client = OpenAI::Client.new
+
+response = client.responses.create(
+  model: "gpt-4o-2024-08-06",
+  input: [
+    {role: :system, content: "Extract the event information."},
+    {
+      role: :user,
+      content: <<~CONTENT
+        Alice Shah and Lena are going to a science fair on Friday at 123 Main St. in San Diego.
+        They have also invited Jasper Vellani and Talia Groves - Jasper has not responded and Talia said she is thinking about it.
+      CONTENT
+    }
+  ],
+  text: CalendarEvent
+)
+
+response
+  .output
+  .flat_map { _1.content }
+  # filter out refusal responses
+  .grep_v(OpenAI::Models::Responses::ResponseOutputRefusal)
+  .each do |content|
+    # parsed is an instance of `CalendarEvent`
+    pp(content.parsed)
+  end
+```
+
+</details>
+
+See the [examples](https://github.com/openai/openai-ruby/tree/main/examples) directory for more usage examples for helper usage.
+
+To make the equivalent request using raw JSON schema format, you would do the following:
+
+<details>
+<summary>Snippet</summary>
+
+```ruby
+response = client.responses.create(
+  model: "gpt-4o-2024-08-06",
+  input: [
+    {role: :system, content: "Extract the event information."},
+    {
+      role: :user,
+      content: "..."
+    }
+  ],
+  text: {
+    format: {
+      type: :json_schema,
+      name: "CalendarEvent",
+      strict: true,
+      schema: {
+        type: "object",
+        properties: {
+          name: {type: "string"},
+          date: {type: "string"},
+          participants: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                first_name: {type: "string"},
+                last_name: {type: %w[string null]},
+                status: {type: "string", enum: %w[confirmed unconfirmed tentative]}
+              },
+              required: %w[first_name last_name status],
+              additionalProperties: false
+            }
+          }
+        },
+        required: %w[name date participants],
+        additionalProperties: false
+      }
+    }
+  }
+)
+```
+
+</details>
 
 ### Handling errors
 

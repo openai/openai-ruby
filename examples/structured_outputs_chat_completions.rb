@@ -51,5 +51,6 @@ chat_completion
   .choices
   .reject { _1.message.refusal }
   .each do |choice|
+    # parsed is an instance of `CalendarEvent`
     pp(choice.message.parsed)
   end

@@ -51,5 +51,6 @@ response
   # filter out refusal responses
   .grep_v(OpenAI::Models::Responses::ResponseOutputRefusal)
   .each do |content|
+    # parsed is an instance of `CalendarEvent`
     pp(content.parsed)
   end
