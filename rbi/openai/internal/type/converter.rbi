@@ -15,12 +15,14 @@ module OpenAI
         CoerceState =
           T.type_alias do
             {
-              strictness: T.any(T::Boolean, Symbol),
+              translate_names: T::Boolean,
+              strictness: T::Boolean,
               exactness: {
                 yes: Integer,
                 no: Integer,
                 maybe: Integer
               },
+              error: T::Class[StandardError],
               branched: Integer
             }
           end
@@ -85,6 +87,15 @@ module OpenAI
           end
 
           # @api private
+          sig do
+            params(translate_names: T::Boolean).returns(
+              OpenAI::Internal::Type::Converter::CoerceState
+            )
+          end
+          def self.new_coerce_state(translate_names: true)
+          end
+
+          # @api private
           #
           # Based on `target`, transform `value` into `target`, to the extent possible:
           #
@@ -105,14 +116,11 @@ module OpenAI
           def self.coerce(
             target,
             value,
-            # The `strictness` is one of `true`, `false`, or `:strong`. This informs the
-            # coercion strategy when we have to decide between multiple possible conversion
-            # targets:
+            # The `strictness` is one of `true`, `false`. This informs the coercion strategy
+            # when we have to decide between multiple possible conversion targets:
             #
             # - `true`: the conversion must be exact, with minimum coercion.
             # - `false`: the conversion can be approximate, with some coercion.
-            # - `:strong`: the conversion must be exact, with no coercion, and raise an error
-            #   if not possible.
             #
             # The `exactness` is `Hash` with keys being one of `yes`, `no`, or `maybe`. For
             # any given conversion attempt, the exactness will be updated based on how closely
@@ -124,15 +132,7 @@ module OpenAI
             # - `no`: the value cannot be converted to the target type.
             #
             # See implementation below for more details.
-            state: {
-              strictness: true,
-              exactness: {
-                yes: 0,
-                no: 0,
-                maybe: 0
-              },
-              branched: 0
-            }
+            state: OpenAI::Internal::Type::Converter.new_coerce_state
           )
           end
 

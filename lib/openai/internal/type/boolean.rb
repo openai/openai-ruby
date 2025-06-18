@@ -31,13 +31,19 @@ module OpenAI
         class << self
           # @api private
           #
+          # Coerce value to Boolean if possible, otherwise return the original value.
+          #
           # @param value [Boolean, Object]
           #
           # @param state [Hash{Symbol=>Object}] .
           #
-          #   @option state [Boolean, :strong] :strictness
+          #   @option state [Boolean] :translate_names
+          #
+          #   @option state [Boolean] :strictness
           #
           #   @option state [Hash{Symbol=>Object}] :exactness
+          #
+          #   @option state [Class<StandardError>] :error
           #
           #   @option state [Integer] :branched
           #

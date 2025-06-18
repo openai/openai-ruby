@@ -81,9 +81,13 @@ module OpenAI
         #
         # @param state [Hash{Symbol=>Object}] .
         #
-        #   @option state [Boolean, :strong] :strictness
+        #   @option state [Boolean] :translate_names
+        #
+        #   @option state [Boolean] :strictness
         #
         #   @option state [Hash{Symbol=>Object}] :exactness
+        #
+        #   @option state [Class<StandardError>] :error
         #
         #   @option state [Integer] :branched
         #
@@ -95,8 +99,12 @@ module OpenAI
           if values.include?(val)
             exactness[:yes] += 1
             val
+          elsif values.first&.class == val.class
+            exactness[:maybe] += 1
+            value
           else
-            exactness[values.first&.class == val.class ? :maybe : :no] += 1
+            exactness[:no] += 1
+            state[:error] = TypeError.new("#{value.class} can't be coerced into #{self}")
             value
           end
         end
