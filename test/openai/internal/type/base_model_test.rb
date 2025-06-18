@@ -66,7 +66,7 @@ class OpenAI::Test::PrimitiveModelTest < Minitest::Test
     cases.each do |lhs, rhs|
       target, input = lhs
       exactness, expect = rhs
-      state = {strictness: true, exactness: {yes: 0, no: 0, maybe: 0}, branched: 0}
+      state = OpenAI::Internal::Type::Converter.new_coerce_state
       assert_pattern do
         OpenAI::Internal::Type::Converter.coerce(target, input, state: state) => ^expect
         state.fetch(:exactness).filter { _2.nonzero? }.to_h => ^exactness
@@ -108,18 +108,19 @@ class OpenAI::Test::PrimitiveModelTest < Minitest::Test
 
   def test_coerce_errors
     cases = {
-      [Integer, "one"] => TypeError,
-      [Float, "one"] => TypeError,
+      [Integer, "one"] => ArgumentError,
+      [Float, "one"] => ArgumentError,
       [String, Time] => TypeError,
       [Date, "one"] => ArgumentError,
       [Time, "one"] => ArgumentError
     }
 
-    cases.each do
-      target, input = _1
-      state = {strictness: :strong, exactness: {yes: 0, no: 0, maybe: 0}, branched: 0}
-      assert_raises(_2) do
-        OpenAI::Internal::Type::Converter.coerce(target, input, state: state)
+    cases.each do |testcase, expect|
+      target, input = testcase
+      state = OpenAI::Internal::Type::Converter.new_coerce_state
+      OpenAI::Internal::Type::Converter.coerce(target, input, state: state)
+      assert_pattern do
+        state => {error: ^expect}
       end
     end
   end
@@ -217,7 +218,7 @@ class OpenAI::Test::EnumModelTest < Minitest::Test
     cases.each do |lhs, rhs|
       target, input = lhs
       exactness, expect = rhs
-      state = {strictness: true, exactness: {yes: 0, no: 0, maybe: 0}, branched: 0}
+      state = OpenAI::Internal::Type::Converter.new_coerce_state
       assert_pattern do
         OpenAI::Internal::Type::Converter.coerce(target, input, state: state) => ^expect
         state.fetch(:exactness).filter { _2.nonzero? }.to_h => ^exactness
@@ -291,7 +292,7 @@ class OpenAI::Test::CollectionModelTest < Minitest::Test
     cases.each do |lhs, rhs|
       target, input = lhs
       exactness, expect = rhs
-      state = {strictness: true, exactness: {yes: 0, no: 0, maybe: 0}, branched: 0}
+      state = OpenAI::Internal::Type::Converter.new_coerce_state
       assert_pattern do
         OpenAI::Internal::Type::Converter.coerce(target, input, state: state) => ^expect
         state.fetch(:exactness).filter { _2.nonzero? }.to_h => ^exactness
@@ -340,6 +341,7 @@ class OpenAI::Test::BaseModelTest < Minitest::Test
 
   class M6 < M1
     required :a, OpenAI::Internal::Type::ArrayOf[M6]
+    optional :b, M6
   end
 
   def test_coerce
@@ -365,13 +367,13 @@ class OpenAI::Test::BaseModelTest < Minitest::Test
       [M5, {d: "d"}] => [{yes: 3}, {d: :d}],
       [M5, {d: nil}] => [{yes: 2, no: 1}, {d: nil}],
 
-      [M6, {a: [{a: []}]}] => [{yes: 4}, -> { _1 in {a: [M6]} }]
+      [M6, {a: [{a: []}]}] => [{yes: 6}, -> { _1 in {a: [M6]} }]
     }
 
     cases.each do |lhs, rhs|
       target, input = lhs
       exactness, expect = rhs
-      state = {strictness: true, exactness: {yes: 0, no: 0, maybe: 0}, branched: 0}
+      state = OpenAI::Internal::Type::Converter.new_coerce_state
       assert_pattern do
         coerced = OpenAI::Internal::Type::Converter.coerce(target, input, state: state)
         assert_equal(coerced, coerced)
@@ -410,20 +412,26 @@ class OpenAI::Test::BaseModelTest < Minitest::Test
 
   def test_accessors
     cases = {
-      M2.new({a: "1990-09-19", b: "1"}) => {a: Time.new(1990, 9, 19), b: TypeError},
-      M2.new(a: "one", b: "one") => {a: ArgumentError, b: TypeError},
-      M2.new(a: nil, b: 2.0) => {a: TypeError},
-      M2.new(a: nil, b: 2.2) => {a: TypeError, b: ArgumentError},
+      M2.new({a: "1990-09-19", b: "1"}) => [{a: "1990-09-19", b: "1"}, {a: Time.new(1990, 9, 19), b: 1}],
+      M2.new(a: "one", b: "one") => [{a: "one", b: "one"}, {a: ArgumentError, b: ArgumentError}],
+      M2.new(a: nil, b: 2.0) => [{a: nil, b: 2.0}, {a: TypeError}],
+      M2.new(a: nil, b: 2.2) => [{a: nil, b: 2.2}, {a: TypeError, b: 2}],
 
-      M3.new => {d: :d},
-      M3.new(d: 1) => {d: ArgumentError},
+      M3.new => [{}, {d: :d}],
+      M3.new(d: 1) => [{d: 1}, {d: ArgumentError}],
 
-      M5.new => {c: :c, d: :d}
+      M5.new => [{}, {c: :c, d: :d}]
     }
 
     cases.each do
       target = _1
-      _2.each do |accessor, expect|
+      data, attributes = _2
+
+      assert_pattern do
+        target.to_h => ^data
+      end
+
+      attributes.each do |accessor, expect|
         case expect
         in Class if expect <= StandardError
           tap do
@@ -436,6 +444,24 @@ class OpenAI::Test::BaseModelTest < Minitest::Test
           assert_pattern { target.public_send(accessor) => ^expect }
         end
       end
+    end
+  end
+
+  def test_inplace_modification
+    m1 = M6.new(a: [])
+    m1.a << M6.new(a: [])
+
+    m2 = M6.new(b: M6.new(a: []))
+    m2.b.a << M6.new(a: [])
+
+    m3 = M6.new(a: [])
+    m4 = M6.new(b: m3)
+    m3.a << M6.new(a: [])
+
+    assert_pattern do
+      m1 => {a: [{a: []}]}
+      m2 => {b: {a: [{a: []}]}}
+      m4 => {b: {a: [{a: []}]}}
     end
   end
 end
@@ -555,7 +581,7 @@ class OpenAI::Test::UnionTest < Minitest::Test
     cases.each do |lhs, rhs|
       target, input = lhs
       exactness, branched, expect = rhs
-      state = {strictness: true, exactness: {yes: 0, no: 0, maybe: 0}, branched: 0}
+      state = OpenAI::Internal::Type::Converter.new_coerce_state
       assert_pattern do
         coerced = OpenAI::Internal::Type::Converter.coerce(target, input, state: state)
         assert_equal(coerced, coerced)

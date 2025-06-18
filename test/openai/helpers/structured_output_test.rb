@@ -50,7 +50,7 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
     cases.each do |lhs, rhs|
       target, input = lhs
       exactness, expect = rhs
-      state = {strictness: true, exactness: {yes: 0, no: 0, maybe: 0}, branched: 0}
+      state = OpenAI::Internal::Type::Converter.new_coerce_state
       assert_pattern do
         OpenAI::Internal::Type::Converter.coerce(target, input, state: state) => ^expect
         state.fetch(:exactness).filter { _2.nonzero? }.to_h => ^exactness

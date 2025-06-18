@@ -33,13 +33,19 @@ module OpenAI
         class << self
           # @api private
           #
+          # No coercion needed for Unknown type.
+          #
           # @param value [Object]
           #
           # @param state [Hash{Symbol=>Object}] .
           #
-          #   @option state [Boolean, :strong] :strictness
+          #   @option state [Boolean] :translate_names
+          #
+          #   @option state [Boolean] :strictness
           #
           #   @option state [Hash{Symbol=>Object}] :exactness
+          #
+          #   @option state [Class<StandardError>] :error
           #
           #   @option state [Integer] :branched
           #

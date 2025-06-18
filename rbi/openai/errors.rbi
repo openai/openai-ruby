@@ -8,6 +8,22 @@ module OpenAI
     end
 
     class ConversionError < OpenAI::Errors::Error
+      sig { returns(T.nilable(StandardError)) }
+      def cause
+      end
+
+      # @api private
+      sig do
+        params(
+          on: T::Class[StandardError],
+          method: Symbol,
+          target: T.anything,
+          value: T.anything,
+          cause: T.nilable(StandardError)
+        ).returns(T.attached_class)
+      end
+      def self.new(on:, method:, target:, value:, cause: nil)
+      end
     end
 
     class APIError < OpenAI::Errors::Error
