@@ -21,21 +21,21 @@ module OpenAI
       # your own data as input for the model's response.
       sig do
         params(
+          background: T.nilable(T::Boolean),
+          include:
+            T.nilable(
+              T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
+            ),
           input: OpenAI::Responses::ResponseCreateParams::Input::Variants,
+          instructions: T.nilable(String),
+          max_output_tokens: T.nilable(Integer),
+          metadata: T.nilable(T::Hash[Symbol, String]),
           model:
             T.any(
               String,
               OpenAI::ChatModel::OrSymbol,
               OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
             ),
-          background: T.nilable(T::Boolean),
-          include:
-            T.nilable(
-              T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
-            ),
-          instructions: T.nilable(String),
-          max_output_tokens: T.nilable(Integer),
-          metadata: T.nilable(T::Hash[Symbol, String]),
           parallel_tool_calls: T.nilable(T::Boolean),
           previous_response_id: T.nilable(String),
           prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
@@ -77,22 +77,6 @@ module OpenAI
         ).returns(OpenAI::Responses::Response)
       end
       def create(
-        # Text, image, or file inputs to the model, used to generate a response.
-        #
-        # Learn more:
-        #
-        # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-        # - [Image inputs](https://platform.openai.com/docs/guides/images)
-        # - [File inputs](https://platform.openai.com/docs/guides/pdf-files)
-        # - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
-        # - [Function calling](https://platform.openai.com/docs/guides/function-calling)
-        input:,
-        # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
-        # wide range of models with different capabilities, performance characteristics,
-        # and price points. Refer to the
-        # [model guide](https://platform.openai.com/docs/models) to browse and compare
-        # available models.
-        model:,
         # Whether to run the model response in the background.
         # [Learn more](https://platform.openai.com/docs/guides/background).
         background: nil,
@@ -112,6 +96,16 @@ module OpenAI
         # - `code_interpreter_call.outputs`: Includes the outputs of python code execution
         #   in code interpreter tool call items.
         include: nil,
+        # Text, image, or file inputs to the model, used to generate a response.
+        #
+        # Learn more:
+        #
+        # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
+        # - [Image inputs](https://platform.openai.com/docs/guides/images)
+        # - [File inputs](https://platform.openai.com/docs/guides/pdf-files)
+        # - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
+        # - [Function calling](https://platform.openai.com/docs/guides/function-calling)
+        input: nil,
         # A system (or developer) message inserted into the model's context.
         #
         # When using along with `previous_response_id`, the instructions from a previous
@@ -129,6 +123,12 @@ module OpenAI
         # Keys are strings with a maximum length of 64 characters. Values are strings with
         # a maximum length of 512 characters.
         metadata: nil,
+        # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
+        # wide range of models with different capabilities, performance characteristics,
+        # and price points. Refer to the
+        # [model guide](https://platform.openai.com/docs/models) to browse and compare
+        # available models.
+        model: nil,
         # Whether to allow the model to run tool calls in parallel.
         parallel_tool_calls: nil,
         # The unique ID of the previous response to the model. Use this to create
@@ -233,21 +233,21 @@ module OpenAI
       # your own data as input for the model's response.
       sig do
         params(
+          background: T.nilable(T::Boolean),
+          include:
+            T.nilable(
+              T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
+            ),
           input: OpenAI::Responses::ResponseCreateParams::Input::Variants,
+          instructions: T.nilable(String),
+          max_output_tokens: T.nilable(Integer),
+          metadata: T.nilable(T::Hash[Symbol, String]),
           model:
             T.any(
               String,
               OpenAI::ChatModel::OrSymbol,
               OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
             ),
-          background: T.nilable(T::Boolean),
-          include:
-            T.nilable(
-              T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
-            ),
-          instructions: T.nilable(String),
-          max_output_tokens: T.nilable(Integer),
-          metadata: T.nilable(T::Hash[Symbol, String]),
           parallel_tool_calls: T.nilable(T::Boolean),
           previous_response_id: T.nilable(String),
           prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
@@ -293,22 +293,6 @@ module OpenAI
         )
       end
       def stream_raw(
-        # Text, image, or file inputs to the model, used to generate a response.
-        #
-        # Learn more:
-        #
-        # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-        # - [Image inputs](https://platform.openai.com/docs/guides/images)
-        # - [File inputs](https://platform.openai.com/docs/guides/pdf-files)
-        # - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
-        # - [Function calling](https://platform.openai.com/docs/guides/function-calling)
-        input:,
-        # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
-        # wide range of models with different capabilities, performance characteristics,
-        # and price points. Refer to the
-        # [model guide](https://platform.openai.com/docs/models) to browse and compare
-        # available models.
-        model:,
         # Whether to run the model response in the background.
         # [Learn more](https://platform.openai.com/docs/guides/background).
         background: nil,
@@ -328,6 +312,16 @@ module OpenAI
         # - `code_interpreter_call.outputs`: Includes the outputs of python code execution
         #   in code interpreter tool call items.
         include: nil,
+        # Text, image, or file inputs to the model, used to generate a response.
+        #
+        # Learn more:
+        #
+        # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
+        # - [Image inputs](https://platform.openai.com/docs/guides/images)
+        # - [File inputs](https://platform.openai.com/docs/guides/pdf-files)
+        # - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
+        # - [Function calling](https://platform.openai.com/docs/guides/function-calling)
+        input: nil,
         # A system (or developer) message inserted into the model's context.
         #
         # When using along with `previous_response_id`, the instructions from a previous
@@ -345,6 +339,12 @@ module OpenAI
         # Keys are strings with a maximum length of 64 characters. Values are strings with
         # a maximum length of 512 characters.
         metadata: nil,
+        # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
+        # wide range of models with different capabilities, performance characteristics,
+        # and price points. Refer to the
+        # [model guide](https://platform.openai.com/docs/models) to browse and compare
+        # available models.
+        model: nil,
         # Whether to allow the model to run tool calls in parallel.
         parallel_tool_calls: nil,
         # The unique ID of the previous response to the model. Use this to create
