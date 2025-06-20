@@ -140,13 +140,22 @@ module OpenAI
 
         # @api private
         #
+        # Tries to efficiently coerce the given value to one of the known variants.
+        #
+        # If the value cannot match any of the known variants, the coercion is considered
+        # non-viable and returns the original value.
+        #
         # @param value [Object]
         #
         # @param state [Hash{Symbol=>Object}] .
         #
-        #   @option state [Boolean, :strong] :strictness
+        #   @option state [Boolean] :translate_names
+        #
+        #   @option state [Boolean] :strictness
         #
         #   @option state [Hash{Symbol=>Object}] :exactness
+        #
+        #   @option state [Class<StandardError>] :error
         #
         #   @option state [Integer] :branched
         #
@@ -158,7 +167,6 @@ module OpenAI
 
           strictness = state.fetch(:strictness)
           exactness = state.fetch(:exactness)
-          state[:strictness] = strictness == :strong ? true : strictness
 
           alternatives = []
           known_variants.each do |_, variant_fn|
@@ -177,13 +185,10 @@ module OpenAI
             end
           end
 
-          case alternatives.sort_by(&:first)
+          case alternatives.sort_by!(&:first)
           in []
             exactness[:no] += 1
-            if strictness == :strong
-              message = "no possible conversion of #{value.class} into a variant of #{target.inspect}"
-              raise ArgumentError.new(message)
-            end
+            state[:error] = ArgumentError.new("no matching variant for #{value.inspect}")
             value
           in [[_, exact, coerced], *]
             exact.each { exactness[_1] += _2 }

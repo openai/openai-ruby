@@ -5,6 +5,15 @@ module OpenAI
     end
 
     class ConversionError < OpenAI::Errors::Error
+      def cause: -> StandardError?
+
+      def initialize: (
+        on: Class,
+        method: Symbol,
+        target: top,
+        value: top,
+        ?cause: StandardError?
+      ) -> void
     end
 
     class APIError < OpenAI::Errors::Error

@@ -78,6 +78,11 @@ module OpenAI
         end
 
         # @api private
+        #
+        # Tries to efficiently coerce the given value to one of the known variants.
+        #
+        # If the value cannot match any of the known variants, the coercion is considered
+        # non-viable and returns the original value.
         sig do
           override
             .params(
