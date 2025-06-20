@@ -4,13 +4,13 @@ module OpenAI
       attr_reader input_items: OpenAI::Resources::Responses::InputItems
 
       def create: (
-        input: OpenAI::Models::Responses::ResponseCreateParams::input,
-        model: OpenAI::Models::responses_model,
         ?background: bool?,
         ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
+        ?input: OpenAI::Models::Responses::ResponseCreateParams::input,
         ?instructions: String?,
         ?max_output_tokens: Integer?,
         ?metadata: OpenAI::Models::metadata?,
+        ?model: OpenAI::Models::responses_model,
         ?parallel_tool_calls: bool?,
         ?previous_response_id: String?,
         ?prompt: OpenAI::Responses::ResponsePrompt?,
@@ -28,13 +28,13 @@ module OpenAI
       ) -> OpenAI::Responses::Response
 
       def stream_raw: (
-        input: OpenAI::Models::Responses::ResponseCreateParams::input,
-        model: OpenAI::Models::responses_model,
         ?background: bool?,
         ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
+        ?input: OpenAI::Models::Responses::ResponseCreateParams::input,
         ?instructions: String?,
         ?max_output_tokens: Integer?,
         ?metadata: OpenAI::Models::metadata?,
+        ?model: OpenAI::Models::responses_model,
         ?parallel_tool_calls: bool?,
         ?previous_response_id: String?,
         ?prompt: OpenAI::Responses::ResponsePrompt?,
