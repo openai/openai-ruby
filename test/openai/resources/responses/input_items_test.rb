@@ -94,10 +94,10 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
       in {
         type: :code_interpreter_call,
         id: String,
-        code: String,
-        results: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseCodeInterpreterToolCall::Result]),
-        status: OpenAI::Responses::ResponseCodeInterpreterToolCall::Status,
-        container_id: String | nil
+        code: String | nil,
+        container_id: String,
+        outputs: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseCodeInterpreterToolCall::Output]) | nil,
+        status: OpenAI::Responses::ResponseCodeInterpreterToolCall::Status
       }
       in {
         type: :local_shell_call,

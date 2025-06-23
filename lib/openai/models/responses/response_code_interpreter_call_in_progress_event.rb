@@ -4,20 +4,21 @@ module OpenAI
   module Models
     module Responses
       class ResponseCodeInterpreterCallInProgressEvent < OpenAI::Internal::Type::BaseModel
-        # @!attribute code_interpreter_call
-        #   A tool call to run code.
+        # @!attribute item_id
+        #   The unique identifier of the code interpreter tool call item.
         #
-        #   @return [OpenAI::Models::Responses::ResponseCodeInterpreterToolCall]
-        required :code_interpreter_call, -> { OpenAI::Responses::ResponseCodeInterpreterToolCall }
+        #   @return [String]
+        required :item_id, String
 
         # @!attribute output_index
-        #   The index of the output item that the code interpreter call is in progress.
+        #   The index of the output item in the response for which the code interpreter call
+        #   is in progress.
         #
         #   @return [Integer]
         required :output_index, Integer
 
         # @!attribute sequence_number
-        #   The sequence number of this event.
+        #   The sequence number of this event, used to order streaming events.
         #
         #   @return [Integer]
         required :sequence_number, Integer
@@ -28,18 +29,18 @@ module OpenAI
         #   @return [Symbol, :"response.code_interpreter_call.in_progress"]
         required :type, const: :"response.code_interpreter_call.in_progress"
 
-        # @!method initialize(code_interpreter_call:, output_index:, sequence_number:, type: :"response.code_interpreter_call.in_progress")
+        # @!method initialize(item_id:, output_index:, sequence_number:, type: :"response.code_interpreter_call.in_progress")
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseCodeInterpreterCallInProgressEvent} for more
         #   details.
         #
         #   Emitted when a code interpreter call is in progress.
         #
-        #   @param code_interpreter_call [OpenAI::Models::Responses::ResponseCodeInterpreterToolCall] A tool call to run code.
+        #   @param item_id [String] The unique identifier of the code interpreter tool call item.
         #
-        #   @param output_index [Integer] The index of the output item that the code interpreter call is in progress.
+        #   @param output_index [Integer] The index of the output item in the response for which the code interpreter call
         #
-        #   @param sequence_number [Integer] The sequence number of this event.
+        #   @param sequence_number [Integer] The sequence number of this event, used to order streaming events.
         #
         #   @param type [Symbol, :"response.code_interpreter_call.in_progress"] The type of the event. Always `response.code_interpreter_call.in_progress`.
       end

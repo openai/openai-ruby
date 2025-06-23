@@ -16,11 +16,15 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :code
 
-        # The index of the output item that the code interpreter call is in progress.
+        # The unique identifier of the code interpreter tool call item.
+        sig { returns(String) }
+        attr_accessor :item_id
+
+        # The index of the output item in the response for which the code is finalized.
         sig { returns(Integer) }
         attr_accessor :output_index
 
-        # The sequence number of this event.
+        # The sequence number of this event, used to order streaming events.
         sig { returns(Integer) }
         attr_accessor :sequence_number
 
@@ -28,10 +32,11 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
-        # Emitted when code snippet output is finalized by the code interpreter.
+        # Emitted when the code snippet is finalized by the code interpreter.
         sig do
           params(
             code: String,
+            item_id: String,
             output_index: Integer,
             sequence_number: Integer,
             type: Symbol
@@ -40,9 +45,11 @@ module OpenAI
         def self.new(
           # The final code snippet output by the code interpreter.
           code:,
-          # The index of the output item that the code interpreter call is in progress.
+          # The unique identifier of the code interpreter tool call item.
+          item_id:,
+          # The index of the output item in the response for which the code is finalized.
           output_index:,
-          # The sequence number of this event.
+          # The sequence number of this event, used to order streaming events.
           sequence_number:,
           # The type of the event. Always `response.code_interpreter_call_code.done`.
           type: :"response.code_interpreter_call_code.done"
@@ -53,6 +60,7 @@ module OpenAI
           override.returns(
             {
               code: String,
+              item_id: String,
               output_index: Integer,
               sequence_number: Integer,
               type: Symbol

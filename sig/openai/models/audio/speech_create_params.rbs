@@ -8,7 +8,8 @@ module OpenAI
           voice: OpenAI::Models::Audio::SpeechCreateParams::voice,
           instructions: String,
           response_format: OpenAI::Models::Audio::SpeechCreateParams::response_format,
-          speed: Float
+          speed: Float,
+          stream_format: OpenAI::Models::Audio::SpeechCreateParams::stream_format
         }
         & OpenAI::Internal::Type::request_parameters
 
@@ -36,6 +37,12 @@ module OpenAI
 
         def speed=: (Float) -> Float
 
+        attr_reader stream_format: OpenAI::Models::Audio::SpeechCreateParams::stream_format?
+
+        def stream_format=: (
+          OpenAI::Models::Audio::SpeechCreateParams::stream_format
+        ) -> OpenAI::Models::Audio::SpeechCreateParams::stream_format
+
         def initialize: (
           input: String,
           model: OpenAI::Models::Audio::SpeechCreateParams::model,
@@ -43,6 +50,7 @@ module OpenAI
           ?instructions: String,
           ?response_format: OpenAI::Models::Audio::SpeechCreateParams::response_format,
           ?speed: Float,
+          ?stream_format: OpenAI::Models::Audio::SpeechCreateParams::stream_format,
           ?request_options: OpenAI::request_opts
         ) -> void
 
@@ -53,6 +61,7 @@ module OpenAI
           instructions: String,
           response_format: OpenAI::Models::Audio::SpeechCreateParams::response_format,
           speed: Float,
+          stream_format: OpenAI::Models::Audio::SpeechCreateParams::stream_format,
           request_options: OpenAI::RequestOptions
         }
 
@@ -109,6 +118,17 @@ module OpenAI
           PCM: :pcm
 
           def self?.values: -> ::Array[OpenAI::Models::Audio::SpeechCreateParams::response_format]
+        end
+
+        type stream_format = :sse | :audio
+
+        module StreamFormat
+          extend OpenAI::Internal::Type::Enum
+
+          SSE: :sse
+          AUDIO: :audio
+
+          def self?.values: -> ::Array[OpenAI::Models::Audio::SpeechCreateParams::stream_format]
         end
       end
     end

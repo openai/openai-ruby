@@ -43,9 +43,7 @@ module OpenAI
               project_id: String,
               request_options: OpenAI::RequestOptions::OrHash
             ).returns(
-              OpenAI::Internal::CursorPage[
-                OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse
-              ]
+              OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse
             )
           end
           def retrieve(

@@ -9,7 +9,7 @@ module OpenAI
         #
         # Generates audio from the input text.
         #
-        # @overload create(input:, model:, voice:, instructions: nil, response_format: nil, speed: nil, request_options: {})
+        # @overload create(input:, model:, voice:, instructions: nil, response_format: nil, speed: nil, stream_format: nil, request_options: {})
         #
         # @param input [String] The text to generate audio for. The maximum length is 4096 characters.
         #
@@ -22,6 +22,8 @@ module OpenAI
         # @param response_format [Symbol, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat] The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`, `wav
         #
         # @param speed [Float] The speed of the generated audio. Select a value from `0.25` to `4.0`. `1.0` is
+        #
+        # @param stream_format [Symbol, OpenAI::Models::Audio::SpeechCreateParams::StreamFormat] The format to stream the audio in. Supported formats are `sse` and `audio`. `sse
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #

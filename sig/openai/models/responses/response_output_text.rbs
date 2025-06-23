@@ -46,10 +46,17 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           type file_citation =
-            { file_id: String, index: Integer, type: :file_citation }
+            {
+              file_id: String,
+              filename: String,
+              index: Integer,
+              type: :file_citation
+            }
 
           class FileCitation < OpenAI::Internal::Type::BaseModel
             attr_accessor file_id: String
+
+            attr_accessor filename: String
 
             attr_accessor index: Integer
 
@@ -57,12 +64,14 @@ module OpenAI
 
             def initialize: (
               file_id: String,
+              filename: String,
               index: Integer,
               ?type: :file_citation
             ) -> void
 
             def to_hash: -> {
               file_id: String,
+              filename: String,
               index: Integer,
               type: :file_citation
             }
@@ -110,6 +119,7 @@ module OpenAI
               container_id: String,
               end_index: Integer,
               file_id: String,
+              filename: String,
               start_index: Integer,
               type: :container_file_citation
             }
@@ -121,6 +131,8 @@ module OpenAI
 
             attr_accessor file_id: String
 
+            attr_accessor filename: String
+
             attr_accessor start_index: Integer
 
             attr_accessor type: :container_file_citation
@@ -129,6 +141,7 @@ module OpenAI
               container_id: String,
               end_index: Integer,
               file_id: String,
+              filename: String,
               start_index: Integer,
               ?type: :container_file_citation
             ) -> void
@@ -137,6 +150,7 @@ module OpenAI
               container_id: String,
               end_index: Integer,
               file_id: String,
+              filename: String,
               start_index: Integer,
               type: :container_file_citation
             }

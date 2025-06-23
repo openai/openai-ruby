@@ -60,12 +60,29 @@ module OpenAI
         attr_writer :response_format
 
         # The speed of the generated audio. Select a value from `0.25` to `4.0`. `1.0` is
-        # the default. Does not work with `gpt-4o-mini-tts`.
+        # the default.
         sig { returns(T.nilable(Float)) }
         attr_reader :speed
 
         sig { params(speed: Float).void }
         attr_writer :speed
+
+        # The format to stream the audio in. Supported formats are `sse` and `audio`.
+        # `sse` is not supported for `tts-1` or `tts-1-hd`.
+        sig do
+          returns(
+            T.nilable(OpenAI::Audio::SpeechCreateParams::StreamFormat::OrSymbol)
+          )
+        end
+        attr_reader :stream_format
+
+        sig do
+          params(
+            stream_format:
+              OpenAI::Audio::SpeechCreateParams::StreamFormat::OrSymbol
+          ).void
+        end
+        attr_writer :stream_format
 
         sig do
           params(
@@ -77,6 +94,8 @@ module OpenAI
             response_format:
               OpenAI::Audio::SpeechCreateParams::ResponseFormat::OrSymbol,
             speed: Float,
+            stream_format:
+              OpenAI::Audio::SpeechCreateParams::StreamFormat::OrSymbol,
             request_options: OpenAI::RequestOptions::OrHash
           ).returns(T.attached_class)
         end
@@ -98,8 +117,11 @@ module OpenAI
           # `wav`, and `pcm`.
           response_format: nil,
           # The speed of the generated audio. Select a value from `0.25` to `4.0`. `1.0` is
-          # the default. Does not work with `gpt-4o-mini-tts`.
+          # the default.
           speed: nil,
+          # The format to stream the audio in. Supported formats are `sse` and `audio`.
+          # `sse` is not supported for `tts-1` or `tts-1-hd`.
+          stream_format: nil,
           request_options: {}
         )
         end
@@ -118,6 +140,8 @@ module OpenAI
               response_format:
                 OpenAI::Audio::SpeechCreateParams::ResponseFormat::OrSymbol,
               speed: Float,
+              stream_format:
+                OpenAI::Audio::SpeechCreateParams::StreamFormat::OrSymbol,
               request_options: OpenAI::RequestOptions
             }
           )
@@ -261,6 +285,39 @@ module OpenAI
             override.returns(
               T::Array[
                 OpenAI::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
+        end
+
+        # The format to stream the audio in. Supported formats are `sse` and `audio`.
+        # `sse` is not supported for `tts-1` or `tts-1-hd`.
+        module StreamFormat
+          extend OpenAI::Internal::Type::Enum
+
+          TaggedSymbol =
+            T.type_alias do
+              T.all(Symbol, OpenAI::Audio::SpeechCreateParams::StreamFormat)
+            end
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+          SSE =
+            T.let(
+              :sse,
+              OpenAI::Audio::SpeechCreateParams::StreamFormat::TaggedSymbol
+            )
+          AUDIO =
+            T.let(
+              :audio,
+              OpenAI::Audio::SpeechCreateParams::StreamFormat::TaggedSymbol
+            )
+
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Audio::SpeechCreateParams::StreamFormat::TaggedSymbol
               ]
             )
           end

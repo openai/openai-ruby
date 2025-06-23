@@ -60,7 +60,7 @@ module OpenAI
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
-          # @return [OpenAI::Internal::CursorPage<OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse>]
+          # @return [OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse]
           #
           # @see OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams
           def retrieve(fine_tuned_model_checkpoint, params = {})
@@ -69,7 +69,6 @@ module OpenAI
               method: :get,
               path: ["fine_tuning/checkpoints/%1$s/permissions", fine_tuned_model_checkpoint],
               query: parsed,
-              page: OpenAI::Internal::CursorPage,
               model: OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse,
               options: options
             )

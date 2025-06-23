@@ -24,11 +24,11 @@ module OpenAI
         # Emitted when the full audio transcript is completed.
         variant :"response.audio.transcript.done", -> { OpenAI::Responses::ResponseAudioTranscriptDoneEvent }
 
-        # Emitted when a partial code snippet is added by the code interpreter.
+        # Emitted when a partial code snippet is streamed by the code interpreter.
         variant :"response.code_interpreter_call_code.delta",
                 -> { OpenAI::Responses::ResponseCodeInterpreterCallCodeDeltaEvent }
 
-        # Emitted when code snippet output is finalized by the code interpreter.
+        # Emitted when the code snippet is finalized by the code interpreter.
         variant :"response.code_interpreter_call_code.done",
                 -> { OpenAI::Responses::ResponseCodeInterpreterCallCodeDoneEvent }
 

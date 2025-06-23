@@ -9,6 +9,7 @@ module OpenAI
           ?instructions: String,
           ?response_format: OpenAI::Models::Audio::SpeechCreateParams::response_format,
           ?speed: Float,
+          ?stream_format: OpenAI::Models::Audio::SpeechCreateParams::stream_format,
           ?request_options: OpenAI::request_opts
         ) -> StringIO
 
