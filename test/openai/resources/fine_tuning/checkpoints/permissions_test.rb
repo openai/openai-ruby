@@ -35,22 +35,16 @@ class OpenAI::Test::Resources::FineTuning::Checkpoints::PermissionsTest < OpenAI
     response = @openai.fine_tuning.checkpoints.permissions.retrieve("ft-AF1WoRqd3aJAHsqc9NY7iL8F")
 
     assert_pattern do
-      response => OpenAI::Internal::CursorPage
-    end
-
-    row = response.to_enum.first
-    return if row.nil?
-
-    assert_pattern do
-      row => OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse
+      response => OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse
     end
 
     assert_pattern do
-      row => {
-        id: String,
-        created_at: Integer,
+      response => {
+        data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse::Data]),
+        has_more: OpenAI::Internal::Type::Boolean,
         object: Symbol,
-        project_id: String
+        first_id: String | nil,
+        last_id: String | nil
       }
     end
   end

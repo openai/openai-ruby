@@ -15,6 +15,8 @@ module OpenAI
             response_format:
               OpenAI::Audio::SpeechCreateParams::ResponseFormat::OrSymbol,
             speed: Float,
+            stream_format:
+              OpenAI::Audio::SpeechCreateParams::StreamFormat::OrSymbol,
             request_options: OpenAI::RequestOptions::OrHash
           ).returns(StringIO)
         end
@@ -36,8 +38,11 @@ module OpenAI
           # `wav`, and `pcm`.
           response_format: nil,
           # The speed of the generated audio. Select a value from `0.25` to `4.0`. `1.0` is
-          # the default. Does not work with `gpt-4o-mini-tts`.
+          # the default.
           speed: nil,
+          # The format to stream the audio in. Supported formats are `sse` and `audio`.
+          # `sse` is not supported for `tts-1` or `tts-1-hd`.
+          stream_format: nil,
           request_options: {}
         )
         end

@@ -12,15 +12,20 @@ module OpenAI
             )
           end
 
-        # The partial code snippet added by the code interpreter.
+        # The partial code snippet being streamed by the code interpreter.
         sig { returns(String) }
         attr_accessor :delta
 
-        # The index of the output item that the code interpreter call is in progress.
+        # The unique identifier of the code interpreter tool call item.
+        sig { returns(String) }
+        attr_accessor :item_id
+
+        # The index of the output item in the response for which the code is being
+        # streamed.
         sig { returns(Integer) }
         attr_accessor :output_index
 
-        # The sequence number of this event.
+        # The sequence number of this event, used to order streaming events.
         sig { returns(Integer) }
         attr_accessor :sequence_number
 
@@ -28,21 +33,25 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
-        # Emitted when a partial code snippet is added by the code interpreter.
+        # Emitted when a partial code snippet is streamed by the code interpreter.
         sig do
           params(
             delta: String,
+            item_id: String,
             output_index: Integer,
             sequence_number: Integer,
             type: Symbol
           ).returns(T.attached_class)
         end
         def self.new(
-          # The partial code snippet added by the code interpreter.
+          # The partial code snippet being streamed by the code interpreter.
           delta:,
-          # The index of the output item that the code interpreter call is in progress.
+          # The unique identifier of the code interpreter tool call item.
+          item_id:,
+          # The index of the output item in the response for which the code is being
+          # streamed.
           output_index:,
-          # The sequence number of this event.
+          # The sequence number of this event, used to order streaming events.
           sequence_number:,
           # The type of the event. Always `response.code_interpreter_call_code.delta`.
           type: :"response.code_interpreter_call_code.delta"
@@ -53,6 +62,7 @@ module OpenAI
           override.returns(
             {
               delta: String,
+              item_id: String,
               output_index: Integer,
               sequence_number: Integer,
               type: Symbol

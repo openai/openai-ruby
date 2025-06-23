@@ -127,6 +127,10 @@ module OpenAI
             sig { returns(String) }
             attr_accessor :file_id
 
+            # The filename of the file cited.
+            sig { returns(String) }
+            attr_accessor :filename
+
             # The index of the file in the list of files.
             sig { returns(Integer) }
             attr_accessor :index
@@ -137,13 +141,18 @@ module OpenAI
 
             # A citation to a file.
             sig do
-              params(file_id: String, index: Integer, type: Symbol).returns(
-                T.attached_class
-              )
+              params(
+                file_id: String,
+                filename: String,
+                index: Integer,
+                type: Symbol
+              ).returns(T.attached_class)
             end
             def self.new(
               # The ID of the file.
               file_id:,
+              # The filename of the file cited.
+              filename:,
               # The index of the file in the list of files.
               index:,
               # The type of the file citation. Always `file_citation`.
@@ -153,7 +162,12 @@ module OpenAI
 
             sig do
               override.returns(
-                { file_id: String, index: Integer, type: Symbol }
+                {
+                  file_id: String,
+                  filename: String,
+                  index: Integer,
+                  type: Symbol
+                }
               )
             end
             def to_hash
@@ -249,6 +263,10 @@ module OpenAI
             sig { returns(String) }
             attr_accessor :file_id
 
+            # The filename of the container file cited.
+            sig { returns(String) }
+            attr_accessor :filename
+
             # The index of the first character of the container file citation in the message.
             sig { returns(Integer) }
             attr_accessor :start_index
@@ -263,6 +281,7 @@ module OpenAI
                 container_id: String,
                 end_index: Integer,
                 file_id: String,
+                filename: String,
                 start_index: Integer,
                 type: Symbol
               ).returns(T.attached_class)
@@ -274,6 +293,8 @@ module OpenAI
               end_index:,
               # The ID of the file.
               file_id:,
+              # The filename of the container file cited.
+              filename:,
               # The index of the first character of the container file citation in the message.
               start_index:,
               # The type of the container file citation. Always `container_file_citation`.
@@ -287,6 +308,7 @@ module OpenAI
                   container_id: String,
                   end_index: Integer,
                   file_id: String,
+                  filename: String,
                   start_index: Integer,
                   type: Symbol
                 }

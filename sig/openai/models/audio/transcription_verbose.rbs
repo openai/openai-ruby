@@ -7,6 +7,7 @@ module OpenAI
           language: String,
           text: String,
           segments: ::Array[OpenAI::Audio::TranscriptionSegment],
+          usage: OpenAI::Audio::TranscriptionVerbose::Usage,
           words: ::Array[OpenAI::Audio::TranscriptionWord]
         }
 
@@ -23,6 +24,12 @@ module OpenAI
           ::Array[OpenAI::Audio::TranscriptionSegment]
         ) -> ::Array[OpenAI::Audio::TranscriptionSegment]
 
+        attr_reader usage: OpenAI::Audio::TranscriptionVerbose::Usage?
+
+        def usage=: (
+          OpenAI::Audio::TranscriptionVerbose::Usage
+        ) -> OpenAI::Audio::TranscriptionVerbose::Usage
+
         attr_reader words: ::Array[OpenAI::Audio::TranscriptionWord]?
 
         def words=: (
@@ -34,6 +41,7 @@ module OpenAI
           language: String,
           text: String,
           ?segments: ::Array[OpenAI::Audio::TranscriptionSegment],
+          ?usage: OpenAI::Audio::TranscriptionVerbose::Usage,
           ?words: ::Array[OpenAI::Audio::TranscriptionWord]
         ) -> void
 
@@ -42,8 +50,21 @@ module OpenAI
           language: String,
           text: String,
           segments: ::Array[OpenAI::Audio::TranscriptionSegment],
+          usage: OpenAI::Audio::TranscriptionVerbose::Usage,
           words: ::Array[OpenAI::Audio::TranscriptionWord]
         }
+
+        type usage = { duration: Float, type: :duration }
+
+        class Usage < OpenAI::Internal::Type::BaseModel
+          attr_accessor duration: Float
+
+          attr_accessor type: :duration
+
+          def initialize: (duration: Float, ?type: :duration) -> void
+
+          def to_hash: -> { duration: Float, type: :duration }
+        end
       end
     end
   end

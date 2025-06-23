@@ -46,12 +46,19 @@ module OpenAI
 
         # @!attribute speed
         #   The speed of the generated audio. Select a value from `0.25` to `4.0`. `1.0` is
-        #   the default. Does not work with `gpt-4o-mini-tts`.
+        #   the default.
         #
         #   @return [Float, nil]
         optional :speed, Float
 
-        # @!method initialize(input:, model:, voice:, instructions: nil, response_format: nil, speed: nil, request_options: {})
+        # @!attribute stream_format
+        #   The format to stream the audio in. Supported formats are `sse` and `audio`.
+        #   `sse` is not supported for `tts-1` or `tts-1-hd`.
+        #
+        #   @return [Symbol, OpenAI::Models::Audio::SpeechCreateParams::StreamFormat, nil]
+        optional :stream_format, enum: -> { OpenAI::Audio::SpeechCreateParams::StreamFormat }
+
+        # @!method initialize(input:, model:, voice:, instructions: nil, response_format: nil, speed: nil, stream_format: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Audio::SpeechCreateParams} for more details.
         #
@@ -66,6 +73,8 @@ module OpenAI
         #   @param response_format [Symbol, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat] The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`, `wav
         #
         #   @param speed [Float] The speed of the generated audio. Select a value from `0.25` to `4.0`. `1.0` is
+        #
+        #   @param stream_format [Symbol, OpenAI::Models::Audio::SpeechCreateParams::StreamFormat] The format to stream the audio in. Supported formats are `sse` and `audio`. `sse
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -149,6 +158,18 @@ module OpenAI
           FLAC = :flac
           WAV = :wav
           PCM = :pcm
+
+          # @!method self.values
+          #   @return [Array<Symbol>]
+        end
+
+        # The format to stream the audio in. Supported formats are `sse` and `audio`.
+        # `sse` is not supported for `tts-1` or `tts-1-hd`.
+        module StreamFormat
+          extend OpenAI::Internal::Type::Enum
+
+          SSE = :sse
+          AUDIO = :audio
 
           # @!method self.values
           #   @return [Array<Symbol>]
