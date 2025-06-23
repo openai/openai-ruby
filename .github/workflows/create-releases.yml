@@ -22,6 +22,15 @@ jobs:
           repo: ${{ github.event.repository.full_name }}
           stainless-api-key: ${{ secrets.STAINLESS_API_KEY }}
 
+      - name: Publish to RubyGems.org
+        if: ${{ steps.release.outputs.releases_created }}
+        run: |
+          bash ./bin/publish-gem
+        env:
+          # `RUBYGEMS_HOST` is only required for private gem repositories, not https://rubygems.org
+          RUBYGEMS_HOST: ${{ secrets.OPENAI_RUBYGEMS_HOST || secrets.RUBYGEMS_HOST }}
+          GEM_HOST_API_KEY: ${{ secrets.OPENAI_GEM_HOST_API_KEY || secrets.GEM_HOST_API_KEY }}
+
       - name: Update RubyDocs
         if: ${{ steps.release.outputs.releases_created }}
         run: |
