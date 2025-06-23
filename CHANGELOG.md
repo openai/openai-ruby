@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.10.0 (2025-06-23)
+
+Full Changelog: [v0.9.0...v0.10.0](https://github.com/openai/openai-ruby/compare/v0.9.0...v0.10.0)
+
+### Features
+
+* **api:** make model and inputs not required to create response ([2087fb5](https://github.com/openai/openai-ruby/commit/2087fb53d775f6481dd34737f6d554c5c35f65e7))
+* **api:** update api shapes for usage and code interpreter ([733ebfb](https://github.com/openai/openai-ruby/commit/733ebfbafe14d9733149b174c99d41d471a42865))
+
+
+### Bug Fixes
+
+* **internal:** fix: should publish to ruby gems when a release is created ([aebd8eb](https://github.com/openai/openai-ruby/commit/aebd8eb2855d6a8f4fe685bdb5a458346d509e50))
+* issue where we cannot mutate arrays on base model derivatives ([266d072](https://github.com/openai/openai-ruby/commit/266d072946c75f93abeff45eec9787ce4e7fea56))
+
+
+### Chores
+
+* allow more free formatted json response input ([#726](https://github.com/openai/openai-ruby/issues/726)) ([69fb0af](https://github.com/openai/openai-ruby/commit/69fb0afabf86ecc3d1ca469d9700c42447569f3b))
+
 ## 0.9.0 (2025-06-17)
 
 Full Changelog: [v0.8.0...v0.9.0](https://github.com/openai/openai-ruby/compare/v0.8.0...v0.9.0)

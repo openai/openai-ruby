@@ -76,6 +76,12 @@ module OpenAI
             #   @return [String]
             required :file_id, String
 
+            # @!attribute filename
+            #   The filename of the file cited.
+            #
+            #   @return [String]
+            required :filename, String
+
             # @!attribute index
             #   The index of the file in the list of files.
             #
@@ -88,10 +94,12 @@ module OpenAI
             #   @return [Symbol, :file_citation]
             required :type, const: :file_citation
 
-            # @!method initialize(file_id:, index:, type: :file_citation)
+            # @!method initialize(file_id:, filename:, index:, type: :file_citation)
             #   A citation to a file.
             #
             #   @param file_id [String] The ID of the file.
+            #
+            #   @param filename [String] The filename of the file cited.
             #
             #   @param index [Integer] The index of the file in the list of files.
             #
@@ -162,6 +170,12 @@ module OpenAI
             #   @return [String]
             required :file_id, String
 
+            # @!attribute filename
+            #   The filename of the container file cited.
+            #
+            #   @return [String]
+            required :filename, String
+
             # @!attribute start_index
             #   The index of the first character of the container file citation in the message.
             #
@@ -174,7 +188,7 @@ module OpenAI
             #   @return [Symbol, :container_file_citation]
             required :type, const: :container_file_citation
 
-            # @!method initialize(container_id:, end_index:, file_id:, start_index:, type: :container_file_citation)
+            # @!method initialize(container_id:, end_index:, file_id:, filename:, start_index:, type: :container_file_citation)
             #   A citation for a container file used to generate a model response.
             #
             #   @param container_id [String] The ID of the container file.
@@ -182,6 +196,8 @@ module OpenAI
             #   @param end_index [Integer] The index of the last character of the container file citation in the message.
             #
             #   @param file_id [String] The ID of the file.
+            #
+            #   @param filename [String] The filename of the container file cited.
             #
             #   @param start_index [Integer] The index of the first character of the container file citation in the message.
             #

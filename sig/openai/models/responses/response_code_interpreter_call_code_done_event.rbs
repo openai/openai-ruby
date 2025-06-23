@@ -4,6 +4,7 @@ module OpenAI
       type response_code_interpreter_call_code_done_event =
         {
           code: String,
+          item_id: String,
           output_index: Integer,
           sequence_number: Integer,
           type: :"response.code_interpreter_call_code.done"
@@ -11,6 +12,8 @@ module OpenAI
 
       class ResponseCodeInterpreterCallCodeDoneEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor code: String
+
+        attr_accessor item_id: String
 
         attr_accessor output_index: Integer
 
@@ -20,6 +23,7 @@ module OpenAI
 
         def initialize: (
           code: String,
+          item_id: String,
           output_index: Integer,
           sequence_number: Integer,
           ?type: :"response.code_interpreter_call_code.done"
@@ -27,6 +31,7 @@ module OpenAI
 
         def to_hash: -> {
           code: String,
+          item_id: String,
           output_index: Integer,
           sequence_number: Integer,
           type: :"response.code_interpreter_call_code.done"

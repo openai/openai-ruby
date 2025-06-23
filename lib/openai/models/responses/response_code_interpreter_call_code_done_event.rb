@@ -10,14 +10,20 @@ module OpenAI
         #   @return [String]
         required :code, String
 
+        # @!attribute item_id
+        #   The unique identifier of the code interpreter tool call item.
+        #
+        #   @return [String]
+        required :item_id, String
+
         # @!attribute output_index
-        #   The index of the output item that the code interpreter call is in progress.
+        #   The index of the output item in the response for which the code is finalized.
         #
         #   @return [Integer]
         required :output_index, Integer
 
         # @!attribute sequence_number
-        #   The sequence number of this event.
+        #   The sequence number of this event, used to order streaming events.
         #
         #   @return [Integer]
         required :sequence_number, Integer
@@ -28,18 +34,16 @@ module OpenAI
         #   @return [Symbol, :"response.code_interpreter_call_code.done"]
         required :type, const: :"response.code_interpreter_call_code.done"
 
-        # @!method initialize(code:, output_index:, sequence_number:, type: :"response.code_interpreter_call_code.done")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseCodeInterpreterCallCodeDoneEvent} for more
-        #   details.
-        #
-        #   Emitted when code snippet output is finalized by the code interpreter.
+        # @!method initialize(code:, item_id:, output_index:, sequence_number:, type: :"response.code_interpreter_call_code.done")
+        #   Emitted when the code snippet is finalized by the code interpreter.
         #
         #   @param code [String] The final code snippet output by the code interpreter.
         #
-        #   @param output_index [Integer] The index of the output item that the code interpreter call is in progress.
+        #   @param item_id [String] The unique identifier of the code interpreter tool call item.
         #
-        #   @param sequence_number [Integer] The sequence number of this event.
+        #   @param output_index [Integer] The index of the output item in the response for which the code is finalized.
+        #
+        #   @param sequence_number [Integer] The sequence number of this event, used to order streaming events.
         #
         #   @param type [Symbol, :"response.code_interpreter_call_code.done"] The type of the event. Always `response.code_interpreter_call_code.done`.
       end

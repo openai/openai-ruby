@@ -119,6 +119,14 @@ module OpenAI
                 }
               }
             )
+          in {response_format: {type: :json_schema, json_schema: OpenAI::StructuredOutput::JsonSchemaConverter => model}}
+            parsed.fetch(:response_format).update(
+              json_schema: {
+                strict: true,
+                name: model.name.split("::").last,
+                schema: model.to_json_schema
+              }
+            )
           in {response_format: {type: :json_schema, json_schema: {schema: OpenAI::StructuredOutput::JsonSchemaConverter => model}}}
             parsed.dig(:response_format, :json_schema).store(:schema, model.to_json_schema)
           in {tools: Array => tools}

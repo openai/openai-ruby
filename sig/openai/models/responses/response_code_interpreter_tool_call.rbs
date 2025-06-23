@@ -4,51 +4,49 @@ module OpenAI
       type response_code_interpreter_tool_call =
         {
           id: String,
-          code: String,
-          results: ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::result],
+          code: String?,
+          container_id: String,
+          outputs: ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::output]?,
           status: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::status,
-          type: :code_interpreter_call,
-          container_id: String
+          type: :code_interpreter_call
         }
 
       class ResponseCodeInterpreterToolCall < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
-        attr_accessor code: String
+        attr_accessor code: String?
 
-        attr_accessor results: ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::result]
+        attr_accessor container_id: String
+
+        attr_accessor outputs: ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::output]?
 
         attr_accessor status: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::status
 
         attr_accessor type: :code_interpreter_call
 
-        attr_reader container_id: String?
-
-        def container_id=: (String) -> String
-
         def initialize: (
           id: String,
-          code: String,
-          results: ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::result],
+          code: String?,
+          container_id: String,
+          outputs: ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::output]?,
           status: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::status,
-          ?container_id: String,
           ?type: :code_interpreter_call
         ) -> void
 
         def to_hash: -> {
           id: String,
-          code: String,
-          results: ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::result],
+          code: String?,
+          container_id: String,
+          outputs: ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::output]?,
           status: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::status,
-          type: :code_interpreter_call,
-          container_id: String
+          type: :code_interpreter_call
         }
 
-        type result =
-          OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Logs
-          | OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Files
+        type output =
+          OpenAI::Responses::ResponseCodeInterpreterToolCall::Output::Logs
+          | OpenAI::Responses::ResponseCodeInterpreterToolCall::Output::Image
 
-        module Result
+        module Output
           extend OpenAI::Internal::Type::Union
 
           type logs = { logs: String, type: :logs }
@@ -63,51 +61,32 @@ module OpenAI
             def to_hash: -> { logs: String, type: :logs }
           end
 
-          type files =
-            {
-              files: ::Array[OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Files::File],
-              type: :files
-            }
+          type image = { type: :image, url: String }
 
-          class Files < OpenAI::Internal::Type::BaseModel
-            attr_accessor files: ::Array[OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Files::File]
+          class Image < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :image
 
-            attr_accessor type: :files
+            attr_accessor url: String
 
-            def initialize: (
-              files: ::Array[OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Files::File],
-              ?type: :files
-            ) -> void
+            def initialize: (url: String, ?type: :image) -> void
 
-            def to_hash: -> {
-              files: ::Array[OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Files::File],
-              type: :files
-            }
-
-            type file = { file_id: String, mime_type: String }
-
-            class File < OpenAI::Internal::Type::BaseModel
-              attr_accessor file_id: String
-
-              attr_accessor mime_type: String
-
-              def initialize: (file_id: String, mime_type: String) -> void
-
-              def to_hash: -> { file_id: String, mime_type: String }
-            end
+            def to_hash: -> { type: :image, url: String }
           end
 
-          def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::result]
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::output]
         end
 
-        type status = :in_progress | :interpreting | :completed
+        type status =
+          :in_progress | :completed | :incomplete | :interpreting | :failed
 
         module Status
           extend OpenAI::Internal::Type::Enum
 
           IN_PROGRESS: :in_progress
-          INTERPRETING: :interpreting
           COMPLETED: :completed
+          INCOMPLETE: :incomplete
+          INTERPRETING: :interpreting
+          FAILED: :failed
 
           def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::status]
         end

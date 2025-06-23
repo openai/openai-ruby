@@ -3,14 +3,14 @@ module OpenAI
     module Responses
       type response_code_interpreter_call_interpreting_event =
         {
-          code_interpreter_call: OpenAI::Responses::ResponseCodeInterpreterToolCall,
+          item_id: String,
           output_index: Integer,
           sequence_number: Integer,
           type: :"response.code_interpreter_call.interpreting"
         }
 
       class ResponseCodeInterpreterCallInterpretingEvent < OpenAI::Internal::Type::BaseModel
-        attr_accessor code_interpreter_call: OpenAI::Responses::ResponseCodeInterpreterToolCall
+        attr_accessor item_id: String
 
         attr_accessor output_index: Integer
 
@@ -19,14 +19,14 @@ module OpenAI
         attr_accessor type: :"response.code_interpreter_call.interpreting"
 
         def initialize: (
-          code_interpreter_call: OpenAI::Responses::ResponseCodeInterpreterToolCall,
+          item_id: String,
           output_index: Integer,
           sequence_number: Integer,
           ?type: :"response.code_interpreter_call.interpreting"
         ) -> void
 
         def to_hash: -> {
-          code_interpreter_call: OpenAI::Responses::ResponseCodeInterpreterToolCall,
+          item_id: String,
           output_index: Integer,
           sequence_number: Integer,
           type: :"response.code_interpreter_call.interpreting"
