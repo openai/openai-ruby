@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.11.0 (2025-06-26)
+
+Full Changelog: [v0.10.0...v0.11.0](https://github.com/openai/openai-ruby/compare/v0.10.0...v0.11.0)
+
+### Features
+
+* **api:** webhook and deep research support ([6228400](https://github.com/openai/openai-ruby/commit/6228400e19aadefc5f87e24b3c104fc0b44d3cee))
+
+
+### Bug Fixes
+
+* **ci:** release-doctor — report correct token name ([c12c991](https://github.com/openai/openai-ruby/commit/c12c9911beaeb8b1c72d7c5cc5f14dcb9cd5452e))
+
+
+### Chores
+
+* **api:** remove unsupported property ([1073c3a](https://github.com/openai/openai-ruby/commit/1073c3a6059f2d1e1ef92937326699e0240503e5))
+* **client:** throw specific errors ([0cf937e](https://github.com/openai/openai-ruby/commit/0cf937ea8abebc05e52a419e19e275a45b5da646))
+* **docs:** update README to include links to docs on Webhooks ([2d8f23e](https://github.com/openai/openai-ruby/commit/2d8f23ecb245c88f3f082f93eb906af857d64c7d))
+
 ## 0.10.0 (2025-06-23)
 
 Full Changelog: [v0.9.0...v0.10.0](https://github.com/openai/openai-ruby/compare/v0.9.0...v0.10.0)
