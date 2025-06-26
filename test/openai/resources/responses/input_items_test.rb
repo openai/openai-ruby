@@ -77,7 +77,12 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
         acknowledged_safety_checks: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck]) | nil,
         status: OpenAI::Responses::ResponseComputerToolCallOutputItem::Status | nil
       }
-      in {type: :web_search_call, id: String, status: OpenAI::Responses::ResponseFunctionWebSearch::Status}
+      in {
+        type: :web_search_call,
+        id: String,
+        action: OpenAI::Responses::ResponseFunctionWebSearch::Action,
+        status: OpenAI::Responses::ResponseFunctionWebSearch::Status
+      }
       in {
         type: :function_call_output,
         id: String,

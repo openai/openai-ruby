@@ -70,7 +70,7 @@ module OpenAI
         #
         # @param seed [Integer, nil] This feature is in Beta.
         #
-        # @param service_tier [Symbol, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier, nil] Specifies the latency tier to use for processing the request. This parameter is
+        # @param service_tier [Symbol, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier, nil] Specifies the processing type used for serving the request.
         #
         # @param stop [String, Array<String>, nil] Not supported with latest reasoning models `o3` and `o4-mini`.
         #
@@ -258,7 +258,7 @@ module OpenAI
         #
         # @param seed [Integer, nil] This feature is in Beta.
         #
-        # @param service_tier [Symbol, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier, nil] Specifies the latency tier to use for processing the request. This parameter is
+        # @param service_tier [Symbol, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier, nil] Specifies the processing type used for serving the request.
         #
         # @param stop [String, Array<String>, nil] Not supported with latest reasoning models `o3` and `o4-mini`.
         #

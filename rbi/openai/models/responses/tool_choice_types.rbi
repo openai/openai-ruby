@@ -18,7 +18,6 @@ module OpenAI
         # - `web_search_preview`
         # - `computer_use_preview`
         # - `code_interpreter`
-        # - `mcp`
         # - `image_generation`
         sig { returns(OpenAI::Responses::ToolChoiceTypes::Type::OrSymbol) }
         attr_accessor :type
@@ -40,7 +39,6 @@ module OpenAI
           # - `web_search_preview`
           # - `computer_use_preview`
           # - `code_interpreter`
-          # - `mcp`
           # - `image_generation`
           type:
         )
@@ -63,7 +61,6 @@ module OpenAI
         # - `web_search_preview`
         # - `computer_use_preview`
         # - `code_interpreter`
-        # - `mcp`
         # - `image_generation`
         module Type
           extend OpenAI::Internal::Type::Enum
@@ -104,8 +101,6 @@ module OpenAI
               :code_interpreter,
               OpenAI::Responses::ToolChoiceTypes::Type::TaggedSymbol
             )
-          MCP =
-            T.let(:mcp, OpenAI::Responses::ToolChoiceTypes::Type::TaggedSymbol)
 
           sig do
             override.returns(

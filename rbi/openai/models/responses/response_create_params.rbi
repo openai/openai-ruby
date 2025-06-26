@@ -23,18 +23,19 @@ module OpenAI
         # Specify additional output data to include in the model response. Currently
         # supported values are:
         #
+        # - `code_interpreter_call.outputs`: Includes the outputs of python code execution
+        #   in code interpreter tool call items.
+        # - `computer_call_output.output.image_url`: Include image urls from the computer
+        #   call output.
         # - `file_search_call.results`: Include the search results of the file search tool
         #   call.
         # - `message.input_image.image_url`: Include image urls from the input message.
-        # - `computer_call_output.output.image_url`: Include image urls from the computer
-        #   call output.
+        # - `message.output_text.logprobs`: Include logprobs with assistant messages.
         # - `reasoning.encrypted_content`: Includes an encrypted version of reasoning
         #   tokens in reasoning item outputs. This enables reasoning items to be used in
         #   multi-turn conversations when using the Responses API statelessly (like when
         #   the `store` parameter is set to `false`, or when an organization is enrolled
         #   in the zero data retention program).
-        # - `code_interpreter_call.outputs`: Includes the outputs of python code execution
-        #   in code interpreter tool call items.
         sig do
           returns(
             T.nilable(T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol])
@@ -78,6 +79,13 @@ module OpenAI
         # [reasoning tokens](https://platform.openai.com/docs/guides/reasoning).
         sig { returns(T.nilable(Integer)) }
         attr_accessor :max_output_tokens
+
+        # The maximum number of total calls to built-in tools that can be processed in a
+        # response. This maximum number applies across all built-in tool calls, not per
+        # individual tool. Any further attempts to call a tool by the model will be
+        # ignored.
+        sig { returns(T.nilable(Integer)) }
+        attr_accessor :max_tool_calls
 
         # Set of 16 key-value pairs that can be attached to an object. This can be useful
         # for storing additional information about the object in a structured format, and
@@ -150,23 +158,23 @@ module OpenAI
         sig { params(reasoning: T.nilable(OpenAI::Reasoning::OrHash)).void }
         attr_writer :reasoning
 
-        # Specifies the latency tier to use for processing the request. This parameter is
-        # relevant for customers subscribed to the scale tier service:
+        # Specifies the processing type used for serving the request.
         #
-        # - If set to 'auto', and the Project is Scale tier enabled, the system will
-        #   utilize scale tier credits until they are exhausted.
-        # - If set to 'auto', and the Project is not Scale tier enabled, the request will
-        #   be processed using the default service tier with a lower uptime SLA and no
-        #   latency guarantee.
-        # - If set to 'default', the request will be processed using the default service
-        #   tier with a lower uptime SLA and no latency guarantee.
-        # - If set to 'flex', the request will be processed with the Flex Processing
-        #   service tier.
-        #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
+        # - If set to 'auto', then the request will be processed with the service tier
+        #   configured in the Project settings. Unless otherwise configured, the Project
+        #   will use 'default'.
+        # - If set to 'default', then the requset will be processed with the standard
+        #   pricing and performance for the selected model.
+        # - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)' or
+        #   'priority', then the request will be processed with the corresponding service
+        #   tier. [Contact sales](https://openai.com/contact-sales) to learn more about
+        #   Priority processing.
         # - When not set, the default behavior is 'auto'.
         #
-        # When this parameter is set, the response body will include the `service_tier`
-        # utilized.
+        # When the `service_tier` parameter is set, the response body will include the
+        # `service_tier` value based on the processing mode actually used to serve the
+        # request. This response value may be different from the value set in the
+        # parameter.
         sig do
           returns(
             T.nilable(
@@ -215,7 +223,8 @@ module OpenAI
               T.any(
                 OpenAI::Responses::ToolChoiceOptions::OrSymbol,
                 OpenAI::Responses::ToolChoiceTypes,
-                OpenAI::Responses::ToolChoiceFunction
+                OpenAI::Responses::ToolChoiceFunction,
+                OpenAI::Responses::ToolChoiceMcp
               )
             )
           )
@@ -228,7 +237,8 @@ module OpenAI
               T.any(
                 OpenAI::Responses::ToolChoiceOptions::OrSymbol,
                 OpenAI::Responses::ToolChoiceTypes::OrHash,
-                OpenAI::Responses::ToolChoiceFunction::OrHash
+                OpenAI::Responses::ToolChoiceFunction::OrHash,
+                OpenAI::Responses::ToolChoiceMcp::OrHash
               )
           ).void
         end
@@ -287,6 +297,11 @@ module OpenAI
         end
         attr_writer :tools
 
+        # An integer between 0 and 20 specifying the number of most likely tokens to
+        # return at each token position, each with an associated log probability.
+        sig { returns(T.nilable(Integer)) }
+        attr_accessor :top_logprobs
+
         # An alternative to sampling with temperature, called nucleus sampling, where the
         # model considers the results of the tokens with top_p probability mass. So 0.1
         # means only the tokens comprising the top 10% probability mass are considered.
@@ -330,6 +345,7 @@ module OpenAI
             input: OpenAI::Responses::ResponseCreateParams::Input::Variants,
             instructions: T.nilable(String),
             max_output_tokens: T.nilable(Integer),
+            max_tool_calls: T.nilable(Integer),
             metadata: T.nilable(T::Hash[Symbol, String]),
             model:
               T.any(
@@ -352,7 +368,8 @@ module OpenAI
               T.any(
                 OpenAI::Responses::ToolChoiceOptions::OrSymbol,
                 OpenAI::Responses::ToolChoiceTypes::OrHash,
-                OpenAI::Responses::ToolChoiceFunction::OrHash
+                OpenAI::Responses::ToolChoiceFunction::OrHash,
+                OpenAI::Responses::ToolChoiceMcp::OrHash
               ),
             tools:
               T::Array[
@@ -367,6 +384,7 @@ module OpenAI
                   OpenAI::Responses::WebSearchTool::OrHash
                 )
               ],
+            top_logprobs: T.nilable(Integer),
             top_p: T.nilable(Float),
             truncation:
               T.nilable(
@@ -383,18 +401,19 @@ module OpenAI
           # Specify additional output data to include in the model response. Currently
           # supported values are:
           #
+          # - `code_interpreter_call.outputs`: Includes the outputs of python code execution
+          #   in code interpreter tool call items.
+          # - `computer_call_output.output.image_url`: Include image urls from the computer
+          #   call output.
           # - `file_search_call.results`: Include the search results of the file search tool
           #   call.
           # - `message.input_image.image_url`: Include image urls from the input message.
-          # - `computer_call_output.output.image_url`: Include image urls from the computer
-          #   call output.
+          # - `message.output_text.logprobs`: Include logprobs with assistant messages.
           # - `reasoning.encrypted_content`: Includes an encrypted version of reasoning
           #   tokens in reasoning item outputs. This enables reasoning items to be used in
           #   multi-turn conversations when using the Responses API statelessly (like when
           #   the `store` parameter is set to `false`, or when an organization is enrolled
           #   in the zero data retention program).
-          # - `code_interpreter_call.outputs`: Includes the outputs of python code execution
-          #   in code interpreter tool call items.
           include: nil,
           # Text, image, or file inputs to the model, used to generate a response.
           #
@@ -416,6 +435,11 @@ module OpenAI
           # including visible output tokens and
           # [reasoning tokens](https://platform.openai.com/docs/guides/reasoning).
           max_output_tokens: nil,
+          # The maximum number of total calls to built-in tools that can be processed in a
+          # response. This maximum number applies across all built-in tool calls, not per
+          # individual tool. Any further attempts to call a tool by the model will be
+          # ignored.
+          max_tool_calls: nil,
           # Set of 16 key-value pairs that can be attached to an object. This can be useful
           # for storing additional information about the object in a structured format, and
           # querying for objects via API or the dashboard.
@@ -443,23 +467,23 @@ module OpenAI
           # Configuration options for
           # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
           reasoning: nil,
-          # Specifies the latency tier to use for processing the request. This parameter is
-          # relevant for customers subscribed to the scale tier service:
+          # Specifies the processing type used for serving the request.
           #
-          # - If set to 'auto', and the Project is Scale tier enabled, the system will
-          #   utilize scale tier credits until they are exhausted.
-          # - If set to 'auto', and the Project is not Scale tier enabled, the request will
-          #   be processed using the default service tier with a lower uptime SLA and no
-          #   latency guarantee.
-          # - If set to 'default', the request will be processed using the default service
-          #   tier with a lower uptime SLA and no latency guarantee.
-          # - If set to 'flex', the request will be processed with the Flex Processing
-          #   service tier.
-          #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
+          # - If set to 'auto', then the request will be processed with the service tier
+          #   configured in the Project settings. Unless otherwise configured, the Project
+          #   will use 'default'.
+          # - If set to 'default', then the requset will be processed with the standard
+          #   pricing and performance for the selected model.
+          # - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)' or
+          #   'priority', then the request will be processed with the corresponding service
+          #   tier. [Contact sales](https://openai.com/contact-sales) to learn more about
+          #   Priority processing.
           # - When not set, the default behavior is 'auto'.
           #
-          # When this parameter is set, the response body will include the `service_tier`
-          # utilized.
+          # When the `service_tier` parameter is set, the response body will include the
+          # `service_tier` value based on the processing mode actually used to serve the
+          # request. This response value may be different from the value set in the
+          # parameter.
           service_tier: nil,
           # Whether to store the generated model response for later retrieval via API.
           store: nil,
@@ -493,6 +517,9 @@ module OpenAI
           #   the model to call your own code. Learn more about
           #   [function calling](https://platform.openai.com/docs/guides/function-calling).
           tools: nil,
+          # An integer between 0 and 20 specifying the number of most likely tokens to
+          # return at each token position, each with an associated log probability.
+          top_logprobs: nil,
           # An alternative to sampling with temperature, called nucleus sampling, where the
           # model considers the results of the tokens with top_p probability mass. So 0.1
           # means only the tokens comprising the top 10% probability mass are considered.
@@ -526,6 +553,7 @@ module OpenAI
               input: OpenAI::Responses::ResponseCreateParams::Input::Variants,
               instructions: T.nilable(String),
               max_output_tokens: T.nilable(Integer),
+              max_tool_calls: T.nilable(Integer),
               metadata: T.nilable(T::Hash[Symbol, String]),
               model:
                 T.any(
@@ -548,7 +576,8 @@ module OpenAI
                 T.any(
                   OpenAI::Responses::ToolChoiceOptions::OrSymbol,
                   OpenAI::Responses::ToolChoiceTypes,
-                  OpenAI::Responses::ToolChoiceFunction
+                  OpenAI::Responses::ToolChoiceFunction,
+                  OpenAI::Responses::ToolChoiceMcp
                 ),
               tools:
                 T::Array[
@@ -563,6 +592,7 @@ module OpenAI
                     OpenAI::Responses::WebSearchTool
                   )
                 ],
+              top_logprobs: T.nilable(Integer),
               top_p: T.nilable(Float),
               truncation:
                 T.nilable(
@@ -605,23 +635,23 @@ module OpenAI
           end
         end
 
-        # Specifies the latency tier to use for processing the request. This parameter is
-        # relevant for customers subscribed to the scale tier service:
+        # Specifies the processing type used for serving the request.
         #
-        # - If set to 'auto', and the Project is Scale tier enabled, the system will
-        #   utilize scale tier credits until they are exhausted.
-        # - If set to 'auto', and the Project is not Scale tier enabled, the request will
-        #   be processed using the default service tier with a lower uptime SLA and no
-        #   latency guarantee.
-        # - If set to 'default', the request will be processed using the default service
-        #   tier with a lower uptime SLA and no latency guarantee.
-        # - If set to 'flex', the request will be processed with the Flex Processing
-        #   service tier.
-        #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
+        # - If set to 'auto', then the request will be processed with the service tier
+        #   configured in the Project settings. Unless otherwise configured, the Project
+        #   will use 'default'.
+        # - If set to 'default', then the requset will be processed with the standard
+        #   pricing and performance for the selected model.
+        # - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)' or
+        #   'priority', then the request will be processed with the corresponding service
+        #   tier. [Contact sales](https://openai.com/contact-sales) to learn more about
+        #   Priority processing.
         # - When not set, the default behavior is 'auto'.
         #
-        # When this parameter is set, the response body will include the `service_tier`
-        # utilized.
+        # When the `service_tier` parameter is set, the response body will include the
+        # `service_tier` value based on the processing mode actually used to serve the
+        # request. This response value may be different from the value set in the
+        # parameter.
         module ServiceTier
           extend OpenAI::Internal::Type::Enum
 
@@ -654,6 +684,11 @@ module OpenAI
               :scale,
               OpenAI::Responses::ResponseCreateParams::ServiceTier::TaggedSymbol
             )
+          PRIORITY =
+            T.let(
+              :priority,
+              OpenAI::Responses::ResponseCreateParams::ServiceTier::TaggedSymbol
+            )
 
           sig do
             override.returns(
@@ -677,7 +712,8 @@ module OpenAI
               T.any(
                 OpenAI::Responses::ToolChoiceOptions::TaggedSymbol,
                 OpenAI::Responses::ToolChoiceTypes,
-                OpenAI::Responses::ToolChoiceFunction
+                OpenAI::Responses::ToolChoiceFunction,
+                OpenAI::Responses::ToolChoiceMcp
               )
             end
 

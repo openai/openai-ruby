@@ -100,7 +100,7 @@ module OpenAI
         #   response. See the `tools` parameter to see how to specify which tools the model
         #   can call.
         #
-        #   @return [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction]
+        #   @return [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp]
         required :tool_choice, union: -> { OpenAI::Responses::Response::ToolChoice }
 
         # @!attribute tools
@@ -147,6 +147,15 @@ module OpenAI
         #   @return [Integer, nil]
         optional :max_output_tokens, Integer, nil?: true
 
+        # @!attribute max_tool_calls
+        #   The maximum number of total calls to built-in tools that can be processed in a
+        #   response. This maximum number applies across all built-in tool calls, not per
+        #   individual tool. Any further attempts to call a tool by the model will be
+        #   ignored.
+        #
+        #   @return [Integer, nil]
+        optional :max_tool_calls, Integer, nil?: true
+
         # @!attribute previous_response_id
         #   The unique ID of the previous response to the model. Use this to create
         #   multi-turn conversations. Learn more about
@@ -172,23 +181,23 @@ module OpenAI
         optional :reasoning, -> { OpenAI::Reasoning }, nil?: true
 
         # @!attribute service_tier
-        #   Specifies the latency tier to use for processing the request. This parameter is
-        #   relevant for customers subscribed to the scale tier service:
+        #   Specifies the processing type used for serving the request.
         #
-        #   - If set to 'auto', and the Project is Scale tier enabled, the system will
-        #     utilize scale tier credits until they are exhausted.
-        #   - If set to 'auto', and the Project is not Scale tier enabled, the request will
-        #     be processed using the default service tier with a lower uptime SLA and no
-        #     latency guarantee.
-        #   - If set to 'default', the request will be processed using the default service
-        #     tier with a lower uptime SLA and no latency guarantee.
-        #   - If set to 'flex', the request will be processed with the Flex Processing
-        #     service tier.
-        #     [Learn more](https://platform.openai.com/docs/guides/flex-processing).
+        #   - If set to 'auto', then the request will be processed with the service tier
+        #     configured in the Project settings. Unless otherwise configured, the Project
+        #     will use 'default'.
+        #   - If set to 'default', then the requset will be processed with the standard
+        #     pricing and performance for the selected model.
+        #   - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)' or
+        #     'priority', then the request will be processed with the corresponding service
+        #     tier. [Contact sales](https://openai.com/contact-sales) to learn more about
+        #     Priority processing.
         #   - When not set, the default behavior is 'auto'.
         #
-        #   When this parameter is set, the response body will include the `service_tier`
-        #   utilized.
+        #   When the `service_tier` parameter is set, the response body will include the
+        #   `service_tier` value based on the processing mode actually used to serve the
+        #   request. This response value may be different from the value set in the
+        #   parameter.
         #
         #   @return [Symbol, OpenAI::Models::Responses::Response::ServiceTier, nil]
         optional :service_tier, enum: -> { OpenAI::Responses::Response::ServiceTier }, nil?: true
@@ -209,6 +218,13 @@ module OpenAI
         #
         #   @return [OpenAI::Models::Responses::ResponseTextConfig, nil]
         optional :text, -> { OpenAI::Responses::ResponseTextConfig }
+
+        # @!attribute top_logprobs
+        #   An integer between 0 and 20 specifying the number of most likely tokens to
+        #   return at each token position, each with an associated log probability.
+        #
+        #   @return [Integer, nil]
+        optional :top_logprobs, Integer, nil?: true
 
         # @!attribute truncation
         #   The truncation strategy to use for the model response.
@@ -237,7 +253,7 @@ module OpenAI
         #   @return [String, nil]
         optional :user, String
 
-        # @!method initialize(id:, created_at:, error:, incomplete_details:, instructions:, metadata:, model:, output:, parallel_tool_calls:, temperature:, tool_choice:, tools:, top_p:, background: nil, max_output_tokens: nil, previous_response_id: nil, prompt: nil, reasoning: nil, service_tier: nil, status: nil, text: nil, truncation: nil, usage: nil, user: nil, object: :response)
+        # @!method initialize(id:, created_at:, error:, incomplete_details:, instructions:, metadata:, model:, output:, parallel_tool_calls:, temperature:, tool_choice:, tools:, top_p:, background: nil, max_output_tokens: nil, max_tool_calls: nil, previous_response_id: nil, prompt: nil, reasoning: nil, service_tier: nil, status: nil, text: nil, top_logprobs: nil, truncation: nil, usage: nil, user: nil, object: :response)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::Response} for more details.
         #
@@ -261,7 +277,7 @@ module OpenAI
         #
         #   @param temperature [Float, nil] What sampling temperature to use, between 0 and 2. Higher values like 0.8 will m
         #
-        #   @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction] How the model should select which tool (or tools) to use when generating
+        #   @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp] How the model should select which tool (or tools) to use when generating
         #
         #   @param tools [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::WebSearchTool>] An array of tools the model may call while generating a response. You
         #
@@ -271,17 +287,21 @@ module OpenAI
         #
         #   @param max_output_tokens [Integer, nil] An upper bound for the number of tokens that can be generated for a response, in
         #
+        #   @param max_tool_calls [Integer, nil] The maximum number of total calls to built-in tools that can be processed in a r
+        #
         #   @param previous_response_id [String, nil] The unique ID of the previous response to the model. Use this to
         #
         #   @param prompt [OpenAI::Models::Responses::ResponsePrompt, nil] Reference to a prompt template and its variables.
         #
         #   @param reasoning [OpenAI::Models::Reasoning, nil] **o-series models only**
         #
-        #   @param service_tier [Symbol, OpenAI::Models::Responses::Response::ServiceTier, nil] Specifies the latency tier to use for processing the request. This parameter is
+        #   @param service_tier [Symbol, OpenAI::Models::Responses::Response::ServiceTier, nil] Specifies the processing type used for serving the request.
         #
         #   @param status [Symbol, OpenAI::Models::Responses::ResponseStatus] The status of the response generation. One of `completed`, `failed`,
         #
         #   @param text [OpenAI::Models::Responses::ResponseTextConfig] Configuration options for a text response from the model. Can be plain
+        #
+        #   @param top_logprobs [Integer, nil] An integer between 0 and 20 specifying the number of most likely tokens to
         #
         #   @param truncation [Symbol, OpenAI::Models::Responses::Response::Truncation, nil] The truncation strategy to use for the model response.
         #
@@ -369,27 +389,30 @@ module OpenAI
           # Use this option to force the model to call a specific function.
           variant -> { OpenAI::Responses::ToolChoiceFunction }
 
+          # Use this option to force the model to call a specific tool on a remote MCP server.
+          variant -> { OpenAI::Responses::ToolChoiceMcp }
+
           # @!method self.variants
-          #   @return [Array(Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction)]
+          #   @return [Array(Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp)]
         end
 
-        # Specifies the latency tier to use for processing the request. This parameter is
-        # relevant for customers subscribed to the scale tier service:
+        # Specifies the processing type used for serving the request.
         #
-        # - If set to 'auto', and the Project is Scale tier enabled, the system will
-        #   utilize scale tier credits until they are exhausted.
-        # - If set to 'auto', and the Project is not Scale tier enabled, the request will
-        #   be processed using the default service tier with a lower uptime SLA and no
-        #   latency guarantee.
-        # - If set to 'default', the request will be processed using the default service
-        #   tier with a lower uptime SLA and no latency guarantee.
-        # - If set to 'flex', the request will be processed with the Flex Processing
-        #   service tier.
-        #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
+        # - If set to 'auto', then the request will be processed with the service tier
+        #   configured in the Project settings. Unless otherwise configured, the Project
+        #   will use 'default'.
+        # - If set to 'default', then the requset will be processed with the standard
+        #   pricing and performance for the selected model.
+        # - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)' or
+        #   'priority', then the request will be processed with the corresponding service
+        #   tier. [Contact sales](https://openai.com/contact-sales) to learn more about
+        #   Priority processing.
         # - When not set, the default behavior is 'auto'.
         #
-        # When this parameter is set, the response body will include the `service_tier`
-        # utilized.
+        # When the `service_tier` parameter is set, the response body will include the
+        # `service_tier` value based on the processing mode actually used to serve the
+        # request. This response value may be different from the value set in the
+        # parameter.
         #
         # @see OpenAI::Models::Responses::Response#service_tier
         module ServiceTier
@@ -399,6 +422,7 @@ module OpenAI
           DEFAULT = :default
           FLEX = :flex
           SCALE = :scale
+          PRIORITY = :priority
 
           # @!method self.values
           #   @return [Array<Symbol>]

@@ -36,6 +36,8 @@ module OpenAI
 
     attr_reader vector_stores: OpenAI::Resources::VectorStores
 
+    attr_reader webhooks: OpenAI::Resources::Webhooks
+
     attr_reader beta: OpenAI::Resources::Beta
 
     attr_reader batches: OpenAI::Resources::Batches

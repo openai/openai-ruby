@@ -140,6 +140,13 @@ module OpenAI
         sig { returns(T.nilable(Integer)) }
         attr_accessor :max_output_tokens
 
+        # The maximum number of total calls to built-in tools that can be processed in a
+        # response. This maximum number applies across all built-in tool calls, not per
+        # individual tool. Any further attempts to call a tool by the model will be
+        # ignored.
+        sig { returns(T.nilable(Integer)) }
+        attr_accessor :max_tool_calls
+
         # The unique ID of the previous response to the model. Use this to create
         # multi-turn conversations. Learn more about
         # [conversation state](https://platform.openai.com/docs/guides/conversation-state).
@@ -168,23 +175,23 @@ module OpenAI
         sig { params(reasoning: T.nilable(OpenAI::Reasoning::OrHash)).void }
         attr_writer :reasoning
 
-        # Specifies the latency tier to use for processing the request. This parameter is
-        # relevant for customers subscribed to the scale tier service:
+        # Specifies the processing type used for serving the request.
         #
-        # - If set to 'auto', and the Project is Scale tier enabled, the system will
-        #   utilize scale tier credits until they are exhausted.
-        # - If set to 'auto', and the Project is not Scale tier enabled, the request will
-        #   be processed using the default service tier with a lower uptime SLA and no
-        #   latency guarantee.
-        # - If set to 'default', the request will be processed using the default service
-        #   tier with a lower uptime SLA and no latency guarantee.
-        # - If set to 'flex', the request will be processed with the Flex Processing
-        #   service tier.
-        #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
+        # - If set to 'auto', then the request will be processed with the service tier
+        #   configured in the Project settings. Unless otherwise configured, the Project
+        #   will use 'default'.
+        # - If set to 'default', then the requset will be processed with the standard
+        #   pricing and performance for the selected model.
+        # - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)' or
+        #   'priority', then the request will be processed with the corresponding service
+        #   tier. [Contact sales](https://openai.com/contact-sales) to learn more about
+        #   Priority processing.
         # - When not set, the default behavior is 'auto'.
         #
-        # When this parameter is set, the response body will include the `service_tier`
-        # utilized.
+        # When the `service_tier` parameter is set, the response body will include the
+        # `service_tier` value based on the processing mode actually used to serve the
+        # request. This response value may be different from the value set in the
+        # parameter.
         sig do
           returns(
             T.nilable(OpenAI::Responses::Response::ServiceTier::TaggedSymbol)
@@ -212,6 +219,11 @@ module OpenAI
 
         sig { params(text: OpenAI::Responses::ResponseTextConfig::OrHash).void }
         attr_writer :text
+
+        # An integer between 0 and 20 specifying the number of most likely tokens to
+        # return at each token position, each with an associated log probability.
+        sig { returns(T.nilable(Integer)) }
+        attr_accessor :top_logprobs
 
         # The truncation strategy to use for the model response.
         #
@@ -283,7 +295,8 @@ module OpenAI
               T.any(
                 OpenAI::Responses::ToolChoiceOptions::OrSymbol,
                 OpenAI::Responses::ToolChoiceTypes::OrHash,
-                OpenAI::Responses::ToolChoiceFunction::OrHash
+                OpenAI::Responses::ToolChoiceFunction::OrHash,
+                OpenAI::Responses::ToolChoiceMcp::OrHash
               ),
             tools:
               T::Array[
@@ -301,6 +314,7 @@ module OpenAI
             top_p: T.nilable(Float),
             background: T.nilable(T::Boolean),
             max_output_tokens: T.nilable(Integer),
+            max_tool_calls: T.nilable(Integer),
             previous_response_id: T.nilable(String),
             prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
             reasoning: T.nilable(OpenAI::Reasoning::OrHash),
@@ -308,6 +322,7 @@ module OpenAI
               T.nilable(OpenAI::Responses::Response::ServiceTier::OrSymbol),
             status: OpenAI::Responses::ResponseStatus::OrSymbol,
             text: OpenAI::Responses::ResponseTextConfig::OrHash,
+            top_logprobs: T.nilable(Integer),
             truncation:
               T.nilable(OpenAI::Responses::Response::Truncation::OrSymbol),
             usage: OpenAI::Responses::ResponseUsage::OrHash,
@@ -390,6 +405,11 @@ module OpenAI
           # including visible output tokens and
           # [reasoning tokens](https://platform.openai.com/docs/guides/reasoning).
           max_output_tokens: nil,
+          # The maximum number of total calls to built-in tools that can be processed in a
+          # response. This maximum number applies across all built-in tool calls, not per
+          # individual tool. Any further attempts to call a tool by the model will be
+          # ignored.
+          max_tool_calls: nil,
           # The unique ID of the previous response to the model. Use this to create
           # multi-turn conversations. Learn more about
           # [conversation state](https://platform.openai.com/docs/guides/conversation-state).
@@ -402,23 +422,23 @@ module OpenAI
           # Configuration options for
           # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
           reasoning: nil,
-          # Specifies the latency tier to use for processing the request. This parameter is
-          # relevant for customers subscribed to the scale tier service:
+          # Specifies the processing type used for serving the request.
           #
-          # - If set to 'auto', and the Project is Scale tier enabled, the system will
-          #   utilize scale tier credits until they are exhausted.
-          # - If set to 'auto', and the Project is not Scale tier enabled, the request will
-          #   be processed using the default service tier with a lower uptime SLA and no
-          #   latency guarantee.
-          # - If set to 'default', the request will be processed using the default service
-          #   tier with a lower uptime SLA and no latency guarantee.
-          # - If set to 'flex', the request will be processed with the Flex Processing
-          #   service tier.
-          #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
+          # - If set to 'auto', then the request will be processed with the service tier
+          #   configured in the Project settings. Unless otherwise configured, the Project
+          #   will use 'default'.
+          # - If set to 'default', then the requset will be processed with the standard
+          #   pricing and performance for the selected model.
+          # - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)' or
+          #   'priority', then the request will be processed with the corresponding service
+          #   tier. [Contact sales](https://openai.com/contact-sales) to learn more about
+          #   Priority processing.
           # - When not set, the default behavior is 'auto'.
           #
-          # When this parameter is set, the response body will include the `service_tier`
-          # utilized.
+          # When the `service_tier` parameter is set, the response body will include the
+          # `service_tier` value based on the processing mode actually used to serve the
+          # request. This response value may be different from the value set in the
+          # parameter.
           service_tier: nil,
           # The status of the response generation. One of `completed`, `failed`,
           # `in_progress`, `cancelled`, `queued`, or `incomplete`.
@@ -429,6 +449,9 @@ module OpenAI
           # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
           # - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
           text: nil,
+          # An integer between 0 and 20 specifying the number of most likely tokens to
+          # return at each token position, each with an associated log probability.
+          top_logprobs: nil,
           # The truncation strategy to use for the model response.
           #
           # - `auto`: If the context of this response and previous ones exceeds the model's
@@ -470,6 +493,7 @@ module OpenAI
               top_p: T.nilable(Float),
               background: T.nilable(T::Boolean),
               max_output_tokens: T.nilable(Integer),
+              max_tool_calls: T.nilable(Integer),
               previous_response_id: T.nilable(String),
               prompt: T.nilable(OpenAI::Responses::ResponsePrompt),
               reasoning: T.nilable(OpenAI::Reasoning),
@@ -479,6 +503,7 @@ module OpenAI
                 ),
               status: OpenAI::Responses::ResponseStatus::TaggedSymbol,
               text: OpenAI::Responses::ResponseTextConfig,
+              top_logprobs: T.nilable(Integer),
               truncation:
                 T.nilable(
                   OpenAI::Responses::Response::Truncation::TaggedSymbol
@@ -622,7 +647,8 @@ module OpenAI
               T.any(
                 OpenAI::Responses::ToolChoiceOptions::TaggedSymbol,
                 OpenAI::Responses::ToolChoiceTypes,
-                OpenAI::Responses::ToolChoiceFunction
+                OpenAI::Responses::ToolChoiceFunction,
+                OpenAI::Responses::ToolChoiceMcp
               )
             end
 
@@ -635,23 +661,23 @@ module OpenAI
           end
         end
 
-        # Specifies the latency tier to use for processing the request. This parameter is
-        # relevant for customers subscribed to the scale tier service:
+        # Specifies the processing type used for serving the request.
         #
-        # - If set to 'auto', and the Project is Scale tier enabled, the system will
-        #   utilize scale tier credits until they are exhausted.
-        # - If set to 'auto', and the Project is not Scale tier enabled, the request will
-        #   be processed using the default service tier with a lower uptime SLA and no
-        #   latency guarantee.
-        # - If set to 'default', the request will be processed using the default service
-        #   tier with a lower uptime SLA and no latency guarantee.
-        # - If set to 'flex', the request will be processed with the Flex Processing
-        #   service tier.
-        #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
+        # - If set to 'auto', then the request will be processed with the service tier
+        #   configured in the Project settings. Unless otherwise configured, the Project
+        #   will use 'default'.
+        # - If set to 'default', then the requset will be processed with the standard
+        #   pricing and performance for the selected model.
+        # - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)' or
+        #   'priority', then the request will be processed with the corresponding service
+        #   tier. [Contact sales](https://openai.com/contact-sales) to learn more about
+        #   Priority processing.
         # - When not set, the default behavior is 'auto'.
         #
-        # When this parameter is set, the response body will include the `service_tier`
-        # utilized.
+        # When the `service_tier` parameter is set, the response body will include the
+        # `service_tier` value based on the processing mode actually used to serve the
+        # request. This response value may be different from the value set in the
+        # parameter.
         module ServiceTier
           extend OpenAI::Internal::Type::Enum
 
@@ -673,6 +699,11 @@ module OpenAI
           SCALE =
             T.let(
               :scale,
+              OpenAI::Responses::Response::ServiceTier::TaggedSymbol
+            )
+          PRIORITY =
+            T.let(
+              :priority,
               OpenAI::Responses::Response::ServiceTier::TaggedSymbol
             )
 

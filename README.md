@@ -112,6 +112,82 @@ puts(edited.data.first)
 
 Note that you can also pass a raw `IO` descriptor, but this disables retries, as the library can't be sure if the descriptor is a file or pipe (which cannot be rewound).
 
+## Webhook Verification
+
+Verifying webhook signatures is _optional but encouraged_.
+
+### Parsing webhook payloads
+
+For most use cases, you will likely want to verify the webhook and parse the payload at the same time. To achieve this, we provide the method `client.webhooks.unwrap`, which parses a webhook request and verifies that it was sent by OpenAI. This method will raise an error if the signature is invalid.
+
+Note that the `body` parameter must be the raw JSON string sent from the server (do not parse it first). The `unwrap` method will parse this JSON for you into an event object after verifying the webhook was sent from OpenAI.
+
+```ruby
+require 'sinatra'
+require 'openai'
+
+# Set up the client with webhook secret from environment variable
+client = OpenAI::Client.new(webhook_secret: ENV['OPENAI_WEBHOOK_SECRET'])
+
+post '/webhook' do
+  request_body = request.body.read
+  
+  begin
+    event = client.webhooks.unwrap(request_body, request.env)
+    
+    case event.type
+    when 'response.completed'
+      puts "Response completed: #{event.data}"
+    when 'response.failed'
+      puts "Response failed: #{event.data}"
+    else
+      puts "Unhandled event type: #{event.type}"
+    end
+    
+    status 200
+    'ok'
+  rescue StandardError => e
+    puts "Invalid signature: #{e}"
+    status 400
+    'Invalid signature'
+  end
+end
+```
+
+### Verifying webhook payloads directly
+
+In some cases, you may want to verify the webhook separately from parsing the payload. If you prefer to handle these steps separately, we provide the method `client.webhooks.verify_signature` to _only verify_ the signature of a webhook request. Like `unwrap`, this method will raise an error if the signature is invalid.
+
+Note that the `body` parameter must be the raw JSON string sent from the server (do not parse it first). You will then need to parse the body after verifying the signature.
+
+```ruby
+require 'sinatra'
+require 'json'
+require 'openai'
+
+# Set up the client with webhook secret from environment variable
+client = OpenAI::Client.new(webhook_secret: ENV['OPENAI_WEBHOOK_SECRET'])
+
+post '/webhook' do
+  request_body = request.body.read
+  
+  begin
+    client.webhooks.verify_signature(request_body, request.env)
+    
+    # Parse the body after verification
+    event = JSON.parse(request_body)
+    puts "Verified event: #{event}"
+    
+    status 200
+    'ok'
+  rescue StandardError => e
+    puts "Invalid signature: #{e}"
+    status 400
+    'Invalid signature'
+  end
+end
+```
+
 ### [Structured outputs](https://platform.openai.com/docs/guides/structured-outputs) and function calling
 
 This SDK ships with helpers in `OpenAI::BaseModel`, `OpenAI::ArrayOf`, `OpenAI::EnumOf`, and `OpenAI::UnionOf` to help you define the supported JSON schemas used in making structured outputs and function calling requests.

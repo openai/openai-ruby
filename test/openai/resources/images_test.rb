@@ -13,7 +13,11 @@ class OpenAI::Test::Resources::ImagesTest < OpenAI::Test::ResourceTest
     assert_pattern do
       response => {
         created: Integer,
+        background: OpenAI::ImagesResponse::Background | nil,
         data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Image]) | nil,
+        output_format: OpenAI::ImagesResponse::OutputFormat | nil,
+        quality: OpenAI::ImagesResponse::Quality | nil,
+        size: OpenAI::ImagesResponse::Size | nil,
         usage: OpenAI::ImagesResponse::Usage | nil
       }
     end
@@ -30,7 +34,11 @@ class OpenAI::Test::Resources::ImagesTest < OpenAI::Test::ResourceTest
     assert_pattern do
       response => {
         created: Integer,
+        background: OpenAI::ImagesResponse::Background | nil,
         data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Image]) | nil,
+        output_format: OpenAI::ImagesResponse::OutputFormat | nil,
+        quality: OpenAI::ImagesResponse::Quality | nil,
+        size: OpenAI::ImagesResponse::Size | nil,
         usage: OpenAI::ImagesResponse::Usage | nil
       }
     end
@@ -46,7 +54,11 @@ class OpenAI::Test::Resources::ImagesTest < OpenAI::Test::ResourceTest
     assert_pattern do
       response => {
         created: Integer,
+        background: OpenAI::ImagesResponse::Background | nil,
         data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Image]) | nil,
+        output_format: OpenAI::ImagesResponse::OutputFormat | nil,
+        quality: OpenAI::ImagesResponse::Quality | nil,
+        size: OpenAI::ImagesResponse::Size | nil,
         usage: OpenAI::ImagesResponse::Usage | nil
       }
     end

@@ -192,4 +192,6 @@ module OpenAI
   class VectorStoreSearchParams = OpenAI::Models::VectorStoreSearchParams
 
   class VectorStoreUpdateParams = OpenAI::Models::VectorStoreUpdateParams
+
+  module Webhooks = OpenAI::Models::Webhooks
 end

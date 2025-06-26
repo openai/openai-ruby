@@ -1,0 +1,66 @@
+module OpenAI
+  module Models
+    module Webhooks
+      type response_completed_webhook_event =
+        {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::ResponseCompletedWebhookEvent::Data,
+          type: :"response.completed",
+          object: OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent::object
+        }
+
+      class ResponseCompletedWebhookEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor created_at: Integer
+
+        attr_accessor data: OpenAI::Webhooks::ResponseCompletedWebhookEvent::Data
+
+        attr_accessor type: :"response.completed"
+
+        attr_reader object: OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent::object?
+
+        def object=: (
+          OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent::object
+        ) -> OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent::object
+
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::ResponseCompletedWebhookEvent::Data,
+          ?object: OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent::object,
+          ?type: :"response.completed"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::ResponseCompletedWebhookEvent::Data,
+          type: :"response.completed",
+          object: OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent::object
+        }
+
+        type data = { id: String }
+
+        class Data < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          def initialize: (id: String) -> void
+
+          def to_hash: -> { id: String }
+        end
+
+        type object = :event
+
+        module Object
+          extend OpenAI::Internal::Type::Enum
+
+          EVENT: :event
+
+          def self?.values: -> ::Array[OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent::object]
+        end
+      end
+    end
+  end
+end

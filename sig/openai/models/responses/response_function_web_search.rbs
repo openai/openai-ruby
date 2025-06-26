@@ -4,6 +4,7 @@ module OpenAI
       type response_function_web_search =
         {
           id: String,
+          action: OpenAI::Models::Responses::ResponseFunctionWebSearch::action,
           status: OpenAI::Models::Responses::ResponseFunctionWebSearch::status,
           type: :web_search_call
         }
@@ -11,21 +12,87 @@ module OpenAI
       class ResponseFunctionWebSearch < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
+        attr_accessor action: OpenAI::Models::Responses::ResponseFunctionWebSearch::action
+
         attr_accessor status: OpenAI::Models::Responses::ResponseFunctionWebSearch::status
 
         attr_accessor type: :web_search_call
 
         def initialize: (
           id: String,
+          action: OpenAI::Models::Responses::ResponseFunctionWebSearch::action,
           status: OpenAI::Models::Responses::ResponseFunctionWebSearch::status,
           ?type: :web_search_call
         ) -> void
 
         def to_hash: -> {
           id: String,
+          action: OpenAI::Models::Responses::ResponseFunctionWebSearch::action,
           status: OpenAI::Models::Responses::ResponseFunctionWebSearch::status,
           type: :web_search_call
         }
+
+        type action =
+          OpenAI::Responses::ResponseFunctionWebSearch::Action::Search
+          | OpenAI::Responses::ResponseFunctionWebSearch::Action::OpenPage
+          | OpenAI::Responses::ResponseFunctionWebSearch::Action::Find
+
+        module Action
+          extend OpenAI::Internal::Type::Union
+
+          type search =
+            { query: String, type: :search, domains: ::Array[String] }
+
+          class Search < OpenAI::Internal::Type::BaseModel
+            attr_accessor query: String
+
+            attr_accessor type: :search
+
+            attr_reader domains: ::Array[String]?
+
+            def domains=: (::Array[String]) -> ::Array[String]
+
+            def initialize: (
+              query: String,
+              ?domains: ::Array[String],
+              ?type: :search
+            ) -> void
+
+            def to_hash: -> {
+              query: String,
+              type: :search,
+              domains: ::Array[String]
+            }
+          end
+
+          type open_page = { type: :open_page, url: String }
+
+          class OpenPage < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :open_page
+
+            attr_accessor url: String
+
+            def initialize: (url: String, ?type: :open_page) -> void
+
+            def to_hash: -> { type: :open_page, url: String }
+          end
+
+          type find = { pattern: String, type: :find, url: String }
+
+          class Find < OpenAI::Internal::Type::BaseModel
+            attr_accessor pattern: String
+
+            attr_accessor type: :find
+
+            attr_accessor url: String
+
+            def initialize: (pattern: String, url: String, ?type: :find) -> void
+
+            def to_hash: -> { pattern: String, type: :find, url: String }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseFunctionWebSearch::action]
+        end
 
         type status = :in_progress | :searching | :completed | :failed
 

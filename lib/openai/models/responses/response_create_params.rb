@@ -21,18 +21,19 @@ module OpenAI
         #   Specify additional output data to include in the model response. Currently
         #   supported values are:
         #
+        #   - `code_interpreter_call.outputs`: Includes the outputs of python code execution
+        #     in code interpreter tool call items.
+        #   - `computer_call_output.output.image_url`: Include image urls from the computer
+        #     call output.
         #   - `file_search_call.results`: Include the search results of the file search tool
         #     call.
         #   - `message.input_image.image_url`: Include image urls from the input message.
-        #   - `computer_call_output.output.image_url`: Include image urls from the computer
-        #     call output.
+        #   - `message.output_text.logprobs`: Include logprobs with assistant messages.
         #   - `reasoning.encrypted_content`: Includes an encrypted version of reasoning
         #     tokens in reasoning item outputs. This enables reasoning items to be used in
         #     multi-turn conversations when using the Responses API statelessly (like when
         #     the `store` parameter is set to `false`, or when an organization is enrolled
         #     in the zero data retention program).
-        #   - `code_interpreter_call.outputs`: Includes the outputs of python code execution
-        #     in code interpreter tool call items.
         #
         #   @return [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>, nil]
         optional :include,
@@ -70,6 +71,15 @@ module OpenAI
         #
         #   @return [Integer, nil]
         optional :max_output_tokens, Integer, nil?: true
+
+        # @!attribute max_tool_calls
+        #   The maximum number of total calls to built-in tools that can be processed in a
+        #   response. This maximum number applies across all built-in tool calls, not per
+        #   individual tool. Any further attempts to call a tool by the model will be
+        #   ignored.
+        #
+        #   @return [Integer, nil]
+        optional :max_tool_calls, Integer, nil?: true
 
         # @!attribute metadata
         #   Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -123,23 +133,23 @@ module OpenAI
         optional :reasoning, -> { OpenAI::Reasoning }, nil?: true
 
         # @!attribute service_tier
-        #   Specifies the latency tier to use for processing the request. This parameter is
-        #   relevant for customers subscribed to the scale tier service:
+        #   Specifies the processing type used for serving the request.
         #
-        #   - If set to 'auto', and the Project is Scale tier enabled, the system will
-        #     utilize scale tier credits until they are exhausted.
-        #   - If set to 'auto', and the Project is not Scale tier enabled, the request will
-        #     be processed using the default service tier with a lower uptime SLA and no
-        #     latency guarantee.
-        #   - If set to 'default', the request will be processed using the default service
-        #     tier with a lower uptime SLA and no latency guarantee.
-        #   - If set to 'flex', the request will be processed with the Flex Processing
-        #     service tier.
-        #     [Learn more](https://platform.openai.com/docs/guides/flex-processing).
+        #   - If set to 'auto', then the request will be processed with the service tier
+        #     configured in the Project settings. Unless otherwise configured, the Project
+        #     will use 'default'.
+        #   - If set to 'default', then the requset will be processed with the standard
+        #     pricing and performance for the selected model.
+        #   - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)' or
+        #     'priority', then the request will be processed with the corresponding service
+        #     tier. [Contact sales](https://openai.com/contact-sales) to learn more about
+        #     Priority processing.
         #   - When not set, the default behavior is 'auto'.
         #
-        #   When this parameter is set, the response body will include the `service_tier`
-        #   utilized.
+        #   When the `service_tier` parameter is set, the response body will include the
+        #   `service_tier` value based on the processing mode actually used to serve the
+        #   request. This response value may be different from the value set in the
+        #   parameter.
         #
         #   @return [Symbol, OpenAI::Models::Responses::ResponseCreateParams::ServiceTier, nil]
         optional :service_tier, enum: -> { OpenAI::Responses::ResponseCreateParams::ServiceTier }, nil?: true
@@ -180,7 +190,7 @@ module OpenAI
         #   response. See the `tools` parameter to see how to specify which tools the model
         #   can call.
         #
-        #   @return [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, nil]
+        #   @return [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp, nil]
         optional :tool_choice, union: -> { OpenAI::Responses::ResponseCreateParams::ToolChoice }
 
         # @!attribute tools
@@ -201,6 +211,13 @@ module OpenAI
         #
         #   @return [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::StructuredOutput::JsonSchemaConverter, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::WebSearchTool>, nil]
         optional :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool] }
+
+        # @!attribute top_logprobs
+        #   An integer between 0 and 20 specifying the number of most likely tokens to
+        #   return at each token position, each with an associated log probability.
+        #
+        #   @return [Integer, nil]
+        optional :top_logprobs, Integer, nil?: true
 
         # @!attribute top_p
         #   An alternative to sampling with temperature, called nucleus sampling, where the
@@ -232,7 +249,7 @@ module OpenAI
         #   @return [String, nil]
         optional :user, String
 
-        # @!method initialize(background: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, metadata: nil, model: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, reasoning: nil, service_tier: nil, store: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
+        # @!method initialize(background: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, reasoning: nil, service_tier: nil, store: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseCreateParams} for more details.
         #
@@ -246,6 +263,8 @@ module OpenAI
         #
         #   @param max_output_tokens [Integer, nil] An upper bound for the number of tokens that can be generated for a response, in
         #
+        #   @param max_tool_calls [Integer, nil] The maximum number of total calls to built-in tools that can be processed in a r
+        #
         #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #
         #   @param model [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel::ResponsesOnlyModel] Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI
@@ -258,7 +277,7 @@ module OpenAI
         #
         #   @param reasoning [OpenAI::Models::Reasoning, nil] **o-series models only**
         #
-        #   @param service_tier [Symbol, OpenAI::Models::Responses::ResponseCreateParams::ServiceTier, nil] Specifies the latency tier to use for processing the request. This parameter is
+        #   @param service_tier [Symbol, OpenAI::Models::Responses::ResponseCreateParams::ServiceTier, nil] Specifies the processing type used for serving the request.
         #
         #   @param store [Boolean, nil] Whether to store the generated model response for later retrieval via
         #
@@ -266,9 +285,11 @@ module OpenAI
         #
         #   @param text [OpenAI::Models::Responses::ResponseTextConfig] Configuration options for a text response from the model. Can be plain
         #
-        #   @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction] How the model should select which tool (or tools) to use when generating
+        #   @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp] How the model should select which tool (or tools) to use when generating
         #
         #   @param tools [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::StructuredOutput::JsonSchemaConverter, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::WebSearchTool>] An array of tools the model may call while generating a response. You
+        #
+        #   @param top_logprobs [Integer, nil] An integer between 0 and 20 specifying the number of most likely tokens to
         #
         #   @param top_p [Float, nil] An alternative to sampling with temperature, called nucleus sampling,
         #
@@ -302,23 +323,23 @@ module OpenAI
           #   @return [Array(String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseInputItem::ItemReference>)]
         end
 
-        # Specifies the latency tier to use for processing the request. This parameter is
-        # relevant for customers subscribed to the scale tier service:
+        # Specifies the processing type used for serving the request.
         #
-        # - If set to 'auto', and the Project is Scale tier enabled, the system will
-        #   utilize scale tier credits until they are exhausted.
-        # - If set to 'auto', and the Project is not Scale tier enabled, the request will
-        #   be processed using the default service tier with a lower uptime SLA and no
-        #   latency guarantee.
-        # - If set to 'default', the request will be processed using the default service
-        #   tier with a lower uptime SLA and no latency guarantee.
-        # - If set to 'flex', the request will be processed with the Flex Processing
-        #   service tier.
-        #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
+        # - If set to 'auto', then the request will be processed with the service tier
+        #   configured in the Project settings. Unless otherwise configured, the Project
+        #   will use 'default'.
+        # - If set to 'default', then the requset will be processed with the standard
+        #   pricing and performance for the selected model.
+        # - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)' or
+        #   'priority', then the request will be processed with the corresponding service
+        #   tier. [Contact sales](https://openai.com/contact-sales) to learn more about
+        #   Priority processing.
         # - When not set, the default behavior is 'auto'.
         #
-        # When this parameter is set, the response body will include the `service_tier`
-        # utilized.
+        # When the `service_tier` parameter is set, the response body will include the
+        # `service_tier` value based on the processing mode actually used to serve the
+        # request. This response value may be different from the value set in the
+        # parameter.
         module ServiceTier
           extend OpenAI::Internal::Type::Enum
 
@@ -326,6 +347,7 @@ module OpenAI
           DEFAULT = :default
           FLEX = :flex
           SCALE = :scale
+          PRIORITY = :priority
 
           # @!method self.values
           #   @return [Array<Symbol>]
@@ -354,8 +376,11 @@ module OpenAI
           # Use this option to force the model to call a specific function.
           variant -> { OpenAI::Responses::ToolChoiceFunction }
 
+          # Use this option to force the model to call a specific tool on a remote MCP server.
+          variant -> { OpenAI::Responses::ToolChoiceMcp }
+
           # @!method self.variants
-          #   @return [Array(Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction)]
+          #   @return [Array(Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp)]
         end
 
         # The truncation strategy to use for the model response.
