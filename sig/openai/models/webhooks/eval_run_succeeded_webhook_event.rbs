@@ -1,0 +1,66 @@
+module OpenAI
+  module Models
+    module Webhooks
+      type eval_run_succeeded_webhook_event =
+        {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::EvalRunSucceededWebhookEvent::Data,
+          type: :"eval.run.succeeded",
+          object: OpenAI::Models::Webhooks::EvalRunSucceededWebhookEvent::object
+        }
+
+      class EvalRunSucceededWebhookEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor created_at: Integer
+
+        attr_accessor data: OpenAI::Webhooks::EvalRunSucceededWebhookEvent::Data
+
+        attr_accessor type: :"eval.run.succeeded"
+
+        attr_reader object: OpenAI::Models::Webhooks::EvalRunSucceededWebhookEvent::object?
+
+        def object=: (
+          OpenAI::Models::Webhooks::EvalRunSucceededWebhookEvent::object
+        ) -> OpenAI::Models::Webhooks::EvalRunSucceededWebhookEvent::object
+
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::EvalRunSucceededWebhookEvent::Data,
+          ?object: OpenAI::Models::Webhooks::EvalRunSucceededWebhookEvent::object,
+          ?type: :"eval.run.succeeded"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::EvalRunSucceededWebhookEvent::Data,
+          type: :"eval.run.succeeded",
+          object: OpenAI::Models::Webhooks::EvalRunSucceededWebhookEvent::object
+        }
+
+        type data = { id: String }
+
+        class Data < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          def initialize: (id: String) -> void
+
+          def to_hash: -> { id: String }
+        end
+
+        type object = :event
+
+        module Object
+          extend OpenAI::Internal::Type::Enum
+
+          EVENT: :event
+
+          def self?.values: -> ::Array[OpenAI::Models::Webhooks::EvalRunSucceededWebhookEvent::object]
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,27 @@
+module OpenAI
+  module Models
+    module Webhooks
+      type unwrap_webhook_event =
+        OpenAI::Webhooks::BatchCancelledWebhookEvent
+        | OpenAI::Webhooks::BatchCompletedWebhookEvent
+        | OpenAI::Webhooks::BatchExpiredWebhookEvent
+        | OpenAI::Webhooks::BatchFailedWebhookEvent
+        | OpenAI::Webhooks::EvalRunCanceledWebhookEvent
+        | OpenAI::Webhooks::EvalRunFailedWebhookEvent
+        | OpenAI::Webhooks::EvalRunSucceededWebhookEvent
+        | OpenAI::Webhooks::FineTuningJobCancelledWebhookEvent
+        | OpenAI::Webhooks::FineTuningJobFailedWebhookEvent
+        | OpenAI::Webhooks::FineTuningJobSucceededWebhookEvent
+        | OpenAI::Webhooks::ResponseCancelledWebhookEvent
+        | OpenAI::Webhooks::ResponseCompletedWebhookEvent
+        | OpenAI::Webhooks::ResponseFailedWebhookEvent
+        | OpenAI::Webhooks::ResponseIncompleteWebhookEvent
+
+      module UnwrapWebhookEvent
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::Webhooks::unwrap_webhook_event]
+      end
+    end
+  end
+end

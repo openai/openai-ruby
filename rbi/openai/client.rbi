@@ -52,6 +52,9 @@ module OpenAI
     sig { returns(OpenAI::Resources::VectorStores) }
     attr_reader :vector_stores
 
+    sig { returns(OpenAI::Resources::Webhooks) }
+    attr_reader :webhooks
+
     sig { returns(OpenAI::Resources::Beta) }
     attr_reader :beta
 

@@ -221,23 +221,23 @@ module OpenAI
           # should refer to the `system_fingerprint` response parameter to monitor changes
           # in the backend.
           seed: nil,
-          # Specifies the latency tier to use for processing the request. This parameter is
-          # relevant for customers subscribed to the scale tier service:
+          # Specifies the processing type used for serving the request.
           #
-          # - If set to 'auto', and the Project is Scale tier enabled, the system will
-          #   utilize scale tier credits until they are exhausted.
-          # - If set to 'auto', and the Project is not Scale tier enabled, the request will
-          #   be processed using the default service tier with a lower uptime SLA and no
-          #   latency guarantee.
-          # - If set to 'default', the request will be processed using the default service
-          #   tier with a lower uptime SLA and no latency guarantee.
-          # - If set to 'flex', the request will be processed with the Flex Processing
-          #   service tier.
-          #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
+          # - If set to 'auto', then the request will be processed with the service tier
+          #   configured in the Project settings. Unless otherwise configured, the Project
+          #   will use 'default'.
+          # - If set to 'default', then the requset will be processed with the standard
+          #   pricing and performance for the selected model.
+          # - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)' or
+          #   'priority', then the request will be processed with the corresponding service
+          #   tier. [Contact sales](https://openai.com/contact-sales) to learn more about
+          #   Priority processing.
           # - When not set, the default behavior is 'auto'.
           #
-          # When this parameter is set, the response body will include the `service_tier`
-          # utilized.
+          # When the `service_tier` parameter is set, the response body will include the
+          # `service_tier` value based on the processing mode actually used to serve the
+          # request. This response value may be different from the value set in the
+          # parameter.
           service_tier: nil,
           # Not supported with latest reasoning models `o3` and `o4-mini`.
           #
@@ -247,6 +247,8 @@ module OpenAI
           # Whether or not to store the output of this chat completion request for use in
           # our [model distillation](https://platform.openai.com/docs/guides/distillation)
           # or [evals](https://platform.openai.com/docs/guides/evals) products.
+          #
+          # Supports text and image inputs. Note: image inputs over 10MB will be dropped.
           store: nil,
           # Options for streaming response. Only set this when you set `stream: true`.
           stream_options: nil,
@@ -508,23 +510,23 @@ module OpenAI
           # should refer to the `system_fingerprint` response parameter to monitor changes
           # in the backend.
           seed: nil,
-          # Specifies the latency tier to use for processing the request. This parameter is
-          # relevant for customers subscribed to the scale tier service:
+          # Specifies the processing type used for serving the request.
           #
-          # - If set to 'auto', and the Project is Scale tier enabled, the system will
-          #   utilize scale tier credits until they are exhausted.
-          # - If set to 'auto', and the Project is not Scale tier enabled, the request will
-          #   be processed using the default service tier with a lower uptime SLA and no
-          #   latency guarantee.
-          # - If set to 'default', the request will be processed using the default service
-          #   tier with a lower uptime SLA and no latency guarantee.
-          # - If set to 'flex', the request will be processed with the Flex Processing
-          #   service tier.
-          #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
+          # - If set to 'auto', then the request will be processed with the service tier
+          #   configured in the Project settings. Unless otherwise configured, the Project
+          #   will use 'default'.
+          # - If set to 'default', then the requset will be processed with the standard
+          #   pricing and performance for the selected model.
+          # - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)' or
+          #   'priority', then the request will be processed with the corresponding service
+          #   tier. [Contact sales](https://openai.com/contact-sales) to learn more about
+          #   Priority processing.
           # - When not set, the default behavior is 'auto'.
           #
-          # When this parameter is set, the response body will include the `service_tier`
-          # utilized.
+          # When the `service_tier` parameter is set, the response body will include the
+          # `service_tier` value based on the processing mode actually used to serve the
+          # request. This response value may be different from the value set in the
+          # parameter.
           service_tier: nil,
           # Not supported with latest reasoning models `o3` and `o4-mini`.
           #
@@ -534,6 +536,8 @@ module OpenAI
           # Whether or not to store the output of this chat completion request for use in
           # our [model distillation](https://platform.openai.com/docs/guides/distillation)
           # or [evals](https://platform.openai.com/docs/guides/evals) products.
+          #
+          # Supports text and image inputs. Note: image inputs over 10MB will be dropped.
           store: nil,
           # Options for streaming response. Only set this when you set `stream: true`.
           stream_options: nil,

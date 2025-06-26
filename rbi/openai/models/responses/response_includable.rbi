@@ -6,18 +6,19 @@ module OpenAI
       # Specify additional output data to include in the model response. Currently
       # supported values are:
       #
+      # - `code_interpreter_call.outputs`: Includes the outputs of python code execution
+      #   in code interpreter tool call items.
+      # - `computer_call_output.output.image_url`: Include image urls from the computer
+      #   call output.
       # - `file_search_call.results`: Include the search results of the file search tool
       #   call.
       # - `message.input_image.image_url`: Include image urls from the input message.
-      # - `computer_call_output.output.image_url`: Include image urls from the computer
-      #   call output.
+      # - `message.output_text.logprobs`: Include logprobs with assistant messages.
       # - `reasoning.encrypted_content`: Includes an encrypted version of reasoning
       #   tokens in reasoning item outputs. This enables reasoning items to be used in
       #   multi-turn conversations when using the Responses API statelessly (like when
       #   the `store` parameter is set to `false`, or when an organization is enrolled
       #   in the zero data retention program).
-      # - `code_interpreter_call.outputs`: Includes the outputs of python code execution
-      #   in code interpreter tool call items.
       module ResponseIncludable
         extend OpenAI::Internal::Type::Enum
 
@@ -25,6 +26,16 @@ module OpenAI
           T.type_alias { T.all(Symbol, OpenAI::Responses::ResponseIncludable) }
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
+        CODE_INTERPRETER_CALL_OUTPUTS =
+          T.let(
+            :"code_interpreter_call.outputs",
+            OpenAI::Responses::ResponseIncludable::TaggedSymbol
+          )
+        COMPUTER_CALL_OUTPUT_OUTPUT_IMAGE_URL =
+          T.let(
+            :"computer_call_output.output.image_url",
+            OpenAI::Responses::ResponseIncludable::TaggedSymbol
+          )
         FILE_SEARCH_CALL_RESULTS =
           T.let(
             :"file_search_call.results",
@@ -35,19 +46,14 @@ module OpenAI
             :"message.input_image.image_url",
             OpenAI::Responses::ResponseIncludable::TaggedSymbol
           )
-        COMPUTER_CALL_OUTPUT_OUTPUT_IMAGE_URL =
+        MESSAGE_OUTPUT_TEXT_LOGPROBS =
           T.let(
-            :"computer_call_output.output.image_url",
+            :"message.output_text.logprobs",
             OpenAI::Responses::ResponseIncludable::TaggedSymbol
           )
         REASONING_ENCRYPTED_CONTENT =
           T.let(
             :"reasoning.encrypted_content",
-            OpenAI::Responses::ResponseIncludable::TaggedSymbol
-          )
-        CODE_INTERPRETER_CALL_OUTPUTS =
-          T.let(
-            :"code_interpreter_call.outputs",
             OpenAI::Responses::ResponseIncludable::TaggedSymbol
           )
 

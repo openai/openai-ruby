@@ -22,7 +22,6 @@ module OpenAI
           | :web_search_preview_2025_03_11
           | :image_generation
           | :code_interpreter
-          | :mcp
 
         module Type
           extend OpenAI::Internal::Type::Enum
@@ -33,7 +32,6 @@ module OpenAI
           WEB_SEARCH_PREVIEW_2025_03_11: :web_search_preview_2025_03_11
           IMAGE_GENERATION: :image_generation
           CODE_INTERPRETER: :code_interpreter
-          MCP: :mcp
 
           def self?.values: -> ::Array[OpenAI::Models::Responses::ToolChoiceTypes::type_]
         end

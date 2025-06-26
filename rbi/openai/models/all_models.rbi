@@ -35,6 +35,26 @@ module OpenAI
             :"o3-pro-2025-06-10",
             OpenAI::AllModels::ResponsesOnlyModel::TaggedSymbol
           )
+        O3_DEEP_RESEARCH =
+          T.let(
+            :"o3-deep-research",
+            OpenAI::AllModels::ResponsesOnlyModel::TaggedSymbol
+          )
+        O3_DEEP_RESEARCH_2025_06_26 =
+          T.let(
+            :"o3-deep-research-2025-06-26",
+            OpenAI::AllModels::ResponsesOnlyModel::TaggedSymbol
+          )
+        O4_MINI_DEEP_RESEARCH =
+          T.let(
+            :"o4-mini-deep-research",
+            OpenAI::AllModels::ResponsesOnlyModel::TaggedSymbol
+          )
+        O4_MINI_DEEP_RESEARCH_2025_06_26 =
+          T.let(
+            :"o4-mini-deep-research-2025-06-26",
+            OpenAI::AllModels::ResponsesOnlyModel::TaggedSymbol
+          )
         COMPUTER_USE_PREVIEW =
           T.let(
             :"computer-use-preview",

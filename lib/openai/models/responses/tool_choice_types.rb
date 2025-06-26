@@ -14,7 +14,6 @@ module OpenAI
         #   - `web_search_preview`
         #   - `computer_use_preview`
         #   - `code_interpreter`
-        #   - `mcp`
         #   - `image_generation`
         #
         #   @return [Symbol, OpenAI::Models::Responses::ToolChoiceTypes::Type]
@@ -38,7 +37,6 @@ module OpenAI
         # - `web_search_preview`
         # - `computer_use_preview`
         # - `code_interpreter`
-        # - `mcp`
         # - `image_generation`
         #
         # @see OpenAI::Models::Responses::ToolChoiceTypes#type
@@ -51,7 +49,6 @@ module OpenAI
           WEB_SEARCH_PREVIEW_2025_03_11 = :web_search_preview_2025_03_11
           IMAGE_GENERATION = :image_generation
           CODE_INTERPRETER = :code_interpreter
-          MCP = :mcp
 
           # @!method self.values
           #   @return [Array<Symbol>]
