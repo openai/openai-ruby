@@ -21,7 +21,7 @@ module OpenAI
         webhook_secret = @client.webhook_secret || ENV["OPENAI_WEBHOOK_SECRET"]
       )
         verify_signature(payload, headers, webhook_secret)
-        
+
         parsed = JSON.parse(payload, symbolize_names: true)
         OpenAI::Internal::Type::Converter.coerce(OpenAI::Models::Webhooks::UnwrapWebhookEvent, parsed)
       end
@@ -73,11 +73,11 @@ module OpenAI
         now = Time.now.to_i
 
         if now - timestamp_seconds > tolerance
-          raise ArgumentError, "Webhook timestamp is too old"
+          raise OpenAI::Errors::InvalidWebhookSignatureError, "Webhook timestamp is too old"
         end
 
         if timestamp_seconds > now + tolerance
-          raise ArgumentError, "Webhook timestamp is too new"
+          raise OpenAI::Errors::InvalidWebhookSignatureError, "Webhook timestamp is too new"
         end
 
         # Extract signatures from v1,<base64> format
@@ -109,7 +109,8 @@ module OpenAI
         # Accept if any signature matches using timing-safe comparison
         return if signatures.any? { |signature| OpenSSL.secure_compare(expected_signature, signature) }
 
-        raise ArgumentError, "The given webhook signature does not match the expected signature"
+        raise OpenAI::Errors::InvalidWebhookSignatureError,
+              "The given webhook signature does not match the expected signature"
       end
 
       # @api private

@@ -38,7 +38,7 @@ class OpenAI::Test::Resources::WebhooksTest < OpenAI::Test::ResourceTest
       "webhook-id" => @webhook_id
     }
 
-    assert_raises(ArgumentError) do
+    assert_raises(OpenAI::Errors::InvalidWebhookSignatureError) do
       @webhook_service.verify_signature(@test_payload, headers, "invalid_secret")
     end
   end
@@ -60,7 +60,7 @@ class OpenAI::Test::Resources::WebhooksTest < OpenAI::Test::ResourceTest
       "webhook-id" => @webhook_id
     }
 
-    assert_raises(ArgumentError) do
+    assert_raises(OpenAI::Errors::InvalidWebhookSignatureError) do
       @webhook_service.verify_signature(@test_payload, headers, @test_secret)
     end
   end
@@ -90,7 +90,7 @@ class OpenAI::Test::Resources::WebhooksTest < OpenAI::Test::ResourceTest
     }
 
     # Should fail due to old timestamp
-    assert_raises(ArgumentError) do
+    assert_raises(OpenAI::Errors::InvalidWebhookSignatureError) do
       @webhook_service.verify_signature(@test_payload, headers, @test_secret, 300)
     end
   end
@@ -136,7 +136,7 @@ class OpenAI::Test::Resources::WebhooksTest < OpenAI::Test::ResourceTest
       "webhook-id" => @webhook_id
     }
 
-    assert_raises(ArgumentError) do
+    assert_raises(OpenAI::Errors::InvalidWebhookSignatureError) do
       @webhook_service.verify_signature(@test_payload, headers, @test_secret)
     end
   end

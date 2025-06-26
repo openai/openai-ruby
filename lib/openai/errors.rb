@@ -8,6 +8,9 @@ module OpenAI
       #   @return [StandardError, nil]
     end
 
+    class InvalidWebhookSignatureError < OpenAI::Errors::Error
+    end
+
     class ConversionError < OpenAI::Errors::Error
       # @return [StandardError, nil]
       def cause = @cause.nil? ? super : @cause
