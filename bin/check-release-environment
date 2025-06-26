@@ -7,7 +7,7 @@ if [ -z "${STAINLESS_API_KEY}" ]; then
 fi
 
 if [ -z "${GEM_HOST_API_KEY}" ]; then
-  errors+=("The OPENAI_GEM_HOST_API_KEY secret has not been set. Please set it in either this repository's secrets or your organization secrets")
+  errors+=("The GEM_HOST_API_KEY secret has not been set. Please set it in either this repository's secrets or your organization secrets")
 fi
 
 lenErrors=${#errors[@]}
