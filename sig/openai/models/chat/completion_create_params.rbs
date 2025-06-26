@@ -280,7 +280,7 @@ module OpenAI
           def self?.variants: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::response_format]
         end
 
-        type service_tier = :auto | :default | :flex | :scale
+        type service_tier = :auto | :default | :flex | :scale | :priority
 
         module ServiceTier
           extend OpenAI::Internal::Type::Enum
@@ -289,6 +289,7 @@ module OpenAI
           DEFAULT: :default
           FLEX: :flex
           SCALE: :scale
+          PRIORITY: :priority
 
           def self?.values: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::service_tier]
         end

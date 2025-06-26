@@ -3,16 +3,44 @@ module OpenAI
     type images_response =
       {
         created: Integer,
+        background: OpenAI::Models::ImagesResponse::background,
         data: ::Array[OpenAI::Image],
+        output_format: OpenAI::Models::ImagesResponse::output_format,
+        quality: OpenAI::Models::ImagesResponse::quality,
+        size: OpenAI::Models::ImagesResponse::size,
         usage: OpenAI::ImagesResponse::Usage
       }
 
     class ImagesResponse < OpenAI::Internal::Type::BaseModel
       attr_accessor created: Integer
 
+      attr_reader background: OpenAI::Models::ImagesResponse::background?
+
+      def background=: (
+        OpenAI::Models::ImagesResponse::background
+      ) -> OpenAI::Models::ImagesResponse::background
+
       attr_reader data: ::Array[OpenAI::Image]?
 
       def data=: (::Array[OpenAI::Image]) -> ::Array[OpenAI::Image]
+
+      attr_reader output_format: OpenAI::Models::ImagesResponse::output_format?
+
+      def output_format=: (
+        OpenAI::Models::ImagesResponse::output_format
+      ) -> OpenAI::Models::ImagesResponse::output_format
+
+      attr_reader quality: OpenAI::Models::ImagesResponse::quality?
+
+      def quality=: (
+        OpenAI::Models::ImagesResponse::quality
+      ) -> OpenAI::Models::ImagesResponse::quality
+
+      attr_reader size: OpenAI::Models::ImagesResponse::size?
+
+      def size=: (
+        OpenAI::Models::ImagesResponse::size
+      ) -> OpenAI::Models::ImagesResponse::size
 
       attr_reader usage: OpenAI::ImagesResponse::Usage?
 
@@ -22,15 +50,70 @@ module OpenAI
 
       def initialize: (
         created: Integer,
+        ?background: OpenAI::Models::ImagesResponse::background,
         ?data: ::Array[OpenAI::Image],
+        ?output_format: OpenAI::Models::ImagesResponse::output_format,
+        ?quality: OpenAI::Models::ImagesResponse::quality,
+        ?size: OpenAI::Models::ImagesResponse::size,
         ?usage: OpenAI::ImagesResponse::Usage
       ) -> void
 
       def to_hash: -> {
         created: Integer,
+        background: OpenAI::Models::ImagesResponse::background,
         data: ::Array[OpenAI::Image],
+        output_format: OpenAI::Models::ImagesResponse::output_format,
+        quality: OpenAI::Models::ImagesResponse::quality,
+        size: OpenAI::Models::ImagesResponse::size,
         usage: OpenAI::ImagesResponse::Usage
       }
+
+      type background = :transparent | :opaque
+
+      module Background
+        extend OpenAI::Internal::Type::Enum
+
+        TRANSPARENT: :transparent
+        OPAQUE: :opaque
+
+        def self?.values: -> ::Array[OpenAI::Models::ImagesResponse::background]
+      end
+
+      type output_format = :png | :webp | :jpeg
+
+      module OutputFormat
+        extend OpenAI::Internal::Type::Enum
+
+        PNG: :png
+        WEBP: :webp
+        JPEG: :jpeg
+
+        def self?.values: -> ::Array[OpenAI::Models::ImagesResponse::output_format]
+      end
+
+      type quality = :low | :medium | :high
+
+      module Quality
+        extend OpenAI::Internal::Type::Enum
+
+        LOW: :low
+        MEDIUM: :medium
+        HIGH: :high
+
+        def self?.values: -> ::Array[OpenAI::Models::ImagesResponse::quality]
+      end
+
+      type size = :"1024x1024" | :"1024x1536" | :"1536x1024"
+
+      module Size
+        extend OpenAI::Internal::Type::Enum
+
+        SIZE_1024X1024: :"1024x1024"
+        SIZE_1024X1536: :"1024x1536"
+        SIZE_1536X1024: :"1536x1024"
+
+        def self?.values: -> ::Array[OpenAI::Models::ImagesResponse::size]
+      end
 
       type usage =
         {

@@ -24,6 +24,9 @@ module OpenAI
     # @return [String, nil]
     attr_reader :project
 
+    # @return [String, nil]
+    attr_reader :webhook_secret
+
     # @return [OpenAI::Resources::Completions]
     attr_reader :completions
 
@@ -56,6 +59,9 @@ module OpenAI
 
     # @return [OpenAI::Resources::VectorStores]
     attr_reader :vector_stores
+
+    # @return [OpenAI::Resources::Webhooks]
+    attr_reader :webhooks
 
     # @return [OpenAI::Resources::Beta]
     attr_reader :beta
@@ -92,6 +98,8 @@ module OpenAI
     #
     # @param project [String, nil] Defaults to `ENV["OPENAI_PROJECT_ID"]`
     #
+    # @param webhook_secret [String, nil] Defaults to `ENV["OPENAI_WEBHOOK_SECRET"]`
+    #
     # @param base_url [String, nil] Override the default base URL for the API, e.g.,
     # `"https://api.example.com/v2/"`. Defaults to `ENV["OPENAI_BASE_URL"]`
     #
@@ -106,6 +114,7 @@ module OpenAI
       api_key: ENV["OPENAI_API_KEY"],
       organization: ENV["OPENAI_ORG_ID"],
       project: ENV["OPENAI_PROJECT_ID"],
+      webhook_secret: ENV["OPENAI_WEBHOOK_SECRET"],
       base_url: ENV["OPENAI_BASE_URL"],
       max_retries: self.class::DEFAULT_MAX_RETRIES,
       timeout: self.class::DEFAULT_TIMEOUT_IN_SECONDS,
@@ -124,6 +133,7 @@ module OpenAI
       }
 
       @api_key = api_key.to_s
+      @webhook_secret = webhook_secret&.to_s
 
       super(
         base_url: base_url,
@@ -145,6 +155,7 @@ module OpenAI
       @fine_tuning = OpenAI::Resources::FineTuning.new(client: self)
       @graders = OpenAI::Resources::Graders.new(client: self)
       @vector_stores = OpenAI::Resources::VectorStores.new(client: self)
+      @webhooks = OpenAI::Resources::Webhooks.new(client: self)
       @beta = OpenAI::Resources::Beta.new(client: self)
       @batches = OpenAI::Resources::Batches.new(client: self)
       @uploads = OpenAI::Resources::Uploads.new(client: self)

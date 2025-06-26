@@ -10,6 +10,13 @@ module OpenAI
         #   @return [String]
         required :id, String
 
+        # @!attribute action
+        #   An object describing the specific action taken in this web search call. Includes
+        #   details on how the model used the web (search, open_page, find).
+        #
+        #   @return [OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Search, OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::OpenPage, OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Find]
+        required :action, union: -> { OpenAI::Responses::ResponseFunctionWebSearch::Action }
+
         # @!attribute status
         #   The status of the web search tool call.
         #
@@ -22,7 +29,7 @@ module OpenAI
         #   @return [Symbol, :web_search_call]
         required :type, const: :web_search_call
 
-        # @!method initialize(id:, status:, type: :web_search_call)
+        # @!method initialize(id:, action:, status:, type: :web_search_call)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseFunctionWebSearch} for more details.
         #
@@ -32,9 +39,124 @@ module OpenAI
         #
         #   @param id [String] The unique ID of the web search tool call.
         #
+        #   @param action [OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Search, OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::OpenPage, OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Find] An object describing the specific action taken in this web search call.
+        #
         #   @param status [Symbol, OpenAI::Models::Responses::ResponseFunctionWebSearch::Status] The status of the web search tool call.
         #
         #   @param type [Symbol, :web_search_call] The type of the web search tool call. Always `web_search_call`.
+
+        # An object describing the specific action taken in this web search call. Includes
+        # details on how the model used the web (search, open_page, find).
+        #
+        # @see OpenAI::Models::Responses::ResponseFunctionWebSearch#action
+        module Action
+          extend OpenAI::Internal::Type::Union
+
+          discriminator :type
+
+          # Action type "search" - Performs a web search query.
+          variant :search, -> { OpenAI::Responses::ResponseFunctionWebSearch::Action::Search }
+
+          # Action type "open_page" - Opens a specific URL from search results.
+          variant :open_page, -> { OpenAI::Responses::ResponseFunctionWebSearch::Action::OpenPage }
+
+          # Action type "find": Searches for a pattern within a loaded page.
+          variant :find, -> { OpenAI::Responses::ResponseFunctionWebSearch::Action::Find }
+
+          class Search < OpenAI::Internal::Type::BaseModel
+            # @!attribute query
+            #   The search query.
+            #
+            #   @return [String]
+            required :query, String
+
+            # @!attribute type
+            #   The action type.
+            #
+            #   @return [Symbol, :search]
+            required :type, const: :search
+
+            # @!attribute domains
+            #   Domains to restrict the search or domains where results were found.
+            #
+            #   @return [Array<String>, nil]
+            optional :domains, OpenAI::Internal::Type::ArrayOf[String]
+
+            # @!method initialize(query:, domains: nil, type: :search)
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Search} for more
+            #   details.
+            #
+            #   Action type "search" - Performs a web search query.
+            #
+            #   @param query [String] The search query.
+            #
+            #   @param domains [Array<String>] Domains to restrict the search or domains where results were found.
+            #
+            #   @param type [Symbol, :search] The action type.
+          end
+
+          class OpenPage < OpenAI::Internal::Type::BaseModel
+            # @!attribute type
+            #   The action type.
+            #
+            #   @return [Symbol, :open_page]
+            required :type, const: :open_page
+
+            # @!attribute url
+            #   The URL opened by the model.
+            #
+            #   @return [String]
+            required :url, String
+
+            # @!method initialize(url:, type: :open_page)
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::OpenPage} for
+            #   more details.
+            #
+            #   Action type "open_page" - Opens a specific URL from search results.
+            #
+            #   @param url [String] The URL opened by the model.
+            #
+            #   @param type [Symbol, :open_page] The action type.
+          end
+
+          class Find < OpenAI::Internal::Type::BaseModel
+            # @!attribute pattern
+            #   The pattern or text to search for within the page.
+            #
+            #   @return [String]
+            required :pattern, String
+
+            # @!attribute type
+            #   The action type.
+            #
+            #   @return [Symbol, :find]
+            required :type, const: :find
+
+            # @!attribute url
+            #   The URL of the page searched for the pattern.
+            #
+            #   @return [String]
+            required :url, String
+
+            # @!method initialize(pattern:, url:, type: :find)
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Find} for more
+            #   details.
+            #
+            #   Action type "find": Searches for a pattern within a loaded page.
+            #
+            #   @param pattern [String] The pattern or text to search for within the page.
+            #
+            #   @param url [String] The URL of the page searched for the pattern.
+            #
+            #   @param type [Symbol, :find] The action type.
+          end
+
+          # @!method self.variants
+          #   @return [Array(OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Search, OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::OpenPage, OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Find)]
+        end
 
         # The status of the web search tool call.
         #

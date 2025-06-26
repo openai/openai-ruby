@@ -219,23 +219,23 @@ module OpenAI
         optional :seed, Integer, nil?: true
 
         # @!attribute service_tier
-        #   Specifies the latency tier to use for processing the request. This parameter is
-        #   relevant for customers subscribed to the scale tier service:
+        #   Specifies the processing type used for serving the request.
         #
-        #   - If set to 'auto', and the Project is Scale tier enabled, the system will
-        #     utilize scale tier credits until they are exhausted.
-        #   - If set to 'auto', and the Project is not Scale tier enabled, the request will
-        #     be processed using the default service tier with a lower uptime SLA and no
-        #     latency guarantee.
-        #   - If set to 'default', the request will be processed using the default service
-        #     tier with a lower uptime SLA and no latency guarantee.
-        #   - If set to 'flex', the request will be processed with the Flex Processing
-        #     service tier.
-        #     [Learn more](https://platform.openai.com/docs/guides/flex-processing).
+        #   - If set to 'auto', then the request will be processed with the service tier
+        #     configured in the Project settings. Unless otherwise configured, the Project
+        #     will use 'default'.
+        #   - If set to 'default', then the requset will be processed with the standard
+        #     pricing and performance for the selected model.
+        #   - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)' or
+        #     'priority', then the request will be processed with the corresponding service
+        #     tier. [Contact sales](https://openai.com/contact-sales) to learn more about
+        #     Priority processing.
         #   - When not set, the default behavior is 'auto'.
         #
-        #   When this parameter is set, the response body will include the `service_tier`
-        #   utilized.
+        #   When the `service_tier` parameter is set, the response body will include the
+        #   `service_tier` value based on the processing mode actually used to serve the
+        #   request. This response value may be different from the value set in the
+        #   parameter.
         #
         #   @return [Symbol, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier, nil]
         optional :service_tier, enum: -> { OpenAI::Chat::CompletionCreateParams::ServiceTier }, nil?: true
@@ -253,6 +253,8 @@ module OpenAI
         #   Whether or not to store the output of this chat completion request for use in
         #   our [model distillation](https://platform.openai.com/docs/guides/distillation)
         #   or [evals](https://platform.openai.com/docs/guides/evals) products.
+        #
+        #   Supports text and image inputs. Note: image inputs over 10MB will be dropped.
         #
         #   @return [Boolean, nil]
         optional :store, OpenAI::Internal::Type::Boolean, nil?: true
@@ -375,7 +377,7 @@ module OpenAI
         #
         #   @param seed [Integer, nil] This feature is in Beta.
         #
-        #   @param service_tier [Symbol, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier, nil] Specifies the latency tier to use for processing the request. This parameter is
+        #   @param service_tier [Symbol, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier, nil] Specifies the processing type used for serving the request.
         #
         #   @param stop [String, Array<String>, nil] Not supported with latest reasoning models `o3` and `o4-mini`.
         #
@@ -546,23 +548,23 @@ module OpenAI
           #   @return [Array(OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject)]
         end
 
-        # Specifies the latency tier to use for processing the request. This parameter is
-        # relevant for customers subscribed to the scale tier service:
+        # Specifies the processing type used for serving the request.
         #
-        # - If set to 'auto', and the Project is Scale tier enabled, the system will
-        #   utilize scale tier credits until they are exhausted.
-        # - If set to 'auto', and the Project is not Scale tier enabled, the request will
-        #   be processed using the default service tier with a lower uptime SLA and no
-        #   latency guarantee.
-        # - If set to 'default', the request will be processed using the default service
-        #   tier with a lower uptime SLA and no latency guarantee.
-        # - If set to 'flex', the request will be processed with the Flex Processing
-        #   service tier.
-        #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
+        # - If set to 'auto', then the request will be processed with the service tier
+        #   configured in the Project settings. Unless otherwise configured, the Project
+        #   will use 'default'.
+        # - If set to 'default', then the requset will be processed with the standard
+        #   pricing and performance for the selected model.
+        # - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)' or
+        #   'priority', then the request will be processed with the corresponding service
+        #   tier. [Contact sales](https://openai.com/contact-sales) to learn more about
+        #   Priority processing.
         # - When not set, the default behavior is 'auto'.
         #
-        # When this parameter is set, the response body will include the `service_tier`
-        # utilized.
+        # When the `service_tier` parameter is set, the response body will include the
+        # `service_tier` value based on the processing mode actually used to serve the
+        # request. This response value may be different from the value set in the
+        # parameter.
         module ServiceTier
           extend OpenAI::Internal::Type::Enum
 
@@ -570,6 +572,7 @@ module OpenAI
           DEFAULT = :default
           FLEX = :flex
           SCALE = :scale
+          PRIORITY = :priority
 
           # @!method self.values
           #   @return [Array<Symbol>]
