@@ -40,29 +40,16 @@ module OpenAI
         module Action
           extend OpenAI::Internal::Type::Union
 
-          type search =
-            { query: String, type: :search, domains: ::Array[String] }
+          type search = { query: String, type: :search }
 
           class Search < OpenAI::Internal::Type::BaseModel
             attr_accessor query: String
 
             attr_accessor type: :search
 
-            attr_reader domains: ::Array[String]?
+            def initialize: (query: String, ?type: :search) -> void
 
-            def domains=: (::Array[String]) -> ::Array[String]
-
-            def initialize: (
-              query: String,
-              ?domains: ::Array[String],
-              ?type: :search
-            ) -> void
-
-            def to_hash: -> {
-              query: String,
-              type: :search,
-              domains: ::Array[String]
-            }
+            def to_hash: -> { query: String, type: :search }
           end
 
           type open_page = { type: :open_page, url: String }

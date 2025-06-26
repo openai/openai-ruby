@@ -76,13 +76,7 @@ module OpenAI
             #   @return [Symbol, :search]
             required :type, const: :search
 
-            # @!attribute domains
-            #   Domains to restrict the search or domains where results were found.
-            #
-            #   @return [Array<String>, nil]
-            optional :domains, OpenAI::Internal::Type::ArrayOf[String]
-
-            # @!method initialize(query:, domains: nil, type: :search)
+            # @!method initialize(query:, type: :search)
             #   Some parameter documentations has been truncated, see
             #   {OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Search} for more
             #   details.
@@ -90,8 +84,6 @@ module OpenAI
             #   Action type "search" - Performs a web search query.
             #
             #   @param query [String] The search query.
-            #
-            #   @param domains [Array<String>] Domains to restrict the search or domains where results were found.
             #
             #   @param type [Symbol, :search] The action type.
           end

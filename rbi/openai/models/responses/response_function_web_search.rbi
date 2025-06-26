@@ -121,36 +121,19 @@ module OpenAI
             sig { returns(Symbol) }
             attr_accessor :type
 
-            # Domains to restrict the search or domains where results were found.
-            sig { returns(T.nilable(T::Array[String])) }
-            attr_reader :domains
-
-            sig { params(domains: T::Array[String]).void }
-            attr_writer :domains
-
             # Action type "search" - Performs a web search query.
             sig do
-              params(
-                query: String,
-                domains: T::Array[String],
-                type: Symbol
-              ).returns(T.attached_class)
+              params(query: String, type: Symbol).returns(T.attached_class)
             end
             def self.new(
               # The search query.
               query:,
-              # Domains to restrict the search or domains where results were found.
-              domains: nil,
               # The action type.
               type: :search
             )
             end
 
-            sig do
-              override.returns(
-                { query: String, type: Symbol, domains: T::Array[String] }
-              )
-            end
+            sig { override.returns({ query: String, type: Symbol }) }
             def to_hash
             end
           end
