@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.11.1 (2025-06-27)
+
+Full Changelog: [v0.11.0...v0.11.1](https://github.com/openai/openai-ruby/compare/v0.11.0...v0.11.1)
+
+### Chores
+
+* **ci:** only run for pushes and fork pull requests ([97538e2](https://github.com/openai/openai-ruby/commit/97538e266f6f9a0e09669453539ee52ca56f4f59))
+
 ## 0.11.0 (2025-06-26)
 
 Full Changelog: [v0.10.0...v0.11.0](https://github.com/openai/openai-ruby/compare/v0.10.0...v0.11.0)
