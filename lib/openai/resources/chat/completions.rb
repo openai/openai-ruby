@@ -104,7 +104,6 @@ module OpenAI
             raise ArgumentError.new(message)
           end
 
-          # rubocop:disable Layout/LineLength
           model = nil
           tool_models = {}
           case parsed
@@ -157,11 +156,16 @@ module OpenAI
           else
           end
 
+          # rubocop:disable Metrics/BlockLength
           unwrap = ->(raw) do
             if model.is_a?(OpenAI::StructuredOutput::JsonSchemaConverter)
               raw[:choices]&.each do |choice|
                 message = choice.fetch(:message)
-                parsed = JSON.parse(message.fetch(:content), symbolize_names: true)
+                begin
+                  parsed = JSON.parse(message.fetch(:content), symbolize_names: true)
+                rescue JSON::ParserError => e
+                  parsed = e
+                end
                 coerced = OpenAI::Internal::Type::Converter.coerce(model, parsed)
                 message.store(:parsed, coerced)
               end
@@ -171,7 +175,11 @@ module OpenAI
                 func = tool_call.fetch(:function)
                 next if (model = tool_models[func.fetch(:name)]).nil?
 
-                parsed = JSON.parse(func.fetch(:arguments), symbolize_names: true)
+                begin
+                  parsed = JSON.parse(func.fetch(:arguments), symbolize_names: true)
+                rescue JSON::ParserError => e
+                  parsed = e
+                end
                 coerced = OpenAI::Internal::Type::Converter.coerce(model, parsed)
                 func.store(:parsed, coerced)
               end
@@ -179,7 +187,7 @@ module OpenAI
 
             raw
           end
-          # rubocop:enable Layout/LineLength
+          # rubocop:enable Metrics/BlockLength
 
           @client.request(
             method: :post,

@@ -52,7 +52,8 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
       exactness, expect = rhs
       state = OpenAI::Internal::Type::Converter.new_coerce_state
       assert_pattern do
-        OpenAI::Internal::Type::Converter.coerce(target, input, state: state) => ^expect
+        coerced = OpenAI::Internal::Type::Converter.coerce(target, input, state: state)
+        coerced => ^expect
         state.fetch(:exactness).filter { _2.nonzero? }.to_h => ^exactness
       end
     end
@@ -216,6 +217,28 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
       assert_pattern do
         assert_equal(expected, schema)
       end
+    end
+  end
+
+  class M7 < OpenAI::Helpers::StructuredOutput::BaseModel
+    required :a, OpenAI::Helpers::StructuredOutput::ParsedJson
+  end
+
+  def test_parsed_json
+    assert_pattern do
+      M7.new(a: {dog: "woof"}) => {a: {dog: "woof"}}
+    end
+
+    err = JSON::ParserError.new("unexpected token at 'invalid json'")
+
+    m1 = M7.new(a: err)
+    assert_raises(OpenAI::Errors::ConversionError) do
+      m1.a
+    end
+
+    m2 = OpenAI::Internal::Type::Converter.coerce(M7, {a: err})
+    assert_raises(OpenAI::Errors::ConversionError) do
+      m2.a
     end
   end
 end
