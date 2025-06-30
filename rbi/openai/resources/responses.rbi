@@ -275,7 +275,13 @@ module OpenAI
             ),
           store: T.nilable(T::Boolean),
           temperature: T.nilable(Float),
-          text: OpenAI::Responses::ResponseTextConfig::OrHash,
+          text:
+            T.nilable(
+              T.any(
+                OpenAI::Responses::ResponseTextConfig::OrHash,
+                OpenAI::StructuredOutput::JsonSchemaConverter
+              )
+            ),
           tool_choice:
             T.any(
               OpenAI::Responses::ToolChoiceOptions::OrSymbol,
@@ -458,6 +464,125 @@ module OpenAI
         # There is no need to provide `stream:`. Instead, use `#stream_raw` or `#create`
         # for streaming and non-streaming use cases, respectively.
         stream: true,
+        request_options: {}
+      )
+      end
+
+      # See {OpenAI::Resources::Responses#create} for non-streaming counterpart.
+      #
+      # Creates a model response with a higher-level streaming interface that provides
+      # helper methods for processing events and aggregating stream outputs.
+      sig do
+        params(
+          input:
+            T.nilable(OpenAI::Responses::ResponseCreateParams::Input::Variants),
+          model:
+            T.nilable(
+              T.any(
+                String,
+                OpenAI::ChatModel::OrSymbol,
+                OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
+              )
+            ),
+          background: T.nilable(T::Boolean),
+          include:
+            T.nilable(
+              T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
+            ),
+          instructions: T.nilable(String),
+          max_output_tokens: T.nilable(Integer),
+          metadata: T.nilable(T::Hash[Symbol, String]),
+          parallel_tool_calls: T.nilable(T::Boolean),
+          previous_response_id: T.nilable(String),
+          prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
+          reasoning: T.nilable(OpenAI::Reasoning::OrHash),
+          service_tier:
+            T.nilable(
+              OpenAI::Responses::ResponseCreateParams::ServiceTier::OrSymbol
+            ),
+          store: T.nilable(T::Boolean),
+          temperature: T.nilable(Float),
+          text:
+            T.any(
+              OpenAI::Responses::ResponseTextConfig::OrHash,
+              OpenAI::StructuredOutput::JsonSchemaConverter
+            ),
+          tool_choice:
+            T.any(
+              OpenAI::Responses::ToolChoiceOptions::OrSymbol,
+              OpenAI::Responses::ToolChoiceTypes::OrHash,
+              OpenAI::Responses::ToolChoiceFunction::OrHash
+            ),
+          tools:
+            T.nilable(
+              T::Array[
+                T.any(
+                  OpenAI::Responses::FunctionTool::OrHash,
+                  OpenAI::Responses::FileSearchTool::OrHash,
+                  OpenAI::Responses::ComputerTool::OrHash,
+                  OpenAI::Responses::Tool::Mcp::OrHash,
+                  OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                  OpenAI::Responses::Tool::ImageGeneration::OrHash,
+                  OpenAI::Responses::Tool::LocalShell::OrHash,
+                  OpenAI::Responses::WebSearchTool::OrHash,
+                  OpenAI::StructuredOutput::JsonSchemaConverter
+                )
+              ]
+            ),
+          top_p: T.nilable(Float),
+          truncation:
+            T.nilable(
+              OpenAI::Responses::ResponseCreateParams::Truncation::OrSymbol
+            ),
+          user: T.nilable(String),
+          starting_after: T.nilable(Integer),
+          request_options: T.nilable(OpenAI::RequestOptions::OrHash)
+        ).returns(OpenAI::Streaming::ResponseStream)
+      end
+      def stream(
+        # Text, image, or file inputs to the model, used to generate a response.
+        input: nil,
+        # Model ID used to generate the response, like `gpt-4o` or `o3`.
+        model: nil,
+        # Whether to run the model response in the background.
+        background: nil,
+        # Specify additional output data to include in the model response.
+        include: nil,
+        # A system (or developer) message inserted into the model's context.
+        instructions: nil,
+        # An upper bound for the number of tokens that can be generated for a response.
+        max_output_tokens: nil,
+        # Set of 16 key-value pairs that can be attached to an object.
+        metadata: nil,
+        # Whether to allow the model to run tool calls in parallel.
+        parallel_tool_calls: nil,
+        # The unique ID of the previous response to the model. Use this to create
+        # multi-turn conversations.
+        previous_response_id: nil,
+        # Reference to a prompt template and its variables.
+        prompt: nil,
+        # Configuration options for reasoning models.
+        reasoning: nil,
+        # Specifies the latency tier to use for processing the request.
+        service_tier: nil,
+        # Whether to store the generated model response for later retrieval via API.
+        store: nil,
+        # What sampling temperature to use, between 0 and 2.
+        temperature: nil,
+        # Configuration options for a text response from the model.
+        text: nil,
+        # How the model should select which tool (or tools) to use when generating a response.
+        tool_choice: nil,
+        # An array of tools the model may call while generating a response.
+        tools: nil,
+        # An alternative to sampling with temperature, called nucleus sampling.
+        top_p: nil,
+        # The truncation strategy to use for the model response.
+        truncation: nil,
+        # A stable identifier for your end-users.
+        user: nil,
+        # The sequence number of the event after which to start streaming (for resuming streams).
+        starting_after: nil,
         request_options: {}
       )
       end
