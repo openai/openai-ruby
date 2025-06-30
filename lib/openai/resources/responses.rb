@@ -442,7 +442,11 @@ module OpenAI
             end
             &.each do |content|
               next unless content[:type] == "output_text"
-              parsed = JSON.parse(content.fetch(:text), symbolize_names: true)
+              begin
+                parsed = JSON.parse(content.fetch(:text), symbolize_names: true)
+              rescue JSON::ParserError => e
+                parsed = e
+              end
               coerced = OpenAI::Internal::Type::Converter.coerce(model, parsed)
               content.store(:parsed, coerced)
             end
@@ -450,7 +454,11 @@ module OpenAI
         raw[:output]&.each do |output|
           next unless output[:type] == "function_call"
           next if (model = tool_models[output.fetch(:name)]).nil?
-          parsed = JSON.parse(output.fetch(:arguments), symbolize_names: true)
+          begin
+            parsed = JSON.parse(output.fetch(:arguments), symbolize_names: true)
+          rescue JSON::ParserError => e
+            parsed = e
+          end
           coerced = OpenAI::Internal::Type::Converter.coerce(model, parsed)
           output.store(:parsed, coerced)
         end
