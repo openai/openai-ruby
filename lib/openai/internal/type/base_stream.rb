@@ -64,12 +64,14 @@ module OpenAI
         # @param url [URI::Generic]
         # @param status [Integer]
         # @param response [Net::HTTPResponse]
+        # @param unwrap [Symbol, Integer, Array<Symbol, Integer>, Proc]
         # @param stream [Enumerable<Object>]
-        def initialize(model:, url:, status:, response:, stream:)
+        def initialize(model:, url:, status:, response:, unwrap:, stream:)
           @model = model
           @url = url
           @status = status
           @response = response
+          @unwrap = unwrap
           @stream = stream
           @iterator = iterator
 
