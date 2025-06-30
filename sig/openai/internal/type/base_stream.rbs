@@ -23,6 +23,10 @@ module OpenAI
           url: URI::Generic,
           status: Integer,
           response: top,
+          unwrap: Symbol
+          | Integer
+          | ::Array[Symbol | Integer]
+          | ^(top arg0) -> top,
           stream: Enumerable[Message]
         ) -> void
 
