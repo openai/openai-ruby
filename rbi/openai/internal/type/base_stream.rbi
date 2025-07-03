@@ -52,10 +52,17 @@ module OpenAI
             url: URI::Generic,
             status: Integer,
             response: Net::HTTPResponse,
+            unwrap:
+              T.any(
+                Symbol,
+                Integer,
+                T::Array[T.any(Symbol, Integer)],
+                T.proc.params(arg0: T.anything).returns(T.anything)
+              ),
             stream: T::Enumerable[Message]
           ).void
         end
-        def initialize(model:, url:, status:, response:, stream:)
+        def initialize(model:, url:, status:, response:, unwrap:, stream:)
         end
 
         # @api private

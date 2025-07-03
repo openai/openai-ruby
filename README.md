@@ -15,7 +15,7 @@ To use this gem, install via Bundler by adding the following to your application
 <!-- x-release-please-start-version -->
 
 ```ruby
-gem "openai", "~> 0.11.0"
+gem "openai", "~> 0.12.0"
 ```
 
 <!-- x-release-please-end -->
@@ -42,16 +42,14 @@ puts(chat_completion)
 
 We provide support for streaming responses using Server-Sent Events (SSE).
 
-**coming soon:** `openai.chat.completions.stream` will soon come with Python SDK-style higher-level streaming responses support.
-
 ```ruby
-stream = openai.chat.completions.stream_raw(
-  messages: [{role: "user", content: "Say this is a test"}],
+stream = openai.responses.stream(
+  input: "Write a haiku about OpenAI.",
   model: :"gpt-4.1"
 )
 
-stream.each do |completion|
-  puts(completion)
+stream.each do |event|
+  puts(event.type)
 end
 ```
 

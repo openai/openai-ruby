@@ -44,7 +44,7 @@ module OpenAI
           #   The parsed contents of the arguments.
           #
           #   @return [Object, nil]
-          required :parsed, OpenAI::Internal::Type::Unknown
+          required :parsed, OpenAI::StructuredOutput::ParsedJson
 
           # @!attribute name
           #   The name of the function to call.

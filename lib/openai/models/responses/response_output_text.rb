@@ -23,7 +23,7 @@ module OpenAI
         #   The parsed contents of the output, if JSON schema is specified.
         #
         #   @return [Object, nil]
-        optional :parsed, OpenAI::Internal::Type::Unknown
+        optional :parsed, OpenAI::StructuredOutput::ParsedJson
 
         # @!attribute type
         #   The type of the output text. Always `output_text`.

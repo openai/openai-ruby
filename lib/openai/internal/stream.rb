@@ -47,7 +47,8 @@ module OpenAI
                   message: message
                 )
               in decoded
-                y << OpenAI::Internal::Type::Converter.coerce(@model, decoded)
+                unwrapped = OpenAI::Internal::Util.dig(decoded, @unwrap)
+                y << OpenAI::Internal::Type::Converter.coerce(@model, unwrapped)
               end
             else
             end

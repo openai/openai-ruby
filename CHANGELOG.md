@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.12.0 (2025-07-03)
+
+Full Changelog: [v0.11.0...v0.12.0](https://github.com/openai/openai-ruby/compare/v0.11.0...v0.12.0)
+
+### Features
+
+* ensure partial jsons in structured ouput are handled gracefully ([#740](https://github.com/openai/openai-ruby/issues/740)) ([5deec70](https://github.com/openai/openai-ruby/commit/5deec708bad1ceb1a03e9aa65f737e3f89ce6455))
+* responses streaming helpers ([#721](https://github.com/openai/openai-ruby/issues/721)) ([c2f4270](https://github.com/openai/openai-ruby/commit/c2f42708e41492f1c22886735079973510fb2789))
+
+
+### Chores
+
+* **ci:** only run for pushes and fork pull requests ([97538e2](https://github.com/openai/openai-ruby/commit/97538e266f6f9a0e09669453539ee52ca56f4f59))
+* **internal:** allow streams to also be unwrapped on a per-row basis ([49bdadf](https://github.com/openai/openai-ruby/commit/49bdadfc0d3400664de0c8e7cfd59879faec45b8))
+* **internal:** minor refactoring of json helpers ([#744](https://github.com/openai/openai-ruby/issues/744)) ([f13edee](https://github.com/openai/openai-ruby/commit/f13edee16325be04335443cb886a7c2024155fd9))
+
 ## 0.11.0 (2025-06-26)
 
 Full Changelog: [v0.10.0...v0.11.0](https://github.com/openai/openai-ruby/compare/v0.10.0...v0.11.0)
