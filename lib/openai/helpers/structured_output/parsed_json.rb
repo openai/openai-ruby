@@ -28,10 +28,9 @@ module OpenAI
           #
           # @return [Object]
           def coerce(value, state:)
-            state.fetch(:exactness)[:yes] += 1
             (state[:error] = value) if value.is_a?(StandardError)
 
-            value
+            super
           end
         end
       end
