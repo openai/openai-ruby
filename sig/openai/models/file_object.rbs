@@ -68,6 +68,7 @@ module OpenAI
         | :"fine-tune"
         | :"fine-tune-results"
         | :vision
+        | :user_data
 
       module Purpose
         extend OpenAI::Internal::Type::Enum
@@ -79,6 +80,7 @@ module OpenAI
         FINE_TUNE: :"fine-tune"
         FINE_TUNE_RESULTS: :"fine-tune-results"
         VISION: :vision
+        USER_DATA: :user_data
 
         def self?.values: -> ::Array[OpenAI::Models::FileObject::purpose]
       end

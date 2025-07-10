@@ -22,13 +22,19 @@ module OpenAI
         #   @return [String, nil]
         optional :file_id, String, nil?: true
 
+        # @!attribute file_url
+        #   The URL of the file to be sent to the model.
+        #
+        #   @return [String, nil]
+        optional :file_url, String
+
         # @!attribute filename
         #   The name of the file to be sent to the model.
         #
         #   @return [String, nil]
         optional :filename, String
 
-        # @!method initialize(file_data: nil, file_id: nil, filename: nil, type: :input_file)
+        # @!method initialize(file_data: nil, file_id: nil, file_url: nil, filename: nil, type: :input_file)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseInputFile} for more details.
         #
@@ -37,6 +43,8 @@ module OpenAI
         #   @param file_data [String] The content of the file to be sent to the model.
         #
         #   @param file_id [String, nil] The ID of the file to be sent to the model.
+        #
+        #   @param file_url [String] The URL of the file to be sent to the model.
         #
         #   @param filename [String] The name of the file to be sent to the model.
         #

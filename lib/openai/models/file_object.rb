@@ -36,8 +36,8 @@ module OpenAI
 
       # @!attribute purpose
       #   The intended purpose of the file. Supported values are `assistants`,
-      #   `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`
-      #   and `vision`.
+      #   `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`,
+      #   `vision`, and `user_data`.
       #
       #   @return [Symbol, OpenAI::Models::FileObject::Purpose]
       required :purpose, enum: -> { OpenAI::FileObject::Purpose }
@@ -91,8 +91,8 @@ module OpenAI
       #   @param object [Symbol, :file] The object type, which is always `file`.
 
       # The intended purpose of the file. Supported values are `assistants`,
-      # `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`
-      # and `vision`.
+      # `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`,
+      # `vision`, and `user_data`.
       #
       # @see OpenAI::Models::FileObject#purpose
       module Purpose
@@ -105,6 +105,7 @@ module OpenAI
         FINE_TUNE = :"fine-tune"
         FINE_TUNE_RESULTS = :"fine-tune-results"
         VISION = :vision
+        USER_DATA = :user_data
 
         # @!method self.values
         #   @return [Array<Symbol>]

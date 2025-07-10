@@ -27,8 +27,8 @@ module OpenAI
       attr_accessor :object
 
       # The intended purpose of the file. Supported values are `assistants`,
-      # `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`
-      # and `vision`.
+      # `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`,
+      # `vision`, and `user_data`.
       sig { returns(OpenAI::FileObject::Purpose::TaggedSymbol) }
       attr_accessor :purpose
 
@@ -76,8 +76,8 @@ module OpenAI
         # The name of the file.
         filename:,
         # The intended purpose of the file. Supported values are `assistants`,
-        # `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`
-        # and `vision`.
+        # `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`,
+        # `vision`, and `user_data`.
         purpose:,
         # Deprecated. The current status of the file, which can be either `uploaded`,
         # `processed`, or `error`.
@@ -111,8 +111,8 @@ module OpenAI
       end
 
       # The intended purpose of the file. Supported values are `assistants`,
-      # `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`
-      # and `vision`.
+      # `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`,
+      # `vision`, and `user_data`.
       module Purpose
         extend OpenAI::Internal::Type::Enum
 
@@ -132,6 +132,7 @@ module OpenAI
         FINE_TUNE_RESULTS =
           T.let(:"fine-tune-results", OpenAI::FileObject::Purpose::TaggedSymbol)
         VISION = T.let(:vision, OpenAI::FileObject::Purpose::TaggedSymbol)
+        USER_DATA = T.let(:user_data, OpenAI::FileObject::Purpose::TaggedSymbol)
 
         sig do
           override.returns(T::Array[OpenAI::FileObject::Purpose::TaggedSymbol])

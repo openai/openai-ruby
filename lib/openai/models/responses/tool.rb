@@ -74,7 +74,13 @@ module OpenAI
           #   @return [OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter, Symbol, OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalSetting, nil]
           optional :require_approval, union: -> { OpenAI::Responses::Tool::Mcp::RequireApproval }, nil?: true
 
-          # @!method initialize(server_label:, server_url:, allowed_tools: nil, headers: nil, require_approval: nil, type: :mcp)
+          # @!attribute server_description
+          #   Optional description of the MCP server, used to provide more context.
+          #
+          #   @return [String, nil]
+          optional :server_description, String
+
+          # @!method initialize(server_label:, server_url:, allowed_tools: nil, headers: nil, require_approval: nil, server_description: nil, type: :mcp)
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Responses::Tool::Mcp} for more details.
           #
@@ -91,6 +97,8 @@ module OpenAI
           #   @param headers [Hash{Symbol=>String}, nil] Optional HTTP headers to send to the MCP server. Use for authentication
           #
           #   @param require_approval [OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter, Symbol, OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalSetting, nil] Specify which of the MCP server's tools require approval.
+          #
+          #   @param server_description [String] Optional description of the MCP server, used to provide more context.
           #
           #   @param type [Symbol, :mcp] The type of the MCP tool. Always `mcp`.
 
