@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.13.0 (2025-07-10)
+
+Full Changelog: [v0.12.0...v0.13.0](https://github.com/openai/openai-ruby/compare/v0.12.0...v0.13.0)
+
+### Features
+
+* **api:** add file_url, fix event ID ([9b8919d](https://github.com/openai/openai-ruby/commit/9b8919d470b622035f13c455aa9aa783feb1f936))
+
 ## 0.12.0 (2025-07-03)
 
 Full Changelog: [v0.11.0...v0.12.0](https://github.com/openai/openai-ruby/compare/v0.11.0...v0.12.0)
