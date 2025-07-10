@@ -7,7 +7,7 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.mcp_call.arguments_delta"
+          type: :"response.mcp_call_arguments.delta"
         }
 
       class ResponseMcpCallArgumentsDeltaEvent < OpenAI::Internal::Type::BaseModel
@@ -19,14 +19,14 @@ module OpenAI
 
         attr_accessor sequence_number: Integer
 
-        attr_accessor type: :"response.mcp_call.arguments_delta"
+        attr_accessor type: :"response.mcp_call_arguments.delta"
 
         def initialize: (
           delta: top,
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          ?type: :"response.mcp_call.arguments_delta"
+          ?type: :"response.mcp_call_arguments.delta"
         ) -> void
 
         def to_hash: -> {
@@ -34,7 +34,7 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.mcp_call.arguments_delta"
+          type: :"response.mcp_call_arguments.delta"
         }
       end
     end

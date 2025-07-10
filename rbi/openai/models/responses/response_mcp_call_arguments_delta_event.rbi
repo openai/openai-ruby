@@ -28,7 +28,7 @@ module OpenAI
         sig { returns(Integer) }
         attr_accessor :sequence_number
 
-        # The type of the event. Always 'response.mcp_call.arguments_delta'.
+        # The type of the event. Always 'response.mcp_call_arguments.delta'.
         sig { returns(Symbol) }
         attr_accessor :type
 
@@ -52,8 +52,8 @@ module OpenAI
           output_index:,
           # The sequence number of this event.
           sequence_number:,
-          # The type of the event. Always 'response.mcp_call.arguments_delta'.
-          type: :"response.mcp_call.arguments_delta"
+          # The type of the event. Always 'response.mcp_call_arguments.delta'.
+          type: :"response.mcp_call_arguments.delta"
         )
         end
 

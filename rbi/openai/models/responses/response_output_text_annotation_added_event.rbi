@@ -36,7 +36,7 @@ module OpenAI
         sig { returns(Integer) }
         attr_accessor :sequence_number
 
-        # The type of the event. Always 'response.output_text_annotation.added'.
+        # The type of the event. Always 'response.output_text.annotation.added'.
         sig { returns(Symbol) }
         attr_accessor :type
 
@@ -65,8 +65,8 @@ module OpenAI
           output_index:,
           # The sequence number of this event.
           sequence_number:,
-          # The type of the event. Always 'response.output_text_annotation.added'.
-          type: :"response.output_text_annotation.added"
+          # The type of the event. Always 'response.output_text.annotation.added'.
+          type: :"response.output_text.annotation.added"
         )
         end
 

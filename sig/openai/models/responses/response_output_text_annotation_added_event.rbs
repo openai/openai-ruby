@@ -9,7 +9,7 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.output_text_annotation.added"
+          type: :"response.output_text.annotation.added"
         }
 
       class ResponseOutputTextAnnotationAddedEvent < OpenAI::Internal::Type::BaseModel
@@ -25,7 +25,7 @@ module OpenAI
 
         attr_accessor sequence_number: Integer
 
-        attr_accessor type: :"response.output_text_annotation.added"
+        attr_accessor type: :"response.output_text.annotation.added"
 
         def initialize: (
           annotation: top,
@@ -34,7 +34,7 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          ?type: :"response.output_text_annotation.added"
+          ?type: :"response.output_text.annotation.added"
         ) -> void
 
         def to_hash: -> {
@@ -44,7 +44,7 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.output_text_annotation.added"
+          type: :"response.output_text.annotation.added"
         }
       end
     end

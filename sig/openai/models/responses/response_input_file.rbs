@@ -6,6 +6,7 @@ module OpenAI
           type: :input_file,
           file_data: String,
           file_id: String?,
+          file_url: String,
           filename: String
         }
 
@@ -18,6 +19,10 @@ module OpenAI
 
         attr_accessor file_id: String?
 
+        attr_reader file_url: String?
+
+        def file_url=: (String) -> String
+
         attr_reader filename: String?
 
         def filename=: (String) -> String
@@ -25,6 +30,7 @@ module OpenAI
         def initialize: (
           ?file_data: String,
           ?file_id: String?,
+          ?file_url: String,
           ?filename: String,
           ?type: :input_file
         ) -> void
@@ -33,6 +39,7 @@ module OpenAI
           type: :input_file,
           file_data: String,
           file_id: String?,
+          file_url: String,
           filename: String
         }
       end

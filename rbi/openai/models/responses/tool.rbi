@@ -70,6 +70,13 @@ module OpenAI
           end
           attr_accessor :require_approval
 
+          # Optional description of the MCP server, used to provide more context.
+          sig { returns(T.nilable(String)) }
+          attr_reader :server_description
+
+          sig { params(server_description: String).void }
+          attr_writer :server_description
+
           # Give the model access to additional tools via remote Model Context Protocol
           # (MCP) servers.
           # [Learn more about MCP](https://platform.openai.com/docs/guides/tools-remote-mcp).
@@ -92,6 +99,7 @@ module OpenAI
                     OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalSetting::OrSymbol
                   )
                 ),
+              server_description: String,
               type: Symbol
             ).returns(T.attached_class)
           end
@@ -107,6 +115,8 @@ module OpenAI
             headers: nil,
             # Specify which of the MCP server's tools require approval.
             require_approval: nil,
+            # Optional description of the MCP server, used to provide more context.
+            server_description: nil,
             # The type of the MCP tool. Always `mcp`.
             type: :mcp
           )
@@ -132,7 +142,8 @@ module OpenAI
                       OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter,
                       OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalSetting::OrSymbol
                     )
-                  )
+                  ),
+                server_description: String
               }
             )
           end

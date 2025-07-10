@@ -291,7 +291,7 @@ module OpenAI
 
             # Duration of the input audio in seconds.
             sig { returns(Float) }
-            attr_accessor :duration
+            attr_accessor :seconds
 
             # The type of the usage object. Always `duration` for this variant.
             sig { returns(Symbol) }
@@ -299,17 +299,17 @@ module OpenAI
 
             # Usage statistics for models billed by audio input duration.
             sig do
-              params(duration: Float, type: Symbol).returns(T.attached_class)
+              params(seconds: Float, type: Symbol).returns(T.attached_class)
             end
             def self.new(
               # Duration of the input audio in seconds.
-              duration:,
+              seconds:,
               # The type of the usage object. Always `duration` for this variant.
               type: :duration
             )
             end
 
-            sig { override.returns({ duration: Float, type: Symbol }) }
+            sig { override.returns({ seconds: Float, type: Symbol }) }
             def to_hash
             end
           end
