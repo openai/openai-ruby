@@ -58,11 +58,11 @@ module OpenAI
 
         # @see OpenAI::Models::Audio::TranscriptionVerbose#usage
         class Usage < OpenAI::Internal::Type::BaseModel
-          # @!attribute duration
+          # @!attribute seconds
           #   Duration of the input audio in seconds.
           #
           #   @return [Float]
-          required :duration, Float
+          required :seconds, Float
 
           # @!attribute type
           #   The type of the usage object. Always `duration` for this variant.
@@ -70,10 +70,10 @@ module OpenAI
           #   @return [Symbol, :duration]
           required :type, const: :duration
 
-          # @!method initialize(duration:, type: :duration)
+          # @!method initialize(seconds:, type: :duration)
           #   Usage statistics for models billed by audio input duration.
           #
-          #   @param duration [Float] Duration of the input audio in seconds.
+          #   @param seconds [Float] Duration of the input audio in seconds.
           #
           #   @param type [Symbol, :duration] The type of the usage object. Always `duration` for this variant.
         end

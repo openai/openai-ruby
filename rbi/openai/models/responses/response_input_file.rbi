@@ -27,6 +27,13 @@ module OpenAI
         sig { returns(T.nilable(String)) }
         attr_accessor :file_id
 
+        # The URL of the file to be sent to the model.
+        sig { returns(T.nilable(String)) }
+        attr_reader :file_url
+
+        sig { params(file_url: String).void }
+        attr_writer :file_url
+
         # The name of the file to be sent to the model.
         sig { returns(T.nilable(String)) }
         attr_reader :filename
@@ -39,6 +46,7 @@ module OpenAI
           params(
             file_data: String,
             file_id: T.nilable(String),
+            file_url: String,
             filename: String,
             type: Symbol
           ).returns(T.attached_class)
@@ -48,6 +56,8 @@ module OpenAI
           file_data: nil,
           # The ID of the file to be sent to the model.
           file_id: nil,
+          # The URL of the file to be sent to the model.
+          file_url: nil,
           # The name of the file to be sent to the model.
           filename: nil,
           # The type of the input item. Always `input_file`.
@@ -61,6 +71,7 @@ module OpenAI
               type: Symbol,
               file_data: String,
               file_id: T.nilable(String),
+              file_url: String,
               filename: String
             }
           )

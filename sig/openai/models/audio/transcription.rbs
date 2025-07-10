@@ -131,16 +131,16 @@ module OpenAI
             end
           end
 
-          type duration = { duration: Float, type: :duration }
+          type duration = { seconds: Float, type: :duration }
 
           class Duration < OpenAI::Internal::Type::BaseModel
-            attr_accessor duration: Float
+            attr_accessor seconds: Float
 
             attr_accessor type: :duration
 
-            def initialize: (duration: Float, ?type: :duration) -> void
+            def initialize: (seconds: Float, ?type: :duration) -> void
 
-            def to_hash: -> { duration: Float, type: :duration }
+            def to_hash: -> { seconds: Float, type: :duration }
           end
 
           def self?.variants: -> ::Array[OpenAI::Models::Audio::Transcription::usage]

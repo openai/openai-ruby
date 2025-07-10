@@ -21,7 +21,8 @@ module OpenAI
             type: :mcp,
             allowed_tools: OpenAI::Models::Responses::Tool::Mcp::allowed_tools?,
             headers: ::Hash[Symbol, String]?,
-            require_approval: OpenAI::Models::Responses::Tool::Mcp::require_approval?
+            require_approval: OpenAI::Models::Responses::Tool::Mcp::require_approval?,
+            server_description: String
           }
 
         class Mcp < OpenAI::Internal::Type::BaseModel
@@ -37,12 +38,17 @@ module OpenAI
 
           attr_accessor require_approval: OpenAI::Models::Responses::Tool::Mcp::require_approval?
 
+          attr_reader server_description: String?
+
+          def server_description=: (String) -> String
+
           def initialize: (
             server_label: String,
             server_url: String,
             ?allowed_tools: OpenAI::Models::Responses::Tool::Mcp::allowed_tools?,
             ?headers: ::Hash[Symbol, String]?,
             ?require_approval: OpenAI::Models::Responses::Tool::Mcp::require_approval?,
+            ?server_description: String,
             ?type: :mcp
           ) -> void
 
@@ -52,7 +58,8 @@ module OpenAI
             type: :mcp,
             allowed_tools: OpenAI::Models::Responses::Tool::Mcp::allowed_tools?,
             headers: ::Hash[Symbol, String]?,
-            require_approval: OpenAI::Models::Responses::Tool::Mcp::require_approval?
+            require_approval: OpenAI::Models::Responses::Tool::Mcp::require_approval?,
+            server_description: String
           }
 
           type allowed_tools =

@@ -151,13 +151,13 @@ module OpenAI
                 -> { OpenAI::Responses::ResponseImageGenCallPartialImageEvent }
 
         # Emitted when there is a delta (partial update) to the arguments of an MCP tool call.
-        variant :"response.mcp_call.arguments_delta",
+        variant :"response.mcp_call_arguments.delta",
                 -> {
                   OpenAI::Responses::ResponseMcpCallArgumentsDeltaEvent
                 }
 
         # Emitted when the arguments for an MCP tool call are finalized.
-        variant :"response.mcp_call.arguments_done",
+        variant :"response.mcp_call_arguments.done",
                 -> {
                   OpenAI::Responses::ResponseMcpCallArgumentsDoneEvent
                 }
@@ -185,7 +185,7 @@ module OpenAI
                 -> { OpenAI::Responses::ResponseMcpListToolsInProgressEvent }
 
         # Emitted when an annotation is added to output text content.
-        variant :"response.output_text_annotation.added",
+        variant :"response.output_text.annotation.added",
                 -> { OpenAI::Responses::ResponseOutputTextAnnotationAddedEvent }
 
         # Emitted when a response is queued and waiting to be processed.

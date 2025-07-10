@@ -29,12 +29,12 @@ module OpenAI
         required :sequence_number, Integer
 
         # @!attribute type
-        #   The type of the event. Always 'response.mcp_call.arguments_delta'.
+        #   The type of the event. Always 'response.mcp_call_arguments.delta'.
         #
-        #   @return [Symbol, :"response.mcp_call.arguments_delta"]
-        required :type, const: :"response.mcp_call.arguments_delta"
+        #   @return [Symbol, :"response.mcp_call_arguments.delta"]
+        required :type, const: :"response.mcp_call_arguments.delta"
 
-        # @!method initialize(delta:, item_id:, output_index:, sequence_number:, type: :"response.mcp_call.arguments_delta")
+        # @!method initialize(delta:, item_id:, output_index:, sequence_number:, type: :"response.mcp_call_arguments.delta")
         #   Emitted when there is a delta (partial update) to the arguments of an MCP tool
         #   call.
         #
@@ -46,7 +46,7 @@ module OpenAI
         #
         #   @param sequence_number [Integer] The sequence number of this event.
         #
-        #   @param type [Symbol, :"response.mcp_call.arguments_delta"] The type of the event. Always 'response.mcp_call.arguments_delta'.
+        #   @param type [Symbol, :"response.mcp_call_arguments.delta"] The type of the event. Always 'response.mcp_call_arguments.delta'.
       end
     end
   end

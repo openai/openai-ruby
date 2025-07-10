@@ -54,16 +54,16 @@ module OpenAI
           words: ::Array[OpenAI::Audio::TranscriptionWord]
         }
 
-        type usage = { duration: Float, type: :duration }
+        type usage = { seconds: Float, type: :duration }
 
         class Usage < OpenAI::Internal::Type::BaseModel
-          attr_accessor duration: Float
+          attr_accessor seconds: Float
 
           attr_accessor type: :duration
 
-          def initialize: (duration: Float, ?type: :duration) -> void
+          def initialize: (seconds: Float, ?type: :duration) -> void
 
-          def to_hash: -> { duration: Float, type: :duration }
+          def to_hash: -> { seconds: Float, type: :duration }
         end
       end
     end
