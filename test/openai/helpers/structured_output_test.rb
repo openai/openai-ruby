@@ -137,78 +137,165 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
 
   class M6 < OpenAI::Helpers::StructuredOutput::BaseModel
     required :a, String
-    required :b, -> { M6 }, nil?: true
+    required :b, -> { M6 }
+  end
+
+  class M7 < OpenAI::Helpers::StructuredOutput::BaseModel
+    required :a, -> { M5 }
+    required :b, M5
+  end
+
+  class M8 < OpenAI::Helpers::StructuredOutput::BaseModel
+    required :a, -> { M5 }
+    required :b, M5, nil?: true
+  end
+
+  class M9 < OpenAI::Helpers::StructuredOutput::BaseModel
+    required :a, -> { M10 }
+    required :b, -> { M10 }
+  end
+
+  class M10 < OpenAI::Helpers::StructuredOutput::BaseModel
+    required :b, -> { M9 }
   end
 
   def test_definition_reusing
     cases = {
-      M4 => {
-        :$defs => {
-          "#/definitions/.a" => {type: "string", enum: ["one"]}
+      M6 => {
+        :$defs =>
+          {
+            "" =>
+                {
+                  type: "object",
+                  properties: {a: {type: "string"}, b: {:$ref => "#/$defs/"}},
+                  required: %w[a b],
+                  additionalProperties: false
+                }
+          },
+        :$ref => "#/$defs/"
+      },
+      M7 =>
+        {
+          :$defs =>
+            {
+              ".a" =>
+                  {
+                    type: "object",
+                    properties: {
+                      a: {
+                        anyOf: [
+                          {
+                            type: "array",
+                            items: {anyOf: [{type: "string", enum: ["one"]}, {type: "null"}]}
+                          },
+                          {type: "null"}
+                        ]
+                      },
+                      b: {
+                        anyOf: [
+                          {
+                            type: "array",
+                            items: {anyOf: [{type: "string", enum: ["one"]}, {type: "null"}]}
+                          },
+                          {type: "null"}
+                        ]
+                      }
+                    },
+                    required: %w[a b],
+                    additionalProperties: false
+                  }
+            },
+          :type => "object",
+          :properties => {a: {:$ref => "#/$defs/.a"}, b: {:$ref => "#/$defs/.a"}},
+          :required => %w[a b],
+          :additionalProperties => false
         },
-        :type => "object",
-        :properties => {
-          a: {"$ref": "#/definitions/.a"},
+      M8 => {
+        type: "object",
+        properties: {
+          a: {
+            type: "object",
+            properties: {
+              a: {
+                anyOf: [
+                  {
+                    type: "array",
+                    items: {anyOf: [{type: "string", enum: ["one"]}, {type: "null"}]}
+                  },
+                  {type: "null"}
+                ]
+              },
+              b: {
+                anyOf: [
+                  {
+                    type: "array",
+                    items: {anyOf: [{type: "string", enum: ["one"]}, {type: "null"}]}
+                  },
+                  {type: "null"}
+                ]
+              }
+            },
+            required: %w[a b],
+            additionalProperties: false
+          },
           b: {
             anyOf: [
-              {"$ref": "#/definitions/.a"},
-              {type: "null"}
-            ]
-          },
-          c: {
-            anyOf: [
               {
-                type: "array",
-                items: {
-                  anyOf: [
-                    {"$ref": "#/definitions/.a"},
-                    {type: "null"}
-                  ]
+                type: "object",
+                properties: {
+                  a: {
+                    anyOf: [
+                      {
+                        type: "array",
+                        items: {anyOf: [{type: "string", enum: ["one"]}, {type: "null"}]}
+                      },
+                      {type: "null"}
+                    ]
+                  },
+                  b: {
+                    anyOf: [
+                      {
+                        type: "array",
+                        items: {
+                          anyOf: [
+                            {type: "string", enum: ["one"]},
+                            {type: "null"}
+                          ]
+                        }
+                      },
+                      {type: "null"}
+                    ]
+                  }
                 },
-                description: "nested"
+                required: %w[a b],
+                additionalProperties: false
               },
               {type: "null"}
             ]
           }
         },
-        :required => %w[a b c],
-        :additionalProperties => false
+        required: %w[a b],
+        additionalProperties: false
       },
-      M5 => {
-        :$defs => {
-          "#/definitions/.a/[]" => {
-            type: "array",
-            items: {anyOf: [{type: "string", enum: ["one"]}, {type: "null"}]}
-          }
-        },
-        :type => "object",
-        :properties => {
-          a: {anyOf: [{:$ref => "#/definitions/.a/[]"}, {type: "null"}]},
-          b: {anyOf: [{:$ref => "#/definitions/.a/[]"}, {type: "null"}]}
-        },
-        :required => %w[a b],
-        :additionalProperties => false
-      },
-      OpenAI::Helpers::StructuredOutput::UnionOf[E1, A2] => {
-        :$defs => {"#/definitions/?.0" => {type: "string", enum: ["one"]}},
-        :anyOf => [
-          {:$ref => "#/definitions/?.0"},
-          {type: "array", items: {anyOf: [{:$ref => "#/definitions/?.0"}, {type: "null"}]}}
-        ]
-      },
-      M6 => {
-        :$defs => {
-          "#/definitions/" => {
-            type: "object",
-            properties: {
-              a: {type: "string"},
-              b: {anyOf: [{:$ref => "#/definitions/"}, {type: "null"}]}
-            },
-            required: %w[a b],
-            additionalProperties: false
-          }
-        },
-        :$ref => "#/definitions/"
+      M10 => {
+        :$defs =>
+          {
+            "" =>
+                {
+                  type: "object",
+                  properties: {
+                    b: {
+                      type: "object",
+                      properties: {a: {:$ref => "#/$defs/"}, b: {:$ref => "#/$defs/"}},
+                      required: %w[a b],
+                      additionalProperties: false
+                    }
+                  },
+                  required: ["b"],
+                  additionalProperties: false
+                }
+          },
+        :$ref => "#/$defs/"
       }
     }
 
@@ -220,23 +307,23 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
     end
   end
 
-  class M7 < OpenAI::Helpers::StructuredOutput::BaseModel
+  class M11 < OpenAI::Helpers::StructuredOutput::BaseModel
     required :a, OpenAI::Helpers::StructuredOutput::ParsedJson
   end
 
   def test_parsed_json
     assert_pattern do
-      M7.new(a: {dog: "woof"}) => {a: {dog: "woof"}}
+      M11.new(a: {dog: "woof"}) => {a: {dog: "woof"}}
     end
 
     err = JSON::ParserError.new("unexpected token at 'invalid json'")
 
-    m1 = M7.new(a: err)
+    m1 = M11.new(a: err)
     assert_raises(OpenAI::Errors::ConversionError) do
       m1.a
     end
 
-    m2 = OpenAI::Internal::Type::Converter.coerce(M7, {a: err})
+    m2 = OpenAI::Internal::Type::Converter.coerce(M11, {a: err})
     assert_raises(OpenAI::Errors::ConversionError) do
       m2.a
     end
