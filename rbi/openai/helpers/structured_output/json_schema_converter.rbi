@@ -7,8 +7,12 @@ module OpenAI
 
       # To customize the JSON schema conversion for a type, implement the `JsonSchemaConverter` interface.
       module JsonSchemaConverter
+        # @api private
         POINTER = T.let(Object.new.freeze, T.anything)
+        # @api private
         COUNTER = T.let(Object.new.freeze, T.anything)
+        # @api private
+        NO_REF = T.let(Object.new.freeze, T.anything)
 
         Input =
           T.type_alias do

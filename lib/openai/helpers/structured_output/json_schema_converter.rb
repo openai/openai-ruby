@@ -5,8 +5,24 @@ module OpenAI
     module StructuredOutput
       # To customize the JSON schema conversion for a type, implement the `JsonSchemaConverter` interface.
       module JsonSchemaConverter
-        POINTER = Object.new.freeze
-        COUNTER = Object.new.freeze
+        # @api private
+        POINTER = Object.new.tap do
+          _1.define_singleton_method(:inspect) do
+            "#<#{OpenAI::Helpers::StructuredOutput::JsonSchemaConverter}::POINTER>"
+          end
+        end.freeze
+        # @api private
+        COUNTER = Object.new.tap do
+          _1.define_singleton_method(:inspect) do
+            "#<#{OpenAI::Helpers::StructuredOutput::JsonSchemaConverter}::COUNTER>"
+          end
+        end.freeze
+        # @api private
+        NO_REF = Object.new.tap do
+          _1.define_singleton_method(:inspect) do
+            "#<#{OpenAI::Helpers::StructuredOutput::JsonSchemaConverter}::NO_REF>"
+          end
+        end.freeze
 
         # rubocop:disable Lint/UnusedMethodArgument
 
@@ -34,7 +50,12 @@ module OpenAI
             null = "null"
             case schema
             in {"$ref": String}
-              {anyOf: [schema, {type: null}]}
+              {
+                anyOf: [
+                  schema.update(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::NO_REF => true),
+                  {type: null}
+                ]
+              }
             in {anyOf: schemas}
               null = {type: null}
               schemas.any? { _1 == null || _1 == {type: ["null"]} } ? schema : {anyOf: [*schemas, null]}
@@ -71,7 +92,7 @@ module OpenAI
               }
               defs.store(type, stored)
               schema = blk.call
-              ref_path.replace("#/definitions/#{path.join('/')}")
+              ref_path.replace("#/$defs/#{path.join('/')}")
               stored.update(schema)
               ref
             end
@@ -92,17 +113,20 @@ module OpenAI
             reused_defs = {}
             defs.each_value do |acc|
               ref = acc.fetch(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::POINTER)
+              if (no_ref = ref.delete(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::NO_REF))
+                acc[OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::COUNTER] -= 1
+              end
+              cnt = acc.fetch(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::COUNTER)
+
               sch = acc.except(
                 OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::POINTER,
                 OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::COUNTER
               )
-              if acc.fetch(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::COUNTER) > 1
-                reused_defs.store(ref.fetch(:$ref), sch)
-              else
-                ref.replace(sch)
-              end
+              cnt > 1 && !no_ref ? reused_defs.store(ref.fetch(:$ref), sch) : ref.replace(sch)
             end
-            reused_defs.empty? ? schema : {"$defs": reused_defs}.update(schema)
+
+            xformed = reused_defs.transform_keys { _1.delete_prefix("#/$defs/") }
+            xformed.empty? ? schema : {"$defs": xformed}.update(schema)
           end
 
           # @api private
