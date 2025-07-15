@@ -78,6 +78,8 @@ module OpenAI
             String
             | OpenAI::Responses::ResponseInputText
             | OpenAI::Graders::LabelModelGrader::Input::Content::OutputText
+            | OpenAI::Graders::LabelModelGrader::Input::Content::InputImage
+            | ::Array[top]
 
           module Content
             extend OpenAI::Internal::Type::Union
@@ -94,7 +96,34 @@ module OpenAI
               def to_hash: -> { text: String, type: :output_text }
             end
 
+            type input_image =
+              { image_url: String, type: :input_image, detail: String }
+
+            class InputImage < OpenAI::Internal::Type::BaseModel
+              attr_accessor image_url: String
+
+              attr_accessor type: :input_image
+
+              attr_reader detail: String?
+
+              def detail=: (String) -> String
+
+              def initialize: (
+                image_url: String,
+                ?detail: String,
+                ?type: :input_image
+              ) -> void
+
+              def to_hash: -> {
+                image_url: String,
+                type: :input_image,
+                detail: String
+              }
+            end
+
             def self?.variants: -> ::Array[OpenAI::Models::Graders::LabelModelGrader::Input::content]
+
+            AnArrayOfInputTextAndInputImageArray: OpenAI::Internal::Type::Converter
           end
 
           type role = :user | :assistant | :system | :developer
