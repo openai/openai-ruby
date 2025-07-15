@@ -92,13 +92,15 @@ module OpenAI
               )
             end
 
-          # Text inputs to the model - can contain template strings.
+          # Inputs to the model - can contain template strings.
           sig do
             returns(
               T.any(
                 String,
                 OpenAI::Responses::ResponseInputText,
-                OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText
+                OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText,
+                OpenAI::Graders::ScoreModelGrader::Input::Content::InputImage,
+                T::Array[T.anything]
               )
             )
           end
@@ -139,14 +141,16 @@ module OpenAI
                 T.any(
                   String,
                   OpenAI::Responses::ResponseInputText::OrHash,
-                  OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText::OrHash
+                  OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText::OrHash,
+                  OpenAI::Graders::ScoreModelGrader::Input::Content::InputImage::OrHash,
+                  T::Array[T.anything]
                 ),
               role: OpenAI::Graders::ScoreModelGrader::Input::Role::OrSymbol,
               type: OpenAI::Graders::ScoreModelGrader::Input::Type::OrSymbol
             ).returns(T.attached_class)
           end
           def self.new(
-            # Text inputs to the model - can contain template strings.
+            # Inputs to the model - can contain template strings.
             content:,
             # The role of the message input. One of `user`, `assistant`, `system`, or
             # `developer`.
@@ -163,7 +167,9 @@ module OpenAI
                   T.any(
                     String,
                     OpenAI::Responses::ResponseInputText,
-                    OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText
+                    OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText,
+                    OpenAI::Graders::ScoreModelGrader::Input::Content::InputImage,
+                    T::Array[T.anything]
                   ),
                 role: OpenAI::Graders::ScoreModelGrader::Input::Role::OrSymbol,
                 type: OpenAI::Graders::ScoreModelGrader::Input::Type::OrSymbol
@@ -173,7 +179,7 @@ module OpenAI
           def to_hash
           end
 
-          # Text inputs to the model - can contain template strings.
+          # Inputs to the model - can contain template strings.
           module Content
             extend OpenAI::Internal::Type::Union
 
@@ -182,7 +188,9 @@ module OpenAI
                 T.any(
                   String,
                   OpenAI::Responses::ResponseInputText,
-                  OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText
+                  OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText,
+                  OpenAI::Graders::ScoreModelGrader::Input::Content::InputImage,
+                  T::Array[T.anything]
                 )
               end
 
@@ -220,6 +228,57 @@ module OpenAI
               end
             end
 
+            class InputImage < OpenAI::Internal::Type::BaseModel
+              OrHash =
+                T.type_alias do
+                  T.any(
+                    OpenAI::Graders::ScoreModelGrader::Input::Content::InputImage,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+              # The URL of the image input.
+              sig { returns(String) }
+              attr_accessor :image_url
+
+              # The type of the image input. Always `input_image`.
+              sig { returns(Symbol) }
+              attr_accessor :type
+
+              # The detail level of the image to be sent to the model. One of `high`, `low`, or
+              # `auto`. Defaults to `auto`.
+              sig { returns(T.nilable(String)) }
+              attr_reader :detail
+
+              sig { params(detail: String).void }
+              attr_writer :detail
+
+              # An image input to the model.
+              sig do
+                params(image_url: String, detail: String, type: Symbol).returns(
+                  T.attached_class
+                )
+              end
+              def self.new(
+                # The URL of the image input.
+                image_url:,
+                # The detail level of the image to be sent to the model. One of `high`, `low`, or
+                # `auto`. Defaults to `auto`.
+                detail: nil,
+                # The type of the image input. Always `input_image`.
+                type: :input_image
+              )
+              end
+
+              sig do
+                override.returns(
+                  { image_url: String, type: Symbol, detail: String }
+                )
+              end
+              def to_hash
+              end
+            end
+
             sig do
               override.returns(
                 T::Array[
@@ -229,6 +288,14 @@ module OpenAI
             end
             def self.variants
             end
+
+            AnArrayOfInputTextAndInputImageArray =
+              T.let(
+                OpenAI::Internal::Type::ArrayOf[
+                  OpenAI::Internal::Type::Unknown
+                ],
+                OpenAI::Internal::Type::Converter
+              )
           end
 
           # The role of the message input. One of `user`, `assistant`, `system`, or
