@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.13.1 (2025-07-15)
+
+Full Changelog: [v0.13.0...v0.13.1](https://github.com/openai/openai-ruby/compare/v0.13.0...v0.13.1)
+
+### Bug Fixes
+
+* ensure openapi refs are correctly linked ([#746](https://github.com/openai/openai-ruby/issues/746)) ([ea3fccd](https://github.com/openai/openai-ruby/commit/ea3fccdc4f433e4e8a07ae6b47f8ef546b90d24b))
+
+
+### Chores
+
+* **api:** update realtime specs, build config ([8ccc35e](https://github.com/openai/openai-ruby/commit/8ccc35e04788eb52be853db6eafa585a9fd5140a))
+
 ## 0.13.0 (2025-07-10)
 
 Full Changelog: [v0.12.0...v0.13.0](https://github.com/openai/openai-ruby/compare/v0.12.0...v0.13.0)
