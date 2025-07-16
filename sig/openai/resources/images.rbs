@@ -29,7 +29,7 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::ImagesResponse
 
-      def stream_raw: (
+      def edit_stream_raw: (
         image: OpenAI::Models::ImageEditParams::image,
         prompt: String,
         ?background: OpenAI::Models::ImageEditParams::background?,
@@ -64,7 +64,7 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::ImagesResponse
 
-      def stream_raw: (
+      def generate_stream_raw: (
         prompt: String,
         ?background: OpenAI::Models::ImageGenerateParams::background?,
         ?model: OpenAI::Models::ImageGenerateParams::model?,

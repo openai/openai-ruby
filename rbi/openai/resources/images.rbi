@@ -42,7 +42,7 @@ module OpenAI
       )
       end
 
-      # See {OpenAI::Resources::Images#stream_raw} for streaming counterpart.
+      # See {OpenAI::Resources::Images#edit_stream_raw} for streaming counterpart.
       #
       # Creates an edited or extended image given one or more source images and a
       # prompt. This endpoint only supports `gpt-image-1` and `dall-e-2`.
@@ -133,8 +133,8 @@ module OpenAI
         # and detect abuse.
         # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         user: nil,
-        # There is no need to provide `stream:`. Instead, use `#stream_raw` or `#edit` for
-        # streaming and non-streaming use cases, respectively.
+        # There is no need to provide `stream:`. Instead, use `#edit_stream_raw` or
+        # `#edit` for streaming and non-streaming use cases, respectively.
         stream: false,
         request_options: {}
       )
@@ -169,7 +169,7 @@ module OpenAI
           OpenAI::Internal::Stream[OpenAI::ImageEditStreamEvent::Variants]
         )
       end
-      def stream_raw(
+      def edit_stream_raw(
         # The image(s) to edit. Must be a supported image file or an array of images.
         #
         # For `gpt-image-1`, each image should be a `png`, `webp`, or `jpg` file less than
@@ -233,14 +233,14 @@ module OpenAI
         # and detect abuse.
         # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         user: nil,
-        # There is no need to provide `stream:`. Instead, use `#stream_raw` or `#edit` for
-        # streaming and non-streaming use cases, respectively.
+        # There is no need to provide `stream:`. Instead, use `#edit_stream_raw` or
+        # `#edit` for streaming and non-streaming use cases, respectively.
         stream: true,
         request_options: {}
       )
       end
 
-      # See {OpenAI::Resources::Images#stream_raw} for streaming counterpart.
+      # See {OpenAI::Resources::Images#generate_stream_raw} for streaming counterpart.
       #
       # Creates an image given a prompt.
       # [Learn more](https://platform.openai.com/docs/guides/images).
@@ -328,8 +328,8 @@ module OpenAI
         # and detect abuse.
         # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         user: nil,
-        # There is no need to provide `stream:`. Instead, use `#stream_raw` or `#generate`
-        # for streaming and non-streaming use cases, respectively.
+        # There is no need to provide `stream:`. Instead, use `#generate_stream_raw` or
+        # `#generate` for streaming and non-streaming use cases, respectively.
         stream: false,
         request_options: {}
       )
@@ -364,7 +364,7 @@ module OpenAI
           OpenAI::Internal::Stream[OpenAI::ImageGenStreamEvent::Variants]
         )
       end
-      def stream_raw(
+      def generate_stream_raw(
         # A text description of the desired image(s). The maximum length is 32000
         # characters for `gpt-image-1`, 1000 characters for `dall-e-2` and 4000 characters
         # for `dall-e-3`.
@@ -425,8 +425,8 @@ module OpenAI
         # and detect abuse.
         # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         user: nil,
-        # There is no need to provide `stream:`. Instead, use `#stream_raw` or `#generate`
-        # for streaming and non-streaming use cases, respectively.
+        # There is no need to provide `stream:`. Instead, use `#generate_stream_raw` or
+        # `#generate` for streaming and non-streaming use cases, respectively.
         stream: true,
         request_options: {}
       )

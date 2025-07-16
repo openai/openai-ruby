@@ -4,7 +4,7 @@ module OpenAI
   module Models
     # @see OpenAI::Resources::Images#edit
     #
-    # @see OpenAI::Resources::Images#stream_raw
+    # @see OpenAI::Resources::Images#edit_stream_raw
     class ImageEditParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters

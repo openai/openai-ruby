@@ -4,7 +4,7 @@ module OpenAI
   module Models
     # @see OpenAI::Resources::Images#generate
     #
-    # @see OpenAI::Resources::Images#stream_raw
+    # @see OpenAI::Resources::Images#generate_stream_raw
     class ImageGenerateParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
