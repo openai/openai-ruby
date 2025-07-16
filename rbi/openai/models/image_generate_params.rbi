@@ -60,6 +60,12 @@ module OpenAI
       end
       attr_accessor :output_format
 
+      # The number of partial images to generate. This parameter is used for streaming
+      # responses that return partial images. Value must be between 0 and 3. When set to
+      # 0, the response will be a single image sent in one streaming event.
+      sig { returns(T.nilable(Integer)) }
+      attr_accessor :partial_images
+
       # The quality of the image that will be generated.
       #
       # - `auto` (default value) will automatically select the best quality for the
@@ -116,6 +122,7 @@ module OpenAI
           output_compression: T.nilable(Integer),
           output_format:
             T.nilable(OpenAI::ImageGenerateParams::OutputFormat::OrSymbol),
+          partial_images: T.nilable(Integer),
           quality: T.nilable(OpenAI::ImageGenerateParams::Quality::OrSymbol),
           response_format:
             T.nilable(OpenAI::ImageGenerateParams::ResponseFormat::OrSymbol),
@@ -155,6 +162,10 @@ module OpenAI
         # The format in which the generated images are returned. This parameter is only
         # supported for `gpt-image-1`. Must be one of `png`, `jpeg`, or `webp`.
         output_format: nil,
+        # The number of partial images to generate. This parameter is used for streaming
+        # responses that return partial images. Value must be between 0 and 3. When set to
+        # 0, the response will be a single image sent in one streaming event.
+        partial_images: nil,
         # The quality of the image that will be generated.
         #
         # - `auto` (default value) will automatically select the best quality for the
@@ -199,6 +210,7 @@ module OpenAI
             output_compression: T.nilable(Integer),
             output_format:
               T.nilable(OpenAI::ImageGenerateParams::OutputFormat::OrSymbol),
+            partial_images: T.nilable(Integer),
             quality: T.nilable(OpenAI::ImageGenerateParams::Quality::OrSymbol),
             response_format:
               T.nilable(OpenAI::ImageGenerateParams::ResponseFormat::OrSymbol),

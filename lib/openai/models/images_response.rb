@@ -152,6 +152,9 @@ module OpenAI
         required :total_tokens, Integer
 
         # @!method initialize(input_tokens:, input_tokens_details:, output_tokens:, total_tokens:)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::ImagesResponse::Usage} for more details.
+        #
         #   For `gpt-image-1` only, the token usage information for the image generation.
         #
         #   @param input_tokens [Integer] The number of tokens (images and text) in the input prompt.

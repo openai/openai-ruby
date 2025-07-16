@@ -1,0 +1,105 @@
+module OpenAI
+  module Models
+    type image_edit_partial_image_event =
+      {
+        :b64_json => String,
+        background: OpenAI::Models::ImageEditPartialImageEvent::background,
+        created_at: Integer,
+        output_format: OpenAI::Models::ImageEditPartialImageEvent::output_format,
+        partial_image_index: Integer,
+        quality: OpenAI::Models::ImageEditPartialImageEvent::quality,
+        size: OpenAI::Models::ImageEditPartialImageEvent::size,
+        type: :"image_edit.partial_image"
+      }
+
+    class ImageEditPartialImageEvent < OpenAI::Internal::Type::BaseModel
+      attr_accessor b64_json: String
+
+      attr_accessor background: OpenAI::Models::ImageEditPartialImageEvent::background
+
+      attr_accessor created_at: Integer
+
+      attr_accessor output_format: OpenAI::Models::ImageEditPartialImageEvent::output_format
+
+      attr_accessor partial_image_index: Integer
+
+      attr_accessor quality: OpenAI::Models::ImageEditPartialImageEvent::quality
+
+      attr_accessor size: OpenAI::Models::ImageEditPartialImageEvent::size
+
+      attr_accessor type: :"image_edit.partial_image"
+
+      def initialize: (
+        b64_json: String,
+        background: OpenAI::Models::ImageEditPartialImageEvent::background,
+        created_at: Integer,
+        output_format: OpenAI::Models::ImageEditPartialImageEvent::output_format,
+        partial_image_index: Integer,
+        quality: OpenAI::Models::ImageEditPartialImageEvent::quality,
+        size: OpenAI::Models::ImageEditPartialImageEvent::size,
+        ?type: :"image_edit.partial_image"
+      ) -> void
+
+      def to_hash: -> {
+        :b64_json => String,
+        background: OpenAI::Models::ImageEditPartialImageEvent::background,
+        created_at: Integer,
+        output_format: OpenAI::Models::ImageEditPartialImageEvent::output_format,
+        partial_image_index: Integer,
+        quality: OpenAI::Models::ImageEditPartialImageEvent::quality,
+        size: OpenAI::Models::ImageEditPartialImageEvent::size,
+        type: :"image_edit.partial_image"
+      }
+
+      type background = :transparent | :opaque | :auto
+
+      module Background
+        extend OpenAI::Internal::Type::Enum
+
+        TRANSPARENT: :transparent
+        OPAQUE: :opaque
+        AUTO: :auto
+
+        def self?.values: -> ::Array[OpenAI::Models::ImageEditPartialImageEvent::background]
+      end
+
+      type output_format = :png | :webp | :jpeg
+
+      module OutputFormat
+        extend OpenAI::Internal::Type::Enum
+
+        PNG: :png
+        WEBP: :webp
+        JPEG: :jpeg
+
+        def self?.values: -> ::Array[OpenAI::Models::ImageEditPartialImageEvent::output_format]
+      end
+
+      type quality = :low | :medium | :high | :auto
+
+      module Quality
+        extend OpenAI::Internal::Type::Enum
+
+        LOW: :low
+        MEDIUM: :medium
+        HIGH: :high
+        AUTO: :auto
+
+        def self?.values: -> ::Array[OpenAI::Models::ImageEditPartialImageEvent::quality]
+      end
+
+      type size = :"1024x1024" | :"1024x1536" | :"1536x1024" | :auto
+
+      module Size
+        extend OpenAI::Internal::Type::Enum
+
+        SIZE_1024X1024: :"1024x1024"
+        SIZE_1024X1536: :"1024x1536"
+        SIZE_1536X1024: :"1536x1024"
+        AUTO: :auto
+
+        def self?.values: -> ::Array[OpenAI::Models::ImageEditPartialImageEvent::size]
+      end
+    end
+  end
+end

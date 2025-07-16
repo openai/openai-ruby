@@ -12,7 +12,7 @@ module OpenAI
             )
           end
 
-        # The refusal explanationfrom the model.
+        # The refusal explanation from the model.
         sig { returns(String) }
         attr_accessor :refusal
 
@@ -23,7 +23,7 @@ module OpenAI
         # A refusal from the model.
         sig { params(refusal: String, type: Symbol).returns(T.attached_class) }
         def self.new(
-          # The refusal explanationfrom the model.
+          # The refusal explanation from the model.
           refusal:,
           # The type of the refusal. Always `refusal`.
           type: :refusal

@@ -15,17 +15,37 @@ module OpenAI
         image: OpenAI::Models::ImageEditParams::image,
         prompt: String,
         ?background: OpenAI::Models::ImageEditParams::background?,
+        ?input_fidelity: OpenAI::Models::ImageEditParams::input_fidelity?,
         ?mask: OpenAI::Internal::file_input,
         ?model: OpenAI::Models::ImageEditParams::model?,
         ?n: Integer?,
         ?output_compression: Integer?,
         ?output_format: OpenAI::Models::ImageEditParams::output_format?,
+        ?partial_images: Integer?,
         ?quality: OpenAI::Models::ImageEditParams::quality?,
         ?response_format: OpenAI::Models::ImageEditParams::response_format?,
         ?size: OpenAI::Models::ImageEditParams::size?,
         ?user: String,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::ImagesResponse
+
+      def edit_stream_raw: (
+        image: OpenAI::Models::ImageEditParams::image,
+        prompt: String,
+        ?background: OpenAI::Models::ImageEditParams::background?,
+        ?input_fidelity: OpenAI::Models::ImageEditParams::input_fidelity?,
+        ?mask: OpenAI::Internal::file_input,
+        ?model: OpenAI::Models::ImageEditParams::model?,
+        ?n: Integer?,
+        ?output_compression: Integer?,
+        ?output_format: OpenAI::Models::ImageEditParams::output_format?,
+        ?partial_images: Integer?,
+        ?quality: OpenAI::Models::ImageEditParams::quality?,
+        ?response_format: OpenAI::Models::ImageEditParams::response_format?,
+        ?size: OpenAI::Models::ImageEditParams::size?,
+        ?user: String,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Internal::Stream[OpenAI::Models::image_edit_stream_event]
 
       def generate: (
         prompt: String,
@@ -35,6 +55,7 @@ module OpenAI
         ?n: Integer?,
         ?output_compression: Integer?,
         ?output_format: OpenAI::Models::ImageGenerateParams::output_format?,
+        ?partial_images: Integer?,
         ?quality: OpenAI::Models::ImageGenerateParams::quality?,
         ?response_format: OpenAI::Models::ImageGenerateParams::response_format?,
         ?size: OpenAI::Models::ImageGenerateParams::size?,
@@ -42,6 +63,23 @@ module OpenAI
         ?user: String,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::ImagesResponse
+
+      def generate_stream_raw: (
+        prompt: String,
+        ?background: OpenAI::Models::ImageGenerateParams::background?,
+        ?model: OpenAI::Models::ImageGenerateParams::model?,
+        ?moderation: OpenAI::Models::ImageGenerateParams::moderation?,
+        ?n: Integer?,
+        ?output_compression: Integer?,
+        ?output_format: OpenAI::Models::ImageGenerateParams::output_format?,
+        ?partial_images: Integer?,
+        ?quality: OpenAI::Models::ImageGenerateParams::quality?,
+        ?response_format: OpenAI::Models::ImageGenerateParams::response_format?,
+        ?size: OpenAI::Models::ImageGenerateParams::size?,
+        ?style: OpenAI::Models::ImageGenerateParams::style?,
+        ?user: String,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Internal::Stream[OpenAI::Models::image_gen_stream_event]
 
       def initialize: (client: OpenAI::Client) -> void
     end

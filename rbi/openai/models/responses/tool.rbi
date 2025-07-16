@@ -565,6 +565,18 @@ module OpenAI
           end
           attr_writer :background
 
+          # Control how much effort the model will exert to match the style and features,
+          # especially facial features, of input images. This parameter is only supported
+          # for `gpt-image-1`. Supports `high` and `low`. Defaults to `low`.
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Responses::Tool::ImageGeneration::InputFidelity::OrSymbol
+              )
+            )
+          end
+          attr_accessor :input_fidelity
+
           # Optional mask for inpainting. Contains `image_url` (string, optional) and
           # `file_id` (string, optional).
           sig do
@@ -695,6 +707,10 @@ module OpenAI
             params(
               background:
                 OpenAI::Responses::Tool::ImageGeneration::Background::OrSymbol,
+              input_fidelity:
+                T.nilable(
+                  OpenAI::Responses::Tool::ImageGeneration::InputFidelity::OrSymbol
+                ),
               input_image_mask:
                 OpenAI::Responses::Tool::ImageGeneration::InputImageMask::OrHash,
               model: OpenAI::Responses::Tool::ImageGeneration::Model::OrSymbol,
@@ -714,6 +730,10 @@ module OpenAI
             # Background type for the generated image. One of `transparent`, `opaque`, or
             # `auto`. Default: `auto`.
             background: nil,
+            # Control how much effort the model will exert to match the style and features,
+            # especially facial features, of input images. This parameter is only supported
+            # for `gpt-image-1`. Supports `high` and `low`. Defaults to `low`.
+            input_fidelity: nil,
             # Optional mask for inpainting. Contains `image_url` (string, optional) and
             # `file_id` (string, optional).
             input_image_mask: nil,
@@ -746,6 +766,10 @@ module OpenAI
                 type: Symbol,
                 background:
                   OpenAI::Responses::Tool::ImageGeneration::Background::OrSymbol,
+                input_fidelity:
+                  T.nilable(
+                    OpenAI::Responses::Tool::ImageGeneration::InputFidelity::OrSymbol
+                  ),
                 input_image_mask:
                   OpenAI::Responses::Tool::ImageGeneration::InputImageMask,
                 model:
@@ -799,6 +823,43 @@ module OpenAI
               override.returns(
                 T::Array[
                   OpenAI::Responses::Tool::ImageGeneration::Background::TaggedSymbol
+                ]
+              )
+            end
+            def self.values
+            end
+          end
+
+          # Control how much effort the model will exert to match the style and features,
+          # especially facial features, of input images. This parameter is only supported
+          # for `gpt-image-1`. Supports `high` and `low`. Defaults to `low`.
+          module InputFidelity
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol =
+              T.type_alias do
+                T.all(
+                  Symbol,
+                  OpenAI::Responses::Tool::ImageGeneration::InputFidelity
+                )
+              end
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            HIGH =
+              T.let(
+                :high,
+                OpenAI::Responses::Tool::ImageGeneration::InputFidelity::TaggedSymbol
+              )
+            LOW =
+              T.let(
+                :low,
+                OpenAI::Responses::Tool::ImageGeneration::InputFidelity::TaggedSymbol
+              )
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Responses::Tool::ImageGeneration::InputFidelity::TaggedSymbol
                 ]
               )
             end
