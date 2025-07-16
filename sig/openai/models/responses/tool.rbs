@@ -213,6 +213,7 @@ module OpenAI
           {
             type: :image_generation,
             background: OpenAI::Models::Responses::Tool::ImageGeneration::background,
+            input_fidelity: OpenAI::Models::Responses::Tool::ImageGeneration::input_fidelity?,
             input_image_mask: OpenAI::Responses::Tool::ImageGeneration::InputImageMask,
             model: OpenAI::Models::Responses::Tool::ImageGeneration::model,
             moderation: OpenAI::Models::Responses::Tool::ImageGeneration::moderation,
@@ -231,6 +232,8 @@ module OpenAI
           def background=: (
             OpenAI::Models::Responses::Tool::ImageGeneration::background
           ) -> OpenAI::Models::Responses::Tool::ImageGeneration::background
+
+          attr_accessor input_fidelity: OpenAI::Models::Responses::Tool::ImageGeneration::input_fidelity?
 
           attr_reader input_image_mask: OpenAI::Responses::Tool::ImageGeneration::InputImageMask?
 
@@ -278,6 +281,7 @@ module OpenAI
 
           def initialize: (
             ?background: OpenAI::Models::Responses::Tool::ImageGeneration::background,
+            ?input_fidelity: OpenAI::Models::Responses::Tool::ImageGeneration::input_fidelity?,
             ?input_image_mask: OpenAI::Responses::Tool::ImageGeneration::InputImageMask,
             ?model: OpenAI::Models::Responses::Tool::ImageGeneration::model,
             ?moderation: OpenAI::Models::Responses::Tool::ImageGeneration::moderation,
@@ -292,6 +296,7 @@ module OpenAI
           def to_hash: -> {
             type: :image_generation,
             background: OpenAI::Models::Responses::Tool::ImageGeneration::background,
+            input_fidelity: OpenAI::Models::Responses::Tool::ImageGeneration::input_fidelity?,
             input_image_mask: OpenAI::Responses::Tool::ImageGeneration::InputImageMask,
             model: OpenAI::Models::Responses::Tool::ImageGeneration::model,
             moderation: OpenAI::Models::Responses::Tool::ImageGeneration::moderation,
@@ -312,6 +317,17 @@ module OpenAI
             AUTO: :auto
 
             def self?.values: -> ::Array[OpenAI::Models::Responses::Tool::ImageGeneration::background]
+          end
+
+          type input_fidelity = :high | :low
+
+          module InputFidelity
+            extend OpenAI::Internal::Type::Enum
+
+            HIGH: :high
+            LOW: :low
+
+            def self?.values: -> ::Array[OpenAI::Models::Responses::Tool::ImageGeneration::input_fidelity]
           end
 
           type input_image_mask = { file_id: String, image_url: String }

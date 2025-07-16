@@ -36,6 +36,14 @@ module OpenAI
       sig { returns(T.nilable(OpenAI::ImageEditParams::Background::OrSymbol)) }
       attr_accessor :background
 
+      # Control how much effort the model will exert to match the style and features,
+      # especially facial features, of input images. This parameter is only supported
+      # for `gpt-image-1`. Supports `high` and `low`. Defaults to `low`.
+      sig do
+        returns(T.nilable(OpenAI::ImageEditParams::InputFidelity::OrSymbol))
+      end
+      attr_accessor :input_fidelity
+
       # An additional image whose fully transparent areas (e.g. where alpha is zero)
       # indicate where `image` should be edited. If there are multiple images provided,
       # the mask will be applied on the first image. Must be a valid PNG file, less than
@@ -69,6 +77,12 @@ module OpenAI
         returns(T.nilable(OpenAI::ImageEditParams::OutputFormat::OrSymbol))
       end
       attr_accessor :output_format
+
+      # The number of partial images to generate. This parameter is used for streaming
+      # responses that return partial images. Value must be between 0 and 3. When set to
+      # 0, the response will be a single image sent in one streaming event.
+      sig { returns(T.nilable(Integer)) }
+      attr_accessor :partial_images
 
       # The quality of the image that will be generated. `high`, `medium` and `low` are
       # only supported for `gpt-image-1`. `dall-e-2` only supports `standard` quality.
@@ -105,12 +119,15 @@ module OpenAI
           image: OpenAI::ImageEditParams::Image::Variants,
           prompt: String,
           background: T.nilable(OpenAI::ImageEditParams::Background::OrSymbol),
+          input_fidelity:
+            T.nilable(OpenAI::ImageEditParams::InputFidelity::OrSymbol),
           mask: OpenAI::Internal::FileInput,
           model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
           n: T.nilable(Integer),
           output_compression: T.nilable(Integer),
           output_format:
             T.nilable(OpenAI::ImageEditParams::OutputFormat::OrSymbol),
+          partial_images: T.nilable(Integer),
           quality: T.nilable(OpenAI::ImageEditParams::Quality::OrSymbol),
           response_format:
             T.nilable(OpenAI::ImageEditParams::ResponseFormat::OrSymbol),
@@ -139,6 +156,10 @@ module OpenAI
         # If `transparent`, the output format needs to support transparency, so it should
         # be set to either `png` (default value) or `webp`.
         background: nil,
+        # Control how much effort the model will exert to match the style and features,
+        # especially facial features, of input images. This parameter is only supported
+        # for `gpt-image-1`. Supports `high` and `low`. Defaults to `low`.
+        input_fidelity: nil,
         # An additional image whose fully transparent areas (e.g. where alpha is zero)
         # indicate where `image` should be edited. If there are multiple images provided,
         # the mask will be applied on the first image. Must be a valid PNG file, less than
@@ -158,6 +179,10 @@ module OpenAI
         # supported for `gpt-image-1`. Must be one of `png`, `jpeg`, or `webp`. The
         # default value is `png`.
         output_format: nil,
+        # The number of partial images to generate. This parameter is used for streaming
+        # responses that return partial images. Value must be between 0 and 3. When set to
+        # 0, the response will be a single image sent in one streaming event.
+        partial_images: nil,
         # The quality of the image that will be generated. `high`, `medium` and `low` are
         # only supported for `gpt-image-1`. `dall-e-2` only supports `standard` quality.
         # Defaults to `auto`.
@@ -186,12 +211,15 @@ module OpenAI
             prompt: String,
             background:
               T.nilable(OpenAI::ImageEditParams::Background::OrSymbol),
+            input_fidelity:
+              T.nilable(OpenAI::ImageEditParams::InputFidelity::OrSymbol),
             mask: OpenAI::Internal::FileInput,
             model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
             n: T.nilable(Integer),
             output_compression: T.nilable(Integer),
             output_format:
               T.nilable(OpenAI::ImageEditParams::OutputFormat::OrSymbol),
+            partial_images: T.nilable(Integer),
             quality: T.nilable(OpenAI::ImageEditParams::Quality::OrSymbol),
             response_format:
               T.nilable(OpenAI::ImageEditParams::ResponseFormat::OrSymbol),
@@ -252,6 +280,29 @@ module OpenAI
         sig do
           override.returns(
             T::Array[OpenAI::ImageEditParams::Background::TaggedSymbol]
+          )
+        end
+        def self.values
+        end
+      end
+
+      # Control how much effort the model will exert to match the style and features,
+      # especially facial features, of input images. This parameter is only supported
+      # for `gpt-image-1`. Supports `high` and `low`. Defaults to `low`.
+      module InputFidelity
+        extend OpenAI::Internal::Type::Enum
+
+        TaggedSymbol =
+          T.type_alias { T.all(Symbol, OpenAI::ImageEditParams::InputFidelity) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+        HIGH =
+          T.let(:high, OpenAI::ImageEditParams::InputFidelity::TaggedSymbol)
+        LOW = T.let(:low, OpenAI::ImageEditParams::InputFidelity::TaggedSymbol)
+
+        sig do
+          override.returns(
+            T::Array[OpenAI::ImageEditParams::InputFidelity::TaggedSymbol]
           )
         end
         def self.values
