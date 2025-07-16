@@ -39,7 +39,7 @@ module OpenAI
         )
       end
 
-      # See {OpenAI::Resources::Images#stream_raw} for streaming counterpart.
+      # See {OpenAI::Resources::Images#edit_stream_raw} for streaming counterpart.
       #
       # Some parameter documentations has been truncated, see
       # {OpenAI::Models::ImageEditParams} for more details.
@@ -85,7 +85,7 @@ module OpenAI
       def edit(params)
         parsed, options = OpenAI::ImageEditParams.dump_request(params)
         if parsed[:stream]
-          message = "Please use `#stream_raw` for the streaming use case."
+          message = "Please use `#edit_stream_raw` for the streaming use case."
           raise ArgumentError.new(message)
         end
         @client.request(
@@ -106,7 +106,7 @@ module OpenAI
       # Creates an edited or extended image given one or more source images and a
       # prompt. This endpoint only supports `gpt-image-1` and `dall-e-2`.
       #
-      # @overload stream_raw(image:, prompt:, background: nil, input_fidelity: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, size: nil, user: nil, request_options: {})
+      # @overload edit_stream_raw(image:, prompt:, background: nil, input_fidelity: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, size: nil, user: nil, request_options: {})
       #
       # @param image [Pathname, StringIO, IO, String, OpenAI::FilePart, Array<Pathname, StringIO, IO, String, OpenAI::FilePart>] The image(s) to edit. Must be a supported image file or an array of images.
       #
@@ -159,7 +159,7 @@ module OpenAI
         )
       end
 
-      # See {OpenAI::Resources::Images#stream_raw} for streaming counterpart.
+      # See {OpenAI::Resources::Images#generate_stream_raw} for streaming counterpart.
       #
       # Some parameter documentations has been truncated, see
       # {OpenAI::Models::ImageGenerateParams} for more details.
@@ -203,7 +203,7 @@ module OpenAI
       def generate(params)
         parsed, options = OpenAI::ImageGenerateParams.dump_request(params)
         if parsed[:stream]
-          message = "Please use `#stream_raw` for the streaming use case."
+          message = "Please use `#generate_stream_raw` for the streaming use case."
           raise ArgumentError.new(message)
         end
         @client.request(
@@ -223,7 +223,7 @@ module OpenAI
       # Creates an image given a prompt.
       # [Learn more](https://platform.openai.com/docs/guides/images).
       #
-      # @overload stream_raw(prompt:, background: nil, model: nil, moderation: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, size: nil, style: nil, user: nil, request_options: {})
+      # @overload generate_stream_raw(prompt:, background: nil, model: nil, moderation: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, size: nil, style: nil, user: nil, request_options: {})
       #
       # @param prompt [String] A text description of the desired image(s). The maximum length is 32000 characte
       #
