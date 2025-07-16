@@ -5,7 +5,7 @@ module OpenAI
     module Responses
       class ResponseOutputRefusal < OpenAI::Internal::Type::BaseModel
         # @!attribute refusal
-        #   The refusal explanationfrom the model.
+        #   The refusal explanation from the model.
         #
         #   @return [String]
         required :refusal, String
@@ -19,7 +19,7 @@ module OpenAI
         # @!method initialize(refusal:, type: :refusal)
         #   A refusal from the model.
         #
-        #   @param refusal [String] The refusal explanationfrom the model.
+        #   @param refusal [String] The refusal explanation from the model.
         #
         #   @param type [Symbol, :refusal] The type of the refusal. Always `refusal`.
       end

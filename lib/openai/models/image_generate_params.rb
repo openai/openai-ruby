@@ -3,6 +3,8 @@
 module OpenAI
   module Models
     # @see OpenAI::Resources::Images#generate
+    #
+    # @see OpenAI::Resources::Images#stream_raw
     class ImageGenerateParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
@@ -64,6 +66,14 @@ module OpenAI
       #   @return [Symbol, OpenAI::Models::ImageGenerateParams::OutputFormat, nil]
       optional :output_format, enum: -> { OpenAI::ImageGenerateParams::OutputFormat }, nil?: true
 
+      # @!attribute partial_images
+      #   The number of partial images to generate. This parameter is used for streaming
+      #   responses that return partial images. Value must be between 0 and 3. When set to
+      #   0, the response will be a single image sent in one streaming event.
+      #
+      #   @return [Integer, nil]
+      optional :partial_images, Integer, nil?: true
+
       # @!attribute quality
       #   The quality of the image that will be generated.
       #
@@ -111,7 +121,7 @@ module OpenAI
       #   @return [String, nil]
       optional :user, String
 
-      # @!method initialize(prompt:, background: nil, model: nil, moderation: nil, n: nil, output_compression: nil, output_format: nil, quality: nil, response_format: nil, size: nil, style: nil, user: nil, request_options: {})
+      # @!method initialize(prompt:, background: nil, model: nil, moderation: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, size: nil, style: nil, user: nil, request_options: {})
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::ImageGenerateParams} for more details.
       #
@@ -128,6 +138,8 @@ module OpenAI
       #   @param output_compression [Integer, nil] The compression level (0-100%) for the generated images. This parameter is only
       #
       #   @param output_format [Symbol, OpenAI::Models::ImageGenerateParams::OutputFormat, nil] The format in which the generated images are returned. This parameter is only su
+      #
+      #   @param partial_images [Integer, nil] The number of partial images to generate. This parameter is used for
       #
       #   @param quality [Symbol, OpenAI::Models::ImageGenerateParams::Quality, nil] The quality of the image that will be generated.
       #

@@ -9,6 +9,7 @@ module OpenAI
         n: Integer?,
         output_compression: Integer?,
         output_format: OpenAI::Models::ImageGenerateParams::output_format?,
+        partial_images: Integer?,
         quality: OpenAI::Models::ImageGenerateParams::quality?,
         response_format: OpenAI::Models::ImageGenerateParams::response_format?,
         size: OpenAI::Models::ImageGenerateParams::size?,
@@ -35,6 +36,8 @@ module OpenAI
 
       attr_accessor output_format: OpenAI::Models::ImageGenerateParams::output_format?
 
+      attr_accessor partial_images: Integer?
+
       attr_accessor quality: OpenAI::Models::ImageGenerateParams::quality?
 
       attr_accessor response_format: OpenAI::Models::ImageGenerateParams::response_format?
@@ -55,6 +58,7 @@ module OpenAI
         ?n: Integer?,
         ?output_compression: Integer?,
         ?output_format: OpenAI::Models::ImageGenerateParams::output_format?,
+        ?partial_images: Integer?,
         ?quality: OpenAI::Models::ImageGenerateParams::quality?,
         ?response_format: OpenAI::Models::ImageGenerateParams::response_format?,
         ?size: OpenAI::Models::ImageGenerateParams::size?,
@@ -71,6 +75,7 @@ module OpenAI
         n: Integer?,
         output_compression: Integer?,
         output_format: OpenAI::Models::ImageGenerateParams::output_format?,
+        partial_images: Integer?,
         quality: OpenAI::Models::ImageGenerateParams::quality?,
         response_format: OpenAI::Models::ImageGenerateParams::response_format?,
         size: OpenAI::Models::ImageGenerateParams::size?,

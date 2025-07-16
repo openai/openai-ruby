@@ -303,6 +303,18 @@ module OpenAI
           #   @return [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Background, nil]
           optional :background, enum: -> { OpenAI::Responses::Tool::ImageGeneration::Background }
 
+          # @!attribute input_fidelity
+          #   Control how much effort the model will exert to match the style and features,
+          #   especially facial features, of input images. This parameter is only supported
+          #   for `gpt-image-1`. Supports `high` and `low`. Defaults to `low`.
+          #
+          #   @return [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::InputFidelity, nil]
+          optional :input_fidelity,
+                   enum: -> {
+                     OpenAI::Responses::Tool::ImageGeneration::InputFidelity
+                   },
+                   nil?: true
+
           # @!attribute input_image_mask
           #   Optional mask for inpainting. Contains `image_url` (string, optional) and
           #   `file_id` (string, optional).
@@ -356,13 +368,15 @@ module OpenAI
           #   @return [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Size, nil]
           optional :size, enum: -> { OpenAI::Responses::Tool::ImageGeneration::Size }
 
-          # @!method initialize(background: nil, input_image_mask: nil, model: nil, moderation: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, size: nil, type: :image_generation)
+          # @!method initialize(background: nil, input_fidelity: nil, input_image_mask: nil, model: nil, moderation: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, size: nil, type: :image_generation)
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Responses::Tool::ImageGeneration} for more details.
           #
           #   A tool that generates images using a model like `gpt-image-1`.
           #
           #   @param background [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Background] Background type for the generated image. One of `transparent`,
+          #
+          #   @param input_fidelity [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::InputFidelity, nil] Control how much effort the model will exert to match the style and features,
           #
           #   @param input_image_mask [OpenAI::Models::Responses::Tool::ImageGeneration::InputImageMask] Optional mask for inpainting. Contains `image_url`
           #
@@ -392,6 +406,21 @@ module OpenAI
             TRANSPARENT = :transparent
             OPAQUE = :opaque
             AUTO = :auto
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
+
+          # Control how much effort the model will exert to match the style and features,
+          # especially facial features, of input images. This parameter is only supported
+          # for `gpt-image-1`. Supports `high` and `low`. Defaults to `low`.
+          #
+          # @see OpenAI::Models::Responses::Tool::ImageGeneration#input_fidelity
+          module InputFidelity
+            extend OpenAI::Internal::Type::Enum
+
+            HIGH = :high
+            LOW = :low
 
             # @!method self.values
             #   @return [Array<Symbol>]

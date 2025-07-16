@@ -3,6 +3,8 @@
 module OpenAI
   module Models
     # @see OpenAI::Resources::Images#edit
+    #
+    # @see OpenAI::Resources::Images#stream_raw
     class ImageEditParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
@@ -37,6 +39,14 @@ module OpenAI
       #
       #   @return [Symbol, OpenAI::Models::ImageEditParams::Background, nil]
       optional :background, enum: -> { OpenAI::ImageEditParams::Background }, nil?: true
+
+      # @!attribute input_fidelity
+      #   Control how much effort the model will exert to match the style and features,
+      #   especially facial features, of input images. This parameter is only supported
+      #   for `gpt-image-1`. Supports `high` and `low`. Defaults to `low`.
+      #
+      #   @return [Symbol, OpenAI::Models::ImageEditParams::InputFidelity, nil]
+      optional :input_fidelity, enum: -> { OpenAI::ImageEditParams::InputFidelity }, nil?: true
 
       # @!attribute mask
       #   An additional image whose fully transparent areas (e.g. where alpha is zero)
@@ -77,6 +87,14 @@ module OpenAI
       #   @return [Symbol, OpenAI::Models::ImageEditParams::OutputFormat, nil]
       optional :output_format, enum: -> { OpenAI::ImageEditParams::OutputFormat }, nil?: true
 
+      # @!attribute partial_images
+      #   The number of partial images to generate. This parameter is used for streaming
+      #   responses that return partial images. Value must be between 0 and 3. When set to
+      #   0, the response will be a single image sent in one streaming event.
+      #
+      #   @return [Integer, nil]
+      optional :partial_images, Integer, nil?: true
+
       # @!attribute quality
       #   The quality of the image that will be generated. `high`, `medium` and `low` are
       #   only supported for `gpt-image-1`. `dall-e-2` only supports `standard` quality.
@@ -110,7 +128,7 @@ module OpenAI
       #   @return [String, nil]
       optional :user, String
 
-      # @!method initialize(image:, prompt:, background: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, quality: nil, response_format: nil, size: nil, user: nil, request_options: {})
+      # @!method initialize(image:, prompt:, background: nil, input_fidelity: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, size: nil, user: nil, request_options: {})
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::ImageEditParams} for more details.
       #
@@ -119,6 +137,8 @@ module OpenAI
       #   @param prompt [String] A text description of the desired image(s). The maximum length is 1000 character
       #
       #   @param background [Symbol, OpenAI::Models::ImageEditParams::Background, nil] Allows to set transparency for the background of the generated image(s).
+      #
+      #   @param input_fidelity [Symbol, OpenAI::Models::ImageEditParams::InputFidelity, nil] Control how much effort the model will exert to match the style and features,
       #
       #   @param mask [Pathname, StringIO, IO, String, OpenAI::FilePart] An additional image whose fully transparent areas (e.g. where alpha is zero) ind
       #
@@ -129,6 +149,8 @@ module OpenAI
       #   @param output_compression [Integer, nil] The compression level (0-100%) for the generated images. This parameter
       #
       #   @param output_format [Symbol, OpenAI::Models::ImageEditParams::OutputFormat, nil] The format in which the generated images are returned. This parameter is
+      #
+      #   @param partial_images [Integer, nil] The number of partial images to generate. This parameter is used for
       #
       #   @param quality [Symbol, OpenAI::Models::ImageEditParams::Quality, nil] The quality of the image that will be generated. `high`, `medium` and `low` are
       #
@@ -174,6 +196,19 @@ module OpenAI
         TRANSPARENT = :transparent
         OPAQUE = :opaque
         AUTO = :auto
+
+        # @!method self.values
+        #   @return [Array<Symbol>]
+      end
+
+      # Control how much effort the model will exert to match the style and features,
+      # especially facial features, of input images. This parameter is only supported
+      # for `gpt-image-1`. Supports `high` and `low`. Defaults to `low`.
+      module InputFidelity
+        extend OpenAI::Internal::Type::Enum
+
+        HIGH = :high
+        LOW = :low
 
         # @!method self.values
         #   @return [Array<Symbol>]

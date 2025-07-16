@@ -115,9 +115,21 @@ module OpenAI
 
   ImageCreateVariationParams = OpenAI::Models::ImageCreateVariationParams
 
+  ImageEditCompletedEvent = OpenAI::Models::ImageEditCompletedEvent
+
   ImageEditParams = OpenAI::Models::ImageEditParams
 
+  ImageEditPartialImageEvent = OpenAI::Models::ImageEditPartialImageEvent
+
+  ImageEditStreamEvent = OpenAI::Models::ImageEditStreamEvent
+
+  ImageGenCompletedEvent = OpenAI::Models::ImageGenCompletedEvent
+
   ImageGenerateParams = OpenAI::Models::ImageGenerateParams
+
+  ImageGenPartialImageEvent = OpenAI::Models::ImageGenPartialImageEvent
+
+  ImageGenStreamEvent = OpenAI::Models::ImageGenStreamEvent
 
   ImageModel = OpenAI::Models::ImageModel
 

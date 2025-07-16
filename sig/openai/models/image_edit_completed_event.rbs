@@ -1,0 +1,150 @@
+module OpenAI
+  module Models
+    type image_edit_completed_event =
+      {
+        :b64_json => String,
+        background: OpenAI::Models::ImageEditCompletedEvent::background,
+        created_at: Integer,
+        output_format: OpenAI::Models::ImageEditCompletedEvent::output_format,
+        quality: OpenAI::Models::ImageEditCompletedEvent::quality,
+        size: OpenAI::Models::ImageEditCompletedEvent::size,
+        type: :"image_edit.completed",
+        usage: OpenAI::ImageEditCompletedEvent::Usage
+      }
+
+    class ImageEditCompletedEvent < OpenAI::Internal::Type::BaseModel
+      attr_accessor b64_json: String
+
+      attr_accessor background: OpenAI::Models::ImageEditCompletedEvent::background
+
+      attr_accessor created_at: Integer
+
+      attr_accessor output_format: OpenAI::Models::ImageEditCompletedEvent::output_format
+
+      attr_accessor quality: OpenAI::Models::ImageEditCompletedEvent::quality
+
+      attr_accessor size: OpenAI::Models::ImageEditCompletedEvent::size
+
+      attr_accessor type: :"image_edit.completed"
+
+      attr_accessor usage: OpenAI::ImageEditCompletedEvent::Usage
+
+      def initialize: (
+        b64_json: String,
+        background: OpenAI::Models::ImageEditCompletedEvent::background,
+        created_at: Integer,
+        output_format: OpenAI::Models::ImageEditCompletedEvent::output_format,
+        quality: OpenAI::Models::ImageEditCompletedEvent::quality,
+        size: OpenAI::Models::ImageEditCompletedEvent::size,
+        usage: OpenAI::ImageEditCompletedEvent::Usage,
+        ?type: :"image_edit.completed"
+      ) -> void
+
+      def to_hash: -> {
+        :b64_json => String,
+        background: OpenAI::Models::ImageEditCompletedEvent::background,
+        created_at: Integer,
+        output_format: OpenAI::Models::ImageEditCompletedEvent::output_format,
+        quality: OpenAI::Models::ImageEditCompletedEvent::quality,
+        size: OpenAI::Models::ImageEditCompletedEvent::size,
+        type: :"image_edit.completed",
+        usage: OpenAI::ImageEditCompletedEvent::Usage
+      }
+
+      type background = :transparent | :opaque | :auto
+
+      module Background
+        extend OpenAI::Internal::Type::Enum
+
+        TRANSPARENT: :transparent
+        OPAQUE: :opaque
+        AUTO: :auto
+
+        def self?.values: -> ::Array[OpenAI::Models::ImageEditCompletedEvent::background]
+      end
+
+      type output_format = :png | :webp | :jpeg
+
+      module OutputFormat
+        extend OpenAI::Internal::Type::Enum
+
+        PNG: :png
+        WEBP: :webp
+        JPEG: :jpeg
+
+        def self?.values: -> ::Array[OpenAI::Models::ImageEditCompletedEvent::output_format]
+      end
+
+      type quality = :low | :medium | :high | :auto
+
+      module Quality
+        extend OpenAI::Internal::Type::Enum
+
+        LOW: :low
+        MEDIUM: :medium
+        HIGH: :high
+        AUTO: :auto
+
+        def self?.values: -> ::Array[OpenAI::Models::ImageEditCompletedEvent::quality]
+      end
+
+      type size = :"1024x1024" | :"1024x1536" | :"1536x1024" | :auto
+
+      module Size
+        extend OpenAI::Internal::Type::Enum
+
+        SIZE_1024X1024: :"1024x1024"
+        SIZE_1024X1536: :"1024x1536"
+        SIZE_1536X1024: :"1536x1024"
+        AUTO: :auto
+
+        def self?.values: -> ::Array[OpenAI::Models::ImageEditCompletedEvent::size]
+      end
+
+      type usage =
+        {
+          input_tokens: Integer,
+          input_tokens_details: OpenAI::ImageEditCompletedEvent::Usage::InputTokensDetails,
+          output_tokens: Integer,
+          total_tokens: Integer
+        }
+
+      class Usage < OpenAI::Internal::Type::BaseModel
+        attr_accessor input_tokens: Integer
+
+        attr_accessor input_tokens_details: OpenAI::ImageEditCompletedEvent::Usage::InputTokensDetails
+
+        attr_accessor output_tokens: Integer
+
+        attr_accessor total_tokens: Integer
+
+        def initialize: (
+          input_tokens: Integer,
+          input_tokens_details: OpenAI::ImageEditCompletedEvent::Usage::InputTokensDetails,
+          output_tokens: Integer,
+          total_tokens: Integer
+        ) -> void
+
+        def to_hash: -> {
+          input_tokens: Integer,
+          input_tokens_details: OpenAI::ImageEditCompletedEvent::Usage::InputTokensDetails,
+          output_tokens: Integer,
+          total_tokens: Integer
+        }
+
+        type input_tokens_details =
+          { image_tokens: Integer, text_tokens: Integer }
+
+        class InputTokensDetails < OpenAI::Internal::Type::BaseModel
+          attr_accessor image_tokens: Integer
+
+          attr_accessor text_tokens: Integer
+
+          def initialize: (image_tokens: Integer, text_tokens: Integer) -> void
+
+          def to_hash: -> { image_tokens: Integer, text_tokens: Integer }
+        end
+      end
+    end
+  end
+end
