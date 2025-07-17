@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.15.0 (2025-07-17)
+
+Full Changelog: [v0.14.0...v0.15.0](https://github.com/openai/openai-ruby/compare/v0.14.0...v0.15.0)
+
+### Features
+
+* **api:** manual updates ([fb53071](https://github.com/openai/openai-ruby/commit/fb530713d08a4ba49e8bdaecd9848674bb35c333))
+
 ## 0.14.0 (2025-07-16)
 
 Full Changelog: [v0.13.1...v0.14.0](https://github.com/openai/openai-ruby/compare/v0.13.1...v0.14.0)
