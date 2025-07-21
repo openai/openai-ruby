@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.15.0 (2025-07-21)
+
+Full Changelog: [v0.14.0...v0.15.0](https://github.com/openai/openai-ruby/compare/v0.14.0...v0.15.0)
+
+### Features
+
+* **api:** manual updates ([fb53071](https://github.com/openai/openai-ruby/commit/fb530713d08a4ba49e8bdaecd9848674bb35c333))
+
+
+### Bug Fixes
+
+* **internal:** tests should use normalized property names ([801e9c2](https://github.com/openai/openai-ruby/commit/801e9c29f65e572a3b49f5cf7891d3053e1d087f))
+
+
+### Chores
+
+* **api:** event shapes more accurate ([29f32ce](https://github.com/openai/openai-ruby/commit/29f32cedf6112d38fe8de454658a5afd7ad0d2cb))
+
 ## 0.14.0 (2025-07-16)
 
 Full Changelog: [v0.13.1...v0.14.0](https://github.com/openai/openai-ruby/compare/v0.13.1...v0.14.0)
