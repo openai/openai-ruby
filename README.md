@@ -443,7 +443,7 @@ You can provide typesafe request parameters like so:
 
 ```ruby
 openai.chat.completions.create(
-  messages: [OpenAI::Chat::ChatCompletionUserMessageParam.new(role: "user", content: "Say this is a test")],
+  messages: [OpenAI::Chat::ChatCompletionUserMessageParam.new(content: "Say this is a test")],
   model: :"gpt-4.1"
 )
 ```
@@ -459,7 +459,7 @@ openai.chat.completions.create(
 
 # You can also splat a full Params class:
 params = OpenAI::Chat::CompletionCreateParams.new(
-  messages: [OpenAI::Chat::ChatCompletionUserMessageParam.new(role: "user", content: "Say this is a test")],
+  messages: [OpenAI::Chat::ChatCompletionUserMessageParam.new(content: "Say this is a test")],
   model: :"gpt-4.1"
 )
 openai.chat.completions.create(**params)
