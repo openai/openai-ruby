@@ -5,10 +5,11 @@ module OpenAI
     module Responses
       class ResponseMcpCallArgumentsDeltaEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute delta
-        #   The partial update to the arguments for the MCP tool call.
+        #   A JSON string containing the partial update to the arguments for the MCP tool
+        #   call.
         #
-        #   @return [Object]
-        required :delta, OpenAI::Internal::Type::Unknown
+        #   @return [String]
+        required :delta, String
 
         # @!attribute item_id
         #   The unique identifier of the MCP tool call item being processed.
@@ -35,10 +36,14 @@ module OpenAI
         required :type, const: :"response.mcp_call_arguments.delta"
 
         # @!method initialize(delta:, item_id:, output_index:, sequence_number:, type: :"response.mcp_call_arguments.delta")
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Responses::ResponseMcpCallArgumentsDeltaEvent} for more
+        #   details.
+        #
         #   Emitted when there is a delta (partial update) to the arguments of an MCP tool
         #   call.
         #
-        #   @param delta [Object] The partial update to the arguments for the MCP tool call.
+        #   @param delta [String] A JSON string containing the partial update to the arguments for the MCP tool ca
         #
         #   @param item_id [String] The unique identifier of the MCP tool call item being processed.
         #

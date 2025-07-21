@@ -216,15 +216,6 @@ module OpenAI
             )
           ECHO =
             T.let(:echo, OpenAI::Audio::SpeechCreateParams::Voice::TaggedSymbol)
-          FABLE =
-            T.let(
-              :fable,
-              OpenAI::Audio::SpeechCreateParams::Voice::TaggedSymbol
-            )
-          ONYX =
-            T.let(:onyx, OpenAI::Audio::SpeechCreateParams::Voice::TaggedSymbol)
-          NOVA =
-            T.let(:nova, OpenAI::Audio::SpeechCreateParams::Voice::TaggedSymbol)
           SAGE =
             T.let(:sage, OpenAI::Audio::SpeechCreateParams::Voice::TaggedSymbol)
           SHIMMER =

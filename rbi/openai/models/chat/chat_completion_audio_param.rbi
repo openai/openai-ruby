@@ -176,21 +176,6 @@ module OpenAI
               :echo,
               OpenAI::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol
             )
-          FABLE =
-            T.let(
-              :fable,
-              OpenAI::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol
-            )
-          ONYX =
-            T.let(
-              :onyx,
-              OpenAI::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol
-            )
-          NOVA =
-            T.let(
-              :nova,
-              OpenAI::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol
-            )
           SAGE =
             T.let(
               :sage,

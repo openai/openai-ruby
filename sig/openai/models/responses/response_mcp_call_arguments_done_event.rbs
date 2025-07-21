@@ -3,7 +3,7 @@ module OpenAI
     module Responses
       type response_mcp_call_arguments_done_event =
         {
-          arguments: top,
+          arguments: String,
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
@@ -11,7 +11,7 @@ module OpenAI
         }
 
       class ResponseMcpCallArgumentsDoneEvent < OpenAI::Internal::Type::BaseModel
-        attr_accessor arguments: top
+        attr_accessor arguments: String
 
         attr_accessor item_id: String
 
@@ -22,7 +22,7 @@ module OpenAI
         attr_accessor type: :"response.mcp_call_arguments.done"
 
         def initialize: (
-          arguments: top,
+          arguments: String,
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
@@ -30,7 +30,7 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          arguments: top,
+          arguments: String,
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
