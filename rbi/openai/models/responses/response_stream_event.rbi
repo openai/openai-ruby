@@ -59,8 +59,6 @@ module OpenAI
               OpenAI::Responses::ResponseMcpListToolsInProgressEvent,
               OpenAI::Responses::ResponseOutputTextAnnotationAddedEvent,
               OpenAI::Responses::ResponseQueuedEvent,
-              OpenAI::Responses::ResponseReasoningDeltaEvent,
-              OpenAI::Responses::ResponseReasoningDoneEvent,
               OpenAI::Responses::ResponseReasoningSummaryDeltaEvent,
               OpenAI::Responses::ResponseReasoningSummaryDoneEvent
             )

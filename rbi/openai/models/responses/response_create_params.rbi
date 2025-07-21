@@ -163,7 +163,7 @@ module OpenAI
         # - If set to 'auto', then the request will be processed with the service tier
         #   configured in the Project settings. Unless otherwise configured, the Project
         #   will use 'default'.
-        # - If set to 'default', then the requset will be processed with the standard
+        # - If set to 'default', then the request will be processed with the standard
         #   pricing and performance for the selected model.
         # - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)' or
         #   'priority', then the request will be processed with the corresponding service
@@ -472,7 +472,7 @@ module OpenAI
           # - If set to 'auto', then the request will be processed with the service tier
           #   configured in the Project settings. Unless otherwise configured, the Project
           #   will use 'default'.
-          # - If set to 'default', then the requset will be processed with the standard
+          # - If set to 'default', then the request will be processed with the standard
           #   pricing and performance for the selected model.
           # - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)' or
           #   'priority', then the request will be processed with the corresponding service
@@ -640,7 +640,7 @@ module OpenAI
         # - If set to 'auto', then the request will be processed with the service tier
         #   configured in the Project settings. Unless otherwise configured, the Project
         #   will use 'default'.
-        # - If set to 'default', then the requset will be processed with the standard
+        # - If set to 'default', then the request will be processed with the standard
         #   pricing and performance for the selected model.
         # - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)' or
         #   'priority', then the request will be processed with the corresponding service
