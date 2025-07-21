@@ -5,10 +5,10 @@ module OpenAI
     module Responses
       class ResponseMcpCallArgumentsDoneEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute arguments
-        #   The finalized arguments for the MCP tool call.
+        #   A JSON string containing the finalized arguments for the MCP tool call.
         #
-        #   @return [Object]
-        required :arguments, OpenAI::Internal::Type::Unknown
+        #   @return [String]
+        required :arguments, String
 
         # @!attribute item_id
         #   The unique identifier of the MCP tool call item being processed.
@@ -35,9 +35,12 @@ module OpenAI
         required :type, const: :"response.mcp_call_arguments.done"
 
         # @!method initialize(arguments:, item_id:, output_index:, sequence_number:, type: :"response.mcp_call_arguments.done")
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Responses::ResponseMcpCallArgumentsDoneEvent} for more details.
+        #
         #   Emitted when the arguments for an MCP tool call are finalized.
         #
-        #   @param arguments [Object] The finalized arguments for the MCP tool call.
+        #   @param arguments [String] A JSON string containing the finalized arguments for the MCP tool call.
         #
         #   @param item_id [String] The unique identifier of the MCP tool call item being processed.
         #

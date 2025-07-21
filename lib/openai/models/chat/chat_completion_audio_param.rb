@@ -67,12 +67,6 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::ECHO }
 
-          variant const: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::FABLE }
-
-          variant const: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::ONYX }
-
-          variant const: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::NOVA }
-
           variant const: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::SAGE }
 
           variant const: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::SHIMMER }
@@ -93,9 +87,6 @@ module OpenAI
           BALLAD = :ballad
           CORAL = :coral
           ECHO = :echo
-          FABLE = :fable
-          ONYX = :onyx
-          NOVA = :nova
           SAGE = :sage
           SHIMMER = :shimmer
           VERSE = :verse

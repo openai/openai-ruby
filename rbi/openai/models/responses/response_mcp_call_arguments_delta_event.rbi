@@ -12,8 +12,9 @@ module OpenAI
             )
           end
 
-        # The partial update to the arguments for the MCP tool call.
-        sig { returns(T.anything) }
+        # A JSON string containing the partial update to the arguments for the MCP tool
+        # call.
+        sig { returns(String) }
         attr_accessor :delta
 
         # The unique identifier of the MCP tool call item being processed.
@@ -36,7 +37,7 @@ module OpenAI
         # call.
         sig do
           params(
-            delta: T.anything,
+            delta: String,
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
@@ -44,7 +45,8 @@ module OpenAI
           ).returns(T.attached_class)
         end
         def self.new(
-          # The partial update to the arguments for the MCP tool call.
+          # A JSON string containing the partial update to the arguments for the MCP tool
+          # call.
           delta:,
           # The unique identifier of the MCP tool call item being processed.
           item_id:,
@@ -60,7 +62,7 @@ module OpenAI
         sig do
           override.returns(
             {
-              delta: T.anything,
+              delta: String,
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,

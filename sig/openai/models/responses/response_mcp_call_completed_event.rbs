@@ -2,19 +2,32 @@ module OpenAI
   module Models
     module Responses
       type response_mcp_call_completed_event =
-        { sequence_number: Integer, type: :"response.mcp_call.completed" }
+        {
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.mcp_call.completed"
+        }
 
       class ResponseMcpCallCompletedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
         attr_accessor sequence_number: Integer
 
         attr_accessor type: :"response.mcp_call.completed"
 
         def initialize: (
+          item_id: String,
+          output_index: Integer,
           sequence_number: Integer,
           ?type: :"response.mcp_call.completed"
         ) -> void
 
         def to_hash: -> {
+          item_id: String,
+          output_index: Integer,
           sequence_number: Integer,
           type: :"response.mcp_call.completed"
         }

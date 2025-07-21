@@ -111,12 +111,6 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::ECHO }
 
-          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::FABLE }
-
-          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::ONYX }
-
-          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::NOVA }
-
           variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::SAGE }
 
           variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::SHIMMER }
@@ -137,9 +131,6 @@ module OpenAI
           BALLAD = :ballad
           CORAL = :coral
           ECHO = :echo
-          FABLE = :fable
-          ONYX = :onyx
-          NOVA = :nova
           SAGE = :sage
           SHIMMER = :shimmer
           VERSE = :verse

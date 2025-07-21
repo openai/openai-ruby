@@ -12,8 +12,8 @@ module OpenAI
             )
           end
 
-        # The finalized arguments for the MCP tool call.
-        sig { returns(T.anything) }
+        # A JSON string containing the finalized arguments for the MCP tool call.
+        sig { returns(String) }
         attr_accessor :arguments
 
         # The unique identifier of the MCP tool call item being processed.
@@ -35,7 +35,7 @@ module OpenAI
         # Emitted when the arguments for an MCP tool call are finalized.
         sig do
           params(
-            arguments: T.anything,
+            arguments: String,
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
@@ -43,7 +43,7 @@ module OpenAI
           ).returns(T.attached_class)
         end
         def self.new(
-          # The finalized arguments for the MCP tool call.
+          # A JSON string containing the finalized arguments for the MCP tool call.
           arguments:,
           # The unique identifier of the MCP tool call item being processed.
           item_id:,
@@ -59,7 +59,7 @@ module OpenAI
         sig do
           override.returns(
             {
-              arguments: T.anything,
+              arguments: String,
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,

@@ -92,6 +92,9 @@ module OpenAI
       #   responses that return partial images. Value must be between 0 and 3. When set to
       #   0, the response will be a single image sent in one streaming event.
       #
+      #   Note that the final image may be sent before the full number of partial images
+      #   are generated if the full image is generated more quickly.
+      #
       #   @return [Integer, nil]
       optional :partial_images, Integer, nil?: true
 
