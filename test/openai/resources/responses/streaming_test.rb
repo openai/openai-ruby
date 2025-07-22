@@ -305,23 +305,23 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
   end
 
   def test_resume_stream_with_structured_output
-    # Stub the GET request to retrieve the response (streaming).
-    stub_request(:get, "http://localhost/responses/msg_structured?stream=true")
+    stub_request(:get, "http://localhost/responses/msg_background_structured?stream=true")
       .to_return(
         status: 200,
         headers: {"Content-Type" => "text/event-stream"},
         body: resume_stream_structured_output_sse_response
       )
 
-    stream = @client.responses.stream(previous_response_id: "msg_structured", text: WeatherModel)
+    stream = @client.responses.stream(
+      previous_response_id: "msg_background_structured",
+      text: WeatherModel
+    )
     events = stream.to_a
 
     text_done = events.find { |e| e.type == :"response.output_text.done" }
-    assert_equal("{\"location\":\"San Francisco\",\"temperature\":72}", text_done.text)
-
-    # Verify the parsed content is available.
     assert_pattern do
       text_done => OpenAI::Streaming::ResponseTextDoneEvent[
+        text: "{\"location\":\"San Francisco\",\"temperature\":72}",
         parsed: WeatherModel[
           location: "San Francisco",
           temperature: 72
@@ -336,6 +336,28 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
           id: "msg_structured",
           status: :completed
         }
+      ]
+    end
+
+    # Also verify the parsed field is available in the final response for resumed streams.
+    final_response = stream.get_final_response
+    assert_pattern do
+      final_response => OpenAI::Models::Responses::Response[
+        id: "msg_structured",
+        status: :completed,
+        output: [
+          {
+            content: [
+              {
+                text: "{\"location\":\"San Francisco\",\"temperature\":72}",
+                parsed: WeatherModel[
+                  location: "San Francisco",
+                  temperature: 72
+                ]
+              }
+            ]
+          }
+        ]
       ]
     end
   end

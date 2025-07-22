@@ -170,20 +170,22 @@ module OpenAI
         end
         model, tool_models = get_structured_output_models(parsed)
 
-        if previous_response_id
-          retrieve_params = {}
-          retrieve_params[:include] = params[:include] if params[:include]
-          retrieve_params[:request_options] = params[:request_options] if params[:request_options]
-
-          raw_stream = retrieve_streaming(previous_response_id, retrieve_params)
-        else
-          unwrap = ->(raw) do
-            if raw[:type] == "response.completed" && raw[:response]
-              parse_structured_outputs!(raw[:response], model, tool_models)
-            end
-            raw
+        unwrap = ->(raw) do
+          if raw[:type] == "response.completed" && raw[:response]
+            parse_structured_outputs!(raw[:response], model, tool_models)
           end
+          raw
+        end
 
+        if previous_response_id
+          retrieve_params = params.slice(:include, :request_options)
+
+          raw_stream = retrieve_streaming_internal(
+            previous_response_id,
+            params: retrieve_params,
+            unwrap: unwrap
+          )
+        else
           parsed[:stream] = true
 
           raw_stream = @client.request(
@@ -362,6 +364,21 @@ module OpenAI
           stream: OpenAI::Internal::Stream,
           model: OpenAI::Responses::ResponseStreamEvent,
           options: options
+        )
+      end
+
+      private def retrieve_streaming_internal(response_id, params:, unwrap:)
+        parsed, options = OpenAI::Responses::ResponseRetrieveParams.dump_request(params)
+        parsed.store(:stream, true)
+        @client.request(
+          method: :get,
+          path: ["responses/%1$s", response_id],
+          query: parsed,
+          headers: {"accept" => "text/event-stream"},
+          stream: OpenAI::Internal::Stream,
+          model: OpenAI::Responses::ResponseStreamEvent,
+          options: options,
+          unwrap: unwrap
         )
       end
 
