@@ -311,19 +311,20 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
         ]
       },
       M11 => {
-        type: "object",
-        properties: {
+        :$defs => {".a/?.0/[]" => {type: "array", items: {type: "string"}}},
+        :type => "object",
+        :properties => {
           a: {
             anyOf: [
               {type: "array", items: {type: "string"}},
               {type: "array", items: {type: "string"}}
             ]
           },
-          b: {type: "array", items: {type: "string"}},
-          c: {type: "array", items: {type: "string"}}
+          b: {:$ref => "#/$defs/.a/?.0/[]"},
+          c: {:$ref => "#/$defs/.a/?.0/[]"}
         },
-        required: %w[a b c],
-        additionalProperties: false
+        :required => %w[a b c],
+        :additionalProperties => false
       }
     }
 
