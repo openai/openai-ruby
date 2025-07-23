@@ -6,9 +6,9 @@ module OpenAI
       # To customize the JSON schema conversion for a type, implement the `JsonSchemaConverter` interface.
       module JsonSchemaConverter
         # @api private
-        POINTER = Object.new.tap do
+        POINTERS = Object.new.tap do
           _1.define_singleton_method(:inspect) do
-            "#<#{OpenAI::Helpers::StructuredOutput::JsonSchemaConverter}::POINTER>"
+            "#<#{OpenAI::Helpers::StructuredOutput::JsonSchemaConverter}::POINTERS>"
           end
         end.freeze
         # @api private
@@ -75,13 +75,15 @@ module OpenAI
           def cache_def!(state, type:, &blk)
             defs, path = state.fetch_values(:defs, :path)
             if (stored = defs[type])
-              pointers = stored.fetch(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::POINTER)
-              pointers.first.except(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::NO_REF).tap { pointers << _1 }
+              pointers = stored.fetch(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::POINTERS)
+              pointers.first.except(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::NO_REF).tap do
+                pointers << _1
+              end
             else
               ref_path = String.new
               ref = {"$ref": ref_path}
               stored = {
-                OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::POINTER => [ref]
+                OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::POINTERS => [ref]
               }
               defs.store(type, stored)
               schema = blk.call
@@ -105,18 +107,18 @@ module OpenAI
             )
             reused_defs = {}
             defs.each_value do |acc|
-              sch = acc.except(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::POINTER)
-              pointers = acc.fetch(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::POINTER)
+              sch = acc.except(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::POINTERS)
+              pointers = acc.fetch(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::POINTERS)
 
               no_refs, refs = pointers.partition do
                 _1.delete(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::NO_REF)
               end
 
               case refs
-              in [_, ref, *]
-                reused_defs.store(ref.fetch(:$ref), sch)
               in [ref]
                 ref.replace(sch)
+              in [_, ref, *]
+                reused_defs.store(ref.fetch(:$ref), sch)
               else
               end
               no_refs.each { _1.replace(sch) }
