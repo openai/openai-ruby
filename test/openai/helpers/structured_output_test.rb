@@ -37,6 +37,7 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
 
   U1 = OpenAI::Helpers::StructuredOutput::UnionOf[Integer, A1]
   U2 = OpenAI::Helpers::StructuredOutput::UnionOf[:type, m2: M2, m3: M3]
+  U3 = OpenAI::Helpers::StructuredOutput::UnionOf[A1, A1]
 
   def test_coerce
     cases = {
@@ -157,6 +158,12 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
 
   class M10 < OpenAI::Helpers::StructuredOutput::BaseModel
     required :b, -> { M9 }
+  end
+
+  class M11 < OpenAI::Helpers::StructuredOutput::BaseModel
+    required :a, U3
+    required :b, A1
+    required :c, A1
   end
 
   def test_definition_reusing
@@ -296,6 +303,27 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
                 }
           },
         :$ref => "#/$defs/"
+      },
+      U3 => {
+        anyOf: [
+          {type: "array", items: {type: "string"}},
+          {type: "array", items: {type: "string"}}
+        ]
+      },
+      M11 => {
+        type: "object",
+        properties: {
+          a: {
+            anyOf: [
+              {type: "array", items: {type: "string"}},
+              {type: "array", items: {type: "string"}}
+            ]
+          },
+          b: {type: "array", items: {type: "string"}},
+          c: {type: "array", items: {type: "string"}}
+        },
+        required: %w[a b c],
+        additionalProperties: false
       }
     }
 
@@ -307,23 +335,23 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
     end
   end
 
-  class M11 < OpenAI::Helpers::StructuredOutput::BaseModel
+  class M12 < OpenAI::Helpers::StructuredOutput::BaseModel
     required :a, OpenAI::Helpers::StructuredOutput::ParsedJson
   end
 
   def test_parsed_json
     assert_pattern do
-      M11.new(a: {dog: "woof"}) => {a: {dog: "woof"}}
+      M12.new(a: {dog: "woof"}) => {a: {dog: "woof"}}
     end
 
     err = JSON::ParserError.new("unexpected token at 'invalid json'")
 
-    m1 = M11.new(a: err)
+    m1 = M12.new(a: err)
     assert_raises(OpenAI::Errors::ConversionError) do
       m1.a
     end
 
-    m2 = OpenAI::Internal::Type::Converter.coerce(M11, {a: err})
+    m2 = OpenAI::Internal::Type::Converter.coerce(M12, {a: err})
     assert_raises(OpenAI::Errors::ConversionError) do
       m2.a
     end
