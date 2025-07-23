@@ -36,7 +36,17 @@ module OpenAI
               mergeable_keys.each_key { mergeable_keys[_1] += 1 if schema.keys == _1 }
             end
             mergeable = mergeable_keys.any? { _1.last == schemas.length }
-            mergeable ? OpenAI::Internal::Util.deep_merge(*schemas, concat: true) : {anyOf: schemas}
+            if mergeable
+              OpenAI::Internal::Util.deep_merge(*schemas, concat: true)
+            else
+              {
+                anyOf: schemas.each do
+                  if _1.key?(:$ref)
+                    _1.update(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::NO_REF => true)
+                  end
+                end
+              }
+            end
           end
         end
 
