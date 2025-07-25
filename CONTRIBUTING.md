@@ -78,7 +78,7 @@ $ bundle exec rake test
 
 ## Linting and formatting
 
-This repository uses [rubocop](https://github.com/rubocop/rubocop) for linting and formatting of `*.rb` and `*.rbi` files. [syntax_tree](https://github.com/ruby-syntax-tree/syntax_tree) is used for formatting `*.rbs` files.
+This repository uses [rubocop](https://github.com/rubocop/rubocop) for linting and formatting of `*.rb` files; And [syntax_tree](https://github.com/ruby-syntax-tree/syntax_tree) is used for formatting of both `*.rbi` and `*.rbs` files.
 
 There are two separate type checkers supported by this library: [sorbet](https://github.com/sorbet/sorbet) and [steep](https://github.com/soutaro/steep) are used for verifying `*.rbi` and `*.rbs` files respectively.
 
