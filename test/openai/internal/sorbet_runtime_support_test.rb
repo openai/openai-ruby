@@ -3,6 +3,8 @@
 require_relative "../test_helper"
 
 class OpenAI::Test::SorbetRuntimeSupportTest < Minitest::Test
+  extend Minitest::Serial
+
   i_suck_and_my_tests_are_order_dependent!
 
   module E
