@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.16.0 (2025-07-30)
+
+Full Changelog: [v0.15.0...v0.16.0](https://github.com/openai/openai-ruby/compare/v0.15.0...v0.16.0)
+
+### Features
+
+* add output_text method for non-streaming responses ([#757](https://github.com/openai/openai-ruby/issues/757)) ([50cf119](https://github.com/openai/openai-ruby/commit/50cf119106f9e16d9ac6a9898028b6d563a6f809))
+* **api:** manual updates ([e9fa8a0](https://github.com/openai/openai-ruby/commit/e9fa8a08d6ecebdd06212eaf6b9103082b7d67aa))
+
+
+### Bug Fixes
+
+* **internal:** ensure sorbet test always runs serially ([0601061](https://github.com/openai/openai-ruby/commit/0601061047525d16cc2afac64e5a4de0dd9de2e5))
+* provide parsed outputs for resumed streams ([#756](https://github.com/openai/openai-ruby/issues/756)) ([82254f9](https://github.com/openai/openai-ruby/commit/82254f980ccc0affa2555a81b0d8ed5aa0290835))
+* union definition re-using ([#760](https://github.com/openai/openai-ruby/issues/760)) ([3046c28](https://github.com/openai/openai-ruby/commit/3046c28935ca925c2f399f0350937d04eab54c0a))
+
+
+### Chores
+
+* extract reused JSON schema references even in unions ([#761](https://github.com/openai/openai-ruby/issues/761)) ([e17d3bf](https://github.com/openai/openai-ruby/commit/e17d3bf1fdf241f7a78ed72a39ddecabeb5877c8))
+* **internal:** refactor variable name ([#762](https://github.com/openai/openai-ruby/issues/762)) ([7e15b07](https://github.com/openai/openai-ruby/commit/7e15b0745dcbd3bf7fc4c1899d9d76e0a9ab1e48))
+* update contribute.md ([b4a0297](https://github.com/openai/openai-ruby/commit/b4a029775bb52d5db2f3fac235595f37b6746a61))
+
 ## 0.15.0 (2025-07-21)
 
 Full Changelog: [v0.14.0...v0.15.0](https://github.com/openai/openai-ruby/compare/v0.14.0...v0.15.0)
