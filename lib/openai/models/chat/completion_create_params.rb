@@ -182,6 +182,14 @@ module OpenAI
         #   @return [Float, nil]
         optional :presence_penalty, Float, nil?: true
 
+        # @!attribute prompt_cache_key
+        #   Used by OpenAI to cache responses for similar requests to optimize your cache
+        #   hit rates. Replaces the `user` field.
+        #   [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
+        #
+        #   @return [String, nil]
+        optional :prompt_cache_key, String
+
         # @!attribute reasoning_effort
         #   **o-series models only**
         #
@@ -207,6 +215,16 @@ module OpenAI
         #
         #   @return [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject, nil]
         optional :response_format, union: -> { OpenAI::Chat::CompletionCreateParams::ResponseFormat }
+
+        # @!attribute safety_identifier
+        #   A stable identifier used to help detect users of your application that may be
+        #   violating OpenAI's usage policies. The IDs should be a string that uniquely
+        #   identifies each user. We recommend hashing their username or email address, in
+        #   order to avoid sending us any identifying information.
+        #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
+        #
+        #   @return [String, nil]
+        optional :safety_identifier, String
 
         # @!attribute seed
         #   This feature is in Beta. If specified, our system will make a best effort to
@@ -315,9 +333,13 @@ module OpenAI
         optional :top_p, Float, nil?: true
 
         # @!attribute user
-        #   A stable identifier for your end-users. Used to boost cache hit rates by better
-        #   bucketing similar requests and to help OpenAI detect and prevent abuse.
-        #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
+        #   @deprecated
+        #
+        #   This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use
+        #   `prompt_cache_key` instead to maintain caching optimizations. A stable
+        #   identifier for your end-users. Used to boost cache hit rates by better bucketing
+        #   similar requests and to help OpenAI detect and prevent abuse.
+        #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
         #
         #   @return [String, nil]
         optional :user, String
@@ -330,7 +352,7 @@ module OpenAI
         #   @return [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions, nil]
         optional :web_search_options, -> { OpenAI::Chat::CompletionCreateParams::WebSearchOptions }
 
-        # @!method initialize(messages:, model:, audio: nil, frequency_penalty: nil, function_call: nil, functions: nil, logit_bias: nil, logprobs: nil, max_completion_tokens: nil, max_tokens: nil, metadata: nil, modalities: nil, n: nil, parallel_tool_calls: nil, prediction: nil, presence_penalty: nil, reasoning_effort: nil, response_format: nil, seed: nil, service_tier: nil, stop: nil, store: nil, stream_options: nil, temperature: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, user: nil, web_search_options: nil, request_options: {})
+        # @!method initialize(messages:, model:, audio: nil, frequency_penalty: nil, function_call: nil, functions: nil, logit_bias: nil, logprobs: nil, max_completion_tokens: nil, max_tokens: nil, metadata: nil, modalities: nil, n: nil, parallel_tool_calls: nil, prediction: nil, presence_penalty: nil, prompt_cache_key: nil, reasoning_effort: nil, response_format: nil, safety_identifier: nil, seed: nil, service_tier: nil, stop: nil, store: nil, stream_options: nil, temperature: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, user: nil, web_search_options: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Chat::CompletionCreateParams} for more details.
         #
@@ -366,9 +388,13 @@ module OpenAI
         #
         #   @param presence_penalty [Float, nil] Number between -2.0 and 2.0. Positive values penalize new tokens based on
         #
+        #   @param prompt_cache_key [String] Used by OpenAI to cache responses for similar requests to optimize your cache hi
+        #
         #   @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] **o-series models only**
         #
         #   @param response_format [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject] An object specifying the format that the model must output.
+        #
+        #   @param safety_identifier [String] A stable identifier used to help detect users of your application that may be vi
         #
         #   @param seed [Integer, nil] This feature is in Beta.
         #
@@ -390,7 +416,7 @@ module OpenAI
         #
         #   @param top_p [Float, nil] An alternative to sampling with temperature, called nucleus sampling,
         #
-        #   @param user [String] A stable identifier for your end-users.
+        #   @param user [String] This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use
         #
         #   @param web_search_options [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions] This tool searches the web for relevant results to use in a response.
         #

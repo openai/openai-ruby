@@ -65,6 +65,7 @@ module OpenAI
             prediction:
               T.nilable(OpenAI::Chat::ChatCompletionPredictionContent::OrHash),
             presence_penalty: T.nilable(Float),
+            prompt_cache_key: String,
             reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
             response_format:
               T.any(
@@ -72,6 +73,7 @@ module OpenAI
                 OpenAI::ResponseFormatJSONSchema::OrHash,
                 OpenAI::ResponseFormatJSONObject::OrHash
               ),
+            safety_identifier: String,
             seed: T.nilable(Integer),
             service_tier:
               T.nilable(
@@ -197,6 +199,10 @@ module OpenAI
           # whether they appear in the text so far, increasing the model's likelihood to
           # talk about new topics.
           presence_penalty: nil,
+          # Used by OpenAI to cache responses for similar requests to optimize your cache
+          # hit rates. Replaces the `user` field.
+          # [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
+          prompt_cache_key: nil,
           # **o-series models only**
           #
           # Constrains effort on reasoning for
@@ -215,6 +221,12 @@ module OpenAI
           # ensures the message the model generates is valid JSON. Using `json_schema` is
           # preferred for models that support it.
           response_format: nil,
+          # A stable identifier used to help detect users of your application that may be
+          # violating OpenAI's usage policies. The IDs should be a string that uniquely
+          # identifies each user. We recommend hashing their username or email address, in
+          # order to avoid sending us any identifying information.
+          # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
+          safety_identifier: nil,
           # This feature is in Beta. If specified, our system will make a best effort to
           # sample deterministically, such that repeated requests with the same `seed` and
           # parameters should return the same result. Determinism is not guaranteed, and you
@@ -281,9 +293,11 @@ module OpenAI
           #
           # We generally recommend altering this or `temperature` but not both.
           top_p: nil,
-          # A stable identifier for your end-users. Used to boost cache hit rates by better
-          # bucketing similar requests and to help OpenAI detect and prevent abuse.
-          # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
+          # This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use
+          # `prompt_cache_key` instead to maintain caching optimizations. A stable
+          # identifier for your end-users. Used to boost cache hit rates by better bucketing
+          # similar requests and to help OpenAI detect and prevent abuse.
+          # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
           user: nil,
           # This tool searches the web for relevant results to use in a response. Learn more
           # about the
@@ -354,6 +368,7 @@ module OpenAI
             prediction:
               T.nilable(OpenAI::Chat::ChatCompletionPredictionContent::OrHash),
             presence_penalty: T.nilable(Float),
+            prompt_cache_key: String,
             reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
             response_format:
               T.any(
@@ -361,6 +376,7 @@ module OpenAI
                 OpenAI::ResponseFormatJSONSchema::OrHash,
                 OpenAI::ResponseFormatJSONObject::OrHash
               ),
+            safety_identifier: String,
             seed: T.nilable(Integer),
             service_tier:
               T.nilable(
@@ -486,6 +502,10 @@ module OpenAI
           # whether they appear in the text so far, increasing the model's likelihood to
           # talk about new topics.
           presence_penalty: nil,
+          # Used by OpenAI to cache responses for similar requests to optimize your cache
+          # hit rates. Replaces the `user` field.
+          # [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
+          prompt_cache_key: nil,
           # **o-series models only**
           #
           # Constrains effort on reasoning for
@@ -504,6 +524,12 @@ module OpenAI
           # ensures the message the model generates is valid JSON. Using `json_schema` is
           # preferred for models that support it.
           response_format: nil,
+          # A stable identifier used to help detect users of your application that may be
+          # violating OpenAI's usage policies. The IDs should be a string that uniquely
+          # identifies each user. We recommend hashing their username or email address, in
+          # order to avoid sending us any identifying information.
+          # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
+          safety_identifier: nil,
           # This feature is in Beta. If specified, our system will make a best effort to
           # sample deterministically, such that repeated requests with the same `seed` and
           # parameters should return the same result. Determinism is not guaranteed, and you
@@ -570,9 +596,11 @@ module OpenAI
           #
           # We generally recommend altering this or `temperature` but not both.
           top_p: nil,
-          # A stable identifier for your end-users. Used to boost cache hit rates by better
-          # bucketing similar requests and to help OpenAI detect and prevent abuse.
-          # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
+          # This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use
+          # `prompt_cache_key` instead to maintain caching optimizations. A stable
+          # identifier for your end-users. Used to boost cache hit rates by better bucketing
+          # similar requests and to help OpenAI detect and prevent abuse.
+          # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
           user: nil,
           # This tool searches the web for relevant results to use in a response. Learn more
           # about the

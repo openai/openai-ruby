@@ -23,7 +23,7 @@ module OpenAI
       # [file search](https://platform.openai.com/docs/guides/tools-file-search) to use
       # your own data as input for the model's response.
       #
-      # @overload create(background: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, reasoning: nil, service_tier: nil, store: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
+      # @overload create(background: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
       #
       # @param background [Boolean, nil] Whether to run the model response in the background.
       #
@@ -47,7 +47,11 @@ module OpenAI
       #
       # @param prompt [OpenAI::Models::Responses::ResponsePrompt, nil] Reference to a prompt template and its variables.
       #
+      # @param prompt_cache_key [String] Used by OpenAI to cache responses for similar requests to optimize your cache hi
+      #
       # @param reasoning [OpenAI::Models::Reasoning, nil] **o-series models only**
+      #
+      # @param safety_identifier [String] A stable identifier used to help detect users of your application that may be vi
       #
       # @param service_tier [Symbol, OpenAI::Models::Responses::ResponseCreateParams::ServiceTier, nil] Specifies the processing type used for serving the request.
       #
@@ -67,7 +71,7 @@ module OpenAI
       #
       # @param truncation [Symbol, OpenAI::Models::Responses::ResponseCreateParams::Truncation, nil] The truncation strategy to use for the model response.
       #
-      # @param user [String] A stable identifier for your end-users.
+      # @param user [String] This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -106,7 +110,7 @@ module OpenAI
       # [file search](https://platform.openai.com/docs/guides/tools-file-search) to use
       # your own data as input for the model's response.
       #
-      # @overload stream_raw(background: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, reasoning: nil, service_tier: nil, store: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
+      # @overload stream_raw(background: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
       #
       # @param background [Boolean, nil] Whether to run the model response in the background.
       #
@@ -130,7 +134,11 @@ module OpenAI
       #
       # @param prompt [OpenAI::Models::Responses::ResponsePrompt, nil] Reference to a prompt template and its variables.
       #
+      # @param prompt_cache_key [String] Used by OpenAI to cache responses for similar requests to optimize your cache hi
+      #
       # @param reasoning [OpenAI::Models::Reasoning, nil] **o-series models only**
+      #
+      # @param safety_identifier [String] A stable identifier used to help detect users of your application that may be vi
       #
       # @param service_tier [Symbol, OpenAI::Models::Responses::ResponseCreateParams::ServiceTier, nil] Specifies the processing type used for serving the request.
       #
@@ -150,7 +158,7 @@ module OpenAI
       #
       # @param truncation [Symbol, OpenAI::Models::Responses::ResponseCreateParams::Truncation, nil] The truncation strategy to use for the model response.
       #
-      # @param user [String] A stable identifier for your end-users.
+      # @param user [String] This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
