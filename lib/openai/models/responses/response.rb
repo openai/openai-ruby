@@ -171,6 +171,14 @@ module OpenAI
         #   @return [OpenAI::Models::Responses::ResponsePrompt, nil]
         optional :prompt, -> { OpenAI::Responses::ResponsePrompt }, nil?: true
 
+        # @!attribute prompt_cache_key
+        #   Used by OpenAI to cache responses for similar requests to optimize your cache
+        #   hit rates. Replaces the `user` field.
+        #   [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
+        #
+        #   @return [String, nil]
+        optional :prompt_cache_key, String
+
         # @!attribute reasoning
         #   **o-series models only**
         #
@@ -179,6 +187,16 @@ module OpenAI
         #
         #   @return [OpenAI::Models::Reasoning, nil]
         optional :reasoning, -> { OpenAI::Reasoning }, nil?: true
+
+        # @!attribute safety_identifier
+        #   A stable identifier used to help detect users of your application that may be
+        #   violating OpenAI's usage policies. The IDs should be a string that uniquely
+        #   identifies each user. We recommend hashing their username or email address, in
+        #   order to avoid sending us any identifying information.
+        #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
+        #
+        #   @return [String, nil]
+        optional :safety_identifier, String
 
         # @!attribute service_tier
         #   Specifies the processing type used for serving the request.
@@ -246,9 +264,13 @@ module OpenAI
         optional :usage, -> { OpenAI::Responses::ResponseUsage }
 
         # @!attribute user
-        #   A stable identifier for your end-users. Used to boost cache hit rates by better
-        #   bucketing similar requests and to help OpenAI detect and prevent abuse.
-        #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
+        #   @deprecated
+        #
+        #   This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use
+        #   `prompt_cache_key` instead to maintain caching optimizations. A stable
+        #   identifier for your end-users. Used to boost cache hit rates by better bucketing
+        #   similar requests and to help OpenAI detect and prevent abuse.
+        #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
         #
         #   @return [String, nil]
         optional :user, String
@@ -313,7 +335,11 @@ module OpenAI
         #
         #   @param prompt [OpenAI::Models::Responses::ResponsePrompt, nil] Reference to a prompt template and its variables.
         #
+        #   @param prompt_cache_key [String] Used by OpenAI to cache responses for similar requests to optimize your cache hi
+        #
         #   @param reasoning [OpenAI::Models::Reasoning, nil] **o-series models only**
+        #
+        #   @param safety_identifier [String] A stable identifier used to help detect users of your application that may be vi
         #
         #   @param service_tier [Symbol, OpenAI::Models::Responses::Response::ServiceTier, nil] Specifies the processing type used for serving the request.
         #
@@ -327,7 +353,7 @@ module OpenAI
         #
         #   @param usage [OpenAI::Models::Responses::ResponseUsage] Represents token usage details including input tokens, output tokens,
         #
-        #   @param user [String] A stable identifier for your end-users.
+        #   @param user [String] This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use
         #
         #   @param object [Symbol, :response] The object type of this resource - always set to `response`.
 
