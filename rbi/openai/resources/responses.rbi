@@ -40,7 +40,9 @@ module OpenAI
           parallel_tool_calls: T.nilable(T::Boolean),
           previous_response_id: T.nilable(String),
           prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
+          prompt_cache_key: String,
           reasoning: T.nilable(OpenAI::Reasoning::OrHash),
+          safety_identifier: String,
           service_tier:
             T.nilable(
               OpenAI::Responses::ResponseCreateParams::ServiceTier::OrSymbol
@@ -151,11 +153,21 @@ module OpenAI
         # Reference to a prompt template and its variables.
         # [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
         prompt: nil,
+        # Used by OpenAI to cache responses for similar requests to optimize your cache
+        # hit rates. Replaces the `user` field.
+        # [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
+        prompt_cache_key: nil,
         # **o-series models only**
         #
         # Configuration options for
         # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
         reasoning: nil,
+        # A stable identifier used to help detect users of your application that may be
+        # violating OpenAI's usage policies. The IDs should be a string that uniquely
+        # identifies each user. We recommend hashing their username or email address, in
+        # order to avoid sending us any identifying information.
+        # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
+        safety_identifier: nil,
         # Specifies the processing type used for serving the request.
         #
         # - If set to 'auto', then the request will be processed with the service tier
@@ -223,9 +235,11 @@ module OpenAI
         # - `disabled` (default): If a model response will exceed the context window size
         #   for a model, the request will fail with a 400 error.
         truncation: nil,
-        # A stable identifier for your end-users. Used to boost cache hit rates by better
-        # bucketing similar requests and to help OpenAI detect and prevent abuse.
-        # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
+        # This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use
+        # `prompt_cache_key` instead to maintain caching optimizations. A stable
+        # identifier for your end-users. Used to boost cache hit rates by better bucketing
+        # similar requests and to help OpenAI detect and prevent abuse.
+        # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
         user: nil,
         # There is no need to provide `stream:`. Instead, use `#stream_raw` or `#create`
         # for streaming and non-streaming use cases, respectively.
@@ -268,7 +282,9 @@ module OpenAI
           parallel_tool_calls: T.nilable(T::Boolean),
           previous_response_id: T.nilable(String),
           prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
+          prompt_cache_key: String,
           reasoning: T.nilable(OpenAI::Reasoning::OrHash),
+          safety_identifier: String,
           service_tier:
             T.nilable(
               OpenAI::Responses::ResponseCreateParams::ServiceTier::OrSymbol
@@ -385,11 +401,21 @@ module OpenAI
         # Reference to a prompt template and its variables.
         # [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
         prompt: nil,
+        # Used by OpenAI to cache responses for similar requests to optimize your cache
+        # hit rates. Replaces the `user` field.
+        # [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
+        prompt_cache_key: nil,
         # **o-series models only**
         #
         # Configuration options for
         # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
         reasoning: nil,
+        # A stable identifier used to help detect users of your application that may be
+        # violating OpenAI's usage policies. The IDs should be a string that uniquely
+        # identifies each user. We recommend hashing their username or email address, in
+        # order to avoid sending us any identifying information.
+        # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
+        safety_identifier: nil,
         # Specifies the processing type used for serving the request.
         #
         # - If set to 'auto', then the request will be processed with the service tier
@@ -457,9 +483,11 @@ module OpenAI
         # - `disabled` (default): If a model response will exceed the context window size
         #   for a model, the request will fail with a 400 error.
         truncation: nil,
-        # A stable identifier for your end-users. Used to boost cache hit rates by better
-        # bucketing similar requests and to help OpenAI detect and prevent abuse.
-        # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
+        # This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use
+        # `prompt_cache_key` instead to maintain caching optimizations. A stable
+        # identifier for your end-users. Used to boost cache hit rates by better bucketing
+        # similar requests and to help OpenAI detect and prevent abuse.
+        # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
         user: nil,
         # There is no need to provide `stream:`. Instead, use `#stream_raw` or `#create`
         # for streaming and non-streaming use cases, respectively.

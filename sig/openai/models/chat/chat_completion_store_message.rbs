@@ -3,16 +3,42 @@ module OpenAI
     class ChatCompletionStoreMessage = Chat::ChatCompletionStoreMessage
 
     module Chat
-      type chat_completion_store_message = { id: String }
+      type chat_completion_store_message =
+        {
+          id: String,
+          content_parts: ::Array[OpenAI::Models::Chat::ChatCompletionStoreMessage::content_part]?
+        }
 
       class ChatCompletionStoreMessage < OpenAI::Models::Chat::ChatCompletionMessage
         def id: -> String
 
         def id=: (String _) -> String
 
-        def initialize: (id: String) -> void
+        def content_parts: -> ::Array[OpenAI::Models::Chat::ChatCompletionStoreMessage::content_part]?
 
-        def to_hash: -> { id: String }
+        def content_parts=: (
+          ::Array[OpenAI::Models::Chat::ChatCompletionStoreMessage::content_part]? _
+        ) -> ::Array[OpenAI::Models::Chat::ChatCompletionStoreMessage::content_part]?
+
+        def initialize: (
+          id: String,
+          ?content_parts: ::Array[OpenAI::Models::Chat::ChatCompletionStoreMessage::content_part]?
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          content_parts: ::Array[OpenAI::Models::Chat::ChatCompletionStoreMessage::content_part]?
+        }
+
+        type content_part =
+          OpenAI::Chat::ChatCompletionContentPartText
+          | OpenAI::Chat::ChatCompletionContentPartImage
+
+        module ContentPart
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Chat::ChatCompletionStoreMessage::content_part]
+        end
       end
     end
   end
