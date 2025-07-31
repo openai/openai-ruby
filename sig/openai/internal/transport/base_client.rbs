@@ -99,7 +99,7 @@ module OpenAI
           retry_count: Integer
         ) -> Float
 
-        private def send_request: (
+        def send_request: (
           OpenAI::Internal::Transport::BaseClient::request_input request,
           redirect_count: Integer,
           retry_count: Integer,
