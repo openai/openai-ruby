@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.16.1 (2025-07-31)
+
+Full Changelog: [v0.16.0...v0.16.1](https://github.com/openai/openai-ruby/compare/v0.16.0...v0.16.1)
+
+### Bug Fixes
+
+* **client:** dont try to parse if content is missing ([#770](https://github.com/openai/openai-ruby/issues/770)) ([7f8f2d3](https://github.com/openai/openai-ruby/commit/7f8f2d32863fafc39ee4a884937673a2ad9be358))
+
+
+### Chores
+
+* **internal:** increase visibility of internal helper method ([eddbcda](https://github.com/openai/openai-ruby/commit/eddbcda189ac0a864fc3dadc5dd3578d730c491f))
+
 ## 0.16.0 (2025-07-30)
 
 Full Changelog: [v0.15.0...v0.16.0](https://github.com/openai/openai-ruby/compare/v0.15.0...v0.16.0)

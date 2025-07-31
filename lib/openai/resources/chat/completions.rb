@@ -166,7 +166,8 @@ module OpenAI
               raw[:choices]&.each do |choice|
                 message = choice.fetch(:message)
                 begin
-                  parsed = JSON.parse(message.fetch(:content), symbolize_names: true)
+                  content = message.fetch(:content)
+                  parsed = content.nil? ? nil : JSON.parse(content, symbolize_names: true)
                 rescue JSON::ParserError => e
                   parsed = e
                 end
@@ -180,7 +181,8 @@ module OpenAI
                 next if (model = tool_models[func.fetch(:name)]).nil?
 
                 begin
-                  parsed = JSON.parse(func.fetch(:arguments), symbolize_names: true)
+                  arguments = func.fetch(:arguments)
+                  parsed = arguments.nil? ? nil : JSON.parse(arguments, symbolize_names: true)
                 rescue JSON::ParserError => e
                   parsed = e
                 end
