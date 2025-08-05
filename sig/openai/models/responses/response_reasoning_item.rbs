@@ -6,6 +6,7 @@ module OpenAI
           id: String,
           summary: ::Array[OpenAI::Responses::ResponseReasoningItem::Summary],
           type: :reasoning,
+          content: ::Array[OpenAI::Responses::ResponseReasoningItem::Content],
           encrypted_content: String?,
           status: OpenAI::Models::Responses::ResponseReasoningItem::status
         }
@@ -16,6 +17,12 @@ module OpenAI
         attr_accessor summary: ::Array[OpenAI::Responses::ResponseReasoningItem::Summary]
 
         attr_accessor type: :reasoning
+
+        attr_reader content: ::Array[OpenAI::Responses::ResponseReasoningItem::Content]?
+
+        def content=: (
+          ::Array[OpenAI::Responses::ResponseReasoningItem::Content]
+        ) -> ::Array[OpenAI::Responses::ResponseReasoningItem::Content]
 
         attr_accessor encrypted_content: String?
 
@@ -28,6 +35,7 @@ module OpenAI
         def initialize: (
           id: String,
           summary: ::Array[OpenAI::Responses::ResponseReasoningItem::Summary],
+          ?content: ::Array[OpenAI::Responses::ResponseReasoningItem::Content],
           ?encrypted_content: String?,
           ?status: OpenAI::Models::Responses::ResponseReasoningItem::status,
           ?type: :reasoning
@@ -37,6 +45,7 @@ module OpenAI
           id: String,
           summary: ::Array[OpenAI::Responses::ResponseReasoningItem::Summary],
           type: :reasoning,
+          content: ::Array[OpenAI::Responses::ResponseReasoningItem::Content],
           encrypted_content: String?,
           status: OpenAI::Models::Responses::ResponseReasoningItem::status
         }
@@ -51,6 +60,18 @@ module OpenAI
           def initialize: (text: String, ?type: :summary_text) -> void
 
           def to_hash: -> { text: String, type: :summary_text }
+        end
+
+        type content = { text: String, type: :reasoning_text }
+
+        class Content < OpenAI::Internal::Type::BaseModel
+          attr_accessor text: String
+
+          attr_accessor type: :reasoning_text
+
+          def initialize: (text: String, ?type: :reasoning_text) -> void
+
+          def to_hash: -> { text: String, type: :reasoning_text }
         end
 
         type status = :in_progress | :completed | :incomplete

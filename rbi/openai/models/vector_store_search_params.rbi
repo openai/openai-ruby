@@ -157,6 +157,7 @@ module OpenAI
             )
           end
 
+        # Enable re-ranking; set to `none` to disable, which can help reduce latency.
         sig do
           returns(
             T.nilable(
@@ -188,7 +189,11 @@ module OpenAI
             score_threshold: Float
           ).returns(T.attached_class)
         end
-        def self.new(ranker: nil, score_threshold: nil)
+        def self.new(
+          # Enable re-ranking; set to `none` to disable, which can help reduce latency.
+          ranker: nil,
+          score_threshold: nil
+        )
         end
 
         sig do
@@ -203,6 +208,7 @@ module OpenAI
         def to_hash
         end
 
+        # Enable re-ranking; set to `none` to disable, which can help reduce latency.
         module Ranker
           extend OpenAI::Internal::Type::Enum
 
@@ -215,6 +221,11 @@ module OpenAI
             end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
+          NONE =
+            T.let(
+              :none,
+              OpenAI::VectorStoreSearchParams::RankingOptions::Ranker::TaggedSymbol
+            )
           AUTO =
             T.let(
               :auto,

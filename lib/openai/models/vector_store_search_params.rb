@@ -85,6 +85,7 @@ module OpenAI
 
       class RankingOptions < OpenAI::Internal::Type::BaseModel
         # @!attribute ranker
+        #   Enable re-ranking; set to `none` to disable, which can help reduce latency.
         #
         #   @return [Symbol, OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker, nil]
         optional :ranker, enum: -> { OpenAI::VectorStoreSearchParams::RankingOptions::Ranker }
@@ -97,13 +98,17 @@ module OpenAI
         # @!method initialize(ranker: nil, score_threshold: nil)
         #   Ranking options for search.
         #
-        #   @param ranker [Symbol, OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker]
+        #   @param ranker [Symbol, OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker] Enable re-ranking; set to `none` to disable, which can help reduce latency.
+        #
         #   @param score_threshold [Float]
 
+        # Enable re-ranking; set to `none` to disable, which can help reduce latency.
+        #
         # @see OpenAI::Models::VectorStoreSearchParams::RankingOptions#ranker
         module Ranker
           extend OpenAI::Internal::Type::Enum
 
+          NONE = :none
           AUTO = :auto
           DEFAULT_2024_11_15 = :"default-2024-11-15"
 

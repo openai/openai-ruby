@@ -38,6 +38,8 @@ module OpenAI
               OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent,
               OpenAI::Responses::ResponseReasoningSummaryTextDeltaEvent,
               OpenAI::Responses::ResponseReasoningSummaryTextDoneEvent,
+              OpenAI::Responses::ResponseReasoningTextDeltaEvent,
+              OpenAI::Responses::ResponseReasoningTextDoneEvent,
               OpenAI::Responses::ResponseRefusalDeltaEvent,
               OpenAI::Responses::ResponseRefusalDoneEvent,
               OpenAI::Responses::ResponseTextDeltaEvent,
@@ -58,9 +60,7 @@ module OpenAI
               OpenAI::Responses::ResponseMcpListToolsFailedEvent,
               OpenAI::Responses::ResponseMcpListToolsInProgressEvent,
               OpenAI::Responses::ResponseOutputTextAnnotationAddedEvent,
-              OpenAI::Responses::ResponseQueuedEvent,
-              OpenAI::Responses::ResponseReasoningSummaryDeltaEvent,
-              OpenAI::Responses::ResponseReasoningSummaryDoneEvent
+              OpenAI::Responses::ResponseQueuedEvent
             )
           end
 

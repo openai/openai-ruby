@@ -3,20 +3,24 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseReasoningSummaryDoneEvent < OpenAI::Internal::Type::BaseModel
+      class ResponseReasoningTextDoneEvent < OpenAI::Internal::Type::BaseModel
         OrHash =
           T.type_alias do
             T.any(
-              OpenAI::Responses::ResponseReasoningSummaryDoneEvent,
+              OpenAI::Responses::ResponseReasoningTextDoneEvent,
               OpenAI::Internal::AnyHash
             )
           end
 
-        # The unique identifier of the item for which the reasoning summary is finalized.
+        # The index of the reasoning content part.
+        sig { returns(Integer) }
+        attr_accessor :content_index
+
+        # The ID of the item this reasoning text is associated with.
         sig { returns(String) }
         attr_accessor :item_id
 
-        # The index of the output item in the response's output array.
+        # The index of the output item this reasoning text is associated with.
         sig { returns(Integer) }
         attr_accessor :output_index
 
@@ -24,52 +28,48 @@ module OpenAI
         sig { returns(Integer) }
         attr_accessor :sequence_number
 
-        # The index of the summary part within the output item.
-        sig { returns(Integer) }
-        attr_accessor :summary_index
-
-        # The finalized reasoning summary text.
+        # The full text of the completed reasoning content.
         sig { returns(String) }
         attr_accessor :text
 
-        # The type of the event. Always 'response.reasoning_summary.done'.
+        # The type of the event. Always `response.reasoning_text.done`.
         sig { returns(Symbol) }
         attr_accessor :type
 
-        # Emitted when the reasoning summary content is finalized for an item.
+        # Emitted when a reasoning text is completed.
         sig do
           params(
+            content_index: Integer,
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            summary_index: Integer,
             text: String,
             type: Symbol
           ).returns(T.attached_class)
         end
         def self.new(
-          # The unique identifier of the item for which the reasoning summary is finalized.
+          # The index of the reasoning content part.
+          content_index:,
+          # The ID of the item this reasoning text is associated with.
           item_id:,
-          # The index of the output item in the response's output array.
+          # The index of the output item this reasoning text is associated with.
           output_index:,
           # The sequence number of this event.
           sequence_number:,
-          # The index of the summary part within the output item.
-          summary_index:,
-          # The finalized reasoning summary text.
+          # The full text of the completed reasoning content.
           text:,
-          # The type of the event. Always 'response.reasoning_summary.done'.
-          type: :"response.reasoning_summary.done"
+          # The type of the event. Always `response.reasoning_text.done`.
+          type: :"response.reasoning_text.done"
         )
         end
 
         sig do
           override.returns(
             {
+              content_index: Integer,
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              summary_index: Integer,
               text: String,
               type: Symbol
             }

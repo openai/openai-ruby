@@ -16,7 +16,7 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :id
 
-        # Reasoning text contents.
+        # Reasoning summary content.
         sig do
           returns(T::Array[OpenAI::Responses::ResponseReasoningItem::Summary])
         end
@@ -25,6 +25,26 @@ module OpenAI
         # The type of the object. Always `reasoning`.
         sig { returns(Symbol) }
         attr_accessor :type
+
+        # Reasoning text content.
+        sig do
+          returns(
+            T.nilable(
+              T::Array[OpenAI::Responses::ResponseReasoningItem::Content]
+            )
+          )
+        end
+        attr_reader :content
+
+        sig do
+          params(
+            content:
+              T::Array[
+                OpenAI::Responses::ResponseReasoningItem::Content::OrHash
+              ]
+          ).void
+        end
+        attr_writer :content
 
         # The encrypted content of the reasoning item - populated when a response is
         # generated with `reasoning.encrypted_content` in the `include` parameter.
@@ -60,6 +80,10 @@ module OpenAI
               T::Array[
                 OpenAI::Responses::ResponseReasoningItem::Summary::OrHash
               ],
+            content:
+              T::Array[
+                OpenAI::Responses::ResponseReasoningItem::Content::OrHash
+              ],
             encrypted_content: T.nilable(String),
             status: OpenAI::Responses::ResponseReasoningItem::Status::OrSymbol,
             type: Symbol
@@ -68,8 +92,10 @@ module OpenAI
         def self.new(
           # The unique identifier of the reasoning content.
           id:,
-          # Reasoning text contents.
+          # Reasoning summary content.
           summary:,
+          # Reasoning text content.
+          content: nil,
           # The encrypted content of the reasoning item - populated when a response is
           # generated with `reasoning.encrypted_content` in the `include` parameter.
           encrypted_content: nil,
@@ -88,6 +114,8 @@ module OpenAI
               summary:
                 T::Array[OpenAI::Responses::ResponseReasoningItem::Summary],
               type: Symbol,
+              content:
+                T::Array[OpenAI::Responses::ResponseReasoningItem::Content],
               encrypted_content: T.nilable(String),
               status: OpenAI::Responses::ResponseReasoningItem::Status::OrSymbol
             }
@@ -105,7 +133,7 @@ module OpenAI
               )
             end
 
-          # A short summary of the reasoning used by the model when generating the response.
+          # A summary of the reasoning output from the model so far.
           sig { returns(String) }
           attr_accessor :text
 
@@ -115,10 +143,41 @@ module OpenAI
 
           sig { params(text: String, type: Symbol).returns(T.attached_class) }
           def self.new(
-            # A short summary of the reasoning used by the model when generating the response.
+            # A summary of the reasoning output from the model so far.
             text:,
             # The type of the object. Always `summary_text`.
             type: :summary_text
+          )
+          end
+
+          sig { override.returns({ text: String, type: Symbol }) }
+          def to_hash
+          end
+        end
+
+        class Content < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseReasoningItem::Content,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # Reasoning text output from the model.
+          sig { returns(String) }
+          attr_accessor :text
+
+          # The type of the object. Always `reasoning_text`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          sig { params(text: String, type: Symbol).returns(T.attached_class) }
+          def self.new(
+            # Reasoning text output from the model.
+            text:,
+            # The type of the object. Always `reasoning_text`.
+            type: :reasoning_text
           )
           end
 
