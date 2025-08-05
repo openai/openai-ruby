@@ -11,7 +11,7 @@ module OpenAI
         required :id, String
 
         # @!attribute summary
-        #   Reasoning text contents.
+        #   Reasoning summary content.
         #
         #   @return [Array<OpenAI::Models::Responses::ResponseReasoningItem::Summary>]
         required :summary,
@@ -22,6 +22,13 @@ module OpenAI
         #
         #   @return [Symbol, :reasoning]
         required :type, const: :reasoning
+
+        # @!attribute content
+        #   Reasoning text content.
+        #
+        #   @return [Array<OpenAI::Models::Responses::ResponseReasoningItem::Content>, nil]
+        optional :content,
+                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseReasoningItem::Content] }
 
         # @!attribute encrypted_content
         #   The encrypted content of the reasoning item - populated when a response is
@@ -37,7 +44,7 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Responses::ResponseReasoningItem::Status, nil]
         optional :status, enum: -> { OpenAI::Responses::ResponseReasoningItem::Status }
 
-        # @!method initialize(id:, summary:, encrypted_content: nil, status: nil, type: :reasoning)
+        # @!method initialize(id:, summary:, content: nil, encrypted_content: nil, status: nil, type: :reasoning)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseReasoningItem} for more details.
         #
@@ -48,7 +55,9 @@ module OpenAI
         #
         #   @param id [String] The unique identifier of the reasoning content.
         #
-        #   @param summary [Array<OpenAI::Models::Responses::ResponseReasoningItem::Summary>] Reasoning text contents.
+        #   @param summary [Array<OpenAI::Models::Responses::ResponseReasoningItem::Summary>] Reasoning summary content.
+        #
+        #   @param content [Array<OpenAI::Models::Responses::ResponseReasoningItem::Content>] Reasoning text content.
         #
         #   @param encrypted_content [String, nil] The encrypted content of the reasoning item - populated when a response is
         #
@@ -58,7 +67,7 @@ module OpenAI
 
         class Summary < OpenAI::Internal::Type::BaseModel
           # @!attribute text
-          #   A short summary of the reasoning used by the model when generating the response.
+          #   A summary of the reasoning output from the model so far.
           #
           #   @return [String]
           required :text, String
@@ -73,9 +82,31 @@ module OpenAI
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Responses::ResponseReasoningItem::Summary} for more details.
           #
-          #   @param text [String] A short summary of the reasoning used by the model when generating
+          #   @param text [String] A summary of the reasoning output from the model so far.
           #
           #   @param type [Symbol, :summary_text] The type of the object. Always `summary_text`.
+        end
+
+        class Content < OpenAI::Internal::Type::BaseModel
+          # @!attribute text
+          #   Reasoning text output from the model.
+          #
+          #   @return [String]
+          required :text, String
+
+          # @!attribute type
+          #   The type of the object. Always `reasoning_text`.
+          #
+          #   @return [Symbol, :reasoning_text]
+          required :type, const: :reasoning_text
+
+          # @!method initialize(text:, type: :reasoning_text)
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Responses::ResponseReasoningItem::Content} for more details.
+          #
+          #   @param text [String] Reasoning text output from the model.
+          #
+          #   @param type [Symbol, :reasoning_text] The type of the object. Always `reasoning_text`.
         end
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.

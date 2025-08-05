@@ -99,11 +99,12 @@ module OpenAI
           score_threshold: Float
         }
 
-        type ranker = :auto | :"default-2024-11-15"
+        type ranker = :none | :auto | :"default-2024-11-15"
 
         module Ranker
           extend OpenAI::Internal::Type::Enum
 
+          NONE: :none
           AUTO: :auto
           DEFAULT_2024_11_15: :"default-2024-11-15"
 
