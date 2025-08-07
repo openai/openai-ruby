@@ -60,7 +60,9 @@ module OpenAI
               OpenAI::Responses::ResponseMcpListToolsFailedEvent,
               OpenAI::Responses::ResponseMcpListToolsInProgressEvent,
               OpenAI::Responses::ResponseOutputTextAnnotationAddedEvent,
-              OpenAI::Responses::ResponseQueuedEvent
+              OpenAI::Responses::ResponseQueuedEvent,
+              OpenAI::Responses::ResponseCustomToolCallInputDeltaEvent,
+              OpenAI::Responses::ResponseCustomToolCallInputDoneEvent
             )
           end
 

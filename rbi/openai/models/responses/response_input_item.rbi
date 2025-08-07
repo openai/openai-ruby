@@ -32,6 +32,8 @@ module OpenAI
               OpenAI::Responses::ResponseInputItem::McpApprovalRequest,
               OpenAI::Responses::ResponseInputItem::McpApprovalResponse,
               OpenAI::Responses::ResponseInputItem::McpCall,
+              OpenAI::Responses::ResponseCustomToolCallOutput,
+              OpenAI::Responses::ResponseCustomToolCall,
               OpenAI::Responses::ResponseInputItem::ItemReference
             )
           end

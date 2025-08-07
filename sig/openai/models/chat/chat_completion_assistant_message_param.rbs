@@ -11,7 +11,7 @@ module OpenAI
           function_call: OpenAI::Chat::ChatCompletionAssistantMessageParam::FunctionCall?,
           name: String,
           refusal: String?,
-          tool_calls: ::Array[OpenAI::Chat::ChatCompletionMessageToolCall]
+          tool_calls: ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call]
         }
 
       class ChatCompletionAssistantMessageParam < OpenAI::Internal::Type::BaseModel
@@ -29,11 +29,11 @@ module OpenAI
 
         attr_accessor refusal: String?
 
-        attr_reader tool_calls: ::Array[OpenAI::Chat::ChatCompletionMessageToolCall]?
+        attr_reader tool_calls: ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call]?
 
         def tool_calls=: (
-          ::Array[OpenAI::Chat::ChatCompletionMessageToolCall]
-        ) -> ::Array[OpenAI::Chat::ChatCompletionMessageToolCall]
+          ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call]
+        ) -> ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call]
 
         def initialize: (
           ?audio: OpenAI::Chat::ChatCompletionAssistantMessageParam::Audio?,
@@ -41,7 +41,7 @@ module OpenAI
           ?function_call: OpenAI::Chat::ChatCompletionAssistantMessageParam::FunctionCall?,
           ?name: String,
           ?refusal: String?,
-          ?tool_calls: ::Array[OpenAI::Chat::ChatCompletionMessageToolCall],
+          ?tool_calls: ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call],
           ?role: :assistant
         ) -> void
 
@@ -52,7 +52,7 @@ module OpenAI
           function_call: OpenAI::Chat::ChatCompletionAssistantMessageParam::FunctionCall?,
           name: String,
           refusal: String?,
-          tool_calls: ::Array[OpenAI::Chat::ChatCompletionMessageToolCall]
+          tool_calls: ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call]
         }
 
         type audio = { id: String }

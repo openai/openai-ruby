@@ -4,6 +4,7 @@ module OpenAI
       type response_retrieve_params =
         {
           include: ::Array[OpenAI::Models::Responses::response_includable],
+          include_obfuscation: bool,
           starting_after: Integer
         }
         & OpenAI::Internal::Type::request_parameters
@@ -18,18 +19,24 @@ module OpenAI
           ::Array[OpenAI::Models::Responses::response_includable]
         ) -> ::Array[OpenAI::Models::Responses::response_includable]
 
+        attr_reader include_obfuscation: bool?
+
+        def include_obfuscation=: (bool) -> bool
+
         attr_reader starting_after: Integer?
 
         def starting_after=: (Integer) -> Integer
 
         def initialize: (
           ?include: ::Array[OpenAI::Models::Responses::response_includable],
+          ?include_obfuscation: bool,
           ?starting_after: Integer,
           ?request_options: OpenAI::request_opts
         ) -> void
 
         def to_hash: -> {
           include: ::Array[OpenAI::Models::Responses::response_includable],
+          include_obfuscation: bool,
           starting_after: Integer,
           request_options: OpenAI::RequestOptions
         }

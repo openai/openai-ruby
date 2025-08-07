@@ -5,7 +5,9 @@ module OpenAI
     module Chat
       type chat_completion_tool_choice_option =
         OpenAI::Models::Chat::ChatCompletionToolChoiceOption::auto
+        | OpenAI::Chat::ChatCompletionAllowedToolChoice
         | OpenAI::Chat::ChatCompletionNamedToolChoice
+        | OpenAI::Chat::ChatCompletionNamedToolChoiceCustom
 
       module ChatCompletionToolChoiceOption
         extend OpenAI::Internal::Type::Union

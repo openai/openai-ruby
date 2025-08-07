@@ -225,12 +225,11 @@ module OpenAI
         sig { params(prompt_cache_key: String).void }
         attr_writer :prompt_cache_key
 
-        # **o-series models only**
-        #
         # Constrains effort on reasoning for
         # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-        # supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
-        # result in faster responses and fewer tokens used on reasoning in a response.
+        # supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
+        # effort can result in faster responses and fewer tokens used on reasoning in a
+        # response.
         sig { returns(T.nilable(OpenAI::ReasoningEffort::OrSymbol)) }
         attr_accessor :reasoning_effort
 
@@ -368,7 +367,9 @@ module OpenAI
             T.nilable(
               T.any(
                 OpenAI::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
-                OpenAI::Chat::ChatCompletionNamedToolChoice
+                OpenAI::Chat::ChatCompletionAllowedToolChoice,
+                OpenAI::Chat::ChatCompletionNamedToolChoice,
+                OpenAI::Chat::ChatCompletionNamedToolChoiceCustom
               )
             )
           )
@@ -380,16 +381,29 @@ module OpenAI
             tool_choice:
               T.any(
                 OpenAI::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
-                OpenAI::Chat::ChatCompletionNamedToolChoice::OrHash
+                OpenAI::Chat::ChatCompletionAllowedToolChoice::OrHash,
+                OpenAI::Chat::ChatCompletionNamedToolChoice::OrHash,
+                OpenAI::Chat::ChatCompletionNamedToolChoiceCustom::OrHash
               )
           ).void
         end
         attr_writer :tool_choice
 
-        # A list of tools the model may call. Currently, only functions are supported as a
-        # tool. Use this to provide a list of functions the model may generate JSON inputs
-        # for. A max of 128 functions are supported.
-        sig { returns(T.nilable(T::Array[OpenAI::Chat::ChatCompletionTool])) }
+        # A list of tools the model may call. You can provide either
+        # [custom tools](https://platform.openai.com/docs/guides/function-calling#custom-tools)
+        # or [function tools](https://platform.openai.com/docs/guides/function-calling).
+        sig do
+          returns(
+            T.nilable(
+              T::Array[
+                T.any(
+                  OpenAI::Chat::ChatCompletionFunctionTool,
+                  OpenAI::Chat::ChatCompletionCustomTool
+                )
+              ]
+            )
+          )
+        end
         attr_reader :tools
 
         sig do
@@ -397,8 +411,9 @@ module OpenAI
             tools:
               T::Array[
                 T.any(
-                  OpenAI::Chat::ChatCompletionTool::OrHash,
                   OpenAI::StructuredOutput::JsonSchemaConverter
+                  OpenAI::Chat::ChatCompletionFunctionTool::OrHash,
+                  OpenAI::Chat::ChatCompletionCustomTool::OrHash
                 )
               ]
           ).void
@@ -429,6 +444,16 @@ module OpenAI
 
         sig { params(user: String).void }
         attr_writer :user
+
+        # Constrains the verbosity of the model's response. Lower values will result in
+        # more concise responses, while higher values will result in more verbose
+        # responses. Currently supported values are `low`, `medium`, and `high`.
+        sig do
+          returns(
+            T.nilable(OpenAI::Chat::CompletionCreateParams::Verbosity::OrSymbol)
+          )
+        end
+        attr_accessor :verbosity
 
         # This tool searches the web for relevant results to use in a response. Learn more
         # about the
@@ -511,18 +536,26 @@ module OpenAI
             tool_choice:
               T.any(
                 OpenAI::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
-                OpenAI::Chat::ChatCompletionNamedToolChoice::OrHash
+                OpenAI::Chat::ChatCompletionAllowedToolChoice::OrHash,
+                OpenAI::Chat::ChatCompletionNamedToolChoice::OrHash,
+                OpenAI::Chat::ChatCompletionNamedToolChoiceCustom::OrHash
               ),
             tools:
               T::Array[
                 T.any(
-                  OpenAI::Chat::ChatCompletionTool::OrHash,
                   OpenAI::StructuredOutput::JsonSchemaConverter
+                  OpenAI::Chat::ChatCompletionFunctionTool::OrHash,
+                  OpenAI::Chat::ChatCompletionCustomTool::OrHash
+                  OpenAI::Chat::ChatCompletionTool::OrHash,
                 )
               ],
             top_logprobs: T.nilable(Integer),
             top_p: T.nilable(Float),
             user: String,
+            verbosity:
+              T.nilable(
+                OpenAI::Chat::CompletionCreateParams::Verbosity::OrSymbol
+              ),
             web_search_options:
               OpenAI::Chat::CompletionCreateParams::WebSearchOptions::OrHash,
             request_options: OpenAI::RequestOptions::OrHash
@@ -631,12 +664,11 @@ module OpenAI
           # hit rates. Replaces the `user` field.
           # [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
           prompt_cache_key: nil,
-          # **o-series models only**
-          #
           # Constrains effort on reasoning for
           # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-          # supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
-          # result in faster responses and fewer tokens used on reasoning in a response.
+          # supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
+          # effort can result in faster responses and fewer tokens used on reasoning in a
+          # response.
           reasoning_effort: nil,
           # An object specifying the format that the model must output.
           #
@@ -707,9 +739,9 @@ module OpenAI
           # `none` is the default when no tools are present. `auto` is the default if tools
           # are present.
           tool_choice: nil,
-          # A list of tools the model may call. Currently, only functions are supported as a
-          # tool. Use this to provide a list of functions the model may generate JSON inputs
-          # for. A max of 128 functions are supported.
+          # A list of tools the model may call. You can provide either
+          # [custom tools](https://platform.openai.com/docs/guides/function-calling#custom-tools)
+          # or [function tools](https://platform.openai.com/docs/guides/function-calling).
           tools: nil,
           # An integer between 0 and 20 specifying the number of most likely tokens to
           # return at each token position, each with an associated log probability.
@@ -727,6 +759,10 @@ module OpenAI
           # similar requests and to help OpenAI detect and prevent abuse.
           # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
           user: nil,
+          # Constrains the verbosity of the model's response. Lower values will result in
+          # more concise responses, while higher values will result in more verbose
+          # responses. Currently supported values are `low`, `medium`, and `high`.
+          verbosity: nil,
           # This tool searches the web for relevant results to use in a response. Learn more
           # about the
           # [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
@@ -798,18 +834,25 @@ module OpenAI
               tool_choice:
                 T.any(
                   OpenAI::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
-                  OpenAI::Chat::ChatCompletionNamedToolChoice
+                  OpenAI::Chat::ChatCompletionAllowedToolChoice,
+                  OpenAI::Chat::ChatCompletionNamedToolChoice,
+                  OpenAI::Chat::ChatCompletionNamedToolChoiceCustom
                 ),
               tools:
                 T::Array[
                   T.any(
-                    OpenAI::Chat::ChatCompletionTool,
                     OpenAI::StructuredOutput::JsonSchemaConverter
+                    OpenAI::Chat::ChatCompletionFunctionTool,
+                    OpenAI::Chat::ChatCompletionCustomTool
                   )
                 ],
               top_logprobs: T.nilable(Integer),
               top_p: T.nilable(Float),
               user: String,
+              verbosity:
+                T.nilable(
+                  OpenAI::Chat::CompletionCreateParams::Verbosity::OrSymbol
+                ),
               web_search_options:
                 OpenAI::Chat::CompletionCreateParams::WebSearchOptions,
               request_options: OpenAI::RequestOptions
@@ -1135,6 +1178,45 @@ module OpenAI
               OpenAI::Internal::Type::ArrayOf[String],
               OpenAI::Internal::Type::Converter
             )
+        end
+
+        # Constrains the verbosity of the model's response. Lower values will result in
+        # more concise responses, while higher values will result in more verbose
+        # responses. Currently supported values are `low`, `medium`, and `high`.
+        module Verbosity
+          extend OpenAI::Internal::Type::Enum
+
+          TaggedSymbol =
+            T.type_alias do
+              T.all(Symbol, OpenAI::Chat::CompletionCreateParams::Verbosity)
+            end
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+          LOW =
+            T.let(
+              :low,
+              OpenAI::Chat::CompletionCreateParams::Verbosity::TaggedSymbol
+            )
+          MEDIUM =
+            T.let(
+              :medium,
+              OpenAI::Chat::CompletionCreateParams::Verbosity::TaggedSymbol
+            )
+          HIGH =
+            T.let(
+              :high,
+              OpenAI::Chat::CompletionCreateParams::Verbosity::TaggedSymbol
+            )
+
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Chat::CompletionCreateParams::Verbosity::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
         end
 
         class WebSearchOptions < OpenAI::Internal::Type::BaseModel

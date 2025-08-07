@@ -32,10 +32,11 @@ module OpenAI
           ?stream_options: OpenAI::Chat::ChatCompletionStreamOptions?,
           ?temperature: Float?,
           ?tool_choice: OpenAI::Models::Chat::chat_completion_tool_choice_option,
-          ?tools: ::Array[OpenAI::Chat::ChatCompletionTool],
+          ?tools: ::Array[OpenAI::Models::Chat::chat_completion_tool],
           ?top_logprobs: Integer?,
           ?top_p: Float?,
           ?user: String,
+          ?verbosity: OpenAI::Models::Chat::CompletionCreateParams::verbosity?,
           ?web_search_options: OpenAI::Chat::CompletionCreateParams::WebSearchOptions,
           ?request_options: OpenAI::request_opts
         ) -> OpenAI::Chat::ChatCompletion
@@ -68,10 +69,11 @@ module OpenAI
           ?stream_options: OpenAI::Chat::ChatCompletionStreamOptions?,
           ?temperature: Float?,
           ?tool_choice: OpenAI::Models::Chat::chat_completion_tool_choice_option,
-          ?tools: ::Array[OpenAI::Chat::ChatCompletionTool],
+          ?tools: ::Array[OpenAI::Models::Chat::chat_completion_tool],
           ?top_logprobs: Integer?,
           ?top_p: Float?,
           ?user: String,
+          ?verbosity: OpenAI::Models::Chat::CompletionCreateParams::verbosity?,
           ?web_search_options: OpenAI::Chat::CompletionCreateParams::WebSearchOptions,
           ?request_options: OpenAI::request_opts
         ) -> OpenAI::Internal::Stream[OpenAI::Chat::ChatCompletionChunk]

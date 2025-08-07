@@ -43,7 +43,7 @@ module OpenAI
           #
           # @param parallel_tool_calls [Boolean] Body param: Whether to enable [parallel function calling](https://platform.opena
           #
-          # @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] Body param: **o-series models only**
+          # @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] Body param: Constrains effort on reasoning for
           #
           # @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil] Body param: Specifies the format that the model must output. Compatible with [GP
           #
@@ -113,7 +113,7 @@ module OpenAI
           #
           # @param parallel_tool_calls [Boolean] Body param: Whether to enable [parallel function calling](https://platform.opena
           #
-          # @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] Body param: **o-series models only**
+          # @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] Body param: Constrains effort on reasoning for
           #
           # @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil] Body param: Specifies the format that the model must output. Compatible with [GP
           #

@@ -107,12 +107,11 @@ module OpenAI
           optional :parallel_tool_calls, OpenAI::Internal::Type::Boolean
 
           # @!attribute reasoning_effort
-          #   **o-series models only**
-          #
           #   Constrains effort on reasoning for
           #   [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-          #   supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
-          #   result in faster responses and fewer tokens used on reasoning in a response.
+          #   supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
+          #   effort can result in faster responses and fewer tokens used on reasoning in a
+          #   response.
           #
           #   @return [Symbol, OpenAI::Models::ReasoningEffort, nil]
           optional :reasoning_effort, enum: -> { OpenAI::ReasoningEffort }, nil?: true
@@ -216,7 +215,7 @@ module OpenAI
           #
           #   @param parallel_tool_calls [Boolean] Whether to enable [parallel function calling](https://platform.openai.com/docs/g
           #
-          #   @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] **o-series models only**
+          #   @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] Constrains effort on reasoning for
           #
           #   @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil] Specifies the format that the model must output. Compatible with [GPT-4o](https:
           #

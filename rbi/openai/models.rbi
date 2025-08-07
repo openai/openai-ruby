@@ -55,6 +55,8 @@ module OpenAI
 
   CreateEmbeddingResponse = OpenAI::Models::CreateEmbeddingResponse
 
+  CustomToolInputFormat = OpenAI::Models::CustomToolInputFormat
+
   Embedding = OpenAI::Models::Embedding
 
   EmbeddingCreateParams = OpenAI::Models::EmbeddingCreateParams
@@ -171,6 +173,10 @@ module OpenAI
   ResponseFormatJSONSchema = OpenAI::Models::ResponseFormatJSONSchema
 
   ResponseFormatText = OpenAI::Models::ResponseFormatText
+
+  ResponseFormatTextGrammar = OpenAI::Models::ResponseFormatTextGrammar
+
+  ResponseFormatTextPython = OpenAI::Models::ResponseFormatTextPython
 
   Responses = OpenAI::Models::Responses
 

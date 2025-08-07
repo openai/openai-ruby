@@ -111,12 +111,11 @@ module OpenAI
           sig { params(parallel_tool_calls: T::Boolean).void }
           attr_writer :parallel_tool_calls
 
-          # **o-series models only**
-          #
           # Constrains effort on reasoning for
           # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-          # supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
-          # result in faster responses and fewer tokens used on reasoning in a response.
+          # supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
+          # effort can result in faster responses and fewer tokens used on reasoning in a
+          # response.
           sig { returns(T.nilable(OpenAI::ReasoningEffort::OrSymbol)) }
           attr_accessor :reasoning_effort
 
@@ -330,12 +329,11 @@ module OpenAI
             # [parallel function calling](https://platform.openai.com/docs/guides/function-calling#configuring-parallel-function-calling)
             # during tool use.
             parallel_tool_calls: nil,
-            # **o-series models only**
-            #
             # Constrains effort on reasoning for
             # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-            # supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
-            # result in faster responses and fewer tokens used on reasoning in a response.
+            # supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
+            # effort can result in faster responses and fewer tokens used on reasoning in a
+            # response.
             reasoning_effort: nil,
             # Specifies the format that the model must output. Compatible with
             # [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),

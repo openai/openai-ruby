@@ -5,41 +5,22 @@ module OpenAI
     ChatCompletionTool = Chat::ChatCompletionTool
 
     module Chat
-      class ChatCompletionTool < OpenAI::Internal::Type::BaseModel
-        OrHash =
+      # A function tool that can be used to generate a response.
+      module ChatCompletionTool
+        extend OpenAI::Internal::Type::Union
+
+        Variants =
           T.type_alias do
-            T.any(OpenAI::Chat::ChatCompletionTool, OpenAI::Internal::AnyHash)
+            T.any(
+              OpenAI::Chat::ChatCompletionFunctionTool,
+              OpenAI::Chat::ChatCompletionCustomTool
+            )
           end
 
-        sig { returns(OpenAI::FunctionDefinition) }
-        attr_reader :function
-
-        sig { params(function: OpenAI::FunctionDefinition::OrHash).void }
-        attr_writer :function
-
-        # The type of the tool. Currently, only `function` is supported.
-        sig { returns(Symbol) }
-        attr_accessor :type
-
         sig do
-          params(
-            function: OpenAI::FunctionDefinition::OrHash,
-            type: Symbol
-          ).returns(T.attached_class)
+          override.returns(T::Array[OpenAI::Chat::ChatCompletionTool::Variants])
         end
-        def self.new(
-          function:,
-          # The type of the tool. Currently, only `function` is supported.
-          type: :function
-        )
-        end
-
-        sig do
-          override.returns(
-            { function: OpenAI::FunctionDefinition, type: Symbol }
-          )
-        end
-        def to_hash
+        def self.variants
         end
       end
     end

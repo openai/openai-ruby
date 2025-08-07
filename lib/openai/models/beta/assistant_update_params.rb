@@ -49,12 +49,11 @@ module OpenAI
         optional :name, String, nil?: true
 
         # @!attribute reasoning_effort
-        #   **o-series models only**
-        #
         #   Constrains effort on reasoning for
         #   [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-        #   supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
-        #   result in faster responses and fewer tokens used on reasoning in a response.
+        #   supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
+        #   effort can result in faster responses and fewer tokens used on reasoning in a
+        #   response.
         #
         #   @return [Symbol, OpenAI::Models::ReasoningEffort, nil]
         optional :reasoning_effort, enum: -> { OpenAI::ReasoningEffort }, nil?: true
@@ -133,7 +132,7 @@ module OpenAI
         #
         #   @param name [String, nil] The name of the assistant. The maximum length is 256 characters.
         #
-        #   @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] **o-series models only**
+        #   @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] Constrains effort on reasoning for
         #
         #   @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil] Specifies the format that the model must output. Compatible with [GPT-4o](https:
         #
@@ -156,6 +155,18 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           variant String
+
+          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_5 }
+
+          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_5_MINI }
+
+          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_5_NANO }
+
+          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_5_2025_08_07 }
+
+          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_5_MINI_2025_08_07 }
+
+          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_5_NANO_2025_08_07 }
 
           variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_1 }
 
@@ -238,6 +249,12 @@ module OpenAI
 
           # @!group
 
+          GPT_5 = :"gpt-5"
+          GPT_5_MINI = :"gpt-5-mini"
+          GPT_5_NANO = :"gpt-5-nano"
+          GPT_5_2025_08_07 = :"gpt-5-2025-08-07"
+          GPT_5_MINI_2025_08_07 = :"gpt-5-mini-2025-08-07"
+          GPT_5_NANO_2025_08_07 = :"gpt-5-nano-2025-08-07"
           GPT_4_1 = :"gpt-4.1"
           GPT_4_1_MINI = :"gpt-4.1-mini"
           GPT_4_1_NANO = :"gpt-4.1-nano"

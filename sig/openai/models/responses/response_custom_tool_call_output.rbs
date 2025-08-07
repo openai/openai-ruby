@@ -1,0 +1,39 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_custom_tool_call_output =
+        {
+          call_id: String,
+          output: String,
+          type: :custom_tool_call_output,
+          id: String
+        }
+
+      class ResponseCustomToolCallOutput < OpenAI::Internal::Type::BaseModel
+        attr_accessor call_id: String
+
+        attr_accessor output: String
+
+        attr_accessor type: :custom_tool_call_output
+
+        attr_reader id: String?
+
+        def id=: (String) -> String
+
+        def initialize: (
+          call_id: String,
+          output: String,
+          ?id: String,
+          ?type: :custom_tool_call_output
+        ) -> void
+
+        def to_hash: -> {
+          call_id: String,
+          output: String,
+          type: :custom_tool_call_output,
+          id: String
+        }
+      end
+    end
+  end
+end

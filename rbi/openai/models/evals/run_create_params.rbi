@@ -1125,6 +1125,7 @@ module OpenAI
                         OpenAI::Responses::Tool::CodeInterpreter,
                         OpenAI::Responses::Tool::ImageGeneration,
                         OpenAI::Responses::Tool::LocalShell,
+                        OpenAI::Responses::CustomTool,
                         OpenAI::Responses::WebSearchTool
                       )
                     ]
@@ -1145,6 +1146,7 @@ module OpenAI
                         OpenAI::Responses::Tool::CodeInterpreter::OrHash,
                         OpenAI::Responses::Tool::ImageGeneration::OrHash,
                         OpenAI::Responses::Tool::LocalShell::OrHash,
+                        OpenAI::Responses::CustomTool::OrHash,
                         OpenAI::Responses::WebSearchTool::OrHash
                       )
                     ]
@@ -1176,6 +1178,7 @@ module OpenAI
                         OpenAI::Responses::Tool::CodeInterpreter::OrHash,
                         OpenAI::Responses::Tool::ImageGeneration::OrHash,
                         OpenAI::Responses::Tool::LocalShell::OrHash,
+                        OpenAI::Responses::CustomTool::OrHash,
                         OpenAI::Responses::WebSearchTool::OrHash
                       )
                     ],
@@ -1233,6 +1236,7 @@ module OpenAI
                           OpenAI::Responses::Tool::CodeInterpreter,
                           OpenAI::Responses::Tool::ImageGeneration,
                           OpenAI::Responses::Tool::LocalShell,
+                          OpenAI::Responses::CustomTool,
                           OpenAI::Responses::WebSearchTool
                         )
                       ],
