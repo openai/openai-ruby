@@ -208,6 +208,24 @@ module OpenAI
         sig { returns(T.nilable(T::Boolean)) }
         attr_accessor :store
 
+        # Options for streaming responses. Only set this when you set `stream: true`.
+        sig do
+          returns(
+            T.nilable(OpenAI::Responses::ResponseCreateParams::StreamOptions)
+          )
+        end
+        attr_reader :stream_options
+
+        sig do
+          params(
+            stream_options:
+              T.nilable(
+                OpenAI::Responses::ResponseCreateParams::StreamOptions::OrHash
+              )
+          ).void
+        end
+        attr_writer :stream_options
+
         # What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
         # make the output more random, while lower values like 0.2 will make it more
         # focused and deterministic. We generally recommend altering this or `top_p` but
@@ -242,9 +260,11 @@ module OpenAI
             T.nilable(
               T.any(
                 OpenAI::Responses::ToolChoiceOptions::OrSymbol,
+                OpenAI::Responses::ToolChoiceAllowed,
                 OpenAI::Responses::ToolChoiceTypes,
                 OpenAI::Responses::ToolChoiceFunction,
-                OpenAI::Responses::ToolChoiceMcp
+                OpenAI::Responses::ToolChoiceMcp,
+                OpenAI::Responses::ToolChoiceCustom
               )
             )
           )
@@ -256,9 +276,11 @@ module OpenAI
             tool_choice:
               T.any(
                 OpenAI::Responses::ToolChoiceOptions::OrSymbol,
+                OpenAI::Responses::ToolChoiceAllowed::OrHash,
                 OpenAI::Responses::ToolChoiceTypes::OrHash,
                 OpenAI::Responses::ToolChoiceFunction::OrHash,
-                OpenAI::Responses::ToolChoiceMcp::OrHash
+                OpenAI::Responses::ToolChoiceMcp::OrHash,
+                OpenAI::Responses::ToolChoiceCustom::OrHash
               )
           ).void
         end
@@ -276,8 +298,10 @@ module OpenAI
         #   Learn more about
         #   [built-in tools](https://platform.openai.com/docs/guides/tools).
         # - **Function calls (custom tools)**: Functions that are defined by you, enabling
-        #   the model to call your own code. Learn more about
+        #   the model to call your own code with strongly typed arguments and outputs.
+        #   Learn more about
         #   [function calling](https://platform.openai.com/docs/guides/function-calling).
+        #   You can also use custom tools to call your own code.
         sig do
           returns(
             T.nilable(
@@ -290,6 +314,7 @@ module OpenAI
                   OpenAI::Responses::Tool::CodeInterpreter,
                   OpenAI::Responses::Tool::ImageGeneration,
                   OpenAI::Responses::Tool::LocalShell,
+                  OpenAI::Responses::CustomTool,
                   OpenAI::Responses::WebSearchTool
                 )
               ]
@@ -310,6 +335,7 @@ module OpenAI
                   OpenAI::Responses::Tool::CodeInterpreter::OrHash,
                   OpenAI::Responses::Tool::ImageGeneration::OrHash,
                   OpenAI::Responses::Tool::LocalShell::OrHash,
+                  OpenAI::Responses::CustomTool::OrHash,
                   OpenAI::Responses::WebSearchTool::OrHash
                 )
               ]
@@ -357,6 +383,18 @@ module OpenAI
         sig { params(user: String).void }
         attr_writer :user
 
+        # Constrains the verbosity of the model's response. Lower values will result in
+        # more concise responses, while higher values will result in more verbose
+        # responses. Currently supported values are `low`, `medium`, and `high`.
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::Responses::ResponseCreateParams::Verbosity::OrSymbol
+            )
+          )
+        end
+        attr_accessor :verbosity
+
         sig do
           params(
             background: T.nilable(T::Boolean),
@@ -386,14 +424,20 @@ module OpenAI
                 OpenAI::Responses::ResponseCreateParams::ServiceTier::OrSymbol
               ),
             store: T.nilable(T::Boolean),
+            stream_options:
+              T.nilable(
+                OpenAI::Responses::ResponseCreateParams::StreamOptions::OrHash
+              ),
             temperature: T.nilable(Float),
             text: OpenAI::Responses::ResponseTextConfig::OrHash,
             tool_choice:
               T.any(
                 OpenAI::Responses::ToolChoiceOptions::OrSymbol,
+                OpenAI::Responses::ToolChoiceAllowed::OrHash,
                 OpenAI::Responses::ToolChoiceTypes::OrHash,
                 OpenAI::Responses::ToolChoiceFunction::OrHash,
-                OpenAI::Responses::ToolChoiceMcp::OrHash
+                OpenAI::Responses::ToolChoiceMcp::OrHash,
+                OpenAI::Responses::ToolChoiceCustom::OrHash
               ),
             tools:
               T::Array[
@@ -405,6 +449,7 @@ module OpenAI
                   OpenAI::Responses::Tool::CodeInterpreter::OrHash,
                   OpenAI::Responses::Tool::ImageGeneration::OrHash,
                   OpenAI::Responses::Tool::LocalShell::OrHash,
+                  OpenAI::Responses::CustomTool::OrHash,
                   OpenAI::Responses::WebSearchTool::OrHash
                 )
               ],
@@ -415,6 +460,10 @@ module OpenAI
                 OpenAI::Responses::ResponseCreateParams::Truncation::OrSymbol
               ),
             user: String,
+            verbosity:
+              T.nilable(
+                OpenAI::Responses::ResponseCreateParams::Verbosity::OrSymbol
+              ),
             request_options: OpenAI::RequestOptions::OrHash
           ).returns(T.attached_class)
         end
@@ -521,6 +570,8 @@ module OpenAI
           service_tier: nil,
           # Whether to store the generated model response for later retrieval via API.
           store: nil,
+          # Options for streaming responses. Only set this when you set `stream: true`.
+          stream_options: nil,
           # What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
           # make the output more random, while lower values like 0.2 will make it more
           # focused and deterministic. We generally recommend altering this or `top_p` but
@@ -548,8 +599,10 @@ module OpenAI
           #   Learn more about
           #   [built-in tools](https://platform.openai.com/docs/guides/tools).
           # - **Function calls (custom tools)**: Functions that are defined by you, enabling
-          #   the model to call your own code. Learn more about
+          #   the model to call your own code with strongly typed arguments and outputs.
+          #   Learn more about
           #   [function calling](https://platform.openai.com/docs/guides/function-calling).
+          #   You can also use custom tools to call your own code.
           tools: nil,
           # An integer between 0 and 20 specifying the number of most likely tokens to
           # return at each token position, each with an associated log probability.
@@ -574,6 +627,10 @@ module OpenAI
           # similar requests and to help OpenAI detect and prevent abuse.
           # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
           user: nil,
+          # Constrains the verbosity of the model's response. Lower values will result in
+          # more concise responses, while higher values will result in more verbose
+          # responses. Currently supported values are `low`, `medium`, and `high`.
+          verbosity: nil,
           request_options: {}
         )
         end
@@ -608,14 +665,20 @@ module OpenAI
                   OpenAI::Responses::ResponseCreateParams::ServiceTier::OrSymbol
                 ),
               store: T.nilable(T::Boolean),
+              stream_options:
+                T.nilable(
+                  OpenAI::Responses::ResponseCreateParams::StreamOptions
+                ),
               temperature: T.nilable(Float),
               text: OpenAI::Responses::ResponseTextConfig,
               tool_choice:
                 T.any(
                   OpenAI::Responses::ToolChoiceOptions::OrSymbol,
+                  OpenAI::Responses::ToolChoiceAllowed,
                   OpenAI::Responses::ToolChoiceTypes,
                   OpenAI::Responses::ToolChoiceFunction,
-                  OpenAI::Responses::ToolChoiceMcp
+                  OpenAI::Responses::ToolChoiceMcp,
+                  OpenAI::Responses::ToolChoiceCustom
                 ),
               tools:
                 T::Array[
@@ -627,6 +690,7 @@ module OpenAI
                     OpenAI::Responses::Tool::CodeInterpreter,
                     OpenAI::Responses::Tool::ImageGeneration,
                     OpenAI::Responses::Tool::LocalShell,
+                    OpenAI::Responses::CustomTool,
                     OpenAI::Responses::WebSearchTool
                   )
                 ],
@@ -637,6 +701,10 @@ module OpenAI
                   OpenAI::Responses::ResponseCreateParams::Truncation::OrSymbol
                 ),
               user: String,
+              verbosity:
+                T.nilable(
+                  OpenAI::Responses::ResponseCreateParams::Verbosity::OrSymbol
+                ),
               request_options: OpenAI::RequestOptions
             }
           )
@@ -739,6 +807,47 @@ module OpenAI
           end
         end
 
+        class StreamOptions < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseCreateParams::StreamOptions,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # When true, stream obfuscation will be enabled. Stream obfuscation adds random
+          # characters to an `obfuscation` field on streaming delta events to normalize
+          # payload sizes as a mitigation to certain side-channel attacks. These obfuscation
+          # fields are included by default, but add a small amount of overhead to the data
+          # stream. You can set `include_obfuscation` to false to optimize for bandwidth if
+          # you trust the network links between your application and the OpenAI API.
+          sig { returns(T.nilable(T::Boolean)) }
+          attr_reader :include_obfuscation
+
+          sig { params(include_obfuscation: T::Boolean).void }
+          attr_writer :include_obfuscation
+
+          # Options for streaming responses. Only set this when you set `stream: true`.
+          sig do
+            params(include_obfuscation: T::Boolean).returns(T.attached_class)
+          end
+          def self.new(
+            # When true, stream obfuscation will be enabled. Stream obfuscation adds random
+            # characters to an `obfuscation` field on streaming delta events to normalize
+            # payload sizes as a mitigation to certain side-channel attacks. These obfuscation
+            # fields are included by default, but add a small amount of overhead to the data
+            # stream. You can set `include_obfuscation` to false to optimize for bandwidth if
+            # you trust the network links between your application and the OpenAI API.
+            include_obfuscation: nil
+          )
+          end
+
+          sig { override.returns({ include_obfuscation: T::Boolean }) }
+          def to_hash
+          end
+        end
+
         # How the model should select which tool (or tools) to use when generating a
         # response. See the `tools` parameter to see how to specify which tools the model
         # can call.
@@ -749,9 +858,11 @@ module OpenAI
             T.type_alias do
               T.any(
                 OpenAI::Responses::ToolChoiceOptions::TaggedSymbol,
+                OpenAI::Responses::ToolChoiceAllowed,
                 OpenAI::Responses::ToolChoiceTypes,
                 OpenAI::Responses::ToolChoiceFunction,
-                OpenAI::Responses::ToolChoiceMcp
+                OpenAI::Responses::ToolChoiceMcp,
+                OpenAI::Responses::ToolChoiceCustom
               )
             end
 
@@ -797,6 +908,45 @@ module OpenAI
             override.returns(
               T::Array[
                 OpenAI::Responses::ResponseCreateParams::Truncation::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
+        end
+
+        # Constrains the verbosity of the model's response. Lower values will result in
+        # more concise responses, while higher values will result in more verbose
+        # responses. Currently supported values are `low`, `medium`, and `high`.
+        module Verbosity
+          extend OpenAI::Internal::Type::Enum
+
+          TaggedSymbol =
+            T.type_alias do
+              T.all(Symbol, OpenAI::Responses::ResponseCreateParams::Verbosity)
+            end
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+          LOW =
+            T.let(
+              :low,
+              OpenAI::Responses::ResponseCreateParams::Verbosity::TaggedSymbol
+            )
+          MEDIUM =
+            T.let(
+              :medium,
+              OpenAI::Responses::ResponseCreateParams::Verbosity::TaggedSymbol
+            )
+          HIGH =
+            T.let(
+              :high,
+              OpenAI::Responses::ResponseCreateParams::Verbosity::TaggedSymbol
+            )
+
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Responses::ResponseCreateParams::Verbosity::TaggedSymbol
               ]
             )
           end

@@ -44,7 +44,8 @@ module OpenAI
                 OpenAI::Responses::ResponseOutputItem::LocalShellCall::OrHash,
                 OpenAI::Responses::ResponseOutputItem::McpCall::OrHash,
                 OpenAI::Responses::ResponseOutputItem::McpListTools::OrHash,
-                OpenAI::Responses::ResponseOutputItem::McpApprovalRequest::OrHash
+                OpenAI::Responses::ResponseOutputItem::McpApprovalRequest::OrHash,
+                OpenAI::Responses::ResponseCustomToolCall::OrHash
               ),
             output_index: Integer,
             sequence_number: Integer,

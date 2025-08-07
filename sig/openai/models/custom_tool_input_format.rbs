@@ -1,0 +1,61 @@
+module OpenAI
+  module Models
+    type custom_tool_input_format =
+      OpenAI::CustomToolInputFormat::Text
+      | OpenAI::CustomToolInputFormat::Grammar
+
+    module CustomToolInputFormat
+      extend OpenAI::Internal::Type::Union
+
+      type text = { type: :text }
+
+      class Text < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :text
+
+        def initialize: (?type: :text) -> void
+
+        def to_hash: -> { type: :text }
+      end
+
+      type grammar =
+        {
+          definition: String,
+          syntax: OpenAI::Models::CustomToolInputFormat::Grammar::syntax,
+          type: :grammar
+        }
+
+      class Grammar < OpenAI::Internal::Type::BaseModel
+        attr_accessor definition: String
+
+        attr_accessor syntax: OpenAI::Models::CustomToolInputFormat::Grammar::syntax
+
+        attr_accessor type: :grammar
+
+        def initialize: (
+          definition: String,
+          syntax: OpenAI::Models::CustomToolInputFormat::Grammar::syntax,
+          ?type: :grammar
+        ) -> void
+
+        def to_hash: -> {
+          definition: String,
+          syntax: OpenAI::Models::CustomToolInputFormat::Grammar::syntax,
+          type: :grammar
+        }
+
+        type syntax = :lark | :regex
+
+        module Syntax
+          extend OpenAI::Internal::Type::Enum
+
+          LARK: :lark
+          REGEX: :regex
+
+          def self?.values: -> ::Array[OpenAI::Models::CustomToolInputFormat::Grammar::syntax]
+        end
+      end
+
+      def self?.variants: -> ::Array[OpenAI::Models::custom_tool_input_format]
+    end
+  end
+end

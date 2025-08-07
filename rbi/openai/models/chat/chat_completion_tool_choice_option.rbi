@@ -21,7 +21,9 @@ module OpenAI
           T.type_alias do
             T.any(
               OpenAI::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol,
-              OpenAI::Chat::ChatCompletionNamedToolChoice
+              OpenAI::Chat::ChatCompletionAllowedToolChoice,
+              OpenAI::Chat::ChatCompletionNamedToolChoice,
+              OpenAI::Chat::ChatCompletionNamedToolChoiceCustom
             )
           end
 

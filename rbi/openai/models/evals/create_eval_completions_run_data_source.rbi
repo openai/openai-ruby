@@ -935,12 +935,16 @@ module OpenAI
           # A list of tools the model may call. Currently, only functions are supported as a
           # tool. Use this to provide a list of functions the model may generate JSON inputs
           # for. A max of 128 functions are supported.
-          sig { returns(T.nilable(T::Array[OpenAI::Chat::ChatCompletionTool])) }
+          sig do
+            returns(
+              T.nilable(T::Array[OpenAI::Chat::ChatCompletionFunctionTool])
+            )
+          end
           attr_reader :tools
 
           sig do
             params(
-              tools: T::Array[OpenAI::Chat::ChatCompletionTool::OrHash]
+              tools: T::Array[OpenAI::Chat::ChatCompletionFunctionTool::OrHash]
             ).void
           end
           attr_writer :tools
@@ -963,7 +967,7 @@ module OpenAI
                 ),
               seed: Integer,
               temperature: Float,
-              tools: T::Array[OpenAI::Chat::ChatCompletionTool::OrHash],
+              tools: T::Array[OpenAI::Chat::ChatCompletionFunctionTool::OrHash],
               top_p: Float
             ).returns(T.attached_class)
           end
@@ -1006,7 +1010,7 @@ module OpenAI
                   ),
                 seed: Integer,
                 temperature: Float,
-                tools: T::Array[OpenAI::Chat::ChatCompletionTool],
+                tools: T::Array[OpenAI::Chat::ChatCompletionFunctionTool],
                 top_p: Float
               }
             )

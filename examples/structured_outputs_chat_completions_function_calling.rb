@@ -27,6 +27,11 @@ chat_completion
   .reject { _1.message.refusal }
   .flat_map { _1.message.tool_calls.to_a }
   .each do |tool_call|
-    # parsed is an instance of `GetWeather`
-    pp(tool_call.function.parsed)
+    case tool_call
+    when OpenAI::Chat::ChatCompletionMessageFunctionToolCall
+      # parsed is an instance of `GetWeather`
+      pp(tool_call.function.parsed)
+    else
+      puts("Unexpected tool call type: #{tool_call.type}")
+    end
   end

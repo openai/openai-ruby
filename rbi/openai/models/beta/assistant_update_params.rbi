@@ -65,12 +65,11 @@ module OpenAI
         sig { returns(T.nilable(String)) }
         attr_accessor :name
 
-        # **o-series models only**
-        #
         # Constrains effort on reasoning for
         # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-        # supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
-        # result in faster responses and fewer tokens used on reasoning in a response.
+        # supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
+        # effort can result in faster responses and fewer tokens used on reasoning in a
+        # response.
         sig { returns(T.nilable(OpenAI::ReasoningEffort::OrSymbol)) }
         attr_accessor :reasoning_effort
 
@@ -232,12 +231,11 @@ module OpenAI
           model: nil,
           # The name of the assistant. The maximum length is 256 characters.
           name: nil,
-          # **o-series models only**
-          #
           # Constrains effort on reasoning for
           # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-          # supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
-          # result in faster responses and fewer tokens used on reasoning in a response.
+          # supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
+          # effort can result in faster responses and fewer tokens used on reasoning in a
+          # response.
           reasoning_effort: nil,
           # Specifies the format that the model must output. Compatible with
           # [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
@@ -354,6 +352,36 @@ module OpenAI
             end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
+          GPT_5 =
+            T.let(
+              :"gpt-5",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
+          GPT_5_MINI =
+            T.let(
+              :"gpt-5-mini",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
+          GPT_5_NANO =
+            T.let(
+              :"gpt-5-nano",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
+          GPT_5_2025_08_07 =
+            T.let(
+              :"gpt-5-2025-08-07",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
+          GPT_5_MINI_2025_08_07 =
+            T.let(
+              :"gpt-5-mini-2025-08-07",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
+          GPT_5_NANO_2025_08_07 =
+            T.let(
+              :"gpt-5-nano-2025-08-07",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
           GPT_4_1 =
             T.let(
               :"gpt-4.1",

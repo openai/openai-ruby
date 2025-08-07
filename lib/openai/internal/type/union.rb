@@ -6,28 +6,24 @@ module OpenAI
       # @api private
       #
       # @example
-      #   # `chat_completion_content_part` is a `OpenAI::Chat::ChatCompletionContentPart`
-      #   case chat_completion_content_part
-      #   when OpenAI::Chat::ChatCompletionContentPartText
-      #     puts(chat_completion_content_part.text)
-      #   when OpenAI::Chat::ChatCompletionContentPartImage
-      #     puts(chat_completion_content_part.image_url)
-      #   when OpenAI::Chat::ChatCompletionContentPartInputAudio
-      #     puts(chat_completion_content_part.input_audio)
+      #   # `custom_tool_input_format` is a `OpenAI::CustomToolInputFormat`
+      #   case custom_tool_input_format
+      #   when OpenAI::CustomToolInputFormat::Text
+      #     puts(custom_tool_input_format.type)
+      #   when OpenAI::CustomToolInputFormat::Grammar
+      #     puts(custom_tool_input_format.definition)
       #   else
-      #     puts(chat_completion_content_part)
+      #     puts(custom_tool_input_format)
       #   end
       #
       # @example
-      #   case chat_completion_content_part
-      #   in {type: :text, text: text}
-      #     puts(text)
-      #   in {type: :image_url, image_url: image_url}
-      #     puts(image_url)
-      #   in {type: :input_audio, input_audio: input_audio}
-      #     puts(input_audio)
+      #   case custom_tool_input_format
+      #   in {type: :text}
+      #     # ...
+      #   in {type: :grammar, definition: definition, syntax: syntax}
+      #     puts(definition)
       #   else
-      #     puts(chat_completion_content_part)
+      #     puts(custom_tool_input_format)
       #   end
       module Union
         include OpenAI::Internal::Type::Converter

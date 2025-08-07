@@ -1,0 +1,43 @@
+module OpenAI
+  module Models
+    module Responses
+      type custom_tool =
+        {
+          name: String,
+          type: :custom,
+          description: String,
+          format_: OpenAI::Models::custom_tool_input_format
+        }
+
+      class CustomTool < OpenAI::Internal::Type::BaseModel
+        attr_accessor name: String
+
+        attr_accessor type: :custom
+
+        attr_reader description: String?
+
+        def description=: (String) -> String
+
+        attr_reader format_: OpenAI::Models::custom_tool_input_format?
+
+        def format_=: (
+          OpenAI::Models::custom_tool_input_format
+        ) -> OpenAI::Models::custom_tool_input_format
+
+        def initialize: (
+          name: String,
+          ?description: String,
+          ?format_: OpenAI::Models::custom_tool_input_format,
+          ?type: :custom
+        ) -> void
+
+        def to_hash: -> {
+          name: String,
+          type: :custom,
+          description: String,
+          format_: OpenAI::Models::custom_tool_input_format
+        }
+      end
+    end
+  end
+end

@@ -33,6 +33,10 @@ module OpenAI
         # A tool that allows the model to execute shell commands in a local environment.
         variant :local_shell, -> { OpenAI::Responses::Tool::LocalShell }
 
+        # A custom tool that processes input using a specified format. Learn more about
+        # [custom tools](https://platform.openai.com/docs/guides/function-calling#custom-tools).
+        variant :custom, -> { OpenAI::Responses::CustomTool }
+
         # This tool searches the web for relevant results to use in a response. Learn more about the [web search tool](https://platform.openai.com/docs/guides/tools-web-search).
         variant -> { OpenAI::Responses::WebSearchTool }
 
@@ -542,7 +546,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::WebSearchTool)]
+        #   @return [Array(OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::WebSearchTool)]
       end
     end
   end

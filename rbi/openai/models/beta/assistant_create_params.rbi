@@ -45,12 +45,11 @@ module OpenAI
         sig { returns(T.nilable(String)) }
         attr_accessor :name
 
-        # **o-series models only**
-        #
         # Constrains effort on reasoning for
         # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-        # supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
-        # result in faster responses and fewer tokens used on reasoning in a response.
+        # supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
+        # effort can result in faster responses and fewer tokens used on reasoning in a
+        # response.
         sig { returns(T.nilable(OpenAI::ReasoningEffort::OrSymbol)) }
         attr_accessor :reasoning_effort
 
@@ -208,12 +207,11 @@ module OpenAI
           metadata: nil,
           # The name of the assistant. The maximum length is 256 characters.
           name: nil,
-          # **o-series models only**
-          #
           # Constrains effort on reasoning for
           # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-          # supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
-          # result in faster responses and fewer tokens used on reasoning in a response.
+          # supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
+          # effort can result in faster responses and fewer tokens used on reasoning in a
+          # response.
           reasoning_effort: nil,
           # Specifies the format that the model must output. Compatible with
           # [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),

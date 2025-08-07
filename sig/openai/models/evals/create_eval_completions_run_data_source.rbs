@@ -335,7 +335,7 @@ module OpenAI
             response_format: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams::response_format,
             seed: Integer,
             temperature: Float,
-            tools: ::Array[OpenAI::Chat::ChatCompletionTool],
+            tools: ::Array[OpenAI::Chat::ChatCompletionFunctionTool],
             top_p: Float
           }
 
@@ -358,11 +358,11 @@ module OpenAI
 
           def temperature=: (Float) -> Float
 
-          attr_reader tools: ::Array[OpenAI::Chat::ChatCompletionTool]?
+          attr_reader tools: ::Array[OpenAI::Chat::ChatCompletionFunctionTool]?
 
           def tools=: (
-            ::Array[OpenAI::Chat::ChatCompletionTool]
-          ) -> ::Array[OpenAI::Chat::ChatCompletionTool]
+            ::Array[OpenAI::Chat::ChatCompletionFunctionTool]
+          ) -> ::Array[OpenAI::Chat::ChatCompletionFunctionTool]
 
           attr_reader top_p: Float?
 
@@ -373,7 +373,7 @@ module OpenAI
             ?response_format: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams::response_format,
             ?seed: Integer,
             ?temperature: Float,
-            ?tools: ::Array[OpenAI::Chat::ChatCompletionTool],
+            ?tools: ::Array[OpenAI::Chat::ChatCompletionFunctionTool],
             ?top_p: Float
           ) -> void
 
@@ -382,7 +382,7 @@ module OpenAI
             response_format: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams::response_format,
             seed: Integer,
             temperature: Float,
-            tools: ::Array[OpenAI::Chat::ChatCompletionTool],
+            tools: ::Array[OpenAI::Chat::ChatCompletionFunctionTool],
             top_p: Float
           }
 

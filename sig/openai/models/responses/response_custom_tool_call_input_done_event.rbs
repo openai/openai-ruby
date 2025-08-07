@@ -1,0 +1,42 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_custom_tool_call_input_done_event =
+        {
+          input: String,
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.custom_tool_call_input.done"
+        }
+
+      class ResponseCustomToolCallInputDoneEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor input: String
+
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor type: :"response.custom_tool_call_input.done"
+
+        def initialize: (
+          input: String,
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          ?type: :"response.custom_tool_call_input.done"
+        ) -> void
+
+        def to_hash: -> {
+          input: String,
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.custom_tool_call_input.done"
+        }
+      end
+    end
+  end
+end

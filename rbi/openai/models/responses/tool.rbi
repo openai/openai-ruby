@@ -17,6 +17,7 @@ module OpenAI
               OpenAI::Responses::Tool::CodeInterpreter,
               OpenAI::Responses::Tool::ImageGeneration,
               OpenAI::Responses::Tool::LocalShell,
+              OpenAI::Responses::CustomTool,
               OpenAI::Responses::WebSearchTool
             )
           end

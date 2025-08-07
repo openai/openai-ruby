@@ -25,7 +25,7 @@ module OpenAI
         end
         attr_writer :function
 
-        # The type of the tool. Currently, only `function` is supported.
+        # For function calling, the type is always `function`.
         sig { returns(Symbol) }
         attr_accessor :type
 
@@ -40,7 +40,7 @@ module OpenAI
         end
         def self.new(
           function:,
-          # The type of the tool. Currently, only `function` is supported.
+          # For function calling, the type is always `function`.
           type: :function
         )
         end

@@ -20,6 +20,7 @@ module OpenAI
         ?safety_identifier: String,
         ?service_tier: OpenAI::Models::Responses::ResponseCreateParams::service_tier?,
         ?store: bool?,
+        ?stream_options: OpenAI::Responses::ResponseCreateParams::StreamOptions?,
         ?temperature: Float?,
         ?text: OpenAI::Responses::ResponseTextConfig,
         ?tool_choice: OpenAI::Models::Responses::ResponseCreateParams::tool_choice,
@@ -28,10 +29,41 @@ module OpenAI
         ?top_p: Float?,
         ?truncation: OpenAI::Models::Responses::ResponseCreateParams::truncation?,
         ?user: String,
+        ?verbosity: OpenAI::Models::Responses::ResponseCreateParams::verbosity?,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Responses::Response
 
       def stream_raw: (
+        ?background: bool?,
+        ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
+        ?input: OpenAI::Models::Responses::ResponseCreateParams::input,
+        ?instructions: String?,
+        ?max_output_tokens: Integer?,
+        ?max_tool_calls: Integer?,
+        ?metadata: OpenAI::Models::metadata?,
+        ?model: OpenAI::Models::responses_model,
+        ?parallel_tool_calls: bool?,
+        ?previous_response_id: String?,
+        ?prompt: OpenAI::Responses::ResponsePrompt?,
+        ?prompt_cache_key: String,
+        ?reasoning: OpenAI::Reasoning?,
+        ?safety_identifier: String,
+        ?service_tier: OpenAI::Models::Responses::ResponseCreateParams::service_tier?,
+        ?store: bool?,
+        ?stream_options: OpenAI::Responses::ResponseCreateParams::StreamOptions?,
+        ?temperature: Float?,
+        ?text: OpenAI::Responses::ResponseTextConfig,
+        ?tool_choice: OpenAI::Models::Responses::ResponseCreateParams::tool_choice,
+        ?tools: ::Array[OpenAI::Models::Responses::tool],
+        ?top_logprobs: Integer?,
+        ?top_p: Float?,
+        ?truncation: OpenAI::Models::Responses::ResponseCreateParams::truncation?,
+        ?user: String,
+        ?verbosity: OpenAI::Models::Responses::ResponseCreateParams::verbosity?,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Internal::Stream[OpenAI::Models::Responses::response_stream_event]
+
+      def stream: (
         ?background: bool?,
         ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
         ?input: OpenAI::Models::Responses::ResponseCreateParams::input,
@@ -56,12 +88,14 @@ module OpenAI
         ?top_p: Float?,
         ?truncation: OpenAI::Models::Responses::ResponseCreateParams::truncation?,
         ?user: String,
+        ?verbosity: OpenAI::Models::Responses::ResponseCreateParams::verbosity?,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Internal::Stream[OpenAI::Models::Responses::response_stream_event]
 
       def retrieve: (
         String response_id,
         ?include: ::Array[OpenAI::Models::Responses::response_includable],
+        ?include_obfuscation: bool,
         ?starting_after: Integer,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Responses::Response
@@ -69,6 +103,7 @@ module OpenAI
       def retrieve_streaming: (
         String response_id,
         ?include: ::Array[OpenAI::Models::Responses::response_includable],
+        ?include_obfuscation: bool,
         ?starting_after: Integer,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Internal::Stream[OpenAI::Models::Responses::response_stream_event]

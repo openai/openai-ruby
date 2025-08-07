@@ -21,7 +21,8 @@ module OpenAI
               OpenAI::Responses::ResponseOutputItem::LocalShellCall,
               OpenAI::Responses::ResponseOutputItem::McpCall,
               OpenAI::Responses::ResponseOutputItem::McpListTools,
-              OpenAI::Responses::ResponseOutputItem::McpApprovalRequest
+              OpenAI::Responses::ResponseOutputItem::McpApprovalRequest,
+              OpenAI::Responses::ResponseCustomToolCall
             )
           end
 

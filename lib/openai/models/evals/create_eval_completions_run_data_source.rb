@@ -512,8 +512,8 @@ module OpenAI
           #   tool. Use this to provide a list of functions the model may generate JSON inputs
           #   for. A max of 128 functions are supported.
           #
-          #   @return [Array<OpenAI::Models::Chat::ChatCompletionTool>, nil]
-          optional :tools, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletionTool] }
+          #   @return [Array<OpenAI::Models::Chat::ChatCompletionFunctionTool>, nil]
+          optional :tools, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletionFunctionTool] }
 
           # @!attribute top_p
           #   An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
@@ -534,7 +534,7 @@ module OpenAI
           #
           #   @param temperature [Float] A higher temperature increases randomness in the outputs.
           #
-          #   @param tools [Array<OpenAI::Models::Chat::ChatCompletionTool>] A list of tools the model may call. Currently, only functions are supported as a
+          #   @param tools [Array<OpenAI::Models::Chat::ChatCompletionFunctionTool>] A list of tools the model may call. Currently, only functions are supported as a
           #
           #   @param top_p [Float] An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
 

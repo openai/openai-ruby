@@ -83,6 +83,12 @@ module OpenAI
 
         type model =
           String
+          | :"gpt-5"
+          | :"gpt-5-mini"
+          | :"gpt-5-nano"
+          | :"gpt-5-2025-08-07"
+          | :"gpt-5-mini-2025-08-07"
+          | :"gpt-5-nano-2025-08-07"
           | :"gpt-4.1"
           | :"gpt-4.1-mini"
           | :"gpt-4.1-nano"
@@ -125,6 +131,12 @@ module OpenAI
 
           def self?.variants: -> ::Array[OpenAI::Models::Beta::AssistantUpdateParams::model]
 
+          GPT_5: :"gpt-5"
+          GPT_5_MINI: :"gpt-5-mini"
+          GPT_5_NANO: :"gpt-5-nano"
+          GPT_5_2025_08_07: :"gpt-5-2025-08-07"
+          GPT_5_MINI_2025_08_07: :"gpt-5-mini-2025-08-07"
+          GPT_5_NANO_2025_08_07: :"gpt-5-nano-2025-08-07"
           GPT_4_1: :"gpt-4.1"
           GPT_4_1_MINI: :"gpt-4.1-mini"
           GPT_4_1_NANO: :"gpt-4.1-nano"

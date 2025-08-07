@@ -30,10 +30,11 @@ module OpenAI
           stream_options: OpenAI::Chat::ChatCompletionStreamOptions?,
           temperature: Float?,
           tool_choice: OpenAI::Models::Chat::chat_completion_tool_choice_option,
-          tools: ::Array[OpenAI::Chat::ChatCompletionTool],
+          tools: ::Array[OpenAI::Models::Chat::chat_completion_tool],
           top_logprobs: Integer?,
           top_p: Float?,
           user: String,
+          verbosity: OpenAI::Models::Chat::CompletionCreateParams::verbosity?,
           web_search_options: OpenAI::Chat::CompletionCreateParams::WebSearchOptions
         }
         & OpenAI::Internal::Type::request_parameters
@@ -118,11 +119,11 @@ module OpenAI
           OpenAI::Models::Chat::chat_completion_tool_choice_option
         ) -> OpenAI::Models::Chat::chat_completion_tool_choice_option
 
-        attr_reader tools: ::Array[OpenAI::Chat::ChatCompletionTool]?
+        attr_reader tools: ::Array[OpenAI::Models::Chat::chat_completion_tool]?
 
         def tools=: (
-          ::Array[OpenAI::Chat::ChatCompletionTool]
-        ) -> ::Array[OpenAI::Chat::ChatCompletionTool]
+          ::Array[OpenAI::Models::Chat::chat_completion_tool]
+        ) -> ::Array[OpenAI::Models::Chat::chat_completion_tool]
 
         attr_accessor top_logprobs: Integer?
 
@@ -131,6 +132,8 @@ module OpenAI
         attr_reader user: String?
 
         def user=: (String) -> String
+
+        attr_accessor verbosity: OpenAI::Models::Chat::CompletionCreateParams::verbosity?
 
         attr_reader web_search_options: OpenAI::Chat::CompletionCreateParams::WebSearchOptions?
 
@@ -166,10 +169,11 @@ module OpenAI
           ?stream_options: OpenAI::Chat::ChatCompletionStreamOptions?,
           ?temperature: Float?,
           ?tool_choice: OpenAI::Models::Chat::chat_completion_tool_choice_option,
-          ?tools: ::Array[OpenAI::Chat::ChatCompletionTool],
+          ?tools: ::Array[OpenAI::Models::Chat::chat_completion_tool],
           ?top_logprobs: Integer?,
           ?top_p: Float?,
           ?user: String,
+          ?verbosity: OpenAI::Models::Chat::CompletionCreateParams::verbosity?,
           ?web_search_options: OpenAI::Chat::CompletionCreateParams::WebSearchOptions,
           ?request_options: OpenAI::request_opts
         ) -> void
@@ -202,10 +206,11 @@ module OpenAI
           stream_options: OpenAI::Chat::ChatCompletionStreamOptions?,
           temperature: Float?,
           tool_choice: OpenAI::Models::Chat::chat_completion_tool_choice_option,
-          tools: ::Array[OpenAI::Chat::ChatCompletionTool],
+          tools: ::Array[OpenAI::Models::Chat::chat_completion_tool],
           top_logprobs: Integer?,
           top_p: Float?,
           user: String,
+          verbosity: OpenAI::Models::Chat::CompletionCreateParams::verbosity?,
           web_search_options: OpenAI::Chat::CompletionCreateParams::WebSearchOptions,
           request_options: OpenAI::RequestOptions
         }
@@ -316,6 +321,18 @@ module OpenAI
           def self?.variants: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::stop]
 
           StringArray: OpenAI::Internal::Type::Converter
+        end
+
+        type verbosity = :low | :medium | :high
+
+        module Verbosity
+          extend OpenAI::Internal::Type::Enum
+
+          LOW: :low
+          MEDIUM: :medium
+          HIGH: :high
+
+          def self?.values: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::verbosity]
         end
 
         type web_search_options =
