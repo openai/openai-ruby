@@ -191,12 +191,11 @@ module OpenAI
         optional :prompt_cache_key, String
 
         # @!attribute reasoning_effort
-        #   **o-series models only**
-        #
         #   Constrains effort on reasoning for
         #   [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-        #   supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
-        #   result in faster responses and fewer tokens used on reasoning in a response.
+        #   supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
+        #   effort can result in faster responses and fewer tokens used on reasoning in a
+        #   response.
         #
         #   @return [Symbol, OpenAI::Models::ReasoningEffort, nil]
         optional :reasoning_effort, enum: -> { OpenAI::ReasoningEffort }, nil?: true
@@ -303,16 +302,16 @@ module OpenAI
         #   `none` is the default when no tools are present. `auto` is the default if tools
         #   are present.
         #
-        #   @return [Symbol, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto, OpenAI::Models::Chat::ChatCompletionNamedToolChoice, nil]
+        #   @return [Symbol, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto, OpenAI::Models::Chat::ChatCompletionAllowedToolChoice, OpenAI::Models::Chat::ChatCompletionNamedToolChoice, OpenAI::Models::Chat::ChatCompletionNamedToolChoiceCustom, nil]
         optional :tool_choice, union: -> { OpenAI::Chat::ChatCompletionToolChoiceOption }
 
         # @!attribute tools
-        #   A list of tools the model may call. Currently, only functions are supported as a
-        #   tool. Use this to provide a list of functions the model may generate JSON inputs
-        #   for. A max of 128 functions are supported.
+        #   A list of tools the model may call. You can provide either
+        #   [custom tools](https://platform.openai.com/docs/guides/function-calling#custom-tools)
+        #   or [function tools](https://platform.openai.com/docs/guides/function-calling).
         #
-        #   @return [Array<OpenAI::Models::Chat::ChatCompletionTool>, nil]
-        optional :tools, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletionTool] }
+        #   @return [Array<OpenAI::Models::Chat::ChatCompletionFunctionTool, OpenAI::Models::Chat::ChatCompletionCustomTool>, nil]
+        optional :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Chat::ChatCompletionTool] }
 
         # @!attribute top_logprobs
         #   An integer between 0 and 20 specifying the number of most likely tokens to
@@ -344,6 +343,14 @@ module OpenAI
         #   @return [String, nil]
         optional :user, String
 
+        # @!attribute verbosity
+        #   Constrains the verbosity of the model's response. Lower values will result in
+        #   more concise responses, while higher values will result in more verbose
+        #   responses. Currently supported values are `low`, `medium`, and `high`.
+        #
+        #   @return [Symbol, OpenAI::Models::Chat::CompletionCreateParams::Verbosity, nil]
+        optional :verbosity, enum: -> { OpenAI::Chat::CompletionCreateParams::Verbosity }, nil?: true
+
         # @!attribute web_search_options
         #   This tool searches the web for relevant results to use in a response. Learn more
         #   about the
@@ -352,7 +359,7 @@ module OpenAI
         #   @return [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions, nil]
         optional :web_search_options, -> { OpenAI::Chat::CompletionCreateParams::WebSearchOptions }
 
-        # @!method initialize(messages:, model:, audio: nil, frequency_penalty: nil, function_call: nil, functions: nil, logit_bias: nil, logprobs: nil, max_completion_tokens: nil, max_tokens: nil, metadata: nil, modalities: nil, n: nil, parallel_tool_calls: nil, prediction: nil, presence_penalty: nil, prompt_cache_key: nil, reasoning_effort: nil, response_format: nil, safety_identifier: nil, seed: nil, service_tier: nil, stop: nil, store: nil, stream_options: nil, temperature: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, user: nil, web_search_options: nil, request_options: {})
+        # @!method initialize(messages:, model:, audio: nil, frequency_penalty: nil, function_call: nil, functions: nil, logit_bias: nil, logprobs: nil, max_completion_tokens: nil, max_tokens: nil, metadata: nil, modalities: nil, n: nil, parallel_tool_calls: nil, prediction: nil, presence_penalty: nil, prompt_cache_key: nil, reasoning_effort: nil, response_format: nil, safety_identifier: nil, seed: nil, service_tier: nil, stop: nil, store: nil, stream_options: nil, temperature: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, user: nil, verbosity: nil, web_search_options: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Chat::CompletionCreateParams} for more details.
         #
@@ -390,7 +397,7 @@ module OpenAI
         #
         #   @param prompt_cache_key [String] Used by OpenAI to cache responses for similar requests to optimize your cache hi
         #
-        #   @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] **o-series models only**
+        #   @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] Constrains effort on reasoning for
         #
         #   @param response_format [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject] An object specifying the format that the model must output.
         #
@@ -408,15 +415,17 @@ module OpenAI
         #
         #   @param temperature [Float, nil] What sampling temperature to use, between 0 and 2. Higher values like 0.8 will m
         #
-        #   @param tool_choice [Symbol, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto, OpenAI::Models::Chat::ChatCompletionNamedToolChoice] Controls which (if any) tool is called by the model.
+        #   @param tool_choice [Symbol, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto, OpenAI::Models::Chat::ChatCompletionAllowedToolChoice, OpenAI::Models::Chat::ChatCompletionNamedToolChoice, OpenAI::Models::Chat::ChatCompletionNamedToolChoiceCustom] Controls which (if any) tool is called by the model.
         #
-        #   @param tools [Array<OpenAI::Models::Chat::ChatCompletionTool>] A list of tools the model may call. Currently, only functions are supported as a
+        #   @param tools [Array<OpenAI::Models::Chat::ChatCompletionFunctionTool, OpenAI::Models::Chat::ChatCompletionCustomTool>] A list of tools the model may call. You can provide either
         #
         #   @param top_logprobs [Integer, nil] An integer between 0 and 20 specifying the number of most likely tokens to
         #
         #   @param top_p [Float, nil] An alternative to sampling with temperature, called nucleus sampling,
         #
         #   @param user [String] This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use
+        #
+        #   @param verbosity [Symbol, OpenAI::Models::Chat::CompletionCreateParams::Verbosity, nil] Constrains the verbosity of the model's response. Lower values will result in
         #
         #   @param web_search_options [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions] This tool searches the web for relevant results to use in a response.
         #
@@ -609,6 +618,20 @@ module OpenAI
 
           # @type [OpenAI::Internal::Type::Converter]
           StringArray = OpenAI::Internal::Type::ArrayOf[String]
+        end
+
+        # Constrains the verbosity of the model's response. Lower values will result in
+        # more concise responses, while higher values will result in more verbose
+        # responses. Currently supported values are `low`, `medium`, and `high`.
+        module Verbosity
+          extend OpenAI::Internal::Type::Enum
+
+          LOW = :low
+          MEDIUM = :medium
+          HIGH = :high
+
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
 
         class WebSearchOptions < OpenAI::Internal::Type::BaseModel

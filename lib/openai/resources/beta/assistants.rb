@@ -21,7 +21,7 @@ module OpenAI
         #
         # @param name [String, nil] The name of the assistant. The maximum length is 256 characters.
         #
-        # @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] **o-series models only**
+        # @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] Constrains effort on reasoning for
         #
         # @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil] Specifies the format that the model must output. Compatible with [GPT-4o](https:
         #
@@ -88,7 +88,7 @@ module OpenAI
         #
         # @param name [String, nil] The name of the assistant. The maximum length is 256 characters.
         #
-        # @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] **o-series models only**
+        # @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] Constrains effort on reasoning for
         #
         # @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil] Specifies the format that the model must output. Compatible with [GPT-4o](https:
         #

@@ -6,12 +6,11 @@ module OpenAI
       OrHash =
         T.type_alias { T.any(OpenAI::Reasoning, OpenAI::Internal::AnyHash) }
 
-      # **o-series models only**
-      #
       # Constrains effort on reasoning for
       # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-      # supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
-      # result in faster responses and fewer tokens used on reasoning in a response.
+      # supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
+      # effort can result in faster responses and fewer tokens used on reasoning in a
+      # response.
       sig { returns(T.nilable(OpenAI::ReasoningEffort::OrSymbol)) }
       attr_accessor :effort
 
@@ -42,12 +41,11 @@ module OpenAI
         ).returns(T.attached_class)
       end
       def self.new(
-        # **o-series models only**
-        #
         # Constrains effort on reasoning for
         # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-        # supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
-        # result in faster responses and fewer tokens used on reasoning in a response.
+        # supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
+        # effort can result in faster responses and fewer tokens used on reasoning in a
+        # response.
         effort: nil,
         # **Deprecated:** use `summary` instead.
         #

@@ -48,14 +48,20 @@ module OpenAI
               OpenAI::Responses::ResponseCreateParams::ServiceTier::OrSymbol
             ),
           store: T.nilable(T::Boolean),
+          stream_options:
+            T.nilable(
+              OpenAI::Responses::ResponseCreateParams::StreamOptions::OrHash
+            ),
           temperature: T.nilable(Float),
           text: OpenAI::Responses::ResponseTextConfig::OrHash,
           tool_choice:
             T.any(
               OpenAI::Responses::ToolChoiceOptions::OrSymbol,
+              OpenAI::Responses::ToolChoiceAllowed::OrHash,
               OpenAI::Responses::ToolChoiceTypes::OrHash,
               OpenAI::Responses::ToolChoiceFunction::OrHash,
-              OpenAI::Responses::ToolChoiceMcp::OrHash
+              OpenAI::Responses::ToolChoiceMcp::OrHash,
+              OpenAI::Responses::ToolChoiceCustom::OrHash
             ),
           tools:
             T::Array[
@@ -67,6 +73,7 @@ module OpenAI
                 OpenAI::Responses::Tool::CodeInterpreter::OrHash,
                 OpenAI::Responses::Tool::ImageGeneration::OrHash,
                 OpenAI::Responses::Tool::LocalShell::OrHash,
+                OpenAI::Responses::CustomTool::OrHash,
                 OpenAI::Responses::WebSearchTool::OrHash
               )
             ],
@@ -77,6 +84,10 @@ module OpenAI
               OpenAI::Responses::ResponseCreateParams::Truncation::OrSymbol
             ),
           user: String,
+          verbosity:
+            T.nilable(
+              OpenAI::Responses::ResponseCreateParams::Verbosity::OrSymbol
+            ),
           stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(OpenAI::Responses::Response)
@@ -184,6 +195,8 @@ module OpenAI
         service_tier: nil,
         # Whether to store the generated model response for later retrieval via API.
         store: nil,
+        # Options for streaming responses. Only set this when you set `stream: true`.
+        stream_options: nil,
         # What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
         # make the output more random, while lower values like 0.2 will make it more
         # focused and deterministic. We generally recommend altering this or `top_p` but
@@ -211,8 +224,10 @@ module OpenAI
         #   Learn more about
         #   [built-in tools](https://platform.openai.com/docs/guides/tools).
         # - **Function calls (custom tools)**: Functions that are defined by you, enabling
-        #   the model to call your own code. Learn more about
+        #   the model to call your own code with strongly typed arguments and outputs.
+        #   Learn more about
         #   [function calling](https://platform.openai.com/docs/guides/function-calling).
+        #   You can also use custom tools to call your own code.
         tools: nil,
         # An integer between 0 and 20 specifying the number of most likely tokens to
         # return at each token position, each with an associated log probability.
@@ -237,6 +252,10 @@ module OpenAI
         # similar requests and to help OpenAI detect and prevent abuse.
         # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
         user: nil,
+        # Constrains the verbosity of the model's response. Lower values will result in
+        # more concise responses, while higher values will result in more verbose
+        # responses. Currently supported values are `low`, `medium`, and `high`.
+        verbosity: nil,
         # There is no need to provide `stream:`. Instead, use `#stream_raw` or `#create`
         # for streaming and non-streaming use cases, respectively.
         stream: false,
@@ -286,14 +305,20 @@ module OpenAI
               OpenAI::Responses::ResponseCreateParams::ServiceTier::OrSymbol
             ),
           store: T.nilable(T::Boolean),
+          stream_options:
+            T.nilable(
+              OpenAI::Responses::ResponseCreateParams::StreamOptions::OrHash
+            ),
           temperature: T.nilable(Float),
           text: OpenAI::Responses::ResponseTextConfig::OrHash,
           tool_choice:
             T.any(
               OpenAI::Responses::ToolChoiceOptions::OrSymbol,
+              OpenAI::Responses::ToolChoiceAllowed::OrHash,
               OpenAI::Responses::ToolChoiceTypes::OrHash,
               OpenAI::Responses::ToolChoiceFunction::OrHash,
-              OpenAI::Responses::ToolChoiceMcp::OrHash
+              OpenAI::Responses::ToolChoiceMcp::OrHash,
+              OpenAI::Responses::ToolChoiceCustom::OrHash
             ),
           tools:
             T::Array[
@@ -305,6 +330,7 @@ module OpenAI
                 OpenAI::Responses::Tool::CodeInterpreter::OrHash,
                 OpenAI::Responses::Tool::ImageGeneration::OrHash,
                 OpenAI::Responses::Tool::LocalShell::OrHash,
+                OpenAI::Responses::CustomTool::OrHash,
                 OpenAI::Responses::WebSearchTool::OrHash
               )
             ],
@@ -315,6 +341,10 @@ module OpenAI
               OpenAI::Responses::ResponseCreateParams::Truncation::OrSymbol
             ),
           user: String,
+          verbosity:
+            T.nilable(
+              OpenAI::Responses::ResponseCreateParams::Verbosity::OrSymbol
+            ),
           stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(
@@ -426,6 +456,8 @@ module OpenAI
         service_tier: nil,
         # Whether to store the generated model response for later retrieval via API.
         store: nil,
+        # Options for streaming responses. Only set this when you set `stream: true`.
+        stream_options: nil,
         # What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
         # make the output more random, while lower values like 0.2 will make it more
         # focused and deterministic. We generally recommend altering this or `top_p` but
@@ -453,8 +485,10 @@ module OpenAI
         #   Learn more about
         #   [built-in tools](https://platform.openai.com/docs/guides/tools).
         # - **Function calls (custom tools)**: Functions that are defined by you, enabling
-        #   the model to call your own code. Learn more about
+        #   the model to call your own code with strongly typed arguments and outputs.
+        #   Learn more about
         #   [function calling](https://platform.openai.com/docs/guides/function-calling).
+        #   You can also use custom tools to call your own code.
         tools: nil,
         # An integer between 0 and 20 specifying the number of most likely tokens to
         # return at each token position, each with an associated log probability.
@@ -479,6 +513,10 @@ module OpenAI
         # similar requests and to help OpenAI detect and prevent abuse.
         # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
         user: nil,
+        # Constrains the verbosity of the model's response. Lower values will result in
+        # more concise responses, while higher values will result in more verbose
+        # responses. Currently supported values are `low`, `medium`, and `high`.
+        verbosity: nil,
         # There is no need to provide `stream:`. Instead, use `#stream_raw` or `#create`
         # for streaming and non-streaming use cases, respectively.
         stream: true,
@@ -493,6 +531,7 @@ module OpenAI
         params(
           response_id: String,
           include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
+          include_obfuscation: T::Boolean,
           starting_after: Integer,
           stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
@@ -504,6 +543,13 @@ module OpenAI
         # Additional fields to include in the response. See the `include` parameter for
         # Response creation above for more information.
         include: nil,
+        # When true, stream obfuscation will be enabled. Stream obfuscation adds random
+        # characters to an `obfuscation` field on streaming delta events to normalize
+        # payload sizes as a mitigation to certain side-channel attacks. These obfuscation
+        # fields are included by default, but add a small amount of overhead to the data
+        # stream. You can set `include_obfuscation` to false to optimize for bandwidth if
+        # you trust the network links between your application and the OpenAI API.
+        include_obfuscation: nil,
         # The sequence number of the event after which to start streaming.
         starting_after: nil,
         # There is no need to provide `stream:`. Instead, use `#retrieve_streaming` or
@@ -520,6 +566,7 @@ module OpenAI
         params(
           response_id: String,
           include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
+          include_obfuscation: T::Boolean,
           starting_after: Integer,
           stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
@@ -535,6 +582,13 @@ module OpenAI
         # Additional fields to include in the response. See the `include` parameter for
         # Response creation above for more information.
         include: nil,
+        # When true, stream obfuscation will be enabled. Stream obfuscation adds random
+        # characters to an `obfuscation` field on streaming delta events to normalize
+        # payload sizes as a mitigation to certain side-channel attacks. These obfuscation
+        # fields are included by default, but add a small amount of overhead to the data
+        # stream. You can set `include_obfuscation` to false to optimize for bandwidth if
+        # you trust the network links between your application and the OpenAI API.
+        include_obfuscation: nil,
         # The sequence number of the event after which to start streaming.
         starting_after: nil,
         # There is no need to provide `stream:`. Instead, use `#retrieve_streaming` or

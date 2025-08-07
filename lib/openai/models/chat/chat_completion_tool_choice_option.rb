@@ -18,8 +18,14 @@ module OpenAI
         # `none` means the model will not call any tool and instead generates a message. `auto` means the model can pick between generating a message or calling one or more tools. `required` means the model must call one or more tools.
         variant enum: -> { OpenAI::Chat::ChatCompletionToolChoiceOption::Auto }
 
+        # Constrains the tools available to the model to a pre-defined set.
+        variant -> { OpenAI::Chat::ChatCompletionAllowedToolChoice }
+
         # Specifies a tool the model should use. Use to force the model to call a specific function.
         variant -> { OpenAI::Chat::ChatCompletionNamedToolChoice }
+
+        # Specifies a tool the model should use. Use to force the model to call a specific custom tool.
+        variant -> { OpenAI::Chat::ChatCompletionNamedToolChoiceCustom }
 
         # `none` means the model will not call any tool and instead generates a message.
         # `auto` means the model can pick between generating a message or calling one or
@@ -36,7 +42,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(Symbol, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto, OpenAI::Models::Chat::ChatCompletionNamedToolChoice)]
+        #   @return [Array(Symbol, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto, OpenAI::Models::Chat::ChatCompletionAllowedToolChoice, OpenAI::Models::Chat::ChatCompletionNamedToolChoice, OpenAI::Models::Chat::ChatCompletionNamedToolChoiceCustom)]
       end
     end
 

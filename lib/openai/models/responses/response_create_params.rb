@@ -51,7 +51,7 @@ module OpenAI
         #   - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
         #   - [Function calling](https://platform.openai.com/docs/guides/function-calling)
         #
-        #   @return [String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseInputItem::ItemReference>, nil]
+        #   @return [String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::ItemReference>, nil]
         optional :input, union: -> { OpenAI::Responses::ResponseCreateParams::Input }
 
         # @!attribute instructions
@@ -178,6 +178,12 @@ module OpenAI
         #   @return [Boolean, nil]
         optional :store, OpenAI::Internal::Type::Boolean, nil?: true
 
+        # @!attribute stream_options
+        #   Options for streaming responses. Only set this when you set `stream: true`.
+        #
+        #   @return [OpenAI::Models::Responses::ResponseCreateParams::StreamOptions, nil]
+        optional :stream_options, -> { OpenAI::Responses::ResponseCreateParams::StreamOptions }, nil?: true
+
         # @!attribute temperature
         #   What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
         #   make the output more random, while lower values like 0.2 will make it more
@@ -202,7 +208,7 @@ module OpenAI
         #   response. See the `tools` parameter to see how to specify which tools the model
         #   can call.
         #
-        #   @return [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp, nil]
+        #   @return [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceAllowed, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp, OpenAI::Models::Responses::ToolChoiceCustom, nil]
         optional :tool_choice, union: -> { OpenAI::Responses::ResponseCreateParams::ToolChoice }
 
         # @!attribute tools
@@ -218,10 +224,12 @@ module OpenAI
         #     Learn more about
         #     [built-in tools](https://platform.openai.com/docs/guides/tools).
         #   - **Function calls (custom tools)**: Functions that are defined by you, enabling
-        #     the model to call your own code. Learn more about
+        #     the model to call your own code with strongly typed arguments and outputs.
+        #     Learn more about
         #     [function calling](https://platform.openai.com/docs/guides/function-calling).
+        #     You can also use custom tools to call your own code.
         #
-        #   @return [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::WebSearchTool>, nil]
+        #   @return [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::WebSearchTool>, nil]
         optional :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool] }
 
         # @!attribute top_logprobs
@@ -265,7 +273,15 @@ module OpenAI
         #   @return [String, nil]
         optional :user, String
 
-        # @!method initialize(background: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
+        # @!attribute verbosity
+        #   Constrains the verbosity of the model's response. Lower values will result in
+        #   more concise responses, while higher values will result in more verbose
+        #   responses. Currently supported values are `low`, `medium`, and `high`.
+        #
+        #   @return [Symbol, OpenAI::Models::Responses::ResponseCreateParams::Verbosity, nil]
+        optional :verbosity, enum: -> { OpenAI::Responses::ResponseCreateParams::Verbosity }, nil?: true
+
+        # @!method initialize(background: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, verbosity: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseCreateParams} for more details.
         #
@@ -273,7 +289,7 @@ module OpenAI
         #
         #   @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>, nil] Specify additional output data to include in the model response. Currently
         #
-        #   @param input [String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseInputItem::ItemReference>] Text, image, or file inputs to the model, used to generate a response.
+        #   @param input [String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::ItemReference>] Text, image, or file inputs to the model, used to generate a response.
         #
         #   @param instructions [String, nil] A system (or developer) message inserted into the model's context.
         #
@@ -301,13 +317,15 @@ module OpenAI
         #
         #   @param store [Boolean, nil] Whether to store the generated model response for later retrieval via
         #
+        #   @param stream_options [OpenAI::Models::Responses::ResponseCreateParams::StreamOptions, nil] Options for streaming responses. Only set this when you set `stream: true`.
+        #
         #   @param temperature [Float, nil] What sampling temperature to use, between 0 and 2. Higher values like 0.8 will m
         #
         #   @param text [OpenAI::Models::Responses::ResponseTextConfig] Configuration options for a text response from the model. Can be plain
         #
-        #   @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp] How the model should select which tool (or tools) to use when generating
+        #   @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceAllowed, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp, OpenAI::Models::Responses::ToolChoiceCustom] How the model should select which tool (or tools) to use when generating
         #
-        #   @param tools [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::WebSearchTool>] An array of tools the model may call while generating a response. You
+        #   @param tools [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::WebSearchTool>] An array of tools the model may call while generating a response. You
         #
         #   @param top_logprobs [Integer, nil] An integer between 0 and 20 specifying the number of most likely tokens to
         #
@@ -316,6 +334,8 @@ module OpenAI
         #   @param truncation [Symbol, OpenAI::Models::Responses::ResponseCreateParams::Truncation, nil] The truncation strategy to use for the model response.
         #
         #   @param user [String] This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use
+        #
+        #   @param verbosity [Symbol, OpenAI::Models::Responses::ResponseCreateParams::Verbosity, nil] Constrains the verbosity of the model's response. Lower values will result in
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -340,7 +360,7 @@ module OpenAI
           variant -> { OpenAI::Responses::ResponseInput }
 
           # @!method self.variants
-          #   @return [Array(String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseInputItem::ItemReference>)]
+          #   @return [Array(String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::ItemReference>)]
         end
 
         # Specifies the processing type used for serving the request.
@@ -373,6 +393,28 @@ module OpenAI
           #   @return [Array<Symbol>]
         end
 
+        class StreamOptions < OpenAI::Internal::Type::BaseModel
+          # @!attribute include_obfuscation
+          #   When true, stream obfuscation will be enabled. Stream obfuscation adds random
+          #   characters to an `obfuscation` field on streaming delta events to normalize
+          #   payload sizes as a mitigation to certain side-channel attacks. These obfuscation
+          #   fields are included by default, but add a small amount of overhead to the data
+          #   stream. You can set `include_obfuscation` to false to optimize for bandwidth if
+          #   you trust the network links between your application and the OpenAI API.
+          #
+          #   @return [Boolean, nil]
+          optional :include_obfuscation, OpenAI::Internal::Type::Boolean
+
+          # @!method initialize(include_obfuscation: nil)
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Responses::ResponseCreateParams::StreamOptions} for more
+          #   details.
+          #
+          #   Options for streaming responses. Only set this when you set `stream: true`.
+          #
+          #   @param include_obfuscation [Boolean] When true, stream obfuscation will be enabled. Stream obfuscation adds
+        end
+
         # How the model should select which tool (or tools) to use when generating a
         # response. See the `tools` parameter to see how to specify which tools the model
         # can call.
@@ -389,6 +431,9 @@ module OpenAI
           # `required` means the model must call one or more tools.
           variant enum: -> { OpenAI::Responses::ToolChoiceOptions }
 
+          # Constrains the tools available to the model to a pre-defined set.
+          variant -> { OpenAI::Responses::ToolChoiceAllowed }
+
           # Indicates that the model should use a built-in tool to generate a response.
           # [Learn more about built-in tools](https://platform.openai.com/docs/guides/tools).
           variant -> { OpenAI::Responses::ToolChoiceTypes }
@@ -399,8 +444,11 @@ module OpenAI
           # Use this option to force the model to call a specific tool on a remote MCP server.
           variant -> { OpenAI::Responses::ToolChoiceMcp }
 
+          # Use this option to force the model to call a specific custom tool.
+          variant -> { OpenAI::Responses::ToolChoiceCustom }
+
           # @!method self.variants
-          #   @return [Array(Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp)]
+          #   @return [Array(Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceAllowed, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp, OpenAI::Models::Responses::ToolChoiceCustom)]
         end
 
         # The truncation strategy to use for the model response.
@@ -415,6 +463,20 @@ module OpenAI
 
           AUTO = :auto
           DISABLED = :disabled
+
+          # @!method self.values
+          #   @return [Array<Symbol>]
+        end
+
+        # Constrains the verbosity of the model's response. Lower values will result in
+        # more concise responses, while higher values will result in more verbose
+        # responses. Currently supported values are `low`, `medium`, and `high`.
+        module Verbosity
+          extend OpenAI::Internal::Type::Enum
+
+          LOW = :low
+          MEDIUM = :medium
+          HIGH = :high
 
           # @!method self.values
           #   @return [Array<Symbol>]

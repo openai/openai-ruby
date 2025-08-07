@@ -4,12 +4,11 @@ module OpenAI
   module Models
     class Reasoning < OpenAI::Internal::Type::BaseModel
       # @!attribute effort
-      #   **o-series models only**
-      #
       #   Constrains effort on reasoning for
       #   [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-      #   supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
-      #   result in faster responses and fewer tokens used on reasoning in a response.
+      #   supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
+      #   effort can result in faster responses and fewer tokens used on reasoning in a
+      #   response.
       #
       #   @return [Symbol, OpenAI::Models::ReasoningEffort, nil]
       optional :effort, enum: -> { OpenAI::ReasoningEffort }, nil?: true
@@ -43,7 +42,7 @@ module OpenAI
       #   Configuration options for
       #   [reasoning models](https://platform.openai.com/docs/guides/reasoning).
       #
-      #   @param effort [Symbol, OpenAI::Models::ReasoningEffort, nil] **o-series models only**
+      #   @param effort [Symbol, OpenAI::Models::ReasoningEffort, nil] Constrains effort on reasoning for
       #
       #   @param generate_summary [Symbol, OpenAI::Models::Reasoning::GenerateSummary, nil] **Deprecated:** use `summary` instead.
       #

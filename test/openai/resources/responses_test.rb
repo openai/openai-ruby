@@ -40,7 +40,8 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
         top_logprobs: Integer | nil,
         truncation: OpenAI::Responses::Response::Truncation | nil,
         usage: OpenAI::Responses::ResponseUsage | nil,
-        user: String | nil
+        user: String | nil,
+        verbosity: OpenAI::Responses::Response::Verbosity | nil
       }
     end
   end
@@ -82,7 +83,8 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
         top_logprobs: Integer | nil,
         truncation: OpenAI::Responses::Response::Truncation | nil,
         usage: OpenAI::Responses::ResponseUsage | nil,
-        user: String | nil
+        user: String | nil,
+        verbosity: OpenAI::Responses::Response::Verbosity | nil
       }
     end
   end
@@ -132,7 +134,8 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
         top_logprobs: Integer | nil,
         truncation: OpenAI::Responses::Response::Truncation | nil,
         usage: OpenAI::Responses::ResponseUsage | nil,
-        user: String | nil
+        user: String | nil,
+        verbosity: OpenAI::Responses::Response::Verbosity | nil
       }
     end
   end

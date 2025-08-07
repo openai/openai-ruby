@@ -19,6 +19,7 @@ module OpenAI
           safety_identifier: String,
           service_tier: OpenAI::Models::Responses::ResponseCreateParams::service_tier?,
           store: bool?,
+          stream_options: OpenAI::Responses::ResponseCreateParams::StreamOptions?,
           temperature: Float?,
           text: OpenAI::Responses::ResponseTextConfig,
           tool_choice: OpenAI::Models::Responses::ResponseCreateParams::tool_choice,
@@ -26,7 +27,8 @@ module OpenAI
           top_logprobs: Integer?,
           top_p: Float?,
           truncation: OpenAI::Models::Responses::ResponseCreateParams::truncation?,
-          user: String
+          user: String,
+          verbosity: OpenAI::Models::Responses::ResponseCreateParams::verbosity?
         }
         & OpenAI::Internal::Type::request_parameters
 
@@ -78,6 +80,8 @@ module OpenAI
 
         attr_accessor store: bool?
 
+        attr_accessor stream_options: OpenAI::Responses::ResponseCreateParams::StreamOptions?
+
         attr_accessor temperature: Float?
 
         attr_reader text: OpenAI::Responses::ResponseTextConfig?
@@ -108,6 +112,8 @@ module OpenAI
 
         def user=: (String) -> String
 
+        attr_accessor verbosity: OpenAI::Models::Responses::ResponseCreateParams::verbosity?
+
         def initialize: (
           ?background: bool?,
           ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
@@ -125,6 +131,7 @@ module OpenAI
           ?safety_identifier: String,
           ?service_tier: OpenAI::Models::Responses::ResponseCreateParams::service_tier?,
           ?store: bool?,
+          ?stream_options: OpenAI::Responses::ResponseCreateParams::StreamOptions?,
           ?temperature: Float?,
           ?text: OpenAI::Responses::ResponseTextConfig,
           ?tool_choice: OpenAI::Models::Responses::ResponseCreateParams::tool_choice,
@@ -133,6 +140,7 @@ module OpenAI
           ?top_p: Float?,
           ?truncation: OpenAI::Models::Responses::ResponseCreateParams::truncation?,
           ?user: String,
+          ?verbosity: OpenAI::Models::Responses::ResponseCreateParams::verbosity?,
           ?request_options: OpenAI::request_opts
         ) -> void
 
@@ -153,6 +161,7 @@ module OpenAI
           safety_identifier: String,
           service_tier: OpenAI::Models::Responses::ResponseCreateParams::service_tier?,
           store: bool?,
+          stream_options: OpenAI::Responses::ResponseCreateParams::StreamOptions?,
           temperature: Float?,
           text: OpenAI::Responses::ResponseTextConfig,
           tool_choice: OpenAI::Models::Responses::ResponseCreateParams::tool_choice,
@@ -161,6 +170,7 @@ module OpenAI
           top_p: Float?,
           truncation: OpenAI::Models::Responses::ResponseCreateParams::truncation?,
           user: String,
+          verbosity: OpenAI::Models::Responses::ResponseCreateParams::verbosity?,
           request_options: OpenAI::RequestOptions
         }
 
@@ -186,11 +196,25 @@ module OpenAI
           def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseCreateParams::service_tier]
         end
 
+        type stream_options = { include_obfuscation: bool }
+
+        class StreamOptions < OpenAI::Internal::Type::BaseModel
+          attr_reader include_obfuscation: bool?
+
+          def include_obfuscation=: (bool) -> bool
+
+          def initialize: (?include_obfuscation: bool) -> void
+
+          def to_hash: -> { include_obfuscation: bool }
+        end
+
         type tool_choice =
           OpenAI::Models::Responses::tool_choice_options
+          | OpenAI::Responses::ToolChoiceAllowed
           | OpenAI::Responses::ToolChoiceTypes
           | OpenAI::Responses::ToolChoiceFunction
           | OpenAI::Responses::ToolChoiceMcp
+          | OpenAI::Responses::ToolChoiceCustom
 
         module ToolChoice
           extend OpenAI::Internal::Type::Union
@@ -207,6 +231,18 @@ module OpenAI
           DISABLED: :disabled
 
           def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseCreateParams::truncation]
+        end
+
+        type verbosity = :low | :medium | :high
+
+        module Verbosity
+          extend OpenAI::Internal::Type::Enum
+
+          LOW: :low
+          MEDIUM: :medium
+          HIGH: :high
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseCreateParams::verbosity]
         end
       end
     end

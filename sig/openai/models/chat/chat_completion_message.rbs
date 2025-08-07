@@ -11,7 +11,7 @@ module OpenAI
           annotations: ::Array[OpenAI::Chat::ChatCompletionMessage::Annotation],
           audio: OpenAI::Chat::ChatCompletionAudio?,
           function_call: OpenAI::Chat::ChatCompletionMessage::FunctionCall,
-          tool_calls: ::Array[OpenAI::Chat::ChatCompletionMessageToolCall]
+          tool_calls: ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call]
         }
 
       class ChatCompletionMessage < OpenAI::Internal::Type::BaseModel
@@ -35,11 +35,11 @@ module OpenAI
           OpenAI::Chat::ChatCompletionMessage::FunctionCall
         ) -> OpenAI::Chat::ChatCompletionMessage::FunctionCall
 
-        attr_reader tool_calls: ::Array[OpenAI::Chat::ChatCompletionMessageToolCall]?
+        attr_reader tool_calls: ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call]?
 
         def tool_calls=: (
-          ::Array[OpenAI::Chat::ChatCompletionMessageToolCall]
-        ) -> ::Array[OpenAI::Chat::ChatCompletionMessageToolCall]
+          ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call]
+        ) -> ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call]
 
         def initialize: (
           content: String?,
@@ -47,7 +47,7 @@ module OpenAI
           ?annotations: ::Array[OpenAI::Chat::ChatCompletionMessage::Annotation],
           ?audio: OpenAI::Chat::ChatCompletionAudio?,
           ?function_call: OpenAI::Chat::ChatCompletionMessage::FunctionCall,
-          ?tool_calls: ::Array[OpenAI::Chat::ChatCompletionMessageToolCall],
+          ?tool_calls: ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call],
           ?role: :assistant
         ) -> void
 
@@ -58,7 +58,7 @@ module OpenAI
           annotations: ::Array[OpenAI::Chat::ChatCompletionMessage::Annotation],
           audio: OpenAI::Chat::ChatCompletionAudio?,
           function_call: OpenAI::Chat::ChatCompletionMessage::FunctionCall,
-          tool_calls: ::Array[OpenAI::Chat::ChatCompletionMessageToolCall]
+          tool_calls: ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call]
         }
 
         type annotation =

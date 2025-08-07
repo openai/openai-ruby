@@ -1,25 +1,16 @@
 module OpenAI
   module Models
-    class ChatCompletionTool = Chat::ChatCompletionTool
+    module ChatCompletionTool = Chat::ChatCompletionTool
 
     module Chat
       type chat_completion_tool =
-        { function: OpenAI::FunctionDefinition, type: :function }
+        OpenAI::Chat::ChatCompletionFunctionTool
+        | OpenAI::Chat::ChatCompletionCustomTool
 
-      class ChatCompletionTool < OpenAI::Internal::Type::BaseModel
-        attr_accessor function: OpenAI::FunctionDefinition
+      module ChatCompletionTool
+        extend OpenAI::Internal::Type::Union
 
-        attr_accessor type: :function
-
-        def initialize: (
-          function: OpenAI::FunctionDefinition,
-          ?type: :function
-        ) -> void
-
-        def to_hash: -> {
-          function: OpenAI::FunctionDefinition,
-          type: :function
-        }
+        def self?.variants: -> ::Array[OpenAI::Models::Chat::chat_completion_tool]
       end
     end
   end

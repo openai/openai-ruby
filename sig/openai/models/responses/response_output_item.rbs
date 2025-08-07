@@ -14,6 +14,7 @@ module OpenAI
         | OpenAI::Responses::ResponseOutputItem::McpCall
         | OpenAI::Responses::ResponseOutputItem::McpListTools
         | OpenAI::Responses::ResponseOutputItem::McpApprovalRequest
+        | OpenAI::Responses::ResponseCustomToolCall
 
       module ResponseOutputItem
         extend OpenAI::Internal::Type::Union

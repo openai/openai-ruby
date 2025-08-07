@@ -4,7 +4,7 @@ require_relative "../../test_helper"
 
 class OpenAI::Test::Resources::Beta::AssistantsTest < OpenAI::Test::ResourceTest
   def test_create_required_params
-    response = @openai.beta.assistants.create(model: :"gpt-4.1")
+    response = @openai.beta.assistants.create(model: :"gpt-5")
 
     assert_pattern do
       response => OpenAI::Beta::Assistant

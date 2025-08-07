@@ -3,16 +3,24 @@ module OpenAI
     class ChatCompletionStreamOptions = Chat::ChatCompletionStreamOptions
 
     module Chat
-      type chat_completion_stream_options = { include_usage: bool }
+      type chat_completion_stream_options =
+        { include_obfuscation: bool, include_usage: bool }
 
       class ChatCompletionStreamOptions < OpenAI::Internal::Type::BaseModel
+        attr_reader include_obfuscation: bool?
+
+        def include_obfuscation=: (bool) -> bool
+
         attr_reader include_usage: bool?
 
         def include_usage=: (bool) -> bool
 
-        def initialize: (?include_usage: bool) -> void
+        def initialize: (
+          ?include_obfuscation: bool,
+          ?include_usage: bool
+        ) -> void
 
-        def to_hash: -> { include_usage: bool }
+        def to_hash: -> { include_obfuscation: bool, include_usage: bool }
       end
     end
   end

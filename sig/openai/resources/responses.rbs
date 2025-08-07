@@ -20,6 +20,7 @@ module OpenAI
         ?safety_identifier: String,
         ?service_tier: OpenAI::Models::Responses::ResponseCreateParams::service_tier?,
         ?store: bool?,
+        ?stream_options: OpenAI::Responses::ResponseCreateParams::StreamOptions?,
         ?temperature: Float?,
         ?text: OpenAI::Responses::ResponseTextConfig,
         ?tool_choice: OpenAI::Models::Responses::ResponseCreateParams::tool_choice,
@@ -28,6 +29,7 @@ module OpenAI
         ?top_p: Float?,
         ?truncation: OpenAI::Models::Responses::ResponseCreateParams::truncation?,
         ?user: String,
+        ?verbosity: OpenAI::Models::Responses::ResponseCreateParams::verbosity?,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Responses::Response
 
@@ -48,6 +50,7 @@ module OpenAI
         ?safety_identifier: String,
         ?service_tier: OpenAI::Models::Responses::ResponseCreateParams::service_tier?,
         ?store: bool?,
+        ?stream_options: OpenAI::Responses::ResponseCreateParams::StreamOptions?,
         ?temperature: Float?,
         ?text: OpenAI::Responses::ResponseTextConfig,
         ?tool_choice: OpenAI::Models::Responses::ResponseCreateParams::tool_choice,
@@ -56,12 +59,14 @@ module OpenAI
         ?top_p: Float?,
         ?truncation: OpenAI::Models::Responses::ResponseCreateParams::truncation?,
         ?user: String,
+        ?verbosity: OpenAI::Models::Responses::ResponseCreateParams::verbosity?,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Internal::Stream[OpenAI::Models::Responses::response_stream_event]
 
       def retrieve: (
         String response_id,
         ?include: ::Array[OpenAI::Models::Responses::response_includable],
+        ?include_obfuscation: bool,
         ?starting_after: Integer,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Responses::Response
@@ -69,6 +74,7 @@ module OpenAI
       def retrieve_streaming: (
         String response_id,
         ?include: ::Array[OpenAI::Models::Responses::response_includable],
+        ?include_obfuscation: bool,
         ?starting_after: Integer,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Internal::Stream[OpenAI::Models::Responses::response_stream_event]

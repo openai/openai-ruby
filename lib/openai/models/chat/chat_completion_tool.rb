@@ -3,22 +3,20 @@
 module OpenAI
   module Models
     module Chat
-      class ChatCompletionTool < OpenAI::Internal::Type::BaseModel
-        # @!attribute function
-        #
-        #   @return [OpenAI::Models::FunctionDefinition]
-        required :function, -> { OpenAI::FunctionDefinition }
+      # A function tool that can be used to generate a response.
+      module ChatCompletionTool
+        extend OpenAI::Internal::Type::Union
 
-        # @!attribute type
-        #   The type of the tool. Currently, only `function` is supported.
-        #
-        #   @return [Symbol, :function]
-        required :type, const: :function
+        discriminator :type
 
-        # @!method initialize(function:, type: :function)
-        #   @param function [OpenAI::Models::FunctionDefinition]
-        #
-        #   @param type [Symbol, :function] The type of the tool. Currently, only `function` is supported.
+        # A function tool that can be used to generate a response.
+        variant :function, -> { OpenAI::Chat::ChatCompletionFunctionTool }
+
+        # A custom tool that processes input using a specified format.
+        variant :custom, -> { OpenAI::Chat::ChatCompletionCustomTool }
+
+        # @!method self.variants
+        #   @return [Array(OpenAI::Models::Chat::ChatCompletionFunctionTool, OpenAI::Models::Chat::ChatCompletionCustomTool)]
       end
     end
 
