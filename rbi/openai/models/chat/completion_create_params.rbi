@@ -411,7 +411,7 @@ module OpenAI
             tools:
               T::Array[
                 T.any(
-                  OpenAI::StructuredOutput::JsonSchemaConverter
+                  OpenAI::StructuredOutput::JsonSchemaConverter,
                   OpenAI::Chat::ChatCompletionFunctionTool::OrHash,
                   OpenAI::Chat::ChatCompletionCustomTool::OrHash
                 )
@@ -543,10 +543,9 @@ module OpenAI
             tools:
               T::Array[
                 T.any(
-                  OpenAI::StructuredOutput::JsonSchemaConverter
+                  OpenAI::StructuredOutput::JsonSchemaConverter,
                   OpenAI::Chat::ChatCompletionFunctionTool::OrHash,
                   OpenAI::Chat::ChatCompletionCustomTool::OrHash
-                  OpenAI::Chat::ChatCompletionTool::OrHash,
                 )
               ],
             top_logprobs: T.nilable(Integer),
@@ -841,7 +840,7 @@ module OpenAI
               tools:
                 T::Array[
                   T.any(
-                    OpenAI::StructuredOutput::JsonSchemaConverter
+                    OpenAI::StructuredOutput::JsonSchemaConverter,
                     OpenAI::Chat::ChatCompletionFunctionTool,
                     OpenAI::Chat::ChatCompletionCustomTool
                   )
