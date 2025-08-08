@@ -1,5 +1,29 @@
 # Changelog
 
+## 0.17.0 (2025-08-08)
+
+Full Changelog: [v0.16.0...v0.17.0](https://github.com/openai/openai-ruby/compare/v0.16.0...v0.17.0)
+
+### Features
+
+* **api:** adds GPT-5 and new API features: platform.openai.com/docs/guides/gpt-5 ([068a381](https://github.com/openai/openai-ruby/commit/068a381a17dd2d60865e67fcd17fa84d919f3f5c))
+* **api:** manual updates ([1d79621](https://github.com/openai/openai-ruby/commit/1d79621120fbccc8dd41f5af6df5a9b1a9018e73))
+
+
+### Bug Fixes
+
+* **client:** dont try to parse if content is missing ([#770](https://github.com/openai/openai-ruby/issues/770)) ([7f8f2d3](https://github.com/openai/openai-ruby/commit/7f8f2d32863fafc39ee4a884937673a2ad9be358))
+* **client:** fix verbosity parameter location in Responses ([a6b7ae8](https://github.com/openai/openai-ruby/commit/a6b7ae8b568c2214d4883fad44c9cf2e8a7d53e2))
+* **internal:** fix rbi error ([803f20b](https://github.com/openai/openai-ruby/commit/803f20ba0c3751d28175dca99853783f0d851645))
+* **respones:** undo accidently deleted fields ([#177](https://github.com/openai/openai-ruby/issues/177)) ([90a7c3a](https://github.com/openai/openai-ruby/commit/90a7c3ac8d22cc90b8ecaa3b091598ea3bc73029))
+* **responses:** remove incorrect verbosity param ([127e2d1](https://github.com/openai/openai-ruby/commit/127e2d1b96b72307178446f0aa8acc1d3ad31367))
+
+
+### Chores
+
+* **internal:** increase visibility of internal helper method ([eddbcda](https://github.com/openai/openai-ruby/commit/eddbcda189ac0a864fc3dadc5dd3578d730c491f))
+* update @stainless-api/prism-cli to v5.15.0 ([aaa7d89](https://github.com/openai/openai-ruby/commit/aaa7d895a3dba31f32cf5f4373a49d1571667fc6))
+
 ## 0.16.0 (2025-07-30)
 
 Full Changelog: [v0.15.0...v0.16.0](https://github.com/openai/openai-ruby/compare/v0.15.0...v0.16.0)
