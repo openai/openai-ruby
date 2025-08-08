@@ -2,7 +2,10 @@ module OpenAI
   module Models
     module Responses
       type response_text_config =
-        { format_: OpenAI::Models::Responses::response_format_text_config }
+        {
+          format_: OpenAI::Models::Responses::response_format_text_config,
+          verbosity: OpenAI::Models::Responses::ResponseTextConfig::verbosity?
+        }
 
       class ResponseTextConfig < OpenAI::Internal::Type::BaseModel
         attr_reader format_: OpenAI::Models::Responses::response_format_text_config?
@@ -11,13 +14,29 @@ module OpenAI
           OpenAI::Models::Responses::response_format_text_config
         ) -> OpenAI::Models::Responses::response_format_text_config
 
+        attr_accessor verbosity: OpenAI::Models::Responses::ResponseTextConfig::verbosity?
+
         def initialize: (
-          ?format_: OpenAI::Models::Responses::response_format_text_config
+          ?format_: OpenAI::Models::Responses::response_format_text_config,
+          ?verbosity: OpenAI::Models::Responses::ResponseTextConfig::verbosity?
         ) -> void
 
         def to_hash: -> {
-          format_: OpenAI::Models::Responses::response_format_text_config
+          format_: OpenAI::Models::Responses::response_format_text_config,
+          verbosity: OpenAI::Models::Responses::ResponseTextConfig::verbosity?
         }
+
+        type verbosity = :low | :medium | :high
+
+        module Verbosity
+          extend OpenAI::Internal::Type::Enum
+
+          LOW: :low
+          MEDIUM: :medium
+          HIGH: :high
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseTextConfig::verbosity]
+        end
       end
     end
   end

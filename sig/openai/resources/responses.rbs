@@ -29,7 +29,6 @@ module OpenAI
         ?top_p: Float?,
         ?truncation: OpenAI::Models::Responses::ResponseCreateParams::truncation?,
         ?user: String,
-        ?verbosity: OpenAI::Models::Responses::ResponseCreateParams::verbosity?,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Responses::Response
 
@@ -59,7 +58,6 @@ module OpenAI
         ?top_p: Float?,
         ?truncation: OpenAI::Models::Responses::ResponseCreateParams::truncation?,
         ?user: String,
-        ?verbosity: OpenAI::Models::Responses::ResponseCreateParams::verbosity?,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Internal::Stream[OpenAI::Models::Responses::response_stream_event]
 
