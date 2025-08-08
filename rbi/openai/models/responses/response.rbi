@@ -280,16 +280,6 @@ module OpenAI
         sig { params(user: String).void }
         attr_writer :user
 
-        # Constrains the verbosity of the model's response. Lower values will result in
-        # more concise responses, while higher values will result in more verbose
-        # responses. Currently supported values are `low`, `medium`, and `high`.
-        sig do
-          returns(
-            T.nilable(OpenAI::Responses::Response::Verbosity::TaggedSymbol)
-          )
-        end
-        attr_accessor :verbosity
-
         sig do
           params(
             id: String,
@@ -367,8 +357,6 @@ module OpenAI
               T.nilable(OpenAI::Responses::Response::Truncation::OrSymbol),
             usage: OpenAI::Responses::ResponseUsage::OrHash,
             user: String,
-            verbosity:
-              T.nilable(OpenAI::Responses::Response::Verbosity::OrSymbol),
             object: Symbol
           ).returns(T.attached_class)
         end
@@ -523,10 +511,6 @@ module OpenAI
           # similar requests and to help OpenAI detect and prevent abuse.
           # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
           user: nil,
-          # Constrains the verbosity of the model's response. Lower values will result in
-          # more concise responses, while higher values will result in more verbose
-          # responses. Currently supported values are `low`, `medium`, and `high`.
-          verbosity: nil,
           # The object type of this resource - always set to `response`.
           object: :response
         )
@@ -571,9 +555,7 @@ module OpenAI
                   OpenAI::Responses::Response::Truncation::TaggedSymbol
                 ),
               usage: OpenAI::Responses::ResponseUsage,
-              user: String,
-              verbosity:
-                T.nilable(OpenAI::Responses::Response::Verbosity::TaggedSymbol)
+              user: String
             }
           )
         end
@@ -809,34 +791,6 @@ module OpenAI
           sig do
             override.returns(
               T::Array[OpenAI::Responses::Response::Truncation::TaggedSymbol]
-            )
-          end
-          def self.values
-          end
-        end
-
-        # Constrains the verbosity of the model's response. Lower values will result in
-        # more concise responses, while higher values will result in more verbose
-        # responses. Currently supported values are `low`, `medium`, and `high`.
-        module Verbosity
-          extend OpenAI::Internal::Type::Enum
-
-          TaggedSymbol =
-            T.type_alias do
-              T.all(Symbol, OpenAI::Responses::Response::Verbosity)
-            end
-          OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-          LOW =
-            T.let(:low, OpenAI::Responses::Response::Verbosity::TaggedSymbol)
-          MEDIUM =
-            T.let(:medium, OpenAI::Responses::Response::Verbosity::TaggedSymbol)
-          HIGH =
-            T.let(:high, OpenAI::Responses::Response::Verbosity::TaggedSymbol)
-
-          sig do
-            override.returns(
-              T::Array[OpenAI::Responses::Response::Verbosity::TaggedSymbol]
             )
           end
           def self.values

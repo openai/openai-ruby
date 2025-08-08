@@ -31,8 +31,7 @@ module OpenAI
           top_logprobs: Integer?,
           truncation: OpenAI::Models::Responses::Response::truncation?,
           usage: OpenAI::Responses::ResponseUsage,
-          user: String,
-          verbosity: OpenAI::Models::Responses::Response::verbosity?
+          user: String
         }
 
       class Response < OpenAI::Internal::Type::BaseModel
@@ -112,8 +111,6 @@ module OpenAI
 
         def user=: (String) -> String
 
-        attr_accessor verbosity: OpenAI::Models::Responses::Response::verbosity?
-
         def initialize: (
           id: String,
           created_at: Float,
@@ -143,7 +140,6 @@ module OpenAI
           ?truncation: OpenAI::Models::Responses::Response::truncation?,
           ?usage: OpenAI::Responses::ResponseUsage,
           ?user: String,
-          ?verbosity: OpenAI::Models::Responses::Response::verbosity?,
           ?object: :response
         ) -> void
 
@@ -176,8 +172,7 @@ module OpenAI
           top_logprobs: Integer?,
           truncation: OpenAI::Models::Responses::Response::truncation?,
           usage: OpenAI::Responses::ResponseUsage,
-          user: String,
-          verbosity: OpenAI::Models::Responses::Response::verbosity?
+          user: String
         }
 
         type incomplete_details =
@@ -260,18 +255,6 @@ module OpenAI
           DISABLED: :disabled
 
           def self?.values: -> ::Array[OpenAI::Models::Responses::Response::truncation]
-        end
-
-        type verbosity = :low | :medium | :high
-
-        module Verbosity
-          extend OpenAI::Internal::Type::Enum
-
-          LOW: :low
-          MEDIUM: :medium
-          HIGH: :high
-
-          def self?.values: -> ::Array[OpenAI::Models::Responses::Response::verbosity]
         end
       end
     end

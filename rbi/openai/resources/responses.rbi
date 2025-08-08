@@ -84,10 +84,6 @@ module OpenAI
               OpenAI::Responses::ResponseCreateParams::Truncation::OrSymbol
             ),
           user: String,
-          verbosity:
-            T.nilable(
-              OpenAI::Responses::ResponseCreateParams::Verbosity::OrSymbol
-            ),
           stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(OpenAI::Responses::Response)
@@ -252,10 +248,6 @@ module OpenAI
         # similar requests and to help OpenAI detect and prevent abuse.
         # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
         user: nil,
-        # Constrains the verbosity of the model's response. Lower values will result in
-        # more concise responses, while higher values will result in more verbose
-        # responses. Currently supported values are `low`, `medium`, and `high`.
-        verbosity: nil,
         # There is no need to provide `stream:`. Instead, use `#stream_raw` or `#create`
         # for streaming and non-streaming use cases, respectively.
         stream: false,
@@ -341,10 +333,6 @@ module OpenAI
               OpenAI::Responses::ResponseCreateParams::Truncation::OrSymbol
             ),
           user: String,
-          verbosity:
-            T.nilable(
-              OpenAI::Responses::ResponseCreateParams::Verbosity::OrSymbol
-            ),
           stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(
@@ -513,10 +501,6 @@ module OpenAI
         # similar requests and to help OpenAI detect and prevent abuse.
         # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
         user: nil,
-        # Constrains the verbosity of the model's response. Lower values will result in
-        # more concise responses, while higher values will result in more verbose
-        # responses. Currently supported values are `low`, `medium`, and `high`.
-        verbosity: nil,
         # There is no need to provide `stream:`. Instead, use `#stream_raw` or `#create`
         # for streaming and non-streaming use cases, respectively.
         stream: true,

@@ -273,15 +273,7 @@ module OpenAI
         #   @return [String, nil]
         optional :user, String
 
-        # @!attribute verbosity
-        #   Constrains the verbosity of the model's response. Lower values will result in
-        #   more concise responses, while higher values will result in more verbose
-        #   responses. Currently supported values are `low`, `medium`, and `high`.
-        #
-        #   @return [Symbol, OpenAI::Models::Responses::ResponseCreateParams::Verbosity, nil]
-        optional :verbosity, enum: -> { OpenAI::Responses::ResponseCreateParams::Verbosity }, nil?: true
-
-        # @!method initialize(background: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, verbosity: nil, request_options: {})
+        # @!method initialize(background: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseCreateParams} for more details.
         #
@@ -334,8 +326,6 @@ module OpenAI
         #   @param truncation [Symbol, OpenAI::Models::Responses::ResponseCreateParams::Truncation, nil] The truncation strategy to use for the model response.
         #
         #   @param user [String] This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use
-        #
-        #   @param verbosity [Symbol, OpenAI::Models::Responses::ResponseCreateParams::Verbosity, nil] Constrains the verbosity of the model's response. Lower values will result in
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -463,20 +453,6 @@ module OpenAI
 
           AUTO = :auto
           DISABLED = :disabled
-
-          # @!method self.values
-          #   @return [Array<Symbol>]
-        end
-
-        # Constrains the verbosity of the model's response. Lower values will result in
-        # more concise responses, while higher values will result in more verbose
-        # responses. Currently supported values are `low`, `medium`, and `high`.
-        module Verbosity
-          extend OpenAI::Internal::Type::Enum
-
-          LOW = :low
-          MEDIUM = :medium
-          HIGH = :high
 
           # @!method self.values
           #   @return [Array<Symbol>]

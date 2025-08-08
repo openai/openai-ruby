@@ -22,7 +22,15 @@ module OpenAI
         #   @return [OpenAI::Models::ResponseFormatText, OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig, OpenAI::Models::ResponseFormatJSONObject, nil]
         optional :format_, union: -> { OpenAI::Responses::ResponseFormatTextConfig }, api_name: :format
 
-        # @!method initialize(format_: nil)
+        # @!attribute verbosity
+        #   Constrains the verbosity of the model's response. Lower values will result in
+        #   more concise responses, while higher values will result in more verbose
+        #   responses. Currently supported values are `low`, `medium`, and `high`.
+        #
+        #   @return [Symbol, OpenAI::Models::Responses::ResponseTextConfig::Verbosity, nil]
+        optional :verbosity, enum: -> { OpenAI::Responses::ResponseTextConfig::Verbosity }, nil?: true
+
+        # @!method initialize(format_: nil, verbosity: nil)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseTextConfig} for more details.
         #
@@ -33,6 +41,24 @@ module OpenAI
         #   - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
         #
         #   @param format_ [OpenAI::Models::ResponseFormatText, OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig, OpenAI::Models::ResponseFormatJSONObject] An object specifying the format that the model must output.
+        #
+        #   @param verbosity [Symbol, OpenAI::Models::Responses::ResponseTextConfig::Verbosity, nil] Constrains the verbosity of the model's response. Lower values will result in
+
+        # Constrains the verbosity of the model's response. Lower values will result in
+        # more concise responses, while higher values will result in more verbose
+        # responses. Currently supported values are `low`, `medium`, and `high`.
+        #
+        # @see OpenAI::Models::Responses::ResponseTextConfig#verbosity
+        module Verbosity
+          extend OpenAI::Internal::Type::Enum
+
+          LOW = :low
+          MEDIUM = :medium
+          HIGH = :high
+
+          # @!method self.values
+          #   @return [Array<Symbol>]
+        end
       end
     end
   end
