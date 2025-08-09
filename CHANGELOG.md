@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.17.1 (2025-08-09)
+
+Full Changelog: [v0.17.0...v0.17.1](https://github.com/openai/openai-ruby/compare/v0.17.0...v0.17.1)
+
+### Chores
+
+* collect metadata from type DSL ([d63cb9e](https://github.com/openai/openai-ruby/commit/d63cb9eb8efc60d43bd17c96bb6dc1e3b4254b26))
+* **internal:** update comment in script ([a08be47](https://github.com/openai/openai-ruby/commit/a08be4787dfc910a7c9cc06bc72f9c40b40250a4))
+
 ## 0.17.0 (2025-08-08)
 
 Full Changelog: [v0.16.0...v0.17.0](https://github.com/openai/openai-ruby/compare/v0.16.0...v0.17.0)
