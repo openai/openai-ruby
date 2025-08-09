@@ -39,6 +39,23 @@ module OpenAI
           | OpenAI::Internal::Type::Converter::input spec
         ) -> (^-> top)
 
+        def self.meta_info: (
+          {
+            const: (nil | bool | Integer | Float | Symbol)?,
+            enum: ^-> OpenAI::Internal::Type::Converter::input?,
+            union: ^-> OpenAI::Internal::Type::Converter::input?
+          }
+          | ^-> OpenAI::Internal::Type::Converter::input
+          | OpenAI::Internal::Type::Converter::input type_info,
+          {
+            const: (nil | bool | Integer | Float | Symbol)?,
+            enum: ^-> OpenAI::Internal::Type::Converter::input?,
+            union: ^-> OpenAI::Internal::Type::Converter::input?
+          }
+          | ^-> OpenAI::Internal::Type::Converter::input
+          | OpenAI::Internal::Type::Converter::input spec
+        ) -> ::Hash[Symbol, top]
+
         def self.new_coerce_state: (
           ?translate_names: bool
         ) -> OpenAI::Internal::Type::Converter::coerce_state
