@@ -22,7 +22,7 @@ class CalendarEvent < OpenAI::BaseModel
   required :name, String
   required :date, String
   required :participants, OpenAI::ArrayOf[Participant]
-  required :optional_participants, OpenAI::ArrayOf[Participant], nil?: true
+  required :optional_participants, OpenAI::ArrayOf[Participant, doc: "who might not show up"], nil?: true
   required :is_virtual, OpenAI::Boolean
   required :location,
            OpenAI::UnionOf[String, Location],
