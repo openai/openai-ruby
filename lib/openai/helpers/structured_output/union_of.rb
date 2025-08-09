@@ -56,16 +56,8 @@ module OpenAI
 
         # @param variants [Array<generic<Member>>]
         def initialize(*variants)
-          case variants
-          in [Symbol => d, Hash => vs]
-            discriminator(d)
-            vs.each do |k, v|
-              v.is_a?(Proc) ? variant(k, v) : variant(k, -> { v })
-            end
-          else
-            variants.each do |v|
-              v.is_a?(Proc) ? variant(v) : variant(-> { v })
-            end
+          variants.each do |v|
+            v.is_a?(Proc) ? variant(v) : variant(-> { v })
           end
         end
       end

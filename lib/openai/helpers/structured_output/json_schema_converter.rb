@@ -46,7 +46,7 @@ module OpenAI
             in {"$ref": String}
               {
                 anyOf: [
-                  schema.update(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::NO_REF => true),
+                  schema.merge!(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::NO_REF => true),
                   {type: null}
                 ]
               }
@@ -58,6 +58,17 @@ module OpenAI
             in {type: Array => types}
               types.include?(null) ? schema : schema.update(type: [*types, null])
             end
+          end
+
+          # @api private
+          #
+          # @param schema [Hash{Symbol=>Object}]
+          def assoc_meta!(schema, meta:)
+            xformed = meta.transform_keys(doc: :description)
+            if schema.key?(:$ref) && !xformed.empty?
+              schema.merge!(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::NO_REF => true)
+            end
+            schema.merge!(xformed)
           end
 
           # @api private
@@ -116,12 +127,17 @@ module OpenAI
 
               case refs
               in [ref]
-                ref.replace(sch)
+                ref.replace(ref.except(:$ref).merge(sch))
               in [_, ref, *]
                 reused_defs.store(ref.fetch(:$ref), sch)
+                refs.each do
+                  unless (meta = _1.except(:$ref)).empty?
+                    _1.replace(allOf: [_1.slice(:$ref), meta])
+                  end
+                end
               else
               end
-              no_refs.each { _1.replace(sch) }
+              no_refs.each { _1.replace(_1.except(:$ref).merge(sch)) }
             end
 
             xformed = reused_defs.transform_keys { _1.delete_prefix("#/$defs/") }

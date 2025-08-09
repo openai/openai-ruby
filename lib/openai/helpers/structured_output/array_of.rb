@@ -30,18 +30,10 @@ module OpenAI
               state: state
             )
             items = OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.to_nilable(items) if nilable?
+            OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.assoc_meta!(items, meta: @meta)
 
-            schema = {type: "array", items: items}
-            description.nil? ? schema : schema.update(description: description)
+            {type: "array", items: items}
           end
-        end
-
-        # @return [String, nil]
-        attr_reader :description
-
-        def initialize(type_info, spec = {})
-          super
-          @description = [type_info, spec].grep(Hash).filter_map { _1[:doc] }.first
         end
       end
     end

@@ -28,15 +28,13 @@ module OpenAI
             OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.cache_def!(state, type: self) do
               path = state.fetch(:path)
               properties = fields.to_h do |name, field|
-                type, nilable = field.fetch_values(:type, :nilable)
+                type, nilable, meta = field.fetch_values(:type, :nilable, :meta)
                 new_state = {**state, path: [*path, ".#{name}"]}
 
                 schema =
                   case type
-                  in {"$ref": String}
-                    type
                   in OpenAI::Helpers::StructuredOutput::JsonSchemaConverter
-                    type.to_json_schema_inner(state: new_state).update(field.slice(:description))
+                    type.to_json_schema_inner(state: new_state)
                   else
                     OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.to_json_schema_inner(
                       type,
@@ -44,6 +42,8 @@ module OpenAI
                     )
                   end
                 schema = OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.to_nilable(schema) if nilable
+                OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.assoc_meta!(schema, meta: meta)
+
                 [name, schema]
               end
 
@@ -58,13 +58,6 @@ module OpenAI
         end
 
         class << self
-          def required(name_sym, type_info, spec = {})
-            super
-
-            doc = [type_info, spec].grep(Hash).filter_map { _1[:doc] }.first
-            known_fields.fetch(name_sym).update(description: doc) unless doc.nil?
-          end
-
           def optional(...)
             # rubocop:disable Layout/LineLength
             message = "`optional` is not supported for structured output APIs, use `#required` with `nil?: true` instead"
