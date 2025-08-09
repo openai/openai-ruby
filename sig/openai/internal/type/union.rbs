@@ -5,9 +5,9 @@ module OpenAI
         include OpenAI::Internal::Type::Converter
         include OpenAI::Internal::Util::SorbetRuntimeSupport
 
-        private def self.known_variants: -> ::Array[[Symbol?, (^-> OpenAI::Internal::Type::Converter::input)]]
+        private def self.known_variants: -> ::Array[[Symbol?, (^-> OpenAI::Internal::Type::Converter::input), ::Hash[Symbol, top]]]
 
-        def self.derefed_variants: -> ::Array[[Symbol?, top]]
+        def self.derefed_variants: -> ::Array[[Symbol?, top, ::Hash[Symbol, top]]]
 
         def self.variants: -> ::Array[top]
 
