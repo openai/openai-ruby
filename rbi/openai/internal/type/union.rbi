@@ -16,7 +16,8 @@ module OpenAI
             T::Array[
               [
                 T.nilable(Symbol),
-                T.proc.returns(OpenAI::Internal::Type::Converter::Input)
+                T.proc.returns(OpenAI::Internal::Type::Converter::Input),
+                OpenAI::Internal::AnyHash
               ]
             ]
           )
@@ -25,7 +26,11 @@ module OpenAI
         end
 
         # @api private
-        sig { returns(T::Array[[T.nilable(Symbol), T.anything]]) }
+        sig do
+          returns(
+            T::Array[[T.nilable(Symbol), T.anything, OpenAI::Internal::AnyHash]]
+          )
+        end
         protected def derefed_variants
         end
 

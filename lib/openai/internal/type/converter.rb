@@ -100,6 +100,33 @@ module OpenAI
 
           # @api private
           #
+          # @param type_info [Hash{Symbol=>Object}, Proc, OpenAI::Internal::Type::Converter, Class] .
+          #
+          #   @option type_info [NilClass, TrueClass, FalseClass, Integer, Float, Symbol] :const
+          #
+          #   @option type_info [Proc] :enum
+          #
+          #   @option type_info [Proc] :union
+          #
+          #   @option type_info [Boolean] :"nil?"
+          #
+          # @param spec [Hash{Symbol=>Object}, Proc, OpenAI::Internal::Type::Converter, Class] .
+          #
+          #   @option spec [NilClass, TrueClass, FalseClass, Integer, Float, Symbol] :const
+          #
+          #   @option spec [Proc] :enum
+          #
+          #   @option spec [Proc] :union
+          #
+          #   @option spec [Boolean] :"nil?"
+          #
+          # @return [Hash{Symbol=>Object}]
+          def meta_info(type_info, spec)
+            [spec, type_info].grep(Hash).first.to_h.except(:const, :enum, :union, :nil?)
+          end
+
+          # @api private
+          #
           # @param translate_names [Boolean]
           #
           # @return [Hash{Symbol=>Object}]
