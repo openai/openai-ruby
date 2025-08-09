@@ -49,6 +49,16 @@ module OpenAI
           # @api private
           sig do
             params(
+              schema: OpenAI::Helpers::StructuredOutput::JsonSchema,
+              meta: OpenAI::Internal::AnyHash
+            ).void
+          end
+          def assoc_meta!(schema, meta:)
+          end
+
+          # @api private
+          sig do
+            params(
               state:
                 OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::State,
               type:

@@ -22,9 +22,10 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
   E1 = OpenAI::Helpers::StructuredOutput::EnumOf[:one]
 
   class M1 < OpenAI::Helpers::StructuredOutput::BaseModel
-    required :a, String
+    required :a, String, doc: "dog"
     required :b, Integer, nil?: true
-    required :c, E1, nil?: true
+    required :c, E1, nil?: true, doc: "dog"
+    required :d, E1, doc: "dog"
   end
 
   class M2 < OpenAI::Helpers::StructuredOutput::BaseModel
@@ -36,7 +37,7 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
   end
 
   U1 = OpenAI::Helpers::StructuredOutput::UnionOf[Integer, A1]
-  U2 = OpenAI::Helpers::StructuredOutput::UnionOf[:type, m2: M2, m3: M3]
+  U2 = OpenAI::Helpers::StructuredOutput::UnionOf[M2, M3]
   U3 = OpenAI::Helpers::StructuredOutput::UnionOf[A1, A1]
 
   def test_coerce
@@ -78,18 +79,21 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
       A1 => {type: "array", items: {type: "string"}},
       OpenAI::Helpers::StructuredOutput::ArrayOf[String, nil?: true, doc: "a1"] => {
         type: "array",
-        items: {type: %w[string null]},
-        description: "a1"
+        items: {type: %w[string null], description: "a1"}
       },
       E1 => {type: "string", enum: ["one"]},
       M1 => {
         type: "object",
         properties: {
-          a: {type: "string"},
+          a: {type: "string", description: "dog"},
           b: {type: %w[integer null]},
-          c: {anyOf: [{type: "string", enum: %w[one]}, {type: "null"}]}
+          c: {
+            anyOf: [{type: "string", enum: ["one"]}, {type: "null"}],
+            description: "dog"
+          },
+          d: {description: "dog", type: "string", enum: ["one"]}
         },
-        required: %w[a b c],
+        required: %w[a b c d],
         additionalProperties: false
       },
       U1 => {
@@ -162,8 +166,9 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
 
   class M11 < OpenAI::Helpers::StructuredOutput::BaseModel
     required :a, U3
-    required :b, A1
+    required :b, A1, doc: "dog"
     required :c, A1
+    required :d, A1, doc: "dawg"
   end
 
   def test_definition_reusing
@@ -311,20 +316,20 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
         ]
       },
       M11 => {
-        :$defs => {".a/?.0/[]" => {type: "array", items: {type: "string"}}},
-        :type => "object",
-        :properties => {
+        type: "object",
+        properties: {
           a: {
             anyOf: [
               {type: "array", items: {type: "string"}},
               {type: "array", items: {type: "string"}}
             ]
           },
-          b: {:$ref => "#/$defs/.a/?.0/[]"},
-          c: {:$ref => "#/$defs/.a/?.0/[]"}
+          b: {description: "dog", type: "array", items: {type: "string"}},
+          c: {type: "array", items: {type: "string"}},
+          d: {description: "dawg", type: "array", items: {type: "string"}}
         },
-        :required => %w[a b c],
-        :additionalProperties => false
+        required: %w[a b c d],
+        additionalProperties: false
       }
     }
 
