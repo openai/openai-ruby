@@ -93,7 +93,7 @@ class OpenAI::Test::Resources::FilesTest < OpenAI::Test::ResourceTest
   end
 
   def test_content
-    skip("skipped: test server currently has no support for method content-type")
+    skip("Prism doesn't support application/binary responses")
 
     response = @openai.files.content("file_id")
 
