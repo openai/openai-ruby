@@ -184,7 +184,7 @@ module OpenAI
 
           # @!attribute truncation_strategy
           #   Controls for how a thread will be truncated prior to the run. Use this to
-          #   control the intial context window of the run.
+          #   control the initial context window of the run.
           #
           #   @return [OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy, nil]
           optional :truncation_strategy,
@@ -413,7 +413,7 @@ module OpenAI
             #   details.
             #
             #   Controls for how a thread will be truncated prior to the run. Use this to
-            #   control the intial context window of the run.
+            #   control the initial context window of the run.
             #
             #   @param type [Symbol, OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy::Type] The truncation strategy to use for the thread. The default is `auto`. If set to
             #

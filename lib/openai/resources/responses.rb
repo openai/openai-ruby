@@ -49,7 +49,7 @@ module OpenAI
       #
       # @param prompt_cache_key [String] Used by OpenAI to cache responses for similar requests to optimize your cache hi
       #
-      # @param reasoning [OpenAI::Models::Reasoning, nil] **o-series models only**
+      # @param reasoning [OpenAI::Models::Reasoning, nil] **gpt-5 and o-series models only**
       #
       # @param safety_identifier [String] A stable identifier used to help detect users of your application that may be vi
       #
@@ -61,7 +61,7 @@ module OpenAI
       #
       # @param temperature [Float, nil] What sampling temperature to use, between 0 and 2. Higher values like 0.8 will m
       #
-      # @param text [OpenAI::Models::Responses::ResponseTextConfig] Configuration options for a text response from the model. Can be plain
+      # @param text [OpenAI::Models::Responses::ResponseCreateParams::Text]
       #
       # @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceAllowed, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp, OpenAI::Models::Responses::ToolChoiceCustom] How the model should select which tool (or tools) to use when generating
       #
@@ -138,7 +138,7 @@ module OpenAI
       #
       # @param prompt_cache_key [String] Used by OpenAI to cache responses for similar requests to optimize your cache hi
       #
-      # @param reasoning [OpenAI::Models::Reasoning, nil] **o-series models only**
+      # @param reasoning [OpenAI::Models::Reasoning, nil] **gpt-5 and o-series models only**
       #
       # @param safety_identifier [String] A stable identifier used to help detect users of your application that may be vi
       #
@@ -150,7 +150,7 @@ module OpenAI
       #
       # @param temperature [Float, nil] What sampling temperature to use, between 0 and 2. Higher values like 0.8 will m
       #
-      # @param text [OpenAI::Models::Responses::ResponseTextConfig] Configuration options for a text response from the model. Can be plain
+      # @param text [OpenAI::Models::Responses::ResponseCreateParams::Text]
       #
       # @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceAllowed, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp, OpenAI::Models::Responses::ToolChoiceCustom] How the model should select which tool (or tools) to use when generating
       #

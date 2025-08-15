@@ -132,7 +132,7 @@ module OpenAI
         optional :prompt_cache_key, String
 
         # @!attribute reasoning
-        #   **o-series models only**
+        #   **gpt-5 and o-series models only**
         #
         #   Configuration options for
         #   [reasoning models](https://platform.openai.com/docs/guides/reasoning).
@@ -159,9 +159,8 @@ module OpenAI
         #   - If set to 'default', then the request will be processed with the standard
         #     pricing and performance for the selected model.
         #   - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)' or
-        #     'priority', then the request will be processed with the corresponding service
-        #     tier. [Contact sales](https://openai.com/contact-sales) to learn more about
-        #     Priority processing.
+        #     '[priority](https://openai.com/api-priority-processing/)', then the request
+        #     will be processed with the corresponding service tier.
         #   - When not set, the default behavior is 'auto'.
         #
         #   When the `service_tier` parameter is set, the response body will include the
@@ -194,14 +193,9 @@ module OpenAI
         optional :temperature, Float, nil?: true
 
         # @!attribute text
-        #   Configuration options for a text response from the model. Can be plain text or
-        #   structured JSON data. Learn more:
         #
-        #   - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-        #   - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
-        #
-        #   @return [OpenAI::Models::Responses::ResponseTextConfig, nil]
-        optional :text, -> { OpenAI::Responses::ResponseTextConfig }
+        #   @return [OpenAI::Models::Responses::ResponseCreateParams::Text, nil]
+        optional :text, -> { OpenAI::Responses::ResponseCreateParams::Text }
 
         # @!attribute tool_choice
         #   How the model should select which tool (or tools) to use when generating a
@@ -301,7 +295,7 @@ module OpenAI
         #
         #   @param prompt_cache_key [String] Used by OpenAI to cache responses for similar requests to optimize your cache hi
         #
-        #   @param reasoning [OpenAI::Models::Reasoning, nil] **o-series models only**
+        #   @param reasoning [OpenAI::Models::Reasoning, nil] **gpt-5 and o-series models only**
         #
         #   @param safety_identifier [String] A stable identifier used to help detect users of your application that may be vi
         #
@@ -313,7 +307,7 @@ module OpenAI
         #
         #   @param temperature [Float, nil] What sampling temperature to use, between 0 and 2. Higher values like 0.8 will m
         #
-        #   @param text [OpenAI::Models::Responses::ResponseTextConfig] Configuration options for a text response from the model. Can be plain
+        #   @param text [OpenAI::Models::Responses::ResponseCreateParams::Text]
         #
         #   @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceAllowed, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp, OpenAI::Models::Responses::ToolChoiceCustom] How the model should select which tool (or tools) to use when generating
         #
@@ -361,9 +355,8 @@ module OpenAI
         # - If set to 'default', then the request will be processed with the standard
         #   pricing and performance for the selected model.
         # - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)' or
-        #   'priority', then the request will be processed with the corresponding service
-        #   tier. [Contact sales](https://openai.com/contact-sales) to learn more about
-        #   Priority processing.
+        #   '[priority](https://openai.com/api-priority-processing/)', then the request
+        #   will be processed with the corresponding service tier.
         # - When not set, the default behavior is 'auto'.
         #
         # When the `service_tier` parameter is set, the response body will include the
@@ -403,6 +396,62 @@ module OpenAI
           #   Options for streaming responses. Only set this when you set `stream: true`.
           #
           #   @param include_obfuscation [Boolean] When true, stream obfuscation will be enabled. Stream obfuscation adds
+        end
+
+        class Text < OpenAI::Internal::Type::BaseModel
+          # @!attribute format_
+          #   An object specifying the format that the model must output.
+          #
+          #   Configuring `{ "type": "json_schema" }` enables Structured Outputs, which
+          #   ensures the model will match your supplied JSON schema. Learn more in the
+          #   [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+          #
+          #   The default format is `{ "type": "text" }` with no additional options.
+          #
+          #   **Not recommended for gpt-4o and newer models:**
+          #
+          #   Setting to `{ "type": "json_object" }` enables the older JSON mode, which
+          #   ensures the message the model generates is valid JSON. Using `json_schema` is
+          #   preferred for models that support it.
+          #
+          #   @return [OpenAI::Models::ResponseFormatText, OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig, OpenAI::Models::ResponseFormatJSONObject, nil]
+          optional :format_, union: -> { OpenAI::Responses::ResponseFormatTextConfig }, api_name: :format
+
+          # @!attribute verbosity
+          #   Constrains the verbosity of the model's response. Lower values will result in
+          #   more concise responses, while higher values will result in more verbose
+          #   responses. Currently supported values are `low`, `medium`, and `high`.
+          #
+          #   @return [Symbol, OpenAI::Models::Responses::ResponseCreateParams::Text::Verbosity, nil]
+          optional :verbosity,
+                   enum: -> {
+                     OpenAI::Responses::ResponseCreateParams::Text::Verbosity
+                   },
+                   nil?: true
+
+          # @!method initialize(format_: nil, verbosity: nil)
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Responses::ResponseCreateParams::Text} for more details.
+          #
+          #   @param format_ [OpenAI::Models::ResponseFormatText, OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig, OpenAI::Models::ResponseFormatJSONObject] An object specifying the format that the model must output.
+          #
+          #   @param verbosity [Symbol, OpenAI::Models::Responses::ResponseCreateParams::Text::Verbosity, nil] Constrains the verbosity of the model's response. Lower values will result in
+
+          # Constrains the verbosity of the model's response. Lower values will result in
+          # more concise responses, while higher values will result in more verbose
+          # responses. Currently supported values are `low`, `medium`, and `high`.
+          #
+          # @see OpenAI::Models::Responses::ResponseCreateParams::Text#verbosity
+          module Verbosity
+            extend OpenAI::Internal::Type::Enum
+
+            LOW = :low
+            MEDIUM = :medium
+            HIGH = :high
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
         end
 
         # How the model should select which tool (or tools) to use when generating a

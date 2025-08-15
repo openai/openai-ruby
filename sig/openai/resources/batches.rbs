@@ -6,6 +6,7 @@ module OpenAI
         endpoint: OpenAI::Models::BatchCreateParams::endpoint,
         input_file_id: String,
         ?metadata: OpenAI::Models::metadata?,
+        ?output_expires_after: OpenAI::BatchCreateParams::OutputExpiresAfter,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Batch
 

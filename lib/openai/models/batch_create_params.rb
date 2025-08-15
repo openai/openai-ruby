@@ -48,7 +48,14 @@ module OpenAI
       #   @return [Hash{Symbol=>String}, nil]
       optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
-      # @!method initialize(completion_window:, endpoint:, input_file_id:, metadata: nil, request_options: {})
+      # @!attribute output_expires_after
+      #   The expiration policy for the output and/or error file that are generated for a
+      #   batch.
+      #
+      #   @return [OpenAI::Models::BatchCreateParams::OutputExpiresAfter, nil]
+      optional :output_expires_after, -> { OpenAI::BatchCreateParams::OutputExpiresAfter }
+
+      # @!method initialize(completion_window:, endpoint:, input_file_id:, metadata: nil, output_expires_after: nil, request_options: {})
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::BatchCreateParams} for more details.
       #
@@ -59,6 +66,8 @@ module OpenAI
       #   @param input_file_id [String] The ID of an uploaded file that contains requests for the new batch.
       #
       #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+      #
+      #   @param output_expires_after [OpenAI::Models::BatchCreateParams::OutputExpiresAfter] The expiration policy for the output and/or error file that are generated for a
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -87,6 +96,34 @@ module OpenAI
 
         # @!method self.values
         #   @return [Array<Symbol>]
+      end
+
+      class OutputExpiresAfter < OpenAI::Internal::Type::BaseModel
+        # @!attribute anchor
+        #   Anchor timestamp after which the expiration policy applies. Supported anchors:
+        #   `created_at`. Note that the anchor is the file creation time, not the time the
+        #   batch is created.
+        #
+        #   @return [Symbol, :created_at]
+        required :anchor, const: :created_at
+
+        # @!attribute seconds
+        #   The number of seconds after the anchor time that the file will expire. Must be
+        #   between 3600 (1 hour) and 2592000 (30 days).
+        #
+        #   @return [Integer]
+        required :seconds, Integer
+
+        # @!method initialize(seconds:, anchor: :created_at)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::BatchCreateParams::OutputExpiresAfter} for more details.
+        #
+        #   The expiration policy for the output and/or error file that are generated for a
+        #   batch.
+        #
+        #   @param seconds [Integer] The number of seconds after the anchor time that the file will expire. Must be b
+        #
+        #   @param anchor [Symbol, :created_at] Anchor timestamp after which the expiration policy applies. Supported anchors: `
       end
     end
   end

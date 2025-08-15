@@ -37,7 +37,7 @@ module OpenAI
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::Reasoning} for more details.
       #
-      #   **o-series models only**
+      #   **gpt-5 and o-series models only**
       #
       #   Configuration options for
       #   [reasoning models](https://platform.openai.com/docs/guides/reasoning).

@@ -29,7 +29,7 @@ module OpenAI
       # the documentation on
       # [creating a File](https://platform.openai.com/docs/api-reference/files/create).
       #
-      # @overload create(bytes:, filename:, mime_type:, purpose:, request_options: {})
+      # @overload create(bytes:, filename:, mime_type:, purpose:, expires_after: nil, request_options: {})
       #
       # @param bytes [Integer] The number of bytes in the file you are uploading.
       #
@@ -38,6 +38,8 @@ module OpenAI
       # @param mime_type [String] The MIME type of the file.
       #
       # @param purpose [Symbol, OpenAI::Models::FilePurpose] The intended purpose of the uploaded file.
+      #
+      # @param expires_after [OpenAI::Models::UploadCreateParams::ExpiresAfter] The expiration policy for a file. By default, files with `purpose=batch` expire
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #

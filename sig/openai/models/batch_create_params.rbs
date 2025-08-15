@@ -5,7 +5,8 @@ module OpenAI
         completion_window: OpenAI::Models::BatchCreateParams::completion_window,
         endpoint: OpenAI::Models::BatchCreateParams::endpoint,
         input_file_id: String,
-        metadata: OpenAI::Models::metadata?
+        metadata: OpenAI::Models::metadata?,
+        output_expires_after: OpenAI::BatchCreateParams::OutputExpiresAfter
       }
       & OpenAI::Internal::Type::request_parameters
 
@@ -21,11 +22,18 @@ module OpenAI
 
       attr_accessor metadata: OpenAI::Models::metadata?
 
+      attr_reader output_expires_after: OpenAI::BatchCreateParams::OutputExpiresAfter?
+
+      def output_expires_after=: (
+        OpenAI::BatchCreateParams::OutputExpiresAfter
+      ) -> OpenAI::BatchCreateParams::OutputExpiresAfter
+
       def initialize: (
         completion_window: OpenAI::Models::BatchCreateParams::completion_window,
         endpoint: OpenAI::Models::BatchCreateParams::endpoint,
         input_file_id: String,
         ?metadata: OpenAI::Models::metadata?,
+        ?output_expires_after: OpenAI::BatchCreateParams::OutputExpiresAfter,
         ?request_options: OpenAI::request_opts
       ) -> void
 
@@ -34,6 +42,7 @@ module OpenAI
         endpoint: OpenAI::Models::BatchCreateParams::endpoint,
         input_file_id: String,
         metadata: OpenAI::Models::metadata?,
+        output_expires_after: OpenAI::BatchCreateParams::OutputExpiresAfter,
         request_options: OpenAI::RequestOptions
       }
 
@@ -62,6 +71,18 @@ module OpenAI
         V1_COMPLETIONS: :"/v1/completions"
 
         def self?.values: -> ::Array[OpenAI::Models::BatchCreateParams::endpoint]
+      end
+
+      type output_expires_after = { anchor: :created_at, seconds: Integer }
+
+      class OutputExpiresAfter < OpenAI::Internal::Type::BaseModel
+        attr_accessor anchor: :created_at
+
+        attr_accessor seconds: Integer
+
+        def initialize: (seconds: Integer, ?anchor: :created_at) -> void
+
+        def to_hash: -> { anchor: :created_at, seconds: Integer }
       end
     end
   end
