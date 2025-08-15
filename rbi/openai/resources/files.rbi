@@ -5,7 +5,7 @@ module OpenAI
     class Files
       # Upload a file that can be used across various endpoints. Individual files can be
       # up to 512 MB, and the size of all files uploaded by one organization can be up
-      # to 100 GB.
+      # to 1 TB.
       #
       # The Assistants API supports files up to 2 million tokens and of specific file
       # types. See the
@@ -28,6 +28,7 @@ module OpenAI
         params(
           file: OpenAI::Internal::FileInput,
           purpose: OpenAI::FilePurpose::OrSymbol,
+          expires_after: OpenAI::FileCreateParams::ExpiresAfter::OrHash,
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(OpenAI::FileObject)
       end
@@ -39,6 +40,9 @@ module OpenAI
         # fine-tuning - `vision`: Images used for vision fine-tuning - `user_data`:
         # Flexible file type for any purpose - `evals`: Used for eval data sets
         purpose:,
+        # The expiration policy for a file. By default, files with `purpose=batch` expire
+        # after 30 days and all other files are persisted until they are manually deleted.
+        expires_after: nil,
         request_options: {}
       )
       end

@@ -174,7 +174,7 @@ module OpenAI
             # We generally recommend altering this or temperature but not both.
             top_p: nil,
             # Body param: Controls for how a thread will be truncated prior to the run. Use
-            # this to control the intial context window of the run.
+            # this to control the initial context window of the run.
             truncation_strategy: nil,
             # There is no need to provide `stream:`. Instead, use `#create_stream_raw` or
             # `#create` for streaming and non-streaming use cases, respectively.
@@ -353,7 +353,7 @@ module OpenAI
             # We generally recommend altering this or temperature but not both.
             top_p: nil,
             # Body param: Controls for how a thread will be truncated prior to the run. Use
-            # this to control the intial context window of the run.
+            # this to control the initial context window of the run.
             truncation_strategy: nil,
             # There is no need to provide `stream:`. Instead, use `#create_stream_raw` or
             # `#create` for streaming and non-streaming use cases, respectively.

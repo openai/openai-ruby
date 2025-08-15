@@ -3,7 +3,8 @@ module OpenAI
     type file_create_params =
       {
         file: OpenAI::Internal::file_input,
-        purpose: OpenAI::Models::file_purpose
+        purpose: OpenAI::Models::file_purpose,
+        expires_after: OpenAI::FileCreateParams::ExpiresAfter
       }
       & OpenAI::Internal::Type::request_parameters
 
@@ -15,17 +16,37 @@ module OpenAI
 
       attr_accessor purpose: OpenAI::Models::file_purpose
 
+      attr_reader expires_after: OpenAI::FileCreateParams::ExpiresAfter?
+
+      def expires_after=: (
+        OpenAI::FileCreateParams::ExpiresAfter
+      ) -> OpenAI::FileCreateParams::ExpiresAfter
+
       def initialize: (
         file: OpenAI::Internal::file_input,
         purpose: OpenAI::Models::file_purpose,
+        ?expires_after: OpenAI::FileCreateParams::ExpiresAfter,
         ?request_options: OpenAI::request_opts
       ) -> void
 
       def to_hash: -> {
         file: OpenAI::Internal::file_input,
         purpose: OpenAI::Models::file_purpose,
+        expires_after: OpenAI::FileCreateParams::ExpiresAfter,
         request_options: OpenAI::RequestOptions
       }
+
+      type expires_after = { anchor: :created_at, seconds: Integer }
+
+      class ExpiresAfter < OpenAI::Internal::Type::BaseModel
+        attr_accessor anchor: :created_at
+
+        attr_accessor seconds: Integer
+
+        def initialize: (seconds: Integer, ?anchor: :created_at) -> void
+
+        def to_hash: -> { anchor: :created_at, seconds: Integer }
+      end
     end
   end
 end

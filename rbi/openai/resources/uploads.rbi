@@ -31,6 +31,7 @@ module OpenAI
           filename: String,
           mime_type: String,
           purpose: OpenAI::FilePurpose::OrSymbol,
+          expires_after: OpenAI::UploadCreateParams::ExpiresAfter::OrHash,
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(OpenAI::Upload)
       end
@@ -49,6 +50,9 @@ module OpenAI
         # See the
         # [documentation on File purposes](https://platform.openai.com/docs/api-reference/files/create#files-create-purpose).
         purpose:,
+        # The expiration policy for a file. By default, files with `purpose=batch` expire
+        # after 30 days and all other files are persisted until they are manually deleted.
+        expires_after: nil,
         request_options: {}
       )
       end

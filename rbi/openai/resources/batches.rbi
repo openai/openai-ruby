@@ -11,6 +11,8 @@ module OpenAI
           endpoint: OpenAI::BatchCreateParams::Endpoint::OrSymbol,
           input_file_id: String,
           metadata: T.nilable(T::Hash[Symbol, String]),
+          output_expires_after:
+            OpenAI::BatchCreateParams::OutputExpiresAfter::OrHash,
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(OpenAI::Batch)
       end
@@ -40,6 +42,9 @@ module OpenAI
         # Keys are strings with a maximum length of 64 characters. Values are strings with
         # a maximum length of 512 characters.
         metadata: nil,
+        # The expiration policy for the output and/or error file that are generated for a
+        # batch.
+        output_expires_after: nil,
         request_options: {}
       )
       end

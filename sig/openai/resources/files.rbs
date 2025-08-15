@@ -4,6 +4,7 @@ module OpenAI
       def create: (
         file: OpenAI::Internal::file_input,
         purpose: OpenAI::Models::file_purpose,
+        ?expires_after: OpenAI::FileCreateParams::ExpiresAfter,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::FileObject
 

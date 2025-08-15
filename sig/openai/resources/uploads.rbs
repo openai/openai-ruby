@@ -8,6 +8,7 @@ module OpenAI
         filename: String,
         mime_type: String,
         purpose: OpenAI::Models::file_purpose,
+        ?expires_after: OpenAI::UploadCreateParams::ExpiresAfter,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Upload
 
