@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.18.0 (2025-08-15)
+
+Full Changelog: [v0.17.1...v0.18.0](https://github.com/openai/openai-ruby/compare/v0.17.1...v0.18.0)
+
+### ⚠ BREAKING CHANGES
+
+* structured output desc should go on array items not array itself ([#799](https://github.com/openai/openai-ruby/issues/799))
+
+### Features
+
+* **api:** add new text parameters, expiration options ([f318432](https://github.com/openai/openai-ruby/commit/f318432b19800ab42d5b0c5f179f0cdd02dbf596))
+
+
+### Bug Fixes
+
+* structured output desc should go on array items not array itself ([#799](https://github.com/openai/openai-ruby/issues/799)) ([ff507d0](https://github.com/openai/openai-ruby/commit/ff507d095ff703ba3b44ab82b06eb4314688d4eb))
+
+
+### Chores
+
+* **internal:** update test skipping reason ([c815703](https://github.com/openai/openai-ruby/commit/c815703062ce79d2cb14f252ee5d23cf4ebf15ca))
+
 ## 0.17.1 (2025-08-09)
 
 Full Changelog: [v0.17.0...v0.17.1](https://github.com/openai/openai-ruby/compare/v0.17.0...v0.17.1)
