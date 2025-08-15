@@ -8,7 +8,7 @@ module OpenAI
       #
       # Upload a file that can be used across various endpoints. Individual files can be
       # up to 512 MB, and the size of all files uploaded by one organization can be up
-      # to 100 GB.
+      # to 1 TB.
       #
       # The Assistants API supports files up to 2 million tokens and of specific file
       # types. See the
@@ -28,11 +28,13 @@ module OpenAI
       # Please [contact us](https://help.openai.com/) if you need to increase these
       # storage limits.
       #
-      # @overload create(file:, purpose:, request_options: {})
+      # @overload create(file:, purpose:, expires_after: nil, request_options: {})
       #
       # @param file [Pathname, StringIO, IO, String, OpenAI::FilePart] The File object (not file name) to be uploaded.
       #
       # @param purpose [Symbol, OpenAI::Models::FilePurpose] The intended purpose of the uploaded file. One of: - `assistants`: Used in the A
+      #
+      # @param expires_after [OpenAI::Models::FileCreateParams::ExpiresAfter] The expiration policy for a file. By default, files with `purpose=batch` expire
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #

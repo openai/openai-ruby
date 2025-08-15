@@ -164,7 +164,7 @@ module OpenAI
         # hit rates. Replaces the `user` field.
         # [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
         prompt_cache_key: nil,
-        # **o-series models only**
+        # **gpt-5 and o-series models only**
         #
         # Configuration options for
         # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
@@ -183,9 +183,8 @@ module OpenAI
         # - If set to 'default', then the request will be processed with the standard
         #   pricing and performance for the selected model.
         # - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)' or
-        #   'priority', then the request will be processed with the corresponding service
-        #   tier. [Contact sales](https://openai.com/contact-sales) to learn more about
-        #   Priority processing.
+        #   '[priority](https://openai.com/api-priority-processing/)', then the request
+        #   will be processed with the corresponding service tier.
         # - When not set, the default behavior is 'auto'.
         #
         # When the `service_tier` parameter is set, the response body will include the
@@ -202,11 +201,6 @@ module OpenAI
         # focused and deterministic. We generally recommend altering this or `top_p` but
         # not both.
         temperature: nil,
-        # Configuration options for a text response from the model. Can be plain text or
-        # structured JSON data. Learn more:
-        #
-        # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-        # - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
         text: nil,
         # How the model should select which tool (or tools) to use when generating a
         # response. See the `tools` parameter to see how to specify which tools the model
@@ -423,7 +417,7 @@ module OpenAI
         # hit rates. Replaces the `user` field.
         # [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
         prompt_cache_key: nil,
-        # **o-series models only**
+        # **gpt-5 and o-series models only**
         #
         # Configuration options for
         # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
@@ -442,9 +436,8 @@ module OpenAI
         # - If set to 'default', then the request will be processed with the standard
         #   pricing and performance for the selected model.
         # - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)' or
-        #   'priority', then the request will be processed with the corresponding service
-        #   tier. [Contact sales](https://openai.com/contact-sales) to learn more about
-        #   Priority processing.
+        #   '[priority](https://openai.com/api-priority-processing/)', then the request
+        #   will be processed with the corresponding service tier.
         # - When not set, the default behavior is 'auto'.
         #
         # When the `service_tier` parameter is set, the response body will include the
@@ -461,11 +454,6 @@ module OpenAI
         # focused and deterministic. We generally recommend altering this or `top_p` but
         # not both.
         temperature: nil,
-        # Configuration options for a text response from the model. Can be plain text or
-        # structured JSON data. Learn more:
-        #
-        # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-        # - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
         text: nil,
         # How the model should select which tool (or tools) to use when generating a
         # response. See the `tools` parameter to see how to specify which tools the model

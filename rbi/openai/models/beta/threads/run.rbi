@@ -184,7 +184,7 @@ module OpenAI
           attr_accessor :tools
 
           # Controls for how a thread will be truncated prior to the run. Use this to
-          # control the intial context window of the run.
+          # control the initial context window of the run.
           sig do
             returns(T.nilable(OpenAI::Beta::Threads::Run::TruncationStrategy))
           end
@@ -375,7 +375,7 @@ module OpenAI
             # this run.
             tools:,
             # Controls for how a thread will be truncated prior to the run. Use this to
-            # control the intial context window of the run.
+            # control the initial context window of the run.
             truncation_strategy:,
             # Usage statistics related to the run. This value will be `null` if the run is not
             # in a terminal state (i.e. `in_progress`, `queued`, etc.).
@@ -740,7 +740,7 @@ module OpenAI
             attr_accessor :last_messages
 
             # Controls for how a thread will be truncated prior to the run. Use this to
-            # control the intial context window of the run.
+            # control the initial context window of the run.
             sig do
               params(
                 type:

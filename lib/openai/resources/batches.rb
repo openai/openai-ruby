@@ -8,7 +8,7 @@ module OpenAI
       #
       # Creates and executes a batch from an uploaded file of requests
       #
-      # @overload create(completion_window:, endpoint:, input_file_id:, metadata: nil, request_options: {})
+      # @overload create(completion_window:, endpoint:, input_file_id:, metadata: nil, output_expires_after: nil, request_options: {})
       #
       # @param completion_window [Symbol, OpenAI::Models::BatchCreateParams::CompletionWindow] The time frame within which the batch should be processed. Currently only `24h`
       #
@@ -17,6 +17,8 @@ module OpenAI
       # @param input_file_id [String] The ID of an uploaded file that contains requests for the new batch.
       #
       # @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+      #
+      # @param output_expires_after [OpenAI::Models::BatchCreateParams::OutputExpiresAfter] The expiration policy for the output and/or error file that are generated for a
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
