@@ -5,8 +5,8 @@ module OpenAI
     module Graders
       class TextSimilarityGrader < OpenAI::Internal::Type::BaseModel
         # @!attribute evaluation_metric
-        #   The evaluation metric to use. One of `fuzzy_match`, `bleu`, `gleu`, `meteor`,
-        #   `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.
+        #   The evaluation metric to use. One of `cosine`, `fuzzy_match`, `bleu`, `gleu`,
+        #   `meteor`, `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.
         #
         #   @return [Symbol, OpenAI::Models::Graders::TextSimilarityGrader::EvaluationMetric]
         required :evaluation_metric, enum: -> { OpenAI::Graders::TextSimilarityGrader::EvaluationMetric }
@@ -41,7 +41,7 @@ module OpenAI
         #
         #   A TextSimilarityGrader object which grades text based on similarity metrics.
         #
-        #   @param evaluation_metric [Symbol, OpenAI::Models::Graders::TextSimilarityGrader::EvaluationMetric] The evaluation metric to use. One of `fuzzy_match`, `bleu`, `gleu`, `meteor`, `r
+        #   @param evaluation_metric [Symbol, OpenAI::Models::Graders::TextSimilarityGrader::EvaluationMetric] The evaluation metric to use. One of `cosine`, `fuzzy_match`, `bleu`,
         #
         #   @param input [String] The text being graded.
         #
@@ -51,13 +51,14 @@ module OpenAI
         #
         #   @param type [Symbol, :text_similarity] The type of grader.
 
-        # The evaluation metric to use. One of `fuzzy_match`, `bleu`, `gleu`, `meteor`,
-        # `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.
+        # The evaluation metric to use. One of `cosine`, `fuzzy_match`, `bleu`, `gleu`,
+        # `meteor`, `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.
         #
         # @see OpenAI::Models::Graders::TextSimilarityGrader#evaluation_metric
         module EvaluationMetric
           extend OpenAI::Internal::Type::Enum
 
+          COSINE = :cosine
           FUZZY_MATCH = :fuzzy_match
           BLEU = :bleu
           GLEU = :gleu

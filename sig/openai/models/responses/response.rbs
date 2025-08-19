@@ -27,7 +27,7 @@ module OpenAI
           safety_identifier: String,
           service_tier: OpenAI::Models::Responses::Response::service_tier?,
           status: OpenAI::Models::Responses::response_status,
-          text: OpenAI::Responses::Response::Text,
+          text: OpenAI::Responses::ResponseTextConfig,
           top_logprobs: Integer?,
           truncation: OpenAI::Models::Responses::Response::truncation?,
           usage: OpenAI::Responses::ResponseUsage,
@@ -91,11 +91,11 @@ module OpenAI
           OpenAI::Models::Responses::response_status
         ) -> OpenAI::Models::Responses::response_status
 
-        attr_reader text: OpenAI::Responses::Response::Text?
+        attr_reader text: OpenAI::Responses::ResponseTextConfig?
 
         def text=: (
-          OpenAI::Responses::Response::Text
-        ) -> OpenAI::Responses::Response::Text
+          OpenAI::Responses::ResponseTextConfig
+        ) -> OpenAI::Responses::ResponseTextConfig
 
         attr_accessor top_logprobs: Integer?
 
@@ -135,7 +135,7 @@ module OpenAI
           ?safety_identifier: String,
           ?service_tier: OpenAI::Models::Responses::Response::service_tier?,
           ?status: OpenAI::Models::Responses::response_status,
-          ?text: OpenAI::Responses::Response::Text,
+          ?text: OpenAI::Responses::ResponseTextConfig,
           ?top_logprobs: Integer?,
           ?truncation: OpenAI::Models::Responses::Response::truncation?,
           ?usage: OpenAI::Responses::ResponseUsage,
@@ -168,7 +168,7 @@ module OpenAI
           safety_identifier: String,
           service_tier: OpenAI::Models::Responses::Response::service_tier?,
           status: OpenAI::Models::Responses::response_status,
-          text: OpenAI::Responses::Response::Text,
+          text: OpenAI::Responses::ResponseTextConfig,
           top_logprobs: Integer?,
           truncation: OpenAI::Models::Responses::Response::truncation?,
           usage: OpenAI::Responses::ResponseUsage,
@@ -244,44 +244,6 @@ module OpenAI
           PRIORITY: :priority
 
           def self?.values: -> ::Array[OpenAI::Models::Responses::Response::service_tier]
-        end
-
-        type text =
-          {
-            format_: OpenAI::Models::Responses::response_format_text_config,
-            verbosity: OpenAI::Models::Responses::Response::Text::verbosity?
-          }
-
-        class Text < OpenAI::Internal::Type::BaseModel
-          attr_reader format_: OpenAI::Models::Responses::response_format_text_config?
-
-          def format_=: (
-            OpenAI::Models::Responses::response_format_text_config
-          ) -> OpenAI::Models::Responses::response_format_text_config
-
-          attr_accessor verbosity: OpenAI::Models::Responses::Response::Text::verbosity?
-
-          def initialize: (
-            ?format_: OpenAI::Models::Responses::response_format_text_config,
-            ?verbosity: OpenAI::Models::Responses::Response::Text::verbosity?
-          ) -> void
-
-          def to_hash: -> {
-            format_: OpenAI::Models::Responses::response_format_text_config,
-            verbosity: OpenAI::Models::Responses::Response::Text::verbosity?
-          }
-
-          type verbosity = :low | :medium | :high
-
-          module Verbosity
-            extend OpenAI::Internal::Type::Enum
-
-            LOW: :low
-            MEDIUM: :medium
-            HIGH: :high
-
-            def self?.values: -> ::Array[OpenAI::Models::Responses::Response::Text::verbosity]
-          end
         end
 
         type truncation = :auto | :disabled
