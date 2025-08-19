@@ -68,19 +68,19 @@ module OpenAI
     end
 
     class APIConnectionError < OpenAI::Errors::APIError
-      sig { void }
+      sig { returns(NilClass) }
       attr_accessor :status
 
-      sig { void }
+      sig { returns(NilClass) }
       attr_accessor :body
 
-      sig { void }
+      sig { returns(NilClass) }
       attr_accessor :code
 
-      sig { void }
+      sig { returns(NilClass) }
       attr_accessor :param
 
-      sig { void }
+      sig { returns(NilClass) }
       attr_accessor :type
 
       # @api private
