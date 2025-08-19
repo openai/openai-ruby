@@ -94,10 +94,7 @@ module OpenAI
               #   Your chosen grammar.
               #
               #   @return [OpenAI::Models::Chat::ChatCompletionCustomTool::Custom::Format::Grammar::Grammar]
-              required :grammar,
-                       -> {
-                         OpenAI::Chat::ChatCompletionCustomTool::Custom::Format::Grammar::Grammar
-                       }
+              required :grammar, -> { OpenAI::Chat::ChatCompletionCustomTool::Custom::Format::Grammar::Grammar }
 
               # @!attribute type
               #   Grammar format. Always `grammar`.
@@ -125,9 +122,7 @@ module OpenAI
                 #
                 #   @return [Symbol, OpenAI::Models::Chat::ChatCompletionCustomTool::Custom::Format::Grammar::Grammar::Syntax]
                 required :syntax,
-                         enum: -> {
-                           OpenAI::Chat::ChatCompletionCustomTool::Custom::Format::Grammar::Grammar::Syntax
-                         }
+                         enum: -> { OpenAI::Chat::ChatCompletionCustomTool::Custom::Format::Grammar::Grammar::Syntax }
 
                 # @!method initialize(definition:, syntax:)
                 #   Your chosen grammar.

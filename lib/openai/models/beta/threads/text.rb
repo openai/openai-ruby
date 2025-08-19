@@ -8,10 +8,7 @@ module OpenAI
           # @!attribute annotations
           #
           #   @return [Array<OpenAI::Models::Beta::Threads::FileCitationAnnotation, OpenAI::Models::Beta::Threads::FilePathAnnotation>]
-          required :annotations,
-                   -> {
-                     OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::Annotation]
-                   }
+          required :annotations, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::Annotation] }
 
           # @!attribute value
           #   The data that makes up the text.

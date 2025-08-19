@@ -15,10 +15,7 @@ module OpenAI
         variant :"thread.run.step.created", -> { OpenAI::Beta::RunStepStreamEvent::ThreadRunStepCreated }
 
         # Occurs when a [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object) moves to an `in_progress` state.
-        variant :"thread.run.step.in_progress",
-                -> {
-                  OpenAI::Beta::RunStepStreamEvent::ThreadRunStepInProgress
-                }
+        variant :"thread.run.step.in_progress", -> { OpenAI::Beta::RunStepStreamEvent::ThreadRunStepInProgress }
 
         # Occurs when parts of a [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object) are being streamed.
         variant :"thread.run.step.delta", -> { OpenAI::Beta::RunStepStreamEvent::ThreadRunStepDelta }

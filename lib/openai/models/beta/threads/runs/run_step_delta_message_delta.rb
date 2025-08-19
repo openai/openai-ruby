@@ -15,10 +15,7 @@ module OpenAI
             # @!attribute message_creation
             #
             #   @return [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation, nil]
-            optional :message_creation,
-                     -> {
-                       OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation
-                     }
+            optional :message_creation, -> { OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation }
 
             # @!method initialize(message_creation: nil, type: :message_creation)
             #   Details of the message creation by the run step.

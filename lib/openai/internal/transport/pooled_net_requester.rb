@@ -193,15 +193,7 @@ module OpenAI
         end
 
         define_sorbet_constant!(:Request) do
-          T.type_alias do
-            {
-              method: Symbol,
-              url: URI::Generic,
-              headers: T::Hash[String, String],
-              body: T.anything,
-              deadline: Float
-            }
-          end
+          T.type_alias { {method: Symbol, url: URI::Generic, headers: T::Hash[String, String], body: T.anything, deadline: Float} }
         end
       end
     end

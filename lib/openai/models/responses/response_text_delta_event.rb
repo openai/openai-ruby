@@ -85,9 +85,7 @@ module OpenAI
           #
           #   @return [Array<OpenAI::Models::Responses::ResponseTextDeltaEvent::Logprob::TopLogprob>, nil]
           optional :top_logprobs,
-                   -> {
-                     OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseTextDeltaEvent::Logprob::TopLogprob]
-                   }
+                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseTextDeltaEvent::Logprob::TopLogprob] }
 
           # @!method initialize(token:, logprob:, top_logprobs: nil)
           #   Some parameter documentations has been truncated, see

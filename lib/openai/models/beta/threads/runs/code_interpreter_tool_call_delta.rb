@@ -62,9 +62,7 @@ module OpenAI
               #
               #   @return [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage>, nil]
               optional :outputs,
-                       -> {
-                         OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::Output]
-                       }
+                       -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::Output] }
 
               # @!method initialize(input: nil, outputs: nil)
               #   Some parameter documentations has been truncated, see

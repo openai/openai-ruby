@@ -355,10 +355,7 @@ module OpenAI
             #   Details on the tool outputs needed for this run to continue.
             #
             #   @return [OpenAI::Models::Beta::Threads::Run::RequiredAction::SubmitToolOutputs]
-            required :submit_tool_outputs,
-                     -> {
-                       OpenAI::Beta::Threads::Run::RequiredAction::SubmitToolOutputs
-                     }
+            required :submit_tool_outputs, -> { OpenAI::Beta::Threads::Run::RequiredAction::SubmitToolOutputs }
 
             # @!attribute type
             #   For now, this is always `submit_tool_outputs`.
@@ -381,9 +378,7 @@ module OpenAI
               #
               #   @return [Array<OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall>]
               required :tool_calls,
-                       -> {
-                         OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::Threads::RequiredActionFunctionToolCall]
-                       }
+                       -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::Threads::RequiredActionFunctionToolCall] }
 
               # @!method initialize(tool_calls:)
               #   Details on the tool outputs needed for this run to continue.

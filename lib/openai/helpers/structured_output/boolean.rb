@@ -8,6 +8,7 @@ module OpenAI
       # Ruby does not have a "boolean" Class, this is something for models to refer to.
       class Boolean < OpenAI::Internal::Type::Boolean
         extend OpenAI::Helpers::StructuredOutput::JsonSchemaConverter
+
         # rubocop:disable Lint/UnusedMethodArgument
 
         # @api private

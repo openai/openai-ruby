@@ -236,10 +236,7 @@ module OpenAI
             #   The text contents of the message.
             #
             #   @return [String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>]
-            required :content,
-                     union: -> {
-                       OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Content
-                     }
+            required :content, union: -> { OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Content }
 
             # @!attribute role
             #   The role of the entity that is creating the message. Allowed values include:
@@ -336,9 +333,7 @@ module OpenAI
               #
               #   @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch>, nil]
               optional :tools,
-                       -> {
-                         OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool]
-                       }
+                       -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool] }
 
               # @!method initialize(file_id: nil, tools: nil)
               #   @param file_id [String] The ID of the file to attach to the message.
@@ -353,9 +348,7 @@ module OpenAI
                 variant :code_interpreter, -> { OpenAI::Beta::CodeInterpreterTool }
 
                 variant :file_search,
-                        -> {
-                          OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch
-                        }
+                        -> { OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch }
 
                 class FileSearch < OpenAI::Internal::Type::BaseModel
                   # @!attribute type

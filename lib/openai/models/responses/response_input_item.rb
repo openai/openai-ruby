@@ -95,10 +95,7 @@ module OpenAI
           #   types.
           #
           #   @return [Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile>]
-          required :content,
-                   -> {
-                     OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseInputContent]
-                   }
+          required :content, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseInputContent] }
 
           # @!attribute role
           #   The role of the message input. One of `user`, `system`, or `developer`.
@@ -605,9 +602,7 @@ module OpenAI
           #
           #   @return [Array<OpenAI::Models::Responses::ResponseInputItem::McpListTools::Tool>]
           required :tools,
-                   -> {
-                     OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseInputItem::McpListTools::Tool]
-                   }
+                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseInputItem::McpListTools::Tool] }
 
           # @!attribute type
           #   The type of the item. Always `mcp_list_tools`.

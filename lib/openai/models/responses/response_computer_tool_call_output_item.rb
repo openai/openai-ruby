@@ -34,9 +34,7 @@ module OpenAI
         #
         #   @return [Array<OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck>, nil]
         optional :acknowledged_safety_checks,
-                 -> {
-                   OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck]
-                 }
+                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck] }
 
         # @!attribute status
         #   The status of the message input. One of `in_progress`, `completed`, or

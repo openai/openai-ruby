@@ -176,9 +176,7 @@ module OpenAI
         #
         #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment>]
         required :harassment,
-                 -> {
-                   OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Moderation::CategoryAppliedInputTypes::Harassment]
-                 }
+                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Moderation::CategoryAppliedInputTypes::Harassment] }
 
         # @!attribute harassment_threatening
         #   The applied input type(s) for the category 'harassment/threatening'.
@@ -195,9 +193,7 @@ module OpenAI
         #
         #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate>]
         required :hate,
-                 -> {
-                   OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Moderation::CategoryAppliedInputTypes::Hate]
-                 }
+                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Moderation::CategoryAppliedInputTypes::Hate] }
 
         # @!attribute hate_threatening
         #   The applied input type(s) for the category 'hate/threatening'.
@@ -214,9 +210,7 @@ module OpenAI
         #
         #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit>]
         required :illicit,
-                 -> {
-                   OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Moderation::CategoryAppliedInputTypes::Illicit]
-                 }
+                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Moderation::CategoryAppliedInputTypes::Illicit] }
 
         # @!attribute illicit_violent
         #   The applied input type(s) for the category 'illicit/violent'.
@@ -263,9 +257,7 @@ module OpenAI
         #
         #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual>]
         required :sexual,
-                 -> {
-                   OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Moderation::CategoryAppliedInputTypes::Sexual]
-                 }
+                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Moderation::CategoryAppliedInputTypes::Sexual] }
 
         # @!attribute sexual_minors
         #   The applied input type(s) for the category 'sexual/minors'.
@@ -282,9 +274,7 @@ module OpenAI
         #
         #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence>]
         required :violence,
-                 -> {
-                   OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Moderation::CategoryAppliedInputTypes::Violence]
-                 }
+                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Moderation::CategoryAppliedInputTypes::Violence] }
 
         # @!attribute violence_graphic
         #   The applied input type(s) for the category 'violence/graphic'.
