@@ -29,7 +29,6 @@ module OpenAI
           store: bool?,
           stream_options: OpenAI::Chat::ChatCompletionStreamOptions?,
           temperature: Float?,
-          text: OpenAI::Chat::CompletionCreateParams::Text,
           tool_choice: OpenAI::Models::Chat::chat_completion_tool_choice_option,
           tools: ::Array[OpenAI::Models::Chat::chat_completion_tool],
           top_logprobs: Integer?,
@@ -114,12 +113,6 @@ module OpenAI
 
         attr_accessor temperature: Float?
 
-        attr_reader text: OpenAI::Chat::CompletionCreateParams::Text?
-
-        def text=: (
-          OpenAI::Chat::CompletionCreateParams::Text
-        ) -> OpenAI::Chat::CompletionCreateParams::Text
-
         attr_reader tool_choice: OpenAI::Models::Chat::chat_completion_tool_choice_option?
 
         def tool_choice=: (
@@ -175,7 +168,6 @@ module OpenAI
           ?store: bool?,
           ?stream_options: OpenAI::Chat::ChatCompletionStreamOptions?,
           ?temperature: Float?,
-          ?text: OpenAI::Chat::CompletionCreateParams::Text,
           ?tool_choice: OpenAI::Models::Chat::chat_completion_tool_choice_option,
           ?tools: ::Array[OpenAI::Models::Chat::chat_completion_tool],
           ?top_logprobs: Integer?,
@@ -213,7 +205,6 @@ module OpenAI
           store: bool?,
           stream_options: OpenAI::Chat::ChatCompletionStreamOptions?,
           temperature: Float?,
-          text: OpenAI::Chat::CompletionCreateParams::Text,
           tool_choice: OpenAI::Models::Chat::chat_completion_tool_choice_option,
           tools: ::Array[OpenAI::Models::Chat::chat_completion_tool],
           top_logprobs: Integer?,
@@ -330,35 +321,6 @@ module OpenAI
           def self?.variants: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::stop]
 
           StringArray: OpenAI::Internal::Type::Converter
-        end
-
-        type text =
-          {
-            verbosity: OpenAI::Models::Chat::CompletionCreateParams::Text::verbosity?
-          }
-
-        class Text < OpenAI::Internal::Type::BaseModel
-          attr_accessor verbosity: OpenAI::Models::Chat::CompletionCreateParams::Text::verbosity?
-
-          def initialize: (
-            ?verbosity: OpenAI::Models::Chat::CompletionCreateParams::Text::verbosity?
-          ) -> void
-
-          def to_hash: -> {
-            verbosity: OpenAI::Models::Chat::CompletionCreateParams::Text::verbosity?
-          }
-
-          type verbosity = :low | :medium | :high
-
-          module Verbosity
-            extend OpenAI::Internal::Type::Enum
-
-            LOW: :low
-            MEDIUM: :medium
-            HIGH: :high
-
-            def self?.values: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::Text::verbosity]
-          end
         end
 
         type verbosity = :low | :medium | :high

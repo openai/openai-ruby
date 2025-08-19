@@ -40,7 +40,8 @@ module OpenAI
         }
 
         type evaluation_metric =
-          :fuzzy_match
+          :cosine
+          | :fuzzy_match
           | :bleu
           | :gleu
           | :meteor
@@ -54,6 +55,7 @@ module OpenAI
         module EvaluationMetric
           extend OpenAI::Internal::Type::Enum
 
+          COSINE: :cosine
           FUZZY_MATCH: :fuzzy_match
           BLEU: :bleu
           GLEU: :gleu

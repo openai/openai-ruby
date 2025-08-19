@@ -61,7 +61,7 @@ module OpenAI
       #
       # @param temperature [Float, nil] What sampling temperature to use, between 0 and 2. Higher values like 0.8 will m
       #
-      # @param text [OpenAI::Models::Responses::ResponseCreateParams::Text]
+      # @param text [OpenAI::Models::Responses::ResponseTextConfig] Configuration options for a text response from the model. Can be plain
       #
       # @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceAllowed, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp, OpenAI::Models::Responses::ToolChoiceCustom] How the model should select which tool (or tools) to use when generating
       #
@@ -150,7 +150,7 @@ module OpenAI
       #
       # @param temperature [Float, nil] What sampling temperature to use, between 0 and 2. Higher values like 0.8 will m
       #
-      # @param text [OpenAI::Models::Responses::ResponseCreateParams::Text]
+      # @param text [OpenAI::Models::Responses::ResponseTextConfig] Configuration options for a text response from the model. Can be plain
       #
       # @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceAllowed, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp, OpenAI::Models::Responses::ToolChoiceCustom] How the model should select which tool (or tools) to use when generating
       #

@@ -14,8 +14,8 @@ module OpenAI
             )
           end
 
-        # The evaluation metric to use. One of `fuzzy_match`, `bleu`, `gleu`, `meteor`,
-        # `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.
+        # The evaluation metric to use. One of `cosine`, `fuzzy_match`, `bleu`, `gleu`,
+        # `meteor`, `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.
         sig do
           returns(
             OpenAI::Graders::TextSimilarityGrader::EvaluationMetric::OrSymbol
@@ -51,8 +51,8 @@ module OpenAI
           ).returns(T.attached_class)
         end
         def self.new(
-          # The evaluation metric to use. One of `fuzzy_match`, `bleu`, `gleu`, `meteor`,
-          # `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.
+          # The evaluation metric to use. One of `cosine`, `fuzzy_match`, `bleu`, `gleu`,
+          # `meteor`, `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.
           evaluation_metric:,
           # The text being graded.
           input:,
@@ -80,8 +80,8 @@ module OpenAI
         def to_hash
         end
 
-        # The evaluation metric to use. One of `fuzzy_match`, `bleu`, `gleu`, `meteor`,
-        # `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.
+        # The evaluation metric to use. One of `cosine`, `fuzzy_match`, `bleu`, `gleu`,
+        # `meteor`, `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.
         module EvaluationMetric
           extend OpenAI::Internal::Type::Enum
 
@@ -94,6 +94,11 @@ module OpenAI
             end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
+          COSINE =
+            T.let(
+              :cosine,
+              OpenAI::Graders::TextSimilarityGrader::EvaluationMetric::TaggedSymbol
+            )
           FUZZY_MATCH =
             T.let(
               :fuzzy_match,

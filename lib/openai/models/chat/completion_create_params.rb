@@ -272,7 +272,7 @@ module OpenAI
         #   our [model distillation](https://platform.openai.com/docs/guides/distillation)
         #   or [evals](https://platform.openai.com/docs/guides/evals) products.
         #
-        #   Supports text and image inputs. Note: image inputs over 10MB will be dropped.
+        #   Supports text and image inputs. Note: image inputs over 8MB will be dropped.
         #
         #   @return [Boolean, nil]
         optional :store, OpenAI::Internal::Type::Boolean, nil?: true
@@ -291,11 +291,6 @@ module OpenAI
         #
         #   @return [Float, nil]
         optional :temperature, Float, nil?: true
-
-        # @!attribute text
-        #
-        #   @return [OpenAI::Models::Chat::CompletionCreateParams::Text, nil]
-        optional :text, -> { OpenAI::Chat::CompletionCreateParams::Text }
 
         # @!attribute tool_choice
         #   Controls which (if any) tool is called by the model. `none` means the model will
@@ -365,7 +360,7 @@ module OpenAI
         #   @return [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions, nil]
         optional :web_search_options, -> { OpenAI::Chat::CompletionCreateParams::WebSearchOptions }
 
-        # @!method initialize(messages:, model:, audio: nil, frequency_penalty: nil, function_call: nil, functions: nil, logit_bias: nil, logprobs: nil, max_completion_tokens: nil, max_tokens: nil, metadata: nil, modalities: nil, n: nil, parallel_tool_calls: nil, prediction: nil, presence_penalty: nil, prompt_cache_key: nil, reasoning_effort: nil, response_format: nil, safety_identifier: nil, seed: nil, service_tier: nil, stop: nil, store: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, user: nil, verbosity: nil, web_search_options: nil, request_options: {})
+        # @!method initialize(messages:, model:, audio: nil, frequency_penalty: nil, function_call: nil, functions: nil, logit_bias: nil, logprobs: nil, max_completion_tokens: nil, max_tokens: nil, metadata: nil, modalities: nil, n: nil, parallel_tool_calls: nil, prediction: nil, presence_penalty: nil, prompt_cache_key: nil, reasoning_effort: nil, response_format: nil, safety_identifier: nil, seed: nil, service_tier: nil, stop: nil, store: nil, stream_options: nil, temperature: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, user: nil, verbosity: nil, web_search_options: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Chat::CompletionCreateParams} for more details.
         #
@@ -420,8 +415,6 @@ module OpenAI
         #   @param stream_options [OpenAI::Models::Chat::ChatCompletionStreamOptions, nil] Options for streaming response. Only set this when you set `stream: true`.
         #
         #   @param temperature [Float, nil] What sampling temperature to use, between 0 and 2. Higher values like 0.8 will m
-        #
-        #   @param text [OpenAI::Models::Chat::CompletionCreateParams::Text]
         #
         #   @param tool_choice [Symbol, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto, OpenAI::Models::Chat::ChatCompletionAllowedToolChoice, OpenAI::Models::Chat::ChatCompletionNamedToolChoice, OpenAI::Models::Chat::ChatCompletionNamedToolChoiceCustom] Controls which (if any) tool is called by the model.
         #
@@ -625,38 +618,6 @@ module OpenAI
 
           # @type [OpenAI::Internal::Type::Converter]
           StringArray = OpenAI::Internal::Type::ArrayOf[String]
-        end
-
-        class Text < OpenAI::Internal::Type::BaseModel
-          # @!attribute verbosity
-          #   Constrains the verbosity of the model's response. Lower values will result in
-          #   more concise responses, while higher values will result in more verbose
-          #   responses. Currently supported values are `low`, `medium`, and `high`.
-          #
-          #   @return [Symbol, OpenAI::Models::Chat::CompletionCreateParams::Text::Verbosity, nil]
-          optional :verbosity, enum: -> { OpenAI::Chat::CompletionCreateParams::Text::Verbosity }, nil?: true
-
-          # @!method initialize(verbosity: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Chat::CompletionCreateParams::Text} for more details.
-          #
-          #   @param verbosity [Symbol, OpenAI::Models::Chat::CompletionCreateParams::Text::Verbosity, nil] Constrains the verbosity of the model's response. Lower values will result in
-
-          # Constrains the verbosity of the model's response. Lower values will result in
-          # more concise responses, while higher values will result in more verbose
-          # responses. Currently supported values are `low`, `medium`, and `high`.
-          #
-          # @see OpenAI::Models::Chat::CompletionCreateParams::Text#verbosity
-          module Verbosity
-            extend OpenAI::Internal::Type::Enum
-
-            LOW = :low
-            MEDIUM = :medium
-            HIGH = :high
-
-            # @!method self.values
-            #   @return [Array<Symbol>]
-          end
         end
 
         # Constrains the verbosity of the model's response. Lower values will result in
