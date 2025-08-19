@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+
+set -e
+
+cd "$(dirname "$0")/.."
+
+echo "==> Detecting breaking changes"
+
+TEST_PATHS=(
+	test/openai/resources/shared_test.rb
+	test/openai/resources/completions_test.rb
+	test/openai/resources/chat_test.rb
+	test/openai/resources/chat/completions_test.rb
+	test/openai/resources/chat/completions/messages_test.rb
+	test/openai/resources/embeddings_test.rb
+	test/openai/resources/files_test.rb
+	test/openai/resources/images_test.rb
+	test/openai/resources/audio_test.rb
+	test/openai/resources/audio/transcriptions_test.rb
+	test/openai/resources/audio/translations_test.rb
+	test/openai/resources/audio/speech_test.rb
+	test/openai/resources/moderations_test.rb
+	test/openai/resources/models_test.rb
+	test/openai/resources/fine_tuning_test.rb
+	test/openai/resources/fine_tuning/methods_test.rb
+	test/openai/resources/fine_tuning/jobs_test.rb
+	test/openai/resources/fine_tuning/jobs/checkpoints_test.rb
+	test/openai/resources/fine_tuning/checkpoints_test.rb
+	test/openai/resources/fine_tuning/checkpoints/permissions_test.rb
+	test/openai/resources/fine_tuning/alpha_test.rb
+	test/openai/resources/fine_tuning/alpha/graders_test.rb
+	test/openai/resources/graders_test.rb
+	test/openai/resources/graders/grader_models_test.rb
+	test/openai/resources/vector_stores_test.rb
+	test/openai/resources/vector_stores/files_test.rb
+	test/openai/resources/vector_stores/file_batches_test.rb
+	test/openai/resources/webhooks_test.rb
+	test/openai/resources/beta_test.rb
+	test/openai/resources/beta/assistants_test.rb
+	test/openai/resources/beta/threads_test.rb
+	test/openai/resources/beta/threads/runs_test.rb
+	test/openai/resources/beta/threads/runs/steps_test.rb
+	test/openai/resources/beta/threads/messages_test.rb
+	test/openai/resources/batches_test.rb
+	test/openai/resources/uploads_test.rb
+	test/openai/resources/uploads/parts_test.rb
+	test/openai/resources/responses_test.rb
+	test/openai/resources/responses/input_items_test.rb
+	test/openai/resources/evals_test.rb
+	test/openai/resources/evals/runs_test.rb
+	test/openai/resources/evals/runs/output_items_test.rb
+	test/openai/resources/containers_test.rb
+	test/openai/resources/containers/files_test.rb
+	test/openai/resources/containers/files/content_test.rb
+	test/openai/client_test.rb
+)
+
+for PATHSPEC in "${TEST_PATHS[@]}"; do
+    # Try to check out previous versions of the test files
+    # with the current SDK.
+    git checkout "$1" -- "${PATHSPEC}" 2>/dev/null || true
+done
+
+# Instead of running the tests, use the linter to check if an
+# older test is no longer compatible with the latest SDK.
+./scripts/lint
