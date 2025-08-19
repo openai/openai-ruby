@@ -149,7 +149,7 @@ Naming/ClassAndModuleCamelCase:
 Naming/MethodParameterName:
   Enabled: false
 
-Naming/PredicateName:
+Naming/PredicatePrefix:
   Exclude:
     - "**/*.rbi"
 

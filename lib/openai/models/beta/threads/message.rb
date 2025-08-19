@@ -38,10 +38,7 @@ module OpenAI
           #   The content of the message in array of text and/or images.
           #
           #   @return [Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlock, OpenAI::Models::Beta::Threads::RefusalContentBlock>]
-          required :content,
-                   -> {
-                     OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::MessageContent]
-                   }
+          required :content, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::MessageContent] }
 
           # @!attribute created_at
           #   The Unix timestamp (in seconds) for when the message was created.
@@ -153,9 +150,7 @@ module OpenAI
             #
             #   @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly>, nil]
             optional :tools,
-                     -> {
-                       OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::Message::Attachment::Tool]
-                     }
+                     -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::Message::Attachment::Tool] }
 
             # @!method initialize(file_id: nil, tools: nil)
             #   @param file_id [String] The ID of the file to attach to the message.
@@ -167,9 +162,7 @@ module OpenAI
 
               variant -> { OpenAI::Beta::CodeInterpreterTool }
 
-              variant -> {
-                OpenAI::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly
-              }
+              variant -> { OpenAI::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly }
 
               class AssistantToolsFileSearchTypeOnly < OpenAI::Internal::Type::BaseModel
                 # @!attribute type

@@ -15,9 +15,7 @@ module OpenAI
         #
         #   @return [Array<OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal>]
         required :content,
-                 -> {
-                   OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseOutputMessage::Content]
-                 }
+                 -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseOutputMessage::Content] }
 
         # @!attribute role
         #   The role of the output message. Always `assistant`.

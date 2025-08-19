@@ -16,10 +16,7 @@ module OpenAI
         variant :"response.audio.done", -> { OpenAI::Responses::ResponseAudioDoneEvent }
 
         # Emitted when there is a partial transcript of audio.
-        variant :"response.audio.transcript.delta",
-                -> {
-                  OpenAI::Responses::ResponseAudioTranscriptDeltaEvent
-                }
+        variant :"response.audio.transcript.delta", -> { OpenAI::Responses::ResponseAudioTranscriptDeltaEvent }
 
         # Emitted when the full audio transcript is completed.
         variant :"response.audio.transcript.done", -> { OpenAI::Responses::ResponseAudioTranscriptDoneEvent }
@@ -157,16 +154,10 @@ module OpenAI
                 -> { OpenAI::Responses::ResponseImageGenCallPartialImageEvent }
 
         # Emitted when there is a delta (partial update) to the arguments of an MCP tool call.
-        variant :"response.mcp_call_arguments.delta",
-                -> {
-                  OpenAI::Responses::ResponseMcpCallArgumentsDeltaEvent
-                }
+        variant :"response.mcp_call_arguments.delta", -> { OpenAI::Responses::ResponseMcpCallArgumentsDeltaEvent }
 
         # Emitted when the arguments for an MCP tool call are finalized.
-        variant :"response.mcp_call_arguments.done",
-                -> {
-                  OpenAI::Responses::ResponseMcpCallArgumentsDoneEvent
-                }
+        variant :"response.mcp_call_arguments.done", -> { OpenAI::Responses::ResponseMcpCallArgumentsDoneEvent }
 
         # Emitted when an MCP  tool call has completed successfully.
         variant :"response.mcp_call.completed", -> { OpenAI::Responses::ResponseMcpCallCompletedEvent }
@@ -178,10 +169,7 @@ module OpenAI
         variant :"response.mcp_call.in_progress", -> { OpenAI::Responses::ResponseMcpCallInProgressEvent }
 
         # Emitted when the list of available MCP tools has been successfully retrieved.
-        variant :"response.mcp_list_tools.completed",
-                -> {
-                  OpenAI::Responses::ResponseMcpListToolsCompletedEvent
-                }
+        variant :"response.mcp_list_tools.completed", -> { OpenAI::Responses::ResponseMcpListToolsCompletedEvent }
 
         # Emitted when the attempt to list available MCP tools has failed.
         variant :"response.mcp_list_tools.failed", -> { OpenAI::Responses::ResponseMcpListToolsFailedEvent }

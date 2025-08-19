@@ -16,10 +16,7 @@ module OpenAI
             #   The Code Interpreter tool call definition.
             #
             #   @return [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter]
-            required :code_interpreter,
-                     -> {
-                       OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter
-                     }
+            required :code_interpreter, -> { OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter }
 
             # @!attribute type
             #   The type of tool call. This is always going to be `code_interpreter` for this
@@ -55,9 +52,7 @@ module OpenAI
               #
               #   @return [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image>]
               required :outputs,
-                       -> {
-                         OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output]
-                       }
+                       -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output] }
 
               # @!method initialize(input:, outputs:)
               #   Some parameter documentations has been truncated, see
@@ -77,15 +72,10 @@ module OpenAI
                 discriminator :type
 
                 # Text output from the Code Interpreter tool call as part of a run step.
-                variant :logs,
-                        -> {
-                          OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs
-                        }
+                variant :logs, -> { OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs }
 
                 variant :image,
-                        -> {
-                          OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image
-                        }
+                        -> { OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image }
 
                 class Logs < OpenAI::Internal::Type::BaseModel
                   # @!attribute logs
@@ -113,9 +103,7 @@ module OpenAI
                   #
                   #   @return [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image]
                   required :image,
-                           -> {
-                             OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image
-                           }
+                           -> { OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image }
 
                   # @!attribute type
                   #   Always `image`.

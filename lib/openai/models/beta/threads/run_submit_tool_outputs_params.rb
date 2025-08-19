@@ -21,9 +21,7 @@ module OpenAI
           #
           #   @return [Array<OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput>]
           required :tool_outputs,
-                   -> {
-                     OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput]
-                   }
+                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput] }
 
           # @!method initialize(thread_id:, tool_outputs:, request_options: {})
           #   @param thread_id [String]

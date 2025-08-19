@@ -183,9 +183,7 @@ module OpenAI
             #
             #   @return [Array<OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall>, nil]
             optional :tool_calls,
-                     -> {
-                       OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall]
-                     }
+                     -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall] }
 
             # @!method initialize(content: nil, function_call: nil, refusal: nil, role: nil, tool_calls: nil)
             #   Some parameter documentations has been truncated, see

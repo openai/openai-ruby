@@ -27,9 +27,7 @@ module OpenAI
         #
         #   @return [Array<OpenAI::Models::Responses::ResponseComputerToolCall::PendingSafetyCheck>]
         required :pending_safety_checks,
-                 -> {
-                   OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseComputerToolCall::PendingSafetyCheck]
-                 }
+                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseComputerToolCall::PendingSafetyCheck] }
 
         # @!attribute status
         #   The status of the item. One of `in_progress`, `completed`, or `incomplete`.
@@ -207,9 +205,7 @@ module OpenAI
             #
             #   @return [Array<OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path>]
             required :path,
-                     -> {
-                       OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseComputerToolCall::Action::Drag::Path]
-                     }
+                     -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseComputerToolCall::Action::Drag::Path] }
 
             # @!attribute type
             #   Specifies the event type. For a drag action, this property is always set to

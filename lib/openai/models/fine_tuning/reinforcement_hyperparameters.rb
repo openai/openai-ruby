@@ -49,10 +49,7 @@ module OpenAI
         #   Level of reasoning effort.
         #
         #   @return [Symbol, OpenAI::Models::FineTuning::ReinforcementHyperparameters::ReasoningEffort, nil]
-        optional :reasoning_effort,
-                 enum: -> {
-                   OpenAI::FineTuning::ReinforcementHyperparameters::ReasoningEffort
-                 }
+        optional :reasoning_effort, enum: -> { OpenAI::FineTuning::ReinforcementHyperparameters::ReasoningEffort }
 
         # @!method initialize(batch_size: nil, compute_multiplier: nil, eval_interval: nil, eval_samples: nil, learning_rate_multiplier: nil, n_epochs: nil, reasoning_effort: nil)
         #   Some parameter documentations has been truncated, see

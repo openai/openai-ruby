@@ -539,10 +539,7 @@ module OpenAI
                 )
               ),
               page: T.nilable(T::Class[OpenAI::Internal::Type::BasePage[OpenAI::Internal::Type::BaseModel]]),
-              stream: T.nilable(
-                T::Class[OpenAI::Internal::Type::BaseStream[T.anything,
-                                                            OpenAI::Internal::Type::BaseModel]]
-              ),
+              stream: T.nilable(T::Class[OpenAI::Internal::Type::BaseStream[T.anything, OpenAI::Internal::Type::BaseModel]]),
               model: T.nilable(OpenAI::Internal::Type::Converter::Input),
               options: T.nilable(OpenAI::RequestOptions::OrHash)
             }

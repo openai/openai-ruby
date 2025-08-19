@@ -154,19 +154,13 @@ module OpenAI
               #   A list of tools that always require approval.
               #
               #   @return [OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always, nil]
-              optional :always,
-                       -> {
-                         OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always
-                       }
+              optional :always, -> { OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always }
 
               # @!attribute never
               #   A list of tools that never require approval.
               #
               #   @return [OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never, nil]
-              optional :never,
-                       -> {
-                         OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never
-                       }
+              optional :never, -> { OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never }
 
               # @!method initialize(always: nil, never: nil)
               #   Some parameter documentations has been truncated, see

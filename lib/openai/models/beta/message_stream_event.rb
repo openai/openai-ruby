@@ -15,10 +15,7 @@ module OpenAI
         variant :"thread.message.created", -> { OpenAI::Beta::MessageStreamEvent::ThreadMessageCreated }
 
         # Occurs when a [message](https://platform.openai.com/docs/api-reference/messages/object) moves to an `in_progress` state.
-        variant :"thread.message.in_progress",
-                -> {
-                  OpenAI::Beta::MessageStreamEvent::ThreadMessageInProgress
-                }
+        variant :"thread.message.in_progress", -> { OpenAI::Beta::MessageStreamEvent::ThreadMessageInProgress }
 
         # Occurs when parts of a [Message](https://platform.openai.com/docs/api-reference/messages/object) are being streamed.
         variant :"thread.message.delta", -> { OpenAI::Beta::MessageStreamEvent::ThreadMessageDelta }

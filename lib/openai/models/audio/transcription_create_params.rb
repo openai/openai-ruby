@@ -90,9 +90,7 @@ module OpenAI
         #
         #   @return [Array<Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity>, nil]
         optional :timestamp_granularities,
-                 -> {
-                   OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Audio::TranscriptionCreateParams::TimestampGranularity]
-                 }
+                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Audio::TranscriptionCreateParams::TimestampGranularity] }
 
         # @!method initialize(file:, model:, chunking_strategy: nil, include: nil, language: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
@@ -150,10 +148,7 @@ module OpenAI
             #   Must be set to `server_vad` to enable manual chunking using server side VAD.
             #
             #   @return [Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::Type]
-            required :type,
-                     enum: -> {
-                       OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::Type
-                     }
+            required :type, enum: -> { OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::Type }
 
             # @!attribute prefix_padding_ms
             #   Amount of audio to include before the VAD detected speech (in milliseconds).

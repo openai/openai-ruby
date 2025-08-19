@@ -299,10 +299,7 @@ module OpenAI
           # @!attribute code_interpreter
           #
           #   @return [OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter, nil]
-          optional :code_interpreter,
-                   -> {
-                     OpenAI::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter
-                   }
+          optional :code_interpreter, -> { OpenAI::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter }
 
           # @!attribute file_search
           #

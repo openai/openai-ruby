@@ -107,10 +107,7 @@ module OpenAI
             #   Details about the input tokens billed for this request.
             #
             #   @return [OpenAI::Models::Audio::Transcription::Usage::Tokens::InputTokenDetails, nil]
-            optional :input_token_details,
-                     -> {
-                       OpenAI::Audio::Transcription::Usage::Tokens::InputTokenDetails
-                     }
+            optional :input_token_details, -> { OpenAI::Audio::Transcription::Usage::Tokens::InputTokenDetails }
 
             # @!method initialize(input_tokens:, output_tokens:, total_tokens:, input_token_details: nil, type: :tokens)
             #   Usage statistics for models billed by token usage.
