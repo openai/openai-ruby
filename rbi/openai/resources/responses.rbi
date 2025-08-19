@@ -201,6 +201,11 @@ module OpenAI
         # focused and deterministic. We generally recommend altering this or `top_p` but
         # not both.
         temperature: nil,
+        # Configuration options for a text response from the model. Can be plain text or
+        # structured JSON data. Learn more:
+        #
+        # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
+        # - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
         text: nil,
         # How the model should select which tool (or tools) to use when generating a
         # response. See the `tools` parameter to see how to specify which tools the model
@@ -454,6 +459,11 @@ module OpenAI
         # focused and deterministic. We generally recommend altering this or `top_p` but
         # not both.
         temperature: nil,
+        # Configuration options for a text response from the model. Can be plain text or
+        # structured JSON data. Learn more:
+        #
+        # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
+        # - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
         text: nil,
         # How the model should select which tool (or tools) to use when generating a
         # response. See the `tools` parameter to see how to specify which tools the model

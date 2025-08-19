@@ -86,7 +86,6 @@ module OpenAI
             stream_options:
               T.nilable(OpenAI::Chat::ChatCompletionStreamOptions::OrHash),
             temperature: T.nilable(Float),
-            text: OpenAI::Chat::CompletionCreateParams::Text::OrHash,
             tool_choice:
               T.any(
                 OpenAI::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
@@ -273,7 +272,7 @@ module OpenAI
           # our [model distillation](https://platform.openai.com/docs/guides/distillation)
           # or [evals](https://platform.openai.com/docs/guides/evals) products.
           #
-          # Supports text and image inputs. Note: image inputs over 10MB will be dropped.
+          # Supports text and image inputs. Note: image inputs over 8MB will be dropped.
           store: nil,
           # Options for streaming response. Only set this when you set `stream: true`.
           stream_options: nil,
@@ -282,7 +281,6 @@ module OpenAI
           # focused and deterministic. We generally recommend altering this or `top_p` but
           # not both.
           temperature: nil,
-          text: nil,
           # Controls which (if any) tool is called by the model. `none` means the model will
           # not call any tool and instead generates a message. `auto` means the model can
           # pick between generating a message or calling one or more tools. `required` means
@@ -406,7 +404,6 @@ module OpenAI
             stream_options:
               T.nilable(OpenAI::Chat::ChatCompletionStreamOptions::OrHash),
             temperature: T.nilable(Float),
-            text: OpenAI::Chat::CompletionCreateParams::Text::OrHash,
             tool_choice:
               T.any(
                 OpenAI::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
@@ -592,7 +589,7 @@ module OpenAI
           # our [model distillation](https://platform.openai.com/docs/guides/distillation)
           # or [evals](https://platform.openai.com/docs/guides/evals) products.
           #
-          # Supports text and image inputs. Note: image inputs over 10MB will be dropped.
+          # Supports text and image inputs. Note: image inputs over 8MB will be dropped.
           store: nil,
           # Options for streaming response. Only set this when you set `stream: true`.
           stream_options: nil,
@@ -601,7 +598,6 @@ module OpenAI
           # focused and deterministic. We generally recommend altering this or `top_p` but
           # not both.
           temperature: nil,
-          text: nil,
           # Controls which (if any) tool is called by the model. `none` means the model will
           # not call any tool and instead generates a message. `auto` means the model can
           # pick between generating a message or calling one or more tools. `required` means

@@ -329,7 +329,7 @@ module OpenAI
         # our [model distillation](https://platform.openai.com/docs/guides/distillation)
         # or [evals](https://platform.openai.com/docs/guides/evals) products.
         #
-        # Supports text and image inputs. Note: image inputs over 10MB will be dropped.
+        # Supports text and image inputs. Note: image inputs over 8MB will be dropped.
         sig { returns(T.nilable(T::Boolean)) }
         attr_accessor :store
 
@@ -351,14 +351,6 @@ module OpenAI
         # not both.
         sig { returns(T.nilable(Float)) }
         attr_accessor :temperature
-
-        sig { returns(T.nilable(OpenAI::Chat::CompletionCreateParams::Text)) }
-        attr_reader :text
-
-        sig do
-          params(text: OpenAI::Chat::CompletionCreateParams::Text::OrHash).void
-        end
-        attr_writer :text
 
         # Controls which (if any) tool is called by the model. `none` means the model will
         # not call any tool and instead generates a message. `auto` means the model can
@@ -540,7 +532,6 @@ module OpenAI
             stream_options:
               T.nilable(OpenAI::Chat::ChatCompletionStreamOptions::OrHash),
             temperature: T.nilable(Float),
-            text: OpenAI::Chat::CompletionCreateParams::Text::OrHash,
             tool_choice:
               T.any(
                 OpenAI::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
@@ -726,7 +717,7 @@ module OpenAI
           # our [model distillation](https://platform.openai.com/docs/guides/distillation)
           # or [evals](https://platform.openai.com/docs/guides/evals) products.
           #
-          # Supports text and image inputs. Note: image inputs over 10MB will be dropped.
+          # Supports text and image inputs. Note: image inputs over 8MB will be dropped.
           store: nil,
           # Options for streaming response. Only set this when you set `stream: true`.
           stream_options: nil,
@@ -735,7 +726,6 @@ module OpenAI
           # focused and deterministic. We generally recommend altering this or `top_p` but
           # not both.
           temperature: nil,
-          text: nil,
           # Controls which (if any) tool is called by the model. `none` means the model will
           # not call any tool and instead generates a message. `auto` means the model can
           # pick between generating a message or calling one or more tools. `required` means
@@ -838,7 +828,6 @@ module OpenAI
               stream_options:
                 T.nilable(OpenAI::Chat::ChatCompletionStreamOptions),
               temperature: T.nilable(Float),
-              text: OpenAI::Chat::CompletionCreateParams::Text,
               tool_choice:
                 T.any(
                   OpenAI::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
@@ -1185,99 +1174,6 @@ module OpenAI
               OpenAI::Internal::Type::ArrayOf[String],
               OpenAI::Internal::Type::Converter
             )
-        end
-
-        class Text < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Chat::CompletionCreateParams::Text,
-                OpenAI::Internal::AnyHash
-              )
-            end
-
-          # Constrains the verbosity of the model's response. Lower values will result in
-          # more concise responses, while higher values will result in more verbose
-          # responses. Currently supported values are `low`, `medium`, and `high`.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Chat::CompletionCreateParams::Text::Verbosity::OrSymbol
-              )
-            )
-          end
-          attr_accessor :verbosity
-
-          sig do
-            params(
-              verbosity:
-                T.nilable(
-                  OpenAI::Chat::CompletionCreateParams::Text::Verbosity::OrSymbol
-                )
-            ).returns(T.attached_class)
-          end
-          def self.new(
-            # Constrains the verbosity of the model's response. Lower values will result in
-            # more concise responses, while higher values will result in more verbose
-            # responses. Currently supported values are `low`, `medium`, and `high`.
-            verbosity: nil
-          )
-          end
-
-          sig do
-            override.returns(
-              {
-                verbosity:
-                  T.nilable(
-                    OpenAI::Chat::CompletionCreateParams::Text::Verbosity::OrSymbol
-                  )
-              }
-            )
-          end
-          def to_hash
-          end
-
-          # Constrains the verbosity of the model's response. Lower values will result in
-          # more concise responses, while higher values will result in more verbose
-          # responses. Currently supported values are `low`, `medium`, and `high`.
-          module Verbosity
-            extend OpenAI::Internal::Type::Enum
-
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Chat::CompletionCreateParams::Text::Verbosity
-                )
-              end
-            OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-            LOW =
-              T.let(
-                :low,
-                OpenAI::Chat::CompletionCreateParams::Text::Verbosity::TaggedSymbol
-              )
-            MEDIUM =
-              T.let(
-                :medium,
-                OpenAI::Chat::CompletionCreateParams::Text::Verbosity::TaggedSymbol
-              )
-            HIGH =
-              T.let(
-                :high,
-                OpenAI::Chat::CompletionCreateParams::Text::Verbosity::TaggedSymbol
-              )
-
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Chat::CompletionCreateParams::Text::Verbosity::TaggedSymbol
-                ]
-              )
-            end
-            def self.values
-            end
-          end
         end
 
         # Constrains the verbosity of the model's response. Lower values will result in
