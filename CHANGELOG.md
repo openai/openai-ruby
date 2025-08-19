@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.18.1 (2025-08-19)
+
+Full Changelog: [v0.18.0...v0.18.1](https://github.com/openai/openai-ruby/compare/v0.18.0...v0.18.1)
+
+### Chores
+
+* **api:** accurately represent shape for verbosity on Chat Completions ([a19cd00](https://github.com/openai/openai-ruby/commit/a19cd00e6df3cc3f47239a25fe15f33c2cb77962))
+
 ## 0.18.0 (2025-08-15)
 
 Full Changelog: [v0.17.1...v0.18.0](https://github.com/openai/openai-ruby/compare/v0.17.1...v0.18.0)
