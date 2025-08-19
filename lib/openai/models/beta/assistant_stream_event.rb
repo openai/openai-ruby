@@ -41,10 +41,7 @@ module OpenAI
         variant :"thread.run.in_progress", -> { OpenAI::Beta::AssistantStreamEvent::ThreadRunInProgress }
 
         # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object) moves to a `requires_action` status.
-        variant :"thread.run.requires_action",
-                -> {
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunRequiresAction
-                }
+        variant :"thread.run.requires_action", -> { OpenAI::Beta::AssistantStreamEvent::ThreadRunRequiresAction }
 
         # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object) is completed.
         variant :"thread.run.completed", -> { OpenAI::Beta::AssistantStreamEvent::ThreadRunCompleted }
@@ -68,28 +65,19 @@ module OpenAI
         variant :"thread.run.step.created", -> { OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCreated }
 
         # Occurs when a [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object) moves to an `in_progress` state.
-        variant :"thread.run.step.in_progress",
-                -> {
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepInProgress
-                }
+        variant :"thread.run.step.in_progress", -> { OpenAI::Beta::AssistantStreamEvent::ThreadRunStepInProgress }
 
         # Occurs when parts of a [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object) are being streamed.
         variant :"thread.run.step.delta", -> { OpenAI::Beta::AssistantStreamEvent::ThreadRunStepDelta }
 
         # Occurs when a [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object) is completed.
-        variant :"thread.run.step.completed",
-                -> {
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCompleted
-                }
+        variant :"thread.run.step.completed", -> { OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCompleted }
 
         # Occurs when a [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object) fails.
         variant :"thread.run.step.failed", -> { OpenAI::Beta::AssistantStreamEvent::ThreadRunStepFailed }
 
         # Occurs when a [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object) is cancelled.
-        variant :"thread.run.step.cancelled",
-                -> {
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCancelled
-                }
+        variant :"thread.run.step.cancelled", -> { OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCancelled }
 
         # Occurs when a [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object) expires.
         variant :"thread.run.step.expired", -> { OpenAI::Beta::AssistantStreamEvent::ThreadRunStepExpired }
@@ -98,10 +86,7 @@ module OpenAI
         variant :"thread.message.created", -> { OpenAI::Beta::AssistantStreamEvent::ThreadMessageCreated }
 
         # Occurs when a [message](https://platform.openai.com/docs/api-reference/messages/object) moves to an `in_progress` state.
-        variant :"thread.message.in_progress",
-                -> {
-                  OpenAI::Beta::AssistantStreamEvent::ThreadMessageInProgress
-                }
+        variant :"thread.message.in_progress", -> { OpenAI::Beta::AssistantStreamEvent::ThreadMessageInProgress }
 
         # Occurs when parts of a [Message](https://platform.openai.com/docs/api-reference/messages/object) are being streamed.
         variant :"thread.message.delta", -> { OpenAI::Beta::AssistantStreamEvent::ThreadMessageDelta }
@@ -110,10 +95,7 @@ module OpenAI
         variant :"thread.message.completed", -> { OpenAI::Beta::AssistantStreamEvent::ThreadMessageCompleted }
 
         # Occurs when a [message](https://platform.openai.com/docs/api-reference/messages/object) ends before it is completed.
-        variant :"thread.message.incomplete",
-                -> {
-                  OpenAI::Beta::AssistantStreamEvent::ThreadMessageIncomplete
-                }
+        variant :"thread.message.incomplete", -> { OpenAI::Beta::AssistantStreamEvent::ThreadMessageIncomplete }
 
         # Occurs when an [error](https://platform.openai.com/docs/guides/error-codes#api-errors) occurs. This can happen due to an internal server error or a timeout.
         variant :error, -> { OpenAI::Beta::AssistantStreamEvent::ErrorEvent }

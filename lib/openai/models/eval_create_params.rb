@@ -191,9 +191,7 @@ module OpenAI
           #
           #   @return [Array<OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem>]
           required :input,
-                   -> {
-                     OpenAI::Internal::Type::ArrayOf[union: OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input]
-                   }
+                   -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input] }
 
           # @!attribute labels
           #   The labels to classify to each item in the evaluation.
@@ -284,28 +282,20 @@ module OpenAI
               #
               #   @return [String, OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::InputImage, Array<Object>]
               required :content,
-                       union: -> {
-                         OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content
-                       }
+                       union: -> { OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content }
 
               # @!attribute role
               #   The role of the message input. One of `user`, `assistant`, `system`, or
               #   `developer`.
               #
               #   @return [Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Role]
-              required :role,
-                       enum: -> {
-                         OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Role
-                       }
+              required :role, enum: -> { OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Role }
 
               # @!attribute type
               #   The type of the message input. Always `message`.
               #
               #   @return [Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Type, nil]
-              optional :type,
-                       enum: -> {
-                         OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Type
-                       }
+              optional :type, enum: -> { OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Type }
 
               # @!method initialize(content:, role:, type: nil)
               #   Some parameter documentations has been truncated, see
@@ -337,14 +327,10 @@ module OpenAI
                 variant -> { OpenAI::Responses::ResponseInputText }
 
                 # A text output from the model.
-                variant -> {
-                  OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText
-                }
+                variant -> { OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText }
 
                 # An image input to the model.
-                variant -> {
-                  OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::InputImage
-                }
+                variant -> { OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::InputImage }
 
                 # A list of inputs, each of which may be either an input text or input image object.
                 variant -> { OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::AnArrayOfInputTextAndInputImageArray }

@@ -15,10 +15,7 @@ module OpenAI
         #   types.
         #
         #   @return [Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile>]
-        required :content,
-                 -> {
-                   OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseInputContent]
-                 }
+        required :content, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseInputContent] }
 
         # @!attribute role
         #   The role of the message input. One of `user`, `system`, or `developer`.

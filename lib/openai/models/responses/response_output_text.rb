@@ -9,9 +9,7 @@ module OpenAI
         #
         #   @return [Array<OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::ContainerFileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath>]
         required :annotations,
-                 -> {
-                   OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseOutputText::Annotation]
-                 }
+                 -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseOutputText::Annotation] }
 
         # @!attribute text
         #   The text output from the model.
@@ -34,10 +32,7 @@ module OpenAI
         # @!attribute logprobs
         #
         #   @return [Array<OpenAI::Models::Responses::ResponseOutputText::Logprob>, nil]
-        optional :logprobs,
-                 -> {
-                   OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseOutputText::Logprob]
-                 }
+        optional :logprobs, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseOutputText::Logprob] }
 
         # @!method initialize(annotations:, text:, logprobs: nil, type: :output_text)
         #   A text output from the model.
@@ -261,9 +256,7 @@ module OpenAI
           #
           #   @return [Array<OpenAI::Models::Responses::ResponseOutputText::Logprob::TopLogprob>]
           required :top_logprobs,
-                   -> {
-                     OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseOutputText::Logprob::TopLogprob]
-                   }
+                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseOutputText::Logprob::TopLogprob] }
 
           # @!method initialize(token:, bytes:, logprob:, top_logprobs:)
           #   The log probability of a token.

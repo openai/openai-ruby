@@ -42,9 +42,7 @@ module OpenAI
             #
             #   @return [Array<OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content>]
             required :content,
-                     -> {
-                       OpenAI::Internal::Type::ArrayOf[OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content]
-                     }
+                     -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content] }
 
             # @!attribute type
             #   The type of jsonl source. Always `file_content`.

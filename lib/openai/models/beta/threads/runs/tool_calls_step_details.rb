@@ -12,10 +12,7 @@ module OpenAI
             #   `function`.
             #
             #   @return [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall, OpenAI::Models::Beta::Threads::Runs::FunctionToolCall>]
-            required :tool_calls,
-                     -> {
-                       OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::Runs::ToolCall]
-                     }
+            required :tool_calls, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::Runs::ToolCall] }
 
             # @!attribute type
             #   Always `tool_calls`.

@@ -107,9 +107,7 @@ module OpenAI
             #
             #   @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::Tool::FileSearch>, nil]
             optional :tools,
-                     -> {
-                       OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::MessageCreateParams::Attachment::Tool]
-                     }
+                     -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::MessageCreateParams::Attachment::Tool] }
 
             # @!method initialize(file_id: nil, tools: nil)
             #   @param file_id [String] The ID of the file to attach to the message.
@@ -123,10 +121,7 @@ module OpenAI
 
               variant :code_interpreter, -> { OpenAI::Beta::CodeInterpreterTool }
 
-              variant :file_search,
-                      -> {
-                        OpenAI::Beta::Threads::MessageCreateParams::Attachment::Tool::FileSearch
-                      }
+              variant :file_search, -> { OpenAI::Beta::Threads::MessageCreateParams::Attachment::Tool::FileSearch }
 
               class FileSearch < OpenAI::Internal::Type::BaseModel
                 # @!attribute type
