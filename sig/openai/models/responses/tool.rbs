@@ -18,22 +18,32 @@ module OpenAI
         type mcp =
           {
             server_label: String,
-            server_url: String,
             type: :mcp,
             allowed_tools: OpenAI::Models::Responses::Tool::Mcp::allowed_tools?,
+            authorization: String,
+            connector_id: OpenAI::Models::Responses::Tool::Mcp::connector_id,
             headers: ::Hash[Symbol, String]?,
             require_approval: OpenAI::Models::Responses::Tool::Mcp::require_approval?,
-            server_description: String
+            server_description: String,
+            server_url: String
           }
 
         class Mcp < OpenAI::Internal::Type::BaseModel
           attr_accessor server_label: String
 
-          attr_accessor server_url: String
-
           attr_accessor type: :mcp
 
           attr_accessor allowed_tools: OpenAI::Models::Responses::Tool::Mcp::allowed_tools?
+
+          attr_reader authorization: String?
+
+          def authorization=: (String) -> String
+
+          attr_reader connector_id: OpenAI::Models::Responses::Tool::Mcp::connector_id?
+
+          def connector_id=: (
+            OpenAI::Models::Responses::Tool::Mcp::connector_id
+          ) -> OpenAI::Models::Responses::Tool::Mcp::connector_id
 
           attr_accessor headers: ::Hash[Symbol, String]?
 
@@ -43,48 +53,89 @@ module OpenAI
 
           def server_description=: (String) -> String
 
+          attr_reader server_url: String?
+
+          def server_url=: (String) -> String
+
           def initialize: (
             server_label: String,
-            server_url: String,
             ?allowed_tools: OpenAI::Models::Responses::Tool::Mcp::allowed_tools?,
+            ?authorization: String,
+            ?connector_id: OpenAI::Models::Responses::Tool::Mcp::connector_id,
             ?headers: ::Hash[Symbol, String]?,
             ?require_approval: OpenAI::Models::Responses::Tool::Mcp::require_approval?,
             ?server_description: String,
+            ?server_url: String,
             ?type: :mcp
           ) -> void
 
           def to_hash: -> {
             server_label: String,
-            server_url: String,
             type: :mcp,
             allowed_tools: OpenAI::Models::Responses::Tool::Mcp::allowed_tools?,
+            authorization: String,
+            connector_id: OpenAI::Models::Responses::Tool::Mcp::connector_id,
             headers: ::Hash[Symbol, String]?,
             require_approval: OpenAI::Models::Responses::Tool::Mcp::require_approval?,
-            server_description: String
+            server_description: String,
+            server_url: String
           }
 
           type allowed_tools =
             ::Array[String]
-            | OpenAI::Responses::Tool::Mcp::AllowedTools::McpAllowedToolsFilter
+            | OpenAI::Responses::Tool::Mcp::AllowedTools::McpToolFilter
 
           module AllowedTools
             extend OpenAI::Internal::Type::Union
 
-            type mcp_allowed_tools_filter = { tool_names: ::Array[String] }
+            type mcp_tool_filter =
+              { read_only: bool, tool_names: ::Array[String] }
 
-            class McpAllowedToolsFilter < OpenAI::Internal::Type::BaseModel
+            class McpToolFilter < OpenAI::Internal::Type::BaseModel
+              attr_reader read_only: bool?
+
+              def read_only=: (bool) -> bool
+
               attr_reader tool_names: ::Array[String]?
 
               def tool_names=: (::Array[String]) -> ::Array[String]
 
-              def initialize: (?tool_names: ::Array[String]) -> void
+              def initialize: (
+                ?read_only: bool,
+                ?tool_names: ::Array[String]
+              ) -> void
 
-              def to_hash: -> { tool_names: ::Array[String] }
+              def to_hash: -> { read_only: bool, tool_names: ::Array[String] }
             end
 
             def self?.variants: -> ::Array[OpenAI::Models::Responses::Tool::Mcp::allowed_tools]
 
             StringArray: OpenAI::Internal::Type::Converter
+          end
+
+          type connector_id =
+            :connector_dropbox
+            | :connector_gmail
+            | :connector_googlecalendar
+            | :connector_googledrive
+            | :connector_microsoftteams
+            | :connector_outlookcalendar
+            | :connector_outlookemail
+            | :connector_sharepoint
+
+          module ConnectorID
+            extend OpenAI::Internal::Type::Enum
+
+            CONNECTOR_DROPBOX: :connector_dropbox
+            CONNECTOR_GMAIL: :connector_gmail
+            CONNECTOR_GOOGLECALENDAR: :connector_googlecalendar
+            CONNECTOR_GOOGLEDRIVE: :connector_googledrive
+            CONNECTOR_MICROSOFTTEAMS: :connector_microsoftteams
+            CONNECTOR_OUTLOOKCALENDAR: :connector_outlookcalendar
+            CONNECTOR_OUTLOOKEMAIL: :connector_outlookemail
+            CONNECTOR_SHAREPOINT: :connector_sharepoint
+
+            def self?.values: -> ::Array[OpenAI::Models::Responses::Tool::Mcp::connector_id]
           end
 
           type require_approval =
@@ -123,28 +174,42 @@ module OpenAI
                 never: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never
               }
 
-              type always = { tool_names: ::Array[String] }
+              type always = { read_only: bool, tool_names: ::Array[String] }
 
               class Always < OpenAI::Internal::Type::BaseModel
+                attr_reader read_only: bool?
+
+                def read_only=: (bool) -> bool
+
                 attr_reader tool_names: ::Array[String]?
 
                 def tool_names=: (::Array[String]) -> ::Array[String]
 
-                def initialize: (?tool_names: ::Array[String]) -> void
+                def initialize: (
+                  ?read_only: bool,
+                  ?tool_names: ::Array[String]
+                ) -> void
 
-                def to_hash: -> { tool_names: ::Array[String] }
+                def to_hash: -> { read_only: bool, tool_names: ::Array[String] }
               end
 
-              type never = { tool_names: ::Array[String] }
+              type never = { read_only: bool, tool_names: ::Array[String] }
 
               class Never < OpenAI::Internal::Type::BaseModel
+                attr_reader read_only: bool?
+
+                def read_only=: (bool) -> bool
+
                 attr_reader tool_names: ::Array[String]?
 
                 def tool_names=: (::Array[String]) -> ::Array[String]
 
-                def initialize: (?tool_names: ::Array[String]) -> void
+                def initialize: (
+                  ?read_only: bool,
+                  ?tool_names: ::Array[String]
+                ) -> void
 
-                def to_hash: -> { tool_names: ::Array[String] }
+                def to_hash: -> { read_only: bool, tool_names: ::Array[String] }
               end
             end
 
