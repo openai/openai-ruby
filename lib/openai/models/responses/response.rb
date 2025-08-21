@@ -141,6 +141,13 @@ module OpenAI
         #   @return [Boolean, nil]
         optional :background, OpenAI::Internal::Type::Boolean, nil?: true
 
+        # @!attribute conversation
+        #   The conversation that this response belongs to. Input items and output items
+        #   from this response are automatically added to this conversation.
+        #
+        #   @return [OpenAI::Models::Responses::Response::Conversation, nil]
+        optional :conversation, -> { OpenAI::Responses::Response::Conversation }, nil?: true
+
         # @!attribute max_output_tokens
         #   An upper bound for the number of tokens that can be generated for a response,
         #   including visible output tokens and
@@ -162,6 +169,7 @@ module OpenAI
         #   The unique ID of the previous response to the model. Use this to create
         #   multi-turn conversations. Learn more about
         #   [conversation state](https://platform.openai.com/docs/guides/conversation-state).
+        #   Cannot be used in conjunction with `conversation`.
         #
         #   @return [String, nil]
         optional :previous_response_id, String, nil?: true
@@ -296,7 +304,7 @@ module OpenAI
           texts.join
         end
 
-        # @!method initialize(id:, created_at:, error:, incomplete_details:, instructions:, metadata:, model:, output:, parallel_tool_calls:, temperature:, tool_choice:, tools:, top_p:, background: nil, max_output_tokens: nil, max_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, status: nil, text: nil, top_logprobs: nil, truncation: nil, usage: nil, user: nil, object: :response)
+        # @!method initialize(id:, created_at:, error:, incomplete_details:, instructions:, metadata:, model:, output:, parallel_tool_calls:, temperature:, tool_choice:, tools:, top_p:, background: nil, conversation: nil, max_output_tokens: nil, max_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, status: nil, text: nil, top_logprobs: nil, truncation: nil, usage: nil, user: nil, object: :response)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::Response} for more details.
         #
@@ -327,6 +335,8 @@ module OpenAI
         #   @param top_p [Float, nil] An alternative to sampling with temperature, called nucleus sampling,
         #
         #   @param background [Boolean, nil] Whether to run the model response in the background.
+        #
+        #   @param conversation [OpenAI::Models::Responses::Response::Conversation, nil] The conversation that this response belongs to. Input items and output items fro
         #
         #   @param max_output_tokens [Integer, nil] An upper bound for the number of tokens that can be generated for a response, in
         #
@@ -447,6 +457,21 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceAllowed, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp, OpenAI::Models::Responses::ToolChoiceCustom)]
+        end
+
+        # @see OpenAI::Models::Responses::Response#conversation
+        class Conversation < OpenAI::Internal::Type::BaseModel
+          # @!attribute id
+          #   The unique ID of the conversation.
+          #
+          #   @return [String]
+          required :id, String
+
+          # @!method initialize(id:)
+          #   The conversation that this response belongs to. Input items and output items
+          #   from this response are automatically added to this conversation.
+          #
+          #   @param id [String] The unique ID of the conversation.
         end
 
         # Specifies the processing type used for serving the request.

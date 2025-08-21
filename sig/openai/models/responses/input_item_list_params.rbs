@@ -4,7 +4,6 @@ module OpenAI
       type input_item_list_params =
         {
           after: String,
-          before: String,
           include: ::Array[OpenAI::Models::Responses::response_includable],
           limit: Integer,
           order: OpenAI::Models::Responses::InputItemListParams::order
@@ -18,10 +17,6 @@ module OpenAI
         attr_reader after: String?
 
         def after=: (String) -> String
-
-        attr_reader before: String?
-
-        def before=: (String) -> String
 
         attr_reader include: ::Array[OpenAI::Models::Responses::response_includable]?
 
@@ -41,7 +36,6 @@ module OpenAI
 
         def initialize: (
           ?after: String,
-          ?before: String,
           ?include: ::Array[OpenAI::Models::Responses::response_includable],
           ?limit: Integer,
           ?order: OpenAI::Models::Responses::InputItemListParams::order,
@@ -50,7 +44,6 @@ module OpenAI
 
         def to_hash: -> {
           after: String,
-          before: String,
           include: ::Array[OpenAI::Models::Responses::response_includable],
           limit: Integer,
           order: OpenAI::Models::Responses::InputItemListParams::order,

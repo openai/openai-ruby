@@ -91,6 +91,8 @@ module OpenAI
 
   Containers = OpenAI::Models::Containers
 
+  Conversations = OpenAI::Models::Conversations
+
   CreateEmbeddingResponse = OpenAI::Models::CreateEmbeddingResponse
 
   CustomToolInputFormat = OpenAI::Models::CustomToolInputFormat

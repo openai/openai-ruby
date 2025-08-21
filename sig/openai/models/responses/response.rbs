@@ -18,6 +18,7 @@ module OpenAI
           tools: ::Array[OpenAI::Models::Responses::tool],
           top_p: Float?,
           background: bool?,
+          conversation: OpenAI::Responses::Response::Conversation?,
           max_output_tokens: Integer?,
           max_tool_calls: Integer?,
           previous_response_id: String?,
@@ -64,6 +65,8 @@ module OpenAI
         attr_accessor top_p: Float?
 
         attr_accessor background: bool?
+
+        attr_accessor conversation: OpenAI::Responses::Response::Conversation?
 
         attr_accessor max_output_tokens: Integer?
 
@@ -126,6 +129,7 @@ module OpenAI
           tools: ::Array[OpenAI::Models::Responses::tool],
           top_p: Float?,
           ?background: bool?,
+          ?conversation: OpenAI::Responses::Response::Conversation?,
           ?max_output_tokens: Integer?,
           ?max_tool_calls: Integer?,
           ?previous_response_id: String?,
@@ -159,6 +163,7 @@ module OpenAI
           tools: ::Array[OpenAI::Models::Responses::tool],
           top_p: Float?,
           background: bool?,
+          conversation: OpenAI::Responses::Response::Conversation?,
           max_output_tokens: Integer?,
           max_tool_calls: Integer?,
           previous_response_id: String?,
@@ -230,6 +235,16 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           def self?.variants: -> ::Array[OpenAI::Models::Responses::Response::tool_choice]
+        end
+
+        type conversation = { id: String }
+
+        class Conversation < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          def initialize: (id: String) -> void
+
+          def to_hash: -> { id: String }
         end
 
         type service_tier = :auto | :default | :flex | :scale | :priority

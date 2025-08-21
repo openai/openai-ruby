@@ -22,6 +22,13 @@ module OpenAI
       sig do
         params(
           background: T.nilable(T::Boolean),
+          conversation:
+            T.nilable(
+              T.any(
+                String,
+                OpenAI::Responses::ResponseConversationParam::OrHash
+              )
+            ),
           include:
             T.nilable(
               T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
@@ -96,6 +103,11 @@ module OpenAI
         # Whether to run the model response in the background.
         # [Learn more](https://platform.openai.com/docs/guides/background).
         background: nil,
+        # The conversation that this response belongs to. Items from this conversation are
+        # prepended to `input_items` for this response request. Input items and output
+        # items from this response are automatically added to this conversation after this
+        # response completes.
+        conversation: nil,
         # Specify additional output data to include in the model response. Currently
         # supported values are:
         #
@@ -156,6 +168,7 @@ module OpenAI
         # The unique ID of the previous response to the model. Use this to create
         # multi-turn conversations. Learn more about
         # [conversation state](https://platform.openai.com/docs/guides/conversation-state).
+        # Cannot be used in conjunction with `conversation`.
         previous_response_id: nil,
         # Reference to a prompt template and its variables.
         # [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
@@ -274,6 +287,13 @@ module OpenAI
       sig do
         params(
           background: T.nilable(T::Boolean),
+          conversation:
+            T.nilable(
+              T.any(
+                String,
+                OpenAI::Responses::ResponseConversationParam::OrHash
+              )
+            ),
           include:
             T.nilable(
               T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
@@ -354,6 +374,11 @@ module OpenAI
         # Whether to run the model response in the background.
         # [Learn more](https://platform.openai.com/docs/guides/background).
         background: nil,
+        # The conversation that this response belongs to. Items from this conversation are
+        # prepended to `input_items` for this response request. Input items and output
+        # items from this response are automatically added to this conversation after this
+        # response completes.
+        conversation: nil,
         # Specify additional output data to include in the model response. Currently
         # supported values are:
         #
@@ -414,6 +439,7 @@ module OpenAI
         # The unique ID of the previous response to the model. Use this to create
         # multi-turn conversations. Learn more about
         # [conversation state](https://platform.openai.com/docs/guides/conversation-state).
+        # Cannot be used in conjunction with `conversation`.
         previous_response_id: nil,
         # Reference to a prompt template and its variables.
         # [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).

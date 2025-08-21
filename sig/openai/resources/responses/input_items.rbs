@@ -5,7 +5,6 @@ module OpenAI
         def list: (
           String response_id,
           ?after: String,
-          ?before: String,
           ?include: ::Array[OpenAI::Models::Responses::response_includable],
           ?limit: Integer,
           ?order: OpenAI::Models::Responses::InputItemListParams::order,

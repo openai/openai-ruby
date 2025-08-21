@@ -22,13 +22,6 @@ module OpenAI
         sig { params(after: String).void }
         attr_writer :after
 
-        # An item ID to list items before, used in pagination.
-        sig { returns(T.nilable(String)) }
-        attr_reader :before
-
-        sig { params(before: String).void }
-        attr_writer :before
-
         # Additional fields to include in the response. See the `include` parameter for
         # Response creation above for more information.
         sig do
@@ -74,7 +67,6 @@ module OpenAI
         sig do
           params(
             after: String,
-            before: String,
             include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
             limit: Integer,
             order: OpenAI::Responses::InputItemListParams::Order::OrSymbol,
@@ -84,8 +76,6 @@ module OpenAI
         def self.new(
           # An item ID to list items after, used in pagination.
           after: nil,
-          # An item ID to list items before, used in pagination.
-          before: nil,
           # Additional fields to include in the response. See the `include` parameter for
           # Response creation above for more information.
           include: nil,
@@ -105,7 +95,6 @@ module OpenAI
           override.returns(
             {
               after: String,
-              before: String,
               include:
                 T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
               limit: Integer,

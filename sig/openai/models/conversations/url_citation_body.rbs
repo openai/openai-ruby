@@ -1,0 +1,42 @@
+module OpenAI
+  module Models
+    module Conversations
+      type url_citation_body =
+        {
+          end_index: Integer,
+          start_index: Integer,
+          title: String,
+          type: :url_citation,
+          url: String
+        }
+
+      class URLCitationBody < OpenAI::Internal::Type::BaseModel
+        attr_accessor end_index: Integer
+
+        attr_accessor start_index: Integer
+
+        attr_accessor title: String
+
+        attr_accessor type: :url_citation
+
+        attr_accessor url: String
+
+        def initialize: (
+          end_index: Integer,
+          start_index: Integer,
+          title: String,
+          url: String,
+          ?type: :url_citation
+        ) -> void
+
+        def to_hash: -> {
+          end_index: Integer,
+          start_index: Integer,
+          title: String,
+          type: :url_citation,
+          url: String
+        }
+      end
+    end
+  end
+end
