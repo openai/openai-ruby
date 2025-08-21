@@ -4,6 +4,7 @@ module OpenAI
       type response_create_params =
         {
           background: bool?,
+          conversation: OpenAI::Models::Responses::ResponseCreateParams::conversation?,
           include: ::Array[OpenAI::Models::Responses::response_includable]?,
           input: OpenAI::Models::Responses::ResponseCreateParams::input,
           instructions: String?,
@@ -36,6 +37,8 @@ module OpenAI
         include OpenAI::Internal::Type::RequestParameters
 
         attr_accessor background: bool?
+
+        attr_accessor conversation: OpenAI::Models::Responses::ResponseCreateParams::conversation?
 
         attr_accessor include: ::Array[OpenAI::Models::Responses::response_includable]?
 
@@ -113,6 +116,7 @@ module OpenAI
 
         def initialize: (
           ?background: bool?,
+          ?conversation: OpenAI::Models::Responses::ResponseCreateParams::conversation?,
           ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
           ?input: OpenAI::Models::Responses::ResponseCreateParams::input,
           ?instructions: String?,
@@ -142,6 +146,7 @@ module OpenAI
 
         def to_hash: -> {
           background: bool?,
+          conversation: OpenAI::Models::Responses::ResponseCreateParams::conversation?,
           include: ::Array[OpenAI::Models::Responses::response_includable]?,
           input: OpenAI::Models::Responses::ResponseCreateParams::input,
           instructions: String?,
@@ -168,6 +173,15 @@ module OpenAI
           user: String,
           request_options: OpenAI::RequestOptions
         }
+
+        type conversation =
+          String | OpenAI::Responses::ResponseConversationParam
+
+        module Conversation
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseCreateParams::conversation]
+        end
 
         type input = String | OpenAI::Models::Responses::response_input
 

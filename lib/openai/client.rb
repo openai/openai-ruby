@@ -72,6 +72,9 @@ module OpenAI
     # @return [OpenAI::Resources::Responses]
     attr_reader :responses
 
+    # @return [OpenAI::Resources::Conversations]
+    attr_reader :conversations
+
     # @return [OpenAI::Resources::Evals]
     attr_reader :evals
 
@@ -153,6 +156,7 @@ module OpenAI
       @batches = OpenAI::Resources::Batches.new(client: self)
       @uploads = OpenAI::Resources::Uploads.new(client: self)
       @responses = OpenAI::Resources::Responses.new(client: self)
+      @conversations = OpenAI::Resources::Conversations.new(client: self)
       @evals = OpenAI::Resources::Evals.new(client: self)
       @containers = OpenAI::Resources::Containers.new(client: self)
     end

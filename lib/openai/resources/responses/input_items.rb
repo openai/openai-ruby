@@ -9,13 +9,11 @@ module OpenAI
         #
         # Returns a list of input items for a given response.
         #
-        # @overload list(response_id, after: nil, before: nil, include: nil, limit: nil, order: nil, request_options: {})
+        # @overload list(response_id, after: nil, include: nil, limit: nil, order: nil, request_options: {})
         #
         # @param response_id [String] The ID of the response to retrieve input items for.
         #
         # @param after [String] An item ID to list items after, used in pagination.
-        #
-        # @param before [String] An item ID to list items before, used in pagination.
         #
         # @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>] Additional fields to include in the response. See the `include`
         #

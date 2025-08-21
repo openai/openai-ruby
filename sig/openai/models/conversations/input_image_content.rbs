@@ -1,0 +1,49 @@
+module OpenAI
+  module Models
+    module Conversations
+      type input_image_content =
+        {
+          detail: OpenAI::Models::Conversations::InputImageContent::detail,
+          file_id: String?,
+          image_url: String?,
+          type: :input_image
+        }
+
+      class InputImageContent < OpenAI::Internal::Type::BaseModel
+        attr_accessor detail: OpenAI::Models::Conversations::InputImageContent::detail
+
+        attr_accessor file_id: String?
+
+        attr_accessor image_url: String?
+
+        attr_accessor type: :input_image
+
+        def initialize: (
+          detail: OpenAI::Models::Conversations::InputImageContent::detail,
+          file_id: String?,
+          image_url: String?,
+          ?type: :input_image
+        ) -> void
+
+        def to_hash: -> {
+          detail: OpenAI::Models::Conversations::InputImageContent::detail,
+          file_id: String?,
+          image_url: String?,
+          type: :input_image
+        }
+
+        type detail = :low | :high | :auto
+
+        module Detail
+          extend OpenAI::Internal::Type::Enum
+
+          LOW: :low
+          HIGH: :high
+          AUTO: :auto
+
+          def self?.values: -> ::Array[OpenAI::Models::Conversations::InputImageContent::detail]
+        end
+      end
+    end
+  end
+end

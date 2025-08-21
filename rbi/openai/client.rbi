@@ -67,6 +67,9 @@ module OpenAI
     sig { returns(OpenAI::Resources::Responses) }
     attr_reader :responses
 
+    sig { returns(OpenAI::Resources::Conversations) }
+    attr_reader :conversations
+
     sig { returns(OpenAI::Resources::Evals) }
     attr_reader :evals
 

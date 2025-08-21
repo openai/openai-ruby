@@ -1,0 +1,66 @@
+module OpenAI
+  module Models
+    module Conversations
+      type item_list_params =
+        {
+          after: String,
+          include: ::Array[OpenAI::Models::Responses::response_includable],
+          limit: Integer,
+          order: OpenAI::Models::Conversations::ItemListParams::order
+        }
+        & OpenAI::Internal::Type::request_parameters
+
+      class ItemListParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_reader after: String?
+
+        def after=: (String) -> String
+
+        attr_reader include: ::Array[OpenAI::Models::Responses::response_includable]?
+
+        def include=: (
+          ::Array[OpenAI::Models::Responses::response_includable]
+        ) -> ::Array[OpenAI::Models::Responses::response_includable]
+
+        attr_reader limit: Integer?
+
+        def limit=: (Integer) -> Integer
+
+        attr_reader order: OpenAI::Models::Conversations::ItemListParams::order?
+
+        def order=: (
+          OpenAI::Models::Conversations::ItemListParams::order
+        ) -> OpenAI::Models::Conversations::ItemListParams::order
+
+        def initialize: (
+          ?after: String,
+          ?include: ::Array[OpenAI::Models::Responses::response_includable],
+          ?limit: Integer,
+          ?order: OpenAI::Models::Conversations::ItemListParams::order,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          after: String,
+          include: ::Array[OpenAI::Models::Responses::response_includable],
+          limit: Integer,
+          order: OpenAI::Models::Conversations::ItemListParams::order,
+          request_options: OpenAI::RequestOptions
+        }
+
+        type order = :asc | :desc
+
+        module Order
+          extend OpenAI::Internal::Type::Enum
+
+          ASC: :asc
+          DESC: :desc
+
+          def self?.values: -> ::Array[OpenAI::Models::Conversations::ItemListParams::order]
+        end
+      end
+    end
+  end
+end

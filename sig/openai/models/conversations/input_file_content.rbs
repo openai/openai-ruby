@@ -1,0 +1,41 @@
+module OpenAI
+  module Models
+    module Conversations
+      type input_file_content =
+        {
+          file_id: String?,
+          type: :input_file,
+          file_url: String,
+          filename: String
+        }
+
+      class InputFileContent < OpenAI::Internal::Type::BaseModel
+        attr_accessor file_id: String?
+
+        attr_accessor type: :input_file
+
+        attr_reader file_url: String?
+
+        def file_url=: (String) -> String
+
+        attr_reader filename: String?
+
+        def filename=: (String) -> String
+
+        def initialize: (
+          file_id: String?,
+          ?file_url: String,
+          ?filename: String,
+          ?type: :input_file
+        ) -> void
+
+        def to_hash: -> {
+          file_id: String?,
+          type: :input_file,
+          file_url: String,
+          filename: String
+        }
+      end
+    end
+  end
+end

@@ -5,6 +5,7 @@ module OpenAI
 
       def create: (
         ?background: bool?,
+        ?conversation: OpenAI::Models::Responses::ResponseCreateParams::conversation?,
         ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
         ?input: OpenAI::Models::Responses::ResponseCreateParams::input,
         ?instructions: String?,
@@ -34,6 +35,7 @@ module OpenAI
 
       def stream_raw: (
         ?background: bool?,
+        ?conversation: OpenAI::Models::Responses::ResponseCreateParams::conversation?,
         ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
         ?input: OpenAI::Models::Responses::ResponseCreateParams::input,
         ?instructions: String?,

@@ -32,6 +32,9 @@ module OpenAI
         end
       end
 
+      module Conversations
+      end
+
       module Evals
         module Runs
         end
