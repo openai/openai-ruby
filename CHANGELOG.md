@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.19.0 (2025-08-21)
+
+Full Changelog: [v0.18.1...v0.19.0](https://github.com/openai/openai-ruby/compare/v0.18.1...v0.19.0)
+
+### Features
+
+* **api:** Add connectors support for MCP tool ([469dbe2](https://github.com/openai/openai-ruby/commit/469dbe2f5fab91bac9f4a656250567c9f6bc9867))
+* **api:** adding support for /v1/conversations to the API ([54d4fe7](https://github.com/openai/openai-ruby/commit/54d4fe72f8157c44d3bca692e232be2e7ef7bbeb))
+
+
+### Bug Fixes
+
+* bump sorbet version and fix new type errors from the breaking change ([147f0a4](https://github.com/openai/openai-ruby/commit/147f0a48e2c10ede5d8a30c58ae8f5601d3c4a26))
+* do note check stainless api key during release creation ([#813](https://github.com/openai/openai-ruby/issues/813)) ([afab147](https://github.com/openai/openai-ruby/commit/afab1477b36c90edd5a163f42d8b7f8f82001622))
+
+
+### Chores
+
+* **internal/ci:** setup breaking change detection ([f6a214c](https://github.com/openai/openai-ruby/commit/f6a214cd9373afdde57bee358b4e008f256b2a1e))
+
 ## 0.18.1 (2025-08-19)
 
 Full Changelog: [v0.18.0...v0.18.1](https://github.com/openai/openai-ruby/compare/v0.18.0...v0.18.1)
