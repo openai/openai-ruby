@@ -14,12 +14,6 @@ module OpenAI
         #   @return [String, nil]
         optional :after, String
 
-        # @!attribute before
-        #   An item ID to list items before, used in pagination.
-        #
-        #   @return [String, nil]
-        optional :before, String
-
         # @!attribute include
         #   Additional fields to include in the response. See the `include` parameter for
         #   Response creation above for more information.
@@ -43,13 +37,11 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Responses::InputItemListParams::Order, nil]
         optional :order, enum: -> { OpenAI::Responses::InputItemListParams::Order }
 
-        # @!method initialize(after: nil, before: nil, include: nil, limit: nil, order: nil, request_options: {})
+        # @!method initialize(after: nil, include: nil, limit: nil, order: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::InputItemListParams} for more details.
         #
         #   @param after [String] An item ID to list items after, used in pagination.
-        #
-        #   @param before [String] An item ID to list items before, used in pagination.
         #
         #   @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>] Additional fields to include in the response. See the `include`
         #

@@ -1,0 +1,28 @@
+module OpenAI
+  module Models
+    module Conversations
+      type computer_screenshot_content =
+        { file_id: String?, image_url: String?, type: :computer_screenshot }
+
+      class ComputerScreenshotContent < OpenAI::Internal::Type::BaseModel
+        attr_accessor file_id: String?
+
+        attr_accessor image_url: String?
+
+        attr_accessor type: :computer_screenshot
+
+        def initialize: (
+          file_id: String?,
+          image_url: String?,
+          ?type: :computer_screenshot
+        ) -> void
+
+        def to_hash: -> {
+          file_id: String?,
+          image_url: String?,
+          type: :computer_screenshot
+        }
+      end
+    end
+  end
+end

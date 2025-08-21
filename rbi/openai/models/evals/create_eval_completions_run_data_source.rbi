@@ -441,7 +441,7 @@ module OpenAI
                 T::Array[
                   T.any(
                     OpenAI::Responses::EasyInputMessage,
-                    OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message
+                    OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem
                   )
                 ]
               )
@@ -458,7 +458,7 @@ module OpenAI
                   T::Array[
                     T.any(
                       OpenAI::Responses::EasyInputMessage::OrHash,
-                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::OrHash
+                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::OrHash
                     )
                   ],
                 type: Symbol
@@ -480,7 +480,7 @@ module OpenAI
                     T::Array[
                       T.any(
                         OpenAI::Responses::EasyInputMessage,
-                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message
+                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem
                       )
                     ],
                   type: Symbol
@@ -502,15 +502,15 @@ module OpenAI
                 T.type_alias do
                   T.any(
                     OpenAI::Responses::EasyInputMessage,
-                    OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message
+                    OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem
                   )
                 end
 
-              class Message < OpenAI::Internal::Type::BaseModel
+              class EvalItem < OpenAI::Internal::Type::BaseModel
                 OrHash =
                   T.type_alias do
                     T.any(
-                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message,
+                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem,
                       OpenAI::Internal::AnyHash
                     )
                   end
@@ -521,8 +521,8 @@ module OpenAI
                     T.any(
                       String,
                       OpenAI::Responses::ResponseInputText,
-                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::OutputText,
-                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::InputImage,
+                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText,
+                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Content::InputImage,
                       T::Array[T.anything]
                     )
                   )
@@ -533,7 +533,7 @@ module OpenAI
                 # `developer`.
                 sig do
                   returns(
-                    OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role::OrSymbol
+                    OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Role::OrSymbol
                   )
                 end
                 attr_accessor :role
@@ -542,7 +542,7 @@ module OpenAI
                 sig do
                   returns(
                     T.nilable(
-                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Type::OrSymbol
+                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Type::OrSymbol
                     )
                   )
                 end
@@ -551,7 +551,7 @@ module OpenAI
                 sig do
                   params(
                     type:
-                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Type::OrSymbol
+                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Type::OrSymbol
                   ).void
                 end
                 attr_writer :type
@@ -567,14 +567,14 @@ module OpenAI
                       T.any(
                         String,
                         OpenAI::Responses::ResponseInputText::OrHash,
-                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::OutputText::OrHash,
-                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::InputImage::OrHash,
+                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText::OrHash,
+                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Content::InputImage::OrHash,
                         T::Array[T.anything]
                       ),
                     role:
-                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role::OrSymbol,
+                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Role::OrSymbol,
                     type:
-                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Type::OrSymbol
+                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Type::OrSymbol
                   ).returns(T.attached_class)
                 end
                 def self.new(
@@ -595,14 +595,14 @@ module OpenAI
                         T.any(
                           String,
                           OpenAI::Responses::ResponseInputText,
-                          OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::OutputText,
-                          OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::InputImage,
+                          OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText,
+                          OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Content::InputImage,
                           T::Array[T.anything]
                         ),
                       role:
-                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role::OrSymbol,
+                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Role::OrSymbol,
                       type:
-                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Type::OrSymbol
+                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Type::OrSymbol
                     }
                   )
                 end
@@ -618,8 +618,8 @@ module OpenAI
                       T.any(
                         String,
                         OpenAI::Responses::ResponseInputText,
-                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::OutputText,
-                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::InputImage,
+                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText,
+                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Content::InputImage,
                         T::Array[T.anything]
                       )
                     end
@@ -628,7 +628,7 @@ module OpenAI
                     OrHash =
                       T.type_alias do
                         T.any(
-                          OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::OutputText,
+                          OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText,
                           OpenAI::Internal::AnyHash
                         )
                       end
@@ -664,7 +664,7 @@ module OpenAI
                     OrHash =
                       T.type_alias do
                         T.any(
-                          OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::InputImage,
+                          OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Content::InputImage,
                           OpenAI::Internal::AnyHash
                         )
                       end
@@ -716,7 +716,7 @@ module OpenAI
                   sig do
                     override.returns(
                       T::Array[
-                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::Variants
+                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Content::Variants
                       ]
                     )
                   end
@@ -741,7 +741,7 @@ module OpenAI
                     T.type_alias do
                       T.all(
                         Symbol,
-                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role
+                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Role
                       )
                     end
                   OrSymbol = T.type_alias { T.any(Symbol, String) }
@@ -749,28 +749,28 @@ module OpenAI
                   USER =
                     T.let(
                       :user,
-                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role::TaggedSymbol
+                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Role::TaggedSymbol
                     )
                   ASSISTANT =
                     T.let(
                       :assistant,
-                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role::TaggedSymbol
+                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Role::TaggedSymbol
                     )
                   SYSTEM =
                     T.let(
                       :system,
-                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role::TaggedSymbol
+                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Role::TaggedSymbol
                     )
                   DEVELOPER =
                     T.let(
                       :developer,
-                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role::TaggedSymbol
+                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Role::TaggedSymbol
                     )
 
                   sig do
                     override.returns(
                       T::Array[
-                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role::TaggedSymbol
+                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Role::TaggedSymbol
                       ]
                     )
                   end
@@ -786,7 +786,7 @@ module OpenAI
                     T.type_alias do
                       T.all(
                         Symbol,
-                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Type
+                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Type
                       )
                     end
                   OrSymbol = T.type_alias { T.any(Symbol, String) }
@@ -794,13 +794,13 @@ module OpenAI
                   MESSAGE =
                     T.let(
                       :message,
-                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Type::TaggedSymbol
+                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Type::TaggedSymbol
                     )
 
                   sig do
                     override.returns(
                       T::Array[
-                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Type::TaggedSymbol
+                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Type::TaggedSymbol
                       ]
                     )
                   end

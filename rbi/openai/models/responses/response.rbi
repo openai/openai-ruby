@@ -136,6 +136,19 @@ module OpenAI
         sig { returns(T.nilable(T::Boolean)) }
         attr_accessor :background
 
+        # The conversation that this response belongs to. Input items and output items
+        # from this response are automatically added to this conversation.
+        sig { returns(T.nilable(OpenAI::Responses::Response::Conversation)) }
+        attr_reader :conversation
+
+        sig do
+          params(
+            conversation:
+              T.nilable(OpenAI::Responses::Response::Conversation::OrHash)
+          ).void
+        end
+        attr_writer :conversation
+
         # An upper bound for the number of tokens that can be generated for a response,
         # including visible output tokens and
         # [reasoning tokens](https://platform.openai.com/docs/guides/reasoning).
@@ -152,6 +165,7 @@ module OpenAI
         # The unique ID of the previous response to the model. Use this to create
         # multi-turn conversations. Learn more about
         # [conversation state](https://platform.openai.com/docs/guides/conversation-state).
+        # Cannot be used in conjunction with `conversation`.
         sig { returns(T.nilable(String)) }
         attr_accessor :previous_response_id
 
@@ -340,6 +354,8 @@ module OpenAI
               ],
             top_p: T.nilable(Float),
             background: T.nilable(T::Boolean),
+            conversation:
+              T.nilable(OpenAI::Responses::Response::Conversation::OrHash),
             max_output_tokens: T.nilable(Integer),
             max_tool_calls: T.nilable(Integer),
             previous_response_id: T.nilable(String),
@@ -432,6 +448,9 @@ module OpenAI
           # Whether to run the model response in the background.
           # [Learn more](https://platform.openai.com/docs/guides/background).
           background: nil,
+          # The conversation that this response belongs to. Input items and output items
+          # from this response are automatically added to this conversation.
+          conversation: nil,
           # An upper bound for the number of tokens that can be generated for a response,
           # including visible output tokens and
           # [reasoning tokens](https://platform.openai.com/docs/guides/reasoning).
@@ -444,6 +463,7 @@ module OpenAI
           # The unique ID of the previous response to the model. Use this to create
           # multi-turn conversations. Learn more about
           # [conversation state](https://platform.openai.com/docs/guides/conversation-state).
+          # Cannot be used in conjunction with `conversation`.
           previous_response_id: nil,
           # Reference to a prompt template and its variables.
           # [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
@@ -534,6 +554,8 @@ module OpenAI
               tools: T::Array[OpenAI::Responses::Tool::Variants],
               top_p: T.nilable(Float),
               background: T.nilable(T::Boolean),
+              conversation:
+                T.nilable(OpenAI::Responses::Response::Conversation),
               max_output_tokens: T.nilable(Integer),
               max_tool_calls: T.nilable(Integer),
               previous_response_id: T.nilable(String),
@@ -704,6 +726,33 @@ module OpenAI
             )
           end
           def self.variants
+          end
+        end
+
+        class Conversation < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::Response::Conversation,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The unique ID of the conversation.
+          sig { returns(String) }
+          attr_accessor :id
+
+          # The conversation that this response belongs to. Input items and output items
+          # from this response are automatically added to this conversation.
+          sig { params(id: String).returns(T.attached_class) }
+          def self.new(
+            # The unique ID of the conversation.
+            id:
+          )
+          end
+
+          sig { override.returns({ id: String }) }
+          def to_hash
           end
         end
 

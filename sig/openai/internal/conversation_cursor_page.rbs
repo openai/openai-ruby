@@ -1,0 +1,15 @@
+module OpenAI
+  module Internal
+    class ConversationCursorPage[Elem]
+      include OpenAI::Internal::Type::BasePage[Elem]
+
+      attr_accessor data: ::Array[Elem]?
+
+      attr_accessor has_more: bool
+
+      attr_accessor last_id: String
+
+      def inspect: -> String
+    end
+  end
+end

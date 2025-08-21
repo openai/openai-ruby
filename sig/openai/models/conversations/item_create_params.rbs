@@ -1,0 +1,37 @@
+module OpenAI
+  module Models
+    module Conversations
+      type item_create_params =
+        {
+          items: ::Array[OpenAI::Models::Responses::response_input_item],
+          include: ::Array[OpenAI::Models::Responses::response_includable]
+        }
+        & OpenAI::Internal::Type::request_parameters
+
+      class ItemCreateParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor items: ::Array[OpenAI::Models::Responses::response_input_item]
+
+        attr_reader include: ::Array[OpenAI::Models::Responses::response_includable]?
+
+        def include=: (
+          ::Array[OpenAI::Models::Responses::response_includable]
+        ) -> ::Array[OpenAI::Models::Responses::response_includable]
+
+        def initialize: (
+          items: ::Array[OpenAI::Models::Responses::response_input_item],
+          ?include: ::Array[OpenAI::Models::Responses::response_includable],
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          items: ::Array[OpenAI::Models::Responses::response_input_item],
+          include: ::Array[OpenAI::Models::Responses::response_includable],
+          request_options: OpenAI::RequestOptions
+        }
+      end
+    end
+  end
+end

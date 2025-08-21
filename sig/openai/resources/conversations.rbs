@@ -1,0 +1,31 @@
+module OpenAI
+  module Resources
+    class Conversations
+      attr_reader items: OpenAI::Resources::Conversations::Items
+
+      def create: (
+        ?items: ::Array[OpenAI::Models::Responses::response_input_item]?,
+        ?metadata: OpenAI::Models::metadata?,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Conversations::Conversation
+
+      def retrieve: (
+        String conversation_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Conversations::Conversation
+
+      def update: (
+        String conversation_id,
+        metadata: ::Hash[Symbol, String],
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Conversations::Conversation
+
+      def delete: (
+        String conversation_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Conversations::ConversationDeletedResource
+
+      def initialize: (client: OpenAI::Client) -> void
+    end
+  end
+end

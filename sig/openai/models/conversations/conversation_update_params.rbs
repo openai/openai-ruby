@@ -1,0 +1,26 @@
+module OpenAI
+  module Models
+    module Conversations
+      type conversation_update_params =
+        { metadata: ::Hash[Symbol, String] }
+        & OpenAI::Internal::Type::request_parameters
+
+      class ConversationUpdateParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor metadata: ::Hash[Symbol, String]
+
+        def initialize: (
+          metadata: ::Hash[Symbol, String],
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          metadata: ::Hash[Symbol, String],
+          request_options: OpenAI::RequestOptions
+        }
+      end
+    end
+  end
+end

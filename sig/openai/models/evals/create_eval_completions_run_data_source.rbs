@@ -195,46 +195,46 @@ module OpenAI
 
             type template =
               OpenAI::Responses::EasyInputMessage
-              | OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message
+              | OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem
 
             module Template
               extend OpenAI::Internal::Type::Union
 
-              type message =
+              type eval_item =
                 {
-                  content: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::content,
-                  role: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::role,
-                  type: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::type_
+                  content: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::content,
+                  role: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::role,
+                  type: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::type_
                 }
 
-              class Message < OpenAI::Internal::Type::BaseModel
-                attr_accessor content: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::content
+              class EvalItem < OpenAI::Internal::Type::BaseModel
+                attr_accessor content: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::content
 
-                attr_accessor role: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::role
+                attr_accessor role: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::role
 
-                attr_reader type: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::type_?
+                attr_reader type: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::type_?
 
                 def type=: (
-                  OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::type_
-                ) -> OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::type_
+                  OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::type_
+                ) -> OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::type_
 
                 def initialize: (
-                  content: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::content,
-                  role: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::role,
-                  ?type: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::type_
+                  content: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::content,
+                  role: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::role,
+                  ?type: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::type_
                 ) -> void
 
                 def to_hash: -> {
-                  content: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::content,
-                  role: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::role,
-                  type: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::type_
+                  content: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::content,
+                  role: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::role,
+                  type: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::type_
                 }
 
                 type content =
                   String
                   | OpenAI::Responses::ResponseInputText
-                  | OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::OutputText
-                  | OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::InputImage
+                  | OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText
+                  | OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Content::InputImage
                   | ::Array[top]
 
                 module Content
@@ -277,7 +277,7 @@ module OpenAI
                     }
                   end
 
-                  def self?.variants: -> ::Array[OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::content]
+                  def self?.variants: -> ::Array[OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::content]
 
                   AnArrayOfInputTextAndInputImageArray: OpenAI::Internal::Type::Converter
                 end
@@ -292,7 +292,7 @@ module OpenAI
                   SYSTEM: :system
                   DEVELOPER: :developer
 
-                  def self?.values: -> ::Array[OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::role]
+                  def self?.values: -> ::Array[OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::role]
                 end
 
                 type type_ = :message
@@ -302,7 +302,7 @@ module OpenAI
 
                   MESSAGE: :message
 
-                  def self?.values: -> ::Array[OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::type_]
+                  def self?.values: -> ::Array[OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::type_]
                 end
               end
 

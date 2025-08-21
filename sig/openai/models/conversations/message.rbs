@@ -1,0 +1,95 @@
+module OpenAI
+  module Models
+    module Conversations
+      type message =
+        {
+          id: String,
+          content: ::Array[OpenAI::Models::Conversations::Message::content],
+          role: OpenAI::Models::Conversations::Message::role,
+          status: OpenAI::Models::Conversations::Message::status,
+          type: :message
+        }
+
+      class Message < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor content: ::Array[OpenAI::Models::Conversations::Message::content]
+
+        attr_accessor role: OpenAI::Models::Conversations::Message::role
+
+        attr_accessor status: OpenAI::Models::Conversations::Message::status
+
+        attr_accessor type: :message
+
+        def initialize: (
+          id: String,
+          content: ::Array[OpenAI::Models::Conversations::Message::content],
+          role: OpenAI::Models::Conversations::Message::role,
+          status: OpenAI::Models::Conversations::Message::status,
+          ?type: :message
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          content: ::Array[OpenAI::Models::Conversations::Message::content],
+          role: OpenAI::Models::Conversations::Message::role,
+          status: OpenAI::Models::Conversations::Message::status,
+          type: :message
+        }
+
+        type content =
+          OpenAI::Conversations::InputTextContent
+          | OpenAI::Conversations::OutputTextContent
+          | OpenAI::Conversations::TextContent
+          | OpenAI::Conversations::SummaryTextContent
+          | OpenAI::Conversations::RefusalContent
+          | OpenAI::Conversations::InputImageContent
+          | OpenAI::Conversations::ComputerScreenshotContent
+          | OpenAI::Conversations::InputFileContent
+
+        module Content
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Conversations::Message::content]
+        end
+
+        type role =
+          :unknown
+          | :user
+          | :assistant
+          | :system
+          | :critic
+          | :discriminator
+          | :developer
+          | :tool
+
+        module Role
+          extend OpenAI::Internal::Type::Enum
+
+          UNKNOWN: :unknown
+          USER: :user
+          ASSISTANT: :assistant
+          SYSTEM: :system
+          CRITIC: :critic
+          DISCRIMINATOR: :discriminator
+          DEVELOPER: :developer
+          TOOL: :tool
+
+          def self?.values: -> ::Array[OpenAI::Models::Conversations::Message::role]
+        end
+
+        type status = :in_progress | :completed | :incomplete
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          IN_PROGRESS: :in_progress
+          COMPLETED: :completed
+          INCOMPLETE: :incomplete
+
+          def self?.values: -> ::Array[OpenAI::Models::Conversations::Message::status]
+        end
+      end
+    end
+  end
+end
