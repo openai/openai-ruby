@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.19.1 (2025-08-22)
+
+Full Changelog: [v0.19.0...v0.19.1](https://github.com/openai/openai-ruby/compare/v0.19.0...v0.19.1)
+
+### Chores
+
+* annotate structured output parsed responses with `response_only` ([#814](https://github.com/openai/openai-ruby/issues/814)) ([320b726](https://github.com/openai/openai-ruby/commit/320b726deec82b34e06fbaa909c9fcc90dbe4d96))
+
 ## 0.19.0 (2025-08-21)
 
 Full Changelog: [v0.18.1...v0.19.0](https://github.com/openai/openai-ruby/compare/v0.18.1...v0.19.0)
