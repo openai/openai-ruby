@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.19.1 (2025-08-22)
+
+Full Changelog: [v0.19.0...v0.19.1](https://github.com/openai/openai-ruby/compare/v0.19.0...v0.19.1)
+
+### Chores
+
+* add example for using openai-ruby with Azure OpenAI ([#185](https://github.com/openai/openai-ruby/issues/185)) ([6b93cac](https://github.com/openai/openai-ruby/commit/6b93cacfcb95eff016a591c8586744406519593f))
+
 ## 0.19.0 (2025-08-21)
 
 Full Changelog: [v0.18.1...v0.19.0](https://github.com/openai/openai-ruby/compare/v0.18.1...v0.19.0)
