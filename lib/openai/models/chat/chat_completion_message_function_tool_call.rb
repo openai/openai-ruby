@@ -42,11 +42,13 @@ module OpenAI
           #   @return [String]
           required :arguments, String
 
-          # @!attribute parsed
-          #   The parsed contents of the arguments.
-          #
-          #   @return [Object, nil]
-          required :parsed, OpenAI::StructuredOutput::ParsedJson
+          response_only do
+            # @!attribute parsed
+            #   The parsed contents of the arguments.
+            #
+            #   @return [Object, nil]
+            required :parsed, OpenAI::StructuredOutput::ParsedJson
+          end
 
           # @!attribute name
           #   The name of the function to call.
