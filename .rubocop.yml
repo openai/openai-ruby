@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://www.rubyschema.org/rubocop.json
 ---
 # Explicitly disable pending cops for now. This is the default behaviour but
 # this avoids a large warning every time we run it.
@@ -8,7 +9,7 @@ AllCops:
     - "bin/*"
   NewCops: enable
   SuggestExtensions: false
-  TargetRubyVersion: 3.2.0
+  TargetRubyVersion: 3.2
 
 # Whether MFA is required or not should be left to the token configuration.
 Gemspec/RequireMFA:
