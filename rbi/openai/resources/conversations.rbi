@@ -6,7 +6,7 @@ module OpenAI
       sig { returns(OpenAI::Resources::Conversations::Items) }
       attr_reader :items
 
-      # Create a conversation with the given ID.
+      # Create a conversation.
       sig do
         params(
           items:

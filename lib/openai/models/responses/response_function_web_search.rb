@@ -76,7 +76,14 @@ module OpenAI
             #   @return [Symbol, :search]
             required :type, const: :search
 
-            # @!method initialize(query:, type: :search)
+            # @!attribute sources
+            #   The sources used in the search.
+            #
+            #   @return [Array<OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Search::Source>, nil]
+            optional :sources,
+                     -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source] }
+
+            # @!method initialize(query:, sources: nil, type: :search)
             #   Some parameter documentations has been truncated, see
             #   {OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Search} for more
             #   details.
@@ -85,7 +92,34 @@ module OpenAI
             #
             #   @param query [String] The search query.
             #
+            #   @param sources [Array<OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Search::Source>] The sources used in the search.
+            #
             #   @param type [Symbol, :search] The action type.
+
+            class Source < OpenAI::Internal::Type::BaseModel
+              # @!attribute type
+              #   The type of source. Always `url`.
+              #
+              #   @return [Symbol, :url]
+              required :type, const: :url
+
+              # @!attribute url
+              #   The URL of the source.
+              #
+              #   @return [String]
+              required :url, String
+
+              # @!method initialize(url:, type: :url)
+              #   Some parameter documentations has been truncated, see
+              #   {OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Search::Source}
+              #   for more details.
+              #
+              #   A source used in the search.
+              #
+              #   @param url [String] The URL of the source.
+              #
+              #   @param type [Symbol, :url] The type of source. Always `url`.
+            end
           end
 
           class OpenPage < OpenAI::Internal::Type::BaseModel

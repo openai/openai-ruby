@@ -9,7 +9,7 @@ module OpenAI
       # Some parameter documentations has been truncated, see
       # {OpenAI::Models::Conversations::ConversationCreateParams} for more details.
       #
-      # Create a conversation with the given ID.
+      # Create a conversation.
       #
       # @overload create(items: nil, metadata: nil, request_options: {})
       #
