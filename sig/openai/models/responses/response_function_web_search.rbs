@@ -40,16 +40,47 @@ module OpenAI
         module Action
           extend OpenAI::Internal::Type::Union
 
-          type search = { query: String, type: :search }
+          type search =
+            {
+              query: String,
+              type: :search,
+              sources: ::Array[OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source]
+            }
 
           class Search < OpenAI::Internal::Type::BaseModel
             attr_accessor query: String
 
             attr_accessor type: :search
 
-            def initialize: (query: String, ?type: :search) -> void
+            attr_reader sources: ::Array[OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source]?
 
-            def to_hash: -> { query: String, type: :search }
+            def sources=: (
+              ::Array[OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source]
+            ) -> ::Array[OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source]
+
+            def initialize: (
+              query: String,
+              ?sources: ::Array[OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source],
+              ?type: :search
+            ) -> void
+
+            def to_hash: -> {
+              query: String,
+              type: :search,
+              sources: ::Array[OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source]
+            }
+
+            type source = { type: :url, url: String }
+
+            class Source < OpenAI::Internal::Type::BaseModel
+              attr_accessor type: :url
+
+              attr_accessor url: String
+
+              def initialize: (url: String, ?type: :url) -> void
+
+              def to_hash: -> { type: :url, url: String }
+            end
           end
 
           type open_page = { type: :open_page, url: String }

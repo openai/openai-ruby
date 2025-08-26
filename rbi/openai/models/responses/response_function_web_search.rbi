@@ -121,20 +121,96 @@ module OpenAI
             sig { returns(Symbol) }
             attr_accessor :type
 
+            # The sources used in the search.
+            sig do
+              returns(
+                T.nilable(
+                  T::Array[
+                    OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source
+                  ]
+                )
+              )
+            end
+            attr_reader :sources
+
+            sig do
+              params(
+                sources:
+                  T::Array[
+                    OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source::OrHash
+                  ]
+              ).void
+            end
+            attr_writer :sources
+
             # Action type "search" - Performs a web search query.
             sig do
-              params(query: String, type: Symbol).returns(T.attached_class)
+              params(
+                query: String,
+                sources:
+                  T::Array[
+                    OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source::OrHash
+                  ],
+                type: Symbol
+              ).returns(T.attached_class)
             end
             def self.new(
               # The search query.
               query:,
+              # The sources used in the search.
+              sources: nil,
               # The action type.
               type: :search
             )
             end
 
-            sig { override.returns({ query: String, type: Symbol }) }
+            sig do
+              override.returns(
+                {
+                  query: String,
+                  type: Symbol,
+                  sources:
+                    T::Array[
+                      OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source
+                    ]
+                }
+              )
+            end
             def to_hash
+            end
+
+            class Source < OpenAI::Internal::Type::BaseModel
+              OrHash =
+                T.type_alias do
+                  T.any(
+                    OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+              # The type of source. Always `url`.
+              sig { returns(Symbol) }
+              attr_accessor :type
+
+              # The URL of the source.
+              sig { returns(String) }
+              attr_accessor :url
+
+              # A source used in the search.
+              sig do
+                params(url: String, type: Symbol).returns(T.attached_class)
+              end
+              def self.new(
+                # The URL of the source.
+                url:,
+                # The type of source. Always `url`.
+                type: :url
+              )
+              end
+
+              sig { override.returns({ type: Symbol, url: String }) }
+              def to_hash
+              end
             end
           end
 
