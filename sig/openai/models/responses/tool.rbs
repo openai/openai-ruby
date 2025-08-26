@@ -10,10 +10,131 @@ module OpenAI
         | OpenAI::Responses::Tool::ImageGeneration
         | OpenAI::Responses::Tool::LocalShell
         | OpenAI::Responses::CustomTool
+        | OpenAI::Responses::Tool::WebSearchTool
         | OpenAI::Responses::WebSearchTool
 
       module Tool
         extend OpenAI::Internal::Type::Union
+
+        type web_search_tool =
+          {
+            type: OpenAI::Models::Responses::Tool::WebSearchTool::type_,
+            filters: OpenAI::Responses::Tool::WebSearchTool::Filters?,
+            search_context_size: OpenAI::Models::Responses::Tool::WebSearchTool::search_context_size,
+            user_location: OpenAI::Responses::Tool::WebSearchTool::UserLocation?
+          }
+
+        class WebSearchTool < OpenAI::Internal::Type::BaseModel
+          attr_accessor type: OpenAI::Models::Responses::Tool::WebSearchTool::type_
+
+          attr_accessor filters: OpenAI::Responses::Tool::WebSearchTool::Filters?
+
+          attr_reader search_context_size: OpenAI::Models::Responses::Tool::WebSearchTool::search_context_size?
+
+          def search_context_size=: (
+            OpenAI::Models::Responses::Tool::WebSearchTool::search_context_size
+          ) -> OpenAI::Models::Responses::Tool::WebSearchTool::search_context_size
+
+          attr_accessor user_location: OpenAI::Responses::Tool::WebSearchTool::UserLocation?
+
+          def initialize: (
+            type: OpenAI::Models::Responses::Tool::WebSearchTool::type_,
+            ?filters: OpenAI::Responses::Tool::WebSearchTool::Filters?,
+            ?search_context_size: OpenAI::Models::Responses::Tool::WebSearchTool::search_context_size,
+            ?user_location: OpenAI::Responses::Tool::WebSearchTool::UserLocation?
+          ) -> void
+
+          def to_hash: -> {
+            type: OpenAI::Models::Responses::Tool::WebSearchTool::type_,
+            filters: OpenAI::Responses::Tool::WebSearchTool::Filters?,
+            search_context_size: OpenAI::Models::Responses::Tool::WebSearchTool::search_context_size,
+            user_location: OpenAI::Responses::Tool::WebSearchTool::UserLocation?
+          }
+
+          type type_ = :web_search | :web_search_2025_08_26
+
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            WEB_SEARCH: :web_search
+            WEB_SEARCH_2025_08_26: :web_search_2025_08_26
+
+            def self?.values: -> ::Array[OpenAI::Models::Responses::Tool::WebSearchTool::type_]
+          end
+
+          type filters = { allowed_domains: ::Array[String]? }
+
+          class Filters < OpenAI::Internal::Type::BaseModel
+            attr_accessor allowed_domains: ::Array[String]?
+
+            def initialize: (?allowed_domains: ::Array[String]?) -> void
+
+            def to_hash: -> { allowed_domains: ::Array[String]? }
+          end
+
+          type search_context_size = :low | :medium | :high
+
+          module SearchContextSize
+            extend OpenAI::Internal::Type::Enum
+
+            LOW: :low
+            MEDIUM: :medium
+            HIGH: :high
+
+            def self?.values: -> ::Array[OpenAI::Models::Responses::Tool::WebSearchTool::search_context_size]
+          end
+
+          type user_location =
+            {
+              city: String?,
+              country: String?,
+              region: String?,
+              timezone: String?,
+              type: OpenAI::Models::Responses::Tool::WebSearchTool::UserLocation::type_
+            }
+
+          class UserLocation < OpenAI::Internal::Type::BaseModel
+            attr_accessor city: String?
+
+            attr_accessor country: String?
+
+            attr_accessor region: String?
+
+            attr_accessor timezone: String?
+
+            attr_reader type: OpenAI::Models::Responses::Tool::WebSearchTool::UserLocation::type_?
+
+            def type=: (
+              OpenAI::Models::Responses::Tool::WebSearchTool::UserLocation::type_
+            ) -> OpenAI::Models::Responses::Tool::WebSearchTool::UserLocation::type_
+
+            def initialize: (
+              ?city: String?,
+              ?country: String?,
+              ?region: String?,
+              ?timezone: String?,
+              ?type: OpenAI::Models::Responses::Tool::WebSearchTool::UserLocation::type_
+            ) -> void
+
+            def to_hash: -> {
+              city: String?,
+              country: String?,
+              region: String?,
+              timezone: String?,
+              type: OpenAI::Models::Responses::Tool::WebSearchTool::UserLocation::type_
+            }
+
+            type type_ = :approximate
+
+            module Type
+              extend OpenAI::Internal::Type::Enum
+
+              APPROXIMATE: :approximate
+
+              def self?.values: -> ::Array[OpenAI::Models::Responses::Tool::WebSearchTool::UserLocation::type_]
+            end
+          end
+        end
 
         type mcp =
           {

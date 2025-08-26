@@ -1175,6 +1175,7 @@ module OpenAI
                         OpenAI::Responses::Tool::ImageGeneration::OrHash,
                         OpenAI::Responses::Tool::LocalShell::OrHash,
                         OpenAI::Responses::CustomTool::OrHash,
+                        OpenAI::Responses::Tool::WebSearchTool::OrHash,
                         OpenAI::Responses::WebSearchTool::OrHash
                       )
                     ]
@@ -1207,6 +1208,7 @@ module OpenAI
                         OpenAI::Responses::Tool::ImageGeneration::OrHash,
                         OpenAI::Responses::Tool::LocalShell::OrHash,
                         OpenAI::Responses::CustomTool::OrHash,
+                        OpenAI::Responses::Tool::WebSearchTool::OrHash,
                         OpenAI::Responses::WebSearchTool::OrHash
                       )
                     ],
