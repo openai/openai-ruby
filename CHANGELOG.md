@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.20.1 (2025-08-28)
+
+Full Changelog: [v0.20.0...v0.20.1](https://github.com/openai/openai-ruby/compare/v0.20.0...v0.20.1)
+
+### Bug Fixes
+
+* correctly raise errors encountered during streaming ([766c6c6](https://github.com/openai/openai-ruby/commit/766c6c65c7d27f853ca6cd3ebc4d0ad6385c5924))
+
 ## 0.20.0 (2025-08-26)
 
 Full Changelog: [v0.19.0...v0.20.0](https://github.com/openai/openai-ruby/compare/v0.19.0...v0.20.0)
