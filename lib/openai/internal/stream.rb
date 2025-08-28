@@ -38,14 +38,15 @@ module OpenAI
                   else
                     "An error occurred during streaming"
                   end
-                OpenAI::Errors::APIError.for(
+                err = OpenAI::Errors::APIError.for(
                   url: @url,
                   status: @status,
-                  body: body,
+                  body: data,
                   request: nil,
                   response: @response,
                   message: message
                 )
+                raise err
               in decoded
                 unwrapped = OpenAI::Internal::Util.dig(decoded, @unwrap)
                 y << OpenAI::Internal::Type::Converter.coerce(@model, unwrapped)
