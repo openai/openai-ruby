@@ -3,39 +3,56 @@ module OpenAI
     module Responses
       type response_input_audio =
         {
-          data: String,
-          format_: OpenAI::Models::Responses::ResponseInputAudio::format_,
+          input_audio: OpenAI::Responses::ResponseInputAudio::InputAudio,
           type: :input_audio
         }
 
       class ResponseInputAudio < OpenAI::Internal::Type::BaseModel
-        attr_accessor data: String
-
-        attr_accessor format_: OpenAI::Models::Responses::ResponseInputAudio::format_
+        attr_accessor input_audio: OpenAI::Responses::ResponseInputAudio::InputAudio
 
         attr_accessor type: :input_audio
 
         def initialize: (
-          data: String,
-          format_: OpenAI::Models::Responses::ResponseInputAudio::format_,
+          input_audio: OpenAI::Responses::ResponseInputAudio::InputAudio,
           ?type: :input_audio
         ) -> void
 
         def to_hash: -> {
-          data: String,
-          format_: OpenAI::Models::Responses::ResponseInputAudio::format_,
+          input_audio: OpenAI::Responses::ResponseInputAudio::InputAudio,
           type: :input_audio
         }
 
-        type format_ = :mp3 | :wav
+        type input_audio =
+          {
+            data: String,
+            format_: OpenAI::Models::Responses::ResponseInputAudio::InputAudio::format_
+          }
 
-        module Format
-          extend OpenAI::Internal::Type::Enum
+        class InputAudio < OpenAI::Internal::Type::BaseModel
+          attr_accessor data: String
 
-          MP3: :mp3
-          WAV: :wav
+          attr_accessor format_: OpenAI::Models::Responses::ResponseInputAudio::InputAudio::format_
 
-          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputAudio::format_]
+          def initialize: (
+            data: String,
+            format_: OpenAI::Models::Responses::ResponseInputAudio::InputAudio::format_
+          ) -> void
+
+          def to_hash: -> {
+            data: String,
+            format_: OpenAI::Models::Responses::ResponseInputAudio::InputAudio::format_
+          }
+
+          type format_ = :mp3 | :wav
+
+          module Format
+            extend OpenAI::Internal::Type::Enum
+
+            MP3: :mp3
+            WAV: :wav
+
+            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputAudio::InputAudio::format_]
+          end
         end
       end
     end

@@ -83,6 +83,7 @@ module OpenAI
             | OpenAI::Responses::ResponseInputText
             | OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText
             | OpenAI::Graders::ScoreModelGrader::Input::Content::InputImage
+            | OpenAI::Responses::ResponseInputAudio
             | ::Array[top]
 
           module Content
@@ -127,7 +128,7 @@ module OpenAI
 
             def self?.variants: -> ::Array[OpenAI::Models::Graders::ScoreModelGrader::Input::content]
 
-            AnArrayOfInputTextAndInputImageArray: OpenAI::Internal::Type::Converter
+            AnArrayOfInputTextInputImageAndInputAudioArray: OpenAI::Internal::Type::Converter
           end
 
           type role = :user | :assistant | :system | :developer
