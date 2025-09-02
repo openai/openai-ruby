@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.21.1 (2025-09-02)
+
+Full Changelog: [v0.21.0...v0.21.1](https://github.com/openai/openai-ruby/compare/v0.21.0...v0.21.1)
+
+### Chores
+
+* **api:** manual updates for ResponseInputAudio ([7768f86](https://github.com/openai/openai-ruby/commit/7768f86e400261623f760fffab526f7386d7cf30))
+
 ## 0.21.0 (2025-09-02)
 
 Full Changelog: [v0.20.0...v0.21.0](https://github.com/openai/openai-ruby/compare/v0.20.0...v0.21.0)
