@@ -219,6 +219,7 @@ module OpenAI
                 | OpenAI::Responses::ResponseInputText
                 | OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText
                 | OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::InputImage
+                | OpenAI::Responses::ResponseInputAudio
                 | ::Array[top]
 
               module Content
@@ -263,7 +264,7 @@ module OpenAI
 
                 def self?.variants: -> ::Array[OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::content]
 
-                AnArrayOfInputTextAndInputImageArray: OpenAI::Internal::Type::Converter
+                AnArrayOfInputTextInputImageAndInputAudioArray: OpenAI::Internal::Type::Converter
               end
 
               type role = :user | :assistant | :system | :developer

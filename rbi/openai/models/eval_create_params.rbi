@@ -482,6 +482,7 @@ module OpenAI
                     OpenAI::Responses::ResponseInputText,
                     OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText,
                     OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::InputImage,
+                    OpenAI::Responses::ResponseInputAudio,
                     T::Array[T.anything]
                   )
                 )
@@ -528,6 +529,7 @@ module OpenAI
                       OpenAI::Responses::ResponseInputText::OrHash,
                       OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText::OrHash,
                       OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::InputImage::OrHash,
+                      OpenAI::Responses::ResponseInputAudio::OrHash,
                       T::Array[T.anything]
                     ),
                   role:
@@ -556,6 +558,7 @@ module OpenAI
                         OpenAI::Responses::ResponseInputText,
                         OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText,
                         OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::InputImage,
+                        OpenAI::Responses::ResponseInputAudio,
                         T::Array[T.anything]
                       ),
                     role:
@@ -579,6 +582,7 @@ module OpenAI
                       OpenAI::Responses::ResponseInputText,
                       OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText,
                       OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::InputImage,
+                      OpenAI::Responses::ResponseInputAudio,
                       T::Array[T.anything]
                     )
                   end
@@ -680,7 +684,7 @@ module OpenAI
                 def self.variants
                 end
 
-                AnArrayOfInputTextAndInputImageArray =
+                AnArrayOfInputTextInputImageAndInputAudioArray =
                   T.let(
                     OpenAI::Internal::Type::ArrayOf[
                       OpenAI::Internal::Type::Unknown

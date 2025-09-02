@@ -75,7 +75,8 @@ module OpenAI
                 T.any(
                   OpenAI::Responses::ResponseInputText::OrHash,
                   OpenAI::Responses::ResponseInputImage::OrHash,
-                  OpenAI::Responses::ResponseInputFile::OrHash
+                  OpenAI::Responses::ResponseInputFile::OrHash,
+                  OpenAI::Responses::ResponseInputAudio::OrHash
                 )
               ],
             role: OpenAI::Responses::ResponseInputMessageItem::Role::OrSymbol,

@@ -13,6 +13,7 @@ module OpenAI
               OpenAI::Responses::ResponseInputText,
               OpenAI::Responses::ResponseInputImage,
               OpenAI::Responses::ResponseInputFile,
+              OpenAI::Responses::ResponseInputAudio,
               OpenAI::Responses::ResponseOutputText,
               OpenAI::Responses::ResponseOutputRefusal
             )

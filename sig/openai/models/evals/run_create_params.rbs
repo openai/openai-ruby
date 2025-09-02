@@ -314,6 +314,7 @@ module OpenAI
                       | OpenAI::Responses::ResponseInputText
                       | OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText
                       | OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Content::InputImage
+                      | OpenAI::Responses::ResponseInputAudio
                       | ::Array[top]
 
                     module Content
@@ -365,7 +366,7 @@ module OpenAI
 
                       def self?.variants: -> ::Array[OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::content]
 
-                      AnArrayOfInputTextAndInputImageArray: OpenAI::Internal::Type::Converter
+                      AnArrayOfInputTextInputImageAndInputAudioArray: OpenAI::Internal::Type::Converter
                     end
 
                     type role = :user | :assistant | :system | :developer

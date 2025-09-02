@@ -18,8 +18,11 @@ module OpenAI
         # A file input to the model.
         variant :input_file, -> { OpenAI::Responses::ResponseInputFile }
 
+        # An audio input to the model.
+        variant :input_audio, -> { OpenAI::Responses::ResponseInputAudio }
+
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile)]
+        #   @return [Array(OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile, OpenAI::Models::Responses::ResponseInputAudio)]
       end
     end
   end
