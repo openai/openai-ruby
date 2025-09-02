@@ -1,0 +1,86 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_conversation_item_function_call =
+        {
+          arguments: String,
+          name: String,
+          type: :function_call,
+          id: String,
+          call_id: String,
+          object: OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall::object,
+          status: OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall::status
+        }
+
+      class RealtimeConversationItemFunctionCall < OpenAI::Internal::Type::BaseModel
+        attr_accessor arguments: String
+
+        attr_accessor name: String
+
+        attr_accessor type: :function_call
+
+        attr_reader id: String?
+
+        def id=: (String) -> String
+
+        attr_reader call_id: String?
+
+        def call_id=: (String) -> String
+
+        attr_reader object: OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall::object?
+
+        def object=: (
+          OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall::object
+        ) -> OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall::object
+
+        attr_reader status: OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall::status?
+
+        def status=: (
+          OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall::status
+        ) -> OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall::status
+
+        def initialize: (
+          arguments: String,
+          name: String,
+          ?id: String,
+          ?call_id: String,
+          ?object: OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall::object,
+          ?status: OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall::status,
+          ?type: :function_call
+        ) -> void
+
+        def to_hash: -> {
+          arguments: String,
+          name: String,
+          type: :function_call,
+          id: String,
+          call_id: String,
+          object: OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall::object,
+          status: OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall::status
+        }
+
+        type object = :"realtime.item"
+
+        module Object
+          extend OpenAI::Internal::Type::Enum
+
+          REALTIME_ITEM: :"realtime.item"
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall::object]
+        end
+
+        type status = :completed | :incomplete | :in_progress
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          COMPLETED: :completed
+          INCOMPLETE: :incomplete
+          IN_PROGRESS: :in_progress
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall::status]
+        end
+      end
+    end
+  end
+end

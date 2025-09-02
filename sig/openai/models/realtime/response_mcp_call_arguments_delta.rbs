@@ -1,0 +1,52 @@
+module OpenAI
+  module Models
+    module Realtime
+      type response_mcp_call_arguments_delta =
+        {
+          delta: String,
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          response_id: String,
+          type: :"response.mcp_call_arguments.delta",
+          obfuscation: String?
+        }
+
+      class ResponseMcpCallArgumentsDelta < OpenAI::Internal::Type::BaseModel
+        attr_accessor delta: String
+
+        attr_accessor event_id: String
+
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor response_id: String
+
+        attr_accessor type: :"response.mcp_call_arguments.delta"
+
+        attr_accessor obfuscation: String?
+
+        def initialize: (
+          delta: String,
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          response_id: String,
+          ?obfuscation: String?,
+          ?type: :"response.mcp_call_arguments.delta"
+        ) -> void
+
+        def to_hash: -> {
+          delta: String,
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          response_id: String,
+          type: :"response.mcp_call_arguments.delta",
+          obfuscation: String?
+        }
+      end
+    end
+  end
+end

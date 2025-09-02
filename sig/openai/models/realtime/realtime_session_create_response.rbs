@@ -1,0 +1,526 @@
+module OpenAI
+  module Models
+    class RealtimeSessionCreateResponse = Realtime::RealtimeSessionCreateResponse
+
+    module Realtime
+      type realtime_session_create_response =
+        {
+          id: String,
+          audio: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio,
+          expires_at: Integer,
+          include: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::include_],
+          instructions: String,
+          max_output_tokens: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::max_output_tokens,
+          model: String,
+          object: String,
+          output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::output_modality],
+          tool_choice: String,
+          tools: ::Array[OpenAI::Realtime::RealtimeSessionCreateResponse::Tool],
+          tracing: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tracing,
+          turn_detection: OpenAI::Realtime::RealtimeSessionCreateResponse::TurnDetection
+        }
+
+      class RealtimeSessionCreateResponse < OpenAI::Internal::Type::BaseModel
+        attr_reader id: String?
+
+        def id=: (String) -> String
+
+        attr_reader audio: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio?
+
+        def audio=: (
+          OpenAI::Realtime::RealtimeSessionCreateResponse::Audio
+        ) -> OpenAI::Realtime::RealtimeSessionCreateResponse::Audio
+
+        attr_reader expires_at: Integer?
+
+        def expires_at=: (Integer) -> Integer
+
+        attr_reader include: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::include_]?
+
+        def include=: (
+          ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::include_]
+        ) -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::include_]
+
+        attr_reader instructions: String?
+
+        def instructions=: (String) -> String
+
+        attr_reader max_output_tokens: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::max_output_tokens?
+
+        def max_output_tokens=: (
+          OpenAI::Models::Realtime::RealtimeSessionCreateResponse::max_output_tokens
+        ) -> OpenAI::Models::Realtime::RealtimeSessionCreateResponse::max_output_tokens
+
+        attr_reader model: String?
+
+        def model=: (String) -> String
+
+        attr_reader object: String?
+
+        def object=: (String) -> String
+
+        attr_reader output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::output_modality]?
+
+        def output_modalities=: (
+          ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::output_modality]
+        ) -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::output_modality]
+
+        attr_reader tool_choice: String?
+
+        def tool_choice=: (String) -> String
+
+        attr_reader tools: ::Array[OpenAI::Realtime::RealtimeSessionCreateResponse::Tool]?
+
+        def tools=: (
+          ::Array[OpenAI::Realtime::RealtimeSessionCreateResponse::Tool]
+        ) -> ::Array[OpenAI::Realtime::RealtimeSessionCreateResponse::Tool]
+
+        attr_reader tracing: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tracing?
+
+        def tracing=: (
+          OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tracing
+        ) -> OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tracing
+
+        attr_reader turn_detection: OpenAI::Realtime::RealtimeSessionCreateResponse::TurnDetection?
+
+        def turn_detection=: (
+          OpenAI::Realtime::RealtimeSessionCreateResponse::TurnDetection
+        ) -> OpenAI::Realtime::RealtimeSessionCreateResponse::TurnDetection
+
+        def initialize: (
+          ?id: String,
+          ?audio: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio,
+          ?expires_at: Integer,
+          ?include: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::include_],
+          ?instructions: String,
+          ?max_output_tokens: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::max_output_tokens,
+          ?model: String,
+          ?object: String,
+          ?output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::output_modality],
+          ?tool_choice: String,
+          ?tools: ::Array[OpenAI::Realtime::RealtimeSessionCreateResponse::Tool],
+          ?tracing: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tracing,
+          ?turn_detection: OpenAI::Realtime::RealtimeSessionCreateResponse::TurnDetection
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          audio: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio,
+          expires_at: Integer,
+          include: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::include_],
+          instructions: String,
+          max_output_tokens: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::max_output_tokens,
+          model: String,
+          object: String,
+          output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::output_modality],
+          tool_choice: String,
+          tools: ::Array[OpenAI::Realtime::RealtimeSessionCreateResponse::Tool],
+          tracing: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tracing,
+          turn_detection: OpenAI::Realtime::RealtimeSessionCreateResponse::TurnDetection
+        }
+
+        type audio =
+          {
+            input: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input,
+            output: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Output
+          }
+
+        class Audio < OpenAI::Internal::Type::BaseModel
+          attr_reader input: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input?
+
+          def input=: (
+            OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input
+          ) -> OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input
+
+          attr_reader output: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Output?
+
+          def output=: (
+            OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Output
+          ) -> OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Output
+
+          def initialize: (
+            ?input: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input,
+            ?output: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Output
+          ) -> void
+
+          def to_hash: -> {
+            input: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input,
+            output: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Output
+          }
+
+          type input =
+            {
+              format_: String,
+              noise_reduction: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction,
+              transcription: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::Transcription,
+              turn_detection: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection
+            }
+
+          class Input < OpenAI::Internal::Type::BaseModel
+            attr_reader format_: String?
+
+            def format_=: (String) -> String
+
+            attr_reader noise_reduction: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction?
+
+            def noise_reduction=: (
+              OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction
+            ) -> OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction
+
+            attr_reader transcription: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::Transcription?
+
+            def transcription=: (
+              OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::Transcription
+            ) -> OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::Transcription
+
+            attr_reader turn_detection: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection?
+
+            def turn_detection=: (
+              OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection
+            ) -> OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection
+
+            def initialize: (
+              ?format_: String,
+              ?noise_reduction: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction,
+              ?transcription: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::Transcription,
+              ?turn_detection: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection
+            ) -> void
+
+            def to_hash: -> {
+              format_: String,
+              noise_reduction: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction,
+              transcription: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::Transcription,
+              turn_detection: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection
+            }
+
+            type noise_reduction =
+              {
+                type: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction::type_
+              }
+
+            class NoiseReduction < OpenAI::Internal::Type::BaseModel
+              attr_reader type: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction::type_?
+
+              def type=: (
+                OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction::type_
+              ) -> OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction::type_
+
+              def initialize: (
+                ?type: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction::type_
+              ) -> void
+
+              def to_hash: -> {
+                type: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction::type_
+              }
+
+              type type_ = :near_field | :far_field
+
+              module Type
+                extend OpenAI::Internal::Type::Enum
+
+                NEAR_FIELD: :near_field
+                FAR_FIELD: :far_field
+
+                def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction::type_]
+              end
+            end
+
+            type transcription =
+              { language: String, model: String, prompt: String }
+
+            class Transcription < OpenAI::Internal::Type::BaseModel
+              attr_reader language: String?
+
+              def language=: (String) -> String
+
+              attr_reader model: String?
+
+              def model=: (String) -> String
+
+              attr_reader prompt: String?
+
+              def prompt=: (String) -> String
+
+              def initialize: (
+                ?language: String,
+                ?model: String,
+                ?prompt: String
+              ) -> void
+
+              def to_hash: -> {
+                language: String,
+                model: String,
+                prompt: String
+              }
+            end
+
+            type turn_detection =
+              {
+                prefix_padding_ms: Integer,
+                silence_duration_ms: Integer,
+                threshold: Float,
+                type: String
+              }
+
+            class TurnDetection < OpenAI::Internal::Type::BaseModel
+              attr_reader prefix_padding_ms: Integer?
+
+              def prefix_padding_ms=: (Integer) -> Integer
+
+              attr_reader silence_duration_ms: Integer?
+
+              def silence_duration_ms=: (Integer) -> Integer
+
+              attr_reader threshold: Float?
+
+              def threshold=: (Float) -> Float
+
+              attr_reader type: String?
+
+              def type=: (String) -> String
+
+              def initialize: (
+                ?prefix_padding_ms: Integer,
+                ?silence_duration_ms: Integer,
+                ?threshold: Float,
+                ?type: String
+              ) -> void
+
+              def to_hash: -> {
+                prefix_padding_ms: Integer,
+                silence_duration_ms: Integer,
+                threshold: Float,
+                type: String
+              }
+            end
+          end
+
+          type output =
+            {
+              format_: String,
+              speed: Float,
+              voice: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::voice
+            }
+
+          class Output < OpenAI::Internal::Type::BaseModel
+            attr_reader format_: String?
+
+            def format_=: (String) -> String
+
+            attr_reader speed: Float?
+
+            def speed=: (Float) -> Float
+
+            attr_reader voice: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::voice?
+
+            def voice=: (
+              OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::voice
+            ) -> OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::voice
+
+            def initialize: (
+              ?format_: String,
+              ?speed: Float,
+              ?voice: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::voice
+            ) -> void
+
+            def to_hash: -> {
+              format_: String,
+              speed: Float,
+              voice: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::voice
+            }
+
+            type voice =
+              String
+              | :alloy
+              | :ash
+              | :ballad
+              | :coral
+              | :echo
+              | :sage
+              | :shimmer
+              | :verse
+              | :marin
+              | :cedar
+
+            module Voice
+              extend OpenAI::Internal::Type::Union
+
+              def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::voice]
+
+              ALLOY: :alloy
+              ASH: :ash
+              BALLAD: :ballad
+              CORAL: :coral
+              ECHO: :echo
+              SAGE: :sage
+              SHIMMER: :shimmer
+              VERSE: :verse
+              MARIN: :marin
+              CEDAR: :cedar
+            end
+          end
+        end
+
+        type include_ = :"item.input_audio_transcription.logprobs"
+
+        module Include
+          extend OpenAI::Internal::Type::Enum
+
+          ITEM_INPUT_AUDIO_TRANSCRIPTION_LOGPROBS: :"item.input_audio_transcription.logprobs"
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::include_]
+        end
+
+        type max_output_tokens = Integer | :inf
+
+        module MaxOutputTokens
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::max_output_tokens]
+        end
+
+        type output_modality = :text | :audio
+
+        module OutputModality
+          extend OpenAI::Internal::Type::Enum
+
+          TEXT: :text
+          AUDIO: :audio
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::output_modality]
+        end
+
+        type tool =
+          {
+            description: String,
+            name: String,
+            parameters: top,
+            type: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::type_
+          }
+
+        class Tool < OpenAI::Internal::Type::BaseModel
+          attr_reader description: String?
+
+          def description=: (String) -> String
+
+          attr_reader name: String?
+
+          def name=: (String) -> String
+
+          attr_reader parameters: top?
+
+          def parameters=: (top) -> top
+
+          attr_reader type: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::type_?
+
+          def type=: (
+            OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::type_
+          ) -> OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::type_
+
+          def initialize: (
+            ?description: String,
+            ?name: String,
+            ?parameters: top,
+            ?type: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::type_
+          ) -> void
+
+          def to_hash: -> {
+            description: String,
+            name: String,
+            parameters: top,
+            type: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::type_
+          }
+
+          type type_ = :function
+
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            FUNCTION: :function
+
+            def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::type_]
+          end
+        end
+
+        type tracing =
+          :auto
+          | OpenAI::Realtime::RealtimeSessionCreateResponse::Tracing::TracingConfiguration
+
+        module Tracing
+          extend OpenAI::Internal::Type::Union
+
+          type tracing_configuration =
+            { group_id: String, metadata: top, workflow_name: String }
+
+          class TracingConfiguration < OpenAI::Internal::Type::BaseModel
+            attr_reader group_id: String?
+
+            def group_id=: (String) -> String
+
+            attr_reader metadata: top?
+
+            def metadata=: (top) -> top
+
+            attr_reader workflow_name: String?
+
+            def workflow_name=: (String) -> String
+
+            def initialize: (
+              ?group_id: String,
+              ?metadata: top,
+              ?workflow_name: String
+            ) -> void
+
+            def to_hash: -> {
+              group_id: String,
+              metadata: top,
+              workflow_name: String
+            }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tracing]
+        end
+
+        type turn_detection =
+          {
+            prefix_padding_ms: Integer,
+            silence_duration_ms: Integer,
+            threshold: Float,
+            type: String
+          }
+
+        class TurnDetection < OpenAI::Internal::Type::BaseModel
+          attr_reader prefix_padding_ms: Integer?
+
+          def prefix_padding_ms=: (Integer) -> Integer
+
+          attr_reader silence_duration_ms: Integer?
+
+          def silence_duration_ms=: (Integer) -> Integer
+
+          attr_reader threshold: Float?
+
+          def threshold=: (Float) -> Float
+
+          attr_reader type: String?
+
+          def type=: (String) -> String
+
+          def initialize: (
+            ?prefix_padding_ms: Integer,
+            ?silence_duration_ms: Integer,
+            ?threshold: Float,
+            ?type: String
+          ) -> void
+
+          def to_hash: -> {
+            prefix_padding_ms: Integer,
+            silence_duration_ms: Integer,
+            threshold: Float,
+            type: String
+          }
+        end
+      end
+    end
+  end
+end

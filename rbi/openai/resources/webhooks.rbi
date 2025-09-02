@@ -17,6 +17,7 @@ module OpenAI
             OpenAI::Webhooks::FineTuningJobCancelledWebhookEvent,
             OpenAI::Webhooks::FineTuningJobFailedWebhookEvent,
             OpenAI::Webhooks::FineTuningJobSucceededWebhookEvent,
+            OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent,
             OpenAI::Webhooks::ResponseCancelledWebhookEvent,
             OpenAI::Webhooks::ResponseCompletedWebhookEvent,
             OpenAI::Webhooks::ResponseFailedWebhookEvent,

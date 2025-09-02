@@ -1,0 +1,354 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_audio_config =
+        {
+          input: OpenAI::Realtime::RealtimeAudioConfig::Input,
+          output: OpenAI::Realtime::RealtimeAudioConfig::Output
+        }
+
+      class RealtimeAudioConfig < OpenAI::Internal::Type::BaseModel
+        attr_reader input: OpenAI::Realtime::RealtimeAudioConfig::Input?
+
+        def input=: (
+          OpenAI::Realtime::RealtimeAudioConfig::Input
+        ) -> OpenAI::Realtime::RealtimeAudioConfig::Input
+
+        attr_reader output: OpenAI::Realtime::RealtimeAudioConfig::Output?
+
+        def output=: (
+          OpenAI::Realtime::RealtimeAudioConfig::Output
+        ) -> OpenAI::Realtime::RealtimeAudioConfig::Output
+
+        def initialize: (
+          ?input: OpenAI::Realtime::RealtimeAudioConfig::Input,
+          ?output: OpenAI::Realtime::RealtimeAudioConfig::Output
+        ) -> void
+
+        def to_hash: -> {
+          input: OpenAI::Realtime::RealtimeAudioConfig::Input,
+          output: OpenAI::Realtime::RealtimeAudioConfig::Output
+        }
+
+        type input =
+          {
+            format_: OpenAI::Models::Realtime::RealtimeAudioConfig::Input::format_,
+            noise_reduction: OpenAI::Realtime::RealtimeAudioConfig::Input::NoiseReduction,
+            transcription: OpenAI::Realtime::RealtimeAudioConfig::Input::Transcription,
+            turn_detection: OpenAI::Realtime::RealtimeAudioConfig::Input::TurnDetection
+          }
+
+        class Input < OpenAI::Internal::Type::BaseModel
+          attr_reader format_: OpenAI::Models::Realtime::RealtimeAudioConfig::Input::format_?
+
+          def format_=: (
+            OpenAI::Models::Realtime::RealtimeAudioConfig::Input::format_
+          ) -> OpenAI::Models::Realtime::RealtimeAudioConfig::Input::format_
+
+          attr_reader noise_reduction: OpenAI::Realtime::RealtimeAudioConfig::Input::NoiseReduction?
+
+          def noise_reduction=: (
+            OpenAI::Realtime::RealtimeAudioConfig::Input::NoiseReduction
+          ) -> OpenAI::Realtime::RealtimeAudioConfig::Input::NoiseReduction
+
+          attr_reader transcription: OpenAI::Realtime::RealtimeAudioConfig::Input::Transcription?
+
+          def transcription=: (
+            OpenAI::Realtime::RealtimeAudioConfig::Input::Transcription
+          ) -> OpenAI::Realtime::RealtimeAudioConfig::Input::Transcription
+
+          attr_reader turn_detection: OpenAI::Realtime::RealtimeAudioConfig::Input::TurnDetection?
+
+          def turn_detection=: (
+            OpenAI::Realtime::RealtimeAudioConfig::Input::TurnDetection
+          ) -> OpenAI::Realtime::RealtimeAudioConfig::Input::TurnDetection
+
+          def initialize: (
+            ?format_: OpenAI::Models::Realtime::RealtimeAudioConfig::Input::format_,
+            ?noise_reduction: OpenAI::Realtime::RealtimeAudioConfig::Input::NoiseReduction,
+            ?transcription: OpenAI::Realtime::RealtimeAudioConfig::Input::Transcription,
+            ?turn_detection: OpenAI::Realtime::RealtimeAudioConfig::Input::TurnDetection
+          ) -> void
+
+          def to_hash: -> {
+            format_: OpenAI::Models::Realtime::RealtimeAudioConfig::Input::format_,
+            noise_reduction: OpenAI::Realtime::RealtimeAudioConfig::Input::NoiseReduction,
+            transcription: OpenAI::Realtime::RealtimeAudioConfig::Input::Transcription,
+            turn_detection: OpenAI::Realtime::RealtimeAudioConfig::Input::TurnDetection
+          }
+
+          type format_ = :pcm16 | :g711_ulaw | :g711_alaw
+
+          module Format
+            extend OpenAI::Internal::Type::Enum
+
+            PCM16: :pcm16
+            G711_ULAW: :g711_ulaw
+            G711_ALAW: :g711_alaw
+
+            def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeAudioConfig::Input::format_]
+          end
+
+          type noise_reduction =
+            {
+              type: OpenAI::Models::Realtime::RealtimeAudioConfig::Input::NoiseReduction::type_
+            }
+
+          class NoiseReduction < OpenAI::Internal::Type::BaseModel
+            attr_reader type: OpenAI::Models::Realtime::RealtimeAudioConfig::Input::NoiseReduction::type_?
+
+            def type=: (
+              OpenAI::Models::Realtime::RealtimeAudioConfig::Input::NoiseReduction::type_
+            ) -> OpenAI::Models::Realtime::RealtimeAudioConfig::Input::NoiseReduction::type_
+
+            def initialize: (
+              ?type: OpenAI::Models::Realtime::RealtimeAudioConfig::Input::NoiseReduction::type_
+            ) -> void
+
+            def to_hash: -> {
+              type: OpenAI::Models::Realtime::RealtimeAudioConfig::Input::NoiseReduction::type_
+            }
+
+            type type_ = :near_field | :far_field
+
+            module Type
+              extend OpenAI::Internal::Type::Enum
+
+              NEAR_FIELD: :near_field
+              FAR_FIELD: :far_field
+
+              def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeAudioConfig::Input::NoiseReduction::type_]
+            end
+          end
+
+          type transcription =
+            {
+              language: String,
+              model: OpenAI::Models::Realtime::RealtimeAudioConfig::Input::Transcription::model,
+              prompt: String
+            }
+
+          class Transcription < OpenAI::Internal::Type::BaseModel
+            attr_reader language: String?
+
+            def language=: (String) -> String
+
+            attr_reader model: OpenAI::Models::Realtime::RealtimeAudioConfig::Input::Transcription::model?
+
+            def model=: (
+              OpenAI::Models::Realtime::RealtimeAudioConfig::Input::Transcription::model
+            ) -> OpenAI::Models::Realtime::RealtimeAudioConfig::Input::Transcription::model
+
+            attr_reader prompt: String?
+
+            def prompt=: (String) -> String
+
+            def initialize: (
+              ?language: String,
+              ?model: OpenAI::Models::Realtime::RealtimeAudioConfig::Input::Transcription::model,
+              ?prompt: String
+            ) -> void
+
+            def to_hash: -> {
+              language: String,
+              model: OpenAI::Models::Realtime::RealtimeAudioConfig::Input::Transcription::model,
+              prompt: String
+            }
+
+            type model =
+              :"whisper-1"
+              | :"gpt-4o-transcribe-latest"
+              | :"gpt-4o-mini-transcribe"
+              | :"gpt-4o-transcribe"
+              | :"gpt-4o-transcribe-diarize"
+
+            module Model
+              extend OpenAI::Internal::Type::Enum
+
+              WHISPER_1: :"whisper-1"
+              GPT_4O_TRANSCRIBE_LATEST: :"gpt-4o-transcribe-latest"
+              GPT_4O_MINI_TRANSCRIBE: :"gpt-4o-mini-transcribe"
+              GPT_4O_TRANSCRIBE: :"gpt-4o-transcribe"
+              GPT_4O_TRANSCRIBE_DIARIZE: :"gpt-4o-transcribe-diarize"
+
+              def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeAudioConfig::Input::Transcription::model]
+            end
+          end
+
+          type turn_detection =
+            {
+              create_response: bool,
+              eagerness: OpenAI::Models::Realtime::RealtimeAudioConfig::Input::TurnDetection::eagerness,
+              idle_timeout_ms: Integer?,
+              interrupt_response: bool,
+              prefix_padding_ms: Integer,
+              silence_duration_ms: Integer,
+              threshold: Float,
+              type: OpenAI::Models::Realtime::RealtimeAudioConfig::Input::TurnDetection::type_
+            }
+
+          class TurnDetection < OpenAI::Internal::Type::BaseModel
+            attr_reader create_response: bool?
+
+            def create_response=: (bool) -> bool
+
+            attr_reader eagerness: OpenAI::Models::Realtime::RealtimeAudioConfig::Input::TurnDetection::eagerness?
+
+            def eagerness=: (
+              OpenAI::Models::Realtime::RealtimeAudioConfig::Input::TurnDetection::eagerness
+            ) -> OpenAI::Models::Realtime::RealtimeAudioConfig::Input::TurnDetection::eagerness
+
+            attr_accessor idle_timeout_ms: Integer?
+
+            attr_reader interrupt_response: bool?
+
+            def interrupt_response=: (bool) -> bool
+
+            attr_reader prefix_padding_ms: Integer?
+
+            def prefix_padding_ms=: (Integer) -> Integer
+
+            attr_reader silence_duration_ms: Integer?
+
+            def silence_duration_ms=: (Integer) -> Integer
+
+            attr_reader threshold: Float?
+
+            def threshold=: (Float) -> Float
+
+            attr_reader type: OpenAI::Models::Realtime::RealtimeAudioConfig::Input::TurnDetection::type_?
+
+            def type=: (
+              OpenAI::Models::Realtime::RealtimeAudioConfig::Input::TurnDetection::type_
+            ) -> OpenAI::Models::Realtime::RealtimeAudioConfig::Input::TurnDetection::type_
+
+            def initialize: (
+              ?create_response: bool,
+              ?eagerness: OpenAI::Models::Realtime::RealtimeAudioConfig::Input::TurnDetection::eagerness,
+              ?idle_timeout_ms: Integer?,
+              ?interrupt_response: bool,
+              ?prefix_padding_ms: Integer,
+              ?silence_duration_ms: Integer,
+              ?threshold: Float,
+              ?type: OpenAI::Models::Realtime::RealtimeAudioConfig::Input::TurnDetection::type_
+            ) -> void
+
+            def to_hash: -> {
+              create_response: bool,
+              eagerness: OpenAI::Models::Realtime::RealtimeAudioConfig::Input::TurnDetection::eagerness,
+              idle_timeout_ms: Integer?,
+              interrupt_response: bool,
+              prefix_padding_ms: Integer,
+              silence_duration_ms: Integer,
+              threshold: Float,
+              type: OpenAI::Models::Realtime::RealtimeAudioConfig::Input::TurnDetection::type_
+            }
+
+            type eagerness = :low | :medium | :high | :auto
+
+            module Eagerness
+              extend OpenAI::Internal::Type::Enum
+
+              LOW: :low
+              MEDIUM: :medium
+              HIGH: :high
+              AUTO: :auto
+
+              def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeAudioConfig::Input::TurnDetection::eagerness]
+            end
+
+            type type_ = :server_vad | :semantic_vad
+
+            module Type
+              extend OpenAI::Internal::Type::Enum
+
+              SERVER_VAD: :server_vad
+              SEMANTIC_VAD: :semantic_vad
+
+              def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeAudioConfig::Input::TurnDetection::type_]
+            end
+          end
+        end
+
+        type output =
+          {
+            format_: OpenAI::Models::Realtime::RealtimeAudioConfig::Output::format_,
+            speed: Float,
+            voice: OpenAI::Models::Realtime::RealtimeAudioConfig::Output::voice
+          }
+
+        class Output < OpenAI::Internal::Type::BaseModel
+          attr_reader format_: OpenAI::Models::Realtime::RealtimeAudioConfig::Output::format_?
+
+          def format_=: (
+            OpenAI::Models::Realtime::RealtimeAudioConfig::Output::format_
+          ) -> OpenAI::Models::Realtime::RealtimeAudioConfig::Output::format_
+
+          attr_reader speed: Float?
+
+          def speed=: (Float) -> Float
+
+          attr_reader voice: OpenAI::Models::Realtime::RealtimeAudioConfig::Output::voice?
+
+          def voice=: (
+            OpenAI::Models::Realtime::RealtimeAudioConfig::Output::voice
+          ) -> OpenAI::Models::Realtime::RealtimeAudioConfig::Output::voice
+
+          def initialize: (
+            ?format_: OpenAI::Models::Realtime::RealtimeAudioConfig::Output::format_,
+            ?speed: Float,
+            ?voice: OpenAI::Models::Realtime::RealtimeAudioConfig::Output::voice
+          ) -> void
+
+          def to_hash: -> {
+            format_: OpenAI::Models::Realtime::RealtimeAudioConfig::Output::format_,
+            speed: Float,
+            voice: OpenAI::Models::Realtime::RealtimeAudioConfig::Output::voice
+          }
+
+          type format_ = :pcm16 | :g711_ulaw | :g711_alaw
+
+          module Format
+            extend OpenAI::Internal::Type::Enum
+
+            PCM16: :pcm16
+            G711_ULAW: :g711_ulaw
+            G711_ALAW: :g711_alaw
+
+            def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeAudioConfig::Output::format_]
+          end
+
+          type voice =
+            String
+            | :alloy
+            | :ash
+            | :ballad
+            | :coral
+            | :echo
+            | :sage
+            | :shimmer
+            | :verse
+            | :marin
+            | :cedar
+
+          module Voice
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeAudioConfig::Output::voice]
+
+            ALLOY: :alloy
+            ASH: :ash
+            BALLAD: :ballad
+            CORAL: :coral
+            ECHO: :echo
+            SAGE: :sage
+            SHIMMER: :shimmer
+            VERSE: :verse
+            MARIN: :marin
+            CEDAR: :cedar
+          end
+        end
+      end
+    end
+  end
+end

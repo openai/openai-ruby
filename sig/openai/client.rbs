@@ -46,6 +46,8 @@ module OpenAI
 
     attr_reader responses: OpenAI::Resources::Responses
 
+    attr_reader realtime: OpenAI::Resources::Realtime
+
     attr_reader conversations: OpenAI::Resources::Conversations
 
     attr_reader evals: OpenAI::Resources::Evals

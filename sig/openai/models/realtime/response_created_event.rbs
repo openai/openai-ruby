@@ -1,0 +1,32 @@
+module OpenAI
+  module Models
+    module Realtime
+      type response_created_event =
+        {
+          event_id: String,
+          response: OpenAI::Realtime::RealtimeResponse,
+          type: :"response.created"
+        }
+
+      class ResponseCreatedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor event_id: String
+
+        attr_accessor response: OpenAI::Realtime::RealtimeResponse
+
+        attr_accessor type: :"response.created"
+
+        def initialize: (
+          event_id: String,
+          response: OpenAI::Realtime::RealtimeResponse,
+          ?type: :"response.created"
+        ) -> void
+
+        def to_hash: -> {
+          event_id: String,
+          response: OpenAI::Realtime::RealtimeResponse,
+          type: :"response.created"
+        }
+      end
+    end
+  end
+end

@@ -1,0 +1,68 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_mcp_tool_call =
+        {
+          id: String,
+          arguments: String,
+          name: String,
+          server_label: String,
+          type: :mcp_tool_call,
+          approval_request_id: String?,
+          error: OpenAI::Models::Realtime::RealtimeMcpToolCall::error?,
+          output: String?
+        }
+
+      class RealtimeMcpToolCall < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor arguments: String
+
+        attr_accessor name: String
+
+        attr_accessor server_label: String
+
+        attr_accessor type: :mcp_tool_call
+
+        attr_accessor approval_request_id: String?
+
+        attr_accessor error: OpenAI::Models::Realtime::RealtimeMcpToolCall::error?
+
+        attr_accessor output: String?
+
+        def initialize: (
+          id: String,
+          arguments: String,
+          name: String,
+          server_label: String,
+          ?approval_request_id: String?,
+          ?error: OpenAI::Models::Realtime::RealtimeMcpToolCall::error?,
+          ?output: String?,
+          ?type: :mcp_tool_call
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          arguments: String,
+          name: String,
+          server_label: String,
+          type: :mcp_tool_call,
+          approval_request_id: String?,
+          error: OpenAI::Models::Realtime::RealtimeMcpToolCall::error?,
+          output: String?
+        }
+
+        type error =
+          OpenAI::Realtime::RealtimeMcpProtocolError
+          | OpenAI::Realtime::RealtimeMcpToolExecutionError
+          | OpenAI::Realtime::RealtimeMcphttpError
+
+        module Error
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeMcpToolCall::error]
+        end
+      end
+    end
+  end
+end

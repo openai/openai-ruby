@@ -1,0 +1,70 @@
+module OpenAI
+  module Models
+    module Realtime
+      type conversation_created_event =
+        {
+          conversation: OpenAI::Realtime::ConversationCreatedEvent::Conversation,
+          event_id: String,
+          type: :"conversation.created"
+        }
+
+      class ConversationCreatedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor conversation: OpenAI::Realtime::ConversationCreatedEvent::Conversation
+
+        attr_accessor event_id: String
+
+        attr_accessor type: :"conversation.created"
+
+        def initialize: (
+          conversation: OpenAI::Realtime::ConversationCreatedEvent::Conversation,
+          event_id: String,
+          ?type: :"conversation.created"
+        ) -> void
+
+        def to_hash: -> {
+          conversation: OpenAI::Realtime::ConversationCreatedEvent::Conversation,
+          event_id: String,
+          type: :"conversation.created"
+        }
+
+        type conversation =
+          {
+            id: String,
+            object: OpenAI::Models::Realtime::ConversationCreatedEvent::Conversation::object
+          }
+
+        class Conversation < OpenAI::Internal::Type::BaseModel
+          attr_reader id: String?
+
+          def id=: (String) -> String
+
+          attr_reader object: OpenAI::Models::Realtime::ConversationCreatedEvent::Conversation::object?
+
+          def object=: (
+            OpenAI::Models::Realtime::ConversationCreatedEvent::Conversation::object
+          ) -> OpenAI::Models::Realtime::ConversationCreatedEvent::Conversation::object
+
+          def initialize: (
+            ?id: String,
+            ?object: OpenAI::Models::Realtime::ConversationCreatedEvent::Conversation::object
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            object: OpenAI::Models::Realtime::ConversationCreatedEvent::Conversation::object
+          }
+
+          type object = :"realtime.conversation"
+
+          module Object
+            extend OpenAI::Internal::Type::Enum
+
+            REALTIME_CONVERSATION: :"realtime.conversation"
+
+            def self?.values: -> ::Array[OpenAI::Models::Realtime::ConversationCreatedEvent::Conversation::object]
+          end
+        end
+      end
+    end
+  end
+end

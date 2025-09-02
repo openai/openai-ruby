@@ -1,0 +1,136 @@
+module OpenAI
+  module Models
+    module Realtime
+      type conversation_item_input_audio_transcription_completed_event =
+        {
+          content_index: Integer,
+          event_id: String,
+          item_id: String,
+          transcript: String,
+          type: :"conversation.item.input_audio_transcription.completed",
+          usage: OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::usage,
+          logprobs: ::Array[OpenAI::Realtime::LogProbProperties]?
+        }
+
+      class ConversationItemInputAudioTranscriptionCompletedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor content_index: Integer
+
+        attr_accessor event_id: String
+
+        attr_accessor item_id: String
+
+        attr_accessor transcript: String
+
+        attr_accessor type: :"conversation.item.input_audio_transcription.completed"
+
+        attr_accessor usage: OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::usage
+
+        attr_accessor logprobs: ::Array[OpenAI::Realtime::LogProbProperties]?
+
+        def initialize: (
+          content_index: Integer,
+          event_id: String,
+          item_id: String,
+          transcript: String,
+          usage: OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::usage,
+          ?logprobs: ::Array[OpenAI::Realtime::LogProbProperties]?,
+          ?type: :"conversation.item.input_audio_transcription.completed"
+        ) -> void
+
+        def to_hash: -> {
+          content_index: Integer,
+          event_id: String,
+          item_id: String,
+          transcript: String,
+          type: :"conversation.item.input_audio_transcription.completed",
+          usage: OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::usage,
+          logprobs: ::Array[OpenAI::Realtime::LogProbProperties]?
+        }
+
+        type usage =
+          OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens
+          | OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageDuration
+
+        module Usage
+          extend OpenAI::Internal::Type::Union
+
+          type transcript_text_usage_tokens =
+            {
+              input_tokens: Integer,
+              output_tokens: Integer,
+              total_tokens: Integer,
+              type: :tokens,
+              input_token_details: OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails
+            }
+
+          class TranscriptTextUsageTokens < OpenAI::Internal::Type::BaseModel
+            attr_accessor input_tokens: Integer
+
+            attr_accessor output_tokens: Integer
+
+            attr_accessor total_tokens: Integer
+
+            attr_accessor type: :tokens
+
+            attr_reader input_token_details: OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails?
+
+            def input_token_details=: (
+              OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails
+            ) -> OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails
+
+            def initialize: (
+              input_tokens: Integer,
+              output_tokens: Integer,
+              total_tokens: Integer,
+              ?input_token_details: OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails,
+              ?type: :tokens
+            ) -> void
+
+            def to_hash: -> {
+              input_tokens: Integer,
+              output_tokens: Integer,
+              total_tokens: Integer,
+              type: :tokens,
+              input_token_details: OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails
+            }
+
+            type input_token_details =
+              { audio_tokens: Integer, text_tokens: Integer }
+
+            class InputTokenDetails < OpenAI::Internal::Type::BaseModel
+              attr_reader audio_tokens: Integer?
+
+              def audio_tokens=: (Integer) -> Integer
+
+              attr_reader text_tokens: Integer?
+
+              def text_tokens=: (Integer) -> Integer
+
+              def initialize: (
+                ?audio_tokens: Integer,
+                ?text_tokens: Integer
+              ) -> void
+
+              def to_hash: -> { audio_tokens: Integer, text_tokens: Integer }
+            end
+          end
+
+          type transcript_text_usage_duration =
+            { seconds: Float, type: :duration }
+
+          class TranscriptTextUsageDuration < OpenAI::Internal::Type::BaseModel
+            attr_accessor seconds: Float
+
+            attr_accessor type: :duration
+
+            def initialize: (seconds: Float, ?type: :duration) -> void
+
+            def to_hash: -> { seconds: Float, type: :duration }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::usage]
+        end
+      end
+    end
+  end
+end

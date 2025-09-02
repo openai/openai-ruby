@@ -228,6 +228,16 @@ module OpenAI
               :verse,
               OpenAI::Audio::SpeechCreateParams::Voice::TaggedSymbol
             )
+          MARIN =
+            T.let(
+              :marin,
+              OpenAI::Audio::SpeechCreateParams::Voice::TaggedSymbol
+            )
+          CEDAR =
+            T.let(
+              :cedar,
+              OpenAI::Audio::SpeechCreateParams::Voice::TaggedSymbol
+            )
         end
 
         # The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`,

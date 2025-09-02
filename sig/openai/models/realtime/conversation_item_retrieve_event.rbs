@@ -1,0 +1,34 @@
+module OpenAI
+  module Models
+    module Realtime
+      type conversation_item_retrieve_event =
+        {
+          item_id: String,
+          type: :"conversation.item.retrieve",
+          event_id: String
+        }
+
+      class ConversationItemRetrieveEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor item_id: String
+
+        attr_accessor type: :"conversation.item.retrieve"
+
+        attr_reader event_id: String?
+
+        def event_id=: (String) -> String
+
+        def initialize: (
+          item_id: String,
+          ?event_id: String,
+          ?type: :"conversation.item.retrieve"
+        ) -> void
+
+        def to_hash: -> {
+          item_id: String,
+          type: :"conversation.item.retrieve",
+          event_id: String
+        }
+      end
+    end
+  end
+end

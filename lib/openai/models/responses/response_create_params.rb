@@ -230,7 +230,7 @@ module OpenAI
         #   An array of tools the model may call while generating a response. You can
         #   specify which tool to use by setting the `tool_choice` parameter.
         #
-        #   The two categories of tools you can provide the model are:
+        #   We support the following categories of tools:
         #
         #   - **Built-in tools**: Tools that are provided by OpenAI that extend the model's
         #     capabilities, like
@@ -238,13 +238,16 @@ module OpenAI
         #     [file search](https://platform.openai.com/docs/guides/tools-file-search).
         #     Learn more about
         #     [built-in tools](https://platform.openai.com/docs/guides/tools).
+        #   - **MCP Tools**: Integrations with third-party systems via custom MCP servers or
+        #     predefined connectors such as Google Drive and Notion. Learn more about
+        #     [MCP Tools](https://platform.openai.com/docs/guides/tools-connectors-mcp).
         #   - **Function calls (custom tools)**: Functions that are defined by you, enabling
         #     the model to call your own code with strongly typed arguments and outputs.
         #     Learn more about
         #     [function calling](https://platform.openai.com/docs/guides/function-calling).
         #     You can also use custom tools to call your own code.
         #
-        #   @return [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::Tool::WebSearchTool, OpenAI::Models::Responses::WebSearchTool>, nil]
+        #   @return [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool>, nil]
         optional :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool] }
 
         # @!attribute top_logprobs
@@ -334,7 +337,7 @@ module OpenAI
         #
         #   @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceAllowed, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp, OpenAI::Models::Responses::ToolChoiceCustom] How the model should select which tool (or tools) to use when generating
         #
-        #   @param tools [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::Tool::WebSearchTool, OpenAI::Models::Responses::WebSearchTool>] An array of tools the model may call while generating a response. You
+        #   @param tools [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool>] An array of tools the model may call while generating a response. You
         #
         #   @param top_logprobs [Integer, nil] An integer between 0 and 20 specifying the number of most likely tokens to
         #
