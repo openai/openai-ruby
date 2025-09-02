@@ -1,0 +1,37 @@
+module OpenAI
+  module Models
+    module Realtime
+      type conversation_item_done =
+        {
+          event_id: String,
+          item: OpenAI::Models::Realtime::conversation_item,
+          type: :"conversation.item.done",
+          previous_item_id: String?
+        }
+
+      class ConversationItemDone < OpenAI::Internal::Type::BaseModel
+        attr_accessor event_id: String
+
+        attr_accessor item: OpenAI::Models::Realtime::conversation_item
+
+        attr_accessor type: :"conversation.item.done"
+
+        attr_accessor previous_item_id: String?
+
+        def initialize: (
+          event_id: String,
+          item: OpenAI::Models::Realtime::conversation_item,
+          ?previous_item_id: String?,
+          ?type: :"conversation.item.done"
+        ) -> void
+
+        def to_hash: -> {
+          event_id: String,
+          item: OpenAI::Models::Realtime::conversation_item,
+          type: :"conversation.item.done",
+          previous_item_id: String?
+        }
+      end
+    end
+  end
+end

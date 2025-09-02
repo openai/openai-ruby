@@ -1,0 +1,41 @@
+module OpenAI
+  module Models
+    module Realtime
+      type conversation_item_create_event =
+        {
+          item: OpenAI::Models::Realtime::conversation_item,
+          type: :"conversation.item.create",
+          event_id: String,
+          previous_item_id: String
+        }
+
+      class ConversationItemCreateEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor item: OpenAI::Models::Realtime::conversation_item
+
+        attr_accessor type: :"conversation.item.create"
+
+        attr_reader event_id: String?
+
+        def event_id=: (String) -> String
+
+        attr_reader previous_item_id: String?
+
+        def previous_item_id=: (String) -> String
+
+        def initialize: (
+          item: OpenAI::Models::Realtime::conversation_item,
+          ?event_id: String,
+          ?previous_item_id: String,
+          ?type: :"conversation.item.create"
+        ) -> void
+
+        def to_hash: -> {
+          item: OpenAI::Models::Realtime::conversation_item,
+          type: :"conversation.item.create",
+          event_id: String,
+          previous_item_id: String
+        }
+      end
+    end
+  end
+end

@@ -73,6 +73,10 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::VERSE }
 
+          variant const: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::MARIN }
+
+          variant const: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::CEDAR }
+
           # @!method self.variants
           #   @return [Array(String, Symbol)]
 
@@ -90,6 +94,8 @@ module OpenAI
           SAGE = :sage
           SHIMMER = :shimmer
           VERSE = :verse
+          MARIN = :marin
+          CEDAR = :cedar
 
           # @!endgroup
         end

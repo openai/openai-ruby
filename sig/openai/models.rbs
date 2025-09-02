@@ -161,6 +161,8 @@ module OpenAI
 
   class OtherFileChunkingStrategyObject = OpenAI::Models::OtherFileChunkingStrategyObject
 
+  module Realtime = OpenAI::Models::Realtime
+
   class Reasoning = OpenAI::Models::Reasoning
 
   module ReasoningEffort = OpenAI::Models::ReasoningEffort

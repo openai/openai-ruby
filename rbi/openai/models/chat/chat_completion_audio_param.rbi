@@ -191,6 +191,16 @@ module OpenAI
               :verse,
               OpenAI::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol
             )
+          MARIN =
+            T.let(
+              :marin,
+              OpenAI::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol
+            )
+          CEDAR =
+            T.let(
+              :cedar,
+              OpenAI::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol
+            )
         end
       end
     end

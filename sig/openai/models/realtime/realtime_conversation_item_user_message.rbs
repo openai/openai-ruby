@@ -1,0 +1,132 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_conversation_item_user_message =
+        {
+          content: ::Array[OpenAI::Realtime::RealtimeConversationItemUserMessage::Content],
+          role: :user,
+          type: :message,
+          id: String,
+          object: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::object,
+          status: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::status
+        }
+
+      class RealtimeConversationItemUserMessage < OpenAI::Internal::Type::BaseModel
+        attr_accessor content: ::Array[OpenAI::Realtime::RealtimeConversationItemUserMessage::Content]
+
+        attr_accessor role: :user
+
+        attr_accessor type: :message
+
+        attr_reader id: String?
+
+        def id=: (String) -> String
+
+        attr_reader object: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::object?
+
+        def object=: (
+          OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::object
+        ) -> OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::object
+
+        attr_reader status: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::status?
+
+        def status=: (
+          OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::status
+        ) -> OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::status
+
+        def initialize: (
+          content: ::Array[OpenAI::Realtime::RealtimeConversationItemUserMessage::Content],
+          ?id: String,
+          ?object: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::object,
+          ?status: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::status,
+          ?role: :user,
+          ?type: :message
+        ) -> void
+
+        def to_hash: -> {
+          content: ::Array[OpenAI::Realtime::RealtimeConversationItemUserMessage::Content],
+          role: :user,
+          type: :message,
+          id: String,
+          object: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::object,
+          status: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::status
+        }
+
+        type content =
+          {
+            audio: String,
+            text: String,
+            transcript: String,
+            type: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::Content::type_
+          }
+
+        class Content < OpenAI::Internal::Type::BaseModel
+          attr_reader audio: String?
+
+          def audio=: (String) -> String
+
+          attr_reader text: String?
+
+          def text=: (String) -> String
+
+          attr_reader transcript: String?
+
+          def transcript=: (String) -> String
+
+          attr_reader type: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::Content::type_?
+
+          def type=: (
+            OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::Content::type_
+          ) -> OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::Content::type_
+
+          def initialize: (
+            ?audio: String,
+            ?text: String,
+            ?transcript: String,
+            ?type: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::Content::type_
+          ) -> void
+
+          def to_hash: -> {
+            audio: String,
+            text: String,
+            transcript: String,
+            type: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::Content::type_
+          }
+
+          type type_ = :input_text | :input_audio
+
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            INPUT_TEXT: :input_text
+            INPUT_AUDIO: :input_audio
+
+            def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::Content::type_]
+          end
+        end
+
+        type object = :"realtime.item"
+
+        module Object
+          extend OpenAI::Internal::Type::Enum
+
+          REALTIME_ITEM: :"realtime.item"
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::object]
+        end
+
+        type status = :completed | :incomplete | :in_progress
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          COMPLETED: :completed
+          INCOMPLETE: :incomplete
+          IN_PROGRESS: :in_progress
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::status]
+        end
+      end
+    end
+  end
+end

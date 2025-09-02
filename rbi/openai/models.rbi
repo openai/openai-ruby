@@ -166,6 +166,8 @@ module OpenAI
   OtherFileChunkingStrategyObject =
     OpenAI::Models::OtherFileChunkingStrategyObject
 
+  Realtime = OpenAI::Models::Realtime
+
   Reasoning = OpenAI::Models::Reasoning
 
   ReasoningEffort = OpenAI::Models::ReasoningEffort

@@ -1,0 +1,90 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_response_status =
+        {
+          error: OpenAI::Realtime::RealtimeResponseStatus::Error,
+          reason: OpenAI::Models::Realtime::RealtimeResponseStatus::reason,
+          type: OpenAI::Models::Realtime::RealtimeResponseStatus::type_
+        }
+
+      class RealtimeResponseStatus < OpenAI::Internal::Type::BaseModel
+        attr_reader error: OpenAI::Realtime::RealtimeResponseStatus::Error?
+
+        def error=: (
+          OpenAI::Realtime::RealtimeResponseStatus::Error
+        ) -> OpenAI::Realtime::RealtimeResponseStatus::Error
+
+        attr_reader reason: OpenAI::Models::Realtime::RealtimeResponseStatus::reason?
+
+        def reason=: (
+          OpenAI::Models::Realtime::RealtimeResponseStatus::reason
+        ) -> OpenAI::Models::Realtime::RealtimeResponseStatus::reason
+
+        attr_reader type: OpenAI::Models::Realtime::RealtimeResponseStatus::type_?
+
+        def type=: (
+          OpenAI::Models::Realtime::RealtimeResponseStatus::type_
+        ) -> OpenAI::Models::Realtime::RealtimeResponseStatus::type_
+
+        def initialize: (
+          ?error: OpenAI::Realtime::RealtimeResponseStatus::Error,
+          ?reason: OpenAI::Models::Realtime::RealtimeResponseStatus::reason,
+          ?type: OpenAI::Models::Realtime::RealtimeResponseStatus::type_
+        ) -> void
+
+        def to_hash: -> {
+          error: OpenAI::Realtime::RealtimeResponseStatus::Error,
+          reason: OpenAI::Models::Realtime::RealtimeResponseStatus::reason,
+          type: OpenAI::Models::Realtime::RealtimeResponseStatus::type_
+        }
+
+        type error = { code: String, type: String }
+
+        class Error < OpenAI::Internal::Type::BaseModel
+          attr_reader code: String?
+
+          def code=: (String) -> String
+
+          attr_reader type: String?
+
+          def type=: (String) -> String
+
+          def initialize: (?code: String, ?type: String) -> void
+
+          def to_hash: -> { code: String, type: String }
+        end
+
+        type reason =
+          :turn_detected
+          | :client_cancelled
+          | :max_output_tokens
+          | :content_filter
+
+        module Reason
+          extend OpenAI::Internal::Type::Enum
+
+          TURN_DETECTED: :turn_detected
+          CLIENT_CANCELLED: :client_cancelled
+          MAX_OUTPUT_TOKENS: :max_output_tokens
+          CONTENT_FILTER: :content_filter
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeResponseStatus::reason]
+        end
+
+        type type_ = :completed | :cancelled | :incomplete | :failed
+
+        module Type
+          extend OpenAI::Internal::Type::Enum
+
+          COMPLETED: :completed
+          CANCELLED: :cancelled
+          INCOMPLETE: :incomplete
+          FAILED: :failed
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeResponseStatus::type_]
+        end
+      end
+    end
+  end
+end

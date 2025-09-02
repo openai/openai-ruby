@@ -1,0 +1,53 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_truncation =
+        OpenAI::Models::Realtime::RealtimeTruncation::realtime_truncation_strategy
+        | OpenAI::Realtime::RealtimeTruncation::RetentionRatioTruncation
+
+      module RealtimeTruncation
+        extend OpenAI::Internal::Type::Union
+
+        type realtime_truncation_strategy = :auto | :disabled
+
+        module RealtimeTruncationStrategy
+          extend OpenAI::Internal::Type::Enum
+
+          AUTO: :auto
+          DISABLED: :disabled
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeTruncation::realtime_truncation_strategy]
+        end
+
+        type retention_ratio_truncation =
+          {
+            retention_ratio: Float,
+            type: :retention_ratio,
+            post_instructions_token_limit: Integer?
+          }
+
+        class RetentionRatioTruncation < OpenAI::Internal::Type::BaseModel
+          attr_accessor retention_ratio: Float
+
+          attr_accessor type: :retention_ratio
+
+          attr_accessor post_instructions_token_limit: Integer?
+
+          def initialize: (
+            retention_ratio: Float,
+            ?post_instructions_token_limit: Integer?,
+            ?type: :retention_ratio
+          ) -> void
+
+          def to_hash: -> {
+            retention_ratio: Float,
+            type: :retention_ratio,
+            post_instructions_token_limit: Integer?
+          }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Realtime::realtime_truncation]
+      end
+    end
+  end
+end

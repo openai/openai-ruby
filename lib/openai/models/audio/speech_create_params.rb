@@ -117,6 +117,10 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::VERSE }
 
+          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::MARIN }
+
+          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::CEDAR }
+
           # @!method self.variants
           #   @return [Array(String, Symbol)]
 
@@ -134,6 +138,8 @@ module OpenAI
           SAGE = :sage
           SHIMMER = :shimmer
           VERSE = :verse
+          MARIN = :marin
+          CEDAR = :cedar
 
           # @!endgroup
         end

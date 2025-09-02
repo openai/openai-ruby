@@ -1,0 +1,71 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_mcp_list_tools =
+        {
+          server_label: String,
+          tools: ::Array[OpenAI::Realtime::RealtimeMcpListTools::Tool],
+          type: :mcp_list_tools,
+          id: String
+        }
+
+      class RealtimeMcpListTools < OpenAI::Internal::Type::BaseModel
+        attr_accessor server_label: String
+
+        attr_accessor tools: ::Array[OpenAI::Realtime::RealtimeMcpListTools::Tool]
+
+        attr_accessor type: :mcp_list_tools
+
+        attr_reader id: String?
+
+        def id=: (String) -> String
+
+        def initialize: (
+          server_label: String,
+          tools: ::Array[OpenAI::Realtime::RealtimeMcpListTools::Tool],
+          ?id: String,
+          ?type: :mcp_list_tools
+        ) -> void
+
+        def to_hash: -> {
+          server_label: String,
+          tools: ::Array[OpenAI::Realtime::RealtimeMcpListTools::Tool],
+          type: :mcp_list_tools,
+          id: String
+        }
+
+        type tool =
+          {
+            input_schema: top,
+            name: String,
+            annotations: top?,
+            description: String?
+          }
+
+        class Tool < OpenAI::Internal::Type::BaseModel
+          attr_accessor input_schema: top
+
+          attr_accessor name: String
+
+          attr_accessor annotations: top?
+
+          attr_accessor description: String?
+
+          def initialize: (
+            input_schema: top,
+            name: String,
+            ?annotations: top?,
+            ?description: String?
+          ) -> void
+
+          def to_hash: -> {
+            input_schema: top,
+            name: String,
+            annotations: top?,
+            description: String?
+          }
+        end
+      end
+    end
+  end
+end

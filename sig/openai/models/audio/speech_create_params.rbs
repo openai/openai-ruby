@@ -83,6 +83,8 @@ module OpenAI
           | :sage
           | :shimmer
           | :verse
+          | :marin
+          | :cedar
 
         module Voice
           extend OpenAI::Internal::Type::Union
@@ -97,6 +99,8 @@ module OpenAI
           SAGE: :sage
           SHIMMER: :shimmer
           VERSE: :verse
+          MARIN: :marin
+          CEDAR: :cedar
         end
 
         type response_format = :mp3 | :opus | :aac | :flac | :wav | :pcm

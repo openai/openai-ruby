@@ -304,7 +304,7 @@ module OpenAI
         # An array of tools the model may call while generating a response. You can
         # specify which tool to use by setting the `tool_choice` parameter.
         #
-        # The two categories of tools you can provide the model are:
+        # We support the following categories of tools:
         #
         # - **Built-in tools**: Tools that are provided by OpenAI that extend the model's
         #   capabilities, like
@@ -312,6 +312,9 @@ module OpenAI
         #   [file search](https://platform.openai.com/docs/guides/tools-file-search).
         #   Learn more about
         #   [built-in tools](https://platform.openai.com/docs/guides/tools).
+        # - **MCP Tools**: Integrations with third-party systems via custom MCP servers or
+        #   predefined connectors such as Google Drive and Notion. Learn more about
+        #   [MCP Tools](https://platform.openai.com/docs/guides/tools-connectors-mcp).
         # - **Function calls (custom tools)**: Functions that are defined by you, enabling
         #   the model to call your own code with strongly typed arguments and outputs.
         #   Learn more about
@@ -330,8 +333,8 @@ module OpenAI
                   OpenAI::Responses::Tool::ImageGeneration,
                   OpenAI::Responses::Tool::LocalShell,
                   OpenAI::Responses::CustomTool,
-                  OpenAI::Responses::Tool::WebSearchTool,
-                  OpenAI::Responses::WebSearchTool
+                  OpenAI::Responses::WebSearchTool,
+                  OpenAI::Responses::WebSearchPreviewTool
                 )
               ]
             )
@@ -352,8 +355,8 @@ module OpenAI
                   OpenAI::Responses::Tool::ImageGeneration::OrHash,
                   OpenAI::Responses::Tool::LocalShell::OrHash,
                   OpenAI::Responses::CustomTool::OrHash,
-                  OpenAI::Responses::Tool::WebSearchTool::OrHash,
-                  OpenAI::Responses::WebSearchTool::OrHash
+                  OpenAI::Responses::WebSearchTool::OrHash,
+                  OpenAI::Responses::WebSearchPreviewTool::OrHash
                 )
               ]
           ).void
@@ -462,8 +465,8 @@ module OpenAI
                   OpenAI::Responses::Tool::ImageGeneration::OrHash,
                   OpenAI::Responses::Tool::LocalShell::OrHash,
                   OpenAI::Responses::CustomTool::OrHash,
-                  OpenAI::Responses::Tool::WebSearchTool::OrHash,
-                  OpenAI::Responses::WebSearchTool::OrHash
+                  OpenAI::Responses::WebSearchTool::OrHash,
+                  OpenAI::Responses::WebSearchPreviewTool::OrHash
                 )
               ],
             top_logprobs: T.nilable(Integer),
@@ -606,7 +609,7 @@ module OpenAI
           # An array of tools the model may call while generating a response. You can
           # specify which tool to use by setting the `tool_choice` parameter.
           #
-          # The two categories of tools you can provide the model are:
+          # We support the following categories of tools:
           #
           # - **Built-in tools**: Tools that are provided by OpenAI that extend the model's
           #   capabilities, like
@@ -614,6 +617,9 @@ module OpenAI
           #   [file search](https://platform.openai.com/docs/guides/tools-file-search).
           #   Learn more about
           #   [built-in tools](https://platform.openai.com/docs/guides/tools).
+          # - **MCP Tools**: Integrations with third-party systems via custom MCP servers or
+          #   predefined connectors such as Google Drive and Notion. Learn more about
+          #   [MCP Tools](https://platform.openai.com/docs/guides/tools-connectors-mcp).
           # - **Function calls (custom tools)**: Functions that are defined by you, enabling
           #   the model to call your own code with strongly typed arguments and outputs.
           #   Learn more about
@@ -707,8 +713,8 @@ module OpenAI
                     OpenAI::Responses::Tool::ImageGeneration,
                     OpenAI::Responses::Tool::LocalShell,
                     OpenAI::Responses::CustomTool,
-                    OpenAI::Responses::Tool::WebSearchTool,
-                    OpenAI::Responses::WebSearchTool
+                    OpenAI::Responses::WebSearchTool,
+                    OpenAI::Responses::WebSearchPreviewTool
                   )
                 ],
               top_logprobs: T.nilable(Integer),

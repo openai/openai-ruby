@@ -1,0 +1,52 @@
+module OpenAI
+  module Models
+    module Realtime
+      type response_function_call_arguments_delta_event =
+        {
+          call_id: String,
+          delta: String,
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          response_id: String,
+          type: :"response.function_call_arguments.delta"
+        }
+
+      class ResponseFunctionCallArgumentsDeltaEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor call_id: String
+
+        attr_accessor delta: String
+
+        attr_accessor event_id: String
+
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor response_id: String
+
+        attr_accessor type: :"response.function_call_arguments.delta"
+
+        def initialize: (
+          call_id: String,
+          delta: String,
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          response_id: String,
+          ?type: :"response.function_call_arguments.delta"
+        ) -> void
+
+        def to_hash: -> {
+          call_id: String,
+          delta: String,
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          response_id: String,
+          type: :"response.function_call_arguments.delta"
+        }
+      end
+    end
+  end
+end
