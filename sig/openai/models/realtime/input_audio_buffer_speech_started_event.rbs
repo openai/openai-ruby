@@ -1,0 +1,37 @@
+module OpenAI
+  module Models
+    module Realtime
+      type input_audio_buffer_speech_started_event =
+        {
+          audio_start_ms: Integer,
+          event_id: String,
+          item_id: String,
+          type: :"input_audio_buffer.speech_started"
+        }
+
+      class InputAudioBufferSpeechStartedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor audio_start_ms: Integer
+
+        attr_accessor event_id: String
+
+        attr_accessor item_id: String
+
+        attr_accessor type: :"input_audio_buffer.speech_started"
+
+        def initialize: (
+          audio_start_ms: Integer,
+          event_id: String,
+          item_id: String,
+          ?type: :"input_audio_buffer.speech_started"
+        ) -> void
+
+        def to_hash: -> {
+          audio_start_ms: Integer,
+          event_id: String,
+          item_id: String,
+          type: :"input_audio_buffer.speech_started"
+        }
+      end
+    end
+  end
+end

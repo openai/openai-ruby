@@ -9,10 +9,21 @@ module OpenAI
             T.any(OpenAI::Responses::WebSearchTool, OpenAI::Internal::AnyHash)
           end
 
-        # The type of the web search tool. One of `web_search_preview` or
-        # `web_search_preview_2025_03_11`.
+        # The type of the web search tool. One of `web_search` or `web_search_2025_08_26`.
         sig { returns(OpenAI::Responses::WebSearchTool::Type::OrSymbol) }
         attr_accessor :type
+
+        # Filters for the search.
+        sig { returns(T.nilable(OpenAI::Responses::WebSearchTool::Filters)) }
+        attr_reader :filters
+
+        sig do
+          params(
+            filters:
+              T.nilable(OpenAI::Responses::WebSearchTool::Filters::OrHash)
+          ).void
+        end
+        attr_writer :filters
 
         # High level guidance for the amount of context window space to use for the
         # search. One of `low`, `medium`, or `high`. `medium` is the default.
@@ -33,7 +44,7 @@ module OpenAI
         end
         attr_writer :search_context_size
 
-        # The user's location.
+        # The approximate location of the user.
         sig do
           returns(T.nilable(OpenAI::Responses::WebSearchTool::UserLocation))
         end
@@ -47,12 +58,13 @@ module OpenAI
         end
         attr_writer :user_location
 
-        # This tool searches the web for relevant results to use in a response. Learn more
-        # about the
+        # Search the Internet for sources related to the prompt. Learn more about the
         # [web search tool](https://platform.openai.com/docs/guides/tools-web-search).
         sig do
           params(
             type: OpenAI::Responses::WebSearchTool::Type::OrSymbol,
+            filters:
+              T.nilable(OpenAI::Responses::WebSearchTool::Filters::OrHash),
             search_context_size:
               OpenAI::Responses::WebSearchTool::SearchContextSize::OrSymbol,
             user_location:
@@ -60,13 +72,14 @@ module OpenAI
           ).returns(T.attached_class)
         end
         def self.new(
-          # The type of the web search tool. One of `web_search_preview` or
-          # `web_search_preview_2025_03_11`.
+          # The type of the web search tool. One of `web_search` or `web_search_2025_08_26`.
           type:,
+          # Filters for the search.
+          filters: nil,
           # High level guidance for the amount of context window space to use for the
           # search. One of `low`, `medium`, or `high`. `medium` is the default.
           search_context_size: nil,
-          # The user's location.
+          # The approximate location of the user.
           user_location: nil
         )
         end
@@ -75,6 +88,7 @@ module OpenAI
           override.returns(
             {
               type: OpenAI::Responses::WebSearchTool::Type::OrSymbol,
+              filters: T.nilable(OpenAI::Responses::WebSearchTool::Filters),
               search_context_size:
                 OpenAI::Responses::WebSearchTool::SearchContextSize::OrSymbol,
               user_location:
@@ -85,8 +99,7 @@ module OpenAI
         def to_hash
         end
 
-        # The type of the web search tool. One of `web_search_preview` or
-        # `web_search_preview_2025_03_11`.
+        # The type of the web search tool. One of `web_search` or `web_search_2025_08_26`.
         module Type
           extend OpenAI::Internal::Type::Enum
 
@@ -96,14 +109,14 @@ module OpenAI
             end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          WEB_SEARCH_PREVIEW =
+          WEB_SEARCH =
             T.let(
-              :web_search_preview,
+              :web_search,
               OpenAI::Responses::WebSearchTool::Type::TaggedSymbol
             )
-          WEB_SEARCH_PREVIEW_2025_03_11 =
+          WEB_SEARCH_2025_08_26 =
             T.let(
-              :web_search_preview_2025_03_11,
+              :web_search_2025_08_26,
               OpenAI::Responses::WebSearchTool::Type::TaggedSymbol
             )
 
@@ -113,6 +126,44 @@ module OpenAI
             )
           end
           def self.values
+          end
+        end
+
+        class Filters < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::WebSearchTool::Filters,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # Allowed domains for the search. If not provided, all domains are allowed.
+          # Subdomains of the provided domains are allowed as well.
+          #
+          # Example: `["pubmed.ncbi.nlm.nih.gov"]`
+          sig { returns(T.nilable(T::Array[String])) }
+          attr_accessor :allowed_domains
+
+          # Filters for the search.
+          sig do
+            params(allowed_domains: T.nilable(T::Array[String])).returns(
+              T.attached_class
+            )
+          end
+          def self.new(
+            # Allowed domains for the search. If not provided, all domains are allowed.
+            # Subdomains of the provided domains are allowed as well.
+            #
+            # Example: `["pubmed.ncbi.nlm.nih.gov"]`
+            allowed_domains: nil
+          )
+          end
+
+          sig do
+            override.returns({ allowed_domains: T.nilable(T::Array[String]) })
+          end
+          def to_hash
           end
         end
 
@@ -163,10 +214,6 @@ module OpenAI
               )
             end
 
-          # The type of location approximation. Always `approximate`.
-          sig { returns(Symbol) }
-          attr_accessor :type
-
           # Free text input for the city of the user, e.g. `San Francisco`.
           sig { returns(T.nilable(String)) }
           attr_accessor :city
@@ -185,14 +232,33 @@ module OpenAI
           sig { returns(T.nilable(String)) }
           attr_accessor :timezone
 
-          # The user's location.
+          # The type of location approximation. Always `approximate`.
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Responses::WebSearchTool::UserLocation::Type::OrSymbol
+              )
+            )
+          end
+          attr_reader :type
+
+          sig do
+            params(
+              type:
+                OpenAI::Responses::WebSearchTool::UserLocation::Type::OrSymbol
+            ).void
+          end
+          attr_writer :type
+
+          # The approximate location of the user.
           sig do
             params(
               city: T.nilable(String),
               country: T.nilable(String),
               region: T.nilable(String),
               timezone: T.nilable(String),
-              type: Symbol
+              type:
+                OpenAI::Responses::WebSearchTool::UserLocation::Type::OrSymbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -207,22 +273,53 @@ module OpenAI
             # user, e.g. `America/Los_Angeles`.
             timezone: nil,
             # The type of location approximation. Always `approximate`.
-            type: :approximate
+            type: nil
           )
           end
 
           sig do
             override.returns(
               {
-                type: Symbol,
                 city: T.nilable(String),
                 country: T.nilable(String),
                 region: T.nilable(String),
-                timezone: T.nilable(String)
+                timezone: T.nilable(String),
+                type:
+                  OpenAI::Responses::WebSearchTool::UserLocation::Type::OrSymbol
               }
             )
           end
           def to_hash
+          end
+
+          # The type of location approximation. Always `approximate`.
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol =
+              T.type_alias do
+                T.all(
+                  Symbol,
+                  OpenAI::Responses::WebSearchTool::UserLocation::Type
+                )
+              end
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            APPROXIMATE =
+              T.let(
+                :approximate,
+                OpenAI::Responses::WebSearchTool::UserLocation::Type::TaggedSymbol
+              )
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Responses::WebSearchTool::UserLocation::Type::TaggedSymbol
+                ]
+              )
+            end
+            def self.values
+            end
           end
         end
       end

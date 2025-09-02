@@ -1126,8 +1126,8 @@ module OpenAI
                         OpenAI::Responses::Tool::ImageGeneration,
                         OpenAI::Responses::Tool::LocalShell,
                         OpenAI::Responses::CustomTool,
-                        OpenAI::Responses::Tool::WebSearchTool,
-                        OpenAI::Responses::WebSearchTool
+                        OpenAI::Responses::WebSearchTool,
+                        OpenAI::Responses::WebSearchPreviewTool
                       )
                     ]
                   )
@@ -1148,8 +1148,8 @@ module OpenAI
                         OpenAI::Responses::Tool::ImageGeneration::OrHash,
                         OpenAI::Responses::Tool::LocalShell::OrHash,
                         OpenAI::Responses::CustomTool::OrHash,
-                        OpenAI::Responses::Tool::WebSearchTool::OrHash,
-                        OpenAI::Responses::WebSearchTool::OrHash
+                        OpenAI::Responses::WebSearchTool::OrHash,
+                        OpenAI::Responses::WebSearchPreviewTool::OrHash
                       )
                     ]
                 ).void
@@ -1181,8 +1181,8 @@ module OpenAI
                         OpenAI::Responses::Tool::ImageGeneration::OrHash,
                         OpenAI::Responses::Tool::LocalShell::OrHash,
                         OpenAI::Responses::CustomTool::OrHash,
-                        OpenAI::Responses::Tool::WebSearchTool::OrHash,
-                        OpenAI::Responses::WebSearchTool::OrHash
+                        OpenAI::Responses::WebSearchTool::OrHash,
+                        OpenAI::Responses::WebSearchPreviewTool::OrHash
                       )
                     ],
                   top_p: Float
@@ -1240,8 +1240,8 @@ module OpenAI
                           OpenAI::Responses::Tool::ImageGeneration,
                           OpenAI::Responses::Tool::LocalShell,
                           OpenAI::Responses::CustomTool,
-                          OpenAI::Responses::Tool::WebSearchTool,
-                          OpenAI::Responses::WebSearchTool
+                          OpenAI::Responses::WebSearchTool,
+                          OpenAI::Responses::WebSearchPreviewTool
                         )
                       ],
                     top_p: Float

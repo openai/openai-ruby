@@ -1177,8 +1177,8 @@ module OpenAI
                         OpenAI::Responses::Tool::ImageGeneration::OrHash,
                         OpenAI::Responses::Tool::LocalShell::OrHash,
                         OpenAI::Responses::CustomTool::OrHash,
-                        OpenAI::Responses::Tool::WebSearchTool::OrHash,
-                        OpenAI::Responses::WebSearchTool::OrHash
+                        OpenAI::Responses::WebSearchTool::OrHash,
+                        OpenAI::Responses::WebSearchPreviewTool::OrHash
                       )
                     ]
                 ).void
@@ -1210,8 +1210,8 @@ module OpenAI
                         OpenAI::Responses::Tool::ImageGeneration::OrHash,
                         OpenAI::Responses::Tool::LocalShell::OrHash,
                         OpenAI::Responses::CustomTool::OrHash,
-                        OpenAI::Responses::Tool::WebSearchTool::OrHash,
-                        OpenAI::Responses::WebSearchTool::OrHash
+                        OpenAI::Responses::WebSearchTool::OrHash,
+                        OpenAI::Responses::WebSearchPreviewTool::OrHash
                       )
                     ],
                   top_p: Float

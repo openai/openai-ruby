@@ -1,0 +1,105 @@
+module OpenAI
+  module Models
+    module Realtime
+      type response_content_part_done_event =
+        {
+          content_index: Integer,
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          part: OpenAI::Realtime::ResponseContentPartDoneEvent::Part,
+          response_id: String,
+          type: :"response.content_part.done"
+        }
+
+      class ResponseContentPartDoneEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor content_index: Integer
+
+        attr_accessor event_id: String
+
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor part: OpenAI::Realtime::ResponseContentPartDoneEvent::Part
+
+        attr_accessor response_id: String
+
+        attr_accessor type: :"response.content_part.done"
+
+        def initialize: (
+          content_index: Integer,
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          part: OpenAI::Realtime::ResponseContentPartDoneEvent::Part,
+          response_id: String,
+          ?type: :"response.content_part.done"
+        ) -> void
+
+        def to_hash: -> {
+          content_index: Integer,
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          part: OpenAI::Realtime::ResponseContentPartDoneEvent::Part,
+          response_id: String,
+          type: :"response.content_part.done"
+        }
+
+        type part =
+          {
+            audio: String,
+            text: String,
+            transcript: String,
+            type: OpenAI::Models::Realtime::ResponseContentPartDoneEvent::Part::type_
+          }
+
+        class Part < OpenAI::Internal::Type::BaseModel
+          attr_reader audio: String?
+
+          def audio=: (String) -> String
+
+          attr_reader text: String?
+
+          def text=: (String) -> String
+
+          attr_reader transcript: String?
+
+          def transcript=: (String) -> String
+
+          attr_reader type: OpenAI::Models::Realtime::ResponseContentPartDoneEvent::Part::type_?
+
+          def type=: (
+            OpenAI::Models::Realtime::ResponseContentPartDoneEvent::Part::type_
+          ) -> OpenAI::Models::Realtime::ResponseContentPartDoneEvent::Part::type_
+
+          def initialize: (
+            ?audio: String,
+            ?text: String,
+            ?transcript: String,
+            ?type: OpenAI::Models::Realtime::ResponseContentPartDoneEvent::Part::type_
+          ) -> void
+
+          def to_hash: -> {
+            audio: String,
+            text: String,
+            transcript: String,
+            type: OpenAI::Models::Realtime::ResponseContentPartDoneEvent::Part::type_
+          }
+
+          type type_ = :text | :audio
+
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            TEXT: :text
+            AUDIO: :audio
+
+            def self?.values: -> ::Array[OpenAI::Models::Realtime::ResponseContentPartDoneEvent::Part::type_]
+          end
+        end
+      end
+    end
+  end
+end

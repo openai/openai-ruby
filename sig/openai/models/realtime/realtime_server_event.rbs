@@ -1,0 +1,168 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_server_event =
+        OpenAI::Realtime::ConversationCreatedEvent
+        | OpenAI::Realtime::ConversationItemCreatedEvent
+        | OpenAI::Realtime::ConversationItemDeletedEvent
+        | OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent
+        | OpenAI::Realtime::ConversationItemInputAudioTranscriptionDeltaEvent
+        | OpenAI::Realtime::ConversationItemInputAudioTranscriptionFailedEvent
+        | OpenAI::Realtime::RealtimeServerEvent::ConversationItemRetrieved
+        | OpenAI::Realtime::ConversationItemTruncatedEvent
+        | OpenAI::Realtime::RealtimeErrorEvent
+        | OpenAI::Realtime::InputAudioBufferClearedEvent
+        | OpenAI::Realtime::InputAudioBufferCommittedEvent
+        | OpenAI::Realtime::InputAudioBufferSpeechStartedEvent
+        | OpenAI::Realtime::InputAudioBufferSpeechStoppedEvent
+        | OpenAI::Realtime::RateLimitsUpdatedEvent
+        | OpenAI::Realtime::ResponseAudioDeltaEvent
+        | OpenAI::Realtime::ResponseAudioDoneEvent
+        | OpenAI::Realtime::ResponseAudioTranscriptDeltaEvent
+        | OpenAI::Realtime::ResponseAudioTranscriptDoneEvent
+        | OpenAI::Realtime::ResponseContentPartAddedEvent
+        | OpenAI::Realtime::ResponseContentPartDoneEvent
+        | OpenAI::Realtime::ResponseCreatedEvent
+        | OpenAI::Realtime::ResponseDoneEvent
+        | OpenAI::Realtime::ResponseFunctionCallArgumentsDeltaEvent
+        | OpenAI::Realtime::ResponseFunctionCallArgumentsDoneEvent
+        | OpenAI::Realtime::ResponseOutputItemAddedEvent
+        | OpenAI::Realtime::ResponseOutputItemDoneEvent
+        | OpenAI::Realtime::ResponseTextDeltaEvent
+        | OpenAI::Realtime::ResponseTextDoneEvent
+        | OpenAI::Realtime::SessionCreatedEvent
+        | OpenAI::Realtime::SessionUpdatedEvent
+        | OpenAI::Realtime::TranscriptionSessionUpdatedEvent
+        | OpenAI::Realtime::TranscriptionSessionCreated
+        | OpenAI::Realtime::RealtimeServerEvent::OutputAudioBufferStarted
+        | OpenAI::Realtime::RealtimeServerEvent::OutputAudioBufferStopped
+        | OpenAI::Realtime::RealtimeServerEvent::OutputAudioBufferCleared
+        | OpenAI::Realtime::ConversationItemAdded
+        | OpenAI::Realtime::ConversationItemDone
+        | OpenAI::Realtime::InputAudioBufferTimeoutTriggered
+        | OpenAI::Realtime::ConversationItemInputAudioTranscriptionSegment
+        | OpenAI::Realtime::McpListToolsInProgress
+        | OpenAI::Realtime::McpListToolsCompleted
+        | OpenAI::Realtime::McpListToolsFailed
+        | OpenAI::Realtime::ResponseMcpCallArgumentsDelta
+        | OpenAI::Realtime::ResponseMcpCallArgumentsDone
+        | OpenAI::Realtime::ResponseMcpCallInProgress
+        | OpenAI::Realtime::ResponseMcpCallCompleted
+        | OpenAI::Realtime::ResponseMcpCallFailed
+
+      module RealtimeServerEvent
+        extend OpenAI::Internal::Type::Union
+
+        type conversation_item_retrieved =
+          {
+            event_id: String,
+            item: OpenAI::Models::Realtime::conversation_item,
+            type: :"conversation.item.retrieved"
+          }
+
+        class ConversationItemRetrieved < OpenAI::Internal::Type::BaseModel
+          attr_accessor event_id: String
+
+          attr_accessor item: OpenAI::Models::Realtime::conversation_item
+
+          attr_accessor type: :"conversation.item.retrieved"
+
+          def initialize: (
+            event_id: String,
+            item: OpenAI::Models::Realtime::conversation_item,
+            ?type: :"conversation.item.retrieved"
+          ) -> void
+
+          def to_hash: -> {
+            event_id: String,
+            item: OpenAI::Models::Realtime::conversation_item,
+            type: :"conversation.item.retrieved"
+          }
+        end
+
+        type output_audio_buffer_started =
+          {
+            event_id: String,
+            response_id: String,
+            type: :"output_audio_buffer.started"
+          }
+
+        class OutputAudioBufferStarted < OpenAI::Internal::Type::BaseModel
+          attr_accessor event_id: String
+
+          attr_accessor response_id: String
+
+          attr_accessor type: :"output_audio_buffer.started"
+
+          def initialize: (
+            event_id: String,
+            response_id: String,
+            ?type: :"output_audio_buffer.started"
+          ) -> void
+
+          def to_hash: -> {
+            event_id: String,
+            response_id: String,
+            type: :"output_audio_buffer.started"
+          }
+        end
+
+        type output_audio_buffer_stopped =
+          {
+            event_id: String,
+            response_id: String,
+            type: :"output_audio_buffer.stopped"
+          }
+
+        class OutputAudioBufferStopped < OpenAI::Internal::Type::BaseModel
+          attr_accessor event_id: String
+
+          attr_accessor response_id: String
+
+          attr_accessor type: :"output_audio_buffer.stopped"
+
+          def initialize: (
+            event_id: String,
+            response_id: String,
+            ?type: :"output_audio_buffer.stopped"
+          ) -> void
+
+          def to_hash: -> {
+            event_id: String,
+            response_id: String,
+            type: :"output_audio_buffer.stopped"
+          }
+        end
+
+        type output_audio_buffer_cleared =
+          {
+            event_id: String,
+            response_id: String,
+            type: :"output_audio_buffer.cleared"
+          }
+
+        class OutputAudioBufferCleared < OpenAI::Internal::Type::BaseModel
+          attr_accessor event_id: String
+
+          attr_accessor response_id: String
+
+          attr_accessor type: :"output_audio_buffer.cleared"
+
+          def initialize: (
+            event_id: String,
+            response_id: String,
+            ?type: :"output_audio_buffer.cleared"
+          ) -> void
+
+          def to_hash: -> {
+            event_id: String,
+            response_id: String,
+            type: :"output_audio_buffer.cleared"
+          }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Realtime::realtime_server_event]
+      end
+    end
+  end
+end

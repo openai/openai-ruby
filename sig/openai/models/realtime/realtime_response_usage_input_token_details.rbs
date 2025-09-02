@@ -1,0 +1,34 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_response_usage_input_token_details =
+        { audio_tokens: Integer, cached_tokens: Integer, text_tokens: Integer }
+
+      class RealtimeResponseUsageInputTokenDetails < OpenAI::Internal::Type::BaseModel
+        attr_reader audio_tokens: Integer?
+
+        def audio_tokens=: (Integer) -> Integer
+
+        attr_reader cached_tokens: Integer?
+
+        def cached_tokens=: (Integer) -> Integer
+
+        attr_reader text_tokens: Integer?
+
+        def text_tokens=: (Integer) -> Integer
+
+        def initialize: (
+          ?audio_tokens: Integer,
+          ?cached_tokens: Integer,
+          ?text_tokens: Integer
+        ) -> void
+
+        def to_hash: -> {
+          audio_tokens: Integer,
+          cached_tokens: Integer,
+          text_tokens: Integer
+        }
+      end
+    end
+  end
+end

@@ -60,6 +60,9 @@ module OpenAI
       module Jobs
       end
 
+      module Realtime
+      end
+
       module Responses
       end
 

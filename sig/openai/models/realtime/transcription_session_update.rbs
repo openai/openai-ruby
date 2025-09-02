@@ -1,0 +1,34 @@
+module OpenAI
+  module Models
+    module Realtime
+      type transcription_session_update =
+        {
+          session: OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest,
+          type: :"transcription_session.update",
+          event_id: String
+        }
+
+      class TranscriptionSessionUpdate < OpenAI::Internal::Type::BaseModel
+        attr_accessor session: OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest
+
+        attr_accessor type: :"transcription_session.update"
+
+        attr_reader event_id: String?
+
+        def event_id=: (String) -> String
+
+        def initialize: (
+          session: OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest,
+          ?event_id: String,
+          ?type: :"transcription_session.update"
+        ) -> void
+
+        def to_hash: -> {
+          session: OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest,
+          type: :"transcription_session.update",
+          event_id: String
+        }
+      end
+    end
+  end
+end
