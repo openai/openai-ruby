@@ -701,6 +701,7 @@ module OpenAI
                           OpenAI::Responses::ResponseInputText,
                           OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText,
                           OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Content::InputImage,
+                          OpenAI::Responses::ResponseInputAudio,
                           T::Array[T.anything]
                         )
                       )
@@ -747,6 +748,7 @@ module OpenAI
                             OpenAI::Responses::ResponseInputText::OrHash,
                             OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText::OrHash,
                             OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Content::InputImage::OrHash,
+                            OpenAI::Responses::ResponseInputAudio::OrHash,
                             T::Array[T.anything]
                           ),
                         role:
@@ -775,6 +777,7 @@ module OpenAI
                               OpenAI::Responses::ResponseInputText,
                               OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText,
                               OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Content::InputImage,
+                              OpenAI::Responses::ResponseInputAudio,
                               T::Array[T.anything]
                             ),
                           role:
@@ -798,6 +801,7 @@ module OpenAI
                             OpenAI::Responses::ResponseInputText,
                             OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText,
                             OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Content::InputImage,
+                            OpenAI::Responses::ResponseInputAudio,
                             T::Array[T.anything]
                           )
                         end
@@ -901,7 +905,7 @@ module OpenAI
                       def self.variants
                       end
 
-                      AnArrayOfInputTextAndInputImageArray =
+                      AnArrayOfInputTextInputImageAndInputAudioArray =
                         T.let(
                           OpenAI::Internal::Type::ArrayOf[
                             OpenAI::Internal::Type::Unknown

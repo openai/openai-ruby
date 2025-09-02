@@ -100,6 +100,7 @@ module OpenAI
                 OpenAI::Responses::ResponseInputText,
                 OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText,
                 OpenAI::Graders::ScoreModelGrader::Input::Content::InputImage,
+                OpenAI::Responses::ResponseInputAudio,
                 T::Array[T.anything]
               )
             )
@@ -143,6 +144,7 @@ module OpenAI
                   OpenAI::Responses::ResponseInputText::OrHash,
                   OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText::OrHash,
                   OpenAI::Graders::ScoreModelGrader::Input::Content::InputImage::OrHash,
+                  OpenAI::Responses::ResponseInputAudio::OrHash,
                   T::Array[T.anything]
                 ),
               role: OpenAI::Graders::ScoreModelGrader::Input::Role::OrSymbol,
@@ -169,6 +171,7 @@ module OpenAI
                     OpenAI::Responses::ResponseInputText,
                     OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText,
                     OpenAI::Graders::ScoreModelGrader::Input::Content::InputImage,
+                    OpenAI::Responses::ResponseInputAudio,
                     T::Array[T.anything]
                   ),
                 role: OpenAI::Graders::ScoreModelGrader::Input::Role::OrSymbol,
@@ -190,6 +193,7 @@ module OpenAI
                   OpenAI::Responses::ResponseInputText,
                   OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText,
                   OpenAI::Graders::ScoreModelGrader::Input::Content::InputImage,
+                  OpenAI::Responses::ResponseInputAudio,
                   T::Array[T.anything]
                 )
               end
@@ -289,7 +293,7 @@ module OpenAI
             def self.variants
             end
 
-            AnArrayOfInputTextAndInputImageArray =
+            AnArrayOfInputTextInputImageAndInputAudioArray =
               T.let(
                 OpenAI::Internal::Type::ArrayOf[
                   OpenAI::Internal::Type::Unknown

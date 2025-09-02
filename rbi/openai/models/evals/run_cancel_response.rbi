@@ -797,6 +797,7 @@ module OpenAI
                             OpenAI::Responses::ResponseInputText::OrHash,
                             OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::OutputText::OrHash,
                             OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::InputImage::OrHash,
+                            OpenAI::Responses::ResponseInputAudio::OrHash,
                             T::Array[T.anything]
                           ),
                         role:
@@ -842,6 +843,7 @@ module OpenAI
                             OpenAI::Responses::ResponseInputText,
                             OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::OutputText,
                             OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::InputImage,
+                            OpenAI::Responses::ResponseInputAudio,
                             T::Array[T.anything]
                           )
                         end
@@ -945,7 +947,7 @@ module OpenAI
                       def self.variants
                       end
 
-                      AnArrayOfInputTextAndInputImageArray =
+                      AnArrayOfInputTextInputImageAndInputAudioArray =
                         T.let(
                           OpenAI::Internal::Type::ArrayOf[
                             OpenAI::Internal::Type::Unknown
