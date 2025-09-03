@@ -157,6 +157,10 @@ module OpenAI
 
           variant String
 
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_REALTIME }
+
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_REALTIME_2025_08_28 }
+
           variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_4O_REALTIME }
 
           variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_4O_MINI_REALTIME }
@@ -182,6 +186,8 @@ module OpenAI
 
           # @!group
 
+          GPT_REALTIME = :"gpt-realtime"
+          GPT_REALTIME_2025_08_28 = :"gpt-realtime-2025-08-28"
           GPT_4O_REALTIME = :"gpt-4o-realtime"
           GPT_4O_MINI_REALTIME = :"gpt-4o-mini-realtime"
           GPT_4O_REALTIME_PREVIEW = :"gpt-4o-realtime-preview"
