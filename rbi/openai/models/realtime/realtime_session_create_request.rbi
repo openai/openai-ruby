@@ -431,6 +431,16 @@ module OpenAI
             end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
+          GPT_REALTIME =
+            T.let(
+              :"gpt-realtime",
+              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
+            )
+          GPT_REALTIME_2025_08_28 =
+            T.let(
+              :"gpt-realtime-2025-08-28",
+              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
+            )
           GPT_4O_REALTIME =
             T.let(
               :"gpt-4o-realtime",

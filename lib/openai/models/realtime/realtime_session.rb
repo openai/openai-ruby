@@ -370,6 +370,8 @@ module OpenAI
         module Model
           extend OpenAI::Internal::Type::Enum
 
+          GPT_REALTIME = :"gpt-realtime"
+          GPT_REALTIME_2025_08_28 = :"gpt-realtime-2025-08-28"
           GPT_4O_REALTIME_PREVIEW = :"gpt-4o-realtime-preview"
           GPT_4O_REALTIME_PREVIEW_2024_10_01 = :"gpt-4o-realtime-preview-2024-10-01"
           GPT_4O_REALTIME_PREVIEW_2024_12_17 = :"gpt-4o-realtime-preview-2024-12-17"
