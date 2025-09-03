@@ -120,6 +120,8 @@ module OpenAI
 
         type model =
           String
+          | :"gpt-realtime"
+          | :"gpt-realtime-2025-08-28"
           | :"gpt-4o-realtime"
           | :"gpt-4o-mini-realtime"
           | :"gpt-4o-realtime-preview"
@@ -134,6 +136,8 @@ module OpenAI
 
           def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateRequest::model]
 
+          GPT_REALTIME: :"gpt-realtime"
+          GPT_REALTIME_2025_08_28: :"gpt-realtime-2025-08-28"
           GPT_4O_REALTIME: :"gpt-4o-realtime"
           GPT_4O_MINI_REALTIME: :"gpt-4o-mini-realtime"
           GPT_4O_REALTIME_PREVIEW: :"gpt-4o-realtime-preview"
