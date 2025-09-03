@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.22.0 (2025-09-03)
+
+Full Changelog: [v0.21.1...v0.22.0](https://github.com/openai/openai-ruby/compare/v0.21.1...v0.22.0)
+
+### Features
+
+* **api:** Add gpt-realtime models ([8e6de5f](https://github.com/openai/openai-ruby/commit/8e6de5f479d43fc2b4659949fe57b3913f439e05))
+
 ## 0.21.1 (2025-09-02)
 
 Full Changelog: [v0.21.0...v0.21.1](https://github.com/openai/openai-ruby/compare/v0.21.0...v0.21.1)
