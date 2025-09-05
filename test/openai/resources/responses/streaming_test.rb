@@ -212,6 +212,31 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     end
   end
 
+  def test_streaming_error_handling
+    stub_request(:post, "http://localhost/responses")
+      .with(
+        body: hash_including(
+          instructions: "You are a helpful assistant",
+          messages: [{content: "Hello", role: "user"}],
+          model: "gpt-4",
+          stream: true
+        )
+      )
+      .to_return(
+        status: 400,
+        headers: {"Content-Type" => "text/event-stream"},
+        body: error_sse_response
+      )
+
+    stream = @client.responses.stream(**basic_params)
+    error = assert_raises(OpenAI::Errors::APIStatusError) do
+      stream.each { |_event| } # Consume the stream to trigger the error.
+    end
+
+    assert_equal(400, error.status)
+    assert_equal("Invalid request: missing required field", error.message)
+  end
+
   def test_text_method
     stub_streaming_response(basic_text_sse_response)
 
@@ -683,6 +708,16 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
 
       event: response.completed
       data: {"type":"response.completed","sequence_number":7,"response":{"id":"msg_structured","object":"realtime.response","status":"completed","status_details":null,"output":[{"id":"item_002","object":"realtime.item","type":"message","status":"completed","role":"assistant","content":[{"type":"output_text","text":"{\\"location\\":\\"San Francisco\\",\\"temperature\\":72}"}]}],"usage":{"total_tokens":20,"input_tokens":10,"output_tokens":10},"metadata":null}}
+
+    SSE
+  end
+
+  def error_sse_response
+    <<~SSE
+      event: response.created
+      data: {"type":"response.created","sequence_number":1,"response":{"id":"msg_error","object":"realtime.response","status":"in_progress","status_details":null,"output":[],"usage":null,"metadata":null}}
+
+      data: {"error":{"message":"Invalid request: missing required field"}}
 
     SSE
   end
