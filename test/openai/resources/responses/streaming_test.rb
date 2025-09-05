@@ -223,17 +223,17 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
         )
       )
       .to_return(
-        status: 400,
+        status: 200,
         headers: {"Content-Type" => "text/event-stream"},
         body: error_sse_response
       )
 
     stream = @client.responses.stream(**basic_params)
     error = assert_raises(OpenAI::Errors::APIStatusError) do
-      stream.each { |_event| } # Consume the stream to trigger the error.
+      stream.each {} # Consume the stream to trigger the error.
     end
 
-    assert_equal(400, error.status)
+    assert_equal(200, error.status)
     assert_equal("Invalid request: missing required field", error.message)
   end
 
