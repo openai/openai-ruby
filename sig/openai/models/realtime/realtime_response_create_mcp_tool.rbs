@@ -1,0 +1,218 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_response_create_mcp_tool =
+        {
+          server_label: String,
+          type: :mcp,
+          allowed_tools: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::allowed_tools?,
+          authorization: String,
+          connector_id: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::connector_id,
+          headers: ::Hash[Symbol, String]?,
+          require_approval: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::require_approval?,
+          server_description: String,
+          server_url: String
+        }
+
+      class RealtimeResponseCreateMcpTool < OpenAI::Internal::Type::BaseModel
+        attr_accessor server_label: String
+
+        attr_accessor type: :mcp
+
+        attr_accessor allowed_tools: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::allowed_tools?
+
+        attr_reader authorization: String?
+
+        def authorization=: (String) -> String
+
+        attr_reader connector_id: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::connector_id?
+
+        def connector_id=: (
+          OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::connector_id
+        ) -> OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::connector_id
+
+        attr_accessor headers: ::Hash[Symbol, String]?
+
+        attr_accessor require_approval: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::require_approval?
+
+        attr_reader server_description: String?
+
+        def server_description=: (String) -> String
+
+        attr_reader server_url: String?
+
+        def server_url=: (String) -> String
+
+        def initialize: (
+          server_label: String,
+          ?allowed_tools: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::allowed_tools?,
+          ?authorization: String,
+          ?connector_id: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::connector_id,
+          ?headers: ::Hash[Symbol, String]?,
+          ?require_approval: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::require_approval?,
+          ?server_description: String,
+          ?server_url: String,
+          ?type: :mcp
+        ) -> void
+
+        def to_hash: -> {
+          server_label: String,
+          type: :mcp,
+          allowed_tools: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::allowed_tools?,
+          authorization: String,
+          connector_id: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::connector_id,
+          headers: ::Hash[Symbol, String]?,
+          require_approval: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::require_approval?,
+          server_description: String,
+          server_url: String
+        }
+
+        type allowed_tools =
+          ::Array[String]
+          | OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedTools::McpToolFilter
+
+        module AllowedTools
+          extend OpenAI::Internal::Type::Union
+
+          type mcp_tool_filter =
+            { read_only: bool, tool_names: ::Array[String] }
+
+          class McpToolFilter < OpenAI::Internal::Type::BaseModel
+            attr_reader read_only: bool?
+
+            def read_only=: (bool) -> bool
+
+            attr_reader tool_names: ::Array[String]?
+
+            def tool_names=: (::Array[String]) -> ::Array[String]
+
+            def initialize: (
+              ?read_only: bool,
+              ?tool_names: ::Array[String]
+            ) -> void
+
+            def to_hash: -> { read_only: bool, tool_names: ::Array[String] }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::allowed_tools]
+
+          StringArray: OpenAI::Internal::Type::Converter
+        end
+
+        type connector_id =
+          :connector_dropbox
+          | :connector_gmail
+          | :connector_googlecalendar
+          | :connector_googledrive
+          | :connector_microsoftteams
+          | :connector_outlookcalendar
+          | :connector_outlookemail
+          | :connector_sharepoint
+
+        module ConnectorID
+          extend OpenAI::Internal::Type::Enum
+
+          CONNECTOR_DROPBOX: :connector_dropbox
+          CONNECTOR_GMAIL: :connector_gmail
+          CONNECTOR_GOOGLECALENDAR: :connector_googlecalendar
+          CONNECTOR_GOOGLEDRIVE: :connector_googledrive
+          CONNECTOR_MICROSOFTTEAMS: :connector_microsoftteams
+          CONNECTOR_OUTLOOKCALENDAR: :connector_outlookcalendar
+          CONNECTOR_OUTLOOKEMAIL: :connector_outlookemail
+          CONNECTOR_SHAREPOINT: :connector_sharepoint
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::connector_id]
+        end
+
+        type require_approval =
+          OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter
+          | OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::mcp_tool_approval_setting
+
+        module RequireApproval
+          extend OpenAI::Internal::Type::Union
+
+          type mcp_tool_approval_filter =
+            {
+              always: OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Always,
+              never: OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Never
+            }
+
+          class McpToolApprovalFilter < OpenAI::Internal::Type::BaseModel
+            attr_reader always: OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Always?
+
+            def always=: (
+              OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Always
+            ) -> OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Always
+
+            attr_reader never: OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Never?
+
+            def never=: (
+              OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Never
+            ) -> OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Never
+
+            def initialize: (
+              ?always: OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Always,
+              ?never: OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Never
+            ) -> void
+
+            def to_hash: -> {
+              always: OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Always,
+              never: OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Never
+            }
+
+            type always = { read_only: bool, tool_names: ::Array[String] }
+
+            class Always < OpenAI::Internal::Type::BaseModel
+              attr_reader read_only: bool?
+
+              def read_only=: (bool) -> bool
+
+              attr_reader tool_names: ::Array[String]?
+
+              def tool_names=: (::Array[String]) -> ::Array[String]
+
+              def initialize: (
+                ?read_only: bool,
+                ?tool_names: ::Array[String]
+              ) -> void
+
+              def to_hash: -> { read_only: bool, tool_names: ::Array[String] }
+            end
+
+            type never = { read_only: bool, tool_names: ::Array[String] }
+
+            class Never < OpenAI::Internal::Type::BaseModel
+              attr_reader read_only: bool?
+
+              def read_only=: (bool) -> bool
+
+              attr_reader tool_names: ::Array[String]?
+
+              def tool_names=: (::Array[String]) -> ::Array[String]
+
+              def initialize: (
+                ?read_only: bool,
+                ?tool_names: ::Array[String]
+              ) -> void
+
+              def to_hash: -> { read_only: bool, tool_names: ::Array[String] }
+            end
+          end
+
+          type mcp_tool_approval_setting = :always | :never
+
+          module McpToolApprovalSetting
+            extend OpenAI::Internal::Type::Enum
+
+            ALWAYS: :always
+            NEVER: :never
+
+            def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::mcp_tool_approval_setting]
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::require_approval]
+        end
+      end
+    end
+  end
+end

@@ -55,10 +55,8 @@ module OpenAI
         #   what the model heard. The client can optionally set the language and prompt for
         #   transcription, these offer additional guidance to the transcription service.
         #
-        #   @return [OpenAI::Models::Realtime::RealtimeSession::InputAudioTranscription, nil]
-        optional :input_audio_transcription,
-                 -> { OpenAI::Realtime::RealtimeSession::InputAudioTranscription },
-                 nil?: true
+        #   @return [OpenAI::Models::Realtime::AudioTranscription, nil]
+        optional :input_audio_transcription, -> { OpenAI::Realtime::AudioTranscription }, nil?: true
 
         # @!attribute instructions
         #   The default system instructions (i.e. system message) prepended to model calls.
@@ -144,8 +142,8 @@ module OpenAI
         # @!attribute tools
         #   Tools (functions) available to the model.
         #
-        #   @return [Array<OpenAI::Models::Realtime::RealtimeSession::Tool>, nil]
-        optional :tools, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Realtime::RealtimeSession::Tool] }
+        #   @return [Array<OpenAI::Models::Realtime::Models>, nil]
+        optional :tools, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Realtime::Models] }
 
         # @!attribute tracing
         #   Configuration options for tracing. Set to null to disable tracing. Once tracing
@@ -196,7 +194,7 @@ module OpenAI
         #
         #   @param input_audio_noise_reduction [OpenAI::Models::Realtime::RealtimeSession::InputAudioNoiseReduction] Configuration for input audio noise reduction. This can be set to `null` to turn
         #
-        #   @param input_audio_transcription [OpenAI::Models::Realtime::RealtimeSession::InputAudioTranscription, nil] Configuration for input audio transcription, defaults to off and can be set to `
+        #   @param input_audio_transcription [OpenAI::Models::Realtime::AudioTranscription, nil] Configuration for input audio transcription, defaults to off and can be set to `
         #
         #   @param instructions [String] The default system instructions (i.e. system message) prepended to model
         #
@@ -218,7 +216,7 @@ module OpenAI
         #
         #   @param tool_choice [String] How the model chooses tools. Options are `auto`, `none`, `required`, or
         #
-        #   @param tools [Array<OpenAI::Models::Realtime::RealtimeSession::Tool>] Tools (functions) available to the model.
+        #   @param tools [Array<OpenAI::Models::Realtime::Models>] Tools (functions) available to the model.
         #
         #   @param tracing [Symbol, :auto, OpenAI::Models::Realtime::RealtimeSession::Tracing::TracingConfiguration, nil] Configuration options for tracing. Set to null to disable tracing. Once
         #
@@ -258,8 +256,8 @@ module OpenAI
           #   headphones, `far_field` is for far-field microphones such as laptop or
           #   conference room microphones.
           #
-          #   @return [Symbol, OpenAI::Models::Realtime::RealtimeSession::InputAudioNoiseReduction::Type, nil]
-          optional :type, enum: -> { OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction::Type }
+          #   @return [Symbol, OpenAI::Models::Realtime::NoiseReductionType, nil]
+          optional :type, enum: -> { OpenAI::Realtime::NoiseReductionType }
 
           # @!method initialize(type: nil)
           #   Some parameter documentations has been truncated, see
@@ -272,70 +270,7 @@ module OpenAI
           #   detection accuracy (reducing false positives) and model performance by improving
           #   perception of the input audio.
           #
-          #   @param type [Symbol, OpenAI::Models::Realtime::RealtimeSession::InputAudioNoiseReduction::Type] Type of noise reduction. `near_field` is for close-talking microphones such as h
-
-          # Type of noise reduction. `near_field` is for close-talking microphones such as
-          # headphones, `far_field` is for far-field microphones such as laptop or
-          # conference room microphones.
-          #
-          # @see OpenAI::Models::Realtime::RealtimeSession::InputAudioNoiseReduction#type
-          module Type
-            extend OpenAI::Internal::Type::Enum
-
-            NEAR_FIELD = :near_field
-            FAR_FIELD = :far_field
-
-            # @!method self.values
-            #   @return [Array<Symbol>]
-          end
-        end
-
-        # @see OpenAI::Models::Realtime::RealtimeSession#input_audio_transcription
-        class InputAudioTranscription < OpenAI::Internal::Type::BaseModel
-          # @!attribute language
-          #   The language of the input audio. Supplying the input language in
-          #   [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`)
-          #   format will improve accuracy and latency.
-          #
-          #   @return [String, nil]
-          optional :language, String
-
-          # @!attribute model
-          #   The model to use for transcription, current options are `gpt-4o-transcribe`,
-          #   `gpt-4o-mini-transcribe`, and `whisper-1`.
-          #
-          #   @return [String, nil]
-          optional :model, String
-
-          # @!attribute prompt
-          #   An optional text to guide the model's style or continue a previous audio
-          #   segment. For `whisper-1`, the
-          #   [prompt is a list of keywords](https://platform.openai.com/docs/guides/speech-to-text#prompting).
-          #   For `gpt-4o-transcribe` models, the prompt is a free text string, for example
-          #   "expect words related to technology".
-          #
-          #   @return [String, nil]
-          optional :prompt, String
-
-          # @!method initialize(language: nil, model: nil, prompt: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Realtime::RealtimeSession::InputAudioTranscription} for more
-          #   details.
-          #
-          #   Configuration for input audio transcription, defaults to off and can be set to
-          #   `null` to turn off once on. Input audio transcription is not native to the
-          #   model, since the model consumes audio directly. Transcription runs
-          #   asynchronously through
-          #   [the /audio/transcriptions endpoint](https://platform.openai.com/docs/api-reference/audio/createTranscription)
-          #   and should be treated as guidance of input audio content rather than precisely
-          #   what the model heard. The client can optionally set the language and prompt for
-          #   transcription, these offer additional guidance to the transcription service.
-          #
-          #   @param language [String] The language of the input audio. Supplying the input language in
-          #
-          #   @param model [String] The model to use for transcription, current options are `gpt-4o-transcribe`, `gp
-          #
-          #   @param prompt [String] An optional text to guide the model's style or continue a previous audio
+          #   @param type [Symbol, OpenAI::Models::Realtime::NoiseReductionType] Type of noise reduction. `near_field` is for close-talking microphones such as h
         end
 
         # Maximum number of output tokens for a single assistant response, inclusive of
@@ -408,57 +343,6 @@ module OpenAI
 
           # @!method self.values
           #   @return [Array<Symbol>]
-        end
-
-        class Tool < OpenAI::Internal::Type::BaseModel
-          # @!attribute description
-          #   The description of the function, including guidance on when and how to call it,
-          #   and guidance about what to tell the user when calling (if anything).
-          #
-          #   @return [String, nil]
-          optional :description, String
-
-          # @!attribute name
-          #   The name of the function.
-          #
-          #   @return [String, nil]
-          optional :name, String
-
-          # @!attribute parameters
-          #   Parameters of the function in JSON Schema.
-          #
-          #   @return [Object, nil]
-          optional :parameters, OpenAI::Internal::Type::Unknown
-
-          # @!attribute type
-          #   The type of the tool, i.e. `function`.
-          #
-          #   @return [Symbol, OpenAI::Models::Realtime::RealtimeSession::Tool::Type, nil]
-          optional :type, enum: -> { OpenAI::Realtime::RealtimeSession::Tool::Type }
-
-          # @!method initialize(description: nil, name: nil, parameters: nil, type: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Realtime::RealtimeSession::Tool} for more details.
-          #
-          #   @param description [String] The description of the function, including guidance on when and how
-          #
-          #   @param name [String] The name of the function.
-          #
-          #   @param parameters [Object] Parameters of the function in JSON Schema.
-          #
-          #   @param type [Symbol, OpenAI::Models::Realtime::RealtimeSession::Tool::Type] The type of the tool, i.e. `function`.
-
-          # The type of the tool, i.e. `function`.
-          #
-          # @see OpenAI::Models::Realtime::RealtimeSession::Tool#type
-          module Type
-            extend OpenAI::Internal::Type::Enum
-
-            FUNCTION = :function
-
-            # @!method self.values
-            #   @return [Array<Symbol>]
-          end
         end
 
         # Configuration options for tracing. Set to null to disable tracing. Once tracing

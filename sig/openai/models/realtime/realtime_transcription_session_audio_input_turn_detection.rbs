@@ -1,0 +1,99 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_transcription_session_audio_input_turn_detection =
+        {
+          create_response: bool,
+          eagerness: OpenAI::Models::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::eagerness,
+          idle_timeout_ms: Integer?,
+          interrupt_response: bool,
+          prefix_padding_ms: Integer,
+          silence_duration_ms: Integer,
+          threshold: Float,
+          type: OpenAI::Models::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::type_
+        }
+
+      class RealtimeTranscriptionSessionAudioInputTurnDetection < OpenAI::Internal::Type::BaseModel
+        attr_reader create_response: bool?
+
+        def create_response=: (bool) -> bool
+
+        attr_reader eagerness: OpenAI::Models::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::eagerness?
+
+        def eagerness=: (
+          OpenAI::Models::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::eagerness
+        ) -> OpenAI::Models::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::eagerness
+
+        attr_accessor idle_timeout_ms: Integer?
+
+        attr_reader interrupt_response: bool?
+
+        def interrupt_response=: (bool) -> bool
+
+        attr_reader prefix_padding_ms: Integer?
+
+        def prefix_padding_ms=: (Integer) -> Integer
+
+        attr_reader silence_duration_ms: Integer?
+
+        def silence_duration_ms=: (Integer) -> Integer
+
+        attr_reader threshold: Float?
+
+        def threshold=: (Float) -> Float
+
+        attr_reader type: OpenAI::Models::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::type_?
+
+        def type=: (
+          OpenAI::Models::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::type_
+        ) -> OpenAI::Models::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::type_
+
+        def initialize: (
+          ?create_response: bool,
+          ?eagerness: OpenAI::Models::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::eagerness,
+          ?idle_timeout_ms: Integer?,
+          ?interrupt_response: bool,
+          ?prefix_padding_ms: Integer,
+          ?silence_duration_ms: Integer,
+          ?threshold: Float,
+          ?type: OpenAI::Models::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::type_
+        ) -> void
+
+        def to_hash: -> {
+          create_response: bool,
+          eagerness: OpenAI::Models::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::eagerness,
+          idle_timeout_ms: Integer?,
+          interrupt_response: bool,
+          prefix_padding_ms: Integer,
+          silence_duration_ms: Integer,
+          threshold: Float,
+          type: OpenAI::Models::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::type_
+        }
+
+        type eagerness = :low | :medium | :high | :auto
+
+        module Eagerness
+          extend OpenAI::Internal::Type::Enum
+
+          LOW: :low
+          MEDIUM: :medium
+          HIGH: :high
+          AUTO: :auto
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::eagerness]
+        end
+
+        type type_ = :server_vad | :semantic_vad
+
+        module Type
+          extend OpenAI::Internal::Type::Enum
+
+          SERVER_VAD: :server_vad
+          SEMANTIC_VAD: :semantic_vad
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::type_]
+        end
+      end
+    end
+  end
+end

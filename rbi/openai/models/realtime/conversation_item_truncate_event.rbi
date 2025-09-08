@@ -18,7 +18,7 @@ module OpenAI
         sig { returns(Integer) }
         attr_accessor :audio_end_ms
 
-        # The index of the content part to truncate. Set this to 0.
+        # The index of the content part to truncate. Set this to `0`.
         sig { returns(Integer) }
         attr_accessor :content_index
 
@@ -63,7 +63,7 @@ module OpenAI
           # audio_end_ms is greater than the actual audio duration, the server will respond
           # with an error.
           audio_end_ms:,
-          # The index of the content part to truncate. Set this to 0.
+          # The index of the content part to truncate. Set this to `0`.
           content_index:,
           # The ID of the assistant message item to truncate. Only assistant message items
           # can be truncated.

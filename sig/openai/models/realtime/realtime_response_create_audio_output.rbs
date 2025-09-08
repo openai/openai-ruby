@@ -1,0 +1,84 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_response_create_audio_output =
+        { output: OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output }
+
+      class RealtimeResponseCreateAudioOutput < OpenAI::Internal::Type::BaseModel
+        attr_reader output: OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output?
+
+        def output=: (
+          OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output
+        ) -> OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output
+
+        def initialize: (
+          ?output: OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output
+        ) -> void
+
+        def to_hash: -> {
+          output: OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output
+        }
+
+        type output =
+          {
+            format_: OpenAI::Models::Realtime::realtime_audio_formats,
+            voice: OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::voice
+          }
+
+        class Output < OpenAI::Internal::Type::BaseModel
+          attr_reader format_: OpenAI::Models::Realtime::realtime_audio_formats?
+
+          def format_=: (
+            OpenAI::Models::Realtime::realtime_audio_formats
+          ) -> OpenAI::Models::Realtime::realtime_audio_formats
+
+          attr_reader voice: OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::voice?
+
+          def voice=: (
+            OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::voice
+          ) -> OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::voice
+
+          def initialize: (
+            ?format_: OpenAI::Models::Realtime::realtime_audio_formats,
+            ?voice: OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::voice
+          ) -> void
+
+          def to_hash: -> {
+            format_: OpenAI::Models::Realtime::realtime_audio_formats,
+            voice: OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::voice
+          }
+
+          type voice =
+            String
+            | :alloy
+            | :ash
+            | :ballad
+            | :coral
+            | :echo
+            | :sage
+            | :shimmer
+            | :verse
+            | :marin
+            | :cedar
+
+          module Voice
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::voice]
+
+            ALLOY: :alloy
+            ASH: :ash
+            BALLAD: :ballad
+            CORAL: :coral
+            ECHO: :echo
+            SAGE: :sage
+            SHIMMER: :shimmer
+            VERSE: :verse
+            MARIN: :marin
+            CEDAR: :cedar
+          end
+        end
+      end
+    end
+  end
+end

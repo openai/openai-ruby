@@ -86,21 +86,13 @@ module OpenAI
         # and should be treated as guidance of input audio content rather than precisely
         # what the model heard. The client can optionally set the language and prompt for
         # transcription, these offer additional guidance to the transcription service.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::Realtime::RealtimeSession::InputAudioTranscription
-            )
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Realtime::AudioTranscription)) }
         attr_reader :input_audio_transcription
 
         sig do
           params(
             input_audio_transcription:
-              T.nilable(
-                OpenAI::Realtime::RealtimeSession::InputAudioTranscription::OrHash
-              )
+              T.nilable(OpenAI::Realtime::AudioTranscription::OrHash)
           ).void
         end
         attr_writer :input_audio_transcription
@@ -233,16 +225,10 @@ module OpenAI
         attr_writer :tool_choice
 
         # Tools (functions) available to the model.
-        sig do
-          returns(T.nilable(T::Array[OpenAI::Realtime::RealtimeSession::Tool]))
-        end
+        sig { returns(T.nilable(T::Array[OpenAI::Realtime::Models])) }
         attr_reader :tools
 
-        sig do
-          params(
-            tools: T::Array[OpenAI::Realtime::RealtimeSession::Tool::OrHash]
-          ).void
-        end
+        sig { params(tools: T::Array[OpenAI::Realtime::Models::OrHash]).void }
         attr_writer :tools
 
         # Configuration options for tracing. Set to null to disable tracing. Once tracing
@@ -321,9 +307,7 @@ module OpenAI
             input_audio_noise_reduction:
               OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction::OrHash,
             input_audio_transcription:
-              T.nilable(
-                OpenAI::Realtime::RealtimeSession::InputAudioTranscription::OrHash
-              ),
+              T.nilable(OpenAI::Realtime::AudioTranscription::OrHash),
             instructions: String,
             max_response_output_tokens: T.any(Integer, Symbol),
             modalities:
@@ -336,7 +320,7 @@ module OpenAI
             speed: Float,
             temperature: Float,
             tool_choice: String,
-            tools: T::Array[OpenAI::Realtime::RealtimeSession::Tool::OrHash],
+            tools: T::Array[OpenAI::Realtime::Models::OrHash],
             tracing:
               T.nilable(
                 T.any(
@@ -460,9 +444,7 @@ module OpenAI
               input_audio_noise_reduction:
                 OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction,
               input_audio_transcription:
-                T.nilable(
-                  OpenAI::Realtime::RealtimeSession::InputAudioTranscription
-                ),
+                T.nilable(OpenAI::Realtime::AudioTranscription),
               instructions: String,
               max_response_output_tokens: T.any(Integer, Symbol),
               modalities:
@@ -475,7 +457,7 @@ module OpenAI
               speed: Float,
               temperature: Float,
               tool_choice: String,
-              tools: T::Array[OpenAI::Realtime::RealtimeSession::Tool],
+              tools: T::Array[OpenAI::Realtime::Models],
               tracing:
                 T.nilable(
                   T.any(
@@ -572,19 +554,12 @@ module OpenAI
           # headphones, `far_field` is for far-field microphones such as laptop or
           # conference room microphones.
           sig do
-            returns(
-              T.nilable(
-                OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction::Type::OrSymbol
-              )
-            )
+            returns(T.nilable(OpenAI::Realtime::NoiseReductionType::OrSymbol))
           end
           attr_reader :type
 
           sig do
-            params(
-              type:
-                OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction::Type::OrSymbol
-            ).void
+            params(type: OpenAI::Realtime::NoiseReductionType::OrSymbol).void
           end
           attr_writer :type
 
@@ -595,8 +570,7 @@ module OpenAI
           # perception of the input audio.
           sig do
             params(
-              type:
-                OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction::Type::OrSymbol
+              type: OpenAI::Realtime::NoiseReductionType::OrSymbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -609,123 +583,7 @@ module OpenAI
 
           sig do
             override.returns(
-              {
-                type:
-                  OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction::Type::OrSymbol
-              }
-            )
-          end
-          def to_hash
-          end
-
-          # Type of noise reduction. `near_field` is for close-talking microphones such as
-          # headphones, `far_field` is for far-field microphones such as laptop or
-          # conference room microphones.
-          module Type
-            extend OpenAI::Internal::Type::Enum
-
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction::Type
-                )
-              end
-            OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-            NEAR_FIELD =
-              T.let(
-                :near_field,
-                OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction::Type::TaggedSymbol
-              )
-            FAR_FIELD =
-              T.let(
-                :far_field,
-                OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction::Type::TaggedSymbol
-              )
-
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction::Type::TaggedSymbol
-                ]
-              )
-            end
-            def self.values
-            end
-          end
-        end
-
-        class InputAudioTranscription < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Realtime::RealtimeSession::InputAudioTranscription,
-                OpenAI::Internal::AnyHash
-              )
-            end
-
-          # The language of the input audio. Supplying the input language in
-          # [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`)
-          # format will improve accuracy and latency.
-          sig { returns(T.nilable(String)) }
-          attr_reader :language
-
-          sig { params(language: String).void }
-          attr_writer :language
-
-          # The model to use for transcription, current options are `gpt-4o-transcribe`,
-          # `gpt-4o-mini-transcribe`, and `whisper-1`.
-          sig { returns(T.nilable(String)) }
-          attr_reader :model
-
-          sig { params(model: String).void }
-          attr_writer :model
-
-          # An optional text to guide the model's style or continue a previous audio
-          # segment. For `whisper-1`, the
-          # [prompt is a list of keywords](https://platform.openai.com/docs/guides/speech-to-text#prompting).
-          # For `gpt-4o-transcribe` models, the prompt is a free text string, for example
-          # "expect words related to technology".
-          sig { returns(T.nilable(String)) }
-          attr_reader :prompt
-
-          sig { params(prompt: String).void }
-          attr_writer :prompt
-
-          # Configuration for input audio transcription, defaults to off and can be set to
-          # `null` to turn off once on. Input audio transcription is not native to the
-          # model, since the model consumes audio directly. Transcription runs
-          # asynchronously through
-          # [the /audio/transcriptions endpoint](https://platform.openai.com/docs/api-reference/audio/createTranscription)
-          # and should be treated as guidance of input audio content rather than precisely
-          # what the model heard. The client can optionally set the language and prompt for
-          # transcription, these offer additional guidance to the transcription service.
-          sig do
-            params(language: String, model: String, prompt: String).returns(
-              T.attached_class
-            )
-          end
-          def self.new(
-            # The language of the input audio. Supplying the input language in
-            # [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`)
-            # format will improve accuracy and latency.
-            language: nil,
-            # The model to use for transcription, current options are `gpt-4o-transcribe`,
-            # `gpt-4o-mini-transcribe`, and `whisper-1`.
-            model: nil,
-            # An optional text to guide the model's style or continue a previous audio
-            # segment. For `whisper-1`, the
-            # [prompt is a list of keywords](https://platform.openai.com/docs/guides/speech-to-text#prompting).
-            # For `gpt-4o-transcribe` models, the prompt is a free text string, for example
-            # "expect words related to technology".
-            prompt: nil
-          )
-          end
-
-          sig do
-            override.returns(
-              { language: String, model: String, prompt: String }
+              { type: OpenAI::Realtime::NoiseReductionType::OrSymbol }
             )
           end
           def to_hash
@@ -905,114 +763,6 @@ module OpenAI
             )
           end
           def self.values
-          end
-        end
-
-        class Tool < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Realtime::RealtimeSession::Tool,
-                OpenAI::Internal::AnyHash
-              )
-            end
-
-          # The description of the function, including guidance on when and how to call it,
-          # and guidance about what to tell the user when calling (if anything).
-          sig { returns(T.nilable(String)) }
-          attr_reader :description
-
-          sig { params(description: String).void }
-          attr_writer :description
-
-          # The name of the function.
-          sig { returns(T.nilable(String)) }
-          attr_reader :name
-
-          sig { params(name: String).void }
-          attr_writer :name
-
-          # Parameters of the function in JSON Schema.
-          sig { returns(T.nilable(T.anything)) }
-          attr_reader :parameters
-
-          sig { params(parameters: T.anything).void }
-          attr_writer :parameters
-
-          # The type of the tool, i.e. `function`.
-          sig do
-            returns(
-              T.nilable(OpenAI::Realtime::RealtimeSession::Tool::Type::OrSymbol)
-            )
-          end
-          attr_reader :type
-
-          sig do
-            params(
-              type: OpenAI::Realtime::RealtimeSession::Tool::Type::OrSymbol
-            ).void
-          end
-          attr_writer :type
-
-          sig do
-            params(
-              description: String,
-              name: String,
-              parameters: T.anything,
-              type: OpenAI::Realtime::RealtimeSession::Tool::Type::OrSymbol
-            ).returns(T.attached_class)
-          end
-          def self.new(
-            # The description of the function, including guidance on when and how to call it,
-            # and guidance about what to tell the user when calling (if anything).
-            description: nil,
-            # The name of the function.
-            name: nil,
-            # Parameters of the function in JSON Schema.
-            parameters: nil,
-            # The type of the tool, i.e. `function`.
-            type: nil
-          )
-          end
-
-          sig do
-            override.returns(
-              {
-                description: String,
-                name: String,
-                parameters: T.anything,
-                type: OpenAI::Realtime::RealtimeSession::Tool::Type::OrSymbol
-              }
-            )
-          end
-          def to_hash
-          end
-
-          # The type of the tool, i.e. `function`.
-          module Type
-            extend OpenAI::Internal::Type::Enum
-
-            TaggedSymbol =
-              T.type_alias do
-                T.all(Symbol, OpenAI::Realtime::RealtimeSession::Tool::Type)
-              end
-            OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-            FUNCTION =
-              T.let(
-                :function,
-                OpenAI::Realtime::RealtimeSession::Tool::Type::TaggedSymbol
-              )
-
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Realtime::RealtimeSession::Tool::Type::TaggedSymbol
-                ]
-              )
-            end
-            def self.values
-            end
           end
         end
 

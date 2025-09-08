@@ -16,12 +16,16 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :event_id
 
-        # Realtime session object.
-        sig { returns(OpenAI::Realtime::RealtimeSession) }
-        attr_reader :session
-
-        sig { params(session: OpenAI::Realtime::RealtimeSession::OrHash).void }
-        attr_writer :session
+        # The session configuration.
+        sig do
+          returns(
+            T.any(
+              OpenAI::Realtime::RealtimeSessionCreateRequest,
+              OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest
+            )
+          )
+        end
+        attr_accessor :session
 
         # The event type, must be `session.created`.
         sig { returns(Symbol) }
@@ -33,14 +37,18 @@ module OpenAI
         sig do
           params(
             event_id: String,
-            session: OpenAI::Realtime::RealtimeSession::OrHash,
+            session:
+              T.any(
+                OpenAI::Realtime::RealtimeSessionCreateRequest::OrHash,
+                OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::OrHash
+              ),
             type: Symbol
           ).returns(T.attached_class)
         end
         def self.new(
           # The unique ID of the server event.
           event_id:,
-          # Realtime session object.
+          # The session configuration.
           session:,
           # The event type, must be `session.created`.
           type: :"session.created"
@@ -51,12 +59,37 @@ module OpenAI
           override.returns(
             {
               event_id: String,
-              session: OpenAI::Realtime::RealtimeSession,
+              session:
+                T.any(
+                  OpenAI::Realtime::RealtimeSessionCreateRequest,
+                  OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest
+                ),
               type: Symbol
             }
           )
         end
         def to_hash
+        end
+
+        # The session configuration.
+        module Session
+          extend OpenAI::Internal::Type::Union
+
+          Variants =
+            T.type_alias do
+              T.any(
+                OpenAI::Realtime::RealtimeSessionCreateRequest,
+                OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest
+              )
+            end
+
+          sig do
+            override.returns(
+              T::Array[OpenAI::Realtime::SessionCreatedEvent::Session::Variants]
+            )
+          end
+          def self.variants
+          end
         end
       end
     end

@@ -30,7 +30,7 @@ module OpenAI
 
         # This event is the output of audio transcription for user audio written to the
         # user audio buffer. Transcription begins when the input audio buffer is
-        # committed by the client or server (in `server_vad` mode). Transcription runs
+        # committed by the client or server (when VAD is enabled). Transcription runs
         # asynchronously with Response creation, so this event may come before or after
         # the Response events.
         #
@@ -41,7 +41,7 @@ module OpenAI
         variant :"conversation.item.input_audio_transcription.completed",
                 -> { OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent }
 
-        # Returned when the text value of an input audio transcription content part is updated.
+        # Returned when the text value of an input audio transcription content part is updated with incremental transcription results.
         variant :"conversation.item.input_audio_transcription.delta",
                 -> { OpenAI::Realtime::ConversationItemInputAudioTranscriptionDeltaEvent }
 
@@ -51,7 +51,7 @@ module OpenAI
         variant :"conversation.item.input_audio_transcription.failed",
                 -> { OpenAI::Realtime::ConversationItemInputAudioTranscriptionFailedEvent }
 
-        # Returned when a conversation item is retrieved with `conversation.item.retrieve`.
+        # Returned when a conversation item is retrieved with `conversation.item.retrieve`. This is provided as a way to fetch the server's representation of an item, for example to get access to the post-processed audio data after noise cancellation and VAD. It includes the full content of the Item, including audio data.
         variant :"conversation.item.retrieved",
                 -> { OpenAI::Realtime::RealtimeServerEvent::ConversationItemRetrieved }
 
@@ -133,6 +133,12 @@ module OpenAI
         # Returned when a Response is done streaming. Always emitted, no matter the
         # final state. The Response object included in the `response.done` event will
         # include all output Items in the Response but will omit the raw audio data.
+        #
+        # Clients should check the `status` field of the Response to determine if it was successful
+        # (`completed`) or if there was another outcome: `cancelled`, `failed`, or `incomplete`.
+        #
+        # A response will contain all output items that were generated during the response, excluding
+        # any audio content.
         variant :"response.done", -> { OpenAI::Realtime::ResponseDoneEvent }
 
         # Returned when the model-generated function call arguments are updated.
@@ -196,10 +202,17 @@ module OpenAI
         variant :"output_audio_buffer.cleared",
                 -> { OpenAI::Realtime::RealtimeServerEvent::OutputAudioBufferCleared }
 
-        # Returned when a conversation item is added.
+        # Sent by the server when an Item is added to the default Conversation. This can happen in several cases:
+        # - When the client sends a `conversation.item.create` event.
+        # - When the input audio buffer is committed. In this case the item will be a user message containing the audio from the buffer.
+        # - When the model is generating a Response. In this case the `conversation.item.added` event will be sent when the model starts generating a specific Item, and thus it will not yet have any content (and `status` will be `in_progress`).
+        #
+        # The event will include the full content of the Item (except when model is generating a Response) except for audio data, which can be retrieved separately with a `conversation.item.retrieve` event if necessary.
         variant :"conversation.item.added", -> { OpenAI::Realtime::ConversationItemAdded }
 
         # Returned when a conversation item is finalized.
+        #
+        # The event will include the full content of the Item except for audio data, which can be retrieved separately with a `conversation.item.retrieve` event if needed.
         variant :"conversation.item.done", -> { OpenAI::Realtime::ConversationItemDone }
 
         # Returned when the server VAD timeout is triggered for the input audio buffer.
@@ -254,7 +267,10 @@ module OpenAI
 
           # @!method initialize(event_id:, item:, type: :"conversation.item.retrieved")
           #   Returned when a conversation item is retrieved with
-          #   `conversation.item.retrieve`.
+          #   `conversation.item.retrieve`. This is provided as a way to fetch the server's
+          #   representation of an item, for example to get access to the post-processed audio
+          #   data after noise cancellation and VAD. It includes the full content of the Item,
+          #   including audio data.
           #
           #   @param event_id [String] The unique ID of the server event.
           #

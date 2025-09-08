@@ -4,28 +4,38 @@ module OpenAI
       type session_updated_event =
         {
           event_id: String,
-          session: OpenAI::Realtime::RealtimeSession,
+          session: OpenAI::Models::Realtime::SessionUpdatedEvent::session,
           type: :"session.updated"
         }
 
       class SessionUpdatedEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor event_id: String
 
-        attr_accessor session: OpenAI::Realtime::RealtimeSession
+        attr_accessor session: OpenAI::Models::Realtime::SessionUpdatedEvent::session
 
         attr_accessor type: :"session.updated"
 
         def initialize: (
           event_id: String,
-          session: OpenAI::Realtime::RealtimeSession,
+          session: OpenAI::Models::Realtime::SessionUpdatedEvent::session,
           ?type: :"session.updated"
         ) -> void
 
         def to_hash: -> {
           event_id: String,
-          session: OpenAI::Realtime::RealtimeSession,
+          session: OpenAI::Models::Realtime::SessionUpdatedEvent::session,
           type: :"session.updated"
         }
+
+        type session =
+          OpenAI::Realtime::RealtimeSessionCreateRequest
+          | OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest
+
+        module Session
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Realtime::SessionUpdatedEvent::session]
+        end
       end
     end
   end

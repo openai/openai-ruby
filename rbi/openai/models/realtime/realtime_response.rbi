@@ -9,20 +9,28 @@ module OpenAI
             T.any(OpenAI::Realtime::RealtimeResponse, OpenAI::Internal::AnyHash)
           end
 
-        # The unique ID of the response.
+        # The unique ID of the response, will look like `resp_1234`.
         sig { returns(T.nilable(String)) }
         attr_reader :id
 
         sig { params(id: String).void }
         attr_writer :id
 
+        # Configuration for audio output.
+        sig { returns(T.nilable(OpenAI::Realtime::RealtimeResponse::Audio)) }
+        attr_reader :audio
+
+        sig do
+          params(audio: OpenAI::Realtime::RealtimeResponse::Audio::OrHash).void
+        end
+        attr_writer :audio
+
         # Which conversation the response is added to, determined by the `conversation`
         # field in the `response.create` event. If `auto`, the response will be added to
         # the default conversation and the value of `conversation_id` will be an id like
         # `conv_1234`. If `none`, the response will not be added to any conversation and
         # the value of `conversation_id` will be `null`. If responses are being triggered
-        # by server VAD, the response will be added to the default conversation, thus the
-        # `conversation_id` will be an id like `conv_1234`.
+        # automatically by VAD the response will be added to the default conversation
         sig { returns(T.nilable(String)) }
         attr_reader :conversation_id
 
@@ -45,26 +53,6 @@ module OpenAI
         # a maximum length of 512 characters.
         sig { returns(T.nilable(T::Hash[Symbol, String])) }
         attr_accessor :metadata
-
-        # The set of modalities the model used to respond. If there are multiple
-        # modalities, the model will pick one, for example if `modalities` is
-        # `["text", "audio"]`, the model could be responding in either text or audio.
-        sig do
-          returns(
-            T.nilable(
-              T::Array[OpenAI::Realtime::RealtimeResponse::Modality::OrSymbol]
-            )
-          )
-        end
-        attr_reader :modalities
-
-        sig do
-          params(
-            modalities:
-              T::Array[OpenAI::Realtime::RealtimeResponse::Modality::OrSymbol]
-          ).void
-        end
-        attr_writer :modalities
 
         # The object type, must be `realtime.response`.
         sig do
@@ -123,23 +111,30 @@ module OpenAI
         end
         attr_writer :output
 
-        # The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+        # The set of modalities the model used to respond, currently the only possible
+        # values are `[\"audio\"]`, `[\"text\"]`. Audio output always include a text
+        # transcript. Setting the output to mode `text` will disable audio output from the
+        # model.
         sig do
           returns(
             T.nilable(
-              OpenAI::Realtime::RealtimeResponse::OutputAudioFormat::OrSymbol
+              T::Array[
+                OpenAI::Realtime::RealtimeResponse::OutputModality::OrSymbol
+              ]
             )
           )
         end
-        attr_reader :output_audio_format
+        attr_reader :output_modalities
 
         sig do
           params(
-            output_audio_format:
-              OpenAI::Realtime::RealtimeResponse::OutputAudioFormat::OrSymbol
+            output_modalities:
+              T::Array[
+                OpenAI::Realtime::RealtimeResponse::OutputModality::OrSymbol
+              ]
           ).void
         end
-        attr_writer :output_audio_format
+        attr_writer :output_modalities
 
         # The final status of the response (`completed`, `cancelled`, `failed`, or
         # `incomplete`, `in_progress`).
@@ -168,13 +163,6 @@ module OpenAI
         end
         attr_writer :status_details
 
-        # Sampling temperature for the model, limited to [0.6, 1.2]. Defaults to 0.8.
-        sig { returns(T.nilable(Float)) }
-        attr_reader :temperature
-
-        sig { params(temperature: Float).void }
-        attr_writer :temperature
-
         # Usage statistics for the Response, this will correspond to billing. A Realtime
         # API session will maintain a conversation context and append new Items to the
         # Conversation, thus output from previous turns (text and audio tokens) will
@@ -187,34 +175,14 @@ module OpenAI
         end
         attr_writer :usage
 
-        # The voice the model used to respond. Current voice options are `alloy`, `ash`,
-        # `ballad`, `coral`, `echo`, `sage`, `shimmer`, and `verse`.
-        sig do
-          returns(
-            T.nilable(
-              T.any(String, OpenAI::Realtime::RealtimeResponse::Voice::OrSymbol)
-            )
-          )
-        end
-        attr_reader :voice
-
-        sig do
-          params(
-            voice:
-              T.any(String, OpenAI::Realtime::RealtimeResponse::Voice::OrSymbol)
-          ).void
-        end
-        attr_writer :voice
-
         # The response resource.
         sig do
           params(
             id: String,
+            audio: OpenAI::Realtime::RealtimeResponse::Audio::OrHash,
             conversation_id: String,
             max_output_tokens: T.any(Integer, Symbol),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            modalities:
-              T::Array[OpenAI::Realtime::RealtimeResponse::Modality::OrSymbol],
             object: OpenAI::Realtime::RealtimeResponse::Object::OrSymbol,
             output:
               T::Array[
@@ -230,26 +198,26 @@ module OpenAI
                   OpenAI::Realtime::RealtimeMcpApprovalRequest::OrHash
                 )
               ],
-            output_audio_format:
-              OpenAI::Realtime::RealtimeResponse::OutputAudioFormat::OrSymbol,
+            output_modalities:
+              T::Array[
+                OpenAI::Realtime::RealtimeResponse::OutputModality::OrSymbol
+              ],
             status: OpenAI::Realtime::RealtimeResponse::Status::OrSymbol,
             status_details: OpenAI::Realtime::RealtimeResponseStatus::OrHash,
-            temperature: Float,
-            usage: OpenAI::Realtime::RealtimeResponseUsage::OrHash,
-            voice:
-              T.any(String, OpenAI::Realtime::RealtimeResponse::Voice::OrSymbol)
+            usage: OpenAI::Realtime::RealtimeResponseUsage::OrHash
           ).returns(T.attached_class)
         end
         def self.new(
-          # The unique ID of the response.
+          # The unique ID of the response, will look like `resp_1234`.
           id: nil,
+          # Configuration for audio output.
+          audio: nil,
           # Which conversation the response is added to, determined by the `conversation`
           # field in the `response.create` event. If `auto`, the response will be added to
           # the default conversation and the value of `conversation_id` will be an id like
           # `conv_1234`. If `none`, the response will not be added to any conversation and
           # the value of `conversation_id` will be `null`. If responses are being triggered
-          # by server VAD, the response will be added to the default conversation, thus the
-          # `conversation_id` will be an id like `conv_1234`.
+          # automatically by VAD the response will be added to the default conversation
           conversation_id: nil,
           # Maximum number of output tokens for a single assistant response, inclusive of
           # tool calls, that was used in this response.
@@ -261,31 +229,25 @@ module OpenAI
           # Keys are strings with a maximum length of 64 characters. Values are strings with
           # a maximum length of 512 characters.
           metadata: nil,
-          # The set of modalities the model used to respond. If there are multiple
-          # modalities, the model will pick one, for example if `modalities` is
-          # `["text", "audio"]`, the model could be responding in either text or audio.
-          modalities: nil,
           # The object type, must be `realtime.response`.
           object: nil,
           # The list of output items generated by the response.
           output: nil,
-          # The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
-          output_audio_format: nil,
+          # The set of modalities the model used to respond, currently the only possible
+          # values are `[\"audio\"]`, `[\"text\"]`. Audio output always include a text
+          # transcript. Setting the output to mode `text` will disable audio output from the
+          # model.
+          output_modalities: nil,
           # The final status of the response (`completed`, `cancelled`, `failed`, or
           # `incomplete`, `in_progress`).
           status: nil,
           # Additional details about the status.
           status_details: nil,
-          # Sampling temperature for the model, limited to [0.6, 1.2]. Defaults to 0.8.
-          temperature: nil,
           # Usage statistics for the Response, this will correspond to billing. A Realtime
           # API session will maintain a conversation context and append new Items to the
           # Conversation, thus output from previous turns (text and audio tokens) will
           # become the input for later turns.
-          usage: nil,
-          # The voice the model used to respond. Current voice options are `alloy`, `ash`,
-          # `ballad`, `coral`, `echo`, `sage`, `shimmer`, and `verse`.
-          voice: nil
+          usage: nil
         )
         end
 
@@ -293,13 +255,10 @@ module OpenAI
           override.returns(
             {
               id: String,
+              audio: OpenAI::Realtime::RealtimeResponse::Audio,
               conversation_id: String,
               max_output_tokens: T.any(Integer, Symbol),
               metadata: T.nilable(T::Hash[Symbol, String]),
-              modalities:
-                T::Array[
-                  OpenAI::Realtime::RealtimeResponse::Modality::OrSymbol
-                ],
               object: OpenAI::Realtime::RealtimeResponse::Object::OrSymbol,
               output:
                 T::Array[
@@ -315,21 +274,253 @@ module OpenAI
                     OpenAI::Realtime::RealtimeMcpApprovalRequest
                   )
                 ],
-              output_audio_format:
-                OpenAI::Realtime::RealtimeResponse::OutputAudioFormat::OrSymbol,
+              output_modalities:
+                T::Array[
+                  OpenAI::Realtime::RealtimeResponse::OutputModality::OrSymbol
+                ],
               status: OpenAI::Realtime::RealtimeResponse::Status::OrSymbol,
               status_details: OpenAI::Realtime::RealtimeResponseStatus,
-              temperature: Float,
-              usage: OpenAI::Realtime::RealtimeResponseUsage,
-              voice:
-                T.any(
-                  String,
-                  OpenAI::Realtime::RealtimeResponse::Voice::OrSymbol
-                )
+              usage: OpenAI::Realtime::RealtimeResponseUsage
             }
           )
         end
         def to_hash
+        end
+
+        class Audio < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Realtime::RealtimeResponse::Audio,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          sig do
+            returns(
+              T.nilable(OpenAI::Realtime::RealtimeResponse::Audio::Output)
+            )
+          end
+          attr_reader :output
+
+          sig do
+            params(
+              output: OpenAI::Realtime::RealtimeResponse::Audio::Output::OrHash
+            ).void
+          end
+          attr_writer :output
+
+          # Configuration for audio output.
+          sig do
+            params(
+              output: OpenAI::Realtime::RealtimeResponse::Audio::Output::OrHash
+            ).returns(T.attached_class)
+          end
+          def self.new(output: nil)
+          end
+
+          sig do
+            override.returns(
+              { output: OpenAI::Realtime::RealtimeResponse::Audio::Output }
+            )
+          end
+          def to_hash
+          end
+
+          class Output < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Realtime::RealtimeResponse::Audio::Output,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The format of the output audio.
+            sig do
+              returns(
+                T.nilable(
+                  T.any(
+                    OpenAI::Realtime::RealtimeAudioFormats::AudioPCM,
+                    OpenAI::Realtime::RealtimeAudioFormats::AudioPCMU,
+                    OpenAI::Realtime::RealtimeAudioFormats::AudioPCMA
+                  )
+                )
+              )
+            end
+            attr_reader :format_
+
+            sig do
+              params(
+                format_:
+                  T.any(
+                    OpenAI::Realtime::RealtimeAudioFormats::AudioPCM::OrHash,
+                    OpenAI::Realtime::RealtimeAudioFormats::AudioPCMU::OrHash,
+                    OpenAI::Realtime::RealtimeAudioFormats::AudioPCMA::OrHash
+                  )
+              ).void
+            end
+            attr_writer :format_
+
+            # The voice the model uses to respond. Voice cannot be changed during the session
+            # once the model has responded with audio at least once. Current voice options are
+            # `alloy`, `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`,
+            # and `cedar`. We recommend `marin` and `cedar` for best quality.
+            sig do
+              returns(
+                T.nilable(
+                  T.any(
+                    String,
+                    OpenAI::Realtime::RealtimeResponse::Audio::Output::Voice::OrSymbol
+                  )
+                )
+              )
+            end
+            attr_reader :voice
+
+            sig do
+              params(
+                voice:
+                  T.any(
+                    String,
+                    OpenAI::Realtime::RealtimeResponse::Audio::Output::Voice::OrSymbol
+                  )
+              ).void
+            end
+            attr_writer :voice
+
+            sig do
+              params(
+                format_:
+                  T.any(
+                    OpenAI::Realtime::RealtimeAudioFormats::AudioPCM::OrHash,
+                    OpenAI::Realtime::RealtimeAudioFormats::AudioPCMU::OrHash,
+                    OpenAI::Realtime::RealtimeAudioFormats::AudioPCMA::OrHash
+                  ),
+                voice:
+                  T.any(
+                    String,
+                    OpenAI::Realtime::RealtimeResponse::Audio::Output::Voice::OrSymbol
+                  )
+              ).returns(T.attached_class)
+            end
+            def self.new(
+              # The format of the output audio.
+              format_: nil,
+              # The voice the model uses to respond. Voice cannot be changed during the session
+              # once the model has responded with audio at least once. Current voice options are
+              # `alloy`, `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`,
+              # and `cedar`. We recommend `marin` and `cedar` for best quality.
+              voice: nil
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  format_:
+                    T.any(
+                      OpenAI::Realtime::RealtimeAudioFormats::AudioPCM,
+                      OpenAI::Realtime::RealtimeAudioFormats::AudioPCMU,
+                      OpenAI::Realtime::RealtimeAudioFormats::AudioPCMA
+                    ),
+                  voice:
+                    T.any(
+                      String,
+                      OpenAI::Realtime::RealtimeResponse::Audio::Output::Voice::OrSymbol
+                    )
+                }
+              )
+            end
+            def to_hash
+            end
+
+            # The voice the model uses to respond. Voice cannot be changed during the session
+            # once the model has responded with audio at least once. Current voice options are
+            # `alloy`, `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`,
+            # and `cedar`. We recommend `marin` and `cedar` for best quality.
+            module Voice
+              extend OpenAI::Internal::Type::Union
+
+              Variants =
+                T.type_alias do
+                  T.any(
+                    String,
+                    OpenAI::Realtime::RealtimeResponse::Audio::Output::Voice::TaggedSymbol
+                  )
+                end
+
+              sig do
+                override.returns(
+                  T::Array[
+                    OpenAI::Realtime::RealtimeResponse::Audio::Output::Voice::Variants
+                  ]
+                )
+              end
+              def self.variants
+              end
+
+              TaggedSymbol =
+                T.type_alias do
+                  T.all(
+                    Symbol,
+                    OpenAI::Realtime::RealtimeResponse::Audio::Output::Voice
+                  )
+                end
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+              ALLOY =
+                T.let(
+                  :alloy,
+                  OpenAI::Realtime::RealtimeResponse::Audio::Output::Voice::TaggedSymbol
+                )
+              ASH =
+                T.let(
+                  :ash,
+                  OpenAI::Realtime::RealtimeResponse::Audio::Output::Voice::TaggedSymbol
+                )
+              BALLAD =
+                T.let(
+                  :ballad,
+                  OpenAI::Realtime::RealtimeResponse::Audio::Output::Voice::TaggedSymbol
+                )
+              CORAL =
+                T.let(
+                  :coral,
+                  OpenAI::Realtime::RealtimeResponse::Audio::Output::Voice::TaggedSymbol
+                )
+              ECHO =
+                T.let(
+                  :echo,
+                  OpenAI::Realtime::RealtimeResponse::Audio::Output::Voice::TaggedSymbol
+                )
+              SAGE =
+                T.let(
+                  :sage,
+                  OpenAI::Realtime::RealtimeResponse::Audio::Output::Voice::TaggedSymbol
+                )
+              SHIMMER =
+                T.let(
+                  :shimmer,
+                  OpenAI::Realtime::RealtimeResponse::Audio::Output::Voice::TaggedSymbol
+                )
+              VERSE =
+                T.let(
+                  :verse,
+                  OpenAI::Realtime::RealtimeResponse::Audio::Output::Voice::TaggedSymbol
+                )
+              MARIN =
+                T.let(
+                  :marin,
+                  OpenAI::Realtime::RealtimeResponse::Audio::Output::Voice::TaggedSymbol
+                )
+              CEDAR =
+                T.let(
+                  :cedar,
+                  OpenAI::Realtime::RealtimeResponse::Audio::Output::Voice::TaggedSymbol
+                )
+            end
+          end
         end
 
         # Maximum number of output tokens for a single assistant response, inclusive of
@@ -347,37 +538,6 @@ module OpenAI
             )
           end
           def self.variants
-          end
-        end
-
-        module Modality
-          extend OpenAI::Internal::Type::Enum
-
-          TaggedSymbol =
-            T.type_alias do
-              T.all(Symbol, OpenAI::Realtime::RealtimeResponse::Modality)
-            end
-          OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-          TEXT =
-            T.let(
-              :text,
-              OpenAI::Realtime::RealtimeResponse::Modality::TaggedSymbol
-            )
-          AUDIO =
-            T.let(
-              :audio,
-              OpenAI::Realtime::RealtimeResponse::Modality::TaggedSymbol
-            )
-
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Realtime::RealtimeResponse::Modality::TaggedSymbol
-              ]
-            )
-          end
-          def self.values
           end
         end
 
@@ -406,39 +566,30 @@ module OpenAI
           end
         end
 
-        # The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
-        module OutputAudioFormat
+        module OutputModality
           extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
             T.type_alias do
-              T.all(
-                Symbol,
-                OpenAI::Realtime::RealtimeResponse::OutputAudioFormat
-              )
+              T.all(Symbol, OpenAI::Realtime::RealtimeResponse::OutputModality)
             end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          PCM16 =
+          TEXT =
             T.let(
-              :pcm16,
-              OpenAI::Realtime::RealtimeResponse::OutputAudioFormat::TaggedSymbol
+              :text,
+              OpenAI::Realtime::RealtimeResponse::OutputModality::TaggedSymbol
             )
-          G711_ULAW =
+          AUDIO =
             T.let(
-              :g711_ulaw,
-              OpenAI::Realtime::RealtimeResponse::OutputAudioFormat::TaggedSymbol
-            )
-          G711_ALAW =
-            T.let(
-              :g711_alaw,
-              OpenAI::Realtime::RealtimeResponse::OutputAudioFormat::TaggedSymbol
+              :audio,
+              OpenAI::Realtime::RealtimeResponse::OutputModality::TaggedSymbol
             )
 
           sig do
             override.returns(
               T::Array[
-                OpenAI::Realtime::RealtimeResponse::OutputAudioFormat::TaggedSymbol
+                OpenAI::Realtime::RealtimeResponse::OutputModality::TaggedSymbol
               ]
             )
           end
@@ -490,82 +641,6 @@ module OpenAI
           end
           def self.values
           end
-        end
-
-        # The voice the model used to respond. Current voice options are `alloy`, `ash`,
-        # `ballad`, `coral`, `echo`, `sage`, `shimmer`, and `verse`.
-        module Voice
-          extend OpenAI::Internal::Type::Union
-
-          Variants =
-            T.type_alias do
-              T.any(
-                String,
-                OpenAI::Realtime::RealtimeResponse::Voice::TaggedSymbol
-              )
-            end
-
-          sig do
-            override.returns(
-              T::Array[OpenAI::Realtime::RealtimeResponse::Voice::Variants]
-            )
-          end
-          def self.variants
-          end
-
-          TaggedSymbol =
-            T.type_alias do
-              T.all(Symbol, OpenAI::Realtime::RealtimeResponse::Voice)
-            end
-          OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-          ALLOY =
-            T.let(
-              :alloy,
-              OpenAI::Realtime::RealtimeResponse::Voice::TaggedSymbol
-            )
-          ASH =
-            T.let(:ash, OpenAI::Realtime::RealtimeResponse::Voice::TaggedSymbol)
-          BALLAD =
-            T.let(
-              :ballad,
-              OpenAI::Realtime::RealtimeResponse::Voice::TaggedSymbol
-            )
-          CORAL =
-            T.let(
-              :coral,
-              OpenAI::Realtime::RealtimeResponse::Voice::TaggedSymbol
-            )
-          ECHO =
-            T.let(
-              :echo,
-              OpenAI::Realtime::RealtimeResponse::Voice::TaggedSymbol
-            )
-          SAGE =
-            T.let(
-              :sage,
-              OpenAI::Realtime::RealtimeResponse::Voice::TaggedSymbol
-            )
-          SHIMMER =
-            T.let(
-              :shimmer,
-              OpenAI::Realtime::RealtimeResponse::Voice::TaggedSymbol
-            )
-          VERSE =
-            T.let(
-              :verse,
-              OpenAI::Realtime::RealtimeResponse::Voice::TaggedSymbol
-            )
-          MARIN =
-            T.let(
-              :marin,
-              OpenAI::Realtime::RealtimeResponse::Voice::TaggedSymbol
-            )
-          CEDAR =
-            T.let(
-              :cedar,
-              OpenAI::Realtime::RealtimeResponse::Voice::TaggedSymbol
-            )
         end
       end
     end

@@ -1,0 +1,72 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_audio_config_output =
+        {
+          format_: OpenAI::Models::Realtime::realtime_audio_formats,
+          speed: Float,
+          voice: OpenAI::Models::Realtime::RealtimeAudioConfigOutput::voice
+        }
+
+      class RealtimeAudioConfigOutput < OpenAI::Internal::Type::BaseModel
+        attr_reader format_: OpenAI::Models::Realtime::realtime_audio_formats?
+
+        def format_=: (
+          OpenAI::Models::Realtime::realtime_audio_formats
+        ) -> OpenAI::Models::Realtime::realtime_audio_formats
+
+        attr_reader speed: Float?
+
+        def speed=: (Float) -> Float
+
+        attr_reader voice: OpenAI::Models::Realtime::RealtimeAudioConfigOutput::voice?
+
+        def voice=: (
+          OpenAI::Models::Realtime::RealtimeAudioConfigOutput::voice
+        ) -> OpenAI::Models::Realtime::RealtimeAudioConfigOutput::voice
+
+        def initialize: (
+          ?format_: OpenAI::Models::Realtime::realtime_audio_formats,
+          ?speed: Float,
+          ?voice: OpenAI::Models::Realtime::RealtimeAudioConfigOutput::voice
+        ) -> void
+
+        def to_hash: -> {
+          format_: OpenAI::Models::Realtime::realtime_audio_formats,
+          speed: Float,
+          voice: OpenAI::Models::Realtime::RealtimeAudioConfigOutput::voice
+        }
+
+        type voice =
+          String
+          | :alloy
+          | :ash
+          | :ballad
+          | :coral
+          | :echo
+          | :sage
+          | :shimmer
+          | :verse
+          | :marin
+          | :cedar
+
+        module Voice
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeAudioConfigOutput::voice]
+
+          ALLOY: :alloy
+          ASH: :ash
+          BALLAD: :ballad
+          CORAL: :coral
+          ECHO: :echo
+          SAGE: :sage
+          SHIMMER: :shimmer
+          VERSE: :verse
+          MARIN: :marin
+          CEDAR: :cedar
+        end
+      end
+    end
+  end
+end

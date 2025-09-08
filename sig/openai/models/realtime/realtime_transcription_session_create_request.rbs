@@ -3,19 +3,19 @@ module OpenAI
     module Realtime
       type realtime_transcription_session_create_request =
         {
-          model: OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::model,
           type: :transcription,
-          include: ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::include_],
-          input_audio_format: OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::input_audio_format,
-          input_audio_noise_reduction: OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::InputAudioNoiseReduction,
-          input_audio_transcription: OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::InputAudioTranscription,
-          turn_detection: OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::TurnDetection
+          audio: OpenAI::Realtime::RealtimeTranscriptionSessionAudio,
+          include: ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::include_]
         }
 
       class RealtimeTranscriptionSessionCreateRequest < OpenAI::Internal::Type::BaseModel
-        attr_accessor model: OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::model
-
         attr_accessor type: :transcription
+
+        attr_reader audio: OpenAI::Realtime::RealtimeTranscriptionSessionAudio?
+
+        def audio=: (
+          OpenAI::Realtime::RealtimeTranscriptionSessionAudio
+        ) -> OpenAI::Realtime::RealtimeTranscriptionSessionAudio
 
         attr_reader include: ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::include_]?
 
@@ -23,65 +23,17 @@ module OpenAI
           ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::include_]
         ) -> ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::include_]
 
-        attr_reader input_audio_format: OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::input_audio_format?
-
-        def input_audio_format=: (
-          OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::input_audio_format
-        ) -> OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::input_audio_format
-
-        attr_reader input_audio_noise_reduction: OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::InputAudioNoiseReduction?
-
-        def input_audio_noise_reduction=: (
-          OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::InputAudioNoiseReduction
-        ) -> OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::InputAudioNoiseReduction
-
-        attr_reader input_audio_transcription: OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::InputAudioTranscription?
-
-        def input_audio_transcription=: (
-          OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::InputAudioTranscription
-        ) -> OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::InputAudioTranscription
-
-        attr_reader turn_detection: OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::TurnDetection?
-
-        def turn_detection=: (
-          OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::TurnDetection
-        ) -> OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::TurnDetection
-
         def initialize: (
-          model: OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::model,
+          ?audio: OpenAI::Realtime::RealtimeTranscriptionSessionAudio,
           ?include: ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::include_],
-          ?input_audio_format: OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::input_audio_format,
-          ?input_audio_noise_reduction: OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::InputAudioNoiseReduction,
-          ?input_audio_transcription: OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::InputAudioTranscription,
-          ?turn_detection: OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::TurnDetection,
           ?type: :transcription
         ) -> void
 
         def to_hash: -> {
-          model: OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::model,
           type: :transcription,
-          include: ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::include_],
-          input_audio_format: OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::input_audio_format,
-          input_audio_noise_reduction: OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::InputAudioNoiseReduction,
-          input_audio_transcription: OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::InputAudioTranscription,
-          turn_detection: OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::TurnDetection
+          audio: OpenAI::Realtime::RealtimeTranscriptionSessionAudio,
+          include: ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::include_]
         }
-
-        type model =
-          String
-          | :"whisper-1"
-          | :"gpt-4o-transcribe"
-          | :"gpt-4o-mini-transcribe"
-
-        module Model
-          extend OpenAI::Internal::Type::Union
-
-          def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::model]
-
-          WHISPER_1: :"whisper-1"
-          GPT_4O_TRANSCRIBE: :"gpt-4o-transcribe"
-          GPT_4O_MINI_TRANSCRIBE: :"gpt-4o-mini-transcribe"
-        end
 
         type include_ = :"item.input_audio_transcription.logprobs"
 
@@ -91,150 +43,6 @@ module OpenAI
           ITEM_INPUT_AUDIO_TRANSCRIPTION_LOGPROBS: :"item.input_audio_transcription.logprobs"
 
           def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::include_]
-        end
-
-        type input_audio_format = :pcm16 | :g711_ulaw | :g711_alaw
-
-        module InputAudioFormat
-          extend OpenAI::Internal::Type::Enum
-
-          PCM16: :pcm16
-          G711_ULAW: :g711_ulaw
-          G711_ALAW: :g711_alaw
-
-          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::input_audio_format]
-        end
-
-        type input_audio_noise_reduction =
-          {
-            type: OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::InputAudioNoiseReduction::type_
-          }
-
-        class InputAudioNoiseReduction < OpenAI::Internal::Type::BaseModel
-          attr_reader type: OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::InputAudioNoiseReduction::type_?
-
-          def type=: (
-            OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::InputAudioNoiseReduction::type_
-          ) -> OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::InputAudioNoiseReduction::type_
-
-          def initialize: (
-            ?type: OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::InputAudioNoiseReduction::type_
-          ) -> void
-
-          def to_hash: -> {
-            type: OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::InputAudioNoiseReduction::type_
-          }
-
-          type type_ = :near_field | :far_field
-
-          module Type
-            extend OpenAI::Internal::Type::Enum
-
-            NEAR_FIELD: :near_field
-            FAR_FIELD: :far_field
-
-            def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::InputAudioNoiseReduction::type_]
-          end
-        end
-
-        type input_audio_transcription =
-          {
-            language: String,
-            model: OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::InputAudioTranscription::model,
-            prompt: String
-          }
-
-        class InputAudioTranscription < OpenAI::Internal::Type::BaseModel
-          attr_reader language: String?
-
-          def language=: (String) -> String
-
-          attr_reader model: OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::InputAudioTranscription::model?
-
-          def model=: (
-            OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::InputAudioTranscription::model
-          ) -> OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::InputAudioTranscription::model
-
-          attr_reader prompt: String?
-
-          def prompt=: (String) -> String
-
-          def initialize: (
-            ?language: String,
-            ?model: OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::InputAudioTranscription::model,
-            ?prompt: String
-          ) -> void
-
-          def to_hash: -> {
-            language: String,
-            model: OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::InputAudioTranscription::model,
-            prompt: String
-          }
-
-          type model =
-            :"gpt-4o-transcribe" | :"gpt-4o-mini-transcribe" | :"whisper-1"
-
-          module Model
-            extend OpenAI::Internal::Type::Enum
-
-            GPT_4O_TRANSCRIBE: :"gpt-4o-transcribe"
-            GPT_4O_MINI_TRANSCRIBE: :"gpt-4o-mini-transcribe"
-            WHISPER_1: :"whisper-1"
-
-            def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::InputAudioTranscription::model]
-          end
-        end
-
-        type turn_detection =
-          {
-            prefix_padding_ms: Integer,
-            silence_duration_ms: Integer,
-            threshold: Float,
-            type: OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::TurnDetection::type_
-          }
-
-        class TurnDetection < OpenAI::Internal::Type::BaseModel
-          attr_reader prefix_padding_ms: Integer?
-
-          def prefix_padding_ms=: (Integer) -> Integer
-
-          attr_reader silence_duration_ms: Integer?
-
-          def silence_duration_ms=: (Integer) -> Integer
-
-          attr_reader threshold: Float?
-
-          def threshold=: (Float) -> Float
-
-          attr_reader type: OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::TurnDetection::type_?
-
-          def type=: (
-            OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::TurnDetection::type_
-          ) -> OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::TurnDetection::type_
-
-          def initialize: (
-            ?prefix_padding_ms: Integer,
-            ?silence_duration_ms: Integer,
-            ?threshold: Float,
-            ?type: OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::TurnDetection::type_
-          ) -> void
-
-          def to_hash: -> {
-            prefix_padding_ms: Integer,
-            silence_duration_ms: Integer,
-            threshold: Float,
-            type: OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::TurnDetection::type_
-          }
-
-          type type_ = :server_vad
-
-          module Type
-            extend OpenAI::Internal::Type::Enum
-
-            SERVER_VAD: :server_vad
-
-            def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::TurnDetection::type_]
-          end
         end
       end
     end

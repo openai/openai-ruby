@@ -11,10 +11,10 @@ module OpenAI
         required :event_id, String
 
         # @!attribute session
-        #   Realtime session object.
+        #   The session configuration.
         #
-        #   @return [OpenAI::Models::Realtime::RealtimeSession]
-        required :session, -> { OpenAI::Realtime::RealtimeSession }
+        #   @return [OpenAI::Models::Realtime::RealtimeSessionCreateRequest, OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest]
+        required :session, union: -> { OpenAI::Realtime::SessionUpdatedEvent::Session }
 
         # @!attribute type
         #   The event type, must be `session.updated`.
@@ -28,9 +28,25 @@ module OpenAI
         #
         #   @param event_id [String] The unique ID of the server event.
         #
-        #   @param session [OpenAI::Models::Realtime::RealtimeSession] Realtime session object.
+        #   @param session [OpenAI::Models::Realtime::RealtimeSessionCreateRequest, OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest] The session configuration.
         #
         #   @param type [Symbol, :"session.updated"] The event type, must be `session.updated`.
+
+        # The session configuration.
+        #
+        # @see OpenAI::Models::Realtime::SessionUpdatedEvent#session
+        module Session
+          extend OpenAI::Internal::Type::Union
+
+          # Realtime session object configuration.
+          variant -> { OpenAI::Realtime::RealtimeSessionCreateRequest }
+
+          # Realtime transcription session object configuration.
+          variant -> { OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest }
+
+          # @!method self.variants
+          #   @return [Array(OpenAI::Models::Realtime::RealtimeSessionCreateRequest, OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest)]
+        end
       end
     end
   end

@@ -36,7 +36,7 @@ module OpenAI
         #
         #   @param error [OpenAI::Models::Realtime::RealtimeResponseStatus::Error] A description of the error that caused the response to fail,
         #
-        #   @param reason [Symbol, OpenAI::Models::Realtime::RealtimeResponseStatus::Reason] The reason the Response did not complete. For a `cancelled` Response,
+        #   @param reason [Symbol, OpenAI::Models::Realtime::RealtimeResponseStatus::Reason] The reason the Response did not complete. For a `cancelled` Response, one of `t
         #
         #   @param type [Symbol, OpenAI::Models::Realtime::RealtimeResponseStatus::Type] The type of error that caused the response to fail, corresponding
 
