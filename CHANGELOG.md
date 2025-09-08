@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.23.0 (2025-09-08)
+
+Full Changelog: [v0.22.1...v0.23.0](https://github.com/openai/openai-ruby/compare/v0.22.1...v0.23.0)
+
+### Features
+
+* **api:** ship the RealtimeGA API shape ([6c59e2c](https://github.com/openai/openai-ruby/commit/6c59e2c78ea130b626442e2230676afcca3a906f))
+
 ## 0.22.1 (2025-09-05)
 
 Full Changelog: [v0.22.0...v0.22.1](https://github.com/openai/openai-ruby/compare/v0.22.0...v0.22.1)
