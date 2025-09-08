@@ -1,0 +1,69 @@
+module OpenAI
+  module Models
+    class RealtimeTranscriptionSessionCreateResponse = Realtime::RealtimeTranscriptionSessionCreateResponse
+
+    module Realtime
+      type realtime_transcription_session_create_response =
+        {
+          client_secret: OpenAI::Realtime::RealtimeTranscriptionSessionClientSecret,
+          input_audio_format: String,
+          input_audio_transcription: OpenAI::Realtime::RealtimeTranscriptionSessionInputAudioTranscription,
+          modalities: ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateResponse::modality],
+          turn_detection: OpenAI::Realtime::RealtimeTranscriptionSessionTurnDetection
+        }
+
+      class RealtimeTranscriptionSessionCreateResponse < OpenAI::Internal::Type::BaseModel
+        attr_accessor client_secret: OpenAI::Realtime::RealtimeTranscriptionSessionClientSecret
+
+        attr_reader input_audio_format: String?
+
+        def input_audio_format=: (String) -> String
+
+        attr_reader input_audio_transcription: OpenAI::Realtime::RealtimeTranscriptionSessionInputAudioTranscription?
+
+        def input_audio_transcription=: (
+          OpenAI::Realtime::RealtimeTranscriptionSessionInputAudioTranscription
+        ) -> OpenAI::Realtime::RealtimeTranscriptionSessionInputAudioTranscription
+
+        attr_reader modalities: ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateResponse::modality]?
+
+        def modalities=: (
+          ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateResponse::modality]
+        ) -> ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateResponse::modality]
+
+        attr_reader turn_detection: OpenAI::Realtime::RealtimeTranscriptionSessionTurnDetection?
+
+        def turn_detection=: (
+          OpenAI::Realtime::RealtimeTranscriptionSessionTurnDetection
+        ) -> OpenAI::Realtime::RealtimeTranscriptionSessionTurnDetection
+
+        def initialize: (
+          client_secret: OpenAI::Realtime::RealtimeTranscriptionSessionClientSecret,
+          ?input_audio_format: String,
+          ?input_audio_transcription: OpenAI::Realtime::RealtimeTranscriptionSessionInputAudioTranscription,
+          ?modalities: ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateResponse::modality],
+          ?turn_detection: OpenAI::Realtime::RealtimeTranscriptionSessionTurnDetection
+        ) -> void
+
+        def to_hash: -> {
+          client_secret: OpenAI::Realtime::RealtimeTranscriptionSessionClientSecret,
+          input_audio_format: String,
+          input_audio_transcription: OpenAI::Realtime::RealtimeTranscriptionSessionInputAudioTranscription,
+          modalities: ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateResponse::modality],
+          turn_detection: OpenAI::Realtime::RealtimeTranscriptionSessionTurnDetection
+        }
+
+        type modality = :text | :audio
+
+        module Modality
+          extend OpenAI::Internal::Type::Enum
+
+          TEXT: :text
+          AUDIO: :audio
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateResponse::modality]
+        end
+      end
+    end
+  end
+end

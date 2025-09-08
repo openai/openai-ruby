@@ -5,10 +5,16 @@ module OpenAI
     module Realtime
       class RealtimeResponse < OpenAI::Internal::Type::BaseModel
         # @!attribute id
-        #   The unique ID of the response.
+        #   The unique ID of the response, will look like `resp_1234`.
         #
         #   @return [String, nil]
         optional :id, String
+
+        # @!attribute audio
+        #   Configuration for audio output.
+        #
+        #   @return [OpenAI::Models::Realtime::RealtimeResponse::Audio, nil]
+        optional :audio, -> { OpenAI::Realtime::RealtimeResponse::Audio }
 
         # @!attribute conversation_id
         #   Which conversation the response is added to, determined by the `conversation`
@@ -16,8 +22,7 @@ module OpenAI
         #   the default conversation and the value of `conversation_id` will be an id like
         #   `conv_1234`. If `none`, the response will not be added to any conversation and
         #   the value of `conversation_id` will be `null`. If responses are being triggered
-        #   by server VAD, the response will be added to the default conversation, thus the
-        #   `conversation_id` will be an id like `conv_1234`.
+        #   automatically by VAD the response will be added to the default conversation
         #
         #   @return [String, nil]
         optional :conversation_id, String
@@ -40,15 +45,6 @@ module OpenAI
         #   @return [Hash{Symbol=>String}, nil]
         optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
-        # @!attribute modalities
-        #   The set of modalities the model used to respond. If there are multiple
-        #   modalities, the model will pick one, for example if `modalities` is
-        #   `["text", "audio"]`, the model could be responding in either text or audio.
-        #
-        #   @return [Array<Symbol, OpenAI::Models::Realtime::RealtimeResponse::Modality>, nil]
-        optional :modalities,
-                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeResponse::Modality] }
-
         # @!attribute object
         #   The object type, must be `realtime.response`.
         #
@@ -61,11 +57,15 @@ module OpenAI
         #   @return [Array<OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage, OpenAI::Models::Realtime::RealtimeConversationItemUserMessage, OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage, OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall, OpenAI::Models::Realtime::RealtimeConversationItemFunctionCallOutput, OpenAI::Models::Realtime::RealtimeMcpApprovalResponse, OpenAI::Models::Realtime::RealtimeMcpListTools, OpenAI::Models::Realtime::RealtimeMcpToolCall, OpenAI::Models::Realtime::RealtimeMcpApprovalRequest>, nil]
         optional :output, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Realtime::ConversationItem] }
 
-        # @!attribute output_audio_format
-        #   The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+        # @!attribute output_modalities
+        #   The set of modalities the model used to respond, currently the only possible
+        #   values are `[\"audio\"]`, `[\"text\"]`. Audio output always include a text
+        #   transcript. Setting the output to mode `text` will disable audio output from the
+        #   model.
         #
-        #   @return [Symbol, OpenAI::Models::Realtime::RealtimeResponse::OutputAudioFormat, nil]
-        optional :output_audio_format, enum: -> { OpenAI::Realtime::RealtimeResponse::OutputAudioFormat }
+        #   @return [Array<Symbol, OpenAI::Models::Realtime::RealtimeResponse::OutputModality>, nil]
+        optional :output_modalities,
+                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeResponse::OutputModality] }
 
         # @!attribute status
         #   The final status of the response (`completed`, `cancelled`, `failed`, or
@@ -80,12 +80,6 @@ module OpenAI
         #   @return [OpenAI::Models::Realtime::RealtimeResponseStatus, nil]
         optional :status_details, -> { OpenAI::Realtime::RealtimeResponseStatus }
 
-        # @!attribute temperature
-        #   Sampling temperature for the model, limited to [0.6, 1.2]. Defaults to 0.8.
-        #
-        #   @return [Float, nil]
-        optional :temperature, Float
-
         # @!attribute usage
         #   Usage statistics for the Response, this will correspond to billing. A Realtime
         #   API session will maintain a conversation context and append new Items to the
@@ -95,20 +89,15 @@ module OpenAI
         #   @return [OpenAI::Models::Realtime::RealtimeResponseUsage, nil]
         optional :usage, -> { OpenAI::Realtime::RealtimeResponseUsage }
 
-        # @!attribute voice
-        #   The voice the model used to respond. Current voice options are `alloy`, `ash`,
-        #   `ballad`, `coral`, `echo`, `sage`, `shimmer`, and `verse`.
-        #
-        #   @return [String, Symbol, OpenAI::Models::Realtime::RealtimeResponse::Voice, nil]
-        optional :voice, union: -> { OpenAI::Realtime::RealtimeResponse::Voice }
-
-        # @!method initialize(id: nil, conversation_id: nil, max_output_tokens: nil, metadata: nil, modalities: nil, object: nil, output: nil, output_audio_format: nil, status: nil, status_details: nil, temperature: nil, usage: nil, voice: nil)
+        # @!method initialize(id: nil, audio: nil, conversation_id: nil, max_output_tokens: nil, metadata: nil, object: nil, output: nil, output_modalities: nil, status: nil, status_details: nil, usage: nil)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Realtime::RealtimeResponse} for more details.
         #
         #   The response resource.
         #
-        #   @param id [String] The unique ID of the response.
+        #   @param id [String] The unique ID of the response, will look like `resp_1234`.
+        #
+        #   @param audio [OpenAI::Models::Realtime::RealtimeResponse::Audio] Configuration for audio output.
         #
         #   @param conversation_id [String] Which conversation the response is added to, determined by the `conversation`
         #
@@ -116,23 +105,110 @@ module OpenAI
         #
         #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #
-        #   @param modalities [Array<Symbol, OpenAI::Models::Realtime::RealtimeResponse::Modality>] The set of modalities the model used to respond. If there are multiple modalitie
-        #
         #   @param object [Symbol, OpenAI::Models::Realtime::RealtimeResponse::Object] The object type, must be `realtime.response`.
         #
         #   @param output [Array<OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage, OpenAI::Models::Realtime::RealtimeConversationItemUserMessage, OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage, OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall, OpenAI::Models::Realtime::RealtimeConversationItemFunctionCallOutput, OpenAI::Models::Realtime::RealtimeMcpApprovalResponse, OpenAI::Models::Realtime::RealtimeMcpListTools, OpenAI::Models::Realtime::RealtimeMcpToolCall, OpenAI::Models::Realtime::RealtimeMcpApprovalRequest>] The list of output items generated by the response.
         #
-        #   @param output_audio_format [Symbol, OpenAI::Models::Realtime::RealtimeResponse::OutputAudioFormat] The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+        #   @param output_modalities [Array<Symbol, OpenAI::Models::Realtime::RealtimeResponse::OutputModality>] The set of modalities the model used to respond, currently the only possible val
         #
         #   @param status [Symbol, OpenAI::Models::Realtime::RealtimeResponse::Status] The final status of the response (`completed`, `cancelled`, `failed`, or
         #
         #   @param status_details [OpenAI::Models::Realtime::RealtimeResponseStatus] Additional details about the status.
         #
-        #   @param temperature [Float] Sampling temperature for the model, limited to [0.6, 1.2]. Defaults to 0.8.
-        #
         #   @param usage [OpenAI::Models::Realtime::RealtimeResponseUsage] Usage statistics for the Response, this will correspond to billing. A
-        #
-        #   @param voice [String, Symbol, OpenAI::Models::Realtime::RealtimeResponse::Voice] The voice the model used to respond.
+
+        # @see OpenAI::Models::Realtime::RealtimeResponse#audio
+        class Audio < OpenAI::Internal::Type::BaseModel
+          # @!attribute output
+          #
+          #   @return [OpenAI::Models::Realtime::RealtimeResponse::Audio::Output, nil]
+          optional :output, -> { OpenAI::Realtime::RealtimeResponse::Audio::Output }
+
+          # @!method initialize(output: nil)
+          #   Configuration for audio output.
+          #
+          #   @param output [OpenAI::Models::Realtime::RealtimeResponse::Audio::Output]
+
+          # @see OpenAI::Models::Realtime::RealtimeResponse::Audio#output
+          class Output < OpenAI::Internal::Type::BaseModel
+            # @!attribute format_
+            #   The format of the output audio.
+            #
+            #   @return [OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMU, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMA, nil]
+            optional :format_, union: -> { OpenAI::Realtime::RealtimeAudioFormats }, api_name: :format
+
+            # @!attribute voice
+            #   The voice the model uses to respond. Voice cannot be changed during the session
+            #   once the model has responded with audio at least once. Current voice options are
+            #   `alloy`, `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`,
+            #   and `cedar`. We recommend `marin` and `cedar` for best quality.
+            #
+            #   @return [String, Symbol, OpenAI::Models::Realtime::RealtimeResponse::Audio::Output::Voice, nil]
+            optional :voice, union: -> { OpenAI::Realtime::RealtimeResponse::Audio::Output::Voice }
+
+            # @!method initialize(format_: nil, voice: nil)
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Realtime::RealtimeResponse::Audio::Output} for more details.
+            #
+            #   @param format_ [OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMU, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMA] The format of the output audio.
+            #
+            #   @param voice [String, Symbol, OpenAI::Models::Realtime::RealtimeResponse::Audio::Output::Voice] The voice the model uses to respond. Voice cannot be changed during the
+
+            # The voice the model uses to respond. Voice cannot be changed during the session
+            # once the model has responded with audio at least once. Current voice options are
+            # `alloy`, `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`,
+            # and `cedar`. We recommend `marin` and `cedar` for best quality.
+            #
+            # @see OpenAI::Models::Realtime::RealtimeResponse::Audio::Output#voice
+            module Voice
+              extend OpenAI::Internal::Type::Union
+
+              variant String
+
+              variant const: -> { OpenAI::Models::Realtime::RealtimeResponse::Audio::Output::Voice::ALLOY }
+
+              variant const: -> { OpenAI::Models::Realtime::RealtimeResponse::Audio::Output::Voice::ASH }
+
+              variant const: -> { OpenAI::Models::Realtime::RealtimeResponse::Audio::Output::Voice::BALLAD }
+
+              variant const: -> { OpenAI::Models::Realtime::RealtimeResponse::Audio::Output::Voice::CORAL }
+
+              variant const: -> { OpenAI::Models::Realtime::RealtimeResponse::Audio::Output::Voice::ECHO }
+
+              variant const: -> { OpenAI::Models::Realtime::RealtimeResponse::Audio::Output::Voice::SAGE }
+
+              variant const: -> { OpenAI::Models::Realtime::RealtimeResponse::Audio::Output::Voice::SHIMMER }
+
+              variant const: -> { OpenAI::Models::Realtime::RealtimeResponse::Audio::Output::Voice::VERSE }
+
+              variant const: -> { OpenAI::Models::Realtime::RealtimeResponse::Audio::Output::Voice::MARIN }
+
+              variant const: -> { OpenAI::Models::Realtime::RealtimeResponse::Audio::Output::Voice::CEDAR }
+
+              # @!method self.variants
+              #   @return [Array(String, Symbol)]
+
+              define_sorbet_constant!(:Variants) do
+                T.type_alias { T.any(String, OpenAI::Realtime::RealtimeResponse::Audio::Output::Voice::TaggedSymbol) }
+              end
+
+              # @!group
+
+              ALLOY = :alloy
+              ASH = :ash
+              BALLAD = :ballad
+              CORAL = :coral
+              ECHO = :echo
+              SAGE = :sage
+              SHIMMER = :shimmer
+              VERSE = :verse
+              MARIN = :marin
+              CEDAR = :cedar
+
+              # @!endgroup
+            end
+          end
+        end
 
         # Maximum number of output tokens for a single assistant response, inclusive of
         # tool calls, that was used in this response.
@@ -149,16 +225,6 @@ module OpenAI
           #   @return [Array(Integer, Symbol, :inf)]
         end
 
-        module Modality
-          extend OpenAI::Internal::Type::Enum
-
-          TEXT = :text
-          AUDIO = :audio
-
-          # @!method self.values
-          #   @return [Array<Symbol>]
-        end
-
         # The object type, must be `realtime.response`.
         #
         # @see OpenAI::Models::Realtime::RealtimeResponse#object
@@ -171,15 +237,11 @@ module OpenAI
           #   @return [Array<Symbol>]
         end
 
-        # The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
-        #
-        # @see OpenAI::Models::Realtime::RealtimeResponse#output_audio_format
-        module OutputAudioFormat
+        module OutputModality
           extend OpenAI::Internal::Type::Enum
 
-          PCM16 = :pcm16
-          G711_ULAW = :g711_ulaw
-          G711_ALAW = :g711_alaw
+          TEXT = :text
+          AUDIO = :audio
 
           # @!method self.values
           #   @return [Array<Symbol>]
@@ -200,58 +262,6 @@ module OpenAI
 
           # @!method self.values
           #   @return [Array<Symbol>]
-        end
-
-        # The voice the model used to respond. Current voice options are `alloy`, `ash`,
-        # `ballad`, `coral`, `echo`, `sage`, `shimmer`, and `verse`.
-        #
-        # @see OpenAI::Models::Realtime::RealtimeResponse#voice
-        module Voice
-          extend OpenAI::Internal::Type::Union
-
-          variant String
-
-          variant const: -> { OpenAI::Models::Realtime::RealtimeResponse::Voice::ALLOY }
-
-          variant const: -> { OpenAI::Models::Realtime::RealtimeResponse::Voice::ASH }
-
-          variant const: -> { OpenAI::Models::Realtime::RealtimeResponse::Voice::BALLAD }
-
-          variant const: -> { OpenAI::Models::Realtime::RealtimeResponse::Voice::CORAL }
-
-          variant const: -> { OpenAI::Models::Realtime::RealtimeResponse::Voice::ECHO }
-
-          variant const: -> { OpenAI::Models::Realtime::RealtimeResponse::Voice::SAGE }
-
-          variant const: -> { OpenAI::Models::Realtime::RealtimeResponse::Voice::SHIMMER }
-
-          variant const: -> { OpenAI::Models::Realtime::RealtimeResponse::Voice::VERSE }
-
-          variant const: -> { OpenAI::Models::Realtime::RealtimeResponse::Voice::MARIN }
-
-          variant const: -> { OpenAI::Models::Realtime::RealtimeResponse::Voice::CEDAR }
-
-          # @!method self.variants
-          #   @return [Array(String, Symbol)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias { T.any(String, OpenAI::Realtime::RealtimeResponse::Voice::TaggedSymbol) }
-          end
-
-          # @!group
-
-          ALLOY = :alloy
-          ASH = :ash
-          BALLAD = :ballad
-          CORAL = :coral
-          ECHO = :echo
-          SAGE = :sage
-          SHIMMER = :shimmer
-          VERSE = :verse
-          MARIN = :marin
-          CEDAR = :cedar
-
-          # @!endgroup
         end
       end
     end

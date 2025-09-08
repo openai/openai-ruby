@@ -1,0 +1,21 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_truncation_retention_ratio =
+        { retention_ratio: Float, type: :retention_ratio }
+
+      class RealtimeTruncationRetentionRatio < OpenAI::Internal::Type::BaseModel
+        attr_accessor retention_ratio: Float
+
+        attr_accessor type: :retention_ratio
+
+        def initialize: (
+          retention_ratio: Float,
+          ?type: :retention_ratio
+        ) -> void
+
+        def to_hash: -> { retention_ratio: Float, type: :retention_ratio }
+      end
+    end
+  end
+end

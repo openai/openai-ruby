@@ -3,8 +3,9 @@
 module OpenAI
   module Models
     module Realtime
-      # Configuration options for tracing. Set to null to disable tracing. Once tracing
-      # is enabled for a session, the configuration cannot be modified.
+      # Realtime API can write session traces to the
+      # [Traces Dashboard](/logs?api=traces). Set to null to disable tracing. Once
+      # tracing is enabled for a session, the configuration cannot be modified.
       #
       # `auto` will create a trace for the session with default values for the workflow
       # name, group id, and metadata.
@@ -20,21 +21,21 @@ module OpenAI
         class TracingConfiguration < OpenAI::Internal::Type::BaseModel
           # @!attribute group_id
           #   The group id to attach to this trace to enable filtering and grouping in the
-          #   traces dashboard.
+          #   Traces Dashboard.
           #
           #   @return [String, nil]
           optional :group_id, String
 
           # @!attribute metadata
-          #   The arbitrary metadata to attach to this trace to enable filtering in the traces
-          #   dashboard.
+          #   The arbitrary metadata to attach to this trace to enable filtering in the Traces
+          #   Dashboard.
           #
           #   @return [Object, nil]
           optional :metadata, OpenAI::Internal::Type::Unknown
 
           # @!attribute workflow_name
           #   The name of the workflow to attach to this trace. This is used to name the trace
-          #   in the traces dashboard.
+          #   in the Traces Dashboard.
           #
           #   @return [String, nil]
           optional :workflow_name, String

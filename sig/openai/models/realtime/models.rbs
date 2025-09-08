@@ -1,0 +1,57 @@
+module OpenAI
+  module Models
+    module Realtime
+      type models =
+        {
+          description: String,
+          name: String,
+          parameters: top,
+          type: OpenAI::Models::Realtime::Models::type_
+        }
+
+      class Models < OpenAI::Internal::Type::BaseModel
+        attr_reader description: String?
+
+        def description=: (String) -> String
+
+        attr_reader name: String?
+
+        def name=: (String) -> String
+
+        attr_reader parameters: top?
+
+        def parameters=: (top) -> top
+
+        attr_reader type: OpenAI::Models::Realtime::Models::type_?
+
+        def type=: (
+          OpenAI::Models::Realtime::Models::type_
+        ) -> OpenAI::Models::Realtime::Models::type_
+
+        def initialize: (
+          ?description: String,
+          ?name: String,
+          ?parameters: top,
+          ?type: OpenAI::Models::Realtime::Models::type_
+        ) -> void
+
+        def to_hash: -> {
+          description: String,
+          name: String,
+          parameters: top,
+          type: OpenAI::Models::Realtime::Models::type_
+        }
+
+        type type_ = :function
+
+        module Type
+          extend OpenAI::Internal::Type::Enum
+
+          FUNCTION: :function
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::Models::type_]
+        end
+      end
+    end
+  end
+end

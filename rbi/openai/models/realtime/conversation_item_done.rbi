@@ -44,6 +44,9 @@ module OpenAI
         attr_accessor :previous_item_id
 
         # Returned when a conversation item is finalized.
+        #
+        # The event will include the full content of the Item except for audio data, which
+        # can be retrieved separately with a `conversation.item.retrieve` event if needed.
         sig do
           params(
             event_id: String,

@@ -17,7 +17,7 @@ module OpenAI
         required :event_id, String
 
         # @!attribute item_id
-        #   The ID of the user message item containing the audio.
+        #   The ID of the item containing the audio that is being transcribed.
         #
         #   @return [String]
         required :item_id, String
@@ -35,7 +35,8 @@ module OpenAI
         required :type, const: :"conversation.item.input_audio_transcription.completed"
 
         # @!attribute usage
-        #   Usage statistics for the transcription.
+        #   Usage statistics for the transcription, this is billed according to the ASR
+        #   model's pricing rather than the realtime model's pricing.
         #
         #   @return [OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens, OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageDuration]
         required :usage,
@@ -56,9 +57,9 @@ module OpenAI
         #
         #   This event is the output of audio transcription for user audio written to the
         #   user audio buffer. Transcription begins when the input audio buffer is committed
-        #   by the client or server (in `server_vad` mode). Transcription runs
-        #   asynchronously with Response creation, so this event may come before or after
-        #   the Response events.
+        #   by the client or server (when VAD is enabled). Transcription runs asynchronously
+        #   with Response creation, so this event may come before or after the Response
+        #   events.
         #
         #   Realtime API models accept audio natively, and thus input transcription is a
         #   separate process run on a separate ASR (Automatic Speech Recognition) model. The
@@ -69,17 +70,18 @@ module OpenAI
         #
         #   @param event_id [String] The unique ID of the server event.
         #
-        #   @param item_id [String] The ID of the user message item containing the audio.
+        #   @param item_id [String] The ID of the item containing the audio that is being transcribed.
         #
         #   @param transcript [String] The transcribed text.
         #
-        #   @param usage [OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens, OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageDuration] Usage statistics for the transcription.
+        #   @param usage [OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens, OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageDuration] Usage statistics for the transcription, this is billed according to the ASR mode
         #
         #   @param logprobs [Array<OpenAI::Models::Realtime::LogProbProperties>, nil] The log probabilities of the transcription.
         #
         #   @param type [Symbol, :"conversation.item.input_audio_transcription.completed"] The event type, must be
 
-        # Usage statistics for the transcription.
+        # Usage statistics for the transcription, this is billed according to the ASR
+        # model's pricing rather than the realtime model's pricing.
         #
         # @see OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent#usage
         module Usage

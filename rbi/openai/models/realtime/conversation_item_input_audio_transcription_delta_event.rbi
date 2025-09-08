@@ -16,7 +16,7 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :event_id
 
-        # The ID of the item.
+        # The ID of the item containing the audio that is being transcribed.
         sig { returns(String) }
         attr_accessor :item_id
 
@@ -38,14 +38,19 @@ module OpenAI
         sig { params(delta: String).void }
         attr_writer :delta
 
-        # The log probabilities of the transcription.
+        # The log probabilities of the transcription. These can be enabled by
+        # configurating the session with
+        # `"include": ["item.input_audio_transcription.logprobs"]`. Each entry in the
+        # array corresponds a log probability of which token would be selected for this
+        # chunk of transcription. This can help to identify if it was possible there were
+        # multiple valid options for a given chunk of transcription.
         sig do
           returns(T.nilable(T::Array[OpenAI::Realtime::LogProbProperties]))
         end
         attr_accessor :logprobs
 
         # Returned when the text value of an input audio transcription content part is
-        # updated.
+        # updated with incremental transcription results.
         sig do
           params(
             event_id: String,
@@ -60,13 +65,18 @@ module OpenAI
         def self.new(
           # The unique ID of the server event.
           event_id:,
-          # The ID of the item.
+          # The ID of the item containing the audio that is being transcribed.
           item_id:,
           # The index of the content part in the item's content array.
           content_index: nil,
           # The text delta.
           delta: nil,
-          # The log probabilities of the transcription.
+          # The log probabilities of the transcription. These can be enabled by
+          # configurating the session with
+          # `"include": ["item.input_audio_transcription.logprobs"]`. Each entry in the
+          # array corresponds a log probability of which token would be selected for this
+          # chunk of transcription. This can help to identify if it was possible there were
+          # multiple valid options for a given chunk of transcription.
           logprobs: nil,
           # The event type, must be `conversation.item.input_audio_transcription.delta`.
           type: :"conversation.item.input_audio_transcription.delta"

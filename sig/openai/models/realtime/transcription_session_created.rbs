@@ -4,278 +4,28 @@ module OpenAI
       type transcription_session_created =
         {
           event_id: String,
-          session: OpenAI::Realtime::TranscriptionSessionCreated::Session,
+          session: OpenAI::Realtime::RealtimeTranscriptionSessionCreateResponse,
           type: :"transcription_session.created"
         }
 
       class TranscriptionSessionCreated < OpenAI::Internal::Type::BaseModel
         attr_accessor event_id: String
 
-        attr_accessor session: OpenAI::Realtime::TranscriptionSessionCreated::Session
+        attr_accessor session: OpenAI::Realtime::RealtimeTranscriptionSessionCreateResponse
 
         attr_accessor type: :"transcription_session.created"
 
         def initialize: (
           event_id: String,
-          session: OpenAI::Realtime::TranscriptionSessionCreated::Session,
+          session: OpenAI::Realtime::RealtimeTranscriptionSessionCreateResponse,
           ?type: :"transcription_session.created"
         ) -> void
 
         def to_hash: -> {
           event_id: String,
-          session: OpenAI::Realtime::TranscriptionSessionCreated::Session,
+          session: OpenAI::Realtime::RealtimeTranscriptionSessionCreateResponse,
           type: :"transcription_session.created"
         }
-
-        type session =
-          {
-            id: String,
-            audio: OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio,
-            expires_at: Integer,
-            include: ::Array[OpenAI::Models::Realtime::TranscriptionSessionCreated::Session::include_],
-            object: String
-          }
-
-        class Session < OpenAI::Internal::Type::BaseModel
-          attr_reader id: String?
-
-          def id=: (String) -> String
-
-          attr_reader audio: OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio?
-
-          def audio=: (
-            OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio
-          ) -> OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio
-
-          attr_reader expires_at: Integer?
-
-          def expires_at=: (Integer) -> Integer
-
-          attr_reader include: ::Array[OpenAI::Models::Realtime::TranscriptionSessionCreated::Session::include_]?
-
-          def include=: (
-            ::Array[OpenAI::Models::Realtime::TranscriptionSessionCreated::Session::include_]
-          ) -> ::Array[OpenAI::Models::Realtime::TranscriptionSessionCreated::Session::include_]
-
-          attr_reader object: String?
-
-          def object=: (String) -> String
-
-          def initialize: (
-            ?id: String,
-            ?audio: OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio,
-            ?expires_at: Integer,
-            ?include: ::Array[OpenAI::Models::Realtime::TranscriptionSessionCreated::Session::include_],
-            ?object: String
-          ) -> void
-
-          def to_hash: -> {
-            id: String,
-            audio: OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio,
-            expires_at: Integer,
-            include: ::Array[OpenAI::Models::Realtime::TranscriptionSessionCreated::Session::include_],
-            object: String
-          }
-
-          type audio =
-            {
-              input: OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio::Input
-            }
-
-          class Audio < OpenAI::Internal::Type::BaseModel
-            attr_reader input: OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio::Input?
-
-            def input=: (
-              OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio::Input
-            ) -> OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio::Input
-
-            def initialize: (
-              ?input: OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio::Input
-            ) -> void
-
-            def to_hash: -> {
-              input: OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio::Input
-            }
-
-            type input =
-              {
-                format_: String,
-                noise_reduction: OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio::Input::NoiseReduction,
-                transcription: OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio::Input::Transcription,
-                turn_detection: OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio::Input::TurnDetection
-              }
-
-            class Input < OpenAI::Internal::Type::BaseModel
-              attr_reader format_: String?
-
-              def format_=: (String) -> String
-
-              attr_reader noise_reduction: OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio::Input::NoiseReduction?
-
-              def noise_reduction=: (
-                OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio::Input::NoiseReduction
-              ) -> OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio::Input::NoiseReduction
-
-              attr_reader transcription: OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio::Input::Transcription?
-
-              def transcription=: (
-                OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio::Input::Transcription
-              ) -> OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio::Input::Transcription
-
-              attr_reader turn_detection: OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio::Input::TurnDetection?
-
-              def turn_detection=: (
-                OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio::Input::TurnDetection
-              ) -> OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio::Input::TurnDetection
-
-              def initialize: (
-                ?format_: String,
-                ?noise_reduction: OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio::Input::NoiseReduction,
-                ?transcription: OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio::Input::Transcription,
-                ?turn_detection: OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio::Input::TurnDetection
-              ) -> void
-
-              def to_hash: -> {
-                format_: String,
-                noise_reduction: OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio::Input::NoiseReduction,
-                transcription: OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio::Input::Transcription,
-                turn_detection: OpenAI::Realtime::TranscriptionSessionCreated::Session::Audio::Input::TurnDetection
-              }
-
-              type noise_reduction =
-                {
-                  type: OpenAI::Models::Realtime::TranscriptionSessionCreated::Session::Audio::Input::NoiseReduction::type_
-                }
-
-              class NoiseReduction < OpenAI::Internal::Type::BaseModel
-                attr_reader type: OpenAI::Models::Realtime::TranscriptionSessionCreated::Session::Audio::Input::NoiseReduction::type_?
-
-                def type=: (
-                  OpenAI::Models::Realtime::TranscriptionSessionCreated::Session::Audio::Input::NoiseReduction::type_
-                ) -> OpenAI::Models::Realtime::TranscriptionSessionCreated::Session::Audio::Input::NoiseReduction::type_
-
-                def initialize: (
-                  ?type: OpenAI::Models::Realtime::TranscriptionSessionCreated::Session::Audio::Input::NoiseReduction::type_
-                ) -> void
-
-                def to_hash: -> {
-                  type: OpenAI::Models::Realtime::TranscriptionSessionCreated::Session::Audio::Input::NoiseReduction::type_
-                }
-
-                type type_ = :near_field | :far_field
-
-                module Type
-                  extend OpenAI::Internal::Type::Enum
-
-                  NEAR_FIELD: :near_field
-                  FAR_FIELD: :far_field
-
-                  def self?.values: -> ::Array[OpenAI::Models::Realtime::TranscriptionSessionCreated::Session::Audio::Input::NoiseReduction::type_]
-                end
-              end
-
-              type transcription =
-                {
-                  language: String,
-                  model: OpenAI::Models::Realtime::TranscriptionSessionCreated::Session::Audio::Input::Transcription::model,
-                  prompt: String
-                }
-
-              class Transcription < OpenAI::Internal::Type::BaseModel
-                attr_reader language: String?
-
-                def language=: (String) -> String
-
-                attr_reader model: OpenAI::Models::Realtime::TranscriptionSessionCreated::Session::Audio::Input::Transcription::model?
-
-                def model=: (
-                  OpenAI::Models::Realtime::TranscriptionSessionCreated::Session::Audio::Input::Transcription::model
-                ) -> OpenAI::Models::Realtime::TranscriptionSessionCreated::Session::Audio::Input::Transcription::model
-
-                attr_reader prompt: String?
-
-                def prompt=: (String) -> String
-
-                def initialize: (
-                  ?language: String,
-                  ?model: OpenAI::Models::Realtime::TranscriptionSessionCreated::Session::Audio::Input::Transcription::model,
-                  ?prompt: String
-                ) -> void
-
-                def to_hash: -> {
-                  language: String,
-                  model: OpenAI::Models::Realtime::TranscriptionSessionCreated::Session::Audio::Input::Transcription::model,
-                  prompt: String
-                }
-
-                type model =
-                  :"gpt-4o-transcribe"
-                  | :"gpt-4o-mini-transcribe"
-                  | :"whisper-1"
-
-                module Model
-                  extend OpenAI::Internal::Type::Enum
-
-                  GPT_4O_TRANSCRIBE: :"gpt-4o-transcribe"
-                  GPT_4O_MINI_TRANSCRIBE: :"gpt-4o-mini-transcribe"
-                  WHISPER_1: :"whisper-1"
-
-                  def self?.values: -> ::Array[OpenAI::Models::Realtime::TranscriptionSessionCreated::Session::Audio::Input::Transcription::model]
-                end
-              end
-
-              type turn_detection =
-                {
-                  prefix_padding_ms: Integer,
-                  silence_duration_ms: Integer,
-                  threshold: Float,
-                  type: String
-                }
-
-              class TurnDetection < OpenAI::Internal::Type::BaseModel
-                attr_reader prefix_padding_ms: Integer?
-
-                def prefix_padding_ms=: (Integer) -> Integer
-
-                attr_reader silence_duration_ms: Integer?
-
-                def silence_duration_ms=: (Integer) -> Integer
-
-                attr_reader threshold: Float?
-
-                def threshold=: (Float) -> Float
-
-                attr_reader type: String?
-
-                def type=: (String) -> String
-
-                def initialize: (
-                  ?prefix_padding_ms: Integer,
-                  ?silence_duration_ms: Integer,
-                  ?threshold: Float,
-                  ?type: String
-                ) -> void
-
-                def to_hash: -> {
-                  prefix_padding_ms: Integer,
-                  silence_duration_ms: Integer,
-                  threshold: Float,
-                  type: String
-                }
-              end
-            end
-          end
-
-          type include_ = :"item.input_audio_transcription.logprobs"
-
-          module Include
-            extend OpenAI::Internal::Type::Enum
-
-            ITEM_INPUT_AUDIO_TRANSCRIPTION_LOGPROBS: :"item.input_audio_transcription.logprobs"
-
-            def self?.values: -> ::Array[OpenAI::Models::Realtime::TranscriptionSessionCreated::Session::include_]
-          end
-        end
       end
     end
   end

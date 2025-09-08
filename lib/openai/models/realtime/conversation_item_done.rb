@@ -35,6 +35,9 @@ module OpenAI
         #
         #   Returned when a conversation item is finalized.
         #
+        #   The event will include the full content of the Item except for audio data, which
+        #   can be retrieved separately with a `conversation.item.retrieve` event if needed.
+        #
         #   @param event_id [String] The unique ID of the server event.
         #
         #   @param item [OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage, OpenAI::Models::Realtime::RealtimeConversationItemUserMessage, OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage, OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall, OpenAI::Models::Realtime::RealtimeConversationItemFunctionCallOutput, OpenAI::Models::Realtime::RealtimeMcpApprovalResponse, OpenAI::Models::Realtime::RealtimeMcpListTools, OpenAI::Models::Realtime::RealtimeMcpToolCall, OpenAI::Models::Realtime::RealtimeMcpApprovalRequest] A single item within a Realtime conversation.

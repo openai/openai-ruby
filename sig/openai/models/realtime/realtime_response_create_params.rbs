@@ -1,0 +1,148 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_response_create_params =
+        {
+          audio: OpenAI::Realtime::RealtimeResponseCreateAudioOutput,
+          conversation: OpenAI::Models::Realtime::RealtimeResponseCreateParams::conversation,
+          input: ::Array[OpenAI::Models::Realtime::conversation_item],
+          instructions: String,
+          max_output_tokens: OpenAI::Models::Realtime::RealtimeResponseCreateParams::max_output_tokens,
+          metadata: OpenAI::Models::metadata?,
+          output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::output_modality],
+          prompt: OpenAI::Responses::ResponsePrompt?,
+          tool_choice: OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool_choice,
+          tools: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool]
+        }
+
+      class RealtimeResponseCreateParams < OpenAI::Internal::Type::BaseModel
+        attr_reader audio: OpenAI::Realtime::RealtimeResponseCreateAudioOutput?
+
+        def audio=: (
+          OpenAI::Realtime::RealtimeResponseCreateAudioOutput
+        ) -> OpenAI::Realtime::RealtimeResponseCreateAudioOutput
+
+        attr_reader conversation: OpenAI::Models::Realtime::RealtimeResponseCreateParams::conversation?
+
+        def conversation=: (
+          OpenAI::Models::Realtime::RealtimeResponseCreateParams::conversation
+        ) -> OpenAI::Models::Realtime::RealtimeResponseCreateParams::conversation
+
+        attr_reader input: ::Array[OpenAI::Models::Realtime::conversation_item]?
+
+        def input=: (
+          ::Array[OpenAI::Models::Realtime::conversation_item]
+        ) -> ::Array[OpenAI::Models::Realtime::conversation_item]
+
+        attr_reader instructions: String?
+
+        def instructions=: (String) -> String
+
+        attr_reader max_output_tokens: OpenAI::Models::Realtime::RealtimeResponseCreateParams::max_output_tokens?
+
+        def max_output_tokens=: (
+          OpenAI::Models::Realtime::RealtimeResponseCreateParams::max_output_tokens
+        ) -> OpenAI::Models::Realtime::RealtimeResponseCreateParams::max_output_tokens
+
+        attr_accessor metadata: OpenAI::Models::metadata?
+
+        attr_reader output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::output_modality]?
+
+        def output_modalities=: (
+          ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::output_modality]
+        ) -> ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::output_modality]
+
+        attr_accessor prompt: OpenAI::Responses::ResponsePrompt?
+
+        attr_reader tool_choice: OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool_choice?
+
+        def tool_choice=: (
+          OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool_choice
+        ) -> OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool_choice
+
+        attr_reader tools: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool]?
+
+        def tools=: (
+          ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool]
+        ) -> ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool]
+
+        def initialize: (
+          ?audio: OpenAI::Realtime::RealtimeResponseCreateAudioOutput,
+          ?conversation: OpenAI::Models::Realtime::RealtimeResponseCreateParams::conversation,
+          ?input: ::Array[OpenAI::Models::Realtime::conversation_item],
+          ?instructions: String,
+          ?max_output_tokens: OpenAI::Models::Realtime::RealtimeResponseCreateParams::max_output_tokens,
+          ?metadata: OpenAI::Models::metadata?,
+          ?output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::output_modality],
+          ?prompt: OpenAI::Responses::ResponsePrompt?,
+          ?tool_choice: OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool_choice,
+          ?tools: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool]
+        ) -> void
+
+        def to_hash: -> {
+          audio: OpenAI::Realtime::RealtimeResponseCreateAudioOutput,
+          conversation: OpenAI::Models::Realtime::RealtimeResponseCreateParams::conversation,
+          input: ::Array[OpenAI::Models::Realtime::conversation_item],
+          instructions: String,
+          max_output_tokens: OpenAI::Models::Realtime::RealtimeResponseCreateParams::max_output_tokens,
+          metadata: OpenAI::Models::metadata?,
+          output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::output_modality],
+          prompt: OpenAI::Responses::ResponsePrompt?,
+          tool_choice: OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool_choice,
+          tools: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool]
+        }
+
+        type conversation = String | :auto | :none
+
+        module Conversation
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::conversation]
+
+          AUTO: :auto
+          NONE: :none
+        end
+
+        type max_output_tokens = Integer | :inf
+
+        module MaxOutputTokens
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::max_output_tokens]
+        end
+
+        type output_modality = :text | :audio
+
+        module OutputModality
+          extend OpenAI::Internal::Type::Enum
+
+          TEXT: :text
+          AUDIO: :audio
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::output_modality]
+        end
+
+        type tool_choice =
+          OpenAI::Models::Responses::tool_choice_options
+          | OpenAI::Responses::ToolChoiceFunction
+          | OpenAI::Responses::ToolChoiceMcp
+
+        module ToolChoice
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool_choice]
+        end
+
+        type tool =
+          OpenAI::Realtime::Models
+          | OpenAI::Realtime::RealtimeResponseCreateMcpTool
+
+        module Tool
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool]
+        end
+      end
+    end
+  end
+end

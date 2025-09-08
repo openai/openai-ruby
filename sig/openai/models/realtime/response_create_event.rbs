@@ -5,7 +5,7 @@ module OpenAI
         {
           type: :"response.create",
           event_id: String,
-          response: OpenAI::Realtime::ResponseCreateEvent::Response
+          response: OpenAI::Realtime::RealtimeResponseCreateParams
         }
 
       class ResponseCreateEvent < OpenAI::Internal::Type::BaseModel
@@ -15,266 +15,23 @@ module OpenAI
 
         def event_id=: (String) -> String
 
-        attr_reader response: OpenAI::Realtime::ResponseCreateEvent::Response?
+        attr_reader response: OpenAI::Realtime::RealtimeResponseCreateParams?
 
         def response=: (
-          OpenAI::Realtime::ResponseCreateEvent::Response
-        ) -> OpenAI::Realtime::ResponseCreateEvent::Response
+          OpenAI::Realtime::RealtimeResponseCreateParams
+        ) -> OpenAI::Realtime::RealtimeResponseCreateParams
 
         def initialize: (
           ?event_id: String,
-          ?response: OpenAI::Realtime::ResponseCreateEvent::Response,
+          ?response: OpenAI::Realtime::RealtimeResponseCreateParams,
           ?type: :"response.create"
         ) -> void
 
         def to_hash: -> {
           type: :"response.create",
           event_id: String,
-          response: OpenAI::Realtime::ResponseCreateEvent::Response
+          response: OpenAI::Realtime::RealtimeResponseCreateParams
         }
-
-        type response =
-          {
-            conversation: OpenAI::Models::Realtime::ResponseCreateEvent::Response::conversation,
-            input: ::Array[OpenAI::Models::Realtime::conversation_item],
-            instructions: String,
-            max_output_tokens: OpenAI::Models::Realtime::ResponseCreateEvent::Response::max_output_tokens,
-            metadata: OpenAI::Models::metadata?,
-            modalities: ::Array[OpenAI::Models::Realtime::ResponseCreateEvent::Response::modality],
-            output_audio_format: OpenAI::Models::Realtime::ResponseCreateEvent::Response::output_audio_format,
-            prompt: OpenAI::Responses::ResponsePrompt?,
-            temperature: Float,
-            tool_choice: OpenAI::Models::Realtime::ResponseCreateEvent::Response::tool_choice,
-            tools: ::Array[OpenAI::Realtime::ResponseCreateEvent::Response::Tool],
-            voice: OpenAI::Models::Realtime::ResponseCreateEvent::Response::voice
-          }
-
-        class Response < OpenAI::Internal::Type::BaseModel
-          attr_reader conversation: OpenAI::Models::Realtime::ResponseCreateEvent::Response::conversation?
-
-          def conversation=: (
-            OpenAI::Models::Realtime::ResponseCreateEvent::Response::conversation
-          ) -> OpenAI::Models::Realtime::ResponseCreateEvent::Response::conversation
-
-          attr_reader input: ::Array[OpenAI::Models::Realtime::conversation_item]?
-
-          def input=: (
-            ::Array[OpenAI::Models::Realtime::conversation_item]
-          ) -> ::Array[OpenAI::Models::Realtime::conversation_item]
-
-          attr_reader instructions: String?
-
-          def instructions=: (String) -> String
-
-          attr_reader max_output_tokens: OpenAI::Models::Realtime::ResponseCreateEvent::Response::max_output_tokens?
-
-          def max_output_tokens=: (
-            OpenAI::Models::Realtime::ResponseCreateEvent::Response::max_output_tokens
-          ) -> OpenAI::Models::Realtime::ResponseCreateEvent::Response::max_output_tokens
-
-          attr_accessor metadata: OpenAI::Models::metadata?
-
-          attr_reader modalities: ::Array[OpenAI::Models::Realtime::ResponseCreateEvent::Response::modality]?
-
-          def modalities=: (
-            ::Array[OpenAI::Models::Realtime::ResponseCreateEvent::Response::modality]
-          ) -> ::Array[OpenAI::Models::Realtime::ResponseCreateEvent::Response::modality]
-
-          attr_reader output_audio_format: OpenAI::Models::Realtime::ResponseCreateEvent::Response::output_audio_format?
-
-          def output_audio_format=: (
-            OpenAI::Models::Realtime::ResponseCreateEvent::Response::output_audio_format
-          ) -> OpenAI::Models::Realtime::ResponseCreateEvent::Response::output_audio_format
-
-          attr_accessor prompt: OpenAI::Responses::ResponsePrompt?
-
-          attr_reader temperature: Float?
-
-          def temperature=: (Float) -> Float
-
-          attr_reader tool_choice: OpenAI::Models::Realtime::ResponseCreateEvent::Response::tool_choice?
-
-          def tool_choice=: (
-            OpenAI::Models::Realtime::ResponseCreateEvent::Response::tool_choice
-          ) -> OpenAI::Models::Realtime::ResponseCreateEvent::Response::tool_choice
-
-          attr_reader tools: ::Array[OpenAI::Realtime::ResponseCreateEvent::Response::Tool]?
-
-          def tools=: (
-            ::Array[OpenAI::Realtime::ResponseCreateEvent::Response::Tool]
-          ) -> ::Array[OpenAI::Realtime::ResponseCreateEvent::Response::Tool]
-
-          attr_reader voice: OpenAI::Models::Realtime::ResponseCreateEvent::Response::voice?
-
-          def voice=: (
-            OpenAI::Models::Realtime::ResponseCreateEvent::Response::voice
-          ) -> OpenAI::Models::Realtime::ResponseCreateEvent::Response::voice
-
-          def initialize: (
-            ?conversation: OpenAI::Models::Realtime::ResponseCreateEvent::Response::conversation,
-            ?input: ::Array[OpenAI::Models::Realtime::conversation_item],
-            ?instructions: String,
-            ?max_output_tokens: OpenAI::Models::Realtime::ResponseCreateEvent::Response::max_output_tokens,
-            ?metadata: OpenAI::Models::metadata?,
-            ?modalities: ::Array[OpenAI::Models::Realtime::ResponseCreateEvent::Response::modality],
-            ?output_audio_format: OpenAI::Models::Realtime::ResponseCreateEvent::Response::output_audio_format,
-            ?prompt: OpenAI::Responses::ResponsePrompt?,
-            ?temperature: Float,
-            ?tool_choice: OpenAI::Models::Realtime::ResponseCreateEvent::Response::tool_choice,
-            ?tools: ::Array[OpenAI::Realtime::ResponseCreateEvent::Response::Tool],
-            ?voice: OpenAI::Models::Realtime::ResponseCreateEvent::Response::voice
-          ) -> void
-
-          def to_hash: -> {
-            conversation: OpenAI::Models::Realtime::ResponseCreateEvent::Response::conversation,
-            input: ::Array[OpenAI::Models::Realtime::conversation_item],
-            instructions: String,
-            max_output_tokens: OpenAI::Models::Realtime::ResponseCreateEvent::Response::max_output_tokens,
-            metadata: OpenAI::Models::metadata?,
-            modalities: ::Array[OpenAI::Models::Realtime::ResponseCreateEvent::Response::modality],
-            output_audio_format: OpenAI::Models::Realtime::ResponseCreateEvent::Response::output_audio_format,
-            prompt: OpenAI::Responses::ResponsePrompt?,
-            temperature: Float,
-            tool_choice: OpenAI::Models::Realtime::ResponseCreateEvent::Response::tool_choice,
-            tools: ::Array[OpenAI::Realtime::ResponseCreateEvent::Response::Tool],
-            voice: OpenAI::Models::Realtime::ResponseCreateEvent::Response::voice
-          }
-
-          type conversation = String | :auto | :none
-
-          module Conversation
-            extend OpenAI::Internal::Type::Union
-
-            def self?.variants: -> ::Array[OpenAI::Models::Realtime::ResponseCreateEvent::Response::conversation]
-
-            AUTO: :auto
-            NONE: :none
-          end
-
-          type max_output_tokens = Integer | :inf
-
-          module MaxOutputTokens
-            extend OpenAI::Internal::Type::Union
-
-            def self?.variants: -> ::Array[OpenAI::Models::Realtime::ResponseCreateEvent::Response::max_output_tokens]
-          end
-
-          type modality = :text | :audio
-
-          module Modality
-            extend OpenAI::Internal::Type::Enum
-
-            TEXT: :text
-            AUDIO: :audio
-
-            def self?.values: -> ::Array[OpenAI::Models::Realtime::ResponseCreateEvent::Response::modality]
-          end
-
-          type output_audio_format = :pcm16 | :g711_ulaw | :g711_alaw
-
-          module OutputAudioFormat
-            extend OpenAI::Internal::Type::Enum
-
-            PCM16: :pcm16
-            G711_ULAW: :g711_ulaw
-            G711_ALAW: :g711_alaw
-
-            def self?.values: -> ::Array[OpenAI::Models::Realtime::ResponseCreateEvent::Response::output_audio_format]
-          end
-
-          type tool_choice =
-            OpenAI::Models::Responses::tool_choice_options
-            | OpenAI::Responses::ToolChoiceFunction
-            | OpenAI::Responses::ToolChoiceMcp
-
-          module ToolChoice
-            extend OpenAI::Internal::Type::Union
-
-            def self?.variants: -> ::Array[OpenAI::Models::Realtime::ResponseCreateEvent::Response::tool_choice]
-          end
-
-          type tool =
-            {
-              description: String,
-              name: String,
-              parameters: top,
-              type: OpenAI::Models::Realtime::ResponseCreateEvent::Response::Tool::type_
-            }
-
-          class Tool < OpenAI::Internal::Type::BaseModel
-            attr_reader description: String?
-
-            def description=: (String) -> String
-
-            attr_reader name: String?
-
-            def name=: (String) -> String
-
-            attr_reader parameters: top?
-
-            def parameters=: (top) -> top
-
-            attr_reader type: OpenAI::Models::Realtime::ResponseCreateEvent::Response::Tool::type_?
-
-            def type=: (
-              OpenAI::Models::Realtime::ResponseCreateEvent::Response::Tool::type_
-            ) -> OpenAI::Models::Realtime::ResponseCreateEvent::Response::Tool::type_
-
-            def initialize: (
-              ?description: String,
-              ?name: String,
-              ?parameters: top,
-              ?type: OpenAI::Models::Realtime::ResponseCreateEvent::Response::Tool::type_
-            ) -> void
-
-            def to_hash: -> {
-              description: String,
-              name: String,
-              parameters: top,
-              type: OpenAI::Models::Realtime::ResponseCreateEvent::Response::Tool::type_
-            }
-
-            type type_ = :function
-
-            module Type
-              extend OpenAI::Internal::Type::Enum
-
-              FUNCTION: :function
-
-              def self?.values: -> ::Array[OpenAI::Models::Realtime::ResponseCreateEvent::Response::Tool::type_]
-            end
-          end
-
-          type voice =
-            String
-            | :alloy
-            | :ash
-            | :ballad
-            | :coral
-            | :echo
-            | :sage
-            | :shimmer
-            | :verse
-            | :marin
-            | :cedar
-
-          module Voice
-            extend OpenAI::Internal::Type::Union
-
-            def self?.variants: -> ::Array[OpenAI::Models::Realtime::ResponseCreateEvent::Response::voice]
-
-            ALLOY: :alloy
-            ASH: :ash
-            BALLAD: :ballad
-            CORAL: :coral
-            ECHO: :echo
-            SAGE: :sage
-            SHIMMER: :shimmer
-            VERSE: :verse
-            MARIN: :marin
-            CEDAR: :cedar
-          end
-        end
       end
     end
   end

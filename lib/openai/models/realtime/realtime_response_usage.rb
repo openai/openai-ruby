@@ -5,7 +5,10 @@ module OpenAI
     module Realtime
       class RealtimeResponseUsage < OpenAI::Internal::Type::BaseModel
         # @!attribute input_token_details
-        #   Details about the input tokens used in the Response.
+        #   Details about the input tokens used in the Response. Cached tokens are tokens
+        #   from previous turns in the conversation that are included as context for the
+        #   current response. Cached tokens here are counted as a subset of input tokens,
+        #   meaning input tokens will include cached and uncached tokens.
         #
         #   @return [OpenAI::Models::Realtime::RealtimeResponseUsageInputTokenDetails, nil]
         optional :input_token_details, -> { OpenAI::Realtime::RealtimeResponseUsageInputTokenDetails }
@@ -46,7 +49,7 @@ module OpenAI
         #   Conversation, thus output from previous turns (text and audio tokens) will
         #   become the input for later turns.
         #
-        #   @param input_token_details [OpenAI::Models::Realtime::RealtimeResponseUsageInputTokenDetails] Details about the input tokens used in the Response.
+        #   @param input_token_details [OpenAI::Models::Realtime::RealtimeResponseUsageInputTokenDetails] Details about the input tokens used in the Response. Cached tokens are tokens fr
         #
         #   @param input_tokens [Integer] The number of input tokens used in the Response, including text and
         #

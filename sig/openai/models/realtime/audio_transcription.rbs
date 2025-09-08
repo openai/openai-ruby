@@ -1,0 +1,57 @@
+module OpenAI
+  module Models
+    module Realtime
+      type audio_transcription =
+        {
+          language: String,
+          model: OpenAI::Models::Realtime::AudioTranscription::model,
+          prompt: String
+        }
+
+      class AudioTranscription < OpenAI::Internal::Type::BaseModel
+        attr_reader language: String?
+
+        def language=: (String) -> String
+
+        attr_reader model: OpenAI::Models::Realtime::AudioTranscription::model?
+
+        def model=: (
+          OpenAI::Models::Realtime::AudioTranscription::model
+        ) -> OpenAI::Models::Realtime::AudioTranscription::model
+
+        attr_reader prompt: String?
+
+        def prompt=: (String) -> String
+
+        def initialize: (
+          ?language: String,
+          ?model: OpenAI::Models::Realtime::AudioTranscription::model,
+          ?prompt: String
+        ) -> void
+
+        def to_hash: -> {
+          language: String,
+          model: OpenAI::Models::Realtime::AudioTranscription::model,
+          prompt: String
+        }
+
+        type model =
+          :"whisper-1"
+          | :"gpt-4o-transcribe-latest"
+          | :"gpt-4o-mini-transcribe"
+          | :"gpt-4o-transcribe"
+
+        module Model
+          extend OpenAI::Internal::Type::Enum
+
+          WHISPER_1: :"whisper-1"
+          GPT_4O_TRANSCRIBE_LATEST: :"gpt-4o-transcribe-latest"
+          GPT_4O_MINI_TRANSCRIBE: :"gpt-4o-mini-transcribe"
+          GPT_4O_TRANSCRIBE: :"gpt-4o-transcribe"
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::AudioTranscription::model]
+        end
+      end
+    end
+  end
+end

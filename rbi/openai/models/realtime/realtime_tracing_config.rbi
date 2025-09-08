@@ -3,8 +3,9 @@
 module OpenAI
   module Models
     module Realtime
-      # Configuration options for tracing. Set to null to disable tracing. Once tracing
-      # is enabled for a session, the configuration cannot be modified.
+      # Realtime API can write session traces to the
+      # [Traces Dashboard](/logs?api=traces). Set to null to disable tracing. Once
+      # tracing is enabled for a session, the configuration cannot be modified.
       #
       # `auto` will create a trace for the session with default values for the workflow
       # name, group id, and metadata.
@@ -29,15 +30,15 @@ module OpenAI
             end
 
           # The group id to attach to this trace to enable filtering and grouping in the
-          # traces dashboard.
+          # Traces Dashboard.
           sig { returns(T.nilable(String)) }
           attr_reader :group_id
 
           sig { params(group_id: String).void }
           attr_writer :group_id
 
-          # The arbitrary metadata to attach to this trace to enable filtering in the traces
-          # dashboard.
+          # The arbitrary metadata to attach to this trace to enable filtering in the Traces
+          # Dashboard.
           sig { returns(T.nilable(T.anything)) }
           attr_reader :metadata
 
@@ -45,7 +46,7 @@ module OpenAI
           attr_writer :metadata
 
           # The name of the workflow to attach to this trace. This is used to name the trace
-          # in the traces dashboard.
+          # in the Traces Dashboard.
           sig { returns(T.nilable(String)) }
           attr_reader :workflow_name
 
@@ -62,13 +63,13 @@ module OpenAI
           end
           def self.new(
             # The group id to attach to this trace to enable filtering and grouping in the
-            # traces dashboard.
+            # Traces Dashboard.
             group_id: nil,
-            # The arbitrary metadata to attach to this trace to enable filtering in the traces
-            # dashboard.
+            # The arbitrary metadata to attach to this trace to enable filtering in the Traces
+            # Dashboard.
             metadata: nil,
             # The name of the workflow to attach to this trace. This is used to name the trace
-            # in the traces dashboard.
+            # in the Traces Dashboard.
             workflow_name: nil
           )
           end
