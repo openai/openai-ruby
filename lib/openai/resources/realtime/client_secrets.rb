@@ -7,12 +7,11 @@ module OpenAI
         # Some parameter documentations has been truncated, see
         # {OpenAI::Models::Realtime::ClientSecretCreateParams} for more details.
         #
-        # Create a Realtime session and client secret for either realtime or
-        # transcription.
+        # Create a Realtime client secret with an associated session configuration.
         #
         # @overload create(expires_after: nil, session: nil, request_options: {})
         #
-        # @param expires_after [OpenAI::Models::Realtime::ClientSecretCreateParams::ExpiresAfter] Configuration for the ephemeral token expiration.
+        # @param expires_after [OpenAI::Models::Realtime::ClientSecretCreateParams::ExpiresAfter] Configuration for the client secret expiration. Expiration refers to the time af
         #
         # @param session [OpenAI::Models::Realtime::RealtimeSessionCreateRequest, OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest] Session configuration to use for the client secret. Choose either a realtime
         #

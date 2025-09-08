@@ -2,63 +2,11 @@ module OpenAI
   module Models
     module Realtime
       type realtime_tools_config_union =
-        OpenAI::Realtime::RealtimeToolsConfigUnion::Function
+        OpenAI::Realtime::Models
         | OpenAI::Realtime::RealtimeToolsConfigUnion::Mcp
 
       module RealtimeToolsConfigUnion
         extend OpenAI::Internal::Type::Union
-
-        type function =
-          {
-            description: String,
-            name: String,
-            parameters: top,
-            type: OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Function::type_
-          }
-
-        class Function < OpenAI::Internal::Type::BaseModel
-          attr_reader description: String?
-
-          def description=: (String) -> String
-
-          attr_reader name: String?
-
-          def name=: (String) -> String
-
-          attr_reader parameters: top?
-
-          def parameters=: (top) -> top
-
-          attr_reader type: OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Function::type_?
-
-          def type=: (
-            OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Function::type_
-          ) -> OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Function::type_
-
-          def initialize: (
-            ?description: String,
-            ?name: String,
-            ?parameters: top,
-            ?type: OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Function::type_
-          ) -> void
-
-          def to_hash: -> {
-            description: String,
-            name: String,
-            parameters: top,
-            type: OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Function::type_
-          }
-
-          type type_ = :function
-
-          module Type
-            extend OpenAI::Internal::Type::Enum
-
-            FUNCTION: :function
-
-            def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Function::type_]
-          end
-        end
 
         type mcp =
           {

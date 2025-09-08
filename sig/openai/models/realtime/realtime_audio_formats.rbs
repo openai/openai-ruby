@@ -1,0 +1,128 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_audio_formats =
+        OpenAI::Realtime::RealtimeAudioFormats::AudioPCM
+        | OpenAI::Realtime::RealtimeAudioFormats::AudioPCMU
+        | OpenAI::Realtime::RealtimeAudioFormats::AudioPCMA
+
+      module RealtimeAudioFormats
+        extend OpenAI::Internal::Type::Union
+
+        type audio_pcm =
+          {
+            rate: OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM::rate,
+            type: OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM::type_
+          }
+
+        class AudioPCM < OpenAI::Internal::Type::BaseModel
+          attr_reader rate: OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM::rate?
+
+          def rate=: (
+            OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM::rate
+          ) -> OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM::rate
+
+          attr_reader type: OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM::type_?
+
+          def type=: (
+            OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM::type_
+          ) -> OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM::type_
+
+          def initialize: (
+            ?rate: OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM::rate,
+            ?type: OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM::type_
+          ) -> void
+
+          def to_hash: -> {
+            rate: OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM::rate,
+            type: OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM::type_
+          }
+
+          type rate = 24000
+
+          module Rate
+            extend OpenAI::Internal::Type::Enum
+
+            RATE_24000: 24000
+
+            def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM::rate]
+          end
+
+          type type_ = :"audio/pcm"
+
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            AUDIO_PCM: :"audio/pcm"
+
+            def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM::type_]
+          end
+        end
+
+        type audio_pcmu =
+          {
+            type: OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMU::type_
+          }
+
+        class AudioPCMU < OpenAI::Internal::Type::BaseModel
+          attr_reader type: OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMU::type_?
+
+          def type=: (
+            OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMU::type_
+          ) -> OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMU::type_
+
+          def initialize: (
+            ?type: OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMU::type_
+          ) -> void
+
+          def to_hash: -> {
+            type: OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMU::type_
+          }
+
+          type type_ = :"audio/pcmu"
+
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            AUDIO_PCMU: :"audio/pcmu"
+
+            def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMU::type_]
+          end
+        end
+
+        type audio_pcma =
+          {
+            type: OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMA::type_
+          }
+
+        class AudioPCMA < OpenAI::Internal::Type::BaseModel
+          attr_reader type: OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMA::type_?
+
+          def type=: (
+            OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMA::type_
+          ) -> OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMA::type_
+
+          def initialize: (
+            ?type: OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMA::type_
+          ) -> void
+
+          def to_hash: -> {
+            type: OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMA::type_
+          }
+
+          type type_ = :"audio/pcma"
+
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            AUDIO_PCMA: :"audio/pcma"
+
+            def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMA::type_]
+          end
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Realtime::realtime_audio_formats]
+      end
+    end
+  end
+end

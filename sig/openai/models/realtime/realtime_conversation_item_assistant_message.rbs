@@ -54,14 +54,24 @@ module OpenAI
 
         type content =
           {
+            audio: String,
             text: String,
+            transcript: String,
             type: OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage::Content::type_
           }
 
         class Content < OpenAI::Internal::Type::BaseModel
+          attr_reader audio: String?
+
+          def audio=: (String) -> String
+
           attr_reader text: String?
 
           def text=: (String) -> String
+
+          attr_reader transcript: String?
+
+          def transcript=: (String) -> String
 
           attr_reader type: OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage::Content::type_?
 
@@ -70,21 +80,26 @@ module OpenAI
           ) -> OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage::Content::type_
 
           def initialize: (
+            ?audio: String,
             ?text: String,
+            ?transcript: String,
             ?type: OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage::Content::type_
           ) -> void
 
           def to_hash: -> {
+            audio: String,
             text: String,
+            transcript: String,
             type: OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage::Content::type_
           }
 
-          type type_ = :text
+          type type_ = :output_text | :output_audio
 
           module Type
             extend OpenAI::Internal::Type::Enum
 
-            TEXT: :text
+            OUTPUT_TEXT: :output_text
+            OUTPUT_AUDIO: :output_audio
 
             def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage::Content::type_]
           end

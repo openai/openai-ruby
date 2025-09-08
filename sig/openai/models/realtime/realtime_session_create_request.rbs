@@ -3,16 +3,14 @@ module OpenAI
     module Realtime
       type realtime_session_create_request =
         {
-          model: OpenAI::Models::Realtime::RealtimeSessionCreateRequest::model,
           type: :realtime,
           audio: OpenAI::Realtime::RealtimeAudioConfig,
-          client_secret: OpenAI::Realtime::RealtimeClientSecretConfig,
           include: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateRequest::include_],
           instructions: String,
           max_output_tokens: OpenAI::Models::Realtime::RealtimeSessionCreateRequest::max_output_tokens,
+          model: OpenAI::Models::Realtime::RealtimeSessionCreateRequest::model,
           output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateRequest::output_modality],
           prompt: OpenAI::Responses::ResponsePrompt?,
-          temperature: Float,
           tool_choice: OpenAI::Models::Realtime::realtime_tool_choice_config,
           tools: OpenAI::Models::Realtime::realtime_tools_config,
           tracing: OpenAI::Models::Realtime::realtime_tracing_config?,
@@ -20,8 +18,6 @@ module OpenAI
         }
 
       class RealtimeSessionCreateRequest < OpenAI::Internal::Type::BaseModel
-        attr_accessor model: OpenAI::Models::Realtime::RealtimeSessionCreateRequest::model
-
         attr_accessor type: :realtime
 
         attr_reader audio: OpenAI::Realtime::RealtimeAudioConfig?
@@ -29,12 +25,6 @@ module OpenAI
         def audio=: (
           OpenAI::Realtime::RealtimeAudioConfig
         ) -> OpenAI::Realtime::RealtimeAudioConfig
-
-        attr_reader client_secret: OpenAI::Realtime::RealtimeClientSecretConfig?
-
-        def client_secret=: (
-          OpenAI::Realtime::RealtimeClientSecretConfig
-        ) -> OpenAI::Realtime::RealtimeClientSecretConfig
 
         attr_reader include: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateRequest::include_]?
 
@@ -52,6 +42,12 @@ module OpenAI
           OpenAI::Models::Realtime::RealtimeSessionCreateRequest::max_output_tokens
         ) -> OpenAI::Models::Realtime::RealtimeSessionCreateRequest::max_output_tokens
 
+        attr_reader model: OpenAI::Models::Realtime::RealtimeSessionCreateRequest::model?
+
+        def model=: (
+          OpenAI::Models::Realtime::RealtimeSessionCreateRequest::model
+        ) -> OpenAI::Models::Realtime::RealtimeSessionCreateRequest::model
+
         attr_reader output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateRequest::output_modality]?
 
         def output_modalities=: (
@@ -59,10 +55,6 @@ module OpenAI
         ) -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateRequest::output_modality]
 
         attr_accessor prompt: OpenAI::Responses::ResponsePrompt?
-
-        attr_reader temperature: Float?
-
-        def temperature=: (Float) -> Float
 
         attr_reader tool_choice: OpenAI::Models::Realtime::realtime_tool_choice_config?
 
@@ -85,15 +77,13 @@ module OpenAI
         ) -> OpenAI::Models::Realtime::realtime_truncation
 
         def initialize: (
-          model: OpenAI::Models::Realtime::RealtimeSessionCreateRequest::model,
           ?audio: OpenAI::Realtime::RealtimeAudioConfig,
-          ?client_secret: OpenAI::Realtime::RealtimeClientSecretConfig,
           ?include: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateRequest::include_],
           ?instructions: String,
           ?max_output_tokens: OpenAI::Models::Realtime::RealtimeSessionCreateRequest::max_output_tokens,
+          ?model: OpenAI::Models::Realtime::RealtimeSessionCreateRequest::model,
           ?output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateRequest::output_modality],
           ?prompt: OpenAI::Responses::ResponsePrompt?,
-          ?temperature: Float,
           ?tool_choice: OpenAI::Models::Realtime::realtime_tool_choice_config,
           ?tools: OpenAI::Models::Realtime::realtime_tools_config,
           ?tracing: OpenAI::Models::Realtime::realtime_tracing_config?,
@@ -102,51 +92,19 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          model: OpenAI::Models::Realtime::RealtimeSessionCreateRequest::model,
           type: :realtime,
           audio: OpenAI::Realtime::RealtimeAudioConfig,
-          client_secret: OpenAI::Realtime::RealtimeClientSecretConfig,
           include: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateRequest::include_],
           instructions: String,
           max_output_tokens: OpenAI::Models::Realtime::RealtimeSessionCreateRequest::max_output_tokens,
+          model: OpenAI::Models::Realtime::RealtimeSessionCreateRequest::model,
           output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateRequest::output_modality],
           prompt: OpenAI::Responses::ResponsePrompt?,
-          temperature: Float,
           tool_choice: OpenAI::Models::Realtime::realtime_tool_choice_config,
           tools: OpenAI::Models::Realtime::realtime_tools_config,
           tracing: OpenAI::Models::Realtime::realtime_tracing_config?,
           truncation: OpenAI::Models::Realtime::realtime_truncation
         }
-
-        type model =
-          String
-          | :"gpt-realtime"
-          | :"gpt-realtime-2025-08-28"
-          | :"gpt-4o-realtime"
-          | :"gpt-4o-mini-realtime"
-          | :"gpt-4o-realtime-preview"
-          | :"gpt-4o-realtime-preview-2024-10-01"
-          | :"gpt-4o-realtime-preview-2024-12-17"
-          | :"gpt-4o-realtime-preview-2025-06-03"
-          | :"gpt-4o-mini-realtime-preview"
-          | :"gpt-4o-mini-realtime-preview-2024-12-17"
-
-        module Model
-          extend OpenAI::Internal::Type::Union
-
-          def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateRequest::model]
-
-          GPT_REALTIME: :"gpt-realtime"
-          GPT_REALTIME_2025_08_28: :"gpt-realtime-2025-08-28"
-          GPT_4O_REALTIME: :"gpt-4o-realtime"
-          GPT_4O_MINI_REALTIME: :"gpt-4o-mini-realtime"
-          GPT_4O_REALTIME_PREVIEW: :"gpt-4o-realtime-preview"
-          GPT_4O_REALTIME_PREVIEW_2024_10_01: :"gpt-4o-realtime-preview-2024-10-01"
-          GPT_4O_REALTIME_PREVIEW_2024_12_17: :"gpt-4o-realtime-preview-2024-12-17"
-          GPT_4O_REALTIME_PREVIEW_2025_06_03: :"gpt-4o-realtime-preview-2025-06-03"
-          GPT_4O_MINI_REALTIME_PREVIEW: :"gpt-4o-mini-realtime-preview"
-          GPT_4O_MINI_REALTIME_PREVIEW_2024_12_17: :"gpt-4o-mini-realtime-preview-2024-12-17"
-        end
 
         type include_ = :"item.input_audio_transcription.logprobs"
 
@@ -164,6 +122,32 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateRequest::max_output_tokens]
+        end
+
+        type model =
+          String
+          | :"gpt-realtime"
+          | :"gpt-realtime-2025-08-28"
+          | :"gpt-4o-realtime-preview"
+          | :"gpt-4o-realtime-preview-2024-10-01"
+          | :"gpt-4o-realtime-preview-2024-12-17"
+          | :"gpt-4o-realtime-preview-2025-06-03"
+          | :"gpt-4o-mini-realtime-preview"
+          | :"gpt-4o-mini-realtime-preview-2024-12-17"
+
+        module Model
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateRequest::model]
+
+          GPT_REALTIME: :"gpt-realtime"
+          GPT_REALTIME_2025_08_28: :"gpt-realtime-2025-08-28"
+          GPT_4O_REALTIME_PREVIEW: :"gpt-4o-realtime-preview"
+          GPT_4O_REALTIME_PREVIEW_2024_10_01: :"gpt-4o-realtime-preview-2024-10-01"
+          GPT_4O_REALTIME_PREVIEW_2024_12_17: :"gpt-4o-realtime-preview-2024-12-17"
+          GPT_4O_REALTIME_PREVIEW_2025_06_03: :"gpt-4o-realtime-preview-2025-06-03"
+          GPT_4O_MINI_REALTIME_PREVIEW: :"gpt-4o-mini-realtime-preview"
+          GPT_4O_MINI_REALTIME_PREVIEW_2024_12_17: :"gpt-4o-mini-realtime-preview-2024-12-17"
         end
 
         type output_modality = :text | :audio

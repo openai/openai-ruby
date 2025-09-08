@@ -4,12 +4,6 @@ module OpenAI
   module Models
     module Realtime
       class RealtimeSessionCreateRequest < OpenAI::Internal::Type::BaseModel
-        # @!attribute model
-        #   The Realtime model used for this session.
-        #
-        #   @return [String, Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model]
-        required :model, union: -> { OpenAI::Realtime::RealtimeSessionCreateRequest::Model }
-
         # @!attribute type
         #   The type of session to create. Always `realtime` for the Realtime API.
         #
@@ -22,17 +16,11 @@ module OpenAI
         #   @return [OpenAI::Models::Realtime::RealtimeAudioConfig, nil]
         optional :audio, -> { OpenAI::Realtime::RealtimeAudioConfig }
 
-        # @!attribute client_secret
-        #   Configuration options for the generated client secret.
-        #
-        #   @return [OpenAI::Models::Realtime::RealtimeClientSecretConfig, nil]
-        optional :client_secret, -> { OpenAI::Realtime::RealtimeClientSecretConfig }
-
         # @!attribute include
         #   Additional fields to include in server outputs.
         #
-        #   - `item.input_audio_transcription.logprobs`: Include logprobs for input audio
-        #     transcription.
+        #   `item.input_audio_transcription.logprobs`: Include logprobs for input audio
+        #   transcription.
         #
         #   @return [Array<Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Include>, nil]
         optional :include,
@@ -62,9 +50,17 @@ module OpenAI
         #   @return [Integer, Symbol, :inf, nil]
         optional :max_output_tokens, union: -> { OpenAI::Realtime::RealtimeSessionCreateRequest::MaxOutputTokens }
 
+        # @!attribute model
+        #   The Realtime model used for this session.
+        #
+        #   @return [String, Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model, nil]
+        optional :model, union: -> { OpenAI::Realtime::RealtimeSessionCreateRequest::Model }
+
         # @!attribute output_modalities
-        #   The set of modalities the model can respond with. To disable audio, set this to
-        #   ["text"].
+        #   The set of modalities the model can respond with. It defaults to `["audio"]`,
+        #   indicating that the model will respond with audio plus a transcript. `["text"]`
+        #   can be used to make the model respond with text only. It is not possible to
+        #   request both `text` and `audio` at the same time.
         #
         #   @return [Array<Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateRequest::OutputModality>, nil]
         optional :output_modalities,
@@ -77,13 +73,6 @@ module OpenAI
         #   @return [OpenAI::Models::Responses::ResponsePrompt, nil]
         optional :prompt, -> { OpenAI::Responses::ResponsePrompt }, nil?: true
 
-        # @!attribute temperature
-        #   Sampling temperature for the model, limited to [0.6, 1.2]. For audio models a
-        #   temperature of 0.8 is highly recommended for best performance.
-        #
-        #   @return [Float, nil]
-        optional :temperature, Float
-
         # @!attribute tool_choice
         #   How the model chooses tools. Provide one of the string modes or force a specific
         #   function/MCP tool.
@@ -94,12 +83,13 @@ module OpenAI
         # @!attribute tools
         #   Tools available to the model.
         #
-        #   @return [Array<OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Function, OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Mcp>, nil]
+        #   @return [Array<OpenAI::Models::Realtime::Models, OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Mcp>, nil]
         optional :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Realtime::RealtimeToolsConfigUnion] }
 
         # @!attribute tracing
-        #   Configuration options for tracing. Set to null to disable tracing. Once tracing
-        #   is enabled for a session, the configuration cannot be modified.
+        #   Realtime API can write session traces to the
+        #   [Traces Dashboard](/logs?api=traces). Set to null to disable tracing. Once
+        #   tracing is enabled for a session, the configuration cannot be modified.
         #
         #   `auto` will create a trace for the session with default values for the workflow
         #   name, group id, and metadata.
@@ -109,23 +99,18 @@ module OpenAI
 
         # @!attribute truncation
         #   Controls how the realtime conversation is truncated prior to model inference.
-        #   The default is `auto`. When set to `retention_ratio`, the server retains a
-        #   fraction of the conversation tokens prior to the instructions.
+        #   The default is `auto`.
         #
-        #   @return [Symbol, OpenAI::Models::Realtime::RealtimeTruncation::RealtimeTruncationStrategy, OpenAI::Models::Realtime::RealtimeTruncation::RetentionRatioTruncation, nil]
+        #   @return [Symbol, OpenAI::Models::Realtime::RealtimeTruncation::RealtimeTruncationStrategy, OpenAI::Models::Realtime::RealtimeTruncationRetentionRatio, nil]
         optional :truncation, union: -> { OpenAI::Realtime::RealtimeTruncation }
 
-        # @!method initialize(model:, audio: nil, client_secret: nil, include: nil, instructions: nil, max_output_tokens: nil, output_modalities: nil, prompt: nil, temperature: nil, tool_choice: nil, tools: nil, tracing: nil, truncation: nil, type: :realtime)
+        # @!method initialize(audio: nil, include: nil, instructions: nil, max_output_tokens: nil, model: nil, output_modalities: nil, prompt: nil, tool_choice: nil, tools: nil, tracing: nil, truncation: nil, type: :realtime)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Realtime::RealtimeSessionCreateRequest} for more details.
         #
         #   Realtime session object configuration.
         #
-        #   @param model [String, Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model] The Realtime model used for this session.
-        #
         #   @param audio [OpenAI::Models::Realtime::RealtimeAudioConfig] Configuration for input and output audio.
-        #
-        #   @param client_secret [OpenAI::Models::Realtime::RealtimeClientSecretConfig] Configuration options for the generated client secret.
         #
         #   @param include [Array<Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Include>] Additional fields to include in server outputs.
         #
@@ -133,72 +118,21 @@ module OpenAI
         #
         #   @param max_output_tokens [Integer, Symbol, :inf] Maximum number of output tokens for a single assistant response,
         #
-        #   @param output_modalities [Array<Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateRequest::OutputModality>] The set of modalities the model can respond with. To disable audio,
+        #   @param model [String, Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model] The Realtime model used for this session.
+        #
+        #   @param output_modalities [Array<Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateRequest::OutputModality>] The set of modalities the model can respond with. It defaults to `["audio"]`, in
         #
         #   @param prompt [OpenAI::Models::Responses::ResponsePrompt, nil] Reference to a prompt template and its variables.
         #
-        #   @param temperature [Float] Sampling temperature for the model, limited to [0.6, 1.2]. For audio models a te
-        #
         #   @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp] How the model chooses tools. Provide one of the string modes or force a specific
         #
-        #   @param tools [Array<OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Function, OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Mcp>] Tools available to the model.
+        #   @param tools [Array<OpenAI::Models::Realtime::Models, OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Mcp>] Tools available to the model.
         #
-        #   @param tracing [Symbol, :auto, OpenAI::Models::Realtime::RealtimeTracingConfig::TracingConfiguration, nil] Configuration options for tracing. Set to null to disable tracing. Once
+        #   @param tracing [Symbol, :auto, OpenAI::Models::Realtime::RealtimeTracingConfig::TracingConfiguration, nil] Realtime API can write session traces to the [Traces Dashboard](/logs?api=traces
         #
-        #   @param truncation [Symbol, OpenAI::Models::Realtime::RealtimeTruncation::RealtimeTruncationStrategy, OpenAI::Models::Realtime::RealtimeTruncation::RetentionRatioTruncation] Controls how the realtime conversation is truncated prior to model inference.
+        #   @param truncation [Symbol, OpenAI::Models::Realtime::RealtimeTruncation::RealtimeTruncationStrategy, OpenAI::Models::Realtime::RealtimeTruncationRetentionRatio] Controls how the realtime conversation is truncated prior to model inference.
         #
         #   @param type [Symbol, :realtime] The type of session to create. Always `realtime` for the Realtime API.
-
-        # The Realtime model used for this session.
-        #
-        # @see OpenAI::Models::Realtime::RealtimeSessionCreateRequest#model
-        module Model
-          extend OpenAI::Internal::Type::Union
-
-          variant String
-
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_REALTIME }
-
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_REALTIME_2025_08_28 }
-
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_4O_REALTIME }
-
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_4O_MINI_REALTIME }
-
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_4O_REALTIME_PREVIEW }
-
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_4O_REALTIME_PREVIEW_2024_10_01 }
-
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_4O_REALTIME_PREVIEW_2024_12_17 }
-
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_4O_REALTIME_PREVIEW_2025_06_03 }
-
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_4O_MINI_REALTIME_PREVIEW }
-
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_4O_MINI_REALTIME_PREVIEW_2024_12_17 }
-
-          # @!method self.variants
-          #   @return [Array(String, Symbol)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias { T.any(String, OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol) }
-          end
-
-          # @!group
-
-          GPT_REALTIME = :"gpt-realtime"
-          GPT_REALTIME_2025_08_28 = :"gpt-realtime-2025-08-28"
-          GPT_4O_REALTIME = :"gpt-4o-realtime"
-          GPT_4O_MINI_REALTIME = :"gpt-4o-mini-realtime"
-          GPT_4O_REALTIME_PREVIEW = :"gpt-4o-realtime-preview"
-          GPT_4O_REALTIME_PREVIEW_2024_10_01 = :"gpt-4o-realtime-preview-2024-10-01"
-          GPT_4O_REALTIME_PREVIEW_2024_12_17 = :"gpt-4o-realtime-preview-2024-12-17"
-          GPT_4O_REALTIME_PREVIEW_2025_06_03 = :"gpt-4o-realtime-preview-2025-06-03"
-          GPT_4O_MINI_REALTIME_PREVIEW = :"gpt-4o-mini-realtime-preview"
-          GPT_4O_MINI_REALTIME_PREVIEW_2024_12_17 = :"gpt-4o-mini-realtime-preview-2024-12-17"
-
-          # @!endgroup
-        end
 
         module Include
           extend OpenAI::Internal::Type::Enum
@@ -223,6 +157,51 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(Integer, Symbol, :inf)]
+        end
+
+        # The Realtime model used for this session.
+        #
+        # @see OpenAI::Models::Realtime::RealtimeSessionCreateRequest#model
+        module Model
+          extend OpenAI::Internal::Type::Union
+
+          variant String
+
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_REALTIME }
+
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_REALTIME_2025_08_28 }
+
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_4O_REALTIME_PREVIEW }
+
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_4O_REALTIME_PREVIEW_2024_10_01 }
+
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_4O_REALTIME_PREVIEW_2024_12_17 }
+
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_4O_REALTIME_PREVIEW_2025_06_03 }
+
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_4O_MINI_REALTIME_PREVIEW }
+
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_4O_MINI_REALTIME_PREVIEW_2024_12_17 }
+
+          # @!method self.variants
+          #   @return [Array(String, Symbol)]
+
+          define_sorbet_constant!(:Variants) do
+            T.type_alias { T.any(String, OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol) }
+          end
+
+          # @!group
+
+          GPT_REALTIME = :"gpt-realtime"
+          GPT_REALTIME_2025_08_28 = :"gpt-realtime-2025-08-28"
+          GPT_4O_REALTIME_PREVIEW = :"gpt-4o-realtime-preview"
+          GPT_4O_REALTIME_PREVIEW_2024_10_01 = :"gpt-4o-realtime-preview-2024-10-01"
+          GPT_4O_REALTIME_PREVIEW_2024_12_17 = :"gpt-4o-realtime-preview-2024-12-17"
+          GPT_4O_REALTIME_PREVIEW_2025_06_03 = :"gpt-4o-realtime-preview-2025-06-03"
+          GPT_4O_MINI_REALTIME_PREVIEW = :"gpt-4o-mini-realtime-preview"
+          GPT_4O_MINI_REALTIME_PREVIEW_2024_12_17 = :"gpt-4o-mini-realtime-preview-2024-12-17"
+
+          # @!endgroup
         end
 
         module OutputModality

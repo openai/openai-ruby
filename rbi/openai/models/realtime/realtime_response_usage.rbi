@@ -12,7 +12,10 @@ module OpenAI
             )
           end
 
-        # Details about the input tokens used in the Response.
+        # Details about the input tokens used in the Response. Cached tokens are tokens
+        # from previous turns in the conversation that are included as context for the
+        # current response. Cached tokens here are counted as a subset of input tokens,
+        # meaning input tokens will include cached and uncached tokens.
         sig do
           returns(
             T.nilable(OpenAI::Realtime::RealtimeResponseUsageInputTokenDetails)
@@ -84,7 +87,10 @@ module OpenAI
           ).returns(T.attached_class)
         end
         def self.new(
-          # Details about the input tokens used in the Response.
+          # Details about the input tokens used in the Response. Cached tokens are tokens
+          # from previous turns in the conversation that are included as context for the
+          # current response. Cached tokens here are counted as a subset of input tokens,
+          # meaning input tokens will include cached and uncached tokens.
           input_token_details: nil,
           # The number of input tokens used in the Response, including text and audio
           # tokens.

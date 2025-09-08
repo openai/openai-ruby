@@ -1,0 +1,16 @@
+module OpenAI
+  module Models
+    module Realtime
+      type noise_reduction_type = :near_field | :far_field
+
+      module NoiseReductionType
+        extend OpenAI::Internal::Type::Enum
+
+        NEAR_FIELD: :near_field
+        FAR_FIELD: :far_field
+
+        def self?.values: -> ::Array[OpenAI::Models::Realtime::noise_reduction_type]
+      end
+    end
+  end
+end

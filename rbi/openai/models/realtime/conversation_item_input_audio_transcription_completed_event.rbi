@@ -20,7 +20,7 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :event_id
 
-        # The ID of the user message item containing the audio.
+        # The ID of the item containing the audio that is being transcribed.
         sig { returns(String) }
         attr_accessor :item_id
 
@@ -32,7 +32,8 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
-        # Usage statistics for the transcription.
+        # Usage statistics for the transcription, this is billed according to the ASR
+        # model's pricing rather than the realtime model's pricing.
         sig do
           returns(
             T.any(
@@ -51,9 +52,9 @@ module OpenAI
 
         # This event is the output of audio transcription for user audio written to the
         # user audio buffer. Transcription begins when the input audio buffer is committed
-        # by the client or server (in `server_vad` mode). Transcription runs
-        # asynchronously with Response creation, so this event may come before or after
-        # the Response events.
+        # by the client or server (when VAD is enabled). Transcription runs asynchronously
+        # with Response creation, so this event may come before or after the Response
+        # events.
         #
         # Realtime API models accept audio natively, and thus input transcription is a
         # separate process run on a separate ASR (Automatic Speech Recognition) model. The
@@ -80,11 +81,12 @@ module OpenAI
           content_index:,
           # The unique ID of the server event.
           event_id:,
-          # The ID of the user message item containing the audio.
+          # The ID of the item containing the audio that is being transcribed.
           item_id:,
           # The transcribed text.
           transcript:,
-          # Usage statistics for the transcription.
+          # Usage statistics for the transcription, this is billed according to the ASR
+          # model's pricing rather than the realtime model's pricing.
           usage:,
           # The log probabilities of the transcription.
           logprobs: nil,
@@ -113,7 +115,8 @@ module OpenAI
         def to_hash
         end
 
-        # Usage statistics for the transcription.
+        # Usage statistics for the transcription, this is billed according to the ASR
+        # model's pricing rather than the realtime model's pricing.
         module Usage
           extend OpenAI::Internal::Type::Union
 

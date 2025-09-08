@@ -13,7 +13,7 @@ module OpenAI
         required :audio_end_ms, Integer
 
         # @!attribute content_index
-        #   The index of the content part to truncate. Set this to 0.
+        #   The index of the content part to truncate. Set this to `0`.
         #
         #   @return [Integer]
         required :content_index, Integer
@@ -55,7 +55,7 @@ module OpenAI
         #
         #   @param audio_end_ms [Integer] Inclusive duration up to which audio is truncated, in milliseconds. If
         #
-        #   @param content_index [Integer] The index of the content part to truncate. Set this to 0.
+        #   @param content_index [Integer] The index of the content part to truncate. Set this to `0`.
         #
         #   @param item_id [String] The ID of the assistant message item to truncate. Only assistant message
         #

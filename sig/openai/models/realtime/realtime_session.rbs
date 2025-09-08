@@ -8,7 +8,7 @@ module OpenAI
           include: ::Array[OpenAI::Models::Realtime::RealtimeSession::include_]?,
           input_audio_format: OpenAI::Models::Realtime::RealtimeSession::input_audio_format,
           input_audio_noise_reduction: OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction,
-          input_audio_transcription: OpenAI::Realtime::RealtimeSession::InputAudioTranscription?,
+          input_audio_transcription: OpenAI::Realtime::AudioTranscription?,
           instructions: String,
           max_response_output_tokens: OpenAI::Models::Realtime::RealtimeSession::max_response_output_tokens,
           modalities: ::Array[OpenAI::Models::Realtime::RealtimeSession::modality],
@@ -19,7 +19,7 @@ module OpenAI
           speed: Float,
           temperature: Float,
           tool_choice: String,
-          tools: ::Array[OpenAI::Realtime::RealtimeSession::Tool],
+          tools: ::Array[OpenAI::Realtime::Models],
           tracing: OpenAI::Models::Realtime::RealtimeSession::tracing?,
           turn_detection: OpenAI::Realtime::RealtimeSession::TurnDetection?,
           voice: OpenAI::Models::Realtime::RealtimeSession::voice
@@ -48,7 +48,7 @@ module OpenAI
           OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction
         ) -> OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction
 
-        attr_accessor input_audio_transcription: OpenAI::Realtime::RealtimeSession::InputAudioTranscription?
+        attr_accessor input_audio_transcription: OpenAI::Realtime::AudioTranscription?
 
         attr_reader instructions: String?
 
@@ -98,11 +98,11 @@ module OpenAI
 
         def tool_choice=: (String) -> String
 
-        attr_reader tools: ::Array[OpenAI::Realtime::RealtimeSession::Tool]?
+        attr_reader tools: ::Array[OpenAI::Realtime::Models]?
 
         def tools=: (
-          ::Array[OpenAI::Realtime::RealtimeSession::Tool]
-        ) -> ::Array[OpenAI::Realtime::RealtimeSession::Tool]
+          ::Array[OpenAI::Realtime::Models]
+        ) -> ::Array[OpenAI::Realtime::Models]
 
         attr_accessor tracing: OpenAI::Models::Realtime::RealtimeSession::tracing?
 
@@ -120,7 +120,7 @@ module OpenAI
           ?include: ::Array[OpenAI::Models::Realtime::RealtimeSession::include_]?,
           ?input_audio_format: OpenAI::Models::Realtime::RealtimeSession::input_audio_format,
           ?input_audio_noise_reduction: OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction,
-          ?input_audio_transcription: OpenAI::Realtime::RealtimeSession::InputAudioTranscription?,
+          ?input_audio_transcription: OpenAI::Realtime::AudioTranscription?,
           ?instructions: String,
           ?max_response_output_tokens: OpenAI::Models::Realtime::RealtimeSession::max_response_output_tokens,
           ?modalities: ::Array[OpenAI::Models::Realtime::RealtimeSession::modality],
@@ -131,7 +131,7 @@ module OpenAI
           ?speed: Float,
           ?temperature: Float,
           ?tool_choice: String,
-          ?tools: ::Array[OpenAI::Realtime::RealtimeSession::Tool],
+          ?tools: ::Array[OpenAI::Realtime::Models],
           ?tracing: OpenAI::Models::Realtime::RealtimeSession::tracing?,
           ?turn_detection: OpenAI::Realtime::RealtimeSession::TurnDetection?,
           ?voice: OpenAI::Models::Realtime::RealtimeSession::voice
@@ -143,7 +143,7 @@ module OpenAI
           include: ::Array[OpenAI::Models::Realtime::RealtimeSession::include_]?,
           input_audio_format: OpenAI::Models::Realtime::RealtimeSession::input_audio_format,
           input_audio_noise_reduction: OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction,
-          input_audio_transcription: OpenAI::Realtime::RealtimeSession::InputAudioTranscription?,
+          input_audio_transcription: OpenAI::Realtime::AudioTranscription?,
           instructions: String,
           max_response_output_tokens: OpenAI::Models::Realtime::RealtimeSession::max_response_output_tokens,
           modalities: ::Array[OpenAI::Models::Realtime::RealtimeSession::modality],
@@ -154,7 +154,7 @@ module OpenAI
           speed: Float,
           temperature: Float,
           tool_choice: String,
-          tools: ::Array[OpenAI::Realtime::RealtimeSession::Tool],
+          tools: ::Array[OpenAI::Realtime::Models],
           tracing: OpenAI::Models::Realtime::RealtimeSession::tracing?,
           turn_detection: OpenAI::Realtime::RealtimeSession::TurnDetection?,
           voice: OpenAI::Models::Realtime::RealtimeSession::voice
@@ -183,60 +183,22 @@ module OpenAI
         end
 
         type input_audio_noise_reduction =
-          {
-            type: OpenAI::Models::Realtime::RealtimeSession::InputAudioNoiseReduction::type_
-          }
+          { type: OpenAI::Models::Realtime::noise_reduction_type }
 
         class InputAudioNoiseReduction < OpenAI::Internal::Type::BaseModel
-          attr_reader type: OpenAI::Models::Realtime::RealtimeSession::InputAudioNoiseReduction::type_?
+          attr_reader type: OpenAI::Models::Realtime::noise_reduction_type?
 
           def type=: (
-            OpenAI::Models::Realtime::RealtimeSession::InputAudioNoiseReduction::type_
-          ) -> OpenAI::Models::Realtime::RealtimeSession::InputAudioNoiseReduction::type_
+            OpenAI::Models::Realtime::noise_reduction_type
+          ) -> OpenAI::Models::Realtime::noise_reduction_type
 
           def initialize: (
-            ?type: OpenAI::Models::Realtime::RealtimeSession::InputAudioNoiseReduction::type_
+            ?type: OpenAI::Models::Realtime::noise_reduction_type
           ) -> void
 
           def to_hash: -> {
-            type: OpenAI::Models::Realtime::RealtimeSession::InputAudioNoiseReduction::type_
+            type: OpenAI::Models::Realtime::noise_reduction_type
           }
-
-          type type_ = :near_field | :far_field
-
-          module Type
-            extend OpenAI::Internal::Type::Enum
-
-            NEAR_FIELD: :near_field
-            FAR_FIELD: :far_field
-
-            def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeSession::InputAudioNoiseReduction::type_]
-          end
-        end
-
-        type input_audio_transcription =
-          { language: String, model: String, prompt: String }
-
-        class InputAudioTranscription < OpenAI::Internal::Type::BaseModel
-          attr_reader language: String?
-
-          def language=: (String) -> String
-
-          attr_reader model: String?
-
-          def model=: (String) -> String
-
-          attr_reader prompt: String?
-
-          def prompt=: (String) -> String
-
-          def initialize: (
-            ?language: String,
-            ?model: String,
-            ?prompt: String
-          ) -> void
-
-          def to_hash: -> { language: String, model: String, prompt: String }
         end
 
         type max_response_output_tokens = Integer | :inf
@@ -303,58 +265,6 @@ module OpenAI
           G711_ALAW: :g711_alaw
 
           def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeSession::output_audio_format]
-        end
-
-        type tool =
-          {
-            description: String,
-            name: String,
-            parameters: top,
-            type: OpenAI::Models::Realtime::RealtimeSession::Tool::type_
-          }
-
-        class Tool < OpenAI::Internal::Type::BaseModel
-          attr_reader description: String?
-
-          def description=: (String) -> String
-
-          attr_reader name: String?
-
-          def name=: (String) -> String
-
-          attr_reader parameters: top?
-
-          def parameters=: (top) -> top
-
-          attr_reader type: OpenAI::Models::Realtime::RealtimeSession::Tool::type_?
-
-          def type=: (
-            OpenAI::Models::Realtime::RealtimeSession::Tool::type_
-          ) -> OpenAI::Models::Realtime::RealtimeSession::Tool::type_
-
-          def initialize: (
-            ?description: String,
-            ?name: String,
-            ?parameters: top,
-            ?type: OpenAI::Models::Realtime::RealtimeSession::Tool::type_
-          ) -> void
-
-          def to_hash: -> {
-            description: String,
-            name: String,
-            parameters: top,
-            type: OpenAI::Models::Realtime::RealtimeSession::Tool::type_
-          }
-
-          type type_ = :function
-
-          module Type
-            extend OpenAI::Internal::Type::Enum
-
-            FUNCTION: :function
-
-            def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeSession::Tool::type_]
-          end
         end
 
         type tracing =

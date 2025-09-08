@@ -44,14 +44,17 @@ module OpenAI
         variant :"conversation.item.truncate", -> { OpenAI::Realtime::ConversationItemTruncateEvent }
 
         # Send this event to append audio bytes to the input audio buffer. The audio
-        # buffer is temporary storage you can write to and later commit. In Server VAD
-        # mode, the audio buffer is used to detect speech and the server will decide
+        # buffer is temporary storage you can write to and later commit. A "commit" will create a new
+        # user message item in the conversation history from the buffer content and clear the buffer.
+        # Input audio transcription (if enabled) will be generated when the buffer is committed.
+        #
+        # If VAD is enabled the audio buffer is used to detect speech and the server will decide
         # when to commit. When Server VAD is disabled, you must commit the audio buffer
-        # manually.
+        # manually. Input audio noise reduction operates on writes to the audio buffer.
         #
         # The client may choose how much audio to place in each event up to a maximum
         # of 15 MiB, for example streaming smaller chunks from the client may allow the
-        # VAD to be more responsive. Unlike made other client events, the server will
+        # VAD to be more responsive. Unlike most other client events, the server will
         # not send a confirmation response to this event.
         variant :"input_audio_buffer.append", -> { OpenAI::Realtime::InputAudioBufferAppendEvent }
 
@@ -66,21 +69,16 @@ module OpenAI
         # [Learn more](https://platform.openai.com/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
         variant :"output_audio_buffer.clear", -> { OpenAI::Realtime::OutputAudioBufferClearEvent }
 
-        # Send this event to commit the user input audio buffer, which will create a
-        # new user message item in the conversation. This event will produce an error
-        # if the input audio buffer is empty. When in Server VAD mode, the client does
-        # not need to send this event, the server will commit the audio buffer
-        # automatically.
+        # Send this event to commit the user input audio buffer, which will create a  new user message item in the conversation. This event will produce an error  if the input audio buffer is empty. When in Server VAD mode, the client does  not need to send this event, the server will commit the audio buffer  automatically.
         #
-        # Committing the input audio buffer will trigger input audio transcription
-        # (if enabled in session configuration), but it will not create a response
-        # from the model. The server will respond with an `input_audio_buffer.committed`
-        # event.
+        # Committing the input audio buffer will trigger input audio transcription  (if enabled in session configuration), but it will not create a response  from the model. The server will respond with an `input_audio_buffer.committed` event.
         variant :"input_audio_buffer.commit", -> { OpenAI::Realtime::InputAudioBufferCommitEvent }
 
         # Send this event to cancel an in-progress response. The server will respond
         # with a `response.done` event with a status of `response.status=cancelled`. If
-        # there is no response to cancel, the server will respond with an error.
+        # there is no response to cancel, the server will respond with an error. It's safe
+        # to call `response.cancel` even if no response is in progress, an error will be
+        # returned the session will remain unaffected.
         variant :"response.cancel", -> { OpenAI::Realtime::ResponseCancelEvent }
 
         # This event instructs the server to create a Response, which means triggering
@@ -89,27 +87,37 @@ module OpenAI
         #
         # A Response will include at least one Item, and may have two, in which case
         # the second will be a function call. These Items will be appended to the
-        # conversation history.
+        # conversation history by default.
         #
         # The server will respond with a `response.created` event, events for Items
         # and content created, and finally a `response.done` event to indicate the
         # Response is complete.
         #
         # The `response.create` event includes inference configuration like
-        # `instructions`, and `temperature`. These fields will override the Session's
+        # `instructions` and `tools`. If these are set, they will override the Session's
         # configuration for this Response only.
+        #
+        # Responses can be created out-of-band of the default Conversation, meaning that they can
+        # have arbitrary input, and it's possible to disable writing the output to the Conversation.
+        # Only one Response can write to the default Conversation at a time, but otherwise multiple
+        # Responses can be created in parallel. The `metadata` field is a good way to disambiguate
+        # multiple simultaneous Responses.
+        #
+        # Clients can set `conversation` to `none` to create a Response that does not write to the default
+        # Conversation. Arbitrary input can be provided with the `input` field, which is an array accepting
+        # raw Items and references to existing Items.
         variant :"response.create", -> { OpenAI::Realtime::ResponseCreateEvent }
 
-        # Send this event to update the session’s default configuration.
-        # The client may send this event at any time to update any field,
-        # except for `voice`. However, note that once a session has been
-        # initialized with a particular `model`, it can’t be changed to
-        # another model using `session.update`.
+        # Send this event to update the session’s configuration.
+        # The client may send this event at any time to update any field
+        # except for `voice` and `model`. `voice` can be updated only if there have been no other
+        # audio outputs yet.
         #
         # When the server receives a `session.update`, it will respond
         # with a `session.updated` event showing the full, effective configuration.
-        # Only the fields that are present are updated. To clear a field like
-        # `instructions`, pass an empty string.
+        # Only the fields that are present in the `session.update` are updated. To clear a field like
+        # `instructions`, pass an empty string. To clear a field like `tools`, pass an empty array.
+        # To clear a field like `turn_detection`, pass `null`.
         variant :"session.update", -> { OpenAI::Realtime::SessionUpdateEvent }
 
         # Send this event to update a transcription session.

@@ -14,14 +14,7 @@ module OpenAI
             )
           end
 
-        # Unique identifier for the session that looks like `sess_1234567890abcdef`.
-        sig { returns(T.nilable(String)) }
-        attr_reader :id
-
-        sig { params(id: String).void }
-        attr_writer :id
-
-        # Configuration for input and output audio for the session.
+        # Configuration for input and output audio.
         sig do
           returns(
             T.nilable(OpenAI::Realtime::RealtimeSessionCreateResponse::Audio)
@@ -37,17 +30,23 @@ module OpenAI
         end
         attr_writer :audio
 
-        # Expiration timestamp for the session, in seconds since epoch.
-        sig { returns(T.nilable(Integer)) }
-        attr_reader :expires_at
+        # Ephemeral key returned by the API.
+        sig do
+          returns(T.nilable(OpenAI::Realtime::RealtimeSessionClientSecret))
+        end
+        attr_reader :client_secret
 
-        sig { params(expires_at: Integer).void }
-        attr_writer :expires_at
+        sig do
+          params(
+            client_secret: OpenAI::Realtime::RealtimeSessionClientSecret::OrHash
+          ).void
+        end
+        attr_writer :client_secret
 
         # Additional fields to include in server outputs.
         #
-        # - `item.input_audio_transcription.logprobs`: Include logprobs for input audio
-        #   transcription.
+        # `item.input_audio_transcription.logprobs`: Include logprobs for input audio
+        # transcription.
         sig do
           returns(
             T.nilable(
@@ -102,21 +101,30 @@ module OpenAI
         attr_writer :max_output_tokens
 
         # The Realtime model used for this session.
-        sig { returns(T.nilable(String)) }
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::Realtime::RealtimeSessionCreateResponse::Model::Variants
+            )
+          )
+        end
         attr_reader :model
 
-        sig { params(model: String).void }
+        sig do
+          params(
+            model:
+              T.any(
+                String,
+                OpenAI::Realtime::RealtimeSessionCreateResponse::Model::OrSymbol
+              )
+          ).void
+        end
         attr_writer :model
 
-        # The object type. Always `realtime.session`.
-        sig { returns(T.nilable(String)) }
-        attr_reader :object
-
-        sig { params(object: String).void }
-        attr_writer :object
-
-        # The set of modalities the model can respond with. To disable audio, set this to
-        # ["text"].
+        # The set of modalities the model can respond with. It defaults to `["audio"]`,
+        # indicating that the model will respond with audio plus a transcript. `["text"]`
+        # can be used to make the model respond with text only. It is not possible to
+        # request both `text` and `audio` at the same time.
         sig do
           returns(
             T.nilable(
@@ -138,19 +146,48 @@ module OpenAI
         end
         attr_writer :output_modalities
 
-        # How the model chooses tools. Options are `auto`, `none`, `required`, or specify
-        # a function.
-        sig { returns(T.nilable(String)) }
-        attr_reader :tool_choice
+        # Reference to a prompt template and its variables.
+        # [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
+        sig { returns(T.nilable(OpenAI::Responses::ResponsePrompt)) }
+        attr_reader :prompt
 
-        sig { params(tool_choice: String).void }
-        attr_writer :tool_choice
+        sig do
+          params(
+            prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash)
+          ).void
+        end
+        attr_writer :prompt
 
-        # Tools (functions) available to the model.
+        # How the model chooses tools. Provide one of the string modes or force a specific
+        # function/MCP tool.
         sig do
           returns(
             T.nilable(
-              T::Array[OpenAI::Realtime::RealtimeSessionCreateResponse::Tool]
+              OpenAI::Realtime::RealtimeSessionCreateResponse::ToolChoice::Variants
+            )
+          )
+        end
+        attr_reader :tool_choice
+
+        sig do
+          params(
+            tool_choice:
+              T.any(
+                OpenAI::Responses::ToolChoiceOptions::OrSymbol,
+                OpenAI::Responses::ToolChoiceFunction::OrHash,
+                OpenAI::Responses::ToolChoiceMcp::OrHash
+              )
+          ).void
+        end
+        attr_writer :tool_choice
+
+        # Tools available to the model.
+        sig do
+          returns(
+            T.nilable(
+              T::Array[
+                OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::Variants
+              ]
             )
           )
         end
@@ -160,14 +197,18 @@ module OpenAI
           params(
             tools:
               T::Array[
-                OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::OrHash
+                T.any(
+                  OpenAI::Realtime::Models::OrHash,
+                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::OrHash
+                )
               ]
           ).void
         end
         attr_writer :tools
 
-        # Configuration options for tracing. Set to null to disable tracing. Once tracing
-        # is enabled for a session, the configuration cannot be modified.
+        # Realtime API can write session traces to the
+        # [Traces Dashboard](/logs?api=traces). Set to null to disable tracing. Once
+        # tracing is enabled for a session, the configuration cannot be modified.
         #
         # `auto` will create a trace for the session with default values for the workflow
         # name, group id, and metadata.
@@ -178,83 +219,106 @@ module OpenAI
             )
           )
         end
-        attr_reader :tracing
+        attr_accessor :tracing
+
+        # Controls how the realtime conversation is truncated prior to model inference.
+        # The default is `auto`.
+        sig do
+          returns(T.nilable(OpenAI::Realtime::RealtimeTruncation::Variants))
+        end
+        attr_reader :truncation
 
         sig do
           params(
-            tracing:
+            truncation:
               T.any(
-                Symbol,
-                OpenAI::Realtime::RealtimeSessionCreateResponse::Tracing::TracingConfiguration::OrHash
+                OpenAI::Realtime::RealtimeTruncation::RealtimeTruncationStrategy::OrSymbol,
+                OpenAI::Realtime::RealtimeTruncationRetentionRatio::OrHash
               )
           ).void
         end
-        attr_writer :tracing
+        attr_writer :truncation
 
-        # Configuration for turn detection. Can be set to `null` to turn off. Server VAD
-        # means that the model will detect the start and end of speech based on audio
-        # volume and respond at the end of user speech.
+        # The type of session to create. Always `realtime` for the Realtime API.
         sig do
           returns(
             T.nilable(
-              OpenAI::Realtime::RealtimeSessionCreateResponse::TurnDetection
+              OpenAI::Realtime::RealtimeSessionCreateResponse::Type::TaggedSymbol
             )
           )
         end
-        attr_reader :turn_detection
+        attr_reader :type
 
         sig do
           params(
-            turn_detection:
-              OpenAI::Realtime::RealtimeSessionCreateResponse::TurnDetection::OrHash
+            type:
+              OpenAI::Realtime::RealtimeSessionCreateResponse::Type::OrSymbol
           ).void
         end
-        attr_writer :turn_detection
+        attr_writer :type
 
-        # A Realtime session configuration object.
+        # A new Realtime session configuration, with an ephemeral key. Default TTL for
+        # keys is one minute.
         sig do
           params(
-            id: String,
             audio:
               OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::OrHash,
-            expires_at: Integer,
+            client_secret:
+              OpenAI::Realtime::RealtimeSessionClientSecret::OrHash,
             include:
               T::Array[
                 OpenAI::Realtime::RealtimeSessionCreateResponse::Include::OrSymbol
               ],
             instructions: String,
             max_output_tokens: T.any(Integer, Symbol),
-            model: String,
-            object: String,
+            model:
+              T.any(
+                String,
+                OpenAI::Realtime::RealtimeSessionCreateResponse::Model::OrSymbol
+              ),
             output_modalities:
               T::Array[
                 OpenAI::Realtime::RealtimeSessionCreateResponse::OutputModality::OrSymbol
               ],
-            tool_choice: String,
+            prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
+            tool_choice:
+              T.any(
+                OpenAI::Responses::ToolChoiceOptions::OrSymbol,
+                OpenAI::Responses::ToolChoiceFunction::OrHash,
+                OpenAI::Responses::ToolChoiceMcp::OrHash
+              ),
             tools:
               T::Array[
-                OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::OrHash
+                T.any(
+                  OpenAI::Realtime::Models::OrHash,
+                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::OrHash
+                )
               ],
             tracing:
-              T.any(
-                Symbol,
-                OpenAI::Realtime::RealtimeSessionCreateResponse::Tracing::TracingConfiguration::OrHash
+              T.nilable(
+                T.any(
+                  Symbol,
+                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tracing::TracingConfiguration::OrHash
+                )
               ),
-            turn_detection:
-              OpenAI::Realtime::RealtimeSessionCreateResponse::TurnDetection::OrHash
+            truncation:
+              T.any(
+                OpenAI::Realtime::RealtimeTruncation::RealtimeTruncationStrategy::OrSymbol,
+                OpenAI::Realtime::RealtimeTruncationRetentionRatio::OrHash
+              ),
+            type:
+              OpenAI::Realtime::RealtimeSessionCreateResponse::Type::OrSymbol
           ).returns(T.attached_class)
         end
         def self.new(
-          # Unique identifier for the session that looks like `sess_1234567890abcdef`.
-          id: nil,
-          # Configuration for input and output audio for the session.
+          # Configuration for input and output audio.
           audio: nil,
-          # Expiration timestamp for the session, in seconds since epoch.
-          expires_at: nil,
+          # Ephemeral key returned by the API.
+          client_secret: nil,
           # Additional fields to include in server outputs.
           #
-          # - `item.input_audio_transcription.logprobs`: Include logprobs for input audio
-          #   transcription.
+          # `item.input_audio_transcription.logprobs`: Include logprobs for input audio
+          # transcription.
           include: nil,
           # The default system instructions (i.e. system message) prepended to model calls.
           # This field allows the client to guide the model on desired responses. The model
@@ -274,35 +338,39 @@ module OpenAI
           max_output_tokens: nil,
           # The Realtime model used for this session.
           model: nil,
-          # The object type. Always `realtime.session`.
-          object: nil,
-          # The set of modalities the model can respond with. To disable audio, set this to
-          # ["text"].
+          # The set of modalities the model can respond with. It defaults to `["audio"]`,
+          # indicating that the model will respond with audio plus a transcript. `["text"]`
+          # can be used to make the model respond with text only. It is not possible to
+          # request both `text` and `audio` at the same time.
           output_modalities: nil,
-          # How the model chooses tools. Options are `auto`, `none`, `required`, or specify
-          # a function.
+          # Reference to a prompt template and its variables.
+          # [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
+          prompt: nil,
+          # How the model chooses tools. Provide one of the string modes or force a specific
+          # function/MCP tool.
           tool_choice: nil,
-          # Tools (functions) available to the model.
+          # Tools available to the model.
           tools: nil,
-          # Configuration options for tracing. Set to null to disable tracing. Once tracing
-          # is enabled for a session, the configuration cannot be modified.
+          # Realtime API can write session traces to the
+          # [Traces Dashboard](/logs?api=traces). Set to null to disable tracing. Once
+          # tracing is enabled for a session, the configuration cannot be modified.
           #
           # `auto` will create a trace for the session with default values for the workflow
           # name, group id, and metadata.
           tracing: nil,
-          # Configuration for turn detection. Can be set to `null` to turn off. Server VAD
-          # means that the model will detect the start and end of speech based on audio
-          # volume and respond at the end of user speech.
-          turn_detection: nil
+          # Controls how the realtime conversation is truncated prior to model inference.
+          # The default is `auto`.
+          truncation: nil,
+          # The type of session to create. Always `realtime` for the Realtime API.
+          type: nil
         )
         end
 
         sig do
           override.returns(
             {
-              id: String,
               audio: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio,
-              expires_at: Integer,
+              client_secret: OpenAI::Realtime::RealtimeSessionClientSecret,
               include:
                 T::Array[
                   OpenAI::Realtime::RealtimeSessionCreateResponse::Include::TaggedSymbol
@@ -310,19 +378,26 @@ module OpenAI
               instructions: String,
               max_output_tokens:
                 OpenAI::Realtime::RealtimeSessionCreateResponse::MaxOutputTokens::Variants,
-              model: String,
-              object: String,
+              model:
+                OpenAI::Realtime::RealtimeSessionCreateResponse::Model::Variants,
               output_modalities:
                 T::Array[
                   OpenAI::Realtime::RealtimeSessionCreateResponse::OutputModality::TaggedSymbol
                 ],
-              tool_choice: String,
+              prompt: T.nilable(OpenAI::Responses::ResponsePrompt),
+              tool_choice:
+                OpenAI::Realtime::RealtimeSessionCreateResponse::ToolChoice::Variants,
               tools:
-                T::Array[OpenAI::Realtime::RealtimeSessionCreateResponse::Tool],
+                T::Array[
+                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::Variants
+                ],
               tracing:
-                OpenAI::Realtime::RealtimeSessionCreateResponse::Tracing::Variants,
-              turn_detection:
-                OpenAI::Realtime::RealtimeSessionCreateResponse::TurnDetection
+                T.nilable(
+                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tracing::Variants
+                ),
+              truncation: OpenAI::Realtime::RealtimeTruncation::Variants,
+              type:
+                OpenAI::Realtime::RealtimeSessionCreateResponse::Type::TaggedSymbol
             }
           )
         end
@@ -372,7 +447,7 @@ module OpenAI
           end
           attr_writer :output
 
-          # Configuration for input and output audio for the session.
+          # Configuration for input and output audio.
           sig do
             params(
               input:
@@ -406,14 +481,31 @@ module OpenAI
                 )
               end
 
-            # The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
-            sig { returns(T.nilable(String)) }
+            # The format of the input audio.
+            sig do
+              returns(
+                T.nilable(OpenAI::Realtime::RealtimeAudioFormats::Variants)
+              )
+            end
             attr_reader :format_
 
-            sig { params(format_: String).void }
+            sig do
+              params(
+                format_:
+                  T.any(
+                    OpenAI::Realtime::RealtimeAudioFormats::AudioPCM::OrHash,
+                    OpenAI::Realtime::RealtimeAudioFormats::AudioPCMU::OrHash,
+                    OpenAI::Realtime::RealtimeAudioFormats::AudioPCMA::OrHash
+                  )
+              ).void
+            end
             attr_writer :format_
 
-            # Configuration for input audio noise reduction.
+            # Configuration for input audio noise reduction. This can be set to `null` to turn
+            # off. Noise reduction filters audio added to the input audio buffer before it is
+            # sent to VAD and the model. Filtering the audio can improve VAD and turn
+            # detection accuracy (reducing false positives) and model performance by improving
+            # perception of the input audio.
             sig do
               returns(
                 T.nilable(
@@ -431,25 +523,34 @@ module OpenAI
             end
             attr_writer :noise_reduction
 
-            # Configuration for input audio transcription.
-            sig do
-              returns(
-                T.nilable(
-                  OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::Transcription
-                )
-              )
-            end
+            # Configuration for input audio transcription, defaults to off and can be set to
+            # `null` to turn off once on. Input audio transcription is not native to the
+            # model, since the model consumes audio directly. Transcription runs
+            # asynchronously through
+            # [the /audio/transcriptions endpoint](https://platform.openai.com/docs/api-reference/audio/createTranscription)
+            # and should be treated as guidance of input audio content rather than precisely
+            # what the model heard. The client can optionally set the language and prompt for
+            # transcription, these offer additional guidance to the transcription service.
+            sig { returns(T.nilable(OpenAI::Realtime::AudioTranscription)) }
             attr_reader :transcription
 
             sig do
               params(
-                transcription:
-                  OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::Transcription::OrHash
+                transcription: OpenAI::Realtime::AudioTranscription::OrHash
               ).void
             end
             attr_writer :transcription
 
-            # Configuration for turn detection.
+            # Configuration for turn detection, ether Server VAD or Semantic VAD. This can be
+            # set to `null` to turn off, in which case the client must manually trigger model
+            # response. Server VAD means that the model will detect the start and end of
+            # speech based on audio volume and respond at the end of user speech. Semantic VAD
+            # is more advanced and uses a turn detection model (in conjunction with VAD) to
+            # semantically estimate whether the user has finished speaking, then dynamically
+            # sets a timeout based on this probability. For example, if user audio trails off
+            # with "uhhm", the model will score a low probability of turn end and wait longer
+            # for the user to continue speaking. This can be useful for more natural
+            # conversations, but may have a higher latency.
             sig do
               returns(
                 T.nilable(
@@ -469,23 +570,47 @@ module OpenAI
 
             sig do
               params(
-                format_: String,
+                format_:
+                  T.any(
+                    OpenAI::Realtime::RealtimeAudioFormats::AudioPCM::OrHash,
+                    OpenAI::Realtime::RealtimeAudioFormats::AudioPCMU::OrHash,
+                    OpenAI::Realtime::RealtimeAudioFormats::AudioPCMA::OrHash
+                  ),
                 noise_reduction:
                   OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction::OrHash,
-                transcription:
-                  OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::Transcription::OrHash,
+                transcription: OpenAI::Realtime::AudioTranscription::OrHash,
                 turn_detection:
                   OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::OrHash
               ).returns(T.attached_class)
             end
             def self.new(
-              # The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+              # The format of the input audio.
               format_: nil,
-              # Configuration for input audio noise reduction.
+              # Configuration for input audio noise reduction. This can be set to `null` to turn
+              # off. Noise reduction filters audio added to the input audio buffer before it is
+              # sent to VAD and the model. Filtering the audio can improve VAD and turn
+              # detection accuracy (reducing false positives) and model performance by improving
+              # perception of the input audio.
               noise_reduction: nil,
-              # Configuration for input audio transcription.
+              # Configuration for input audio transcription, defaults to off and can be set to
+              # `null` to turn off once on. Input audio transcription is not native to the
+              # model, since the model consumes audio directly. Transcription runs
+              # asynchronously through
+              # [the /audio/transcriptions endpoint](https://platform.openai.com/docs/api-reference/audio/createTranscription)
+              # and should be treated as guidance of input audio content rather than precisely
+              # what the model heard. The client can optionally set the language and prompt for
+              # transcription, these offer additional guidance to the transcription service.
               transcription: nil,
-              # Configuration for turn detection.
+              # Configuration for turn detection, ether Server VAD or Semantic VAD. This can be
+              # set to `null` to turn off, in which case the client must manually trigger model
+              # response. Server VAD means that the model will detect the start and end of
+              # speech based on audio volume and respond at the end of user speech. Semantic VAD
+              # is more advanced and uses a turn detection model (in conjunction with VAD) to
+              # semantically estimate whether the user has finished speaking, then dynamically
+              # sets a timeout based on this probability. For example, if user audio trails off
+              # with "uhhm", the model will score a low probability of turn end and wait longer
+              # for the user to continue speaking. This can be useful for more natural
+              # conversations, but may have a higher latency.
               turn_detection: nil
             )
             end
@@ -493,11 +618,10 @@ module OpenAI
             sig do
               override.returns(
                 {
-                  format_: String,
+                  format_: OpenAI::Realtime::RealtimeAudioFormats::Variants,
                   noise_reduction:
                     OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction,
-                  transcription:
-                    OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::Transcription,
+                  transcription: OpenAI::Realtime::AudioTranscription,
                   turn_detection:
                     OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection
                 }
@@ -515,128 +639,44 @@ module OpenAI
                   )
                 end
 
+              # Type of noise reduction. `near_field` is for close-talking microphones such as
+              # headphones, `far_field` is for far-field microphones such as laptop or
+              # conference room microphones.
               sig do
                 returns(
-                  T.nilable(
-                    OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction::Type::TaggedSymbol
-                  )
+                  T.nilable(OpenAI::Realtime::NoiseReductionType::TaggedSymbol)
                 )
               end
               attr_reader :type
 
               sig do
                 params(
-                  type:
-                    OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction::Type::OrSymbol
+                  type: OpenAI::Realtime::NoiseReductionType::OrSymbol
                 ).void
               end
               attr_writer :type
 
-              # Configuration for input audio noise reduction.
+              # Configuration for input audio noise reduction. This can be set to `null` to turn
+              # off. Noise reduction filters audio added to the input audio buffer before it is
+              # sent to VAD and the model. Filtering the audio can improve VAD and turn
+              # detection accuracy (reducing false positives) and model performance by improving
+              # perception of the input audio.
               sig do
                 params(
-                  type:
-                    OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction::Type::OrSymbol
+                  type: OpenAI::Realtime::NoiseReductionType::OrSymbol
                 ).returns(T.attached_class)
               end
-              def self.new(type: nil)
-              end
-
-              sig do
-                override.returns(
-                  {
-                    type:
-                      OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction::Type::TaggedSymbol
-                  }
-                )
-              end
-              def to_hash
-              end
-
-              module Type
-                extend OpenAI::Internal::Type::Enum
-
-                TaggedSymbol =
-                  T.type_alias do
-                    T.all(
-                      Symbol,
-                      OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction::Type
-                    )
-                  end
-                OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-                NEAR_FIELD =
-                  T.let(
-                    :near_field,
-                    OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction::Type::TaggedSymbol
-                  )
-                FAR_FIELD =
-                  T.let(
-                    :far_field,
-                    OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction::Type::TaggedSymbol
-                  )
-
-                sig do
-                  override.returns(
-                    T::Array[
-                      OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction::Type::TaggedSymbol
-                    ]
-                  )
-                end
-                def self.values
-                end
-              end
-            end
-
-            class Transcription < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::Transcription,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
-
-              # The language of the input audio.
-              sig { returns(T.nilable(String)) }
-              attr_reader :language
-
-              sig { params(language: String).void }
-              attr_writer :language
-
-              # The model to use for transcription.
-              sig { returns(T.nilable(String)) }
-              attr_reader :model
-
-              sig { params(model: String).void }
-              attr_writer :model
-
-              # Optional text to guide the model's style or continue a previous audio segment.
-              sig { returns(T.nilable(String)) }
-              attr_reader :prompt
-
-              sig { params(prompt: String).void }
-              attr_writer :prompt
-
-              # Configuration for input audio transcription.
-              sig do
-                params(language: String, model: String, prompt: String).returns(
-                  T.attached_class
-                )
-              end
               def self.new(
-                # The language of the input audio.
-                language: nil,
-                # The model to use for transcription.
-                model: nil,
-                # Optional text to guide the model's style or continue a previous audio segment.
-                prompt: nil
+                # Type of noise reduction. `near_field` is for close-talking microphones such as
+                # headphones, `far_field` is for far-field microphones such as laptop or
+                # conference room microphones.
+                type: nil
               )
               end
 
               sig do
                 override.returns(
-                  { language: String, model: String, prompt: String }
+                  { type: OpenAI::Realtime::NoiseReductionType::TaggedSymbol }
                 )
               end
               def to_hash
@@ -652,45 +692,145 @@ module OpenAI
                   )
                 end
 
+              # Whether or not to automatically generate a response when a VAD stop event
+              # occurs.
+              sig { returns(T.nilable(T::Boolean)) }
+              attr_reader :create_response
+
+              sig { params(create_response: T::Boolean).void }
+              attr_writer :create_response
+
+              # Used only for `semantic_vad` mode. The eagerness of the model to respond. `low`
+              # will wait longer for the user to continue speaking, `high` will respond more
+              # quickly. `auto` is the default and is equivalent to `medium`. `low`, `medium`,
+              # and `high` have max timeouts of 8s, 4s, and 2s respectively.
+              sig do
+                returns(
+                  T.nilable(
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::Eagerness::TaggedSymbol
+                  )
+                )
+              end
+              attr_reader :eagerness
+
+              sig do
+                params(
+                  eagerness:
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::Eagerness::OrSymbol
+                ).void
+              end
+              attr_writer :eagerness
+
+              # Optional idle timeout after which turn detection will auto-timeout when no
+              # additional audio is received.
+              sig { returns(T.nilable(Integer)) }
+              attr_accessor :idle_timeout_ms
+
+              # Whether or not to automatically interrupt any ongoing response with output to
+              # the default conversation (i.e. `conversation` of `auto`) when a VAD start event
+              # occurs.
+              sig { returns(T.nilable(T::Boolean)) }
+              attr_reader :interrupt_response
+
+              sig { params(interrupt_response: T::Boolean).void }
+              attr_writer :interrupt_response
+
+              # Used only for `server_vad` mode. Amount of audio to include before the VAD
+              # detected speech (in milliseconds). Defaults to 300ms.
               sig { returns(T.nilable(Integer)) }
               attr_reader :prefix_padding_ms
 
               sig { params(prefix_padding_ms: Integer).void }
               attr_writer :prefix_padding_ms
 
+              # Used only for `server_vad` mode. Duration of silence to detect speech stop (in
+              # milliseconds). Defaults to 500ms. With shorter values the model will respond
+              # more quickly, but may jump in on short pauses from the user.
               sig { returns(T.nilable(Integer)) }
               attr_reader :silence_duration_ms
 
               sig { params(silence_duration_ms: Integer).void }
               attr_writer :silence_duration_ms
 
+              # Used only for `server_vad` mode. Activation threshold for VAD (0.0 to 1.0), this
+              # defaults to 0.5. A higher threshold will require louder audio to activate the
+              # model, and thus might perform better in noisy environments.
               sig { returns(T.nilable(Float)) }
               attr_reader :threshold
 
               sig { params(threshold: Float).void }
               attr_writer :threshold
 
-              # Type of turn detection, only `server_vad` is currently supported.
-              sig { returns(T.nilable(String)) }
+              # Type of turn detection.
+              sig do
+                returns(
+                  T.nilable(
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::Type::TaggedSymbol
+                  )
+                )
+              end
               attr_reader :type
 
-              sig { params(type: String).void }
-              attr_writer :type
-
-              # Configuration for turn detection.
               sig do
                 params(
+                  type:
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::Type::OrSymbol
+                ).void
+              end
+              attr_writer :type
+
+              # Configuration for turn detection, ether Server VAD or Semantic VAD. This can be
+              # set to `null` to turn off, in which case the client must manually trigger model
+              # response. Server VAD means that the model will detect the start and end of
+              # speech based on audio volume and respond at the end of user speech. Semantic VAD
+              # is more advanced and uses a turn detection model (in conjunction with VAD) to
+              # semantically estimate whether the user has finished speaking, then dynamically
+              # sets a timeout based on this probability. For example, if user audio trails off
+              # with "uhhm", the model will score a low probability of turn end and wait longer
+              # for the user to continue speaking. This can be useful for more natural
+              # conversations, but may have a higher latency.
+              sig do
+                params(
+                  create_response: T::Boolean,
+                  eagerness:
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::Eagerness::OrSymbol,
+                  idle_timeout_ms: T.nilable(Integer),
+                  interrupt_response: T::Boolean,
                   prefix_padding_ms: Integer,
                   silence_duration_ms: Integer,
                   threshold: Float,
-                  type: String
+                  type:
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::Type::OrSymbol
                 ).returns(T.attached_class)
               end
               def self.new(
+                # Whether or not to automatically generate a response when a VAD stop event
+                # occurs.
+                create_response: nil,
+                # Used only for `semantic_vad` mode. The eagerness of the model to respond. `low`
+                # will wait longer for the user to continue speaking, `high` will respond more
+                # quickly. `auto` is the default and is equivalent to `medium`. `low`, `medium`,
+                # and `high` have max timeouts of 8s, 4s, and 2s respectively.
+                eagerness: nil,
+                # Optional idle timeout after which turn detection will auto-timeout when no
+                # additional audio is received.
+                idle_timeout_ms: nil,
+                # Whether or not to automatically interrupt any ongoing response with output to
+                # the default conversation (i.e. `conversation` of `auto`) when a VAD start event
+                # occurs.
+                interrupt_response: nil,
+                # Used only for `server_vad` mode. Amount of audio to include before the VAD
+                # detected speech (in milliseconds). Defaults to 300ms.
                 prefix_padding_ms: nil,
+                # Used only for `server_vad` mode. Duration of silence to detect speech stop (in
+                # milliseconds). Defaults to 500ms. With shorter values the model will respond
+                # more quickly, but may jump in on short pauses from the user.
                 silence_duration_ms: nil,
+                # Used only for `server_vad` mode. Activation threshold for VAD (0.0 to 1.0), this
+                # defaults to 0.5. A higher threshold will require louder audio to activate the
+                # model, and thus might perform better in noisy environments.
                 threshold: nil,
-                # Type of turn detection, only `server_vad` is currently supported.
+                # Type of turn detection.
                 type: nil
               )
               end
@@ -698,14 +838,103 @@ module OpenAI
               sig do
                 override.returns(
                   {
+                    create_response: T::Boolean,
+                    eagerness:
+                      OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::Eagerness::TaggedSymbol,
+                    idle_timeout_ms: T.nilable(Integer),
+                    interrupt_response: T::Boolean,
                     prefix_padding_ms: Integer,
                     silence_duration_ms: Integer,
                     threshold: Float,
-                    type: String
+                    type:
+                      OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::Type::TaggedSymbol
                   }
                 )
               end
               def to_hash
+              end
+
+              # Used only for `semantic_vad` mode. The eagerness of the model to respond. `low`
+              # will wait longer for the user to continue speaking, `high` will respond more
+              # quickly. `auto` is the default and is equivalent to `medium`. `low`, `medium`,
+              # and `high` have max timeouts of 8s, 4s, and 2s respectively.
+              module Eagerness
+                extend OpenAI::Internal::Type::Enum
+
+                TaggedSymbol =
+                  T.type_alias do
+                    T.all(
+                      Symbol,
+                      OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::Eagerness
+                    )
+                  end
+                OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+                LOW =
+                  T.let(
+                    :low,
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::Eagerness::TaggedSymbol
+                  )
+                MEDIUM =
+                  T.let(
+                    :medium,
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::Eagerness::TaggedSymbol
+                  )
+                HIGH =
+                  T.let(
+                    :high,
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::Eagerness::TaggedSymbol
+                  )
+                AUTO =
+                  T.let(
+                    :auto,
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::Eagerness::TaggedSymbol
+                  )
+
+                sig do
+                  override.returns(
+                    T::Array[
+                      OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::Eagerness::TaggedSymbol
+                    ]
+                  )
+                end
+                def self.values
+                end
+              end
+
+              # Type of turn detection.
+              module Type
+                extend OpenAI::Internal::Type::Enum
+
+                TaggedSymbol =
+                  T.type_alias do
+                    T.all(
+                      Symbol,
+                      OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::Type
+                    )
+                  end
+                OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+                SERVER_VAD =
+                  T.let(
+                    :server_vad,
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::Type::TaggedSymbol
+                  )
+                SEMANTIC_VAD =
+                  T.let(
+                    :semantic_vad,
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::Type::TaggedSymbol
+                  )
+
+                sig do
+                  override.returns(
+                    T::Array[
+                      OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::Type::TaggedSymbol
+                    ]
+                  )
+                end
+                def self.values
+                end
               end
             end
           end
@@ -719,19 +948,43 @@ module OpenAI
                 )
               end
 
-            # The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
-            sig { returns(T.nilable(String)) }
+            # The format of the output audio.
+            sig do
+              returns(
+                T.nilable(OpenAI::Realtime::RealtimeAudioFormats::Variants)
+              )
+            end
             attr_reader :format_
 
-            sig { params(format_: String).void }
+            sig do
+              params(
+                format_:
+                  T.any(
+                    OpenAI::Realtime::RealtimeAudioFormats::AudioPCM::OrHash,
+                    OpenAI::Realtime::RealtimeAudioFormats::AudioPCMU::OrHash,
+                    OpenAI::Realtime::RealtimeAudioFormats::AudioPCMA::OrHash
+                  )
+              ).void
+            end
             attr_writer :format_
 
+            # The speed of the model's spoken response as a multiple of the original speed.
+            # 1.0 is the default speed. 0.25 is the minimum speed. 1.5 is the maximum speed.
+            # This value can only be changed in between model turns, not while a response is
+            # in progress.
+            #
+            # This parameter is a post-processing adjustment to the audio after it is
+            # generated, it's also possible to prompt the model to speak faster or slower.
             sig { returns(T.nilable(Float)) }
             attr_reader :speed
 
             sig { params(speed: Float).void }
             attr_writer :speed
 
+            # The voice the model uses to respond. Voice cannot be changed during the session
+            # once the model has responded with audio at least once. Current voice options are
+            # `alloy`, `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`,
+            # and `cedar`. We recommend `marin` and `cedar` for best quality.
             sig do
               returns(
                 T.nilable(
@@ -754,7 +1007,12 @@ module OpenAI
 
             sig do
               params(
-                format_: String,
+                format_:
+                  T.any(
+                    OpenAI::Realtime::RealtimeAudioFormats::AudioPCM::OrHash,
+                    OpenAI::Realtime::RealtimeAudioFormats::AudioPCMU::OrHash,
+                    OpenAI::Realtime::RealtimeAudioFormats::AudioPCMA::OrHash
+                  ),
                 speed: Float,
                 voice:
                   T.any(
@@ -764,9 +1022,20 @@ module OpenAI
               ).returns(T.attached_class)
             end
             def self.new(
-              # The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+              # The format of the output audio.
               format_: nil,
+              # The speed of the model's spoken response as a multiple of the original speed.
+              # 1.0 is the default speed. 0.25 is the minimum speed. 1.5 is the maximum speed.
+              # This value can only be changed in between model turns, not while a response is
+              # in progress.
+              #
+              # This parameter is a post-processing adjustment to the audio after it is
+              # generated, it's also possible to prompt the model to speak faster or slower.
               speed: nil,
+              # The voice the model uses to respond. Voice cannot be changed during the session
+              # once the model has responded with audio at least once. Current voice options are
+              # `alloy`, `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`,
+              # and `cedar`. We recommend `marin` and `cedar` for best quality.
               voice: nil
             )
             end
@@ -774,7 +1043,7 @@ module OpenAI
             sig do
               override.returns(
                 {
-                  format_: String,
+                  format_: OpenAI::Realtime::RealtimeAudioFormats::Variants,
                   speed: Float,
                   voice:
                     OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::Variants
@@ -784,6 +1053,10 @@ module OpenAI
             def to_hash
             end
 
+            # The voice the model uses to respond. Voice cannot be changed during the session
+            # once the model has responded with audio at least once. Current voice options are
+            # `alloy`, `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`,
+            # and `cedar`. We recommend `marin` and `cedar` for best quality.
             module Voice
               extend OpenAI::Internal::Type::Union
 
@@ -916,6 +1189,79 @@ module OpenAI
           end
         end
 
+        # The Realtime model used for this session.
+        module Model
+          extend OpenAI::Internal::Type::Union
+
+          Variants =
+            T.type_alias do
+              T.any(
+                String,
+                OpenAI::Realtime::RealtimeSessionCreateResponse::Model::TaggedSymbol
+              )
+            end
+
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Realtime::RealtimeSessionCreateResponse::Model::Variants
+              ]
+            )
+          end
+          def self.variants
+          end
+
+          TaggedSymbol =
+            T.type_alias do
+              T.all(
+                Symbol,
+                OpenAI::Realtime::RealtimeSessionCreateResponse::Model
+              )
+            end
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+          GPT_REALTIME =
+            T.let(
+              :"gpt-realtime",
+              OpenAI::Realtime::RealtimeSessionCreateResponse::Model::TaggedSymbol
+            )
+          GPT_REALTIME_2025_08_28 =
+            T.let(
+              :"gpt-realtime-2025-08-28",
+              OpenAI::Realtime::RealtimeSessionCreateResponse::Model::TaggedSymbol
+            )
+          GPT_4O_REALTIME_PREVIEW =
+            T.let(
+              :"gpt-4o-realtime-preview",
+              OpenAI::Realtime::RealtimeSessionCreateResponse::Model::TaggedSymbol
+            )
+          GPT_4O_REALTIME_PREVIEW_2024_10_01 =
+            T.let(
+              :"gpt-4o-realtime-preview-2024-10-01",
+              OpenAI::Realtime::RealtimeSessionCreateResponse::Model::TaggedSymbol
+            )
+          GPT_4O_REALTIME_PREVIEW_2024_12_17 =
+            T.let(
+              :"gpt-4o-realtime-preview-2024-12-17",
+              OpenAI::Realtime::RealtimeSessionCreateResponse::Model::TaggedSymbol
+            )
+          GPT_4O_REALTIME_PREVIEW_2025_06_03 =
+            T.let(
+              :"gpt-4o-realtime-preview-2025-06-03",
+              OpenAI::Realtime::RealtimeSessionCreateResponse::Model::TaggedSymbol
+            )
+          GPT_4O_MINI_REALTIME_PREVIEW =
+            T.let(
+              :"gpt-4o-mini-realtime-preview",
+              OpenAI::Realtime::RealtimeSessionCreateResponse::Model::TaggedSymbol
+            )
+          GPT_4O_MINI_REALTIME_PREVIEW_2024_12_17 =
+            T.let(
+              :"gpt-4o-mini-realtime-preview-2024-12-17",
+              OpenAI::Realtime::RealtimeSessionCreateResponse::Model::TaggedSymbol
+            )
+        end
+
         module OutputModality
           extend OpenAI::Internal::Type::Enum
 
@@ -950,124 +1296,656 @@ module OpenAI
           end
         end
 
-        class Tool < OpenAI::Internal::Type::BaseModel
-          OrHash =
+        # How the model chooses tools. Provide one of the string modes or force a specific
+        # function/MCP tool.
+        module ToolChoice
+          extend OpenAI::Internal::Type::Union
+
+          Variants =
             T.type_alias do
               T.any(
-                OpenAI::Realtime::RealtimeSessionCreateResponse::Tool,
-                OpenAI::Internal::AnyHash
+                OpenAI::Responses::ToolChoiceOptions::TaggedSymbol,
+                OpenAI::Responses::ToolChoiceFunction,
+                OpenAI::Responses::ToolChoiceMcp
               )
             end
 
-          # The description of the function, including guidance on when and how to call it,
-          # and guidance about what to tell the user when calling (if anything).
-          sig { returns(T.nilable(String)) }
-          attr_reader :description
-
-          sig { params(description: String).void }
-          attr_writer :description
-
-          # The name of the function.
-          sig { returns(T.nilable(String)) }
-          attr_reader :name
-
-          sig { params(name: String).void }
-          attr_writer :name
-
-          # Parameters of the function in JSON Schema.
-          sig { returns(T.nilable(T.anything)) }
-          attr_reader :parameters
-
-          sig { params(parameters: T.anything).void }
-          attr_writer :parameters
-
-          # The type of the tool, i.e. `function`.
           sig do
-            returns(
-              T.nilable(
-                OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::Type::TaggedSymbol
-              )
+            override.returns(
+              T::Array[
+                OpenAI::Realtime::RealtimeSessionCreateResponse::ToolChoice::Variants
+              ]
             )
           end
-          attr_reader :type
-
-          sig do
-            params(
-              type:
-                OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::Type::OrSymbol
-            ).void
+          def self.variants
           end
-          attr_writer :type
+        end
 
-          sig do
-            params(
-              description: String,
-              name: String,
-              parameters: T.anything,
-              type:
-                OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::Type::OrSymbol
-            ).returns(T.attached_class)
-          end
-          def self.new(
-            # The description of the function, including guidance on when and how to call it,
-            # and guidance about what to tell the user when calling (if anything).
-            description: nil,
-            # The name of the function.
-            name: nil,
-            # Parameters of the function in JSON Schema.
-            parameters: nil,
-            # The type of the tool, i.e. `function`.
-            type: nil
-          )
+        # Give the model access to additional tools via remote Model Context Protocol
+        # (MCP) servers.
+        # [Learn more about MCP](https://platform.openai.com/docs/guides/tools-remote-mcp).
+        module Tool
+          extend OpenAI::Internal::Type::Union
+
+          Variants =
+            T.type_alias do
+              T.any(
+                OpenAI::Realtime::Models,
+                OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool
+              )
+            end
+
+          class McpTool < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # A label for this MCP server, used to identify it in tool calls.
+            sig { returns(String) }
+            attr_accessor :server_label
+
+            # The type of the MCP tool. Always `mcp`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            # List of allowed tool names or a filter object.
+            sig do
+              returns(
+                T.nilable(
+                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedTools::Variants
+                )
+              )
+            end
+            attr_accessor :allowed_tools
+
+            # An OAuth access token that can be used with a remote MCP server, either with a
+            # custom MCP server URL or a service connector. Your application must handle the
+            # OAuth authorization flow and provide the token here.
+            sig { returns(T.nilable(String)) }
+            attr_reader :authorization
+
+            sig { params(authorization: String).void }
+            attr_writer :authorization
+
+            # Identifier for service connectors, like those available in ChatGPT. One of
+            # `server_url` or `connector_id` must be provided. Learn more about service
+            # connectors
+            # [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).
+            #
+            # Currently supported `connector_id` values are:
+            #
+            # - Dropbox: `connector_dropbox`
+            # - Gmail: `connector_gmail`
+            # - Google Calendar: `connector_googlecalendar`
+            # - Google Drive: `connector_googledrive`
+            # - Microsoft Teams: `connector_microsoftteams`
+            # - Outlook Calendar: `connector_outlookcalendar`
+            # - Outlook Email: `connector_outlookemail`
+            # - SharePoint: `connector_sharepoint`
+            sig do
+              returns(
+                T.nilable(
+                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::ConnectorID::TaggedSymbol
+                )
+              )
+            end
+            attr_reader :connector_id
+
+            sig do
+              params(
+                connector_id:
+                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::ConnectorID::OrSymbol
+              ).void
+            end
+            attr_writer :connector_id
+
+            # Optional HTTP headers to send to the MCP server. Use for authentication or other
+            # purposes.
+            sig { returns(T.nilable(T::Hash[Symbol, String])) }
+            attr_accessor :headers
+
+            # Specify which of the MCP server's tools require approval.
+            sig do
+              returns(
+                T.nilable(
+                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::Variants
+                )
+              )
+            end
+            attr_accessor :require_approval
+
+            # Optional description of the MCP server, used to provide more context.
+            sig { returns(T.nilable(String)) }
+            attr_reader :server_description
+
+            sig { params(server_description: String).void }
+            attr_writer :server_description
+
+            # The URL for the MCP server. One of `server_url` or `connector_id` must be
+            # provided.
+            sig { returns(T.nilable(String)) }
+            attr_reader :server_url
+
+            sig { params(server_url: String).void }
+            attr_writer :server_url
+
+            # Give the model access to additional tools via remote Model Context Protocol
+            # (MCP) servers.
+            # [Learn more about MCP](https://platform.openai.com/docs/guides/tools-remote-mcp).
+            sig do
+              params(
+                server_label: String,
+                allowed_tools:
+                  T.nilable(
+                    T.any(
+                      T::Array[String],
+                      OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedTools::McpToolFilter::OrHash
+                    )
+                  ),
+                authorization: String,
+                connector_id:
+                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::ConnectorID::OrSymbol,
+                headers: T.nilable(T::Hash[Symbol, String]),
+                require_approval:
+                  T.nilable(
+                    T.any(
+                      OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::OrHash,
+                      OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalSetting::OrSymbol
+                    )
+                  ),
+                server_description: String,
+                server_url: String,
+                type: Symbol
+              ).returns(T.attached_class)
+            end
+            def self.new(
+              # A label for this MCP server, used to identify it in tool calls.
+              server_label:,
+              # List of allowed tool names or a filter object.
+              allowed_tools: nil,
+              # An OAuth access token that can be used with a remote MCP server, either with a
+              # custom MCP server URL or a service connector. Your application must handle the
+              # OAuth authorization flow and provide the token here.
+              authorization: nil,
+              # Identifier for service connectors, like those available in ChatGPT. One of
+              # `server_url` or `connector_id` must be provided. Learn more about service
+              # connectors
+              # [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).
+              #
+              # Currently supported `connector_id` values are:
+              #
+              # - Dropbox: `connector_dropbox`
+              # - Gmail: `connector_gmail`
+              # - Google Calendar: `connector_googlecalendar`
+              # - Google Drive: `connector_googledrive`
+              # - Microsoft Teams: `connector_microsoftteams`
+              # - Outlook Calendar: `connector_outlookcalendar`
+              # - Outlook Email: `connector_outlookemail`
+              # - SharePoint: `connector_sharepoint`
+              connector_id: nil,
+              # Optional HTTP headers to send to the MCP server. Use for authentication or other
+              # purposes.
+              headers: nil,
+              # Specify which of the MCP server's tools require approval.
+              require_approval: nil,
+              # Optional description of the MCP server, used to provide more context.
+              server_description: nil,
+              # The URL for the MCP server. One of `server_url` or `connector_id` must be
+              # provided.
+              server_url: nil,
+              # The type of the MCP tool. Always `mcp`.
+              type: :mcp
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  server_label: String,
+                  type: Symbol,
+                  allowed_tools:
+                    T.nilable(
+                      OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedTools::Variants
+                    ),
+                  authorization: String,
+                  connector_id:
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::ConnectorID::TaggedSymbol,
+                  headers: T.nilable(T::Hash[Symbol, String]),
+                  require_approval:
+                    T.nilable(
+                      OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::Variants
+                    ),
+                  server_description: String,
+                  server_url: String
+                }
+              )
+            end
+            def to_hash
+            end
+
+            # List of allowed tool names or a filter object.
+            module AllowedTools
+              extend OpenAI::Internal::Type::Union
+
+              Variants =
+                T.type_alias do
+                  T.any(
+                    T::Array[String],
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedTools::McpToolFilter
+                  )
+                end
+
+              class McpToolFilter < OpenAI::Internal::Type::BaseModel
+                OrHash =
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedTools::McpToolFilter,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
+
+                # Indicates whether or not a tool modifies data or is read-only. If an MCP server
+                # is
+                # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+                # it will match this filter.
+                sig { returns(T.nilable(T::Boolean)) }
+                attr_reader :read_only
+
+                sig { params(read_only: T::Boolean).void }
+                attr_writer :read_only
+
+                # List of allowed tool names.
+                sig { returns(T.nilable(T::Array[String])) }
+                attr_reader :tool_names
+
+                sig { params(tool_names: T::Array[String]).void }
+                attr_writer :tool_names
+
+                # A filter object to specify which tools are allowed.
+                sig do
+                  params(
+                    read_only: T::Boolean,
+                    tool_names: T::Array[String]
+                  ).returns(T.attached_class)
+                end
+                def self.new(
+                  # Indicates whether or not a tool modifies data or is read-only. If an MCP server
+                  # is
+                  # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+                  # it will match this filter.
+                  read_only: nil,
+                  # List of allowed tool names.
+                  tool_names: nil
+                )
+                end
+
+                sig do
+                  override.returns(
+                    { read_only: T::Boolean, tool_names: T::Array[String] }
+                  )
+                end
+                def to_hash
+                end
+              end
+
+              sig do
+                override.returns(
+                  T::Array[
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedTools::Variants
+                  ]
+                )
+              end
+              def self.variants
+              end
+
+              StringArray =
+                T.let(
+                  OpenAI::Internal::Type::ArrayOf[String],
+                  OpenAI::Internal::Type::Converter
+                )
+            end
+
+            # Identifier for service connectors, like those available in ChatGPT. One of
+            # `server_url` or `connector_id` must be provided. Learn more about service
+            # connectors
+            # [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).
+            #
+            # Currently supported `connector_id` values are:
+            #
+            # - Dropbox: `connector_dropbox`
+            # - Gmail: `connector_gmail`
+            # - Google Calendar: `connector_googlecalendar`
+            # - Google Drive: `connector_googledrive`
+            # - Microsoft Teams: `connector_microsoftteams`
+            # - Outlook Calendar: `connector_outlookcalendar`
+            # - Outlook Email: `connector_outlookemail`
+            # - SharePoint: `connector_sharepoint`
+            module ConnectorID
+              extend OpenAI::Internal::Type::Enum
+
+              TaggedSymbol =
+                T.type_alias do
+                  T.all(
+                    Symbol,
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::ConnectorID
+                  )
+                end
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+              CONNECTOR_DROPBOX =
+                T.let(
+                  :connector_dropbox,
+                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::ConnectorID::TaggedSymbol
+                )
+              CONNECTOR_GMAIL =
+                T.let(
+                  :connector_gmail,
+                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::ConnectorID::TaggedSymbol
+                )
+              CONNECTOR_GOOGLECALENDAR =
+                T.let(
+                  :connector_googlecalendar,
+                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::ConnectorID::TaggedSymbol
+                )
+              CONNECTOR_GOOGLEDRIVE =
+                T.let(
+                  :connector_googledrive,
+                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::ConnectorID::TaggedSymbol
+                )
+              CONNECTOR_MICROSOFTTEAMS =
+                T.let(
+                  :connector_microsoftteams,
+                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::ConnectorID::TaggedSymbol
+                )
+              CONNECTOR_OUTLOOKCALENDAR =
+                T.let(
+                  :connector_outlookcalendar,
+                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::ConnectorID::TaggedSymbol
+                )
+              CONNECTOR_OUTLOOKEMAIL =
+                T.let(
+                  :connector_outlookemail,
+                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::ConnectorID::TaggedSymbol
+                )
+              CONNECTOR_SHAREPOINT =
+                T.let(
+                  :connector_sharepoint,
+                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::ConnectorID::TaggedSymbol
+                )
+
+              sig do
+                override.returns(
+                  T::Array[
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::ConnectorID::TaggedSymbol
+                  ]
+                )
+              end
+              def self.values
+              end
+            end
+
+            # Specify which of the MCP server's tools require approval.
+            module RequireApproval
+              extend OpenAI::Internal::Type::Union
+
+              Variants =
+                T.type_alias do
+                  T.any(
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter,
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalSetting::TaggedSymbol
+                  )
+                end
+
+              class McpToolApprovalFilter < OpenAI::Internal::Type::BaseModel
+                OrHash =
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
+
+                # A filter object to specify which tools are allowed.
+                sig do
+                  returns(
+                    T.nilable(
+                      OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Always
+                    )
+                  )
+                end
+                attr_reader :always
+
+                sig do
+                  params(
+                    always:
+                      OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Always::OrHash
+                  ).void
+                end
+                attr_writer :always
+
+                # A filter object to specify which tools are allowed.
+                sig do
+                  returns(
+                    T.nilable(
+                      OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Never
+                    )
+                  )
+                end
+                attr_reader :never
+
+                sig do
+                  params(
+                    never:
+                      OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Never::OrHash
+                  ).void
+                end
+                attr_writer :never
+
+                # Specify which of the MCP server's tools require approval. Can be `always`,
+                # `never`, or a filter object associated with tools that require approval.
+                sig do
+                  params(
+                    always:
+                      OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Always::OrHash,
+                    never:
+                      OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Never::OrHash
+                  ).returns(T.attached_class)
+                end
+                def self.new(
+                  # A filter object to specify which tools are allowed.
+                  always: nil,
+                  # A filter object to specify which tools are allowed.
+                  never: nil
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {
+                      always:
+                        OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Always,
+                      never:
+                        OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Never
+                    }
+                  )
+                end
+                def to_hash
+                end
+
+                class Always < OpenAI::Internal::Type::BaseModel
+                  OrHash =
+                    T.type_alias do
+                      T.any(
+                        OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Always,
+                        OpenAI::Internal::AnyHash
+                      )
+                    end
+
+                  # Indicates whether or not a tool modifies data or is read-only. If an MCP server
+                  # is
+                  # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+                  # it will match this filter.
+                  sig { returns(T.nilable(T::Boolean)) }
+                  attr_reader :read_only
+
+                  sig { params(read_only: T::Boolean).void }
+                  attr_writer :read_only
+
+                  # List of allowed tool names.
+                  sig { returns(T.nilable(T::Array[String])) }
+                  attr_reader :tool_names
+
+                  sig { params(tool_names: T::Array[String]).void }
+                  attr_writer :tool_names
+
+                  # A filter object to specify which tools are allowed.
+                  sig do
+                    params(
+                      read_only: T::Boolean,
+                      tool_names: T::Array[String]
+                    ).returns(T.attached_class)
+                  end
+                  def self.new(
+                    # Indicates whether or not a tool modifies data or is read-only. If an MCP server
+                    # is
+                    # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+                    # it will match this filter.
+                    read_only: nil,
+                    # List of allowed tool names.
+                    tool_names: nil
+                  )
+                  end
+
+                  sig do
+                    override.returns(
+                      { read_only: T::Boolean, tool_names: T::Array[String] }
+                    )
+                  end
+                  def to_hash
+                  end
+                end
+
+                class Never < OpenAI::Internal::Type::BaseModel
+                  OrHash =
+                    T.type_alias do
+                      T.any(
+                        OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Never,
+                        OpenAI::Internal::AnyHash
+                      )
+                    end
+
+                  # Indicates whether or not a tool modifies data or is read-only. If an MCP server
+                  # is
+                  # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+                  # it will match this filter.
+                  sig { returns(T.nilable(T::Boolean)) }
+                  attr_reader :read_only
+
+                  sig { params(read_only: T::Boolean).void }
+                  attr_writer :read_only
+
+                  # List of allowed tool names.
+                  sig { returns(T.nilable(T::Array[String])) }
+                  attr_reader :tool_names
+
+                  sig { params(tool_names: T::Array[String]).void }
+                  attr_writer :tool_names
+
+                  # A filter object to specify which tools are allowed.
+                  sig do
+                    params(
+                      read_only: T::Boolean,
+                      tool_names: T::Array[String]
+                    ).returns(T.attached_class)
+                  end
+                  def self.new(
+                    # Indicates whether or not a tool modifies data or is read-only. If an MCP server
+                    # is
+                    # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+                    # it will match this filter.
+                    read_only: nil,
+                    # List of allowed tool names.
+                    tool_names: nil
+                  )
+                  end
+
+                  sig do
+                    override.returns(
+                      { read_only: T::Boolean, tool_names: T::Array[String] }
+                    )
+                  end
+                  def to_hash
+                  end
+                end
+              end
+
+              # Specify a single approval policy for all tools. One of `always` or `never`. When
+              # set to `always`, all tools will require approval. When set to `never`, all tools
+              # will not require approval.
+              module McpToolApprovalSetting
+                extend OpenAI::Internal::Type::Enum
+
+                TaggedSymbol =
+                  T.type_alias do
+                    T.all(
+                      Symbol,
+                      OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalSetting
+                    )
+                  end
+                OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+                ALWAYS =
+                  T.let(
+                    :always,
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalSetting::TaggedSymbol
+                  )
+                NEVER =
+                  T.let(
+                    :never,
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalSetting::TaggedSymbol
+                  )
+
+                sig do
+                  override.returns(
+                    T::Array[
+                      OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalSetting::TaggedSymbol
+                    ]
+                  )
+                end
+                def self.values
+                end
+              end
+
+              sig do
+                override.returns(
+                  T::Array[
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::Variants
+                  ]
+                )
+              end
+              def self.variants
+              end
+            end
           end
 
           sig do
             override.returns(
-              {
-                description: String,
-                name: String,
-                parameters: T.anything,
-                type:
-                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::Type::TaggedSymbol
-              }
+              T::Array[
+                OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::Variants
+              ]
             )
           end
-          def to_hash
-          end
-
-          # The type of the tool, i.e. `function`.
-          module Type
-            extend OpenAI::Internal::Type::Enum
-
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::Type
-                )
-              end
-            OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-            FUNCTION =
-              T.let(
-                :function,
-                OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::Type::TaggedSymbol
-              )
-
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::Type::TaggedSymbol
-                ]
-              )
-            end
-            def self.values
-            end
+          def self.variants
           end
         end
 
-        # Configuration options for tracing. Set to null to disable tracing. Once tracing
-        # is enabled for a session, the configuration cannot be modified.
+        # Realtime API can write session traces to the
+        # [Traces Dashboard](/logs?api=traces). Set to null to disable tracing. Once
+        # tracing is enabled for a session, the configuration cannot be modified.
         #
         # `auto` will create a trace for the session with default values for the workflow
         # name, group id, and metadata.
@@ -1092,15 +1970,15 @@ module OpenAI
               end
 
             # The group id to attach to this trace to enable filtering and grouping in the
-            # traces dashboard.
+            # Traces Dashboard.
             sig { returns(T.nilable(String)) }
             attr_reader :group_id
 
             sig { params(group_id: String).void }
             attr_writer :group_id
 
-            # The arbitrary metadata to attach to this trace to enable filtering in the traces
-            # dashboard.
+            # The arbitrary metadata to attach to this trace to enable filtering in the Traces
+            # Dashboard.
             sig { returns(T.nilable(T.anything)) }
             attr_reader :metadata
 
@@ -1108,7 +1986,7 @@ module OpenAI
             attr_writer :metadata
 
             # The name of the workflow to attach to this trace. This is used to name the trace
-            # in the traces dashboard.
+            # in the Traces Dashboard.
             sig { returns(T.nilable(String)) }
             attr_reader :workflow_name
 
@@ -1125,13 +2003,13 @@ module OpenAI
             end
             def self.new(
               # The group id to attach to this trace to enable filtering and grouping in the
-              # traces dashboard.
+              # Traces Dashboard.
               group_id: nil,
-              # The arbitrary metadata to attach to this trace to enable filtering in the traces
-              # dashboard.
+              # The arbitrary metadata to attach to this trace to enable filtering in the Traces
+              # Dashboard.
               metadata: nil,
               # The name of the workflow to attach to this trace. This is used to name the trace
-              # in the traces dashboard.
+              # in the Traces Dashboard.
               workflow_name: nil
             )
             end
@@ -1160,87 +2038,33 @@ module OpenAI
           end
         end
 
-        class TurnDetection < OpenAI::Internal::Type::BaseModel
-          OrHash =
+        # The type of session to create. Always `realtime` for the Realtime API.
+        module Type
+          extend OpenAI::Internal::Type::Enum
+
+          TaggedSymbol =
             T.type_alias do
-              T.any(
-                OpenAI::Realtime::RealtimeSessionCreateResponse::TurnDetection,
-                OpenAI::Internal::AnyHash
+              T.all(
+                Symbol,
+                OpenAI::Realtime::RealtimeSessionCreateResponse::Type
               )
             end
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          # Amount of audio to include before the VAD detected speech (in milliseconds).
-          # Defaults to 300ms.
-          sig { returns(T.nilable(Integer)) }
-          attr_reader :prefix_padding_ms
-
-          sig { params(prefix_padding_ms: Integer).void }
-          attr_writer :prefix_padding_ms
-
-          # Duration of silence to detect speech stop (in milliseconds). Defaults to 500ms.
-          # With shorter values the model will respond more quickly, but may jump in on
-          # short pauses from the user.
-          sig { returns(T.nilable(Integer)) }
-          attr_reader :silence_duration_ms
-
-          sig { params(silence_duration_ms: Integer).void }
-          attr_writer :silence_duration_ms
-
-          # Activation threshold for VAD (0.0 to 1.0), this defaults to 0.5. A higher
-          # threshold will require louder audio to activate the model, and thus might
-          # perform better in noisy environments.
-          sig { returns(T.nilable(Float)) }
-          attr_reader :threshold
-
-          sig { params(threshold: Float).void }
-          attr_writer :threshold
-
-          # Type of turn detection, only `server_vad` is currently supported.
-          sig { returns(T.nilable(String)) }
-          attr_reader :type
-
-          sig { params(type: String).void }
-          attr_writer :type
-
-          # Configuration for turn detection. Can be set to `null` to turn off. Server VAD
-          # means that the model will detect the start and end of speech based on audio
-          # volume and respond at the end of user speech.
-          sig do
-            params(
-              prefix_padding_ms: Integer,
-              silence_duration_ms: Integer,
-              threshold: Float,
-              type: String
-            ).returns(T.attached_class)
-          end
-          def self.new(
-            # Amount of audio to include before the VAD detected speech (in milliseconds).
-            # Defaults to 300ms.
-            prefix_padding_ms: nil,
-            # Duration of silence to detect speech stop (in milliseconds). Defaults to 500ms.
-            # With shorter values the model will respond more quickly, but may jump in on
-            # short pauses from the user.
-            silence_duration_ms: nil,
-            # Activation threshold for VAD (0.0 to 1.0), this defaults to 0.5. A higher
-            # threshold will require louder audio to activate the model, and thus might
-            # perform better in noisy environments.
-            threshold: nil,
-            # Type of turn detection, only `server_vad` is currently supported.
-            type: nil
-          )
-          end
+          REALTIME =
+            T.let(
+              :realtime,
+              OpenAI::Realtime::RealtimeSessionCreateResponse::Type::TaggedSymbol
+            )
 
           sig do
             override.returns(
-              {
-                prefix_padding_ms: Integer,
-                silence_duration_ms: Integer,
-                threshold: Float,
-                type: String
-              }
+              T::Array[
+                OpenAI::Realtime::RealtimeSessionCreateResponse::Type::TaggedSymbol
+              ]
             )
           end
-          def to_hash
+          def self.values
           end
         end
       end

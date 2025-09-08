@@ -55,6 +55,8 @@ module OpenAI
         type content =
           {
             audio: String,
+            detail: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::Content::detail,
+            image_url: String,
             text: String,
             transcript: String,
             type: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::Content::type_
@@ -64,6 +66,16 @@ module OpenAI
           attr_reader audio: String?
 
           def audio=: (String) -> String
+
+          attr_reader detail: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::Content::detail?
+
+          def detail=: (
+            OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::Content::detail
+          ) -> OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::Content::detail
+
+          attr_reader image_url: String?
+
+          def image_url=: (String) -> String
 
           attr_reader text: String?
 
@@ -81,6 +93,8 @@ module OpenAI
 
           def initialize: (
             ?audio: String,
+            ?detail: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::Content::detail,
+            ?image_url: String,
             ?text: String,
             ?transcript: String,
             ?type: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::Content::type_
@@ -88,18 +102,33 @@ module OpenAI
 
           def to_hash: -> {
             audio: String,
+            detail: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::Content::detail,
+            image_url: String,
             text: String,
             transcript: String,
             type: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::Content::type_
           }
 
-          type type_ = :input_text | :input_audio
+          type detail = :auto | :low | :high
+
+          module Detail
+            extend OpenAI::Internal::Type::Enum
+
+            AUTO: :auto
+            LOW: :low
+            HIGH: :high
+
+            def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::Content::detail]
+          end
+
+          type type_ = :input_text | :input_audio | :input_image
 
           module Type
             extend OpenAI::Internal::Type::Enum
 
             INPUT_TEXT: :input_text
             INPUT_AUDIO: :input_audio
+            INPUT_IMAGE: :input_image
 
             def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::Content::type_]
           end

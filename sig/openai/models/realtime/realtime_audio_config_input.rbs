@@ -1,0 +1,72 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_audio_config_input =
+        {
+          format_: OpenAI::Models::Realtime::realtime_audio_formats,
+          noise_reduction: OpenAI::Realtime::RealtimeAudioConfigInput::NoiseReduction,
+          transcription: OpenAI::Realtime::AudioTranscription,
+          turn_detection: OpenAI::Realtime::RealtimeAudioInputTurnDetection
+        }
+
+      class RealtimeAudioConfigInput < OpenAI::Internal::Type::BaseModel
+        attr_reader format_: OpenAI::Models::Realtime::realtime_audio_formats?
+
+        def format_=: (
+          OpenAI::Models::Realtime::realtime_audio_formats
+        ) -> OpenAI::Models::Realtime::realtime_audio_formats
+
+        attr_reader noise_reduction: OpenAI::Realtime::RealtimeAudioConfigInput::NoiseReduction?
+
+        def noise_reduction=: (
+          OpenAI::Realtime::RealtimeAudioConfigInput::NoiseReduction
+        ) -> OpenAI::Realtime::RealtimeAudioConfigInput::NoiseReduction
+
+        attr_reader transcription: OpenAI::Realtime::AudioTranscription?
+
+        def transcription=: (
+          OpenAI::Realtime::AudioTranscription
+        ) -> OpenAI::Realtime::AudioTranscription
+
+        attr_reader turn_detection: OpenAI::Realtime::RealtimeAudioInputTurnDetection?
+
+        def turn_detection=: (
+          OpenAI::Realtime::RealtimeAudioInputTurnDetection
+        ) -> OpenAI::Realtime::RealtimeAudioInputTurnDetection
+
+        def initialize: (
+          ?format_: OpenAI::Models::Realtime::realtime_audio_formats,
+          ?noise_reduction: OpenAI::Realtime::RealtimeAudioConfigInput::NoiseReduction,
+          ?transcription: OpenAI::Realtime::AudioTranscription,
+          ?turn_detection: OpenAI::Realtime::RealtimeAudioInputTurnDetection
+        ) -> void
+
+        def to_hash: -> {
+          format_: OpenAI::Models::Realtime::realtime_audio_formats,
+          noise_reduction: OpenAI::Realtime::RealtimeAudioConfigInput::NoiseReduction,
+          transcription: OpenAI::Realtime::AudioTranscription,
+          turn_detection: OpenAI::Realtime::RealtimeAudioInputTurnDetection
+        }
+
+        type noise_reduction =
+          { type: OpenAI::Models::Realtime::noise_reduction_type }
+
+        class NoiseReduction < OpenAI::Internal::Type::BaseModel
+          attr_reader type: OpenAI::Models::Realtime::noise_reduction_type?
+
+          def type=: (
+            OpenAI::Models::Realtime::noise_reduction_type
+          ) -> OpenAI::Models::Realtime::noise_reduction_type
+
+          def initialize: (
+            ?type: OpenAI::Models::Realtime::noise_reduction_type
+          ) -> void
+
+          def to_hash: -> {
+            type: OpenAI::Models::Realtime::noise_reduction_type
+          }
+        end
+      end
+    end
+  end
+end
