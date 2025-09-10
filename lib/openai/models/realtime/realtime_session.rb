@@ -142,8 +142,8 @@ module OpenAI
         # @!attribute tools
         #   Tools (functions) available to the model.
         #
-        #   @return [Array<OpenAI::Models::Realtime::Models>, nil]
-        optional :tools, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Realtime::Models] }
+        #   @return [Array<OpenAI::Models::Realtime::RealtimeFunctionTool>, nil]
+        optional :tools, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Realtime::RealtimeFunctionTool] }
 
         # @!attribute tracing
         #   Configuration options for tracing. Set to null to disable tracing. Once tracing
@@ -216,7 +216,7 @@ module OpenAI
         #
         #   @param tool_choice [String] How the model chooses tools. Options are `auto`, `none`, `required`, or
         #
-        #   @param tools [Array<OpenAI::Models::Realtime::Models>] Tools (functions) available to the model.
+        #   @param tools [Array<OpenAI::Models::Realtime::RealtimeFunctionTool>] Tools (functions) available to the model.
         #
         #   @param tracing [Symbol, :auto, OpenAI::Models::Realtime::RealtimeSession::Tracing::TracingConfiguration, nil] Configuration options for tracing. Set to null to disable tracing. Once
         #

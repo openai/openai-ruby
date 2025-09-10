@@ -3,10 +3,13 @@
 module OpenAI
   module Models
     module Realtime
-      class Models < OpenAI::Internal::Type::BaseModel
+      class RealtimeFunctionTool < OpenAI::Internal::Type::BaseModel
         OrHash =
           T.type_alias do
-            T.any(OpenAI::Realtime::Models, OpenAI::Internal::AnyHash)
+            T.any(
+              OpenAI::Realtime::RealtimeFunctionTool,
+              OpenAI::Internal::AnyHash
+            )
           end
 
         # The description of the function, including guidance on when and how to call it,
@@ -32,10 +35,18 @@ module OpenAI
         attr_writer :parameters
 
         # The type of the tool, i.e. `function`.
-        sig { returns(T.nilable(OpenAI::Realtime::Models::Type::OrSymbol)) }
+        sig do
+          returns(
+            T.nilable(OpenAI::Realtime::RealtimeFunctionTool::Type::OrSymbol)
+          )
+        end
         attr_reader :type
 
-        sig { params(type: OpenAI::Realtime::Models::Type::OrSymbol).void }
+        sig do
+          params(
+            type: OpenAI::Realtime::RealtimeFunctionTool::Type::OrSymbol
+          ).void
+        end
         attr_writer :type
 
         sig do
@@ -43,7 +54,7 @@ module OpenAI
             description: String,
             name: String,
             parameters: T.anything,
-            type: OpenAI::Realtime::Models::Type::OrSymbol
+            type: OpenAI::Realtime::RealtimeFunctionTool::Type::OrSymbol
           ).returns(T.attached_class)
         end
         def self.new(
@@ -65,7 +76,7 @@ module OpenAI
               description: String,
               name: String,
               parameters: T.anything,
-              type: OpenAI::Realtime::Models::Type::OrSymbol
+              type: OpenAI::Realtime::RealtimeFunctionTool::Type::OrSymbol
             }
           )
         end
@@ -77,15 +88,22 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
-            T.type_alias { T.all(Symbol, OpenAI::Realtime::Models::Type) }
+            T.type_alias do
+              T.all(Symbol, OpenAI::Realtime::RealtimeFunctionTool::Type)
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           FUNCTION =
-            T.let(:function, OpenAI::Realtime::Models::Type::TaggedSymbol)
+            T.let(
+              :function,
+              OpenAI::Realtime::RealtimeFunctionTool::Type::TaggedSymbol
+            )
 
           sig do
             override.returns(
-              T::Array[OpenAI::Realtime::Models::Type::TaggedSymbol]
+              T::Array[
+                OpenAI::Realtime::RealtimeFunctionTool::Type::TaggedSymbol
+              ]
             )
           end
           def self.values

@@ -19,7 +19,7 @@ module OpenAI
           speed: Float,
           temperature: Float,
           tool_choice: String,
-          tools: ::Array[OpenAI::Realtime::Models],
+          tools: ::Array[OpenAI::Realtime::RealtimeFunctionTool],
           tracing: OpenAI::Models::Realtime::RealtimeSession::tracing?,
           turn_detection: OpenAI::Realtime::RealtimeSession::TurnDetection?,
           voice: OpenAI::Models::Realtime::RealtimeSession::voice
@@ -98,11 +98,11 @@ module OpenAI
 
         def tool_choice=: (String) -> String
 
-        attr_reader tools: ::Array[OpenAI::Realtime::Models]?
+        attr_reader tools: ::Array[OpenAI::Realtime::RealtimeFunctionTool]?
 
         def tools=: (
-          ::Array[OpenAI::Realtime::Models]
-        ) -> ::Array[OpenAI::Realtime::Models]
+          ::Array[OpenAI::Realtime::RealtimeFunctionTool]
+        ) -> ::Array[OpenAI::Realtime::RealtimeFunctionTool]
 
         attr_accessor tracing: OpenAI::Models::Realtime::RealtimeSession::tracing?
 
@@ -131,7 +131,7 @@ module OpenAI
           ?speed: Float,
           ?temperature: Float,
           ?tool_choice: String,
-          ?tools: ::Array[OpenAI::Realtime::Models],
+          ?tools: ::Array[OpenAI::Realtime::RealtimeFunctionTool],
           ?tracing: OpenAI::Models::Realtime::RealtimeSession::tracing?,
           ?turn_detection: OpenAI::Realtime::RealtimeSession::TurnDetection?,
           ?voice: OpenAI::Models::Realtime::RealtimeSession::voice
@@ -154,7 +154,7 @@ module OpenAI
           speed: Float,
           temperature: Float,
           tool_choice: String,
-          tools: ::Array[OpenAI::Realtime::Models],
+          tools: ::Array[OpenAI::Realtime::RealtimeFunctionTool],
           tracing: OpenAI::Models::Realtime::RealtimeSession::tracing?,
           turn_detection: OpenAI::Realtime::RealtimeSession::TurnDetection?,
           voice: OpenAI::Models::Realtime::RealtimeSession::voice

@@ -170,7 +170,7 @@ module OpenAI
             T.nilable(
               T::Array[
                 T.any(
-                  OpenAI::Realtime::Models,
+                  OpenAI::Realtime::RealtimeFunctionTool,
                   OpenAI::Realtime::RealtimeToolsConfigUnion::Mcp
                 )
               ]
@@ -184,7 +184,7 @@ module OpenAI
             tools:
               T::Array[
                 T.any(
-                  OpenAI::Realtime::Models::OrHash,
+                  OpenAI::Realtime::RealtimeFunctionTool::OrHash,
                   OpenAI::Realtime::RealtimeToolsConfigUnion::Mcp::OrHash
                 )
               ]
@@ -264,7 +264,7 @@ module OpenAI
             tools:
               T::Array[
                 T.any(
-                  OpenAI::Realtime::Models::OrHash,
+                  OpenAI::Realtime::RealtimeFunctionTool::OrHash,
                   OpenAI::Realtime::RealtimeToolsConfigUnion::Mcp::OrHash
                 )
               ],
@@ -367,7 +367,7 @@ module OpenAI
               tools:
                 T::Array[
                   T.any(
-                    OpenAI::Realtime::Models,
+                    OpenAI::Realtime::RealtimeFunctionTool,
                     OpenAI::Realtime::RealtimeToolsConfigUnion::Mcp
                   )
                 ],

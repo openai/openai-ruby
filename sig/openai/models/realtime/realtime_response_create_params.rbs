@@ -134,7 +134,7 @@ module OpenAI
         end
 
         type tool =
-          OpenAI::Realtime::Models
+          OpenAI::Realtime::RealtimeFunctionTool
           | OpenAI::Realtime::RealtimeResponseCreateMcpTool
 
         module Tool

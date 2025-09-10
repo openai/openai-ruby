@@ -110,8 +110,7 @@ module OpenAI
 
         # Send this event to update the session’s configuration.
         # The client may send this event at any time to update any field
-        # except for `voice` and `model`. `voice` can be updated only if there have been no other
-        # audio outputs yet.
+        # except for `voice` and `model`. `voice` can be updated only if there have been no other audio outputs yet.
         #
         # When the server receives a `session.update`, it will respond
         # with a `session.updated` event showing the full, effective configuration.
@@ -120,11 +119,8 @@ module OpenAI
         # To clear a field like `turn_detection`, pass `null`.
         variant :"session.update", -> { OpenAI::Realtime::SessionUpdateEvent }
 
-        # Send this event to update a transcription session.
-        variant :"transcription_session.update", -> { OpenAI::Realtime::TranscriptionSessionUpdate }
-
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Realtime::ConversationItemCreateEvent, OpenAI::Models::Realtime::ConversationItemDeleteEvent, OpenAI::Models::Realtime::ConversationItemRetrieveEvent, OpenAI::Models::Realtime::ConversationItemTruncateEvent, OpenAI::Models::Realtime::InputAudioBufferAppendEvent, OpenAI::Models::Realtime::InputAudioBufferClearEvent, OpenAI::Models::Realtime::OutputAudioBufferClearEvent, OpenAI::Models::Realtime::InputAudioBufferCommitEvent, OpenAI::Models::Realtime::ResponseCancelEvent, OpenAI::Models::Realtime::ResponseCreateEvent, OpenAI::Models::Realtime::SessionUpdateEvent, OpenAI::Models::Realtime::TranscriptionSessionUpdate)]
+        #   @return [Array(OpenAI::Models::Realtime::ConversationItemCreateEvent, OpenAI::Models::Realtime::ConversationItemDeleteEvent, OpenAI::Models::Realtime::ConversationItemRetrieveEvent, OpenAI::Models::Realtime::ConversationItemTruncateEvent, OpenAI::Models::Realtime::InputAudioBufferAppendEvent, OpenAI::Models::Realtime::InputAudioBufferClearEvent, OpenAI::Models::Realtime::OutputAudioBufferClearEvent, OpenAI::Models::Realtime::InputAudioBufferCommitEvent, OpenAI::Models::Realtime::ResponseCancelEvent, OpenAI::Models::Realtime::ResponseCreateEvent, OpenAI::Models::Realtime::SessionUpdateEvent)]
       end
     end
   end

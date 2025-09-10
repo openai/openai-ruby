@@ -1,15 +1,15 @@
 module OpenAI
   module Models
     module Realtime
-      type models =
+      type realtime_function_tool =
         {
           description: String,
           name: String,
           parameters: top,
-          type: OpenAI::Models::Realtime::Models::type_
+          type: OpenAI::Models::Realtime::RealtimeFunctionTool::type_
         }
 
-      class Models < OpenAI::Internal::Type::BaseModel
+      class RealtimeFunctionTool < OpenAI::Internal::Type::BaseModel
         attr_reader description: String?
 
         def description=: (String) -> String
@@ -22,24 +22,24 @@ module OpenAI
 
         def parameters=: (top) -> top
 
-        attr_reader type: OpenAI::Models::Realtime::Models::type_?
+        attr_reader type: OpenAI::Models::Realtime::RealtimeFunctionTool::type_?
 
         def type=: (
-          OpenAI::Models::Realtime::Models::type_
-        ) -> OpenAI::Models::Realtime::Models::type_
+          OpenAI::Models::Realtime::RealtimeFunctionTool::type_
+        ) -> OpenAI::Models::Realtime::RealtimeFunctionTool::type_
 
         def initialize: (
           ?description: String,
           ?name: String,
           ?parameters: top,
-          ?type: OpenAI::Models::Realtime::Models::type_
+          ?type: OpenAI::Models::Realtime::RealtimeFunctionTool::type_
         ) -> void
 
         def to_hash: -> {
           description: String,
           name: String,
           parameters: top,
-          type: OpenAI::Models::Realtime::Models::type_
+          type: OpenAI::Models::Realtime::RealtimeFunctionTool::type_
         }
 
         type type_ = :function
@@ -49,7 +49,7 @@ module OpenAI
 
           FUNCTION: :function
 
-          def self?.values: -> ::Array[OpenAI::Models::Realtime::Models::type_]
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeFunctionTool::type_]
         end
       end
     end

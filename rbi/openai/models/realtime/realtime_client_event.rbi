@@ -20,8 +20,7 @@ module OpenAI
               OpenAI::Realtime::InputAudioBufferCommitEvent,
               OpenAI::Realtime::ResponseCancelEvent,
               OpenAI::Realtime::ResponseCreateEvent,
-              OpenAI::Realtime::SessionUpdateEvent,
-              OpenAI::Realtime::TranscriptionSessionUpdate
+              OpenAI::Realtime::SessionUpdateEvent
             )
           end
 

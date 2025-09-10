@@ -83,7 +83,7 @@ module OpenAI
         # @!attribute tools
         #   Tools available to the model.
         #
-        #   @return [Array<OpenAI::Models::Realtime::Models, OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Mcp>, nil]
+        #   @return [Array<OpenAI::Models::Realtime::RealtimeFunctionTool, OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Mcp>, nil]
         optional :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Realtime::RealtimeToolsConfigUnion] }
 
         # @!attribute tracing
@@ -126,7 +126,7 @@ module OpenAI
         #
         #   @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp] How the model chooses tools. Provide one of the string modes or force a specific
         #
-        #   @param tools [Array<OpenAI::Models::Realtime::Models, OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Mcp>] Tools available to the model.
+        #   @param tools [Array<OpenAI::Models::Realtime::RealtimeFunctionTool, OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Mcp>] Tools available to the model.
         #
         #   @param tracing [Symbol, :auto, OpenAI::Models::Realtime::RealtimeTracingConfig::TracingConfiguration, nil] Realtime API can write session traces to the [Traces Dashboard](/logs?api=traces
         #

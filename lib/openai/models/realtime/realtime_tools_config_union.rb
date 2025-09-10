@@ -11,7 +11,7 @@ module OpenAI
 
         discriminator :type
 
-        variant :function, -> { OpenAI::Realtime::Models }
+        variant :function, -> { OpenAI::Realtime::RealtimeFunctionTool }
 
         # Give the model access to additional tools via remote Model Context Protocol
         # (MCP) servers. [Learn more about MCP](https://platform.openai.com/docs/guides/tools-remote-mcp).
@@ -321,7 +321,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Realtime::Models, OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Mcp)]
+        #   @return [Array(OpenAI::Models::Realtime::RealtimeFunctionTool, OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Mcp)]
       end
     end
   end

@@ -5,8 +5,9 @@ module OpenAI
     module Realtime
       type realtime_session_create_response =
         {
-          audio: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio,
           client_secret: OpenAI::Realtime::RealtimeSessionClientSecret,
+          type: :realtime,
+          audio: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio,
           include: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::include_],
           instructions: String,
           max_output_tokens: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::max_output_tokens,
@@ -16,22 +17,19 @@ module OpenAI
           tool_choice: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tool_choice,
           tools: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tool],
           tracing: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tracing?,
-          truncation: OpenAI::Models::Realtime::realtime_truncation,
-          type: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::type_
+          truncation: OpenAI::Models::Realtime::realtime_truncation
         }
 
       class RealtimeSessionCreateResponse < OpenAI::Internal::Type::BaseModel
+        attr_accessor client_secret: OpenAI::Realtime::RealtimeSessionClientSecret
+
+        attr_accessor type: :realtime
+
         attr_reader audio: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio?
 
         def audio=: (
           OpenAI::Realtime::RealtimeSessionCreateResponse::Audio
         ) -> OpenAI::Realtime::RealtimeSessionCreateResponse::Audio
-
-        attr_reader client_secret: OpenAI::Realtime::RealtimeSessionClientSecret?
-
-        def client_secret=: (
-          OpenAI::Realtime::RealtimeSessionClientSecret
-        ) -> OpenAI::Realtime::RealtimeSessionClientSecret
 
         attr_reader include: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::include_]?
 
@@ -83,15 +81,9 @@ module OpenAI
           OpenAI::Models::Realtime::realtime_truncation
         ) -> OpenAI::Models::Realtime::realtime_truncation
 
-        attr_reader type: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::type_?
-
-        def type=: (
-          OpenAI::Models::Realtime::RealtimeSessionCreateResponse::type_
-        ) -> OpenAI::Models::Realtime::RealtimeSessionCreateResponse::type_
-
         def initialize: (
+          client_secret: OpenAI::Realtime::RealtimeSessionClientSecret,
           ?audio: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio,
-          ?client_secret: OpenAI::Realtime::RealtimeSessionClientSecret,
           ?include: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::include_],
           ?instructions: String,
           ?max_output_tokens: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::max_output_tokens,
@@ -102,12 +94,13 @@ module OpenAI
           ?tools: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tool],
           ?tracing: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tracing?,
           ?truncation: OpenAI::Models::Realtime::realtime_truncation,
-          ?type: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::type_
+          ?type: :realtime
         ) -> void
 
         def to_hash: -> {
-          audio: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio,
           client_secret: OpenAI::Realtime::RealtimeSessionClientSecret,
+          type: :realtime,
+          audio: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio,
           include: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::include_],
           instructions: String,
           max_output_tokens: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::max_output_tokens,
@@ -117,8 +110,7 @@ module OpenAI
           tool_choice: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tool_choice,
           tools: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tool],
           tracing: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tracing?,
-          truncation: OpenAI::Models::Realtime::realtime_truncation,
-          type: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::type_
+          truncation: OpenAI::Models::Realtime::realtime_truncation
         }
 
         type audio =
@@ -446,7 +438,7 @@ module OpenAI
         end
 
         type tool =
-          OpenAI::Realtime::Models
+          OpenAI::Realtime::RealtimeFunctionTool
           | OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool
 
         module Tool
@@ -711,16 +703,6 @@ module OpenAI
           end
 
           def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tracing]
-        end
-
-        type type_ = :realtime
-
-        module Type
-          extend OpenAI::Internal::Type::Enum
-
-          REALTIME: :realtime
-
-          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::type_]
         end
       end
     end
