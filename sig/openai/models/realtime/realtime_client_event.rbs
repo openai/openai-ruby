@@ -13,7 +13,6 @@ module OpenAI
         | OpenAI::Realtime::ResponseCancelEvent
         | OpenAI::Realtime::ResponseCreateEvent
         | OpenAI::Realtime::SessionUpdateEvent
-        | OpenAI::Realtime::TranscriptionSessionUpdate
 
       module RealtimeClientEvent
         extend OpenAI::Internal::Type::Union

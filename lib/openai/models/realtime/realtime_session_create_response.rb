@@ -4,17 +4,23 @@ module OpenAI
   module Models
     module Realtime
       class RealtimeSessionCreateResponse < OpenAI::Internal::Type::BaseModel
+        # @!attribute client_secret
+        #   Ephemeral key returned by the API.
+        #
+        #   @return [OpenAI::Models::Realtime::RealtimeSessionClientSecret]
+        required :client_secret, -> { OpenAI::Realtime::RealtimeSessionClientSecret }
+
+        # @!attribute type
+        #   The type of session to create. Always `realtime` for the Realtime API.
+        #
+        #   @return [Symbol, :realtime]
+        required :type, const: :realtime
+
         # @!attribute audio
         #   Configuration for input and output audio.
         #
         #   @return [OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio, nil]
         optional :audio, -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Audio }
-
-        # @!attribute client_secret
-        #   Ephemeral key returned by the API.
-        #
-        #   @return [OpenAI::Models::Realtime::RealtimeSessionClientSecret, nil]
-        optional :client_secret, -> { OpenAI::Realtime::RealtimeSessionClientSecret }
 
         # @!attribute include
         #   Additional fields to include in server outputs.
@@ -84,7 +90,7 @@ module OpenAI
         # @!attribute tools
         #   Tools available to the model.
         #
-        #   @return [Array<OpenAI::Models::Realtime::Models, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool>, nil]
+        #   @return [Array<OpenAI::Models::Realtime::RealtimeFunctionTool, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool>, nil]
         optional :tools,
                  -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Realtime::RealtimeSessionCreateResponse::Tool] }
 
@@ -106,22 +112,16 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Realtime::RealtimeTruncation::RealtimeTruncationStrategy, OpenAI::Models::Realtime::RealtimeTruncationRetentionRatio, nil]
         optional :truncation, union: -> { OpenAI::Realtime::RealtimeTruncation }
 
-        # @!attribute type
-        #   The type of session to create. Always `realtime` for the Realtime API.
-        #
-        #   @return [Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Type, nil]
-        optional :type, enum: -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Type }
-
-        # @!method initialize(audio: nil, client_secret: nil, include: nil, instructions: nil, max_output_tokens: nil, model: nil, output_modalities: nil, prompt: nil, tool_choice: nil, tools: nil, tracing: nil, truncation: nil, type: nil)
+        # @!method initialize(client_secret:, audio: nil, include: nil, instructions: nil, max_output_tokens: nil, model: nil, output_modalities: nil, prompt: nil, tool_choice: nil, tools: nil, tracing: nil, truncation: nil, type: :realtime)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Realtime::RealtimeSessionCreateResponse} for more details.
         #
         #   A new Realtime session configuration, with an ephemeral key. Default TTL for
         #   keys is one minute.
         #
-        #   @param audio [OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio] Configuration for input and output audio.
-        #
         #   @param client_secret [OpenAI::Models::Realtime::RealtimeSessionClientSecret] Ephemeral key returned by the API.
+        #
+        #   @param audio [OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio] Configuration for input and output audio.
         #
         #   @param include [Array<Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Include>] Additional fields to include in server outputs.
         #
@@ -137,13 +137,13 @@ module OpenAI
         #
         #   @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp] How the model chooses tools. Provide one of the string modes or force a specific
         #
-        #   @param tools [Array<OpenAI::Models::Realtime::Models, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool>] Tools available to the model.
+        #   @param tools [Array<OpenAI::Models::Realtime::RealtimeFunctionTool, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool>] Tools available to the model.
         #
         #   @param tracing [Symbol, :auto, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tracing::TracingConfiguration, nil] Realtime API can write session traces to the [Traces Dashboard](/logs?api=traces
         #
         #   @param truncation [Symbol, OpenAI::Models::Realtime::RealtimeTruncation::RealtimeTruncationStrategy, OpenAI::Models::Realtime::RealtimeTruncationRetentionRatio] Controls how the realtime conversation is truncated prior to model inference.
         #
-        #   @param type [Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Type] The type of session to create. Always `realtime` for the Realtime API.
+        #   @param type [Symbol, :realtime] The type of session to create. Always `realtime` for the Realtime API.
 
         # @see OpenAI::Models::Realtime::RealtimeSessionCreateResponse#audio
         class Audio < OpenAI::Internal::Type::BaseModel
@@ -269,7 +269,7 @@ module OpenAI
 
               # @!attribute idle_timeout_ms
               #   Optional idle timeout after which turn detection will auto-timeout when no
-              #   additional audio is received.
+              #   additional audio is received and emits a `timeout_triggered` event.
               #
               #   @return [Integer, nil]
               optional :idle_timeout_ms, Integer, nil?: true
@@ -586,7 +586,7 @@ module OpenAI
         module Tool
           extend OpenAI::Internal::Type::Union
 
-          variant -> { OpenAI::Realtime::Models }
+          variant -> { OpenAI::Realtime::RealtimeFunctionTool }
 
           # Give the model access to additional tools via remote Model Context Protocol
           # (MCP) servers. [Learn more about MCP](https://platform.openai.com/docs/guides/tools-remote-mcp).
@@ -902,7 +902,7 @@ module OpenAI
           end
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Models::Realtime::Models, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool)]
+          #   @return [Array(OpenAI::Models::Realtime::RealtimeFunctionTool, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool)]
         end
 
         # Realtime API can write session traces to the
@@ -960,18 +960,6 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(Symbol, :auto, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tracing::TracingConfiguration)]
-        end
-
-        # The type of session to create. Always `realtime` for the Realtime API.
-        #
-        # @see OpenAI::Models::Realtime::RealtimeSessionCreateResponse#type
-        module Type
-          extend OpenAI::Internal::Type::Enum
-
-          REALTIME = :realtime
-
-          # @!method self.values
-          #   @return [Array<Symbol>]
         end
       end
     end

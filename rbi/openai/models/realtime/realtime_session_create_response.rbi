@@ -14,6 +14,21 @@ module OpenAI
             )
           end
 
+        # Ephemeral key returned by the API.
+        sig { returns(OpenAI::Realtime::RealtimeSessionClientSecret) }
+        attr_reader :client_secret
+
+        sig do
+          params(
+            client_secret: OpenAI::Realtime::RealtimeSessionClientSecret::OrHash
+          ).void
+        end
+        attr_writer :client_secret
+
+        # The type of session to create. Always `realtime` for the Realtime API.
+        sig { returns(Symbol) }
+        attr_accessor :type
+
         # Configuration for input and output audio.
         sig do
           returns(
@@ -29,19 +44,6 @@ module OpenAI
           ).void
         end
         attr_writer :audio
-
-        # Ephemeral key returned by the API.
-        sig do
-          returns(T.nilable(OpenAI::Realtime::RealtimeSessionClientSecret))
-        end
-        attr_reader :client_secret
-
-        sig do
-          params(
-            client_secret: OpenAI::Realtime::RealtimeSessionClientSecret::OrHash
-          ).void
-        end
-        attr_writer :client_secret
 
         # Additional fields to include in server outputs.
         #
@@ -198,7 +200,7 @@ module OpenAI
             tools:
               T::Array[
                 T.any(
-                  OpenAI::Realtime::Models::OrHash,
+                  OpenAI::Realtime::RealtimeFunctionTool::OrHash,
                   OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::OrHash
                 )
               ]
@@ -239,32 +241,14 @@ module OpenAI
         end
         attr_writer :truncation
 
-        # The type of session to create. Always `realtime` for the Realtime API.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::Realtime::RealtimeSessionCreateResponse::Type::TaggedSymbol
-            )
-          )
-        end
-        attr_reader :type
-
-        sig do
-          params(
-            type:
-              OpenAI::Realtime::RealtimeSessionCreateResponse::Type::OrSymbol
-          ).void
-        end
-        attr_writer :type
-
         # A new Realtime session configuration, with an ephemeral key. Default TTL for
         # keys is one minute.
         sig do
           params(
-            audio:
-              OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::OrHash,
             client_secret:
               OpenAI::Realtime::RealtimeSessionClientSecret::OrHash,
+            audio:
+              OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::OrHash,
             include:
               T::Array[
                 OpenAI::Realtime::RealtimeSessionCreateResponse::Include::OrSymbol
@@ -290,7 +274,7 @@ module OpenAI
             tools:
               T::Array[
                 T.any(
-                  OpenAI::Realtime::Models::OrHash,
+                  OpenAI::Realtime::RealtimeFunctionTool::OrHash,
                   OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::OrHash
                 )
               ],
@@ -306,15 +290,14 @@ module OpenAI
                 OpenAI::Realtime::RealtimeTruncation::RealtimeTruncationStrategy::OrSymbol,
                 OpenAI::Realtime::RealtimeTruncationRetentionRatio::OrHash
               ),
-            type:
-              OpenAI::Realtime::RealtimeSessionCreateResponse::Type::OrSymbol
+            type: Symbol
           ).returns(T.attached_class)
         end
         def self.new(
+          # Ephemeral key returned by the API.
+          client_secret:,
           # Configuration for input and output audio.
           audio: nil,
-          # Ephemeral key returned by the API.
-          client_secret: nil,
           # Additional fields to include in server outputs.
           #
           # `item.input_audio_transcription.logprobs`: Include logprobs for input audio
@@ -362,15 +345,16 @@ module OpenAI
           # The default is `auto`.
           truncation: nil,
           # The type of session to create. Always `realtime` for the Realtime API.
-          type: nil
+          type: :realtime
         )
         end
 
         sig do
           override.returns(
             {
-              audio: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio,
               client_secret: OpenAI::Realtime::RealtimeSessionClientSecret,
+              type: Symbol,
+              audio: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio,
               include:
                 T::Array[
                   OpenAI::Realtime::RealtimeSessionCreateResponse::Include::TaggedSymbol
@@ -395,9 +379,7 @@ module OpenAI
                 T.nilable(
                   OpenAI::Realtime::RealtimeSessionCreateResponse::Tracing::Variants
                 ),
-              truncation: OpenAI::Realtime::RealtimeTruncation::Variants,
-              type:
-                OpenAI::Realtime::RealtimeSessionCreateResponse::Type::TaggedSymbol
+              truncation: OpenAI::Realtime::RealtimeTruncation::Variants
             }
           )
         end
@@ -722,7 +704,7 @@ module OpenAI
               attr_writer :eagerness
 
               # Optional idle timeout after which turn detection will auto-timeout when no
-              # additional audio is received.
+              # additional audio is received and emits a `timeout_triggered` event.
               sig { returns(T.nilable(Integer)) }
               attr_accessor :idle_timeout_ms
 
@@ -813,7 +795,7 @@ module OpenAI
                 # and `high` have max timeouts of 8s, 4s, and 2s respectively.
                 eagerness: nil,
                 # Optional idle timeout after which turn detection will auto-timeout when no
-                # additional audio is received.
+                # additional audio is received and emits a `timeout_triggered` event.
                 idle_timeout_ms: nil,
                 # Whether or not to automatically interrupt any ongoing response with output to
                 # the default conversation (i.e. `conversation` of `auto`) when a VAD start event
@@ -1330,7 +1312,7 @@ module OpenAI
           Variants =
             T.type_alias do
               T.any(
-                OpenAI::Realtime::Models,
+                OpenAI::Realtime::RealtimeFunctionTool,
                 OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool
               )
             end
@@ -2035,36 +2017,6 @@ module OpenAI
             )
           end
           def self.variants
-          end
-        end
-
-        # The type of session to create. Always `realtime` for the Realtime API.
-        module Type
-          extend OpenAI::Internal::Type::Enum
-
-          TaggedSymbol =
-            T.type_alias do
-              T.all(
-                Symbol,
-                OpenAI::Realtime::RealtimeSessionCreateResponse::Type
-              )
-            end
-          OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-          REALTIME =
-            T.let(
-              :realtime,
-              OpenAI::Realtime::RealtimeSessionCreateResponse::Type::TaggedSymbol
-            )
-
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Realtime::RealtimeSessionCreateResponse::Type::TaggedSymbol
-              ]
-            )
-          end
-          def self.values
           end
         end
       end

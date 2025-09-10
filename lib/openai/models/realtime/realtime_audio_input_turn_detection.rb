@@ -22,7 +22,7 @@ module OpenAI
 
         # @!attribute idle_timeout_ms
         #   Optional idle timeout after which turn detection will auto-timeout when no
-        #   additional audio is received.
+        #   additional audio is received and emits a `timeout_triggered` event.
         #
         #   @return [Integer, nil]
         optional :idle_timeout_ms, Integer, nil?: true
