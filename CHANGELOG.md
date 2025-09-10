@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.23.1 (2025-09-10)
+
+Full Changelog: [v0.23.0...v0.23.1](https://github.com/openai/openai-ruby/compare/v0.23.0...v0.23.1)
+
+### Chores
+
+* **api:** fix realtime GA types ([342f8d9](https://github.com/openai/openai-ruby/commit/342f8d9a4322cc1afba9aeabc1ff0fda5daec5c3))
+
 ## 0.23.0 (2025-09-08)
 
 Full Changelog: [v0.22.1...v0.23.0](https://github.com/openai/openai-ruby/compare/v0.22.1...v0.23.0)
