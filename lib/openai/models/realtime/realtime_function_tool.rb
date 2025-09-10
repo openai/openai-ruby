@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Realtime
-      class Models < OpenAI::Internal::Type::BaseModel
+      class RealtimeFunctionTool < OpenAI::Internal::Type::BaseModel
         # @!attribute description
         #   The description of the function, including guidance on when and how to call it,
         #   and guidance about what to tell the user when calling (if anything).
@@ -26,12 +26,12 @@ module OpenAI
         # @!attribute type
         #   The type of the tool, i.e. `function`.
         #
-        #   @return [Symbol, OpenAI::Models::Realtime::Models::Type, nil]
-        optional :type, enum: -> { OpenAI::Realtime::Models::Type }
+        #   @return [Symbol, OpenAI::Models::Realtime::RealtimeFunctionTool::Type, nil]
+        optional :type, enum: -> { OpenAI::Realtime::RealtimeFunctionTool::Type }
 
         # @!method initialize(description: nil, name: nil, parameters: nil, type: nil)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::Models} for more details.
+        #   {OpenAI::Models::Realtime::RealtimeFunctionTool} for more details.
         #
         #   @param description [String] The description of the function, including guidance on when and how
         #
@@ -39,11 +39,11 @@ module OpenAI
         #
         #   @param parameters [Object] Parameters of the function in JSON Schema.
         #
-        #   @param type [Symbol, OpenAI::Models::Realtime::Models::Type] The type of the tool, i.e. `function`.
+        #   @param type [Symbol, OpenAI::Models::Realtime::RealtimeFunctionTool::Type] The type of the tool, i.e. `function`.
 
         # The type of the tool, i.e. `function`.
         #
-        # @see OpenAI::Models::Realtime::Models#type
+        # @see OpenAI::Models::Realtime::RealtimeFunctionTool#type
         module Type
           extend OpenAI::Internal::Type::Enum
 

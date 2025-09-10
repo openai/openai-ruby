@@ -90,7 +90,7 @@ module OpenAI
         # @!attribute tools
         #   Tools available to the model.
         #
-        #   @return [Array<OpenAI::Models::Realtime::Models, OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool>, nil]
+        #   @return [Array<OpenAI::Models::Realtime::RealtimeFunctionTool, OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool>, nil]
         optional :tools,
                  -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Realtime::RealtimeResponseCreateParams::Tool] }
 
@@ -118,7 +118,7 @@ module OpenAI
         #
         #   @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp] How the model chooses tools. Provide one of the string modes or force a specific
         #
-        #   @param tools [Array<OpenAI::Models::Realtime::Models, OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool>] Tools available to the model.
+        #   @param tools [Array<OpenAI::Models::Realtime::RealtimeFunctionTool, OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool>] Tools available to the model.
 
         # Controls which conversation the response is added to. Currently supports `auto`
         # and `none`, with `auto` as the default value. The `auto` value means that the
@@ -210,14 +210,14 @@ module OpenAI
         module Tool
           extend OpenAI::Internal::Type::Union
 
-          variant -> { OpenAI::Realtime::Models }
+          variant -> { OpenAI::Realtime::RealtimeFunctionTool }
 
           # Give the model access to additional tools via remote Model Context Protocol
           # (MCP) servers. [Learn more about MCP](https://platform.openai.com/docs/guides/tools-remote-mcp).
           variant -> { OpenAI::Realtime::RealtimeResponseCreateMcpTool }
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Models::Realtime::Models, OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool)]
+          #   @return [Array(OpenAI::Models::Realtime::RealtimeFunctionTool, OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool)]
         end
       end
     end

@@ -12,7 +12,7 @@ module OpenAI
         Variants =
           T.type_alias do
             T.any(
-              OpenAI::Realtime::Models,
+              OpenAI::Realtime::RealtimeFunctionTool,
               OpenAI::Realtime::RealtimeToolsConfigUnion::Mcp
             )
           end

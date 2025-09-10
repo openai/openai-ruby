@@ -42,7 +42,7 @@ module OpenAI
         attr_writer :eagerness
 
         # Optional idle timeout after which turn detection will auto-timeout when no
-        # additional audio is received.
+        # additional audio is received and emits a `timeout_triggered` event.
         sig { returns(T.nilable(Integer)) }
         attr_accessor :idle_timeout_ms
 
@@ -133,7 +133,7 @@ module OpenAI
           # and `high` have max timeouts of 8s, 4s, and 2s respectively.
           eagerness: nil,
           # Optional idle timeout after which turn detection will auto-timeout when no
-          # additional audio is received.
+          # additional audio is received and emits a `timeout_triggered` event.
           idle_timeout_ms: nil,
           # Whether or not to automatically interrupt any ongoing response with output to
           # the default conversation (i.e. `conversation` of `auto`) when a VAD start event

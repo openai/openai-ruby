@@ -40,8 +40,6 @@ module OpenAI
               OpenAI::Realtime::ResponseTextDoneEvent,
               OpenAI::Realtime::SessionCreatedEvent,
               OpenAI::Realtime::SessionUpdatedEvent,
-              OpenAI::Realtime::TranscriptionSessionUpdatedEvent,
-              OpenAI::Realtime::TranscriptionSessionCreated,
               OpenAI::Realtime::RealtimeServerEvent::OutputAudioBufferStarted,
               OpenAI::Realtime::RealtimeServerEvent::OutputAudioBufferStopped,
               OpenAI::Realtime::RealtimeServerEvent::OutputAudioBufferCleared,

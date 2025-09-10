@@ -204,7 +204,7 @@ module OpenAI
             T.nilable(
               T::Array[
                 T.any(
-                  OpenAI::Realtime::Models,
+                  OpenAI::Realtime::RealtimeFunctionTool,
                   OpenAI::Realtime::RealtimeResponseCreateMcpTool
                 )
               ]
@@ -218,7 +218,7 @@ module OpenAI
             tools:
               T::Array[
                 T.any(
-                  OpenAI::Realtime::Models::OrHash,
+                  OpenAI::Realtime::RealtimeFunctionTool::OrHash,
                   OpenAI::Realtime::RealtimeResponseCreateMcpTool::OrHash
                 )
               ]
@@ -266,7 +266,7 @@ module OpenAI
             tools:
               T::Array[
                 T.any(
-                  OpenAI::Realtime::Models::OrHash,
+                  OpenAI::Realtime::RealtimeFunctionTool::OrHash,
                   OpenAI::Realtime::RealtimeResponseCreateMcpTool::OrHash
                 )
               ]
@@ -364,7 +364,7 @@ module OpenAI
               tools:
                 T::Array[
                   T.any(
-                    OpenAI::Realtime::Models,
+                    OpenAI::Realtime::RealtimeFunctionTool,
                     OpenAI::Realtime::RealtimeResponseCreateMcpTool
                   )
                 ]
@@ -508,7 +508,7 @@ module OpenAI
           Variants =
             T.type_alias do
               T.any(
-                OpenAI::Realtime::Models,
+                OpenAI::Realtime::RealtimeFunctionTool,
                 OpenAI::Realtime::RealtimeResponseCreateMcpTool
               )
             end

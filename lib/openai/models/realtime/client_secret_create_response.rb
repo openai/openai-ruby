@@ -41,16 +41,14 @@ module OpenAI
         module Session
           extend OpenAI::Internal::Type::Union
 
+          discriminator :type
+
           # A new Realtime session configuration, with an ephemeral key. Default TTL
           # for keys is one minute.
-          variant -> { OpenAI::Realtime::RealtimeSessionCreateResponse }
+          variant :realtime, -> { OpenAI::Realtime::RealtimeSessionCreateResponse }
 
-          # A new Realtime transcription session configuration.
-          #
-          # When a session is created on the server via REST API, the session object
-          # also contains an ephemeral key. Default TTL for keys is 10 minutes. This
-          # property is not present when a session is updated via the WebSocket API.
-          variant -> { OpenAI::Realtime::RealtimeTranscriptionSessionCreateResponse }
+          # A Realtime transcription session configuration object.
+          variant :transcription, -> { OpenAI::Realtime::RealtimeTranscriptionSessionCreateResponse }
 
           # @!method self.variants
           #   @return [Array(OpenAI::Models::Realtime::RealtimeSessionCreateResponse, OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateResponse)]

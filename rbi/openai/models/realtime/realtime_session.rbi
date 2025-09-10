@@ -225,10 +225,16 @@ module OpenAI
         attr_writer :tool_choice
 
         # Tools (functions) available to the model.
-        sig { returns(T.nilable(T::Array[OpenAI::Realtime::Models])) }
+        sig do
+          returns(T.nilable(T::Array[OpenAI::Realtime::RealtimeFunctionTool]))
+        end
         attr_reader :tools
 
-        sig { params(tools: T::Array[OpenAI::Realtime::Models::OrHash]).void }
+        sig do
+          params(
+            tools: T::Array[OpenAI::Realtime::RealtimeFunctionTool::OrHash]
+          ).void
+        end
         attr_writer :tools
 
         # Configuration options for tracing. Set to null to disable tracing. Once tracing
@@ -320,7 +326,7 @@ module OpenAI
             speed: Float,
             temperature: Float,
             tool_choice: String,
-            tools: T::Array[OpenAI::Realtime::Models::OrHash],
+            tools: T::Array[OpenAI::Realtime::RealtimeFunctionTool::OrHash],
             tracing:
               T.nilable(
                 T.any(
@@ -457,7 +463,7 @@ module OpenAI
               speed: Float,
               temperature: Float,
               tool_choice: String,
-              tools: T::Array[OpenAI::Realtime::Models],
+              tools: T::Array[OpenAI::Realtime::RealtimeFunctionTool],
               tracing:
                 T.nilable(
                   T.any(
