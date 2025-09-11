@@ -6,7 +6,7 @@ module OpenAI
           format_: OpenAI::Models::Realtime::realtime_audio_formats,
           noise_reduction: OpenAI::Realtime::RealtimeTranscriptionSessionAudioInput::NoiseReduction,
           transcription: OpenAI::Realtime::AudioTranscription,
-          turn_detection: OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection
+          turn_detection: OpenAI::Models::Realtime::realtime_transcription_session_audio_input_turn_detection?
         }
 
       class RealtimeTranscriptionSessionAudioInput < OpenAI::Internal::Type::BaseModel
@@ -28,24 +28,20 @@ module OpenAI
           OpenAI::Realtime::AudioTranscription
         ) -> OpenAI::Realtime::AudioTranscription
 
-        attr_reader turn_detection: OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection?
-
-        def turn_detection=: (
-          OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection
-        ) -> OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection
+        attr_accessor turn_detection: OpenAI::Models::Realtime::realtime_transcription_session_audio_input_turn_detection?
 
         def initialize: (
           ?format_: OpenAI::Models::Realtime::realtime_audio_formats,
           ?noise_reduction: OpenAI::Realtime::RealtimeTranscriptionSessionAudioInput::NoiseReduction,
           ?transcription: OpenAI::Realtime::AudioTranscription,
-          ?turn_detection: OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection
+          ?turn_detection: OpenAI::Models::Realtime::realtime_transcription_session_audio_input_turn_detection?
         ) -> void
 
         def to_hash: -> {
           format_: OpenAI::Models::Realtime::realtime_audio_formats,
           noise_reduction: OpenAI::Realtime::RealtimeTranscriptionSessionAudioInput::NoiseReduction,
           transcription: OpenAI::Realtime::AudioTranscription,
-          turn_detection: OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection
+          turn_detection: OpenAI::Models::Realtime::realtime_transcription_session_audio_input_turn_detection?
         }
 
         type noise_reduction =

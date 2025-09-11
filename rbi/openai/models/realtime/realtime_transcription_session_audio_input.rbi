@@ -80,30 +80,28 @@ module OpenAI
 
         # Configuration for turn detection, ether Server VAD or Semantic VAD. This can be
         # set to `null` to turn off, in which case the client must manually trigger model
-        # response. Server VAD means that the model will detect the start and end of
-        # speech based on audio volume and respond at the end of user speech. Semantic VAD
-        # is more advanced and uses a turn detection model (in conjunction with VAD) to
-        # semantically estimate whether the user has finished speaking, then dynamically
-        # sets a timeout based on this probability. For example, if user audio trails off
-        # with "uhhm", the model will score a low probability of turn end and wait longer
-        # for the user to continue speaking. This can be useful for more natural
-        # conversations, but may have a higher latency.
+        # response.
+        #
+        # Server VAD means that the model will detect the start and end of speech based on
+        # audio volume and respond at the end of user speech.
+        #
+        # Semantic VAD is more advanced and uses a turn detection model (in conjunction
+        # with VAD) to semantically estimate whether the user has finished speaking, then
+        # dynamically sets a timeout based on this probability. For example, if user audio
+        # trails off with "uhhm", the model will score a low probability of turn end and
+        # wait longer for the user to continue speaking. This can be useful for more
+        # natural conversations, but may have a higher latency.
         sig do
           returns(
             T.nilable(
-              OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection
+              T.any(
+                OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::ServerVad,
+                OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::SemanticVad
+              )
             )
           )
         end
-        attr_reader :turn_detection
-
-        sig do
-          params(
-            turn_detection:
-              OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::OrHash
-          ).void
-        end
-        attr_writer :turn_detection
+        attr_accessor :turn_detection
 
         sig do
           params(
@@ -117,7 +115,12 @@ module OpenAI
               OpenAI::Realtime::RealtimeTranscriptionSessionAudioInput::NoiseReduction::OrHash,
             transcription: OpenAI::Realtime::AudioTranscription::OrHash,
             turn_detection:
-              OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::OrHash
+              T.nilable(
+                T.any(
+                  OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::ServerVad::OrHash,
+                  OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::SemanticVad::OrHash
+                )
+              )
           ).returns(T.attached_class)
         end
         def self.new(
@@ -140,14 +143,17 @@ module OpenAI
           transcription: nil,
           # Configuration for turn detection, ether Server VAD or Semantic VAD. This can be
           # set to `null` to turn off, in which case the client must manually trigger model
-          # response. Server VAD means that the model will detect the start and end of
-          # speech based on audio volume and respond at the end of user speech. Semantic VAD
-          # is more advanced and uses a turn detection model (in conjunction with VAD) to
-          # semantically estimate whether the user has finished speaking, then dynamically
-          # sets a timeout based on this probability. For example, if user audio trails off
-          # with "uhhm", the model will score a low probability of turn end and wait longer
-          # for the user to continue speaking. This can be useful for more natural
-          # conversations, but may have a higher latency.
+          # response.
+          #
+          # Server VAD means that the model will detect the start and end of speech based on
+          # audio volume and respond at the end of user speech.
+          #
+          # Semantic VAD is more advanced and uses a turn detection model (in conjunction
+          # with VAD) to semantically estimate whether the user has finished speaking, then
+          # dynamically sets a timeout based on this probability. For example, if user audio
+          # trails off with "uhhm", the model will score a low probability of turn end and
+          # wait longer for the user to continue speaking. This can be useful for more
+          # natural conversations, but may have a higher latency.
           turn_detection: nil
         )
         end
@@ -165,7 +171,12 @@ module OpenAI
                 OpenAI::Realtime::RealtimeTranscriptionSessionAudioInput::NoiseReduction,
               transcription: OpenAI::Realtime::AudioTranscription,
               turn_detection:
-                OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection
+                T.nilable(
+                  T.any(
+                    OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::ServerVad,
+                    OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::SemanticVad
+                  )
+                )
             }
           )
         end
