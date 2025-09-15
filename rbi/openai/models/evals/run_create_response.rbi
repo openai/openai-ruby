@@ -510,8 +510,11 @@ module OpenAI
                 sig { returns(T.nilable(String)) }
                 attr_accessor :model
 
-                # Optional reasoning effort parameter. This is a query parameter used to select
-                # responses.
+                # Constrains effort on reasoning for
+                # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
+                # supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
+                # effort can result in faster responses and fewer tokens used on reasoning in a
+                # response.
                 sig do
                   returns(T.nilable(OpenAI::ReasoningEffort::TaggedSymbol))
                 end
@@ -566,8 +569,11 @@ module OpenAI
                   # The name of the model to find responses for. This is a query parameter used to
                   # select responses.
                   model: nil,
-                  # Optional reasoning effort parameter. This is a query parameter used to select
-                  # responses.
+                  # Constrains effort on reasoning for
+                  # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
+                  # supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
+                  # effort can result in faster responses and fewer tokens used on reasoning in a
+                  # response.
                   reasoning_effort: nil,
                   # Sampling temperature. This is a query parameter used to select responses.
                   temperature: nil,

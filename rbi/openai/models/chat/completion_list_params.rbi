@@ -26,9 +26,12 @@ module OpenAI
         sig { params(limit: Integer).void }
         attr_writer :limit
 
-        # A list of metadata keys to filter the Chat Completions by. Example:
+        # Set of 16 key-value pairs that can be attached to an object. This can be useful
+        # for storing additional information about the object in a structured format, and
+        # querying for objects via API or the dashboard.
         #
-        # `metadata[key1]=value1&metadata[key2]=value2`
+        # Keys are strings with a maximum length of 64 characters. Values are strings with
+        # a maximum length of 512 characters.
         sig { returns(T.nilable(T::Hash[Symbol, String])) }
         attr_accessor :metadata
 
@@ -70,9 +73,12 @@ module OpenAI
           after: nil,
           # Number of Chat Completions to retrieve.
           limit: nil,
-          # A list of metadata keys to filter the Chat Completions by. Example:
+          # Set of 16 key-value pairs that can be attached to an object. This can be useful
+          # for storing additional information about the object in a structured format, and
+          # querying for objects via API or the dashboard.
           #
-          # `metadata[key1]=value1&metadata[key2]=value2`
+          # Keys are strings with a maximum length of 64 characters. Values are strings with
+          # a maximum length of 512 characters.
           metadata: nil,
           # The model used to generate the Chat Completions.
           model: nil,
