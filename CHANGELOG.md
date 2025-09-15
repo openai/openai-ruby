@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.23.3 (2025-09-15)
+
+Full Changelog: [v0.23.2...v0.23.3](https://github.com/openai/openai-ruby/compare/v0.23.2...v0.23.3)
+
+### Chores
+
+* **api:** docs and spec refactoring ([81ccb86](https://github.com/openai/openai-ruby/commit/81ccb86c346e51a2b5d532a5997358aa86977572))
+
 ## 0.23.2 (2025-09-11)
 
 Full Changelog: [v0.23.1...v0.23.2](https://github.com/openai/openai-ruby/compare/v0.23.1...v0.23.2)
