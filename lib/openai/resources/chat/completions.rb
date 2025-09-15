@@ -294,7 +294,7 @@ module OpenAI
         #
         # @param limit [Integer] Number of Chat Completions to retrieve.
         #
-        # @param metadata [Hash{Symbol=>String}, nil] A list of metadata keys to filter the Chat Completions by. Example:
+        # @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #
         # @param model [String] The model used to generate the Chat Completions.
         #
