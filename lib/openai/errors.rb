@@ -43,6 +43,9 @@ module OpenAI
       # @return [Integer, nil]
       attr_accessor :status
 
+      # @return [Hash{String=>String}, nil]
+      attr_accessor :headers
+
       # @return [Object, nil]
       attr_accessor :body
 
@@ -59,13 +62,15 @@ module OpenAI
       #
       # @param url [URI::Generic]
       # @param status [Integer, nil]
+      # @param headers [Hash{String=>String}, nil]
       # @param body [Object, nil]
       # @param request [nil]
       # @param response [nil]
       # @param message [String, nil]
-      def initialize(url:, status: nil, body: nil, request: nil, response: nil, message: nil)
+      def initialize(url:, status: nil, headers: nil, body: nil, request: nil, response: nil, message: nil)
         @url = url
         @status = status
+        @headers = headers
         @body = body
         @request = request
         @response = response
@@ -98,6 +103,7 @@ module OpenAI
       #
       # @param url [URI::Generic]
       # @param status [nil]
+      # @param headers [Hash{String=>String}, nil]
       # @param body [nil]
       # @param request [nil]
       # @param response [nil]
@@ -105,6 +111,7 @@ module OpenAI
       def initialize(
         url:,
         status: nil,
+        headers: nil,
         body: nil,
         request: nil,
         response: nil,
@@ -119,6 +126,7 @@ module OpenAI
       #
       # @param url [URI::Generic]
       # @param status [nil]
+      # @param headers [Hash{String=>String}, nil]
       # @param body [nil]
       # @param request [nil]
       # @param response [nil]
@@ -126,6 +134,7 @@ module OpenAI
       def initialize(
         url:,
         status: nil,
+        headers: nil,
         body: nil,
         request: nil,
         response: nil,
@@ -140,21 +149,24 @@ module OpenAI
       #
       # @param url [URI::Generic]
       # @param status [Integer]
+      # @param headers [Hash{String=>String}, nil]
       # @param body [Object, nil]
       # @param request [nil]
       # @param response [nil]
       # @param message [String, nil]
       #
       # @return [self]
-      def self.for(url:, status:, body:, request:, response:, message: nil)
-        kwargs = {
-          url: url,
-          status: status,
-          body: body,
-          request: request,
-          response: response,
-          message: message
-        }
+      def self.for(url:, status:, headers:, body:, request:, response:, message: nil)
+        kwargs =
+          {
+            url: url,
+            status: status,
+            headers: headers,
+            body: body,
+            request: request,
+            response: response,
+            message: message
+          }
 
         case status
         in 400
@@ -198,11 +210,12 @@ module OpenAI
       #
       # @param url [URI::Generic]
       # @param status [Integer]
+      # @param headers [Hash{String=>String}, nil]
       # @param body [Object, nil]
       # @param request [nil]
       # @param response [nil]
       # @param message [String, nil]
-      def initialize(url:, status:, body:, request:, response:, message: nil)
+      def initialize(url:, status:, headers:, body:, request:, response:, message: nil)
         message ||= OpenAI::Internal::Util.dig(body, :message) { {url: url.to_s, status: status, body: body} }
         @code = OpenAI::Internal::Type::Converter.coerce(String, OpenAI::Internal::Util.dig(body, :code))
         @param = OpenAI::Internal::Type::Converter.coerce(String, OpenAI::Internal::Util.dig(body, :param))
@@ -210,6 +223,7 @@ module OpenAI
         super(
           url: url,
           status: status,
+          headers: headers,
           body: body,
           request: request,
           response: response,
