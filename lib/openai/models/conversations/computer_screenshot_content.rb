@@ -27,6 +27,8 @@ module OpenAI
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Conversations::ComputerScreenshotContent} for more details.
         #
+        #   A screenshot of a computer.
+        #
         #   @param file_id [String, nil] The identifier of an uploaded file that contains the screenshot.
         #
         #   @param image_url [String, nil] The URL of the screenshot image.

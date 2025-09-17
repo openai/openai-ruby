@@ -10,7 +10,7 @@ module OpenAI
           name: String,
           type: :score_model,
           range: ::Array[Float],
-          sampling_params: top
+          sampling_params: OpenAI::Graders::ScoreModelGrader::SamplingParams
         }
 
       class ScoreModelGrader < OpenAI::Internal::Type::BaseModel
@@ -26,16 +26,18 @@ module OpenAI
 
         def range=: (::Array[Float]) -> ::Array[Float]
 
-        attr_reader sampling_params: top?
+        attr_reader sampling_params: OpenAI::Graders::ScoreModelGrader::SamplingParams?
 
-        def sampling_params=: (top) -> top
+        def sampling_params=: (
+          OpenAI::Graders::ScoreModelGrader::SamplingParams
+        ) -> OpenAI::Graders::ScoreModelGrader::SamplingParams
 
         def initialize: (
           input: ::Array[OpenAI::Graders::ScoreModelGrader::Input],
           model: String,
           name: String,
           ?range: ::Array[Float],
-          ?sampling_params: top,
+          ?sampling_params: OpenAI::Graders::ScoreModelGrader::SamplingParams,
           ?type: :score_model
         ) -> void
 
@@ -45,7 +47,7 @@ module OpenAI
           name: String,
           type: :score_model,
           range: ::Array[Float],
-          sampling_params: top
+          sampling_params: OpenAI::Graders::ScoreModelGrader::SamplingParams
         }
 
         type input =
@@ -153,6 +155,43 @@ module OpenAI
 
             def self?.values: -> ::Array[OpenAI::Models::Graders::ScoreModelGrader::Input::type_]
           end
+        end
+
+        type sampling_params =
+          {
+            max_completions_tokens: Integer?,
+            reasoning_effort: OpenAI::Models::reasoning_effort?,
+            seed: Integer?,
+            temperature: Float?,
+            top_p: Float?
+          }
+
+        class SamplingParams < OpenAI::Internal::Type::BaseModel
+          attr_accessor max_completions_tokens: Integer?
+
+          attr_accessor reasoning_effort: OpenAI::Models::reasoning_effort?
+
+          attr_accessor seed: Integer?
+
+          attr_accessor temperature: Float?
+
+          attr_accessor top_p: Float?
+
+          def initialize: (
+            ?max_completions_tokens: Integer?,
+            ?reasoning_effort: OpenAI::Models::reasoning_effort?,
+            ?seed: Integer?,
+            ?temperature: Float?,
+            ?top_p: Float?
+          ) -> void
+
+          def to_hash: -> {
+            max_completions_tokens: Integer?,
+            reasoning_effort: OpenAI::Models::reasoning_effort?,
+            seed: Integer?,
+            temperature: Float?,
+            top_p: Float?
+          }
         end
       end
     end

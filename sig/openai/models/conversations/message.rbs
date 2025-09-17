@@ -38,14 +38,14 @@ module OpenAI
         }
 
         type content =
-          OpenAI::Conversations::InputTextContent
-          | OpenAI::Conversations::OutputTextContent
+          OpenAI::Responses::ResponseInputText
+          | OpenAI::Responses::ResponseOutputText
           | OpenAI::Conversations::TextContent
           | OpenAI::Conversations::SummaryTextContent
-          | OpenAI::Conversations::RefusalContent
-          | OpenAI::Conversations::InputImageContent
+          | OpenAI::Responses::ResponseOutputRefusal
+          | OpenAI::Responses::ResponseInputImage
           | OpenAI::Conversations::ComputerScreenshotContent
-          | OpenAI::Conversations::InputFileContent
+          | OpenAI::Responses::ResponseInputFile
 
         module Content
           extend OpenAI::Internal::Type::Union

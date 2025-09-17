@@ -25,6 +25,7 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
+        # A screenshot of a computer.
         sig do
           params(
             file_id: T.nilable(String),

@@ -33,20 +33,21 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
+        # A message to or from the model.
         sig do
           params(
             id: String,
             content:
               T::Array[
                 T.any(
-                  OpenAI::Conversations::InputTextContent::OrHash,
-                  OpenAI::Conversations::OutputTextContent::OrHash,
+                  OpenAI::Responses::ResponseInputText::OrHash,
+                  OpenAI::Responses::ResponseOutputText::OrHash,
                   OpenAI::Conversations::TextContent::OrHash,
                   OpenAI::Conversations::SummaryTextContent::OrHash,
-                  OpenAI::Conversations::RefusalContent::OrHash,
-                  OpenAI::Conversations::InputImageContent::OrHash,
+                  OpenAI::Responses::ResponseOutputRefusal::OrHash,
+                  OpenAI::Responses::ResponseInputImage::OrHash,
                   OpenAI::Conversations::ComputerScreenshotContent::OrHash,
-                  OpenAI::Conversations::InputFileContent::OrHash
+                  OpenAI::Responses::ResponseInputFile::OrHash
                 )
               ],
             role: OpenAI::Conversations::Message::Role::OrSymbol,
@@ -85,20 +86,21 @@ module OpenAI
         def to_hash
         end
 
+        # A text input to the model.
         module Content
           extend OpenAI::Internal::Type::Union
 
           Variants =
             T.type_alias do
               T.any(
-                OpenAI::Conversations::InputTextContent,
-                OpenAI::Conversations::OutputTextContent,
+                OpenAI::Responses::ResponseInputText,
+                OpenAI::Responses::ResponseOutputText,
                 OpenAI::Conversations::TextContent,
                 OpenAI::Conversations::SummaryTextContent,
-                OpenAI::Conversations::RefusalContent,
-                OpenAI::Conversations::InputImageContent,
+                OpenAI::Responses::ResponseOutputRefusal,
+                OpenAI::Responses::ResponseInputImage,
                 OpenAI::Conversations::ComputerScreenshotContent,
-                OpenAI::Conversations::InputFileContent
+                OpenAI::Responses::ResponseInputFile
               )
             end
 

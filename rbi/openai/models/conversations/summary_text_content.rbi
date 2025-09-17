@@ -18,6 +18,7 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
+        # A summary text from the model.
         sig { params(text: String, type: Symbol).returns(T.attached_class) }
         def self.new(text:, type: :summary_text)
         end

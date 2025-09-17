@@ -654,6 +654,16 @@ module OpenAI
               #   @return [Integer, nil]
               optional :max_completion_tokens, Integer
 
+              # @!attribute reasoning_effort
+              #   Constrains effort on reasoning for
+              #   [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
+              #   supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
+              #   effort can result in faster responses and fewer tokens used on reasoning in a
+              #   response.
+              #
+              #   @return [Symbol, OpenAI::Models::ReasoningEffort, nil]
+              optional :reasoning_effort, enum: -> { OpenAI::ReasoningEffort }, nil?: true
+
               # @!attribute seed
               #   A seed value to initialize the randomness, during sampling.
               #
@@ -702,12 +712,14 @@ module OpenAI
               #   @return [Float, nil]
               optional :top_p, Float
 
-              # @!method initialize(max_completion_tokens: nil, seed: nil, temperature: nil, text: nil, tools: nil, top_p: nil)
+              # @!method initialize(max_completion_tokens: nil, reasoning_effort: nil, seed: nil, temperature: nil, text: nil, tools: nil, top_p: nil)
               #   Some parameter documentations has been truncated, see
               #   {OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::SamplingParams}
               #   for more details.
               #
               #   @param max_completion_tokens [Integer] The maximum number of tokens in the generated output.
+              #
+              #   @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] Constrains effort on reasoning for
               #
               #   @param seed [Integer] A seed value to initialize the randomness, during sampling.
               #

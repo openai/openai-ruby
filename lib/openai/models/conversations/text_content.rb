@@ -15,6 +15,8 @@ module OpenAI
         required :type, const: :text
 
         # @!method initialize(text:, type: :text)
+        #   A text content.
+        #
         #   @param text [String]
         #   @param type [Symbol, :text]
       end
