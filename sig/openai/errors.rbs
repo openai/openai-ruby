@@ -21,6 +21,8 @@ module OpenAI
 
       attr_accessor status: Integer?
 
+      attr_accessor headers: ::Hash[String, String]?
+
       attr_accessor body: top?
 
       attr_accessor code: String?
@@ -32,6 +34,7 @@ module OpenAI
       def initialize: (
         url: URI::Generic,
         ?status: Integer?,
+        ?headers: ::Hash[String, String]?,
         ?body: Object?,
         ?request: nil,
         ?response: nil,
@@ -43,6 +46,7 @@ module OpenAI
       def initialize: (
         url: URI::Generic,
         ?status: nil,
+        ?headers: ::Hash[String, String]?,
         ?body: nil,
         ?request: nil,
         ?response: nil,
@@ -54,6 +58,7 @@ module OpenAI
       def initialize: (
         url: URI::Generic,
         ?status: nil,
+        ?headers: ::Hash[String, String]?,
         ?body: nil,
         ?request: nil,
         ?response: nil,
@@ -65,6 +70,7 @@ module OpenAI
       def self.for: (
         url: URI::Generic,
         status: Integer,
+        headers: ::Hash[String, String]?,
         body: Object?,
         request: nil,
         response: nil,
@@ -74,6 +80,7 @@ module OpenAI
       def initialize: (
         url: URI::Generic,
         status: Integer,
+        headers: ::Hash[String, String]?,
         body: Object?,
         request: nil,
         response: nil,

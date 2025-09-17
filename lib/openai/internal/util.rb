@@ -647,7 +647,7 @@ module OpenAI
         #
         # Assumes each chunk in stream has `Encoding::BINARY`.
         #
-        # @param headers [Hash{String=>String}, Net::HTTPHeader]
+        # @param headers [Hash{String=>String}]
         # @param stream [Enumerable<String>]
         # @param suppress_error [Boolean]
         #
