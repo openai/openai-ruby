@@ -10,7 +10,7 @@ module OpenAI
             datasource_item_id: Integer,
             eval_id: String,
             object: :"eval.run.output_item",
-            results: ::Array[::Hash[Symbol, top]],
+            results: ::Array[OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Result],
             run_id: String,
             sample: OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample,
             status: String
@@ -29,7 +29,7 @@ module OpenAI
 
           attr_accessor object: :"eval.run.output_item"
 
-          attr_accessor results: ::Array[::Hash[Symbol, top]]
+          attr_accessor results: ::Array[OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Result]
 
           attr_accessor run_id: String
 
@@ -43,7 +43,7 @@ module OpenAI
             datasource_item: ::Hash[Symbol, top],
             datasource_item_id: Integer,
             eval_id: String,
-            results: ::Array[::Hash[Symbol, top]],
+            results: ::Array[OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Result],
             run_id: String,
             sample: OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample,
             status: String,
@@ -57,11 +57,50 @@ module OpenAI
             datasource_item_id: Integer,
             eval_id: String,
             object: :"eval.run.output_item",
-            results: ::Array[::Hash[Symbol, top]],
+            results: ::Array[OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Result],
             run_id: String,
             sample: OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample,
             status: String
           }
+
+          type result =
+            {
+              name: String,
+              passed: bool,
+              score: Float,
+              sample: ::Hash[Symbol, top]?,
+              type: String
+            }
+
+          class Result < OpenAI::Internal::Type::BaseModel
+            attr_accessor name: String
+
+            attr_accessor passed: bool
+
+            attr_accessor score: Float
+
+            attr_accessor sample: ::Hash[Symbol, top]?
+
+            attr_reader type: String?
+
+            def type=: (String) -> String
+
+            def initialize: (
+              name: String,
+              passed: bool,
+              score: Float,
+              ?sample: ::Hash[Symbol, top]?,
+              ?type: String
+            ) -> void
+
+            def to_hash: -> {
+              name: String,
+              passed: bool,
+              score: Float,
+              sample: ::Hash[Symbol, top]?,
+              type: String
+            }
+          end
 
           type sample =
             {

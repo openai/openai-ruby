@@ -13,6 +13,7 @@ module OpenAI
 
         discriminator :type
 
+        # A message to or from the model.
         variant :message, -> { OpenAI::Conversations::Message }
 
         # A tool call to run a function. See the

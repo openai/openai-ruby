@@ -43,11 +43,11 @@ module OpenAI
           required :object, const: :"eval.run.output_item"
 
           # @!attribute results
-          #   A list of results from the evaluation run.
+          #   A list of grader results for this output item.
           #
-          #   @return [Array<Hash{Symbol=>Object}>]
+          #   @return [Array<OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Result>]
           required :results,
-                   OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]]
+                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Result] }
 
           # @!attribute run_id
           #   The identifier of the evaluation run associated with this output item.
@@ -80,7 +80,7 @@ module OpenAI
           #
           #   @param eval_id [String] The identifier of the evaluation group.
           #
-          #   @param results [Array<Hash{Symbol=>Object}>] A list of results from the evaluation run.
+          #   @param results [Array<OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Result>] A list of grader results for this output item.
           #
           #   @param run_id [String] The identifier of the evaluation run associated with this output item.
           #
@@ -89,6 +89,51 @@ module OpenAI
           #   @param status [String] The status of the evaluation run.
           #
           #   @param object [Symbol, :"eval.run.output_item"] The type of the object. Always "eval.run.output_item".
+
+          class Result < OpenAI::Internal::Type::BaseModel
+            # @!attribute name
+            #   The name of the grader.
+            #
+            #   @return [String]
+            required :name, String
+
+            # @!attribute passed
+            #   Whether the grader considered the output a pass.
+            #
+            #   @return [Boolean]
+            required :passed, OpenAI::Internal::Type::Boolean
+
+            # @!attribute score
+            #   The numeric score produced by the grader.
+            #
+            #   @return [Float]
+            required :score, Float
+
+            # @!attribute sample
+            #   Optional sample or intermediate data produced by the grader.
+            #
+            #   @return [Hash{Symbol=>Object}, nil]
+            optional :sample, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown], nil?: true
+
+            # @!attribute type
+            #   The grader type (for example, "string-check-grader").
+            #
+            #   @return [String, nil]
+            optional :type, String
+
+            # @!method initialize(name:, passed:, score:, sample: nil, type: nil)
+            #   A single grader result for an evaluation run output item.
+            #
+            #   @param name [String] The name of the grader.
+            #
+            #   @param passed [Boolean] Whether the grader considered the output a pass.
+            #
+            #   @param score [Float] The numeric score produced by the grader.
+            #
+            #   @param sample [Hash{Symbol=>Object}, nil] Optional sample or intermediate data produced by the grader.
+            #
+            #   @param type [String] The grader type (for example, "string-check-grader").
+          end
 
           # @see OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse#sample
           class Sample < OpenAI::Internal::Type::BaseModel

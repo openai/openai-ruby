@@ -1115,6 +1115,14 @@ module OpenAI
               sig { params(max_completion_tokens: Integer).void }
               attr_writer :max_completion_tokens
 
+              # Constrains effort on reasoning for
+              # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
+              # supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
+              # effort can result in faster responses and fewer tokens used on reasoning in a
+              # response.
+              sig { returns(T.nilable(OpenAI::ReasoningEffort::TaggedSymbol)) }
+              attr_accessor :reasoning_effort
+
               # A seed value to initialize the randomness, during sampling.
               sig { returns(T.nilable(Integer)) }
               attr_reader :seed
@@ -1201,6 +1209,8 @@ module OpenAI
               sig do
                 params(
                   max_completion_tokens: Integer,
+                  reasoning_effort:
+                    T.nilable(OpenAI::ReasoningEffort::OrSymbol),
                   seed: Integer,
                   temperature: Float,
                   text:
@@ -1226,6 +1236,12 @@ module OpenAI
               def self.new(
                 # The maximum number of tokens in the generated output.
                 max_completion_tokens: nil,
+                # Constrains effort on reasoning for
+                # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
+                # supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
+                # effort can result in faster responses and fewer tokens used on reasoning in a
+                # response.
+                reasoning_effort: nil,
                 # A seed value to initialize the randomness, during sampling.
                 seed: nil,
                 # A higher temperature increases randomness in the outputs.
@@ -1260,6 +1276,8 @@ module OpenAI
                 override.returns(
                   {
                     max_completion_tokens: Integer,
+                    reasoning_effort:
+                      T.nilable(OpenAI::ReasoningEffort::TaggedSymbol),
                     seed: Integer,
                     temperature: Float,
                     text:

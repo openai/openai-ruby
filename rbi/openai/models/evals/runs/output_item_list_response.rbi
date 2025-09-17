@@ -37,8 +37,14 @@ module OpenAI
           sig { returns(Symbol) }
           attr_accessor :object
 
-          # A list of results from the evaluation run.
-          sig { returns(T::Array[T::Hash[Symbol, T.anything]]) }
+          # A list of grader results for this output item.
+          sig do
+            returns(
+              T::Array[
+                OpenAI::Models::Evals::Runs::OutputItemListResponse::Result
+              ]
+            )
+          end
           attr_accessor :results
 
           # The identifier of the evaluation run associated with this output item.
@@ -71,7 +77,10 @@ module OpenAI
               datasource_item: T::Hash[Symbol, T.anything],
               datasource_item_id: Integer,
               eval_id: String,
-              results: T::Array[T::Hash[Symbol, T.anything]],
+              results:
+                T::Array[
+                  OpenAI::Models::Evals::Runs::OutputItemListResponse::Result::OrHash
+                ],
               run_id: String,
               sample:
                 OpenAI::Models::Evals::Runs::OutputItemListResponse::Sample::OrHash,
@@ -90,7 +99,7 @@ module OpenAI
             datasource_item_id:,
             # The identifier of the evaluation group.
             eval_id:,
-            # A list of results from the evaluation run.
+            # A list of grader results for this output item.
             results:,
             # The identifier of the evaluation run associated with this output item.
             run_id:,
@@ -112,7 +121,10 @@ module OpenAI
                 datasource_item_id: Integer,
                 eval_id: String,
                 object: Symbol,
-                results: T::Array[T::Hash[Symbol, T.anything]],
+                results:
+                  T::Array[
+                    OpenAI::Models::Evals::Runs::OutputItemListResponse::Result
+                  ],
                 run_id: String,
                 sample:
                   OpenAI::Models::Evals::Runs::OutputItemListResponse::Sample,
@@ -121,6 +133,77 @@ module OpenAI
             )
           end
           def to_hash
+          end
+
+          class Result < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Models::Evals::Runs::OutputItemListResponse::Result,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The name of the grader.
+            sig { returns(String) }
+            attr_accessor :name
+
+            # Whether the grader considered the output a pass.
+            sig { returns(T::Boolean) }
+            attr_accessor :passed
+
+            # The numeric score produced by the grader.
+            sig { returns(Float) }
+            attr_accessor :score
+
+            # Optional sample or intermediate data produced by the grader.
+            sig { returns(T.nilable(T::Hash[Symbol, T.anything])) }
+            attr_accessor :sample
+
+            # The grader type (for example, "string-check-grader").
+            sig { returns(T.nilable(String)) }
+            attr_reader :type
+
+            sig { params(type: String).void }
+            attr_writer :type
+
+            # A single grader result for an evaluation run output item.
+            sig do
+              params(
+                name: String,
+                passed: T::Boolean,
+                score: Float,
+                sample: T.nilable(T::Hash[Symbol, T.anything]),
+                type: String
+              ).returns(T.attached_class)
+            end
+            def self.new(
+              # The name of the grader.
+              name:,
+              # Whether the grader considered the output a pass.
+              passed:,
+              # The numeric score produced by the grader.
+              score:,
+              # Optional sample or intermediate data produced by the grader.
+              sample: nil,
+              # The grader type (for example, "string-check-grader").
+              type: nil
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  name: String,
+                  passed: T::Boolean,
+                  score: Float,
+                  sample: T.nilable(T::Hash[Symbol, T.anything]),
+                  type: String
+                }
+              )
+            end
+            def to_hash
+            end
           end
 
           class Sample < OpenAI::Internal::Type::BaseModel

@@ -19,7 +19,7 @@ class OpenAI::Test::Resources::Evals::Runs::OutputItemsTest < OpenAI::Test::Reso
         datasource_item_id: Integer,
         eval_id: String,
         object: Symbol,
-        results: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]]),
+        results: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Result]),
         run_id: String,
         sample: OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample,
         status: String
@@ -49,7 +49,7 @@ class OpenAI::Test::Resources::Evals::Runs::OutputItemsTest < OpenAI::Test::Reso
         datasource_item_id: Integer,
         eval_id: String,
         object: Symbol,
-        results: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]]),
+        results: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Evals::Runs::OutputItemListResponse::Result]),
         run_id: String,
         sample: OpenAI::Models::Evals::Runs::OutputItemListResponse::Sample,
         status: String
