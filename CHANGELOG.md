@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.24.0 (2025-09-17)
+
+Full Changelog: [v0.23.3...v0.24.0](https://github.com/openai/openai-ruby/compare/v0.23.3...v0.24.0)
+
+### Features
+
+* **api:** type updates for conversations, reasoning_effort and results for evals ([ee17642](https://github.com/openai/openai-ruby/commit/ee17642d7319dacb933a41ae9f1edae2a200762f))
+* expose response headers for both streams and errors ([a158fd6](https://github.com/openai/openai-ruby/commit/a158fd66b22a5586f4a45301ff96e40f8d52fe8c))
+
 ## 0.23.3 (2025-09-15)
 
 Full Changelog: [v0.23.2...v0.23.3](https://github.com/openai/openai-ruby/compare/v0.23.2...v0.23.3)
