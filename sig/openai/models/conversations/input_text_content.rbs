@@ -1,17 +1,7 @@
 module OpenAI
   module Models
     module Conversations
-      type input_text_content = { text: String, type: :input_text }
-
-      class InputTextContent < OpenAI::Internal::Type::BaseModel
-        attr_accessor text: String
-
-        attr_accessor type: :input_text
-
-        def initialize: (text: String, ?type: :input_text) -> void
-
-        def to_hash: -> { text: String, type: :input_text }
-      end
+      class InputTextContent = OpenAI::Models::Responses::ResponseInputText
     end
   end
 end

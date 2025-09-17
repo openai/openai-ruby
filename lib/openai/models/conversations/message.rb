@@ -13,7 +13,7 @@ module OpenAI
         # @!attribute content
         #   The content of the message
         #
-        #   @return [Array<OpenAI::Models::Conversations::InputTextContent, OpenAI::Models::Conversations::OutputTextContent, OpenAI::Models::Conversations::TextContent, OpenAI::Models::Conversations::SummaryTextContent, OpenAI::Models::Conversations::RefusalContent, OpenAI::Models::Conversations::InputImageContent, OpenAI::Models::Conversations::ComputerScreenshotContent, OpenAI::Models::Conversations::InputFileContent>]
+        #   @return [Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Conversations::TextContent, OpenAI::Models::Conversations::SummaryTextContent, OpenAI::Models::Responses::ResponseOutputRefusal, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Conversations::ComputerScreenshotContent, OpenAI::Models::Responses::ResponseInputFile>]
         required :content, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Conversations::Message::Content] }
 
         # @!attribute role
@@ -40,9 +40,11 @@ module OpenAI
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Conversations::Message} for more details.
         #
+        #   A message to or from the model.
+        #
         #   @param id [String] The unique ID of the message.
         #
-        #   @param content [Array<OpenAI::Models::Conversations::InputTextContent, OpenAI::Models::Conversations::OutputTextContent, OpenAI::Models::Conversations::TextContent, OpenAI::Models::Conversations::SummaryTextContent, OpenAI::Models::Conversations::RefusalContent, OpenAI::Models::Conversations::InputImageContent, OpenAI::Models::Conversations::ComputerScreenshotContent, OpenAI::Models::Conversations::InputFileContent>] The content of the message
+        #   @param content [Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Conversations::TextContent, OpenAI::Models::Conversations::SummaryTextContent, OpenAI::Models::Responses::ResponseOutputRefusal, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Conversations::ComputerScreenshotContent, OpenAI::Models::Responses::ResponseInputFile>] The content of the message
         #
         #   @param role [Symbol, OpenAI::Models::Conversations::Message::Role] The role of the message. One of `unknown`, `user`, `assistant`, `system`, `criti
         #
@@ -50,29 +52,38 @@ module OpenAI
         #
         #   @param type [Symbol, :message] The type of the message. Always set to `message`.
 
+        # A text input to the model.
         module Content
           extend OpenAI::Internal::Type::Union
 
           discriminator :type
 
-          variant :input_text, -> { OpenAI::Conversations::InputTextContent }
+          # A text input to the model.
+          variant :input_text, -> { OpenAI::Responses::ResponseInputText }
 
-          variant :output_text, -> { OpenAI::Conversations::OutputTextContent }
+          # A text output from the model.
+          variant :output_text, -> { OpenAI::Responses::ResponseOutputText }
 
+          # A text content.
           variant :text, -> { OpenAI::Conversations::TextContent }
 
+          # A summary text from the model.
           variant :summary_text, -> { OpenAI::Conversations::SummaryTextContent }
 
-          variant :refusal, -> { OpenAI::Conversations::RefusalContent }
+          # A refusal from the model.
+          variant :refusal, -> { OpenAI::Responses::ResponseOutputRefusal }
 
-          variant :input_image, -> { OpenAI::Conversations::InputImageContent }
+          # An image input to the model. Learn about [image inputs](https://platform.openai.com/docs/guides/vision).
+          variant :input_image, -> { OpenAI::Responses::ResponseInputImage }
 
+          # A screenshot of a computer.
           variant :computer_screenshot, -> { OpenAI::Conversations::ComputerScreenshotContent }
 
-          variant :input_file, -> { OpenAI::Conversations::InputFileContent }
+          # A file input to the model.
+          variant :input_file, -> { OpenAI::Responses::ResponseInputFile }
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Models::Conversations::InputTextContent, OpenAI::Models::Conversations::OutputTextContent, OpenAI::Models::Conversations::TextContent, OpenAI::Models::Conversations::SummaryTextContent, OpenAI::Models::Conversations::RefusalContent, OpenAI::Models::Conversations::InputImageContent, OpenAI::Models::Conversations::ComputerScreenshotContent, OpenAI::Models::Conversations::InputFileContent)]
+          #   @return [Array(OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Conversations::TextContent, OpenAI::Models::Conversations::SummaryTextContent, OpenAI::Models::Responses::ResponseOutputRefusal, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Conversations::ComputerScreenshotContent, OpenAI::Models::Responses::ResponseInputFile)]
         end
 
         # The role of the message. One of `unknown`, `user`, `assistant`, `system`,

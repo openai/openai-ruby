@@ -35,10 +35,17 @@ module OpenAI
         attr_writer :range
 
         # The sampling parameters for the model.
-        sig { returns(T.nilable(T.anything)) }
+        sig do
+          returns(T.nilable(OpenAI::Graders::ScoreModelGrader::SamplingParams))
+        end
         attr_reader :sampling_params
 
-        sig { params(sampling_params: T.anything).void }
+        sig do
+          params(
+            sampling_params:
+              OpenAI::Graders::ScoreModelGrader::SamplingParams::OrHash
+          ).void
+        end
         attr_writer :sampling_params
 
         # A ScoreModelGrader object that uses a model to assign a score to the input.
@@ -48,7 +55,8 @@ module OpenAI
             model: String,
             name: String,
             range: T::Array[Float],
-            sampling_params: T.anything,
+            sampling_params:
+              OpenAI::Graders::ScoreModelGrader::SamplingParams::OrHash,
             type: Symbol
           ).returns(T.attached_class)
         end
@@ -76,7 +84,7 @@ module OpenAI
               name: String,
               type: Symbol,
               range: T::Array[Float],
-              sampling_params: T.anything
+              sampling_params: OpenAI::Graders::ScoreModelGrader::SamplingParams
             }
           )
         end
@@ -370,6 +378,82 @@ module OpenAI
             end
             def self.values
             end
+          end
+        end
+
+        class SamplingParams < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Graders::ScoreModelGrader::SamplingParams,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The maximum number of tokens the grader model may generate in its response.
+          sig { returns(T.nilable(Integer)) }
+          attr_accessor :max_completions_tokens
+
+          # Constrains effort on reasoning for
+          # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
+          # supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
+          # effort can result in faster responses and fewer tokens used on reasoning in a
+          # response.
+          sig { returns(T.nilable(OpenAI::ReasoningEffort::OrSymbol)) }
+          attr_accessor :reasoning_effort
+
+          # A seed value to initialize the randomness, during sampling.
+          sig { returns(T.nilable(Integer)) }
+          attr_accessor :seed
+
+          # A higher temperature increases randomness in the outputs.
+          sig { returns(T.nilable(Float)) }
+          attr_accessor :temperature
+
+          # An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
+          sig { returns(T.nilable(Float)) }
+          attr_accessor :top_p
+
+          # The sampling parameters for the model.
+          sig do
+            params(
+              max_completions_tokens: T.nilable(Integer),
+              reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
+              seed: T.nilable(Integer),
+              temperature: T.nilable(Float),
+              top_p: T.nilable(Float)
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # The maximum number of tokens the grader model may generate in its response.
+            max_completions_tokens: nil,
+            # Constrains effort on reasoning for
+            # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
+            # supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
+            # effort can result in faster responses and fewer tokens used on reasoning in a
+            # response.
+            reasoning_effort: nil,
+            # A seed value to initialize the randomness, during sampling.
+            seed: nil,
+            # A higher temperature increases randomness in the outputs.
+            temperature: nil,
+            # An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
+            top_p: nil
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                max_completions_tokens: T.nilable(Integer),
+                reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
+                seed: T.nilable(Integer),
+                temperature: T.nilable(Float),
+                top_p: T.nilable(Float)
+              }
+            )
+          end
+          def to_hash
           end
         end
       end

@@ -422,6 +422,7 @@ module OpenAI
             type sampling_params =
               {
                 max_completion_tokens: Integer,
+                reasoning_effort: OpenAI::Models::reasoning_effort?,
                 seed: Integer,
                 temperature: Float,
                 text: OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams::Text,
@@ -433,6 +434,8 @@ module OpenAI
               attr_reader max_completion_tokens: Integer?
 
               def max_completion_tokens=: (Integer) -> Integer
+
+              attr_accessor reasoning_effort: OpenAI::Models::reasoning_effort?
 
               attr_reader seed: Integer?
 
@@ -460,6 +463,7 @@ module OpenAI
 
               def initialize: (
                 ?max_completion_tokens: Integer,
+                ?reasoning_effort: OpenAI::Models::reasoning_effort?,
                 ?seed: Integer,
                 ?temperature: Float,
                 ?text: OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams::Text,
@@ -469,6 +473,7 @@ module OpenAI
 
               def to_hash: -> {
                 max_completion_tokens: Integer,
+                reasoning_effort: OpenAI::Models::reasoning_effort?,
                 seed: Integer,
                 temperature: Float,
                 text: OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams::Text,

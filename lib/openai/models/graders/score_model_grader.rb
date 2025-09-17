@@ -37,8 +37,8 @@ module OpenAI
         # @!attribute sampling_params
         #   The sampling parameters for the model.
         #
-        #   @return [Object, nil]
-        optional :sampling_params, OpenAI::Internal::Type::Unknown
+        #   @return [OpenAI::Models::Graders::ScoreModelGrader::SamplingParams, nil]
+        optional :sampling_params, -> { OpenAI::Graders::ScoreModelGrader::SamplingParams }
 
         # @!method initialize(input:, model:, name:, range: nil, sampling_params: nil, type: :score_model)
         #   A ScoreModelGrader object that uses a model to assign a score to the input.
@@ -51,7 +51,7 @@ module OpenAI
         #
         #   @param range [Array<Float>] The range of the score. Defaults to `[0, 1]`.
         #
-        #   @param sampling_params [Object] The sampling parameters for the model.
+        #   @param sampling_params [OpenAI::Models::Graders::ScoreModelGrader::SamplingParams] The sampling parameters for the model.
         #
         #   @param type [Symbol, :score_model] The object type, which is always `score_model`.
 
@@ -209,6 +209,59 @@ module OpenAI
             # @!method self.values
             #   @return [Array<Symbol>]
           end
+        end
+
+        # @see OpenAI::Models::Graders::ScoreModelGrader#sampling_params
+        class SamplingParams < OpenAI::Internal::Type::BaseModel
+          # @!attribute max_completions_tokens
+          #   The maximum number of tokens the grader model may generate in its response.
+          #
+          #   @return [Integer, nil]
+          optional :max_completions_tokens, Integer, nil?: true
+
+          # @!attribute reasoning_effort
+          #   Constrains effort on reasoning for
+          #   [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
+          #   supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
+          #   effort can result in faster responses and fewer tokens used on reasoning in a
+          #   response.
+          #
+          #   @return [Symbol, OpenAI::Models::ReasoningEffort, nil]
+          optional :reasoning_effort, enum: -> { OpenAI::ReasoningEffort }, nil?: true
+
+          # @!attribute seed
+          #   A seed value to initialize the randomness, during sampling.
+          #
+          #   @return [Integer, nil]
+          optional :seed, Integer, nil?: true
+
+          # @!attribute temperature
+          #   A higher temperature increases randomness in the outputs.
+          #
+          #   @return [Float, nil]
+          optional :temperature, Float, nil?: true
+
+          # @!attribute top_p
+          #   An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
+          #
+          #   @return [Float, nil]
+          optional :top_p, Float, nil?: true
+
+          # @!method initialize(max_completions_tokens: nil, reasoning_effort: nil, seed: nil, temperature: nil, top_p: nil)
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Graders::ScoreModelGrader::SamplingParams} for more details.
+          #
+          #   The sampling parameters for the model.
+          #
+          #   @param max_completions_tokens [Integer, nil] The maximum number of tokens the grader model may generate in its response.
+          #
+          #   @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] Constrains effort on reasoning for
+          #
+          #   @param seed [Integer, nil] A seed value to initialize the randomness, during sampling.
+          #
+          #   @param temperature [Float, nil] A higher temperature increases randomness in the outputs.
+          #
+          #   @param top_p [Float, nil] An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
         end
       end
     end

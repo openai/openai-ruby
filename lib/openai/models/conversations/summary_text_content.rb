@@ -15,6 +15,8 @@ module OpenAI
         required :type, const: :summary_text
 
         # @!method initialize(text:, type: :summary_text)
+        #   A summary text from the model.
+        #
         #   @param text [String]
         #   @param type [Symbol, :summary_text]
       end
