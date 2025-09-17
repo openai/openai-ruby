@@ -8,6 +8,10 @@ module OpenAI
           Enumerable[top] stream
         ) -> (^(Integer arg0) -> void)
 
+        attr_reader status: Integer
+
+        attr_reader headers: ::Hash[String, String]
+
         def close: -> void
 
         private def iterator: -> Enumerable[Elem]
@@ -22,6 +26,7 @@ module OpenAI
           model: Class | OpenAI::Internal::Type::Converter,
           url: URI::Generic,
           status: Integer,
+          headers: ::Hash[String, String],
           response: top,
           unwrap: Symbol
           | Integer

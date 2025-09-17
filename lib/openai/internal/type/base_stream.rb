@@ -28,6 +28,12 @@ module OpenAI
           def defer_closing(stream) = ->(_id) { OpenAI::Internal::Util.close_fused!(stream) }
         end
 
+        # @return [Integer]
+        attr_reader :status
+
+        # @return [Hash{String=>String}]
+        attr_reader :headers
+
         # @api public
         #
         # @return [void]
@@ -63,13 +69,15 @@ module OpenAI
         # @param model [Class, OpenAI::Internal::Type::Converter]
         # @param url [URI::Generic]
         # @param status [Integer]
+        # @param headers [Hash{String=>String}]
         # @param response [Net::HTTPResponse]
         # @param unwrap [Symbol, Integer, Array<Symbol, Integer>, Proc]
         # @param stream [Enumerable<Object>]
-        def initialize(model:, url:, status:, response:, unwrap:, stream:)
+        def initialize(model:, url:, status:, headers:, response:, unwrap:, stream:)
           @model = model
           @url = url
           @status = status
+          @headers = headers
           @response = response
           @unwrap = unwrap
           @stream = stream

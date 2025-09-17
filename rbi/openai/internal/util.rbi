@@ -361,7 +361,7 @@ module OpenAI
         # Assumes each chunk in stream has `Encoding::BINARY`.
         sig do
           params(
-            headers: T.any(T::Hash[String, String], Net::HTTPHeader),
+            headers: T::Hash[String, String],
             stream: T::Enumerable[String],
             suppress_error: T::Boolean
           ).returns(T.anything)
