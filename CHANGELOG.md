@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.25.0 (2025-09-19)
+
+Full Changelog: [v0.24.0...v0.25.0](https://github.com/openai/openai-ruby/compare/v0.24.0...v0.25.0)
+
+### Features
+
+* **api:** add reasoning_text ([48073e9](https://github.com/openai/openai-ruby/commit/48073e955e50f7818fc0c422b7b5ce80c853536c))
+
 ## 0.24.0 (2025-09-17)
 
 Full Changelog: [v0.23.3...v0.24.0](https://github.com/openai/openai-ruby/compare/v0.23.3...v0.24.0)
