@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.25.1 (2025-09-19)
+
+Full Changelog: [v0.25.0...v0.25.1](https://github.com/openai/openai-ruby/compare/v0.25.0...v0.25.1)
+
+### Chores
+
+* do not install brew dependencies in ./scripts/bootstrap by default ([3afa532](https://github.com/openai/openai-ruby/commit/3afa53231a90968bec2d361363334800463b436d))
+
 ## 0.25.0 (2025-09-19)
 
 Full Changelog: [v0.24.0...v0.25.0](https://github.com/openai/openai-ruby/compare/v0.24.0...v0.25.0)
