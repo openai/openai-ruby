@@ -25,8 +25,32 @@ module OpenAI
         # A refusal from the model.
         variant -> { OpenAI::Responses::ResponseOutputRefusal }
 
+        # Reasoning text from the model.
+        variant -> { OpenAI::Responses::ResponseContent::ReasoningTextContent }
+
+        class ReasoningTextContent < OpenAI::Internal::Type::BaseModel
+          # @!attribute text
+          #   The reasoning text from the model.
+          #
+          #   @return [String]
+          required :text, String
+
+          # @!attribute type
+          #   The type of the reasoning text. Always `reasoning_text`.
+          #
+          #   @return [Symbol, :reasoning_text]
+          required :type, const: :reasoning_text
+
+          # @!method initialize(text:, type: :reasoning_text)
+          #   Reasoning text from the model.
+          #
+          #   @param text [String] The reasoning text from the model.
+          #
+          #   @param type [Symbol, :reasoning_text] The type of the reasoning text. Always `reasoning_text`.
+        end
+
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile, OpenAI::Models::Responses::ResponseInputAudio, OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)]
+        #   @return [Array(OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile, OpenAI::Models::Responses::ResponseInputAudio, OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal, OpenAI::Models::Responses::ResponseContent::ReasoningTextContent)]
       end
     end
   end

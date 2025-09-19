@@ -25,7 +25,7 @@ module OpenAI
         # @!attribute part
         #   The content part that is done.
         #
-        #   @return [OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal]
+        #   @return [OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal, OpenAI::Models::Responses::ResponseContentPartDoneEvent::Part::ReasoningText]
         required :part, union: -> { OpenAI::Responses::ResponseContentPartDoneEvent::Part }
 
         # @!attribute sequence_number
@@ -52,7 +52,7 @@ module OpenAI
         #
         #   @param output_index [Integer] The index of the output item that the content part was added to.
         #
-        #   @param part [OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal] The content part that is done.
+        #   @param part [OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal, OpenAI::Models::Responses::ResponseContentPartDoneEvent::Part::ReasoningText] The content part that is done.
         #
         #   @param sequence_number [Integer] The sequence number of this event.
         #
@@ -72,8 +72,32 @@ module OpenAI
           # A refusal from the model.
           variant :refusal, -> { OpenAI::Responses::ResponseOutputRefusal }
 
+          # Reasoning text from the model.
+          variant :reasoning_text, -> { OpenAI::Responses::ResponseContentPartDoneEvent::Part::ReasoningText }
+
+          class ReasoningText < OpenAI::Internal::Type::BaseModel
+            # @!attribute text
+            #   The reasoning text from the model.
+            #
+            #   @return [String]
+            required :text, String
+
+            # @!attribute type
+            #   The type of the reasoning text. Always `reasoning_text`.
+            #
+            #   @return [Symbol, :reasoning_text]
+            required :type, const: :reasoning_text
+
+            # @!method initialize(text:, type: :reasoning_text)
+            #   Reasoning text from the model.
+            #
+            #   @param text [String] The reasoning text from the model.
+            #
+            #   @param type [Symbol, :reasoning_text] The type of the reasoning text. Always `reasoning_text`.
+          end
+
           # @!method self.variants
-          #   @return [Array(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)]
+          #   @return [Array(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal, OpenAI::Models::Responses::ResponseContentPartDoneEvent::Part::ReasoningText)]
         end
       end
     end

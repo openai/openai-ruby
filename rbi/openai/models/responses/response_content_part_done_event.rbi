@@ -49,7 +49,8 @@ module OpenAI
             part:
               T.any(
                 OpenAI::Responses::ResponseOutputText::OrHash,
-                OpenAI::Responses::ResponseOutputRefusal::OrHash
+                OpenAI::Responses::ResponseOutputRefusal::OrHash,
+                OpenAI::Responses::ResponseContentPartDoneEvent::Part::ReasoningText::OrHash
               ),
             sequence_number: Integer,
             type: Symbol
@@ -95,9 +96,42 @@ module OpenAI
             T.type_alias do
               T.any(
                 OpenAI::Responses::ResponseOutputText,
-                OpenAI::Responses::ResponseOutputRefusal
+                OpenAI::Responses::ResponseOutputRefusal,
+                OpenAI::Responses::ResponseContentPartDoneEvent::Part::ReasoningText
               )
             end
+
+          class ReasoningText < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseContentPartDoneEvent::Part::ReasoningText,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The reasoning text from the model.
+            sig { returns(String) }
+            attr_accessor :text
+
+            # The type of the reasoning text. Always `reasoning_text`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            # Reasoning text from the model.
+            sig { params(text: String, type: Symbol).returns(T.attached_class) }
+            def self.new(
+              # The reasoning text from the model.
+              text:,
+              # The type of the reasoning text. Always `reasoning_text`.
+              type: :reasoning_text
+            )
+            end
+
+            sig { override.returns({ text: String, type: Symbol }) }
+            def to_hash
+            end
+          end
 
           sig do
             override.returns(
