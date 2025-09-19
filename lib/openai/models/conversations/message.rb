@@ -13,7 +13,7 @@ module OpenAI
         # @!attribute content
         #   The content of the message
         #
-        #   @return [Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Conversations::TextContent, OpenAI::Models::Conversations::SummaryTextContent, OpenAI::Models::Responses::ResponseOutputRefusal, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Conversations::ComputerScreenshotContent, OpenAI::Models::Responses::ResponseInputFile>]
+        #   @return [Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Conversations::TextContent, OpenAI::Models::Conversations::SummaryTextContent, OpenAI::Models::Conversations::Message::Content::ReasoningText, OpenAI::Models::Responses::ResponseOutputRefusal, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Conversations::ComputerScreenshotContent, OpenAI::Models::Responses::ResponseInputFile>]
         required :content, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Conversations::Message::Content] }
 
         # @!attribute role
@@ -44,7 +44,7 @@ module OpenAI
         #
         #   @param id [String] The unique ID of the message.
         #
-        #   @param content [Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Conversations::TextContent, OpenAI::Models::Conversations::SummaryTextContent, OpenAI::Models::Responses::ResponseOutputRefusal, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Conversations::ComputerScreenshotContent, OpenAI::Models::Responses::ResponseInputFile>] The content of the message
+        #   @param content [Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Conversations::TextContent, OpenAI::Models::Conversations::SummaryTextContent, OpenAI::Models::Conversations::Message::Content::ReasoningText, OpenAI::Models::Responses::ResponseOutputRefusal, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Conversations::ComputerScreenshotContent, OpenAI::Models::Responses::ResponseInputFile>] The content of the message
         #
         #   @param role [Symbol, OpenAI::Models::Conversations::Message::Role] The role of the message. One of `unknown`, `user`, `assistant`, `system`, `criti
         #
@@ -70,6 +70,9 @@ module OpenAI
           # A summary text from the model.
           variant :summary_text, -> { OpenAI::Conversations::SummaryTextContent }
 
+          # Reasoning text from the model.
+          variant :reasoning_text, -> { OpenAI::Conversations::Message::Content::ReasoningText }
+
           # A refusal from the model.
           variant :refusal, -> { OpenAI::Responses::ResponseOutputRefusal }
 
@@ -82,8 +85,29 @@ module OpenAI
           # A file input to the model.
           variant :input_file, -> { OpenAI::Responses::ResponseInputFile }
 
+          class ReasoningText < OpenAI::Internal::Type::BaseModel
+            # @!attribute text
+            #   The reasoning text from the model.
+            #
+            #   @return [String]
+            required :text, String
+
+            # @!attribute type
+            #   The type of the reasoning text. Always `reasoning_text`.
+            #
+            #   @return [Symbol, :reasoning_text]
+            required :type, const: :reasoning_text
+
+            # @!method initialize(text:, type: :reasoning_text)
+            #   Reasoning text from the model.
+            #
+            #   @param text [String] The reasoning text from the model.
+            #
+            #   @param type [Symbol, :reasoning_text] The type of the reasoning text. Always `reasoning_text`.
+          end
+
           # @!method self.variants
-          #   @return [Array(OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Conversations::TextContent, OpenAI::Models::Conversations::SummaryTextContent, OpenAI::Models::Responses::ResponseOutputRefusal, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Conversations::ComputerScreenshotContent, OpenAI::Models::Responses::ResponseInputFile)]
+          #   @return [Array(OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Conversations::TextContent, OpenAI::Models::Conversations::SummaryTextContent, OpenAI::Models::Conversations::Message::Content::ReasoningText, OpenAI::Models::Responses::ResponseOutputRefusal, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Conversations::ComputerScreenshotContent, OpenAI::Models::Responses::ResponseInputFile)]
         end
 
         # The role of the message. One of `unknown`, `user`, `assistant`, `system`,

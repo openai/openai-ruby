@@ -79,8 +79,7 @@ module OpenAI
           required :type, const: :summary_text
 
           # @!method initialize(text:, type: :summary_text)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Responses::ResponseReasoningItem::Summary} for more details.
+          #   A summary text from the model.
           #
           #   @param text [String] A summary of the reasoning output from the model so far.
           #
@@ -89,24 +88,23 @@ module OpenAI
 
         class Content < OpenAI::Internal::Type::BaseModel
           # @!attribute text
-          #   Reasoning text output from the model.
+          #   The reasoning text from the model.
           #
           #   @return [String]
           required :text, String
 
           # @!attribute type
-          #   The type of the object. Always `reasoning_text`.
+          #   The type of the reasoning text. Always `reasoning_text`.
           #
           #   @return [Symbol, :reasoning_text]
           required :type, const: :reasoning_text
 
           # @!method initialize(text:, type: :reasoning_text)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Responses::ResponseReasoningItem::Content} for more details.
+          #   Reasoning text from the model.
           #
-          #   @param text [String] Reasoning text output from the model.
+          #   @param text [String] The reasoning text from the model.
           #
-          #   @param type [Symbol, :reasoning_text] The type of the object. Always `reasoning_text`.
+          #   @param type [Symbol, :reasoning_text] The type of the reasoning text. Always `reasoning_text`.
         end
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.

@@ -42,6 +42,7 @@ module OpenAI
           | OpenAI::Responses::ResponseOutputText
           | OpenAI::Conversations::TextContent
           | OpenAI::Conversations::SummaryTextContent
+          | OpenAI::Conversations::Message::Content::ReasoningText
           | OpenAI::Responses::ResponseOutputRefusal
           | OpenAI::Responses::ResponseInputImage
           | OpenAI::Conversations::ComputerScreenshotContent
@@ -49,6 +50,18 @@ module OpenAI
 
         module Content
           extend OpenAI::Internal::Type::Union
+
+          type reasoning_text = { text: String, type: :reasoning_text }
+
+          class ReasoningText < OpenAI::Internal::Type::BaseModel
+            attr_accessor text: String
+
+            attr_accessor type: :reasoning_text
+
+            def initialize: (text: String, ?type: :reasoning_text) -> void
+
+            def to_hash: -> { text: String, type: :reasoning_text }
+          end
 
           def self?.variants: -> ::Array[OpenAI::Models::Conversations::Message::content]
         end

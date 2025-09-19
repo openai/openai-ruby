@@ -8,9 +8,22 @@ module OpenAI
         | OpenAI::Responses::ResponseInputAudio
         | OpenAI::Responses::ResponseOutputText
         | OpenAI::Responses::ResponseOutputRefusal
+        | OpenAI::Responses::ResponseContent::ReasoningTextContent
 
       module ResponseContent
         extend OpenAI::Internal::Type::Union
+
+        type reasoning_text_content = { text: String, type: :reasoning_text }
+
+        class ReasoningTextContent < OpenAI::Internal::Type::BaseModel
+          attr_accessor text: String
+
+          attr_accessor type: :reasoning_text
+
+          def initialize: (text: String, ?type: :reasoning_text) -> void
+
+          def to_hash: -> { text: String, type: :reasoning_text }
+        end
 
         def self?.variants: -> ::Array[OpenAI::Models::Responses::response_content]
       end

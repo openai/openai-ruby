@@ -141,6 +141,7 @@ module OpenAI
           sig { returns(Symbol) }
           attr_accessor :type
 
+          # A summary text from the model.
           sig { params(text: String, type: Symbol).returns(T.attached_class) }
           def self.new(
             # A summary of the reasoning output from the model so far.
@@ -164,19 +165,20 @@ module OpenAI
               )
             end
 
-          # Reasoning text output from the model.
+          # The reasoning text from the model.
           sig { returns(String) }
           attr_accessor :text
 
-          # The type of the object. Always `reasoning_text`.
+          # The type of the reasoning text. Always `reasoning_text`.
           sig { returns(Symbol) }
           attr_accessor :type
 
+          # Reasoning text from the model.
           sig { params(text: String, type: Symbol).returns(T.attached_class) }
           def self.new(
-            # Reasoning text output from the model.
+            # The reasoning text from the model.
             text:,
-            # The type of the object. Always `reasoning_text`.
+            # The type of the reasoning text. Always `reasoning_text`.
             type: :reasoning_text
           )
           end

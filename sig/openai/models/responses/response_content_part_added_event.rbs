@@ -45,9 +45,22 @@ module OpenAI
         type part =
           OpenAI::Responses::ResponseOutputText
           | OpenAI::Responses::ResponseOutputRefusal
+          | OpenAI::Responses::ResponseContentPartAddedEvent::Part::ReasoningText
 
         module Part
           extend OpenAI::Internal::Type::Union
+
+          type reasoning_text = { text: String, type: :reasoning_text }
+
+          class ReasoningText < OpenAI::Internal::Type::BaseModel
+            attr_accessor text: String
+
+            attr_accessor type: :reasoning_text
+
+            def initialize: (text: String, ?type: :reasoning_text) -> void
+
+            def to_hash: -> { text: String, type: :reasoning_text }
+          end
 
           def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseContentPartAddedEvent::part]
         end
