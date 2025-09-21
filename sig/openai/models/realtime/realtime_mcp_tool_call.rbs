@@ -7,7 +7,7 @@ module OpenAI
           arguments: String,
           name: String,
           server_label: String,
-          type: :mcp_tool_call,
+          type: :mcp_call,
           approval_request_id: String?,
           error: OpenAI::Models::Realtime::RealtimeMcpToolCall::error?,
           output: String?
@@ -22,7 +22,7 @@ module OpenAI
 
         attr_accessor server_label: String
 
-        attr_accessor type: :mcp_tool_call
+        attr_accessor type: :mcp_call
 
         attr_accessor approval_request_id: String?
 
@@ -38,7 +38,7 @@ module OpenAI
           ?approval_request_id: String?,
           ?error: OpenAI::Models::Realtime::RealtimeMcpToolCall::error?,
           ?output: String?,
-          ?type: :mcp_tool_call
+          ?type: :mcp_call
         ) -> void
 
         def to_hash: -> {
@@ -46,7 +46,7 @@ module OpenAI
           arguments: String,
           name: String,
           server_label: String,
-          type: :mcp_tool_call,
+          type: :mcp_call,
           approval_request_id: String?,
           error: OpenAI::Models::Realtime::RealtimeMcpToolCall::error?,
           output: String?

@@ -29,10 +29,10 @@ module OpenAI
         required :server_label, String
 
         # @!attribute type
-        #   The type of the item. Always `mcp_tool_call`.
+        #   The type of the item. Always `mcp_call`.
         #
-        #   @return [Symbol, :mcp_tool_call]
-        required :type, const: :mcp_tool_call
+        #   @return [Symbol, :mcp_call]
+        required :type, const: :mcp_call
 
         # @!attribute approval_request_id
         #   The ID of an associated approval request, if any.
@@ -52,7 +52,7 @@ module OpenAI
         #   @return [String, nil]
         optional :output, String, nil?: true
 
-        # @!method initialize(id:, arguments:, name:, server_label:, approval_request_id: nil, error: nil, output: nil, type: :mcp_tool_call)
+        # @!method initialize(id:, arguments:, name:, server_label:, approval_request_id: nil, error: nil, output: nil, type: :mcp_call)
         #   A Realtime item representing an invocation of a tool on an MCP server.
         #
         #   @param id [String] The unique ID of the tool call.
@@ -69,7 +69,7 @@ module OpenAI
         #
         #   @param output [String, nil] The output from the tool call.
         #
-        #   @param type [Symbol, :mcp_tool_call] The type of the item. Always `mcp_tool_call`.
+        #   @param type [Symbol, :mcp_call] The type of the item. Always `mcp_call`.
 
         # The error from the tool call, if any.
         #
