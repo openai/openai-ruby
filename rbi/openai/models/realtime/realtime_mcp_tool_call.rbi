@@ -28,7 +28,7 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :server_label
 
-        # The type of the item. Always `mcp_tool_call`.
+        # The type of the item. Always `mcp_call`.
         sig { returns(Symbol) }
         attr_accessor :type
 
@@ -89,8 +89,8 @@ module OpenAI
           error: nil,
           # The output from the tool call.
           output: nil,
-          # The type of the item. Always `mcp_tool_call`.
-          type: :mcp_tool_call
+          # The type of the item. Always `mcp_call`.
+          type: :mcp_call
         )
         end
 

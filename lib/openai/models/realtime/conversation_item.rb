@@ -31,7 +31,7 @@ module OpenAI
         variant :mcp_list_tools, -> { OpenAI::Realtime::RealtimeMcpListTools }
 
         # A Realtime item representing an invocation of a tool on an MCP server.
-        variant :mcp_tool_call, -> { OpenAI::Realtime::RealtimeMcpToolCall }
+        variant :mcp_call, -> { OpenAI::Realtime::RealtimeMcpToolCall }
 
         # A Realtime item requesting human approval of a tool invocation.
         variant :mcp_approval_request, -> { OpenAI::Realtime::RealtimeMcpApprovalRequest }
