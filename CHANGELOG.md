@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.25.1 (2025-09-22)
+
+Full Changelog: [v0.25.0...v0.25.1](https://github.com/openai/openai-ruby/compare/v0.25.0...v0.25.1)
+
+### Bug Fixes
+
+* **api:** fix mcp tool name ([25ec2ac](https://github.com/openai/openai-ruby/commit/25ec2aca164414f66a7d023c196ee6b1781c7146))
+
+
+### Chores
+
+* **api:** openapi updates for conversations ([ce76a59](https://github.com/openai/openai-ruby/commit/ce76a591d8c596d9eaeaa14077cec3146ffb1d0c))
+* do not install brew dependencies in ./scripts/bootstrap by default ([3afa532](https://github.com/openai/openai-ruby/commit/3afa53231a90968bec2d361363334800463b436d))
+* improve example values ([ad9a444](https://github.com/openai/openai-ruby/commit/ad9a4444e8a9af36f31368f19a095c1d4f4200ad))
+
 ## 0.25.0 (2025-09-19)
 
 Full Changelog: [v0.24.0...v0.25.0](https://github.com/openai/openai-ruby/compare/v0.24.0...v0.25.0)
