@@ -4,7 +4,11 @@ require_relative "../../test_helper"
 
 class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::ResourceTest
   def test_create_required_params
-    response = @openai.conversations.items.create("conv_123", items: [{content: "string", role: :user}])
+    response =
+      @openai.conversations.items.create(
+        "conv_123",
+        items: [{content: "string", role: :user, type: :message}]
+      )
 
     assert_pattern do
       response => OpenAI::Conversations::ConversationItemList
