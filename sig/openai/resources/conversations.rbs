@@ -16,7 +16,7 @@ module OpenAI
 
       def update: (
         String conversation_id,
-        metadata: ::Hash[Symbol, String],
+        metadata: OpenAI::Models::metadata?,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Conversations::Conversation
 
