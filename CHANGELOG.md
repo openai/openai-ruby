@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.26.0 (2025-09-23)
+
+Full Changelog: [v0.25.1...v0.26.0](https://github.com/openai/openai-ruby/compare/v0.25.1...v0.26.0)
+
+### Features
+
+* **api:** gpt-5-codex ([6c9b9b5](https://github.com/openai/openai-ruby/commit/6c9b9b58dabc56fbe9ac871517f837a662c6c237))
+
 ## 0.25.1 (2025-09-22)
 
 Full Changelog: [v0.25.0...v0.25.1](https://github.com/openai/openai-ruby/compare/v0.25.0...v0.25.1)
