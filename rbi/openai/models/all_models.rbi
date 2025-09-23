@@ -65,6 +65,11 @@ module OpenAI
             :"computer-use-preview-2025-03-11",
             OpenAI::AllModels::ResponsesOnlyModel::TaggedSymbol
           )
+        GPT_5_CODEX =
+          T.let(
+            :"gpt-5-codex",
+            OpenAI::AllModels::ResponsesOnlyModel::TaggedSymbol
+          )
 
         sig do
           override.returns(
