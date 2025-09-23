@@ -24,6 +24,7 @@ module OpenAI
         O4_MINI_DEEP_RESEARCH_2025_06_26 = :"o4-mini-deep-research-2025-06-26"
         COMPUTER_USE_PREVIEW = :"computer-use-preview"
         COMPUTER_USE_PREVIEW_2025_03_11 = :"computer-use-preview-2025-03-11"
+        GPT_5_CODEX = :"gpt-5-codex"
 
         # @!method self.values
         #   @return [Array<Symbol>]
