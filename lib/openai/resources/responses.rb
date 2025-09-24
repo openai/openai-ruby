@@ -85,7 +85,7 @@ module OpenAI
       def create(params = {})
         parsed, options = OpenAI::Responses::ResponseCreateParams.dump_request(params)
         if parsed[:stream]
-          message = "Please use `#stream_raw` for the streaming use case."
+          message = "Please use `#stream` for the streaming use case."
           raise ArgumentError.new(message)
         end
 

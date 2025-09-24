@@ -127,6 +127,29 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     assert_equal("", text)
   end
 
+  class WeatherModel < OpenAI::BaseModel
+    required :location, String
+    required :temperature, Integer
+  end
+
+  def test_function_tool_parsed_field
+    stub_streaming_response(function_calling_sse_response)
+
+    stream = @client.responses.stream(**function_tool_params)
+    response = stream.get_final_response
+
+    function_call = response.output.find { |o| o.is_a?(OpenAI::Models::Responses::ResponseFunctionToolCall) }
+
+    assert_pattern do
+      function_call => OpenAI::Models::Responses::ResponseFunctionToolCall[
+        parsed: WeatherModel[
+          location: "San Francisco",
+          temperature: 72
+        ]
+      ]
+    end
+  end
+
   def test_early_stream_close
     stub_streaming_response(basic_text_sse_response)
 
@@ -139,11 +162,6 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
 
     assert_equal(2, events.count { |e| e.type == :"response.output_text.delta" })
     refute(events.any? { |e| e.type == :"response.completed" })
-  end
-
-  class WeatherModel < OpenAI::BaseModel
-    required :location, String
-    required :temperature, Integer
   end
 
   def test_structured_output_streaming
@@ -198,8 +216,8 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
 
     assert_function_delta_events(
       events,
-      expected_deltas: ['{"location":"', "San Francisco", '"}'],
-      expected_snapshot: '{"location":"San Francisco"}'
+      expected_deltas: ['{"location":"', "San Francisco", '","temperature":', "72}"],
+      expected_snapshot: '{"location":"San Francisco","temperature":72}'
     )
   end
 
@@ -418,7 +436,7 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     basic_params.merge(
       tools: [
         {
-          type: "function",
+          type: :function,
           function: {
             name: "get_weather",
             description: "Get weather for a location",
@@ -594,16 +612,19 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
       data: {"type":"response.function_call_arguments.delta","sequence_number":4,"item_id":"item_003","output_index":0,"delta":"San Francisco"}
 
       event: response.function_call_arguments.delta
-      data: {"type":"response.function_call_arguments.delta","sequence_number":5,"item_id":"item_003","output_index":0,"delta":"\\"}"}
+      data: {"type":"response.function_call_arguments.delta","sequence_number":5,"item_id":"item_003","output_index":0,"delta":"\\",\\"temperature\\":"}
+
+      event: response.function_call_arguments.delta
+      data: {"type":"response.function_call_arguments.delta","sequence_number":6,"item_id":"item_003","output_index":0,"delta":"72}"}
 
       event: response.function_call_arguments.done
-      data: {"type":"response.function_call_arguments.done","sequence_number":6,"item_id":"item_003","output_index":0,"arguments":"{\\"location\\":\\"San Francisco\\"}"}
+      data: {"type":"response.function_call_arguments.done","sequence_number":7,"item_id":"item_003","output_index":0,"arguments":"{\\"location\\":\\"San Francisco\\",\\"temperature\\":72}"}
 
       event: response.output_item.done
-      data: {"type":"response.output_item.done","sequence_number":7,"response_id":"msg_003","item_id":"item_003","output_index":0,"item":{"id":"item_003","object":"realtime.item","type":"function_call","status":"completed","name":"get_weather","arguments":"{\\"location\\":\\"San Francisco\\"}","call_id":"call_001"}}
+      data: {"type":"response.output_item.done","sequence_number":8,"response_id":"msg_003","item_id":"item_003","output_index":0,"item":{"id":"item_003","object":"realtime.item","type":"function_call","status":"completed","name":"get_weather","arguments":"{\\"location\\":\\"San Francisco\\",\\"temperature\\":72}","call_id":"call_001"}}
 
       event: response.completed
-      data: {"type":"response.completed","sequence_number":8,"response":{"id":"msg_003","object":"realtime.response","status":"completed","status_details":null,"output":[{"id":"item_003","object":"realtime.item","type":"function_call","status":"completed","name":"get_weather","arguments":"{\\"location\\":\\"San Francisco\\"}","call_id":"call_001"}],"usage":{"total_tokens":20,"input_tokens":10,"output_tokens":10},"metadata":null}}
+      data: {"type":"response.completed","sequence_number":9,"response":{"id":"msg_003","object":"realtime.response","status":"completed","status_details":null,"output":[{"id":"item_003","object":"realtime.item","type":"function_call","status":"completed","name":"get_weather","arguments":"{\\"location\\":\\"San Francisco\\",\\"temperature\\":72}","call_id":"call_001"}],"usage":{"total_tokens":20,"input_tokens":10,"output_tokens":10},"metadata":null}}
 
     SSE
   end
