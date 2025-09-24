@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "events"
-
 module OpenAI
   module Helpers
     module Streaming

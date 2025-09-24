@@ -110,6 +110,54 @@ module OpenAI
             raise ArgumentError.new(message)
           end
 
+          model, tool_models = get_structured_output_models(parsed)
+
+          # rubocop:disable Metrics/BlockLength
+          unwrap = ->(raw) do
+            if model.is_a?(OpenAI::StructuredOutput::JsonSchemaConverter)
+              raw[:choices]&.each do |choice|
+                message = choice.fetch(:message)
+                begin
+                  content = message.fetch(:content)
+                  parsed = content.nil? ? nil : JSON.parse(content, symbolize_names: true)
+                rescue JSON::ParserError => e
+                  parsed = e
+                end
+                coerced = OpenAI::Internal::Type::Converter.coerce(model, parsed)
+                message.store(:parsed, coerced)
+              end
+            end
+            raw[:choices]&.each do |choice|
+              choice.dig(:message, :tool_calls)&.each do |tool_call|
+                func = tool_call.fetch(:function)
+                next if (model = tool_models[func.fetch(:name)]).nil?
+
+                begin
+                  arguments = func.fetch(:arguments)
+                  parsed = arguments.nil? ? nil : JSON.parse(arguments, symbolize_names: true)
+                rescue JSON::ParserError => e
+                  parsed = e
+                end
+                coerced = OpenAI::Internal::Type::Converter.coerce(model, parsed)
+                func.store(:parsed, coerced)
+              end
+            end
+
+            raw
+          end
+          # rubocop:enable Metrics/BlockLength
+
+          @client.request(
+            method: :post,
+            path: "chat/completions",
+            body: parsed,
+            unwrap: unwrap,
+            model: OpenAI::Chat::ChatCompletion,
+            options: options
+          )
+        end
+
+        def get_structured_output_models(parsed)
           model = nil
           tool_models = {}
           case parsed
@@ -162,53 +210,46 @@ module OpenAI
           else
           end
 
-          # rubocop:disable Metrics/BlockLength
-          unwrap = ->(raw) do
-            if model.is_a?(OpenAI::StructuredOutput::JsonSchemaConverter)
-              raw[:choices]&.each do |choice|
-                message = choice.fetch(:message)
-                begin
-                  content = message.fetch(:content)
-                  parsed = content.nil? ? nil : JSON.parse(content, symbolize_names: true)
-                rescue JSON::ParserError => e
-                  parsed = e
-                end
-                coerced = OpenAI::Internal::Type::Converter.coerce(model, parsed)
-                message.store(:parsed, coerced)
-              end
-            end
-            raw[:choices]&.each do |choice|
-              choice.dig(:message, :tool_calls)&.each do |tool_call|
-                func = tool_call.fetch(:function)
-                next if (model = tool_models[func.fetch(:name)]).nil?
-
-                begin
-                  arguments = func.fetch(:arguments)
-                  parsed = arguments.nil? ? nil : JSON.parse(arguments, symbolize_names: true)
-                rescue JSON::ParserError => e
-                  parsed = e
-                end
-                coerced = OpenAI::Internal::Type::Converter.coerce(model, parsed)
-                func.store(:parsed, coerced)
-              end
-            end
-
-            raw
-          end
-          # rubocop:enable Metrics/BlockLength
-
-          @client.request(
-            method: :post,
-            path: "chat/completions",
-            body: parsed,
-            unwrap: unwrap,
-            model: OpenAI::Chat::ChatCompletion,
-            options: options
-          )
+          [model, tool_models]
         end
 
-        def stream
-          raise NotImplementedError.new("higher level helpers are coming soon!")
+        def build_tools_with_models(tools, tool_models)
+          return [] if tools.nil?
+
+          tools.map do |tool|
+            next tool unless tool[:type] == :function
+
+            function_name = tool.dig(:function, :name)
+            model = tool_models[function_name]
+
+            model ? tool.merge(model: model) : tool
+          end
+        end
+
+        def stream(params)
+          parsed, options = OpenAI::Chat::CompletionCreateParams.dump_request(params)
+
+          parsed.store(:stream, true)
+
+          response_format, tool_models = get_structured_output_models(parsed)
+
+          input_tools = build_tools_with_models(parsed[:tools], tool_models)
+
+          raw_stream = @client.request(
+            method: :post,
+            path: "chat/completions",
+            headers: {"accept" => "text/event-stream"},
+            body: parsed,
+            stream: OpenAI::Internal::Stream,
+            model: OpenAI::Chat::ChatCompletionChunk,
+            options: options
+          )
+
+          OpenAI::Helpers::Streaming::ChatCompletionStream.new(
+            raw_stream: raw_stream,
+            response_format: response_format,
+            input_tools: input_tools
+          )
         end
 
         # See {OpenAI::Resources::Chat::Completions#create} for non-streaming counterpart.
