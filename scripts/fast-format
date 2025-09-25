@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+echo "Script started with $# arguments"
+echo "Arguments: $*"
+echo "Script location: $(dirname "$0")"
+
+cd "$(dirname "$0")/.."
+echo "Changed to directory: $(pwd)"
+
+if [ $# -eq 0 ]; then
+    echo "Usage: $0 <file-with-paths> [additional-formatter-args...]"
+    echo "The file should contain one file path per line"
+    exit 1
+fi
+
+FORMAT_FILE="$1" exec -- bundle exec rake format
