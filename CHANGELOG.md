@@ -1,5 +1,29 @@
 # Changelog
 
+## 0.27.0 (2025-09-26)
+
+Full Changelog: [v0.26.0...v0.27.0](https://github.com/openai/openai-ruby/compare/v0.26.0...v0.27.0)
+
+### Features
+
+* chat completion streaming helpers ([#828](https://github.com/openai/openai-ruby/issues/828)) ([6e98424](https://github.com/openai/openai-ruby/commit/6e9842485e819876dd6b78107fa45f1a5da67e4f))
+
+
+### Bug Fixes
+
+* **internal:** use null byte as file separator in the fast formatting script ([151ffe1](https://github.com/openai/openai-ruby/commit/151ffe10c9dc8d5edaf46de2a1c6b6e6fda80034))
+* shorten multipart boundary sep to less than RFC specificed max length ([d7770d1](https://github.com/openai/openai-ruby/commit/d7770d10ee3b093d8e2464b79e0e12be3a9d2beb))
+
+
+### Performance Improvements
+
+* faster code formatting ([67da711](https://github.com/openai/openai-ruby/commit/67da71139e5b572c97539299c39bae04c1d569fd))
+
+
+### Chores
+
+* allow fast-format to use bsd sed as well ([66ac913](https://github.com/openai/openai-ruby/commit/66ac913d195d8b5a5c4474ded88a5f9dad13b7b6))
+
 ## 0.26.0 (2025-09-23)
 
 Full Changelog: [v0.25.1...v0.26.0](https://github.com/openai/openai-ruby/compare/v0.25.1...v0.26.0)
