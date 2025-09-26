@@ -566,7 +566,8 @@ module OpenAI
         #
         # @return [Array(String, Enumerable<String>)]
         private def encode_multipart_streaming(body)
-          boundary = SecureRandom.urlsafe_base64(60)
+          # RFC 1521 Section 7.2.1 says we should have 70 char maximum for boundary length
+          boundary = SecureRandom.urlsafe_base64(46)
 
           closing = []
           strio = writable_enum do |y|

@@ -213,6 +213,18 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
     end
   end
 
+  def test_encoding_length
+    headers, = OpenAI::Internal::Util.encode_content(
+      {"content-type" => "multipart/form-data"},
+      Pathname(__FILE__)
+    )
+    assert_pattern do
+      headers.fetch("content-type") => /boundary=(.+)$/
+    end
+    field, = Regexp.last_match.captures
+    assert(field.length < 70 - 6)
+  end
+
   def test_file_encode
     file = Pathname(__FILE__)
     headers = {"content-type" => "multipart/form-data"}
