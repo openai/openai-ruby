@@ -6,8 +6,8 @@ echo "Script started with $# arguments"
 echo "Arguments: $*"
 echo "Script location: $(dirname "$0")"
 
-cd "$(dirname "$0")/.."
-echo "Changed to directory: $(pwd)"
+cd -- "$(dirname "$0")/.."
+echo "Changed to directory: $PWD"
 
 if [ $# -eq 0 ]; then
     echo "Usage: $0 <file-with-paths> [additional-formatter-args...]"
@@ -15,4 +15,7 @@ if [ $# -eq 0 ]; then
     exit 1
 fi
 
-FORMAT_FILE="$1" exec -- bundle exec rake format
+FILE="$(mktemp)"
+tr -- '\n' '\0' < "$1" > "$FILE"
+
+exec -- bundle exec rake format FORMAT_FILE="$FILE"

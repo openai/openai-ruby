@@ -57,21 +57,21 @@ end
 desc("Format `*.rb`")
 multitask(:"format:rb") do
   # while `syntax_tree` is much faster than `rubocop`, `rubocop` is the only formatter with full syntax support
-  files = ENV.key?(FILES_ENV) ? %w[sed -E -n -e /\.rb$/p --] << ENV.fetch(FILES_ENV) : %w[find ./lib ./test ./examples -type f -and -name *.rb -print0]
+  files = ENV.key?(FILES_ENV) ? %w[sed -E -z -n -e /\.rb$/p --] << ENV.fetch(FILES_ENV) : %w[find ./lib ./test ./examples -type f -and -name *.rb -print0]
   fmt = xargs + %w[rubocop --fail-level F --autocorrect --format simple --]
   sh("#{files.shelljoin} | #{fmt.shelljoin}")
 end
 
 desc("Format `*.rbi`")
 multitask(:"format:rbi") do
-  files = ENV.key?(FILES_ENV) ? %w[sed -E -n -e /\.rbi$/p --] << ENV.fetch(FILES_ENV) : %w[find ./rbi -type f -and -name *.rbi -print0]
+  files = ENV.key?(FILES_ENV) ? %w[sed -E -z -n -e /\.rbi$/p --] << ENV.fetch(FILES_ENV) : %w[find ./rbi -type f -and -name *.rbi -print0]
   fmt = xargs + %w[stree write --]
   sh(ruby_opt, "#{files.shelljoin} | #{fmt.shelljoin}")
 end
 
 desc("Format `*.rbs`")
 multitask(:"format:rbs") do
-  files = ENV.key?(FILES_ENV) ? %w[sed -E -n -e /\.rbs$/p --] << ENV.fetch(FILES_ENV) : %w[find ./sig -type f -name *.rbs -print0]
+  files = ENV.key?(FILES_ENV) ? %w[sed -E -z -n -e /\.rbs$/p --] << ENV.fetch(FILES_ENV) : %w[find ./sig -type f -name *.rbs -print0]
   inplace = /darwin|bsd/ =~ RUBY_PLATFORM ? ["-i", ""] : %w[-i]
   uuid = SecureRandom.uuid
 
