@@ -15,7 +15,4 @@ if [ $# -eq 0 ]; then
     exit 1
 fi
 
-FILE="$(mktemp)"
-tr -- '\n' '\0' < "$1" > "$FILE"
-
-exec -- bundle exec rake format FORMAT_FILE="$FILE"
+exec -- bundle exec rake format FORMAT_FILE="$1"
