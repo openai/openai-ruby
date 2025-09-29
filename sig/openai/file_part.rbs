@@ -14,7 +14,7 @@ module OpenAI
 
     def initialize: (
       Pathname | StringIO | IO | String content,
-      ?filename: String?,
+      ?filename: (Pathname | String)?,
       ?content_type: String?
     ) -> void
   end
