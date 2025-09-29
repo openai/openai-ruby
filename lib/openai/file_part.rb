@@ -38,18 +38,21 @@ module OpenAI
     def to_yaml(*a) = read.to_yaml(*a)
 
     # @param content [Pathname, StringIO, IO, String]
-    # @param filename [String, nil]
+    # @param filename [Pathname, String, nil]
     # @param content_type [String, nil]
     def initialize(content, filename: nil, content_type: nil)
-      @content = content
-      @filename =
-        case content
-        in Pathname
-          filename.nil? ? content.basename.to_path : ::File.basename(filename)
-        else
-          filename.nil? ? nil : ::File.basename(filename)
-        end
       @content_type = content_type
+      @filename =
+        case [filename, (@content = content)]
+        in [String | Pathname, _]
+          ::File.basename(filename)
+        in [nil, Pathname]
+          content.basename.to_path
+        in [nil, IO]
+          content.to_path
+        else
+          filename
+        end
     end
   end
 end

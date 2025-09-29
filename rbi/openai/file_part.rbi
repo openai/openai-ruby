@@ -27,7 +27,7 @@ module OpenAI
     sig do
       params(
         content: T.any(Pathname, StringIO, IO, String),
-        filename: T.nilable(String),
+        filename: T.nilable(T.any(Pathname, String)),
         content_type: T.nilable(String)
       ).returns(T.attached_class)
     end

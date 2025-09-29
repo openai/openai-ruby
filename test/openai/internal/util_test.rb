@@ -227,20 +227,24 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
 
   def test_file_encode
     file = Pathname(__FILE__)
+    fileinput = OpenAI::Internal::Type::Converter.dump(OpenAI::Internal::Type::FileInput, "abc")
     headers = {"content-type" => "multipart/form-data"}
     cases = {
-      "abc" => "abc",
-      StringIO.new("abc") => "abc",
-      OpenAI::FilePart.new("abc") => "abc",
-      OpenAI::FilePart.new(StringIO.new("abc")) => "abc",
-      file => /^class OpenAI/,
-      OpenAI::FilePart.new(file) => /^class OpenAI/
+      "abc" => ["", "abc"],
+      StringIO.new("abc") => ["", "abc"],
+      fileinput => %w[upload abc],
+      OpenAI::FilePart.new(StringIO.new("abc")) => ["", "abc"],
+      file => [file.basename.to_path, /^class OpenAI/],
+      OpenAI::FilePart.new(file, filename: "d o g") => ["d%20o%20g", /^class OpenAI/]
     }
-    cases.each do |body, val|
+    cases.each do |body, testcase|
+      filename, val = testcase
       encoded = OpenAI::Internal::Util.encode_content(headers, body)
       cgi = FakeCGI.new(*encoded)
+      io = cgi[""]
       assert_pattern do
-        cgi[""].read => ^val
+        io.original_filename => ^filename
+        io.read => ^val
       end
     end
   end
@@ -261,7 +265,14 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
       cgi = FakeCGI.new(*encoded)
       testcase.each do |key, val|
         assert_pattern do
-          cgi[key] => ^val
+          parsed =
+            case (p = cgi[key])
+            in StringIO
+              p.read
+            else
+              p
+            end
+          parsed => ^val
         end
       end
     end
