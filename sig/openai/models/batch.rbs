@@ -20,8 +20,10 @@ module OpenAI
         finalizing_at: Integer,
         in_progress_at: Integer,
         metadata: OpenAI::Models::metadata?,
+        model: String,
         output_file_id: String,
-        request_counts: OpenAI::BatchRequestCounts
+        request_counts: OpenAI::BatchRequestCounts,
+        usage: OpenAI::BatchUsage
       }
 
     class Batch < OpenAI::Internal::Type::BaseModel
@@ -81,6 +83,10 @@ module OpenAI
 
       attr_accessor metadata: OpenAI::Models::metadata?
 
+      attr_reader model: String?
+
+      def model=: (String) -> String
+
       attr_reader output_file_id: String?
 
       def output_file_id=: (String) -> String
@@ -90,6 +96,10 @@ module OpenAI
       def request_counts=: (
         OpenAI::BatchRequestCounts
       ) -> OpenAI::BatchRequestCounts
+
+      attr_reader usage: OpenAI::BatchUsage?
+
+      def usage=: (OpenAI::BatchUsage) -> OpenAI::BatchUsage
 
       def initialize: (
         id: String,
@@ -109,8 +119,10 @@ module OpenAI
         ?finalizing_at: Integer,
         ?in_progress_at: Integer,
         ?metadata: OpenAI::Models::metadata?,
+        ?model: String,
         ?output_file_id: String,
         ?request_counts: OpenAI::BatchRequestCounts,
+        ?usage: OpenAI::BatchUsage,
         ?object: :batch
       ) -> void
 
@@ -133,8 +145,10 @@ module OpenAI
         finalizing_at: Integer,
         in_progress_at: Integer,
         metadata: OpenAI::Models::metadata?,
+        model: String,
         output_file_id: String,
-        request_counts: OpenAI::BatchRequestCounts
+        request_counts: OpenAI::BatchRequestCounts,
+        usage: OpenAI::BatchUsage
       }
 
       type status =

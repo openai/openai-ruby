@@ -115,6 +115,16 @@ module OpenAI
       #   @return [Hash{Symbol=>String}, nil]
       optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
+      # @!attribute model
+      #   Model ID used to process the batch, like `gpt-5-2025-08-07`. OpenAI offers a
+      #   wide range of models with different capabilities, performance characteristics,
+      #   and price points. Refer to the
+      #   [model guide](https://platform.openai.com/docs/models) to browse and compare
+      #   available models.
+      #
+      #   @return [String, nil]
+      optional :model, String
+
       # @!attribute output_file_id
       #   The ID of the file containing the outputs of successfully executed requests.
       #
@@ -127,7 +137,15 @@ module OpenAI
       #   @return [OpenAI::Models::BatchRequestCounts, nil]
       optional :request_counts, -> { OpenAI::BatchRequestCounts }
 
-      # @!method initialize(id:, completion_window:, created_at:, endpoint:, input_file_id:, status:, cancelled_at: nil, cancelling_at: nil, completed_at: nil, error_file_id: nil, errors: nil, expired_at: nil, expires_at: nil, failed_at: nil, finalizing_at: nil, in_progress_at: nil, metadata: nil, output_file_id: nil, request_counts: nil, object: :batch)
+      # @!attribute usage
+      #   Represents token usage details including input tokens, output tokens, a
+      #   breakdown of output tokens, and the total tokens used. Only populated on batches
+      #   created after September 7, 2025.
+      #
+      #   @return [OpenAI::Models::BatchUsage, nil]
+      optional :usage, -> { OpenAI::BatchUsage }
+
+      # @!method initialize(id:, completion_window:, created_at:, endpoint:, input_file_id:, status:, cancelled_at: nil, cancelling_at: nil, completed_at: nil, error_file_id: nil, errors: nil, expired_at: nil, expires_at: nil, failed_at: nil, finalizing_at: nil, in_progress_at: nil, metadata: nil, model: nil, output_file_id: nil, request_counts: nil, usage: nil, object: :batch)
       #   Some parameter documentations has been truncated, see {OpenAI::Models::Batch}
       #   for more details.
       #
@@ -165,9 +183,13 @@ module OpenAI
       #
       #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
       #
+      #   @param model [String] Model ID used to process the batch, like `gpt-5-2025-08-07`. OpenAI
+      #
       #   @param output_file_id [String] The ID of the file containing the outputs of successfully executed requests.
       #
       #   @param request_counts [OpenAI::Models::BatchRequestCounts] The request counts for different statuses within the batch.
+      #
+      #   @param usage [OpenAI::Models::BatchUsage] Represents token usage details including input tokens, output tokens, a
       #
       #   @param object [Symbol, :batch] The object type, which is always `batch`.
 

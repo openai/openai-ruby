@@ -1,0 +1,49 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_input_image_content =
+        {
+          type: :input_image,
+          detail: OpenAI::Models::Responses::ResponseInputImageContent::detail?,
+          file_id: String?,
+          image_url: String?
+        }
+
+      class ResponseInputImageContent < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :input_image
+
+        attr_accessor detail: OpenAI::Models::Responses::ResponseInputImageContent::detail?
+
+        attr_accessor file_id: String?
+
+        attr_accessor image_url: String?
+
+        def initialize: (
+          ?detail: OpenAI::Models::Responses::ResponseInputImageContent::detail?,
+          ?file_id: String?,
+          ?image_url: String?,
+          ?type: :input_image
+        ) -> void
+
+        def to_hash: -> {
+          type: :input_image,
+          detail: OpenAI::Models::Responses::ResponseInputImageContent::detail?,
+          file_id: String?,
+          image_url: String?
+        }
+
+        type detail = :low | :high | :auto
+
+        module Detail
+          extend OpenAI::Internal::Type::Enum
+
+          LOW: :low
+          HIGH: :high
+          AUTO: :auto
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputImageContent::detail]
+        end
+      end
+    end
+  end
+end

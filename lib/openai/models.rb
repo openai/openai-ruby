@@ -63,6 +63,8 @@ module OpenAI
 
   BatchRetrieveParams = OpenAI::Models::BatchRetrieveParams
 
+  BatchUsage = OpenAI::Models::BatchUsage
+
   Beta = OpenAI::Models::Beta
 
   Chat = OpenAI::Models::Chat

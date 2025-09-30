@@ -5,7 +5,7 @@ module OpenAI
         {
           id: String,
           call_id: String,
-          output: String,
+          output: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::output,
           type: :function_call_output,
           status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status
         }
@@ -15,7 +15,7 @@ module OpenAI
 
         attr_accessor call_id: String
 
-        attr_accessor output: String
+        attr_accessor output: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::output
 
         attr_accessor type: :function_call_output
 
@@ -28,7 +28,7 @@ module OpenAI
         def initialize: (
           id: String,
           call_id: String,
-          output: String,
+          output: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::output,
           ?status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status,
           ?type: :function_call_output
         ) -> void
@@ -36,10 +36,33 @@ module OpenAI
         def to_hash: -> {
           id: String,
           call_id: String,
-          output: String,
+          output: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::output,
           type: :function_call_output,
           status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status
         }
+
+        type output =
+          String
+          | ::Array[OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::Output::output_content_list]
+
+        module Output
+          extend OpenAI::Internal::Type::Union
+
+          type output_content_list =
+            OpenAI::Responses::ResponseInputText
+            | OpenAI::Responses::ResponseInputImage
+            | OpenAI::Responses::ResponseInputFile
+
+          module OutputContentList
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::Output::output_content_list]
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::output]
+
+          OutputContentListArray: OpenAI::Internal::Type::Converter
+        end
 
         type status = :in_progress | :completed | :incomplete
 

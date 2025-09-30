@@ -1,0 +1,42 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_input_file_content =
+        {
+          type: :input_file,
+          file_data: String?,
+          file_id: String?,
+          file_url: String?,
+          filename: String?
+        }
+
+      class ResponseInputFileContent < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :input_file
+
+        attr_accessor file_data: String?
+
+        attr_accessor file_id: String?
+
+        attr_accessor file_url: String?
+
+        attr_accessor filename: String?
+
+        def initialize: (
+          ?file_data: String?,
+          ?file_id: String?,
+          ?file_url: String?,
+          ?filename: String?,
+          ?type: :input_file
+        ) -> void
+
+        def to_hash: -> {
+          type: :input_file,
+          file_data: String?,
+          file_id: String?,
+          file_url: String?,
+          filename: String?
+        }
+      end
+    end
+  end
+end
