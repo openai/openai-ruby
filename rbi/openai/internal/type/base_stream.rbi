@@ -12,21 +12,6 @@ module OpenAI
         Message = type_member(:in)
         Elem = type_member(:out)
 
-        class << self
-          # Attempt to close the underlying transport when the stream itself is garbage
-          # collected.
-          #
-          # This should not be relied upon for resource clean up, as the garbage collector
-          # is not guaranteed to run.
-          sig do
-            params(stream: T::Enumerable[T.anything]).returns(
-              T.proc.params(arg0: Integer).void
-            )
-          end
-          def defer_closing(stream)
-          end
-        end
-
         sig { returns(Integer) }
         attr_reader :status
 
