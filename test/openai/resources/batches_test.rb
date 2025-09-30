@@ -35,8 +35,10 @@ class OpenAI::Test::Resources::BatchesTest < OpenAI::Test::ResourceTest
         finalizing_at: Integer | nil,
         in_progress_at: Integer | nil,
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
+        model: String | nil,
         output_file_id: String | nil,
-        request_counts: OpenAI::BatchRequestCounts | nil
+        request_counts: OpenAI::BatchRequestCounts | nil,
+        usage: OpenAI::BatchUsage | nil
       }
     end
   end
@@ -68,8 +70,10 @@ class OpenAI::Test::Resources::BatchesTest < OpenAI::Test::ResourceTest
         finalizing_at: Integer | nil,
         in_progress_at: Integer | nil,
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
+        model: String | nil,
         output_file_id: String | nil,
-        request_counts: OpenAI::BatchRequestCounts | nil
+        request_counts: OpenAI::BatchRequestCounts | nil,
+        usage: OpenAI::BatchUsage | nil
       }
     end
   end
@@ -108,8 +112,10 @@ class OpenAI::Test::Resources::BatchesTest < OpenAI::Test::ResourceTest
         finalizing_at: Integer | nil,
         in_progress_at: Integer | nil,
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
+        model: String | nil,
         output_file_id: String | nil,
-        request_counts: OpenAI::BatchRequestCounts | nil
+        request_counts: OpenAI::BatchRequestCounts | nil,
+        usage: OpenAI::BatchUsage | nil
       }
     end
   end
@@ -141,8 +147,10 @@ class OpenAI::Test::Resources::BatchesTest < OpenAI::Test::ResourceTest
         finalizing_at: Integer | nil,
         in_progress_at: Integer | nil,
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
+        model: String | nil,
         output_file_id: String | nil,
-        request_counts: OpenAI::BatchRequestCounts | nil
+        request_counts: OpenAI::BatchRequestCounts | nil,
+        usage: OpenAI::BatchUsage | nil
       }
     end
   end

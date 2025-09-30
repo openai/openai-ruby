@@ -177,7 +177,7 @@ module OpenAI
         type function_call_output =
           {
             call_id: String,
-            output: String,
+            output: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::output,
             type: :function_call_output,
             id: String?,
             status: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status?
@@ -186,7 +186,7 @@ module OpenAI
         class FunctionCallOutput < OpenAI::Internal::Type::BaseModel
           attr_accessor call_id: String
 
-          attr_accessor output: String
+          attr_accessor output: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::output
 
           attr_accessor type: :function_call_output
 
@@ -196,7 +196,7 @@ module OpenAI
 
           def initialize: (
             call_id: String,
-            output: String,
+            output: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::output,
             ?id: String?,
             ?status: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status?,
             ?type: :function_call_output
@@ -204,11 +204,21 @@ module OpenAI
 
           def to_hash: -> {
             call_id: String,
-            output: String,
+            output: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::output,
             type: :function_call_output,
             id: String?,
             status: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status?
           }
+
+          type output =
+            String
+            | OpenAI::Models::Responses::response_function_call_output_item_list
+
+          module Output
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::output]
+          end
 
           type status = :in_progress | :completed | :incomplete
 

@@ -87,7 +87,7 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
         type: :function_call_output,
         id: String,
         call_id: String,
-        output: String,
+        output: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Output,
         status: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Status | nil
       }
       in {
