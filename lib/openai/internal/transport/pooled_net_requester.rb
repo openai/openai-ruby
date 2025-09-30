@@ -134,9 +134,9 @@ module OpenAI
 
           # rubocop:disable Metrics/BlockLength
           enum = Enumerator.new do |y|
-            with_pool(url, deadline: deadline) do |conn|
-              next if finished
+            next if finished
 
+            with_pool(url, deadline: deadline) do |conn|
               req, closing = self.class.build_request(request) do
                 self.class.calibrate_socket_timeout(conn, deadline)
               end
@@ -149,7 +149,7 @@ module OpenAI
 
               self.class.calibrate_socket_timeout(conn, deadline)
               conn.request(req) do |rsp|
-                y << [conn, req, rsp]
+                y << [req, rsp]
                 break if finished
 
                 rsp.read_body do |bytes|
@@ -160,6 +160,8 @@ module OpenAI
                 end
                 eof = true
               end
+            ensure
+              conn.finish if !eof && conn&.started?
             end
           rescue Timeout::Error
             raise OpenAI::Errors::APITimeoutError.new(url: url, request: req)
@@ -168,16 +170,11 @@ module OpenAI
           end
           # rubocop:enable Metrics/BlockLength
 
-          conn, _, response = enum.next
+          _, response = enum.next
           body = OpenAI::Internal::Util.fused_enum(enum, external: true) do
             finished = true
-            tap do
-              enum.next
-            rescue StopIteration
-              nil
-            end
+            loop { enum.next }
           ensure
-            conn.finish if !eof && conn&.started?
             closing&.call
           end
           [Integer(response.code), response, body]
