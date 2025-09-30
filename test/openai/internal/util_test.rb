@@ -310,6 +310,31 @@ class OpenAI::Test::UtilIOAdapterTest < Minitest::Test
 end
 
 class OpenAI::Test::UtilFusedEnumTest < Minitest::Test
+  def test_rewind_closing
+    touched = false
+    once = 0
+    steps = 0
+    enum = Enumerator.new do |y|
+      next if touched
+
+      10.times do
+        steps = _1
+        y << _1
+      end
+    ensure
+      once = once.succ
+    end
+
+    fused = OpenAI::Internal::Util.fused_enum(enum, external: true) do
+      touched = true
+      loop { enum.next }
+    end
+    OpenAI::Internal::Util.close_fused!(fused)
+
+    assert_equal(1, once)
+    assert_equal(0, steps)
+  end
+
   def test_closing
     arr = [1, 2, 3]
     once = 0
