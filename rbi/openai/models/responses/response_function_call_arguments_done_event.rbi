@@ -20,6 +20,10 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :item_id
 
+        # The name of the function that was called.
+        sig { returns(String) }
+        attr_accessor :name
+
         # The index of the output item.
         sig { returns(Integer) }
         attr_accessor :output_index
@@ -36,6 +40,7 @@ module OpenAI
           params(
             arguments: String,
             item_id: String,
+            name: String,
             output_index: Integer,
             sequence_number: Integer,
             type: Symbol
@@ -46,6 +51,8 @@ module OpenAI
           arguments:,
           # The ID of the item.
           item_id:,
+          # The name of the function that was called.
+          name:,
           # The index of the output item.
           output_index:,
           # The sequence number of this event.
@@ -59,6 +66,7 @@ module OpenAI
             {
               arguments: String,
               item_id: String,
+              name: String,
               output_index: Integer,
               sequence_number: Integer,
               type: Symbol

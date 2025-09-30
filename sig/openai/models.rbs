@@ -23,6 +23,8 @@ module OpenAI
 
   class BatchRetrieveParams = OpenAI::Models::BatchRetrieveParams
 
+  class BatchUsage = OpenAI::Models::BatchUsage
+
   module Beta = OpenAI::Models::Beta
 
   module Chat = OpenAI::Models::Chat

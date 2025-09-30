@@ -4,7 +4,7 @@ module OpenAI
       type response_custom_tool_call_output =
         {
           call_id: String,
-          output: String,
+          output: OpenAI::Models::Responses::ResponseCustomToolCallOutput::output,
           type: :custom_tool_call_output,
           id: String
         }
@@ -12,7 +12,7 @@ module OpenAI
       class ResponseCustomToolCallOutput < OpenAI::Internal::Type::BaseModel
         attr_accessor call_id: String
 
-        attr_accessor output: String
+        attr_accessor output: OpenAI::Models::Responses::ResponseCustomToolCallOutput::output
 
         attr_accessor type: :custom_tool_call_output
 
@@ -22,17 +22,40 @@ module OpenAI
 
         def initialize: (
           call_id: String,
-          output: String,
+          output: OpenAI::Models::Responses::ResponseCustomToolCallOutput::output,
           ?id: String,
           ?type: :custom_tool_call_output
         ) -> void
 
         def to_hash: -> {
           call_id: String,
-          output: String,
+          output: OpenAI::Models::Responses::ResponseCustomToolCallOutput::output,
           type: :custom_tool_call_output,
           id: String
         }
+
+        type output =
+          String
+          | ::Array[OpenAI::Models::Responses::ResponseCustomToolCallOutput::Output::output_content_list]
+
+        module Output
+          extend OpenAI::Internal::Type::Union
+
+          type output_content_list =
+            OpenAI::Responses::ResponseInputText
+            | OpenAI::Responses::ResponseInputImage
+            | OpenAI::Responses::ResponseInputFile
+
+          module OutputContentList
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseCustomToolCallOutput::Output::output_content_list]
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseCustomToolCallOutput::output]
+
+          OutputContentListArray: OpenAI::Internal::Type::Converter
+        end
       end
     end
   end

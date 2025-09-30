@@ -110,6 +110,17 @@ module OpenAI
       sig { returns(T.nilable(T::Hash[Symbol, String])) }
       attr_accessor :metadata
 
+      # Model ID used to process the batch, like `gpt-5-2025-08-07`. OpenAI offers a
+      # wide range of models with different capabilities, performance characteristics,
+      # and price points. Refer to the
+      # [model guide](https://platform.openai.com/docs/models) to browse and compare
+      # available models.
+      sig { returns(T.nilable(String)) }
+      attr_reader :model
+
+      sig { params(model: String).void }
+      attr_writer :model
+
       # The ID of the file containing the outputs of successfully executed requests.
       sig { returns(T.nilable(String)) }
       attr_reader :output_file_id
@@ -123,6 +134,15 @@ module OpenAI
 
       sig { params(request_counts: OpenAI::BatchRequestCounts::OrHash).void }
       attr_writer :request_counts
+
+      # Represents token usage details including input tokens, output tokens, a
+      # breakdown of output tokens, and the total tokens used. Only populated on batches
+      # created after September 7, 2025.
+      sig { returns(T.nilable(OpenAI::BatchUsage)) }
+      attr_reader :usage
+
+      sig { params(usage: OpenAI::BatchUsage::OrHash).void }
+      attr_writer :usage
 
       sig do
         params(
@@ -143,8 +163,10 @@ module OpenAI
           finalizing_at: Integer,
           in_progress_at: Integer,
           metadata: T.nilable(T::Hash[Symbol, String]),
+          model: String,
           output_file_id: String,
           request_counts: OpenAI::BatchRequestCounts::OrHash,
+          usage: OpenAI::BatchUsage::OrHash,
           object: Symbol
         ).returns(T.attached_class)
       end
@@ -186,10 +208,20 @@ module OpenAI
         # Keys are strings with a maximum length of 64 characters. Values are strings with
         # a maximum length of 512 characters.
         metadata: nil,
+        # Model ID used to process the batch, like `gpt-5-2025-08-07`. OpenAI offers a
+        # wide range of models with different capabilities, performance characteristics,
+        # and price points. Refer to the
+        # [model guide](https://platform.openai.com/docs/models) to browse and compare
+        # available models.
+        model: nil,
         # The ID of the file containing the outputs of successfully executed requests.
         output_file_id: nil,
         # The request counts for different statuses within the batch.
         request_counts: nil,
+        # Represents token usage details including input tokens, output tokens, a
+        # breakdown of output tokens, and the total tokens used. Only populated on batches
+        # created after September 7, 2025.
+        usage: nil,
         # The object type, which is always `batch`.
         object: :batch
       )
@@ -216,8 +248,10 @@ module OpenAI
             finalizing_at: Integer,
             in_progress_at: Integer,
             metadata: T.nilable(T::Hash[Symbol, String]),
+            model: String,
             output_file_id: String,
-            request_counts: OpenAI::BatchRequestCounts
+            request_counts: OpenAI::BatchRequestCounts,
+            usage: OpenAI::BatchUsage
           }
         )
       end

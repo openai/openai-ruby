@@ -68,7 +68,7 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         type: :function_call_output,
         id: String,
         call_id: String,
-        output: String,
+        output: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Output,
         status: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Status | nil
       }
       in {
@@ -160,7 +160,12 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         output: String | nil
       }
       in {type: :custom_tool_call, call_id: String, input: String, name: String, id: String | nil}
-      in {type: :custom_tool_call_output, call_id: String, output: String, id: String | nil}
+      in {
+        type: :custom_tool_call_output,
+        call_id: String,
+        output: OpenAI::Responses::ResponseCustomToolCallOutput::Output,
+        id: String | nil
+      }
       end
     end
   end
@@ -215,7 +220,7 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         type: :function_call_output,
         id: String,
         call_id: String,
-        output: String,
+        output: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Output,
         status: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Status | nil
       }
       in {
@@ -307,7 +312,12 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         output: String | nil
       }
       in {type: :custom_tool_call, call_id: String, input: String, name: String, id: String | nil}
-      in {type: :custom_tool_call_output, call_id: String, output: String, id: String | nil}
+      in {
+        type: :custom_tool_call_output,
+        call_id: String,
+        output: OpenAI::Responses::ResponseCustomToolCallOutput::Output,
+        id: String | nil
+      }
       end
     end
   end
