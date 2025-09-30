@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.28.0 (2025-09-30)
+
+Full Changelog: [v0.27.1...v0.28.0](https://github.com/openai/openai-ruby/compare/v0.27.1...v0.28.0)
+
+### ⚠ BREAKING CHANGES
+
+* **api:** `ResponseFunctionToolCallOutputItem.output` and `ResponseCustomToolCallOutput.output` now return `string | Array<ResponseInputText | ResponseInputImage | ResponseInputFile>` instead of `string` only. This may break existing callsites that assume `output` is always a string.
+
+### Features
+
+* **api:** Support images and files for function call outputs in responses, BatchUsage ([904348a](https://github.com/openai/openai-ruby/commit/904348a26c713601f10063fef73f9982088aa438))
+
+
+### Bug Fixes
+
+* coroutine leaks from connection pool ([7f0b3cd](https://github.com/openai/openai-ruby/commit/7f0b3cdfee0232dbfa1800029ba80f5470f95c13))
+
 ## 0.27.1 (2025-09-29)
 
 Full Changelog: [v0.27.0...v0.27.1](https://github.com/openai/openai-ruby/compare/v0.27.0...v0.27.1)
