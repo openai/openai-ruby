@@ -356,8 +356,10 @@ module OpenAI
             name: String,
             server_label: String,
             type: :mcp_call,
+            approval_request_id: String?,
             error: String?,
-            output: String?
+            output: String?,
+            status: OpenAI::Models::Conversations::ConversationItem::McpCall::status
           }
 
         class McpCall < OpenAI::Internal::Type::BaseModel
@@ -371,17 +373,27 @@ module OpenAI
 
           attr_accessor type: :mcp_call
 
+          attr_accessor approval_request_id: String?
+
           attr_accessor error: String?
 
           attr_accessor output: String?
+
+          attr_reader status: OpenAI::Models::Conversations::ConversationItem::McpCall::status?
+
+          def status=: (
+            OpenAI::Models::Conversations::ConversationItem::McpCall::status
+          ) -> OpenAI::Models::Conversations::ConversationItem::McpCall::status
 
           def initialize: (
             id: String,
             arguments: String,
             name: String,
             server_label: String,
+            ?approval_request_id: String?,
             ?error: String?,
             ?output: String?,
+            ?status: OpenAI::Models::Conversations::ConversationItem::McpCall::status,
             ?type: :mcp_call
           ) -> void
 
@@ -391,9 +403,26 @@ module OpenAI
             name: String,
             server_label: String,
             type: :mcp_call,
+            approval_request_id: String?,
             error: String?,
-            output: String?
+            output: String?,
+            status: OpenAI::Models::Conversations::ConversationItem::McpCall::status
           }
+
+          type status =
+            :in_progress | :completed | :incomplete | :calling | :failed
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            IN_PROGRESS: :in_progress
+            COMPLETED: :completed
+            INCOMPLETE: :incomplete
+            CALLING: :calling
+            FAILED: :failed
+
+            def self?.values: -> ::Array[OpenAI::Models::Conversations::ConversationItem::McpCall::status]
+          end
         end
 
         def self?.variants: -> ::Array[OpenAI::Models::Conversations::conversation_item]

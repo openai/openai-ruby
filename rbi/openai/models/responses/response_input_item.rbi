@@ -1381,6 +1381,12 @@ module OpenAI
           sig { returns(Symbol) }
           attr_accessor :type
 
+          # Unique identifier for the MCP tool call approval request. Include this value in
+          # a subsequent `mcp_approval_response` input to approve or reject the
+          # corresponding tool call.
+          sig { returns(T.nilable(String)) }
+          attr_accessor :approval_request_id
+
           # The error from the tool call, if any.
           sig { returns(T.nilable(String)) }
           attr_accessor :error
@@ -1389,6 +1395,25 @@ module OpenAI
           sig { returns(T.nilable(String)) }
           attr_accessor :output
 
+          # The status of the tool call. One of `in_progress`, `completed`, `incomplete`,
+          # `calling`, or `failed`.
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Responses::ResponseInputItem::McpCall::Status::OrSymbol
+              )
+            )
+          end
+          attr_reader :status
+
+          sig do
+            params(
+              status:
+                OpenAI::Responses::ResponseInputItem::McpCall::Status::OrSymbol
+            ).void
+          end
+          attr_writer :status
+
           # An invocation of a tool on an MCP server.
           sig do
             params(
@@ -1396,8 +1421,11 @@ module OpenAI
               arguments: String,
               name: String,
               server_label: String,
+              approval_request_id: T.nilable(String),
               error: T.nilable(String),
               output: T.nilable(String),
+              status:
+                OpenAI::Responses::ResponseInputItem::McpCall::Status::OrSymbol,
               type: Symbol
             ).returns(T.attached_class)
           end
@@ -1410,10 +1438,17 @@ module OpenAI
             name:,
             # The label of the MCP server running the tool.
             server_label:,
+            # Unique identifier for the MCP tool call approval request. Include this value in
+            # a subsequent `mcp_approval_response` input to approve or reject the
+            # corresponding tool call.
+            approval_request_id: nil,
             # The error from the tool call, if any.
             error: nil,
             # The output from the tool call.
             output: nil,
+            # The status of the tool call. One of `in_progress`, `completed`, `incomplete`,
+            # `calling`, or `failed`.
+            status: nil,
             # The type of the item. Always `mcp_call`.
             type: :mcp_call
           )
@@ -1427,12 +1462,66 @@ module OpenAI
                 name: String,
                 server_label: String,
                 type: Symbol,
+                approval_request_id: T.nilable(String),
                 error: T.nilable(String),
-                output: T.nilable(String)
+                output: T.nilable(String),
+                status:
+                  OpenAI::Responses::ResponseInputItem::McpCall::Status::OrSymbol
               }
             )
           end
           def to_hash
+          end
+
+          # The status of the tool call. One of `in_progress`, `completed`, `incomplete`,
+          # `calling`, or `failed`.
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol =
+              T.type_alias do
+                T.all(
+                  Symbol,
+                  OpenAI::Responses::ResponseInputItem::McpCall::Status
+                )
+              end
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            IN_PROGRESS =
+              T.let(
+                :in_progress,
+                OpenAI::Responses::ResponseInputItem::McpCall::Status::TaggedSymbol
+              )
+            COMPLETED =
+              T.let(
+                :completed,
+                OpenAI::Responses::ResponseInputItem::McpCall::Status::TaggedSymbol
+              )
+            INCOMPLETE =
+              T.let(
+                :incomplete,
+                OpenAI::Responses::ResponseInputItem::McpCall::Status::TaggedSymbol
+              )
+            CALLING =
+              T.let(
+                :calling,
+                OpenAI::Responses::ResponseInputItem::McpCall::Status::TaggedSymbol
+              )
+            FAILED =
+              T.let(
+                :failed,
+                OpenAI::Responses::ResponseInputItem::McpCall::Status::TaggedSymbol
+              )
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Responses::ResponseInputItem::McpCall::Status::TaggedSymbol
+                ]
+              )
+            end
+            def self.values
+            end
           end
         end
 
