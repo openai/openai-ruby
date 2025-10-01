@@ -138,8 +138,10 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
         arguments: String,
         name: String,
         server_label: String,
+        approval_request_id: String | nil,
         error: String | nil,
-        output: String | nil
+        output: String | nil,
+        status: OpenAI::Responses::ResponseItem::McpCall::Status | nil
       }
       end
     end
