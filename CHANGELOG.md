@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.28.1 (2025-10-01)
+
+Full Changelog: [v0.28.0...v0.28.1](https://github.com/openai/openai-ruby/compare/v0.28.0...v0.28.1)
+
+### Bug Fixes
+
+* **api:** add status, approval_request_id to MCP tool call ([51622d0](https://github.com/openai/openai-ruby/commit/51622d065828bec248fb765c5bc243a058f0044d))
+
 ## 0.28.0 (2025-09-30)
 
 Full Changelog: [v0.27.1...v0.28.0](https://github.com/openai/openai-ruby/compare/v0.27.1...v0.28.0)
