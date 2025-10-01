@@ -156,8 +156,10 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         arguments: String,
         name: String,
         server_label: String,
+        approval_request_id: String | nil,
         error: String | nil,
-        output: String | nil
+        output: String | nil,
+        status: OpenAI::Conversations::ConversationItem::McpCall::Status | nil
       }
       in {type: :custom_tool_call, call_id: String, input: String, name: String, id: String | nil}
       in {
@@ -308,8 +310,10 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         arguments: String,
         name: String,
         server_label: String,
+        approval_request_id: String | nil,
         error: String | nil,
-        output: String | nil
+        output: String | nil,
+        status: OpenAI::Conversations::ConversationItem::McpCall::Status | nil
       }
       in {type: :custom_tool_call, call_id: String, input: String, name: String, id: String | nil}
       in {

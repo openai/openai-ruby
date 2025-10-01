@@ -508,6 +508,14 @@ module OpenAI
           #   @return [Symbol, :mcp_call]
           required :type, const: :mcp_call
 
+          # @!attribute approval_request_id
+          #   Unique identifier for the MCP tool call approval request. Include this value in
+          #   a subsequent `mcp_approval_response` input to approve or reject the
+          #   corresponding tool call.
+          #
+          #   @return [String, nil]
+          optional :approval_request_id, String, nil?: true
+
           # @!attribute error
           #   The error from the tool call, if any.
           #
@@ -520,7 +528,14 @@ module OpenAI
           #   @return [String, nil]
           optional :output, String, nil?: true
 
-          # @!method initialize(id:, arguments:, name:, server_label:, error: nil, output: nil, type: :mcp_call)
+          # @!attribute status
+          #   The status of the tool call. One of `in_progress`, `completed`, `incomplete`,
+          #   `calling`, or `failed`.
+          #
+          #   @return [Symbol, OpenAI::Models::Responses::ResponseItem::McpCall::Status, nil]
+          optional :status, enum: -> { OpenAI::Responses::ResponseItem::McpCall::Status }
+
+          # @!method initialize(id:, arguments:, name:, server_label:, approval_request_id: nil, error: nil, output: nil, status: nil, type: :mcp_call)
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Responses::ResponseItem::McpCall} for more details.
           #
@@ -534,11 +549,32 @@ module OpenAI
           #
           #   @param server_label [String] The label of the MCP server running the tool.
           #
+          #   @param approval_request_id [String, nil] Unique identifier for the MCP tool call approval request.
+          #
           #   @param error [String, nil] The error from the tool call, if any.
           #
           #   @param output [String, nil] The output from the tool call.
           #
+          #   @param status [Symbol, OpenAI::Models::Responses::ResponseItem::McpCall::Status] The status of the tool call. One of `in_progress`, `completed`, `incomplete`, `c
+          #
           #   @param type [Symbol, :mcp_call] The type of the item. Always `mcp_call`.
+
+          # The status of the tool call. One of `in_progress`, `completed`, `incomplete`,
+          # `calling`, or `failed`.
+          #
+          # @see OpenAI::Models::Responses::ResponseItem::McpCall#status
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            IN_PROGRESS = :in_progress
+            COMPLETED = :completed
+            INCOMPLETE = :incomplete
+            CALLING = :calling
+            FAILED = :failed
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
         end
 
         # @!method self.variants
