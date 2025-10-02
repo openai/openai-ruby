@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.29.0 (2025-10-02)
+
+Full Changelog: [v0.28.1...v0.29.0](https://github.com/openai/openai-ruby/compare/v0.28.1...v0.29.0)
+
+### Features
+
+* **api:** add support for realtime calls ([2c89d20](https://github.com/openai/openai-ruby/commit/2c89d20072ed1611227bcdb0cb3771407e5c0a21))
+
 ## 0.28.1 (2025-10-01)
 
 Full Changelog: [v0.28.0...v0.28.1](https://github.com/openai/openai-ruby/compare/v0.28.0...v0.28.1)
