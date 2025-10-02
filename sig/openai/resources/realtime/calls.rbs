@@ -1,0 +1,43 @@
+module OpenAI
+  module Resources
+    class Realtime
+      class Calls
+        def accept: (
+          String call_id,
+          ?audio: OpenAI::Realtime::RealtimeAudioConfig,
+          ?include: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateRequest::include_],
+          ?instructions: String,
+          ?max_output_tokens: OpenAI::Models::Realtime::RealtimeSessionCreateRequest::max_output_tokens,
+          ?model: OpenAI::Models::Realtime::RealtimeSessionCreateRequest::model,
+          ?output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateRequest::output_modality],
+          ?prompt: OpenAI::Responses::ResponsePrompt?,
+          ?tool_choice: OpenAI::Models::Realtime::realtime_tool_choice_config,
+          ?tools: OpenAI::Models::Realtime::realtime_tools_config,
+          ?tracing: OpenAI::Models::Realtime::realtime_tracing_config?,
+          ?truncation: OpenAI::Models::Realtime::realtime_truncation,
+          ?type: :realtime,
+          ?request_options: OpenAI::request_opts
+        ) -> nil
+
+        def hangup: (
+          String call_id,
+          ?request_options: OpenAI::request_opts
+        ) -> nil
+
+        def refer: (
+          String call_id,
+          target_uri: String,
+          ?request_options: OpenAI::request_opts
+        ) -> nil
+
+        def reject: (
+          String call_id,
+          ?status_code: Integer,
+          ?request_options: OpenAI::request_opts
+        ) -> nil
+
+        def initialize: (client: OpenAI::Client) -> void
+      end
+    end
+  end
+end
