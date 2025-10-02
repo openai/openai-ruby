@@ -1,0 +1,27 @@
+module OpenAI
+  module Models
+    module Realtime
+      type call_reject_params =
+        { status_code: Integer } & OpenAI::Internal::Type::request_parameters
+
+      class CallRejectParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_reader status_code: Integer?
+
+        def status_code=: (Integer) -> Integer
+
+        def initialize: (
+          ?status_code: Integer,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          status_code: Integer,
+          request_options: OpenAI::RequestOptions
+        }
+      end
+    end
+  end
+end
