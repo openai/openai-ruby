@@ -3,6 +3,8 @@ module OpenAI
     class Realtime
       attr_reader client_secrets: OpenAI::Resources::Realtime::ClientSecrets
 
+      attr_reader calls: OpenAI::Resources::Realtime::Calls
+
       def initialize: (client: OpenAI::Client) -> void
     end
   end

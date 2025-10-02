@@ -1,0 +1,16 @@
+# frozen_string_literal: true
+
+module OpenAI
+  module Models
+    module Realtime
+      # @see OpenAI::Resources::Realtime::Calls#accept
+      class CallAcceptParams < OpenAI::Models::Realtime::RealtimeSessionCreateRequest
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        # @!method initialize(request_options: {})
+        #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
+      end
+    end
+  end
+end
