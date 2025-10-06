@@ -1,0 +1,88 @@
+module OpenAI
+  module Models
+    type video =
+      {
+        id: String,
+        completed_at: Integer?,
+        created_at: Integer,
+        error: OpenAI::VideoCreateError?,
+        expires_at: Integer?,
+        model: OpenAI::Models::video_model,
+        object: :video,
+        progress: Integer,
+        remixed_from_video_id: String?,
+        seconds: OpenAI::Models::video_seconds,
+        size: OpenAI::Models::video_size,
+        status: OpenAI::Models::Video::status
+      }
+
+    class Video < OpenAI::Internal::Type::BaseModel
+      attr_accessor id: String
+
+      attr_accessor completed_at: Integer?
+
+      attr_accessor created_at: Integer
+
+      attr_accessor error: OpenAI::VideoCreateError?
+
+      attr_accessor expires_at: Integer?
+
+      attr_accessor model: OpenAI::Models::video_model
+
+      attr_accessor object: :video
+
+      attr_accessor progress: Integer
+
+      attr_accessor remixed_from_video_id: String?
+
+      attr_accessor seconds: OpenAI::Models::video_seconds
+
+      attr_accessor size: OpenAI::Models::video_size
+
+      attr_accessor status: OpenAI::Models::Video::status
+
+      def initialize: (
+        id: String,
+        completed_at: Integer?,
+        created_at: Integer,
+        error: OpenAI::VideoCreateError?,
+        expires_at: Integer?,
+        model: OpenAI::Models::video_model,
+        progress: Integer,
+        remixed_from_video_id: String?,
+        seconds: OpenAI::Models::video_seconds,
+        size: OpenAI::Models::video_size,
+        status: OpenAI::Models::Video::status,
+        ?object: :video
+      ) -> void
+
+      def to_hash: -> {
+        id: String,
+        completed_at: Integer?,
+        created_at: Integer,
+        error: OpenAI::VideoCreateError?,
+        expires_at: Integer?,
+        model: OpenAI::Models::video_model,
+        object: :video,
+        progress: Integer,
+        remixed_from_video_id: String?,
+        seconds: OpenAI::Models::video_seconds,
+        size: OpenAI::Models::video_size,
+        status: OpenAI::Models::Video::status
+      }
+
+      type status = :queued | :in_progress | :completed | :failed
+
+      module Status
+        extend OpenAI::Internal::Type::Enum
+
+        QUEUED: :queued
+        IN_PROGRESS: :in_progress
+        COMPLETED: :completed
+        FAILED: :failed
+
+        def self?.values: -> ::Array[OpenAI::Models::Video::status]
+      end
+    end
+  end
+end

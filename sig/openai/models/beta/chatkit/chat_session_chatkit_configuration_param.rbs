@@ -1,0 +1,103 @@
+module OpenAI
+  module Models
+    module Beta
+      module ChatKit
+        type chat_session_chatkit_configuration_param =
+          {
+            automatic_thread_titling: OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::AutomaticThreadTitling,
+            file_upload: OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::FileUpload,
+            history: OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::History
+          }
+
+        class ChatSessionChatKitConfigurationParam < OpenAI::Internal::Type::BaseModel
+          attr_reader automatic_thread_titling: OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::AutomaticThreadTitling?
+
+          def automatic_thread_titling=: (
+            OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::AutomaticThreadTitling
+          ) -> OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::AutomaticThreadTitling
+
+          attr_reader file_upload: OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::FileUpload?
+
+          def file_upload=: (
+            OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::FileUpload
+          ) -> OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::FileUpload
+
+          attr_reader history: OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::History?
+
+          def history=: (
+            OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::History
+          ) -> OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::History
+
+          def initialize: (
+            ?automatic_thread_titling: OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::AutomaticThreadTitling,
+            ?file_upload: OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::FileUpload,
+            ?history: OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::History
+          ) -> void
+
+          def to_hash: -> {
+            automatic_thread_titling: OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::AutomaticThreadTitling,
+            file_upload: OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::FileUpload,
+            history: OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::History
+          }
+
+          type automatic_thread_titling = { enabled: bool }
+
+          class AutomaticThreadTitling < OpenAI::Internal::Type::BaseModel
+            attr_reader enabled: bool?
+
+            def enabled=: (bool) -> bool
+
+            def initialize: (?enabled: bool) -> void
+
+            def to_hash: -> { enabled: bool }
+          end
+
+          type file_upload =
+            { enabled: bool, max_file_size: Integer, max_files: Integer }
+
+          class FileUpload < OpenAI::Internal::Type::BaseModel
+            attr_reader enabled: bool?
+
+            def enabled=: (bool) -> bool
+
+            attr_reader max_file_size: Integer?
+
+            def max_file_size=: (Integer) -> Integer
+
+            attr_reader max_files: Integer?
+
+            def max_files=: (Integer) -> Integer
+
+            def initialize: (
+              ?enabled: bool,
+              ?max_file_size: Integer,
+              ?max_files: Integer
+            ) -> void
+
+            def to_hash: -> {
+              enabled: bool,
+              max_file_size: Integer,
+              max_files: Integer
+            }
+          end
+
+          type history = { enabled: bool, recent_threads: Integer }
+
+          class History < OpenAI::Internal::Type::BaseModel
+            attr_reader enabled: bool?
+
+            def enabled=: (bool) -> bool
+
+            attr_reader recent_threads: Integer?
+
+            def recent_threads=: (Integer) -> Integer
+
+            def initialize: (?enabled: bool, ?recent_threads: Integer) -> void
+
+            def to_hash: -> { enabled: bool, recent_threads: Integer }
+          end
+        end
+      end
+    end
+  end
+end

@@ -508,6 +508,26 @@ module OpenAI
               :"gpt-4o-mini-realtime-preview-2024-12-17",
               OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
             )
+          GPT_REALTIME_MINI =
+            T.let(
+              :"gpt-realtime-mini",
+              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
+            )
+          GPT_REALTIME_MINI_2025_10_06 =
+            T.let(
+              :"gpt-realtime-mini-2025-10-06",
+              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
+            )
+          GPT_AUDIO_MINI =
+            T.let(
+              :"gpt-audio-mini",
+              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
+            )
+          GPT_AUDIO_MINI_2025_10_06 =
+            T.let(
+              :"gpt-audio-mini-2025-10-06",
+              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
+            )
         end
 
         module OutputModality
