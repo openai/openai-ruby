@@ -217,5 +217,27 @@ module OpenAI
 
   class VectorStoreUpdateParams = OpenAI::Models::VectorStoreUpdateParams
 
+  class Video = OpenAI::Models::Video
+
+  class VideoCreateError = OpenAI::Models::VideoCreateError
+
+  class VideoCreateParams = OpenAI::Models::VideoCreateParams
+
+  class VideoDeleteParams = OpenAI::Models::VideoDeleteParams
+
+  class VideoDownloadContentParams = OpenAI::Models::VideoDownloadContentParams
+
+  class VideoListParams = OpenAI::Models::VideoListParams
+
+  module VideoModel = OpenAI::Models::VideoModel
+
+  class VideoRemixParams = OpenAI::Models::VideoRemixParams
+
+  class VideoRetrieveParams = OpenAI::Models::VideoRetrieveParams
+
+  module VideoSeconds = OpenAI::Models::VideoSeconds
+
+  module VideoSize = OpenAI::Models::VideoSize
+
   module Webhooks = OpenAI::Models::Webhooks
 end

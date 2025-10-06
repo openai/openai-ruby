@@ -54,6 +54,8 @@ module OpenAI
 
     attr_reader containers: OpenAI::Resources::Containers
 
+    attr_reader videos: OpenAI::Resources::Videos
+
     private def auth_headers: -> ::Hash[String, String]
 
     def initialize: (

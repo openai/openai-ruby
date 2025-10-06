@@ -10,8 +10,8 @@ module OpenAI
     #   end
     #
     # @example
-    #   conversation_cursor_page.auto_paging_each do |item|
-    #     puts(item)
+    #   conversation_cursor_page.auto_paging_each do |thread|
+    #     puts(thread)
     #   end
     class ConversationCursorPage
       include OpenAI::Internal::Type::BasePage

@@ -1,0 +1,34 @@
+module OpenAI
+  module Models
+    module Beta
+      module ChatKit
+        type chat_session_chatkit_configuration =
+          {
+            automatic_thread_titling: OpenAI::Beta::ChatKit::ChatSessionAutomaticThreadTitling,
+            file_upload: OpenAI::Beta::ChatKit::ChatSessionFileUpload,
+            history: OpenAI::Beta::ChatKit::ChatSessionHistory
+          }
+
+        class ChatSessionChatKitConfiguration < OpenAI::Internal::Type::BaseModel
+          attr_accessor automatic_thread_titling: OpenAI::Beta::ChatKit::ChatSessionAutomaticThreadTitling
+
+          attr_accessor file_upload: OpenAI::Beta::ChatKit::ChatSessionFileUpload
+
+          attr_accessor history: OpenAI::Beta::ChatKit::ChatSessionHistory
+
+          def initialize: (
+            automatic_thread_titling: OpenAI::Beta::ChatKit::ChatSessionAutomaticThreadTitling,
+            file_upload: OpenAI::Beta::ChatKit::ChatSessionFileUpload,
+            history: OpenAI::Beta::ChatKit::ChatSessionHistory
+          ) -> void
+
+          def to_hash: -> {
+            automatic_thread_titling: OpenAI::Beta::ChatKit::ChatSessionAutomaticThreadTitling,
+            file_upload: OpenAI::Beta::ChatKit::ChatSessionFileUpload,
+            history: OpenAI::Beta::ChatKit::ChatSessionHistory
+          }
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,30 @@
+module OpenAI
+  module Models
+    module Beta
+      module ChatKit
+        type thread_delete_response =
+          { id: String, deleted: bool, object: :"chatkit.thread.deleted" }
+
+        class ThreadDeleteResponse < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor deleted: bool
+
+          attr_accessor object: :"chatkit.thread.deleted"
+
+          def initialize: (
+            id: String,
+            deleted: bool,
+            ?object: :"chatkit.thread.deleted"
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            deleted: bool,
+            object: :"chatkit.thread.deleted"
+          }
+        end
+      end
+    end
+  end
+end

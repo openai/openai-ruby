@@ -1,0 +1,15 @@
+module OpenAI
+  module Models
+    type video_create_error = { code: String, message: String }
+
+    class VideoCreateError < OpenAI::Internal::Type::BaseModel
+      attr_accessor code: String
+
+      attr_accessor message: String
+
+      def initialize: (code: String, message: String) -> void
+
+      def to_hash: -> { code: String, message: String }
+    end
+  end
+end

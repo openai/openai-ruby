@@ -1,0 +1,39 @@
+module OpenAI
+  module Resources
+    class Beta
+      class ChatKit
+        class Threads
+          def retrieve: (
+            String thread_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Beta::ChatKit::ChatKitThread
+
+          def list: (
+            ?after: String,
+            ?before: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Beta::ChatKit::ThreadListParams::order,
+            ?user: String,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Internal::ConversationCursorPage[OpenAI::Beta::ChatKit::ChatKitThread]
+
+          def delete: (
+            String thread_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Beta::ChatKit::ThreadDeleteResponse
+
+          def list_items: (
+            String thread_id,
+            ?after: String,
+            ?before: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Beta::ChatKit::ThreadListItemsParams::order,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Internal::ConversationCursorPage[OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::data]
+
+          def initialize: (client: OpenAI::Client) -> void
+        end
+      end
+    end
+  end
+end

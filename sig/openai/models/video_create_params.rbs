@@ -1,0 +1,58 @@
+module OpenAI
+  module Models
+    type video_create_params =
+      {
+        prompt: String,
+        input_reference: OpenAI::Internal::file_input,
+        model: OpenAI::Models::video_model,
+        seconds: OpenAI::Models::video_seconds,
+        size: OpenAI::Models::video_size
+      }
+      & OpenAI::Internal::Type::request_parameters
+
+    class VideoCreateParams < OpenAI::Internal::Type::BaseModel
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
+
+      attr_accessor prompt: String
+
+      attr_reader input_reference: OpenAI::Internal::file_input?
+
+      def input_reference=: (
+        OpenAI::Internal::file_input
+      ) -> OpenAI::Internal::file_input
+
+      attr_reader model: OpenAI::Models::video_model?
+
+      def model=: (OpenAI::Models::video_model) -> OpenAI::Models::video_model
+
+      attr_reader seconds: OpenAI::Models::video_seconds?
+
+      def seconds=: (
+        OpenAI::Models::video_seconds
+      ) -> OpenAI::Models::video_seconds
+
+      attr_reader size: OpenAI::Models::video_size?
+
+      def size=: (OpenAI::Models::video_size) -> OpenAI::Models::video_size
+
+      def initialize: (
+        prompt: String,
+        ?input_reference: OpenAI::Internal::file_input,
+        ?model: OpenAI::Models::video_model,
+        ?seconds: OpenAI::Models::video_seconds,
+        ?size: OpenAI::Models::video_size,
+        ?request_options: OpenAI::request_opts
+      ) -> void
+
+      def to_hash: -> {
+        prompt: String,
+        input_reference: OpenAI::Internal::file_input,
+        model: OpenAI::Models::video_model,
+        seconds: OpenAI::Models::video_seconds,
+        size: OpenAI::Models::video_size,
+        request_options: OpenAI::RequestOptions
+      }
+    end
+  end
+end

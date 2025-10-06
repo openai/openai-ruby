@@ -87,6 +87,9 @@ module OpenAI
     # @return [OpenAI::Resources::Containers]
     attr_reader :containers
 
+    # @return [OpenAI::Resources::Videos]
+    attr_reader :videos
+
     # @api private
     #
     # @return [Hash{String=>String}]
@@ -170,6 +173,7 @@ module OpenAI
       @conversations = OpenAI::Resources::Conversations.new(client: self)
       @evals = OpenAI::Resources::Evals.new(client: self)
       @containers = OpenAI::Resources::Containers.new(client: self)
+      @videos = OpenAI::Resources::Videos.new(client: self)
     end
   end
 end

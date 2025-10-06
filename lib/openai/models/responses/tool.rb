@@ -427,7 +427,8 @@ module OpenAI
           # @!attribute input_fidelity
           #   Control how much effort the model will exert to match the style and features,
           #   especially facial features, of input images. This parameter is only supported
-          #   for `gpt-image-1`. Supports `high` and `low`. Defaults to `low`.
+          #   for `gpt-image-1`. Unsupported for `gpt-image-1-mini`. Supports `high` and
+          #   `low`. Defaults to `low`.
           #
           #   @return [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::InputFidelity, nil]
           optional :input_fidelity,
@@ -534,7 +535,8 @@ module OpenAI
 
           # Control how much effort the model will exert to match the style and features,
           # especially facial features, of input images. This parameter is only supported
-          # for `gpt-image-1`. Supports `high` and `low`. Defaults to `low`.
+          # for `gpt-image-1`. Unsupported for `gpt-image-1-mini`. Supports `high` and
+          # `low`. Defaults to `low`.
           #
           # @see OpenAI::Models::Responses::Tool::ImageGeneration#input_fidelity
           module InputFidelity
@@ -581,6 +583,7 @@ module OpenAI
             extend OpenAI::Internal::Type::Enum
 
             GPT_IMAGE_1 = :"gpt-image-1"
+            GPT_IMAGE_1_MINI = :"gpt-image-1-mini"
 
             # @!method self.values
             #   @return [Array<Symbol>]

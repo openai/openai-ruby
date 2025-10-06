@@ -38,7 +38,8 @@ module OpenAI
 
       # Control how much effort the model will exert to match the style and features,
       # especially facial features, of input images. This parameter is only supported
-      # for `gpt-image-1`. Supports `high` and `low`. Defaults to `low`.
+      # for `gpt-image-1`. Unsupported for `gpt-image-1-mini`. Supports `high` and
+      # `low`. Defaults to `low`.
       sig do
         returns(T.nilable(OpenAI::ImageEditParams::InputFidelity::OrSymbol))
       end
@@ -161,7 +162,8 @@ module OpenAI
         background: nil,
         # Control how much effort the model will exert to match the style and features,
         # especially facial features, of input images. This parameter is only supported
-        # for `gpt-image-1`. Supports `high` and `low`. Defaults to `low`.
+        # for `gpt-image-1`. Unsupported for `gpt-image-1-mini`. Supports `high` and
+        # `low`. Defaults to `low`.
         input_fidelity: nil,
         # An additional image whose fully transparent areas (e.g. where alpha is zero)
         # indicate where `image` should be edited. If there are multiple images provided,
@@ -294,7 +296,8 @@ module OpenAI
 
       # Control how much effort the model will exert to match the style and features,
       # especially facial features, of input images. This parameter is only supported
-      # for `gpt-image-1`. Supports `high` and `low`. Defaults to `low`.
+      # for `gpt-image-1`. Unsupported for `gpt-image-1-mini`. Supports `high` and
+      # `low`. Defaults to `low`.
       module InputFidelity
         extend OpenAI::Internal::Type::Enum
 

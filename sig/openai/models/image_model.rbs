@@ -1,6 +1,7 @@
 module OpenAI
   module Models
-    type image_model = :"dall-e-2" | :"dall-e-3" | :"gpt-image-1"
+    type image_model =
+      :"dall-e-2" | :"dall-e-3" | :"gpt-image-1" | :"gpt-image-1-mini"
 
     module ImageModel
       extend OpenAI::Internal::Type::Enum
@@ -8,6 +9,7 @@ module OpenAI
       DALL_E_2: :"dall-e-2"
       DALL_E_3: :"dall-e-3"
       GPT_IMAGE_1: :"gpt-image-1"
+      GPT_IMAGE_1_MINI: :"gpt-image-1-mini"
 
       def self?.values: -> ::Array[OpenAI::Models::image_model]
     end

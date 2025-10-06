@@ -10,6 +10,9 @@ module OpenAI
       end
 
       module Beta
+        module ChatKit
+        end
+
         module Threads
           module Runs
           end
@@ -19,6 +22,9 @@ module OpenAI
       module Chat
         module Completions
         end
+      end
+
+      module ChatKit
       end
 
       module Checkpoints

@@ -43,7 +43,8 @@ module OpenAI
       # @!attribute input_fidelity
       #   Control how much effort the model will exert to match the style and features,
       #   especially facial features, of input images. This parameter is only supported
-      #   for `gpt-image-1`. Supports `high` and `low`. Defaults to `low`.
+      #   for `gpt-image-1`. Unsupported for `gpt-image-1-mini`. Supports `high` and
+      #   `low`. Defaults to `low`.
       #
       #   @return [Symbol, OpenAI::Models::ImageEditParams::InputFidelity, nil]
       optional :input_fidelity, enum: -> { OpenAI::ImageEditParams::InputFidelity }, nil?: true
@@ -206,7 +207,8 @@ module OpenAI
 
       # Control how much effort the model will exert to match the style and features,
       # especially facial features, of input images. This parameter is only supported
-      # for `gpt-image-1`. Supports `high` and `low`. Defaults to `low`.
+      # for `gpt-image-1`. Unsupported for `gpt-image-1-mini`. Supports `high` and
+      # `low`. Defaults to `low`.
       module InputFidelity
         extend OpenAI::Internal::Type::Enum
 
