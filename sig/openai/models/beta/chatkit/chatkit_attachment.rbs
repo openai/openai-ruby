@@ -1,0 +1,57 @@
+module OpenAI
+  module Models
+    module Beta
+      class ChatKitAttachment = ChatKit::ChatKitAttachment
+
+      module ChatKit
+        type chatkit_attachment =
+          {
+            id: String,
+            mime_type: String,
+            name: String,
+            preview_url: String?,
+            type: OpenAI::Models::Beta::ChatKit::ChatKitAttachment::type_
+          }
+
+        class ChatKitAttachment < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor mime_type: String
+
+          attr_accessor name: String
+
+          attr_accessor preview_url: String?
+
+          attr_accessor type: OpenAI::Models::Beta::ChatKit::ChatKitAttachment::type_
+
+          def initialize: (
+            id: String,
+            mime_type: String,
+            name: String,
+            preview_url: String?,
+            type: OpenAI::Models::Beta::ChatKit::ChatKitAttachment::type_
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            mime_type: String,
+            name: String,
+            preview_url: String?,
+            type: OpenAI::Models::Beta::ChatKit::ChatKitAttachment::type_
+          }
+
+          type type_ = :image | :file
+
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            IMAGE: :image
+            FILE: :file
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::ChatKit::ChatKitAttachment::type_]
+          end
+        end
+      end
+    end
+  end
+end

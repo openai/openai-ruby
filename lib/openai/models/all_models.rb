@@ -25,6 +25,8 @@ module OpenAI
         COMPUTER_USE_PREVIEW = :"computer-use-preview"
         COMPUTER_USE_PREVIEW_2025_03_11 = :"computer-use-preview-2025-03-11"
         GPT_5_CODEX = :"gpt-5-codex"
+        GPT_5_PRO = :"gpt-5-pro"
+        GPT_5_PRO_2025_10_06 = :"gpt-5-pro-2025-10-06"
 
         # @!method self.values
         #   @return [Array<Symbol>]

@@ -8,6 +8,7 @@ module OpenAI
       DALL_E_2 = :"dall-e-2"
       DALL_E_3 = :"dall-e-3"
       GPT_IMAGE_1 = :"gpt-image-1"
+      GPT_IMAGE_1_MINI = :"gpt-image-1-mini"
 
       # @!method self.values
       #   @return [Array<Symbol>]

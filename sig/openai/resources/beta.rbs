@@ -1,6 +1,8 @@
 module OpenAI
   module Resources
     class Beta
+      attr_reader chatkit: OpenAI::Resources::Beta::ChatKit
+
       attr_reader assistants: OpenAI::Resources::Beta::Assistants
 
       attr_reader threads: OpenAI::Resources::Beta::Threads

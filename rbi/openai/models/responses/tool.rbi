@@ -781,7 +781,8 @@ module OpenAI
 
           # Control how much effort the model will exert to match the style and features,
           # especially facial features, of input images. This parameter is only supported
-          # for `gpt-image-1`. Supports `high` and `low`. Defaults to `low`.
+          # for `gpt-image-1`. Unsupported for `gpt-image-1-mini`. Supports `high` and
+          # `low`. Defaults to `low`.
           sig do
             returns(
               T.nilable(
@@ -946,7 +947,8 @@ module OpenAI
             background: nil,
             # Control how much effort the model will exert to match the style and features,
             # especially facial features, of input images. This parameter is only supported
-            # for `gpt-image-1`. Supports `high` and `low`. Defaults to `low`.
+            # for `gpt-image-1`. Unsupported for `gpt-image-1-mini`. Supports `high` and
+            # `low`. Defaults to `low`.
             input_fidelity: nil,
             # Optional mask for inpainting. Contains `image_url` (string, optional) and
             # `file_id` (string, optional).
@@ -1046,7 +1048,8 @@ module OpenAI
 
           # Control how much effort the model will exert to match the style and features,
           # especially facial features, of input images. This parameter is only supported
-          # for `gpt-image-1`. Supports `high` and `low`. Defaults to `low`.
+          # for `gpt-image-1`. Unsupported for `gpt-image-1-mini`. Supports `high` and
+          # `low`. Defaults to `low`.
           module InputFidelity
             extend OpenAI::Internal::Type::Enum
 
@@ -1137,6 +1140,11 @@ module OpenAI
             GPT_IMAGE_1 =
               T.let(
                 :"gpt-image-1",
+                OpenAI::Responses::Tool::ImageGeneration::Model::TaggedSymbol
+              )
+            GPT_IMAGE_1_MINI =
+              T.let(
+                :"gpt-image-1-mini",
                 OpenAI::Responses::Tool::ImageGeneration::Model::TaggedSymbol
               )
 

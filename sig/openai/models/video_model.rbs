@@ -1,0 +1,14 @@
+module OpenAI
+  module Models
+    type video_model = :"sora-2" | :"sora-2-pro"
+
+    module VideoModel
+      extend OpenAI::Internal::Type::Enum
+
+      SORA_2: :"sora-2"
+      SORA_2_PRO: :"sora-2-pro"
+
+      def self?.values: -> ::Array[OpenAI::Models::video_model]
+    end
+  end
+end

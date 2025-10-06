@@ -1,0 +1,14 @@
+module OpenAI
+  module Models
+    module Beta
+      type chatkit_upload_file_response =
+        OpenAI::Beta::FilePart | OpenAI::Beta::ImagePart
+
+      module ChatKitUploadFileResponse
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::chatkit_upload_file_response]
+      end
+    end
+  end
+end

@@ -36,6 +36,9 @@ TEST_PATHS=(
 	test/openai/resources/vector_stores/file_batches_test.rb
 	test/openai/resources/webhooks_test.rb
 	test/openai/resources/beta_test.rb
+	test/openai/resources/beta/chatkit_test.rb
+	test/openai/resources/beta/chatkit/sessions_test.rb
+	test/openai/resources/beta/chatkit/threads_test.rb
 	test/openai/resources/beta/assistants_test.rb
 	test/openai/resources/beta/threads_test.rb
 	test/openai/resources/beta/threads/runs_test.rb
@@ -57,6 +60,7 @@ TEST_PATHS=(
 	test/openai/resources/containers_test.rb
 	test/openai/resources/containers/files_test.rb
 	test/openai/resources/containers/files/content_test.rb
+	test/openai/resources/videos_test.rb
 	test/openai/client_test.rb
 )
 

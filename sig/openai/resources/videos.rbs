@@ -1,0 +1,45 @@
+module OpenAI
+  module Resources
+    class Videos
+      def create: (
+        prompt: String,
+        ?input_reference: OpenAI::Internal::file_input,
+        ?model: OpenAI::Models::video_model,
+        ?seconds: OpenAI::Models::video_seconds,
+        ?size: OpenAI::Models::video_size,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Video
+
+      def retrieve: (
+        String video_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Video
+
+      def list: (
+        ?after: String,
+        ?limit: Integer,
+        ?order: OpenAI::Models::VideoListParams::order,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Internal::ConversationCursorPage[OpenAI::Video]
+
+      def delete: (
+        String video_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Models::VideoDeleteResponse
+
+      def download_content: (
+        String video_id,
+        ?variant: OpenAI::Models::VideoDownloadContentParams::variant,
+        ?request_options: OpenAI::request_opts
+      ) -> StringIO
+
+      def remix: (
+        String video_id,
+        prompt: String,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Video
+
+      def initialize: (client: OpenAI::Client) -> void
+    end
+  end
+end

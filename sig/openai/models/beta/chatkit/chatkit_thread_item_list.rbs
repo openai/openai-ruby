@@ -1,0 +1,276 @@
+module OpenAI
+  module Models
+    module Beta
+      class ChatKitThreadItemList = ChatKit::ChatKitThreadItemList
+
+      module ChatKit
+        type chatkit_thread_item_list =
+          {
+            data: ::Array[OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::data],
+            first_id: String?,
+            has_more: bool,
+            last_id: String?,
+            object: :list
+          }
+
+        class ChatKitThreadItemList < OpenAI::Internal::Type::BaseModel
+          attr_accessor data: ::Array[OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::data]
+
+          attr_accessor first_id: String?
+
+          attr_accessor has_more: bool
+
+          attr_accessor last_id: String?
+
+          attr_accessor object: :list
+
+          def initialize: (
+            data: ::Array[OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::data],
+            first_id: String?,
+            has_more: bool,
+            last_id: String?,
+            ?object: :list
+          ) -> void
+
+          def to_hash: -> {
+            data: ::Array[OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::data],
+            first_id: String?,
+            has_more: bool,
+            last_id: String?,
+            object: :list
+          }
+
+          type data =
+            OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem
+            | OpenAI::Beta::ChatKit::ChatKitThreadAssistantMessageItem
+            | OpenAI::Beta::ChatKit::ChatKitWidgetItem
+            | OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitClientToolCall
+            | OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTask
+            | OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup
+
+          module Data
+            extend OpenAI::Internal::Type::Union
+
+            type chatkit_client_tool_call =
+              {
+                id: String,
+                arguments: String,
+                call_id: String,
+                created_at: Integer,
+                name: String,
+                object: :"chatkit.thread_item",
+                output: String?,
+                status: OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitClientToolCall::status,
+                thread_id: String,
+                type: :"chatkit.client_tool_call"
+              }
+
+            class ChatKitClientToolCall < OpenAI::Internal::Type::BaseModel
+              attr_accessor id: String
+
+              attr_accessor arguments: String
+
+              attr_accessor call_id: String
+
+              attr_accessor created_at: Integer
+
+              attr_accessor name: String
+
+              attr_accessor object: :"chatkit.thread_item"
+
+              attr_accessor output: String?
+
+              attr_accessor status: OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitClientToolCall::status
+
+              attr_accessor thread_id: String
+
+              attr_accessor type: :"chatkit.client_tool_call"
+
+              def initialize: (
+                id: String,
+                arguments: String,
+                call_id: String,
+                created_at: Integer,
+                name: String,
+                output: String?,
+                status: OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitClientToolCall::status,
+                thread_id: String,
+                ?object: :"chatkit.thread_item",
+                ?type: :"chatkit.client_tool_call"
+              ) -> void
+
+              def to_hash: -> {
+                id: String,
+                arguments: String,
+                call_id: String,
+                created_at: Integer,
+                name: String,
+                object: :"chatkit.thread_item",
+                output: String?,
+                status: OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitClientToolCall::status,
+                thread_id: String,
+                type: :"chatkit.client_tool_call"
+              }
+
+              type status = :in_progress | :completed
+
+              module Status
+                extend OpenAI::Internal::Type::Enum
+
+                IN_PROGRESS: :in_progress
+                COMPLETED: :completed
+
+                def self?.values: -> ::Array[OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitClientToolCall::status]
+              end
+            end
+
+            type chatkit_task =
+              {
+                id: String,
+                created_at: Integer,
+                heading: String?,
+                object: :"chatkit.thread_item",
+                summary: String?,
+                task_type: OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTask::task_type,
+                thread_id: String,
+                type: :"chatkit.task"
+              }
+
+            class ChatKitTask < OpenAI::Internal::Type::BaseModel
+              attr_accessor id: String
+
+              attr_accessor created_at: Integer
+
+              attr_accessor heading: String?
+
+              attr_accessor object: :"chatkit.thread_item"
+
+              attr_accessor summary: String?
+
+              attr_accessor task_type: OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTask::task_type
+
+              attr_accessor thread_id: String
+
+              attr_accessor type: :"chatkit.task"
+
+              def initialize: (
+                id: String,
+                created_at: Integer,
+                heading: String?,
+                summary: String?,
+                task_type: OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTask::task_type,
+                thread_id: String,
+                ?object: :"chatkit.thread_item",
+                ?type: :"chatkit.task"
+              ) -> void
+
+              def to_hash: -> {
+                id: String,
+                created_at: Integer,
+                heading: String?,
+                object: :"chatkit.thread_item",
+                summary: String?,
+                task_type: OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTask::task_type,
+                thread_id: String,
+                type: :"chatkit.task"
+              }
+
+              type task_type = :custom | :thought
+
+              module TaskType
+                extend OpenAI::Internal::Type::Enum
+
+                CUSTOM: :custom
+                THOUGHT: :thought
+
+                def self?.values: -> ::Array[OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTask::task_type]
+              end
+            end
+
+            type chatkit_task_group =
+              {
+                id: String,
+                created_at: Integer,
+                object: :"chatkit.thread_item",
+                tasks: ::Array[OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task],
+                thread_id: String,
+                type: :"chatkit.task_group"
+              }
+
+            class ChatKitTaskGroup < OpenAI::Internal::Type::BaseModel
+              attr_accessor id: String
+
+              attr_accessor created_at: Integer
+
+              attr_accessor object: :"chatkit.thread_item"
+
+              attr_accessor tasks: ::Array[OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task]
+
+              attr_accessor thread_id: String
+
+              attr_accessor type: :"chatkit.task_group"
+
+              def initialize: (
+                id: String,
+                created_at: Integer,
+                tasks: ::Array[OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task],
+                thread_id: String,
+                ?object: :"chatkit.thread_item",
+                ?type: :"chatkit.task_group"
+              ) -> void
+
+              def to_hash: -> {
+                id: String,
+                created_at: Integer,
+                object: :"chatkit.thread_item",
+                tasks: ::Array[OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task],
+                thread_id: String,
+                type: :"chatkit.task_group"
+              }
+
+              type task =
+                {
+                  heading: String?,
+                  summary: String?,
+                  type: OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task::type_
+                }
+
+              class Task < OpenAI::Internal::Type::BaseModel
+                attr_accessor heading: String?
+
+                attr_accessor summary: String?
+
+                attr_accessor type: OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task::type_
+
+                def initialize: (
+                  heading: String?,
+                  summary: String?,
+                  type: OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task::type_
+                ) -> void
+
+                def to_hash: -> {
+                  heading: String?,
+                  summary: String?,
+                  type: OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task::type_
+                }
+
+                type type_ = :custom | :thought
+
+                module Type
+                  extend OpenAI::Internal::Type::Enum
+
+                  CUSTOM: :custom
+                  THOUGHT: :thought
+
+                  def self?.values: -> ::Array[OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task::type_]
+                end
+              end
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::data]
+          end
+        end
+      end
+    end
+  end
+end

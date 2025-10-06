@@ -1,0 +1,40 @@
+module OpenAI
+  module Models
+    type video_download_content_params =
+      { variant: OpenAI::Models::VideoDownloadContentParams::variant }
+      & OpenAI::Internal::Type::request_parameters
+
+    class VideoDownloadContentParams < OpenAI::Internal::Type::BaseModel
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
+
+      attr_reader variant: OpenAI::Models::VideoDownloadContentParams::variant?
+
+      def variant=: (
+        OpenAI::Models::VideoDownloadContentParams::variant
+      ) -> OpenAI::Models::VideoDownloadContentParams::variant
+
+      def initialize: (
+        ?variant: OpenAI::Models::VideoDownloadContentParams::variant,
+        ?request_options: OpenAI::request_opts
+      ) -> void
+
+      def to_hash: -> {
+        variant: OpenAI::Models::VideoDownloadContentParams::variant,
+        request_options: OpenAI::RequestOptions
+      }
+
+      type variant = :video | :thumbnail | :spritesheet
+
+      module Variant
+        extend OpenAI::Internal::Type::Enum
+
+        VIDEO: :video
+        THUMBNAIL: :thumbnail
+        SPRITESHEET: :spritesheet
+
+        def self?.values: -> ::Array[OpenAI::Models::VideoDownloadContentParams::variant]
+      end
+    end
+  end
+end

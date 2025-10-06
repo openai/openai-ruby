@@ -1,0 +1,23 @@
+module OpenAI
+  module Models
+    type video_remix_params =
+      { prompt: String } & OpenAI::Internal::Type::request_parameters
+
+    class VideoRemixParams < OpenAI::Internal::Type::BaseModel
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
+
+      attr_accessor prompt: String
+
+      def initialize: (
+        prompt: String,
+        ?request_options: OpenAI::request_opts
+      ) -> void
+
+      def to_hash: -> {
+        prompt: String,
+        request_options: OpenAI::RequestOptions
+      }
+    end
+  end
+end

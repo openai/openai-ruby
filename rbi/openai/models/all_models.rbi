@@ -70,6 +70,16 @@ module OpenAI
             :"gpt-5-codex",
             OpenAI::AllModels::ResponsesOnlyModel::TaggedSymbol
           )
+        GPT_5_PRO =
+          T.let(
+            :"gpt-5-pro",
+            OpenAI::AllModels::ResponsesOnlyModel::TaggedSymbol
+          )
+        GPT_5_PRO_2025_10_06 =
+          T.let(
+            :"gpt-5-pro-2025-10-06",
+            OpenAI::AllModels::ResponsesOnlyModel::TaggedSymbol
+          )
 
         sig do
           override.returns(
