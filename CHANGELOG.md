@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.30.0 (2025-10-06)
+
+Full Changelog: [v0.29.0...v0.30.0](https://github.com/openai/openai-ruby/compare/v0.29.0...v0.30.0)
+
+### Features
+
+* **api:** dev day 2025 launches ([98a56b4](https://github.com/openai/openai-ruby/commit/98a56b4c6a1cae0ebf4c0d9bc75933fbcd74af9f))
+
 ## 0.29.0 (2025-10-02)
 
 Full Changelog: [v0.28.1...v0.29.0](https://github.com/openai/openai-ruby/compare/v0.28.1...v0.29.0)
