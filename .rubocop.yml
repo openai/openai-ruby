@@ -121,6 +121,10 @@ Metrics/BlockLength:
 Metrics/ClassLength:
   Enabled: false
 
+Metrics/CollectionLiteralLength:
+  Exclude:
+    - "test/**/*"
+
 Metrics/CyclomaticComplexity:
   Enabled: false
 
