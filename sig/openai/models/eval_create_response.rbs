@@ -85,8 +85,8 @@ module OpenAI
       end
 
       type testing_criterion =
-        OpenAI::Models::Graders::LabelModelGrader
-        | OpenAI::Models::Graders::StringCheckGrader
+        OpenAI::Graders::LabelModelGrader
+        | OpenAI::Graders::StringCheckGrader
         | OpenAI::Models::EvalCreateResponse::TestingCriterion::EvalGraderTextSimilarity
         | OpenAI::Models::EvalCreateResponse::TestingCriterion::EvalGraderPython
         | OpenAI::Models::EvalCreateResponse::TestingCriterion::EvalGraderScoreModel
