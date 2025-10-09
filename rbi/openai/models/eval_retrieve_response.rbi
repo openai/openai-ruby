@@ -72,8 +72,8 @@ module OpenAI
           testing_criteria:
             T::Array[
               T.any(
-                OpenAI::Models::Graders::LabelModelGrader::OrHash,
-                OpenAI::Models::Graders::StringCheckGrader::OrHash,
+                OpenAI::Graders::LabelModelGrader::OrHash,
+                OpenAI::Graders::StringCheckGrader::OrHash,
                 OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderTextSimilarity::OrHash,
                 OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderPython::OrHash,
                 OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderScoreModel::OrHash
@@ -225,8 +225,8 @@ module OpenAI
         Variants =
           T.type_alias do
             T.any(
-              OpenAI::Models::Graders::LabelModelGrader,
-              OpenAI::Models::Graders::StringCheckGrader,
+              OpenAI::Graders::LabelModelGrader,
+              OpenAI::Graders::StringCheckGrader,
               OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderTextSimilarity,
               OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderPython,
               OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderScoreModel
