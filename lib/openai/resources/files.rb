@@ -105,7 +105,7 @@ module OpenAI
         )
       end
 
-      # Delete a file.
+      # Delete a file and remove it from all vector stores.
       #
       # @overload delete(file_id, request_options: {})
       #

@@ -41,12 +41,26 @@ module OpenAI
         def self?.values: -> ::Array[OpenAI::Models::ComparisonFilter::type_]
       end
 
-      type value = String | Float | bool
+      type value =
+        String
+        | Float
+        | bool
+        | ::Array[OpenAI::Models::ComparisonFilter::Value::union_member3]
 
       module Value
         extend OpenAI::Internal::Type::Union
 
+        type union_member3 = String | Float
+
+        module UnionMember3
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::ComparisonFilter::Value::union_member3]
+        end
+
         def self?.variants: -> ::Array[OpenAI::Models::ComparisonFilter::value]
+
+        UnionMember3Array: OpenAI::Internal::Type::Converter
       end
     end
   end

@@ -517,6 +517,9 @@ module OpenAI
                 # supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
                 # effort can result in faster responses and fewer tokens used on reasoning in a
                 # response.
+                #
+                # Note: The `gpt-5-pro` model defaults to (and only supports) `high` reasoning
+                # effort.
                 sig do
                   returns(T.nilable(OpenAI::ReasoningEffort::TaggedSymbol))
                 end
@@ -576,6 +579,9 @@ module OpenAI
                   # supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
                   # effort can result in faster responses and fewer tokens used on reasoning in a
                   # response.
+                  #
+                  # Note: The `gpt-5-pro` model defaults to (and only supports) `high` reasoning
+                  # effort.
                   reasoning_effort: nil,
                   # Sampling temperature. This is a query parameter used to select responses.
                   temperature: nil,
@@ -1122,6 +1128,9 @@ module OpenAI
               # supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
               # effort can result in faster responses and fewer tokens used on reasoning in a
               # response.
+              #
+              # Note: The `gpt-5-pro` model defaults to (and only supports) `high` reasoning
+              # effort.
               sig { returns(T.nilable(OpenAI::ReasoningEffort::TaggedSymbol)) }
               attr_accessor :reasoning_effort
 
@@ -1243,6 +1252,9 @@ module OpenAI
                 # supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
                 # effort can result in faster responses and fewer tokens used on reasoning in a
                 # response.
+                #
+                # Note: The `gpt-5-pro` model defaults to (and only supports) `high` reasoning
+                # effort.
                 reasoning_effort: nil,
                 # A seed value to initialize the randomness, during sampling.
                 seed: nil,
