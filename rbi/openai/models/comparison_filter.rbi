@@ -12,7 +12,8 @@ module OpenAI
       sig { returns(String) }
       attr_accessor :key
 
-      # Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`.
+      # Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`, `in`,
+      # `nin`.
       #
       # - `eq`: equals
       # - `ne`: not equal
@@ -20,6 +21,8 @@ module OpenAI
       # - `gte`: greater than or equal
       # - `lt`: less than
       # - `lte`: less than or equal
+      # - `in`: in
+      # - `nin`: not in
       sig { returns(OpenAI::ComparisonFilter::Type::OrSymbol) }
       attr_accessor :type
 
@@ -40,7 +43,8 @@ module OpenAI
       def self.new(
         # The key to compare against the value.
         key:,
-        # Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`.
+        # Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`, `in`,
+        # `nin`.
         #
         # - `eq`: equals
         # - `ne`: not equal
@@ -48,6 +52,8 @@ module OpenAI
         # - `gte`: greater than or equal
         # - `lt`: less than
         # - `lte`: less than or equal
+        # - `in`: in
+        # - `nin`: not in
         type:,
         # The value to compare against the attribute key; supports string, number, or
         # boolean types.
@@ -67,7 +73,8 @@ module OpenAI
       def to_hash
       end
 
-      # Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`.
+      # Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`, `in`,
+      # `nin`.
       #
       # - `eq`: equals
       # - `ne`: not equal
@@ -75,6 +82,8 @@ module OpenAI
       # - `gte`: greater than or equal
       # - `lt`: less than
       # - `lte`: less than or equal
+      # - `in`: in
+      # - `nin`: not in
       module Type
         extend OpenAI::Internal::Type::Enum
 
@@ -103,13 +112,43 @@ module OpenAI
       module Value
         extend OpenAI::Internal::Type::Union
 
-        Variants = T.type_alias { T.any(String, Float, T::Boolean) }
+        Variants =
+          T.type_alias do
+            T.any(
+              String,
+              Float,
+              T::Boolean,
+              T::Array[OpenAI::ComparisonFilter::Value::UnionMember3::Variants]
+            )
+          end
+
+        module UnionMember3
+          extend OpenAI::Internal::Type::Union
+
+          Variants = T.type_alias { T.any(String, Float) }
+
+          sig do
+            override.returns(
+              T::Array[OpenAI::ComparisonFilter::Value::UnionMember3::Variants]
+            )
+          end
+          def self.variants
+          end
+        end
 
         sig do
           override.returns(T::Array[OpenAI::ComparisonFilter::Value::Variants])
         end
         def self.variants
         end
+
+        UnionMember3Array =
+          T.let(
+            OpenAI::Internal::Type::ArrayOf[
+              union: OpenAI::ComparisonFilter::Value::UnionMember3
+            ],
+            OpenAI::Internal::Type::Converter
+          )
       end
     end
   end

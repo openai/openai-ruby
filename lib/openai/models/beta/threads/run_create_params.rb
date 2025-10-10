@@ -113,6 +113,9 @@ module OpenAI
           #   effort can result in faster responses and fewer tokens used on reasoning in a
           #   response.
           #
+          #   Note: The `gpt-5-pro` model defaults to (and only supports) `high` reasoning
+          #   effort.
+          #
           #   @return [Symbol, OpenAI::Models::ReasoningEffort, nil]
           optional :reasoning_effort, enum: -> { OpenAI::ReasoningEffort }, nil?: true
 

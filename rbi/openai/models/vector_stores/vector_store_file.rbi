@@ -190,7 +190,7 @@ module OpenAI
               )
             end
 
-          # One of `server_error` or `rate_limit_exceeded`.
+          # One of `server_error`, `unsupported_file`, or `invalid_file`.
           sig do
             returns(
               OpenAI::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol
@@ -212,7 +212,7 @@ module OpenAI
             ).returns(T.attached_class)
           end
           def self.new(
-            # One of `server_error` or `rate_limit_exceeded`.
+            # One of `server_error`, `unsupported_file`, or `invalid_file`.
             code:,
             # A human-readable description of the error.
             message:
@@ -231,7 +231,7 @@ module OpenAI
           def to_hash
           end
 
-          # One of `server_error` or `rate_limit_exceeded`.
+          # One of `server_error`, `unsupported_file`, or `invalid_file`.
           module Code
             extend OpenAI::Internal::Type::Enum
 
