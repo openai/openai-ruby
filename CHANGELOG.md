@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.31.0 (2025-10-10)
+
+Full Changelog: [v0.30.0...v0.31.0](https://github.com/openai/openai-ruby/compare/v0.30.0...v0.31.0)
+
+### Features
+
+* **api:** comparison filter in/not in ([ac3e58b](https://github.com/openai/openai-ruby/commit/ac3e58bbee0c919ac84c4b3ac8b67955bca7ba88))
+
+
+### Chores
+
+* ignore linter error for tests having large collections ([90c4440](https://github.com/openai/openai-ruby/commit/90c44400f8713b7d2d0b51142f4ed5509dbca713))
+* simplify model references ([d18c5af](https://github.com/openai/openai-ruby/commit/d18c5af9d05ae63616f2c83fb228c15f37cdddb0))
+
 ## 0.30.0 (2025-10-06)
 
 Full Changelog: [v0.29.0...v0.30.0](https://github.com/openai/openai-ruby/compare/v0.29.0...v0.30.0)
