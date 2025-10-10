@@ -128,6 +128,9 @@ module OpenAI
             # supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
             # effort can result in faster responses and fewer tokens used on reasoning in a
             # response.
+            #
+            # Note: The `gpt-5-pro` model defaults to (and only supports) `high` reasoning
+            # effort.
             reasoning_effort: nil,
             # Body param: Specifies the format that the model must output. Compatible with
             # [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
@@ -307,6 +310,9 @@ module OpenAI
             # supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
             # effort can result in faster responses and fewer tokens used on reasoning in a
             # response.
+            #
+            # Note: The `gpt-5-pro` model defaults to (and only supports) `high` reasoning
+            # effort.
             reasoning_effort: nil,
             # Body param: Specifies the format that the model must output. Compatible with
             # [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),

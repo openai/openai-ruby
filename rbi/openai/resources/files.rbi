@@ -89,7 +89,7 @@ module OpenAI
       )
       end
 
-      # Delete a file.
+      # Delete a file and remove it from all vector stores.
       sig do
         params(
           file_id: String,

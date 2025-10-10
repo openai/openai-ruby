@@ -10,7 +10,8 @@ module OpenAI
       required :key, String
 
       # @!attribute type
-      #   Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`.
+      #   Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`, `in`,
+      #   `nin`.
       #
       #   - `eq`: equals
       #   - `ne`: not equal
@@ -18,6 +19,8 @@ module OpenAI
       #   - `gte`: greater than or equal
       #   - `lt`: less than
       #   - `lte`: less than or equal
+      #   - `in`: in
+      #   - `nin`: not in
       #
       #   @return [Symbol, OpenAI::Models::ComparisonFilter::Type]
       required :type, enum: -> { OpenAI::ComparisonFilter::Type }
@@ -26,7 +29,7 @@ module OpenAI
       #   The value to compare against the attribute key; supports string, number, or
       #   boolean types.
       #
-      #   @return [String, Float, Boolean]
+      #   @return [String, Float, Boolean, Array<String, Float>]
       required :value, union: -> { OpenAI::ComparisonFilter::Value }
 
       # @!method initialize(key:, type:, value:)
@@ -38,11 +41,12 @@ module OpenAI
       #
       #   @param key [String] The key to compare against the value.
       #
-      #   @param type [Symbol, OpenAI::Models::ComparisonFilter::Type] Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`.
+      #   @param type [Symbol, OpenAI::Models::ComparisonFilter::Type] Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`, `in`, `
       #
-      #   @param value [String, Float, Boolean] The value to compare against the attribute key; supports string, number, or bool
+      #   @param value [String, Float, Boolean, Array<String, Float>] The value to compare against the attribute key; supports string, number, or bool
 
-      # Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`.
+      # Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`, `in`,
+      # `nin`.
       #
       # - `eq`: equals
       # - `ne`: not equal
@@ -50,6 +54,8 @@ module OpenAI
       # - `gte`: greater than or equal
       # - `lt`: less than
       # - `lte`: less than or equal
+      # - `in`: in
+      # - `nin`: not in
       #
       # @see OpenAI::Models::ComparisonFilter#type
       module Type
@@ -79,8 +85,25 @@ module OpenAI
 
         variant OpenAI::Internal::Type::Boolean
 
+        variant -> { OpenAI::Models::ComparisonFilter::Value::UnionMember3Array }
+
+        module UnionMember3
+          extend OpenAI::Internal::Type::Union
+
+          variant String
+
+          variant Float
+
+          # @!method self.variants
+          #   @return [Array(String, Float)]
+        end
+
         # @!method self.variants
-        #   @return [Array(String, Float, Boolean)]
+        #   @return [Array(String, Float, Boolean, Array<String, Float>)]
+
+        # @type [OpenAI::Internal::Type::Converter]
+        UnionMember3Array =
+          OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::ComparisonFilter::Value::UnionMember3 }]
       end
     end
   end

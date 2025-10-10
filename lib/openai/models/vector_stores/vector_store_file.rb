@@ -101,7 +101,7 @@ module OpenAI
         # @see OpenAI::Models::VectorStores::VectorStoreFile#last_error
         class LastError < OpenAI::Internal::Type::BaseModel
           # @!attribute code
-          #   One of `server_error` or `rate_limit_exceeded`.
+          #   One of `server_error`, `unsupported_file`, or `invalid_file`.
           #
           #   @return [Symbol, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code]
           required :code, enum: -> { OpenAI::VectorStores::VectorStoreFile::LastError::Code }
@@ -116,11 +116,11 @@ module OpenAI
           #   The last error associated with this vector store file. Will be `null` if there
           #   are no errors.
           #
-          #   @param code [Symbol, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code] One of `server_error` or `rate_limit_exceeded`.
+          #   @param code [Symbol, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code] One of `server_error`, `unsupported_file`, or `invalid_file`.
           #
           #   @param message [String] A human-readable description of the error.
 
-          # One of `server_error` or `rate_limit_exceeded`.
+          # One of `server_error`, `unsupported_file`, or `invalid_file`.
           #
           # @see OpenAI::Models::VectorStores::VectorStoreFile::LastError#code
           module Code
