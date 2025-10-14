@@ -473,10 +473,9 @@ module OpenAI
         # @return [Enumerable<String>]
         def writable_enum(&blk)
           Enumerator.new do |y|
-            buf = String.new
             y.define_singleton_method(:write) do
-              self << buf.replace(_1)
-              buf.bytesize
+              self << _1.dup
+              _1.bytesize
             end
 
             blk.call(y)
