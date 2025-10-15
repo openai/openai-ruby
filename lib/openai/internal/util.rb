@@ -346,8 +346,9 @@ module OpenAI
           base_path, base_query = lhs.fetch_values(:path, :query)
           slashed = base_path.end_with?("/") ? base_path : "#{base_path}/"
 
-          parsed_path, parsed_query = parse_uri(rhs.fetch(:path)).fetch_values(:path, :query)
-          override = URI::Generic.build(**rhs.slice(:scheme, :host, :port), path: parsed_path)
+          merged = {**parse_uri(rhs.fetch(:path)), **rhs.except(:path, :query)}
+          parsed_path, parsed_query = merged.fetch_values(:path, :query)
+          override = URI::Generic.build(**merged.slice(:scheme, :host, :port), path: parsed_path)
 
           joined = URI.join(URI::Generic.build(lhs.except(:path, :query)), slashed, override)
           query = deep_merge(
