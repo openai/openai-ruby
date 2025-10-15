@@ -124,6 +124,14 @@ class OpenAI::Test::UtilUriHandlingTest < Minitest::Test
           path: "/c",
           query: {"d" => ["e"]}
         }
+      ],
+      [
+        "h://a.b/c?d=e",
+        "h://nope",
+        {
+          path: "h://a.b/c",
+          query: {"d" => ["e"]}
+        }
       ]
     ]
 
