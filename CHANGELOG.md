@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.32.0 (2025-10-16)
+
+Full Changelog: [v0.31.0...v0.32.0](https://github.com/openai/openai-ruby/compare/v0.31.0...v0.32.0)
+
+### Features
+
+* **api:** Add support for gpt-4o-transcribe-diarize on audio/transcriptions endpoint ([b31bd7f](https://github.com/openai/openai-ruby/commit/b31bd7f20ca702160873fa26ab39479fd8102f85))
+
+
+### Bug Fixes
+
+* absolutely qualified uris should always override the default ([14fdff8](https://github.com/openai/openai-ruby/commit/14fdff8de533a1002c64c9086016777a1e152a97))
+* should not reuse buffers for `IO.copy_stream` interop ([8f33de1](https://github.com/openai/openai-ruby/commit/8f33de18bb104d5003a4d459ad244c0813e5a07e))
+
 ## 0.31.0 (2025-10-10)
 
 Full Changelog: [v0.30.0...v0.31.0](https://github.com/openai/openai-ruby/compare/v0.30.0...v0.31.0)
