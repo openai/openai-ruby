@@ -22,7 +22,8 @@ module OpenAI
         attr_writer :language
 
         # The model to use for transcription. Current options are `whisper-1`,
-        # `gpt-4o-transcribe-latest`, `gpt-4o-mini-transcribe`, and `gpt-4o-transcribe`.
+        # `gpt-4o-mini-transcribe`, `gpt-4o-transcribe`, and `gpt-4o-transcribe-diarize`.
+        # Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.
         sig do
           returns(
             T.nilable(OpenAI::Realtime::AudioTranscription::Model::OrSymbol)
@@ -40,8 +41,8 @@ module OpenAI
         # An optional text to guide the model's style or continue a previous audio
         # segment. For `whisper-1`, the
         # [prompt is a list of keywords](https://platform.openai.com/docs/guides/speech-to-text#prompting).
-        # For `gpt-4o-transcribe` models, the prompt is a free text string, for example
-        # "expect words related to technology".
+        # For `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the
+        # prompt is a free text string, for example "expect words related to technology".
         sig { returns(T.nilable(String)) }
         attr_reader :prompt
 
@@ -61,13 +62,14 @@ module OpenAI
           # format will improve accuracy and latency.
           language: nil,
           # The model to use for transcription. Current options are `whisper-1`,
-          # `gpt-4o-transcribe-latest`, `gpt-4o-mini-transcribe`, and `gpt-4o-transcribe`.
+          # `gpt-4o-mini-transcribe`, `gpt-4o-transcribe`, and `gpt-4o-transcribe-diarize`.
+          # Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.
           model: nil,
           # An optional text to guide the model's style or continue a previous audio
           # segment. For `whisper-1`, the
           # [prompt is a list of keywords](https://platform.openai.com/docs/guides/speech-to-text#prompting).
-          # For `gpt-4o-transcribe` models, the prompt is a free text string, for example
-          # "expect words related to technology".
+          # For `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the
+          # prompt is a free text string, for example "expect words related to technology".
           prompt: nil
         )
         end
@@ -85,7 +87,8 @@ module OpenAI
         end
 
         # The model to use for transcription. Current options are `whisper-1`,
-        # `gpt-4o-transcribe-latest`, `gpt-4o-mini-transcribe`, and `gpt-4o-transcribe`.
+        # `gpt-4o-mini-transcribe`, `gpt-4o-transcribe`, and `gpt-4o-transcribe-diarize`.
+        # Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.
         module Model
           extend OpenAI::Internal::Type::Enum
 
@@ -100,11 +103,6 @@ module OpenAI
               :"whisper-1",
               OpenAI::Realtime::AudioTranscription::Model::TaggedSymbol
             )
-          GPT_4O_TRANSCRIBE_LATEST =
-            T.let(
-              :"gpt-4o-transcribe-latest",
-              OpenAI::Realtime::AudioTranscription::Model::TaggedSymbol
-            )
           GPT_4O_MINI_TRANSCRIBE =
             T.let(
               :"gpt-4o-mini-transcribe",
@@ -113,6 +111,11 @@ module OpenAI
           GPT_4O_TRANSCRIBE =
             T.let(
               :"gpt-4o-transcribe",
+              OpenAI::Realtime::AudioTranscription::Model::TaggedSymbol
+            )
+          GPT_4O_TRANSCRIBE_DIARIZE =
+            T.let(
+              :"gpt-4o-transcribe-diarize",
               OpenAI::Realtime::AudioTranscription::Model::TaggedSymbol
             )
 

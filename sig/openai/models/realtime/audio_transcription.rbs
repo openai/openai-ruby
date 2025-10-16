@@ -37,17 +37,17 @@ module OpenAI
 
         type model =
           :"whisper-1"
-          | :"gpt-4o-transcribe-latest"
           | :"gpt-4o-mini-transcribe"
           | :"gpt-4o-transcribe"
+          | :"gpt-4o-transcribe-diarize"
 
         module Model
           extend OpenAI::Internal::Type::Enum
 
           WHISPER_1: :"whisper-1"
-          GPT_4O_TRANSCRIBE_LATEST: :"gpt-4o-transcribe-latest"
           GPT_4O_MINI_TRANSCRIBE: :"gpt-4o-mini-transcribe"
           GPT_4O_TRANSCRIBE: :"gpt-4o-transcribe"
+          GPT_4O_TRANSCRIBE_DIARIZE: :"gpt-4o-transcribe-diarize"
 
           def self?.values: -> ::Array[OpenAI::Models::Realtime::AudioTranscription::model]
         end

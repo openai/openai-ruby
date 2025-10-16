@@ -25,7 +25,14 @@ module OpenAI
         optional :logprobs,
                  -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob] }
 
-        # @!method initialize(delta:, logprobs: nil, type: :"transcript.text.delta")
+        # @!attribute segment_id
+        #   Identifier of the diarized segment that this delta belongs to. Only present when
+        #   using `gpt-4o-transcribe-diarize`.
+        #
+        #   @return [String, nil]
+        optional :segment_id, String
+
+        # @!method initialize(delta:, logprobs: nil, segment_id: nil, type: :"transcript.text.delta")
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Audio::TranscriptionTextDeltaEvent} for more details.
         #
@@ -37,6 +44,8 @@ module OpenAI
         #   @param delta [String] The text delta that was additionally transcribed.
         #
         #   @param logprobs [Array<OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob>] The log probabilities of the delta. Only included if you [create a transcription
+        #
+        #   @param segment_id [String] Identifier of the diarized segment that this delta belongs to. Only present when
         #
         #   @param type [Symbol, :"transcript.text.delta"] The type of the event. Always `transcript.text.delta`.
 

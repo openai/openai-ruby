@@ -5,7 +5,8 @@ module OpenAI
         {
           delta: String,
           type: :"transcript.text.delta",
-          logprobs: ::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob]
+          logprobs: ::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob],
+          segment_id: String
         }
 
       class TranscriptionTextDeltaEvent < OpenAI::Internal::Type::BaseModel
@@ -19,16 +20,22 @@ module OpenAI
           ::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob]
         ) -> ::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob]
 
+        attr_reader segment_id: String?
+
+        def segment_id=: (String) -> String
+
         def initialize: (
           delta: String,
           ?logprobs: ::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob],
+          ?segment_id: String,
           ?type: :"transcript.text.delta"
         ) -> void
 
         def to_hash: -> {
           delta: String,
           type: :"transcript.text.delta",
-          logprobs: ::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob]
+          logprobs: ::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob],
+          segment_id: String
         }
 
         type logprob =
