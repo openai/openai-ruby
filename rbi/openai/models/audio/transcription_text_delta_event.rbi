@@ -42,6 +42,14 @@ module OpenAI
         end
         attr_writer :logprobs
 
+        # Identifier of the diarized segment that this delta belongs to. Only present when
+        # using `gpt-4o-transcribe-diarize`.
+        sig { returns(T.nilable(String)) }
+        attr_reader :segment_id
+
+        sig { params(segment_id: String).void }
+        attr_writer :segment_id
+
         # Emitted when there is an additional text delta. This is also the first event
         # emitted when the transcription starts. Only emitted when you
         # [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
@@ -53,6 +61,7 @@ module OpenAI
               T::Array[
                 OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob::OrHash
               ],
+            segment_id: String,
             type: Symbol
           ).returns(T.attached_class)
         end
@@ -63,6 +72,9 @@ module OpenAI
           # [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
           # with the `include[]` parameter set to `logprobs`.
           logprobs: nil,
+          # Identifier of the diarized segment that this delta belongs to. Only present when
+          # using `gpt-4o-transcribe-diarize`.
+          segment_id: nil,
           # The type of the event. Always `transcript.text.delta`.
           type: :"transcript.text.delta"
         )
@@ -74,7 +86,8 @@ module OpenAI
               delta: String,
               type: Symbol,
               logprobs:
-                T::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob]
+                T::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob],
+              segment_id: String
             }
           )
         end

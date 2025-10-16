@@ -7,6 +7,8 @@ module OpenAI
           model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
           chunking_strategy: OpenAI::Models::Audio::TranscriptionCreateParams::chunking_strategy?,
           include: ::Array[OpenAI::Models::Audio::transcription_include],
+          known_speaker_names: ::Array[String],
+          known_speaker_references: ::Array[String],
           language: String,
           prompt: String,
           response_format: OpenAI::Models::audio_response_format,
@@ -30,6 +32,14 @@ module OpenAI
         def include=: (
           ::Array[OpenAI::Models::Audio::transcription_include]
         ) -> ::Array[OpenAI::Models::Audio::transcription_include]
+
+        attr_reader known_speaker_names: ::Array[String]?
+
+        def known_speaker_names=: (::Array[String]) -> ::Array[String]
+
+        attr_reader known_speaker_references: ::Array[String]?
+
+        def known_speaker_references=: (::Array[String]) -> ::Array[String]
 
         attr_reader language: String?
 
@@ -60,6 +70,8 @@ module OpenAI
           model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
           ?chunking_strategy: OpenAI::Models::Audio::TranscriptionCreateParams::chunking_strategy?,
           ?include: ::Array[OpenAI::Models::Audio::transcription_include],
+          ?known_speaker_names: ::Array[String],
+          ?known_speaker_references: ::Array[String],
           ?language: String,
           ?prompt: String,
           ?response_format: OpenAI::Models::audio_response_format,
@@ -73,6 +85,8 @@ module OpenAI
           model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
           chunking_strategy: OpenAI::Models::Audio::TranscriptionCreateParams::chunking_strategy?,
           include: ::Array[OpenAI::Models::Audio::transcription_include],
+          known_speaker_names: ::Array[String],
+          known_speaker_references: ::Array[String],
           language: String,
           prompt: String,
           response_format: OpenAI::Models::audio_response_format,

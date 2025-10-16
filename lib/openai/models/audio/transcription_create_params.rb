@@ -19,8 +19,8 @@ module OpenAI
 
         # @!attribute model
         #   ID of the model to use. The options are `gpt-4o-transcribe`,
-        #   `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source
-        #   Whisper V2 model).
+        #   `gpt-4o-mini-transcribe`, `whisper-1` (which is powered by our open source
+        #   Whisper V2 model), and `gpt-4o-transcribe-diarize`.
         #
         #   @return [String, Symbol, OpenAI::Models::AudioModel]
         required :model, union: -> { OpenAI::Audio::TranscriptionCreateParams::Model }
@@ -30,6 +30,8 @@ module OpenAI
         #   first normalizes loudness and then uses voice activity detection (VAD) to choose
         #   boundaries. `server_vad` object can be provided to tweak VAD detection
         #   parameters manually. If unset, the audio is transcribed as a single block.
+        #   Required when using `gpt-4o-transcribe-diarize` for inputs longer than 30
+        #   seconds.
         #
         #   @return [Symbol, :auto, OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig, nil]
         optional :chunking_strategy,
@@ -41,10 +43,29 @@ module OpenAI
         #   return the log probabilities of the tokens in the response to understand the
         #   model's confidence in the transcription. `logprobs` only works with
         #   response_format set to `json` and only with the models `gpt-4o-transcribe` and
-        #   `gpt-4o-mini-transcribe`.
+        #   `gpt-4o-mini-transcribe`. This field is not supported when using
+        #   `gpt-4o-transcribe-diarize`.
         #
         #   @return [Array<Symbol, OpenAI::Models::Audio::TranscriptionInclude>, nil]
         optional :include, -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Audio::TranscriptionInclude] }
+
+        # @!attribute known_speaker_names
+        #   Optional list of speaker names that correspond to the audio samples provided in
+        #   `known_speaker_references[]`. Each entry should be a short identifier (for
+        #   example `customer` or `agent`). Up to 4 speakers are supported.
+        #
+        #   @return [Array<String>, nil]
+        optional :known_speaker_names, OpenAI::Internal::Type::ArrayOf[String]
+
+        # @!attribute known_speaker_references
+        #   Optional list of audio samples (as
+        #   [data URLs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs))
+        #   that contain known speaker references matching `known_speaker_names[]`. Each
+        #   sample must be between 2 and 10 seconds, and can use any of the same input audio
+        #   formats supported by `file`.
+        #
+        #   @return [Array<String>, nil]
+        optional :known_speaker_references, OpenAI::Internal::Type::ArrayOf[String]
 
         # @!attribute language
         #   The language of the input audio. Supplying the input language in
@@ -58,15 +79,18 @@ module OpenAI
         #   An optional text to guide the model's style or continue a previous audio
         #   segment. The
         #   [prompt](https://platform.openai.com/docs/guides/speech-to-text#prompting)
-        #   should match the audio language.
+        #   should match the audio language. This field is not supported when using
+        #   `gpt-4o-transcribe-diarize`.
         #
         #   @return [String, nil]
         optional :prompt, String
 
         # @!attribute response_format
         #   The format of the output, in one of these options: `json`, `text`, `srt`,
-        #   `verbose_json`, or `vtt`. For `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`,
-        #   the only supported format is `json`.
+        #   `verbose_json`, `vtt`, or `diarized_json`. For `gpt-4o-transcribe` and
+        #   `gpt-4o-mini-transcribe`, the only supported format is `json`. For
+        #   `gpt-4o-transcribe-diarize`, the supported formats are `json`, `text`, and
+        #   `diarized_json`, with `diarized_json` required to receive speaker annotations.
         #
         #   @return [Symbol, OpenAI::Models::AudioResponseFormat, nil]
         optional :response_format, enum: -> { OpenAI::AudioResponseFormat }
@@ -86,13 +110,14 @@ module OpenAI
         #   `response_format` must be set `verbose_json` to use timestamp granularities.
         #   Either or both of these options are supported: `word`, or `segment`. Note: There
         #   is no additional latency for segment timestamps, but generating word timestamps
-        #   incurs additional latency.
+        #   incurs additional latency. This option is not available for
+        #   `gpt-4o-transcribe-diarize`.
         #
         #   @return [Array<Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity>, nil]
         optional :timestamp_granularities,
                  -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Audio::TranscriptionCreateParams::TimestampGranularity] }
 
-        # @!method initialize(file:, model:, chunking_strategy: nil, include: nil, language: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
+        # @!method initialize(file:, model:, chunking_strategy: nil, include: nil, known_speaker_names: nil, known_speaker_references: nil, language: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Audio::TranscriptionCreateParams} for more details.
         #
@@ -103,6 +128,10 @@ module OpenAI
         #   @param chunking_strategy [Symbol, :auto, OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig, nil] Controls how the audio is cut into chunks. When set to `"auto"`, the server firs
         #
         #   @param include [Array<Symbol, OpenAI::Models::Audio::TranscriptionInclude>] Additional information to include in the transcription response.
+        #
+        #   @param known_speaker_names [Array<String>] Optional list of speaker names that correspond to the audio samples provided in
+        #
+        #   @param known_speaker_references [Array<String>] Optional list of audio samples (as [data URLs](https://developer.mozilla.org/en-
         #
         #   @param language [String] The language of the input audio. Supplying the input language in [ISO-639-1](htt
         #
@@ -117,14 +146,14 @@ module OpenAI
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         # ID of the model to use. The options are `gpt-4o-transcribe`,
-        # `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source
-        # Whisper V2 model).
+        # `gpt-4o-mini-transcribe`, `whisper-1` (which is powered by our open source
+        # Whisper V2 model), and `gpt-4o-transcribe-diarize`.
         module Model
           extend OpenAI::Internal::Type::Union
 
           variant String
 
-          # ID of the model to use. The options are `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source Whisper V2 model).
+          # ID of the model to use. The options are `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, `whisper-1` (which is powered by our open source Whisper V2 model), and `gpt-4o-transcribe-diarize`.
           variant enum: -> { OpenAI::AudioModel }
 
           # @!method self.variants
@@ -135,6 +164,8 @@ module OpenAI
         # first normalizes loudness and then uses voice activity detection (VAD) to choose
         # boundaries. `server_vad` object can be provided to tweak VAD detection
         # parameters manually. If unset, the audio is transcribed as a single block.
+        # Required when using `gpt-4o-transcribe-diarize` for inputs longer than 30
+        # seconds.
         module ChunkingStrategy
           extend OpenAI::Internal::Type::Union
 

@@ -12,7 +12,7 @@ module OpenAI
         #
         # Transcribes audio into the input language.
         #
-        # @overload create(file:, model:, chunking_strategy: nil, include: nil, language: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
+        # @overload create(file:, model:, chunking_strategy: nil, include: nil, known_speaker_names: nil, known_speaker_references: nil, language: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
         #
         # @param file [Pathname, StringIO, IO, String, OpenAI::FilePart] The audio file object (not file name) to transcribe, in one of these formats: fl
         #
@@ -21,6 +21,10 @@ module OpenAI
         # @param chunking_strategy [Symbol, :auto, OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig, nil] Controls how the audio is cut into chunks. When set to `"auto"`, the server firs
         #
         # @param include [Array<Symbol, OpenAI::Models::Audio::TranscriptionInclude>] Additional information to include in the transcription response.
+        #
+        # @param known_speaker_names [Array<String>] Optional list of speaker names that correspond to the audio samples provided in
+        #
+        # @param known_speaker_references [Array<String>] Optional list of audio samples (as [data URLs](https://developer.mozilla.org/en-
         #
         # @param language [String] The language of the input audio. Supplying the input language in [ISO-639-1](htt
         #
@@ -34,7 +38,7 @@ module OpenAI
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionVerbose]
+        # @return [OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionDiarized, OpenAI::Models::Audio::TranscriptionVerbose]
         #
         # @see OpenAI::Models::Audio::TranscriptionCreateParams
         def create(params)
@@ -61,7 +65,7 @@ module OpenAI
         #
         # Transcribes audio into the input language.
         #
-        # @overload create_streaming(file:, model:, chunking_strategy: nil, include: nil, language: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
+        # @overload create_streaming(file:, model:, chunking_strategy: nil, include: nil, known_speaker_names: nil, known_speaker_references: nil, language: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
         #
         # @param file [Pathname, StringIO, IO, String, OpenAI::FilePart] The audio file object (not file name) to transcribe, in one of these formats: fl
         #
@@ -70,6 +74,10 @@ module OpenAI
         # @param chunking_strategy [Symbol, :auto, OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig, nil] Controls how the audio is cut into chunks. When set to `"auto"`, the server firs
         #
         # @param include [Array<Symbol, OpenAI::Models::Audio::TranscriptionInclude>] Additional information to include in the transcription response.
+        #
+        # @param known_speaker_names [Array<String>] Optional list of speaker names that correspond to the audio samples provided in
+        #
+        # @param known_speaker_references [Array<String>] Optional list of audio samples (as [data URLs](https://developer.mozilla.org/en-
         #
         # @param language [String] The language of the input audio. Supplying the input language in [ISO-639-1](htt
         #
@@ -83,7 +91,7 @@ module OpenAI
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::Internal::Stream<OpenAI::Models::Audio::TranscriptionTextDeltaEvent, OpenAI::Models::Audio::TranscriptionTextDoneEvent>]
+        # @return [OpenAI::Internal::Stream<OpenAI::Models::Audio::TranscriptionTextSegmentEvent, OpenAI::Models::Audio::TranscriptionTextDeltaEvent, OpenAI::Models::Audio::TranscriptionTextDoneEvent>]
         #
         # @see OpenAI::Models::Audio::TranscriptionCreateParams
         def create_streaming(params)
