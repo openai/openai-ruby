@@ -13,6 +13,7 @@ class OpenAI::Test::Resources::Audio::TranscriptionsTest < OpenAI::Test::Resourc
     assert_pattern do
       case response
       in OpenAI::Audio::Transcription
+      in OpenAI::Audio::TranscriptionDiarized
       in OpenAI::Audio::TranscriptionVerbose
       end
     end

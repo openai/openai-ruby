@@ -12,6 +12,7 @@ module OpenAI
           T.type_alias do
             T.any(
               OpenAI::Audio::Transcription,
+              OpenAI::Audio::TranscriptionDiarized,
               OpenAI::Audio::TranscriptionVerbose
             )
           end

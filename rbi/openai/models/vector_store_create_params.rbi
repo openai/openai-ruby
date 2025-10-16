@@ -36,6 +36,14 @@ module OpenAI
       end
       attr_writer :chunking_strategy
 
+      # A description for the vector store. Can be used to describe the vector store's
+      # purpose.
+      sig { returns(T.nilable(String)) }
+      attr_reader :description
+
+      sig { params(description: String).void }
+      attr_writer :description
+
       # The expiration policy for a vector store.
       sig { returns(T.nilable(OpenAI::VectorStoreCreateParams::ExpiresAfter)) }
       attr_reader :expires_after
@@ -79,6 +87,7 @@ module OpenAI
               OpenAI::AutoFileChunkingStrategyParam::OrHash,
               OpenAI::StaticFileChunkingStrategyObjectParam::OrHash
             ),
+          description: String,
           expires_after: OpenAI::VectorStoreCreateParams::ExpiresAfter::OrHash,
           file_ids: T::Array[String],
           metadata: T.nilable(T::Hash[Symbol, String]),
@@ -90,6 +99,9 @@ module OpenAI
         # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
         # strategy. Only applicable if `file_ids` is non-empty.
         chunking_strategy: nil,
+        # A description for the vector store. Can be used to describe the vector store's
+        # purpose.
+        description: nil,
         # The expiration policy for a vector store.
         expires_after: nil,
         # A list of [File](https://platform.openai.com/docs/api-reference/files) IDs that
@@ -117,6 +129,7 @@ module OpenAI
                 OpenAI::AutoFileChunkingStrategyParam,
                 OpenAI::StaticFileChunkingStrategyObjectParam
               ),
+            description: String,
             expires_after: OpenAI::VectorStoreCreateParams::ExpiresAfter,
             file_ids: T::Array[String],
             metadata: T.nilable(T::Hash[Symbol, String]),

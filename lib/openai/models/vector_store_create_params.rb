@@ -14,6 +14,13 @@ module OpenAI
       #   @return [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam, nil]
       optional :chunking_strategy, union: -> { OpenAI::FileChunkingStrategyParam }
 
+      # @!attribute description
+      #   A description for the vector store. Can be used to describe the vector store's
+      #   purpose.
+      #
+      #   @return [String, nil]
+      optional :description, String
+
       # @!attribute expires_after
       #   The expiration policy for a vector store.
       #
@@ -45,11 +52,13 @@ module OpenAI
       #   @return [String, nil]
       optional :name, String
 
-      # @!method initialize(chunking_strategy: nil, expires_after: nil, file_ids: nil, metadata: nil, name: nil, request_options: {})
+      # @!method initialize(chunking_strategy: nil, description: nil, expires_after: nil, file_ids: nil, metadata: nil, name: nil, request_options: {})
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::VectorStoreCreateParams} for more details.
       #
       #   @param chunking_strategy [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam] The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+      #
+      #   @param description [String] A description for the vector store. Can be used to describe the vector store's p
       #
       #   @param expires_after [OpenAI::Models::VectorStoreCreateParams::ExpiresAfter] The expiration policy for a vector store.
       #

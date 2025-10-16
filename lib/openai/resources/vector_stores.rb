@@ -14,9 +14,11 @@ module OpenAI
       #
       # Create a vector store.
       #
-      # @overload create(chunking_strategy: nil, expires_after: nil, file_ids: nil, metadata: nil, name: nil, request_options: {})
+      # @overload create(chunking_strategy: nil, description: nil, expires_after: nil, file_ids: nil, metadata: nil, name: nil, request_options: {})
       #
       # @param chunking_strategy [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam] The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+      #
+      # @param description [String] A description for the vector store. Can be used to describe the vector store's p
       #
       # @param expires_after [OpenAI::Models::VectorStoreCreateParams::ExpiresAfter] The expiration policy for a vector store.
       #

@@ -3,16 +3,17 @@
 module OpenAI
   module Models
     module Audio
-      # Emitted when there is an additional text delta. This is also the first event
-      # emitted when the transcription starts. Only emitted when you
+      # Emitted when a diarized transcription returns a completed segment with speaker
+      # information. Only emitted when you
       # [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
-      # with the `Stream` parameter set to `true`.
+      # with `stream` set to `true` and `response_format` set to `diarized_json`.
       module TranscriptionStreamEvent
         extend OpenAI::Internal::Type::Union
 
         Variants =
           T.type_alias do
             T.any(
+              OpenAI::Audio::TranscriptionTextSegmentEvent,
               OpenAI::Audio::TranscriptionTextDeltaEvent,
               OpenAI::Audio::TranscriptionTextDoneEvent
             )

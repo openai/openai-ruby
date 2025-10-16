@@ -3,6 +3,7 @@ module OpenAI
     type vector_store_create_params =
       {
         chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
+        description: String,
         expires_after: OpenAI::VectorStoreCreateParams::ExpiresAfter,
         file_ids: ::Array[String],
         metadata: OpenAI::Models::metadata?,
@@ -19,6 +20,10 @@ module OpenAI
       def chunking_strategy=: (
         OpenAI::Models::file_chunking_strategy_param
       ) -> OpenAI::Models::file_chunking_strategy_param
+
+      attr_reader description: String?
+
+      def description=: (String) -> String
 
       attr_reader expires_after: OpenAI::VectorStoreCreateParams::ExpiresAfter?
 
@@ -38,6 +43,7 @@ module OpenAI
 
       def initialize: (
         ?chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
+        ?description: String,
         ?expires_after: OpenAI::VectorStoreCreateParams::ExpiresAfter,
         ?file_ids: ::Array[String],
         ?metadata: OpenAI::Models::metadata?,
@@ -47,6 +53,7 @@ module OpenAI
 
       def to_hash: -> {
         chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
+        description: String,
         expires_after: OpenAI::VectorStoreCreateParams::ExpiresAfter,
         file_ids: ::Array[String],
         metadata: OpenAI::Models::metadata?,

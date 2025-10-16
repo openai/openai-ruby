@@ -7,6 +7,7 @@ module OpenAI
 
       def create: (
         ?chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
+        ?description: String,
         ?expires_after: OpenAI::VectorStoreCreateParams::ExpiresAfter,
         ?file_ids: ::Array[String],
         ?metadata: OpenAI::Models::metadata?,
