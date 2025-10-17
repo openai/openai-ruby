@@ -28,19 +28,19 @@ module OpenAI
           T.type_alias { T.all(Symbol, OpenAI::Responses::ResponseIncludable) }
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-        CODE_INTERPRETER_CALL_OUTPUTS =
-          T.let(
-            :"code_interpreter_call.outputs",
-            OpenAI::Responses::ResponseIncludable::TaggedSymbol
-          )
-        COMPUTER_CALL_OUTPUT_OUTPUT_IMAGE_URL =
-          T.let(
-            :"computer_call_output.output.image_url",
-            OpenAI::Responses::ResponseIncludable::TaggedSymbol
-          )
         FILE_SEARCH_CALL_RESULTS =
           T.let(
             :"file_search_call.results",
+            OpenAI::Responses::ResponseIncludable::TaggedSymbol
+          )
+        WEB_SEARCH_CALL_RESULTS =
+          T.let(
+            :"web_search_call.results",
+            OpenAI::Responses::ResponseIncludable::TaggedSymbol
+          )
+        WEB_SEARCH_CALL_ACTION_SOURCES =
+          T.let(
+            :"web_search_call.action.sources",
             OpenAI::Responses::ResponseIncludable::TaggedSymbol
           )
         MESSAGE_INPUT_IMAGE_IMAGE_URL =
@@ -48,14 +48,24 @@ module OpenAI
             :"message.input_image.image_url",
             OpenAI::Responses::ResponseIncludable::TaggedSymbol
           )
-        MESSAGE_OUTPUT_TEXT_LOGPROBS =
+        COMPUTER_CALL_OUTPUT_OUTPUT_IMAGE_URL =
           T.let(
-            :"message.output_text.logprobs",
+            :"computer_call_output.output.image_url",
+            OpenAI::Responses::ResponseIncludable::TaggedSymbol
+          )
+        CODE_INTERPRETER_CALL_OUTPUTS =
+          T.let(
+            :"code_interpreter_call.outputs",
             OpenAI::Responses::ResponseIncludable::TaggedSymbol
           )
         REASONING_ENCRYPTED_CONTENT =
           T.let(
             :"reasoning.encrypted_content",
+            OpenAI::Responses::ResponseIncludable::TaggedSymbol
+          )
+        MESSAGE_OUTPUT_TEXT_LOGPROBS =
+          T.let(
+            :"message.output_text.logprobs",
             OpenAI::Responses::ResponseIncludable::TaggedSymbol
           )
 
