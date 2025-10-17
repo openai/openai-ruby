@@ -59,7 +59,7 @@ module OpenAI
         #
         #   @param after [String] An item ID to list items after, used in pagination.
         #
-        #   @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>] Specify additional output data to include in the model response. Currently
+        #   @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>] Specify additional output data to include in the model response. Currently suppo
         #
         #   @param limit [Integer] A limit on the number of objects to be returned. Limit can range between
         #

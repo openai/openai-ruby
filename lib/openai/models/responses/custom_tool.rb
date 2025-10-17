@@ -29,12 +29,6 @@ module OpenAI
         optional :format_, union: -> { OpenAI::CustomToolInputFormat }, api_name: :format
 
         # @!method initialize(name:, description: nil, format_: nil, type: :custom)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::CustomTool} for more details.
-        #
-        #   A custom tool that processes input using a specified format. Learn more about
-        #   [custom tools](https://platform.openai.com/docs/guides/function-calling#custom-tools).
-        #
         #   @param name [String] The name of the custom tool, used to identify it in tool calls.
         #
         #   @param description [String] Optional description of the custom tool, used to provide more context.

@@ -28,11 +28,8 @@ module OpenAI
         # A tool that generates images using a model like `gpt-image-1`.
         variant :image_generation, -> { OpenAI::Responses::Tool::ImageGeneration }
 
-        # A tool that allows the model to execute shell commands in a local environment.
         variant :local_shell, -> { OpenAI::Responses::Tool::LocalShell }
 
-        # A custom tool that processes input using a specified format. Learn more about
-        # [custom tools](https://platform.openai.com/docs/guides/function-calling#custom-tools).
         variant :custom, -> { OpenAI::Responses::CustomTool }
 
         # Search the Internet for sources related to the prompt. Learn more about the
@@ -373,8 +370,7 @@ module OpenAI
             # The container ID.
             variant String
 
-            # Configuration for a code interpreter container. Optionally specify the IDs
-            # of the files to run the code on.
+            # Configuration for a code interpreter container. Optionally specify the IDs of the files to run the code on.
             variant -> { OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto }
 
             class CodeInterpreterToolAuto < OpenAI::Internal::Type::BaseModel
@@ -391,10 +387,6 @@ module OpenAI
               optional :file_ids, OpenAI::Internal::Type::ArrayOf[String]
 
               # @!method initialize(file_ids: nil, type: :auto)
-              #   Some parameter documentations has been truncated, see
-              #   {OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto}
-              #   for more details.
-              #
               #   Configuration for a code interpreter container. Optionally specify the IDs of
               #   the files to run the code on.
               #
@@ -496,7 +488,7 @@ module OpenAI
           #
           #   @param background [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Background] Background type for the generated image. One of `transparent`,
           #
-          #   @param input_fidelity [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::InputFidelity, nil] Control how much effort the model will exert to match the style and features,
+          #   @param input_fidelity [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::InputFidelity, nil]
           #
           #   @param input_image_mask [OpenAI::Models::Responses::Tool::ImageGeneration::InputImageMask] Optional mask for inpainting. Contains `image_url`
           #
@@ -656,8 +648,6 @@ module OpenAI
           required :type, const: :local_shell
 
           # @!method initialize(type: :local_shell)
-          #   A tool that allows the model to execute shell commands in a local environment.
-          #
           #   @param type [Symbol, :local_shell] The type of the local shell tool. Always `local_shell`.
         end
 
