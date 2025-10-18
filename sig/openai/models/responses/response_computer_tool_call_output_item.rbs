@@ -51,18 +51,22 @@ module OpenAI
         }
 
         type acknowledged_safety_check =
-          { id: String, code: String, message: String }
+          { id: String, code: String?, message: String? }
 
         class AcknowledgedSafetyCheck < OpenAI::Internal::Type::BaseModel
           attr_accessor id: String
 
-          attr_accessor code: String
+          attr_accessor code: String?
 
-          attr_accessor message: String
+          attr_accessor message: String?
 
-          def initialize: (id: String, code: String, message: String) -> void
+          def initialize: (
+            id: String,
+            ?code: String?,
+            ?message: String?
+          ) -> void
 
-          def to_hash: -> { id: String, code: String, message: String }
+          def to_hash: -> { id: String, code: String?, message: String? }
         end
 
         type status = :in_progress | :completed | :incomplete

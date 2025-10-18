@@ -70,23 +70,23 @@ module OpenAI
           # @!attribute code
           #   The type of the pending safety check.
           #
-          #   @return [String]
-          required :code, String
+          #   @return [String, nil]
+          optional :code, String, nil?: true
 
           # @!attribute message
           #   Details about the pending safety check.
           #
-          #   @return [String]
-          required :message, String
+          #   @return [String, nil]
+          optional :message, String, nil?: true
 
-          # @!method initialize(id:, code:, message:)
+          # @!method initialize(id:, code: nil, message: nil)
           #   A pending safety check for the computer call.
           #
           #   @param id [String] The ID of the pending safety check.
           #
-          #   @param code [String] The type of the pending safety check.
+          #   @param code [String, nil] The type of the pending safety check.
           #
-          #   @param message [String] Details about the pending safety check.
+          #   @param message [String, nil] Details about the pending safety check.
         end
 
         # The status of the message input. One of `in_progress`, `completed`, or

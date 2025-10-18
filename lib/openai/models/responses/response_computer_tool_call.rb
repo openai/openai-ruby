@@ -106,8 +106,7 @@ module OpenAI
             required :button, enum: -> { OpenAI::Responses::ResponseComputerToolCall::Action::Click::Button }
 
             # @!attribute type
-            #   Specifies the event type. For a click action, this property is always set to
-            #   `click`.
+            #   Specifies the event type. For a click action, this property is always `click`.
             #
             #   @return [Symbol, :click]
             required :type, const: :click
@@ -137,7 +136,7 @@ module OpenAI
             #
             #   @param y_ [Integer] The y-coordinate where the click occurred.
             #
-            #   @param type [Symbol, :click] Specifies the event type. For a click action, this property is
+            #   @param type [Symbol, :click] Specifies the event type. For a click action, this property is always `click`.
 
             # Indicates which mouse button was pressed during the click. One of `left`,
             # `right`, `wheel`, `back`, or `forward`.
@@ -188,7 +187,7 @@ module OpenAI
             #
             #   @param y_ [Integer] The y-coordinate where the double click occurred.
             #
-            #   @param type [Symbol, :double_click] Specifies the event type. For a double click action, this property is
+            #   @param type [Symbol, :double_click] Specifies the event type. For a double click action, this property is always set
           end
 
           class Drag < OpenAI::Internal::Type::BaseModel
@@ -239,11 +238,7 @@ module OpenAI
               required :y_, Integer, api_name: :y
 
               # @!method initialize(x:, y_:)
-              #   Some parameter documentations has been truncated, see
-              #   {OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path} for
-              #   more details.
-              #
-              #   A series of x/y coordinate pairs in the drag path.
+              #   An x/y coordinate pair, e.g. `{ x: 100, y: 200 }`.
               #
               #   @param x [Integer] The x-coordinate.
               #
@@ -273,9 +268,9 @@ module OpenAI
             #
             #   A collection of keypresses the model would like to perform.
             #
-            #   @param keys [Array<String>] The combination of keys the model is requesting to be pressed. This is an
+            #   @param keys [Array<String>] The combination of keys the model is requesting to be pressed. This is an array
             #
-            #   @param type [Symbol, :keypress] Specifies the event type. For a keypress action, this property is
+            #   @param type [Symbol, :keypress] Specifies the event type. For a keypress action, this property is always set to
           end
 
           class Move < OpenAI::Internal::Type::BaseModel
@@ -438,23 +433,23 @@ module OpenAI
           # @!attribute code
           #   The type of the pending safety check.
           #
-          #   @return [String]
-          required :code, String
+          #   @return [String, nil]
+          optional :code, String, nil?: true
 
           # @!attribute message
           #   Details about the pending safety check.
           #
-          #   @return [String]
-          required :message, String
+          #   @return [String, nil]
+          optional :message, String, nil?: true
 
-          # @!method initialize(id:, code:, message:)
+          # @!method initialize(id:, code: nil, message: nil)
           #   A pending safety check for the computer call.
           #
           #   @param id [String] The ID of the pending safety check.
           #
-          #   @param code [String] The type of the pending safety check.
+          #   @param code [String, nil] The type of the pending safety check.
           #
-          #   @param message [String] Details about the pending safety check.
+          #   @param message [String, nil] Details about the pending safety check.
         end
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.

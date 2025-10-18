@@ -84,7 +84,7 @@ module OpenAI
             required :logs, String
 
             # @!attribute type
-            #   The type of the output. Always 'logs'.
+            #   The type of the output. Always `logs`.
             #
             #   @return [Symbol, :logs]
             required :type, const: :logs
@@ -94,12 +94,12 @@ module OpenAI
             #
             #   @param logs [String] The logs output from the code interpreter.
             #
-            #   @param type [Symbol, :logs] The type of the output. Always 'logs'.
+            #   @param type [Symbol, :logs] The type of the output. Always `logs`.
           end
 
           class Image < OpenAI::Internal::Type::BaseModel
             # @!attribute type
-            #   The type of the output. Always 'image'.
+            #   The type of the output. Always `image`.
             #
             #   @return [Symbol, :image]
             required :type, const: :image
@@ -115,7 +115,7 @@ module OpenAI
             #
             #   @param url [String] The URL of the image output from the code interpreter.
             #
-            #   @param type [Symbol, :image] The type of the output. Always 'image'.
+            #   @param type [Symbol, :image] The type of the output. Always `image`.
           end
 
           # @!method self.variants

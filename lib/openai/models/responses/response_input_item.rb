@@ -508,10 +508,6 @@ module OpenAI
             optional :working_directory, String, nil?: true
 
             # @!method initialize(command:, env:, timeout_ms: nil, user: nil, working_directory: nil, type: :exec)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Responses::ResponseInputItem::LocalShellCall::Action} for more
-            #   details.
-            #
             #   Execute a shell command on the server.
             #
             #   @param command [Array<String>] The command to run.

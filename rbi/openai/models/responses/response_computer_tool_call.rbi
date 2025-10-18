@@ -173,8 +173,7 @@ module OpenAI
             end
             attr_accessor :button
 
-            # Specifies the event type. For a click action, this property is always set to
-            # `click`.
+            # Specifies the event type. For a click action, this property is always `click`.
             sig { returns(Symbol) }
             attr_accessor :type
 
@@ -204,8 +203,7 @@ module OpenAI
               x:,
               # The y-coordinate where the click occurred.
               y_:,
-              # Specifies the event type. For a click action, this property is always set to
-              # `click`.
+              # Specifies the event type. For a click action, this property is always `click`.
               type: :click
             )
             end
@@ -410,7 +408,7 @@ module OpenAI
               sig { returns(Integer) }
               attr_accessor :y_
 
-              # A series of x/y coordinate pairs in the drag path.
+              # An x/y coordinate pair, e.g. `{ x: 100, y: 200 }`.
               sig { params(x: Integer, y_: Integer).returns(T.attached_class) }
               def self.new(
                 # The x-coordinate.
@@ -695,31 +693,39 @@ module OpenAI
           attr_accessor :id
 
           # The type of the pending safety check.
-          sig { returns(String) }
+          sig { returns(T.nilable(String)) }
           attr_accessor :code
 
           # Details about the pending safety check.
-          sig { returns(String) }
+          sig { returns(T.nilable(String)) }
           attr_accessor :message
 
           # A pending safety check for the computer call.
           sig do
-            params(id: String, code: String, message: String).returns(
-              T.attached_class
-            )
+            params(
+              id: String,
+              code: T.nilable(String),
+              message: T.nilable(String)
+            ).returns(T.attached_class)
           end
           def self.new(
             # The ID of the pending safety check.
             id:,
             # The type of the pending safety check.
-            code:,
+            code: nil,
             # Details about the pending safety check.
-            message:
+            message: nil
           )
           end
 
           sig do
-            override.returns({ id: String, code: String, message: String })
+            override.returns(
+              {
+                id: String,
+                code: T.nilable(String),
+                message: T.nilable(String)
+              }
+            )
           end
           def to_hash
           end

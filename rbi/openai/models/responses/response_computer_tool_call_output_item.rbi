@@ -147,31 +147,39 @@ module OpenAI
           attr_accessor :id
 
           # The type of the pending safety check.
-          sig { returns(String) }
+          sig { returns(T.nilable(String)) }
           attr_accessor :code
 
           # Details about the pending safety check.
-          sig { returns(String) }
+          sig { returns(T.nilable(String)) }
           attr_accessor :message
 
           # A pending safety check for the computer call.
           sig do
-            params(id: String, code: String, message: String).returns(
-              T.attached_class
-            )
+            params(
+              id: String,
+              code: T.nilable(String),
+              message: T.nilable(String)
+            ).returns(T.attached_class)
           end
           def self.new(
             # The ID of the pending safety check.
             id:,
             # The type of the pending safety check.
-            code:,
+            code: nil,
             # Details about the pending safety check.
-            message:
+            message: nil
           )
           end
 
           sig do
-            override.returns({ id: String, code: String, message: String })
+            override.returns(
+              {
+                id: String,
+                code: T.nilable(String),
+                message: T.nilable(String)
+              }
+            )
           end
           def to_hash
           end

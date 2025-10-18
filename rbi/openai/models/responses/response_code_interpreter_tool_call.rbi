@@ -140,7 +140,7 @@ module OpenAI
             sig { returns(String) }
             attr_accessor :logs
 
-            # The type of the output. Always 'logs'.
+            # The type of the output. Always `logs`.
             sig { returns(Symbol) }
             attr_accessor :type
 
@@ -149,7 +149,7 @@ module OpenAI
             def self.new(
               # The logs output from the code interpreter.
               logs:,
-              # The type of the output. Always 'logs'.
+              # The type of the output. Always `logs`.
               type: :logs
             )
             end
@@ -168,7 +168,7 @@ module OpenAI
                 )
               end
 
-            # The type of the output. Always 'image'.
+            # The type of the output. Always `image`.
             sig { returns(Symbol) }
             attr_accessor :type
 
@@ -181,7 +181,7 @@ module OpenAI
             def self.new(
               # The URL of the image output from the code interpreter.
               url:,
-              # The type of the output. Always 'image'.
+              # The type of the output. Always `image`.
               type: :image
             )
             end
