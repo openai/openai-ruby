@@ -3,6 +3,8 @@ module OpenAI
     class Responses
       attr_reader input_items: OpenAI::Resources::Responses::InputItems
 
+      attr_reader input_tokens: OpenAI::Resources::Responses::InputTokens
+
       def create: (
         ?background: bool?,
         ?conversation: OpenAI::Models::Responses::ResponseCreateParams::conversation?,
