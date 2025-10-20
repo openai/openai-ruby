@@ -6,6 +6,9 @@ module OpenAI
       sig { returns(OpenAI::Resources::Responses::InputItems) }
       attr_reader :input_items
 
+      sig { returns(OpenAI::Resources::Responses::InputTokens) }
+      attr_reader :input_tokens
+
       # See {OpenAI::Resources::Responses#stream_raw} for streaming counterpart.
       #
       # Creates a model response. Provide

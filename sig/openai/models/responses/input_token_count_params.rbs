@@ -1,0 +1,165 @@
+module OpenAI
+  module Models
+    module Responses
+      type input_token_count_params =
+        {
+          conversation: OpenAI::Models::Responses::InputTokenCountParams::conversation?,
+          input: OpenAI::Models::Responses::InputTokenCountParams::input?,
+          instructions: String?,
+          model: String?,
+          parallel_tool_calls: bool?,
+          previous_response_id: String?,
+          reasoning: OpenAI::Reasoning?,
+          text: OpenAI::Responses::InputTokenCountParams::Text?,
+          tool_choice: OpenAI::Models::Responses::InputTokenCountParams::tool_choice?,
+          tools: ::Array[OpenAI::Models::Responses::tool]?,
+          truncation: OpenAI::Models::Responses::InputTokenCountParams::truncation
+        }
+        & OpenAI::Internal::Type::request_parameters
+
+      class InputTokenCountParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor conversation: OpenAI::Models::Responses::InputTokenCountParams::conversation?
+
+        attr_accessor input: OpenAI::Models::Responses::InputTokenCountParams::input?
+
+        attr_accessor instructions: String?
+
+        attr_accessor model: String?
+
+        attr_accessor parallel_tool_calls: bool?
+
+        attr_accessor previous_response_id: String?
+
+        attr_accessor reasoning: OpenAI::Reasoning?
+
+        attr_accessor text: OpenAI::Responses::InputTokenCountParams::Text?
+
+        attr_accessor tool_choice: OpenAI::Models::Responses::InputTokenCountParams::tool_choice?
+
+        attr_accessor tools: ::Array[OpenAI::Models::Responses::tool]?
+
+        attr_reader truncation: OpenAI::Models::Responses::InputTokenCountParams::truncation?
+
+        def truncation=: (
+          OpenAI::Models::Responses::InputTokenCountParams::truncation
+        ) -> OpenAI::Models::Responses::InputTokenCountParams::truncation
+
+        def initialize: (
+          ?conversation: OpenAI::Models::Responses::InputTokenCountParams::conversation?,
+          ?input: OpenAI::Models::Responses::InputTokenCountParams::input?,
+          ?instructions: String?,
+          ?model: String?,
+          ?parallel_tool_calls: bool?,
+          ?previous_response_id: String?,
+          ?reasoning: OpenAI::Reasoning?,
+          ?text: OpenAI::Responses::InputTokenCountParams::Text?,
+          ?tool_choice: OpenAI::Models::Responses::InputTokenCountParams::tool_choice?,
+          ?tools: ::Array[OpenAI::Models::Responses::tool]?,
+          ?truncation: OpenAI::Models::Responses::InputTokenCountParams::truncation,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          conversation: OpenAI::Models::Responses::InputTokenCountParams::conversation?,
+          input: OpenAI::Models::Responses::InputTokenCountParams::input?,
+          instructions: String?,
+          model: String?,
+          parallel_tool_calls: bool?,
+          previous_response_id: String?,
+          reasoning: OpenAI::Reasoning?,
+          text: OpenAI::Responses::InputTokenCountParams::Text?,
+          tool_choice: OpenAI::Models::Responses::InputTokenCountParams::tool_choice?,
+          tools: ::Array[OpenAI::Models::Responses::tool]?,
+          truncation: OpenAI::Models::Responses::InputTokenCountParams::truncation,
+          request_options: OpenAI::RequestOptions
+        }
+
+        type conversation =
+          String | OpenAI::Responses::ResponseConversationParam
+
+        module Conversation
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::InputTokenCountParams::conversation]
+        end
+
+        type input =
+          String | ::Array[OpenAI::Models::Responses::response_input_item]
+
+        module Input
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::InputTokenCountParams::input]
+
+          ResponseInputItemArray: OpenAI::Internal::Type::Converter
+        end
+
+        type text =
+          {
+            format_: OpenAI::Models::Responses::response_format_text_config,
+            verbosity: OpenAI::Models::Responses::InputTokenCountParams::Text::verbosity?
+          }
+
+        class Text < OpenAI::Internal::Type::BaseModel
+          attr_reader format_: OpenAI::Models::Responses::response_format_text_config?
+
+          def format_=: (
+            OpenAI::Models::Responses::response_format_text_config
+          ) -> OpenAI::Models::Responses::response_format_text_config
+
+          attr_accessor verbosity: OpenAI::Models::Responses::InputTokenCountParams::Text::verbosity?
+
+          def initialize: (
+            ?format_: OpenAI::Models::Responses::response_format_text_config,
+            ?verbosity: OpenAI::Models::Responses::InputTokenCountParams::Text::verbosity?
+          ) -> void
+
+          def to_hash: -> {
+            format_: OpenAI::Models::Responses::response_format_text_config,
+            verbosity: OpenAI::Models::Responses::InputTokenCountParams::Text::verbosity?
+          }
+
+          type verbosity = :low | :medium | :high
+
+          module Verbosity
+            extend OpenAI::Internal::Type::Enum
+
+            LOW: :low
+            MEDIUM: :medium
+            HIGH: :high
+
+            def self?.values: -> ::Array[OpenAI::Models::Responses::InputTokenCountParams::Text::verbosity]
+          end
+        end
+
+        type tool_choice =
+          OpenAI::Models::Responses::tool_choice_options
+          | OpenAI::Responses::ToolChoiceAllowed
+          | OpenAI::Responses::ToolChoiceTypes
+          | OpenAI::Responses::ToolChoiceFunction
+          | OpenAI::Responses::ToolChoiceMcp
+          | OpenAI::Responses::ToolChoiceCustom
+
+        module ToolChoice
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::InputTokenCountParams::tool_choice]
+        end
+
+        type truncation = :auto | :disabled
+
+        module Truncation
+          extend OpenAI::Internal::Type::Enum
+
+          AUTO: :auto
+          DISABLED: :disabled
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::InputTokenCountParams::truncation]
+        end
+      end
+    end
+  end
+end

@@ -6,6 +6,9 @@ module OpenAI
       # @return [OpenAI::Resources::Responses::InputItems]
       attr_reader :input_items
 
+      # @return [OpenAI::Resources::Responses::InputTokens]
+      attr_reader :input_tokens
+
       # See {OpenAI::Resources::Responses#stream_raw} for streaming counterpart.
       #
       # Some parameter documentations has been truncated, see
@@ -316,6 +319,7 @@ module OpenAI
       def initialize(client:)
         @client = client
         @input_items = OpenAI::Resources::Responses::InputItems.new(client: client)
+        @input_tokens = OpenAI::Resources::Responses::InputTokens.new(client: client)
       end
     end
   end
