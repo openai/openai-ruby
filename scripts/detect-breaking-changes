@@ -49,6 +49,7 @@ TEST_PATHS=(
 	test/openai/resources/uploads/parts_test.rb
 	test/openai/resources/responses_test.rb
 	test/openai/resources/responses/input_items_test.rb
+	test/openai/resources/responses/input_tokens_test.rb
 	test/openai/resources/realtime_test.rb
 	test/openai/resources/realtime/client_secrets_test.rb
 	test/openai/resources/realtime/calls_test.rb
