@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.34.1 (2025-10-20)
+
+Full Changelog: [v0.34.0...v0.34.1](https://github.com/openai/openai-ruby/compare/v0.34.0...v0.34.1)
+
+### Bug Fixes
+
+* **api:** fix discriminator propertyName for ResponseFormatJsonSchema ([e7bacfb](https://github.com/openai/openai-ruby/commit/e7bacfb9e5dee526ff4d4fae23a1663bb3fb64eb))
+
 ## 0.34.0 (2025-10-20)
 
 Full Changelog: [v0.33.0...v0.34.0](https://github.com/openai/openai-ruby/compare/v0.33.0...v0.34.0)
