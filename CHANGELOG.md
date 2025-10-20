@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.34.0 (2025-10-20)
+
+Full Changelog: [v0.33.0...v0.34.0](https://github.com/openai/openai-ruby/compare/v0.33.0...v0.34.0)
+
+### Features
+
+* **api:** Add responses.input_tokens.count ([4c3f064](https://github.com/openai/openai-ruby/commit/4c3f06487954945b034f69c393a0a5a28fffa0c8))
+
+
+### Bug Fixes
+
+* **api:** internal openapi updates ([1fbce8c](https://github.com/openai/openai-ruby/commit/1fbce8c1158482b361ea48ff996b1998031679bf))
+
 ## 0.33.0 (2025-10-17)
 
 Full Changelog: [v0.32.0...v0.33.0](https://github.com/openai/openai-ruby/compare/v0.32.0...v0.33.0)
