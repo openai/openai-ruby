@@ -564,12 +564,14 @@ module OpenAI
         module ResponseFormat
           extend OpenAI::Internal::Type::Union
 
+          discriminator :type
+
           # Default response format. Used to generate text responses.
-          variant -> { OpenAI::ResponseFormatText }
+          variant :text, -> { OpenAI::ResponseFormatText }
 
           # JSON Schema response format. Used to generate structured JSON responses.
           # Learn more about [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
-          variant -> { OpenAI::ResponseFormatJSONSchema }
+          variant :json_schema, -> { OpenAI::ResponseFormatJSONSchema }
 
           # An {OpenAI::BaseModel} can be provided and implicitly converted into {OpenAI::Models::ResponseFormatJSONSchema}.
           # See examples for more details.
@@ -581,7 +583,7 @@ module OpenAI
           # Using `json_schema` is recommended for models that support it. Note that the
           # model will not generate JSON without a system or user message instructing it
           # to do so.
-          variant -> { OpenAI::ResponseFormatJSONObject }
+          variant :json_object, -> { OpenAI::ResponseFormatJSONObject }
 
           # @!method self.variants
           #   @return [Array(OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject)]
