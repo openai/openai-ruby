@@ -28,6 +28,8 @@ module OpenAI
       # A summary of the reasoning performed by the model. This can be useful for
       # debugging and understanding the model's reasoning process. One of `auto`,
       # `concise`, or `detailed`.
+      #
+      # `concise` is only supported for `computer-use-preview` models.
       sig { returns(T.nilable(OpenAI::Reasoning::Summary::OrSymbol)) }
       attr_accessor :summary
 
@@ -62,6 +64,8 @@ module OpenAI
         # A summary of the reasoning performed by the model. This can be useful for
         # debugging and understanding the model's reasoning process. One of `auto`,
         # `concise`, or `detailed`.
+        #
+        # `concise` is only supported for `computer-use-preview` models.
         summary: nil
       )
       end
@@ -109,6 +113,8 @@ module OpenAI
       # A summary of the reasoning performed by the model. This can be useful for
       # debugging and understanding the model's reasoning process. One of `auto`,
       # `concise`, or `detailed`.
+      #
+      # `concise` is only supported for `computer-use-preview` models.
       module Summary
         extend OpenAI::Internal::Type::Enum
 
