@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.35.0 (2025-10-24)
+
+Full Changelog: [v0.34.1...v0.35.0](https://github.com/openai/openai-ruby/compare/v0.34.1...v0.35.0)
+
+### Features
+
+* handle thread interrupts in the core HTTP client ([92e26d0](https://github.com/openai/openai-ruby/commit/92e26d0593ae6487a62d500c3e1e866252f3bdeb))
+
+
+### Bug Fixes
+
+* **api:** docs updates ([88a4a35](https://github.com/openai/openai-ruby/commit/88a4a355457b22ef9ac657ecb0e7a1a2e9bc8973))
+* text and tools use mutually exclusive issue ([#855](https://github.com/openai/openai-ruby/issues/855)) ([7d93874](https://github.com/openai/openai-ruby/commit/7d93874ff34f5efa2459211984533fe72dced9e1))
+
 ## 0.34.1 (2025-10-20)
 
 Full Changelog: [v0.34.0...v0.34.1](https://github.com/openai/openai-ruby/compare/v0.34.0...v0.34.1)
