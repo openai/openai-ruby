@@ -430,6 +430,75 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     end
   end
 
+  class CalendarEvent < OpenAI::BaseModel
+    required :name, String
+    required :date, String
+    required :location, String
+  end
+
+  class LookupCalendar < OpenAI::BaseModel
+    required :first_name, String
+    required :last_name, String
+  end
+
+  def test_stream_with_both_text_and_tools
+    stub_request(:post, "http://localhost/responses")
+      .to_return(
+        status: 200,
+        headers: {"Content-Type" => "text/event-stream"},
+        body: text_and_tools_sse_response
+      )
+
+    stream = @client.responses.stream(
+      model: "gpt-4o-2024-08-06",
+      input: [
+        {role: :system, content: "Extract event info and look up attendees."},
+        {role: :user, content: "Ada Lovelace is going to a conference on Friday at the Convention Center."}
+      ],
+      text: CalendarEvent,
+      tools: [LookupCalendar]
+    )
+
+    events = stream.to_a
+
+    text_done = events.find { |e| e.type == :"response.output_text.done" }
+    assert_pattern do
+      text_done => OpenAI::Streaming::ResponseTextDoneEvent[
+        parsed: CalendarEvent[
+          name: "Conference",
+          date: "Friday",
+          location: "Convention Center"
+        ]
+      ]
+    end
+
+    function_done = events.find { |e| e.type == :"response.function_call_arguments.done" }
+    assert_equal('{"first_name":"Ada","last_name":"Lovelace"}', function_done.arguments)
+
+    final_response = stream.get_final_response
+
+    text_output = final_response.output.find { |o| o.is_a?(OpenAI::Models::Responses::ResponseOutputMessage) }
+    text_content = text_output.content.find { |c| c[:type] == :output_text }
+    assert_pattern do
+      text_content[:parsed] => CalendarEvent[
+        name: "Conference",
+        date: "Friday",
+        location: "Convention Center"
+      ]
+    end
+
+    tool_call = final_response.output.find { |o| o.is_a?(OpenAI::Models::Responses::ResponseFunctionToolCall) }
+    assert_pattern do
+      tool_call => OpenAI::Models::Responses::ResponseFunctionToolCall[
+        name: "LookupCalendar",
+        parsed: LookupCalendar[
+          first_name: "Ada",
+          last_name: "Lovelace"
+        ]
+      ]
+    end
+  end
+
   private
 
   def function_tool_params
@@ -739,6 +808,53 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
       data: {"type":"response.created","sequence_number":1,"response":{"id":"msg_error","object":"realtime.response","status":"in_progress","status_details":null,"output":[],"usage":null,"metadata":null}}
 
       data: {"error":{"message":"Invalid request: missing required field"}}
+
+    SSE
+  end
+
+  def text_and_tools_sse_response
+    <<~SSE
+      event: response.created
+      data: {"type":"response.created","sequence_number":1,"response":{"id":"resp_stream_001","object":"realtime.response","status":"in_progress","output":[],"usage":null}}
+
+      event: response.output_item.added
+      data: {"type":"response.output_item.added","sequence_number":2,"response_id":"resp_stream_001","output_index":0,"item":{"id":"msg_001","object":"realtime.item","type":"message","status":"in_progress","role":"assistant","content":[]}}
+
+      event: response.content_part.added
+      data: {"type":"response.content_part.added","sequence_number":3,"response_id":"resp_stream_001","item_id":"msg_001","output_index":0,"content_index":0,"part":{"type":"output_text","text":""}}
+
+      event: response.output_text.delta
+      data: {"type":"response.output_text.delta","sequence_number":4,"response_id":"resp_stream_001","item_id":"msg_001","output_index":0,"content_index":0,"delta":"{\\"name\\":\\"Conference\\","}
+
+      event: response.output_text.delta
+      data: {"type":"response.output_text.delta","sequence_number":5,"response_id":"resp_stream_001","item_id":"msg_001","output_index":0,"content_index":0,"delta":"\\"date\\":\\"Friday\\",\\"location\\":\\"Convention Center\\"}"}
+
+      event: response.output_text.done
+      data: {"type":"response.output_text.done","sequence_number":6,"response_id":"resp_stream_001","item_id":"msg_001","output_index":0,"content_index":0,"text":"{\\"name\\":\\"Conference\\",\\"date\\":\\"Friday\\",\\"location\\":\\"Convention Center\\"}"}
+
+      event: response.content_part.done
+      data: {"type":"response.content_part.done","sequence_number":7,"response_id":"resp_stream_001","item_id":"msg_001","output_index":0,"content_index":0,"part":{"type":"output_text","text":"{\\"name\\":\\"Conference\\",\\"date\\":\\"Friday\\",\\"location\\":\\"Convention Center\\"}"}}
+
+      event: response.output_item.done
+      data: {"type":"response.output_item.done","sequence_number":8,"response_id":"resp_stream_001","item_id":"msg_001","output_index":0,"item":{"id":"msg_001","object":"realtime.item","type":"message","status":"completed","role":"assistant","content":[{"type":"output_text","text":"{\\"name\\":\\"Conference\\",\\"date\\":\\"Friday\\",\\"location\\":\\"Convention Center\\"}"}]}}
+
+      event: response.output_item.added
+      data: {"type":"response.output_item.added","sequence_number":9,"response_id":"resp_stream_001","output_index":1,"item":{"id":"call_001","object":"realtime.item","type":"function_call","status":"in_progress","name":"LookupCalendar","arguments":"","call_id":"call_001"}}
+
+      event: response.function_call_arguments.delta
+      data: {"type":"response.function_call_arguments.delta","sequence_number":10,"item_id":"call_001","output_index":1,"delta":"{\\"first_name\\":\\"Ada\\","}
+
+      event: response.function_call_arguments.delta
+      data: {"type":"response.function_call_arguments.delta","sequence_number":11,"item_id":"call_001","output_index":1,"delta":"\\"last_name\\":\\"Lovelace\\"}"}
+
+      event: response.function_call_arguments.done
+      data: {"type":"response.function_call_arguments.done","sequence_number":12,"item_id":"call_001","output_index":1,"arguments":"{\\"first_name\\":\\"Ada\\",\\"last_name\\":\\"Lovelace\\"}"}
+
+      event: response.output_item.done
+      data: {"type":"response.output_item.done","sequence_number":13,"response_id":"resp_stream_001","item_id":"call_001","output_index":1,"item":{"id":"call_001","object":"realtime.item","type":"function_call","status":"completed","name":"LookupCalendar","arguments":"{\\"first_name\\":\\"Ada\\",\\"last_name\\":\\"Lovelace\\"}","call_id":"call_001"}}
+
+      event: response.completed
+      data: {"type":"response.completed","sequence_number":14,"response":{"id":"resp_stream_001","object":"realtime.response","status":"completed","output":[{"id":"msg_001","object":"realtime.item","type":"message","status":"completed","role":"assistant","content":[{"type":"output_text","text":"{\\"name\\":\\"Conference\\",\\"date\\":\\"Friday\\",\\"location\\":\\"Convention Center\\"}"}]},{"id":"call_001","object":"realtime.item","type":"function_call","status":"completed","name":"LookupCalendar","arguments":"{\\"first_name\\":\\"Ada\\",\\"last_name\\":\\"Lovelace\\"}","call_id":"call_001"}],"usage":{"total_tokens":50,"input_tokens":30,"output_tokens":20}}}
 
     SSE
   end
