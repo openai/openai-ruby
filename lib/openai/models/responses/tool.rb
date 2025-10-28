@@ -30,8 +30,10 @@ module OpenAI
         # A tool that generates images using a model like `gpt-image-1`.
         variant :image_generation, -> { OpenAI::Responses::Tool::ImageGeneration }
 
+        # A tool that allows the model to execute shell commands in a local environment.
         variant :local_shell, -> { OpenAI::Responses::Tool::LocalShell }
 
+        # A custom tool that processes input using a specified format. Learn more about   [custom tools](https://platform.openai.com/docs/guides/function-calling#custom-tools)
         variant :custom, -> { OpenAI::Responses::CustomTool }
 
         # Search the Internet for sources related to the prompt. Learn more about the
@@ -650,6 +652,8 @@ module OpenAI
           required :type, const: :local_shell
 
           # @!method initialize(type: :local_shell)
+          #   A tool that allows the model to execute shell commands in a local environment.
+          #
           #   @param type [Symbol, :local_shell] The type of the local shell tool. Always `local_shell`.
         end
 
