@@ -33,6 +33,8 @@ module OpenAI
       #   debugging and understanding the model's reasoning process. One of `auto`,
       #   `concise`, or `detailed`.
       #
+      #   `concise` is only supported for `computer-use-preview` models.
+      #
       #   @return [Symbol, OpenAI::Models::Reasoning::Summary, nil]
       optional :summary, enum: -> { OpenAI::Reasoning::Summary }, nil?: true
 
@@ -74,6 +76,8 @@ module OpenAI
       # A summary of the reasoning performed by the model. This can be useful for
       # debugging and understanding the model's reasoning process. One of `auto`,
       # `concise`, or `detailed`.
+      #
+      # `concise` is only supported for `computer-use-preview` models.
       #
       # @see OpenAI::Models::Reasoning#summary
       module Summary

@@ -559,6 +559,10 @@ module OpenAI
         in {text: {format: {type: :json_schema,
                             schema: OpenAI::StructuredOutput::JsonSchemaConverter => model}}}
           parsed.dig(:text, :format).store(:schema, model.to_json_schema)
+        else
+        end
+
+        case parsed
         in {tools: Array => tools}
           # rubocop:disable Metrics/BlockLength
           mapped = tools.map do |tool|

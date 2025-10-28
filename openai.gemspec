@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
   s.metadata["source_code_uri"] = "https://github.com/openai/openai-ruby"
   s.metadata["rubygems_mfa_required"] = false.to_s
   s.required_ruby_version = ">= 3.2.0"
+  s.license = "Apache-2.0"
 
   s.files = Dir[
     "lib/**/*.rb",

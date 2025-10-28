@@ -48,6 +48,8 @@ module OpenAI
         end
         attr_writer :format_
 
+        # A custom tool that processes input using a specified format. Learn more about
+        # [custom tools](https://platform.openai.com/docs/guides/function-calling#custom-tools)
         sig do
           params(
             name: String,

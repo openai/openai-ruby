@@ -5,7 +5,6 @@ module OpenAI
         OpenAI::Responses::ResponseInputText
         | OpenAI::Responses::ResponseInputImage
         | OpenAI::Responses::ResponseInputFile
-        | OpenAI::Responses::ResponseInputAudio
 
       module ResponseInputContent
         extend OpenAI::Internal::Type::Union

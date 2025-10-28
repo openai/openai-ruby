@@ -990,7 +990,7 @@ module OpenAI
         module Tracing
           extend OpenAI::Internal::Type::Union
 
-          # Default tracing mode for the session.
+          # Enables tracing and sets default values for tracing configuration options. Always `auto`.
           variant const: :auto
 
           # Granular configuration for tracing.

@@ -14,7 +14,7 @@ module OpenAI
         #   A list of one or many input items to the model, containing different content
         #   types.
         #
-        #   @return [Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile, OpenAI::Models::Responses::ResponseInputAudio>]
+        #   @return [Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile>]
         required :content, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseInputContent] }
 
         # @!attribute role
@@ -42,7 +42,7 @@ module OpenAI
         #
         #   @param id [String] The unique ID of the message input.
         #
-        #   @param content [Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile, OpenAI::Models::Responses::ResponseInputAudio>] A list of one or many input items to the model, containing different content
+        #   @param content [Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile>] A list of one or many input items to the model, containing different content
         #
         #   @param role [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Role] The role of the message input. One of `user`, `system`, or `developer`.
         #
