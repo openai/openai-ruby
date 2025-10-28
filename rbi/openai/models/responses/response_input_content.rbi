@@ -12,8 +12,7 @@ module OpenAI
             T.any(
               OpenAI::Responses::ResponseInputText,
               OpenAI::Responses::ResponseInputImage,
-              OpenAI::Responses::ResponseInputFile,
-              OpenAI::Responses::ResponseInputAudio
+              OpenAI::Responses::ResponseInputFile
             )
           end
 

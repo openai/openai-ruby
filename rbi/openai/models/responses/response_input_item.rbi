@@ -55,8 +55,7 @@ module OpenAI
                 T.any(
                   OpenAI::Responses::ResponseInputText,
                   OpenAI::Responses::ResponseInputImage,
-                  OpenAI::Responses::ResponseInputFile,
-                  OpenAI::Responses::ResponseInputAudio
+                  OpenAI::Responses::ResponseInputFile
                 )
               ]
             )
@@ -118,8 +117,7 @@ module OpenAI
                   T.any(
                     OpenAI::Responses::ResponseInputText::OrHash,
                     OpenAI::Responses::ResponseInputImage::OrHash,
-                    OpenAI::Responses::ResponseInputFile::OrHash,
-                    OpenAI::Responses::ResponseInputAudio::OrHash
+                    OpenAI::Responses::ResponseInputFile::OrHash
                   )
                 ],
               role:
@@ -152,8 +150,7 @@ module OpenAI
                     T.any(
                       OpenAI::Responses::ResponseInputText,
                       OpenAI::Responses::ResponseInputImage,
-                      OpenAI::Responses::ResponseInputFile,
-                      OpenAI::Responses::ResponseInputAudio
+                      OpenAI::Responses::ResponseInputFile
                     )
                   ],
                 role:
