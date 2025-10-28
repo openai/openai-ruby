@@ -1335,6 +1335,7 @@ module OpenAI
           sig { returns(Symbol) }
           attr_accessor :type
 
+          # A tool that allows the model to execute shell commands in a local environment.
           sig { params(type: Symbol).returns(T.attached_class) }
           def self.new(
             # The type of the local shell tool. Always `local_shell`.
