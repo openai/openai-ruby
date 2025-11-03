@@ -11,8 +11,7 @@ group :development do
   gem "sorbet"
   gem "steep"
   gem "syntax_tree"
-  # TODO: using a fork for now, the prettier below has a bug
-  gem "syntax_tree-rbs", github: "stainless-api/syntax_tree-rbs", branch: "main"
+  gem "syntax_tree-rbs", github: "ruby-syntax-tree/syntax_tree-rbs", branch: "main"
   gem "tapioca"
 end
 
