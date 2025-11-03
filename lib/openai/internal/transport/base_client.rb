@@ -201,7 +201,8 @@ module OpenAI
             self.class::PLATFORM_HEADERS,
             {
               "accept" => "application/json",
-              "content-type" => "application/json"
+              "content-type" => "application/json",
+              "user-agent" => user_agent
             },
             headers
           )
@@ -218,6 +219,11 @@ module OpenAI
         #
         # @return [Hash{String=>String}]
         private def auth_headers = {}
+
+        # @api private
+        #
+        # @return [String]
+        private def user_agent = "#{self.class.name}/Ruby #{OpenAI::VERSION}"
 
         # @api private
         #
