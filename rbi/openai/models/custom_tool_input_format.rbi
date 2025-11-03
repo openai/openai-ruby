@@ -27,6 +27,7 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
+        # Unconstrained free-form text.
         sig { params(type: Symbol).returns(T.attached_class) }
         def self.new(
           # Unconstrained text format. Always `text`.
@@ -62,6 +63,7 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
+        # A grammar defined by the user.
         sig do
           params(
             definition: String,

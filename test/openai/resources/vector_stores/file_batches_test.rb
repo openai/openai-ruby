@@ -3,8 +3,8 @@
 require_relative "../../test_helper"
 
 class OpenAI::Test::Resources::VectorStores::FileBatchesTest < OpenAI::Test::ResourceTest
-  def test_create_required_params
-    response = @openai.vector_stores.file_batches.create("vs_abc123", file_ids: ["string"])
+  def test_create
+    response = @openai.vector_stores.file_batches.create("vs_abc123")
 
     assert_pattern do
       response => OpenAI::VectorStores::VectorStoreFileBatch

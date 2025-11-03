@@ -4,9 +4,10 @@ module OpenAI
       class FileBatches
         def create: (
           String vector_store_id,
-          file_ids: ::Array[String],
           ?attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileBatchCreateParams::attribute]?,
           ?chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
+          ?file_ids: ::Array[String],
+          ?files: ::Array[OpenAI::VectorStores::FileBatchCreateParams::File],
           ?request_options: OpenAI::request_opts
         ) -> OpenAI::VectorStores::VectorStoreFileBatch
 

@@ -9,22 +9,24 @@ module OpenAI
         #
         # Create a vector store file batch.
         #
-        # @overload create(vector_store_id, file_ids:, attributes: nil, chunking_strategy: nil, request_options: {})
+        # @overload create(vector_store_id, attributes: nil, chunking_strategy: nil, file_ids: nil, files: nil, request_options: {})
         #
         # @param vector_store_id [String] The ID of the vector store for which to create a File Batch.
-        #
-        # @param file_ids [Array<String>] A list of [File](https://platform.openai.com/docs/api-reference/files) IDs that
         #
         # @param attributes [Hash{Symbol=>String, Float, Boolean}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #
         # @param chunking_strategy [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam] The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+        #
+        # @param file_ids [Array<String>] A list of [File](https://platform.openai.com/docs/api-reference/files) IDs that
+        #
+        # @param files [Array<OpenAI::Models::VectorStores::FileBatchCreateParams::File>] A list of objects that each include a `file_id` plus optional `attributes` or `c
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
         # @return [OpenAI::Models::VectorStores::VectorStoreFileBatch]
         #
         # @see OpenAI::Models::VectorStores::FileBatchCreateParams
-        def create(vector_store_id, params)
+        def create(vector_store_id, params = {})
           parsed, options = OpenAI::VectorStores::FileBatchCreateParams.dump_request(params)
           @client.request(
             method: :post,

@@ -40,6 +40,10 @@ module OpenAI
       sig { returns(Integer) }
       attr_accessor :progress
 
+      # The prompt that was used to generate the video.
+      sig { returns(T.nilable(String)) }
+      attr_accessor :prompt
+
       # Identifier of the source video if this video is a remix.
       sig { returns(T.nilable(String)) }
       attr_accessor :remixed_from_video_id
@@ -66,6 +70,7 @@ module OpenAI
           expires_at: T.nilable(Integer),
           model: OpenAI::VideoModel::OrSymbol,
           progress: Integer,
+          prompt: T.nilable(String),
           remixed_from_video_id: T.nilable(String),
           seconds: OpenAI::VideoSeconds::OrSymbol,
           size: OpenAI::VideoSize::OrSymbol,
@@ -88,6 +93,8 @@ module OpenAI
         model:,
         # Approximate completion percentage for the generation task.
         progress:,
+        # The prompt that was used to generate the video.
+        prompt:,
         # Identifier of the source video if this video is a remix.
         remixed_from_video_id:,
         # Duration of the generated clip in seconds.
@@ -112,6 +119,7 @@ module OpenAI
             model: OpenAI::VideoModel::TaggedSymbol,
             object: Symbol,
             progress: Integer,
+            prompt: T.nilable(String),
             remixed_from_video_id: T.nilable(String),
             seconds: OpenAI::VideoSeconds::TaggedSymbol,
             size: OpenAI::VideoSize::TaggedSymbol,

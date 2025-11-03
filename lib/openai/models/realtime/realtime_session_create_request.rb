@@ -98,8 +98,19 @@ module OpenAI
         optional :tracing, union: -> { OpenAI::Realtime::RealtimeTracingConfig }, nil?: true
 
         # @!attribute truncation
-        #   Controls how the realtime conversation is truncated prior to model inference.
-        #   The default is `auto`.
+        #   When the number of tokens in a conversation exceeds the model's input token
+        #   limit, the conversation be truncated, meaning messages (starting from the
+        #   oldest) will not be included in the model's context. A 32k context model with
+        #   4,096 max output tokens can only include 28,224 tokens in the context before
+        #   truncation occurs. Clients can configure truncation behavior to truncate with a
+        #   lower max token limit, which is an effective way to control token usage and
+        #   cost. Truncation will reduce the number of cached tokens on the next turn
+        #   (busting the cache), since messages are dropped from the beginning of the
+        #   context. However, clients can also configure truncation to retain messages up to
+        #   a fraction of the maximum context size, which will reduce the need for future
+        #   truncations and thus improve the cache rate. Truncation can be disabled
+        #   entirely, which means the server will never truncate but would instead return an
+        #   error if the conversation exceeds the model's input token limit.
         #
         #   @return [Symbol, OpenAI::Models::Realtime::RealtimeTruncation::RealtimeTruncationStrategy, OpenAI::Models::Realtime::RealtimeTruncationRetentionRatio, nil]
         optional :truncation, union: -> { OpenAI::Realtime::RealtimeTruncation }
@@ -130,7 +141,7 @@ module OpenAI
         #
         #   @param tracing [Symbol, :auto, OpenAI::Models::Realtime::RealtimeTracingConfig::TracingConfiguration, nil] Realtime API can write session traces to the [Traces Dashboard](/logs?api=traces
         #
-        #   @param truncation [Symbol, OpenAI::Models::Realtime::RealtimeTruncation::RealtimeTruncationStrategy, OpenAI::Models::Realtime::RealtimeTruncationRetentionRatio] Controls how the realtime conversation is truncated prior to model inference.
+        #   @param truncation [Symbol, OpenAI::Models::Realtime::RealtimeTruncation::RealtimeTruncationStrategy, OpenAI::Models::Realtime::RealtimeTruncationRetentionRatio] When the number of tokens in a conversation exceeds the model's input token limi
         #
         #   @param type [Symbol, :realtime] The type of session to create. Always `realtime` for the Realtime API.
 

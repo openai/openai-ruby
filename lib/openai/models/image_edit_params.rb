@@ -142,7 +142,7 @@ module OpenAI
       #
       #   @param background [Symbol, OpenAI::Models::ImageEditParams::Background, nil] Allows to set transparency for the background of the generated image(s).
       #
-      #   @param input_fidelity [Symbol, OpenAI::Models::ImageEditParams::InputFidelity, nil]
+      #   @param input_fidelity [Symbol, OpenAI::Models::ImageEditParams::InputFidelity, nil] Control how much effort the model will exert to match the style and features, es
       #
       #   @param mask [Pathname, StringIO, IO, String, OpenAI::FilePart] An additional image whose fully transparent areas (e.g. where alpha is zero) ind
       #

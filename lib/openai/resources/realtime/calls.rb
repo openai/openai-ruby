@@ -34,7 +34,7 @@ module OpenAI
         #
         # @param tracing [Symbol, :auto, OpenAI::Models::Realtime::RealtimeTracingConfig::TracingConfiguration, nil] Realtime API can write session traces to the [Traces Dashboard](/logs?api=traces
         #
-        # @param truncation [Symbol, OpenAI::Models::Realtime::RealtimeTruncation::RealtimeTruncationStrategy, OpenAI::Models::Realtime::RealtimeTruncationRetentionRatio] Controls how the realtime conversation is truncated prior to model inference.
+        # @param truncation [Symbol, OpenAI::Models::Realtime::RealtimeTruncation::RealtimeTruncationStrategy, OpenAI::Models::Realtime::RealtimeTruncationRetentionRatio] When the number of tokens in a conversation exceeds the model's input token limi
         #
         # @param type [Symbol, :realtime] The type of session to create. Always `realtime` for the Realtime API.
         #
