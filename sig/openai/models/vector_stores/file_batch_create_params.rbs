@@ -3,17 +3,16 @@ module OpenAI
     module VectorStores
       type file_batch_create_params =
         {
-          file_ids: ::Array[String],
           attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileBatchCreateParams::attribute]?,
-          chunking_strategy: OpenAI::Models::file_chunking_strategy_param
+          chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
+          file_ids: ::Array[String],
+          files: ::Array[OpenAI::VectorStores::FileBatchCreateParams::File]
         }
         & OpenAI::Internal::Type::request_parameters
 
       class FileBatchCreateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
-
-        attr_accessor file_ids: ::Array[String]
 
         attr_accessor attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileBatchCreateParams::attribute]?
 
@@ -23,17 +22,29 @@ module OpenAI
           OpenAI::Models::file_chunking_strategy_param
         ) -> OpenAI::Models::file_chunking_strategy_param
 
+        attr_reader file_ids: ::Array[String]?
+
+        def file_ids=: (::Array[String]) -> ::Array[String]
+
+        attr_reader files: ::Array[OpenAI::VectorStores::FileBatchCreateParams::File]?
+
+        def files=: (
+          ::Array[OpenAI::VectorStores::FileBatchCreateParams::File]
+        ) -> ::Array[OpenAI::VectorStores::FileBatchCreateParams::File]
+
         def initialize: (
-          file_ids: ::Array[String],
           ?attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileBatchCreateParams::attribute]?,
           ?chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
+          ?file_ids: ::Array[String],
+          ?files: ::Array[OpenAI::VectorStores::FileBatchCreateParams::File],
           ?request_options: OpenAI::request_opts
         ) -> void
 
         def to_hash: -> {
-          file_ids: ::Array[String],
           attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileBatchCreateParams::attribute]?,
           chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
+          file_ids: ::Array[String],
+          files: ::Array[OpenAI::VectorStores::FileBatchCreateParams::File],
           request_options: OpenAI::RequestOptions
         }
 
@@ -43,6 +54,45 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           def self?.variants: -> ::Array[OpenAI::Models::VectorStores::FileBatchCreateParams::attribute]
+        end
+
+        type file =
+          {
+            file_id: String,
+            attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileBatchCreateParams::File::attribute]?,
+            chunking_strategy: OpenAI::Models::file_chunking_strategy_param
+          }
+
+        class File < OpenAI::Internal::Type::BaseModel
+          attr_accessor file_id: String
+
+          attr_accessor attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileBatchCreateParams::File::attribute]?
+
+          attr_reader chunking_strategy: OpenAI::Models::file_chunking_strategy_param?
+
+          def chunking_strategy=: (
+            OpenAI::Models::file_chunking_strategy_param
+          ) -> OpenAI::Models::file_chunking_strategy_param
+
+          def initialize: (
+            file_id: String,
+            ?attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileBatchCreateParams::File::attribute]?,
+            ?chunking_strategy: OpenAI::Models::file_chunking_strategy_param
+          ) -> void
+
+          def to_hash: -> {
+            file_id: String,
+            attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileBatchCreateParams::File::attribute]?,
+            chunking_strategy: OpenAI::Models::file_chunking_strategy_param
+          }
+
+          type attribute = String | Float | bool
+
+          module Attribute
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::VectorStores::FileBatchCreateParams::File::attribute]
+          end
         end
       end
     end

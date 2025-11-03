@@ -258,7 +258,11 @@ module OpenAI
             extend OpenAI::Internal::Type::Union
 
             type code_interpreter_tool_auto =
-              { type: :auto, file_ids: ::Array[String] }
+              {
+                type: :auto,
+                file_ids: ::Array[String],
+                memory_limit: OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::memory_limit?
+              }
 
             class CodeInterpreterToolAuto < OpenAI::Internal::Type::BaseModel
               attr_accessor type: :auto
@@ -267,9 +271,32 @@ module OpenAI
 
               def file_ids=: (::Array[String]) -> ::Array[String]
 
-              def initialize: (?file_ids: ::Array[String], ?type: :auto) -> void
+              attr_accessor memory_limit: OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::memory_limit?
 
-              def to_hash: -> { type: :auto, file_ids: ::Array[String] }
+              def initialize: (
+                ?file_ids: ::Array[String],
+                ?memory_limit: OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::memory_limit?,
+                ?type: :auto
+              ) -> void
+
+              def to_hash: -> {
+                type: :auto,
+                file_ids: ::Array[String],
+                memory_limit: OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::memory_limit?
+              }
+
+              type memory_limit = :"1g" | :"4g" | :"16g" | :"64g"
+
+              module MemoryLimit
+                extend OpenAI::Internal::Type::Enum
+
+                MEMORY_LIMIT_1G: :"1g"
+                MEMORY_LIMIT_4G: :"4g"
+                MEMORY_LIMIT_16G: :"16g"
+                MEMORY_LIMIT_64G: :"64g"
+
+                def self?.values: -> ::Array[OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::memory_limit]
+              end
             end
 
             def self?.variants: -> ::Array[OpenAI::Models::Responses::Tool::CodeInterpreter::container]

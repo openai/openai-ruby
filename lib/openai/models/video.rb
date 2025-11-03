@@ -52,6 +52,12 @@ module OpenAI
       #   @return [Integer]
       required :progress, Integer
 
+      # @!attribute prompt
+      #   The prompt that was used to generate the video.
+      #
+      #   @return [String, nil]
+      required :prompt, String, nil?: true
+
       # @!attribute remixed_from_video_id
       #   Identifier of the source video if this video is a remix.
       #
@@ -76,7 +82,7 @@ module OpenAI
       #   @return [Symbol, OpenAI::Models::Video::Status]
       required :status, enum: -> { OpenAI::Video::Status }
 
-      # @!method initialize(id:, completed_at:, created_at:, error:, expires_at:, model:, progress:, remixed_from_video_id:, seconds:, size:, status:, object: :video)
+      # @!method initialize(id:, completed_at:, created_at:, error:, expires_at:, model:, progress:, prompt:, remixed_from_video_id:, seconds:, size:, status:, object: :video)
       #   Structured information describing a generated video job.
       #
       #   @param id [String] Unique identifier for the video job.
@@ -92,6 +98,8 @@ module OpenAI
       #   @param model [Symbol, OpenAI::Models::VideoModel] The video generation model that produced the job.
       #
       #   @param progress [Integer] Approximate completion percentage for the generation task.
+      #
+      #   @param prompt [String, nil] The prompt that was used to generate the video.
       #
       #   @param remixed_from_video_id [String, nil] Identifier of the source video if this video is a remix.
       #

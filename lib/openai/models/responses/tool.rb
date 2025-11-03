@@ -390,13 +390,37 @@ module OpenAI
               #   @return [Array<String>, nil]
               optional :file_ids, OpenAI::Internal::Type::ArrayOf[String]
 
-              # @!method initialize(file_ids: nil, type: :auto)
+              # @!attribute memory_limit
+              #
+              #   @return [Symbol, OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit, nil]
+              optional :memory_limit,
+                       enum: -> {
+                         OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit
+                       },
+                       nil?: true
+
+              # @!method initialize(file_ids: nil, memory_limit: nil, type: :auto)
               #   Configuration for a code interpreter container. Optionally specify the IDs of
               #   the files to run the code on.
               #
               #   @param file_ids [Array<String>] An optional list of uploaded files to make available to your code.
               #
+              #   @param memory_limit [Symbol, OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit, nil]
+              #
               #   @param type [Symbol, :auto] Always `auto`.
+
+              # @see OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto#memory_limit
+              module MemoryLimit
+                extend OpenAI::Internal::Type::Enum
+
+                MEMORY_LIMIT_1G = :"1g"
+                MEMORY_LIMIT_4G = :"4g"
+                MEMORY_LIMIT_16G = :"16g"
+                MEMORY_LIMIT_64G = :"64g"
+
+                # @!method self.values
+                #   @return [Array<Symbol>]
+              end
             end
 
             # @!method self.variants
@@ -492,7 +516,7 @@ module OpenAI
           #
           #   @param background [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Background] Background type for the generated image. One of `transparent`,
           #
-          #   @param input_fidelity [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::InputFidelity, nil]
+          #   @param input_fidelity [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::InputFidelity, nil] Control how much effort the model will exert to match the style and features, es
           #
           #   @param input_image_mask [OpenAI::Models::Responses::Tool::ImageGeneration::InputImageMask] Optional mask for inpainting. Contains `image_url`
           #

@@ -713,25 +713,93 @@ module OpenAI
               sig { params(file_ids: T::Array[String]).void }
               attr_writer :file_ids
 
+              sig do
+                returns(
+                  T.nilable(
+                    OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::OrSymbol
+                  )
+                )
+              end
+              attr_accessor :memory_limit
+
               # Configuration for a code interpreter container. Optionally specify the IDs of
               # the files to run the code on.
               sig do
-                params(file_ids: T::Array[String], type: Symbol).returns(
-                  T.attached_class
-                )
+                params(
+                  file_ids: T::Array[String],
+                  memory_limit:
+                    T.nilable(
+                      OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::OrSymbol
+                    ),
+                  type: Symbol
+                ).returns(T.attached_class)
               end
               def self.new(
                 # An optional list of uploaded files to make available to your code.
                 file_ids: nil,
+                memory_limit: nil,
                 # Always `auto`.
                 type: :auto
               )
               end
 
               sig do
-                override.returns({ type: Symbol, file_ids: T::Array[String] })
+                override.returns(
+                  {
+                    type: Symbol,
+                    file_ids: T::Array[String],
+                    memory_limit:
+                      T.nilable(
+                        OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::OrSymbol
+                      )
+                  }
+                )
               end
               def to_hash
+              end
+
+              module MemoryLimit
+                extend OpenAI::Internal::Type::Enum
+
+                TaggedSymbol =
+                  T.type_alias do
+                    T.all(
+                      Symbol,
+                      OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit
+                    )
+                  end
+                OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+                MEMORY_LIMIT_1G =
+                  T.let(
+                    :"1g",
+                    OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::TaggedSymbol
+                  )
+                MEMORY_LIMIT_4G =
+                  T.let(
+                    :"4g",
+                    OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::TaggedSymbol
+                  )
+                MEMORY_LIMIT_16G =
+                  T.let(
+                    :"16g",
+                    OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::TaggedSymbol
+                  )
+                MEMORY_LIMIT_64G =
+                  T.let(
+                    :"64g",
+                    OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::TaggedSymbol
+                  )
+
+                sig do
+                  override.returns(
+                    T::Array[
+                      OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::TaggedSymbol
+                    ]
+                  )
+                end
+                def self.values
+                end
               end
             end
 

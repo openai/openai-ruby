@@ -10,6 +10,7 @@ module OpenAI
         model: OpenAI::Models::video_model,
         object: :video,
         progress: Integer,
+        prompt: String?,
         remixed_from_video_id: String?,
         seconds: OpenAI::Models::video_seconds,
         size: OpenAI::Models::video_size,
@@ -33,6 +34,8 @@ module OpenAI
 
       attr_accessor progress: Integer
 
+      attr_accessor prompt: String?
+
       attr_accessor remixed_from_video_id: String?
 
       attr_accessor seconds: OpenAI::Models::video_seconds
@@ -49,6 +52,7 @@ module OpenAI
         expires_at: Integer?,
         model: OpenAI::Models::video_model,
         progress: Integer,
+        prompt: String?,
         remixed_from_video_id: String?,
         seconds: OpenAI::Models::video_seconds,
         size: OpenAI::Models::video_size,
@@ -65,6 +69,7 @@ module OpenAI
         model: OpenAI::Models::video_model,
         object: :video,
         progress: Integer,
+        prompt: String?,
         remixed_from_video_id: String?,
         seconds: OpenAI::Models::video_seconds,
         size: OpenAI::Models::video_size,
