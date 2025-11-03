@@ -125,6 +125,25 @@ module OpenAI
               )
             end
 
+          # Weights that control how reciprocal rank fusion balances semantic embedding
+          # matches versus sparse keyword matches when hybrid search is enabled.
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch
+              )
+            )
+          end
+          attr_reader :hybrid_search
+
+          sig do
+            params(
+              hybrid_search:
+                OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch::OrHash
+            ).void
+          end
+          attr_writer :hybrid_search
+
           # The ranker to use for the file search.
           sig do
             returns(
@@ -155,12 +174,17 @@ module OpenAI
           # Ranking options for search.
           sig do
             params(
+              hybrid_search:
+                OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch::OrHash,
               ranker:
                 OpenAI::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol,
               score_threshold: Float
             ).returns(T.attached_class)
           end
           def self.new(
+            # Weights that control how reciprocal rank fusion balances semantic embedding
+            # matches versus sparse keyword matches when hybrid search is enabled.
+            hybrid_search: nil,
             # The ranker to use for the file search.
             ranker: nil,
             # The score threshold for the file search, a number between 0 and 1. Numbers
@@ -173,6 +197,8 @@ module OpenAI
           sig do
             override.returns(
               {
+                hybrid_search:
+                  OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch,
                 ranker:
                   OpenAI::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol,
                 score_threshold: Float
@@ -180,6 +206,45 @@ module OpenAI
             )
           end
           def to_hash
+          end
+
+          class HybridSearch < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The weight of the embedding in the reciprocal ranking fusion.
+            sig { returns(Float) }
+            attr_accessor :embedding_weight
+
+            # The weight of the text in the reciprocal ranking fusion.
+            sig { returns(Float) }
+            attr_accessor :text_weight
+
+            # Weights that control how reciprocal rank fusion balances semantic embedding
+            # matches versus sparse keyword matches when hybrid search is enabled.
+            sig do
+              params(embedding_weight: Float, text_weight: Float).returns(
+                T.attached_class
+              )
+            end
+            def self.new(
+              # The weight of the embedding in the reciprocal ranking fusion.
+              embedding_weight:,
+              # The weight of the text in the reciprocal ranking fusion.
+              text_weight:
+            )
+            end
+
+            sig do
+              override.returns({ embedding_weight: Float, text_weight: Float })
+            end
+            def to_hash
+            end
           end
 
           # The ranker to use for the file search.

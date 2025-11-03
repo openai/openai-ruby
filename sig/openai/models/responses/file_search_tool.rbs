@@ -53,11 +53,18 @@ module OpenAI
 
         type ranking_options =
           {
+            hybrid_search: OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch,
             ranker: OpenAI::Models::Responses::FileSearchTool::RankingOptions::ranker,
             score_threshold: Float
           }
 
         class RankingOptions < OpenAI::Internal::Type::BaseModel
+          attr_reader hybrid_search: OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch?
+
+          def hybrid_search=: (
+            OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch
+          ) -> OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch
+
           attr_reader ranker: OpenAI::Models::Responses::FileSearchTool::RankingOptions::ranker?
 
           def ranker=: (
@@ -69,14 +76,31 @@ module OpenAI
           def score_threshold=: (Float) -> Float
 
           def initialize: (
+            ?hybrid_search: OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch,
             ?ranker: OpenAI::Models::Responses::FileSearchTool::RankingOptions::ranker,
             ?score_threshold: Float
           ) -> void
 
           def to_hash: -> {
+            hybrid_search: OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch,
             ranker: OpenAI::Models::Responses::FileSearchTool::RankingOptions::ranker,
             score_threshold: Float
           }
+
+          type hybrid_search = { embedding_weight: Float, text_weight: Float }
+
+          class HybridSearch < OpenAI::Internal::Type::BaseModel
+            attr_accessor embedding_weight: Float
+
+            attr_accessor text_weight: Float
+
+            def initialize: (
+              embedding_weight: Float,
+              text_weight: Float
+            ) -> void
+
+            def to_hash: -> { embedding_weight: Float, text_weight: Float }
+          end
 
           type ranker = :auto | :"default-2024-11-15"
 

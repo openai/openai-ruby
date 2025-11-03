@@ -8,8 +8,10 @@ module OpenAI
 
       discriminator :type
 
+      # Unconstrained free-form text.
       variant :text, -> { OpenAI::CustomToolInputFormat::Text }
 
+      # A grammar defined by the user.
       variant :grammar, -> { OpenAI::CustomToolInputFormat::Grammar }
 
       class Text < OpenAI::Internal::Type::BaseModel
@@ -20,6 +22,8 @@ module OpenAI
         required :type, const: :text
 
         # @!method initialize(type: :text)
+        #   Unconstrained free-form text.
+        #
         #   @param type [Symbol, :text] Unconstrained text format. Always `text`.
       end
 
@@ -43,6 +47,8 @@ module OpenAI
         required :type, const: :grammar
 
         # @!method initialize(definition:, syntax:, type: :grammar)
+        #   A grammar defined by the user.
+        #
         #   @param definition [String] The grammar definition.
         #
         #   @param syntax [Symbol, OpenAI::Models::CustomToolInputFormat::Grammar::Syntax] The syntax of the grammar definition. One of `lark` or `regex`.

@@ -8,7 +8,6 @@ module OpenAI
         sig do
           params(
             vector_store_id: String,
-            file_ids: T::Array[String],
             attributes:
               T.nilable(
                 T::Hash[
@@ -21,16 +20,17 @@ module OpenAI
                 OpenAI::AutoFileChunkingStrategyParam::OrHash,
                 OpenAI::StaticFileChunkingStrategyObjectParam::OrHash
               ),
+            file_ids: T::Array[String],
+            files:
+              T::Array[
+                OpenAI::VectorStores::FileBatchCreateParams::File::OrHash
+              ],
             request_options: OpenAI::RequestOptions::OrHash
           ).returns(OpenAI::VectorStores::VectorStoreFileBatch)
         end
         def create(
           # The ID of the vector store for which to create a File Batch.
           vector_store_id,
-          # A list of [File](https://platform.openai.com/docs/api-reference/files) IDs that
-          # the vector store should use. Useful for tools like `file_search` that can access
-          # files.
-          file_ids:,
           # Set of 16 key-value pairs that can be attached to an object. This can be useful
           # for storing additional information about the object in a structured format, and
           # querying for objects via API or the dashboard. Keys are strings with a maximum
@@ -40,6 +40,16 @@ module OpenAI
           # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
           # strategy. Only applicable if `file_ids` is non-empty.
           chunking_strategy: nil,
+          # A list of [File](https://platform.openai.com/docs/api-reference/files) IDs that
+          # the vector store should use. Useful for tools like `file_search` that can access
+          # files. If `attributes` or `chunking_strategy` are provided, they will be applied
+          # to all files in the batch. Mutually exclusive with `files`.
+          file_ids: nil,
+          # A list of objects that each include a `file_id` plus optional `attributes` or
+          # `chunking_strategy`. Use this when you need to override metadata for specific
+          # files. The global `attributes` or `chunking_strategy` will be ignored and must
+          # be specified for each file. Mutually exclusive with `file_ids`.
+          files: nil,
           request_options: {}
         )
         end

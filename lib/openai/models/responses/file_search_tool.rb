@@ -71,6 +71,13 @@ module OpenAI
 
         # @see OpenAI::Models::Responses::FileSearchTool#ranking_options
         class RankingOptions < OpenAI::Internal::Type::BaseModel
+          # @!attribute hybrid_search
+          #   Weights that control how reciprocal rank fusion balances semantic embedding
+          #   matches versus sparse keyword matches when hybrid search is enabled.
+          #
+          #   @return [OpenAI::Models::Responses::FileSearchTool::RankingOptions::HybridSearch, nil]
+          optional :hybrid_search, -> { OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch }
+
           # @!attribute ranker
           #   The ranker to use for the file search.
           #
@@ -85,15 +92,40 @@ module OpenAI
           #   @return [Float, nil]
           optional :score_threshold, Float
 
-          # @!method initialize(ranker: nil, score_threshold: nil)
+          # @!method initialize(hybrid_search: nil, ranker: nil, score_threshold: nil)
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Responses::FileSearchTool::RankingOptions} for more details.
           #
           #   Ranking options for search.
           #
+          #   @param hybrid_search [OpenAI::Models::Responses::FileSearchTool::RankingOptions::HybridSearch] Weights that control how reciprocal rank fusion balances semantic embedding matc
+          #
           #   @param ranker [Symbol, OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker] The ranker to use for the file search.
           #
           #   @param score_threshold [Float] The score threshold for the file search, a number between 0 and 1. Numbers close
+
+          # @see OpenAI::Models::Responses::FileSearchTool::RankingOptions#hybrid_search
+          class HybridSearch < OpenAI::Internal::Type::BaseModel
+            # @!attribute embedding_weight
+            #   The weight of the embedding in the reciprocal ranking fusion.
+            #
+            #   @return [Float]
+            required :embedding_weight, Float
+
+            # @!attribute text_weight
+            #   The weight of the text in the reciprocal ranking fusion.
+            #
+            #   @return [Float]
+            required :text_weight, Float
+
+            # @!method initialize(embedding_weight:, text_weight:)
+            #   Weights that control how reciprocal rank fusion balances semantic embedding
+            #   matches versus sparse keyword matches when hybrid search is enabled.
+            #
+            #   @param embedding_weight [Float] The weight of the embedding in the reciprocal ranking fusion.
+            #
+            #   @param text_weight [Float] The weight of the text in the reciprocal ranking fusion.
+          end
 
           # The ranker to use for the file search.
           #
