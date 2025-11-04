@@ -27,11 +27,6 @@ module OpenAI
         end
         attr_accessor :annotations
 
-        sig do
-          returns(T::Array[OpenAI::Responses::ResponseOutputText::Logprob])
-        end
-        attr_accessor :logprobs
-
         # The text output from the model.
         sig { returns(String) }
         attr_accessor :text
@@ -43,6 +38,21 @@ module OpenAI
         # The type of the output text. Always `output_text`.
         sig { returns(Symbol) }
         attr_accessor :type
+
+        sig do
+          returns(
+            T.nilable(T::Array[OpenAI::Responses::ResponseOutputText::Logprob])
+          )
+        end
+        attr_reader :logprobs
+
+        sig do
+          params(
+            logprobs:
+              T::Array[OpenAI::Responses::ResponseOutputText::Logprob::OrHash]
+          ).void
+        end
+        attr_writer :logprobs
 
         # A text output from the model.
         sig do
@@ -56,18 +66,18 @@ module OpenAI
                   OpenAI::Responses::ResponseOutputText::Annotation::FilePath::OrHash
                 )
               ],
+            text: String,
             logprobs:
               T::Array[OpenAI::Responses::ResponseOutputText::Logprob::OrHash],
-            text: String,
             type: Symbol
           ).returns(T.attached_class)
         end
         def self.new(
           # The annotations of the text output.
           annotations:,
-          logprobs:,
           # The text output from the model.
           text:,
+          logprobs: nil,
           # The type of the output text. Always `output_text`.
           type: :output_text
         )
@@ -85,10 +95,9 @@ module OpenAI
                     OpenAI::Responses::ResponseOutputText::Annotation::FilePath
                   )
                 ],
-              logprobs:
-                T::Array[OpenAI::Responses::ResponseOutputText::Logprob],
               text: String,
-              type: Symbol
+              type: Symbol,
+              logprobs: T::Array[OpenAI::Responses::ResponseOutputText::Logprob]
             }
           )
         end
