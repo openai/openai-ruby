@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.35.1 (2025-11-04)
+
+Full Changelog: [v0.35.0...v0.35.1](https://github.com/openai/openai-ruby/compare/v0.35.0...v0.35.1)
+
+### Bug Fixes
+
+* **api:** fix nullability of logprobs ([adead66](https://github.com/openai/openai-ruby/commit/adead661c71c8c5f6420bbafc5fa5b188758ddc5))
+
 ## 0.35.0 (2025-11-03)
 
 Full Changelog: [v0.34.1...v0.35.0](https://github.com/openai/openai-ruby/compare/v0.34.1...v0.35.0)
