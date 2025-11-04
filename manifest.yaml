@@ -6,6 +6,7 @@ dependencies:
   - etc
   - json
   - net/http
+  - openssl
   - pathname
   - rbconfig
   - securerandom
