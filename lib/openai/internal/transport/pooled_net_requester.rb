@@ -16,10 +16,11 @@ module OpenAI
         class << self
           # @api private
           #
+          # @param cert_store [OpenSSL::X509::Store]
           # @param url [URI::Generic]
           #
           # @return [Net::HTTP]
-          def connect(url)
+          def connect(cert_store:, url:)
             port =
               case [url.port, url.scheme]
               in [Integer, _]
@@ -33,6 +34,8 @@ module OpenAI
             Net::HTTP.new(url.host, port).tap do
               _1.use_ssl = %w[https wss].include?(url.scheme)
               _1.max_retries = 0
+
+              (_1.cert_store = cert_store) if _1.use_ssl?
             end
           end
 
@@ -102,7 +105,7 @@ module OpenAI
           pool =
             @mutex.synchronize do
               @pools[origin] ||= ConnectionPool.new(size: @size) do
-                self.class.connect(url)
+                self.class.connect(cert_store: @cert_store, url: url)
               end
             end
 
@@ -192,6 +195,7 @@ module OpenAI
         def initialize(size: self.class::DEFAULT_MAX_CONNECTIONS)
           @mutex = Mutex.new
           @size = size
+          @cert_store = OpenSSL::X509::Store.new.tap(&:set_default_paths)
           @pools = {}
         end
 

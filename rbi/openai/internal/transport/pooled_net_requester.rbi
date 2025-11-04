@@ -26,8 +26,12 @@ module OpenAI
 
         class << self
           # @api private
-          sig { params(url: URI::Generic).returns(Net::HTTP) }
-          def connect(url)
+          sig do
+            params(cert_store: OpenSSL::X509::Store, url: URI::Generic).returns(
+              Net::HTTP
+            )
+          end
+          def connect(cert_store:, url:)
           end
 
           # @api private
