@@ -17,7 +17,10 @@ module OpenAI
 
         DEFAULT_MAX_CONNECTIONS: Integer
 
-        def self.connect: (URI::Generic url) -> top
+        def self.connect: (
+          cert_store: OpenSSL::X509::Store,
+          url: URI::Generic
+        ) -> top
 
         def self.calibrate_socket_timeout: (top conn, Float deadline) -> void
 
