@@ -4,32 +4,36 @@ module OpenAI
       type response_output_text =
         {
           annotations: ::Array[OpenAI::Models::Responses::ResponseOutputText::annotation],
-          logprobs: ::Array[OpenAI::Responses::ResponseOutputText::Logprob],
           text: String,
-          type: :output_text
+          type: :output_text,
+          logprobs: ::Array[OpenAI::Responses::ResponseOutputText::Logprob]
         }
 
       class ResponseOutputText < OpenAI::Internal::Type::BaseModel
         attr_accessor annotations: ::Array[OpenAI::Models::Responses::ResponseOutputText::annotation]
 
-        attr_accessor logprobs: ::Array[OpenAI::Responses::ResponseOutputText::Logprob]
-
         attr_accessor text: String
 
         attr_accessor type: :output_text
 
+        attr_reader logprobs: ::Array[OpenAI::Responses::ResponseOutputText::Logprob]?
+
+        def logprobs=: (
+          ::Array[OpenAI::Responses::ResponseOutputText::Logprob]
+        ) -> ::Array[OpenAI::Responses::ResponseOutputText::Logprob]
+
         def initialize: (
           annotations: ::Array[OpenAI::Models::Responses::ResponseOutputText::annotation],
-          logprobs: ::Array[OpenAI::Responses::ResponseOutputText::Logprob],
           text: String,
+          ?logprobs: ::Array[OpenAI::Responses::ResponseOutputText::Logprob],
           ?type: :output_text
         ) -> void
 
         def to_hash: -> {
           annotations: ::Array[OpenAI::Models::Responses::ResponseOutputText::annotation],
-          logprobs: ::Array[OpenAI::Responses::ResponseOutputText::Logprob],
           text: String,
-          type: :output_text
+          type: :output_text,
+          logprobs: ::Array[OpenAI::Responses::ResponseOutputText::Logprob]
         }
 
         type annotation =
