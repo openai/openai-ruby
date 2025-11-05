@@ -21,6 +21,7 @@ module OpenAI
         #
         # @return [Hash{Symbol=>Object}]
         def to_json_schema_inner(state:)
+          # rubocop:disable Metrics/BlockLength
           OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.cache_def!(state, type: self) do
             path = state.fetch(:path)
             mergeable_keys = {[:anyOf] => 0, [:type] => 0}
@@ -33,7 +34,9 @@ module OpenAI
             end
 
             schemas.each do |schema|
-              mergeable_keys.each_key { mergeable_keys[_1] += 1 if schema.keys == _1 }
+              mergeable_keys.each_key do
+                mergeable_keys[_1] += 1 if schema.keys == _1 && schema[_1].is_a?(Array)
+              end
             end
             mergeable = mergeable_keys.any? { _1.last == schemas.length }
             if mergeable
@@ -48,6 +51,7 @@ module OpenAI
               }
             end
           end
+          # rubocop:enable Metrics/BlockLength
         end
 
         private_class_method :new
