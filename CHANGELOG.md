@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.35.2 (2025-11-05)
+
+Full Changelog: [v0.35.1...v0.35.2](https://github.com/openai/openai-ruby/compare/v0.35.1...v0.35.2)
+
+### Bug Fixes
+
+* better thread safety via early initializing SSL store during HTTP client creation ([e7d9a3d](https://github.com/openai/openai-ruby/commit/e7d9a3d70c0930ac248b4da680296213cb3e163d))
+* schema generation ([#862](https://github.com/openai/openai-ruby/issues/862)) ([2c9b91a](https://github.com/openai/openai-ruby/commit/2c9b91acc79262dd56ef52854ad64384f172984b))
+
 ## 0.35.1 (2025-11-04)
 
 Full Changelog: [v0.35.0...v0.35.1](https://github.com/openai/openai-ruby/compare/v0.35.0...v0.35.1)
