@@ -39,6 +39,7 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
   U1 = OpenAI::Helpers::StructuredOutput::UnionOf[Integer, A1]
   U2 = OpenAI::Helpers::StructuredOutput::UnionOf[M2, M3]
   U3 = OpenAI::Helpers::StructuredOutput::UnionOf[A1, A1]
+  U4 = OpenAI::Helpers::StructuredOutput::UnionOf[String, NilClass]
 
   def test_coerce
     cases = {
@@ -116,6 +117,12 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
             required: %w[type],
             additionalProperties: false
           }
+        ]
+      },
+      U4 => {
+        anyOf: [
+          {type: "string"},
+          {type: "null"}
         ]
       }
     }
