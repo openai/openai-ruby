@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.36.0 (2025-11-13)
+
+Full Changelog: [v0.35.2...v0.36.0](https://github.com/openai/openai-ruby/compare/v0.35.2...v0.36.0)
+
+### Features
+
+* **api:** gpt 5.1 ([26ece0e](https://github.com/openai/openai-ruby/commit/26ece0eb68486e40066c89f626b9a83c4f274889))
+
 ## 0.35.2 (2025-11-05)
 
 Full Changelog: [v0.35.1...v0.35.2](https://github.com/openai/openai-ruby/compare/v0.35.1...v0.35.2)
