@@ -173,6 +173,19 @@ module OpenAI
         sig { params(prompt_cache_key: String).void }
         attr_writer :prompt_cache_key
 
+        # The retention policy for the prompt cache. Set to `24h` to enable extended
+        # prompt caching, which keeps cached prefixes active for longer, up to a maximum
+        # of 24 hours.
+        # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::Responses::ResponseCreateParams::PromptCacheRetention::OrSymbol
+            )
+          )
+        end
+        attr_accessor :prompt_cache_retention
+
         # **gpt-5 and o-series models only**
         #
         # Configuration options for
@@ -271,7 +284,9 @@ module OpenAI
                 OpenAI::Responses::ToolChoiceTypes,
                 OpenAI::Responses::ToolChoiceFunction,
                 OpenAI::Responses::ToolChoiceMcp,
-                OpenAI::Responses::ToolChoiceCustom
+                OpenAI::Responses::ToolChoiceCustom,
+                OpenAI::Responses::ToolChoiceApplyPatch,
+                OpenAI::Responses::ToolChoiceShell
               )
             )
           )
@@ -287,7 +302,9 @@ module OpenAI
                 OpenAI::Responses::ToolChoiceTypes::OrHash,
                 OpenAI::Responses::ToolChoiceFunction::OrHash,
                 OpenAI::Responses::ToolChoiceMcp::OrHash,
-                OpenAI::Responses::ToolChoiceCustom::OrHash
+                OpenAI::Responses::ToolChoiceCustom::OrHash,
+                OpenAI::Responses::ToolChoiceApplyPatch::OrHash,
+                OpenAI::Responses::ToolChoiceShell::OrHash
               )
           ).void
         end
@@ -324,7 +341,9 @@ module OpenAI
                   OpenAI::Responses::Tool::CodeInterpreter,
                   OpenAI::Responses::Tool::ImageGeneration,
                   OpenAI::Responses::Tool::LocalShell,
+                  OpenAI::Responses::FunctionShellTool,
                   OpenAI::Responses::CustomTool,
+                  OpenAI::Responses::ApplyPatchTool,
                   OpenAI::Responses::WebSearchTool,
                   OpenAI::Responses::WebSearchPreviewTool
                 )
@@ -346,7 +365,9 @@ module OpenAI
                   OpenAI::Responses::Tool::CodeInterpreter::OrHash,
                   OpenAI::Responses::Tool::ImageGeneration::OrHash,
                   OpenAI::Responses::Tool::LocalShell::OrHash,
+                  OpenAI::Responses::FunctionShellTool::OrHash,
                   OpenAI::Responses::CustomTool::OrHash,
+                  OpenAI::Responses::ApplyPatchTool::OrHash,
                   OpenAI::Responses::WebSearchTool::OrHash,
                   OpenAI::Responses::WebSearchPreviewTool::OrHash
                 )
@@ -424,6 +445,10 @@ module OpenAI
             previous_response_id: T.nilable(String),
             prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
             prompt_cache_key: String,
+            prompt_cache_retention:
+              T.nilable(
+                OpenAI::Responses::ResponseCreateParams::PromptCacheRetention::OrSymbol
+              ),
             reasoning: T.nilable(OpenAI::Reasoning::OrHash),
             safety_identifier: String,
             service_tier:
@@ -444,7 +469,9 @@ module OpenAI
                 OpenAI::Responses::ToolChoiceTypes::OrHash,
                 OpenAI::Responses::ToolChoiceFunction::OrHash,
                 OpenAI::Responses::ToolChoiceMcp::OrHash,
-                OpenAI::Responses::ToolChoiceCustom::OrHash
+                OpenAI::Responses::ToolChoiceCustom::OrHash,
+                OpenAI::Responses::ToolChoiceApplyPatch::OrHash,
+                OpenAI::Responses::ToolChoiceShell::OrHash
               ),
             tools:
               T::Array[
@@ -456,7 +483,9 @@ module OpenAI
                   OpenAI::Responses::Tool::CodeInterpreter::OrHash,
                   OpenAI::Responses::Tool::ImageGeneration::OrHash,
                   OpenAI::Responses::Tool::LocalShell::OrHash,
+                  OpenAI::Responses::FunctionShellTool::OrHash,
                   OpenAI::Responses::CustomTool::OrHash,
+                  OpenAI::Responses::ApplyPatchTool::OrHash,
                   OpenAI::Responses::WebSearchTool::OrHash,
                   OpenAI::Responses::WebSearchPreviewTool::OrHash
                 )
@@ -551,6 +580,11 @@ module OpenAI
           # hit rates. Replaces the `user` field.
           # [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
           prompt_cache_key: nil,
+          # The retention policy for the prompt cache. Set to `24h` to enable extended
+          # prompt caching, which keeps cached prefixes active for longer, up to a maximum
+          # of 24 hours.
+          # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
+          prompt_cache_retention: nil,
           # **gpt-5 and o-series models only**
           #
           # Configuration options for
@@ -672,6 +706,10 @@ module OpenAI
               previous_response_id: T.nilable(String),
               prompt: T.nilable(OpenAI::Responses::ResponsePrompt),
               prompt_cache_key: String,
+              prompt_cache_retention:
+                T.nilable(
+                  OpenAI::Responses::ResponseCreateParams::PromptCacheRetention::OrSymbol
+                ),
               reasoning: T.nilable(OpenAI::Reasoning),
               safety_identifier: String,
               service_tier:
@@ -692,7 +730,9 @@ module OpenAI
                   OpenAI::Responses::ToolChoiceTypes,
                   OpenAI::Responses::ToolChoiceFunction,
                   OpenAI::Responses::ToolChoiceMcp,
-                  OpenAI::Responses::ToolChoiceCustom
+                  OpenAI::Responses::ToolChoiceCustom,
+                  OpenAI::Responses::ToolChoiceApplyPatch,
+                  OpenAI::Responses::ToolChoiceShell
                 ),
               tools:
                 T::Array[
@@ -704,7 +744,9 @@ module OpenAI
                     OpenAI::Responses::Tool::CodeInterpreter,
                     OpenAI::Responses::Tool::ImageGeneration,
                     OpenAI::Responses::Tool::LocalShell,
+                    OpenAI::Responses::FunctionShellTool,
                     OpenAI::Responses::CustomTool,
+                    OpenAI::Responses::ApplyPatchTool,
                     OpenAI::Responses::WebSearchTool,
                     OpenAI::Responses::WebSearchPreviewTool
                   )
@@ -772,6 +814,44 @@ module OpenAI
             )
           end
           def self.variants
+          end
+        end
+
+        # The retention policy for the prompt cache. Set to `24h` to enable extended
+        # prompt caching, which keeps cached prefixes active for longer, up to a maximum
+        # of 24 hours.
+        # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
+        module PromptCacheRetention
+          extend OpenAI::Internal::Type::Enum
+
+          TaggedSymbol =
+            T.type_alias do
+              T.all(
+                Symbol,
+                OpenAI::Responses::ResponseCreateParams::PromptCacheRetention
+              )
+            end
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+          IN_MEMORY =
+            T.let(
+              :"in-memory",
+              OpenAI::Responses::ResponseCreateParams::PromptCacheRetention::TaggedSymbol
+            )
+          PROMPT_CACHE_RETENTION_24H =
+            T.let(
+              :"24h",
+              OpenAI::Responses::ResponseCreateParams::PromptCacheRetention::TaggedSymbol
+            )
+
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Responses::ResponseCreateParams::PromptCacheRetention::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
           end
         end
 
@@ -895,7 +975,9 @@ module OpenAI
                 OpenAI::Responses::ToolChoiceTypes,
                 OpenAI::Responses::ToolChoiceFunction,
                 OpenAI::Responses::ToolChoiceMcp,
-                OpenAI::Responses::ToolChoiceCustom
+                OpenAI::Responses::ToolChoiceCustom,
+                OpenAI::Responses::ToolChoiceApplyPatch,
+                OpenAI::Responses::ToolChoiceShell
               )
             end
 

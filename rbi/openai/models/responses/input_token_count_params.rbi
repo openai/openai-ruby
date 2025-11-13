@@ -100,7 +100,9 @@ module OpenAI
                 OpenAI::Responses::ToolChoiceTypes,
                 OpenAI::Responses::ToolChoiceFunction,
                 OpenAI::Responses::ToolChoiceMcp,
-                OpenAI::Responses::ToolChoiceCustom
+                OpenAI::Responses::ToolChoiceCustom,
+                OpenAI::Responses::ToolChoiceApplyPatch,
+                OpenAI::Responses::ToolChoiceShell
               )
             )
           )
@@ -121,7 +123,9 @@ module OpenAI
                   OpenAI::Responses::Tool::CodeInterpreter,
                   OpenAI::Responses::Tool::ImageGeneration,
                   OpenAI::Responses::Tool::LocalShell,
+                  OpenAI::Responses::FunctionShellTool,
                   OpenAI::Responses::CustomTool,
+                  OpenAI::Responses::ApplyPatchTool,
                   OpenAI::Responses::WebSearchTool,
                   OpenAI::Responses::WebSearchPreviewTool
                 )
@@ -181,7 +185,9 @@ module OpenAI
                   OpenAI::Responses::ToolChoiceTypes::OrHash,
                   OpenAI::Responses::ToolChoiceFunction::OrHash,
                   OpenAI::Responses::ToolChoiceMcp::OrHash,
-                  OpenAI::Responses::ToolChoiceCustom::OrHash
+                  OpenAI::Responses::ToolChoiceCustom::OrHash,
+                  OpenAI::Responses::ToolChoiceApplyPatch::OrHash,
+                  OpenAI::Responses::ToolChoiceShell::OrHash
                 )
               ),
             tools:
@@ -195,7 +201,9 @@ module OpenAI
                     OpenAI::Responses::Tool::CodeInterpreter::OrHash,
                     OpenAI::Responses::Tool::ImageGeneration::OrHash,
                     OpenAI::Responses::Tool::LocalShell::OrHash,
+                    OpenAI::Responses::FunctionShellTool::OrHash,
                     OpenAI::Responses::CustomTool::OrHash,
+                    OpenAI::Responses::ApplyPatchTool::OrHash,
                     OpenAI::Responses::WebSearchTool::OrHash,
                     OpenAI::Responses::WebSearchPreviewTool::OrHash
                   )
@@ -283,7 +291,9 @@ module OpenAI
                     OpenAI::Responses::ToolChoiceTypes,
                     OpenAI::Responses::ToolChoiceFunction,
                     OpenAI::Responses::ToolChoiceMcp,
-                    OpenAI::Responses::ToolChoiceCustom
+                    OpenAI::Responses::ToolChoiceCustom,
+                    OpenAI::Responses::ToolChoiceApplyPatch,
+                    OpenAI::Responses::ToolChoiceShell
                   )
                 ),
               tools:
@@ -297,7 +307,9 @@ module OpenAI
                       OpenAI::Responses::Tool::CodeInterpreter,
                       OpenAI::Responses::Tool::ImageGeneration,
                       OpenAI::Responses::Tool::LocalShell,
+                      OpenAI::Responses::FunctionShellTool,
                       OpenAI::Responses::CustomTool,
+                      OpenAI::Responses::ApplyPatchTool,
                       OpenAI::Responses::WebSearchTool,
                       OpenAI::Responses::WebSearchPreviewTool
                     )
@@ -542,7 +554,9 @@ module OpenAI
                 OpenAI::Responses::ToolChoiceTypes,
                 OpenAI::Responses::ToolChoiceFunction,
                 OpenAI::Responses::ToolChoiceMcp,
-                OpenAI::Responses::ToolChoiceCustom
+                OpenAI::Responses::ToolChoiceCustom,
+                OpenAI::Responses::ToolChoiceApplyPatch,
+                OpenAI::Responses::ToolChoiceShell
               )
             end
 

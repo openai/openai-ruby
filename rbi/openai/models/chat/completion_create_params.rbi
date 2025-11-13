@@ -225,14 +225,31 @@ module OpenAI
         sig { params(prompt_cache_key: String).void }
         attr_writer :prompt_cache_key
 
+        # The retention policy for the prompt cache. Set to `24h` to enable extended
+        # prompt caching, which keeps cached prefixes active for longer, up to a maximum
+        # of 24 hours.
+        # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::Chat::CompletionCreateParams::PromptCacheRetention::OrSymbol
+            )
+          )
+        end
+        attr_accessor :prompt_cache_retention
+
         # Constrains effort on reasoning for
         # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-        # supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
-        # effort can result in faster responses and fewer tokens used on reasoning in a
-        # response.
+        # supported values are `none`, `minimal`, `low`, `medium`, and `high`. Reducing
+        # reasoning effort can result in faster responses and fewer tokens used on
+        # reasoning in a response.
         #
-        # Note: The `gpt-5-pro` model defaults to (and only supports) `high` reasoning
-        # effort.
+        # - `gpt-5.1` defaults to `none`, which does not perform reasoning. The supported
+        #   reasoning values for `gpt-5.1` are `none`, `low`, `medium`, and `high`. Tool
+        #   calls are supported for all reasoning values in gpt-5.1.
+        # - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
+        #   support `none`.
+        # - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
         sig { returns(T.nilable(OpenAI::ReasoningEffort::OrSymbol)) }
         attr_accessor :reasoning_effort
 
@@ -512,6 +529,10 @@ module OpenAI
               T.nilable(OpenAI::Chat::ChatCompletionPredictionContent::OrHash),
             presence_penalty: T.nilable(Float),
             prompt_cache_key: String,
+            prompt_cache_retention:
+              T.nilable(
+                OpenAI::Chat::CompletionCreateParams::PromptCacheRetention::OrSymbol
+              ),
             reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
             response_format:
               T.any(
@@ -660,14 +681,23 @@ module OpenAI
           # hit rates. Replaces the `user` field.
           # [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
           prompt_cache_key: nil,
+          # The retention policy for the prompt cache. Set to `24h` to enable extended
+          # prompt caching, which keeps cached prefixes active for longer, up to a maximum
+          # of 24 hours.
+          # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
+          prompt_cache_retention: nil,
           # Constrains effort on reasoning for
           # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-          # supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
-          # effort can result in faster responses and fewer tokens used on reasoning in a
-          # response.
+          # supported values are `none`, `minimal`, `low`, `medium`, and `high`. Reducing
+          # reasoning effort can result in faster responses and fewer tokens used on
+          # reasoning in a response.
           #
-          # Note: The `gpt-5-pro` model defaults to (and only supports) `high` reasoning
-          # effort.
+          # - `gpt-5.1` defaults to `none`, which does not perform reasoning. The supported
+          #   reasoning values for `gpt-5.1` are `none`, `low`, `medium`, and `high`. Tool
+          #   calls are supported for all reasoning values in gpt-5.1.
+          # - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
+          #   support `none`.
+          # - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
           reasoning_effort: nil,
           # An object specifying the format that the model must output.
           #
@@ -810,6 +840,10 @@ module OpenAI
                 T.nilable(OpenAI::Chat::ChatCompletionPredictionContent),
               presence_penalty: T.nilable(Float),
               prompt_cache_key: String,
+              prompt_cache_retention:
+                T.nilable(
+                  OpenAI::Chat::CompletionCreateParams::PromptCacheRetention::OrSymbol
+                ),
               reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
               response_format:
                 T.any(
@@ -1049,6 +1083,44 @@ module OpenAI
             override.returns(
               T::Array[
                 OpenAI::Chat::CompletionCreateParams::Modality::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
+        end
+
+        # The retention policy for the prompt cache. Set to `24h` to enable extended
+        # prompt caching, which keeps cached prefixes active for longer, up to a maximum
+        # of 24 hours.
+        # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
+        module PromptCacheRetention
+          extend OpenAI::Internal::Type::Enum
+
+          TaggedSymbol =
+            T.type_alias do
+              T.all(
+                Symbol,
+                OpenAI::Chat::CompletionCreateParams::PromptCacheRetention
+              )
+            end
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+          IN_MEMORY =
+            T.let(
+              :"in-memory",
+              OpenAI::Chat::CompletionCreateParams::PromptCacheRetention::TaggedSymbol
+            )
+          PROMPT_CACHE_RETENTION_24H =
+            T.let(
+              :"24h",
+              OpenAI::Chat::CompletionCreateParams::PromptCacheRetention::TaggedSymbol
+            )
+
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Chat::CompletionCreateParams::PromptCacheRetention::TaggedSymbol
               ]
             )
           end

@@ -16,6 +16,7 @@ module OpenAI
           previous_response_id: String?,
           prompt: OpenAI::Responses::ResponsePrompt?,
           prompt_cache_key: String,
+          prompt_cache_retention: OpenAI::Models::Responses::ResponseCreateParams::prompt_cache_retention?,
           reasoning: OpenAI::Reasoning?,
           safety_identifier: String,
           service_tier: OpenAI::Models::Responses::ResponseCreateParams::service_tier?,
@@ -71,6 +72,8 @@ module OpenAI
         attr_reader prompt_cache_key: String?
 
         def prompt_cache_key=: (String) -> String
+
+        attr_accessor prompt_cache_retention: OpenAI::Models::Responses::ResponseCreateParams::prompt_cache_retention?
 
         attr_accessor reasoning: OpenAI::Reasoning?
 
@@ -128,6 +131,7 @@ module OpenAI
           ?previous_response_id: String?,
           ?prompt: OpenAI::Responses::ResponsePrompt?,
           ?prompt_cache_key: String,
+          ?prompt_cache_retention: OpenAI::Models::Responses::ResponseCreateParams::prompt_cache_retention?,
           ?reasoning: OpenAI::Reasoning?,
           ?safety_identifier: String,
           ?service_tier: OpenAI::Models::Responses::ResponseCreateParams::service_tier?,
@@ -158,6 +162,7 @@ module OpenAI
           previous_response_id: String?,
           prompt: OpenAI::Responses::ResponsePrompt?,
           prompt_cache_key: String,
+          prompt_cache_retention: OpenAI::Models::Responses::ResponseCreateParams::prompt_cache_retention?,
           reasoning: OpenAI::Reasoning?,
           safety_identifier: String,
           service_tier: OpenAI::Models::Responses::ResponseCreateParams::service_tier?,
@@ -189,6 +194,17 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseCreateParams::input]
+        end
+
+        type prompt_cache_retention = :"in-memory" | :"24h"
+
+        module PromptCacheRetention
+          extend OpenAI::Internal::Type::Enum
+
+          IN_MEMORY: :"in-memory"
+          PROMPT_CACHE_RETENTION_24H: :"24h"
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseCreateParams::prompt_cache_retention]
         end
 
         type service_tier = :auto | :default | :flex | :scale | :priority
@@ -224,6 +240,8 @@ module OpenAI
           | OpenAI::Responses::ToolChoiceFunction
           | OpenAI::Responses::ToolChoiceMcp
           | OpenAI::Responses::ToolChoiceCustom
+          | OpenAI::Responses::ToolChoiceApplyPatch
+          | OpenAI::Responses::ToolChoiceShell
 
         module ToolChoice
           extend OpenAI::Internal::Type::Union

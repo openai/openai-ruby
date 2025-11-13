@@ -16,6 +16,10 @@ module OpenAI
         | OpenAI::Responses::ResponseCodeInterpreterToolCall
         | OpenAI::Responses::ResponseInputItem::LocalShellCall
         | OpenAI::Responses::ResponseInputItem::LocalShellCallOutput
+        | OpenAI::Responses::ResponseInputItem::ShellCall
+        | OpenAI::Responses::ResponseInputItem::ShellCallOutput
+        | OpenAI::Responses::ResponseInputItem::ApplyPatchCall
+        | OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput
         | OpenAI::Responses::ResponseInputItem::McpListTools
         | OpenAI::Responses::ResponseInputItem::McpApprovalRequest
         | OpenAI::Responses::ResponseInputItem::McpApprovalResponse
@@ -410,6 +414,278 @@ module OpenAI
             INCOMPLETE: :incomplete
 
             def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput::status]
+          end
+        end
+
+        type shell_call =
+          {
+            action: OpenAI::Responses::ResponseInputItem::ShellCall::Action,
+            call_id: String,
+            type: :shell_call,
+            id: String?,
+            status: OpenAI::Models::Responses::ResponseInputItem::ShellCall::status?
+          }
+
+        class ShellCall < OpenAI::Internal::Type::BaseModel
+          attr_accessor action: OpenAI::Responses::ResponseInputItem::ShellCall::Action
+
+          attr_accessor call_id: String
+
+          attr_accessor type: :shell_call
+
+          attr_accessor id: String?
+
+          attr_accessor status: OpenAI::Models::Responses::ResponseInputItem::ShellCall::status?
+
+          def initialize: (
+            action: OpenAI::Responses::ResponseInputItem::ShellCall::Action,
+            call_id: String,
+            ?id: String?,
+            ?status: OpenAI::Models::Responses::ResponseInputItem::ShellCall::status?,
+            ?type: :shell_call
+          ) -> void
+
+          def to_hash: -> {
+            action: OpenAI::Responses::ResponseInputItem::ShellCall::Action,
+            call_id: String,
+            type: :shell_call,
+            id: String?,
+            status: OpenAI::Models::Responses::ResponseInputItem::ShellCall::status?
+          }
+
+          type action =
+            {
+              commands: ::Array[String],
+              max_output_length: Integer?,
+              timeout_ms: Integer?
+            }
+
+          class Action < OpenAI::Internal::Type::BaseModel
+            attr_accessor commands: ::Array[String]
+
+            attr_accessor max_output_length: Integer?
+
+            attr_accessor timeout_ms: Integer?
+
+            def initialize: (
+              commands: ::Array[String],
+              ?max_output_length: Integer?,
+              ?timeout_ms: Integer?
+            ) -> void
+
+            def to_hash: -> {
+              commands: ::Array[String],
+              max_output_length: Integer?,
+              timeout_ms: Integer?
+            }
+          end
+
+          type status = :in_progress | :completed | :incomplete
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            IN_PROGRESS: :in_progress
+            COMPLETED: :completed
+            INCOMPLETE: :incomplete
+
+            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::ShellCall::status]
+          end
+        end
+
+        type shell_call_output =
+          {
+            call_id: String,
+            output: ::Array[OpenAI::Responses::ResponseFunctionShellCallOutputContent],
+            type: :shell_call_output,
+            id: String?,
+            max_output_length: Integer?
+          }
+
+        class ShellCallOutput < OpenAI::Internal::Type::BaseModel
+          attr_accessor call_id: String
+
+          attr_accessor output: ::Array[OpenAI::Responses::ResponseFunctionShellCallOutputContent]
+
+          attr_accessor type: :shell_call_output
+
+          attr_accessor id: String?
+
+          attr_accessor max_output_length: Integer?
+
+          def initialize: (
+            call_id: String,
+            output: ::Array[OpenAI::Responses::ResponseFunctionShellCallOutputContent],
+            ?id: String?,
+            ?max_output_length: Integer?,
+            ?type: :shell_call_output
+          ) -> void
+
+          def to_hash: -> {
+            call_id: String,
+            output: ::Array[OpenAI::Responses::ResponseFunctionShellCallOutputContent],
+            type: :shell_call_output,
+            id: String?,
+            max_output_length: Integer?
+          }
+        end
+
+        type apply_patch_call =
+          {
+            call_id: String,
+            operation: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::operation,
+            status: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::status,
+            type: :apply_patch_call,
+            id: String?
+          }
+
+        class ApplyPatchCall < OpenAI::Internal::Type::BaseModel
+          attr_accessor call_id: String
+
+          attr_accessor operation: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::operation
+
+          attr_accessor status: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::status
+
+          attr_accessor type: :apply_patch_call
+
+          attr_accessor id: String?
+
+          def initialize: (
+            call_id: String,
+            operation: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::operation,
+            status: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::status,
+            ?id: String?,
+            ?type: :apply_patch_call
+          ) -> void
+
+          def to_hash: -> {
+            call_id: String,
+            operation: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::operation,
+            status: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::status,
+            type: :apply_patch_call,
+            id: String?
+          }
+
+          type operation =
+            OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::CreateFile
+            | OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::DeleteFile
+            | OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::UpdateFile
+
+          module Operation
+            extend OpenAI::Internal::Type::Union
+
+            type create_file =
+              { diff: String, path: String, type: :create_file }
+
+            class CreateFile < OpenAI::Internal::Type::BaseModel
+              attr_accessor diff: String
+
+              attr_accessor path: String
+
+              attr_accessor type: :create_file
+
+              def initialize: (
+                diff: String,
+                path: String,
+                ?type: :create_file
+              ) -> void
+
+              def to_hash: -> { diff: String, path: String, type: :create_file }
+            end
+
+            type delete_file = { path: String, type: :delete_file }
+
+            class DeleteFile < OpenAI::Internal::Type::BaseModel
+              attr_accessor path: String
+
+              attr_accessor type: :delete_file
+
+              def initialize: (path: String, ?type: :delete_file) -> void
+
+              def to_hash: -> { path: String, type: :delete_file }
+            end
+
+            type update_file =
+              { diff: String, path: String, type: :update_file }
+
+            class UpdateFile < OpenAI::Internal::Type::BaseModel
+              attr_accessor diff: String
+
+              attr_accessor path: String
+
+              attr_accessor type: :update_file
+
+              def initialize: (
+                diff: String,
+                path: String,
+                ?type: :update_file
+              ) -> void
+
+              def to_hash: -> { diff: String, path: String, type: :update_file }
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::operation]
+          end
+
+          type status = :in_progress | :completed
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            IN_PROGRESS: :in_progress
+            COMPLETED: :completed
+
+            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::status]
+          end
+        end
+
+        type apply_patch_call_output =
+          {
+            call_id: String,
+            status: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput::status,
+            type: :apply_patch_call_output,
+            id: String?,
+            output: String
+          }
+
+        class ApplyPatchCallOutput < OpenAI::Internal::Type::BaseModel
+          attr_accessor call_id: String
+
+          attr_accessor status: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput::status
+
+          attr_accessor type: :apply_patch_call_output
+
+          attr_accessor id: String?
+
+          attr_reader output: String?
+
+          def output=: (String) -> String
+
+          def initialize: (
+            call_id: String,
+            status: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput::status,
+            ?id: String?,
+            ?output: String,
+            ?type: :apply_patch_call_output
+          ) -> void
+
+          def to_hash: -> {
+            call_id: String,
+            status: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput::status,
+            type: :apply_patch_call_output,
+            id: String?,
+            output: String
+          }
+
+          type status = :completed | :failed
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            COMPLETED: :completed
+            FAILED: :failed
+
+            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput::status]
           end
         end
 

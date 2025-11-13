@@ -51,6 +51,10 @@ module OpenAI
           previous_response_id: T.nilable(String),
           prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
           prompt_cache_key: String,
+          prompt_cache_retention:
+            T.nilable(
+              OpenAI::Responses::ResponseCreateParams::PromptCacheRetention::OrSymbol
+            ),
           reasoning: T.nilable(OpenAI::Reasoning::OrHash),
           safety_identifier: String,
           service_tier:
@@ -71,7 +75,9 @@ module OpenAI
               OpenAI::Responses::ToolChoiceTypes::OrHash,
               OpenAI::Responses::ToolChoiceFunction::OrHash,
               OpenAI::Responses::ToolChoiceMcp::OrHash,
-              OpenAI::Responses::ToolChoiceCustom::OrHash
+              OpenAI::Responses::ToolChoiceCustom::OrHash,
+              OpenAI::Responses::ToolChoiceApplyPatch::OrHash,
+              OpenAI::Responses::ToolChoiceShell::OrHash
             ),
           tools:
             T::Array[
@@ -83,7 +89,9 @@ module OpenAI
                 OpenAI::Responses::Tool::CodeInterpreter::OrHash,
                 OpenAI::Responses::Tool::ImageGeneration::OrHash,
                 OpenAI::Responses::Tool::LocalShell::OrHash,
+                OpenAI::Responses::FunctionShellTool::OrHash,
                 OpenAI::Responses::CustomTool::OrHash,
+                OpenAI::Responses::ApplyPatchTool::OrHash,
                 OpenAI::Responses::WebSearchTool::OrHash,
                 OpenAI::Responses::WebSearchPreviewTool::OrHash
               )
@@ -179,6 +187,11 @@ module OpenAI
         # hit rates. Replaces the `user` field.
         # [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
         prompt_cache_key: nil,
+        # The retention policy for the prompt cache. Set to `24h` to enable extended
+        # prompt caching, which keeps cached prefixes active for longer, up to a maximum
+        # of 24 hours.
+        # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
+        prompt_cache_retention: nil,
         # **gpt-5 and o-series models only**
         #
         # Configuration options for
@@ -318,6 +331,10 @@ module OpenAI
           previous_response_id: T.nilable(String),
           prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
           prompt_cache_key: String,
+          prompt_cache_retention:
+            T.nilable(
+              OpenAI::Responses::ResponseCreateParams::PromptCacheRetention::OrSymbol
+            ),
           reasoning: T.nilable(OpenAI::Reasoning::OrHash),
           safety_identifier: String,
           service_tier:
@@ -338,7 +355,9 @@ module OpenAI
               OpenAI::Responses::ToolChoiceTypes::OrHash,
               OpenAI::Responses::ToolChoiceFunction::OrHash,
               OpenAI::Responses::ToolChoiceMcp::OrHash,
-              OpenAI::Responses::ToolChoiceCustom::OrHash
+              OpenAI::Responses::ToolChoiceCustom::OrHash,
+              OpenAI::Responses::ToolChoiceApplyPatch::OrHash,
+              OpenAI::Responses::ToolChoiceShell::OrHash
             ),
           tools:
             T::Array[
@@ -350,7 +369,9 @@ module OpenAI
                 OpenAI::Responses::Tool::CodeInterpreter::OrHash,
                 OpenAI::Responses::Tool::ImageGeneration::OrHash,
                 OpenAI::Responses::Tool::LocalShell::OrHash,
+                OpenAI::Responses::FunctionShellTool::OrHash,
                 OpenAI::Responses::CustomTool::OrHash,
+                OpenAI::Responses::ApplyPatchTool::OrHash,
                 OpenAI::Responses::WebSearchTool::OrHash,
                 OpenAI::Responses::WebSearchPreviewTool::OrHash
               )
@@ -450,6 +471,11 @@ module OpenAI
         # hit rates. Replaces the `user` field.
         # [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
         prompt_cache_key: nil,
+        # The retention policy for the prompt cache. Set to `24h` to enable extended
+        # prompt caching, which keeps cached prefixes active for longer, up to a maximum
+        # of 24 hours.
+        # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
+        prompt_cache_retention: nil,
         # **gpt-5 and o-series models only**
         #
         # Configuration options for

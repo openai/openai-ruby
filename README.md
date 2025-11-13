@@ -30,7 +30,10 @@ openai = OpenAI::Client.new(
   api_key: ENV["OPENAI_API_KEY"] # This is the default and can be omitted
 )
 
-chat_completion = openai.chat.completions.create(messages: [{role: "user", content: "Say this is a test"}], model: :"gpt-5")
+chat_completion = openai.chat.completions.create(
+  messages: [{role: "user", content: "Say this is a test"}],
+  model: :"gpt-5.1"
+)
 
 puts(chat_completion)
 ```
@@ -42,7 +45,7 @@ We provide support for streaming responses using Server-Sent Events (SSE).
 ```ruby
 stream = openai.chat.completions.stream_raw(
   messages: [{role: "user", content: "Say this is a test"}],
-  model: :"gpt-5"
+  model: :"gpt-5.1"
 )
 
 stream.each do |completion|
@@ -151,7 +154,7 @@ openai = OpenAI::Client.new(
 # Or, configure per-request:
 openai.chat.completions.create(
   messages: [{role: "user", content: "How can I get the name of the current day in JavaScript?"}],
-  model: :"gpt-5",
+  model: :"gpt-5.1",
   request_options: {max_retries: 5}
 )
 ```
@@ -169,7 +172,7 @@ openai = OpenAI::Client.new(
 # Or, configure per-request:
 openai.chat.completions.create(
   messages: [{role: "user", content: "How can I list all files in a directory using Python?"}],
-  model: :"gpt-5",
+  model: :"gpt-5.1",
   request_options: {timeout: 5}
 )
 ```
@@ -204,7 +207,7 @@ Note: the `extra_` parameters of the same name overrides the documented paramete
 chat_completion =
   openai.chat.completions.create(
     messages: [{role: "user", content: "How can I get the name of the current day in JavaScript?"}],
-    model: :"gpt-5",
+    model: :"gpt-5.1",
     request_options: {
       extra_query: {my_query_parameter: value},
       extra_body: {my_body_parameter: value},
@@ -252,7 +255,7 @@ You can provide typesafe request parameters like so:
 ```ruby
 openai.chat.completions.create(
   messages: [OpenAI::Chat::ChatCompletionUserMessageParam.new(content: "Say this is a test")],
-  model: :"gpt-5"
+  model: :"gpt-5.1"
 )
 ```
 
@@ -260,12 +263,15 @@ Or, equivalently:
 
 ```ruby
 # Hashes work, but are not typesafe:
-openai.chat.completions.create(messages: [{role: "user", content: "Say this is a test"}], model: :"gpt-5")
+openai.chat.completions.create(
+  messages: [{role: "user", content: "Say this is a test"}],
+  model: :"gpt-5.1"
+)
 
 # You can also splat a full Params class:
 params = OpenAI::Chat::CompletionCreateParams.new(
   messages: [OpenAI::Chat::ChatCompletionUserMessageParam.new(content: "Say this is a test")],
-  model: :"gpt-5"
+  model: :"gpt-5.1"
 )
 openai.chat.completions.create(**params)
 ```
@@ -275,11 +281,11 @@ openai.chat.completions.create(**params)
 Since this library does not depend on `sorbet-runtime`, it cannot provide [`T::Enum`](https://sorbet.org/docs/tenum) instances. Instead, we provide "tagged symbols" instead, which is always a primitive at runtime:
 
 ```ruby
-# :minimal
-puts(OpenAI::ReasoningEffort::MINIMAL)
+# :"in-memory"
+puts(OpenAI::Chat::CompletionCreateParams::PromptCacheRetention::IN_MEMORY)
 
-# Revealed type: `T.all(OpenAI::ReasoningEffort, Symbol)`
-T.reveal_type(OpenAI::ReasoningEffort::MINIMAL)
+# Revealed type: `T.all(OpenAI::Chat::CompletionCreateParams::PromptCacheRetention, Symbol)`
+T.reveal_type(OpenAI::Chat::CompletionCreateParams::PromptCacheRetention::IN_MEMORY)
 ```
 
 Enum parameters have a "relaxed" type, so you can either pass in enum constants or their literal value:
@@ -287,13 +293,13 @@ Enum parameters have a "relaxed" type, so you can either pass in enum constants 
 ```ruby
 # Using the enum constants preserves the tagged type information:
 openai.chat.completions.create(
-  reasoning_effort: OpenAI::ReasoningEffort::MINIMAL,
+  prompt_cache_retention: OpenAI::Chat::CompletionCreateParams::PromptCacheRetention::IN_MEMORY,
   # …
 )
 
 # Literal values are also permissible:
 openai.chat.completions.create(
-  reasoning_effort: :minimal,
+  prompt_cache_retention: :"in-memory",
   # …
 )
 ```
