@@ -11,7 +11,7 @@ GIT
 PATH
   remote: .
   specs:
-    openai (0.35.2)
+    openai (0.36.0)
       connection_pool
 
 GEM
