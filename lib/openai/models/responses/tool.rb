@@ -33,8 +33,14 @@ module OpenAI
         # A tool that allows the model to execute shell commands in a local environment.
         variant :local_shell, -> { OpenAI::Responses::Tool::LocalShell }
 
+        # A tool that allows the model to execute shell commands.
+        variant :shell, -> { OpenAI::Responses::FunctionShellTool }
+
         # A custom tool that processes input using a specified format. Learn more about   [custom tools](https://platform.openai.com/docs/guides/function-calling#custom-tools)
         variant :custom, -> { OpenAI::Responses::CustomTool }
+
+        # Allows the assistant to create, delete, or update files using unified diffs.
+        variant :apply_patch, -> { OpenAI::Responses::ApplyPatchTool }
 
         # Search the Internet for sources related to the prompt. Learn more about the
         # [web search tool](https://platform.openai.com/docs/guides/tools-web-search).
@@ -682,7 +688,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool)]
+        #   @return [Array(OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::FunctionShellTool, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::ApplyPatchTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool)]
       end
     end
   end

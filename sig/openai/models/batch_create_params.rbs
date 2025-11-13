@@ -61,6 +61,7 @@ module OpenAI
         | :"/v1/chat/completions"
         | :"/v1/embeddings"
         | :"/v1/completions"
+        | :"/v1/moderations"
 
       module Endpoint
         extend OpenAI::Internal::Type::Enum
@@ -69,6 +70,7 @@ module OpenAI
         V1_CHAT_COMPLETIONS: :"/v1/chat/completions"
         V1_EMBEDDINGS: :"/v1/embeddings"
         V1_COMPLETIONS: :"/v1/completions"
+        V1_MODERATIONS: :"/v1/moderations"
 
         def self?.values: -> ::Array[OpenAI::Models::BatchCreateParams::endpoint]
       end

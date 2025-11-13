@@ -54,6 +54,18 @@ module OpenAI
         # The output of a local shell tool call.
         variant :local_shell_call_output, -> { OpenAI::Conversations::ConversationItem::LocalShellCallOutput }
 
+        # A tool call that executes one or more shell commands in a managed environment.
+        variant :shell_call, -> { OpenAI::Responses::ResponseFunctionShellToolCall }
+
+        # The output of a shell tool call.
+        variant :shell_call_output, -> { OpenAI::Responses::ResponseFunctionShellToolCallOutput }
+
+        # A tool call that applies file diffs by creating, deleting, or updating files.
+        variant :apply_patch_call, -> { OpenAI::Responses::ResponseApplyPatchToolCall }
+
+        # The output emitted by an apply patch tool call.
+        variant :apply_patch_call_output, -> { OpenAI::Responses::ResponseApplyPatchToolCallOutput }
+
         # A list of tools available on an MCP server.
         variant :mcp_list_tools, -> { OpenAI::Conversations::ConversationItem::McpListTools }
 
@@ -592,7 +604,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Conversations::Message, OpenAI::Models::Responses::ResponseFunctionToolCallItem, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Conversations::ConversationItem::LocalShellCall, OpenAI::Models::Conversations::ConversationItem::LocalShellCallOutput, OpenAI::Models::Conversations::ConversationItem::McpListTools, OpenAI::Models::Conversations::ConversationItem::McpApprovalRequest, OpenAI::Models::Conversations::ConversationItem::McpApprovalResponse, OpenAI::Models::Conversations::ConversationItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput)]
+        #   @return [Array(OpenAI::Models::Conversations::Message, OpenAI::Models::Responses::ResponseFunctionToolCallItem, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Conversations::ConversationItem::LocalShellCall, OpenAI::Models::Conversations::ConversationItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseFunctionShellToolCall, OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput, OpenAI::Models::Responses::ResponseApplyPatchToolCall, OpenAI::Models::Responses::ResponseApplyPatchToolCallOutput, OpenAI::Models::Conversations::ConversationItem::McpListTools, OpenAI::Models::Conversations::ConversationItem::McpApprovalRequest, OpenAI::Models::Conversations::ConversationItem::McpApprovalResponse, OpenAI::Models::Conversations::ConversationItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput)]
       end
     end
 

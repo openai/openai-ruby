@@ -508,12 +508,16 @@ module OpenAI
 
                 # Constrains effort on reasoning for
                 # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-                # supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
-                # effort can result in faster responses and fewer tokens used on reasoning in a
-                # response.
+                # supported values are `none`, `minimal`, `low`, `medium`, and `high`. Reducing
+                # reasoning effort can result in faster responses and fewer tokens used on
+                # reasoning in a response.
                 #
-                # Note: The `gpt-5-pro` model defaults to (and only supports) `high` reasoning
-                # effort.
+                # - `gpt-5.1` defaults to `none`, which does not perform reasoning. The supported
+                #   reasoning values for `gpt-5.1` are `none`, `low`, `medium`, and `high`. Tool
+                #   calls are supported for all reasoning values in gpt-5.1.
+                # - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
+                #   support `none`.
+                # - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
                 sig do
                   returns(T.nilable(OpenAI::ReasoningEffort::TaggedSymbol))
                 end
@@ -570,12 +574,16 @@ module OpenAI
                   model: nil,
                   # Constrains effort on reasoning for
                   # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-                  # supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
-                  # effort can result in faster responses and fewer tokens used on reasoning in a
-                  # response.
+                  # supported values are `none`, `minimal`, `low`, `medium`, and `high`. Reducing
+                  # reasoning effort can result in faster responses and fewer tokens used on
+                  # reasoning in a response.
                   #
-                  # Note: The `gpt-5-pro` model defaults to (and only supports) `high` reasoning
-                  # effort.
+                  # - `gpt-5.1` defaults to `none`, which does not perform reasoning. The supported
+                  #   reasoning values for `gpt-5.1` are `none`, `low`, `medium`, and `high`. Tool
+                  #   calls are supported for all reasoning values in gpt-5.1.
+                  # - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
+                  #   support `none`.
+                  # - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
                   reasoning_effort: nil,
                   # Sampling temperature. This is a query parameter used to select responses.
                   temperature: nil,
@@ -1119,12 +1127,16 @@ module OpenAI
 
               # Constrains effort on reasoning for
               # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-              # supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
-              # effort can result in faster responses and fewer tokens used on reasoning in a
-              # response.
+              # supported values are `none`, `minimal`, `low`, `medium`, and `high`. Reducing
+              # reasoning effort can result in faster responses and fewer tokens used on
+              # reasoning in a response.
               #
-              # Note: The `gpt-5-pro` model defaults to (and only supports) `high` reasoning
-              # effort.
+              # - `gpt-5.1` defaults to `none`, which does not perform reasoning. The supported
+              #   reasoning values for `gpt-5.1` are `none`, `low`, `medium`, and `high`. Tool
+              #   calls are supported for all reasoning values in gpt-5.1.
+              # - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
+              #   support `none`.
+              # - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
               sig { returns(T.nilable(OpenAI::ReasoningEffort::TaggedSymbol)) }
               attr_accessor :reasoning_effort
 
@@ -1195,7 +1207,9 @@ module OpenAI
                         OpenAI::Responses::Tool::CodeInterpreter::OrHash,
                         OpenAI::Responses::Tool::ImageGeneration::OrHash,
                         OpenAI::Responses::Tool::LocalShell::OrHash,
+                        OpenAI::Responses::FunctionShellTool::OrHash,
                         OpenAI::Responses::CustomTool::OrHash,
+                        OpenAI::Responses::ApplyPatchTool::OrHash,
                         OpenAI::Responses::WebSearchTool::OrHash,
                         OpenAI::Responses::WebSearchPreviewTool::OrHash
                       )
@@ -1230,7 +1244,9 @@ module OpenAI
                         OpenAI::Responses::Tool::CodeInterpreter::OrHash,
                         OpenAI::Responses::Tool::ImageGeneration::OrHash,
                         OpenAI::Responses::Tool::LocalShell::OrHash,
+                        OpenAI::Responses::FunctionShellTool::OrHash,
                         OpenAI::Responses::CustomTool::OrHash,
+                        OpenAI::Responses::ApplyPatchTool::OrHash,
                         OpenAI::Responses::WebSearchTool::OrHash,
                         OpenAI::Responses::WebSearchPreviewTool::OrHash
                       )
@@ -1243,12 +1259,16 @@ module OpenAI
                 max_completion_tokens: nil,
                 # Constrains effort on reasoning for
                 # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-                # supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
-                # effort can result in faster responses and fewer tokens used on reasoning in a
-                # response.
+                # supported values are `none`, `minimal`, `low`, `medium`, and `high`. Reducing
+                # reasoning effort can result in faster responses and fewer tokens used on
+                # reasoning in a response.
                 #
-                # Note: The `gpt-5-pro` model defaults to (and only supports) `high` reasoning
-                # effort.
+                # - `gpt-5.1` defaults to `none`, which does not perform reasoning. The supported
+                #   reasoning values for `gpt-5.1` are `none`, `low`, `medium`, and `high`. Tool
+                #   calls are supported for all reasoning values in gpt-5.1.
+                # - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
+                #   support `none`.
+                # - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
                 reasoning_effort: nil,
                 # A seed value to initialize the randomness, during sampling.
                 seed: nil,

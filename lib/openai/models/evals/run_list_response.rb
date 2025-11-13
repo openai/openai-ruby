@@ -316,12 +316,16 @@ module OpenAI
                 # @!attribute reasoning_effort
                 #   Constrains effort on reasoning for
                 #   [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-                #   supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
-                #   effort can result in faster responses and fewer tokens used on reasoning in a
-                #   response.
+                #   supported values are `none`, `minimal`, `low`, `medium`, and `high`. Reducing
+                #   reasoning effort can result in faster responses and fewer tokens used on
+                #   reasoning in a response.
                 #
-                #   Note: The `gpt-5-pro` model defaults to (and only supports) `high` reasoning
-                #   effort.
+                #   - `gpt-5.1` defaults to `none`, which does not perform reasoning. The supported
+                #     reasoning values for `gpt-5.1` are `none`, `low`, `medium`, and `high`. Tool
+                #     calls are supported for all reasoning values in gpt-5.1.
+                #   - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
+                #     support `none`.
+                #   - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
                 #
                 #   @return [Symbol, OpenAI::Models::ReasoningEffort, nil]
                 optional :reasoning_effort, enum: -> { OpenAI::ReasoningEffort }, nil?: true
@@ -660,12 +664,16 @@ module OpenAI
               # @!attribute reasoning_effort
               #   Constrains effort on reasoning for
               #   [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-              #   supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
-              #   effort can result in faster responses and fewer tokens used on reasoning in a
-              #   response.
+              #   supported values are `none`, `minimal`, `low`, `medium`, and `high`. Reducing
+              #   reasoning effort can result in faster responses and fewer tokens used on
+              #   reasoning in a response.
               #
-              #   Note: The `gpt-5-pro` model defaults to (and only supports) `high` reasoning
-              #   effort.
+              #   - `gpt-5.1` defaults to `none`, which does not perform reasoning. The supported
+              #     reasoning values for `gpt-5.1` are `none`, `low`, `medium`, and `high`. Tool
+              #     calls are supported for all reasoning values in gpt-5.1.
+              #   - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
+              #     support `none`.
+              #   - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
               #
               #   @return [Symbol, OpenAI::Models::ReasoningEffort, nil]
               optional :reasoning_effort, enum: -> { OpenAI::ReasoningEffort }, nil?: true
@@ -708,7 +716,7 @@ module OpenAI
               #     the model to call your own code. Learn more about
               #     [function calling](https://platform.openai.com/docs/guides/function-calling).
               #
-              #   @return [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool>, nil]
+              #   @return [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::FunctionShellTool, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::ApplyPatchTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool>, nil]
               optional :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool] }
 
               # @!attribute top_p
@@ -732,7 +740,7 @@ module OpenAI
               #
               #   @param text [OpenAI::Models::Evals::RunListResponse::DataSource::Responses::SamplingParams::Text] Configuration options for a text response from the model. Can be plain
               #
-              #   @param tools [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool>] An array of tools the model may call while generating a response. You
+              #   @param tools [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::FunctionShellTool, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::ApplyPatchTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool>] An array of tools the model may call while generating a response. You
               #
               #   @param top_p [Float] An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
 

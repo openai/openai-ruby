@@ -1,0 +1,123 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_apply_patch_tool_call =
+        {
+          id: String,
+          call_id: String,
+          status: OpenAI::Models::Responses::ResponseApplyPatchToolCall::status,
+          type: :apply_patch_call,
+          created_by: String,
+          operation: OpenAI::Models::Responses::ResponseApplyPatchToolCall::operation
+        }
+
+      class ResponseApplyPatchToolCall < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor call_id: String
+
+        attr_accessor status: OpenAI::Models::Responses::ResponseApplyPatchToolCall::status
+
+        attr_accessor type: :apply_patch_call
+
+        attr_reader created_by: String?
+
+        def created_by=: (String) -> String
+
+        attr_reader operation: OpenAI::Models::Responses::ResponseApplyPatchToolCall::operation?
+
+        def operation=: (
+          OpenAI::Models::Responses::ResponseApplyPatchToolCall::operation
+        ) -> OpenAI::Models::Responses::ResponseApplyPatchToolCall::operation
+
+        def initialize: (
+          id: String,
+          call_id: String,
+          status: OpenAI::Models::Responses::ResponseApplyPatchToolCall::status,
+          ?created_by: String,
+          ?operation: OpenAI::Models::Responses::ResponseApplyPatchToolCall::operation,
+          ?type: :apply_patch_call
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          call_id: String,
+          status: OpenAI::Models::Responses::ResponseApplyPatchToolCall::status,
+          type: :apply_patch_call,
+          created_by: String,
+          operation: OpenAI::Models::Responses::ResponseApplyPatchToolCall::operation
+        }
+
+        type status = :in_progress | :completed
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          IN_PROGRESS: :in_progress
+          COMPLETED: :completed
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseApplyPatchToolCall::status]
+        end
+
+        type operation =
+          OpenAI::Responses::ResponseApplyPatchToolCall::Operation::CreateFile
+          | OpenAI::Responses::ResponseApplyPatchToolCall::Operation::DeleteFile
+          | OpenAI::Responses::ResponseApplyPatchToolCall::Operation::UpdateFile
+
+        module Operation
+          extend OpenAI::Internal::Type::Union
+
+          type create_file = { diff: String, path: String, type: :create_file }
+
+          class CreateFile < OpenAI::Internal::Type::BaseModel
+            attr_accessor diff: String
+
+            attr_accessor path: String
+
+            attr_accessor type: :create_file
+
+            def initialize: (
+              diff: String,
+              path: String,
+              ?type: :create_file
+            ) -> void
+
+            def to_hash: -> { diff: String, path: String, type: :create_file }
+          end
+
+          type delete_file = { path: String, type: :delete_file }
+
+          class DeleteFile < OpenAI::Internal::Type::BaseModel
+            attr_accessor path: String
+
+            attr_accessor type: :delete_file
+
+            def initialize: (path: String, ?type: :delete_file) -> void
+
+            def to_hash: -> { path: String, type: :delete_file }
+          end
+
+          type update_file = { diff: String, path: String, type: :update_file }
+
+          class UpdateFile < OpenAI::Internal::Type::BaseModel
+            attr_accessor diff: String
+
+            attr_accessor path: String
+
+            attr_accessor type: :update_file
+
+            def initialize: (
+              diff: String,
+              path: String,
+              ?type: :update_file
+            ) -> void
+
+            def to_hash: -> { diff: String, path: String, type: :update_file }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseApplyPatchToolCall::operation]
+        end
+      end
+    end
+  end
+end

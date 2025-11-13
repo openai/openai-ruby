@@ -1,0 +1,15 @@
+module OpenAI
+  module Models
+    module Responses
+      type apply_patch_tool = { type: :apply_patch }
+
+      class ApplyPatchTool < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :apply_patch
+
+        def initialize: (?type: :apply_patch) -> void
+
+        def to_hash: -> { type: :apply_patch }
+      end
+    end
+  end
+end
