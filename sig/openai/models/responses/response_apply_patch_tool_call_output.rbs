@@ -1,0 +1,60 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_apply_patch_tool_call_output =
+        {
+          id: String,
+          call_id: String,
+          output: String?,
+          status: OpenAI::Models::Responses::ResponseApplyPatchToolCallOutput::status,
+          type: :apply_patch_call_output,
+          created_by: String
+        }
+
+      class ResponseApplyPatchToolCallOutput < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor call_id: String
+
+        attr_accessor output: String?
+
+        attr_accessor status: OpenAI::Models::Responses::ResponseApplyPatchToolCallOutput::status
+
+        attr_accessor type: :apply_patch_call_output
+
+        attr_reader created_by: String?
+
+        def created_by=: (String) -> String
+
+        def initialize: (
+          id: String,
+          call_id: String,
+          output: String?,
+          status: OpenAI::Models::Responses::ResponseApplyPatchToolCallOutput::status,
+          ?created_by: String,
+          ?type: :apply_patch_call_output
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          call_id: String,
+          output: String?,
+          status: OpenAI::Models::Responses::ResponseApplyPatchToolCallOutput::status,
+          type: :apply_patch_call_output,
+          created_by: String
+        }
+
+        type status = :completed | :failed
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          COMPLETED: :completed
+          FAILED: :failed
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseApplyPatchToolCallOutput::status]
+        end
+      end
+    end
+  end
+end

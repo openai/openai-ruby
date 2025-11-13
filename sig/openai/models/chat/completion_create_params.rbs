@@ -20,6 +20,7 @@ module OpenAI
           prediction: OpenAI::Chat::ChatCompletionPredictionContent?,
           presence_penalty: Float?,
           prompt_cache_key: String,
+          prompt_cache_retention: OpenAI::Models::Chat::CompletionCreateParams::prompt_cache_retention?,
           reasoning_effort: OpenAI::Models::reasoning_effort?,
           response_format: OpenAI::Models::Chat::CompletionCreateParams::response_format,
           safety_identifier: String,
@@ -88,6 +89,8 @@ module OpenAI
         attr_reader prompt_cache_key: String?
 
         def prompt_cache_key=: (String) -> String
+
+        attr_accessor prompt_cache_retention: OpenAI::Models::Chat::CompletionCreateParams::prompt_cache_retention?
 
         attr_accessor reasoning_effort: OpenAI::Models::reasoning_effort?
 
@@ -159,6 +162,7 @@ module OpenAI
           ?prediction: OpenAI::Chat::ChatCompletionPredictionContent?,
           ?presence_penalty: Float?,
           ?prompt_cache_key: String,
+          ?prompt_cache_retention: OpenAI::Models::Chat::CompletionCreateParams::prompt_cache_retention?,
           ?reasoning_effort: OpenAI::Models::reasoning_effort?,
           ?response_format: OpenAI::Models::Chat::CompletionCreateParams::response_format,
           ?safety_identifier: String,
@@ -196,6 +200,7 @@ module OpenAI
           prediction: OpenAI::Chat::ChatCompletionPredictionContent?,
           presence_penalty: Float?,
           prompt_cache_key: String,
+          prompt_cache_retention: OpenAI::Models::Chat::CompletionCreateParams::prompt_cache_retention?,
           reasoning_effort: OpenAI::Models::reasoning_effort?,
           response_format: OpenAI::Models::Chat::CompletionCreateParams::response_format,
           safety_identifier: String,
@@ -286,6 +291,17 @@ module OpenAI
           AUDIO: :audio
 
           def self?.values: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::modality]
+        end
+
+        type prompt_cache_retention = :"in-memory" | :"24h"
+
+        module PromptCacheRetention
+          extend OpenAI::Internal::Type::Enum
+
+          IN_MEMORY: :"in-memory"
+          PROMPT_CACHE_RETENTION_24H: :"24h"
+
+          def self?.values: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::prompt_cache_retention]
         end
 
         type response_format =

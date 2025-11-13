@@ -31,6 +31,10 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
       in OpenAI::Responses::ResponseCodeInterpreterToolCall
       in OpenAI::Responses::ResponseItem::LocalShellCall
       in OpenAI::Responses::ResponseItem::LocalShellCallOutput
+      in OpenAI::Responses::ResponseFunctionShellToolCall
+      in OpenAI::Responses::ResponseFunctionShellToolCallOutput
+      in OpenAI::Responses::ResponseApplyPatchToolCall
+      in OpenAI::Responses::ResponseApplyPatchToolCallOutput
       in OpenAI::Responses::ResponseItem::McpListTools
       in OpenAI::Responses::ResponseItem::McpApprovalRequest
       in OpenAI::Responses::ResponseItem::McpApprovalResponse
@@ -116,6 +120,38 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
         id: String,
         output: String,
         status: OpenAI::Responses::ResponseItem::LocalShellCallOutput::Status | nil
+      }
+      in {
+        type: :shell_call,
+        id: String,
+        action: OpenAI::Responses::ResponseFunctionShellToolCall::Action,
+        call_id: String,
+        status: OpenAI::Responses::ResponseFunctionShellToolCall::Status,
+        created_by: String | nil
+      }
+      in {
+        type: :shell_call_output,
+        id: String,
+        call_id: String,
+        max_output_length: Integer | nil,
+        output: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output]),
+        created_by: String | nil
+      }
+      in {
+        type: :apply_patch_call,
+        id: String,
+        call_id: String,
+        status: OpenAI::Responses::ResponseApplyPatchToolCall::Status,
+        created_by: String | nil,
+        operation: OpenAI::Responses::ResponseApplyPatchToolCall::Operation | nil
+      }
+      in {
+        type: :apply_patch_call_output,
+        id: String,
+        call_id: String,
+        output: String | nil,
+        status: OpenAI::Responses::ResponseApplyPatchToolCallOutput::Status,
+        created_by: String | nil
       }
       in {
         type: :mcp_list_tools,

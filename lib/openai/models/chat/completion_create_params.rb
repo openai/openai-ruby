@@ -190,15 +190,30 @@ module OpenAI
         #   @return [String, nil]
         optional :prompt_cache_key, String
 
+        # @!attribute prompt_cache_retention
+        #   The retention policy for the prompt cache. Set to `24h` to enable extended
+        #   prompt caching, which keeps cached prefixes active for longer, up to a maximum
+        #   of 24 hours.
+        #   [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
+        #
+        #   @return [Symbol, OpenAI::Models::Chat::CompletionCreateParams::PromptCacheRetention, nil]
+        optional :prompt_cache_retention,
+                 enum: -> { OpenAI::Chat::CompletionCreateParams::PromptCacheRetention },
+                 nil?: true
+
         # @!attribute reasoning_effort
         #   Constrains effort on reasoning for
         #   [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-        #   supported values are `minimal`, `low`, `medium`, and `high`. Reducing reasoning
-        #   effort can result in faster responses and fewer tokens used on reasoning in a
-        #   response.
+        #   supported values are `none`, `minimal`, `low`, `medium`, and `high`. Reducing
+        #   reasoning effort can result in faster responses and fewer tokens used on
+        #   reasoning in a response.
         #
-        #   Note: The `gpt-5-pro` model defaults to (and only supports) `high` reasoning
-        #   effort.
+        #   - `gpt-5.1` defaults to `none`, which does not perform reasoning. The supported
+        #     reasoning values for `gpt-5.1` are `none`, `low`, `medium`, and `high`. Tool
+        #     calls are supported for all reasoning values in gpt-5.1.
+        #   - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
+        #     support `none`.
+        #   - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
         #
         #   @return [Symbol, OpenAI::Models::ReasoningEffort, nil]
         optional :reasoning_effort, enum: -> { OpenAI::ReasoningEffort }, nil?: true
@@ -368,7 +383,7 @@ module OpenAI
         #   @return [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions, nil]
         optional :web_search_options, -> { OpenAI::Chat::CompletionCreateParams::WebSearchOptions }
 
-        # @!method initialize(messages:, model:, audio: nil, frequency_penalty: nil, function_call: nil, functions: nil, logit_bias: nil, logprobs: nil, max_completion_tokens: nil, max_tokens: nil, metadata: nil, modalities: nil, n: nil, parallel_tool_calls: nil, prediction: nil, presence_penalty: nil, prompt_cache_key: nil, reasoning_effort: nil, response_format: nil, safety_identifier: nil, seed: nil, service_tier: nil, stop: nil, store: nil, stream_options: nil, temperature: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, user: nil, verbosity: nil, web_search_options: nil, request_options: {})
+        # @!method initialize(messages:, model:, audio: nil, frequency_penalty: nil, function_call: nil, functions: nil, logit_bias: nil, logprobs: nil, max_completion_tokens: nil, max_tokens: nil, metadata: nil, modalities: nil, n: nil, parallel_tool_calls: nil, prediction: nil, presence_penalty: nil, prompt_cache_key: nil, prompt_cache_retention: nil, reasoning_effort: nil, response_format: nil, safety_identifier: nil, seed: nil, service_tier: nil, stop: nil, store: nil, stream_options: nil, temperature: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, user: nil, verbosity: nil, web_search_options: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Chat::CompletionCreateParams} for more details.
         #
@@ -405,6 +420,8 @@ module OpenAI
         #   @param presence_penalty [Float, nil] Number between -2.0 and 2.0. Positive values penalize new tokens based on
         #
         #   @param prompt_cache_key [String] Used by OpenAI to cache responses for similar requests to optimize your cache hi
+        #
+        #   @param prompt_cache_retention [Symbol, OpenAI::Models::Chat::CompletionCreateParams::PromptCacheRetention, nil] The retention policy for the prompt cache. Set to `24h` to enable extended promp
         #
         #   @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] Constrains effort on reasoning for
         #
@@ -546,6 +563,20 @@ module OpenAI
 
           TEXT = :text
           AUDIO = :audio
+
+          # @!method self.values
+          #   @return [Array<Symbol>]
+        end
+
+        # The retention policy for the prompt cache. Set to `24h` to enable extended
+        # prompt caching, which keeps cached prefixes active for longer, up to a maximum
+        # of 24 hours.
+        # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
+        module PromptCacheRetention
+          extend OpenAI::Internal::Type::Enum
+
+          IN_MEMORY = :"in-memory"
+          PROMPT_CACHE_RETENTION_24H = :"24h"
 
           # @!method self.values
           #   @return [Array<Symbol>]

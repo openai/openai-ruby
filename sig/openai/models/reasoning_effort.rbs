@@ -1,10 +1,11 @@
 module OpenAI
   module Models
-    type reasoning_effort = :minimal | :low | :medium | :high
+    type reasoning_effort = :none | :minimal | :low | :medium | :high
 
     module ReasoningEffort
       extend OpenAI::Internal::Type::Enum
 
+      NONE: :none
       MINIMAL: :minimal
       LOW: :low
       MEDIUM: :medium

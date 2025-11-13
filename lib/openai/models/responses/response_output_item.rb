@@ -43,6 +43,18 @@ module OpenAI
         # A tool call to run a command on the local shell.
         variant :local_shell_call, -> { OpenAI::Responses::ResponseOutputItem::LocalShellCall }
 
+        # A tool call that executes one or more shell commands in a managed environment.
+        variant :shell_call, -> { OpenAI::Responses::ResponseFunctionShellToolCall }
+
+        # The output of a shell tool call.
+        variant :shell_call_output, -> { OpenAI::Responses::ResponseFunctionShellToolCallOutput }
+
+        # A tool call that applies file diffs by creating, deleting, or updating files.
+        variant :apply_patch_call, -> { OpenAI::Responses::ResponseApplyPatchToolCall }
+
+        # The output emitted by an apply patch tool call.
+        variant :apply_patch_call_output, -> { OpenAI::Responses::ResponseApplyPatchToolCallOutput }
+
         # An invocation of a tool on an MCP server.
         variant :mcp_call, -> { OpenAI::Responses::ResponseOutputItem::McpCall }
 
@@ -468,7 +480,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseOutputItem::LocalShellCall, OpenAI::Models::Responses::ResponseOutputItem::McpCall, OpenAI::Models::Responses::ResponseOutputItem::McpListTools, OpenAI::Models::Responses::ResponseOutputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseCustomToolCall)]
+        #   @return [Array(OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseOutputItem::LocalShellCall, OpenAI::Models::Responses::ResponseFunctionShellToolCall, OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput, OpenAI::Models::Responses::ResponseApplyPatchToolCall, OpenAI::Models::Responses::ResponseApplyPatchToolCallOutput, OpenAI::Models::Responses::ResponseOutputItem::McpCall, OpenAI::Models::Responses::ResponseOutputItem::McpListTools, OpenAI::Models::Responses::ResponseOutputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseCustomToolCall)]
       end
     end
   end

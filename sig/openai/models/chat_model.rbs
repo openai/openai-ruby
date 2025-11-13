@@ -1,7 +1,12 @@
 module OpenAI
   module Models
     type chat_model =
-      :"gpt-5"
+      :"gpt-5.1"
+      | :"gpt-5.1-2025-11-13"
+      | :"gpt-5.1-codex"
+      | :"gpt-5.1-mini"
+      | :"gpt-5.1-chat-latest"
+      | :"gpt-5"
       | :"gpt-5-mini"
       | :"gpt-5-nano"
       | :"gpt-5-2025-08-07"
@@ -67,6 +72,11 @@ module OpenAI
     module ChatModel
       extend OpenAI::Internal::Type::Enum
 
+      GPT_5_1: :"gpt-5.1"
+      GPT_5_1_2025_11_13: :"gpt-5.1-2025-11-13"
+      GPT_5_1_CODEX: :"gpt-5.1-codex"
+      GPT_5_1_MINI: :"gpt-5.1-mini"
+      GPT_5_1_CHAT_LATEST: :"gpt-5.1-chat-latest"
       GPT_5: :"gpt-5"
       GPT_5_MINI: :"gpt-5-mini"
       GPT_5_NANO: :"gpt-5-nano"

@@ -46,6 +46,10 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
       in OpenAI::Responses::ResponseCodeInterpreterToolCall
       in OpenAI::Conversations::ConversationItem::LocalShellCall
       in OpenAI::Conversations::ConversationItem::LocalShellCallOutput
+      in OpenAI::Responses::ResponseFunctionShellToolCall
+      in OpenAI::Responses::ResponseFunctionShellToolCallOutput
+      in OpenAI::Responses::ResponseApplyPatchToolCall
+      in OpenAI::Responses::ResponseApplyPatchToolCallOutput
       in OpenAI::Conversations::ConversationItem::McpListTools
       in OpenAI::Conversations::ConversationItem::McpApprovalRequest
       in OpenAI::Conversations::ConversationItem::McpApprovalResponse
@@ -136,6 +140,38 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         status: OpenAI::Conversations::ConversationItem::LocalShellCallOutput::Status | nil
       }
       in {
+        type: :shell_call,
+        id: String,
+        action: OpenAI::Responses::ResponseFunctionShellToolCall::Action,
+        call_id: String,
+        status: OpenAI::Responses::ResponseFunctionShellToolCall::Status,
+        created_by: String | nil
+      }
+      in {
+        type: :shell_call_output,
+        id: String,
+        call_id: String,
+        max_output_length: Integer | nil,
+        output: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output]),
+        created_by: String | nil
+      }
+      in {
+        type: :apply_patch_call,
+        id: String,
+        call_id: String,
+        status: OpenAI::Responses::ResponseApplyPatchToolCall::Status,
+        created_by: String | nil,
+        operation: OpenAI::Responses::ResponseApplyPatchToolCall::Operation | nil
+      }
+      in {
+        type: :apply_patch_call_output,
+        id: String,
+        call_id: String,
+        output: String | nil,
+        status: OpenAI::Responses::ResponseApplyPatchToolCallOutput::Status,
+        created_by: String | nil
+      }
+      in {
         type: :mcp_list_tools,
         id: String,
         server_label: String,
@@ -200,6 +236,10 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
       in OpenAI::Responses::ResponseCodeInterpreterToolCall
       in OpenAI::Conversations::ConversationItem::LocalShellCall
       in OpenAI::Conversations::ConversationItem::LocalShellCallOutput
+      in OpenAI::Responses::ResponseFunctionShellToolCall
+      in OpenAI::Responses::ResponseFunctionShellToolCallOutput
+      in OpenAI::Responses::ResponseApplyPatchToolCall
+      in OpenAI::Responses::ResponseApplyPatchToolCallOutput
       in OpenAI::Conversations::ConversationItem::McpListTools
       in OpenAI::Conversations::ConversationItem::McpApprovalRequest
       in OpenAI::Conversations::ConversationItem::McpApprovalResponse
@@ -288,6 +328,38 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         id: String,
         output: String,
         status: OpenAI::Conversations::ConversationItem::LocalShellCallOutput::Status | nil
+      }
+      in {
+        type: :shell_call,
+        id: String,
+        action: OpenAI::Responses::ResponseFunctionShellToolCall::Action,
+        call_id: String,
+        status: OpenAI::Responses::ResponseFunctionShellToolCall::Status,
+        created_by: String | nil
+      }
+      in {
+        type: :shell_call_output,
+        id: String,
+        call_id: String,
+        max_output_length: Integer | nil,
+        output: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output]),
+        created_by: String | nil
+      }
+      in {
+        type: :apply_patch_call,
+        id: String,
+        call_id: String,
+        status: OpenAI::Responses::ResponseApplyPatchToolCall::Status,
+        created_by: String | nil,
+        operation: OpenAI::Responses::ResponseApplyPatchToolCall::Operation | nil
+      }
+      in {
+        type: :apply_patch_call_output,
+        id: String,
+        call_id: String,
+        output: String | nil,
+        status: OpenAI::Responses::ResponseApplyPatchToolCallOutput::Status,
+        created_by: String | nil
       }
       in {
         type: :mcp_list_tools,
