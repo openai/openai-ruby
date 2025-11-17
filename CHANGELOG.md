@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.36.1 (2025-11-17)
+
+Full Changelog: [v0.36.0...v0.36.1](https://github.com/openai/openai-ruby/compare/v0.36.0...v0.36.1)
+
+### Bug Fixes
+
+* **api:** align types of input items / output items for typescript ([b593643](https://github.com/openai/openai-ruby/commit/b5936439c6804161bc1a9a7900bdc33f09be1485))
+
 ## 0.36.0 (2025-11-13)
 
 Full Changelog: [v0.35.2...v0.36.0](https://github.com/openai/openai-ruby/compare/v0.35.2...v0.36.0)
