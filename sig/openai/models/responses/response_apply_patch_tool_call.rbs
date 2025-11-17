@@ -5,16 +5,18 @@ module OpenAI
         {
           id: String,
           call_id: String,
+          operation: OpenAI::Models::Responses::ResponseApplyPatchToolCall::operation,
           status: OpenAI::Models::Responses::ResponseApplyPatchToolCall::status,
           type: :apply_patch_call,
-          created_by: String,
-          operation: OpenAI::Models::Responses::ResponseApplyPatchToolCall::operation
+          created_by: String
         }
 
       class ResponseApplyPatchToolCall < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
         attr_accessor call_id: String
+
+        attr_accessor operation: OpenAI::Models::Responses::ResponseApplyPatchToolCall::operation
 
         attr_accessor status: OpenAI::Models::Responses::ResponseApplyPatchToolCall::status
 
@@ -24,40 +26,23 @@ module OpenAI
 
         def created_by=: (String) -> String
 
-        attr_reader operation: OpenAI::Models::Responses::ResponseApplyPatchToolCall::operation?
-
-        def operation=: (
-          OpenAI::Models::Responses::ResponseApplyPatchToolCall::operation
-        ) -> OpenAI::Models::Responses::ResponseApplyPatchToolCall::operation
-
         def initialize: (
           id: String,
           call_id: String,
+          operation: OpenAI::Models::Responses::ResponseApplyPatchToolCall::operation,
           status: OpenAI::Models::Responses::ResponseApplyPatchToolCall::status,
           ?created_by: String,
-          ?operation: OpenAI::Models::Responses::ResponseApplyPatchToolCall::operation,
           ?type: :apply_patch_call
         ) -> void
 
         def to_hash: -> {
           id: String,
           call_id: String,
+          operation: OpenAI::Models::Responses::ResponseApplyPatchToolCall::operation,
           status: OpenAI::Models::Responses::ResponseApplyPatchToolCall::status,
           type: :apply_patch_call,
-          created_by: String,
-          operation: OpenAI::Models::Responses::ResponseApplyPatchToolCall::operation
+          created_by: String
         }
-
-        type status = :in_progress | :completed
-
-        module Status
-          extend OpenAI::Internal::Type::Enum
-
-          IN_PROGRESS: :in_progress
-          COMPLETED: :completed
-
-          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseApplyPatchToolCall::status]
-        end
 
         type operation =
           OpenAI::Responses::ResponseApplyPatchToolCall::Operation::CreateFile
@@ -116,6 +101,17 @@ module OpenAI
           end
 
           def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseApplyPatchToolCall::operation]
+        end
+
+        type status = :in_progress | :completed
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          IN_PROGRESS: :in_progress
+          COMPLETED: :completed
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseApplyPatchToolCall::status]
         end
       end
     end

@@ -5,18 +5,16 @@ module OpenAI
         {
           id: String,
           call_id: String,
-          output: String?,
           status: OpenAI::Models::Responses::ResponseApplyPatchToolCallOutput::status,
           type: :apply_patch_call_output,
-          created_by: String
+          created_by: String,
+          output: String?
         }
 
       class ResponseApplyPatchToolCallOutput < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
         attr_accessor call_id: String
-
-        attr_accessor output: String?
 
         attr_accessor status: OpenAI::Models::Responses::ResponseApplyPatchToolCallOutput::status
 
@@ -26,22 +24,24 @@ module OpenAI
 
         def created_by=: (String) -> String
 
+        attr_accessor output: String?
+
         def initialize: (
           id: String,
           call_id: String,
-          output: String?,
           status: OpenAI::Models::Responses::ResponseApplyPatchToolCallOutput::status,
           ?created_by: String,
+          ?output: String?,
           ?type: :apply_patch_call_output
         ) -> void
 
         def to_hash: -> {
           id: String,
           call_id: String,
-          output: String?,
           status: OpenAI::Models::Responses::ResponseApplyPatchToolCallOutput::status,
           type: :apply_patch_call_output,
-          created_by: String
+          created_by: String,
+          output: String?
         }
 
         type status = :completed | :failed

@@ -1667,10 +1667,7 @@ module OpenAI
           # Optional human-readable log text from the apply patch tool (e.g., patch results
           # or errors).
           sig { returns(T.nilable(String)) }
-          attr_reader :output
-
-          sig { params(output: String).void }
-          attr_writer :output
+          attr_accessor :output
 
           # The streamed output emitted by an apply patch tool call.
           sig do
@@ -1679,7 +1676,7 @@ module OpenAI
               status:
                 OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Status::OrSymbol,
               id: T.nilable(String),
-              output: String,
+              output: T.nilable(String),
               type: Symbol
             ).returns(T.attached_class)
           end
@@ -1707,7 +1704,7 @@ module OpenAI
                   OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Status::OrSymbol,
                 type: Symbol,
                 id: T.nilable(String),
-                output: String
+                output: T.nilable(String)
               }
             )
           end

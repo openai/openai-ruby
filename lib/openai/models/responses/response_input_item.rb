@@ -956,7 +956,7 @@ module OpenAI
           #   or errors).
           #
           #   @return [String, nil]
-          optional :output, String
+          optional :output, String, nil?: true
 
           # @!method initialize(call_id:, status:, id: nil, output: nil, type: :apply_patch_call_output)
           #   Some parameter documentations has been truncated, see
@@ -971,7 +971,7 @@ module OpenAI
           #
           #   @param id [String, nil] The unique ID of the apply patch tool call output. Populated when this item is r
           #
-          #   @param output [String] Optional human-readable log text from the apply patch tool (e.g., patch results
+          #   @param output [String, nil] Optional human-readable log text from the apply patch tool (e.g., patch results
           #
           #   @param type [Symbol, :apply_patch_call_output] The type of the item. Always `apply_patch_call_output`.
 

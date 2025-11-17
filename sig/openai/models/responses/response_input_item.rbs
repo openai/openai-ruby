@@ -645,7 +645,7 @@ module OpenAI
             status: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput::status,
             type: :apply_patch_call_output,
             id: String?,
-            output: String
+            output: String?
           }
 
         class ApplyPatchCallOutput < OpenAI::Internal::Type::BaseModel
@@ -657,15 +657,13 @@ module OpenAI
 
           attr_accessor id: String?
 
-          attr_reader output: String?
-
-          def output=: (String) -> String
+          attr_accessor output: String?
 
           def initialize: (
             call_id: String,
             status: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput::status,
             ?id: String?,
-            ?output: String,
+            ?output: String?,
             ?type: :apply_patch_call_output
           ) -> void
 
@@ -674,7 +672,7 @@ module OpenAI
             status: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput::status,
             type: :apply_patch_call_output,
             id: String?,
-            output: String
+            output: String?
           }
 
           type status = :completed | :failed
