@@ -141,17 +141,17 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
         type: :apply_patch_call,
         id: String,
         call_id: String,
+        operation: OpenAI::Responses::ResponseApplyPatchToolCall::Operation,
         status: OpenAI::Responses::ResponseApplyPatchToolCall::Status,
-        created_by: String | nil,
-        operation: OpenAI::Responses::ResponseApplyPatchToolCall::Operation | nil
+        created_by: String | nil
       }
       in {
         type: :apply_patch_call_output,
         id: String,
         call_id: String,
-        output: String | nil,
         status: OpenAI::Responses::ResponseApplyPatchToolCallOutput::Status,
-        created_by: String | nil
+        created_by: String | nil,
+        output: String | nil
       }
       in {
         type: :mcp_list_tools,
