@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.36.2 (2025-11-20)
+
+Full Changelog: [v0.36.1...v0.36.2](https://github.com/openai/openai-ruby/compare/v0.36.1...v0.36.2)
+
+### Chores
+
+* add "base64" as a dependency for newer ruby versions ([#868](https://github.com/openai/openai-ruby/issues/868)) ([b7be495](https://github.com/openai/openai-ruby/commit/b7be4955d5ea7affdf55ce11086afc1bc904f471))
+* explicitly require "base64" gem ([4be5941](https://github.com/openai/openai-ruby/commit/4be5941881cd50e5c7596c62e3b7b4fda2af5196))
+
 ## 0.36.1 (2025-11-17)
 
 Full Changelog: [v0.36.0...v0.36.1](https://github.com/openai/openai-ruby/compare/v0.36.0...v0.36.1)
