@@ -12,6 +12,7 @@ PATH
   remote: .
   specs:
     openai (0.36.1)
+      base64
       connection_pool
 
 GEM
