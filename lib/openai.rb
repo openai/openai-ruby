@@ -3,6 +3,7 @@
 # Standard libraries.
 # rubocop:disable Lint/RedundantRequireStatement
 require "English"
+require "base64"
 require "cgi"
 require "date"
 require "erb"
