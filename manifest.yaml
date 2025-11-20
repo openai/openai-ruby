@@ -1,5 +1,6 @@
 dependencies:
   - English
+  - base64
   - cgi
   - date
   - erb
