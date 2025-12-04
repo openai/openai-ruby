@@ -347,7 +347,8 @@ module OpenAI
         class CodeInterpreter < OpenAI::Internal::Type::BaseModel
           # @!attribute container
           #   The code interpreter container. Can be a container ID or an object that
-          #   specifies uploaded file IDs to make available to your code.
+          #   specifies uploaded file IDs to make available to your code, along with an
+          #   optional `memory_limit` setting.
           #
           #   @return [String, OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto]
           required :container, union: -> { OpenAI::Responses::Tool::CodeInterpreter::Container }
@@ -369,7 +370,8 @@ module OpenAI
           #   @param type [Symbol, :code_interpreter] The type of the code interpreter tool. Always `code_interpreter`.
 
           # The code interpreter container. Can be a container ID or an object that
-          # specifies uploaded file IDs to make available to your code.
+          # specifies uploaded file IDs to make available to your code, along with an
+          # optional `memory_limit` setting.
           #
           # @see OpenAI::Models::Responses::Tool::CodeInterpreter#container
           module Container

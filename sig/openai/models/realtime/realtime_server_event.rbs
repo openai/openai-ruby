@@ -13,6 +13,7 @@ module OpenAI
         | OpenAI::Realtime::RealtimeErrorEvent
         | OpenAI::Realtime::InputAudioBufferClearedEvent
         | OpenAI::Realtime::InputAudioBufferCommittedEvent
+        | OpenAI::Realtime::InputAudioBufferDtmfEventReceivedEvent
         | OpenAI::Realtime::InputAudioBufferSpeechStartedEvent
         | OpenAI::Realtime::InputAudioBufferSpeechStoppedEvent
         | OpenAI::Realtime::RateLimitsUpdatedEvent

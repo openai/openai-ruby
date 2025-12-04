@@ -12,7 +12,7 @@ module OpenAI
             )
           end
 
-        # The exit or timeout outcome associated with this chunk.
+        # The exit or timeout outcome associated with this shell call.
         sig do
           returns(
             T.any(
@@ -23,15 +23,15 @@ module OpenAI
         end
         attr_accessor :outcome
 
-        # Captured stderr output for this chunk of the shell call.
+        # Captured stderr output for the shell call.
         sig { returns(String) }
         attr_accessor :stderr
 
-        # Captured stdout output for this chunk of the shell call.
+        # Captured stdout output for the shell call.
         sig { returns(String) }
         attr_accessor :stdout
 
-        # Captured stdout and stderr for a portion of a function shell tool call output.
+        # Captured stdout and stderr for a portion of a shell tool call output.
         sig do
           params(
             outcome:
@@ -44,11 +44,11 @@ module OpenAI
           ).returns(T.attached_class)
         end
         def self.new(
-          # The exit or timeout outcome associated with this chunk.
+          # The exit or timeout outcome associated with this shell call.
           outcome:,
-          # Captured stderr output for this chunk of the shell call.
+          # Captured stderr output for the shell call.
           stderr:,
-          # Captured stdout output for this chunk of the shell call.
+          # Captured stdout output for the shell call.
           stdout:
         )
         end
@@ -69,7 +69,7 @@ module OpenAI
         def to_hash
         end
 
-        # The exit or timeout outcome associated with this chunk.
+        # The exit or timeout outcome associated with this shell call.
         module Outcome
           extend OpenAI::Internal::Type::Union
 
@@ -94,7 +94,7 @@ module OpenAI
             sig { returns(Symbol) }
             attr_accessor :type
 
-            # Indicates that the function shell call exceeded its configured time limit.
+            # Indicates that the shell call exceeded its configured time limit.
             sig { params(type: Symbol).returns(T.attached_class) }
             def self.new(
               # The outcome type. Always `timeout`.

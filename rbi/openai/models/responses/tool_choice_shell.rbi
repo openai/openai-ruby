@@ -13,7 +13,7 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
-        # Forces the model to call the function shell tool when a tool call is required.
+        # Forces the model to call the shell tool when a tool call is required.
         sig { params(type: Symbol).returns(T.attached_class) }
         def self.new(
           # The tool to call. Always `shell`.

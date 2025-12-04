@@ -5,33 +5,33 @@ module OpenAI
     module Responses
       class ResponseFunctionShellCallOutputContent < OpenAI::Internal::Type::BaseModel
         # @!attribute outcome
-        #   The exit or timeout outcome associated with this chunk.
+        #   The exit or timeout outcome associated with this shell call.
         #
         #   @return [OpenAI::Models::Responses::ResponseFunctionShellCallOutputContent::Outcome::Timeout, OpenAI::Models::Responses::ResponseFunctionShellCallOutputContent::Outcome::Exit]
         required :outcome, union: -> { OpenAI::Responses::ResponseFunctionShellCallOutputContent::Outcome }
 
         # @!attribute stderr
-        #   Captured stderr output for this chunk of the shell call.
+        #   Captured stderr output for the shell call.
         #
         #   @return [String]
         required :stderr, String
 
         # @!attribute stdout
-        #   Captured stdout output for this chunk of the shell call.
+        #   Captured stdout output for the shell call.
         #
         #   @return [String]
         required :stdout, String
 
         # @!method initialize(outcome:, stderr:, stdout:)
-        #   Captured stdout and stderr for a portion of a function shell tool call output.
+        #   Captured stdout and stderr for a portion of a shell tool call output.
         #
-        #   @param outcome [OpenAI::Models::Responses::ResponseFunctionShellCallOutputContent::Outcome::Timeout, OpenAI::Models::Responses::ResponseFunctionShellCallOutputContent::Outcome::Exit] The exit or timeout outcome associated with this chunk.
+        #   @param outcome [OpenAI::Models::Responses::ResponseFunctionShellCallOutputContent::Outcome::Timeout, OpenAI::Models::Responses::ResponseFunctionShellCallOutputContent::Outcome::Exit] The exit or timeout outcome associated with this shell call.
         #
-        #   @param stderr [String] Captured stderr output for this chunk of the shell call.
+        #   @param stderr [String] Captured stderr output for the shell call.
         #
-        #   @param stdout [String] Captured stdout output for this chunk of the shell call.
+        #   @param stdout [String] Captured stdout output for the shell call.
 
-        # The exit or timeout outcome associated with this chunk.
+        # The exit or timeout outcome associated with this shell call.
         #
         # @see OpenAI::Models::Responses::ResponseFunctionShellCallOutputContent#outcome
         module Outcome
@@ -39,7 +39,7 @@ module OpenAI
 
           discriminator :type
 
-          # Indicates that the function shell call exceeded its configured time limit.
+          # Indicates that the shell call exceeded its configured time limit.
           variant :timeout, -> { OpenAI::Responses::ResponseFunctionShellCallOutputContent::Outcome::Timeout }
 
           # Indicates that the shell commands finished and returned an exit code.
@@ -53,7 +53,7 @@ module OpenAI
             required :type, const: :timeout
 
             # @!method initialize(type: :timeout)
-            #   Indicates that the function shell call exceeded its configured time limit.
+            #   Indicates that the shell call exceeded its configured time limit.
             #
             #   @param type [Symbol, :timeout] The outcome type. Always `timeout`.
           end

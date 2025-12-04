@@ -33,11 +33,25 @@ module OpenAI
       sig { params(file_ids: T::Array[String]).void }
       attr_writer :file_ids
 
+      # Optional memory limit for the container. Defaults to "1g".
+      sig do
+        returns(T.nilable(OpenAI::ContainerCreateParams::MemoryLimit::OrSymbol))
+      end
+      attr_reader :memory_limit
+
+      sig do
+        params(
+          memory_limit: OpenAI::ContainerCreateParams::MemoryLimit::OrSymbol
+        ).void
+      end
+      attr_writer :memory_limit
+
       sig do
         params(
           name: String,
           expires_after: OpenAI::ContainerCreateParams::ExpiresAfter::OrHash,
           file_ids: T::Array[String],
+          memory_limit: OpenAI::ContainerCreateParams::MemoryLimit::OrSymbol,
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(T.attached_class)
       end
@@ -48,6 +62,8 @@ module OpenAI
         expires_after: nil,
         # IDs of files to copy to the container.
         file_ids: nil,
+        # Optional memory limit for the container. Defaults to "1g".
+        memory_limit: nil,
         request_options: {}
       )
       end
@@ -58,6 +74,7 @@ module OpenAI
             name: String,
             expires_after: OpenAI::ContainerCreateParams::ExpiresAfter,
             file_ids: T::Array[String],
+            memory_limit: OpenAI::ContainerCreateParams::MemoryLimit::OrSymbol,
             request_options: OpenAI::RequestOptions
           }
         )
@@ -138,6 +155,40 @@ module OpenAI
           end
           def self.values
           end
+        end
+      end
+
+      # Optional memory limit for the container. Defaults to "1g".
+      module MemoryLimit
+        extend OpenAI::Internal::Type::Enum
+
+        TaggedSymbol =
+          T.type_alias do
+            T.all(Symbol, OpenAI::ContainerCreateParams::MemoryLimit)
+          end
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+        MEMORY_LIMIT_1G =
+          T.let(:"1g", OpenAI::ContainerCreateParams::MemoryLimit::TaggedSymbol)
+        MEMORY_LIMIT_4G =
+          T.let(:"4g", OpenAI::ContainerCreateParams::MemoryLimit::TaggedSymbol)
+        MEMORY_LIMIT_16G =
+          T.let(
+            :"16g",
+            OpenAI::ContainerCreateParams::MemoryLimit::TaggedSymbol
+          )
+        MEMORY_LIMIT_64G =
+          T.let(
+            :"64g",
+            OpenAI::ContainerCreateParams::MemoryLimit::TaggedSymbol
+          )
+
+        sig do
+          override.returns(
+            T::Array[OpenAI::ContainerCreateParams::MemoryLimit::TaggedSymbol]
+          )
+        end
+        def self.values
         end
       end
     end

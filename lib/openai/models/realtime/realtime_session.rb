@@ -443,7 +443,11 @@ module OpenAI
 
             # @!attribute create_response
             #   Whether or not to automatically generate a response when a VAD stop event
-            #   occurs.
+            #   occurs. If `interrupt_response` is set to `false` this may fail to create a
+            #   response if the model is already responding.
+            #
+            #   If both `create_response` and `interrupt_response` are set to `false`, the model
+            #   will never respond automatically but VAD events will still be emitted.
             #
             #   @return [Boolean, nil]
             optional :create_response, OpenAI::Internal::Type::Boolean
@@ -466,9 +470,13 @@ module OpenAI
             optional :idle_timeout_ms, Integer, nil?: true
 
             # @!attribute interrupt_response
-            #   Whether or not to automatically interrupt any ongoing response with output to
-            #   the default conversation (i.e. `conversation` of `auto`) when a VAD start event
-            #   occurs.
+            #   Whether or not to automatically interrupt (cancel) any ongoing response with
+            #   output to the default conversation (i.e. `conversation` of `auto`) when a VAD
+            #   start event occurs. If `true` then the response will be cancelled, otherwise it
+            #   will continue until complete.
+            #
+            #   If both `create_response` and `interrupt_response` are set to `false`, the model
+            #   will never respond automatically but VAD events will still be emitted.
             #
             #   @return [Boolean, nil]
             optional :interrupt_response, OpenAI::Internal::Type::Boolean
@@ -508,7 +516,7 @@ module OpenAI
             #
             #   @param idle_timeout_ms [Integer, nil] Optional timeout after which a model response will be triggered automatically. T
             #
-            #   @param interrupt_response [Boolean] Whether or not to automatically interrupt any ongoing response with output to th
+            #   @param interrupt_response [Boolean] Whether or not to automatically interrupt (cancel) any ongoing response with out
             #
             #   @param prefix_padding_ms [Integer] Used only for `server_vad` mode. Amount of audio to include before the VAD detec
             #

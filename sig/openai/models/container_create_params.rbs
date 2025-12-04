@@ -4,7 +4,8 @@ module OpenAI
       {
         name: String,
         expires_after: OpenAI::ContainerCreateParams::ExpiresAfter,
-        file_ids: ::Array[String]
+        file_ids: ::Array[String],
+        memory_limit: OpenAI::Models::ContainerCreateParams::memory_limit
       }
       & OpenAI::Internal::Type::request_parameters
 
@@ -24,10 +25,17 @@ module OpenAI
 
       def file_ids=: (::Array[String]) -> ::Array[String]
 
+      attr_reader memory_limit: OpenAI::Models::ContainerCreateParams::memory_limit?
+
+      def memory_limit=: (
+        OpenAI::Models::ContainerCreateParams::memory_limit
+      ) -> OpenAI::Models::ContainerCreateParams::memory_limit
+
       def initialize: (
         name: String,
         ?expires_after: OpenAI::ContainerCreateParams::ExpiresAfter,
         ?file_ids: ::Array[String],
+        ?memory_limit: OpenAI::Models::ContainerCreateParams::memory_limit,
         ?request_options: OpenAI::request_opts
       ) -> void
 
@@ -35,6 +43,7 @@ module OpenAI
         name: String,
         expires_after: OpenAI::ContainerCreateParams::ExpiresAfter,
         file_ids: ::Array[String],
+        memory_limit: OpenAI::Models::ContainerCreateParams::memory_limit,
         request_options: OpenAI::RequestOptions
       }
 
@@ -68,6 +77,19 @@ module OpenAI
 
           def self?.values: -> ::Array[OpenAI::Models::ContainerCreateParams::ExpiresAfter::anchor]
         end
+      end
+
+      type memory_limit = :"1g" | :"4g" | :"16g" | :"64g"
+
+      module MemoryLimit
+        extend OpenAI::Internal::Type::Enum
+
+        MEMORY_LIMIT_1G: :"1g"
+        MEMORY_LIMIT_4G: :"4g"
+        MEMORY_LIMIT_16G: :"16g"
+        MEMORY_LIMIT_64G: :"64g"
+
+        def self?.values: -> ::Array[OpenAI::Models::ContainerCreateParams::memory_limit]
       end
     end
   end

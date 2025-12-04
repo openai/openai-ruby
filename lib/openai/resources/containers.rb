@@ -8,13 +8,15 @@ module OpenAI
 
       # Create Container
       #
-      # @overload create(name:, expires_after: nil, file_ids: nil, request_options: {})
+      # @overload create(name:, expires_after: nil, file_ids: nil, memory_limit: nil, request_options: {})
       #
       # @param name [String] Name of the container to create.
       #
       # @param expires_after [OpenAI::Models::ContainerCreateParams::ExpiresAfter] Container expiration time in seconds relative to the 'anchor' time.
       #
       # @param file_ids [Array<String>] IDs of files to copy to the container.
+      #
+      # @param memory_limit [Symbol, OpenAI::Models::ContainerCreateParams::MemoryLimit] Optional memory limit for the container. Defaults to "1g".
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #

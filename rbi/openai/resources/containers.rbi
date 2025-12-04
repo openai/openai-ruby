@@ -12,6 +12,7 @@ module OpenAI
           name: String,
           expires_after: OpenAI::ContainerCreateParams::ExpiresAfter::OrHash,
           file_ids: T::Array[String],
+          memory_limit: OpenAI::ContainerCreateParams::MemoryLimit::OrSymbol,
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(OpenAI::Models::ContainerCreateResponse)
       end
@@ -22,6 +23,8 @@ module OpenAI
         expires_after: nil,
         # IDs of files to copy to the container.
         file_ids: nil,
+        # Optional memory limit for the container. Defaults to "1g".
+        memory_limit: nil,
         request_options: {}
       )
       end

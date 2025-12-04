@@ -25,12 +25,20 @@ module OpenAI
       #   @return [Array<String>, nil]
       optional :file_ids, OpenAI::Internal::Type::ArrayOf[String]
 
-      # @!method initialize(name:, expires_after: nil, file_ids: nil, request_options: {})
+      # @!attribute memory_limit
+      #   Optional memory limit for the container. Defaults to "1g".
+      #
+      #   @return [Symbol, OpenAI::Models::ContainerCreateParams::MemoryLimit, nil]
+      optional :memory_limit, enum: -> { OpenAI::ContainerCreateParams::MemoryLimit }
+
+      # @!method initialize(name:, expires_after: nil, file_ids: nil, memory_limit: nil, request_options: {})
       #   @param name [String] Name of the container to create.
       #
       #   @param expires_after [OpenAI::Models::ContainerCreateParams::ExpiresAfter] Container expiration time in seconds relative to the 'anchor' time.
       #
       #   @param file_ids [Array<String>] IDs of files to copy to the container.
+      #
+      #   @param memory_limit [Symbol, OpenAI::Models::ContainerCreateParams::MemoryLimit] Optional memory limit for the container. Defaults to "1g".
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -69,6 +77,19 @@ module OpenAI
           # @!method self.values
           #   @return [Array<Symbol>]
         end
+      end
+
+      # Optional memory limit for the container. Defaults to "1g".
+      module MemoryLimit
+        extend OpenAI::Internal::Type::Enum
+
+        MEMORY_LIMIT_1G = :"1g"
+        MEMORY_LIMIT_4G = :"4g"
+        MEMORY_LIMIT_16G = :"16g"
+        MEMORY_LIMIT_64G = :"64g"
+
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
     end
   end

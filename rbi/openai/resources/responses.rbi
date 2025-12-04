@@ -677,6 +677,48 @@ module OpenAI
       )
       end
 
+      # Compact conversation
+      sig do
+        params(
+          input:
+            T.nilable(
+              OpenAI::Responses::ResponseCompactParams::Input::Variants
+            ),
+          instructions: T.nilable(String),
+          model:
+            T.nilable(
+              T.any(
+                OpenAI::Responses::ResponseCompactParams::Model::OrSymbol,
+                String
+              )
+            ),
+          previous_response_id: T.nilable(String),
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::Responses::CompactedResponse)
+      end
+      def compact(
+        # Text, image, or file inputs to the model, used to generate a response
+        input: nil,
+        # A system (or developer) message inserted into the model's context. When used
+        # along with `previous_response_id`, the instructions from a previous response
+        # will not be carried over to the next response. This makes it simple to swap out
+        # system (or developer) messages in new responses.
+        instructions: nil,
+        # Model ID used to generate the response, like `gpt-5` or `o3`. OpenAI offers a
+        # wide range of models with different capabilities, performance characteristics,
+        # and price points. Refer to the
+        # [model guide](https://platform.openai.com/docs/models) to browse and compare
+        # available models.
+        model: nil,
+        # The unique ID of the previous response to the model. Use this to create
+        # multi-turn conversations. Learn more about
+        # [conversation state](https://platform.openai.com/docs/guides/conversation-state).
+        # Cannot be used in conjunction with `conversation`.
+        previous_response_id: nil,
+        request_options: {}
+      )
+      end
+
       # @api private
       sig { params(client: OpenAI::Client).returns(T.attached_class) }
       def self.new(client:)

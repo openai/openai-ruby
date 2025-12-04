@@ -108,7 +108,7 @@ module OpenAI
 
             discriminator :type
 
-            # Indicates that the function shell call exceeded its configured time limit.
+            # Indicates that the shell call exceeded its configured time limit.
             variant :timeout, -> { OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output::Outcome::Timeout }
 
             # Indicates that the shell commands finished and returned an exit code.
@@ -122,7 +122,7 @@ module OpenAI
               required :type, const: :timeout
 
               # @!method initialize(type: :timeout)
-              #   Indicates that the function shell call exceeded its configured time limit.
+              #   Indicates that the shell call exceeded its configured time limit.
               #
               #   @param type [Symbol, :timeout] The outcome type. Always `timeout`.
             end

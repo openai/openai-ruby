@@ -142,4 +142,22 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
       }
     end
   end
+
+  def test_compact
+    response = @openai.responses.compact
+
+    assert_pattern do
+      response => OpenAI::Responses::CompactedResponse
+    end
+
+    assert_pattern do
+      response => {
+        id: String,
+        created_at: Integer,
+        object: Symbol,
+        output: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseOutputItem]),
+        usage: OpenAI::Responses::ResponseUsage
+      }
+    end
+  end
 end

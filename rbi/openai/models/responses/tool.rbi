@@ -632,7 +632,8 @@ module OpenAI
             end
 
           # The code interpreter container. Can be a container ID or an object that
-          # specifies uploaded file IDs to make available to your code.
+          # specifies uploaded file IDs to make available to your code, along with an
+          # optional `memory_limit` setting.
           sig do
             returns(
               T.any(
@@ -660,7 +661,8 @@ module OpenAI
           end
           def self.new(
             # The code interpreter container. Can be a container ID or an object that
-            # specifies uploaded file IDs to make available to your code.
+            # specifies uploaded file IDs to make available to your code, along with an
+            # optional `memory_limit` setting.
             container:,
             # The type of the code interpreter tool. Always `code_interpreter`.
             type: :code_interpreter
@@ -683,7 +685,8 @@ module OpenAI
           end
 
           # The code interpreter container. Can be a container ID or an object that
-          # specifies uploaded file IDs to make available to your code.
+          # specifies uploaded file IDs to make available to your code, along with an
+          # optional `memory_limit` setting.
           module Container
             extend OpenAI::Internal::Type::Union
 
