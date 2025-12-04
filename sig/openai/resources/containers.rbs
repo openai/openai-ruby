@@ -7,6 +7,7 @@ module OpenAI
         name: String,
         ?expires_after: OpenAI::ContainerCreateParams::ExpiresAfter,
         ?file_ids: ::Array[String],
+        ?memory_limit: OpenAI::Models::ContainerCreateParams::memory_limit,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Models::ContainerCreateResponse
 

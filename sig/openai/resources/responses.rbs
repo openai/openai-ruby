@@ -121,6 +121,14 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Responses::Response
 
+      def compact: (
+        ?input: OpenAI::Models::Responses::ResponseCompactParams::input?,
+        ?instructions: String?,
+        ?model: OpenAI::Models::Responses::ResponseCompactParams::model?,
+        ?previous_response_id: String?,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Responses::CompactedResponse
+
       def initialize: (client: OpenAI::Client) -> void
     end
   end

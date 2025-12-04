@@ -88,6 +88,11 @@ module OpenAI
             :"gpt-5-pro-2025-10-06",
             OpenAI::ResponsesModel::ResponsesOnlyModel::TaggedSymbol
           )
+        GPT_5_1_CODEX_MAX =
+          T.let(
+            :"gpt-5.1-codex-max",
+            OpenAI::ResponsesModel::ResponsesOnlyModel::TaggedSymbol
+          )
 
         sig do
           override.returns(

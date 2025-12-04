@@ -78,6 +78,13 @@ module OpenAI
         # will also be sent to the client.
         variant :"input_audio_buffer.committed", -> { OpenAI::Realtime::InputAudioBufferCommittedEvent }
 
+        # **SIP Only:** Returned when an DTMF event is received. A DTMF event is a message that
+        # represents a telephone keypad press (0–9, *, #, A–D). The `event` property
+        # is the keypad that the user press. The `received_at` is the UTC Unix Timestamp
+        # that the server received the event.
+        variant :"input_audio_buffer.dtmf_event_received",
+                -> { OpenAI::Realtime::InputAudioBufferDtmfEventReceivedEvent }
+
         # Sent by the server when in `server_vad` mode to indicate that speech has been
         # detected in the audio buffer. This can happen any time audio is added to the
         # buffer (unless speech is already detected). The client may want to use this
@@ -173,21 +180,21 @@ module OpenAI
         # there is an error.
         variant :"session.updated", -> { OpenAI::Realtime::SessionUpdatedEvent }
 
-        # **WebRTC Only:** Emitted when the server begins streaming audio to the client. This event is
+        # **WebRTC/SIP Only:** Emitted when the server begins streaming audio to the client. This event is
         # emitted after an audio content part has been added (`response.content_part.added`)
         # to the response.
         # [Learn more](https://platform.openai.com/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
         variant :"output_audio_buffer.started",
                 -> { OpenAI::Realtime::RealtimeServerEvent::OutputAudioBufferStarted }
 
-        # **WebRTC Only:** Emitted when the output audio buffer has been completely drained on the server,
+        # **WebRTC/SIP Only:** Emitted when the output audio buffer has been completely drained on the server,
         # and no more audio is forthcoming. This event is emitted after the full response
         # data has been sent to the client (`response.done`).
         # [Learn more](https://platform.openai.com/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
         variant :"output_audio_buffer.stopped",
                 -> { OpenAI::Realtime::RealtimeServerEvent::OutputAudioBufferStopped }
 
-        # **WebRTC Only:** Emitted when the output audio buffer is cleared. This happens either in VAD
+        # **WebRTC/SIP Only:** Emitted when the output audio buffer is cleared. This happens either in VAD
         # mode when the user has interrupted (`input_audio_buffer.speech_started`),
         # or when the client has emitted the `output_audio_buffer.clear` event to manually
         # cut off the current audio response.
@@ -304,8 +311,8 @@ module OpenAI
           required :type, const: :"output_audio_buffer.started"
 
           # @!method initialize(event_id:, response_id:, type: :"output_audio_buffer.started")
-          #   **WebRTC Only:** Emitted when the server begins streaming audio to the client.
-          #   This event is emitted after an audio content part has been added
+          #   **WebRTC/SIP Only:** Emitted when the server begins streaming audio to the
+          #   client. This event is emitted after an audio content part has been added
           #   (`response.content_part.added`) to the response.
           #   [Learn more](https://platform.openai.com/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
           #
@@ -336,7 +343,7 @@ module OpenAI
           required :type, const: :"output_audio_buffer.stopped"
 
           # @!method initialize(event_id:, response_id:, type: :"output_audio_buffer.stopped")
-          #   **WebRTC Only:** Emitted when the output audio buffer has been completely
+          #   **WebRTC/SIP Only:** Emitted when the output audio buffer has been completely
           #   drained on the server, and no more audio is forthcoming. This event is emitted
           #   after the full response data has been sent to the client (`response.done`).
           #   [Learn more](https://platform.openai.com/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
@@ -368,8 +375,8 @@ module OpenAI
           required :type, const: :"output_audio_buffer.cleared"
 
           # @!method initialize(event_id:, response_id:, type: :"output_audio_buffer.cleared")
-          #   **WebRTC Only:** Emitted when the output audio buffer is cleared. This happens
-          #   either in VAD mode when the user has interrupted
+          #   **WebRTC/SIP Only:** Emitted when the output audio buffer is cleared. This
+          #   happens either in VAD mode when the user has interrupted
           #   (`input_audio_buffer.speech_started`), or when the client has emitted the
           #   `output_audio_buffer.clear` event to manually cut off the current audio
           #   response.
@@ -383,7 +390,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Realtime::ConversationCreatedEvent, OpenAI::Models::Realtime::ConversationItemCreatedEvent, OpenAI::Models::Realtime::ConversationItemDeletedEvent, OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent, OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionDeltaEvent, OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionFailedEvent, OpenAI::Models::Realtime::RealtimeServerEvent::ConversationItemRetrieved, OpenAI::Models::Realtime::ConversationItemTruncatedEvent, OpenAI::Models::Realtime::RealtimeErrorEvent, OpenAI::Models::Realtime::InputAudioBufferClearedEvent, OpenAI::Models::Realtime::InputAudioBufferCommittedEvent, OpenAI::Models::Realtime::InputAudioBufferSpeechStartedEvent, OpenAI::Models::Realtime::InputAudioBufferSpeechStoppedEvent, OpenAI::Models::Realtime::RateLimitsUpdatedEvent, OpenAI::Models::Realtime::ResponseAudioDeltaEvent, OpenAI::Models::Realtime::ResponseAudioDoneEvent, OpenAI::Models::Realtime::ResponseAudioTranscriptDeltaEvent, OpenAI::Models::Realtime::ResponseAudioTranscriptDoneEvent, OpenAI::Models::Realtime::ResponseContentPartAddedEvent, OpenAI::Models::Realtime::ResponseContentPartDoneEvent, OpenAI::Models::Realtime::ResponseCreatedEvent, OpenAI::Models::Realtime::ResponseDoneEvent, OpenAI::Models::Realtime::ResponseFunctionCallArgumentsDeltaEvent, OpenAI::Models::Realtime::ResponseFunctionCallArgumentsDoneEvent, OpenAI::Models::Realtime::ResponseOutputItemAddedEvent, OpenAI::Models::Realtime::ResponseOutputItemDoneEvent, OpenAI::Models::Realtime::ResponseTextDeltaEvent, OpenAI::Models::Realtime::ResponseTextDoneEvent, OpenAI::Models::Realtime::SessionCreatedEvent, OpenAI::Models::Realtime::SessionUpdatedEvent, OpenAI::Models::Realtime::RealtimeServerEvent::OutputAudioBufferStarted, OpenAI::Models::Realtime::RealtimeServerEvent::OutputAudioBufferStopped, OpenAI::Models::Realtime::RealtimeServerEvent::OutputAudioBufferCleared, OpenAI::Models::Realtime::ConversationItemAdded, OpenAI::Models::Realtime::ConversationItemDone, OpenAI::Models::Realtime::InputAudioBufferTimeoutTriggered, OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionSegment, OpenAI::Models::Realtime::McpListToolsInProgress, OpenAI::Models::Realtime::McpListToolsCompleted, OpenAI::Models::Realtime::McpListToolsFailed, OpenAI::Models::Realtime::ResponseMcpCallArgumentsDelta, OpenAI::Models::Realtime::ResponseMcpCallArgumentsDone, OpenAI::Models::Realtime::ResponseMcpCallInProgress, OpenAI::Models::Realtime::ResponseMcpCallCompleted, OpenAI::Models::Realtime::ResponseMcpCallFailed)]
+        #   @return [Array(OpenAI::Models::Realtime::ConversationCreatedEvent, OpenAI::Models::Realtime::ConversationItemCreatedEvent, OpenAI::Models::Realtime::ConversationItemDeletedEvent, OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent, OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionDeltaEvent, OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionFailedEvent, OpenAI::Models::Realtime::RealtimeServerEvent::ConversationItemRetrieved, OpenAI::Models::Realtime::ConversationItemTruncatedEvent, OpenAI::Models::Realtime::RealtimeErrorEvent, OpenAI::Models::Realtime::InputAudioBufferClearedEvent, OpenAI::Models::Realtime::InputAudioBufferCommittedEvent, OpenAI::Models::Realtime::InputAudioBufferDtmfEventReceivedEvent, OpenAI::Models::Realtime::InputAudioBufferSpeechStartedEvent, OpenAI::Models::Realtime::InputAudioBufferSpeechStoppedEvent, OpenAI::Models::Realtime::RateLimitsUpdatedEvent, OpenAI::Models::Realtime::ResponseAudioDeltaEvent, OpenAI::Models::Realtime::ResponseAudioDoneEvent, OpenAI::Models::Realtime::ResponseAudioTranscriptDeltaEvent, OpenAI::Models::Realtime::ResponseAudioTranscriptDoneEvent, OpenAI::Models::Realtime::ResponseContentPartAddedEvent, OpenAI::Models::Realtime::ResponseContentPartDoneEvent, OpenAI::Models::Realtime::ResponseCreatedEvent, OpenAI::Models::Realtime::ResponseDoneEvent, OpenAI::Models::Realtime::ResponseFunctionCallArgumentsDeltaEvent, OpenAI::Models::Realtime::ResponseFunctionCallArgumentsDoneEvent, OpenAI::Models::Realtime::ResponseOutputItemAddedEvent, OpenAI::Models::Realtime::ResponseOutputItemDoneEvent, OpenAI::Models::Realtime::ResponseTextDeltaEvent, OpenAI::Models::Realtime::ResponseTextDoneEvent, OpenAI::Models::Realtime::SessionCreatedEvent, OpenAI::Models::Realtime::SessionUpdatedEvent, OpenAI::Models::Realtime::RealtimeServerEvent::OutputAudioBufferStarted, OpenAI::Models::Realtime::RealtimeServerEvent::OutputAudioBufferStopped, OpenAI::Models::Realtime::RealtimeServerEvent::OutputAudioBufferCleared, OpenAI::Models::Realtime::ConversationItemAdded, OpenAI::Models::Realtime::ConversationItemDone, OpenAI::Models::Realtime::InputAudioBufferTimeoutTriggered, OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionSegment, OpenAI::Models::Realtime::McpListToolsInProgress, OpenAI::Models::Realtime::McpListToolsCompleted, OpenAI::Models::Realtime::McpListToolsFailed, OpenAI::Models::Realtime::ResponseMcpCallArgumentsDelta, OpenAI::Models::Realtime::ResponseMcpCallArgumentsDone, OpenAI::Models::Realtime::ResponseMcpCallInProgress, OpenAI::Models::Realtime::ResponseMcpCallCompleted, OpenAI::Models::Realtime::ResponseMcpCallFailed)]
       end
     end
   end

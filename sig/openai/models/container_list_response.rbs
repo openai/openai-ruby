@@ -7,7 +7,9 @@ module OpenAI
         name: String,
         object: String,
         status: String,
-        expires_after: OpenAI::Models::ContainerListResponse::ExpiresAfter
+        expires_after: OpenAI::Models::ContainerListResponse::ExpiresAfter,
+        last_active_at: Integer,
+        memory_limit: OpenAI::Models::ContainerListResponse::memory_limit
       }
 
     class ContainerListResponse < OpenAI::Internal::Type::BaseModel
@@ -27,13 +29,25 @@ module OpenAI
         OpenAI::Models::ContainerListResponse::ExpiresAfter
       ) -> OpenAI::Models::ContainerListResponse::ExpiresAfter
 
+      attr_reader last_active_at: Integer?
+
+      def last_active_at=: (Integer) -> Integer
+
+      attr_reader memory_limit: OpenAI::Models::ContainerListResponse::memory_limit?
+
+      def memory_limit=: (
+        OpenAI::Models::ContainerListResponse::memory_limit
+      ) -> OpenAI::Models::ContainerListResponse::memory_limit
+
       def initialize: (
         id: String,
         created_at: Integer,
         name: String,
         object: String,
         status: String,
-        ?expires_after: OpenAI::Models::ContainerListResponse::ExpiresAfter
+        ?expires_after: OpenAI::Models::ContainerListResponse::ExpiresAfter,
+        ?last_active_at: Integer,
+        ?memory_limit: OpenAI::Models::ContainerListResponse::memory_limit
       ) -> void
 
       def to_hash: -> {
@@ -42,7 +56,9 @@ module OpenAI
         name: String,
         object: String,
         status: String,
-        expires_after: OpenAI::Models::ContainerListResponse::ExpiresAfter
+        expires_after: OpenAI::Models::ContainerListResponse::ExpiresAfter,
+        last_active_at: Integer,
+        memory_limit: OpenAI::Models::ContainerListResponse::memory_limit
       }
 
       type expires_after =
@@ -81,6 +97,19 @@ module OpenAI
 
           def self?.values: -> ::Array[OpenAI::Models::ContainerListResponse::ExpiresAfter::anchor]
         end
+      end
+
+      type memory_limit = :"1g" | :"4g" | :"16g" | :"64g"
+
+      module MemoryLimit
+        extend OpenAI::Internal::Type::Enum
+
+        MEMORY_LIMIT_1G: :"1g"
+        MEMORY_LIMIT_4G: :"4g"
+        MEMORY_LIMIT_16G: :"16g"
+        MEMORY_LIMIT_64G: :"64g"
+
+        def self?.values: -> ::Array[OpenAI::Models::ContainerListResponse::memory_limit]
       end
     end
   end

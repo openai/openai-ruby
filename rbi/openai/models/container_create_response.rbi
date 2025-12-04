@@ -49,6 +49,31 @@ module OpenAI
       end
       attr_writer :expires_after
 
+      # Unix timestamp (in seconds) when the container was last active.
+      sig { returns(T.nilable(Integer)) }
+      attr_reader :last_active_at
+
+      sig { params(last_active_at: Integer).void }
+      attr_writer :last_active_at
+
+      # The memory limit configured for the container.
+      sig do
+        returns(
+          T.nilable(
+            OpenAI::Models::ContainerCreateResponse::MemoryLimit::TaggedSymbol
+          )
+        )
+      end
+      attr_reader :memory_limit
+
+      sig do
+        params(
+          memory_limit:
+            OpenAI::Models::ContainerCreateResponse::MemoryLimit::OrSymbol
+        ).void
+      end
+      attr_writer :memory_limit
+
       sig do
         params(
           id: String,
@@ -57,7 +82,10 @@ module OpenAI
           object: String,
           status: String,
           expires_after:
-            OpenAI::Models::ContainerCreateResponse::ExpiresAfter::OrHash
+            OpenAI::Models::ContainerCreateResponse::ExpiresAfter::OrHash,
+          last_active_at: Integer,
+          memory_limit:
+            OpenAI::Models::ContainerCreateResponse::MemoryLimit::OrSymbol
         ).returns(T.attached_class)
       end
       def self.new(
@@ -74,7 +102,11 @@ module OpenAI
         # The container will expire after this time period. The anchor is the reference
         # point for the expiration. The minutes is the number of minutes after the anchor
         # before the container expires.
-        expires_after: nil
+        expires_after: nil,
+        # Unix timestamp (in seconds) when the container was last active.
+        last_active_at: nil,
+        # The memory limit configured for the container.
+        memory_limit: nil
       )
       end
 
@@ -86,7 +118,11 @@ module OpenAI
             name: String,
             object: String,
             status: String,
-            expires_after: OpenAI::Models::ContainerCreateResponse::ExpiresAfter
+            expires_after:
+              OpenAI::Models::ContainerCreateResponse::ExpiresAfter,
+            last_active_at: Integer,
+            memory_limit:
+              OpenAI::Models::ContainerCreateResponse::MemoryLimit::TaggedSymbol
           }
         )
       end
@@ -185,6 +221,48 @@ module OpenAI
           end
           def self.values
           end
+        end
+      end
+
+      # The memory limit configured for the container.
+      module MemoryLimit
+        extend OpenAI::Internal::Type::Enum
+
+        TaggedSymbol =
+          T.type_alias do
+            T.all(Symbol, OpenAI::Models::ContainerCreateResponse::MemoryLimit)
+          end
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+        MEMORY_LIMIT_1G =
+          T.let(
+            :"1g",
+            OpenAI::Models::ContainerCreateResponse::MemoryLimit::TaggedSymbol
+          )
+        MEMORY_LIMIT_4G =
+          T.let(
+            :"4g",
+            OpenAI::Models::ContainerCreateResponse::MemoryLimit::TaggedSymbol
+          )
+        MEMORY_LIMIT_16G =
+          T.let(
+            :"16g",
+            OpenAI::Models::ContainerCreateResponse::MemoryLimit::TaggedSymbol
+          )
+        MEMORY_LIMIT_64G =
+          T.let(
+            :"64g",
+            OpenAI::Models::ContainerCreateResponse::MemoryLimit::TaggedSymbol
+          )
+
+        sig do
+          override.returns(
+            T::Array[
+              OpenAI::Models::ContainerCreateResponse::MemoryLimit::TaggedSymbol
+            ]
+          )
+        end
+        def self.values
         end
       end
     end

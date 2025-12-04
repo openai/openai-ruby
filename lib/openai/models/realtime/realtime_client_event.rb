@@ -62,7 +62,7 @@ module OpenAI
         # respond with an `input_audio_buffer.cleared` event.
         variant :"input_audio_buffer.clear", -> { OpenAI::Realtime::InputAudioBufferClearEvent }
 
-        # **WebRTC Only:** Emit to cut off the current audio response. This will trigger the server to
+        # **WebRTC/SIP Only:** Emit to cut off the current audio response. This will trigger the server to
         # stop generating audio and emit a `output_audio_buffer.cleared` event. This
         # event should be preceded by a `response.cancel` client event to stop the
         # generation of the current response.

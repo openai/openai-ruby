@@ -8,6 +8,7 @@ module OpenAI
         | OpenAI::Responses::ResponseFunctionWebSearch
         | OpenAI::Responses::ResponseComputerToolCall
         | OpenAI::Responses::ResponseReasoningItem
+        | OpenAI::Responses::ResponseCompactionItem
         | OpenAI::Responses::ResponseOutputItem::ImageGenerationCall
         | OpenAI::Responses::ResponseCodeInterpreterToolCall
         | OpenAI::Responses::ResponseOutputItem::LocalShellCall
