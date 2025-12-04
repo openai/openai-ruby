@@ -188,7 +188,7 @@ module OpenAI
               sig { returns(Symbol) }
               attr_accessor :type
 
-              # Indicates that the function shell call exceeded its configured time limit.
+              # Indicates that the shell call exceeded its configured time limit.
               sig { params(type: Symbol).returns(T.attached_class) }
               def self.new(
                 # The outcome type. Always `timeout`.

@@ -933,7 +933,11 @@ module OpenAI
             attr_accessor :type
 
             # Whether or not to automatically generate a response when a VAD stop event
-            # occurs.
+            # occurs. If `interrupt_response` is set to `false` this may fail to create a
+            # response if the model is already responding.
+            #
+            # If both `create_response` and `interrupt_response` are set to `false`, the model
+            # will never respond automatically but VAD events will still be emitted.
             sig { returns(T.nilable(T::Boolean)) }
             attr_reader :create_response
 
@@ -955,9 +959,13 @@ module OpenAI
             sig { returns(T.nilable(Integer)) }
             attr_accessor :idle_timeout_ms
 
-            # Whether or not to automatically interrupt any ongoing response with output to
-            # the default conversation (i.e. `conversation` of `auto`) when a VAD start event
-            # occurs.
+            # Whether or not to automatically interrupt (cancel) any ongoing response with
+            # output to the default conversation (i.e. `conversation` of `auto`) when a VAD
+            # start event occurs. If `true` then the response will be cancelled, otherwise it
+            # will continue until complete.
+            #
+            # If both `create_response` and `interrupt_response` are set to `false`, the model
+            # will never respond automatically but VAD events will still be emitted.
             sig { returns(T.nilable(T::Boolean)) }
             attr_reader :interrupt_response
 
@@ -1005,7 +1013,11 @@ module OpenAI
             end
             def self.new(
               # Whether or not to automatically generate a response when a VAD stop event
-              # occurs.
+              # occurs. If `interrupt_response` is set to `false` this may fail to create a
+              # response if the model is already responding.
+              #
+              # If both `create_response` and `interrupt_response` are set to `false`, the model
+              # will never respond automatically but VAD events will still be emitted.
               create_response: nil,
               # Optional timeout after which a model response will be triggered automatically.
               # This is useful for situations in which a long pause from the user is unexpected,
@@ -1020,9 +1032,13 @@ module OpenAI
               # Response) will be emitted when the timeout is reached. Idle timeout is currently
               # only supported for `server_vad` mode.
               idle_timeout_ms: nil,
-              # Whether or not to automatically interrupt any ongoing response with output to
-              # the default conversation (i.e. `conversation` of `auto`) when a VAD start event
-              # occurs.
+              # Whether or not to automatically interrupt (cancel) any ongoing response with
+              # output to the default conversation (i.e. `conversation` of `auto`) when a VAD
+              # start event occurs. If `true` then the response will be cancelled, otherwise it
+              # will continue until complete.
+              #
+              # If both `create_response` and `interrupt_response` are set to `false`, the model
+              # will never respond automatically but VAD events will still be emitted.
               interrupt_response: nil,
               # Used only for `server_vad` mode. Amount of audio to include before the VAD
               # detected speech (in milliseconds). Defaults to 300ms.

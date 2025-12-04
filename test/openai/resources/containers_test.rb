@@ -17,7 +17,9 @@ class OpenAI::Test::Resources::ContainersTest < OpenAI::Test::ResourceTest
         name: String,
         object: String,
         status: String,
-        expires_after: OpenAI::Models::ContainerCreateResponse::ExpiresAfter | nil
+        expires_after: OpenAI::Models::ContainerCreateResponse::ExpiresAfter | nil,
+        last_active_at: Integer | nil,
+        memory_limit: OpenAI::Models::ContainerCreateResponse::MemoryLimit | nil
       }
     end
   end
@@ -36,7 +38,9 @@ class OpenAI::Test::Resources::ContainersTest < OpenAI::Test::ResourceTest
         name: String,
         object: String,
         status: String,
-        expires_after: OpenAI::Models::ContainerRetrieveResponse::ExpiresAfter | nil
+        expires_after: OpenAI::Models::ContainerRetrieveResponse::ExpiresAfter | nil,
+        last_active_at: Integer | nil,
+        memory_limit: OpenAI::Models::ContainerRetrieveResponse::MemoryLimit | nil
       }
     end
   end
@@ -62,7 +66,9 @@ class OpenAI::Test::Resources::ContainersTest < OpenAI::Test::ResourceTest
         name: String,
         object: String,
         status: String,
-        expires_after: OpenAI::Models::ContainerListResponse::ExpiresAfter | nil
+        expires_after: OpenAI::Models::ContainerListResponse::ExpiresAfter | nil,
+        last_active_at: Integer | nil,
+        memory_limit: OpenAI::Models::ContainerListResponse::MemoryLimit | nil
       }
     end
   end

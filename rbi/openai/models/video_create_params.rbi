@@ -22,21 +22,23 @@ module OpenAI
       sig { params(input_reference: OpenAI::Internal::FileInput).void }
       attr_writer :input_reference
 
-      # The video generation model to use. Defaults to `sora-2`.
+      # The video generation model to use (allowed values: sora-2, sora-2-pro). Defaults
+      # to `sora-2`.
       sig { returns(T.nilable(OpenAI::VideoModel::OrSymbol)) }
       attr_reader :model
 
       sig { params(model: OpenAI::VideoModel::OrSymbol).void }
       attr_writer :model
 
-      # Clip duration in seconds. Defaults to 4 seconds.
+      # Clip duration in seconds (allowed values: 4, 8, 12). Defaults to 4 seconds.
       sig { returns(T.nilable(OpenAI::VideoSeconds::OrSymbol)) }
       attr_reader :seconds
 
       sig { params(seconds: OpenAI::VideoSeconds::OrSymbol).void }
       attr_writer :seconds
 
-      # Output resolution formatted as width x height. Defaults to 720x1280.
+      # Output resolution formatted as width x height (allowed values: 720x1280,
+      # 1280x720, 1024x1792, 1792x1024). Defaults to 720x1280.
       sig { returns(T.nilable(OpenAI::VideoSize::OrSymbol)) }
       attr_reader :size
 
@@ -58,11 +60,13 @@ module OpenAI
         prompt:,
         # Optional image reference that guides generation.
         input_reference: nil,
-        # The video generation model to use. Defaults to `sora-2`.
+        # The video generation model to use (allowed values: sora-2, sora-2-pro). Defaults
+        # to `sora-2`.
         model: nil,
-        # Clip duration in seconds. Defaults to 4 seconds.
+        # Clip duration in seconds (allowed values: 4, 8, 12). Defaults to 4 seconds.
         seconds: nil,
-        # Output resolution formatted as width x height. Defaults to 720x1280.
+        # Output resolution formatted as width x height (allowed values: 720x1280,
+        # 1280x720, 1024x1792, 1792x1024). Defaults to 720x1280.
         size: nil,
         request_options: {}
       )

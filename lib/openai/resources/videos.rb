@@ -3,6 +3,9 @@
 module OpenAI
   module Resources
     class Videos
+      # Some parameter documentations has been truncated, see
+      # {OpenAI::Models::VideoCreateParams} for more details.
+      #
       # Create a video
       #
       # @overload create(prompt:, input_reference: nil, model: nil, seconds: nil, size: nil, request_options: {})
@@ -11,11 +14,11 @@ module OpenAI
       #
       # @param input_reference [Pathname, StringIO, IO, String, OpenAI::FilePart] Optional image reference that guides generation.
       #
-      # @param model [Symbol, OpenAI::Models::VideoModel] The video generation model to use. Defaults to `sora-2`.
+      # @param model [Symbol, OpenAI::Models::VideoModel] The video generation model to use (allowed values: sora-2, sora-2-pro). Defaults
       #
-      # @param seconds [Symbol, OpenAI::Models::VideoSeconds] Clip duration in seconds. Defaults to 4 seconds.
+      # @param seconds [Symbol, OpenAI::Models::VideoSeconds] Clip duration in seconds (allowed values: 4, 8, 12). Defaults to 4 seconds.
       #
-      # @param size [Symbol, OpenAI::Models::VideoSize] Output resolution formatted as width x height. Defaults to 720x1280.
+      # @param size [Symbol, OpenAI::Models::VideoSize] Output resolution formatted as width x height (allowed values: 720x1280, 1280x72
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
