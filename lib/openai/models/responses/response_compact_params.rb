@@ -8,6 +8,16 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # @!attribute model
+        #   Model ID used to generate the response, like `gpt-5` or `o3`. OpenAI offers a
+        #   wide range of models with different capabilities, performance characteristics,
+        #   and price points. Refer to the
+        #   [model guide](https://platform.openai.com/docs/models) to browse and compare
+        #   available models.
+        #
+        #   @return [Symbol, String, OpenAI::Models::Responses::ResponseCompactParams::Model, nil]
+        required :model, union: -> { OpenAI::Responses::ResponseCompactParams::Model }, nil?: true
+
         # @!attribute input
         #   Text, image, or file inputs to the model, used to generate a response
         #
@@ -23,16 +33,6 @@ module OpenAI
         #   @return [String, nil]
         optional :instructions, String, nil?: true
 
-        # @!attribute model
-        #   Model ID used to generate the response, like `gpt-5` or `o3`. OpenAI offers a
-        #   wide range of models with different capabilities, performance characteristics,
-        #   and price points. Refer to the
-        #   [model guide](https://platform.openai.com/docs/models) to browse and compare
-        #   available models.
-        #
-        #   @return [Symbol, String, OpenAI::Models::Responses::ResponseCompactParams::Model, nil]
-        optional :model, union: -> { OpenAI::Responses::ResponseCompactParams::Model }, nil?: true
-
         # @!attribute previous_response_id
         #   The unique ID of the previous response to the model. Use this to create
         #   multi-turn conversations. Learn more about
@@ -42,36 +42,19 @@ module OpenAI
         #   @return [String, nil]
         optional :previous_response_id, String, nil?: true
 
-        # @!method initialize(input: nil, instructions: nil, model: nil, previous_response_id: nil, request_options: {})
+        # @!method initialize(model:, input: nil, instructions: nil, previous_response_id: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseCompactParams} for more details.
+        #
+        #   @param model [Symbol, String, OpenAI::Models::Responses::ResponseCompactParams::Model, nil] Model ID used to generate the response, like `gpt-5` or `o3`. OpenAI offers a wi
         #
         #   @param input [String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::ItemReference>, nil] Text, image, or file inputs to the model, used to generate a response
         #
         #   @param instructions [String, nil] A system (or developer) message inserted into the model's context.
         #
-        #   @param model [Symbol, String, OpenAI::Models::Responses::ResponseCompactParams::Model, nil] Model ID used to generate the response, like `gpt-5` or `o3`. OpenAI offers a wi
-        #
         #   @param previous_response_id [String, nil] The unique ID of the previous response to the model. Use this to create multi-tu
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-
-        # Text, image, or file inputs to the model, used to generate a response
-        module Input
-          extend OpenAI::Internal::Type::Union
-
-          # A text input to the model, equivalent to a text input with the `user` role.
-          variant String
-
-          variant -> { OpenAI::Models::Responses::ResponseCompactParams::Input::ResponseInputItemArray }
-
-          # @!method self.variants
-          #   @return [Array(String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::ItemReference>)]
-
-          # @type [OpenAI::Internal::Type::Converter]
-          ResponseInputItemArray =
-            OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Responses::ResponseInputItem }]
-        end
 
         # Model ID used to generate the response, like `gpt-5` or `o3`. OpenAI offers a
         # wide range of models with different capabilities, performance characteristics,
@@ -337,6 +320,23 @@ module OpenAI
           GPT_5_1_CODEX_MAX = :"gpt-5.1-codex-max"
 
           # @!endgroup
+        end
+
+        # Text, image, or file inputs to the model, used to generate a response
+        module Input
+          extend OpenAI::Internal::Type::Union
+
+          # A text input to the model, equivalent to a text input with the `user` role.
+          variant String
+
+          variant -> { OpenAI::Models::Responses::ResponseCompactParams::Input::ResponseInputItemArray }
+
+          # @!method self.variants
+          #   @return [Array(String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::ItemReference>)]
+
+          # @type [OpenAI::Internal::Type::Converter]
+          ResponseInputItemArray =
+            OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Responses::ResponseInputItem }]
         end
       end
     end
