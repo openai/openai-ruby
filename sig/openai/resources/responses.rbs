@@ -94,9 +94,9 @@ module OpenAI
       ) -> OpenAI::Responses::Response
 
       def compact: (
+        model: OpenAI::Models::Responses::ResponseCompactParams::model?,
         ?input: OpenAI::Models::Responses::ResponseCompactParams::input?,
         ?instructions: String?,
-        ?model: OpenAI::Models::Responses::ResponseCompactParams::model?,
         ?previous_response_id: String?,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Responses::CompactedResponse

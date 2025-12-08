@@ -3,9 +3,9 @@ module OpenAI
     module Responses
       type response_compact_params =
         {
+          model: OpenAI::Models::Responses::ResponseCompactParams::model?,
           input: OpenAI::Models::Responses::ResponseCompactParams::input?,
           instructions: String?,
-          model: OpenAI::Models::Responses::ResponseCompactParams::model?,
           previous_response_id: String?
         }
         & OpenAI::Internal::Type::request_parameters
@@ -14,40 +14,29 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        attr_accessor model: OpenAI::Models::Responses::ResponseCompactParams::model?
+
         attr_accessor input: OpenAI::Models::Responses::ResponseCompactParams::input?
 
         attr_accessor instructions: String?
 
-        attr_accessor model: OpenAI::Models::Responses::ResponseCompactParams::model?
-
         attr_accessor previous_response_id: String?
 
         def initialize: (
+          model: OpenAI::Models::Responses::ResponseCompactParams::model?,
           ?input: OpenAI::Models::Responses::ResponseCompactParams::input?,
           ?instructions: String?,
-          ?model: OpenAI::Models::Responses::ResponseCompactParams::model?,
           ?previous_response_id: String?,
           ?request_options: OpenAI::request_opts
         ) -> void
 
         def to_hash: -> {
+          model: OpenAI::Models::Responses::ResponseCompactParams::model?,
           input: OpenAI::Models::Responses::ResponseCompactParams::input?,
           instructions: String?,
-          model: OpenAI::Models::Responses::ResponseCompactParams::model?,
           previous_response_id: String?,
           request_options: OpenAI::RequestOptions
         }
-
-        type input =
-          String | ::Array[OpenAI::Models::Responses::response_input_item]
-
-        module Input
-          extend OpenAI::Internal::Type::Union
-
-          def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseCompactParams::input]
-
-          ResponseInputItemArray: OpenAI::Internal::Type::Converter
-        end
 
         type model =
           :"gpt-5.1"
@@ -219,6 +208,17 @@ module OpenAI
           GPT_5_PRO: :"gpt-5-pro"
           GPT_5_PRO_2025_10_06: :"gpt-5-pro-2025-10-06"
           GPT_5_1_CODEX_MAX: :"gpt-5.1-codex-max"
+        end
+
+        type input =
+          String | ::Array[OpenAI::Models::Responses::response_input_item]
+
+        module Input
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseCompactParams::input]
+
+          ResponseInputItemArray: OpenAI::Internal::Type::Converter
         end
       end
     end
