@@ -143,8 +143,8 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
     end
   end
 
-  def test_compact
-    response = @openai.responses.compact
+  def test_compact_required_params
+    response = @openai.responses.compact(model: :"gpt-5.1")
 
     assert_pattern do
       response => OpenAI::Responses::CompactedResponse
