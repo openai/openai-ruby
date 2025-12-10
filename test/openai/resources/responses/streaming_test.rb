@@ -277,6 +277,41 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     assert_equal(['{"location":"', 'San Francisco","temperature":', "72}"], text_chunks)
   end
 
+  def test_create_stream_with_previous_response_id
+    # Stub the GET request to retrieve the response.
+    stub_request(:post, "http://localhost/responses")
+      .with(
+        body: hash_including(
+          instructions: "You are a helpful assistant",
+          messages: [{content: "Hello", role: "user"}],
+          model: "gpt-4",
+          stream: true,
+          previous_response_id: "msg_abc"
+        )
+      )
+      .to_return(
+        status: 200,
+        headers: {"Content-Type" => "text/event-stream"},
+        body: resume_stream_sse_response
+      )
+
+    stream = @client.responses.stream(**basic_params, previous_response_id: "msg_abc")
+    events = stream.to_a
+
+    text_done = events.find { |e| e.type == :"response.output_text.done" }
+    assert_equal("Hello there! How can I help you today?", text_done.text)
+
+    completed = events.find { |e| e.type == :"response.completed" }
+    assert_pattern do
+      completed => OpenAI::Streaming::ResponseCompletedEvent[
+        response: {
+          id: "msg_123",
+          status: :completed
+        }
+      ]
+    end
+  end
+
   def test_resume_stream_with_response_id
     # Stub the GET request to retrieve the response.
     stub_request(:get, "http://localhost/responses/msg_123?stream=true")
@@ -286,7 +321,7 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
         body: resume_stream_sse_response
       )
 
-    stream = @client.responses.stream(previous_response_id: "msg_123")
+    stream = @client.responses.stream(response_id: "msg_123")
     events = stream.to_a
 
     text_done = events.find { |e| e.type == :"response.output_text.done" }
@@ -318,7 +353,7 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
         body: resume_stream_with_starting_after_sse_response
       )
 
-    stream = @client.responses.stream(previous_response_id: "msg_456", starting_after: 7)
+    stream = @client.responses.stream(response_id: "msg_456", starting_after: 7)
     events = stream.to_a
 
     # Should only get events after sequence 7.
@@ -356,7 +391,7 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
       )
 
     stream = @client.responses.stream(
-      previous_response_id: "msg_background_structured",
+      response_id: "msg_background_structured",
       text: WeatherModel
     )
     events = stream.to_a
