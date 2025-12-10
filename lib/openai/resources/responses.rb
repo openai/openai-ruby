@@ -186,10 +186,10 @@ module OpenAI
       # @see OpenAI::Models::Responses::ResponseCreateParams
       def stream(params)
         parsed, options = OpenAI::Responses::ResponseCreateParams.dump_request(params)
-        starting_after, previous_response_id = parsed.values_at(:starting_after, :previous_response_id)
+        starting_after, response_id = parsed.values_at(:starting_after, :response_id)
 
-        if starting_after && !previous_response_id
-          raise ArgumentError, "starting_after can only be used with previous_response_id"
+        if starting_after && !response_id
+          raise ArgumentError, "starting_after can only be used with response_id"
         end
         model, tool_models = get_structured_output_models(parsed)
 
@@ -200,11 +200,11 @@ module OpenAI
           raw
         end
 
-        if previous_response_id
+        if response_id
           retrieve_params = params.slice(:include, :request_options)
 
           raw_stream = retrieve_streaming_internal(
-            previous_response_id,
+            response_id,
             params: retrieve_params,
             unwrap: unwrap
           )
