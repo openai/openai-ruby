@@ -11,7 +11,8 @@ module OpenAI
             T.any(OpenAI::Graders::ScoreModelGrader, OpenAI::Internal::AnyHash)
           end
 
-        # The input text. This may include template strings.
+        # The input messages evaluated by the grader. Supports text, output text, input
+        # image, and input audio content blocks, and may include template strings.
         sig { returns(T::Array[OpenAI::Graders::ScoreModelGrader::Input]) }
         attr_accessor :input
 
@@ -61,7 +62,8 @@ module OpenAI
           ).returns(T.attached_class)
         end
         def self.new(
-          # The input text. This may include template strings.
+          # The input messages evaluated by the grader. Supports text, output text, input
+          # image, and input audio content blocks, and may include template strings.
           input:,
           # The model to use for the evaluation.
           model:,
@@ -406,7 +408,7 @@ module OpenAI
           # - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
           #   support `none`.
           # - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
-          # - `xhigh` is currently only supported for `gpt-5.1-codex-max`.
+          # - `xhigh` is supported for all models after `gpt-5.1-codex-max`.
           sig { returns(T.nilable(OpenAI::ReasoningEffort::OrSymbol)) }
           attr_accessor :reasoning_effort
 
@@ -447,7 +449,7 @@ module OpenAI
             # - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
             #   support `none`.
             # - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
-            # - `xhigh` is currently only supported for `gpt-5.1-codex-max`.
+            # - `xhigh` is supported for all models after `gpt-5.1-codex-max`.
             reasoning_effort: nil,
             # A seed value to initialize the randomness, during sampling.
             seed: nil,

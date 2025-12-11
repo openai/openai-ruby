@@ -64,6 +64,16 @@ module OpenAI
         module Model
           extend OpenAI::Internal::Type::Union
 
+          variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_5_2 }
+
+          variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_5_2_2025_12_11 }
+
+          variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_5_2_CHAT_LATEST }
+
+          variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_5_2_PRO }
+
+          variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_5_2_PRO_2025_12_11 }
+
           variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_5_1 }
 
           variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_5_1_2025_11_13 }
@@ -237,6 +247,11 @@ module OpenAI
 
           # @!group
 
+          GPT_5_2 = :"gpt-5.2"
+          GPT_5_2_2025_12_11 = :"gpt-5.2-2025-12-11"
+          GPT_5_2_CHAT_LATEST = :"gpt-5.2-chat-latest"
+          GPT_5_2_PRO = :"gpt-5.2-pro"
+          GPT_5_2_PRO_2025_12_11 = :"gpt-5.2-pro-2025-12-11"
           GPT_5_1 = :"gpt-5.1"
           GPT_5_1_2025_11_13 = :"gpt-5.1-2025-11-13"
           GPT_5_1_CODEX = :"gpt-5.1-codex"

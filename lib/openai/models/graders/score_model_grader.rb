@@ -5,7 +5,8 @@ module OpenAI
     module Graders
       class ScoreModelGrader < OpenAI::Internal::Type::BaseModel
         # @!attribute input
-        #   The input text. This may include template strings.
+        #   The input messages evaluated by the grader. Supports text, output text, input
+        #   image, and input audio content blocks, and may include template strings.
         #
         #   @return [Array<OpenAI::Models::Graders::ScoreModelGrader::Input>]
         required :input, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Graders::ScoreModelGrader::Input] }
@@ -41,9 +42,12 @@ module OpenAI
         optional :sampling_params, -> { OpenAI::Graders::ScoreModelGrader::SamplingParams }
 
         # @!method initialize(input:, model:, name:, range: nil, sampling_params: nil, type: :score_model)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Graders::ScoreModelGrader} for more details.
+        #
         #   A ScoreModelGrader object that uses a model to assign a score to the input.
         #
-        #   @param input [Array<OpenAI::Models::Graders::ScoreModelGrader::Input>] The input text. This may include template strings.
+        #   @param input [Array<OpenAI::Models::Graders::ScoreModelGrader::Input>] The input messages evaluated by the grader. Supports text, output text, input im
         #
         #   @param model [String] The model to use for the evaluation.
         #
@@ -232,7 +236,7 @@ module OpenAI
           #   - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
           #     support `none`.
           #   - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
-          #   - `xhigh` is currently only supported for `gpt-5.1-codex-max`.
+          #   - `xhigh` is supported for all models after `gpt-5.1-codex-max`.
           #
           #   @return [Symbol, OpenAI::Models::ReasoningEffort, nil]
           optional :reasoning_effort, enum: -> { OpenAI::ReasoningEffort }, nil?: true

@@ -5,6 +5,11 @@ module OpenAI
     module ChatModel
       extend OpenAI::Internal::Type::Enum
 
+      GPT_5_2 = :"gpt-5.2"
+      GPT_5_2_2025_12_11 = :"gpt-5.2-2025-12-11"
+      GPT_5_2_CHAT_LATEST = :"gpt-5.2-chat-latest"
+      GPT_5_2_PRO = :"gpt-5.2-pro"
+      GPT_5_2_PRO_2025_12_11 = :"gpt-5.2-pro-2025-12-11"
       GPT_5_1 = :"gpt-5.1"
       GPT_5_1_2025_11_13 = :"gpt-5.1-2025-11-13"
       GPT_5_1_CODEX = :"gpt-5.1-codex"

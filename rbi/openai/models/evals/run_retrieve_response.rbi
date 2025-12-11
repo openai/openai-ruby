@@ -524,7 +524,7 @@ module OpenAI
                 # - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
                 #   support `none`.
                 # - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
-                # - `xhigh` is currently only supported for `gpt-5.1-codex-max`.
+                # - `xhigh` is supported for all models after `gpt-5.1-codex-max`.
                 sig do
                   returns(T.nilable(OpenAI::ReasoningEffort::TaggedSymbol))
                 end
@@ -591,7 +591,7 @@ module OpenAI
                   # - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
                   #   support `none`.
                   # - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
-                  # - `xhigh` is currently only supported for `gpt-5.1-codex-max`.
+                  # - `xhigh` is supported for all models after `gpt-5.1-codex-max`.
                   reasoning_effort: nil,
                   # Sampling temperature. This is a query parameter used to select responses.
                   temperature: nil,
@@ -1145,7 +1145,7 @@ module OpenAI
               # - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
               #   support `none`.
               # - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
-              # - `xhigh` is currently only supported for `gpt-5.1-codex-max`.
+              # - `xhigh` is supported for all models after `gpt-5.1-codex-max`.
               sig { returns(T.nilable(OpenAI::ReasoningEffort::TaggedSymbol)) }
               attr_accessor :reasoning_effort
 
@@ -1278,7 +1278,7 @@ module OpenAI
                 # - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
                 #   support `none`.
                 # - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
-                # - `xhigh` is currently only supported for `gpt-5.1-codex-max`.
+                # - `xhigh` is supported for all models after `gpt-5.1-codex-max`.
                 reasoning_effort: nil,
                 # A seed value to initialize the randomness, during sampling.
                 seed: nil,
