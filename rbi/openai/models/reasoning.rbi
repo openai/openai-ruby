@@ -18,7 +18,7 @@ module OpenAI
       # - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
       #   support `none`.
       # - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
-      # - `xhigh` is currently only supported for `gpt-5.1-codex-max`.
+      # - `xhigh` is supported for all models after `gpt-5.1-codex-max`.
       sig { returns(T.nilable(OpenAI::ReasoningEffort::OrSymbol)) }
       attr_accessor :effort
 
@@ -34,7 +34,8 @@ module OpenAI
       # debugging and understanding the model's reasoning process. One of `auto`,
       # `concise`, or `detailed`.
       #
-      # `concise` is only supported for `computer-use-preview` models.
+      # `concise` is supported for `computer-use-preview` models and all reasoning
+      # models after `gpt-5`.
       sig { returns(T.nilable(OpenAI::Reasoning::Summary::OrSymbol)) }
       attr_accessor :summary
 
@@ -63,7 +64,7 @@ module OpenAI
         # - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
         #   support `none`.
         # - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
-        # - `xhigh` is currently only supported for `gpt-5.1-codex-max`.
+        # - `xhigh` is supported for all models after `gpt-5.1-codex-max`.
         effort: nil,
         # **Deprecated:** use `summary` instead.
         #
@@ -75,7 +76,8 @@ module OpenAI
         # debugging and understanding the model's reasoning process. One of `auto`,
         # `concise`, or `detailed`.
         #
-        # `concise` is only supported for `computer-use-preview` models.
+        # `concise` is supported for `computer-use-preview` models and all reasoning
+        # models after `gpt-5`.
         summary: nil
       )
       end
@@ -124,7 +126,8 @@ module OpenAI
       # debugging and understanding the model's reasoning process. One of `auto`,
       # `concise`, or `detailed`.
       #
-      # `concise` is only supported for `computer-use-preview` models.
+      # `concise` is supported for `computer-use-preview` models and all reasoning
+      # models after `gpt-5`.
       module Summary
         extend OpenAI::Internal::Type::Enum
 

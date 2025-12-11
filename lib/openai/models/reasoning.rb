@@ -16,7 +16,7 @@ module OpenAI
       #   - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
       #     support `none`.
       #   - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
-      #   - `xhigh` is currently only supported for `gpt-5.1-codex-max`.
+      #   - `xhigh` is supported for all models after `gpt-5.1-codex-max`.
       #
       #   @return [Symbol, OpenAI::Models::ReasoningEffort, nil]
       optional :effort, enum: -> { OpenAI::ReasoningEffort }, nil?: true
@@ -38,7 +38,8 @@ module OpenAI
       #   debugging and understanding the model's reasoning process. One of `auto`,
       #   `concise`, or `detailed`.
       #
-      #   `concise` is only supported for `computer-use-preview` models.
+      #   `concise` is supported for `computer-use-preview` models and all reasoning
+      #   models after `gpt-5`.
       #
       #   @return [Symbol, OpenAI::Models::Reasoning::Summary, nil]
       optional :summary, enum: -> { OpenAI::Reasoning::Summary }, nil?: true
@@ -82,7 +83,8 @@ module OpenAI
       # debugging and understanding the model's reasoning process. One of `auto`,
       # `concise`, or `detailed`.
       #
-      # `concise` is only supported for `computer-use-preview` models.
+      # `concise` is supported for `computer-use-preview` models and all reasoning
+      # models after `gpt-5`.
       #
       # @see OpenAI::Models::Reasoning#summary
       module Summary
