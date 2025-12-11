@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.39.0 (2025-12-11)
+
+Full Changelog: [v0.38.0...v0.39.0](https://github.com/openai/openai-ruby/compare/v0.38.0...v0.39.0)
+
+### Features
+
+* **api:** gpt 5.2 ([369f26b](https://github.com/openai/openai-ruby/commit/369f26b5e42ddef31d07278e43776415f5d49b62))
+
+
+### Bug Fixes
+
+* Create new responses with previous_response_id ([#869](https://github.com/openai/openai-ruby/issues/869)) ([b14e2aa](https://github.com/openai/openai-ruby/commit/b14e2aa2351d102c4af30809ebb4a5cca61a1165))
+
 ## 0.38.0 (2025-12-08)
 
 Full Changelog: [v0.37.0...v0.38.0](https://github.com/openai/openai-ruby/compare/v0.37.0...v0.38.0)
