@@ -771,7 +771,8 @@ module OpenAI
                         )
                       end
 
-                    # Inputs to the model - can contain template strings.
+                    # Inputs to the model - can contain template strings. Supports text, output text,
+                    # input images, and input audio, either as a single item or an array of items.
                     sig do
                       returns(
                         OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::Variants
@@ -818,9 +819,17 @@ module OpenAI
                             String,
                             OpenAI::Responses::ResponseInputText::OrHash,
                             OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::OutputText::OrHash,
-                            OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::InputImage::OrHash,
+                            OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::EvalItemInputImage::OrHash,
                             OpenAI::Responses::ResponseInputAudio::OrHash,
-                            T::Array[T.anything]
+                            T::Array[
+                              T.any(
+                                String,
+                                OpenAI::Responses::ResponseInputText::OrHash,
+                                OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::AnArrayOfInputTextOutputTextInputImageAndInputAudio::OutputText::OrHash,
+                                OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::AnArrayOfInputTextOutputTextInputImageAndInputAudio::EvalItemInputImage::OrHash,
+                                OpenAI::Responses::ResponseInputAudio::OrHash
+                              )
+                            ]
                           ),
                         role:
                           OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Role::OrSymbol,
@@ -829,7 +838,8 @@ module OpenAI
                       ).returns(T.attached_class)
                     end
                     def self.new(
-                      # Inputs to the model - can contain template strings.
+                      # Inputs to the model - can contain template strings. Supports text, output text,
+                      # input images, and input audio, either as a single item or an array of items.
                       content:,
                       # The role of the message input. One of `user`, `assistant`, `system`, or
                       # `developer`.
@@ -854,7 +864,8 @@ module OpenAI
                     def to_hash
                     end
 
-                    # Inputs to the model - can contain template strings.
+                    # Inputs to the model - can contain template strings. Supports text, output text,
+                    # input images, and input audio, either as a single item or an array of items.
                     module Content
                       extend OpenAI::Internal::Type::Union
 
@@ -864,9 +875,11 @@ module OpenAI
                             String,
                             OpenAI::Responses::ResponseInputText,
                             OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::OutputText,
-                            OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::InputImage,
+                            OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::EvalItemInputImage,
                             OpenAI::Responses::ResponseInputAudio,
-                            T::Array[T.anything]
+                            T::Array[
+                              OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::AnArrayOfInputTextOutputTextInputImageAndInputAudio::Variants
+                            ]
                           )
                         end
 
@@ -906,11 +919,11 @@ module OpenAI
                         end
                       end
 
-                      class InputImage < OpenAI::Internal::Type::BaseModel
+                      class EvalItemInputImage < OpenAI::Internal::Type::BaseModel
                         OrHash =
                           T.type_alias do
                             T.any(
-                              OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::InputImage,
+                              OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::EvalItemInputImage,
                               OpenAI::Internal::AnyHash
                             )
                           end
@@ -931,7 +944,7 @@ module OpenAI
                         sig { params(detail: String).void }
                         attr_writer :detail
 
-                        # An image input to the model.
+                        # An image input block used within EvalItem content arrays.
                         sig do
                           params(
                             image_url: String,
@@ -959,6 +972,127 @@ module OpenAI
                         end
                       end
 
+                      # A text input to the model.
+                      module AnArrayOfInputTextOutputTextInputImageAndInputAudio
+                        extend OpenAI::Internal::Type::Union
+
+                        Variants =
+                          T.type_alias do
+                            T.any(
+                              String,
+                              OpenAI::Responses::ResponseInputText,
+                              OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::AnArrayOfInputTextOutputTextInputImageAndInputAudio::OutputText,
+                              OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::AnArrayOfInputTextOutputTextInputImageAndInputAudio::EvalItemInputImage,
+                              OpenAI::Responses::ResponseInputAudio
+                            )
+                          end
+
+                        class OutputText < OpenAI::Internal::Type::BaseModel
+                          OrHash =
+                            T.type_alias do
+                              T.any(
+                                OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::AnArrayOfInputTextOutputTextInputImageAndInputAudio::OutputText,
+                                OpenAI::Internal::AnyHash
+                              )
+                            end
+
+                          # The text output from the model.
+                          sig { returns(String) }
+                          attr_accessor :text
+
+                          # The type of the output text. Always `output_text`.
+                          sig { returns(Symbol) }
+                          attr_accessor :type
+
+                          # A text output from the model.
+                          sig do
+                            params(text: String, type: Symbol).returns(
+                              T.attached_class
+                            )
+                          end
+                          def self.new(
+                            # The text output from the model.
+                            text:,
+                            # The type of the output text. Always `output_text`.
+                            type: :output_text
+                          )
+                          end
+
+                          sig do
+                            override.returns({ text: String, type: Symbol })
+                          end
+                          def to_hash
+                          end
+                        end
+
+                        class EvalItemInputImage < OpenAI::Internal::Type::BaseModel
+                          OrHash =
+                            T.type_alias do
+                              T.any(
+                                OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::AnArrayOfInputTextOutputTextInputImageAndInputAudio::EvalItemInputImage,
+                                OpenAI::Internal::AnyHash
+                              )
+                            end
+
+                          # The URL of the image input.
+                          sig { returns(String) }
+                          attr_accessor :image_url
+
+                          # The type of the image input. Always `input_image`.
+                          sig { returns(Symbol) }
+                          attr_accessor :type
+
+                          # The detail level of the image to be sent to the model. One of `high`, `low`, or
+                          # `auto`. Defaults to `auto`.
+                          sig { returns(T.nilable(String)) }
+                          attr_reader :detail
+
+                          sig { params(detail: String).void }
+                          attr_writer :detail
+
+                          # An image input block used within EvalItem content arrays.
+                          sig do
+                            params(
+                              image_url: String,
+                              detail: String,
+                              type: Symbol
+                            ).returns(T.attached_class)
+                          end
+                          def self.new(
+                            # The URL of the image input.
+                            image_url:,
+                            # The detail level of the image to be sent to the model. One of `high`, `low`, or
+                            # `auto`. Defaults to `auto`.
+                            detail: nil,
+                            # The type of the image input. Always `input_image`.
+                            type: :input_image
+                          )
+                          end
+
+                          sig do
+                            override.returns(
+                              {
+                                image_url: String,
+                                type: Symbol,
+                                detail: String
+                              }
+                            )
+                          end
+                          def to_hash
+                          end
+                        end
+
+                        sig do
+                          override.returns(
+                            T::Array[
+                              OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::AnArrayOfInputTextOutputTextInputImageAndInputAudio::Variants
+                            ]
+                          )
+                        end
+                        def self.variants
+                        end
+                      end
+
                       sig do
                         override.returns(
                           T::Array[
@@ -969,10 +1103,11 @@ module OpenAI
                       def self.variants
                       end
 
-                      AnArrayOfInputTextInputImageAndInputAudioArray =
+                      AnArrayOfInputTextOutputTextInputImageAndInputAudioArray =
                         T.let(
                           OpenAI::Internal::Type::ArrayOf[
-                            OpenAI::Internal::Type::Unknown
+                            union:
+                              OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::AnArrayOfInputTextOutputTextInputImageAndInputAudio
                           ],
                           OpenAI::Internal::Type::Converter
                         )
