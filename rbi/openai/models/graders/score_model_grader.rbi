@@ -102,16 +102,25 @@ module OpenAI
               )
             end
 
-          # Inputs to the model - can contain template strings.
+          # Inputs to the model - can contain template strings. Supports text, output text,
+          # input images, and input audio, either as a single item or an array of items.
           sig do
             returns(
               T.any(
                 String,
                 OpenAI::Responses::ResponseInputText,
                 OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText,
-                OpenAI::Graders::ScoreModelGrader::Input::Content::InputImage,
+                OpenAI::Graders::ScoreModelGrader::Input::Content::EvalItemInputImage,
                 OpenAI::Responses::ResponseInputAudio,
-                T::Array[T.anything]
+                T::Array[
+                  T.any(
+                    String,
+                    OpenAI::Responses::ResponseInputText,
+                    OpenAI::Graders::ScoreModelGrader::Input::Content::AnArrayOfInputTextOutputTextInputImageAndInputAudio::OutputText,
+                    OpenAI::Graders::ScoreModelGrader::Input::Content::AnArrayOfInputTextOutputTextInputImageAndInputAudio::EvalItemInputImage,
+                    OpenAI::Responses::ResponseInputAudio
+                  )
+                ]
               )
             )
           end
@@ -153,16 +162,25 @@ module OpenAI
                   String,
                   OpenAI::Responses::ResponseInputText::OrHash,
                   OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText::OrHash,
-                  OpenAI::Graders::ScoreModelGrader::Input::Content::InputImage::OrHash,
+                  OpenAI::Graders::ScoreModelGrader::Input::Content::EvalItemInputImage::OrHash,
                   OpenAI::Responses::ResponseInputAudio::OrHash,
-                  T::Array[T.anything]
+                  T::Array[
+                    T.any(
+                      String,
+                      OpenAI::Responses::ResponseInputText::OrHash,
+                      OpenAI::Graders::ScoreModelGrader::Input::Content::AnArrayOfInputTextOutputTextInputImageAndInputAudio::OutputText::OrHash,
+                      OpenAI::Graders::ScoreModelGrader::Input::Content::AnArrayOfInputTextOutputTextInputImageAndInputAudio::EvalItemInputImage::OrHash,
+                      OpenAI::Responses::ResponseInputAudio::OrHash
+                    )
+                  ]
                 ),
               role: OpenAI::Graders::ScoreModelGrader::Input::Role::OrSymbol,
               type: OpenAI::Graders::ScoreModelGrader::Input::Type::OrSymbol
             ).returns(T.attached_class)
           end
           def self.new(
-            # Inputs to the model - can contain template strings.
+            # Inputs to the model - can contain template strings. Supports text, output text,
+            # input images, and input audio, either as a single item or an array of items.
             content:,
             # The role of the message input. One of `user`, `assistant`, `system`, or
             # `developer`.
@@ -180,9 +198,17 @@ module OpenAI
                     String,
                     OpenAI::Responses::ResponseInputText,
                     OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText,
-                    OpenAI::Graders::ScoreModelGrader::Input::Content::InputImage,
+                    OpenAI::Graders::ScoreModelGrader::Input::Content::EvalItemInputImage,
                     OpenAI::Responses::ResponseInputAudio,
-                    T::Array[T.anything]
+                    T::Array[
+                      T.any(
+                        String,
+                        OpenAI::Responses::ResponseInputText,
+                        OpenAI::Graders::ScoreModelGrader::Input::Content::AnArrayOfInputTextOutputTextInputImageAndInputAudio::OutputText,
+                        OpenAI::Graders::ScoreModelGrader::Input::Content::AnArrayOfInputTextOutputTextInputImageAndInputAudio::EvalItemInputImage,
+                        OpenAI::Responses::ResponseInputAudio
+                      )
+                    ]
                   ),
                 role: OpenAI::Graders::ScoreModelGrader::Input::Role::OrSymbol,
                 type: OpenAI::Graders::ScoreModelGrader::Input::Type::OrSymbol
@@ -192,7 +218,8 @@ module OpenAI
           def to_hash
           end
 
-          # Inputs to the model - can contain template strings.
+          # Inputs to the model - can contain template strings. Supports text, output text,
+          # input images, and input audio, either as a single item or an array of items.
           module Content
             extend OpenAI::Internal::Type::Union
 
@@ -202,9 +229,11 @@ module OpenAI
                   String,
                   OpenAI::Responses::ResponseInputText,
                   OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText,
-                  OpenAI::Graders::ScoreModelGrader::Input::Content::InputImage,
+                  OpenAI::Graders::ScoreModelGrader::Input::Content::EvalItemInputImage,
                   OpenAI::Responses::ResponseInputAudio,
-                  T::Array[T.anything]
+                  T::Array[
+                    OpenAI::Graders::ScoreModelGrader::Input::Content::AnArrayOfInputTextOutputTextInputImageAndInputAudio::Variants
+                  ]
                 )
               end
 
@@ -242,11 +271,11 @@ module OpenAI
               end
             end
 
-            class InputImage < OpenAI::Internal::Type::BaseModel
+            class EvalItemInputImage < OpenAI::Internal::Type::BaseModel
               OrHash =
                 T.type_alias do
                   T.any(
-                    OpenAI::Graders::ScoreModelGrader::Input::Content::InputImage,
+                    OpenAI::Graders::ScoreModelGrader::Input::Content::EvalItemInputImage,
                     OpenAI::Internal::AnyHash
                   )
                 end
@@ -267,7 +296,7 @@ module OpenAI
               sig { params(detail: String).void }
               attr_writer :detail
 
-              # An image input to the model.
+              # An image input block used within EvalItem content arrays.
               sig do
                 params(image_url: String, detail: String, type: Symbol).returns(
                   T.attached_class
@@ -293,6 +322,119 @@ module OpenAI
               end
             end
 
+            # A text input to the model.
+            module AnArrayOfInputTextOutputTextInputImageAndInputAudio
+              extend OpenAI::Internal::Type::Union
+
+              Variants =
+                T.type_alias do
+                  T.any(
+                    String,
+                    OpenAI::Responses::ResponseInputText,
+                    OpenAI::Graders::ScoreModelGrader::Input::Content::AnArrayOfInputTextOutputTextInputImageAndInputAudio::OutputText,
+                    OpenAI::Graders::ScoreModelGrader::Input::Content::AnArrayOfInputTextOutputTextInputImageAndInputAudio::EvalItemInputImage,
+                    OpenAI::Responses::ResponseInputAudio
+                  )
+                end
+
+              class OutputText < OpenAI::Internal::Type::BaseModel
+                OrHash =
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Graders::ScoreModelGrader::Input::Content::AnArrayOfInputTextOutputTextInputImageAndInputAudio::OutputText,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
+
+                # The text output from the model.
+                sig { returns(String) }
+                attr_accessor :text
+
+                # The type of the output text. Always `output_text`.
+                sig { returns(Symbol) }
+                attr_accessor :type
+
+                # A text output from the model.
+                sig do
+                  params(text: String, type: Symbol).returns(T.attached_class)
+                end
+                def self.new(
+                  # The text output from the model.
+                  text:,
+                  # The type of the output text. Always `output_text`.
+                  type: :output_text
+                )
+                end
+
+                sig { override.returns({ text: String, type: Symbol }) }
+                def to_hash
+                end
+              end
+
+              class EvalItemInputImage < OpenAI::Internal::Type::BaseModel
+                OrHash =
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Graders::ScoreModelGrader::Input::Content::AnArrayOfInputTextOutputTextInputImageAndInputAudio::EvalItemInputImage,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
+
+                # The URL of the image input.
+                sig { returns(String) }
+                attr_accessor :image_url
+
+                # The type of the image input. Always `input_image`.
+                sig { returns(Symbol) }
+                attr_accessor :type
+
+                # The detail level of the image to be sent to the model. One of `high`, `low`, or
+                # `auto`. Defaults to `auto`.
+                sig { returns(T.nilable(String)) }
+                attr_reader :detail
+
+                sig { params(detail: String).void }
+                attr_writer :detail
+
+                # An image input block used within EvalItem content arrays.
+                sig do
+                  params(
+                    image_url: String,
+                    detail: String,
+                    type: Symbol
+                  ).returns(T.attached_class)
+                end
+                def self.new(
+                  # The URL of the image input.
+                  image_url:,
+                  # The detail level of the image to be sent to the model. One of `high`, `low`, or
+                  # `auto`. Defaults to `auto`.
+                  detail: nil,
+                  # The type of the image input. Always `input_image`.
+                  type: :input_image
+                )
+                end
+
+                sig do
+                  override.returns(
+                    { image_url: String, type: Symbol, detail: String }
+                  )
+                end
+                def to_hash
+                end
+              end
+
+              sig do
+                override.returns(
+                  T::Array[
+                    OpenAI::Graders::ScoreModelGrader::Input::Content::AnArrayOfInputTextOutputTextInputImageAndInputAudio::Variants
+                  ]
+                )
+              end
+              def self.variants
+              end
+            end
+
             sig do
               override.returns(
                 T::Array[
@@ -303,10 +445,11 @@ module OpenAI
             def self.variants
             end
 
-            AnArrayOfInputTextInputImageAndInputAudioArray =
+            AnArrayOfInputTextOutputTextInputImageAndInputAudioArray =
               T.let(
                 OpenAI::Internal::Type::ArrayOf[
-                  OpenAI::Internal::Type::Unknown
+                  union:
+                    OpenAI::Graders::ScoreModelGrader::Input::Content::AnArrayOfInputTextOutputTextInputImageAndInputAudio
                 ],
                 OpenAI::Internal::Type::Converter
               )
