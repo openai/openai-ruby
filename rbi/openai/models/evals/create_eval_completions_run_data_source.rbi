@@ -515,7 +515,8 @@ module OpenAI
                     )
                   end
 
-                # Inputs to the model - can contain template strings.
+                # Inputs to the model - can contain template strings. Supports text, output text,
+                # input images, and input audio, either as a single item or an array of items.
                 sig do
                   returns(
                     T.any(
@@ -524,7 +525,15 @@ module OpenAI
                       OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText,
                       OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Content::InputImage,
                       OpenAI::Responses::ResponseInputAudio,
-                      T::Array[T.anything]
+                      T::Array[
+                        T.any(
+                          String,
+                          OpenAI::Responses::ResponseInputText,
+                          OpenAI::Graders::GraderInputItem::OutputText,
+                          OpenAI::Graders::GraderInputItem::InputImage,
+                          OpenAI::Responses::ResponseInputAudio
+                        )
+                      ]
                     )
                   )
                 end
@@ -571,7 +580,15 @@ module OpenAI
                         OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText::OrHash,
                         OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Content::InputImage::OrHash,
                         OpenAI::Responses::ResponseInputAudio::OrHash,
-                        T::Array[T.anything]
+                        T::Array[
+                          T.any(
+                            String,
+                            OpenAI::Responses::ResponseInputText::OrHash,
+                            OpenAI::Graders::GraderInputItem::OutputText::OrHash,
+                            OpenAI::Graders::GraderInputItem::InputImage::OrHash,
+                            OpenAI::Responses::ResponseInputAudio::OrHash
+                          )
+                        ]
                       ),
                     role:
                       OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Role::OrSymbol,
@@ -580,7 +597,8 @@ module OpenAI
                   ).returns(T.attached_class)
                 end
                 def self.new(
-                  # Inputs to the model - can contain template strings.
+                  # Inputs to the model - can contain template strings. Supports text, output text,
+                  # input images, and input audio, either as a single item or an array of items.
                   content:,
                   # The role of the message input. One of `user`, `assistant`, `system`, or
                   # `developer`.
@@ -600,7 +618,15 @@ module OpenAI
                           OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText,
                           OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Content::InputImage,
                           OpenAI::Responses::ResponseInputAudio,
-                          T::Array[T.anything]
+                          T::Array[
+                            T.any(
+                              String,
+                              OpenAI::Responses::ResponseInputText,
+                              OpenAI::Graders::GraderInputItem::OutputText,
+                              OpenAI::Graders::GraderInputItem::InputImage,
+                              OpenAI::Responses::ResponseInputAudio
+                            )
+                          ]
                         ),
                       role:
                         OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Role::OrSymbol,
@@ -612,7 +638,8 @@ module OpenAI
                 def to_hash
                 end
 
-                # Inputs to the model - can contain template strings.
+                # Inputs to the model - can contain template strings. Supports text, output text,
+                # input images, and input audio, either as a single item or an array of items.
                 module Content
                   extend OpenAI::Internal::Type::Union
 
@@ -624,7 +651,7 @@ module OpenAI
                         OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText,
                         OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::Content::InputImage,
                         OpenAI::Responses::ResponseInputAudio,
-                        T::Array[T.anything]
+                        T::Array[OpenAI::Graders::GraderInputItem::Variants]
                       )
                     end
 
@@ -689,7 +716,7 @@ module OpenAI
                     sig { params(detail: String).void }
                     attr_writer :detail
 
-                    # An image input to the model.
+                    # An image input block used within EvalItem content arrays.
                     sig do
                       params(
                         image_url: String,
@@ -726,14 +753,6 @@ module OpenAI
                   end
                   def self.variants
                   end
-
-                  AnArrayOfInputTextInputImageAndInputAudioArray =
-                    T.let(
-                      OpenAI::Internal::Type::ArrayOf[
-                        OpenAI::Internal::Type::Unknown
-                      ],
-                      OpenAI::Internal::Type::Converter
-                    )
                 end
 
                 # The role of the message input. One of `user`, `assistant`, `system`, or

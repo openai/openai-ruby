@@ -315,7 +315,7 @@ module OpenAI
                       | OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText
                       | OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Content::InputImage
                       | OpenAI::Responses::ResponseInputAudio
-                      | ::Array[top]
+                      | OpenAI::Models::Graders::grader_inputs
 
                     module Content
                       extend OpenAI::Internal::Type::Union
@@ -365,8 +365,6 @@ module OpenAI
                       end
 
                       def self?.variants: -> ::Array[OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::content]
-
-                      AnArrayOfInputTextInputImageAndInputAudioArray: OpenAI::Internal::Type::Converter
                     end
 
                     type role = :user | :assistant | :system | :developer

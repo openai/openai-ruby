@@ -80,7 +80,7 @@ module OpenAI
             | OpenAI::Graders::LabelModelGrader::Input::Content::OutputText
             | OpenAI::Graders::LabelModelGrader::Input::Content::InputImage
             | OpenAI::Responses::ResponseInputAudio
-            | ::Array[top]
+            | OpenAI::Models::Graders::grader_inputs
 
           module Content
             extend OpenAI::Internal::Type::Union
@@ -123,8 +123,6 @@ module OpenAI
             end
 
             def self?.variants: -> ::Array[OpenAI::Models::Graders::LabelModelGrader::Input::content]
-
-            AnArrayOfInputTextInputImageAndInputAudioArray: OpenAI::Internal::Type::Converter
           end
 
           type role = :user | :assistant | :system | :developer

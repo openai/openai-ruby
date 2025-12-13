@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.40.0 (2025-12-13)
+
+Full Changelog: [v0.39.0...v0.40.0](https://github.com/openai/openai-ruby/compare/v0.39.0...v0.40.0)
+
+### Features
+
+* **api:** api update ([a4115ea](https://github.com/openai/openai-ruby/commit/a4115ead652128743bd6692ba0719991374d052a))
+* **api:** fix grader input list, add dated slugs for sora-2 ([bedec43](https://github.com/openai/openai-ruby/commit/bedec437928f692a5e3de51fd0e49df310fcbcd2))
+
 ## 0.39.0 (2025-12-11)
 
 Full Changelog: [v0.38.0...v0.39.0](https://github.com/openai/openai-ruby/compare/v0.38.0...v0.39.0)
