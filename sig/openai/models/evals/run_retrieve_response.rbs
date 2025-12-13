@@ -350,9 +350,9 @@ module OpenAI
                       String
                       | OpenAI::Responses::ResponseInputText
                       | OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::OutputText
-                      | OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::EvalItemInputImage
+                      | OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::InputImage
                       | OpenAI::Responses::ResponseInputAudio
-                      | ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::an_array_of_input_text_output_text_input_image_and_input_audio]
+                      | OpenAI::Models::Graders::grader_inputs
 
                     module Content
                       extend OpenAI::Internal::Type::Union
@@ -372,14 +372,14 @@ module OpenAI
                         def to_hash: -> { text: String, type: :output_text }
                       end
 
-                      type eval_item_input_image =
+                      type input_image =
                         {
                           image_url: String,
                           type: :input_image,
                           detail: String
                         }
 
-                      class EvalItemInputImage < OpenAI::Internal::Type::BaseModel
+                      class InputImage < OpenAI::Internal::Type::BaseModel
                         attr_accessor image_url: String
 
                         attr_accessor type: :input_image
@@ -401,66 +401,7 @@ module OpenAI
                         }
                       end
 
-                      type an_array_of_input_text_output_text_input_image_and_input_audio =
-                        String
-                        | OpenAI::Responses::ResponseInputText
-                        | OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::AnArrayOfInputTextOutputTextInputImageAndInputAudio::OutputText
-                        | OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::AnArrayOfInputTextOutputTextInputImageAndInputAudio::EvalItemInputImage
-                        | OpenAI::Responses::ResponseInputAudio
-
-                      module AnArrayOfInputTextOutputTextInputImageAndInputAudio
-                        extend OpenAI::Internal::Type::Union
-
-                        type output_text = { text: String, type: :output_text }
-
-                        class OutputText < OpenAI::Internal::Type::BaseModel
-                          attr_accessor text: String
-
-                          attr_accessor type: :output_text
-
-                          def initialize: (
-                            text: String,
-                            ?type: :output_text
-                          ) -> void
-
-                          def to_hash: -> { text: String, type: :output_text }
-                        end
-
-                        type eval_item_input_image =
-                          {
-                            image_url: String,
-                            type: :input_image,
-                            detail: String
-                          }
-
-                        class EvalItemInputImage < OpenAI::Internal::Type::BaseModel
-                          attr_accessor image_url: String
-
-                          attr_accessor type: :input_image
-
-                          attr_reader detail: String?
-
-                          def detail=: (String) -> String
-
-                          def initialize: (
-                            image_url: String,
-                            ?detail: String,
-                            ?type: :input_image
-                          ) -> void
-
-                          def to_hash: -> {
-                            image_url: String,
-                            type: :input_image,
-                            detail: String
-                          }
-                        end
-
-                        def self?.variants: -> ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::an_array_of_input_text_output_text_input_image_and_input_audio]
-                      end
-
                       def self?.variants: -> ::Array[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::content]
-
-                      AnArrayOfInputTextOutputTextInputImageAndInputAudioArray: OpenAI::Internal::Type::Converter
                     end
 
                     type role = :user | :assistant | :system | :developer
