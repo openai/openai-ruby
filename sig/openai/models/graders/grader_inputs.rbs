@@ -3,56 +3,6 @@ module OpenAI
     GraderInputs: OpenAI::Internal::Type::Converter
 
     module Graders
-      type grader_input_item =
-        String
-        | OpenAI::Responses::ResponseInputText
-        | OpenAI::Graders::GraderInputItem::OutputText
-        | OpenAI::Graders::GraderInputItem::InputImage
-        | OpenAI::Responses::ResponseInputAudio
-
-      module GraderInputItem
-        extend OpenAI::Internal::Type::Union
-
-        type output_text = { text: String, type: :output_text }
-
-        class OutputText < OpenAI::Internal::Type::BaseModel
-          attr_accessor text: String
-
-          attr_accessor type: :output_text
-
-          def initialize: (text: String, ?type: :output_text) -> void
-
-          def to_hash: -> { text: String, type: :output_text }
-        end
-
-        type input_image =
-          { image_url: String, type: :input_image, detail: String }
-
-        class InputImage < OpenAI::Internal::Type::BaseModel
-          attr_accessor image_url: String
-
-          attr_accessor type: :input_image
-
-          attr_reader detail: String?
-
-          def detail=: (String) -> String
-
-          def initialize: (
-            image_url: String,
-            ?detail: String,
-            ?type: :input_image
-          ) -> void
-
-          def to_hash: -> {
-            image_url: String,
-            type: :input_image,
-            detail: String
-          }
-        end
-
-        def self?.variants: -> ::Array[OpenAI::Models::Graders::grader_input_item]
-      end
-
       type grader_inputs = ::Array[OpenAI::Models::Graders::grader_input_item]
 
       GraderInputs: OpenAI::Internal::Type::Converter
