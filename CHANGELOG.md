@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.41.0 (2025-12-16)
+
+Full Changelog: [v0.40.0...v0.41.0](https://github.com/openai/openai-ruby/compare/v0.40.0...v0.41.0)
+
+### Features
+
+* **api:** gpt-image-1.5 ([8a7fdb3](https://github.com/openai/openai-ruby/commit/8a7fdb3c5228f765a0e18f9bb1f8c9c24dcf037b))
+* **api:** manual updates for java ([3aeb38f](https://github.com/openai/openai-ruby/commit/3aeb38f958498574d2009da300d2d964206955e5))
+
+
+### Bug Fixes
+
+* **api:** manual updates for ruby build ([c142813](https://github.com/openai/openai-ruby/commit/c142813f8948131abe980ef919aade6ed10b7456))
+* calling `break` out of streams should be instantaneous ([7fc53db](https://github.com/openai/openai-ruby/commit/7fc53db685dfa10c64472a337e7093f20a2ea597))
+
 ## 0.40.0 (2025-12-13)
 
 Full Changelog: [v0.39.0...v0.40.0](https://github.com/openai/openai-ruby/compare/v0.39.0...v0.40.0)
