@@ -46,7 +46,8 @@ module OpenAI
       required :type, const: :"image_edit.completed"
 
       # @!attribute usage
-      #   For `gpt-image-1` only, the token usage information for the image generation.
+      #   For the GPT image models only, the token usage information for the image
+      #   generation.
       #
       #   @return [OpenAI::Models::ImageEditCompletedEvent::Usage]
       required :usage, -> { OpenAI::ImageEditCompletedEvent::Usage }
@@ -69,7 +70,7 @@ module OpenAI
       #
       #   @param size [Symbol, OpenAI::Models::ImageEditCompletedEvent::Size] The size of the edited image.
       #
-      #   @param usage [OpenAI::Models::ImageEditCompletedEvent::Usage] For `gpt-image-1` only, the token usage information for the image generation.
+      #   @param usage [OpenAI::Models::ImageEditCompletedEvent::Usage] For the GPT image models only, the token usage information for the image generat
       #
       #   @param type [Symbol, :"image_edit.completed"] The type of the event. Always `image_edit.completed`.
 
@@ -161,7 +162,8 @@ module OpenAI
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::ImageEditCompletedEvent::Usage} for more details.
         #
-        #   For `gpt-image-1` only, the token usage information for the image generation.
+        #   For the GPT image models only, the token usage information for the image
+        #   generation.
         #
         #   @param input_tokens [Integer] The number of tokens (images and text) in the input prompt.
         #

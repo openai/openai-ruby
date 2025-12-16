@@ -120,7 +120,8 @@ module OpenAI
           input_tokens: Integer,
           input_tokens_details: OpenAI::ImagesResponse::Usage::InputTokensDetails,
           output_tokens: Integer,
-          total_tokens: Integer
+          total_tokens: Integer,
+          output_tokens_details: OpenAI::ImagesResponse::Usage::OutputTokensDetails
         }
 
       class Usage < OpenAI::Internal::Type::BaseModel
@@ -132,24 +133,45 @@ module OpenAI
 
         attr_accessor total_tokens: Integer
 
+        attr_reader output_tokens_details: OpenAI::ImagesResponse::Usage::OutputTokensDetails?
+
+        def output_tokens_details=: (
+          OpenAI::ImagesResponse::Usage::OutputTokensDetails
+        ) -> OpenAI::ImagesResponse::Usage::OutputTokensDetails
+
         def initialize: (
           input_tokens: Integer,
           input_tokens_details: OpenAI::ImagesResponse::Usage::InputTokensDetails,
           output_tokens: Integer,
-          total_tokens: Integer
+          total_tokens: Integer,
+          ?output_tokens_details: OpenAI::ImagesResponse::Usage::OutputTokensDetails
         ) -> void
 
         def to_hash: -> {
           input_tokens: Integer,
           input_tokens_details: OpenAI::ImagesResponse::Usage::InputTokensDetails,
           output_tokens: Integer,
-          total_tokens: Integer
+          total_tokens: Integer,
+          output_tokens_details: OpenAI::ImagesResponse::Usage::OutputTokensDetails
         }
 
         type input_tokens_details =
           { image_tokens: Integer, text_tokens: Integer }
 
         class InputTokensDetails < OpenAI::Internal::Type::BaseModel
+          attr_accessor image_tokens: Integer
+
+          attr_accessor text_tokens: Integer
+
+          def initialize: (image_tokens: Integer, text_tokens: Integer) -> void
+
+          def to_hash: -> { image_tokens: Integer, text_tokens: Integer }
+        end
+
+        type output_tokens_details =
+          { image_tokens: Integer, text_tokens: Integer }
+
+        class OutputTokensDetails < OpenAI::Internal::Type::BaseModel
           attr_accessor image_tokens: Integer
 
           attr_accessor text_tokens: Integer

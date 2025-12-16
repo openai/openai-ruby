@@ -8,6 +8,7 @@ module OpenAI
       TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::ImageModel) }
       OrSymbol = T.type_alias { T.any(Symbol, String) }
 
+      GPT_IMAGE_1_5 = T.let(:"gpt-image-1.5", OpenAI::ImageModel::TaggedSymbol)
       DALL_E_2 = T.let(:"dall-e-2", OpenAI::ImageModel::TaggedSymbol)
       DALL_E_3 = T.let(:"dall-e-3", OpenAI::ImageModel::TaggedSymbol)
       GPT_IMAGE_1 = T.let(:"gpt-image-1", OpenAI::ImageModel::TaggedSymbol)
