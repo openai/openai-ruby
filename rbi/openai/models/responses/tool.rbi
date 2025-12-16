@@ -888,7 +888,10 @@ module OpenAI
           sig do
             returns(
               T.nilable(
-                OpenAI::Responses::Tool::ImageGeneration::Model::OrSymbol
+                T.any(
+                  String,
+                  OpenAI::Responses::Tool::ImageGeneration::Model::OrSymbol
+                )
               )
             )
           end
@@ -896,7 +899,11 @@ module OpenAI
 
           sig do
             params(
-              model: OpenAI::Responses::Tool::ImageGeneration::Model::OrSymbol
+              model:
+                T.any(
+                  String,
+                  OpenAI::Responses::Tool::ImageGeneration::Model::OrSymbol
+                )
             ).void
           end
           attr_writer :model
@@ -990,7 +997,7 @@ module OpenAI
           end
           attr_writer :size
 
-          # A tool that generates images using a model like `gpt-image-1`.
+          # A tool that generates images using the GPT image models.
           sig do
             params(
               background:
@@ -1001,7 +1008,11 @@ module OpenAI
                 ),
               input_image_mask:
                 OpenAI::Responses::Tool::ImageGeneration::InputImageMask::OrHash,
-              model: OpenAI::Responses::Tool::ImageGeneration::Model::OrSymbol,
+              model:
+                T.any(
+                  String,
+                  OpenAI::Responses::Tool::ImageGeneration::Model::OrSymbol
+                ),
               moderation:
                 OpenAI::Responses::Tool::ImageGeneration::Moderation::OrSymbol,
               output_compression: Integer,
@@ -1062,7 +1073,10 @@ module OpenAI
                 input_image_mask:
                   OpenAI::Responses::Tool::ImageGeneration::InputImageMask,
                 model:
-                  OpenAI::Responses::Tool::ImageGeneration::Model::OrSymbol,
+                  T.any(
+                    String,
+                    OpenAI::Responses::Tool::ImageGeneration::Model::OrSymbol
+                  ),
                 moderation:
                   OpenAI::Responses::Tool::ImageGeneration::Moderation::OrSymbol,
                 output_compression: Integer,
@@ -1202,7 +1216,25 @@ module OpenAI
 
           # The image generation model to use. Default: `gpt-image-1`.
           module Model
-            extend OpenAI::Internal::Type::Enum
+            extend OpenAI::Internal::Type::Union
+
+            Variants =
+              T.type_alias do
+                T.any(
+                  String,
+                  OpenAI::Responses::Tool::ImageGeneration::Model::TaggedSymbol
+                )
+              end
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Responses::Tool::ImageGeneration::Model::Variants
+                ]
+              )
+            end
+            def self.variants
+            end
 
             TaggedSymbol =
               T.type_alias do
@@ -1220,16 +1252,6 @@ module OpenAI
                 :"gpt-image-1-mini",
                 OpenAI::Responses::Tool::ImageGeneration::Model::TaggedSymbol
               )
-
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::Tool::ImageGeneration::Model::TaggedSymbol
-                ]
-              )
-            end
-            def self.values
-            end
           end
 
           # Moderation level for the generated image. Default: `auto`.

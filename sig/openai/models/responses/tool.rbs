@@ -442,15 +442,15 @@ module OpenAI
             def to_hash: -> { file_id: String, image_url: String }
           end
 
-          type model = :"gpt-image-1" | :"gpt-image-1-mini"
+          type model = String | :"gpt-image-1" | :"gpt-image-1-mini"
 
           module Model
-            extend OpenAI::Internal::Type::Enum
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Responses::Tool::ImageGeneration::model]
 
             GPT_IMAGE_1: :"gpt-image-1"
             GPT_IMAGE_1_MINI: :"gpt-image-1-mini"
-
-            def self?.values: -> ::Array[OpenAI::Models::Responses::Tool::ImageGeneration::model]
           end
 
           type moderation = :auto | :low

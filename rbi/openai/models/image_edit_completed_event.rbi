@@ -38,7 +38,8 @@ module OpenAI
       sig { returns(Symbol) }
       attr_accessor :type
 
-      # For `gpt-image-1` only, the token usage information for the image generation.
+      # For the GPT image models only, the token usage information for the image
+      # generation.
       sig { returns(OpenAI::ImageEditCompletedEvent::Usage) }
       attr_reader :usage
 
@@ -72,7 +73,8 @@ module OpenAI
         quality:,
         # The size of the edited image.
         size:,
-        # For `gpt-image-1` only, the token usage information for the image generation.
+        # For the GPT image models only, the token usage information for the image
+        # generation.
         usage:,
         # The type of the event. Always `image_edit.completed`.
         type: :"image_edit.completed"
@@ -267,7 +269,8 @@ module OpenAI
         sig { returns(Integer) }
         attr_accessor :total_tokens
 
-        # For `gpt-image-1` only, the token usage information for the image generation.
+        # For the GPT image models only, the token usage information for the image
+        # generation.
         sig do
           params(
             input_tokens: Integer,

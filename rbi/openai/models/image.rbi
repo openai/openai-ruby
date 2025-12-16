@@ -5,9 +5,9 @@ module OpenAI
     class Image < OpenAI::Internal::Type::BaseModel
       OrHash = T.type_alias { T.any(OpenAI::Image, OpenAI::Internal::AnyHash) }
 
-      # The base64-encoded JSON of the generated image. Default value for `gpt-image-1`,
-      # and only present if `response_format` is set to `b64_json` for `dall-e-2` and
-      # `dall-e-3`.
+      # The base64-encoded JSON of the generated image. Returned by default for the GPT
+      # image models, and only present if `response_format` is set to `b64_json` for
+      # `dall-e-2` and `dall-e-3`.
       sig { returns(T.nilable(String)) }
       attr_reader :b64_json
 
@@ -22,8 +22,8 @@ module OpenAI
       attr_writer :revised_prompt
 
       # When using `dall-e-2` or `dall-e-3`, the URL of the generated image if
-      # `response_format` is set to `url` (default value). Unsupported for
-      # `gpt-image-1`.
+      # `response_format` is set to `url` (default value). Unsupported for the GPT image
+      # models.
       sig { returns(T.nilable(String)) }
       attr_reader :url
 
@@ -37,15 +37,15 @@ module OpenAI
         )
       end
       def self.new(
-        # The base64-encoded JSON of the generated image. Default value for `gpt-image-1`,
-        # and only present if `response_format` is set to `b64_json` for `dall-e-2` and
-        # `dall-e-3`.
+        # The base64-encoded JSON of the generated image. Returned by default for the GPT
+        # image models, and only present if `response_format` is set to `b64_json` for
+        # `dall-e-2` and `dall-e-3`.
         b64_json: nil,
         # For `dall-e-3` only, the revised prompt that was used to generate the image.
         revised_prompt: nil,
         # When using `dall-e-2` or `dall-e-3`, the URL of the generated image if
-        # `response_format` is set to `url` (default value). Unsupported for
-        # `gpt-image-1`.
+        # `response_format` is set to `url` (default value). Unsupported for the GPT image
+        # models.
         url: nil
       )
       end
