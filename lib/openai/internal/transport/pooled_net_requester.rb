@@ -153,17 +153,19 @@ module OpenAI
                   end
 
                   self.class.calibrate_socket_timeout(conn, deadline)
-                  conn.request(req) do |rsp|
-                    y << [req, rsp]
-                    break if finished
+                  ::Kernel.catch(:jump) do
+                    conn.request(req) do |rsp|
+                      y << [req, rsp]
+                      ::Kernel.throw(:jump) if finished
 
-                    rsp.read_body do |bytes|
-                      y << bytes.force_encoding(Encoding::BINARY)
-                      break if finished
+                      rsp.read_body do |bytes|
+                        y << bytes.force_encoding(Encoding::BINARY)
+                        ::Kernel.throw(:jump) if finished
 
-                      self.class.calibrate_socket_timeout(conn, deadline)
+                        self.class.calibrate_socket_timeout(conn, deadline)
+                      end
+                      eof = true
                     end
-                    eof = true
                   end
                 end
               ensure
