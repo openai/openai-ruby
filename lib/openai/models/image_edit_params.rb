@@ -12,7 +12,8 @@ module OpenAI
       # @!attribute image
       #   The image(s) to edit. Must be a supported image file or an array of images.
       #
-      #   For `gpt-image-1`, each image should be a `png`, `webp`, or `jpg` file less than
+      #   For the GPT image models (`gpt-image-1`, `gpt-image-1-mini`, and
+      #   `gpt-image-1.5`), each image should be a `png`, `webp`, or `jpg` file less than
       #   50MB. You can provide up to 16 images.
       #
       #   For `dall-e-2`, you can only provide one image, and it should be a square `png`
@@ -23,16 +24,16 @@ module OpenAI
 
       # @!attribute prompt
       #   A text description of the desired image(s). The maximum length is 1000
-      #   characters for `dall-e-2`, and 32000 characters for `gpt-image-1`.
+      #   characters for `dall-e-2`, and 32000 characters for the GPT image models.
       #
       #   @return [String]
       required :prompt, String
 
       # @!attribute background
       #   Allows to set transparency for the background of the generated image(s). This
-      #   parameter is only supported for `gpt-image-1`. Must be one of `transparent`,
-      #   `opaque` or `auto` (default value). When `auto` is used, the model will
-      #   automatically determine the best background for the image.
+      #   parameter is only supported for the GPT image models. Must be one of
+      #   `transparent`, `opaque` or `auto` (default value). When `auto` is used, the
+      #   model will automatically determine the best background for the image.
       #
       #   If `transparent`, the output format needs to support transparency, so it should
       #   be set to either `png` (default value) or `webp`.
@@ -59,9 +60,9 @@ module OpenAI
       optional :mask, OpenAI::Internal::Type::FileInput
 
       # @!attribute model
-      #   The model to use for image generation. Only `dall-e-2` and `gpt-image-1` are
-      #   supported. Defaults to `dall-e-2` unless a parameter specific to `gpt-image-1`
-      #   is used.
+      #   The model to use for image generation. Only `dall-e-2` and the GPT image models
+      #   are supported. Defaults to `dall-e-2` unless a parameter specific to the GPT
+      #   image models is used.
       #
       #   @return [String, Symbol, OpenAI::Models::ImageModel, nil]
       optional :model, union: -> { OpenAI::ImageEditParams::Model }, nil?: true
@@ -74,7 +75,7 @@ module OpenAI
 
       # @!attribute output_compression
       #   The compression level (0-100%) for the generated images. This parameter is only
-      #   supported for `gpt-image-1` with the `webp` or `jpeg` output formats, and
+      #   supported for the GPT image models with the `webp` or `jpeg` output formats, and
       #   defaults to 100.
       #
       #   @return [Integer, nil]
@@ -82,7 +83,7 @@ module OpenAI
 
       # @!attribute output_format
       #   The format in which the generated images are returned. This parameter is only
-      #   supported for `gpt-image-1`. Must be one of `png`, `jpeg`, or `webp`. The
+      #   supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`. The
       #   default value is `png`.
       #
       #   @return [Symbol, OpenAI::Models::ImageEditParams::OutputFormat, nil]
@@ -101,8 +102,8 @@ module OpenAI
 
       # @!attribute quality
       #   The quality of the image that will be generated. `high`, `medium` and `low` are
-      #   only supported for `gpt-image-1`. `dall-e-2` only supports `standard` quality.
-      #   Defaults to `auto`.
+      #   only supported for the GPT image models. `dall-e-2` only supports `standard`
+      #   quality. Defaults to `auto`.
       #
       #   @return [Symbol, OpenAI::Models::ImageEditParams::Quality, nil]
       optional :quality, enum: -> { OpenAI::ImageEditParams::Quality }, nil?: true
@@ -110,16 +111,16 @@ module OpenAI
       # @!attribute response_format
       #   The format in which the generated images are returned. Must be one of `url` or
       #   `b64_json`. URLs are only valid for 60 minutes after the image has been
-      #   generated. This parameter is only supported for `dall-e-2`, as `gpt-image-1`
-      #   will always return base64-encoded images.
+      #   generated. This parameter is only supported for `dall-e-2`, as the GPT image
+      #   models always return base64-encoded images.
       #
       #   @return [Symbol, OpenAI::Models::ImageEditParams::ResponseFormat, nil]
       optional :response_format, enum: -> { OpenAI::ImageEditParams::ResponseFormat }, nil?: true
 
       # @!attribute size
       #   The size of the generated images. Must be one of `1024x1024`, `1536x1024`
-      #   (landscape), `1024x1536` (portrait), or `auto` (default value) for
-      #   `gpt-image-1`, and one of `256x256`, `512x512`, or `1024x1024` for `dall-e-2`.
+      #   (landscape), `1024x1536` (portrait), or `auto` (default value) for the GPT image
+      #   models, and one of `256x256`, `512x512`, or `1024x1024` for `dall-e-2`.
       #
       #   @return [Symbol, OpenAI::Models::ImageEditParams::Size, nil]
       optional :size, enum: -> { OpenAI::ImageEditParams::Size }, nil?: true
@@ -146,7 +147,7 @@ module OpenAI
       #
       #   @param mask [Pathname, StringIO, IO, String, OpenAI::FilePart] An additional image whose fully transparent areas (e.g. where alpha is zero) ind
       #
-      #   @param model [String, Symbol, OpenAI::Models::ImageModel, nil] The model to use for image generation. Only `dall-e-2` and `gpt-image-1` are sup
+      #   @param model [String, Symbol, OpenAI::Models::ImageModel, nil] The model to use for image generation. Only `dall-e-2` and the GPT image models
       #
       #   @param n [Integer, nil] The number of images to generate. Must be between 1 and 10.
       #
@@ -168,7 +169,8 @@ module OpenAI
 
       # The image(s) to edit. Must be a supported image file or an array of images.
       #
-      # For `gpt-image-1`, each image should be a `png`, `webp`, or `jpg` file less than
+      # For the GPT image models (`gpt-image-1`, `gpt-image-1-mini`, and
+      # `gpt-image-1.5`), each image should be a `png`, `webp`, or `jpg` file less than
       # 50MB. You can provide up to 16 images.
       #
       # For `dall-e-2`, you can only provide one image, and it should be a square `png`
@@ -188,9 +190,9 @@ module OpenAI
       end
 
       # Allows to set transparency for the background of the generated image(s). This
-      # parameter is only supported for `gpt-image-1`. Must be one of `transparent`,
-      # `opaque` or `auto` (default value). When `auto` is used, the model will
-      # automatically determine the best background for the image.
+      # parameter is only supported for the GPT image models. Must be one of
+      # `transparent`, `opaque` or `auto` (default value). When `auto` is used, the
+      # model will automatically determine the best background for the image.
       #
       # If `transparent`, the output format needs to support transparency, so it should
       # be set to either `png` (default value) or `webp`.
@@ -219,15 +221,15 @@ module OpenAI
         #   @return [Array<Symbol>]
       end
 
-      # The model to use for image generation. Only `dall-e-2` and `gpt-image-1` are
-      # supported. Defaults to `dall-e-2` unless a parameter specific to `gpt-image-1`
-      # is used.
+      # The model to use for image generation. Only `dall-e-2` and the GPT image models
+      # are supported. Defaults to `dall-e-2` unless a parameter specific to the GPT
+      # image models is used.
       module Model
         extend OpenAI::Internal::Type::Union
 
         variant String
 
-        # The model to use for image generation. Only `dall-e-2` and `gpt-image-1` are supported. Defaults to `dall-e-2` unless a parameter specific to `gpt-image-1` is used.
+        # The model to use for image generation. Only `dall-e-2` and the GPT image models are supported. Defaults to `dall-e-2` unless a parameter specific to the GPT image models is used.
         variant enum: -> { OpenAI::ImageModel }
 
         # @!method self.variants
@@ -235,7 +237,7 @@ module OpenAI
       end
 
       # The format in which the generated images are returned. This parameter is only
-      # supported for `gpt-image-1`. Must be one of `png`, `jpeg`, or `webp`. The
+      # supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`. The
       # default value is `png`.
       module OutputFormat
         extend OpenAI::Internal::Type::Enum
@@ -249,8 +251,8 @@ module OpenAI
       end
 
       # The quality of the image that will be generated. `high`, `medium` and `low` are
-      # only supported for `gpt-image-1`. `dall-e-2` only supports `standard` quality.
-      # Defaults to `auto`.
+      # only supported for the GPT image models. `dall-e-2` only supports `standard`
+      # quality. Defaults to `auto`.
       module Quality
         extend OpenAI::Internal::Type::Enum
 
@@ -266,8 +268,8 @@ module OpenAI
 
       # The format in which the generated images are returned. Must be one of `url` or
       # `b64_json`. URLs are only valid for 60 minutes after the image has been
-      # generated. This parameter is only supported for `dall-e-2`, as `gpt-image-1`
-      # will always return base64-encoded images.
+      # generated. This parameter is only supported for `dall-e-2`, as the GPT image
+      # models always return base64-encoded images.
       module ResponseFormat
         extend OpenAI::Internal::Type::Enum
 
@@ -279,8 +281,8 @@ module OpenAI
       end
 
       # The size of the generated images. Must be one of `1024x1024`, `1536x1024`
-      # (landscape), `1024x1536` (portrait), or `auto` (default value) for
-      # `gpt-image-1`, and one of `256x256`, `512x512`, or `1024x1024` for `dall-e-2`.
+      # (landscape), `1024x1536` (portrait), or `auto` (default value) for the GPT image
+      # models, and one of `256x256`, `512x512`, or `1024x1024` for `dall-e-2`.
       module Size
         extend OpenAI::Internal::Type::Enum
 

@@ -27,7 +27,7 @@ module OpenAI
         # A tool that runs Python code to help generate a response to a prompt.
         variant :code_interpreter, -> { OpenAI::Responses::Tool::CodeInterpreter }
 
-        # A tool that generates images using a model like `gpt-image-1`.
+        # A tool that generates images using the GPT image models.
         variant :image_generation, -> { OpenAI::Responses::Tool::ImageGeneration }
 
         # A tool that allows the model to execute shell commands in a local environment.
@@ -473,8 +473,8 @@ module OpenAI
           # @!attribute model
           #   The image generation model to use. Default: `gpt-image-1`.
           #
-          #   @return [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Model, nil]
-          optional :model, enum: -> { OpenAI::Responses::Tool::ImageGeneration::Model }
+          #   @return [String, Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Model, nil]
+          optional :model, union: -> { OpenAI::Responses::Tool::ImageGeneration::Model }
 
           # @!attribute moderation
           #   Moderation level for the generated image. Default: `auto`.
@@ -520,7 +520,7 @@ module OpenAI
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Responses::Tool::ImageGeneration} for more details.
           #
-          #   A tool that generates images using a model like `gpt-image-1`.
+          #   A tool that generates images using the GPT image models.
           #
           #   @param background [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Background] Background type for the generated image. One of `transparent`,
           #
@@ -528,7 +528,7 @@ module OpenAI
           #
           #   @param input_image_mask [OpenAI::Models::Responses::Tool::ImageGeneration::InputImageMask] Optional mask for inpainting. Contains `image_url`
           #
-          #   @param model [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Model] The image generation model to use. Default: `gpt-image-1`.
+          #   @param model [String, Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Model] The image generation model to use. Default: `gpt-image-1`.
           #
           #   @param moderation [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Moderation] Moderation level for the generated image. Default: `auto`.
           #
@@ -606,13 +606,27 @@ module OpenAI
           #
           # @see OpenAI::Models::Responses::Tool::ImageGeneration#model
           module Model
-            extend OpenAI::Internal::Type::Enum
+            extend OpenAI::Internal::Type::Union
+
+            variant String
+
+            variant const: -> { OpenAI::Models::Responses::Tool::ImageGeneration::Model::GPT_IMAGE_1 }
+
+            variant const: -> { OpenAI::Models::Responses::Tool::ImageGeneration::Model::GPT_IMAGE_1_MINI }
+
+            # @!method self.variants
+            #   @return [Array(String, Symbol)]
+
+            define_sorbet_constant!(:Variants) do
+              T.type_alias { T.any(String, OpenAI::Responses::Tool::ImageGeneration::Model::TaggedSymbol) }
+            end
+
+            # @!group
 
             GPT_IMAGE_1 = :"gpt-image-1"
             GPT_IMAGE_1_MINI = :"gpt-image-1-mini"
 
-            # @!method self.values
-            #   @return [Array<Symbol>]
+            # @!endgroup
           end
 
           # Moderation level for the generated image. Default: `auto`.

@@ -5,6 +5,7 @@ module OpenAI
     module ImageModel
       extend OpenAI::Internal::Type::Enum
 
+      GPT_IMAGE_1_5 = :"gpt-image-1.5"
       DALL_E_2 = :"dall-e-2"
       DALL_E_3 = :"dall-e-3"
       GPT_IMAGE_1 = :"gpt-image-1"
