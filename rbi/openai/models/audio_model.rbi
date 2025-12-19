@@ -13,6 +13,11 @@ module OpenAI
         T.let(:"gpt-4o-transcribe", OpenAI::AudioModel::TaggedSymbol)
       GPT_4O_MINI_TRANSCRIBE =
         T.let(:"gpt-4o-mini-transcribe", OpenAI::AudioModel::TaggedSymbol)
+      GPT_4O_MINI_TRANSCRIBE_2025_12_15 =
+        T.let(
+          :"gpt-4o-mini-transcribe-2025-12-15",
+          OpenAI::AudioModel::TaggedSymbol
+        )
       GPT_4O_TRANSCRIBE_DIARIZE =
         T.let(:"gpt-4o-transcribe-diarize", OpenAI::AudioModel::TaggedSymbol)
 

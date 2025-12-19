@@ -24,10 +24,10 @@ module OpenAI
 
       # The video generation model to use (allowed values: sora-2, sora-2-pro). Defaults
       # to `sora-2`.
-      sig { returns(T.nilable(OpenAI::VideoModel::OrSymbol)) }
+      sig { returns(T.nilable(T.any(String, OpenAI::VideoModel::OrSymbol))) }
       attr_reader :model
 
-      sig { params(model: OpenAI::VideoModel::OrSymbol).void }
+      sig { params(model: T.any(String, OpenAI::VideoModel::OrSymbol)).void }
       attr_writer :model
 
       # Clip duration in seconds (allowed values: 4, 8, 12). Defaults to 4 seconds.
@@ -49,7 +49,7 @@ module OpenAI
         params(
           prompt: String,
           input_reference: OpenAI::Internal::FileInput,
-          model: OpenAI::VideoModel::OrSymbol,
+          model: T.any(String, OpenAI::VideoModel::OrSymbol),
           seconds: OpenAI::VideoSeconds::OrSymbol,
           size: OpenAI::VideoSize::OrSymbol,
           request_options: OpenAI::RequestOptions::OrHash
@@ -77,7 +77,7 @@ module OpenAI
           {
             prompt: String,
             input_reference: OpenAI::Internal::FileInput,
-            model: OpenAI::VideoModel::OrSymbol,
+            model: T.any(String, OpenAI::VideoModel::OrSymbol),
             seconds: OpenAI::VideoSeconds::OrSymbol,
             size: OpenAI::VideoSize::OrSymbol,
             request_options: OpenAI::RequestOptions
