@@ -221,7 +221,8 @@ module OpenAI
         end
 
         type model =
-          :"gpt-realtime"
+          String
+          | :"gpt-realtime"
           | :"gpt-realtime-2025-08-28"
           | :"gpt-4o-realtime-preview"
           | :"gpt-4o-realtime-preview-2024-10-01"
@@ -231,11 +232,15 @@ module OpenAI
           | :"gpt-4o-mini-realtime-preview-2024-12-17"
           | :"gpt-realtime-mini"
           | :"gpt-realtime-mini-2025-10-06"
+          | :"gpt-realtime-mini-2025-12-15"
           | :"gpt-audio-mini"
           | :"gpt-audio-mini-2025-10-06"
+          | :"gpt-audio-mini-2025-12-15"
 
         module Model
-          extend OpenAI::Internal::Type::Enum
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeSession::model]
 
           GPT_REALTIME: :"gpt-realtime"
           GPT_REALTIME_2025_08_28: :"gpt-realtime-2025-08-28"
@@ -247,10 +252,10 @@ module OpenAI
           GPT_4O_MINI_REALTIME_PREVIEW_2024_12_17: :"gpt-4o-mini-realtime-preview-2024-12-17"
           GPT_REALTIME_MINI: :"gpt-realtime-mini"
           GPT_REALTIME_MINI_2025_10_06: :"gpt-realtime-mini-2025-10-06"
+          GPT_REALTIME_MINI_2025_12_15: :"gpt-realtime-mini-2025-12-15"
           GPT_AUDIO_MINI: :"gpt-audio-mini"
           GPT_AUDIO_MINI_2025_10_06: :"gpt-audio-mini-2025-10-06"
-
-          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeSession::model]
+          GPT_AUDIO_MINI_2025_12_15: :"gpt-audio-mini-2025-12-15"
         end
 
         type object = :"realtime.session"

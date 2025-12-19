@@ -144,12 +144,19 @@ module OpenAI
 
         # The Realtime model used for this session.
         sig do
-          returns(T.nilable(OpenAI::Realtime::RealtimeSession::Model::OrSymbol))
+          returns(
+            T.nilable(
+              T.any(String, OpenAI::Realtime::RealtimeSession::Model::OrSymbol)
+            )
+          )
         end
         attr_reader :model
 
         sig do
-          params(model: OpenAI::Realtime::RealtimeSession::Model::OrSymbol).void
+          params(
+            model:
+              T.any(String, OpenAI::Realtime::RealtimeSession::Model::OrSymbol)
+          ).void
         end
         attr_writer :model
 
@@ -318,7 +325,8 @@ module OpenAI
             max_response_output_tokens: T.any(Integer, Symbol),
             modalities:
               T::Array[OpenAI::Realtime::RealtimeSession::Modality::OrSymbol],
-            model: OpenAI::Realtime::RealtimeSession::Model::OrSymbol,
+            model:
+              T.any(String, OpenAI::Realtime::RealtimeSession::Model::OrSymbol),
             object: OpenAI::Realtime::RealtimeSession::Object::OrSymbol,
             output_audio_format:
               OpenAI::Realtime::RealtimeSession::OutputAudioFormat::OrSymbol,
@@ -461,7 +469,11 @@ module OpenAI
               max_response_output_tokens: T.any(Integer, Symbol),
               modalities:
                 T::Array[OpenAI::Realtime::RealtimeSession::Modality::OrSymbol],
-              model: OpenAI::Realtime::RealtimeSession::Model::OrSymbol,
+              model:
+                T.any(
+                  String,
+                  OpenAI::Realtime::RealtimeSession::Model::OrSymbol
+                ),
               object: OpenAI::Realtime::RealtimeSession::Object::OrSymbol,
               output_audio_format:
                 OpenAI::Realtime::RealtimeSession::OutputAudioFormat::OrSymbol,
@@ -659,7 +671,23 @@ module OpenAI
 
         # The Realtime model used for this session.
         module Model
-          extend OpenAI::Internal::Type::Enum
+          extend OpenAI::Internal::Type::Union
+
+          Variants =
+            T.type_alias do
+              T.any(
+                String,
+                OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
+              )
+            end
+
+          sig do
+            override.returns(
+              T::Array[OpenAI::Realtime::RealtimeSession::Model::Variants]
+            )
+          end
+          def self.variants
+          end
 
           TaggedSymbol =
             T.type_alias do
@@ -717,6 +745,11 @@ module OpenAI
               :"gpt-realtime-mini-2025-10-06",
               OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
             )
+          GPT_REALTIME_MINI_2025_12_15 =
+            T.let(
+              :"gpt-realtime-mini-2025-12-15",
+              OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
+            )
           GPT_AUDIO_MINI =
             T.let(
               :"gpt-audio-mini",
@@ -727,14 +760,11 @@ module OpenAI
               :"gpt-audio-mini-2025-10-06",
               OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
             )
-
-          sig do
-            override.returns(
-              T::Array[OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol]
+          GPT_AUDIO_MINI_2025_12_15 =
+            T.let(
+              :"gpt-audio-mini-2025-12-15",
+              OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
             )
-          end
-          def self.values
-          end
         end
 
         # The object type. Always `realtime.session`.

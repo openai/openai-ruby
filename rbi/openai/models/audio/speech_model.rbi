@@ -14,6 +14,11 @@ module OpenAI
         TTS_1_HD = T.let(:"tts-1-hd", OpenAI::Audio::SpeechModel::TaggedSymbol)
         GPT_4O_MINI_TTS =
           T.let(:"gpt-4o-mini-tts", OpenAI::Audio::SpeechModel::TaggedSymbol)
+        GPT_4O_MINI_TTS_2025_12_15 =
+          T.let(
+            :"gpt-4o-mini-tts-2025-12-15",
+            OpenAI::Audio::SpeechModel::TaggedSymbol
+          )
 
         sig do
           override.returns(T::Array[OpenAI::Audio::SpeechModel::TaggedSymbol])

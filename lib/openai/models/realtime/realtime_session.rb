@@ -94,8 +94,8 @@ module OpenAI
         # @!attribute model
         #   The Realtime model used for this session.
         #
-        #   @return [Symbol, OpenAI::Models::Realtime::RealtimeSession::Model, nil]
-        optional :model, enum: -> { OpenAI::Realtime::RealtimeSession::Model }
+        #   @return [String, Symbol, OpenAI::Models::Realtime::RealtimeSession::Model, nil]
+        optional :model, union: -> { OpenAI::Realtime::RealtimeSession::Model }
 
         # @!attribute object
         #   The object type. Always `realtime.session`.
@@ -205,7 +205,7 @@ module OpenAI
         #
         #   @param modalities [Array<Symbol, OpenAI::Models::Realtime::RealtimeSession::Modality>] The set of modalities the model can respond with. To disable audio,
         #
-        #   @param model [Symbol, OpenAI::Models::Realtime::RealtimeSession::Model] The Realtime model used for this session.
+        #   @param model [String, Symbol, OpenAI::Models::Realtime::RealtimeSession::Model] The Realtime model used for this session.
         #
         #   @param object [Symbol, OpenAI::Models::Realtime::RealtimeSession::Object] The object type. Always `realtime.session`.
         #
@@ -306,7 +306,46 @@ module OpenAI
         #
         # @see OpenAI::Models::Realtime::RealtimeSession#model
         module Model
-          extend OpenAI::Internal::Type::Enum
+          extend OpenAI::Internal::Type::Union
+
+          variant String
+
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSession::Model::GPT_REALTIME }
+
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSession::Model::GPT_REALTIME_2025_08_28 }
+
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSession::Model::GPT_4O_REALTIME_PREVIEW }
+
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSession::Model::GPT_4O_REALTIME_PREVIEW_2024_10_01 }
+
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSession::Model::GPT_4O_REALTIME_PREVIEW_2024_12_17 }
+
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSession::Model::GPT_4O_REALTIME_PREVIEW_2025_06_03 }
+
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSession::Model::GPT_4O_MINI_REALTIME_PREVIEW }
+
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSession::Model::GPT_4O_MINI_REALTIME_PREVIEW_2024_12_17 }
+
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSession::Model::GPT_REALTIME_MINI }
+
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSession::Model::GPT_REALTIME_MINI_2025_10_06 }
+
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSession::Model::GPT_REALTIME_MINI_2025_12_15 }
+
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSession::Model::GPT_AUDIO_MINI }
+
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSession::Model::GPT_AUDIO_MINI_2025_10_06 }
+
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSession::Model::GPT_AUDIO_MINI_2025_12_15 }
+
+          # @!method self.variants
+          #   @return [Array(String, Symbol)]
+
+          define_sorbet_constant!(:Variants) do
+            T.type_alias { T.any(String, OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol) }
+          end
+
+          # @!group
 
           GPT_REALTIME = :"gpt-realtime"
           GPT_REALTIME_2025_08_28 = :"gpt-realtime-2025-08-28"
@@ -318,11 +357,12 @@ module OpenAI
           GPT_4O_MINI_REALTIME_PREVIEW_2024_12_17 = :"gpt-4o-mini-realtime-preview-2024-12-17"
           GPT_REALTIME_MINI = :"gpt-realtime-mini"
           GPT_REALTIME_MINI_2025_10_06 = :"gpt-realtime-mini-2025-10-06"
+          GPT_REALTIME_MINI_2025_12_15 = :"gpt-realtime-mini-2025-12-15"
           GPT_AUDIO_MINI = :"gpt-audio-mini"
           GPT_AUDIO_MINI_2025_10_06 = :"gpt-audio-mini-2025-10-06"
+          GPT_AUDIO_MINI_2025_12_15 = :"gpt-audio-mini-2025-12-15"
 
-          # @!method self.values
-          #   @return [Array<Symbol>]
+          # @!endgroup
         end
 
         # The object type. Always `realtime.session`.

@@ -16,7 +16,7 @@ module OpenAI
 
         # @!attribute model
         #   One of the available [TTS models](https://platform.openai.com/docs/models#tts):
-        #   `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.
+        #   `tts-1`, `tts-1-hd`, `gpt-4o-mini-tts`, or `gpt-4o-mini-tts-2025-12-15`.
         #
         #   @return [String, Symbol, OpenAI::Models::Audio::SpeechModel]
         required :model, union: -> { OpenAI::Audio::SpeechCreateParams::Model }
@@ -79,13 +79,13 @@ module OpenAI
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         # One of the available [TTS models](https://platform.openai.com/docs/models#tts):
-        # `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.
+        # `tts-1`, `tts-1-hd`, `gpt-4o-mini-tts`, or `gpt-4o-mini-tts-2025-12-15`.
         module Model
           extend OpenAI::Internal::Type::Union
 
           variant String
 
-          # One of the available [TTS models](https://platform.openai.com/docs/models#tts): `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.
+          # One of the available [TTS models](https://platform.openai.com/docs/models#tts): `tts-1`, `tts-1-hd`, `gpt-4o-mini-tts`, or `gpt-4o-mini-tts-2025-12-15`.
           variant enum: -> { OpenAI::Audio::SpeechModel }
 
           # @!method self.variants

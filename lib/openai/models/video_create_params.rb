@@ -23,8 +23,8 @@ module OpenAI
       #   The video generation model to use (allowed values: sora-2, sora-2-pro). Defaults
       #   to `sora-2`.
       #
-      #   @return [Symbol, OpenAI::Models::VideoModel, nil]
-      optional :model, enum: -> { OpenAI::VideoModel }
+      #   @return [String, Symbol, OpenAI::Models::VideoModel, nil]
+      optional :model, union: -> { OpenAI::VideoModel }
 
       # @!attribute seconds
       #   Clip duration in seconds (allowed values: 4, 8, 12). Defaults to 4 seconds.
@@ -47,7 +47,7 @@ module OpenAI
       #
       #   @param input_reference [Pathname, StringIO, IO, String, OpenAI::FilePart] Optional image reference that guides generation.
       #
-      #   @param model [Symbol, OpenAI::Models::VideoModel] The video generation model to use (allowed values: sora-2, sora-2-pro). Defaults
+      #   @param model [String, Symbol, OpenAI::Models::VideoModel] The video generation model to use (allowed values: sora-2, sora-2-pro). Defaults
       #
       #   @param seconds [Symbol, OpenAI::Models::VideoSeconds] Clip duration in seconds (allowed values: 4, 8, 12). Defaults to 4 seconds.
       #
