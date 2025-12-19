@@ -41,8 +41,9 @@ module OpenAI
           # flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.
           file:,
           # ID of the model to use. The options are `gpt-4o-transcribe`,
-          # `gpt-4o-mini-transcribe`, `whisper-1` (which is powered by our open source
-          # Whisper V2 model), and `gpt-4o-transcribe-diarize`.
+          # `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `whisper-1`
+          # (which is powered by our open source Whisper V2 model), and
+          # `gpt-4o-transcribe-diarize`.
           model:,
           # Controls how the audio is cut into chunks. When set to `"auto"`, the server
           # first normalizes loudness and then uses voice activity detection (VAD) to choose
@@ -54,9 +55,9 @@ module OpenAI
           # Additional information to include in the transcription response. `logprobs` will
           # return the log probabilities of the tokens in the response to understand the
           # model's confidence in the transcription. `logprobs` only works with
-          # response_format set to `json` and only with the models `gpt-4o-transcribe` and
-          # `gpt-4o-mini-transcribe`. This field is not supported when using
-          # `gpt-4o-transcribe-diarize`.
+          # response_format set to `json` and only with the models `gpt-4o-transcribe`,
+          # `gpt-4o-mini-transcribe`, and `gpt-4o-mini-transcribe-2025-12-15`. This field is
+          # not supported when using `gpt-4o-transcribe-diarize`.
           include: nil,
           # Optional list of speaker names that correspond to the audio samples provided in
           # `known_speaker_references[]`. Each entry should be a short identifier (for
@@ -143,8 +144,9 @@ module OpenAI
           # flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.
           file:,
           # ID of the model to use. The options are `gpt-4o-transcribe`,
-          # `gpt-4o-mini-transcribe`, `whisper-1` (which is powered by our open source
-          # Whisper V2 model), and `gpt-4o-transcribe-diarize`.
+          # `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `whisper-1`
+          # (which is powered by our open source Whisper V2 model), and
+          # `gpt-4o-transcribe-diarize`.
           model:,
           # Controls how the audio is cut into chunks. When set to `"auto"`, the server
           # first normalizes loudness and then uses voice activity detection (VAD) to choose
@@ -156,9 +158,9 @@ module OpenAI
           # Additional information to include in the transcription response. `logprobs` will
           # return the log probabilities of the tokens in the response to understand the
           # model's confidence in the transcription. `logprobs` only works with
-          # response_format set to `json` and only with the models `gpt-4o-transcribe` and
-          # `gpt-4o-mini-transcribe`. This field is not supported when using
-          # `gpt-4o-transcribe-diarize`.
+          # response_format set to `json` and only with the models `gpt-4o-transcribe`,
+          # `gpt-4o-mini-transcribe`, and `gpt-4o-mini-transcribe-2025-12-15`. This field is
+          # not supported when using `gpt-4o-transcribe-diarize`.
           include: nil,
           # Optional list of speaker names that correspond to the audio samples provided in
           # `known_speaker_references[]`. Each entry should be a short identifier (for

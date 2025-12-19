@@ -203,9 +203,13 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_REALTIME_MINI_2025_10_06 }
 
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_REALTIME_MINI_2025_12_15 }
+
           variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_AUDIO_MINI }
 
           variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_AUDIO_MINI_2025_10_06 }
+
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_AUDIO_MINI_2025_12_15 }
 
           # @!method self.variants
           #   @return [Array(String, Symbol)]
@@ -226,8 +230,10 @@ module OpenAI
           GPT_4O_MINI_REALTIME_PREVIEW_2024_12_17 = :"gpt-4o-mini-realtime-preview-2024-12-17"
           GPT_REALTIME_MINI = :"gpt-realtime-mini"
           GPT_REALTIME_MINI_2025_10_06 = :"gpt-realtime-mini-2025-10-06"
+          GPT_REALTIME_MINI_2025_12_15 = :"gpt-realtime-mini-2025-12-15"
           GPT_AUDIO_MINI = :"gpt-audio-mini"
           GPT_AUDIO_MINI_2025_10_06 = :"gpt-audio-mini-2025-10-06"
+          GPT_AUDIO_MINI_2025_12_15 = :"gpt-audio-mini-2025-12-15"
 
           # @!endgroup
         end

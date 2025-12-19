@@ -8,7 +8,7 @@ module OpenAI
         params(
           prompt: String,
           input_reference: OpenAI::Internal::FileInput,
-          model: OpenAI::VideoModel::OrSymbol,
+          model: T.any(String, OpenAI::VideoModel::OrSymbol),
           seconds: OpenAI::VideoSeconds::OrSymbol,
           size: OpenAI::VideoSize::OrSymbol,
           request_options: OpenAI::RequestOptions::OrHash

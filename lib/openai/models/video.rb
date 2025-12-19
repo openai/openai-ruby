@@ -37,8 +37,8 @@ module OpenAI
       # @!attribute model
       #   The video generation model that produced the job.
       #
-      #   @return [Symbol, OpenAI::Models::VideoModel]
-      required :model, enum: -> { OpenAI::VideoModel }
+      #   @return [String, Symbol, OpenAI::Models::VideoModel]
+      required :model, union: -> { OpenAI::VideoModel }
 
       # @!attribute object
       #   The object type, which is always `video`.
@@ -95,7 +95,7 @@ module OpenAI
       #
       #   @param expires_at [Integer, nil] Unix timestamp (seconds) for when the downloadable assets expire, if set.
       #
-      #   @param model [Symbol, OpenAI::Models::VideoModel] The video generation model that produced the job.
+      #   @param model [String, Symbol, OpenAI::Models::VideoModel] The video generation model that produced the job.
       #
       #   @param progress [Integer] Approximate completion percentage for the generation task.
       #

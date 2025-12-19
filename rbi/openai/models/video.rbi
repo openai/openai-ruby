@@ -29,7 +29,7 @@ module OpenAI
       attr_accessor :expires_at
 
       # The video generation model that produced the job.
-      sig { returns(OpenAI::VideoModel::TaggedSymbol) }
+      sig { returns(OpenAI::VideoModel::Variants) }
       attr_accessor :model
 
       # The object type, which is always `video`.
@@ -68,7 +68,7 @@ module OpenAI
           created_at: Integer,
           error: T.nilable(OpenAI::VideoCreateError::OrHash),
           expires_at: T.nilable(Integer),
-          model: OpenAI::VideoModel::OrSymbol,
+          model: T.any(String, OpenAI::VideoModel::OrSymbol),
           progress: Integer,
           prompt: T.nilable(String),
           remixed_from_video_id: T.nilable(String),
@@ -116,7 +116,7 @@ module OpenAI
             created_at: Integer,
             error: T.nilable(OpenAI::VideoCreateError),
             expires_at: T.nilable(Integer),
-            model: OpenAI::VideoModel::TaggedSymbol,
+            model: OpenAI::VideoModel::Variants,
             object: Symbol,
             progress: Integer,
             prompt: T.nilable(String),
