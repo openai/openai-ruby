@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.42.0 (2025-12-19)
+
+Full Changelog: [v0.41.0...v0.42.0](https://github.com/openai/openai-ruby/compare/v0.41.0...v0.42.0)
+
+### Bug Fixes
+
+* issue where json.parse errors when receiving HTTP 204 with nobody ([7984c03](https://github.com/openai/openai-ruby/commit/7984c0396f5acd1b801514e280415090deb0cd06))
+* rebuild ([52b19e9](https://github.com/openai/openai-ruby/commit/52b19e9b4b0344c77bec4603df3d4f16ee4cd720))
+
 ## 0.41.0 (2025-12-16)
 
 Full Changelog: [v0.40.0...v0.41.0](https://github.com/openai/openai-ruby/compare/v0.40.0...v0.41.0)
