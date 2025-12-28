@@ -28,4 +28,5 @@ Gem::Specification.new do |s|
 
   s.add_dependency "base64"
   s.add_dependency "connection_pool"
+  s.add_dependency "cgi"
 end
