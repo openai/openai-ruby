@@ -4,7 +4,7 @@ require_relative "../../test_helper"
 
 class OpenAI::Test::Resources::FineTuning::JobsTest < OpenAI::Test::ResourceTest
   def test_create_required_params
-    response = @openai.fine_tuning.jobs.create(model: :"babbage-002", training_file: "file-abc123")
+    response = @openai.fine_tuning.jobs.create(model: :"gpt-4o-mini", training_file: "file-abc123")
 
     assert_pattern do
       response => OpenAI::FineTuning::FineTuningJob

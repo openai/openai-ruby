@@ -30,10 +30,7 @@ openai = OpenAI::Client.new(
   api_key: ENV["OPENAI_API_KEY"] # This is the default and can be omitted
 )
 
-chat_completion = openai.chat.completions.create(
-  messages: [{role: "user", content: "Say this is a test"}],
-  model: :"gpt-5.2"
-)
+chat_completion = openai.chat.completions.create(messages: [{role: "user", content: "Say this is a test"}], model: "gpt-4o")
 
 puts(chat_completion)
 ```
@@ -45,7 +42,7 @@ We provide support for streaming responses using Server-Sent Events (SSE).
 ```ruby
 stream = openai.responses.stream(
   input: "Write a haiku about OpenAI.",
-  model: :"gpt-5.2"
+  model: "gpt-4o"
 )
 
 stream.each do |event|
@@ -298,7 +295,7 @@ When the library is unable to connect to the API, or if the API returns a non-su
 
 ```ruby
 begin
-  job = openai.fine_tuning.jobs.create(model: :"babbage-002", training_file: "file-abc123")
+  job = openai.fine_tuning.jobs.create(model: "gpt-4o", training_file: "file-abc123")
 rescue OpenAI::Errors::APIConnectionError => e
   puts("The server could not be reached")
   puts(e.cause)  # an underlying Exception, likely raised within `net/http`
@@ -343,7 +340,7 @@ openai = OpenAI::Client.new(
 # Or, configure per-request:
 openai.chat.completions.create(
   messages: [{role: "user", content: "How can I get the name of the current day in JavaScript?"}],
-  model: :"gpt-5.2",
+  model: "gpt-4o",
   request_options: {max_retries: 5}
 )
 ```
@@ -361,7 +358,7 @@ openai = OpenAI::Client.new(
 # Or, configure per-request:
 openai.chat.completions.create(
   messages: [{role: "user", content: "How can I list all files in a directory using Python?"}],
-  model: :"gpt-5.2",
+  model: "gpt-4o",
   request_options: {timeout: 5}
 )
 ```
@@ -396,7 +393,7 @@ Note: the `extra_` parameters of the same name overrides the documented paramete
 chat_completion =
   openai.chat.completions.create(
     messages: [{role: "user", content: "How can I get the name of the current day in JavaScript?"}],
-    model: :"gpt-5.2",
+    model: "gpt-4o",
     request_options: {
       extra_query: {my_query_parameter: value},
       extra_body: {my_body_parameter: value},
@@ -444,7 +441,7 @@ You can provide typesafe request parameters like so:
 ```ruby
 openai.chat.completions.create(
   messages: [OpenAI::Chat::ChatCompletionUserMessageParam.new(content: "Say this is a test")],
-  model: :"gpt-5.2"
+  model: "gpt-4o"
 )
 ```
 
@@ -452,15 +449,12 @@ Or, equivalently:
 
 ```ruby
 # Hashes work, but are not typesafe:
-openai.chat.completions.create(
-  messages: [{role: "user", content: "Say this is a test"}],
-  model: :"gpt-5.2"
-)
+openai.chat.completions.create(messages: [{role: "user", content: "Say this is a test"}], model: "gpt-4o")
 
 # You can also splat a full Params class:
 params = OpenAI::Chat::CompletionCreateParams.new(
   messages: [OpenAI::Chat::ChatCompletionUserMessageParam.new(content: "Say this is a test")],
-  model: :"gpt-5.2"
+  model: "gpt-4o"
 )
 openai.chat.completions.create(**params)
 ```
