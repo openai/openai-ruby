@@ -38,6 +38,7 @@ module OpenAI
         required :type, const: :shell_call_output
 
         # @!attribute created_by
+        #   The identifier of the actor that created the item.
         #
         #   @return [String, nil]
         optional :created_by, String
@@ -47,7 +48,7 @@ module OpenAI
         #   {OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput} for more
         #   details.
         #
-        #   The output of a shell tool call.
+        #   The output of a shell tool call that was emitted.
         #
         #   @param id [String] The unique ID of the shell call output. Populated when this item is returned via
         #
@@ -57,7 +58,7 @@ module OpenAI
         #
         #   @param output [Array<OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::Output>] An array of shell call output contents
         #
-        #   @param created_by [String]
+        #   @param created_by [String] The identifier of the actor that created the item.
         #
         #   @param type [Symbol, :shell_call_output] The type of the shell call output. Always `shell_call_output`.
 
@@ -70,16 +71,19 @@ module OpenAI
           required :outcome, union: -> { OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output::Outcome }
 
           # @!attribute stderr
+          #   The standard error output that was captured.
           #
           #   @return [String]
           required :stderr, String
 
           # @!attribute stdout
+          #   The standard output that was captured.
           #
           #   @return [String]
           required :stdout, String
 
           # @!attribute created_by
+          #   The identifier of the actor that created the item.
           #
           #   @return [String, nil]
           optional :created_by, String
@@ -89,15 +93,15 @@ module OpenAI
           #   {OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::Output} for
           #   more details.
           #
-          #   The content of a shell call output.
+          #   The content of a shell tool call output that was emitted.
           #
           #   @param outcome [OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::Output::Outcome::Timeout, OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::Output::Outcome::Exit] Represents either an exit outcome (with an exit code) or a timeout outcome for a
           #
-          #   @param stderr [String]
+          #   @param stderr [String] The standard error output that was captured.
           #
-          #   @param stdout [String]
+          #   @param stdout [String] The standard output that was captured.
           #
-          #   @param created_by [String]
+          #   @param created_by [String] The identifier of the actor that created the item.
 
           # Represents either an exit outcome (with an exit code) or a timeout outcome for a
           # shell call output chunk.

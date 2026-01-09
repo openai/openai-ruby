@@ -23,10 +23,10 @@ module OpenAI
           optional :format_, union: -> { OpenAI::Realtime::RealtimeAudioFormats }, api_name: :format
 
           # @!attribute voice
-          #   The voice the model uses to respond. Voice cannot be changed during the session
-          #   once the model has responded with audio at least once. Current voice options are
-          #   `alloy`, `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`,
-          #   and `cedar`. We recommend `marin` and `cedar` for best quality.
+          #   The voice the model uses to respond. Supported built-in voices are `alloy`,
+          #   `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`, and
+          #   `cedar`. Voice cannot be changed during the session once the model has responded
+          #   with audio at least once.
           #
           #   @return [String, Symbol, OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice, nil]
           optional :voice, union: -> { OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice }
@@ -38,12 +38,12 @@ module OpenAI
           #
           #   @param format_ [OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMU, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMA] The format of the output audio.
           #
-          #   @param voice [String, Symbol, OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice] The voice the model uses to respond. Voice cannot be changed during the
+          #   @param voice [String, Symbol, OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice] The voice the model uses to respond. Supported built-in voices are `alloy`, `ash
 
-          # The voice the model uses to respond. Voice cannot be changed during the session
-          # once the model has responded with audio at least once. Current voice options are
-          # `alloy`, `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`,
-          # and `cedar`. We recommend `marin` and `cedar` for best quality.
+          # The voice the model uses to respond. Supported built-in voices are `alloy`,
+          # `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`, and
+          # `cedar`. Voice cannot be changed during the session once the model has responded
+          # with audio at least once.
           #
           # @see OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output#voice
           module Voice

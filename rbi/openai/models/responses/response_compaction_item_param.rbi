@@ -12,6 +12,7 @@ module OpenAI
             )
           end
 
+        # The encrypted content of the compaction summary.
         sig { returns(String) }
         attr_accessor :encrypted_content
 
@@ -33,6 +34,7 @@ module OpenAI
           ).returns(T.attached_class)
         end
         def self.new(
+          # The encrypted content of the compaction summary.
           encrypted_content:,
           # The ID of the compaction item.
           id: nil,

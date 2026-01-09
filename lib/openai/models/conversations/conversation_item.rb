@@ -57,7 +57,7 @@ module OpenAI
         # A tool call that executes one or more shell commands in a managed environment.
         variant :shell_call, -> { OpenAI::Responses::ResponseFunctionShellToolCall }
 
-        # The output of a shell tool call.
+        # The output of a shell tool call that was emitted.
         variant :shell_call_output, -> { OpenAI::Responses::ResponseFunctionShellToolCallOutput }
 
         # A tool call that applies file diffs by creating, deleting, or updating files.

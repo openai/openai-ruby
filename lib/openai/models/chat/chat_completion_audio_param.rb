@@ -12,8 +12,9 @@ module OpenAI
         required :format_, enum: -> { OpenAI::Chat::ChatCompletionAudioParam::Format }, api_name: :format
 
         # @!attribute voice
-        #   The voice the model uses to respond. Supported voices are `alloy`, `ash`,
-        #   `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`, `sage`, and `shimmer`.
+        #   The voice the model uses to respond. Supported built-in voices are `alloy`,
+        #   `ash`, `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`, `sage`, `shimmer`,
+        #   `marin`, and `cedar`.
         #
         #   @return [String, Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice]
         required :voice, union: -> { OpenAI::Chat::ChatCompletionAudioParam::Voice }
@@ -28,7 +29,7 @@ module OpenAI
         #
         #   @param format_ [Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Format] Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`,
         #
-        #   @param voice [String, Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice] The voice the model uses to respond. Supported voices are
+        #   @param voice [String, Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice] The voice the model uses to respond. Supported built-in voices are `alloy`, `ash
 
         # Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`, `opus`,
         # or `pcm16`.
@@ -48,8 +49,9 @@ module OpenAI
           #   @return [Array<Symbol>]
         end
 
-        # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
-        # `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`, `sage`, and `shimmer`.
+        # The voice the model uses to respond. Supported built-in voices are `alloy`,
+        # `ash`, `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`, `sage`, `shimmer`,
+        # `marin`, and `cedar`.
         #
         # @see OpenAI::Models::Chat::ChatCompletionAudioParam#voice
         module Voice

@@ -16,6 +16,7 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :id
 
+        # The encrypted content that was produced by compaction.
         sig { returns(String) }
         attr_accessor :encrypted_content
 
@@ -23,6 +24,7 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
+        # The identifier of the actor that created the item.
         sig { returns(T.nilable(String)) }
         attr_reader :created_by
 
@@ -42,7 +44,9 @@ module OpenAI
         def self.new(
           # The unique ID of the compaction item.
           id:,
+          # The encrypted content that was produced by compaction.
           encrypted_content:,
+          # The identifier of the actor that created the item.
           created_by: nil,
           # The type of the item. Always `compaction`.
           type: :compaction

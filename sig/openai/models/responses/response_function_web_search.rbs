@@ -44,6 +44,7 @@ module OpenAI
             {
               query: String,
               type: :search,
+              queries: ::Array[String],
               sources: ::Array[OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source]
             }
 
@@ -51,6 +52,10 @@ module OpenAI
             attr_accessor query: String
 
             attr_accessor type: :search
+
+            attr_reader queries: ::Array[String]?
+
+            def queries=: (::Array[String]) -> ::Array[String]
 
             attr_reader sources: ::Array[OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source]?
 
@@ -60,6 +65,7 @@ module OpenAI
 
             def initialize: (
               query: String,
+              ?queries: ::Array[String],
               ?sources: ::Array[OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source],
               ?type: :search
             ) -> void
@@ -67,6 +73,7 @@ module OpenAI
             def to_hash: -> {
               query: String,
               type: :search,
+              queries: ::Array[String],
               sources: ::Array[OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source]
             }
 

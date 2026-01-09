@@ -344,6 +344,7 @@ module OpenAI
           # A text input to the model, equivalent to a text input with the `user` role.
           variant String
 
+          # A list of one or many input items to the model, containing different content types.
           variant -> { OpenAI::Models::Responses::ResponseCompactParams::Input::ResponseInputItemArray }
 
           # @!method self.variants
