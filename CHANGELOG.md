@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.43.0 (2026-01-09)
+
+Full Changelog: [v0.42.0...v0.43.0](https://github.com/openai/openai-ruby/compare/v0.42.0...v0.43.0)
+
+### Features
+
+* **api:** add new Response completed_at prop ([c32e1c2](https://github.com/openai/openai-ruby/commit/c32e1c2a0a0ae6a9b7724e1c6d251ba14e8499e1))
+
+
+### Chores
+
+* add ci tests for ruby 4 compatibility [#235](https://github.com/openai/openai-ruby/issues/235) ([#236](https://github.com/openai/openai-ruby/issues/236)) ([1aa0d7a](https://github.com/openai/openai-ruby/commit/1aa0d7abf5a4714fa28cfe7ee5aecefbe2c683d2))
+* **internal:** codegen related update ([ef23de3](https://github.com/openai/openai-ruby/commit/ef23de347b5f541853a32a288cd02a54938793cf))
+* **internal:** use different example values for some enums ([8b6c4ad](https://github.com/openai/openai-ruby/commit/8b6c4ade813244e8c65690c66fe09f2566dd3ff0))
+* move `cgi` into dependencies for ruby 4 ([bd9c798](https://github.com/openai/openai-ruby/commit/bd9c798552a3d378ec943c7e07d6cf1334f72b1d))
+
 ## 0.42.0 (2025-12-19)
 
 Full Changelog: [v0.41.0...v0.42.0](https://github.com/openai/openai-ruby/compare/v0.41.0...v0.42.0)
