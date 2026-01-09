@@ -139,8 +139,13 @@ module OpenAI
         sig { returns(T.nilable(T::Boolean)) }
         attr_accessor :background
 
-        # The conversation that this response belongs to. Input items and output items
-        # from this response are automatically added to this conversation.
+        # Unix timestamp (in seconds) of when this Response was completed. Only present
+        # when the status is `completed`.
+        sig { returns(T.nilable(Float)) }
+        attr_accessor :completed_at
+
+        # The conversation that this response belonged to. Input items and output items
+        # from this response were automatically added to this conversation.
         sig { returns(T.nilable(OpenAI::Responses::Response::Conversation)) }
         attr_reader :conversation
 
@@ -380,6 +385,7 @@ module OpenAI
               ],
             top_p: T.nilable(Float),
             background: T.nilable(T::Boolean),
+            completed_at: T.nilable(Float),
             conversation:
               T.nilable(OpenAI::Responses::Response::Conversation::OrHash),
             max_output_tokens: T.nilable(Integer),
@@ -481,8 +487,11 @@ module OpenAI
           # Whether to run the model response in the background.
           # [Learn more](https://platform.openai.com/docs/guides/background).
           background: nil,
-          # The conversation that this response belongs to. Input items and output items
-          # from this response are automatically added to this conversation.
+          # Unix timestamp (in seconds) of when this Response was completed. Only present
+          # when the status is `completed`.
+          completed_at: nil,
+          # The conversation that this response belonged to. Input items and output items
+          # from this response were automatically added to this conversation.
           conversation: nil,
           # An upper bound for the number of tokens that can be generated for a response,
           # including visible output tokens and
@@ -592,6 +601,7 @@ module OpenAI
               tools: T::Array[OpenAI::Responses::Tool::Variants],
               top_p: T.nilable(Float),
               background: T.nilable(T::Boolean),
+              completed_at: T.nilable(Float),
               conversation:
                 T.nilable(OpenAI::Responses::Response::Conversation),
               max_output_tokens: T.nilable(Integer),
@@ -782,15 +792,15 @@ module OpenAI
               )
             end
 
-          # The unique ID of the conversation.
+          # The unique ID of the conversation that this response was associated with.
           sig { returns(String) }
           attr_accessor :id
 
-          # The conversation that this response belongs to. Input items and output items
-          # from this response are automatically added to this conversation.
+          # The conversation that this response belonged to. Input items and output items
+          # from this response were automatically added to this conversation.
           sig { params(id: String).returns(T.attached_class) }
           def self.new(
-            # The unique ID of the conversation.
+            # The unique ID of the conversation that this response was associated with.
             id:
           )
           end

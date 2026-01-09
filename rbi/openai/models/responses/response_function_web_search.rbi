@@ -113,13 +113,20 @@ module OpenAI
                 )
               end
 
-            # The search query.
+            # [DEPRECATED] The search query.
             sig { returns(String) }
             attr_accessor :query
 
             # The action type.
             sig { returns(Symbol) }
             attr_accessor :type
+
+            # The search queries.
+            sig { returns(T.nilable(T::Array[String])) }
+            attr_reader :queries
+
+            sig { params(queries: T::Array[String]).void }
+            attr_writer :queries
 
             # The sources used in the search.
             sig do
@@ -147,6 +154,7 @@ module OpenAI
             sig do
               params(
                 query: String,
+                queries: T::Array[String],
                 sources:
                   T::Array[
                     OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source::OrHash
@@ -155,8 +163,10 @@ module OpenAI
               ).returns(T.attached_class)
             end
             def self.new(
-              # The search query.
+              # [DEPRECATED] The search query.
               query:,
+              # The search queries.
+              queries: nil,
               # The sources used in the search.
               sources: nil,
               # The action type.
@@ -169,6 +179,7 @@ module OpenAI
                 {
                   query: String,
                   type: Symbol,
+                  queries: T::Array[String],
                   sources:
                     T::Array[
                       OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source

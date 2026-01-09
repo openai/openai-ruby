@@ -40,13 +40,14 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
+        # The identifier of the actor that created the item.
         sig { returns(T.nilable(String)) }
         attr_reader :created_by
 
         sig { params(created_by: String).void }
         attr_writer :created_by
 
-        # The output of a shell tool call.
+        # The output of a shell tool call that was emitted.
         sig do
           params(
             id: String,
@@ -71,6 +72,7 @@ module OpenAI
           max_output_length:,
           # An array of shell call output contents
           output:,
+          # The identifier of the actor that created the item.
           created_by: nil,
           # The type of the shell call output. Always `shell_call_output`.
           type: :shell_call_output
@@ -113,19 +115,22 @@ module OpenAI
           end
           attr_accessor :outcome
 
+          # The standard error output that was captured.
           sig { returns(String) }
           attr_accessor :stderr
 
+          # The standard output that was captured.
           sig { returns(String) }
           attr_accessor :stdout
 
+          # The identifier of the actor that created the item.
           sig { returns(T.nilable(String)) }
           attr_reader :created_by
 
           sig { params(created_by: String).void }
           attr_writer :created_by
 
-          # The content of a shell call output.
+          # The content of a shell tool call output that was emitted.
           sig do
             params(
               outcome:
@@ -142,8 +147,11 @@ module OpenAI
             # Represents either an exit outcome (with an exit code) or a timeout outcome for a
             # shell call output chunk.
             outcome:,
+            # The standard error output that was captured.
             stderr:,
+            # The standard output that was captured.
             stdout:,
+            # The identifier of the actor that created the item.
             created_by: nil
           )
           end

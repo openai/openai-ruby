@@ -45,7 +45,8 @@ module OpenAI
       # {OpenAI::Models::ImageEditParams} for more details.
       #
       # Creates an edited or extended image given one or more source images and a
-      # prompt. This endpoint only supports `gpt-image-1` and `dall-e-2`.
+      # prompt. This endpoint supports GPT Image models (`gpt-image-1.5`, `gpt-image-1`,
+      # and `gpt-image-1-mini`) and `dall-e-2`.
       #
       # @overload edit(image:, prompt:, background: nil, input_fidelity: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, size: nil, user: nil, request_options: {})
       #
@@ -104,7 +105,8 @@ module OpenAI
       # {OpenAI::Models::ImageEditParams} for more details.
       #
       # Creates an edited or extended image given one or more source images and a
-      # prompt. This endpoint only supports `gpt-image-1` and `dall-e-2`.
+      # prompt. This endpoint supports GPT Image models (`gpt-image-1.5`, `gpt-image-1`,
+      # and `gpt-image-1-mini`) and `dall-e-2`.
       #
       # @overload edit_stream_raw(image:, prompt:, background: nil, input_fidelity: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, size: nil, user: nil, request_options: {})
       #

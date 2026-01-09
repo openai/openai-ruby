@@ -359,6 +359,7 @@ module OpenAI
             # A JSON string of the output of the function tool call.
             variant String
 
+            # An array of content outputs (text, image, file) for the function tool call.
             variant -> { OpenAI::Responses::ResponseFunctionCallOutputItemList }
 
             # @!method self.variants

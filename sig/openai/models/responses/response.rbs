@@ -18,6 +18,7 @@ module OpenAI
           tools: ::Array[OpenAI::Models::Responses::tool],
           top_p: Float?,
           background: bool?,
+          completed_at: Float?,
           conversation: OpenAI::Responses::Response::Conversation?,
           max_output_tokens: Integer?,
           max_tool_calls: Integer?,
@@ -66,6 +67,8 @@ module OpenAI
         attr_accessor top_p: Float?
 
         attr_accessor background: bool?
+
+        attr_accessor completed_at: Float?
 
         attr_accessor conversation: OpenAI::Responses::Response::Conversation?
 
@@ -132,6 +135,7 @@ module OpenAI
           tools: ::Array[OpenAI::Models::Responses::tool],
           top_p: Float?,
           ?background: bool?,
+          ?completed_at: Float?,
           ?conversation: OpenAI::Responses::Response::Conversation?,
           ?max_output_tokens: Integer?,
           ?max_tool_calls: Integer?,
@@ -167,6 +171,7 @@ module OpenAI
           tools: ::Array[OpenAI::Models::Responses::tool],
           top_p: Float?,
           background: bool?,
+          completed_at: Float?,
           conversation: OpenAI::Responses::Response::Conversation?,
           max_output_tokens: Integer?,
           max_tool_calls: Integer?,

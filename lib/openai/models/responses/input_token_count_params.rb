@@ -79,9 +79,7 @@ module OpenAI
         optional :text, -> { OpenAI::Responses::InputTokenCountParams::Text }, nil?: true
 
         # @!attribute tool_choice
-        #   How the model should select which tool (or tools) to use when generating a
-        #   response. See the `tools` parameter to see how to specify which tools the model
-        #   can call.
+        #   Controls which tool the model should use, if any.
         #
         #   @return [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceAllowed, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp, OpenAI::Models::Responses::ToolChoiceCustom, OpenAI::Models::Responses::ToolChoiceApplyPatch, OpenAI::Models::Responses::ToolChoiceShell, nil]
         optional :tool_choice, union: -> { OpenAI::Responses::InputTokenCountParams::ToolChoice }, nil?: true
@@ -123,7 +121,7 @@ module OpenAI
         #
         #   @param text [OpenAI::Models::Responses::InputTokenCountParams::Text, nil] Configuration options for a text response from the model. Can be plain
         #
-        #   @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceAllowed, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp, OpenAI::Models::Responses::ToolChoiceCustom, OpenAI::Models::Responses::ToolChoiceApplyPatch, OpenAI::Models::Responses::ToolChoiceShell, nil] How the model should select which tool (or tools) to use when generating
+        #   @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceAllowed, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp, OpenAI::Models::Responses::ToolChoiceCustom, OpenAI::Models::Responses::ToolChoiceApplyPatch, OpenAI::Models::Responses::ToolChoiceShell, nil] Controls which tool the model should use, if any.
         #
         #   @param tools [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::FunctionShellTool, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::ApplyPatchTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool>, nil] An array of tools the model may call while generating a response. You can specif
         #
@@ -155,6 +153,7 @@ module OpenAI
           # A text input to the model, equivalent to a text input with the `user` role.
           variant String
 
+          # A list of one or many input items to the model, containing different content types.
           variant -> { OpenAI::Models::Responses::InputTokenCountParams::Input::ResponseInputItemArray }
 
           # @!method self.variants
@@ -227,9 +226,7 @@ module OpenAI
           end
         end
 
-        # How the model should select which tool (or tools) to use when generating a
-        # response. See the `tools` parameter to see how to specify which tools the model
-        # can call.
+        # Controls which tool the model should use, if any.
         module ToolChoice
           extend OpenAI::Internal::Type::Union
 

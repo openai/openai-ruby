@@ -718,6 +718,7 @@ module OpenAI
               sig { params(file_ids: T::Array[String]).void }
               attr_writer :file_ids
 
+              # The memory limit for the code interpreter container.
               sig do
                 returns(
                   T.nilable(
@@ -742,6 +743,7 @@ module OpenAI
               def self.new(
                 # An optional list of uploaded files to make available to your code.
                 file_ids: nil,
+                # The memory limit for the code interpreter container.
                 memory_limit: nil,
                 # Always `auto`.
                 type: :auto
@@ -763,6 +765,7 @@ module OpenAI
               def to_hash
               end
 
+              # The memory limit for the code interpreter container.
               module MemoryLimit
                 extend OpenAI::Internal::Type::Enum
 
