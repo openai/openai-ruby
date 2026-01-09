@@ -32,14 +32,19 @@ jobs:
         run: ./scripts/lint
   test:
     timeout-minutes: 10
-    name: test
+    name: test (ruby ${{ matrix.ruby-version }})
     runs-on: ${{ github.repository == 'stainless-sdks/openai-ruby' && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
     if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby-version: ['3.2', '3.3', '3.4', '4.0']
     steps:
       - uses: actions/checkout@v4
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
+          ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: false
       - run: |-
           bundle install
