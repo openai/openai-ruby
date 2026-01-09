@@ -11,6 +11,7 @@ module OpenAI
         required :id, String
 
         # @!attribute encrypted_content
+        #   The encrypted content that was produced by compaction.
         #
         #   @return [String]
         required :encrypted_content, String
@@ -22,6 +23,7 @@ module OpenAI
         required :type, const: :compaction
 
         # @!attribute created_by
+        #   The identifier of the actor that created the item.
         #
         #   @return [String, nil]
         optional :created_by, String
@@ -32,9 +34,9 @@ module OpenAI
         #
         #   @param id [String] The unique ID of the compaction item.
         #
-        #   @param encrypted_content [String]
+        #   @param encrypted_content [String] The encrypted content that was produced by compaction.
         #
-        #   @param created_by [String]
+        #   @param created_by [String] The identifier of the actor that created the item.
         #
         #   @param type [Symbol, :compaction] The type of the item. Always `compaction`.
       end

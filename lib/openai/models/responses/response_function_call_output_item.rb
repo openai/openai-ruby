@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      # A text input to the model.
+      # A piece of message content, such as text, an image, or a file.
       module ResponseFunctionCallOutputItem
         extend OpenAI::Internal::Type::Union
 

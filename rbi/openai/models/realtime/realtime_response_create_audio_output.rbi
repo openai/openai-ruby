@@ -85,10 +85,10 @@ module OpenAI
           end
           attr_writer :format_
 
-          # The voice the model uses to respond. Voice cannot be changed during the session
-          # once the model has responded with audio at least once. Current voice options are
-          # `alloy`, `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`,
-          # and `cedar`. We recommend `marin` and `cedar` for best quality.
+          # The voice the model uses to respond. Supported built-in voices are `alloy`,
+          # `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`, and
+          # `cedar`. Voice cannot be changed during the session once the model has responded
+          # with audio at least once.
           sig do
             returns(
               T.nilable(
@@ -130,10 +130,10 @@ module OpenAI
           def self.new(
             # The format of the output audio.
             format_: nil,
-            # The voice the model uses to respond. Voice cannot be changed during the session
-            # once the model has responded with audio at least once. Current voice options are
-            # `alloy`, `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`,
-            # and `cedar`. We recommend `marin` and `cedar` for best quality.
+            # The voice the model uses to respond. Supported built-in voices are `alloy`,
+            # `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`, and
+            # `cedar`. Voice cannot be changed during the session once the model has responded
+            # with audio at least once.
             voice: nil
           )
           end
@@ -158,10 +158,10 @@ module OpenAI
           def to_hash
           end
 
-          # The voice the model uses to respond. Voice cannot be changed during the session
-          # once the model has responded with audio at least once. Current voice options are
-          # `alloy`, `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`,
-          # and `cedar`. We recommend `marin` and `cedar` for best quality.
+          # The voice the model uses to respond. Supported built-in voices are `alloy`,
+          # `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`, and
+          # `cedar`. Voice cannot be changed during the session once the model has responded
+          # with audio at least once.
           module Voice
             extend OpenAI::Internal::Type::Union
 

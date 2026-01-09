@@ -397,6 +397,7 @@ module OpenAI
               optional :file_ids, OpenAI::Internal::Type::ArrayOf[String]
 
               # @!attribute memory_limit
+              #   The memory limit for the code interpreter container.
               #
               #   @return [Symbol, OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit, nil]
               optional :memory_limit,
@@ -411,10 +412,12 @@ module OpenAI
               #
               #   @param file_ids [Array<String>] An optional list of uploaded files to make available to your code.
               #
-              #   @param memory_limit [Symbol, OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit, nil]
+              #   @param memory_limit [Symbol, OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit, nil] The memory limit for the code interpreter container.
               #
               #   @param type [Symbol, :auto] Always `auto`.
 
+              # The memory limit for the code interpreter container.
+              #
               # @see OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto#memory_limit
               module MemoryLimit
                 extend OpenAI::Internal::Type::Enum

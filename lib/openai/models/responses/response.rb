@@ -144,9 +144,16 @@ module OpenAI
         #   @return [Boolean, nil]
         optional :background, OpenAI::Internal::Type::Boolean, nil?: true
 
+        # @!attribute completed_at
+        #   Unix timestamp (in seconds) of when this Response was completed. Only present
+        #   when the status is `completed`.
+        #
+        #   @return [Float, nil]
+        optional :completed_at, Float, nil?: true
+
         # @!attribute conversation
-        #   The conversation that this response belongs to. Input items and output items
-        #   from this response are automatically added to this conversation.
+        #   The conversation that this response belonged to. Input items and output items
+        #   from this response were automatically added to this conversation.
         #
         #   @return [OpenAI::Models::Responses::Response::Conversation, nil]
         optional :conversation, -> { OpenAI::Responses::Response::Conversation }, nil?: true
@@ -298,7 +305,7 @@ module OpenAI
         #   @return [String, nil]
         optional :user, String
 
-        # @!method initialize(id:, created_at:, error:, incomplete_details:, instructions:, metadata:, model:, output:, parallel_tool_calls:, temperature:, tool_choice:, tools:, top_p:, background: nil, conversation: nil, max_output_tokens: nil, max_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, status: nil, text: nil, top_logprobs: nil, truncation: nil, usage: nil, user: nil, object: :response)
+        # @!method initialize(id:, created_at:, error:, incomplete_details:, instructions:, metadata:, model:, output:, parallel_tool_calls:, temperature:, tool_choice:, tools:, top_p:, background: nil, completed_at: nil, conversation: nil, max_output_tokens: nil, max_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, status: nil, text: nil, top_logprobs: nil, truncation: nil, usage: nil, user: nil, object: :response)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::Response} for more details.
         #
@@ -330,7 +337,9 @@ module OpenAI
         #
         #   @param background [Boolean, nil] Whether to run the model response in the background.
         #
-        #   @param conversation [OpenAI::Models::Responses::Response::Conversation, nil] The conversation that this response belongs to. Input items and output items fro
+        #   @param completed_at [Float, nil] Unix timestamp (in seconds) of when this Response was completed.
+        #
+        #   @param conversation [OpenAI::Models::Responses::Response::Conversation, nil] The conversation that this response belonged to. Input items and output items fr
         #
         #   @param max_output_tokens [Integer, nil] An upper bound for the number of tokens that can be generated for a response, in
         #
@@ -464,16 +473,16 @@ module OpenAI
         # @see OpenAI::Models::Responses::Response#conversation
         class Conversation < OpenAI::Internal::Type::BaseModel
           # @!attribute id
-          #   The unique ID of the conversation.
+          #   The unique ID of the conversation that this response was associated with.
           #
           #   @return [String]
           required :id, String
 
           # @!method initialize(id:)
-          #   The conversation that this response belongs to. Input items and output items
-          #   from this response are automatically added to this conversation.
+          #   The conversation that this response belonged to. Input items and output items
+          #   from this response were automatically added to this conversation.
           #
-          #   @param id [String] The unique ID of the conversation.
+          #   @param id [String] The unique ID of the conversation that this response was associated with.
         end
 
         # The retention policy for the prompt cache. Set to `24h` to enable extended

@@ -15,7 +15,7 @@ module OpenAI
         #
         # @param model [String, Symbol, OpenAI::Models::Audio::SpeechModel] One of the available [TTS models](https://platform.openai.com/docs/models#tts):
         #
-        # @param voice [String, Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice] The voice to use when generating the audio. Supported voices are `alloy`, `ash`,
+        # @param voice [String, Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice] The voice to use when generating the audio. Supported built-in voices are `alloy
         #
         # @param instructions [String] Control the voice of your generated audio with additional instructions. Does not
         #

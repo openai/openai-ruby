@@ -88,9 +88,7 @@ module OpenAI
         end
         attr_writer :text
 
-        # How the model should select which tool (or tools) to use when generating a
-        # response. See the `tools` parameter to see how to specify which tools the model
-        # can call.
+        # Controls which tool the model should use, if any.
         sig do
           returns(
             T.nilable(
@@ -249,9 +247,7 @@ module OpenAI
           # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
           # - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
           text: nil,
-          # How the model should select which tool (or tools) to use when generating a
-          # response. See the `tools` parameter to see how to specify which tools the model
-          # can call.
+          # Controls which tool the model should use, if any.
           tool_choice: nil,
           # An array of tools the model may call while generating a response. You can
           # specify which tool to use by setting the `tool_choice` parameter.
@@ -540,9 +536,7 @@ module OpenAI
           end
         end
 
-        # How the model should select which tool (or tools) to use when generating a
-        # response. See the `tools` parameter to see how to specify which tools the model
-        # can call.
+        # Controls which tool the model should use, if any.
         module ToolChoice
           extend OpenAI::Internal::Type::Union
 

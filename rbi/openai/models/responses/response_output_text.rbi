@@ -100,7 +100,7 @@ module OpenAI
         def to_hash
         end
 
-        # A citation to a file.
+        # An annotation that applies to a span of output text.
         module Annotation
           extend OpenAI::Internal::Type::Union
 

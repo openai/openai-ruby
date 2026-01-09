@@ -87,7 +87,7 @@ module OpenAI
         def to_hash
         end
 
-        # A text input to the model.
+        # A content part that makes up an input or output item.
         module Content
           extend OpenAI::Internal::Type::Union
 

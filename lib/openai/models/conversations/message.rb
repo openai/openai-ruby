@@ -52,7 +52,7 @@ module OpenAI
         #
         #   @param type [Symbol, :message] The type of the message. Always set to `message`.
 
-        # A text input to the model.
+        # A content part that makes up an input or output item.
         module Content
           extend OpenAI::Internal::Type::Union
 

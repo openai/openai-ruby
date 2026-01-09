@@ -21,8 +21,9 @@ module OpenAI
         end
         attr_accessor :format_
 
-        # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
-        # `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`, `sage`, and `shimmer`.
+        # The voice the model uses to respond. Supported built-in voices are `alloy`,
+        # `ash`, `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`, `sage`, `shimmer`,
+        # `marin`, and `cedar`.
         sig do
           returns(
             T.any(
@@ -50,8 +51,9 @@ module OpenAI
           # Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`, `opus`,
           # or `pcm16`.
           format_:,
-          # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
-          # `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`, `sage`, and `shimmer`.
+          # The voice the model uses to respond. Supported built-in voices are `alloy`,
+          # `ash`, `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`, `sage`, `shimmer`,
+          # `marin`, and `cedar`.
           voice:
         )
         end
@@ -124,8 +126,9 @@ module OpenAI
           end
         end
 
-        # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
-        # `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`, `sage`, and `shimmer`.
+        # The voice the model uses to respond. Supported built-in voices are `alloy`,
+        # `ash`, `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`, `sage`, `shimmer`,
+        # `marin`, and `cedar`.
         module Voice
           extend OpenAI::Internal::Type::Union
 
