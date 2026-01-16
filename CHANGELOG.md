@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.43.1 (2026-01-16)
+
+Full Changelog: [v0.43.0...v0.43.1](https://github.com/openai/openai-ruby/compare/v0.43.0...v0.43.1)
+
+### Chores
+
+* **internal:** update `actions/checkout` version ([78251bd](https://github.com/openai/openai-ruby/commit/78251bd3cdaccc09f57feda8ee5b73cab03d6625))
+
 ## 0.43.0 (2026-01-09)
 
 Full Changelog: [v0.42.0...v0.43.0](https://github.com/openai/openai-ruby/compare/v0.42.0...v0.43.0)
