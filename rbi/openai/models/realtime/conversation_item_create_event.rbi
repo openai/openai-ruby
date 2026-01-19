@@ -42,10 +42,14 @@ module OpenAI
         attr_writer :event_id
 
         # The ID of the preceding item after which the new item will be inserted. If not
-        # set, the new item will be appended to the end of the conversation. If set to
-        # `root`, the new item will be added to the beginning of the conversation. If set
-        # to an existing ID, it allows an item to be inserted mid-conversation. If the ID
-        # cannot be found, an error will be returned and the item will not be added.
+        # set, the new item will be appended to the end of the conversation.
+        #
+        # If set to `root`, the new item will be added to the beginning of the
+        # conversation.
+        #
+        # If set to an existing ID, it allows an item to be inserted mid-conversation. If
+        # the ID cannot be found, an error will be returned and the item will not be
+        # added.
         sig { returns(T.nilable(String)) }
         attr_reader :previous_item_id
 
@@ -84,10 +88,14 @@ module OpenAI
           # Optional client-generated ID used to identify this event.
           event_id: nil,
           # The ID of the preceding item after which the new item will be inserted. If not
-          # set, the new item will be appended to the end of the conversation. If set to
-          # `root`, the new item will be added to the beginning of the conversation. If set
-          # to an existing ID, it allows an item to be inserted mid-conversation. If the ID
-          # cannot be found, an error will be returned and the item will not be added.
+          # set, the new item will be appended to the end of the conversation.
+          #
+          # If set to `root`, the new item will be added to the beginning of the
+          # conversation.
+          #
+          # If set to an existing ID, it allows an item to be inserted mid-conversation. If
+          # the ID cannot be found, an error will be returned and the item will not be
+          # added.
           previous_item_id: nil,
           # The event type, must be `conversation.item.create`.
           type: :"conversation.item.create"

@@ -14,10 +14,14 @@ module OpenAI
       required :file, OpenAI::Internal::Type::FileInput
 
       # @!attribute purpose
-      #   The intended purpose of the uploaded file. One of: - `assistants`: Used in the
-      #   Assistants API - `batch`: Used in the Batch API - `fine-tune`: Used for
-      #   fine-tuning - `vision`: Images used for vision fine-tuning - `user_data`:
-      #   Flexible file type for any purpose - `evals`: Used for eval data sets
+      #   The intended purpose of the uploaded file. One of:
+      #
+      #   - `assistants`: Used in the Assistants API
+      #   - `batch`: Used in the Batch API
+      #   - `fine-tune`: Used for fine-tuning
+      #   - `vision`: Images used for vision fine-tuning
+      #   - `user_data`: Flexible file type for any purpose
+      #   - `evals`: Used for eval data sets
       #
       #   @return [Symbol, OpenAI::Models::FilePurpose]
       required :purpose, enum: -> { OpenAI::FilePurpose }
@@ -35,7 +39,7 @@ module OpenAI
       #
       #   @param file [Pathname, StringIO, IO, String, OpenAI::FilePart] The File object (not file name) to be uploaded.
       #
-      #   @param purpose [Symbol, OpenAI::Models::FilePurpose] The intended purpose of the uploaded file. One of: - `assistants`: Used in the A
+      #   @param purpose [Symbol, OpenAI::Models::FilePurpose] The intended purpose of the uploaded file. One of:
       #
       #   @param expires_after [OpenAI::Models::FileCreateParams::ExpiresAfter] The expiration policy for a file. By default, files with `purpose=batch` expire
       #
