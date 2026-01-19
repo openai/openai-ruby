@@ -31,7 +31,7 @@ module OpenAI
       #
       # @param file [Pathname, StringIO, IO, String, OpenAI::FilePart] The File object (not file name) to be uploaded.
       #
-      # @param purpose [Symbol, OpenAI::Models::FilePurpose] The intended purpose of the uploaded file. One of: - `assistants`: Used in the A
+      # @param purpose [Symbol, OpenAI::Models::FilePurpose] The intended purpose of the uploaded file. One of:
       #
       # @param expires_after [OpenAI::Models::FileCreateParams::ExpiresAfter] The expiration policy for a file. By default, files with `purpose=batch` expire
       #
