@@ -30,7 +30,7 @@ openai = OpenAI::Client.new(
   api_key: ENV["OPENAI_API_KEY"] # This is the default and can be omitted
 )
 
-chat_completion = openai.chat.completions.create(messages: [{role: "user", content: "Say this is a test"}], model: "gpt-4o")
+chat_completion = openai.chat.completions.create(messages: [{role: "user", content: "Say this is a test"}], model: "gpt-5.2")
 
 puts(chat_completion)
 ```
@@ -42,7 +42,7 @@ We provide support for streaming responses using Server-Sent Events (SSE).
 ```ruby
 stream = openai.responses.stream(
   input: "Write a haiku about OpenAI.",
-  model: "gpt-4o"
+  model: "gpt-5.2"
 )
 
 stream.each do |event|
@@ -211,7 +211,7 @@ end
 client = OpenAI::Client.new
 
 response = client.responses.create(
-  model: "gpt-4o-2024-08-06",
+  model: "gpt-5.2",
   input: [
     {role: :system, content: "Extract the event information."},
     {
@@ -247,7 +247,7 @@ To make the equivalent request using raw JSON schema format, you would do the fo
 
 ```ruby
 response = client.responses.create(
-  model: "gpt-4o-2024-08-06",
+  model: "gpt-5.2",
   input: [
     {role: :system, content: "Extract the event information."},
     {
@@ -340,7 +340,7 @@ openai = OpenAI::Client.new(
 # Or, configure per-request:
 openai.chat.completions.create(
   messages: [{role: "user", content: "How can I get the name of the current day in JavaScript?"}],
-  model: "gpt-4o",
+  model: "gpt-5.2",
   request_options: {max_retries: 5}
 )
 ```
@@ -358,7 +358,7 @@ openai = OpenAI::Client.new(
 # Or, configure per-request:
 openai.chat.completions.create(
   messages: [{role: "user", content: "How can I list all files in a directory using Python?"}],
-  model: "gpt-4o",
+  model: "gpt-5.2",
   request_options: {timeout: 5}
 )
 ```
@@ -393,7 +393,7 @@ Note: the `extra_` parameters of the same name overrides the documented paramete
 chat_completion =
   openai.chat.completions.create(
     messages: [{role: "user", content: "How can I get the name of the current day in JavaScript?"}],
-    model: "gpt-4o",
+    model: "gpt-5.2",
     request_options: {
       extra_query: {my_query_parameter: value},
       extra_body: {my_body_parameter: value},
@@ -441,7 +441,7 @@ You can provide typesafe request parameters like so:
 ```ruby
 openai.chat.completions.create(
   messages: [OpenAI::Chat::ChatCompletionUserMessageParam.new(content: "Say this is a test")],
-  model: "gpt-4o"
+  model: "gpt-5.2"
 )
 ```
 
@@ -449,12 +449,12 @@ Or, equivalently:
 
 ```ruby
 # Hashes work, but are not typesafe:
-openai.chat.completions.create(messages: [{role: "user", content: "Say this is a test"}], model: "gpt-4o")
+openai.chat.completions.create(messages: [{role: "user", content: "Say this is a test"}], model: "gpt-5.2")
 
 # You can also splat a full Params class:
 params = OpenAI::Chat::CompletionCreateParams.new(
   messages: [OpenAI::Chat::ChatCompletionUserMessageParam.new(content: "Say this is a test")],
-  model: "gpt-4o"
+  model: "gpt-5.2"
 )
 openai.chat.completions.create(**params)
 ```
