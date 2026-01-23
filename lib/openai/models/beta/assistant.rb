@@ -3,6 +3,8 @@
 module OpenAI
   module Models
     module Beta
+      # @deprecated
+      #
       # @see OpenAI::Resources::Beta::Assistants#create
       class Assistant < OpenAI::Internal::Type::BaseModel
         # @!attribute id

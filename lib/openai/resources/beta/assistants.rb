@@ -4,6 +4,8 @@ module OpenAI
   module Resources
     class Beta
       class Assistants
+        # @deprecated
+        #
         # Some parameter documentations has been truncated, see
         # {OpenAI::Models::Beta::AssistantCreateParams} for more details.
         #
@@ -49,6 +51,8 @@ module OpenAI
           )
         end
 
+        # @deprecated
+        #
         # Retrieves an assistant.
         #
         # @overload retrieve(assistant_id, request_options: {})
@@ -69,6 +73,8 @@ module OpenAI
           )
         end
 
+        # @deprecated
+        #
         # Some parameter documentations has been truncated, see
         # {OpenAI::Models::Beta::AssistantUpdateParams} for more details.
         #
@@ -116,6 +122,8 @@ module OpenAI
           )
         end
 
+        # @deprecated
+        #
         # Some parameter documentations has been truncated, see
         # {OpenAI::Models::Beta::AssistantListParams} for more details.
         #
@@ -148,6 +156,8 @@ module OpenAI
           )
         end
 
+        # @deprecated
+        #
         # Delete an assistant.
         #
         # @overload delete(assistant_id, request_options: {})
