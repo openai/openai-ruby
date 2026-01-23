@@ -8,9 +8,11 @@ module OpenAI
       #
       # Create a video
       #
-      # @overload create(prompt:, input_reference: nil, model: nil, seconds: nil, size: nil, request_options: {})
+      # @overload create(prompt:, character_ids: nil, input_reference: nil, model: nil, seconds: nil, size: nil, request_options: {})
       #
       # @param prompt [String] Text prompt that describes the video to generate.
+      #
+      # @param character_ids [Array<String>] Character IDs to include in the generation.
       #
       # @param input_reference [Pathname, StringIO, IO, String, OpenAI::FilePart] Optional image reference that guides generation.
       #
