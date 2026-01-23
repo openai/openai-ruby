@@ -13,6 +13,12 @@ module OpenAI
       #   @return [String]
       required :prompt, String
 
+      # @!attribute character_ids
+      #   Character IDs to include in the generation.
+      #
+      #   @return [Array<String>, nil]
+      optional :character_ids, OpenAI::Internal::Type::ArrayOf[String]
+
       # @!attribute input_reference
       #   Optional image reference that guides generation.
       #
@@ -39,11 +45,13 @@ module OpenAI
       #   @return [Symbol, OpenAI::Models::VideoSize, nil]
       optional :size, enum: -> { OpenAI::VideoSize }
 
-      # @!method initialize(prompt:, input_reference: nil, model: nil, seconds: nil, size: nil, request_options: {})
+      # @!method initialize(prompt:, character_ids: nil, input_reference: nil, model: nil, seconds: nil, size: nil, request_options: {})
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::VideoCreateParams} for more details.
       #
       #   @param prompt [String] Text prompt that describes the video to generate.
+      #
+      #   @param character_ids [Array<String>] Character IDs to include in the generation.
       #
       #   @param input_reference [Pathname, StringIO, IO, String, OpenAI::FilePart] Optional image reference that guides generation.
       #
