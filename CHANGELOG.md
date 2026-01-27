@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.44.0 (2026-01-27)
+
+Full Changelog: [v0.43.0...v0.44.0](https://github.com/openai/openai-ruby/compare/v0.43.0...v0.44.0)
+
+### Features
+
+* **api:** api update ([407360e](https://github.com/openai/openai-ruby/commit/407360eb65bd70de1e4398e2b892624d0d674ea9))
+* **api:** api updates ([d3b882e](https://github.com/openai/openai-ruby/commit/d3b882ec9547197583f8002395842cc861b08774))
+
+
+### Bug Fixes
+
+* **api:** mark assistants as deprecated ([5baf7da](https://github.com/openai/openai-ruby/commit/5baf7dab0fecd0fb64720ce586377e9999d76b9e))
+
+
+### Chores
+
+* **internal:** update `actions/checkout` version ([78251bd](https://github.com/openai/openai-ruby/commit/78251bd3cdaccc09f57feda8ee5b73cab03d6625))
+
 ## 0.43.0 (2026-01-09)
 
 Full Changelog: [v0.42.0...v0.43.0](https://github.com/openai/openai-ruby/compare/v0.42.0...v0.43.0)
