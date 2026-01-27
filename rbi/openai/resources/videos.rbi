@@ -7,7 +7,6 @@ module OpenAI
       sig do
         params(
           prompt: String,
-          character_ids: T::Array[String],
           input_reference: OpenAI::Internal::FileInput,
           model: T.any(String, OpenAI::VideoModel::OrSymbol),
           seconds: OpenAI::VideoSeconds::OrSymbol,
@@ -18,8 +17,6 @@ module OpenAI
       def create(
         # Text prompt that describes the video to generate.
         prompt:,
-        # Character IDs to include in the generation.
-        character_ids: nil,
         # Optional image reference that guides generation.
         input_reference: nil,
         # The video generation model to use (allowed values: sora-2, sora-2-pro). Defaults

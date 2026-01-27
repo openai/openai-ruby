@@ -15,13 +15,6 @@ module OpenAI
       sig { returns(String) }
       attr_accessor :prompt
 
-      # Character IDs to include in the generation.
-      sig { returns(T.nilable(T::Array[String])) }
-      attr_reader :character_ids
-
-      sig { params(character_ids: T::Array[String]).void }
-      attr_writer :character_ids
-
       # Optional image reference that guides generation.
       sig { returns(T.nilable(OpenAI::Internal::FileInput)) }
       attr_reader :input_reference
@@ -55,7 +48,6 @@ module OpenAI
       sig do
         params(
           prompt: String,
-          character_ids: T::Array[String],
           input_reference: OpenAI::Internal::FileInput,
           model: T.any(String, OpenAI::VideoModel::OrSymbol),
           seconds: OpenAI::VideoSeconds::OrSymbol,
@@ -66,8 +58,6 @@ module OpenAI
       def self.new(
         # Text prompt that describes the video to generate.
         prompt:,
-        # Character IDs to include in the generation.
-        character_ids: nil,
         # Optional image reference that guides generation.
         input_reference: nil,
         # The video generation model to use (allowed values: sora-2, sora-2-pro). Defaults
@@ -86,7 +76,6 @@ module OpenAI
         override.returns(
           {
             prompt: String,
-            character_ids: T::Array[String],
             input_reference: OpenAI::Internal::FileInput,
             model: T.any(String, OpenAI::VideoModel::OrSymbol),
             seconds: OpenAI::VideoSeconds::OrSymbol,

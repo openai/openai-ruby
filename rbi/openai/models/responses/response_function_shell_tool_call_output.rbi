@@ -36,6 +36,15 @@ module OpenAI
         end
         attr_accessor :output
 
+        # The status of the shell call output. One of `in_progress`, `completed`, or
+        # `incomplete`.
+        sig do
+          returns(
+            OpenAI::Responses::ResponseFunctionShellToolCallOutput::Status::TaggedSymbol
+          )
+        end
+        attr_accessor :status
+
         # The type of the shell call output. Always `shell_call_output`.
         sig { returns(Symbol) }
         attr_accessor :type
@@ -57,6 +66,8 @@ module OpenAI
               T::Array[
                 OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output::OrHash
               ],
+            status:
+              OpenAI::Responses::ResponseFunctionShellToolCallOutput::Status::OrSymbol,
             created_by: String,
             type: Symbol
           ).returns(T.attached_class)
@@ -72,6 +83,9 @@ module OpenAI
           max_output_length:,
           # An array of shell call output contents
           output:,
+          # The status of the shell call output. One of `in_progress`, `completed`, or
+          # `incomplete`.
+          status:,
           # The identifier of the actor that created the item.
           created_by: nil,
           # The type of the shell call output. Always `shell_call_output`.
@@ -89,6 +103,8 @@ module OpenAI
                 T::Array[
                   OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output
                 ],
+              status:
+                OpenAI::Responses::ResponseFunctionShellToolCallOutput::Status::TaggedSymbol,
               type: Symbol,
               created_by: String
             }
@@ -254,6 +270,47 @@ module OpenAI
             end
             def self.variants
             end
+          end
+        end
+
+        # The status of the shell call output. One of `in_progress`, `completed`, or
+        # `incomplete`.
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          TaggedSymbol =
+            T.type_alias do
+              T.all(
+                Symbol,
+                OpenAI::Responses::ResponseFunctionShellToolCallOutput::Status
+              )
+            end
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+          IN_PROGRESS =
+            T.let(
+              :in_progress,
+              OpenAI::Responses::ResponseFunctionShellToolCallOutput::Status::TaggedSymbol
+            )
+          COMPLETED =
+            T.let(
+              :completed,
+              OpenAI::Responses::ResponseFunctionShellToolCallOutput::Status::TaggedSymbol
+            )
+          INCOMPLETE =
+            T.let(
+              :incomplete,
+              OpenAI::Responses::ResponseFunctionShellToolCallOutput::Status::TaggedSymbol
+            )
+
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Responses::ResponseFunctionShellToolCallOutput::Status::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
           end
         end
       end
