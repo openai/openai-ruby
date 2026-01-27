@@ -222,7 +222,7 @@ module OpenAI
             #
             #   @param path [Array<OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path>] An array of coordinates representing the path of the drag action. Coordinates wi
             #
-            #   @param type [Symbol, :drag] Specifies the event type. For a drag action, this property is
+            #   @param type [Symbol, :drag] Specifies the event type. For a drag action, this property is always set to `dra
 
             class Path < OpenAI::Internal::Type::BaseModel
               # @!attribute x
@@ -304,7 +304,7 @@ module OpenAI
             #
             #   @param y_ [Integer] The y-coordinate to move to.
             #
-            #   @param type [Symbol, :move] Specifies the event type. For a move action, this property is
+            #   @param type [Symbol, :move] Specifies the event type. For a move action, this property is always set to `mov
           end
 
           class Screenshot < OpenAI::Internal::Type::BaseModel
@@ -322,7 +322,7 @@ module OpenAI
             #
             #   A screenshot action.
             #
-            #   @param type [Symbol, :screenshot] Specifies the event type. For a screenshot action, this property is
+            #   @param type [Symbol, :screenshot] Specifies the event type. For a screenshot action, this property is always set t
           end
 
           class Scroll < OpenAI::Internal::Type::BaseModel
@@ -372,7 +372,7 @@ module OpenAI
             #
             #   @param y_ [Integer] The y-coordinate where the scroll occurred.
             #
-            #   @param type [Symbol, :scroll] Specifies the event type. For a scroll action, this property is
+            #   @param type [Symbol, :scroll] Specifies the event type. For a scroll action, this property is always set to `s
           end
 
           class Type < OpenAI::Internal::Type::BaseModel
@@ -398,7 +398,7 @@ module OpenAI
             #
             #   @param text [String] The text to type.
             #
-            #   @param type [Symbol, :type] Specifies the event type. For a type action, this property is
+            #   @param type [Symbol, :type] Specifies the event type. For a type action, this property is always set to `typ
           end
 
           class Wait < OpenAI::Internal::Type::BaseModel
@@ -416,7 +416,7 @@ module OpenAI
             #
             #   A wait action.
             #
-            #   @param type [Symbol, :wait] Specifies the event type. For a wait action, this property is
+            #   @param type [Symbol, :wait] Specifies the event type. For a wait action, this property is always set to `wai
           end
 
           # @!method self.variants

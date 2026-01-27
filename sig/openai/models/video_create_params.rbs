@@ -3,7 +3,6 @@ module OpenAI
     type video_create_params =
       {
         prompt: String,
-        character_ids: ::Array[String],
         input_reference: OpenAI::Internal::file_input,
         model: OpenAI::Models::video_model,
         seconds: OpenAI::Models::video_seconds,
@@ -16,10 +15,6 @@ module OpenAI
       include OpenAI::Internal::Type::RequestParameters
 
       attr_accessor prompt: String
-
-      attr_reader character_ids: ::Array[String]?
-
-      def character_ids=: (::Array[String]) -> ::Array[String]
 
       attr_reader input_reference: OpenAI::Internal::file_input?
 
@@ -43,7 +38,6 @@ module OpenAI
 
       def initialize: (
         prompt: String,
-        ?character_ids: ::Array[String],
         ?input_reference: OpenAI::Internal::file_input,
         ?model: OpenAI::Models::video_model,
         ?seconds: OpenAI::Models::video_seconds,
@@ -53,7 +47,6 @@ module OpenAI
 
       def to_hash: -> {
         prompt: String,
-        character_ids: ::Array[String],
         input_reference: OpenAI::Internal::file_input,
         model: OpenAI::Models::video_model,
         seconds: OpenAI::Models::video_seconds,
