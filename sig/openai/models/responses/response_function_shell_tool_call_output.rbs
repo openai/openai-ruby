@@ -7,6 +7,7 @@ module OpenAI
           call_id: String,
           max_output_length: Integer?,
           output: ::Array[OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output],
+          status: OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::status,
           type: :shell_call_output,
           created_by: String
         }
@@ -20,6 +21,8 @@ module OpenAI
 
         attr_accessor output: ::Array[OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output]
 
+        attr_accessor status: OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::status
+
         attr_accessor type: :shell_call_output
 
         attr_reader created_by: String?
@@ -31,6 +34,7 @@ module OpenAI
           call_id: String,
           max_output_length: Integer?,
           output: ::Array[OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output],
+          status: OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::status,
           ?created_by: String,
           ?type: :shell_call_output
         ) -> void
@@ -40,6 +44,7 @@ module OpenAI
           call_id: String,
           max_output_length: Integer?,
           output: ::Array[OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output],
+          status: OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::status,
           type: :shell_call_output,
           created_by: String
         }
@@ -108,6 +113,18 @@ module OpenAI
 
             def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::Output::outcome]
           end
+        end
+
+        type status = :in_progress | :completed | :incomplete
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          IN_PROGRESS: :in_progress
+          COMPLETED: :completed
+          INCOMPLETE: :incomplete
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::status]
         end
       end
     end

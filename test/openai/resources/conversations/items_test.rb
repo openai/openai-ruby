@@ -153,6 +153,7 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         call_id: String,
         max_output_length: Integer | nil,
         output: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output]),
+        status: OpenAI::Responses::ResponseFunctionShellToolCallOutput::Status,
         created_by: String | nil
       }
       in {
@@ -343,6 +344,7 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         call_id: String,
         max_output_length: Integer | nil,
         output: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output]),
+        status: OpenAI::Responses::ResponseFunctionShellToolCallOutput::Status,
         created_by: String | nil
       }
       in {

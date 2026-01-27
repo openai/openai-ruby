@@ -135,6 +135,7 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
         call_id: String,
         max_output_length: Integer | nil,
         output: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output]),
+        status: OpenAI::Responses::ResponseFunctionShellToolCallOutput::Status,
         created_by: String | nil
       }
       in {
