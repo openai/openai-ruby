@@ -1308,6 +1308,16 @@ module OpenAI
           sig { returns(T.nilable(Integer)) }
           attr_accessor :max_output_length
 
+          # The status of the shell call output.
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Responses::ResponseInputItem::ShellCallOutput::Status::OrSymbol
+              )
+            )
+          end
+          attr_accessor :status
+
           # The streamed output items emitted by a shell tool call.
           sig do
             params(
@@ -1318,6 +1328,10 @@ module OpenAI
                 ],
               id: T.nilable(String),
               max_output_length: T.nilable(Integer),
+              status:
+                T.nilable(
+                  OpenAI::Responses::ResponseInputItem::ShellCallOutput::Status::OrSymbol
+                ),
               type: Symbol
             ).returns(T.attached_class)
           end
@@ -1333,6 +1347,8 @@ module OpenAI
             # The maximum number of UTF-8 characters captured for this shell call's combined
             # output.
             max_output_length: nil,
+            # The status of the shell call output.
+            status: nil,
             # The type of the item. Always `shell_call_output`.
             type: :shell_call_output
           )
@@ -1348,11 +1364,55 @@ module OpenAI
                   ],
                 type: Symbol,
                 id: T.nilable(String),
-                max_output_length: T.nilable(Integer)
+                max_output_length: T.nilable(Integer),
+                status:
+                  T.nilable(
+                    OpenAI::Responses::ResponseInputItem::ShellCallOutput::Status::OrSymbol
+                  )
               }
             )
           end
           def to_hash
+          end
+
+          # The status of the shell call output.
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol =
+              T.type_alias do
+                T.all(
+                  Symbol,
+                  OpenAI::Responses::ResponseInputItem::ShellCallOutput::Status
+                )
+              end
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            IN_PROGRESS =
+              T.let(
+                :in_progress,
+                OpenAI::Responses::ResponseInputItem::ShellCallOutput::Status::TaggedSymbol
+              )
+            COMPLETED =
+              T.let(
+                :completed,
+                OpenAI::Responses::ResponseInputItem::ShellCallOutput::Status::TaggedSymbol
+              )
+            INCOMPLETE =
+              T.let(
+                :incomplete,
+                OpenAI::Responses::ResponseInputItem::ShellCallOutput::Status::TaggedSymbol
+              )
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Responses::ResponseInputItem::ShellCallOutput::Status::TaggedSymbol
+                ]
+              )
+            end
+            def self.values
+            end
           end
         end
 
