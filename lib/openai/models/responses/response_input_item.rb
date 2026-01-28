@@ -746,7 +746,17 @@ module OpenAI
           #   @return [Integer, nil]
           optional :max_output_length, Integer, nil?: true
 
-          # @!method initialize(call_id:, output:, id: nil, max_output_length: nil, type: :shell_call_output)
+          # @!attribute status
+          #   The status of the shell call output.
+          #
+          #   @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput::Status, nil]
+          optional :status,
+                   enum: -> {
+                     OpenAI::Responses::ResponseInputItem::ShellCallOutput::Status
+                   },
+                   nil?: true
+
+          # @!method initialize(call_id:, output:, id: nil, max_output_length: nil, status: nil, type: :shell_call_output)
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput} for more
           #   details.
@@ -761,7 +771,23 @@ module OpenAI
           #
           #   @param max_output_length [Integer, nil] The maximum number of UTF-8 characters captured for this shell call's combined o
           #
+          #   @param status [Symbol, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput::Status, nil] The status of the shell call output.
+          #
           #   @param type [Symbol, :shell_call_output] The type of the item. Always `shell_call_output`.
+
+          # The status of the shell call output.
+          #
+          # @see OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput#status
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            IN_PROGRESS = :in_progress
+            COMPLETED = :completed
+            INCOMPLETE = :incomplete
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
         end
 
         class ApplyPatchCall < OpenAI::Internal::Type::BaseModel

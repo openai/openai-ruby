@@ -500,7 +500,8 @@ module OpenAI
             output: ::Array[OpenAI::Responses::ResponseFunctionShellCallOutputContent],
             type: :shell_call_output,
             id: String?,
-            max_output_length: Integer?
+            max_output_length: Integer?,
+            status: OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput::status?
           }
 
         class ShellCallOutput < OpenAI::Internal::Type::BaseModel
@@ -514,11 +515,14 @@ module OpenAI
 
           attr_accessor max_output_length: Integer?
 
+          attr_accessor status: OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput::status?
+
           def initialize: (
             call_id: String,
             output: ::Array[OpenAI::Responses::ResponseFunctionShellCallOutputContent],
             ?id: String?,
             ?max_output_length: Integer?,
+            ?status: OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput::status?,
             ?type: :shell_call_output
           ) -> void
 
@@ -527,8 +531,21 @@ module OpenAI
             output: ::Array[OpenAI::Responses::ResponseFunctionShellCallOutputContent],
             type: :shell_call_output,
             id: String?,
-            max_output_length: Integer?
+            max_output_length: Integer?,
+            status: OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput::status?
           }
+
+          type status = :in_progress | :completed | :incomplete
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            IN_PROGRESS: :in_progress
+            COMPLETED: :completed
+            INCOMPLETE: :incomplete
+
+            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput::status]
+          end
         end
 
         type apply_patch_call =
