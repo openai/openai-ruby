@@ -28,6 +28,10 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :item_id
 
+        # The name of the function that was called.
+        sig { returns(String) }
+        attr_accessor :name
+
         # The index of the output item in the response.
         sig { returns(Integer) }
         attr_accessor :output_index
@@ -48,6 +52,7 @@ module OpenAI
             call_id: String,
             event_id: String,
             item_id: String,
+            name: String,
             output_index: Integer,
             response_id: String,
             type: Symbol
@@ -62,6 +67,8 @@ module OpenAI
           event_id:,
           # The ID of the function call item.
           item_id:,
+          # The name of the function that was called.
+          name:,
           # The index of the output item in the response.
           output_index:,
           # The ID of the response.
@@ -78,6 +85,7 @@ module OpenAI
               call_id: String,
               event_id: String,
               item_id: String,
+              name: String,
               output_index: Integer,
               response_id: String,
               type: Symbol

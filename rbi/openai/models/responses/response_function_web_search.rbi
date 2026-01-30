@@ -17,7 +17,7 @@ module OpenAI
         attr_accessor :id
 
         # An object describing the specific action taken in this web search call. Includes
-        # details on how the model used the web (search, open_page, find).
+        # details on how the model used the web (search, open_page, find_in_page).
         sig do
           returns(
             T.any(
@@ -62,7 +62,7 @@ module OpenAI
           # The unique ID of the web search tool call.
           id:,
           # An object describing the specific action taken in this web search call. Includes
-          # details on how the model used the web (search, open_page, find).
+          # details on how the model used the web (search, open_page, find_in_page).
           action:,
           # The status of the web search tool call.
           status:,
@@ -91,7 +91,7 @@ module OpenAI
         end
 
         # An object describing the specific action taken in this web search call. Includes
-        # details on how the model used the web (search, open_page, find).
+        # details on how the model used the web (search, open_page, find_in_page).
         module Action
           extend OpenAI::Internal::Type::Union
 
@@ -239,20 +239,24 @@ module OpenAI
             attr_accessor :type
 
             # The URL opened by the model.
-            sig { returns(String) }
+            sig { returns(T.nilable(String)) }
             attr_accessor :url
 
             # Action type "open_page" - Opens a specific URL from search results.
-            sig { params(url: String, type: Symbol).returns(T.attached_class) }
+            sig do
+              params(url: T.nilable(String), type: Symbol).returns(
+                T.attached_class
+              )
+            end
             def self.new(
               # The URL opened by the model.
-              url:,
+              url: nil,
               # The action type.
               type: :open_page
             )
             end
 
-            sig { override.returns({ type: Symbol, url: String }) }
+            sig { override.returns({ type: Symbol, url: T.nilable(String) }) }
             def to_hash
             end
           end

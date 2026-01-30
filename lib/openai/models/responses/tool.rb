@@ -446,6 +446,12 @@ module OpenAI
           #   @return [Symbol, :image_generation]
           required :type, const: :image_generation
 
+          # @!attribute action
+          #   Whether to generate a new image or edit an existing image. Default: `auto`.
+          #
+          #   @return [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Action, nil]
+          optional :action, enum: -> { OpenAI::Responses::Tool::ImageGeneration::Action }
+
           # @!attribute background
           #   Background type for the generated image. One of `transparent`, `opaque`, or
           #   `auto`. Default: `auto`.
@@ -519,11 +525,13 @@ module OpenAI
           #   @return [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Size, nil]
           optional :size, enum: -> { OpenAI::Responses::Tool::ImageGeneration::Size }
 
-          # @!method initialize(background: nil, input_fidelity: nil, input_image_mask: nil, model: nil, moderation: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, size: nil, type: :image_generation)
+          # @!method initialize(action: nil, background: nil, input_fidelity: nil, input_image_mask: nil, model: nil, moderation: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, size: nil, type: :image_generation)
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Responses::Tool::ImageGeneration} for more details.
           #
           #   A tool that generates images using the GPT image models.
+          #
+          #   @param action [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Action] Whether to generate a new image or edit an existing image. Default: `auto`.
           #
           #   @param background [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Background] Background type for the generated image. One of `transparent`,
           #
@@ -546,6 +554,20 @@ module OpenAI
           #   @param size [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Size] The size of the generated image. One of `1024x1024`, `1024x1536`,
           #
           #   @param type [Symbol, :image_generation] The type of the image generation tool. Always `image_generation`.
+
+          # Whether to generate a new image or edit an existing image. Default: `auto`.
+          #
+          # @see OpenAI::Models::Responses::Tool::ImageGeneration#action
+          module Action
+            extend OpenAI::Internal::Type::Enum
+
+            GENERATE = :generate
+            EDIT = :edit
+            AUTO = :auto
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
 
           # Background type for the generated image. One of `transparent`, `opaque`, or
           # `auto`. Default: `auto`.
@@ -617,6 +639,8 @@ module OpenAI
 
             variant const: -> { OpenAI::Models::Responses::Tool::ImageGeneration::Model::GPT_IMAGE_1_MINI }
 
+            variant const: -> { OpenAI::Models::Responses::Tool::ImageGeneration::Model::GPT_IMAGE_1_5 }
+
             # @!method self.variants
             #   @return [Array(String, Symbol)]
 
@@ -628,6 +652,7 @@ module OpenAI
 
             GPT_IMAGE_1 = :"gpt-image-1"
             GPT_IMAGE_1_MINI = :"gpt-image-1-mini"
+            GPT_IMAGE_1_5 = :"gpt-image-1.5"
 
             # @!endgroup
           end

@@ -90,16 +90,16 @@ module OpenAI
             end
           end
 
-          type open_page = { type: :open_page, url: String }
+          type open_page = { type: :open_page, url: String? }
 
           class OpenPage < OpenAI::Internal::Type::BaseModel
             attr_accessor type: :open_page
 
-            attr_accessor url: String
+            attr_accessor url: String?
 
-            def initialize: (url: String, ?type: :open_page) -> void
+            def initialize: (?url: String?, ?type: :open_page) -> void
 
-            def to_hash: -> { type: :open_page, url: String }
+            def to_hash: -> { type: :open_page, url: String? }
           end
 
           type find = { pattern: String, type: :find, url: String }

@@ -7,6 +7,7 @@ module OpenAI
           call_id: String,
           event_id: String,
           item_id: String,
+          name: String,
           output_index: Integer,
           response_id: String,
           type: :"response.function_call_arguments.done"
@@ -21,6 +22,8 @@ module OpenAI
 
         attr_accessor item_id: String
 
+        attr_accessor name: String
+
         attr_accessor output_index: Integer
 
         attr_accessor response_id: String
@@ -32,6 +35,7 @@ module OpenAI
           call_id: String,
           event_id: String,
           item_id: String,
+          name: String,
           output_index: Integer,
           response_id: String,
           ?type: :"response.function_call_arguments.done"
@@ -42,6 +46,7 @@ module OpenAI
           call_id: String,
           event_id: String,
           item_id: String,
+          name: String,
           output_index: Integer,
           response_id: String,
           type: :"response.function_call_arguments.done"

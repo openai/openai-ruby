@@ -12,7 +12,7 @@ module OpenAI
 
         # @!attribute action
         #   An object describing the specific action taken in this web search call. Includes
-        #   details on how the model used the web (search, open_page, find).
+        #   details on how the model used the web (search, open_page, find_in_page).
         #
         #   @return [OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Search, OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::OpenPage, OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Find]
         required :action, union: -> { OpenAI::Responses::ResponseFunctionWebSearch::Action }
@@ -46,7 +46,7 @@ module OpenAI
         #   @param type [Symbol, :web_search_call] The type of the web search tool call. Always `web_search_call`.
 
         # An object describing the specific action taken in this web search call. Includes
-        # details on how the model used the web (search, open_page, find).
+        # details on how the model used the web (search, open_page, find_in_page).
         #
         # @see OpenAI::Models::Responses::ResponseFunctionWebSearch#action
         module Action
@@ -140,17 +140,17 @@ module OpenAI
             # @!attribute url
             #   The URL opened by the model.
             #
-            #   @return [String]
-            required :url, String
+            #   @return [String, nil]
+            optional :url, String, nil?: true
 
-            # @!method initialize(url:, type: :open_page)
+            # @!method initialize(url: nil, type: :open_page)
             #   Some parameter documentations has been truncated, see
             #   {OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::OpenPage} for
             #   more details.
             #
             #   Action type "open_page" - Opens a specific URL from search results.
             #
-            #   @param url [String] The URL opened by the model.
+            #   @param url [String, nil] The URL opened by the model.
             #
             #   @param type [Symbol, :open_page] The action type.
           end

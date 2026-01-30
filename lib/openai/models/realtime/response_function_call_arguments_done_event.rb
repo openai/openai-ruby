@@ -28,6 +28,12 @@ module OpenAI
         #   @return [String]
         required :item_id, String
 
+        # @!attribute name
+        #   The name of the function that was called.
+        #
+        #   @return [String]
+        required :name, String
+
         # @!attribute output_index
         #   The index of the output item in the response.
         #
@@ -46,7 +52,7 @@ module OpenAI
         #   @return [Symbol, :"response.function_call_arguments.done"]
         required :type, const: :"response.function_call_arguments.done"
 
-        # @!method initialize(arguments:, call_id:, event_id:, item_id:, output_index:, response_id:, type: :"response.function_call_arguments.done")
+        # @!method initialize(arguments:, call_id:, event_id:, item_id:, name:, output_index:, response_id:, type: :"response.function_call_arguments.done")
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Realtime::ResponseFunctionCallArgumentsDoneEvent} for more
         #   details.
@@ -61,6 +67,8 @@ module OpenAI
         #   @param event_id [String] The unique ID of the server event.
         #
         #   @param item_id [String] The ID of the function call item.
+        #
+        #   @param name [String] The name of the function that was called.
         #
         #   @param output_index [Integer] The index of the output item in the response.
         #

@@ -836,6 +836,23 @@ module OpenAI
           sig { returns(Symbol) }
           attr_accessor :type
 
+          # Whether to generate a new image or edit an existing image. Default: `auto`.
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Responses::Tool::ImageGeneration::Action::OrSymbol
+              )
+            )
+          end
+          attr_reader :action
+
+          sig do
+            params(
+              action: OpenAI::Responses::Tool::ImageGeneration::Action::OrSymbol
+            ).void
+          end
+          attr_writer :action
+
           # Background type for the generated image. One of `transparent`, `opaque`, or
           # `auto`. Default: `auto`.
           sig do
@@ -1003,6 +1020,8 @@ module OpenAI
           # A tool that generates images using the GPT image models.
           sig do
             params(
+              action:
+                OpenAI::Responses::Tool::ImageGeneration::Action::OrSymbol,
               background:
                 OpenAI::Responses::Tool::ImageGeneration::Background::OrSymbol,
               input_fidelity:
@@ -1029,6 +1048,8 @@ module OpenAI
             ).returns(T.attached_class)
           end
           def self.new(
+            # Whether to generate a new image or edit an existing image. Default: `auto`.
+            action: nil,
             # Background type for the generated image. One of `transparent`, `opaque`, or
             # `auto`. Default: `auto`.
             background: nil,
@@ -1067,6 +1088,8 @@ module OpenAI
             override.returns(
               {
                 type: Symbol,
+                action:
+                  OpenAI::Responses::Tool::ImageGeneration::Action::OrSymbol,
                 background:
                   OpenAI::Responses::Tool::ImageGeneration::Background::OrSymbol,
                 input_fidelity:
@@ -1093,6 +1116,43 @@ module OpenAI
             )
           end
           def to_hash
+          end
+
+          # Whether to generate a new image or edit an existing image. Default: `auto`.
+          module Action
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol =
+              T.type_alias do
+                T.all(Symbol, OpenAI::Responses::Tool::ImageGeneration::Action)
+              end
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            GENERATE =
+              T.let(
+                :generate,
+                OpenAI::Responses::Tool::ImageGeneration::Action::TaggedSymbol
+              )
+            EDIT =
+              T.let(
+                :edit,
+                OpenAI::Responses::Tool::ImageGeneration::Action::TaggedSymbol
+              )
+            AUTO =
+              T.let(
+                :auto,
+                OpenAI::Responses::Tool::ImageGeneration::Action::TaggedSymbol
+              )
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Responses::Tool::ImageGeneration::Action::TaggedSymbol
+                ]
+              )
+            end
+            def self.values
+            end
           end
 
           # Background type for the generated image. One of `transparent`, `opaque`, or
@@ -1253,6 +1313,11 @@ module OpenAI
             GPT_IMAGE_1_MINI =
               T.let(
                 :"gpt-image-1-mini",
+                OpenAI::Responses::Tool::ImageGeneration::Model::TaggedSymbol
+              )
+            GPT_IMAGE_1_5 =
+              T.let(
+                :"gpt-image-1.5",
                 OpenAI::Responses::Tool::ImageGeneration::Model::TaggedSymbol
               )
           end

@@ -308,6 +308,7 @@ module OpenAI
         type image_generation =
           {
             type: :image_generation,
+            action: OpenAI::Models::Responses::Tool::ImageGeneration::action,
             background: OpenAI::Models::Responses::Tool::ImageGeneration::background,
             input_fidelity: OpenAI::Models::Responses::Tool::ImageGeneration::input_fidelity?,
             input_image_mask: OpenAI::Responses::Tool::ImageGeneration::InputImageMask,
@@ -322,6 +323,12 @@ module OpenAI
 
         class ImageGeneration < OpenAI::Internal::Type::BaseModel
           attr_accessor type: :image_generation
+
+          attr_reader action: OpenAI::Models::Responses::Tool::ImageGeneration::action?
+
+          def action=: (
+            OpenAI::Models::Responses::Tool::ImageGeneration::action
+          ) -> OpenAI::Models::Responses::Tool::ImageGeneration::action
 
           attr_reader background: OpenAI::Models::Responses::Tool::ImageGeneration::background?
 
@@ -376,6 +383,7 @@ module OpenAI
           ) -> OpenAI::Models::Responses::Tool::ImageGeneration::size
 
           def initialize: (
+            ?action: OpenAI::Models::Responses::Tool::ImageGeneration::action,
             ?background: OpenAI::Models::Responses::Tool::ImageGeneration::background,
             ?input_fidelity: OpenAI::Models::Responses::Tool::ImageGeneration::input_fidelity?,
             ?input_image_mask: OpenAI::Responses::Tool::ImageGeneration::InputImageMask,
@@ -391,6 +399,7 @@ module OpenAI
 
           def to_hash: -> {
             type: :image_generation,
+            action: OpenAI::Models::Responses::Tool::ImageGeneration::action,
             background: OpenAI::Models::Responses::Tool::ImageGeneration::background,
             input_fidelity: OpenAI::Models::Responses::Tool::ImageGeneration::input_fidelity?,
             input_image_mask: OpenAI::Responses::Tool::ImageGeneration::InputImageMask,
@@ -402,6 +411,18 @@ module OpenAI
             quality: OpenAI::Models::Responses::Tool::ImageGeneration::quality,
             size: OpenAI::Models::Responses::Tool::ImageGeneration::size
           }
+
+          type action = :generate | :edit | :auto
+
+          module Action
+            extend OpenAI::Internal::Type::Enum
+
+            GENERATE: :generate
+            EDIT: :edit
+            AUTO: :auto
+
+            def self?.values: -> ::Array[OpenAI::Models::Responses::Tool::ImageGeneration::action]
+          end
 
           type background = :transparent | :opaque | :auto
 
@@ -442,7 +463,8 @@ module OpenAI
             def to_hash: -> { file_id: String, image_url: String }
           end
 
-          type model = String | :"gpt-image-1" | :"gpt-image-1-mini"
+          type model =
+            String | :"gpt-image-1" | :"gpt-image-1-mini" | :"gpt-image-1.5"
 
           module Model
             extend OpenAI::Internal::Type::Union
@@ -451,6 +473,7 @@ module OpenAI
 
             GPT_IMAGE_1: :"gpt-image-1"
             GPT_IMAGE_1_MINI: :"gpt-image-1-mini"
+            GPT_IMAGE_1_5: :"gpt-image-1.5"
           end
 
           type moderation = :auto | :low
