@@ -35,7 +35,7 @@ module OpenAI
         type action =
           OpenAI::Responses::ResponseFunctionWebSearch::Action::Search
           | OpenAI::Responses::ResponseFunctionWebSearch::Action::OpenPage
-          | OpenAI::Responses::ResponseFunctionWebSearch::Action::Find
+          | OpenAI::Responses::ResponseFunctionWebSearch::Action::FindInPage
 
         module Action
           extend OpenAI::Internal::Type::Union
@@ -102,18 +102,27 @@ module OpenAI
             def to_hash: -> { type: :open_page, url: String? }
           end
 
-          type find = { pattern: String, type: :find, url: String }
+          type find_in_page =
+            { pattern: String, type: :find_in_page, url: String }
 
-          class Find < OpenAI::Internal::Type::BaseModel
+          class FindInPage < OpenAI::Internal::Type::BaseModel
             attr_accessor pattern: String
 
-            attr_accessor type: :find
+            attr_accessor type: :find_in_page
 
             attr_accessor url: String
 
-            def initialize: (pattern: String, url: String, ?type: :find) -> void
+            def initialize: (
+              pattern: String,
+              url: String,
+              ?type: :find_in_page
+            ) -> void
 
-            def to_hash: -> { pattern: String, type: :find, url: String }
+            def to_hash: -> {
+              pattern: String,
+              type: :find_in_page,
+              url: String
+            }
           end
 
           def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseFunctionWebSearch::action]
