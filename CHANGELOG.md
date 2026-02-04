@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.45.0 (2026-02-04)
+
+Full Changelog: [v0.44.0...v0.45.0](https://github.com/openai/openai-ruby/compare/v0.44.0...v0.45.0)
+
+### Features
+
+* **api:** add shell_call_output status field ([b235617](https://github.com/openai/openai-ruby/commit/b2356174e90b573b98f16a3176a51cc2b4a108b4))
+* **api:** image generation actions for responses; ResponseFunctionCallArgumentsDoneEvent.name ([da359de](https://github.com/openai/openai-ruby/commit/da359de522a5532b287094b04f625248687d08f3))
+
+
+### Bug Fixes
+
+* **client:** always add content-length to post body, even when empty ([b6faa94](https://github.com/openai/openai-ruby/commit/b6faa94ec4454515c576c067a584e2a62fa33666))
+* **client:** undo change to web search Find action ([e10a7dd](https://github.com/openai/openai-ruby/commit/e10a7dd8f601a66b5b1e7c769623f51f9e191a9f))
+* **client:** update type for `find_in_page` action ([dd727fa](https://github.com/openai/openai-ruby/commit/dd727fadbd82ae42181fae53582043809e4dd391))
+
+
+### Chores
+
+* **client:** improve example values ([3c8e152](https://github.com/openai/openai-ruby/commit/3c8e1520fd7bea47442814fe2a4196c68f2062c7))
+* **docs:** remove www prefix ([6ef56a3](https://github.com/openai/openai-ruby/commit/6ef56a36260ed01f4ea302ae69a73aed366e5e94))
+
 ## 0.44.0 (2026-01-27)
 
 Full Changelog: [v0.43.0...v0.44.0](https://github.com/openai/openai-ruby/compare/v0.43.0...v0.44.0)
