@@ -171,6 +171,8 @@ class OpenAI::Test::RegexMatchTest < Minitest::Test
     cases = {
       "application/json" => true,
       "application/jsonl" => false,
+      "application/arbitrary+json" => true,
+      "application/ARBITRARY+json" => true,
       "application/vnd.github.v3+json" => true,
       "application/vnd.api+json" => true
     }
