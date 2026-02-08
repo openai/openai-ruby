@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.46.0 (2026-02-08)
+
+Full Changelog: [v0.45.0...v0.46.0](https://github.com/openai/openai-ruby/compare/v0.45.0...v0.46.0)
+
+### Features
+
+* **api:** responses context_management ([d954f15](https://github.com/openai/openai-ruby/commit/d954f152ff59cc30baec8d7bba91f1575bfa29f4))
+
+
+### Bug Fixes
+
+* **client:** loosen json header parsing ([8b7f68c](https://github.com/openai/openai-ruby/commit/8b7f68c3b866daba39ed4bf83a724990891de69a))
+
 ## 0.45.0 (2026-02-04)
 
 Full Changelog: [v0.44.0...v0.45.0](https://github.com/openai/openai-ruby/compare/v0.44.0...v0.45.0)
