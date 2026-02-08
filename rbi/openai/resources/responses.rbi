@@ -25,6 +25,12 @@ module OpenAI
       sig do
         params(
           background: T.nilable(T::Boolean),
+          context_management:
+            T.nilable(
+              T::Array[
+                OpenAI::Responses::ResponseCreateParams::ContextManagement::OrHash
+              ]
+            ),
           conversation:
             T.nilable(
               T.any(
@@ -115,6 +121,8 @@ module OpenAI
         # Whether to run the model response in the background.
         # [Learn more](https://platform.openai.com/docs/guides/background).
         background: nil,
+        # Context management configuration for this request.
+        context_management: nil,
         # The conversation that this response belongs to. Items from this conversation are
         # prepended to `input_items` for this response request. Input items and output
         # items from this response are automatically added to this conversation after this
@@ -309,6 +317,12 @@ module OpenAI
       sig do
         params(
           background: T.nilable(T::Boolean),
+          context_management:
+            T.nilable(
+              T::Array[
+                OpenAI::Responses::ResponseCreateParams::ContextManagement::OrHash
+              ]
+            ),
           conversation:
             T.nilable(
               T.any(
@@ -405,6 +419,8 @@ module OpenAI
         # Whether to run the model response in the background.
         # [Learn more](https://platform.openai.com/docs/guides/background).
         background: nil,
+        # Context management configuration for this request.
+        context_management: nil,
         # The conversation that this response belongs to. Items from this conversation are
         # prepended to `input_items` for this response request. Input items and output
         # items from this response are automatically added to this conversation after this

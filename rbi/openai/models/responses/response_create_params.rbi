@@ -20,6 +20,18 @@ module OpenAI
         sig { returns(T.nilable(T::Boolean)) }
         attr_accessor :background
 
+        # Context management configuration for this request.
+        sig do
+          returns(
+            T.nilable(
+              T::Array[
+                OpenAI::Responses::ResponseCreateParams::ContextManagement
+              ]
+            )
+          )
+        end
+        attr_accessor :context_management
+
         # The conversation that this response belongs to. Items from this conversation are
         # prepended to `input_items` for this response request. Input items and output
         # items from this response are automatically added to this conversation after this
@@ -427,6 +439,12 @@ module OpenAI
         sig do
           params(
             background: T.nilable(T::Boolean),
+            context_management:
+              T.nilable(
+                T::Array[
+                  OpenAI::Responses::ResponseCreateParams::ContextManagement::OrHash
+                ]
+              ),
             conversation:
               T.nilable(
                 T.any(
@@ -512,6 +530,8 @@ module OpenAI
           # Whether to run the model response in the background.
           # [Learn more](https://platform.openai.com/docs/guides/background).
           background: nil,
+          # Context management configuration for this request.
+          context_management: nil,
           # The conversation that this response belongs to. Items from this conversation are
           # prepended to `input_items` for this response request. Input items and output
           # items from this response are automatically added to this conversation after this
@@ -691,6 +711,12 @@ module OpenAI
           override.returns(
             {
               background: T.nilable(T::Boolean),
+              context_management:
+                T.nilable(
+                  T::Array[
+                    OpenAI::Responses::ResponseCreateParams::ContextManagement
+                  ]
+                ),
               conversation:
                 T.nilable(
                   T.any(String, OpenAI::Responses::ResponseConversationParam)
@@ -771,6 +797,45 @@ module OpenAI
           )
         end
         def to_hash
+        end
+
+        class ContextManagement < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseCreateParams::ContextManagement,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The context management entry type. Currently only 'compaction' is supported.
+          sig { returns(String) }
+          attr_accessor :type
+
+          # Token threshold at which compaction should be triggered for this entry.
+          sig { returns(T.nilable(Integer)) }
+          attr_accessor :compact_threshold
+
+          sig do
+            params(type: String, compact_threshold: T.nilable(Integer)).returns(
+              T.attached_class
+            )
+          end
+          def self.new(
+            # The context management entry type. Currently only 'compaction' is supported.
+            type:,
+            # Token threshold at which compaction should be triggered for this entry.
+            compact_threshold: nil
+          )
+          end
+
+          sig do
+            override.returns(
+              { type: String, compact_threshold: T.nilable(Integer) }
+            )
+          end
+          def to_hash
+          end
         end
 
         # The conversation that this response belongs to. Items from this conversation are

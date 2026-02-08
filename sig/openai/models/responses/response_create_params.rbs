@@ -4,6 +4,7 @@ module OpenAI
       type response_create_params =
         {
           background: bool?,
+          context_management: ::Array[OpenAI::Responses::ResponseCreateParams::ContextManagement]?,
           conversation: OpenAI::Models::Responses::ResponseCreateParams::conversation?,
           include: ::Array[OpenAI::Models::Responses::response_includable]?,
           input: OpenAI::Models::Responses::ResponseCreateParams::input,
@@ -38,6 +39,8 @@ module OpenAI
         include OpenAI::Internal::Type::RequestParameters
 
         attr_accessor background: bool?
+
+        attr_accessor context_management: ::Array[OpenAI::Responses::ResponseCreateParams::ContextManagement]?
 
         attr_accessor conversation: OpenAI::Models::Responses::ResponseCreateParams::conversation?
 
@@ -119,6 +122,7 @@ module OpenAI
 
         def initialize: (
           ?background: bool?,
+          ?context_management: ::Array[OpenAI::Responses::ResponseCreateParams::ContextManagement]?,
           ?conversation: OpenAI::Models::Responses::ResponseCreateParams::conversation?,
           ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
           ?input: OpenAI::Models::Responses::ResponseCreateParams::input,
@@ -150,6 +154,7 @@ module OpenAI
 
         def to_hash: -> {
           background: bool?,
+          context_management: ::Array[OpenAI::Responses::ResponseCreateParams::ContextManagement]?,
           conversation: OpenAI::Models::Responses::ResponseCreateParams::conversation?,
           include: ::Array[OpenAI::Models::Responses::response_includable]?,
           input: OpenAI::Models::Responses::ResponseCreateParams::input,
@@ -178,6 +183,18 @@ module OpenAI
           user: String,
           request_options: OpenAI::RequestOptions
         }
+
+        type context_management = { type: String, compact_threshold: Integer? }
+
+        class ContextManagement < OpenAI::Internal::Type::BaseModel
+          attr_accessor type: String
+
+          attr_accessor compact_threshold: Integer?
+
+          def initialize: (type: String, ?compact_threshold: Integer?) -> void
+
+          def to_hash: -> { type: String, compact_threshold: Integer? }
+        end
 
         type conversation =
           String | OpenAI::Responses::ResponseConversationParam

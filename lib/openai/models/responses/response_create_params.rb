@@ -17,6 +17,16 @@ module OpenAI
         #   @return [Boolean, nil]
         optional :background, OpenAI::Internal::Type::Boolean, nil?: true
 
+        # @!attribute context_management
+        #   Context management configuration for this request.
+        #
+        #   @return [Array<OpenAI::Models::Responses::ResponseCreateParams::ContextManagement>, nil]
+        optional :context_management,
+                 -> {
+                   OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseCreateParams::ContextManagement]
+                 },
+                 nil?: true
+
         # @!attribute conversation
         #   The conversation that this response belongs to. Items from this conversation are
         #   prepended to `input_items` for this response request. Input items and output
@@ -308,11 +318,13 @@ module OpenAI
         #   @return [String, nil]
         optional :user, String
 
-        # @!method initialize(background: nil, conversation: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
+        # @!method initialize(background: nil, context_management: nil, conversation: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseCreateParams} for more details.
         #
         #   @param background [Boolean, nil] Whether to run the model response in the background.
+        #
+        #   @param context_management [Array<OpenAI::Models::Responses::ResponseCreateParams::ContextManagement>, nil] Context management configuration for this request.
         #
         #   @param conversation [String, OpenAI::Models::Responses::ResponseConversationParam, nil] The conversation that this response belongs to. Items from this conversation are
         #
@@ -367,6 +379,25 @@ module OpenAI
         #   @param user [String] This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
+
+        class ContextManagement < OpenAI::Internal::Type::BaseModel
+          # @!attribute type
+          #   The context management entry type. Currently only 'compaction' is supported.
+          #
+          #   @return [String]
+          required :type, String
+
+          # @!attribute compact_threshold
+          #   Token threshold at which compaction should be triggered for this entry.
+          #
+          #   @return [Integer, nil]
+          optional :compact_threshold, Integer, nil?: true
+
+          # @!method initialize(type:, compact_threshold: nil)
+          #   @param type [String] The context management entry type. Currently only 'compaction' is supported.
+          #
+          #   @param compact_threshold [Integer, nil] Token threshold at which compaction should be triggered for this entry.
+        end
 
         # The conversation that this response belongs to. Items from this conversation are
         # prepended to `input_items` for this response request. Input items and output

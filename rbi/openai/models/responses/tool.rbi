@@ -874,8 +874,8 @@ module OpenAI
 
           # Control how much effort the model will exert to match the style and features,
           # especially facial features, of input images. This parameter is only supported
-          # for `gpt-image-1`. Unsupported for `gpt-image-1-mini`. Supports `high` and
-          # `low`. Defaults to `low`.
+          # for `gpt-image-1` and `gpt-image-1.5` and later models, unsupported for
+          # `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.
           sig do
             returns(
               T.nilable(
@@ -1055,8 +1055,8 @@ module OpenAI
             background: nil,
             # Control how much effort the model will exert to match the style and features,
             # especially facial features, of input images. This parameter is only supported
-            # for `gpt-image-1`. Unsupported for `gpt-image-1-mini`. Supports `high` and
-            # `low`. Defaults to `low`.
+            # for `gpt-image-1` and `gpt-image-1.5` and later models, unsupported for
+            # `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.
             input_fidelity: nil,
             # Optional mask for inpainting. Contains `image_url` (string, optional) and
             # `file_id` (string, optional).
@@ -1198,8 +1198,8 @@ module OpenAI
 
           # Control how much effort the model will exert to match the style and features,
           # especially facial features, of input images. This parameter is only supported
-          # for `gpt-image-1`. Unsupported for `gpt-image-1-mini`. Supports `high` and
-          # `low`. Defaults to `low`.
+          # for `gpt-image-1` and `gpt-image-1.5` and later models, unsupported for
+          # `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.
           module InputFidelity
             extend OpenAI::Internal::Type::Enum
 
