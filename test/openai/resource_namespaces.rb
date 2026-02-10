@@ -75,6 +75,11 @@ module OpenAI
       module Runs
       end
 
+      module Skills
+        module Versions
+        end
+      end
+
       module Threads
         module Runs
         end
@@ -84,6 +89,9 @@ module OpenAI
       end
 
       module VectorStores
+      end
+
+      module Versions
       end
     end
   end

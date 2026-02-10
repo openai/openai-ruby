@@ -1,0 +1,39 @@
+module OpenAI
+  module Models
+    type skill_create_params =
+      { files: OpenAI::Models::SkillCreateParams::files }
+      & OpenAI::Internal::Type::request_parameters
+
+    class SkillCreateParams < OpenAI::Internal::Type::BaseModel
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
+
+      attr_reader files: OpenAI::Models::SkillCreateParams::files?
+
+      def files=: (
+        OpenAI::Models::SkillCreateParams::files
+      ) -> OpenAI::Models::SkillCreateParams::files
+
+      def initialize: (
+        ?files: OpenAI::Models::SkillCreateParams::files,
+        ?request_options: OpenAI::request_opts
+      ) -> void
+
+      def to_hash: -> {
+        files: OpenAI::Models::SkillCreateParams::files,
+        request_options: OpenAI::RequestOptions
+      }
+
+      type files =
+        ::Array[OpenAI::Internal::file_input] | OpenAI::Internal::file_input
+
+      module Files
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::SkillCreateParams::files]
+
+        StringArray: OpenAI::Internal::Type::Converter
+      end
+    end
+  end
+end

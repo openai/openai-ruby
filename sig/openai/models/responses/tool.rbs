@@ -263,7 +263,8 @@ module OpenAI
               {
                 type: :auto,
                 file_ids: ::Array[String],
-                memory_limit: OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::memory_limit?
+                memory_limit: OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::memory_limit?,
+                network_policy: OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::network_policy
               }
 
             class CodeInterpreterToolAuto < OpenAI::Internal::Type::BaseModel
@@ -275,16 +276,24 @@ module OpenAI
 
               attr_accessor memory_limit: OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::memory_limit?
 
+              attr_reader network_policy: OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::network_policy?
+
+              def network_policy=: (
+                OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::network_policy
+              ) -> OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::network_policy
+
               def initialize: (
                 ?file_ids: ::Array[String],
                 ?memory_limit: OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::memory_limit?,
+                ?network_policy: OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::network_policy,
                 ?type: :auto
               ) -> void
 
               def to_hash: -> {
                 type: :auto,
                 file_ids: ::Array[String],
-                memory_limit: OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::memory_limit?
+                memory_limit: OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::memory_limit?,
+                network_policy: OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::network_policy
               }
 
               type memory_limit = :"1g" | :"4g" | :"16g" | :"64g"
@@ -298,6 +307,16 @@ module OpenAI
                 MEMORY_LIMIT_64G: :"64g"
 
                 def self?.values: -> ::Array[OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::memory_limit]
+              end
+
+              type network_policy =
+                OpenAI::Responses::ContainerNetworkPolicyDisabled
+                | OpenAI::Responses::ContainerNetworkPolicyAllowlist
+
+              module NetworkPolicy
+                extend OpenAI::Internal::Type::Union
+
+                def self?.variants: -> ::Array[OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::network_policy]
               end
             end
 

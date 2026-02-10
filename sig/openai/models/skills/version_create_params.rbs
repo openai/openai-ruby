@@ -1,0 +1,50 @@
+module OpenAI
+  module Models
+    module Skills
+      type version_create_params =
+        {
+          default: bool,
+          files: OpenAI::Models::Skills::VersionCreateParams::files
+        }
+        & OpenAI::Internal::Type::request_parameters
+
+      class VersionCreateParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_reader default: bool?
+
+        def default=: (bool) -> bool
+
+        attr_reader files: OpenAI::Models::Skills::VersionCreateParams::files?
+
+        def files=: (
+          OpenAI::Models::Skills::VersionCreateParams::files
+        ) -> OpenAI::Models::Skills::VersionCreateParams::files
+
+        def initialize: (
+          ?default: bool,
+          ?files: OpenAI::Models::Skills::VersionCreateParams::files,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          default: bool,
+          files: OpenAI::Models::Skills::VersionCreateParams::files,
+          request_options: OpenAI::RequestOptions
+        }
+
+        type files =
+          ::Array[OpenAI::Internal::file_input] | OpenAI::Internal::file_input
+
+        module Files
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Skills::VersionCreateParams::files]
+
+          StringArray: OpenAI::Internal::Type::Converter
+        end
+      end
+    end
+  end
+end

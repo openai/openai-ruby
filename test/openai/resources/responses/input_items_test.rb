@@ -126,6 +126,7 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
         id: String,
         action: OpenAI::Responses::ResponseFunctionShellToolCall::Action,
         call_id: String,
+        environment: OpenAI::Responses::ResponseFunctionShellToolCall::Environment | nil,
         status: OpenAI::Responses::ResponseFunctionShellToolCall::Status,
         created_by: String | nil
       }

@@ -728,6 +728,30 @@ module OpenAI
               end
               attr_accessor :memory_limit
 
+              # Network access policy for the container.
+              sig do
+                returns(
+                  T.nilable(
+                    T.any(
+                      OpenAI::Responses::ContainerNetworkPolicyDisabled,
+                      OpenAI::Responses::ContainerNetworkPolicyAllowlist
+                    )
+                  )
+                )
+              end
+              attr_reader :network_policy
+
+              sig do
+                params(
+                  network_policy:
+                    T.any(
+                      OpenAI::Responses::ContainerNetworkPolicyDisabled::OrHash,
+                      OpenAI::Responses::ContainerNetworkPolicyAllowlist::OrHash
+                    )
+                ).void
+              end
+              attr_writer :network_policy
+
               # Configuration for a code interpreter container. Optionally specify the IDs of
               # the files to run the code on.
               sig do
@@ -737,6 +761,11 @@ module OpenAI
                     T.nilable(
                       OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::OrSymbol
                     ),
+                  network_policy:
+                    T.any(
+                      OpenAI::Responses::ContainerNetworkPolicyDisabled::OrHash,
+                      OpenAI::Responses::ContainerNetworkPolicyAllowlist::OrHash
+                    ),
                   type: Symbol
                 ).returns(T.attached_class)
               end
@@ -745,6 +774,8 @@ module OpenAI
                 file_ids: nil,
                 # The memory limit for the code interpreter container.
                 memory_limit: nil,
+                # Network access policy for the container.
+                network_policy: nil,
                 # Always `auto`.
                 type: :auto
               )
@@ -758,6 +789,11 @@ module OpenAI
                     memory_limit:
                       T.nilable(
                         OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::OrSymbol
+                      ),
+                    network_policy:
+                      T.any(
+                        OpenAI::Responses::ContainerNetworkPolicyDisabled,
+                        OpenAI::Responses::ContainerNetworkPolicyAllowlist
                       )
                   }
                 )
@@ -807,6 +843,29 @@ module OpenAI
                   )
                 end
                 def self.values
+                end
+              end
+
+              # Network access policy for the container.
+              module NetworkPolicy
+                extend OpenAI::Internal::Type::Union
+
+                Variants =
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Responses::ContainerNetworkPolicyDisabled,
+                      OpenAI::Responses::ContainerNetworkPolicyAllowlist
+                    )
+                  end
+
+                sig do
+                  override.returns(
+                    T::Array[
+                      OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::NetworkPolicy::Variants
+                    ]
+                  )
+                end
+                def self.variants
                 end
               end
             end

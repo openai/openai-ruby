@@ -46,7 +46,7 @@ module OpenAI
       #
       # Creates an edited or extended image given one or more source images and a
       # prompt. This endpoint supports GPT Image models (`gpt-image-1.5`, `gpt-image-1`,
-      # and `gpt-image-1-mini`) and `dall-e-2`.
+      # `gpt-image-1-mini`, and `chatgpt-image-latest`) and `dall-e-2`.
       #
       # @overload edit(image:, prompt:, background: nil, input_fidelity: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, size: nil, user: nil, request_options: {})
       #
@@ -60,7 +60,7 @@ module OpenAI
       #
       # @param mask [Pathname, StringIO, IO, String, OpenAI::FilePart] An additional image whose fully transparent areas (e.g. where alpha is zero) ind
       #
-      # @param model [String, Symbol, OpenAI::Models::ImageModel, nil] The model to use for image generation. Only `dall-e-2` and the GPT image models
+      # @param model [String, Symbol, OpenAI::Models::ImageModel, nil] The model to use for image generation. Defaults to `gpt-image-1.5`.
       #
       # @param n [Integer, nil] The number of images to generate. Must be between 1 and 10.
       #
@@ -70,7 +70,7 @@ module OpenAI
       #
       # @param partial_images [Integer, nil] The number of partial images to generate. This parameter is used for
       #
-      # @param quality [Symbol, OpenAI::Models::ImageEditParams::Quality, nil] The quality of the image that will be generated. `high`, `medium` and `low` are
+      # @param quality [Symbol, OpenAI::Models::ImageEditParams::Quality, nil] The quality of the image that will be generated for GPT image models. Defaults t
       #
       # @param response_format [Symbol, OpenAI::Models::ImageEditParams::ResponseFormat, nil] The format in which the generated images are returned. Must be one of `url` or `
       #
@@ -106,7 +106,7 @@ module OpenAI
       #
       # Creates an edited or extended image given one or more source images and a
       # prompt. This endpoint supports GPT Image models (`gpt-image-1.5`, `gpt-image-1`,
-      # and `gpt-image-1-mini`) and `dall-e-2`.
+      # `gpt-image-1-mini`, and `chatgpt-image-latest`) and `dall-e-2`.
       #
       # @overload edit_stream_raw(image:, prompt:, background: nil, input_fidelity: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, size: nil, user: nil, request_options: {})
       #
@@ -120,7 +120,7 @@ module OpenAI
       #
       # @param mask [Pathname, StringIO, IO, String, OpenAI::FilePart] An additional image whose fully transparent areas (e.g. where alpha is zero) ind
       #
-      # @param model [String, Symbol, OpenAI::Models::ImageModel, nil] The model to use for image generation. Only `dall-e-2` and the GPT image models
+      # @param model [String, Symbol, OpenAI::Models::ImageModel, nil] The model to use for image generation. Defaults to `gpt-image-1.5`.
       #
       # @param n [Integer, nil] The number of images to generate. Must be between 1 and 10.
       #
@@ -130,7 +130,7 @@ module OpenAI
       #
       # @param partial_images [Integer, nil] The number of partial images to generate. This parameter is used for
       #
-      # @param quality [Symbol, OpenAI::Models::ImageEditParams::Quality, nil] The quality of the image that will be generated. `high`, `medium` and `low` are
+      # @param quality [Symbol, OpenAI::Models::ImageEditParams::Quality, nil] The quality of the image that will be generated for GPT image models. Defaults t
       #
       # @param response_format [Symbol, OpenAI::Models::ImageEditParams::ResponseFormat, nil] The format in which the generated images are returned. Must be one of `url` or `
       #

@@ -1,0 +1,30 @@
+module OpenAI
+  module Models
+    module Responses
+      type skill_reference =
+        { skill_id: String, type: :skill_reference, version: String }
+
+      class SkillReference < OpenAI::Internal::Type::BaseModel
+        attr_accessor skill_id: String
+
+        attr_accessor type: :skill_reference
+
+        attr_reader version: String?
+
+        def version=: (String) -> String
+
+        def initialize: (
+          skill_id: String,
+          ?version: String,
+          ?type: :skill_reference
+        ) -> void
+
+        def to_hash: -> {
+          skill_id: String,
+          type: :skill_reference,
+          version: String
+        }
+      end
+    end
+  end
+end

@@ -1,14 +1,37 @@
 module OpenAI
   module Models
     module Responses
-      type function_shell_tool = { type: :shell }
+      type function_shell_tool =
+        {
+          type: :shell,
+          environment: OpenAI::Models::Responses::FunctionShellTool::environment?
+        }
 
       class FunctionShellTool < OpenAI::Internal::Type::BaseModel
         attr_accessor type: :shell
 
-        def initialize: (?type: :shell) -> void
+        attr_accessor environment: OpenAI::Models::Responses::FunctionShellTool::environment?
 
-        def to_hash: -> { type: :shell }
+        def initialize: (
+          ?environment: OpenAI::Models::Responses::FunctionShellTool::environment?,
+          ?type: :shell
+        ) -> void
+
+        def to_hash: -> {
+          type: :shell,
+          environment: OpenAI::Models::Responses::FunctionShellTool::environment?
+        }
+
+        type environment =
+          OpenAI::Responses::ContainerAuto
+          | OpenAI::Responses::LocalEnvironment
+          | OpenAI::Responses::ContainerReference
+
+        module Environment
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::FunctionShellTool::environment]
+        end
       end
     end
   end

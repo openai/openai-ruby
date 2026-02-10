@@ -1,0 +1,23 @@
+module OpenAI
+  module Models
+    type skill_update_params =
+      { default_version: String } & OpenAI::Internal::Type::request_parameters
+
+    class SkillUpdateParams < OpenAI::Internal::Type::BaseModel
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
+
+      attr_accessor default_version: String
+
+      def initialize: (
+        default_version: String,
+        ?request_options: OpenAI::request_opts
+      ) -> void
+
+      def to_hash: -> {
+        default_version: String,
+        request_options: OpenAI::RequestOptions
+      }
+    end
+  end
+end

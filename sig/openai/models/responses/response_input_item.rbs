@@ -424,6 +424,7 @@ module OpenAI
             call_id: String,
             type: :shell_call,
             id: String?,
+            environment: OpenAI::Models::Responses::ResponseInputItem::ShellCall::environment?,
             status: OpenAI::Models::Responses::ResponseInputItem::ShellCall::status?
           }
 
@@ -436,12 +437,15 @@ module OpenAI
 
           attr_accessor id: String?
 
+          attr_accessor environment: OpenAI::Models::Responses::ResponseInputItem::ShellCall::environment?
+
           attr_accessor status: OpenAI::Models::Responses::ResponseInputItem::ShellCall::status?
 
           def initialize: (
             action: OpenAI::Responses::ResponseInputItem::ShellCall::Action,
             call_id: String,
             ?id: String?,
+            ?environment: OpenAI::Models::Responses::ResponseInputItem::ShellCall::environment?,
             ?status: OpenAI::Models::Responses::ResponseInputItem::ShellCall::status?,
             ?type: :shell_call
           ) -> void
@@ -451,6 +455,7 @@ module OpenAI
             call_id: String,
             type: :shell_call,
             id: String?,
+            environment: OpenAI::Models::Responses::ResponseInputItem::ShellCall::environment?,
             status: OpenAI::Models::Responses::ResponseInputItem::ShellCall::status?
           }
 
@@ -479,6 +484,16 @@ module OpenAI
               max_output_length: Integer?,
               timeout_ms: Integer?
             }
+          end
+
+          type environment =
+            OpenAI::Responses::LocalEnvironment
+            | OpenAI::Responses::ContainerReference
+
+          module Environment
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::ShellCall::environment]
           end
 
           type status = :in_progress | :completed | :incomplete

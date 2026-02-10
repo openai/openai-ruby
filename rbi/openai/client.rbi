@@ -79,6 +79,9 @@ module OpenAI
     sig { returns(OpenAI::Resources::Containers) }
     attr_reader :containers
 
+    sig { returns(OpenAI::Resources::Skills) }
+    attr_reader :skills
+
     sig { returns(OpenAI::Resources::Videos) }
     attr_reader :videos
 

@@ -61,6 +61,10 @@ TEST_PATHS=(
 	test/openai/resources/containers_test.rb
 	test/openai/resources/containers/files_test.rb
 	test/openai/resources/containers/files/content_test.rb
+	test/openai/resources/skills_test.rb
+	test/openai/resources/skills/content_test.rb
+	test/openai/resources/skills/versions_test.rb
+	test/openai/resources/skills/versions/content_test.rb
 	test/openai/resources/videos_test.rb
 	test/openai/client_test.rb
 )

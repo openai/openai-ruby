@@ -1,0 +1,84 @@
+module OpenAI
+  module Models
+    module Responses
+      type container_auto =
+        {
+          type: :container_auto,
+          file_ids: ::Array[String],
+          memory_limit: OpenAI::Models::Responses::ContainerAuto::memory_limit?,
+          network_policy: OpenAI::Models::Responses::ContainerAuto::network_policy,
+          skills: ::Array[OpenAI::Models::Responses::ContainerAuto::skill]
+        }
+
+      class ContainerAuto < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :container_auto
+
+        attr_reader file_ids: ::Array[String]?
+
+        def file_ids=: (::Array[String]) -> ::Array[String]
+
+        attr_accessor memory_limit: OpenAI::Models::Responses::ContainerAuto::memory_limit?
+
+        attr_reader network_policy: OpenAI::Models::Responses::ContainerAuto::network_policy?
+
+        def network_policy=: (
+          OpenAI::Models::Responses::ContainerAuto::network_policy
+        ) -> OpenAI::Models::Responses::ContainerAuto::network_policy
+
+        attr_reader skills: ::Array[OpenAI::Models::Responses::ContainerAuto::skill]?
+
+        def skills=: (
+          ::Array[OpenAI::Models::Responses::ContainerAuto::skill]
+        ) -> ::Array[OpenAI::Models::Responses::ContainerAuto::skill]
+
+        def initialize: (
+          ?file_ids: ::Array[String],
+          ?memory_limit: OpenAI::Models::Responses::ContainerAuto::memory_limit?,
+          ?network_policy: OpenAI::Models::Responses::ContainerAuto::network_policy,
+          ?skills: ::Array[OpenAI::Models::Responses::ContainerAuto::skill],
+          ?type: :container_auto
+        ) -> void
+
+        def to_hash: -> {
+          type: :container_auto,
+          file_ids: ::Array[String],
+          memory_limit: OpenAI::Models::Responses::ContainerAuto::memory_limit?,
+          network_policy: OpenAI::Models::Responses::ContainerAuto::network_policy,
+          skills: ::Array[OpenAI::Models::Responses::ContainerAuto::skill]
+        }
+
+        type memory_limit = :"1g" | :"4g" | :"16g" | :"64g"
+
+        module MemoryLimit
+          extend OpenAI::Internal::Type::Enum
+
+          MEMORY_LIMIT_1G: :"1g"
+          MEMORY_LIMIT_4G: :"4g"
+          MEMORY_LIMIT_16G: :"16g"
+          MEMORY_LIMIT_64G: :"64g"
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ContainerAuto::memory_limit]
+        end
+
+        type network_policy =
+          OpenAI::Responses::ContainerNetworkPolicyDisabled
+          | OpenAI::Responses::ContainerNetworkPolicyAllowlist
+
+        module NetworkPolicy
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::ContainerAuto::network_policy]
+        end
+
+        type skill =
+          OpenAI::Responses::SkillReference | OpenAI::Responses::InlineSkill
+
+        module Skill
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::ContainerAuto::skill]
+        end
+      end
+    end
+  end
+end

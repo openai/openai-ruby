@@ -46,7 +46,7 @@ module OpenAI
       #
       # Creates an edited or extended image given one or more source images and a
       # prompt. This endpoint supports GPT Image models (`gpt-image-1.5`, `gpt-image-1`,
-      # and `gpt-image-1-mini`) and `dall-e-2`.
+      # `gpt-image-1-mini`, and `chatgpt-image-latest`) and `dall-e-2`.
       sig do
         params(
           image: OpenAI::ImageEditParams::Image::Variants,
@@ -75,7 +75,8 @@ module OpenAI
         #
         # For the GPT image models (`gpt-image-1`, `gpt-image-1-mini`, and
         # `gpt-image-1.5`), each image should be a `png`, `webp`, or `jpg` file less than
-        # 50MB. You can provide up to 16 images.
+        # 50MB. You can provide up to 16 images. `chatgpt-image-latest` follows the same
+        # input constraints as GPT image models.
         #
         # For `dall-e-2`, you can only provide one image, and it should be a square `png`
         # file less than 4MB.
@@ -101,9 +102,7 @@ module OpenAI
         # the mask will be applied on the first image. Must be a valid PNG file, less than
         # 4MB, and have the same dimensions as `image`.
         mask: nil,
-        # The model to use for image generation. Only `dall-e-2` and the GPT image models
-        # are supported. Defaults to `dall-e-2` unless a parameter specific to the GPT
-        # image models is used.
+        # The model to use for image generation. Defaults to `gpt-image-1.5`.
         model: nil,
         # The number of images to generate. Must be between 1 and 10.
         n: nil,
@@ -122,14 +121,13 @@ module OpenAI
         # Note that the final image may be sent before the full number of partial images
         # are generated if the full image is generated more quickly.
         partial_images: nil,
-        # The quality of the image that will be generated. `high`, `medium` and `low` are
-        # only supported for the GPT image models. `dall-e-2` only supports `standard`
-        # quality. Defaults to `auto`.
+        # The quality of the image that will be generated for GPT image models. Defaults
+        # to `auto`.
         quality: nil,
         # The format in which the generated images are returned. Must be one of `url` or
         # `b64_json`. URLs are only valid for 60 minutes after the image has been
-        # generated. This parameter is only supported for `dall-e-2`, as the GPT image
-        # models always return base64-encoded images.
+        # generated. This parameter is only supported for `dall-e-2` (default is `url` for
+        # `dall-e-2`), as GPT image models always return base64-encoded images.
         response_format: nil,
         # The size of the generated images. Must be one of `1024x1024`, `1536x1024`
         # (landscape), `1024x1536` (portrait), or `auto` (default value) for the GPT image
@@ -150,7 +148,7 @@ module OpenAI
       #
       # Creates an edited or extended image given one or more source images and a
       # prompt. This endpoint supports GPT Image models (`gpt-image-1.5`, `gpt-image-1`,
-      # and `gpt-image-1-mini`) and `dall-e-2`.
+      # `gpt-image-1-mini`, and `chatgpt-image-latest`) and `dall-e-2`.
       sig do
         params(
           image: OpenAI::ImageEditParams::Image::Variants,
@@ -181,7 +179,8 @@ module OpenAI
         #
         # For the GPT image models (`gpt-image-1`, `gpt-image-1-mini`, and
         # `gpt-image-1.5`), each image should be a `png`, `webp`, or `jpg` file less than
-        # 50MB. You can provide up to 16 images.
+        # 50MB. You can provide up to 16 images. `chatgpt-image-latest` follows the same
+        # input constraints as GPT image models.
         #
         # For `dall-e-2`, you can only provide one image, and it should be a square `png`
         # file less than 4MB.
@@ -207,9 +206,7 @@ module OpenAI
         # the mask will be applied on the first image. Must be a valid PNG file, less than
         # 4MB, and have the same dimensions as `image`.
         mask: nil,
-        # The model to use for image generation. Only `dall-e-2` and the GPT image models
-        # are supported. Defaults to `dall-e-2` unless a parameter specific to the GPT
-        # image models is used.
+        # The model to use for image generation. Defaults to `gpt-image-1.5`.
         model: nil,
         # The number of images to generate. Must be between 1 and 10.
         n: nil,
@@ -228,14 +225,13 @@ module OpenAI
         # Note that the final image may be sent before the full number of partial images
         # are generated if the full image is generated more quickly.
         partial_images: nil,
-        # The quality of the image that will be generated. `high`, `medium` and `low` are
-        # only supported for the GPT image models. `dall-e-2` only supports `standard`
-        # quality. Defaults to `auto`.
+        # The quality of the image that will be generated for GPT image models. Defaults
+        # to `auto`.
         quality: nil,
         # The format in which the generated images are returned. Must be one of `url` or
         # `b64_json`. URLs are only valid for 60 minutes after the image has been
-        # generated. This parameter is only supported for `dall-e-2`, as the GPT image
-        # models always return base64-encoded images.
+        # generated. This parameter is only supported for `dall-e-2` (default is `url` for
+        # `dall-e-2`), as GPT image models always return base64-encoded images.
         response_format: nil,
         # The size of the generated images. Must be one of `1024x1024`, `1536x1024`
         # (landscape), `1024x1536` (portrait), or `auto` (default value) for the GPT image

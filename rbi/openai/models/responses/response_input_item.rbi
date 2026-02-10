@@ -1116,6 +1116,19 @@ module OpenAI
           sig { returns(T.nilable(String)) }
           attr_accessor :id
 
+          # The environment to execute the shell commands in.
+          sig do
+            returns(
+              T.nilable(
+                T.any(
+                  OpenAI::Responses::LocalEnvironment,
+                  OpenAI::Responses::ContainerReference
+                )
+              )
+            )
+          end
+          attr_accessor :environment
+
           # The status of the shell call. One of `in_progress`, `completed`, or
           # `incomplete`.
           sig do
@@ -1134,6 +1147,13 @@ module OpenAI
                 OpenAI::Responses::ResponseInputItem::ShellCall::Action::OrHash,
               call_id: String,
               id: T.nilable(String),
+              environment:
+                T.nilable(
+                  T.any(
+                    OpenAI::Responses::LocalEnvironment::OrHash,
+                    OpenAI::Responses::ContainerReference::OrHash
+                  )
+                ),
               status:
                 T.nilable(
                   OpenAI::Responses::ResponseInputItem::ShellCall::Status::OrSymbol
@@ -1149,6 +1169,8 @@ module OpenAI
             # The unique ID of the shell tool call. Populated when this item is returned via
             # API.
             id: nil,
+            # The environment to execute the shell commands in.
+            environment: nil,
             # The status of the shell call. One of `in_progress`, `completed`, or
             # `incomplete`.
             status: nil,
@@ -1164,6 +1186,13 @@ module OpenAI
                 call_id: String,
                 type: Symbol,
                 id: T.nilable(String),
+                environment:
+                  T.nilable(
+                    T.any(
+                      OpenAI::Responses::LocalEnvironment,
+                      OpenAI::Responses::ContainerReference
+                    )
+                  ),
                 status:
                   T.nilable(
                     OpenAI::Responses::ResponseInputItem::ShellCall::Status::OrSymbol
@@ -1225,6 +1254,29 @@ module OpenAI
               )
             end
             def to_hash
+            end
+          end
+
+          # The environment to execute the shell commands in.
+          module Environment
+            extend OpenAI::Internal::Type::Union
+
+            Variants =
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::LocalEnvironment,
+                  OpenAI::Responses::ContainerReference
+                )
+              end
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Responses::ResponseInputItem::ShellCall::Environment::Variants
+                ]
+              )
+            end
+            def self.variants
             end
           end
 

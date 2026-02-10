@@ -99,6 +99,8 @@ module OpenAI
 
   CustomToolInputFormat = OpenAI::Models::CustomToolInputFormat
 
+  DeletedSkill = OpenAI::Models::DeletedSkill
+
   Embedding = OpenAI::Models::Embedding
 
   EmbeddingCreateParams = OpenAI::Models::EmbeddingCreateParams
@@ -224,6 +226,22 @@ module OpenAI
   Responses = OpenAI::Models::Responses
 
   ResponsesModel = OpenAI::Models::ResponsesModel
+
+  Skill = OpenAI::Models::Skill
+
+  SkillCreateParams = OpenAI::Models::SkillCreateParams
+
+  SkillDeleteParams = OpenAI::Models::SkillDeleteParams
+
+  SkillList = OpenAI::Models::SkillList
+
+  SkillListParams = OpenAI::Models::SkillListParams
+
+  SkillRetrieveParams = OpenAI::Models::SkillRetrieveParams
+
+  Skills = OpenAI::Models::Skills
+
+  SkillUpdateParams = OpenAI::Models::SkillUpdateParams
 
   StaticFileChunkingStrategy = OpenAI::Models::StaticFileChunkingStrategy
 

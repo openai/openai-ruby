@@ -6,6 +6,7 @@ module OpenAI
           id: String,
           action: OpenAI::Responses::ResponseFunctionShellToolCall::Action,
           call_id: String,
+          environment: OpenAI::Models::Responses::ResponseFunctionShellToolCall::environment?,
           status: OpenAI::Models::Responses::ResponseFunctionShellToolCall::status,
           type: :shell_call,
           created_by: String
@@ -17,6 +18,8 @@ module OpenAI
         attr_accessor action: OpenAI::Responses::ResponseFunctionShellToolCall::Action
 
         attr_accessor call_id: String
+
+        attr_accessor environment: OpenAI::Models::Responses::ResponseFunctionShellToolCall::environment?
 
         attr_accessor status: OpenAI::Models::Responses::ResponseFunctionShellToolCall::status
 
@@ -30,6 +33,7 @@ module OpenAI
           id: String,
           action: OpenAI::Responses::ResponseFunctionShellToolCall::Action,
           call_id: String,
+          environment: OpenAI::Models::Responses::ResponseFunctionShellToolCall::environment?,
           status: OpenAI::Models::Responses::ResponseFunctionShellToolCall::status,
           ?created_by: String,
           ?type: :shell_call
@@ -39,6 +43,7 @@ module OpenAI
           id: String,
           action: OpenAI::Responses::ResponseFunctionShellToolCall::Action,
           call_id: String,
+          environment: OpenAI::Models::Responses::ResponseFunctionShellToolCall::environment?,
           status: OpenAI::Models::Responses::ResponseFunctionShellToolCall::status,
           type: :shell_call,
           created_by: String
@@ -69,6 +74,16 @@ module OpenAI
             max_output_length: Integer?,
             timeout_ms: Integer?
           }
+        end
+
+        type environment =
+          OpenAI::Responses::ResponseLocalEnvironment
+          | OpenAI::Responses::ResponseContainerReference
+
+        module Environment
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseFunctionShellToolCall::environment]
         end
 
         type status = :in_progress | :completed | :incomplete

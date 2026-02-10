@@ -14,7 +14,8 @@ module OpenAI
       #
       #   For the GPT image models (`gpt-image-1`, `gpt-image-1-mini`, and
       #   `gpt-image-1.5`), each image should be a `png`, `webp`, or `jpg` file less than
-      #   50MB. You can provide up to 16 images.
+      #   50MB. You can provide up to 16 images. `chatgpt-image-latest` follows the same
+      #   input constraints as GPT image models.
       #
       #   For `dall-e-2`, you can only provide one image, and it should be a square `png`
       #   file less than 4MB.
@@ -60,9 +61,7 @@ module OpenAI
       optional :mask, OpenAI::Internal::Type::FileInput
 
       # @!attribute model
-      #   The model to use for image generation. Only `dall-e-2` and the GPT image models
-      #   are supported. Defaults to `dall-e-2` unless a parameter specific to the GPT
-      #   image models is used.
+      #   The model to use for image generation. Defaults to `gpt-image-1.5`.
       #
       #   @return [String, Symbol, OpenAI::Models::ImageModel, nil]
       optional :model, union: -> { OpenAI::ImageEditParams::Model }, nil?: true
@@ -101,9 +100,8 @@ module OpenAI
       optional :partial_images, Integer, nil?: true
 
       # @!attribute quality
-      #   The quality of the image that will be generated. `high`, `medium` and `low` are
-      #   only supported for the GPT image models. `dall-e-2` only supports `standard`
-      #   quality. Defaults to `auto`.
+      #   The quality of the image that will be generated for GPT image models. Defaults
+      #   to `auto`.
       #
       #   @return [Symbol, OpenAI::Models::ImageEditParams::Quality, nil]
       optional :quality, enum: -> { OpenAI::ImageEditParams::Quality }, nil?: true
@@ -111,8 +109,8 @@ module OpenAI
       # @!attribute response_format
       #   The format in which the generated images are returned. Must be one of `url` or
       #   `b64_json`. URLs are only valid for 60 minutes after the image has been
-      #   generated. This parameter is only supported for `dall-e-2`, as the GPT image
-      #   models always return base64-encoded images.
+      #   generated. This parameter is only supported for `dall-e-2` (default is `url` for
+      #   `dall-e-2`), as GPT image models always return base64-encoded images.
       #
       #   @return [Symbol, OpenAI::Models::ImageEditParams::ResponseFormat, nil]
       optional :response_format, enum: -> { OpenAI::ImageEditParams::ResponseFormat }, nil?: true
@@ -147,7 +145,7 @@ module OpenAI
       #
       #   @param mask [Pathname, StringIO, IO, String, OpenAI::FilePart] An additional image whose fully transparent areas (e.g. where alpha is zero) ind
       #
-      #   @param model [String, Symbol, OpenAI::Models::ImageModel, nil] The model to use for image generation. Only `dall-e-2` and the GPT image models
+      #   @param model [String, Symbol, OpenAI::Models::ImageModel, nil] The model to use for image generation. Defaults to `gpt-image-1.5`.
       #
       #   @param n [Integer, nil] The number of images to generate. Must be between 1 and 10.
       #
@@ -157,7 +155,7 @@ module OpenAI
       #
       #   @param partial_images [Integer, nil] The number of partial images to generate. This parameter is used for
       #
-      #   @param quality [Symbol, OpenAI::Models::ImageEditParams::Quality, nil] The quality of the image that will be generated. `high`, `medium` and `low` are
+      #   @param quality [Symbol, OpenAI::Models::ImageEditParams::Quality, nil] The quality of the image that will be generated for GPT image models. Defaults t
       #
       #   @param response_format [Symbol, OpenAI::Models::ImageEditParams::ResponseFormat, nil] The format in which the generated images are returned. Must be one of `url` or `
       #
@@ -171,7 +169,8 @@ module OpenAI
       #
       # For the GPT image models (`gpt-image-1`, `gpt-image-1-mini`, and
       # `gpt-image-1.5`), each image should be a `png`, `webp`, or `jpg` file less than
-      # 50MB. You can provide up to 16 images.
+      # 50MB. You can provide up to 16 images. `chatgpt-image-latest` follows the same
+      # input constraints as GPT image models.
       #
       # For `dall-e-2`, you can only provide one image, and it should be a square `png`
       # file less than 4MB.
@@ -221,15 +220,13 @@ module OpenAI
         #   @return [Array<Symbol>]
       end
 
-      # The model to use for image generation. Only `dall-e-2` and the GPT image models
-      # are supported. Defaults to `dall-e-2` unless a parameter specific to the GPT
-      # image models is used.
+      # The model to use for image generation. Defaults to `gpt-image-1.5`.
       module Model
         extend OpenAI::Internal::Type::Union
 
         variant String
 
-        # The model to use for image generation. Only `dall-e-2` and the GPT image models are supported. Defaults to `dall-e-2` unless a parameter specific to the GPT image models is used.
+        # The model to use for image generation. Defaults to `gpt-image-1.5`.
         variant enum: -> { OpenAI::ImageModel }
 
         # @!method self.variants
@@ -250,9 +247,8 @@ module OpenAI
         #   @return [Array<Symbol>]
       end
 
-      # The quality of the image that will be generated. `high`, `medium` and `low` are
-      # only supported for the GPT image models. `dall-e-2` only supports `standard`
-      # quality. Defaults to `auto`.
+      # The quality of the image that will be generated for GPT image models. Defaults
+      # to `auto`.
       module Quality
         extend OpenAI::Internal::Type::Enum
 
@@ -268,8 +264,8 @@ module OpenAI
 
       # The format in which the generated images are returned. Must be one of `url` or
       # `b64_json`. URLs are only valid for 60 minutes after the image has been
-      # generated. This parameter is only supported for `dall-e-2`, as the GPT image
-      # models always return base64-encoded images.
+      # generated. This parameter is only supported for `dall-e-2` (default is `url` for
+      # `dall-e-2`), as GPT image models always return base64-encoded images.
       module ResponseFormat
         extend OpenAI::Internal::Type::Enum
 

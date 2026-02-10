@@ -1,0 +1,54 @@
+module OpenAI
+  module Models
+    class SkillVersion = Skills::SkillVersion
+
+    module Skills
+      type skill_version =
+        {
+          id: String,
+          created_at: Integer,
+          description: String,
+          name: String,
+          object: :"skill.version",
+          skill_id: String,
+          version: String
+        }
+
+      class SkillVersion < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor created_at: Integer
+
+        attr_accessor description: String
+
+        attr_accessor name: String
+
+        attr_accessor object: :"skill.version"
+
+        attr_accessor skill_id: String
+
+        attr_accessor version: String
+
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          description: String,
+          name: String,
+          skill_id: String,
+          version: String,
+          ?object: :"skill.version"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          created_at: Integer,
+          description: String,
+          name: String,
+          object: :"skill.version",
+          skill_id: String,
+          version: String
+        }
+      end
+    end
+  end
+end

@@ -408,13 +408,22 @@ module OpenAI
                        },
                        nil?: true
 
-              # @!method initialize(file_ids: nil, memory_limit: nil, type: :auto)
+              # @!attribute network_policy
+              #   Network access policy for the container.
+              #
+              #   @return [OpenAI::Models::Responses::ContainerNetworkPolicyDisabled, OpenAI::Models::Responses::ContainerNetworkPolicyAllowlist, nil]
+              optional :network_policy,
+                       union: -> { OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::NetworkPolicy }
+
+              # @!method initialize(file_ids: nil, memory_limit: nil, network_policy: nil, type: :auto)
               #   Configuration for a code interpreter container. Optionally specify the IDs of
               #   the files to run the code on.
               #
               #   @param file_ids [Array<String>] An optional list of uploaded files to make available to your code.
               #
               #   @param memory_limit [Symbol, OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit, nil] The memory limit for the code interpreter container.
+              #
+              #   @param network_policy [OpenAI::Models::Responses::ContainerNetworkPolicyDisabled, OpenAI::Models::Responses::ContainerNetworkPolicyAllowlist] Network access policy for the container.
               #
               #   @param type [Symbol, :auto] Always `auto`.
 
@@ -431,6 +440,22 @@ module OpenAI
 
                 # @!method self.values
                 #   @return [Array<Symbol>]
+              end
+
+              # Network access policy for the container.
+              #
+              # @see OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto#network_policy
+              module NetworkPolicy
+                extend OpenAI::Internal::Type::Union
+
+                discriminator :type
+
+                variant :disabled, -> { OpenAI::Responses::ContainerNetworkPolicyDisabled }
+
+                variant :allowlist, -> { OpenAI::Responses::ContainerNetworkPolicyAllowlist }
+
+                # @!method self.variants
+                #   @return [Array(OpenAI::Models::Responses::ContainerNetworkPolicyDisabled, OpenAI::Models::Responses::ContainerNetworkPolicyAllowlist)]
               end
             end
 
