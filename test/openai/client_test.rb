@@ -108,22 +108,26 @@ class OpenAITest < Minitest::Test
   end
 
   def test_client_retry_after_date
+    now = Time.at(1_700_000_000)
     stub_request(:post, "http://localhost/chat/completions").to_return_json(
       status: 500,
-      headers: {"retry-after" => (Time.now + 10).httpdate},
+      headers: {"retry-after" => (now + 10).httpdate},
       body: {}
     )
 
     openai = OpenAI::Client.new(base_url: "http://localhost", api_key: "My API Key", max_retries: 1)
 
-    assert_raises(OpenAI::Errors::InternalServerError) do
-      Thread.current.thread_variable_set(:time_now, Time.now)
-      openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"gpt-4o")
+    begin
+      Thread.current.thread_variable_set(:time_now, now)
+      assert_raises(OpenAI::Errors::InternalServerError) do
+        openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"gpt-4o")
+      end
+    ensure
       Thread.current.thread_variable_set(:time_now, nil)
     end
 
     assert_requested(:any, /./, times: 2)
-    assert_in_delta(10, Thread.current.thread_variable_get(:mock_sleep).last, 1.0)
+    assert_equal(10, Thread.current.thread_variable_get(:mock_sleep).last)
   end
 
   def test_client_retry_after_ms
