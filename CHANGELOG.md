@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.47.0 (2026-02-10)
+
+Full Changelog: [v0.46.0...v0.47.0](https://github.com/openai/openai-ruby/compare/v0.46.0...v0.47.0)
+
+### Features
+
+* **api:** skills and hosted shell ([cf841cd](https://github.com/openai/openai-ruby/commit/cf841cd617c13c2800d2d71afe9e4ef04f18e5e5))
+
 ## 0.46.0 (2026-02-08)
 
 Full Changelog: [v0.45.0...v0.46.0](https://github.com/openai/openai-ruby/compare/v0.45.0...v0.46.0)
