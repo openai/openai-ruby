@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.48.0 (2026-02-10)
+
+Full Changelog: [v0.47.0...v0.48.0](https://github.com/openai/openai-ruby/compare/v0.47.0...v0.48.0)
+
+### Features
+
+* **api:** support for images in batch api ([fc847f5](https://github.com/openai/openai-ruby/commit/fc847f59d745e86bf0f93e7886612dae910e19b6))
+
 ## 0.47.0 (2026-02-10)
 
 Full Changelog: [v0.46.0...v0.47.0](https://github.com/openai/openai-ruby/compare/v0.46.0...v0.47.0)
