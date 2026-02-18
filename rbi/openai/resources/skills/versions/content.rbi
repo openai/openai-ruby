@@ -5,7 +5,7 @@ module OpenAI
     class Skills
       class Versions
         class Content
-          # Get Skill Version Content
+          # Download a skill version zip bundle.
           sig do
             params(
               version: String,

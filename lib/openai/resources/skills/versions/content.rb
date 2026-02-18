@@ -5,7 +5,7 @@ module OpenAI
     class Skills
       class Versions
         class Content
-          # Get Skill Version Content
+          # Download a skill version zip bundle.
           #
           # @overload retrieve(version, skill_id:, request_options: {})
           #

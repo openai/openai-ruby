@@ -26,6 +26,9 @@ module OpenAI
         # supported for reasoning models are noted below. For the current state of
         # unsupported parameters in reasoning models,
         # [refer to the reasoning guide](https://platform.openai.com/docs/guides/reasoning).
+        #
+        # Returns a chat completion object, or a streamed sequence of chat completion
+        # chunk objects if the request is streamed.
         sig do
           params(
             messages:
@@ -360,6 +363,9 @@ module OpenAI
         # supported for reasoning models are noted below. For the current state of
         # unsupported parameters in reasoning models,
         # [refer to the reasoning guide](https://platform.openai.com/docs/guides/reasoning).
+        #
+        # Returns a chat completion object, or a streamed sequence of chat completion
+        # chunk objects if the request is streamed.
         sig do
           params(
             messages:

@@ -6,6 +6,9 @@ module OpenAI
       # See {OpenAI::Resources::Completions#create_streaming} for streaming counterpart.
       #
       # Creates a completion for the provided prompt and parameters.
+      #
+      # Returns a completion object, or a sequence of completion objects if the request
+      # is streamed.
       sig do
         params(
           model: T.any(String, OpenAI::CompletionCreateParams::Model::OrSymbol),
@@ -146,6 +149,9 @@ module OpenAI
       # See {OpenAI::Resources::Completions#create} for non-streaming counterpart.
       #
       # Creates a completion for the provided prompt and parameters.
+      #
+      # Returns a completion object, or a sequence of completion objects if the request
+      # is streamed.
       sig do
         params(
           model: T.any(String, OpenAI::CompletionCreateParams::Model::OrSymbol),

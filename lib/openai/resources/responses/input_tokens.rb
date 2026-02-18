@@ -7,7 +7,10 @@ module OpenAI
         # Some parameter documentations has been truncated, see
         # {OpenAI::Models::Responses::InputTokenCountParams} for more details.
         #
-        # Get input token counts
+        # Returns input token counts of the request.
+        #
+        # Returns an object with `object` set to `response.input_tokens` and an
+        # `input_tokens` count.
         #
         # @overload count(conversation: nil, input: nil, instructions: nil, model: nil, parallel_tool_calls: nil, previous_response_id: nil, reasoning: nil, text: nil, tool_choice: nil, tools: nil, truncation: nil, request_options: {})
         #

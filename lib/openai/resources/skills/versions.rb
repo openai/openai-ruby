@@ -7,7 +7,7 @@ module OpenAI
         # @return [OpenAI::Resources::Skills::Versions::Content]
         attr_reader :content
 
-        # Create Skill Version
+        # Create a new immutable skill version.
         #
         # @overload create(skill_id, default: nil, files: nil, request_options: {})
         #
@@ -34,7 +34,7 @@ module OpenAI
           )
         end
 
-        # Get Skill Version
+        # Get a specific skill version.
         #
         # @overload retrieve(version, skill_id:, request_options: {})
         #
@@ -61,7 +61,7 @@ module OpenAI
           )
         end
 
-        # List Skill Versions
+        # List skill versions for a skill.
         #
         # @overload list(skill_id, after: nil, limit: nil, order: nil, request_options: {})
         #
@@ -90,7 +90,7 @@ module OpenAI
           )
         end
 
-        # Delete Skill Version
+        # Delete a skill version.
         #
         # @overload delete(version, skill_id:, request_options: {})
         #
