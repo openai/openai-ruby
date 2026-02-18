@@ -8,7 +8,7 @@ module OpenAI
           # Some parameter documentations has been truncated, see
           # {OpenAI::Models::Beta::ChatKit::SessionCreateParams} for more details.
           #
-          # Create a ChatKit session
+          # Create a ChatKit session.
           #
           # @overload create(user:, workflow:, chatkit_configuration: nil, expires_after: nil, rate_limits: nil, request_options: {})
           #
@@ -38,7 +38,9 @@ module OpenAI
             )
           end
 
-          # Cancel a ChatKit session
+          # Cancel an active ChatKit session and return its most recent metadata.
+          #
+          # Cancelling prevents new requests from using the issued client secret.
           #
           # @overload cancel(session_id, request_options: {})
           #

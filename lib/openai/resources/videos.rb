@@ -6,7 +6,7 @@ module OpenAI
       # Some parameter documentations has been truncated, see
       # {OpenAI::Models::VideoCreateParams} for more details.
       #
-      # Create a video
+      # Create a new video generation job from a prompt and optional reference assets.
       #
       # @overload create(prompt:, input_reference: nil, model: nil, seconds: nil, size: nil, request_options: {})
       #
@@ -37,7 +37,7 @@ module OpenAI
         )
       end
 
-      # Retrieve a video
+      # Fetch the latest metadata for a generated video.
       #
       # @overload retrieve(video_id, request_options: {})
       #
@@ -60,7 +60,7 @@ module OpenAI
       # Some parameter documentations has been truncated, see
       # {OpenAI::Models::VideoListParams} for more details.
       #
-      # List videos
+      # List recently generated videos for the current project.
       #
       # @overload list(after: nil, limit: nil, order: nil, request_options: {})
       #
@@ -87,7 +87,7 @@ module OpenAI
         )
       end
 
-      # Delete a video
+      # Permanently delete a completed or failed video and its stored assets.
       #
       # @overload delete(video_id, request_options: {})
       #
@@ -107,7 +107,9 @@ module OpenAI
         )
       end
 
-      # Download video content
+      # Download the generated video bytes or a derived preview asset.
+      #
+      # Streams the rendered video content for the specified video job.
       #
       # @overload download_content(video_id, variant: nil, request_options: {})
       #
@@ -132,7 +134,7 @@ module OpenAI
         )
       end
 
-      # Create a video remix
+      # Create a remix of a completed video using a refreshed prompt.
       #
       # @overload remix(video_id, prompt:, request_options: {})
       #

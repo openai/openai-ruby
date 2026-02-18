@@ -8,6 +8,9 @@ module OpenAI
         # counterpart.
         #
         # Transcribes audio into the input language.
+        #
+        # Returns a transcription object in `json`, `diarized_json`, or `verbose_json`
+        # format, or a stream of transcript events.
         sig do
           params(
             file: OpenAI::Internal::FileInput,
@@ -109,6 +112,9 @@ module OpenAI
         # counterpart.
         #
         # Transcribes audio into the input language.
+        #
+        # Returns a transcription object in `json`, `diarized_json`, or `verbose_json`
+        # format, or a stream of transcript events.
         sig do
           params(
             file: OpenAI::Internal::FileInput,

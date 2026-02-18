@@ -5,7 +5,7 @@ module OpenAI
     class Beta
       class ChatKit
         class Sessions
-          # Create a ChatKit session
+          # Create a ChatKit session.
           sig do
             params(
               user: String,
@@ -36,7 +36,9 @@ module OpenAI
           )
           end
 
-          # Cancel a ChatKit session
+          # Cancel an active ChatKit session and return its most recent metadata.
+          #
+          # Cancelling prevents new requests from using the issued client secret.
           sig do
             params(
               session_id: String,

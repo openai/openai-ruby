@@ -9,7 +9,7 @@ module OpenAI
       sig { returns(OpenAI::Resources::Skills::Versions) }
       attr_reader :versions
 
-      # Create Skill
+      # Create a new skill.
       sig do
         params(
           files: OpenAI::SkillCreateParams::Files::Variants,
@@ -23,7 +23,7 @@ module OpenAI
       )
       end
 
-      # Get Skill
+      # Get a skill by its ID.
       sig do
         params(
           skill_id: String,
@@ -37,7 +37,7 @@ module OpenAI
       )
       end
 
-      # Update Skill Default Version
+      # Update the default version pointer for a skill.
       sig do
         params(
           skill_id: String,
@@ -54,7 +54,7 @@ module OpenAI
       )
       end
 
-      # List Skills
+      # List all skills for the current project.
       sig do
         params(
           after: String,
@@ -75,7 +75,7 @@ module OpenAI
       )
       end
 
-      # Delete Skill
+      # Delete a skill by its ID.
       sig do
         params(
           skill_id: String,

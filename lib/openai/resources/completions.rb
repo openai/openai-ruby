@@ -10,6 +10,9 @@ module OpenAI
       #
       # Creates a completion for the provided prompt and parameters.
       #
+      # Returns a completion object, or a sequence of completion objects if the request
+      # is streamed.
+      #
       # @overload create(model:, prompt:, best_of: nil, echo: nil, frequency_penalty: nil, logit_bias: nil, logprobs: nil, max_tokens: nil, n: nil, presence_penalty: nil, seed: nil, stop: nil, stream_options: nil, suffix: nil, temperature: nil, top_p: nil, user: nil, request_options: {})
       #
       # @param model [String, Symbol, OpenAI::Models::CompletionCreateParams::Model] ID of the model to use. You can use the [List models](https://platform.openai.co
@@ -72,6 +75,9 @@ module OpenAI
       # {OpenAI::Models::CompletionCreateParams} for more details.
       #
       # Creates a completion for the provided prompt and parameters.
+      #
+      # Returns a completion object, or a sequence of completion objects if the request
+      # is streamed.
       #
       # @overload create_streaming(model:, prompt:, best_of: nil, echo: nil, frequency_penalty: nil, logit_bias: nil, logprobs: nil, max_tokens: nil, n: nil, presence_penalty: nil, seed: nil, stop: nil, stream_options: nil, suffix: nil, temperature: nil, top_p: nil, user: nil, request_options: {})
       #

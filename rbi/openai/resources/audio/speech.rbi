@@ -5,6 +5,8 @@ module OpenAI
     class Audio
       class Speech
         # Generates audio from the input text.
+        #
+        # Returns the audio file content, or a stream of audio events.
         sig do
           params(
             input: String,
