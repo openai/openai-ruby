@@ -3,7 +3,7 @@
 module OpenAI
   module Resources
     class Videos
-      # Create a video
+      # Create a new video generation job from a prompt and optional reference assets.
       sig do
         params(
           prompt: String,
@@ -31,7 +31,7 @@ module OpenAI
       )
       end
 
-      # Retrieve a video
+      # Fetch the latest metadata for a generated video.
       sig do
         params(
           video_id: String,
@@ -45,7 +45,7 @@ module OpenAI
       )
       end
 
-      # List videos
+      # List recently generated videos for the current project.
       sig do
         params(
           after: String,
@@ -66,7 +66,7 @@ module OpenAI
       )
       end
 
-      # Delete a video
+      # Permanently delete a completed or failed video and its stored assets.
       sig do
         params(
           video_id: String,
@@ -80,7 +80,9 @@ module OpenAI
       )
       end
 
-      # Download video content
+      # Download the generated video bytes or a derived preview asset.
+      #
+      # Streams the rendered video content for the specified video job.
       sig do
         params(
           video_id: String,
@@ -97,7 +99,7 @@ module OpenAI
       )
       end
 
-      # Create a video remix
+      # Create a remix of a completed video using a refreshed prompt.
       sig do
         params(
           video_id: String,

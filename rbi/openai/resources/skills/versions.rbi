@@ -7,7 +7,7 @@ module OpenAI
         sig { returns(OpenAI::Resources::Skills::Versions::Content) }
         attr_reader :content
 
-        # Create Skill Version
+        # Create a new immutable skill version.
         sig do
           params(
             skill_id: String,
@@ -27,7 +27,7 @@ module OpenAI
         )
         end
 
-        # Get Skill Version
+        # Get a specific skill version.
         sig do
           params(
             version: String,
@@ -44,7 +44,7 @@ module OpenAI
         )
         end
 
-        # List Skill Versions
+        # List skill versions for a skill.
         sig do
           params(
             skill_id: String,
@@ -67,7 +67,7 @@ module OpenAI
         )
         end
 
-        # Delete Skill Version
+        # Delete a skill version.
         sig do
           params(
             version: String,

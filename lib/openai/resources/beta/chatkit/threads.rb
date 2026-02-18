@@ -5,7 +5,7 @@ module OpenAI
     class Beta
       class ChatKit
         class Threads
-          # Retrieve a ChatKit thread
+          # Retrieve a ChatKit thread by its identifier.
           #
           # @overload retrieve(thread_id, request_options: {})
           #
@@ -28,7 +28,7 @@ module OpenAI
           # Some parameter documentations has been truncated, see
           # {OpenAI::Models::Beta::ChatKit::ThreadListParams} for more details.
           #
-          # List ChatKit threads
+          # List ChatKit threads with optional pagination and user filters.
           #
           # @overload list(after: nil, before: nil, limit: nil, order: nil, user: nil, request_options: {})
           #
@@ -59,7 +59,7 @@ module OpenAI
             )
           end
 
-          # Delete a ChatKit thread
+          # Delete a ChatKit thread along with its items and stored attachments.
           #
           # @overload delete(thread_id, request_options: {})
           #
@@ -82,7 +82,7 @@ module OpenAI
           # Some parameter documentations has been truncated, see
           # {OpenAI::Models::Beta::ChatKit::ThreadListItemsParams} for more details.
           #
-          # List ChatKit thread items
+          # List items that belong to a ChatKit thread.
           #
           # @overload list_items(thread_id, after: nil, before: nil, limit: nil, order: nil, request_options: {})
           #

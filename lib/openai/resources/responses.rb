@@ -466,7 +466,12 @@ module OpenAI
       # Some parameter documentations has been truncated, see
       # {OpenAI::Models::Responses::ResponseCompactParams} for more details.
       #
-      # Compact conversation
+      # Compact a conversation. Returns a compacted response object.
+      #
+      # Learn when and how to compact long-running conversations in the
+      # [conversation state guide](https://platform.openai.com/docs/guides/conversation-state#managing-the-context-window).
+      # For ZDR-compatible compaction details, see
+      # [Compaction (advanced)](https://platform.openai.com/docs/guides/conversation-state#compaction-advanced).
       #
       # @overload compact(model:, input: nil, instructions: nil, previous_response_id: nil, request_options: {})
       #

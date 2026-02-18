@@ -4,7 +4,7 @@ module OpenAI
   module Resources
     class Skills
       class Content
-        # Get Skill Content
+        # Download a skill zip bundle by its ID.
         #
         # @overload retrieve(skill_id, request_options: {})
         #

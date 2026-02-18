@@ -5,7 +5,7 @@ module OpenAI
     class Beta
       class ChatKit
         class Threads
-          # Retrieve a ChatKit thread
+          # Retrieve a ChatKit thread by its identifier.
           sig do
             params(
               thread_id: String,
@@ -19,7 +19,7 @@ module OpenAI
           )
           end
 
-          # List ChatKit threads
+          # List ChatKit threads with optional pagination and user filters.
           sig do
             params(
               after: String,
@@ -52,7 +52,7 @@ module OpenAI
           )
           end
 
-          # Delete a ChatKit thread
+          # Delete a ChatKit thread along with its items and stored attachments.
           sig do
             params(
               thread_id: String,
@@ -66,7 +66,7 @@ module OpenAI
           )
           end
 
-          # List ChatKit thread items
+          # List items that belong to a ChatKit thread.
           sig do
             params(
               thread_id: String,

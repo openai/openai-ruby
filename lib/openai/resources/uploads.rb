@@ -29,6 +29,8 @@ module OpenAI
       # the documentation on
       # [creating a File](https://platform.openai.com/docs/api-reference/files/create).
       #
+      # Returns the Upload object with status `pending`.
+      #
       # @overload create(bytes:, filename:, mime_type:, purpose:, expires_after: nil, request_options: {})
       #
       # @param bytes [Integer] The number of bytes in the file you are uploading.
@@ -55,6 +57,8 @@ module OpenAI
       # {OpenAI::Models::UploadCancelParams} for more details.
       #
       # Cancels the Upload. No Parts may be added after an Upload is cancelled.
+      #
+      # Returns the Upload object with status `cancelled`.
       #
       # @overload cancel(upload_id, request_options: {})
       #
@@ -89,7 +93,9 @@ module OpenAI
       #
       # The number of bytes uploaded upon completion must match the number of bytes
       # initially specified when creating the Upload object. No Parts may be added after
-      # an Upload is completed.
+      # an Upload is completed. Returns the Upload object with status `completed`,
+      # including an additional `file` property containing the created usable File
+      # object.
       #
       # @overload complete(upload_id, part_ids:, md5: nil, request_options: {})
       #

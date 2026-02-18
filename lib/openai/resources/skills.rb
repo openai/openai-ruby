@@ -9,7 +9,7 @@ module OpenAI
       # @return [OpenAI::Resources::Skills::Versions]
       attr_reader :versions
 
-      # Create Skill
+      # Create a new skill.
       #
       # @overload create(files: nil, request_options: {})
       #
@@ -32,7 +32,7 @@ module OpenAI
         )
       end
 
-      # Get Skill
+      # Get a skill by its ID.
       #
       # @overload retrieve(skill_id, request_options: {})
       #
@@ -52,7 +52,7 @@ module OpenAI
         )
       end
 
-      # Update Skill Default Version
+      # Update the default version pointer for a skill.
       #
       # @overload update(skill_id, default_version:, request_options: {})
       #
@@ -79,7 +79,7 @@ module OpenAI
       # Some parameter documentations has been truncated, see
       # {OpenAI::Models::SkillListParams} for more details.
       #
-      # List Skills
+      # List all skills for the current project.
       #
       # @overload list(after: nil, limit: nil, order: nil, request_options: {})
       #
@@ -106,7 +106,7 @@ module OpenAI
         )
       end
 
-      # Delete Skill
+      # Delete a skill by its ID.
       #
       # @overload delete(skill_id, request_options: {})
       #

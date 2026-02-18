@@ -9,6 +9,8 @@ module OpenAI
         #
         # Generates audio from the input text.
         #
+        # Returns the audio file content, or a stream of audio events.
+        #
         # @overload create(input:, model:, voice:, instructions: nil, response_format: nil, speed: nil, stream_format: nil, request_options: {})
         #
         # @param input [String] The text to generate audio for. The maximum length is 4096 characters.
