@@ -105,7 +105,7 @@ class OpenAI::Test::Resources::VideosTest < OpenAI::Test::ResourceTest
   end
 
   def test_download_content
-    skip("Prism doesn't support application/binary responses")
+    skip("Mock server doesn't support application/binary responses")
 
     response = @openai.videos.download_content("video_123")
 
