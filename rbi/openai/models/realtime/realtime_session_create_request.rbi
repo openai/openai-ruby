@@ -505,6 +505,11 @@ module OpenAI
               :"gpt-realtime",
               OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
             )
+          GPT_REALTIME_1_5 =
+            T.let(
+              :"gpt-realtime-1.5",
+              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
+            )
           GPT_REALTIME_2025_08_28 =
             T.let(
               :"gpt-realtime-2025-08-28",
@@ -553,6 +558,11 @@ module OpenAI
           GPT_REALTIME_MINI_2025_12_15 =
             T.let(
               :"gpt-realtime-mini-2025-12-15",
+              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
+            )
+          GPT_AUDIO_1_5 =
+            T.let(
+              :"gpt-audio-1.5",
               OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
             )
           GPT_AUDIO_MINI =

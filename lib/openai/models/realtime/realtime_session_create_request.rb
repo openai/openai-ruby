@@ -185,6 +185,8 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_REALTIME }
 
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_REALTIME_1_5 }
+
           variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_REALTIME_2025_08_28 }
 
           variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_4O_REALTIME_PREVIEW }
@@ -205,6 +207,8 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_REALTIME_MINI_2025_12_15 }
 
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_AUDIO_1_5 }
+
           variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_AUDIO_MINI }
 
           variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_AUDIO_MINI_2025_10_06 }
@@ -221,6 +225,7 @@ module OpenAI
           # @!group
 
           GPT_REALTIME = :"gpt-realtime"
+          GPT_REALTIME_1_5 = :"gpt-realtime-1.5"
           GPT_REALTIME_2025_08_28 = :"gpt-realtime-2025-08-28"
           GPT_4O_REALTIME_PREVIEW = :"gpt-4o-realtime-preview"
           GPT_4O_REALTIME_PREVIEW_2024_10_01 = :"gpt-4o-realtime-preview-2024-10-01"
@@ -231,6 +236,7 @@ module OpenAI
           GPT_REALTIME_MINI = :"gpt-realtime-mini"
           GPT_REALTIME_MINI_2025_10_06 = :"gpt-realtime-mini-2025-10-06"
           GPT_REALTIME_MINI_2025_12_15 = :"gpt-realtime-mini-2025-12-15"
+          GPT_AUDIO_1_5 = :"gpt-audio-1.5"
           GPT_AUDIO_MINI = :"gpt-audio-mini"
           GPT_AUDIO_MINI_2025_10_06 = :"gpt-audio-mini-2025-10-06"
           GPT_AUDIO_MINI_2025_12_15 = :"gpt-audio-mini-2025-12-15"
