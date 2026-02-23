@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.49.1 (2026-02-23)
+
+Full Changelog: [v0.49.0...v0.49.1](https://github.com/openai/openai-ruby/compare/v0.49.0...v0.49.1)
+
+### Bug Fixes
+
+* **api:** manual updates ([6d59acd](https://github.com/openai/openai-ruby/commit/6d59acd6875dad00aa7abefc9b8629e68d4068ff))
+
+
+### Chores
+
+* update mock server docs ([4ab9773](https://github.com/openai/openai-ruby/commit/4ab97731fd3d59dde01eae01ad6b09b962475724))
+
+
+### Documentation
+
+* **api:** add batch size limit to vector_stores file_batch_create_params ([f8f915b](https://github.com/openai/openai-ruby/commit/f8f915b791433e804256e27e76d48f61fefd0aa3))
+* **api:** add length limit to safety_identifier in chat/responses ([f76fd6f](https://github.com/openai/openai-ruby/commit/f76fd6fd8ac3c4d63199e71fcfd9ae20bd9050d0))
+* **api:** enhance method descriptions and return value docs across resources ([6ac3366](https://github.com/openai/openai-ruby/commit/6ac336621101468f74758c5b7eff56a8b14cb69d))
+
 ## 0.49.0 (2026-02-13)
 
 Full Changelog: [v0.48.0...v0.49.0](https://github.com/openai/openai-ruby/compare/v0.48.0...v0.49.0)
