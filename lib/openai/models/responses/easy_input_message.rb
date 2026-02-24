@@ -19,8 +19,8 @@ module OpenAI
         required :role, enum: -> { OpenAI::Responses::EasyInputMessage::Role }
 
         # @!attribute phase
-        #   Labels an assistant message as intermediate commentary ("commentary") or the
-        #   final answer ("final_answer"). For models like gpt-5.3-codex and beyond, when
+        #   Labels an `assistant` message as intermediate commentary (`commentary`) or the
+        #   final answer (`final_answer`). For models like `gpt-5.3-codex` and beyond, when
         #   sending follow-up requests, preserve and resend phase on all assistant messages
         #   — dropping it can degrade performance. Not used for user messages.
         #
@@ -47,7 +47,7 @@ module OpenAI
         #
         #   @param role [Symbol, OpenAI::Models::Responses::EasyInputMessage::Role] The role of the message input. One of `user`, `assistant`, `system`, or
         #
-        #   @param phase [Symbol, OpenAI::Models::Responses::EasyInputMessage::Phase, nil] Labels an assistant message as intermediate commentary ("commentary") or the fin
+        #   @param phase [Symbol, OpenAI::Models::Responses::EasyInputMessage::Phase, nil] Labels an `assistant` message as intermediate commentary (`commentary`) or the f
         #
         #   @param type [Symbol, OpenAI::Models::Responses::EasyInputMessage::Type] The type of the message input. Always `message`.
 
@@ -85,8 +85,8 @@ module OpenAI
           #   @return [Array<Symbol>]
         end
 
-        # Labels an assistant message as intermediate commentary ("commentary") or the
-        # final answer ("final_answer"). For models like gpt-5.3-codex and beyond, when
+        # Labels an `assistant` message as intermediate commentary (`commentary`) or the
+        # final answer (`final_answer`). For models like `gpt-5.3-codex` and beyond, when
         # sending follow-up requests, preserve and resend phase on all assistant messages
         # — dropping it can degrade performance. Not used for user messages.
         #

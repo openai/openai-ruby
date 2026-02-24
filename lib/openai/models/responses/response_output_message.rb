@@ -37,8 +37,8 @@ module OpenAI
         required :type, const: :message
 
         # @!attribute phase
-        #   Labels an assistant message as intermediate commentary ("commentary") or the
-        #   final answer ("final_answer"). For models like gpt-5.3-codex and beyond, when
+        #   Labels an `assistant` message as intermediate commentary (`commentary`) or the
+        #   final answer (`final_answer`). For models like `gpt-5.3-codex` and beyond, when
         #   sending follow-up requests, preserve and resend phase on all assistant messages
         #   — dropping it can degrade performance. Not used for user messages.
         #
@@ -57,7 +57,7 @@ module OpenAI
         #
         #   @param status [Symbol, OpenAI::Models::Responses::ResponseOutputMessage::Status] The status of the message input. One of `in_progress`, `completed`, or
         #
-        #   @param phase [Symbol, OpenAI::Models::Responses::ResponseOutputMessage::Phase, nil] Labels an assistant message as intermediate commentary ("commentary") or the fin
+        #   @param phase [Symbol, OpenAI::Models::Responses::ResponseOutputMessage::Phase, nil] Labels an `assistant` message as intermediate commentary (`commentary`) or the f
         #
         #   @param role [Symbol, :assistant] The role of the output message. Always `assistant`.
         #
@@ -94,8 +94,8 @@ module OpenAI
           #   @return [Array<Symbol>]
         end
 
-        # Labels an assistant message as intermediate commentary ("commentary") or the
-        # final answer ("final_answer"). For models like gpt-5.3-codex and beyond, when
+        # Labels an `assistant` message as intermediate commentary (`commentary`) or the
+        # final answer (`final_answer`). For models like `gpt-5.3-codex` and beyond, when
         # sending follow-up requests, preserve and resend phase on all assistant messages
         # — dropping it can degrade performance. Not used for user messages.
         #
