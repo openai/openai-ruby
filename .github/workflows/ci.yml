@@ -30,7 +30,7 @@ jobs:
 
       - name: Run lints
         run: ./scripts/lint
-  test:
+  test-ruby:
     timeout-minutes: 10
     name: test (ruby ${{ matrix.ruby-version }})
     runs-on: ${{ github.repository == 'stainless-sdks/openai-ruby' && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
@@ -51,3 +51,11 @@ jobs:
 
       - name: Run tests
         run: ./scripts/test
+  test:
+    name: test
+    needs: test-ruby
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - if: needs.test-ruby.result != 'success' && needs.test-ruby.result != 'skipped'
+        run: exit 1
