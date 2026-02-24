@@ -981,7 +981,6 @@ module OpenAI
             ),
           instructions: T.nilable(String),
           previous_response_id: T.nilable(String),
-          prompt_cache_key: T.nilable(String),
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(OpenAI::Responses::CompactedResponse)
       end
@@ -1004,8 +1003,6 @@ module OpenAI
         # [conversation state](https://platform.openai.com/docs/guides/conversation-state).
         # Cannot be used in conjunction with `conversation`.
         previous_response_id: nil,
-        # A key to use when reading from or writing to the prompt cache.
-        prompt_cache_key: nil,
         request_options: {}
       )
       end
