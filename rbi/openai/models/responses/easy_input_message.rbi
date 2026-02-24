@@ -22,8 +22,8 @@ module OpenAI
         sig { returns(OpenAI::Responses::EasyInputMessage::Role::OrSymbol) }
         attr_accessor :role
 
-        # Labels an assistant message as intermediate commentary ("commentary") or the
-        # final answer ("final_answer"). For models like gpt-5.3-codex and beyond, when
+        # Labels an `assistant` message as intermediate commentary (`commentary`) or the
+        # final answer (`final_answer`). For models like `gpt-5.3-codex` and beyond, when
         # sending follow-up requests, preserve and resend phase on all assistant messages
         # — dropping it can degrade performance. Not used for user messages.
         sig do
@@ -67,8 +67,8 @@ module OpenAI
           # The role of the message input. One of `user`, `assistant`, `system`, or
           # `developer`.
           role:,
-          # Labels an assistant message as intermediate commentary ("commentary") or the
-          # final answer ("final_answer"). For models like gpt-5.3-codex and beyond, when
+          # Labels an `assistant` message as intermediate commentary (`commentary`) or the
+          # final answer (`final_answer`). For models like `gpt-5.3-codex` and beyond, when
           # sending follow-up requests, preserve and resend phase on all assistant messages
           # — dropping it can degrade performance. Not used for user messages.
           phase: nil,
@@ -154,8 +154,8 @@ module OpenAI
           end
         end
 
-        # Labels an assistant message as intermediate commentary ("commentary") or the
-        # final answer ("final_answer"). For models like gpt-5.3-codex and beyond, when
+        # Labels an `assistant` message as intermediate commentary (`commentary`) or the
+        # final answer (`final_answer`). For models like `gpt-5.3-codex` and beyond, when
         # sending follow-up requests, preserve and resend phase on all assistant messages
         # — dropping it can degrade performance. Not used for user messages.
         module Phase

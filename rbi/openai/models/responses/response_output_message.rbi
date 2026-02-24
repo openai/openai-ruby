@@ -44,8 +44,8 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
-        # Labels an assistant message as intermediate commentary ("commentary") or the
-        # final answer ("final_answer"). For models like gpt-5.3-codex and beyond, when
+        # Labels an `assistant` message as intermediate commentary (`commentary`) or the
+        # final answer (`final_answer`). For models like `gpt-5.3-codex` and beyond, when
         # sending follow-up requests, preserve and resend phase on all assistant messages
         # — dropping it can degrade performance. Not used for user messages.
         sig do
@@ -83,8 +83,8 @@ module OpenAI
           # The status of the message input. One of `in_progress`, `completed`, or
           # `incomplete`. Populated when input items are returned via API.
           status:,
-          # Labels an assistant message as intermediate commentary ("commentary") or the
-          # final answer ("final_answer"). For models like gpt-5.3-codex and beyond, when
+          # Labels an `assistant` message as intermediate commentary (`commentary`) or the
+          # final answer (`final_answer`). For models like `gpt-5.3-codex` and beyond, when
           # sending follow-up requests, preserve and resend phase on all assistant messages
           # — dropping it can degrade performance. Not used for user messages.
           phase: nil,
@@ -181,8 +181,8 @@ module OpenAI
           end
         end
 
-        # Labels an assistant message as intermediate commentary ("commentary") or the
-        # final answer ("final_answer"). For models like gpt-5.3-codex and beyond, when
+        # Labels an `assistant` message as intermediate commentary (`commentary`) or the
+        # final answer (`final_answer`). For models like `gpt-5.3-codex` and beyond, when
         # sending follow-up requests, preserve and resend phase on all assistant messages
         # — dropping it can degrade performance. Not used for user messages.
         module Phase
