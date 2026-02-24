@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.51.0 (2026-02-24)
+
+Full Changelog: [v0.50.0...v0.51.0](https://github.com/openai/openai-ruby/compare/v0.50.0...v0.51.0)
+
+### Features
+
+* **api:** add phase ([656f591](https://github.com/openai/openai-ruby/commit/656f5917f52cfbe388f9d706ab372b958301985e))
+
+
+### Bug Fixes
+
+* **api:** fix phase enum ([c055d7b](https://github.com/openai/openai-ruby/commit/c055d7b2fe06a49ad64db6dc880e30f41d42e22d))
+* **api:** phase docs ([766b70c](https://github.com/openai/openai-ruby/commit/766b70cc83834acf57f1d2c31ea5026ff0d70b7f))
+
 ## 0.50.0 (2026-02-24)
 
 Full Changelog: [v0.49.1...v0.50.0](https://github.com/openai/openai-ruby/compare/v0.49.1...v0.50.0)
