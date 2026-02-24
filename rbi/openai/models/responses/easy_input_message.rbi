@@ -22,19 +22,6 @@ module OpenAI
         sig { returns(OpenAI::Responses::EasyInputMessage::Role::OrSymbol) }
         attr_accessor :role
 
-        # The phase of an assistant message.
-        #
-        # Use `commentary` for an intermediate assistant message and `final_answer` for
-        # the final assistant message. For follow-up requests with models like
-        # `gpt-5.3-codex` and later, preserve and resend phase on all assistant messages.
-        # Omitting it can degrade performance. Not used for user messages.
-        sig do
-          returns(
-            T.nilable(OpenAI::Responses::EasyInputMessage::Phase::OrSymbol)
-          )
-        end
-        attr_accessor :phase
-
         # The type of the message input. Always `message`.
         sig do
           returns(
@@ -57,8 +44,6 @@ module OpenAI
           params(
             content: OpenAI::Responses::EasyInputMessage::Content::Variants,
             role: OpenAI::Responses::EasyInputMessage::Role::OrSymbol,
-            phase:
-              T.nilable(OpenAI::Responses::EasyInputMessage::Phase::OrSymbol),
             type: OpenAI::Responses::EasyInputMessage::Type::OrSymbol
           ).returns(T.attached_class)
         end
@@ -69,13 +54,6 @@ module OpenAI
           # The role of the message input. One of `user`, `assistant`, `system`, or
           # `developer`.
           role:,
-          # The phase of an assistant message.
-          #
-          # Use `commentary` for an intermediate assistant message and `final_answer` for
-          # the final assistant message. For follow-up requests with models like
-          # `gpt-5.3-codex` and later, preserve and resend phase on all assistant messages.
-          # Omitting it can degrade performance. Not used for user messages.
-          phase: nil,
           # The type of the message input. Always `message`.
           type: nil
         )
@@ -86,8 +64,6 @@ module OpenAI
             {
               content: OpenAI::Responses::EasyInputMessage::Content::Variants,
               role: OpenAI::Responses::EasyInputMessage::Role::OrSymbol,
-              phase:
-                T.nilable(OpenAI::Responses::EasyInputMessage::Phase::OrSymbol),
               type: OpenAI::Responses::EasyInputMessage::Type::OrSymbol
             }
           )
@@ -152,41 +128,6 @@ module OpenAI
           sig do
             override.returns(
               T::Array[OpenAI::Responses::EasyInputMessage::Role::TaggedSymbol]
-            )
-          end
-          def self.values
-          end
-        end
-
-        # The phase of an assistant message.
-        #
-        # Use `commentary` for an intermediate assistant message and `final_answer` for
-        # the final assistant message. For follow-up requests with models like
-        # `gpt-5.3-codex` and later, preserve and resend phase on all assistant messages.
-        # Omitting it can degrade performance. Not used for user messages.
-        module Phase
-          extend OpenAI::Internal::Type::Enum
-
-          TaggedSymbol =
-            T.type_alias do
-              T.all(Symbol, OpenAI::Responses::EasyInputMessage::Phase)
-            end
-          OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-          COMMENTARY =
-            T.let(
-              :commentary,
-              OpenAI::Responses::EasyInputMessage::Phase::TaggedSymbol
-            )
-          FINAL_ANSWER =
-            T.let(
-              :final_answer,
-              OpenAI::Responses::EasyInputMessage::Phase::TaggedSymbol
-            )
-
-          sig do
-            override.returns(
-              T::Array[OpenAI::Responses::EasyInputMessage::Phase::TaggedSymbol]
             )
           end
           def self.values

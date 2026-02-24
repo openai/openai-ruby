@@ -42,13 +42,7 @@ module OpenAI
         #   @return [String, nil]
         optional :previous_response_id, String, nil?: true
 
-        # @!attribute prompt_cache_key
-        #   A key to use when reading from or writing to the prompt cache.
-        #
-        #   @return [String, nil]
-        optional :prompt_cache_key, String, nil?: true
-
-        # @!method initialize(model:, input: nil, instructions: nil, previous_response_id: nil, prompt_cache_key: nil, request_options: {})
+        # @!method initialize(model:, input: nil, instructions: nil, previous_response_id: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseCompactParams} for more details.
         #
@@ -59,8 +53,6 @@ module OpenAI
         #   @param instructions [String, nil] A system (or developer) message inserted into the model's context.
         #
         #   @param previous_response_id [String, nil] The unique ID of the previous response to the model. Use this to create multi-tu
-        #
-        #   @param prompt_cache_key [String, nil] A key to use when reading from or writing to the prompt cache.
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
