@@ -7,8 +7,7 @@ module OpenAI
           content: ::Array[OpenAI::Models::Responses::ResponseOutputMessage::content],
           role: :assistant,
           status: OpenAI::Models::Responses::ResponseOutputMessage::status,
-          type: :message,
-          phase: OpenAI::Models::Responses::ResponseOutputMessage::phase?
+          type: :message
         }
 
       class ResponseOutputMessage < OpenAI::Internal::Type::BaseModel
@@ -22,13 +21,10 @@ module OpenAI
 
         attr_accessor type: :message
 
-        attr_accessor phase: OpenAI::Models::Responses::ResponseOutputMessage::phase?
-
         def initialize: (
           id: String,
           content: ::Array[OpenAI::Models::Responses::ResponseOutputMessage::content],
           status: OpenAI::Models::Responses::ResponseOutputMessage::status,
-          ?phase: OpenAI::Models::Responses::ResponseOutputMessage::phase?,
           ?role: :assistant,
           ?type: :message
         ) -> void
@@ -38,8 +34,7 @@ module OpenAI
           content: ::Array[OpenAI::Models::Responses::ResponseOutputMessage::content],
           role: :assistant,
           status: OpenAI::Models::Responses::ResponseOutputMessage::status,
-          type: :message,
-          phase: OpenAI::Models::Responses::ResponseOutputMessage::phase?
+          type: :message
         }
 
         type content =
@@ -62,17 +57,6 @@ module OpenAI
           INCOMPLETE: :incomplete
 
           def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseOutputMessage::status]
-        end
-
-        type phase = :commentary | :final_answer
-
-        module Phase
-          extend OpenAI::Internal::Type::Enum
-
-          COMMENTARY: :commentary
-          FINAL_ANSWER: :final_answer
-
-          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseOutputMessage::phase]
         end
       end
     end

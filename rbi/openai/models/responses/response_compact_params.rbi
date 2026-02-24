@@ -54,10 +54,6 @@ module OpenAI
         sig { returns(T.nilable(String)) }
         attr_accessor :previous_response_id
 
-        # A key to use when reading from or writing to the prompt cache.
-        sig { returns(T.nilable(String)) }
-        attr_accessor :prompt_cache_key
-
         sig do
           params(
             model:
@@ -73,7 +69,6 @@ module OpenAI
               ),
             instructions: T.nilable(String),
             previous_response_id: T.nilable(String),
-            prompt_cache_key: T.nilable(String),
             request_options: OpenAI::RequestOptions::OrHash
           ).returns(T.attached_class)
         end
@@ -96,8 +91,6 @@ module OpenAI
           # [conversation state](https://platform.openai.com/docs/guides/conversation-state).
           # Cannot be used in conjunction with `conversation`.
           previous_response_id: nil,
-          # A key to use when reading from or writing to the prompt cache.
-          prompt_cache_key: nil,
           request_options: {}
         )
         end
@@ -118,7 +111,6 @@ module OpenAI
                 ),
               instructions: T.nilable(String),
               previous_response_id: T.nilable(String),
-              prompt_cache_key: T.nilable(String),
               request_options: OpenAI::RequestOptions
             }
           )

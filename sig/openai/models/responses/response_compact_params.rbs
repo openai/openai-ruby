@@ -6,8 +6,7 @@ module OpenAI
           model: OpenAI::Models::Responses::ResponseCompactParams::model?,
           input: OpenAI::Models::Responses::ResponseCompactParams::input?,
           instructions: String?,
-          previous_response_id: String?,
-          prompt_cache_key: String?
+          previous_response_id: String?
         }
         & OpenAI::Internal::Type::request_parameters
 
@@ -23,14 +22,11 @@ module OpenAI
 
         attr_accessor previous_response_id: String?
 
-        attr_accessor prompt_cache_key: String?
-
         def initialize: (
           model: OpenAI::Models::Responses::ResponseCompactParams::model?,
           ?input: OpenAI::Models::Responses::ResponseCompactParams::input?,
           ?instructions: String?,
           ?previous_response_id: String?,
-          ?prompt_cache_key: String?,
           ?request_options: OpenAI::request_opts
         ) -> void
 
@@ -39,7 +35,6 @@ module OpenAI
           input: OpenAI::Models::Responses::ResponseCompactParams::input?,
           instructions: String?,
           previous_response_id: String?,
-          prompt_cache_key: String?,
           request_options: OpenAI::RequestOptions
         }
 
