@@ -56,7 +56,8 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
         id: String,
         content: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseOutputMessage::Content]),
         role: Symbol,
-        status: OpenAI::Responses::ResponseOutputMessage::Status
+        status: OpenAI::Responses::ResponseOutputMessage::Status,
+        phase: OpenAI::Responses::ResponseOutputMessage::Phase | nil
       }
       in {
         type: :file_search_call,
