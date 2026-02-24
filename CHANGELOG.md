@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.50.0 (2026-02-24)
+
+Full Changelog: [v0.49.1...v0.50.0](https://github.com/openai/openai-ruby/compare/v0.49.1...v0.50.0)
+
+### Features
+
+* **api:** add gpt-realtime-1.5 and gpt-audio-1.5 models to realtime session ([23a0d24](https://github.com/openai/openai-ruby/commit/23a0d24790e85e300735cdc7481ec907b85dff01))
+
 ## 0.49.1 (2026-02-23)
 
 Full Changelog: [v0.49.0...v0.49.1](https://github.com/openai/openai-ruby/compare/v0.49.0...v0.49.1)
