@@ -37,10 +37,12 @@ module OpenAI
         required :type, const: :message
 
         # @!attribute phase
-        #   Labels an `assistant` message as intermediate commentary (`commentary`) or the
-        #   final answer (`final_answer`). For models like `gpt-5.3-codex` and beyond, when
-        #   sending follow-up requests, preserve and resend phase on all assistant messages
-        #   — dropping it can degrade performance. Not used for user messages.
+        #   The phase of an assistant message.
+        #
+        #   Use `commentary` for an intermediate assistant message and `final_answer` for
+        #   the final assistant message. For follow-up requests with models like
+        #   `gpt-5.3-codex` and later, preserve and resend phase on all assistant messages.
+        #   Omitting it can degrade performance. Not used for user messages.
         #
         #   @return [Symbol, OpenAI::Models::Responses::ResponseOutputMessage::Phase, nil]
         optional :phase, enum: -> { OpenAI::Responses::ResponseOutputMessage::Phase }, nil?: true
@@ -57,7 +59,7 @@ module OpenAI
         #
         #   @param status [Symbol, OpenAI::Models::Responses::ResponseOutputMessage::Status] The status of the message input. One of `in_progress`, `completed`, or
         #
-        #   @param phase [Symbol, OpenAI::Models::Responses::ResponseOutputMessage::Phase, nil] Labels an `assistant` message as intermediate commentary (`commentary`) or the f
+        #   @param phase [Symbol, OpenAI::Models::Responses::ResponseOutputMessage::Phase, nil] The phase of an assistant message.
         #
         #   @param role [Symbol, :assistant] The role of the output message. Always `assistant`.
         #
@@ -94,16 +96,19 @@ module OpenAI
           #   @return [Array<Symbol>]
         end
 
-        # Labels an `assistant` message as intermediate commentary (`commentary`) or the
-        # final answer (`final_answer`). For models like `gpt-5.3-codex` and beyond, when
-        # sending follow-up requests, preserve and resend phase on all assistant messages
-        # — dropping it can degrade performance. Not used for user messages.
+        # The phase of an assistant message.
+        #
+        # Use `commentary` for an intermediate assistant message and `final_answer` for
+        # the final assistant message. For follow-up requests with models like
+        # `gpt-5.3-codex` and later, preserve and resend phase on all assistant messages.
+        # Omitting it can degrade performance. Not used for user messages.
         #
         # @see OpenAI::Models::Responses::ResponseOutputMessage#phase
         module Phase
           extend OpenAI::Internal::Type::Enum
 
           COMMENTARY = :commentary
+          FINAL_ANSWER = :final_answer
 
           # @!method self.values
           #   @return [Array<Symbol>]

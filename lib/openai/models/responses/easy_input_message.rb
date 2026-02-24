@@ -19,10 +19,12 @@ module OpenAI
         required :role, enum: -> { OpenAI::Responses::EasyInputMessage::Role }
 
         # @!attribute phase
-        #   Labels an `assistant` message as intermediate commentary (`commentary`) or the
-        #   final answer (`final_answer`). For models like `gpt-5.3-codex` and beyond, when
-        #   sending follow-up requests, preserve and resend phase on all assistant messages
-        #   — dropping it can degrade performance. Not used for user messages.
+        #   The phase of an assistant message.
+        #
+        #   Use `commentary` for an intermediate assistant message and `final_answer` for
+        #   the final assistant message. For follow-up requests with models like
+        #   `gpt-5.3-codex` and later, preserve and resend phase on all assistant messages.
+        #   Omitting it can degrade performance. Not used for user messages.
         #
         #   @return [Symbol, OpenAI::Models::Responses::EasyInputMessage::Phase, nil]
         optional :phase, enum: -> { OpenAI::Responses::EasyInputMessage::Phase }, nil?: true
@@ -47,7 +49,7 @@ module OpenAI
         #
         #   @param role [Symbol, OpenAI::Models::Responses::EasyInputMessage::Role] The role of the message input. One of `user`, `assistant`, `system`, or
         #
-        #   @param phase [Symbol, OpenAI::Models::Responses::EasyInputMessage::Phase, nil] Labels an `assistant` message as intermediate commentary (`commentary`) or the f
+        #   @param phase [Symbol, OpenAI::Models::Responses::EasyInputMessage::Phase, nil] The phase of an assistant message.
         #
         #   @param type [Symbol, OpenAI::Models::Responses::EasyInputMessage::Type] The type of the message input. Always `message`.
 
@@ -85,16 +87,19 @@ module OpenAI
           #   @return [Array<Symbol>]
         end
 
-        # Labels an `assistant` message as intermediate commentary (`commentary`) or the
-        # final answer (`final_answer`). For models like `gpt-5.3-codex` and beyond, when
-        # sending follow-up requests, preserve and resend phase on all assistant messages
-        # — dropping it can degrade performance. Not used for user messages.
+        # The phase of an assistant message.
+        #
+        # Use `commentary` for an intermediate assistant message and `final_answer` for
+        # the final assistant message. For follow-up requests with models like
+        # `gpt-5.3-codex` and later, preserve and resend phase on all assistant messages.
+        # Omitting it can degrade performance. Not used for user messages.
         #
         # @see OpenAI::Models::Responses::EasyInputMessage#phase
         module Phase
           extend OpenAI::Internal::Type::Enum
 
           COMMENTARY = :commentary
+          FINAL_ANSWER = :final_answer
 
           # @!method self.values
           #   @return [Array<Symbol>]
