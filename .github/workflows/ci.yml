@@ -55,7 +55,7 @@ jobs:
     name: test
     needs: test-ruby
     if: always()
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.repository == 'stainless-sdks/openai-ruby' && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
     steps:
-      - if: needs.test-ruby.result != 'success' && needs.test-ruby.result != 'skipped'
+      - if: needs.test-ruby.result != 'success'
         run: exit 1
