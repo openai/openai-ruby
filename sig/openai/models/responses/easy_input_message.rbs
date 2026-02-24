@@ -5,6 +5,7 @@ module OpenAI
         {
           content: OpenAI::Models::Responses::EasyInputMessage::content,
           role: OpenAI::Models::Responses::EasyInputMessage::role,
+          phase: OpenAI::Models::Responses::EasyInputMessage::phase?,
           type: OpenAI::Models::Responses::EasyInputMessage::type_
         }
 
@@ -12,6 +13,8 @@ module OpenAI
         attr_accessor content: OpenAI::Models::Responses::EasyInputMessage::content
 
         attr_accessor role: OpenAI::Models::Responses::EasyInputMessage::role
+
+        attr_accessor phase: OpenAI::Models::Responses::EasyInputMessage::phase?
 
         attr_reader type: OpenAI::Models::Responses::EasyInputMessage::type_?
 
@@ -22,12 +25,14 @@ module OpenAI
         def initialize: (
           content: OpenAI::Models::Responses::EasyInputMessage::content,
           role: OpenAI::Models::Responses::EasyInputMessage::role,
+          ?phase: OpenAI::Models::Responses::EasyInputMessage::phase?,
           ?type: OpenAI::Models::Responses::EasyInputMessage::type_
         ) -> void
 
         def to_hash: -> {
           content: OpenAI::Models::Responses::EasyInputMessage::content,
           role: OpenAI::Models::Responses::EasyInputMessage::role,
+          phase: OpenAI::Models::Responses::EasyInputMessage::phase?,
           type: OpenAI::Models::Responses::EasyInputMessage::type_
         }
 
@@ -52,6 +57,16 @@ module OpenAI
           DEVELOPER: :developer
 
           def self?.values: -> ::Array[OpenAI::Models::Responses::EasyInputMessage::role]
+        end
+
+        type phase = :commentary
+
+        module Phase
+          extend OpenAI::Internal::Type::Enum
+
+          COMMENTARY: :commentary
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::EasyInputMessage::phase]
         end
 
         type type_ = :message
