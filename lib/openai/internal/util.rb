@@ -535,12 +535,13 @@ module OpenAI
         # @param key [Symbol, String]
         # @param val [Object]
         # @param closing [Array<Proc>]
-        private def write_multipart_chunk(y, boundary:, key:, val:, closing:)
+        private def write_multipart_chunk(y, boundary:, key:, val:, closing:, is_array: false)
           y << "--#{boundary}\r\n"
           y << "Content-Disposition: form-data"
 
           unless key.nil?
             name = ERB::Util.url_encode(key.to_s)
+            name = "#{name}[]" if is_array
             y << "; name=\"#{name}\""
           end
 
@@ -577,7 +578,14 @@ module OpenAI
                 case val
                 in Array if val.all? { primitive?(_1) }
                   val.each do |v|
-                    write_multipart_chunk(y, boundary: boundary, key: key, val: v, closing: closing)
+                    write_multipart_chunk(
+                      y,
+                      boundary: boundary,
+                      key: key,
+                      val: v,
+                      closing: closing,
+                      is_array: true
+                    )
                   end
                 else
                   write_multipart_chunk(y, boundary: boundary, key: key, val: val, closing: closing)
