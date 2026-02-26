@@ -117,6 +117,7 @@ module OpenAI
         Enumerator::Yielder y,
         boundary: String,
         key: Symbol | String,
+        ?is_array: bool,
         val: top,
         closing: ::Array[^-> void]
       ) -> void
