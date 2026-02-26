@@ -264,7 +264,7 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
     cases = {
       {a: 2, b: 3} => {"a" => "2", "b" => "3"},
       {a: 2, b: nil} => {"a" => "2", "b" => "null"},
-      {a: 2, b: [1, 2, 3]} => {"a" => "2", "b" => "1"},
+      {a: 2, b: [1, 2, 3]} => {"a" => "2", "b[]" => "1"},
       {strio: StringIO.new("a")} => {"strio" => "a"},
       {strio: OpenAI::FilePart.new("a")} => {"strio" => "a"},
       {pathname: Pathname(__FILE__)} => {"pathname" => -> { _1.read in /^class OpenAI/ }},
