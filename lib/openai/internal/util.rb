@@ -578,7 +578,14 @@ module OpenAI
                 case val
                 in Array if val.all? { primitive?(_1) }
                   val.each do |v|
-                    write_multipart_chunk(y, boundary: boundary, key: "#{key}", val: v, closing: closing, is_array: true)
+                    write_multipart_chunk(
+                      y,
+                      boundary: boundary,
+                      key: key,
+                      val: v,
+                      closing: closing,
+                      is_array: true
+                    )
                   end
                 else
                   write_multipart_chunk(y, boundary: boundary, key: key, val: val, closing: closing)
