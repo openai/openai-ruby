@@ -187,6 +187,11 @@ module OpenAI
               :commentary,
               OpenAI::Responses::EasyInputMessage::Phase::TaggedSymbol
             )
+          FINAL_ANSWER =
+            T.let(
+              :final_answer,
+              OpenAI::Responses::EasyInputMessage::Phase::TaggedSymbol
+            )
 
           sig do
             override.returns(

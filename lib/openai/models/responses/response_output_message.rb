@@ -114,6 +114,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           COMMENTARY = :commentary
+          FINAL_ANSWER = :final_answer
 
           # @!method self.values
           #   @return [Array<Symbol>]
