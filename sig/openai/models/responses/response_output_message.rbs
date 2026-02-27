@@ -64,12 +64,13 @@ module OpenAI
           def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseOutputMessage::status]
         end
 
-        type phase = :commentary
+        type phase = :commentary | :final_answer
 
         module Phase
           extend OpenAI::Internal::Type::Enum
 
           COMMENTARY: :commentary
+          FINAL_ANSWER: :final_answer
 
           def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseOutputMessage::phase]
         end
