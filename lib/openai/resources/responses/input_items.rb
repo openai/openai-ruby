@@ -28,10 +28,11 @@ module OpenAI
         # @see OpenAI::Models::Responses::InputItemListParams
         def list(response_id, params = {})
           parsed, options = OpenAI::Responses::InputItemListParams.dump_request(params)
+          query = OpenAI::Internal::Util.encode_query_params(parsed)
           @client.request(
             method: :get,
             path: ["responses/%1$s/input_items", response_id],
-            query: parsed,
+            query: query,
             page: OpenAI::Internal::CursorPage,
             model: OpenAI::Responses::ResponseItem,
             options: options

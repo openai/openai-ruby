@@ -13,6 +13,40 @@ on:
       - 'stl-preview-base/**'
 
 jobs:
+  build:
+    timeout-minutes: 10
+    name: build
+    permissions:
+      contents: read
+      id-token: write
+    runs-on: ${{ github.repository == 'stainless-sdks/openai-ruby' && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
+    if: |-
+      github.repository == 'stainless-sdks/openai-ruby' &&
+      (github.event_name == 'push' || github.event.pull_request.head.repo.fork)
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: false
+      - run: |-
+          bundle install
+
+      - name: Get GitHub OIDC Token
+        if: github.repository == 'stainless-sdks/openai-ruby'
+        id: github-oidc
+        uses: actions/github-script@v8
+        with:
+          script: core.setOutput('github_token', await core.getIDToken());
+
+      - name: Build and upload gem artifacts
+        if: github.repository == 'stainless-sdks/openai-ruby'
+        env:
+          URL: https://pkg.stainless.com/s
+          AUTH: ${{ steps.github-oidc.outputs.github_token }}
+          SHA: ${{ github.sha }}
+          PACKAGE_NAME: openai
+        run: ./scripts/utils/upload-artifact.sh
   lint:
     timeout-minutes: 10
     name: lint

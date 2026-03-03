@@ -5,7 +5,10 @@ module OpenAI
     class Beta
       class Threads
         # @deprecated The Assistants API is deprecated in favor of the Responses API
+        #
+        # Build Assistants that can call models and use tools.
         class Runs
+          # Build Assistants that can call models and use tools.
           # @return [OpenAI::Resources::Beta::Threads::Runs::Steps]
           attr_reader :steps
 
@@ -63,16 +66,17 @@ module OpenAI
           #
           # @see OpenAI::Models::Beta::Threads::RunCreateParams
           def create(thread_id, params)
+            query_params = [:include]
             parsed, options = OpenAI::Beta::Threads::RunCreateParams.dump_request(params)
+            query = OpenAI::Internal::Util.encode_query_params(parsed.slice(*query_params))
             if parsed[:stream]
               message = "Please use `#create_stream_raw` for the streaming use case."
               raise ArgumentError.new(message)
             end
-            query_params = [:include]
             @client.request(
               method: :post,
               path: ["threads/%1$s/runs", thread_id],
-              query: parsed.slice(*query_params),
+              query: query,
               body: parsed.except(*query_params),
               model: OpenAI::Beta::Threads::Run,
               options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
@@ -133,17 +137,18 @@ module OpenAI
           #
           # @see OpenAI::Models::Beta::Threads::RunCreateParams
           def create_stream_raw(thread_id, params)
+            query_params = [:include]
             parsed, options = OpenAI::Beta::Threads::RunCreateParams.dump_request(params)
+            query = OpenAI::Internal::Util.encode_query_params(parsed.slice(*query_params))
             unless parsed.fetch(:stream, true)
               message = "Please use `#create` for the non-streaming use case."
               raise ArgumentError.new(message)
             end
             parsed.store(:stream, true)
-            query_params = [:include]
             @client.request(
               method: :post,
               path: ["threads/%1$s/runs", thread_id],
-              query: parsed.slice(*query_params),
+              query: query,
               headers: {"accept" => "text/event-stream"},
               body: parsed.except(*query_params),
               stream: OpenAI::Internal::Stream,
@@ -245,10 +250,11 @@ module OpenAI
           # @see OpenAI::Models::Beta::Threads::RunListParams
           def list(thread_id, params = {})
             parsed, options = OpenAI::Beta::Threads::RunListParams.dump_request(params)
+            query = OpenAI::Internal::Util.encode_query_params(parsed)
             @client.request(
               method: :get,
               path: ["threads/%1$s/runs", thread_id],
-              query: parsed,
+              query: query,
               page: OpenAI::Internal::CursorPage,
               model: OpenAI::Beta::Threads::Run,
               options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}

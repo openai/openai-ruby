@@ -79,10 +79,11 @@ module OpenAI
       # @see OpenAI::Models::ContainerListParams
       def list(params = {})
         parsed, options = OpenAI::ContainerListParams.dump_request(params)
+        query = OpenAI::Internal::Util.encode_query_params(parsed)
         @client.request(
           method: :get,
           path: "containers",
-          query: parsed,
+          query: query,
           page: OpenAI::Internal::CursorPage,
           model: OpenAI::Models::ContainerListResponse,
           options: options

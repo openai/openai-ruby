@@ -303,6 +303,26 @@ module OpenAI
       class << self
         # @api private
         sig do
+          params(query: OpenAI::Internal::AnyHash).returns(
+            OpenAI::Internal::AnyHash
+          )
+        end
+        def encode_query_params(query)
+        end
+
+        # @api private
+        sig do
+          params(
+            collection: OpenAI::Internal::AnyHash,
+            key: String,
+            element: T.anything
+          ).void
+        end
+        private def write_query_param_element!(collection, key, element)
+        end
+
+        # @api private
+        sig do
           params(
             y: Enumerator::Yielder,
             val: T.anything,

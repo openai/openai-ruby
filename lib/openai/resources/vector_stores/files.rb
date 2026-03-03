@@ -123,10 +123,11 @@ module OpenAI
         # @see OpenAI::Models::VectorStores::FileListParams
         def list(vector_store_id, params = {})
           parsed, options = OpenAI::VectorStores::FileListParams.dump_request(params)
+          query = OpenAI::Internal::Util.encode_query_params(parsed)
           @client.request(
             method: :get,
             path: ["vector_stores/%1$s/files", vector_store_id],
-            query: parsed,
+            query: query,
             page: OpenAI::Internal::CursorPage,
             model: OpenAI::VectorStores::VectorStoreFile,
             options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}

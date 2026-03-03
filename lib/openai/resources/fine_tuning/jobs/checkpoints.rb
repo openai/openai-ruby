@@ -4,6 +4,7 @@ module OpenAI
   module Resources
     class FineTuning
       class Jobs
+        # Manage fine-tuning jobs to tailor a model to your specific training data.
         class Checkpoints
           # Some parameter documentations has been truncated, see
           # {OpenAI::Models::FineTuning::Jobs::CheckpointListParams} for more details.
@@ -25,10 +26,11 @@ module OpenAI
           # @see OpenAI::Models::FineTuning::Jobs::CheckpointListParams
           def list(fine_tuning_job_id, params = {})
             parsed, options = OpenAI::FineTuning::Jobs::CheckpointListParams.dump_request(params)
+            query = OpenAI::Internal::Util.encode_query_params(parsed)
             @client.request(
               method: :get,
               path: ["fine_tuning/jobs/%1$s/checkpoints", fine_tuning_job_id],
-              query: parsed,
+              query: query,
               page: OpenAI::Internal::CursorPage,
               model: OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint,
               options: options

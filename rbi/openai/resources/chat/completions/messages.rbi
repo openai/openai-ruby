@@ -4,6 +4,8 @@ module OpenAI
   module Resources
     class Chat
       class Completions
+        # Given a list of messages comprising a conversation, the model will return a
+        # response.
         class Messages
           # Get the messages in a stored chat completion. Only Chat Completions that have
           # been created with the `store` parameter set to `true` will be returned.

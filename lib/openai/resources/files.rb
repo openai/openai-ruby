@@ -2,6 +2,8 @@
 
 module OpenAI
   module Resources
+    # Files are used to upload documents that can be used with features like
+    # Assistants and Fine-tuning.
     class Files
       # Some parameter documentations has been truncated, see
       # {OpenAI::Models::FileCreateParams} for more details.
@@ -94,10 +96,11 @@ module OpenAI
       # @see OpenAI::Models::FileListParams
       def list(params = {})
         parsed, options = OpenAI::FileListParams.dump_request(params)
+        query = OpenAI::Internal::Util.encode_query_params(parsed)
         @client.request(
           method: :get,
           path: "files",
-          query: parsed,
+          query: query,
           page: OpenAI::Internal::CursorPage,
           model: OpenAI::FileObject,
           options: options

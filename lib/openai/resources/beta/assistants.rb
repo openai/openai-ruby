@@ -3,6 +3,7 @@
 module OpenAI
   module Resources
     class Beta
+      # Build Assistants that can call models and use tools.
       class Assistants
         # @deprecated
         #
@@ -146,10 +147,11 @@ module OpenAI
         # @see OpenAI::Models::Beta::AssistantListParams
         def list(params = {})
           parsed, options = OpenAI::Beta::AssistantListParams.dump_request(params)
+          query = OpenAI::Internal::Util.encode_query_params(parsed)
           @client.request(
             method: :get,
             path: "assistants",
-            query: parsed,
+            query: query,
             page: OpenAI::Internal::CursorPage,
             model: OpenAI::Beta::Assistant,
             options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}

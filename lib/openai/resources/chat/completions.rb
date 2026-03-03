@@ -3,7 +3,11 @@
 module OpenAI
   module Resources
     class Chat
+      # Given a list of messages comprising a conversation, the model will return a
+      # response.
       class Completions
+        # Given a list of messages comprising a conversation, the model will return a
+        # response.
         # @return [OpenAI::Resources::Chat::Completions::Messages]
         attr_reader :messages
 
@@ -317,10 +321,11 @@ module OpenAI
         # @see OpenAI::Models::Chat::CompletionListParams
         def list(params = {})
           parsed, options = OpenAI::Chat::CompletionListParams.dump_request(params)
+          query = OpenAI::Internal::Util.encode_query_params(parsed)
           @client.request(
             method: :get,
             path: "chat/completions",
-            query: parsed,
+            query: query,
             page: OpenAI::Internal::CursorPage,
             model: OpenAI::Chat::ChatCompletion,
             options: options

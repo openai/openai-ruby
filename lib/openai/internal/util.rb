@@ -492,6 +492,37 @@ module OpenAI
       class << self
         # @api private
         #
+        # @param query [Hash{Symbol=>Object}]
+        #
+        # @return [Hash{Symbol=>Object}]
+        def encode_query_params(query)
+          out = {}
+          query.each { write_query_param_element!(out, _1, _2) }
+          out
+        end
+
+        # @api private
+        #
+        # @param collection [Hash{Symbol=>Object}]
+        # @param key [String]
+        # @param element [Object]
+        #
+        # @return [nil]
+        private def write_query_param_element!(collection, key, element)
+          case element
+          in Hash
+            element.each do |name, value|
+              write_query_param_element!(collection, "#{key}[#{name}]", value)
+            end
+          in Array
+            collection["#{key}[]"] = element.map(&:to_s)
+          else
+            collection[key] = element.to_s
+          end
+        end
+
+        # @api private
+        #
         # @param y [Enumerator::Yielder]
         # @param val [Object]
         # @param closing [Array<Proc>]

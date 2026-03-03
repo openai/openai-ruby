@@ -226,6 +226,7 @@ module OpenAI
       # @see OpenAI::Models::Responses::ResponseRetrieveParams
       def retrieve(response_id, params = {})
         parsed, options = OpenAI::Responses::ResponseRetrieveParams.dump_request(params)
+        query = OpenAI::Internal::Util.encode_query_params(parsed)
         if parsed[:stream]
           message = "Please use `#retrieve_streaming` for the streaming use case."
           raise ArgumentError.new(message)
@@ -233,7 +234,7 @@ module OpenAI
         @client.request(
           method: :get,
           path: ["responses/%1$s", response_id],
-          query: parsed,
+          query: query,
           model: OpenAI::Responses::Response,
           options: options
         )
@@ -263,6 +264,7 @@ module OpenAI
       # @see OpenAI::Models::Responses::ResponseRetrieveParams
       def retrieve_streaming(response_id, params = {})
         parsed, options = OpenAI::Responses::ResponseRetrieveParams.dump_request(params)
+        query = OpenAI::Internal::Util.encode_query_params(parsed)
         unless parsed.fetch(:stream, true)
           message = "Please use `#retrieve` for the non-streaming use case."
           raise ArgumentError.new(message)
@@ -271,7 +273,7 @@ module OpenAI
         @client.request(
           method: :get,
           path: ["responses/%1$s", response_id],
-          query: parsed,
+          query: query,
           headers: {"accept" => "text/event-stream"},
           stream: OpenAI::Internal::Stream,
           model: OpenAI::Responses::ResponseStreamEvent,

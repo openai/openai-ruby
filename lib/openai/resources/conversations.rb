@@ -2,7 +2,9 @@
 
 module OpenAI
   module Resources
+    # Manage conversations and conversation items.
     class Conversations
+      # Manage conversations and conversation items.
       # @return [OpenAI::Resources::Conversations::Items]
       attr_reader :items
 

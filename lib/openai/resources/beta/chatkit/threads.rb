@@ -49,10 +49,11 @@ module OpenAI
           # @see OpenAI::Models::Beta::ChatKit::ThreadListParams
           def list(params = {})
             parsed, options = OpenAI::Beta::ChatKit::ThreadListParams.dump_request(params)
+            query = OpenAI::Internal::Util.encode_query_params(parsed)
             @client.request(
               method: :get,
               path: "chatkit/threads",
-              query: parsed,
+              query: query,
               page: OpenAI::Internal::ConversationCursorPage,
               model: OpenAI::Beta::ChatKit::ChatKitThread,
               options: {extra_headers: {"OpenAI-Beta" => "chatkit_beta=v1"}, **options}
@@ -103,10 +104,11 @@ module OpenAI
           # @see OpenAI::Models::Beta::ChatKit::ThreadListItemsParams
           def list_items(thread_id, params = {})
             parsed, options = OpenAI::Beta::ChatKit::ThreadListItemsParams.dump_request(params)
+            query = OpenAI::Internal::Util.encode_query_params(parsed)
             @client.request(
               method: :get,
               path: ["chatkit/threads/%1$s/items", thread_id],
-              query: parsed,
+              query: query,
               page: OpenAI::Internal::ConversationCursorPage,
               model: OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data,
               options: {extra_headers: {"OpenAI-Beta" => "chatkit_beta=v1"}, **options}

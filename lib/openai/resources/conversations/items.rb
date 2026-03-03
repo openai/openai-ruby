@@ -3,6 +3,7 @@
 module OpenAI
   module Resources
     class Conversations
+      # Manage conversations and conversation items.
       class Items
         # Some parameter documentations has been truncated, see
         # {OpenAI::Models::Conversations::ItemCreateParams} for more details.
@@ -23,12 +24,13 @@ module OpenAI
         #
         # @see OpenAI::Models::Conversations::ItemCreateParams
         def create(conversation_id, params)
-          parsed, options = OpenAI::Conversations::ItemCreateParams.dump_request(params)
           query_params = [:include]
+          parsed, options = OpenAI::Conversations::ItemCreateParams.dump_request(params)
+          query = OpenAI::Internal::Util.encode_query_params(parsed.slice(*query_params))
           @client.request(
             method: :post,
             path: ["conversations/%1$s/items", conversation_id],
-            query: parsed.slice(*query_params),
+            query: query,
             body: parsed.except(*query_params),
             model: OpenAI::Conversations::ConversationItemList,
             options: options
@@ -55,6 +57,7 @@ module OpenAI
         # @see OpenAI::Models::Conversations::ItemRetrieveParams
         def retrieve(item_id, params)
           parsed, options = OpenAI::Conversations::ItemRetrieveParams.dump_request(params)
+          query = OpenAI::Internal::Util.encode_query_params(parsed)
           conversation_id =
             parsed.delete(:conversation_id) do
               raise ArgumentError.new("missing required path argument #{_1}")
@@ -62,7 +65,7 @@ module OpenAI
           @client.request(
             method: :get,
             path: ["conversations/%1$s/items/%2$s", conversation_id, item_id],
-            query: parsed,
+            query: query,
             model: OpenAI::Conversations::ConversationItem,
             options: options
           )
@@ -92,10 +95,11 @@ module OpenAI
         # @see OpenAI::Models::Conversations::ItemListParams
         def list(conversation_id, params = {})
           parsed, options = OpenAI::Conversations::ItemListParams.dump_request(params)
+          query = OpenAI::Internal::Util.encode_query_params(parsed)
           @client.request(
             method: :get,
             path: ["conversations/%1$s/items", conversation_id],
-            query: parsed,
+            query: query,
             page: OpenAI::Internal::ConversationCursorPage,
             model: OpenAI::Conversations::ConversationItem,
             options: options

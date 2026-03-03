@@ -4,6 +4,7 @@ module OpenAI
   module Resources
     class FineTuning
       class Alpha
+        # Manage fine-tuning jobs to tailor a model to your specific training data.
         class Graders
           # Some parameter documentations has been truncated, see
           # {OpenAI::Models::FineTuning::Alpha::GraderRunParams} for more details.

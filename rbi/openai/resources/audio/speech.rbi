@@ -3,6 +3,7 @@
 module OpenAI
   module Resources
     class Audio
+      # Turn audio into text or text into audio.
       class Speech
         # Generates audio from the input text.
         #

@@ -5,6 +5,7 @@ module OpenAI
     class Beta
       class Threads
         class Runs
+          # Build Assistants that can call models and use tools.
           class Steps
             # Retrieves a run step.
             sig do

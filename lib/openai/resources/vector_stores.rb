@@ -117,10 +117,11 @@ module OpenAI
       # @see OpenAI::Models::VectorStoreListParams
       def list(params = {})
         parsed, options = OpenAI::VectorStoreListParams.dump_request(params)
+        query = OpenAI::Internal::Util.encode_query_params(parsed)
         @client.request(
           method: :get,
           path: "vector_stores",
-          query: parsed,
+          query: query,
           page: OpenAI::Internal::CursorPage,
           model: OpenAI::VectorStore,
           options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}

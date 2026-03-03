@@ -3,10 +3,13 @@
 module OpenAI
   module Resources
     class Beta
+      # Build Assistants that can call models and use tools.
       class Threads
+        # Build Assistants that can call models and use tools.
         sig { returns(OpenAI::Resources::Beta::Threads::Runs) }
         attr_reader :runs
 
+        # Build Assistants that can call models and use tools.
         sig { returns(OpenAI::Resources::Beta::Threads::Messages) }
         attr_reader :messages
 

@@ -4,6 +4,7 @@ module OpenAI
   module Resources
     class Beta
       class Threads
+        # Build Assistants that can call models and use tools.
         class Messages
           # Create a message.
           sig do

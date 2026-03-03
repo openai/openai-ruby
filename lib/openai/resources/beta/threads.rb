@@ -4,10 +4,14 @@ module OpenAI
   module Resources
     class Beta
       # @deprecated The Assistants API is deprecated in favor of the Responses API
+      #
+      # Build Assistants that can call models and use tools.
       class Threads
+        # Build Assistants that can call models and use tools.
         # @return [OpenAI::Resources::Beta::Threads::Runs]
         attr_reader :runs
 
+        # Build Assistants that can call models and use tools.
         # @return [OpenAI::Resources::Beta::Threads::Messages]
         attr_reader :messages
 

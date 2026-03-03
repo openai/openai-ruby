@@ -86,10 +86,11 @@ module OpenAI
         # @see OpenAI::Models::Containers::FileListParams
         def list(container_id, params = {})
           parsed, options = OpenAI::Containers::FileListParams.dump_request(params)
+          query = OpenAI::Internal::Util.encode_query_params(parsed)
           @client.request(
             method: :get,
             path: ["containers/%1$s/files", container_id],
-            query: parsed,
+            query: query,
             page: OpenAI::Internal::CursorPage,
             model: OpenAI::Models::Containers::FileListResponse,
             options: options
