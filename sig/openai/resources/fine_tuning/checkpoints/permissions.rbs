@@ -18,6 +18,15 @@ module OpenAI
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse
 
+          def list: (
+            String fine_tuned_model_checkpoint,
+            ?after: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::FineTuning::Checkpoints::PermissionListParams::order,
+            ?project_id: String,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Internal::ConversationCursorPage[OpenAI::Models::FineTuning::Checkpoints::PermissionListResponse]
+
           def delete: (
             String permission_id,
             fine_tuned_model_checkpoint: String,
