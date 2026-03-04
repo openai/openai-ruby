@@ -49,6 +49,30 @@ class OpenAI::Test::Resources::FineTuning::Checkpoints::PermissionsTest < OpenAI
     end
   end
 
+  def test_list
+    response = @openai.fine_tuning.checkpoints.permissions.list("ft-AF1WoRqd3aJAHsqc9NY7iL8F")
+
+    assert_pattern do
+      response => OpenAI::Internal::ConversationCursorPage
+    end
+
+    row = response.to_enum.first
+    return if row.nil?
+
+    assert_pattern do
+      row => OpenAI::Models::FineTuning::Checkpoints::PermissionListResponse
+    end
+
+    assert_pattern do
+      row => {
+        id: String,
+        created_at: Integer,
+        object: Symbol,
+        project_id: String
+      }
+    end
+  end
+
   def test_delete_required_params
     response =
       @openai.fine_tuning.checkpoints.permissions.delete(
