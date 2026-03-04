@@ -38,6 +38,8 @@ module OpenAI
             )
           end
 
+          # @deprecated Retrieve is deprecated. Please swap to the paginated list method instead.
+          #
           # Some parameter documentations has been truncated, see
           # {OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams} for more
           # details.
@@ -72,6 +74,45 @@ module OpenAI
               path: ["fine_tuning/checkpoints/%1$s/permissions", fine_tuned_model_checkpoint],
               query: query,
               model: OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse,
+              options: options
+            )
+          end
+
+          # Some parameter documentations has been truncated, see
+          # {OpenAI::Models::FineTuning::Checkpoints::PermissionListParams} for more
+          # details.
+          #
+          # **NOTE:** This endpoint requires an [admin API key](../admin-api-keys).
+          #
+          # Organization owners can use this endpoint to view all permissions for a
+          # fine-tuned model checkpoint.
+          #
+          # @overload list(fine_tuned_model_checkpoint, after: nil, limit: nil, order: nil, project_id: nil, request_options: {})
+          #
+          # @param fine_tuned_model_checkpoint [String] The ID of the fine-tuned model checkpoint to get permissions for.
+          #
+          # @param after [String] Identifier for the last permission ID from the previous pagination request.
+          #
+          # @param limit [Integer] Number of permissions to retrieve.
+          #
+          # @param order [Symbol, OpenAI::Models::FineTuning::Checkpoints::PermissionListParams::Order] The order in which to retrieve permissions.
+          #
+          # @param project_id [String] The ID of the project to get permissions for.
+          #
+          # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+          #
+          # @return [OpenAI::Internal::ConversationCursorPage<OpenAI::Models::FineTuning::Checkpoints::PermissionListResponse>]
+          #
+          # @see OpenAI::Models::FineTuning::Checkpoints::PermissionListParams
+          def list(fine_tuned_model_checkpoint, params = {})
+            parsed, options = OpenAI::FineTuning::Checkpoints::PermissionListParams.dump_request(params)
+            query = OpenAI::Internal::Util.encode_query_params(parsed)
+            @client.request(
+              method: :get,
+              path: ["fine_tuning/checkpoints/%1$s/permissions", fine_tuned_model_checkpoint],
+              query: query,
+              page: OpenAI::Internal::ConversationCursorPage,
+              model: OpenAI::Models::FineTuning::Checkpoints::PermissionListResponse,
               options: options
             )
           end

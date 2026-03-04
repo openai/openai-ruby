@@ -363,6 +363,8 @@ require_relative "openai/models/fine_tuning/checkpoints/permission_create_params
 require_relative "openai/models/fine_tuning/checkpoints/permission_create_response"
 require_relative "openai/models/fine_tuning/checkpoints/permission_delete_params"
 require_relative "openai/models/fine_tuning/checkpoints/permission_delete_response"
+require_relative "openai/models/fine_tuning/checkpoints/permission_list_params"
+require_relative "openai/models/fine_tuning/checkpoints/permission_list_response"
 require_relative "openai/models/fine_tuning/checkpoints/permission_retrieve_params"
 require_relative "openai/models/fine_tuning/checkpoints/permission_retrieve_response"
 require_relative "openai/models/fine_tuning/dpo_hyperparameters"
