@@ -5,6 +5,7 @@ module OpenAI
         {
           name: String,
           type: :custom,
+          defer_loading: bool,
           description: String,
           format_: OpenAI::Models::custom_tool_input_format
         }
@@ -13,6 +14,10 @@ module OpenAI
         attr_accessor name: String
 
         attr_accessor type: :custom
+
+        attr_reader defer_loading: bool?
+
+        def defer_loading=: (bool) -> bool
 
         attr_reader description: String?
 
@@ -26,6 +31,7 @@ module OpenAI
 
         def initialize: (
           name: String,
+          ?defer_loading: bool,
           ?description: String,
           ?format_: OpenAI::Models::custom_tool_input_format,
           ?type: :custom
@@ -34,6 +40,7 @@ module OpenAI
         def to_hash: -> {
           name: String,
           type: :custom,
+          defer_loading: bool,
           description: String,
           format_: OpenAI::Models::custom_tool_input_format
         }

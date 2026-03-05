@@ -17,6 +17,13 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
+        # Whether this tool should be deferred and discovered via tool search.
+        sig { returns(T.nilable(T::Boolean)) }
+        attr_reader :defer_loading
+
+        sig { params(defer_loading: T::Boolean).void }
+        attr_writer :defer_loading
+
         # Optional description of the custom tool, used to provide more context.
         sig { returns(T.nilable(String)) }
         attr_reader :description
@@ -53,6 +60,7 @@ module OpenAI
         sig do
           params(
             name: String,
+            defer_loading: T::Boolean,
             description: String,
             format_:
               T.any(
@@ -65,6 +73,8 @@ module OpenAI
         def self.new(
           # The name of the custom tool, used to identify it in tool calls.
           name:,
+          # Whether this tool should be deferred and discovered via tool search.
+          defer_loading: nil,
           # Optional description of the custom tool, used to provide more context.
           description: nil,
           # The input format for the custom tool. Default is unconstrained text.
@@ -79,6 +89,7 @@ module OpenAI
             {
               name: String,
               type: Symbol,
+              defer_loading: T::Boolean,
               description: String,
               format_:
                 T.any(

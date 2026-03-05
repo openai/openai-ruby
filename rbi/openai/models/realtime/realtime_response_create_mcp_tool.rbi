@@ -74,6 +74,13 @@ module OpenAI
         end
         attr_writer :connector_id
 
+        # Whether this MCP tool is deferred and discovered via tool search.
+        sig { returns(T.nilable(T::Boolean)) }
+        attr_reader :defer_loading
+
+        sig { params(defer_loading: T::Boolean).void }
+        attr_writer :defer_loading
+
         # Optional HTTP headers to send to the MCP server. Use for authentication or other
         # purposes.
         sig { returns(T.nilable(T::Hash[Symbol, String])) }
@@ -123,6 +130,7 @@ module OpenAI
             authorization: String,
             connector_id:
               OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID::OrSymbol,
+            defer_loading: T::Boolean,
             headers: T.nilable(T::Hash[Symbol, String]),
             require_approval:
               T.nilable(
@@ -161,6 +169,8 @@ module OpenAI
           # - Outlook Email: `connector_outlookemail`
           # - SharePoint: `connector_sharepoint`
           connector_id: nil,
+          # Whether this MCP tool is deferred and discovered via tool search.
+          defer_loading: nil,
           # Optional HTTP headers to send to the MCP server. Use for authentication or other
           # purposes.
           headers: nil,
@@ -191,6 +201,7 @@ module OpenAI
               authorization: String,
               connector_id:
                 OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID::OrSymbol,
+              defer_loading: T::Boolean,
               headers: T.nilable(T::Hash[Symbol, String]),
               require_approval:
                 T.nilable(

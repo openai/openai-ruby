@@ -12,7 +12,7 @@ module OpenAI
       #
       # @param prompt [String] Text prompt that describes the video to generate.
       #
-      # @param input_reference [Pathname, StringIO, IO, String, OpenAI::FilePart] Optional image reference that guides generation.
+      # @param input_reference [Pathname, StringIO, IO, String, OpenAI::FilePart] Optional multipart reference asset that guides generation.
       #
       # @param model [String, Symbol, OpenAI::Models::VideoModel] The video generation model to use (allowed values: sora-2, sora-2-pro). Defaults
       #

@@ -4,6 +4,7 @@ module OpenAI
       type tool =
         OpenAI::Responses::FunctionTool
         | OpenAI::Responses::FileSearchTool
+        | OpenAI::Responses::ComputerUseTool
         | OpenAI::Responses::ComputerTool
         | OpenAI::Responses::Tool::Mcp
         | OpenAI::Responses::Tool::CodeInterpreter
@@ -11,6 +12,8 @@ module OpenAI
         | OpenAI::Responses::Tool::LocalShell
         | OpenAI::Responses::FunctionShellTool
         | OpenAI::Responses::CustomTool
+        | OpenAI::Responses::NamespaceTool
+        | OpenAI::Responses::ToolSearchTool
         | OpenAI::Responses::ApplyPatchTool
         | OpenAI::Responses::WebSearchTool
         | OpenAI::Responses::WebSearchPreviewTool
@@ -25,6 +28,7 @@ module OpenAI
             allowed_tools: OpenAI::Models::Responses::Tool::Mcp::allowed_tools?,
             authorization: String,
             connector_id: OpenAI::Models::Responses::Tool::Mcp::connector_id,
+            defer_loading: bool,
             headers: ::Hash[Symbol, String]?,
             require_approval: OpenAI::Models::Responses::Tool::Mcp::require_approval?,
             server_description: String,
@@ -48,6 +52,10 @@ module OpenAI
             OpenAI::Models::Responses::Tool::Mcp::connector_id
           ) -> OpenAI::Models::Responses::Tool::Mcp::connector_id
 
+          attr_reader defer_loading: bool?
+
+          def defer_loading=: (bool) -> bool
+
           attr_accessor headers: ::Hash[Symbol, String]?
 
           attr_accessor require_approval: OpenAI::Models::Responses::Tool::Mcp::require_approval?
@@ -65,6 +73,7 @@ module OpenAI
             ?allowed_tools: OpenAI::Models::Responses::Tool::Mcp::allowed_tools?,
             ?authorization: String,
             ?connector_id: OpenAI::Models::Responses::Tool::Mcp::connector_id,
+            ?defer_loading: bool,
             ?headers: ::Hash[Symbol, String]?,
             ?require_approval: OpenAI::Models::Responses::Tool::Mcp::require_approval?,
             ?server_description: String,
@@ -78,6 +87,7 @@ module OpenAI
             allowed_tools: OpenAI::Models::Responses::Tool::Mcp::allowed_tools?,
             authorization: String,
             connector_id: OpenAI::Models::Responses::Tool::Mcp::connector_id,
+            defer_loading: bool,
             headers: ::Hash[Symbol, String]?,
             require_approval: OpenAI::Models::Responses::Tool::Mcp::require_approval?,
             server_description: String,

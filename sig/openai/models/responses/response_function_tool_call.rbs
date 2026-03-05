@@ -8,6 +8,7 @@ module OpenAI
           name: String,
           type: :function_call,
           id: String,
+          namespace: String,
           status: OpenAI::Models::Responses::ResponseFunctionToolCall::status
         }
 
@@ -24,6 +25,10 @@ module OpenAI
 
         def id=: (String) -> String
 
+        attr_reader namespace: String?
+
+        def namespace=: (String) -> String
+
         attr_reader status: OpenAI::Models::Responses::ResponseFunctionToolCall::status?
 
         def status=: (
@@ -35,6 +40,7 @@ module OpenAI
           call_id: String,
           name: String,
           ?id: String,
+          ?namespace: String,
           ?status: OpenAI::Models::Responses::ResponseFunctionToolCall::status,
           ?type: :function_call
         ) -> void
@@ -45,6 +51,7 @@ module OpenAI
           name: String,
           type: :function_call,
           id: String,
+          namespace: String,
           status: OpenAI::Models::Responses::ResponseFunctionToolCall::status
         }
 

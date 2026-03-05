@@ -27,6 +27,8 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
       in OpenAI::Responses::ResponseFunctionWebSearch
       in OpenAI::Responses::ResponseFunctionToolCallItem
       in OpenAI::Responses::ResponseFunctionToolCallOutputItem
+      in OpenAI::Responses::ResponseToolSearchCall
+      in OpenAI::Responses::ResponseToolSearchOutputItem
       in OpenAI::Responses::ResponseItem::ImageGenerationCall
       in OpenAI::Responses::ResponseCodeInterpreterToolCall
       in OpenAI::Responses::ResponseItem::LocalShellCall
@@ -69,10 +71,11 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
       in {
         type: :computer_call,
         id: String,
-        action: OpenAI::Responses::ResponseComputerToolCall::Action,
         call_id: String,
         pending_safety_checks: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseComputerToolCall::PendingSafetyCheck]),
-        status: OpenAI::Responses::ResponseComputerToolCall::Status
+        status: OpenAI::Responses::ResponseComputerToolCall::Status,
+        action: OpenAI::Responses::ResponseComputerToolCall::Action | nil,
+        actions: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ComputerAction]) | nil
       }
       in {
         type: :computer_call_output,
@@ -94,6 +97,24 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
         call_id: String,
         output: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Output,
         status: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Status | nil
+      }
+      in {
+        type: :tool_search_call,
+        id: String,
+        arguments: OpenAI::Internal::Type::Unknown,
+        call_id: String | nil,
+        execution: OpenAI::Responses::ResponseToolSearchCall::Execution,
+        status: OpenAI::Responses::ResponseToolSearchCall::Status,
+        created_by: String | nil
+      }
+      in {
+        type: :tool_search_output,
+        id: String,
+        call_id: String | nil,
+        execution: OpenAI::Responses::ResponseToolSearchOutputItem::Execution,
+        status: OpenAI::Responses::ResponseToolSearchOutputItem::Status,
+        tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool]),
+        created_by: String | nil
       }
       in {
         type: :image_generation_call,

@@ -25,6 +25,13 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
+        # Whether this function is deferred and loaded via tool search.
+        sig { returns(T.nilable(T::Boolean)) }
+        attr_reader :defer_loading
+
+        sig { params(defer_loading: T::Boolean).void }
+        attr_writer :defer_loading
+
         # A description of the function. Used by the model to determine whether or not to
         # call the function.
         sig { returns(T.nilable(String)) }
@@ -38,6 +45,7 @@ module OpenAI
             name: String,
             parameters: T.nilable(T::Hash[Symbol, T.anything]),
             strict: T.nilable(T::Boolean),
+            defer_loading: T::Boolean,
             description: T.nilable(String),
             type: Symbol
           ).returns(T.attached_class)
@@ -49,6 +57,8 @@ module OpenAI
           parameters:,
           # Whether to enforce strict parameter validation. Default `true`.
           strict:,
+          # Whether this function is deferred and loaded via tool search.
+          defer_loading: nil,
           # A description of the function. Used by the model to determine whether or not to
           # call the function.
           description: nil,
@@ -64,6 +74,7 @@ module OpenAI
               parameters: T.nilable(T::Hash[Symbol, T.anything]),
               strict: T.nilable(T::Boolean),
               type: Symbol,
+              defer_loading: T::Boolean,
               description: T.nilable(String)
             }
           )

@@ -7,6 +7,7 @@ module OpenAI
           parameters: ::Hash[Symbol, top]?,
           strict: bool?,
           type: :function,
+          defer_loading: bool,
           description: String?
         }
 
@@ -19,12 +20,17 @@ module OpenAI
 
         attr_accessor type: :function
 
+        attr_reader defer_loading: bool?
+
+        def defer_loading=: (bool) -> bool
+
         attr_accessor description: String?
 
         def initialize: (
           name: String,
           parameters: ::Hash[Symbol, top]?,
           strict: bool?,
+          ?defer_loading: bool,
           ?description: String?,
           ?type: :function
         ) -> void
@@ -34,6 +40,7 @@ module OpenAI
           parameters: ::Hash[Symbol, top]?,
           strict: bool?,
           type: :function,
+          defer_loading: bool,
           description: String?
         }
       end

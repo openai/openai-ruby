@@ -22,7 +22,7 @@ class OpenAI::Test::Resources::VideosTest < OpenAI::Test::ResourceTest
         progress: Integer,
         prompt: String | nil,
         remixed_from_video_id: String | nil,
-        seconds: OpenAI::VideoSeconds,
+        seconds: OpenAI::Video::Seconds,
         size: OpenAI::VideoSize,
         status: OpenAI::Video::Status
       }
@@ -48,7 +48,7 @@ class OpenAI::Test::Resources::VideosTest < OpenAI::Test::ResourceTest
         progress: Integer,
         prompt: String | nil,
         remixed_from_video_id: String | nil,
-        seconds: OpenAI::VideoSeconds,
+        seconds: OpenAI::Video::Seconds,
         size: OpenAI::VideoSize,
         status: OpenAI::Video::Status
       }
@@ -81,7 +81,7 @@ class OpenAI::Test::Resources::VideosTest < OpenAI::Test::ResourceTest
         progress: Integer,
         prompt: String | nil,
         remixed_from_video_id: String | nil,
-        seconds: OpenAI::VideoSeconds,
+        seconds: OpenAI::Video::Seconds,
         size: OpenAI::VideoSize,
         status: OpenAI::Video::Status
       }
@@ -133,7 +133,7 @@ class OpenAI::Test::Resources::VideosTest < OpenAI::Test::ResourceTest
         progress: Integer,
         prompt: String | nil,
         remixed_from_video_id: String | nil,
-        seconds: OpenAI::VideoSeconds,
+        seconds: OpenAI::Video::Seconds,
         size: OpenAI::VideoSize,
         status: OpenAI::Video::Status
       }

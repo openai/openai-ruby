@@ -4,17 +4,16 @@ module OpenAI
       type response_computer_tool_call =
         {
           id: String,
-          action: OpenAI::Models::Responses::ResponseComputerToolCall::action,
           call_id: String,
           pending_safety_checks: ::Array[OpenAI::Responses::ResponseComputerToolCall::PendingSafetyCheck],
           status: OpenAI::Models::Responses::ResponseComputerToolCall::status,
-          type: OpenAI::Models::Responses::ResponseComputerToolCall::type_
+          type: OpenAI::Models::Responses::ResponseComputerToolCall::type_,
+          action: OpenAI::Models::Responses::ResponseComputerToolCall::action,
+          actions: OpenAI::Models::Responses::computer_action_list
         }
 
       class ResponseComputerToolCall < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
-
-        attr_accessor action: OpenAI::Models::Responses::ResponseComputerToolCall::action
 
         attr_accessor call_id: String
 
@@ -24,23 +23,78 @@ module OpenAI
 
         attr_accessor type: OpenAI::Models::Responses::ResponseComputerToolCall::type_
 
+        attr_reader action: OpenAI::Models::Responses::ResponseComputerToolCall::action?
+
+        def action=: (
+          OpenAI::Models::Responses::ResponseComputerToolCall::action
+        ) -> OpenAI::Models::Responses::ResponseComputerToolCall::action
+
+        attr_reader actions: OpenAI::Models::Responses::computer_action_list?
+
+        def actions=: (
+          OpenAI::Models::Responses::computer_action_list
+        ) -> OpenAI::Models::Responses::computer_action_list
+
         def initialize: (
           id: String,
-          action: OpenAI::Models::Responses::ResponseComputerToolCall::action,
           call_id: String,
           pending_safety_checks: ::Array[OpenAI::Responses::ResponseComputerToolCall::PendingSafetyCheck],
           status: OpenAI::Models::Responses::ResponseComputerToolCall::status,
-          type: OpenAI::Models::Responses::ResponseComputerToolCall::type_
+          type: OpenAI::Models::Responses::ResponseComputerToolCall::type_,
+          ?action: OpenAI::Models::Responses::ResponseComputerToolCall::action,
+          ?actions: OpenAI::Models::Responses::computer_action_list
         ) -> void
 
         def to_hash: -> {
           id: String,
-          action: OpenAI::Models::Responses::ResponseComputerToolCall::action,
           call_id: String,
           pending_safety_checks: ::Array[OpenAI::Responses::ResponseComputerToolCall::PendingSafetyCheck],
           status: OpenAI::Models::Responses::ResponseComputerToolCall::status,
-          type: OpenAI::Models::Responses::ResponseComputerToolCall::type_
+          type: OpenAI::Models::Responses::ResponseComputerToolCall::type_,
+          action: OpenAI::Models::Responses::ResponseComputerToolCall::action,
+          actions: OpenAI::Models::Responses::computer_action_list
         }
+
+        type pending_safety_check =
+          { id: String, code: String?, message: String? }
+
+        class PendingSafetyCheck < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor code: String?
+
+          attr_accessor message: String?
+
+          def initialize: (
+            id: String,
+            ?code: String?,
+            ?message: String?
+          ) -> void
+
+          def to_hash: -> { id: String, code: String?, message: String? }
+        end
+
+        type status = :in_progress | :completed | :incomplete
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          IN_PROGRESS: :in_progress
+          COMPLETED: :completed
+          INCOMPLETE: :incomplete
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseComputerToolCall::status]
+        end
+
+        type type_ = :computer_call
+
+        module Type
+          extend OpenAI::Internal::Type::Enum
+
+          COMPUTER_CALL: :computer_call
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseComputerToolCall::type_]
+        end
 
         type action =
           OpenAI::Responses::ResponseComputerToolCall::Action::Click
@@ -250,47 +304,6 @@ module OpenAI
           end
 
           def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseComputerToolCall::action]
-        end
-
-        type pending_safety_check =
-          { id: String, code: String?, message: String? }
-
-        class PendingSafetyCheck < OpenAI::Internal::Type::BaseModel
-          attr_accessor id: String
-
-          attr_accessor code: String?
-
-          attr_accessor message: String?
-
-          def initialize: (
-            id: String,
-            ?code: String?,
-            ?message: String?
-          ) -> void
-
-          def to_hash: -> { id: String, code: String?, message: String? }
-        end
-
-        type status = :in_progress | :completed | :incomplete
-
-        module Status
-          extend OpenAI::Internal::Type::Enum
-
-          IN_PROGRESS: :in_progress
-          COMPLETED: :completed
-          INCOMPLETE: :incomplete
-
-          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseComputerToolCall::status]
-        end
-
-        type type_ = :computer_call
-
-        module Type
-          extend OpenAI::Internal::Type::Enum
-
-          COMPUTER_CALL: :computer_call
-
-          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseComputerToolCall::type_]
         end
       end
     end

@@ -48,8 +48,9 @@ module OpenAI
       sig { returns(T.nilable(String)) }
       attr_accessor :remixed_from_video_id
 
-      # Duration of the generated clip in seconds.
-      sig { returns(OpenAI::VideoSeconds::TaggedSymbol) }
+      # Duration of the generated clip in seconds. For extensions, this is the stitched
+      # total duration.
+      sig { returns(OpenAI::Video::Seconds::Variants) }
       attr_accessor :seconds
 
       # The resolution of the generated video.
@@ -72,7 +73,7 @@ module OpenAI
           progress: Integer,
           prompt: T.nilable(String),
           remixed_from_video_id: T.nilable(String),
-          seconds: OpenAI::VideoSeconds::OrSymbol,
+          seconds: T.any(String, OpenAI::VideoSeconds::OrSymbol),
           size: OpenAI::VideoSize::OrSymbol,
           status: OpenAI::Video::Status::OrSymbol,
           object: Symbol
@@ -97,7 +98,8 @@ module OpenAI
         prompt:,
         # Identifier of the source video if this video is a remix.
         remixed_from_video_id:,
-        # Duration of the generated clip in seconds.
+        # Duration of the generated clip in seconds. For extensions, this is the stitched
+        # total duration.
         seconds:,
         # The resolution of the generated video.
         size:,
@@ -121,13 +123,26 @@ module OpenAI
             progress: Integer,
             prompt: T.nilable(String),
             remixed_from_video_id: T.nilable(String),
-            seconds: OpenAI::VideoSeconds::TaggedSymbol,
+            seconds: OpenAI::Video::Seconds::Variants,
             size: OpenAI::VideoSize::TaggedSymbol,
             status: OpenAI::Video::Status::TaggedSymbol
           }
         )
       end
       def to_hash
+      end
+
+      # Duration of the generated clip in seconds. For extensions, this is the stitched
+      # total duration.
+      module Seconds
+        extend OpenAI::Internal::Type::Union
+
+        Variants =
+          T.type_alias { T.any(String, OpenAI::VideoSeconds::TaggedSymbol) }
+
+        sig { override.returns(T::Array[OpenAI::Video::Seconds::Variants]) }
+        def self.variants
+        end
       end
 
       # Current lifecycle status of the video job.

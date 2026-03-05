@@ -16,6 +16,9 @@ module OpenAI
         variant :file_search, -> { OpenAI::Responses::FileSearchTool }
 
         # A tool that controls a virtual computer. Learn more about the [computer tool](https://platform.openai.com/docs/guides/tools-computer-use).
+        variant :computer, -> { OpenAI::Responses::ComputerUseTool }
+
+        # A tool that controls a virtual computer. Learn more about the [computer tool](https://platform.openai.com/docs/guides/tools-computer-use).
         variant :computer_use_preview, -> { OpenAI::Responses::ComputerTool }
 
         # Give the model access to additional tools via remote Model Context Protocol
@@ -36,6 +39,12 @@ module OpenAI
 
         # A custom tool that processes input using a specified format. Learn more about   [custom tools](https://platform.openai.com/docs/guides/function-calling#custom-tools)
         variant :custom, -> { OpenAI::Responses::CustomTool }
+
+        # Groups function/custom tools under a shared namespace.
+        variant :namespace, -> { OpenAI::Responses::NamespaceTool }
+
+        # Hosted or BYOT tool search configuration for deferred tools.
+        variant :tool_search, -> { OpenAI::Responses::ToolSearchTool }
 
         # Allows the assistant to create, delete, or update files using unified diffs.
         variant :apply_patch, -> { OpenAI::Responses::ApplyPatchTool }
@@ -94,6 +103,12 @@ module OpenAI
           #   @return [Symbol, OpenAI::Models::Responses::Tool::Mcp::ConnectorID, nil]
           optional :connector_id, enum: -> { OpenAI::Responses::Tool::Mcp::ConnectorID }
 
+          # @!attribute defer_loading
+          #   Whether this MCP tool is deferred and discovered via tool search.
+          #
+          #   @return [Boolean, nil]
+          optional :defer_loading, OpenAI::Internal::Type::Boolean
+
           # @!attribute headers
           #   Optional HTTP headers to send to the MCP server. Use for authentication or other
           #   purposes.
@@ -120,7 +135,7 @@ module OpenAI
           #   @return [String, nil]
           optional :server_url, String
 
-          # @!method initialize(server_label:, allowed_tools: nil, authorization: nil, connector_id: nil, headers: nil, require_approval: nil, server_description: nil, server_url: nil, type: :mcp)
+          # @!method initialize(server_label:, allowed_tools: nil, authorization: nil, connector_id: nil, defer_loading: nil, headers: nil, require_approval: nil, server_description: nil, server_url: nil, type: :mcp)
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Responses::Tool::Mcp} for more details.
           #
@@ -135,6 +150,8 @@ module OpenAI
           #   @param authorization [String] An OAuth access token that can be used with a remote MCP server, either
           #
           #   @param connector_id [Symbol, OpenAI::Models::Responses::Tool::Mcp::ConnectorID] Identifier for service connectors, like those available in ChatGPT. One of
+          #
+          #   @param defer_loading [Boolean] Whether this MCP tool is deferred and discovered via tool search.
           #
           #   @param headers [Hash{Symbol=>String}, nil] Optional HTTP headers to send to the MCP server. Use for authentication
           #
@@ -755,7 +772,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::FunctionShellTool, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::ApplyPatchTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool)]
+        #   @return [Array(OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerUseTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::FunctionShellTool, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::NamespaceTool, OpenAI::Models::Responses::ToolSearchTool, OpenAI::Models::Responses::ApplyPatchTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool)]
       end
     end
   end

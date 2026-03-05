@@ -18,6 +18,8 @@ module OpenAI
               OpenAI::Responses::ResponseFunctionWebSearch,
               OpenAI::Responses::ResponseFunctionToolCallItem,
               OpenAI::Responses::ResponseFunctionToolCallOutputItem,
+              OpenAI::Responses::ResponseToolSearchCall,
+              OpenAI::Responses::ResponseToolSearchOutputItem,
               OpenAI::Responses::ResponseItem::ImageGenerationCall,
               OpenAI::Responses::ResponseCodeInterpreterToolCall,
               OpenAI::Responses::ResponseItem::LocalShellCall,

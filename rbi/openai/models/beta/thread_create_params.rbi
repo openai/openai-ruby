@@ -622,8 +622,9 @@ module OpenAI
               attr_writer :chunking_strategy
 
               # A list of [file](https://platform.openai.com/docs/api-reference/files) IDs to
-              # add to the vector store. There can be a maximum of 10000 files in a vector
-              # store.
+              # add to the vector store. For vector stores created before Nov 2025, there can be
+              # a maximum of 10,000 files in a vector store. For vector stores created starting
+              # in Nov 2025, the limit is 100,000,000 files.
               sig { returns(T.nilable(T::Array[String])) }
               attr_reader :file_ids
 
@@ -655,8 +656,9 @@ module OpenAI
                 # strategy.
                 chunking_strategy: nil,
                 # A list of [file](https://platform.openai.com/docs/api-reference/files) IDs to
-                # add to the vector store. There can be a maximum of 10000 files in a vector
-                # store.
+                # add to the vector store. For vector stores created before Nov 2025, there can be
+                # a maximum of 10,000 files in a vector store. For vector stores created starting
+                # in Nov 2025, the limit is 100,000,000 files.
                 file_ids: nil,
                 # Set of 16 key-value pairs that can be attached to an object. This can be useful
                 # for storing additional information about the object in a structured format, and

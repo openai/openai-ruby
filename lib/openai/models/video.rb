@@ -65,10 +65,11 @@ module OpenAI
       required :remixed_from_video_id, String, nil?: true
 
       # @!attribute seconds
-      #   Duration of the generated clip in seconds.
+      #   Duration of the generated clip in seconds. For extensions, this is the stitched
+      #   total duration.
       #
-      #   @return [Symbol, OpenAI::Models::VideoSeconds]
-      required :seconds, enum: -> { OpenAI::VideoSeconds }
+      #   @return [String, Symbol, OpenAI::Models::VideoSeconds]
+      required :seconds, union: -> { OpenAI::Video::Seconds }
 
       # @!attribute size
       #   The resolution of the generated video.
@@ -83,6 +84,9 @@ module OpenAI
       required :status, enum: -> { OpenAI::Video::Status }
 
       # @!method initialize(id:, completed_at:, created_at:, error:, expires_at:, model:, progress:, prompt:, remixed_from_video_id:, seconds:, size:, status:, object: :video)
+      #   Some parameter documentations has been truncated, see {OpenAI::Models::Video}
+      #   for more details.
+      #
       #   Structured information describing a generated video job.
       #
       #   @param id [String] Unique identifier for the video job.
@@ -103,13 +107,29 @@ module OpenAI
       #
       #   @param remixed_from_video_id [String, nil] Identifier of the source video if this video is a remix.
       #
-      #   @param seconds [Symbol, OpenAI::Models::VideoSeconds] Duration of the generated clip in seconds.
+      #   @param seconds [String, Symbol, OpenAI::Models::VideoSeconds] Duration of the generated clip in seconds. For extensions, this is the stitched
       #
       #   @param size [Symbol, OpenAI::Models::VideoSize] The resolution of the generated video.
       #
       #   @param status [Symbol, OpenAI::Models::Video::Status] Current lifecycle status of the video job.
       #
       #   @param object [Symbol, :video] The object type, which is always `video`.
+
+      # Duration of the generated clip in seconds. For extensions, this is the stitched
+      # total duration.
+      #
+      # @see OpenAI::Models::Video#seconds
+      module Seconds
+        extend OpenAI::Internal::Type::Union
+
+        variant String
+
+        # Duration of the generated clip in seconds. For extensions, this is the stitched total duration.
+        variant enum: -> { OpenAI::VideoSeconds }
+
+        # @!method self.variants
+        #   @return [Array(String, Symbol, OpenAI::Models::VideoSeconds)]
+      end
 
       # Current lifecycle status of the video job.
       #
