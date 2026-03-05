@@ -11,17 +11,22 @@ module OpenAI
           T.any(OpenAI::VideoRemixParams, OpenAI::Internal::AnyHash)
         end
 
+      sig { returns(String) }
+      attr_accessor :video_id
+
       # Updated text prompt that directs the remix generation.
       sig { returns(String) }
       attr_accessor :prompt
 
       sig do
         params(
+          video_id: String,
           prompt: String,
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(T.attached_class)
       end
       def self.new(
+        video_id:,
         # Updated text prompt that directs the remix generation.
         prompt:,
         request_options: {}
@@ -30,7 +35,11 @@ module OpenAI
 
       sig do
         override.returns(
-          { prompt: String, request_options: OpenAI::RequestOptions }
+          {
+            video_id: String,
+            prompt: String,
+            request_options: OpenAI::RequestOptions
+          }
         )
       end
       def to_hash

@@ -15,6 +15,9 @@ module OpenAI
             )
           end
 
+        sig { returns(String) }
+        attr_accessor :container_id
+
         # The File object (not file name) to be uploaded.
         sig { returns(T.nilable(OpenAI::Internal::FileInput)) }
         attr_reader :file
@@ -31,12 +34,14 @@ module OpenAI
 
         sig do
           params(
+            container_id: String,
             file: OpenAI::Internal::FileInput,
             file_id: String,
             request_options: OpenAI::RequestOptions::OrHash
           ).returns(T.attached_class)
         end
         def self.new(
+          container_id:,
           # The File object (not file name) to be uploaded.
           file: nil,
           # Name of the file to create.
@@ -48,6 +53,7 @@ module OpenAI
         sig do
           override.returns(
             {
+              container_id: String,
               file: OpenAI::Internal::FileInput,
               file_id: String,
               request_options: OpenAI::RequestOptions

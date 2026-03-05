@@ -12,15 +12,23 @@ module OpenAI
             T.any(OpenAI::Realtime::CallHangupParams, OpenAI::Internal::AnyHash)
           end
 
+        sig { returns(String) }
+        attr_accessor :call_id
+
         sig do
-          params(request_options: OpenAI::RequestOptions::OrHash).returns(
-            T.attached_class
-          )
+          params(
+            call_id: String,
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(T.attached_class)
         end
-        def self.new(request_options: {})
+        def self.new(call_id:, request_options: {})
         end
 
-        sig { override.returns({ request_options: OpenAI::RequestOptions }) }
+        sig do
+          override.returns(
+            { call_id: String, request_options: OpenAI::RequestOptions }
+          )
+        end
         def to_hash
         end
       end

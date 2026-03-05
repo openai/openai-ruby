@@ -3,6 +3,7 @@ module OpenAI
     module Evals
       type run_create_params =
         {
+          eval_id: String,
           data_source: OpenAI::Models::Evals::RunCreateParams::data_source,
           metadata: OpenAI::Models::metadata?,
           name: String
@@ -13,6 +14,8 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        attr_accessor eval_id: String
+
         attr_accessor data_source: OpenAI::Models::Evals::RunCreateParams::data_source
 
         attr_accessor metadata: OpenAI::Models::metadata?
@@ -22,6 +25,7 @@ module OpenAI
         def name=: (String) -> String
 
         def initialize: (
+          eval_id: String,
           data_source: OpenAI::Models::Evals::RunCreateParams::data_source,
           ?metadata: OpenAI::Models::metadata?,
           ?name: String,
@@ -29,6 +33,7 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
+          eval_id: String,
           data_source: OpenAI::Models::Evals::RunCreateParams::data_source,
           metadata: OpenAI::Models::metadata?,
           name: String,

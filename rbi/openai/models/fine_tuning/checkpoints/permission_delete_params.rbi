@@ -19,19 +19,28 @@ module OpenAI
           sig { returns(String) }
           attr_accessor :fine_tuned_model_checkpoint
 
+          sig { returns(String) }
+          attr_accessor :permission_id
+
           sig do
             params(
               fine_tuned_model_checkpoint: String,
+              permission_id: String,
               request_options: OpenAI::RequestOptions::OrHash
             ).returns(T.attached_class)
           end
-          def self.new(fine_tuned_model_checkpoint:, request_options: {})
+          def self.new(
+            fine_tuned_model_checkpoint:,
+            permission_id:,
+            request_options: {}
+          )
           end
 
           sig do
             override.returns(
               {
                 fine_tuned_model_checkpoint: String,
+                permission_id: String,
                 request_options: OpenAI::RequestOptions
               }
             )

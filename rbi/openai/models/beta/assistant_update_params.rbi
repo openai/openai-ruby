@@ -15,6 +15,9 @@ module OpenAI
             )
           end
 
+        sig { returns(String) }
+        attr_accessor :assistant_id
+
         # The description of the assistant. The maximum length is 512 characters.
         sig { returns(T.nilable(String)) }
         attr_accessor :description
@@ -182,6 +185,7 @@ module OpenAI
 
         sig do
           params(
+            assistant_id: String,
             description: T.nilable(String),
             instructions: T.nilable(String),
             metadata: T.nilable(T::Hash[Symbol, String]),
@@ -219,6 +223,7 @@ module OpenAI
           ).returns(T.attached_class)
         end
         def self.new(
+          assistant_id:,
           # The description of the assistant. The maximum length is 512 characters.
           description: nil,
           # The system instructions that the assistant uses. The maximum length is 256,000
@@ -300,6 +305,7 @@ module OpenAI
         sig do
           override.returns(
             {
+              assistant_id: String,
               description: T.nilable(String),
               instructions: T.nilable(String),
               metadata: T.nilable(T::Hash[Symbol, String]),

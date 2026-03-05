@@ -11,15 +11,23 @@ module OpenAI
           T.any(OpenAI::ModelDeleteParams, OpenAI::Internal::AnyHash)
         end
 
+      sig { returns(String) }
+      attr_accessor :model
+
       sig do
-        params(request_options: OpenAI::RequestOptions::OrHash).returns(
-          T.attached_class
-        )
+        params(
+          model: String,
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(T.attached_class)
       end
-      def self.new(request_options: {})
+      def self.new(model:, request_options: {})
       end
 
-      sig { override.returns({ request_options: OpenAI::RequestOptions }) }
+      sig do
+        override.returns(
+          { model: String, request_options: OpenAI::RequestOptions }
+        )
+      end
       def to_hash
       end
     end

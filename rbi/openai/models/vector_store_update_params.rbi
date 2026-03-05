@@ -11,6 +11,9 @@ module OpenAI
           T.any(OpenAI::VectorStoreUpdateParams, OpenAI::Internal::AnyHash)
         end
 
+      sig { returns(String) }
+      attr_accessor :vector_store_id
+
       # The expiration policy for a vector store.
       sig { returns(T.nilable(OpenAI::VectorStoreUpdateParams::ExpiresAfter)) }
       attr_reader :expires_after
@@ -38,6 +41,7 @@ module OpenAI
 
       sig do
         params(
+          vector_store_id: String,
           expires_after:
             T.nilable(OpenAI::VectorStoreUpdateParams::ExpiresAfter::OrHash),
           metadata: T.nilable(T::Hash[Symbol, String]),
@@ -46,6 +50,7 @@ module OpenAI
         ).returns(T.attached_class)
       end
       def self.new(
+        vector_store_id:,
         # The expiration policy for a vector store.
         expires_after: nil,
         # Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -64,6 +69,7 @@ module OpenAI
       sig do
         override.returns(
           {
+            vector_store_id: String,
             expires_after:
               T.nilable(OpenAI::VectorStoreUpdateParams::ExpiresAfter),
             metadata: T.nilable(T::Hash[Symbol, String]),

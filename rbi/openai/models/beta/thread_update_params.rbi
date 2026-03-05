@@ -12,6 +12,9 @@ module OpenAI
             T.any(OpenAI::Beta::ThreadUpdateParams, OpenAI::Internal::AnyHash)
           end
 
+        sig { returns(String) }
+        attr_accessor :thread_id
+
         # Set of 16 key-value pairs that can be attached to an object. This can be useful
         # for storing additional information about the object in a structured format, and
         # querying for objects via API or the dashboard.
@@ -40,6 +43,7 @@ module OpenAI
 
         sig do
           params(
+            thread_id: String,
             metadata: T.nilable(T::Hash[Symbol, String]),
             tool_resources:
               T.nilable(
@@ -49,6 +53,7 @@ module OpenAI
           ).returns(T.attached_class)
         end
         def self.new(
+          thread_id:,
           # Set of 16 key-value pairs that can be attached to an object. This can be useful
           # for storing additional information about the object in a structured format, and
           # querying for objects via API or the dashboard.
@@ -68,6 +73,7 @@ module OpenAI
         sig do
           override.returns(
             {
+              thread_id: String,
               metadata: T.nilable(T::Hash[Symbol, String]),
               tool_resources:
                 T.nilable(OpenAI::Beta::ThreadUpdateParams::ToolResources),

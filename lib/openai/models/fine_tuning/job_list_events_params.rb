@@ -8,6 +8,11 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # @!attribute fine_tuning_job_id
+        #
+        #   @return [String]
+        required :fine_tuning_job_id, String
+
         # @!attribute after
         #   Identifier for the last event from the previous pagination request.
         #
@@ -20,7 +25,9 @@ module OpenAI
         #   @return [Integer, nil]
         optional :limit, Integer
 
-        # @!method initialize(after: nil, limit: nil, request_options: {})
+        # @!method initialize(fine_tuning_job_id:, after: nil, limit: nil, request_options: {})
+        #   @param fine_tuning_job_id [String]
+        #
         #   @param after [String] Identifier for the last event from the previous pagination request.
         #
         #   @param limit [Integer] Number of events to retrieve.

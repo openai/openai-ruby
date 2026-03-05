@@ -2,12 +2,18 @@ module OpenAI
   module Models
     module Containers
       type file_create_params =
-        { file: OpenAI::Internal::file_input, file_id: String }
+        {
+          container_id: String,
+          file: OpenAI::Internal::file_input,
+          file_id: String
+        }
         & OpenAI::Internal::Type::request_parameters
 
       class FileCreateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor container_id: String
 
         attr_reader file: OpenAI::Internal::file_input?
 
@@ -20,12 +26,14 @@ module OpenAI
         def file_id=: (String) -> String
 
         def initialize: (
+          container_id: String,
           ?file: OpenAI::Internal::file_input,
           ?file_id: String,
           ?request_options: OpenAI::request_opts
         ) -> void
 
         def to_hash: -> {
+          container_id: String,
           file: OpenAI::Internal::file_input,
           file_id: String,
           request_options: OpenAI::RequestOptions

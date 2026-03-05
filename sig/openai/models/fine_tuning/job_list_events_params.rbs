@@ -2,12 +2,14 @@ module OpenAI
   module Models
     module FineTuning
       type job_list_events_params =
-        { after: String, limit: Integer }
+        { fine_tuning_job_id: String, after: String, limit: Integer }
         & OpenAI::Internal::Type::request_parameters
 
       class JobListEventsParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor fine_tuning_job_id: String
 
         attr_reader after: String?
 
@@ -18,12 +20,14 @@ module OpenAI
         def limit=: (Integer) -> Integer
 
         def initialize: (
+          fine_tuning_job_id: String,
           ?after: String,
           ?limit: Integer,
           ?request_options: OpenAI::request_opts
         ) -> void
 
         def to_hash: -> {
+          fine_tuning_job_id: String,
           after: String,
           limit: Integer,
           request_options: OpenAI::RequestOptions

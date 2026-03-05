@@ -11,6 +11,9 @@ module OpenAI
           T.any(OpenAI::EvalUpdateParams, OpenAI::Internal::AnyHash)
         end
 
+      sig { returns(String) }
+      attr_accessor :eval_id
+
       # Set of 16 key-value pairs that can be attached to an object. This can be useful
       # for storing additional information about the object in a structured format, and
       # querying for objects via API or the dashboard.
@@ -29,12 +32,14 @@ module OpenAI
 
       sig do
         params(
+          eval_id: String,
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: String,
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(T.attached_class)
       end
       def self.new(
+        eval_id:,
         # Set of 16 key-value pairs that can be attached to an object. This can be useful
         # for storing additional information about the object in a structured format, and
         # querying for objects via API or the dashboard.
@@ -51,6 +56,7 @@ module OpenAI
       sig do
         override.returns(
           {
+            eval_id: String,
             metadata: T.nilable(T::Hash[Symbol, String]),
             name: String,
             request_options: OpenAI::RequestOptions

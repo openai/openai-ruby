@@ -8,6 +8,11 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # @!attribute call_id
+        #
+        #   @return [String]
+        required :call_id, String
+
         # @!attribute status_code
         #   SIP response code to send back to the caller. Defaults to `603` (Decline) when
         #   omitted.
@@ -15,9 +20,11 @@ module OpenAI
         #   @return [Integer, nil]
         optional :status_code, Integer
 
-        # @!method initialize(status_code: nil, request_options: {})
+        # @!method initialize(call_id:, status_code: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Realtime::CallRejectParams} for more details.
+        #
+        #   @param call_id [String]
         #
         #   @param status_code [Integer] SIP response code to send back to the caller. Defaults to `603` (Decline)
         #

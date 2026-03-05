@@ -5,6 +5,7 @@ module OpenAI
         type output_item_list_params =
           {
             eval_id: String,
+            run_id: String,
             after: String,
             limit: Integer,
             order: OpenAI::Models::Evals::Runs::OutputItemListParams::order,
@@ -17,6 +18,8 @@ module OpenAI
           include OpenAI::Internal::Type::RequestParameters
 
           attr_accessor eval_id: String
+
+          attr_accessor run_id: String
 
           attr_reader after: String?
 
@@ -40,6 +43,7 @@ module OpenAI
 
           def initialize: (
             eval_id: String,
+            run_id: String,
             ?after: String,
             ?limit: Integer,
             ?order: OpenAI::Models::Evals::Runs::OutputItemListParams::order,
@@ -49,6 +53,7 @@ module OpenAI
 
           def to_hash: -> {
             eval_id: String,
+            run_id: String,
             after: String,
             limit: Integer,
             order: OpenAI::Models::Evals::Runs::OutputItemListParams::order,

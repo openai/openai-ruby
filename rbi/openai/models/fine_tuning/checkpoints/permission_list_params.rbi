@@ -16,6 +16,9 @@ module OpenAI
               )
             end
 
+          sig { returns(String) }
+          attr_accessor :fine_tuned_model_checkpoint
+
           # Identifier for the last permission ID from the previous pagination request.
           sig { returns(T.nilable(String)) }
           attr_reader :after
@@ -57,6 +60,7 @@ module OpenAI
 
           sig do
             params(
+              fine_tuned_model_checkpoint: String,
               after: String,
               limit: Integer,
               order:
@@ -66,6 +70,7 @@ module OpenAI
             ).returns(T.attached_class)
           end
           def self.new(
+            fine_tuned_model_checkpoint:,
             # Identifier for the last permission ID from the previous pagination request.
             after: nil,
             # Number of permissions to retrieve.
@@ -81,6 +86,7 @@ module OpenAI
           sig do
             override.returns(
               {
+                fine_tuned_model_checkpoint: String,
                 after: String,
                 limit: Integer,
                 order:

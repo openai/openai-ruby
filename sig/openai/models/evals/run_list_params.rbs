@@ -3,6 +3,7 @@ module OpenAI
     module Evals
       type run_list_params =
         {
+          eval_id: String,
           after: String,
           limit: Integer,
           order: OpenAI::Models::Evals::RunListParams::order,
@@ -13,6 +14,8 @@ module OpenAI
       class RunListParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor eval_id: String
 
         attr_reader after: String?
 
@@ -35,6 +38,7 @@ module OpenAI
         ) -> OpenAI::Models::Evals::RunListParams::status
 
         def initialize: (
+          eval_id: String,
           ?after: String,
           ?limit: Integer,
           ?order: OpenAI::Models::Evals::RunListParams::order,
@@ -43,6 +47,7 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
+          eval_id: String,
           after: String,
           limit: Integer,
           order: OpenAI::Models::Evals::RunListParams::order,

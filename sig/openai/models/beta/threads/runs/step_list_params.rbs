@@ -6,6 +6,7 @@ module OpenAI
           type step_list_params =
             {
               thread_id: String,
+              run_id: String,
               after: String,
               before: String,
               include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
@@ -19,6 +20,8 @@ module OpenAI
             include OpenAI::Internal::Type::RequestParameters
 
             attr_accessor thread_id: String
+
+            attr_accessor run_id: String
 
             attr_reader after: String?
 
@@ -46,6 +49,7 @@ module OpenAI
 
             def initialize: (
               thread_id: String,
+              run_id: String,
               ?after: String,
               ?before: String,
               ?include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
@@ -56,6 +60,7 @@ module OpenAI
 
             def to_hash: -> {
               thread_id: String,
+              run_id: String,
               after: String,
               before: String,
               include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],

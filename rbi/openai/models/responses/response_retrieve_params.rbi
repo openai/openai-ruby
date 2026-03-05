@@ -15,6 +15,9 @@ module OpenAI
             )
           end
 
+        sig { returns(String) }
+        attr_accessor :response_id
+
         # Additional fields to include in the response. See the `include` parameter for
         # Response creation above for more information.
         sig do
@@ -52,6 +55,7 @@ module OpenAI
 
         sig do
           params(
+            response_id: String,
             include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
             include_obfuscation: T::Boolean,
             starting_after: Integer,
@@ -59,6 +63,7 @@ module OpenAI
           ).returns(T.attached_class)
         end
         def self.new(
+          response_id:,
           # Additional fields to include in the response. See the `include` parameter for
           # Response creation above for more information.
           include: nil,
@@ -78,6 +83,7 @@ module OpenAI
         sig do
           override.returns(
             {
+              response_id: String,
               include:
                 T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
               include_obfuscation: T::Boolean,

@@ -12,6 +12,9 @@ module OpenAI
             T.any(OpenAI::Evals::RunCreateParams, OpenAI::Internal::AnyHash)
           end
 
+        sig { returns(String) }
+        attr_accessor :eval_id
+
         # Details about the run's data source.
         sig do
           returns(
@@ -42,6 +45,7 @@ module OpenAI
 
         sig do
           params(
+            eval_id: String,
             data_source:
               T.any(
                 OpenAI::Evals::CreateEvalJSONLRunDataSource::OrHash,
@@ -54,6 +58,7 @@ module OpenAI
           ).returns(T.attached_class)
         end
         def self.new(
+          eval_id:,
           # Details about the run's data source.
           data_source:,
           # Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -72,6 +77,7 @@ module OpenAI
         sig do
           override.returns(
             {
+              eval_id: String,
               data_source:
                 T.any(
                   OpenAI::Evals::CreateEvalJSONLRunDataSource,

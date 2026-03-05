@@ -13,6 +13,11 @@ module OpenAI
         #   @return [String]
         required :conversation_id, String
 
+        # @!attribute item_id
+        #
+        #   @return [String]
+        required :item_id, String
+
         # @!attribute include
         #   Additional fields to include in the response. See the `include` parameter for
         #   [listing Conversation items above](https://platform.openai.com/docs/api-reference/conversations/list-items#conversations_list_items-include)
@@ -21,11 +26,13 @@ module OpenAI
         #   @return [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>, nil]
         optional :include, -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Responses::ResponseIncludable] }
 
-        # @!method initialize(conversation_id:, include: nil, request_options: {})
+        # @!method initialize(conversation_id:, item_id:, include: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Conversations::ItemRetrieveParams} for more details.
         #
         #   @param conversation_id [String]
+        #
+        #   @param item_id [String]
         #
         #   @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>] Additional fields to include in the response. See the `include`
         #

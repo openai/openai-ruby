@@ -1,12 +1,17 @@
 module OpenAI
   module Models
     type video_download_content_params =
-      { variant: OpenAI::Models::VideoDownloadContentParams::variant }
+      {
+        video_id: String,
+        variant: OpenAI::Models::VideoDownloadContentParams::variant
+      }
       & OpenAI::Internal::Type::request_parameters
 
     class VideoDownloadContentParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
+
+      attr_accessor video_id: String
 
       attr_reader variant: OpenAI::Models::VideoDownloadContentParams::variant?
 
@@ -15,11 +20,13 @@ module OpenAI
       ) -> OpenAI::Models::VideoDownloadContentParams::variant
 
       def initialize: (
+        video_id: String,
         ?variant: OpenAI::Models::VideoDownloadContentParams::variant,
         ?request_options: OpenAI::request_opts
       ) -> void
 
       def to_hash: -> {
+        video_id: String,
         variant: OpenAI::Models::VideoDownloadContentParams::variant,
         request_options: OpenAI::RequestOptions
       }

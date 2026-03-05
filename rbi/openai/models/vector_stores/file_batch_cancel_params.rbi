@@ -18,18 +18,26 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :vector_store_id
 
+        sig { returns(String) }
+        attr_accessor :batch_id
+
         sig do
           params(
             vector_store_id: String,
+            batch_id: String,
             request_options: OpenAI::RequestOptions::OrHash
           ).returns(T.attached_class)
         end
-        def self.new(vector_store_id:, request_options: {})
+        def self.new(vector_store_id:, batch_id:, request_options: {})
         end
 
         sig do
           override.returns(
-            { vector_store_id: String, request_options: OpenAI::RequestOptions }
+            {
+              vector_store_id: String,
+              batch_id: String,
+              request_options: OpenAI::RequestOptions
+            }
           )
         end
         def to_hash

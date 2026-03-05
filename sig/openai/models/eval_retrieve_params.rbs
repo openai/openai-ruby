@@ -1,15 +1,23 @@
 module OpenAI
   module Models
     type eval_retrieve_params =
-      {  } & OpenAI::Internal::Type::request_parameters
+      { eval_id: String } & OpenAI::Internal::Type::request_parameters
 
     class EvalRetrieveParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      def initialize: (?request_options: OpenAI::request_opts) -> void
+      attr_accessor eval_id: String
 
-      def to_hash: -> { request_options: OpenAI::RequestOptions }
+      def initialize: (
+        eval_id: String,
+        ?request_options: OpenAI::request_opts
+      ) -> void
+
+      def to_hash: -> {
+        eval_id: String,
+        request_options: OpenAI::RequestOptions
+      }
     end
   end
 end

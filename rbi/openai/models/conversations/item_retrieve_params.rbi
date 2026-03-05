@@ -18,6 +18,9 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :conversation_id
 
+        sig { returns(String) }
+        attr_accessor :item_id
+
         # Additional fields to include in the response. See the `include` parameter for
         # [listing Conversation items above](https://platform.openai.com/docs/api-reference/conversations/list-items#conversations_list_items-include)
         # for more information.
@@ -38,12 +41,14 @@ module OpenAI
         sig do
           params(
             conversation_id: String,
+            item_id: String,
             include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
             request_options: OpenAI::RequestOptions::OrHash
           ).returns(T.attached_class)
         end
         def self.new(
           conversation_id:,
+          item_id:,
           # Additional fields to include in the response. See the `include` parameter for
           # [listing Conversation items above](https://platform.openai.com/docs/api-reference/conversations/list-items#conversations_list_items-include)
           # for more information.
@@ -56,6 +61,7 @@ module OpenAI
           override.returns(
             {
               conversation_id: String,
+              item_id: String,
               include:
                 T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
               request_options: OpenAI::RequestOptions

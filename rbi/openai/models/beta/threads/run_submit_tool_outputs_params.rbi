@@ -19,6 +19,9 @@ module OpenAI
           sig { returns(String) }
           attr_accessor :thread_id
 
+          sig { returns(String) }
+          attr_accessor :run_id
+
           # A list of tools for which the outputs are being submitted.
           sig do
             returns(
@@ -32,6 +35,7 @@ module OpenAI
           sig do
             params(
               thread_id: String,
+              run_id: String,
               tool_outputs:
                 T::Array[
                   OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput::OrHash
@@ -41,6 +45,7 @@ module OpenAI
           end
           def self.new(
             thread_id:,
+            run_id:,
             # A list of tools for which the outputs are being submitted.
             tool_outputs:,
             request_options: {}
@@ -51,6 +56,7 @@ module OpenAI
             override.returns(
               {
                 thread_id: String,
+                run_id: String,
                 tool_outputs:
                   T::Array[
                     OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput

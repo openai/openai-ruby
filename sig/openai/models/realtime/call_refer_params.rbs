@@ -2,20 +2,25 @@ module OpenAI
   module Models
     module Realtime
       type call_refer_params =
-        { target_uri: String } & OpenAI::Internal::Type::request_parameters
+        { call_id: String, target_uri: String }
+        & OpenAI::Internal::Type::request_parameters
 
       class CallReferParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        attr_accessor call_id: String
+
         attr_accessor target_uri: String
 
         def initialize: (
+          call_id: String,
           target_uri: String,
           ?request_options: OpenAI::request_opts
         ) -> void
 
         def to_hash: -> {
+          call_id: String,
           target_uri: String,
           request_options: OpenAI::RequestOptions
         }

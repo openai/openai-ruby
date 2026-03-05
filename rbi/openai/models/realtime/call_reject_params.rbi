@@ -12,6 +12,9 @@ module OpenAI
             T.any(OpenAI::Realtime::CallRejectParams, OpenAI::Internal::AnyHash)
           end
 
+        sig { returns(String) }
+        attr_accessor :call_id
+
         # SIP response code to send back to the caller. Defaults to `603` (Decline) when
         # omitted.
         sig { returns(T.nilable(Integer)) }
@@ -22,11 +25,13 @@ module OpenAI
 
         sig do
           params(
+            call_id: String,
             status_code: Integer,
             request_options: OpenAI::RequestOptions::OrHash
           ).returns(T.attached_class)
         end
         def self.new(
+          call_id:,
           # SIP response code to send back to the caller. Defaults to `603` (Decline) when
           # omitted.
           status_code: nil,
@@ -36,7 +41,11 @@ module OpenAI
 
         sig do
           override.returns(
-            { status_code: Integer, request_options: OpenAI::RequestOptions }
+            {
+              call_id: String,
+              status_code: Integer,
+              request_options: OpenAI::RequestOptions
+            }
           )
         end
         def to_hash

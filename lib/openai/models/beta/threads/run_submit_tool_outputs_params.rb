@@ -16,6 +16,11 @@ module OpenAI
           #   @return [String]
           required :thread_id, String
 
+          # @!attribute run_id
+          #
+          #   @return [String]
+          required :run_id, String
+
           # @!attribute tool_outputs
           #   A list of tools for which the outputs are being submitted.
           #
@@ -23,8 +28,10 @@ module OpenAI
           required :tool_outputs,
                    -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput] }
 
-          # @!method initialize(thread_id:, tool_outputs:, request_options: {})
+          # @!method initialize(thread_id:, run_id:, tool_outputs:, request_options: {})
           #   @param thread_id [String]
+          #
+          #   @param run_id [String]
           #
           #   @param tool_outputs [Array<OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput>] A list of tools for which the outputs are being submitted.
           #

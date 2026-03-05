@@ -14,8 +14,14 @@ module OpenAI
           #   @return [String]
           required :container_id, String
 
-          # @!method initialize(container_id:, request_options: {})
+          # @!attribute file_id
+          #
+          #   @return [String]
+          required :file_id, String
+
+          # @!method initialize(container_id:, file_id:, request_options: {})
           #   @param container_id [String]
+          #   @param file_id [String]
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
         end
       end

@@ -19,9 +19,15 @@ module OpenAI
           #   @return [String]
           required :run_id, String
 
-          # @!method initialize(eval_id:, run_id:, request_options: {})
+          # @!attribute output_item_id
+          #
+          #   @return [String]
+          required :output_item_id, String
+
+          # @!method initialize(eval_id:, run_id:, output_item_id:, request_options: {})
           #   @param eval_id [String]
           #   @param run_id [String]
+          #   @param output_item_id [String]
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
         end
       end

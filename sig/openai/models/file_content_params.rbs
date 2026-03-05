@@ -1,14 +1,23 @@
 module OpenAI
   module Models
-    type file_content_params = {  } & OpenAI::Internal::Type::request_parameters
+    type file_content_params =
+      { file_id: String } & OpenAI::Internal::Type::request_parameters
 
     class FileContentParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      def initialize: (?request_options: OpenAI::request_opts) -> void
+      attr_accessor file_id: String
 
-      def to_hash: -> { request_options: OpenAI::RequestOptions }
+      def initialize: (
+        file_id: String,
+        ?request_options: OpenAI::request_opts
+      ) -> void
+
+      def to_hash: -> {
+        file_id: String,
+        request_options: OpenAI::RequestOptions
+      }
     end
   end
 end

@@ -13,8 +13,14 @@ module OpenAI
         #   @return [String]
         required :conversation_id, String
 
-        # @!method initialize(conversation_id:, request_options: {})
+        # @!attribute item_id
+        #
+        #   @return [String]
+        required :item_id, String
+
+        # @!method initialize(conversation_id:, item_id:, request_options: {})
         #   @param conversation_id [String]
+        #   @param item_id [String]
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
       end
     end

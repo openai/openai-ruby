@@ -3,6 +3,7 @@ module OpenAI
     module Skills
       type version_create_params =
         {
+          skill_id: String,
           default: bool,
           files: OpenAI::Models::Skills::VersionCreateParams::files
         }
@@ -11,6 +12,8 @@ module OpenAI
       class VersionCreateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor skill_id: String
 
         attr_reader default: bool?
 
@@ -23,12 +26,14 @@ module OpenAI
         ) -> OpenAI::Models::Skills::VersionCreateParams::files
 
         def initialize: (
+          skill_id: String,
           ?default: bool,
           ?files: OpenAI::Models::Skills::VersionCreateParams::files,
           ?request_options: OpenAI::request_opts
         ) -> void
 
         def to_hash: -> {
+          skill_id: String,
           default: bool,
           files: OpenAI::Models::Skills::VersionCreateParams::files,
           request_options: OpenAI::RequestOptions

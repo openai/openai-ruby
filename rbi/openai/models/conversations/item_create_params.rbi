@@ -15,6 +15,9 @@ module OpenAI
             )
           end
 
+        sig { returns(String) }
+        attr_accessor :conversation_id
+
         # The items to add to the conversation. You may add up to 20 items at a time.
         sig do
           returns(
@@ -71,6 +74,7 @@ module OpenAI
 
         sig do
           params(
+            conversation_id: String,
             items:
               T::Array[
                 T.any(
@@ -107,6 +111,7 @@ module OpenAI
           ).returns(T.attached_class)
         end
         def self.new(
+          conversation_id:,
           # The items to add to the conversation. You may add up to 20 items at a time.
           items:,
           # Additional fields to include in the response. See the `include` parameter for
@@ -120,6 +125,7 @@ module OpenAI
         sig do
           override.returns(
             {
+              conversation_id: String,
               items:
                 T::Array[
                   T.any(

@@ -7,6 +7,11 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
+      # @!attribute eval_id
+      #
+      #   @return [String]
+      required :eval_id, String
+
       # @!attribute metadata
       #   Set of 16 key-value pairs that can be attached to an object. This can be useful
       #   for storing additional information about the object in a structured format, and
@@ -24,9 +29,11 @@ module OpenAI
       #   @return [String, nil]
       optional :name, String
 
-      # @!method initialize(metadata: nil, name: nil, request_options: {})
+      # @!method initialize(eval_id:, metadata: nil, name: nil, request_options: {})
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::EvalUpdateParams} for more details.
+      #
+      #   @param eval_id [String]
       #
       #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
       #

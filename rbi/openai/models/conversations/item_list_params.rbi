@@ -15,6 +15,9 @@ module OpenAI
             )
           end
 
+        sig { returns(String) }
+        attr_accessor :conversation_id
+
         # An item ID to list items after, used in pagination.
         sig { returns(T.nilable(String)) }
         attr_reader :after
@@ -82,6 +85,7 @@ module OpenAI
 
         sig do
           params(
+            conversation_id: String,
             after: String,
             include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
             limit: Integer,
@@ -90,6 +94,7 @@ module OpenAI
           ).returns(T.attached_class)
         end
         def self.new(
+          conversation_id:,
           # An item ID to list items after, used in pagination.
           after: nil,
           # Specify additional output data to include in the model response. Currently
@@ -126,6 +131,7 @@ module OpenAI
         sig do
           override.returns(
             {
+              conversation_id: String,
               after: String,
               include:
                 T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],

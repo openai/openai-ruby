@@ -2,15 +2,23 @@ module OpenAI
   module Models
     module Responses
       type response_delete_params =
-        {  } & OpenAI::Internal::Type::request_parameters
+        { response_id: String } & OpenAI::Internal::Type::request_parameters
 
       class ResponseDeleteParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        def initialize: (?request_options: OpenAI::request_opts) -> void
+        attr_accessor response_id: String
 
-        def to_hash: -> { request_options: OpenAI::RequestOptions }
+        def initialize: (
+          response_id: String,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          response_id: String,
+          request_options: OpenAI::RequestOptions
+        }
       end
     end
   end

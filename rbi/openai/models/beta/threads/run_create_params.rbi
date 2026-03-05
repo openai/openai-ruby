@@ -16,6 +16,9 @@ module OpenAI
               )
             end
 
+          sig { returns(String) }
+          attr_accessor :thread_id
+
           # The ID of the
           # [assistant](https://platform.openai.com/docs/api-reference/assistants) to use to
           # execute this run.
@@ -234,6 +237,7 @@ module OpenAI
 
           sig do
             params(
+              thread_id: String,
               assistant_id: String,
               include:
                 T::Array[OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol],
@@ -287,6 +291,7 @@ module OpenAI
             ).returns(T.attached_class)
           end
           def self.new(
+            thread_id:,
             # The ID of the
             # [assistant](https://platform.openai.com/docs/api-reference/assistants) to use to
             # execute this run.
@@ -403,6 +408,7 @@ module OpenAI
           sig do
             override.returns(
               {
+                thread_id: String,
                 assistant_id: String,
                 include:
                   T::Array[

@@ -7,6 +7,11 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
+      # @!attribute upload_id
+      #
+      #   @return [String]
+      required :upload_id, String
+
       # @!attribute part_ids
       #   The ordered list of Part IDs.
       #
@@ -20,9 +25,11 @@ module OpenAI
       #   @return [String, nil]
       optional :md5, String
 
-      # @!method initialize(part_ids:, md5: nil, request_options: {})
+      # @!method initialize(upload_id:, part_ids:, md5: nil, request_options: {})
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::UploadCompleteParams} for more details.
+      #
+      #   @param upload_id [String]
       #
       #   @param part_ids [Array<String>] The ordered list of Part IDs.
       #

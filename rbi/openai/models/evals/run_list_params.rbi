@@ -12,6 +12,9 @@ module OpenAI
             T.any(OpenAI::Evals::RunListParams, OpenAI::Internal::AnyHash)
           end
 
+        sig { returns(String) }
+        attr_accessor :eval_id
+
         # Identifier for the last run from the previous pagination request.
         sig { returns(T.nilable(String)) }
         attr_reader :after
@@ -52,6 +55,7 @@ module OpenAI
 
         sig do
           params(
+            eval_id: String,
             after: String,
             limit: Integer,
             order: OpenAI::Evals::RunListParams::Order::OrSymbol,
@@ -60,6 +64,7 @@ module OpenAI
           ).returns(T.attached_class)
         end
         def self.new(
+          eval_id:,
           # Identifier for the last run from the previous pagination request.
           after: nil,
           # Number of runs to retrieve.
@@ -77,6 +82,7 @@ module OpenAI
         sig do
           override.returns(
             {
+              eval_id: String,
               after: String,
               limit: Integer,
               order: OpenAI::Evals::RunListParams::Order::OrSymbol,

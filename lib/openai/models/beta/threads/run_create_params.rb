@@ -11,6 +11,11 @@ module OpenAI
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
+          # @!attribute thread_id
+          #
+          #   @return [String]
+          required :thread_id, String
+
           # @!attribute assistant_id
           #   The ID of the
           #   [assistant](https://platform.openai.com/docs/api-reference/assistants) to use to
@@ -199,9 +204,11 @@ module OpenAI
                    -> { OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy },
                    nil?: true
 
-          # @!method initialize(assistant_id:, include: nil, additional_instructions: nil, additional_messages: nil, instructions: nil, max_completion_tokens: nil, max_prompt_tokens: nil, metadata: nil, model: nil, parallel_tool_calls: nil, reasoning_effort: nil, response_format: nil, temperature: nil, tool_choice: nil, tools: nil, top_p: nil, truncation_strategy: nil, request_options: {})
+          # @!method initialize(thread_id:, assistant_id:, include: nil, additional_instructions: nil, additional_messages: nil, instructions: nil, max_completion_tokens: nil, max_prompt_tokens: nil, metadata: nil, model: nil, parallel_tool_calls: nil, reasoning_effort: nil, response_format: nil, temperature: nil, tool_choice: nil, tools: nil, top_p: nil, truncation_strategy: nil, request_options: {})
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Beta::Threads::RunCreateParams} for more details.
+          #
+          #   @param thread_id [String]
           #
           #   @param assistant_id [String] The ID of the [assistant](https://platform.openai.com/docs/api-reference/assista
           #
