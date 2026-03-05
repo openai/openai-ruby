@@ -23,6 +23,9 @@ module OpenAI
             sig { returns(String) }
             attr_accessor :run_id
 
+            sig { returns(String) }
+            attr_accessor :step_id
+
             # A list of additional fields to include in the response. Currently the only
             # supported value is `step_details.tool_calls[*].file_search.results[*].content`
             # to fetch the file search result content.
@@ -55,6 +58,7 @@ module OpenAI
               params(
                 thread_id: String,
                 run_id: String,
+                step_id: String,
                 include:
                   T::Array[
                     OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol
@@ -65,6 +69,7 @@ module OpenAI
             def self.new(
               thread_id:,
               run_id:,
+              step_id:,
               # A list of additional fields to include in the response. Currently the only
               # supported value is `step_details.tool_calls[*].file_search.results[*].content`
               # to fetch the file search result content.
@@ -82,6 +87,7 @@ module OpenAI
                 {
                   thread_id: String,
                   run_id: String,
+                  step_id: String,
                   include:
                     T::Array[
                       OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol

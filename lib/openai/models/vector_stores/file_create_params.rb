@@ -8,6 +8,11 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # @!attribute vector_store_id
+        #
+        #   @return [String]
+        required :vector_store_id, String
+
         # @!attribute file_id
         #   A [File](https://platform.openai.com/docs/api-reference/files) ID that the
         #   vector store should use. Useful for tools like `file_search` that can access
@@ -37,9 +42,11 @@ module OpenAI
         #   @return [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam, nil]
         optional :chunking_strategy, union: -> { OpenAI::FileChunkingStrategyParam }
 
-        # @!method initialize(file_id:, attributes: nil, chunking_strategy: nil, request_options: {})
+        # @!method initialize(vector_store_id:, file_id:, attributes: nil, chunking_strategy: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::VectorStores::FileCreateParams} for more details.
+        #
+        #   @param vector_store_id [String]
         #
         #   @param file_id [String] A [File](https://platform.openai.com/docs/api-reference/files) ID that the vecto
         #

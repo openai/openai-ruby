@@ -3,6 +3,7 @@ module OpenAI
     module Beta
       type thread_update_params =
         {
+          thread_id: String,
           metadata: OpenAI::Models::metadata?,
           tool_resources: OpenAI::Beta::ThreadUpdateParams::ToolResources?
         }
@@ -12,17 +13,21 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        attr_accessor thread_id: String
+
         attr_accessor metadata: OpenAI::Models::metadata?
 
         attr_accessor tool_resources: OpenAI::Beta::ThreadUpdateParams::ToolResources?
 
         def initialize: (
+          thread_id: String,
           ?metadata: OpenAI::Models::metadata?,
           ?tool_resources: OpenAI::Beta::ThreadUpdateParams::ToolResources?,
           ?request_options: OpenAI::request_opts
         ) -> void
 
         def to_hash: -> {
+          thread_id: String,
           metadata: OpenAI::Models::metadata?,
           tool_resources: OpenAI::Beta::ThreadUpdateParams::ToolResources?,
           request_options: OpenAI::RequestOptions

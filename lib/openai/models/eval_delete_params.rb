@@ -7,7 +7,13 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      # @!method initialize(request_options: {})
+      # @!attribute eval_id
+      #
+      #   @return [String]
+      required :eval_id, String
+
+      # @!method initialize(eval_id:, request_options: {})
+      #   @param eval_id [String]
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
     end
   end

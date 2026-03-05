@@ -13,6 +13,11 @@ module OpenAI
         #   @return [String]
         required :vector_store_id, String
 
+        # @!attribute file_id
+        #
+        #   @return [String]
+        required :file_id, String
+
         # @!attribute attributes
         #   Set of 16 key-value pairs that can be attached to an object. This can be useful
         #   for storing additional information about the object in a structured format, and
@@ -27,11 +32,13 @@ module OpenAI
                  },
                  nil?: true
 
-        # @!method initialize(vector_store_id:, attributes:, request_options: {})
+        # @!method initialize(vector_store_id:, file_id:, attributes:, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::VectorStores::FileUpdateParams} for more details.
         #
         #   @param vector_store_id [String]
+        #
+        #   @param file_id [String]
         #
         #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #

@@ -7,7 +7,13 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      # @!method initialize(request_options: {})
+      # @!attribute batch_id
+      #
+      #   @return [String]
+      required :batch_id, String
+
+      # @!method initialize(batch_id:, request_options: {})
+      #   @param batch_id [String]
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
     end
   end

@@ -4,6 +4,7 @@ module OpenAI
       module Threads
         type run_list_params =
           {
+            thread_id: String,
             after: String,
             before: String,
             limit: Integer,
@@ -14,6 +15,8 @@ module OpenAI
         class RunListParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor thread_id: String
 
           attr_reader after: String?
 
@@ -34,6 +37,7 @@ module OpenAI
           ) -> OpenAI::Models::Beta::Threads::RunListParams::order
 
           def initialize: (
+            thread_id: String,
             ?after: String,
             ?before: String,
             ?limit: Integer,
@@ -42,6 +46,7 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
+            thread_id: String,
             after: String,
             before: String,
             limit: Integer,

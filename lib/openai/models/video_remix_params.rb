@@ -7,13 +7,20 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
+      # @!attribute video_id
+      #
+      #   @return [String]
+      required :video_id, String
+
       # @!attribute prompt
       #   Updated text prompt that directs the remix generation.
       #
       #   @return [String]
       required :prompt, String
 
-      # @!method initialize(prompt:, request_options: {})
+      # @!method initialize(video_id:, prompt:, request_options: {})
+      #   @param video_id [String]
+      #
       #   @param prompt [String] Updated text prompt that directs the remix generation.
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]

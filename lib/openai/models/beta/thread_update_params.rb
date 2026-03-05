@@ -8,6 +8,11 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # @!attribute thread_id
+        #
+        #   @return [String]
+        required :thread_id, String
+
         # @!attribute metadata
         #   Set of 16 key-value pairs that can be attached to an object. This can be useful
         #   for storing additional information about the object in a structured format, and
@@ -28,9 +33,11 @@ module OpenAI
         #   @return [OpenAI::Models::Beta::ThreadUpdateParams::ToolResources, nil]
         optional :tool_resources, -> { OpenAI::Beta::ThreadUpdateParams::ToolResources }, nil?: true
 
-        # @!method initialize(metadata: nil, tool_resources: nil, request_options: {})
+        # @!method initialize(thread_id:, metadata: nil, tool_resources: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Beta::ThreadUpdateParams} for more details.
+        #
+        #   @param thread_id [String]
         #
         #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #

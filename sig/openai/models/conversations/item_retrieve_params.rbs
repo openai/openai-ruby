@@ -4,6 +4,7 @@ module OpenAI
       type item_retrieve_params =
         {
           conversation_id: String,
+          item_id: String,
           include: ::Array[OpenAI::Models::Responses::response_includable]
         }
         & OpenAI::Internal::Type::request_parameters
@@ -14,6 +15,8 @@ module OpenAI
 
         attr_accessor conversation_id: String
 
+        attr_accessor item_id: String
+
         attr_reader include: ::Array[OpenAI::Models::Responses::response_includable]?
 
         def include=: (
@@ -22,12 +25,14 @@ module OpenAI
 
         def initialize: (
           conversation_id: String,
+          item_id: String,
           ?include: ::Array[OpenAI::Models::Responses::response_includable],
           ?request_options: OpenAI::request_opts
         ) -> void
 
         def to_hash: -> {
           conversation_id: String,
+          item_id: String,
           include: ::Array[OpenAI::Models::Responses::response_includable],
           request_options: OpenAI::RequestOptions
         }

@@ -8,6 +8,11 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # @!attribute response_id
+        #
+        #   @return [String]
+        required :response_id, String
+
         # @!attribute after
         #   An item ID to list items after, used in pagination.
         #
@@ -37,9 +42,11 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Responses::InputItemListParams::Order, nil]
         optional :order, enum: -> { OpenAI::Responses::InputItemListParams::Order }
 
-        # @!method initialize(after: nil, include: nil, limit: nil, order: nil, request_options: {})
+        # @!method initialize(response_id:, after: nil, include: nil, limit: nil, order: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::InputItemListParams} for more details.
+        #
+        #   @param response_id [String]
         #
         #   @param after [String] An item ID to list items after, used in pagination.
         #

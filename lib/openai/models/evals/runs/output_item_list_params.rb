@@ -14,6 +14,11 @@ module OpenAI
           #   @return [String]
           required :eval_id, String
 
+          # @!attribute run_id
+          #
+          #   @return [String]
+          required :run_id, String
+
           # @!attribute after
           #   Identifier for the last output item from the previous pagination request.
           #
@@ -40,11 +45,13 @@ module OpenAI
           #   @return [Symbol, OpenAI::Models::Evals::Runs::OutputItemListParams::Status, nil]
           optional :status, enum: -> { OpenAI::Evals::Runs::OutputItemListParams::Status }
 
-          # @!method initialize(eval_id:, after: nil, limit: nil, order: nil, status: nil, request_options: {})
+          # @!method initialize(eval_id:, run_id:, after: nil, limit: nil, order: nil, status: nil, request_options: {})
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Evals::Runs::OutputItemListParams} for more details.
           #
           #   @param eval_id [String]
+          #
+          #   @param run_id [String]
           #
           #   @param after [String] Identifier for the last output item from the previous pagination request.
           #

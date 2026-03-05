@@ -16,6 +16,9 @@ module OpenAI
               )
             end
 
+          sig { returns(String) }
+          attr_accessor :completion_id
+
           # Identifier for the last message from the previous pagination request.
           sig { returns(T.nilable(String)) }
           attr_reader :after
@@ -51,6 +54,7 @@ module OpenAI
 
           sig do
             params(
+              completion_id: String,
               after: String,
               limit: Integer,
               order:
@@ -59,6 +63,7 @@ module OpenAI
             ).returns(T.attached_class)
           end
           def self.new(
+            completion_id:,
             # Identifier for the last message from the previous pagination request.
             after: nil,
             # Number of messages to retrieve.
@@ -73,6 +78,7 @@ module OpenAI
           sig do
             override.returns(
               {
+                completion_id: String,
                 after: String,
                 limit: Integer,
                 order:

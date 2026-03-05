@@ -12,6 +12,9 @@ module OpenAI
             T.any(OpenAI::Realtime::CallReferParams, OpenAI::Internal::AnyHash)
           end
 
+        sig { returns(String) }
+        attr_accessor :call_id
+
         # URI that should appear in the SIP Refer-To header. Supports values like
         # `tel:+14155550123` or `sip:agent@example.com`.
         sig { returns(String) }
@@ -19,11 +22,13 @@ module OpenAI
 
         sig do
           params(
+            call_id: String,
             target_uri: String,
             request_options: OpenAI::RequestOptions::OrHash
           ).returns(T.attached_class)
         end
         def self.new(
+          call_id:,
           # URI that should appear in the SIP Refer-To header. Supports values like
           # `tel:+14155550123` or `sip:agent@example.com`.
           target_uri:,
@@ -33,7 +38,11 @@ module OpenAI
 
         sig do
           override.returns(
-            { target_uri: String, request_options: OpenAI::RequestOptions }
+            {
+              call_id: String,
+              target_uri: String,
+              request_options: OpenAI::RequestOptions
+            }
           )
         end
         def to_hash

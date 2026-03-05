@@ -18,6 +18,9 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :vector_store_id
 
+        sig { returns(String) }
+        attr_accessor :file_id
+
         # Set of 16 key-value pairs that can be attached to an object. This can be useful
         # for storing additional information about the object in a structured format, and
         # querying for objects via API or the dashboard. Keys are strings with a maximum
@@ -38,6 +41,7 @@ module OpenAI
         sig do
           params(
             vector_store_id: String,
+            file_id: String,
             attributes:
               T.nilable(
                 T::Hash[
@@ -50,6 +54,7 @@ module OpenAI
         end
         def self.new(
           vector_store_id:,
+          file_id:,
           # Set of 16 key-value pairs that can be attached to an object. This can be useful
           # for storing additional information about the object in a structured format, and
           # querying for objects via API or the dashboard. Keys are strings with a maximum
@@ -64,6 +69,7 @@ module OpenAI
           override.returns(
             {
               vector_store_id: String,
+              file_id: String,
               attributes:
                 T.nilable(
                   T::Hash[

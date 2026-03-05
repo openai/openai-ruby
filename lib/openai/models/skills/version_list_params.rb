@@ -8,6 +8,11 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # @!attribute skill_id
+        #
+        #   @return [String]
+        required :skill_id, String
+
         # @!attribute after
         #   The skill version ID to start after.
         #
@@ -26,7 +31,9 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Skills::VersionListParams::Order, nil]
         optional :order, enum: -> { OpenAI::Skills::VersionListParams::Order }
 
-        # @!method initialize(after: nil, limit: nil, order: nil, request_options: {})
+        # @!method initialize(skill_id:, after: nil, limit: nil, order: nil, request_options: {})
+        #   @param skill_id [String]
+        #
         #   @param after [String] The skill version ID to start after.
         #
         #   @param limit [Integer] Number of versions to retrieve.

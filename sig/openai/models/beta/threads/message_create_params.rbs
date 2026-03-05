@@ -4,6 +4,7 @@ module OpenAI
       module Threads
         type message_create_params =
           {
+            thread_id: String,
             content: OpenAI::Models::Beta::Threads::MessageCreateParams::content,
             role: OpenAI::Models::Beta::Threads::MessageCreateParams::role,
             attachments: ::Array[OpenAI::Beta::Threads::MessageCreateParams::Attachment]?,
@@ -15,6 +16,8 @@ module OpenAI
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
+          attr_accessor thread_id: String
+
           attr_accessor content: OpenAI::Models::Beta::Threads::MessageCreateParams::content
 
           attr_accessor role: OpenAI::Models::Beta::Threads::MessageCreateParams::role
@@ -24,6 +27,7 @@ module OpenAI
           attr_accessor metadata: OpenAI::Models::metadata?
 
           def initialize: (
+            thread_id: String,
             content: OpenAI::Models::Beta::Threads::MessageCreateParams::content,
             role: OpenAI::Models::Beta::Threads::MessageCreateParams::role,
             ?attachments: ::Array[OpenAI::Beta::Threads::MessageCreateParams::Attachment]?,
@@ -32,6 +36,7 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
+            thread_id: String,
             content: OpenAI::Models::Beta::Threads::MessageCreateParams::content,
             role: OpenAI::Models::Beta::Threads::MessageCreateParams::role,
             attachments: ::Array[OpenAI::Beta::Threads::MessageCreateParams::Attachment]?,

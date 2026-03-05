@@ -3,15 +3,23 @@ module OpenAI
     module Beta
       module ChatKit
         type thread_delete_params =
-          {  } & OpenAI::Internal::Type::request_parameters
+          { thread_id: String } & OpenAI::Internal::Type::request_parameters
 
         class ThreadDeleteParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
-          def initialize: (?request_options: OpenAI::request_opts) -> void
+          attr_accessor thread_id: String
 
-          def to_hash: -> { request_options: OpenAI::RequestOptions }
+          def initialize: (
+            thread_id: String,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            thread_id: String,
+            request_options: OpenAI::RequestOptions
+          }
         end
       end
     end

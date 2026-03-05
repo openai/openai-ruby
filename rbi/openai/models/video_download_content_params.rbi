@@ -11,6 +11,9 @@ module OpenAI
           T.any(OpenAI::VideoDownloadContentParams, OpenAI::Internal::AnyHash)
         end
 
+      sig { returns(String) }
+      attr_accessor :video_id
+
       # Which downloadable asset to return. Defaults to the MP4 video.
       sig do
         returns(
@@ -28,11 +31,13 @@ module OpenAI
 
       sig do
         params(
+          video_id: String,
           variant: OpenAI::VideoDownloadContentParams::Variant::OrSymbol,
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(T.attached_class)
       end
       def self.new(
+        video_id:,
         # Which downloadable asset to return. Defaults to the MP4 video.
         variant: nil,
         request_options: {}
@@ -42,6 +47,7 @@ module OpenAI
       sig do
         override.returns(
           {
+            video_id: String,
             variant: OpenAI::VideoDownloadContentParams::Variant::OrSymbol,
             request_options: OpenAI::RequestOptions
           }

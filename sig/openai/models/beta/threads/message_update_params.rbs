@@ -3,7 +3,11 @@ module OpenAI
     module Beta
       module Threads
         type message_update_params =
-          { thread_id: String, metadata: OpenAI::Models::metadata? }
+          {
+            thread_id: String,
+            message_id: String,
+            metadata: OpenAI::Models::metadata?
+          }
           & OpenAI::Internal::Type::request_parameters
 
         class MessageUpdateParams < OpenAI::Internal::Type::BaseModel
@@ -12,16 +16,20 @@ module OpenAI
 
           attr_accessor thread_id: String
 
+          attr_accessor message_id: String
+
           attr_accessor metadata: OpenAI::Models::metadata?
 
           def initialize: (
             thread_id: String,
+            message_id: String,
             ?metadata: OpenAI::Models::metadata?,
             ?request_options: OpenAI::request_opts
           ) -> void
 
           def to_hash: -> {
             thread_id: String,
+            message_id: String,
             metadata: OpenAI::Models::metadata?,
             request_options: OpenAI::RequestOptions
           }

@@ -3,6 +3,7 @@ module OpenAI
     module Responses
       type response_retrieve_params =
         {
+          response_id: String,
           include: ::Array[OpenAI::Models::Responses::response_includable],
           include_obfuscation: bool,
           starting_after: Integer
@@ -12,6 +13,8 @@ module OpenAI
       class ResponseRetrieveParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor response_id: String
 
         attr_reader include: ::Array[OpenAI::Models::Responses::response_includable]?
 
@@ -28,6 +31,7 @@ module OpenAI
         def starting_after=: (Integer) -> Integer
 
         def initialize: (
+          response_id: String,
           ?include: ::Array[OpenAI::Models::Responses::response_includable],
           ?include_obfuscation: bool,
           ?starting_after: Integer,
@@ -35,6 +39,7 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
+          response_id: String,
           include: ::Array[OpenAI::Models::Responses::response_includable],
           include_obfuscation: bool,
           starting_after: Integer,

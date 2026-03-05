@@ -2,7 +2,8 @@ module OpenAI
   module Models
     module VectorStores
       type file_retrieve_params =
-        { vector_store_id: String } & OpenAI::Internal::Type::request_parameters
+        { vector_store_id: String, file_id: String }
+        & OpenAI::Internal::Type::request_parameters
 
       class FileRetrieveParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -10,13 +11,17 @@ module OpenAI
 
         attr_accessor vector_store_id: String
 
+        attr_accessor file_id: String
+
         def initialize: (
           vector_store_id: String,
+          file_id: String,
           ?request_options: OpenAI::request_opts
         ) -> void
 
         def to_hash: -> {
           vector_store_id: String,
+          file_id: String,
           request_options: OpenAI::RequestOptions
         }
       end

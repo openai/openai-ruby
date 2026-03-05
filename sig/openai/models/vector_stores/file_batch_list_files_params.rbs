@@ -4,6 +4,7 @@ module OpenAI
       type file_batch_list_files_params =
         {
           vector_store_id: String,
+          batch_id: String,
           after: String,
           before: String,
           filter: OpenAI::Models::VectorStores::FileBatchListFilesParams::filter,
@@ -17,6 +18,8 @@ module OpenAI
         include OpenAI::Internal::Type::RequestParameters
 
         attr_accessor vector_store_id: String
+
+        attr_accessor batch_id: String
 
         attr_reader after: String?
 
@@ -44,6 +47,7 @@ module OpenAI
 
         def initialize: (
           vector_store_id: String,
+          batch_id: String,
           ?after: String,
           ?before: String,
           ?filter: OpenAI::Models::VectorStores::FileBatchListFilesParams::filter,
@@ -54,6 +58,7 @@ module OpenAI
 
         def to_hash: -> {
           vector_store_id: String,
+          batch_id: String,
           after: String,
           before: String,
           filter: OpenAI::Models::VectorStores::FileBatchListFilesParams::filter,

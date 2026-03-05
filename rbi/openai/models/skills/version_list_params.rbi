@@ -12,6 +12,9 @@ module OpenAI
             T.any(OpenAI::Skills::VersionListParams, OpenAI::Internal::AnyHash)
           end
 
+        sig { returns(String) }
+        attr_accessor :skill_id
+
         # The skill version ID to start after.
         sig { returns(T.nilable(String)) }
         attr_reader :after
@@ -39,6 +42,7 @@ module OpenAI
 
         sig do
           params(
+            skill_id: String,
             after: String,
             limit: Integer,
             order: OpenAI::Skills::VersionListParams::Order::OrSymbol,
@@ -46,6 +50,7 @@ module OpenAI
           ).returns(T.attached_class)
         end
         def self.new(
+          skill_id:,
           # The skill version ID to start after.
           after: nil,
           # Number of versions to retrieve.
@@ -59,6 +64,7 @@ module OpenAI
         sig do
           override.returns(
             {
+              skill_id: String,
               after: String,
               limit: Integer,
               order: OpenAI::Skills::VersionListParams::Order::OrSymbol,

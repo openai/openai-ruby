@@ -4,6 +4,7 @@ module OpenAI
       module Checkpoints
         type permission_list_params =
           {
+            fine_tuned_model_checkpoint: String,
             after: String,
             limit: Integer,
             order: OpenAI::Models::FineTuning::Checkpoints::PermissionListParams::order,
@@ -14,6 +15,8 @@ module OpenAI
         class PermissionListParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor fine_tuned_model_checkpoint: String
 
           attr_reader after: String?
 
@@ -34,6 +37,7 @@ module OpenAI
           def project_id=: (String) -> String
 
           def initialize: (
+            fine_tuned_model_checkpoint: String,
             ?after: String,
             ?limit: Integer,
             ?order: OpenAI::Models::FineTuning::Checkpoints::PermissionListParams::order,
@@ -42,6 +46,7 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
+            fine_tuned_model_checkpoint: String,
             after: String,
             limit: Integer,
             order: OpenAI::Models::FineTuning::Checkpoints::PermissionListParams::order,

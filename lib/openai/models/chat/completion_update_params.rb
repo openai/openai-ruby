@@ -8,6 +8,11 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # @!attribute completion_id
+        #
+        #   @return [String]
+        required :completion_id, String
+
         # @!attribute metadata
         #   Set of 16 key-value pairs that can be attached to an object. This can be useful
         #   for storing additional information about the object in a structured format, and
@@ -19,9 +24,11 @@ module OpenAI
         #   @return [Hash{Symbol=>String}, nil]
         required :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
-        # @!method initialize(metadata:, request_options: {})
+        # @!method initialize(completion_id:, metadata:, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Chat::CompletionUpdateParams} for more details.
+        #
+        #   @param completion_id [String]
         #
         #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #

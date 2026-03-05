@@ -14,8 +14,14 @@ module OpenAI
           #   @return [String]
           required :fine_tuned_model_checkpoint, String
 
-          # @!method initialize(fine_tuned_model_checkpoint:, request_options: {})
+          # @!attribute permission_id
+          #
+          #   @return [String]
+          required :permission_id, String
+
+          # @!method initialize(fine_tuned_model_checkpoint:, permission_id:, request_options: {})
           #   @param fine_tuned_model_checkpoint [String]
+          #   @param permission_id [String]
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
         end
       end

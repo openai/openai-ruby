@@ -7,6 +7,11 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
+      # @!attribute vector_store_id
+      #
+      #   @return [String]
+      required :vector_store_id, String
+
       # @!attribute expires_after
       #   The expiration policy for a vector store.
       #
@@ -30,9 +35,11 @@ module OpenAI
       #   @return [String, nil]
       optional :name, String, nil?: true
 
-      # @!method initialize(expires_after: nil, metadata: nil, name: nil, request_options: {})
+      # @!method initialize(vector_store_id:, expires_after: nil, metadata: nil, name: nil, request_options: {})
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::VectorStoreUpdateParams} for more details.
+      #
+      #   @param vector_store_id [String]
       #
       #   @param expires_after [OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter, nil] The expiration policy for a vector store.
       #

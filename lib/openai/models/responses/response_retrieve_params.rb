@@ -10,6 +10,11 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # @!attribute response_id
+        #
+        #   @return [String]
+        required :response_id, String
+
         # @!attribute include
         #   Additional fields to include in the response. See the `include` parameter for
         #   Response creation above for more information.
@@ -34,9 +39,11 @@ module OpenAI
         #   @return [Integer, nil]
         optional :starting_after, Integer
 
-        # @!method initialize(include: nil, include_obfuscation: nil, starting_after: nil, request_options: {})
+        # @!method initialize(response_id:, include: nil, include_obfuscation: nil, starting_after: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseRetrieveParams} for more details.
+        #
+        #   @param response_id [String]
         #
         #   @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>] Additional fields to include in the response. See the `include`
         #

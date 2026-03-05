@@ -13,8 +13,17 @@ module OpenAI
         #   @return [String]
         required :skill_id, String
 
-        # @!method initialize(skill_id:, request_options: {})
+        # @!attribute version
+        #   The version number to retrieve.
+        #
+        #   @return [String]
+        required :version, String
+
+        # @!method initialize(skill_id:, version:, request_options: {})
         #   @param skill_id [String]
+        #
+        #   @param version [String] The version number to retrieve.
+        #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
       end
     end

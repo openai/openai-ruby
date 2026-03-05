@@ -1,14 +1,23 @@
 module OpenAI
   module Models
-    type batch_cancel_params = {  } & OpenAI::Internal::Type::request_parameters
+    type batch_cancel_params =
+      { batch_id: String } & OpenAI::Internal::Type::request_parameters
 
     class BatchCancelParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      def initialize: (?request_options: OpenAI::request_opts) -> void
+      attr_accessor batch_id: String
 
-      def to_hash: -> { request_options: OpenAI::RequestOptions }
+      def initialize: (
+        batch_id: String,
+        ?request_options: OpenAI::request_opts
+      ) -> void
+
+      def to_hash: -> {
+        batch_id: String,
+        request_options: OpenAI::RequestOptions
+      }
     end
   end
 end

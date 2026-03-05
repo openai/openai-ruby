@@ -8,6 +8,11 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # @!attribute assistant_id
+        #
+        #   @return [String]
+        required :assistant_id, String
+
         # @!attribute description
         #   The description of the assistant. The maximum length is 512 characters.
         #
@@ -126,9 +131,11 @@ module OpenAI
         #   @return [Float, nil]
         optional :top_p, Float, nil?: true
 
-        # @!method initialize(description: nil, instructions: nil, metadata: nil, model: nil, name: nil, reasoning_effort: nil, response_format: nil, temperature: nil, tool_resources: nil, tools: nil, top_p: nil, request_options: {})
+        # @!method initialize(assistant_id:, description: nil, instructions: nil, metadata: nil, model: nil, name: nil, reasoning_effort: nil, response_format: nil, temperature: nil, tool_resources: nil, tools: nil, top_p: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Beta::AssistantUpdateParams} for more details.
+        #
+        #   @param assistant_id [String]
         #
         #   @param description [String, nil] The description of the assistant. The maximum length is 512 characters.
         #

@@ -11,17 +11,22 @@ module OpenAI
           T.any(OpenAI::SkillUpdateParams, OpenAI::Internal::AnyHash)
         end
 
+      sig { returns(String) }
+      attr_accessor :skill_id
+
       # The skill version number to set as default.
       sig { returns(String) }
       attr_accessor :default_version
 
       sig do
         params(
+          skill_id: String,
           default_version: String,
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(T.attached_class)
       end
       def self.new(
+        skill_id:,
         # The skill version number to set as default.
         default_version:,
         request_options: {}
@@ -30,7 +35,11 @@ module OpenAI
 
       sig do
         override.returns(
-          { default_version: String, request_options: OpenAI::RequestOptions }
+          {
+            skill_id: String,
+            default_version: String,
+            request_options: OpenAI::RequestOptions
+          }
         )
       end
       def to_hash

@@ -14,8 +14,14 @@ module OpenAI
           #   @return [String]
           required :thread_id, String
 
-          # @!method initialize(thread_id:, request_options: {})
+          # @!attribute run_id
+          #
+          #   @return [String]
+          required :run_id, String
+
+          # @!method initialize(thread_id:, run_id:, request_options: {})
           #   @param thread_id [String]
+          #   @param run_id [String]
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
         end
       end

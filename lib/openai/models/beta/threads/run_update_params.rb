@@ -14,6 +14,11 @@ module OpenAI
           #   @return [String]
           required :thread_id, String
 
+          # @!attribute run_id
+          #
+          #   @return [String]
+          required :run_id, String
+
           # @!attribute metadata
           #   Set of 16 key-value pairs that can be attached to an object. This can be useful
           #   for storing additional information about the object in a structured format, and
@@ -25,11 +30,13 @@ module OpenAI
           #   @return [Hash{Symbol=>String}, nil]
           optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
-          # @!method initialize(thread_id:, metadata: nil, request_options: {})
+          # @!method initialize(thread_id:, run_id:, metadata: nil, request_options: {})
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Beta::Threads::RunUpdateParams} for more details.
           #
           #   @param thread_id [String]
+          #
+          #   @param run_id [String]
           #
           #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
           #

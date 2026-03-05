@@ -15,6 +15,11 @@ module OpenAI
             #   @return [String]
             required :thread_id, String
 
+            # @!attribute run_id
+            #
+            #   @return [String]
+            required :run_id, String
+
             # @!attribute after
             #   A cursor for use in pagination. `after` is an object ID that defines your place
             #   in the list. For instance, if you make a list request and receive 100 objects,
@@ -60,11 +65,13 @@ module OpenAI
             #   @return [Symbol, OpenAI::Models::Beta::Threads::Runs::StepListParams::Order, nil]
             optional :order, enum: -> { OpenAI::Beta::Threads::Runs::StepListParams::Order }
 
-            # @!method initialize(thread_id:, after: nil, before: nil, include: nil, limit: nil, order: nil, request_options: {})
+            # @!method initialize(thread_id:, run_id:, after: nil, before: nil, include: nil, limit: nil, order: nil, request_options: {})
             #   Some parameter documentations has been truncated, see
             #   {OpenAI::Models::Beta::Threads::Runs::StepListParams} for more details.
             #
             #   @param thread_id [String]
+            #
+            #   @param run_id [String]
             #
             #   @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
             #

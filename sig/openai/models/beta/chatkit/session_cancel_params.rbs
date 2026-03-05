@@ -3,15 +3,23 @@ module OpenAI
     module Beta
       module ChatKit
         type session_cancel_params =
-          {  } & OpenAI::Internal::Type::request_parameters
+          { session_id: String } & OpenAI::Internal::Type::request_parameters
 
         class SessionCancelParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
-          def initialize: (?request_options: OpenAI::request_opts) -> void
+          attr_accessor session_id: String
 
-          def to_hash: -> { request_options: OpenAI::RequestOptions }
+          def initialize: (
+            session_id: String,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            session_id: String,
+            request_options: OpenAI::RequestOptions
+          }
         end
       end
     end

@@ -12,15 +12,26 @@ module OpenAI
             T.any(OpenAI::FineTuning::JobPauseParams, OpenAI::Internal::AnyHash)
           end
 
+        sig { returns(String) }
+        attr_accessor :fine_tuning_job_id
+
         sig do
-          params(request_options: OpenAI::RequestOptions::OrHash).returns(
-            T.attached_class
-          )
+          params(
+            fine_tuning_job_id: String,
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(T.attached_class)
         end
-        def self.new(request_options: {})
+        def self.new(fine_tuning_job_id:, request_options: {})
         end
 
-        sig { override.returns({ request_options: OpenAI::RequestOptions }) }
+        sig do
+          override.returns(
+            {
+              fine_tuning_job_id: String,
+              request_options: OpenAI::RequestOptions
+            }
+          )
+        end
         def to_hash
         end
       end

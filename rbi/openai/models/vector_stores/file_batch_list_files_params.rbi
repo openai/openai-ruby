@@ -18,6 +18,9 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :vector_store_id
 
+        sig { returns(String) }
+        attr_accessor :batch_id
+
         # A cursor for use in pagination. `after` is an object ID that defines your place
         # in the list. For instance, if you make a list request and receive 100 objects,
         # ending with obj_foo, your subsequent call can include after=obj_foo in order to
@@ -86,6 +89,7 @@ module OpenAI
         sig do
           params(
             vector_store_id: String,
+            batch_id: String,
             after: String,
             before: String,
             filter:
@@ -98,6 +102,7 @@ module OpenAI
         end
         def self.new(
           vector_store_id:,
+          batch_id:,
           # A cursor for use in pagination. `after` is an object ID that defines your place
           # in the list. For instance, if you make a list request and receive 100 objects,
           # ending with obj_foo, your subsequent call can include after=obj_foo in order to
@@ -124,6 +129,7 @@ module OpenAI
           override.returns(
             {
               vector_store_id: String,
+              batch_id: String,
               after: String,
               before: String,
               filter:

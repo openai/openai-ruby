@@ -8,6 +8,11 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # @!attribute eval_id
+        #
+        #   @return [String]
+        required :eval_id, String
+
         # @!attribute after
         #   Identifier for the last run from the previous pagination request.
         #
@@ -34,9 +39,11 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Evals::RunListParams::Status, nil]
         optional :status, enum: -> { OpenAI::Evals::RunListParams::Status }
 
-        # @!method initialize(after: nil, limit: nil, order: nil, status: nil, request_options: {})
+        # @!method initialize(eval_id:, after: nil, limit: nil, order: nil, status: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Evals::RunListParams} for more details.
+        #
+        #   @param eval_id [String]
         #
         #   @param after [String] Identifier for the last run from the previous pagination request.
         #
