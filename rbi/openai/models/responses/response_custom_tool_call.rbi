@@ -35,6 +35,13 @@ module OpenAI
         sig { params(id: String).void }
         attr_writer :id
 
+        # The namespace of the custom tool being called.
+        sig { returns(T.nilable(String)) }
+        attr_reader :namespace
+
+        sig { params(namespace: String).void }
+        attr_writer :namespace
+
         # A call to a custom tool created by the model.
         sig do
           params(
@@ -42,6 +49,7 @@ module OpenAI
             input: String,
             name: String,
             id: String,
+            namespace: String,
             type: Symbol
           ).returns(T.attached_class)
         end
@@ -54,6 +62,8 @@ module OpenAI
           name:,
           # The unique ID of the custom tool call in the OpenAI platform.
           id: nil,
+          # The namespace of the custom tool being called.
+          namespace: nil,
           # The type of the custom tool call. Always `custom_tool_call`.
           type: :custom_tool_call
         )
@@ -66,7 +76,8 @@ module OpenAI
               input: String,
               name: String,
               type: Symbol,
-              id: String
+              id: String,
+              namespace: String
             }
           )
         end

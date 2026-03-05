@@ -11,6 +11,12 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Responses::WebSearchPreviewTool::Type]
         required :type, enum: -> { OpenAI::Responses::WebSearchPreviewTool::Type }
 
+        # @!attribute search_content_types
+        #
+        #   @return [Array<Symbol, OpenAI::Models::Responses::WebSearchPreviewTool::SearchContentType>, nil]
+        optional :search_content_types,
+                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Responses::WebSearchPreviewTool::SearchContentType] }
+
         # @!attribute search_context_size
         #   High level guidance for the amount of context window space to use for the
         #   search. One of `low`, `medium`, or `high`. `medium` is the default.
@@ -24,7 +30,7 @@ module OpenAI
         #   @return [OpenAI::Models::Responses::WebSearchPreviewTool::UserLocation, nil]
         optional :user_location, -> { OpenAI::Responses::WebSearchPreviewTool::UserLocation }, nil?: true
 
-        # @!method initialize(type:, search_context_size: nil, user_location: nil)
+        # @!method initialize(type:, search_content_types: nil, search_context_size: nil, user_location: nil)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::WebSearchPreviewTool} for more details.
         #
@@ -33,6 +39,8 @@ module OpenAI
         #   [web search tool](https://platform.openai.com/docs/guides/tools-web-search).
         #
         #   @param type [Symbol, OpenAI::Models::Responses::WebSearchPreviewTool::Type] The type of the web search tool. One of `web_search_preview` or `web_search_prev
+        #
+        #   @param search_content_types [Array<Symbol, OpenAI::Models::Responses::WebSearchPreviewTool::SearchContentType>]
         #
         #   @param search_context_size [Symbol, OpenAI::Models::Responses::WebSearchPreviewTool::SearchContextSize] High level guidance for the amount of context window space to use for the search
         #
@@ -47,6 +55,16 @@ module OpenAI
 
           WEB_SEARCH_PREVIEW = :web_search_preview
           WEB_SEARCH_PREVIEW_2025_03_11 = :web_search_preview_2025_03_11
+
+          # @!method self.values
+          #   @return [Array<Symbol>]
+        end
+
+        module SearchContentType
+          extend OpenAI::Internal::Type::Enum
+
+          TEXT = :text
+          IMAGE = :image
 
           # @!method self.values
           #   @return [Array<Symbol>]

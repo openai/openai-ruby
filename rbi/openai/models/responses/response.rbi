@@ -340,6 +340,8 @@ module OpenAI
                   OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
                   OpenAI::Responses::ResponseComputerToolCall::OrHash,
                   OpenAI::Responses::ResponseReasoningItem::OrHash,
+                  OpenAI::Responses::ResponseToolSearchCall::OrHash,
+                  OpenAI::Responses::ResponseToolSearchOutputItem::OrHash,
                   OpenAI::Responses::ResponseCompactionItem::OrHash,
                   OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::OrHash,
                   OpenAI::Responses::ResponseCodeInterpreterToolCall::OrHash,
@@ -372,6 +374,7 @@ module OpenAI
                 T.any(
                   OpenAI::Responses::FunctionTool::OrHash,
                   OpenAI::Responses::FileSearchTool::OrHash,
+                  OpenAI::Responses::ComputerUseTool::OrHash,
                   OpenAI::Responses::ComputerTool::OrHash,
                   OpenAI::Responses::Tool::Mcp::OrHash,
                   OpenAI::Responses::Tool::CodeInterpreter::OrHash,
@@ -379,6 +382,8 @@ module OpenAI
                   OpenAI::Responses::Tool::LocalShell::OrHash,
                   OpenAI::Responses::FunctionShellTool::OrHash,
                   OpenAI::Responses::CustomTool::OrHash,
+                  OpenAI::Responses::NamespaceTool::OrHash,
+                  OpenAI::Responses::ToolSearchTool::OrHash,
                   OpenAI::Responses::ApplyPatchTool::OrHash,
                   OpenAI::Responses::WebSearchTool::OrHash,
                   OpenAI::Responses::WebSearchPreviewTool::OrHash

@@ -10,12 +10,6 @@ module OpenAI
         #   @return [String]
         required :id, String
 
-        # @!attribute action
-        #   A click action.
-        #
-        #   @return [OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click, OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait]
-        required :action, union: -> { OpenAI::Responses::ResponseComputerToolCall::Action }
-
         # @!attribute call_id
         #   An identifier used when responding to the tool call with output.
         #
@@ -42,7 +36,20 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Type]
         required :type, enum: -> { OpenAI::Responses::ResponseComputerToolCall::Type }
 
-        # @!method initialize(id:, action:, call_id:, pending_safety_checks:, status:, type:)
+        # @!attribute action
+        #   A click action.
+        #
+        #   @return [OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click, OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait, nil]
+        optional :action, union: -> { OpenAI::Responses::ResponseComputerToolCall::Action }
+
+        # @!attribute actions
+        #   Flattened batched actions for `computer_use`. Each action includes an `type`
+        #   discriminator and action-specific fields.
+        #
+        #   @return [Array<OpenAI::Models::Responses::ComputerAction::Click, OpenAI::Models::Responses::ComputerAction::DoubleClick, OpenAI::Models::Responses::ComputerAction::Drag, OpenAI::Models::Responses::ComputerAction::Keypress, OpenAI::Models::Responses::ComputerAction::Move, OpenAI::Models::Responses::ComputerAction::Screenshot, OpenAI::Models::Responses::ComputerAction::Scroll, OpenAI::Models::Responses::ComputerAction::Type, OpenAI::Models::Responses::ComputerAction::Wait>, nil]
+        optional :actions, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ComputerAction] }
+
+        # @!method initialize(id:, call_id:, pending_safety_checks:, status:, type:, action: nil, actions: nil)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseComputerToolCall} for more details.
         #
@@ -52,8 +59,6 @@ module OpenAI
         #
         #   @param id [String] The unique ID of the computer call.
         #
-        #   @param action [OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click, OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait] A click action.
-        #
         #   @param call_id [String] An identifier used when responding to the tool call with output.
         #
         #   @param pending_safety_checks [Array<OpenAI::Models::Responses::ResponseComputerToolCall::PendingSafetyCheck>] The pending safety checks for the computer call.
@@ -61,6 +66,66 @@ module OpenAI
         #   @param status [Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Status] The status of the item. One of `in_progress`, `completed`, or
         #
         #   @param type [Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Type] The type of the computer call. Always `computer_call`.
+        #
+        #   @param action [OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click, OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait] A click action.
+        #
+        #   @param actions [Array<OpenAI::Models::Responses::ComputerAction::Click, OpenAI::Models::Responses::ComputerAction::DoubleClick, OpenAI::Models::Responses::ComputerAction::Drag, OpenAI::Models::Responses::ComputerAction::Keypress, OpenAI::Models::Responses::ComputerAction::Move, OpenAI::Models::Responses::ComputerAction::Screenshot, OpenAI::Models::Responses::ComputerAction::Scroll, OpenAI::Models::Responses::ComputerAction::Type, OpenAI::Models::Responses::ComputerAction::Wait>] Flattened batched actions for `computer_use`. Each action includes an
+
+        class PendingSafetyCheck < OpenAI::Internal::Type::BaseModel
+          # @!attribute id
+          #   The ID of the pending safety check.
+          #
+          #   @return [String]
+          required :id, String
+
+          # @!attribute code
+          #   The type of the pending safety check.
+          #
+          #   @return [String, nil]
+          optional :code, String, nil?: true
+
+          # @!attribute message
+          #   Details about the pending safety check.
+          #
+          #   @return [String, nil]
+          optional :message, String, nil?: true
+
+          # @!method initialize(id:, code: nil, message: nil)
+          #   A pending safety check for the computer call.
+          #
+          #   @param id [String] The ID of the pending safety check.
+          #
+          #   @param code [String, nil] The type of the pending safety check.
+          #
+          #   @param message [String, nil] Details about the pending safety check.
+        end
+
+        # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
+        # Populated when items are returned via API.
+        #
+        # @see OpenAI::Models::Responses::ResponseComputerToolCall#status
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          IN_PROGRESS = :in_progress
+          COMPLETED = :completed
+          INCOMPLETE = :incomplete
+
+          # @!method self.values
+          #   @return [Array<Symbol>]
+        end
+
+        # The type of the computer call. Always `computer_call`.
+        #
+        # @see OpenAI::Models::Responses::ResponseComputerToolCall#type
+        module Type
+          extend OpenAI::Internal::Type::Enum
+
+          COMPUTER_CALL = :computer_call
+
+          # @!method self.values
+          #   @return [Array<Symbol>]
+        end
 
         # A click action.
         #
@@ -421,62 +486,6 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click, OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait)]
-        end
-
-        class PendingSafetyCheck < OpenAI::Internal::Type::BaseModel
-          # @!attribute id
-          #   The ID of the pending safety check.
-          #
-          #   @return [String]
-          required :id, String
-
-          # @!attribute code
-          #   The type of the pending safety check.
-          #
-          #   @return [String, nil]
-          optional :code, String, nil?: true
-
-          # @!attribute message
-          #   Details about the pending safety check.
-          #
-          #   @return [String, nil]
-          optional :message, String, nil?: true
-
-          # @!method initialize(id:, code: nil, message: nil)
-          #   A pending safety check for the computer call.
-          #
-          #   @param id [String] The ID of the pending safety check.
-          #
-          #   @param code [String, nil] The type of the pending safety check.
-          #
-          #   @param message [String, nil] Details about the pending safety check.
-        end
-
-        # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
-        # Populated when items are returned via API.
-        #
-        # @see OpenAI::Models::Responses::ResponseComputerToolCall#status
-        module Status
-          extend OpenAI::Internal::Type::Enum
-
-          IN_PROGRESS = :in_progress
-          COMPLETED = :completed
-          INCOMPLETE = :incomplete
-
-          # @!method self.values
-          #   @return [Array<Symbol>]
-        end
-
-        # The type of the computer call. Always `computer_call`.
-        #
-        # @see OpenAI::Models::Responses::ResponseComputerToolCall#type
-        module Type
-          extend OpenAI::Internal::Type::Enum
-
-          COMPUTER_CALL = :computer_call
-
-          # @!method self.values
-          #   @return [Array<Symbol>]
         end
       end
     end

@@ -34,7 +34,13 @@ module OpenAI
         #   @return [String, nil]
         optional :id, String
 
-        # @!method initialize(call_id:, input:, name:, id: nil, type: :custom_tool_call)
+        # @!attribute namespace
+        #   The namespace of the custom tool being called.
+        #
+        #   @return [String, nil]
+        optional :namespace, String
+
+        # @!method initialize(call_id:, input:, name:, id: nil, namespace: nil, type: :custom_tool_call)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseCustomToolCall} for more details.
         #
@@ -47,6 +53,8 @@ module OpenAI
         #   @param name [String] The name of the custom tool being called.
         #
         #   @param id [String] The unique ID of the custom tool call in the OpenAI platform.
+        #
+        #   @param namespace [String] The namespace of the custom tool being called.
         #
         #   @param type [Symbol, :custom_tool_call] The type of the custom tool call. Always `custom_tool_call`.
       end

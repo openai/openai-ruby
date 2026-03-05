@@ -8,6 +8,7 @@ module OpenAI
           allowed_tools: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::allowed_tools?,
           authorization: String,
           connector_id: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::connector_id,
+          defer_loading: bool,
           headers: ::Hash[Symbol, String]?,
           require_approval: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::require_approval?,
           server_description: String,
@@ -31,6 +32,10 @@ module OpenAI
           OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::connector_id
         ) -> OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::connector_id
 
+        attr_reader defer_loading: bool?
+
+        def defer_loading=: (bool) -> bool
+
         attr_accessor headers: ::Hash[Symbol, String]?
 
         attr_accessor require_approval: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::require_approval?
@@ -48,6 +53,7 @@ module OpenAI
           ?allowed_tools: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::allowed_tools?,
           ?authorization: String,
           ?connector_id: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::connector_id,
+          ?defer_loading: bool,
           ?headers: ::Hash[Symbol, String]?,
           ?require_approval: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::require_approval?,
           ?server_description: String,
@@ -61,6 +67,7 @@ module OpenAI
           allowed_tools: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::allowed_tools?,
           authorization: String,
           connector_id: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::connector_id,
+          defer_loading: bool,
           headers: ::Hash[Symbol, String]?,
           require_approval: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::require_approval?,
           server_description: String,

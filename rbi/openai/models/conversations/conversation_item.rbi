@@ -22,6 +22,8 @@ module OpenAI
               OpenAI::Conversations::ConversationItem::ImageGenerationCall,
               OpenAI::Responses::ResponseComputerToolCall,
               OpenAI::Responses::ResponseComputerToolCallOutputItem,
+              OpenAI::Responses::ResponseToolSearchCall,
+              OpenAI::Responses::ResponseToolSearchOutputItem,
               OpenAI::Responses::ResponseReasoningItem,
               OpenAI::Responses::ResponseCodeInterpreterToolCall,
               OpenAI::Conversations::ConversationItem::LocalShellCall,

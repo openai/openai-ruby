@@ -48,6 +48,8 @@ module OpenAI
                   OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
                   OpenAI::Responses::ResponseFunctionToolCallItem::OrHash,
                   OpenAI::Responses::ResponseFunctionToolCallOutputItem::OrHash,
+                  OpenAI::Responses::ResponseToolSearchCall::OrHash,
+                  OpenAI::Responses::ResponseToolSearchOutputItem::OrHash,
                   OpenAI::Responses::ResponseItem::ImageGenerationCall::OrHash,
                   OpenAI::Responses::ResponseCodeInterpreterToolCall::OrHash,
                   OpenAI::Responses::ResponseItem::LocalShellCall::OrHash,

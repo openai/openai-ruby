@@ -158,6 +158,16 @@ module OpenAI
             end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
+          GPT_5_4 =
+            T.let(
+              :"gpt-5.4",
+              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+            )
+          GPT_5_3_CHAT_LATEST =
+            T.let(
+              :"gpt-5.3-chat-latest",
+              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+            )
           GPT_5_2 =
             T.let(
               :"gpt-5.2",

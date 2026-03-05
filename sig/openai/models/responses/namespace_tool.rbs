@@ -1,0 +1,84 @@
+module OpenAI
+  module Models
+    module Responses
+      type namespace_tool =
+        {
+          description: String,
+          name: String,
+          tools: ::Array[OpenAI::Models::Responses::NamespaceTool::tool],
+          type: :namespace
+        }
+
+      class NamespaceTool < OpenAI::Internal::Type::BaseModel
+        attr_accessor description: String
+
+        attr_accessor name: String
+
+        attr_accessor tools: ::Array[OpenAI::Models::Responses::NamespaceTool::tool]
+
+        attr_accessor type: :namespace
+
+        def initialize: (
+          description: String,
+          name: String,
+          tools: ::Array[OpenAI::Models::Responses::NamespaceTool::tool],
+          ?type: :namespace
+        ) -> void
+
+        def to_hash: -> {
+          description: String,
+          name: String,
+          tools: ::Array[OpenAI::Models::Responses::NamespaceTool::tool],
+          type: :namespace
+        }
+
+        type tool =
+          OpenAI::Responses::NamespaceTool::Tool::Function
+          | OpenAI::Responses::CustomTool
+
+        module Tool
+          extend OpenAI::Internal::Type::Union
+
+          type function =
+            {
+              name: String,
+              type: :function,
+              description: String?,
+              parameters: top?,
+              strict: bool?
+            }
+
+          class Function < OpenAI::Internal::Type::BaseModel
+            attr_accessor name: String
+
+            attr_accessor type: :function
+
+            attr_accessor description: String?
+
+            attr_accessor parameters: top?
+
+            attr_accessor strict: bool?
+
+            def initialize: (
+              name: String,
+              ?description: String?,
+              ?parameters: top?,
+              ?strict: bool?,
+              ?type: :function
+            ) -> void
+
+            def to_hash: -> {
+              name: String,
+              type: :function,
+              description: String?,
+              parameters: top?,
+              strict: bool?
+            }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::NamespaceTool::tool]
+        end
+      end
+    end
+  end
+end

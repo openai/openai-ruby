@@ -16,7 +16,9 @@ module OpenAI
         #
         # - `file_search`
         # - `web_search_preview`
+        # - `computer`
         # - `computer_use_preview`
+        # - `computer_use`
         # - `code_interpreter`
         # - `image_generation`
         sig { returns(OpenAI::Responses::ToolChoiceTypes::Type::OrSymbol) }
@@ -37,7 +39,9 @@ module OpenAI
           #
           # - `file_search`
           # - `web_search_preview`
+          # - `computer`
           # - `computer_use_preview`
+          # - `computer_use`
           # - `code_interpreter`
           # - `image_generation`
           type:
@@ -59,7 +63,9 @@ module OpenAI
         #
         # - `file_search`
         # - `web_search_preview`
+        # - `computer`
         # - `computer_use_preview`
+        # - `computer_use`
         # - `code_interpreter`
         # - `image_generation`
         module Type
@@ -81,9 +87,19 @@ module OpenAI
               :web_search_preview,
               OpenAI::Responses::ToolChoiceTypes::Type::TaggedSymbol
             )
+          COMPUTER =
+            T.let(
+              :computer,
+              OpenAI::Responses::ToolChoiceTypes::Type::TaggedSymbol
+            )
           COMPUTER_USE_PREVIEW =
             T.let(
               :computer_use_preview,
+              OpenAI::Responses::ToolChoiceTypes::Type::TaggedSymbol
+            )
+          COMPUTER_USE =
+            T.let(
+              :computer_use,
               OpenAI::Responses::ToolChoiceTypes::Type::TaggedSymbol
             )
           WEB_SEARCH_PREVIEW_2025_03_11 =

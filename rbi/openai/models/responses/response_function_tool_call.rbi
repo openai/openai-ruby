@@ -39,6 +39,13 @@ module OpenAI
         sig { params(id: String).void }
         attr_writer :id
 
+        # The namespace of the function to run.
+        sig { returns(T.nilable(String)) }
+        attr_reader :namespace
+
+        sig { params(namespace: String).void }
+        attr_writer :namespace
+
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         # Populated when items are returned via API.
         sig do
@@ -67,6 +74,7 @@ module OpenAI
             call_id: String,
             name: String,
             id: String,
+            namespace: String,
             status:
               OpenAI::Responses::ResponseFunctionToolCall::Status::OrSymbol,
             type: Symbol
@@ -81,6 +89,8 @@ module OpenAI
           name:,
           # The unique ID of the function tool call.
           id: nil,
+          # The namespace of the function to run.
+          namespace: nil,
           # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
           # Populated when items are returned via API.
           status: nil,
@@ -97,6 +107,7 @@ module OpenAI
               name: String,
               type: Symbol,
               id: String,
+              namespace: String,
               status:
                 OpenAI::Responses::ResponseFunctionToolCall::Status::OrSymbol
             }
