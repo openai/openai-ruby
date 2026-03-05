@@ -2,6 +2,8 @@
 
 module OpenAI
   module Resources
+    # Given a prompt, the model will return one or more predicted completions, and can
+    # also return the probabilities of alternative tokens at each position.
     class Completions
       # See {OpenAI::Resources::Completions#create_streaming} for streaming counterpart.
       #

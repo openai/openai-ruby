@@ -3,6 +3,7 @@
 module OpenAI
   module Resources
     class Conversations
+      # Manage conversations and conversation items.
       class Items
         # Create items in a conversation with the given ID.
         sig do

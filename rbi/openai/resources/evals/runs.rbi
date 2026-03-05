@@ -3,7 +3,9 @@
 module OpenAI
   module Resources
     class Evals
+      # Manage and run evals in the OpenAI platform.
       class Runs
+        # Manage and run evals in the OpenAI platform.
         sig { returns(OpenAI::Resources::Evals::Runs::OutputItems) }
         attr_reader :output_items
 

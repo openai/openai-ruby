@@ -2,6 +2,7 @@
 
 module OpenAI
   module Resources
+    # Given a prompt and/or an input image, the model will generate a new image.
     class Images
       # Creates a variation of a given image. This endpoint only supports `dall-e-2`.
       sig do

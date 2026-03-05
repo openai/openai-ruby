@@ -2,6 +2,7 @@
 
 module OpenAI
   module Resources
+    # List and describe the various models available in the API.
     class Models
       # Retrieves a model instance, providing basic information about the model such as
       # the owner and permissioning.

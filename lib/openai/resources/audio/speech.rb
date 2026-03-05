@@ -3,6 +3,7 @@
 module OpenAI
   module Resources
     class Audio
+      # Turn audio into text or text into audio.
       class Speech
         # Some parameter documentations has been truncated, see
         # {OpenAI::Models::Audio::SpeechCreateParams} for more details.

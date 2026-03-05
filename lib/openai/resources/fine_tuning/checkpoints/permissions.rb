@@ -4,6 +4,7 @@ module OpenAI
   module Resources
     class FineTuning
       class Checkpoints
+        # Manage fine-tuning jobs to tailor a model to your specific training data.
         class Permissions
           # Some parameter documentations has been truncated, see
           # {OpenAI::Models::FineTuning::Checkpoints::PermissionCreateParams} for more
@@ -65,10 +66,11 @@ module OpenAI
           # @see OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams
           def retrieve(fine_tuned_model_checkpoint, params = {})
             parsed, options = OpenAI::FineTuning::Checkpoints::PermissionRetrieveParams.dump_request(params)
+            query = OpenAI::Internal::Util.encode_query_params(parsed)
             @client.request(
               method: :get,
               path: ["fine_tuning/checkpoints/%1$s/permissions", fine_tuned_model_checkpoint],
-              query: parsed,
+              query: query,
               model: OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse,
               options: options
             )

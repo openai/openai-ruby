@@ -2,6 +2,7 @@
 
 module OpenAI
   module Resources
+    # Create large batches of API requests to run asynchronously.
     class Batches
       # Some parameter documentations has been truncated, see
       # {OpenAI::Models::BatchCreateParams} for more details.
@@ -68,10 +69,11 @@ module OpenAI
       # @see OpenAI::Models::BatchListParams
       def list(params = {})
         parsed, options = OpenAI::BatchListParams.dump_request(params)
+        query = OpenAI::Internal::Util.encode_query_params(parsed)
         @client.request(
           method: :get,
           path: "batches",
-          query: parsed,
+          query: query,
           page: OpenAI::Internal::CursorPage,
           model: OpenAI::Batch,
           options: options

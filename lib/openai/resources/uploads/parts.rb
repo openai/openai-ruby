@@ -3,6 +3,7 @@
 module OpenAI
   module Resources
     class Uploads
+      # Use Uploads to upload large files in multiple parts.
       class Parts
         # Some parameter documentations has been truncated, see
         # {OpenAI::Models::Uploads::PartCreateParams} for more details.

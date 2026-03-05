@@ -4,6 +4,8 @@ module OpenAI
   module Resources
     class Chat
       class Completions
+        # Given a list of messages comprising a conversation, the model will return a
+        # response.
         class Messages
           # Some parameter documentations has been truncated, see
           # {OpenAI::Models::Chat::Completions::MessageListParams} for more details.
@@ -28,10 +30,11 @@ module OpenAI
           # @see OpenAI::Models::Chat::Completions::MessageListParams
           def list(completion_id, params = {})
             parsed, options = OpenAI::Chat::Completions::MessageListParams.dump_request(params)
+            query = OpenAI::Internal::Util.encode_query_params(parsed)
             @client.request(
               method: :get,
               path: ["chat/completions/%1$s/messages", completion_id],
-              query: parsed,
+              query: query,
               page: OpenAI::Internal::CursorPage,
               model: OpenAI::Chat::ChatCompletionStoreMessage,
               options: options

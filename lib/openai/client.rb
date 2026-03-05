@@ -27,27 +27,37 @@ module OpenAI
     # @return [String, nil]
     attr_reader :webhook_secret
 
+    # Given a prompt, the model will return one or more predicted completions, and can
+    # also return the probabilities of alternative tokens at each position.
     # @return [OpenAI::Resources::Completions]
     attr_reader :completions
 
     # @return [OpenAI::Resources::Chat]
     attr_reader :chat
 
+    # Get a vector representation of a given input that can be easily consumed by
+    # machine learning models and algorithms.
     # @return [OpenAI::Resources::Embeddings]
     attr_reader :embeddings
 
+    # Files are used to upload documents that can be used with features like
+    # Assistants and Fine-tuning.
     # @return [OpenAI::Resources::Files]
     attr_reader :files
 
+    # Given a prompt and/or an input image, the model will generate a new image.
     # @return [OpenAI::Resources::Images]
     attr_reader :images
 
     # @return [OpenAI::Resources::Audio]
     attr_reader :audio
 
+    # Given text and/or image inputs, classifies if those inputs are potentially
+    # harmful.
     # @return [OpenAI::Resources::Moderations]
     attr_reader :moderations
 
+    # List and describe the various models available in the API.
     # @return [OpenAI::Resources::Models]
     attr_reader :models
 
@@ -66,9 +76,11 @@ module OpenAI
     # @return [OpenAI::Resources::Beta]
     attr_reader :beta
 
+    # Create large batches of API requests to run asynchronously.
     # @return [OpenAI::Resources::Batches]
     attr_reader :batches
 
+    # Use Uploads to upload large files in multiple parts.
     # @return [OpenAI::Resources::Uploads]
     attr_reader :uploads
 
@@ -78,9 +90,11 @@ module OpenAI
     # @return [OpenAI::Resources::Realtime]
     attr_reader :realtime
 
+    # Manage conversations and conversation items.
     # @return [OpenAI::Resources::Conversations]
     attr_reader :conversations
 
+    # Manage and run evals in the OpenAI platform.
     # @return [OpenAI::Resources::Evals]
     attr_reader :evals
 

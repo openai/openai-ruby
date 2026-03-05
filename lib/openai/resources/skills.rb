@@ -96,10 +96,11 @@ module OpenAI
       # @see OpenAI::Models::SkillListParams
       def list(params = {})
         parsed, options = OpenAI::SkillListParams.dump_request(params)
+        query = OpenAI::Internal::Util.encode_query_params(parsed)
         @client.request(
           method: :get,
           path: "skills",
-          query: parsed,
+          query: query,
           page: OpenAI::Internal::CursorPage,
           model: OpenAI::Skill,
           options: options
