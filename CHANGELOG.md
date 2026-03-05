@@ -1,5 +1,29 @@
 # Changelog
 
+## 0.52.0 (2026-03-05)
+
+Full Changelog: [v0.51.0...v0.52.0](https://github.com/openai/openai-ruby/compare/v0.51.0...v0.52.0)
+
+### Features
+
+* **api:** gpt-5.4, tool search tool, and new computer tool ([8cdcde5](https://github.com/openai/openai-ruby/commit/8cdcde5c4641eca5aaaf096588be4fe9e617a929))
+* **api:** remove phase from EasyInputMessage/ResponseOutputMessage, prompt_cache_key from compact ([f603ff1](https://github.com/openai/openai-ruby/commit/f603ff148798d0d47ee2caa7281dce30547cdbd6))
+
+
+### Bug Fixes
+
+* **api:** internal schema fixes ([261ed6a](https://github.com/openai/openai-ruby/commit/261ed6ab5feb33996169e812e419e0cd4c8d7174))
+* **api:** manual updates ([4f10197](https://github.com/openai/openai-ruby/commit/4f10197e93eccd7e49537716879419db09a6c477))
+* **api:** readd phase ([a78d02b](https://github.com/openai/openai-ruby/commit/a78d02b807f9282b7ba6b311c9205b9998735814))
+* properly mock time in ruby ci tests ([b554a8b](https://github.com/openai/openai-ruby/commit/b554a8bec4642f7cd9a0f9f2837e43f665ed5415))
+
+
+### Chores
+
+* **internal:** codegen related update ([3f6d5be](https://github.com/openai/openai-ruby/commit/3f6d5be78f67be5680eb711f0f044cf6fc2d2c5e))
+* **internal:** codegen related update ([356b20b](https://github.com/openai/openai-ruby/commit/356b20ba42eea108ed7f46ff867ef894745e9ee2))
+* **internal:** reduce warnings ([c13a8a3](https://github.com/openai/openai-ruby/commit/c13a8a31ecda80a45880432915855a3be9f55f70))
+
 ## 0.51.0 (2026-02-24)
 
 Full Changelog: [v0.50.0...v0.51.0](https://github.com/openai/openai-ruby/compare/v0.50.0...v0.51.0)
