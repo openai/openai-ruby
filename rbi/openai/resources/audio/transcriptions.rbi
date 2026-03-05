@@ -3,6 +3,7 @@
 module OpenAI
   module Resources
     class Audio
+      # Turn audio into text or text into audio.
       class Transcriptions
         # See {OpenAI::Resources::Audio::Transcriptions#create_streaming} for streaming
         # counterpart.

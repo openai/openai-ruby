@@ -106,6 +106,16 @@ module OpenAI
       JSON_CONTENT: Regexp
       JSONL_CONTENT: Regexp
 
+      def encode_query_params: (
+        ::Hash[Symbol, top] query
+      ) -> ::Hash[Symbol, top]
+
+      private def write_query_param_element!: (
+        ::Hash[Symbol, top] collection,
+        String key,
+        top element
+      ) -> nil
+
       def self?.write_multipart_content: (
         Enumerator::Yielder y,
         val: top,

@@ -6,6 +6,8 @@ module OpenAI
       class Threads
         class Runs
           # @deprecated The Assistants API is deprecated in favor of the Responses API
+          #
+          # Build Assistants that can call models and use tools.
           class Steps
             # @deprecated The Assistants API is deprecated in favor of the Responses API
             #
@@ -31,6 +33,7 @@ module OpenAI
             # @see OpenAI::Models::Beta::Threads::Runs::StepRetrieveParams
             def retrieve(step_id, params)
               parsed, options = OpenAI::Beta::Threads::Runs::StepRetrieveParams.dump_request(params)
+              query = OpenAI::Internal::Util.encode_query_params(parsed)
               thread_id =
                 parsed.delete(:thread_id) do
                   raise ArgumentError.new("missing required path argument #{_1}")
@@ -42,7 +45,7 @@ module OpenAI
               @client.request(
                 method: :get,
                 path: ["threads/%1$s/runs/%2$s/steps/%3$s", thread_id, run_id, step_id],
-                query: parsed,
+                query: query,
                 model: OpenAI::Beta::Threads::Runs::RunStep,
                 options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
               )
@@ -78,6 +81,7 @@ module OpenAI
             # @see OpenAI::Models::Beta::Threads::Runs::StepListParams
             def list(run_id, params)
               parsed, options = OpenAI::Beta::Threads::Runs::StepListParams.dump_request(params)
+              query = OpenAI::Internal::Util.encode_query_params(parsed)
               thread_id =
                 parsed.delete(:thread_id) do
                   raise ArgumentError.new("missing required path argument #{_1}")
@@ -85,7 +89,7 @@ module OpenAI
               @client.request(
                 method: :get,
                 path: ["threads/%1$s/runs/%2$s/steps", thread_id, run_id],
-                query: parsed,
+                query: query,
                 page: OpenAI::Internal::CursorPage,
                 model: OpenAI::Beta::Threads::Runs::RunStep,
                 options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}

@@ -6,6 +6,7 @@ module OpenAI
       sig { returns(OpenAI::Resources::FineTuning::Methods) }
       attr_reader :methods_
 
+      # Manage fine-tuning jobs to tailor a model to your specific training data.
       sig { returns(OpenAI::Resources::FineTuning::Jobs) }
       attr_reader :jobs
 

@@ -2,6 +2,7 @@
 
 module OpenAI
   module Resources
+    # Given a prompt and/or an input image, the model will generate a new image.
     class Images
       # Some parameter documentations has been truncated, see
       # {OpenAI::Models::ImageCreateVariationParams} for more details.

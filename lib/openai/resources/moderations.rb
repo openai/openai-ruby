@@ -2,6 +2,8 @@
 
 module OpenAI
   module Resources
+    # Given text and/or image inputs, classifies if those inputs are potentially
+    # harmful.
     class Moderations
       # Some parameter documentations has been truncated, see
       # {OpenAI::Models::ModerationCreateParams} for more details.

@@ -3,6 +3,7 @@
 module OpenAI
   module Resources
     class Audio
+      # Turn audio into text or text into audio.
       class Translations
         # Translates audio into English.
         sig do

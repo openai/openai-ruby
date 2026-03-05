@@ -2,7 +2,9 @@
 
 module OpenAI
   module Resources
+    # Manage and run evals in the OpenAI platform.
     class Evals
+      # Manage and run evals in the OpenAI platform.
       # @return [OpenAI::Resources::Evals::Runs]
       attr_reader :runs
 
@@ -113,10 +115,11 @@ module OpenAI
       # @see OpenAI::Models::EvalListParams
       def list(params = {})
         parsed, options = OpenAI::EvalListParams.dump_request(params)
+        query = OpenAI::Internal::Util.encode_query_params(parsed)
         @client.request(
           method: :get,
           path: "evals",
-          query: parsed,
+          query: query,
           page: OpenAI::Internal::CursorPage,
           model: OpenAI::Models::EvalListResponse,
           options: options

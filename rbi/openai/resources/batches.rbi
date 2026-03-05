@@ -2,6 +2,7 @@
 
 module OpenAI
   module Resources
+    # Create large batches of API requests to run asynchronously.
     class Batches
       # Creates and executes a batch from an uploaded file of requests
       sig do

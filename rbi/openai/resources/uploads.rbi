@@ -2,7 +2,9 @@
 
 module OpenAI
   module Resources
+    # Use Uploads to upload large files in multiple parts.
     class Uploads
+      # Use Uploads to upload large files in multiple parts.
       sig { returns(OpenAI::Resources::Uploads::Parts) }
       attr_reader :parts
 

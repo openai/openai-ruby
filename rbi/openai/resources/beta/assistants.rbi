@@ -3,6 +3,7 @@
 module OpenAI
   module Resources
     class Beta
+      # Build Assistants that can call models and use tools.
       class Assistants
         # Create an assistant with a model and instructions.
         sig do

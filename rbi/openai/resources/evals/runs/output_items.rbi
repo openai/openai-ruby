@@ -4,6 +4,7 @@ module OpenAI
   module Resources
     class Evals
       class Runs
+        # Manage and run evals in the OpenAI platform.
         class OutputItems
           # Get an evaluation run output item by ID.
           sig do

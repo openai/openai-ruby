@@ -4,6 +4,7 @@ module OpenAI
   module Resources
     class FineTuning
       class Jobs
+        # Manage fine-tuning jobs to tailor a model to your specific training data.
         class Checkpoints
           # List checkpoints for a fine-tuning job.
           sig do

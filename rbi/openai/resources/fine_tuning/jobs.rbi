@@ -3,7 +3,9 @@
 module OpenAI
   module Resources
     class FineTuning
+      # Manage fine-tuning jobs to tailor a model to your specific training data.
       class Jobs
+        # Manage fine-tuning jobs to tailor a model to your specific training data.
         sig { returns(OpenAI::Resources::FineTuning::Jobs::Checkpoints) }
         attr_reader :checkpoints
 

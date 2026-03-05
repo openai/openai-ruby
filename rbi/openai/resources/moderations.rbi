@@ -2,6 +2,8 @@
 
 module OpenAI
   module Resources
+    # Given text and/or image inputs, classifies if those inputs are potentially
+    # harmful.
     class Moderations
       # Classifies if text and/or image inputs are potentially harmful. Learn more in
       # the [moderation guide](https://platform.openai.com/docs/guides/moderation).

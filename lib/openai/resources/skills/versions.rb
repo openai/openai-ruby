@@ -80,10 +80,11 @@ module OpenAI
         # @see OpenAI::Models::Skills::VersionListParams
         def list(skill_id, params = {})
           parsed, options = OpenAI::Skills::VersionListParams.dump_request(params)
+          query = OpenAI::Internal::Util.encode_query_params(parsed)
           @client.request(
             method: :get,
             path: ["skills/%1$s/versions", skill_id],
-            query: parsed,
+            query: query,
             page: OpenAI::Internal::CursorPage,
             model: OpenAI::Skills::SkillVersion,
             options: options

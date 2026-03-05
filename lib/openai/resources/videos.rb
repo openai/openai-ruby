@@ -77,10 +77,11 @@ module OpenAI
       # @see OpenAI::Models::VideoListParams
       def list(params = {})
         parsed, options = OpenAI::VideoListParams.dump_request(params)
+        query = OpenAI::Internal::Util.encode_query_params(parsed)
         @client.request(
           method: :get,
           path: "videos",
-          query: parsed,
+          query: query,
           page: OpenAI::Internal::ConversationCursorPage,
           model: OpenAI::Video,
           options: options
@@ -124,10 +125,11 @@ module OpenAI
       # @see OpenAI::Models::VideoDownloadContentParams
       def download_content(video_id, params = {})
         parsed, options = OpenAI::VideoDownloadContentParams.dump_request(params)
+        query = OpenAI::Internal::Util.encode_query_params(parsed)
         @client.request(
           method: :get,
           path: ["videos/%1$s/content", video_id],
-          query: parsed,
+          query: query,
           headers: {"accept" => "application/binary"},
           model: StringIO,
           options: options

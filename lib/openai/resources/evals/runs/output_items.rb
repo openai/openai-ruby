@@ -4,6 +4,7 @@ module OpenAI
   module Resources
     class Evals
       class Runs
+        # Manage and run evals in the OpenAI platform.
         class OutputItems
           # Get an evaluation run output item by ID.
           #
@@ -64,6 +65,7 @@ module OpenAI
           # @see OpenAI::Models::Evals::Runs::OutputItemListParams
           def list(run_id, params)
             parsed, options = OpenAI::Evals::Runs::OutputItemListParams.dump_request(params)
+            query = OpenAI::Internal::Util.encode_query_params(parsed)
             eval_id =
               parsed.delete(:eval_id) do
                 raise ArgumentError.new("missing required path argument #{_1}")
@@ -71,7 +73,7 @@ module OpenAI
             @client.request(
               method: :get,
               path: ["evals/%1$s/runs/%2$s/output_items", eval_id, run_id],
-              query: parsed,
+              query: query,
               page: OpenAI::Internal::CursorPage,
               model: OpenAI::Models::Evals::Runs::OutputItemListResponse,
               options: options

@@ -3,7 +3,9 @@
 module OpenAI
   module Resources
     class FineTuning
+      # Manage fine-tuning jobs to tailor a model to your specific training data.
       class Jobs
+        # Manage fine-tuning jobs to tailor a model to your specific training data.
         # @return [OpenAI::Resources::FineTuning::Jobs::Checkpoints]
         attr_reader :checkpoints
 
@@ -99,10 +101,11 @@ module OpenAI
         # @see OpenAI::Models::FineTuning::JobListParams
         def list(params = {})
           parsed, options = OpenAI::FineTuning::JobListParams.dump_request(params)
+          query = OpenAI::Internal::Util.encode_query_params(parsed)
           @client.request(
             method: :get,
             path: "fine_tuning/jobs",
-            query: parsed,
+            query: query,
             page: OpenAI::Internal::CursorPage,
             model: OpenAI::FineTuning::FineTuningJob,
             options: options
@@ -152,10 +155,11 @@ module OpenAI
         # @see OpenAI::Models::FineTuning::JobListEventsParams
         def list_events(fine_tuning_job_id, params = {})
           parsed, options = OpenAI::FineTuning::JobListEventsParams.dump_request(params)
+          query = OpenAI::Internal::Util.encode_query_params(parsed)
           @client.request(
             method: :get,
             path: ["fine_tuning/jobs/%1$s/events", fine_tuning_job_id],
-            query: parsed,
+            query: query,
             page: OpenAI::Internal::CursorPage,
             model: OpenAI::FineTuning::FineTuningJobEvent,
             options: options

@@ -5,6 +5,8 @@ module OpenAI
     class Beta
       class Threads
         # @deprecated The Assistants API is deprecated in favor of the Responses API
+        #
+        # Build Assistants that can call models and use tools.
         class Messages
           # @deprecated The Assistants API is deprecated in favor of the Responses API
           #
@@ -136,10 +138,11 @@ module OpenAI
           # @see OpenAI::Models::Beta::Threads::MessageListParams
           def list(thread_id, params = {})
             parsed, options = OpenAI::Beta::Threads::MessageListParams.dump_request(params)
+            query = OpenAI::Internal::Util.encode_query_params(parsed)
             @client.request(
               method: :get,
               path: ["threads/%1$s/messages", thread_id],
-              query: parsed,
+              query: query,
               page: OpenAI::Internal::CursorPage,
               model: OpenAI::Beta::Threads::Message,
               options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}

@@ -2,6 +2,8 @@
 
 module OpenAI
   module Resources
+    # Get a vector representation of a given input that can be easily consumed by
+    # machine learning models and algorithms.
     class Embeddings
       # Some parameter documentations has been truncated, see
       # {OpenAI::Models::EmbeddingCreateParams} for more details.

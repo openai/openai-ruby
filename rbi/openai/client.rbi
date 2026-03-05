@@ -19,27 +19,37 @@ module OpenAI
     sig { returns(T.nilable(String)) }
     attr_reader :project
 
+    # Given a prompt, the model will return one or more predicted completions, and can
+    # also return the probabilities of alternative tokens at each position.
     sig { returns(OpenAI::Resources::Completions) }
     attr_reader :completions
 
     sig { returns(OpenAI::Resources::Chat) }
     attr_reader :chat
 
+    # Get a vector representation of a given input that can be easily consumed by
+    # machine learning models and algorithms.
     sig { returns(OpenAI::Resources::Embeddings) }
     attr_reader :embeddings
 
+    # Files are used to upload documents that can be used with features like
+    # Assistants and Fine-tuning.
     sig { returns(OpenAI::Resources::Files) }
     attr_reader :files
 
+    # Given a prompt and/or an input image, the model will generate a new image.
     sig { returns(OpenAI::Resources::Images) }
     attr_reader :images
 
     sig { returns(OpenAI::Resources::Audio) }
     attr_reader :audio
 
+    # Given text and/or image inputs, classifies if those inputs are potentially
+    # harmful.
     sig { returns(OpenAI::Resources::Moderations) }
     attr_reader :moderations
 
+    # List and describe the various models available in the API.
     sig { returns(OpenAI::Resources::Models) }
     attr_reader :models
 
@@ -58,9 +68,11 @@ module OpenAI
     sig { returns(OpenAI::Resources::Beta) }
     attr_reader :beta
 
+    # Create large batches of API requests to run asynchronously.
     sig { returns(OpenAI::Resources::Batches) }
     attr_reader :batches
 
+    # Use Uploads to upload large files in multiple parts.
     sig { returns(OpenAI::Resources::Uploads) }
     attr_reader :uploads
 
@@ -70,9 +82,11 @@ module OpenAI
     sig { returns(OpenAI::Resources::Realtime) }
     attr_reader :realtime
 
+    # Manage conversations and conversation items.
     sig { returns(OpenAI::Resources::Conversations) }
     attr_reader :conversations
 
+    # Manage and run evals in the OpenAI platform.
     sig { returns(OpenAI::Resources::Evals) }
     attr_reader :evals
 
