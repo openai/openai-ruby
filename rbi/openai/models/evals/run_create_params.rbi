@@ -1187,6 +1187,7 @@ module OpenAI
                       T.any(
                         OpenAI::Responses::FunctionTool,
                         OpenAI::Responses::FileSearchTool,
+                        OpenAI::Responses::ComputerUseTool,
                         OpenAI::Responses::ComputerTool,
                         OpenAI::Responses::Tool::Mcp,
                         OpenAI::Responses::Tool::CodeInterpreter,
@@ -1194,6 +1195,8 @@ module OpenAI
                         OpenAI::Responses::Tool::LocalShell,
                         OpenAI::Responses::FunctionShellTool,
                         OpenAI::Responses::CustomTool,
+                        OpenAI::Responses::NamespaceTool,
+                        OpenAI::Responses::ToolSearchTool,
                         OpenAI::Responses::ApplyPatchTool,
                         OpenAI::Responses::WebSearchTool,
                         OpenAI::Responses::WebSearchPreviewTool
@@ -1211,6 +1214,7 @@ module OpenAI
                       T.any(
                         OpenAI::Responses::FunctionTool::OrHash,
                         OpenAI::Responses::FileSearchTool::OrHash,
+                        OpenAI::Responses::ComputerUseTool::OrHash,
                         OpenAI::Responses::ComputerTool::OrHash,
                         OpenAI::Responses::Tool::Mcp::OrHash,
                         OpenAI::Responses::Tool::CodeInterpreter::OrHash,
@@ -1218,6 +1222,8 @@ module OpenAI
                         OpenAI::Responses::Tool::LocalShell::OrHash,
                         OpenAI::Responses::FunctionShellTool::OrHash,
                         OpenAI::Responses::CustomTool::OrHash,
+                        OpenAI::Responses::NamespaceTool::OrHash,
+                        OpenAI::Responses::ToolSearchTool::OrHash,
                         OpenAI::Responses::ApplyPatchTool::OrHash,
                         OpenAI::Responses::WebSearchTool::OrHash,
                         OpenAI::Responses::WebSearchPreviewTool::OrHash
@@ -1248,6 +1254,7 @@ module OpenAI
                       T.any(
                         OpenAI::Responses::FunctionTool::OrHash,
                         OpenAI::Responses::FileSearchTool::OrHash,
+                        OpenAI::Responses::ComputerUseTool::OrHash,
                         OpenAI::Responses::ComputerTool::OrHash,
                         OpenAI::Responses::Tool::Mcp::OrHash,
                         OpenAI::Responses::Tool::CodeInterpreter::OrHash,
@@ -1255,6 +1262,8 @@ module OpenAI
                         OpenAI::Responses::Tool::LocalShell::OrHash,
                         OpenAI::Responses::FunctionShellTool::OrHash,
                         OpenAI::Responses::CustomTool::OrHash,
+                        OpenAI::Responses::NamespaceTool::OrHash,
+                        OpenAI::Responses::ToolSearchTool::OrHash,
                         OpenAI::Responses::ApplyPatchTool::OrHash,
                         OpenAI::Responses::WebSearchTool::OrHash,
                         OpenAI::Responses::WebSearchPreviewTool::OrHash
@@ -1325,6 +1334,7 @@ module OpenAI
                         T.any(
                           OpenAI::Responses::FunctionTool,
                           OpenAI::Responses::FileSearchTool,
+                          OpenAI::Responses::ComputerUseTool,
                           OpenAI::Responses::ComputerTool,
                           OpenAI::Responses::Tool::Mcp,
                           OpenAI::Responses::Tool::CodeInterpreter,
@@ -1332,6 +1342,8 @@ module OpenAI
                           OpenAI::Responses::Tool::LocalShell,
                           OpenAI::Responses::FunctionShellTool,
                           OpenAI::Responses::CustomTool,
+                          OpenAI::Responses::NamespaceTool,
+                          OpenAI::Responses::ToolSearchTool,
                           OpenAI::Responses::ApplyPatchTool,
                           OpenAI::Responses::WebSearchTool,
                           OpenAI::Responses::WebSearchPreviewTool

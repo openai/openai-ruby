@@ -15,7 +15,7 @@ module OpenAI
       sig { returns(String) }
       attr_accessor :prompt
 
-      # Optional image reference that guides generation.
+      # Optional multipart reference asset that guides generation.
       sig { returns(T.nilable(OpenAI::Internal::FileInput)) }
       attr_reader :input_reference
 
@@ -58,7 +58,7 @@ module OpenAI
       def self.new(
         # Text prompt that describes the video to generate.
         prompt:,
-        # Optional image reference that guides generation.
+        # Optional multipart reference asset that guides generation.
         input_reference: nil,
         # The video generation model to use (allowed values: sora-2, sora-2-pro). Defaults
         # to `sora-2`.

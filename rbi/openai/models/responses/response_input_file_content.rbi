@@ -16,6 +16,25 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
+        # The detail level of the file to be sent to the model. One of `high` or `low`.
+        # Defaults to `high`.
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::Responses::ResponseInputFileContent::Detail::OrSymbol
+            )
+          )
+        end
+        attr_reader :detail
+
+        sig do
+          params(
+            detail:
+              OpenAI::Responses::ResponseInputFileContent::Detail::OrSymbol
+          ).void
+        end
+        attr_writer :detail
+
         # The base64-encoded data of the file to be sent to the model.
         sig { returns(T.nilable(String)) }
         attr_accessor :file_data
@@ -35,6 +54,8 @@ module OpenAI
         # A file input to the model.
         sig do
           params(
+            detail:
+              OpenAI::Responses::ResponseInputFileContent::Detail::OrSymbol,
             file_data: T.nilable(String),
             file_id: T.nilable(String),
             file_url: T.nilable(String),
@@ -43,6 +64,9 @@ module OpenAI
           ).returns(T.attached_class)
         end
         def self.new(
+          # The detail level of the file to be sent to the model. One of `high` or `low`.
+          # Defaults to `high`.
+          detail: nil,
           # The base64-encoded data of the file to be sent to the model.
           file_data: nil,
           # The ID of the file to be sent to the model.
@@ -60,6 +84,8 @@ module OpenAI
           override.returns(
             {
               type: Symbol,
+              detail:
+                OpenAI::Responses::ResponseInputFileContent::Detail::OrSymbol,
               file_data: T.nilable(String),
               file_id: T.nilable(String),
               file_url: T.nilable(String),
@@ -68,6 +94,39 @@ module OpenAI
           )
         end
         def to_hash
+        end
+
+        # The detail level of the file to be sent to the model. One of `high` or `low`.
+        # Defaults to `high`.
+        module Detail
+          extend OpenAI::Internal::Type::Enum
+
+          TaggedSymbol =
+            T.type_alias do
+              T.all(Symbol, OpenAI::Responses::ResponseInputFileContent::Detail)
+            end
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+          HIGH =
+            T.let(
+              :high,
+              OpenAI::Responses::ResponseInputFileContent::Detail::TaggedSymbol
+            )
+          LOW =
+            T.let(
+              :low,
+              OpenAI::Responses::ResponseInputFileContent::Detail::TaggedSymbol
+            )
+
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Responses::ResponseInputFileContent::Detail::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
         end
       end
     end

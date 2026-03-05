@@ -42,6 +42,8 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
       in OpenAI::Conversations::ConversationItem::ImageGenerationCall
       in OpenAI::Responses::ResponseComputerToolCall
       in OpenAI::Responses::ResponseComputerToolCallOutputItem
+      in OpenAI::Responses::ResponseToolSearchCall
+      in OpenAI::Responses::ResponseToolSearchOutputItem
       in OpenAI::Responses::ResponseReasoningItem
       in OpenAI::Responses::ResponseCodeInterpreterToolCall
       in OpenAI::Conversations::ConversationItem::LocalShellCall
@@ -97,10 +99,11 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
       in {
         type: :computer_call,
         id: String,
-        action: OpenAI::Responses::ResponseComputerToolCall::Action,
         call_id: String,
         pending_safety_checks: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseComputerToolCall::PendingSafetyCheck]),
-        status: OpenAI::Responses::ResponseComputerToolCall::Status
+        status: OpenAI::Responses::ResponseComputerToolCall::Status,
+        action: OpenAI::Responses::ResponseComputerToolCall::Action | nil,
+        actions: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ComputerAction]) | nil
       }
       in {
         type: :computer_call_output,
@@ -109,6 +112,24 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         output: OpenAI::Responses::ResponseComputerToolCallOutputScreenshot,
         acknowledged_safety_checks: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck]) | nil,
         status: OpenAI::Responses::ResponseComputerToolCallOutputItem::Status | nil
+      }
+      in {
+        type: :tool_search_call,
+        id: String,
+        arguments: OpenAI::Internal::Type::Unknown,
+        call_id: String | nil,
+        execution: OpenAI::Responses::ResponseToolSearchCall::Execution,
+        status: OpenAI::Responses::ResponseToolSearchCall::Status,
+        created_by: String | nil
+      }
+      in {
+        type: :tool_search_output,
+        id: String,
+        call_id: String | nil,
+        execution: OpenAI::Responses::ResponseToolSearchOutputItem::Execution,
+        status: OpenAI::Responses::ResponseToolSearchOutputItem::Status,
+        tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool]),
+        created_by: String | nil
       }
       in {
         type: :reasoning,
@@ -199,7 +220,7 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         output: String | nil,
         status: OpenAI::Conversations::ConversationItem::McpCall::Status | nil
       }
-      in {type: :custom_tool_call, call_id: String, input: String, name: String, id: String | nil}
+      in {type: :custom_tool_call, call_id: String, input: String, name: String, id: String | nil, namespace: String | nil}
       in {
         type: :custom_tool_call_output,
         call_id: String,
@@ -234,6 +255,8 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
       in OpenAI::Conversations::ConversationItem::ImageGenerationCall
       in OpenAI::Responses::ResponseComputerToolCall
       in OpenAI::Responses::ResponseComputerToolCallOutputItem
+      in OpenAI::Responses::ResponseToolSearchCall
+      in OpenAI::Responses::ResponseToolSearchOutputItem
       in OpenAI::Responses::ResponseReasoningItem
       in OpenAI::Responses::ResponseCodeInterpreterToolCall
       in OpenAI::Conversations::ConversationItem::LocalShellCall
@@ -289,10 +312,11 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
       in {
         type: :computer_call,
         id: String,
-        action: OpenAI::Responses::ResponseComputerToolCall::Action,
         call_id: String,
         pending_safety_checks: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseComputerToolCall::PendingSafetyCheck]),
-        status: OpenAI::Responses::ResponseComputerToolCall::Status
+        status: OpenAI::Responses::ResponseComputerToolCall::Status,
+        action: OpenAI::Responses::ResponseComputerToolCall::Action | nil,
+        actions: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ComputerAction]) | nil
       }
       in {
         type: :computer_call_output,
@@ -301,6 +325,24 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         output: OpenAI::Responses::ResponseComputerToolCallOutputScreenshot,
         acknowledged_safety_checks: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck]) | nil,
         status: OpenAI::Responses::ResponseComputerToolCallOutputItem::Status | nil
+      }
+      in {
+        type: :tool_search_call,
+        id: String,
+        arguments: OpenAI::Internal::Type::Unknown,
+        call_id: String | nil,
+        execution: OpenAI::Responses::ResponseToolSearchCall::Execution,
+        status: OpenAI::Responses::ResponseToolSearchCall::Status,
+        created_by: String | nil
+      }
+      in {
+        type: :tool_search_output,
+        id: String,
+        call_id: String | nil,
+        execution: OpenAI::Responses::ResponseToolSearchOutputItem::Execution,
+        status: OpenAI::Responses::ResponseToolSearchOutputItem::Status,
+        tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool]),
+        created_by: String | nil
       }
       in {
         type: :reasoning,
@@ -391,7 +433,7 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         output: String | nil,
         status: OpenAI::Conversations::ConversationItem::McpCall::Status | nil
       }
-      in {type: :custom_tool_call, call_id: String, input: String, name: String, id: String | nil}
+      in {type: :custom_tool_call, call_id: String, input: String, name: String, id: String | nil, namespace: String | nil}
       in {
         type: :custom_tool_call_output,
         call_id: String,

@@ -50,6 +50,8 @@ module OpenAI
                   OpenAI::Conversations::ConversationItem::ImageGenerationCall::OrHash,
                   OpenAI::Responses::ResponseComputerToolCall::OrHash,
                   OpenAI::Responses::ResponseComputerToolCallOutputItem::OrHash,
+                  OpenAI::Responses::ResponseToolSearchCall::OrHash,
+                  OpenAI::Responses::ResponseToolSearchOutputItem::OrHash,
                   OpenAI::Responses::ResponseReasoningItem::OrHash,
                   OpenAI::Responses::ResponseCodeInterpreterToolCall::OrHash,
                   OpenAI::Conversations::ConversationItem::LocalShellCall::OrHash,

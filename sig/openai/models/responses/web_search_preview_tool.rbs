@@ -4,12 +4,19 @@ module OpenAI
       type web_search_preview_tool =
         {
           type: OpenAI::Models::Responses::WebSearchPreviewTool::type_,
+          search_content_types: ::Array[OpenAI::Models::Responses::WebSearchPreviewTool::search_content_type],
           search_context_size: OpenAI::Models::Responses::WebSearchPreviewTool::search_context_size,
           user_location: OpenAI::Responses::WebSearchPreviewTool::UserLocation?
         }
 
       class WebSearchPreviewTool < OpenAI::Internal::Type::BaseModel
         attr_accessor type: OpenAI::Models::Responses::WebSearchPreviewTool::type_
+
+        attr_reader search_content_types: ::Array[OpenAI::Models::Responses::WebSearchPreviewTool::search_content_type]?
+
+        def search_content_types=: (
+          ::Array[OpenAI::Models::Responses::WebSearchPreviewTool::search_content_type]
+        ) -> ::Array[OpenAI::Models::Responses::WebSearchPreviewTool::search_content_type]
 
         attr_reader search_context_size: OpenAI::Models::Responses::WebSearchPreviewTool::search_context_size?
 
@@ -21,12 +28,14 @@ module OpenAI
 
         def initialize: (
           type: OpenAI::Models::Responses::WebSearchPreviewTool::type_,
+          ?search_content_types: ::Array[OpenAI::Models::Responses::WebSearchPreviewTool::search_content_type],
           ?search_context_size: OpenAI::Models::Responses::WebSearchPreviewTool::search_context_size,
           ?user_location: OpenAI::Responses::WebSearchPreviewTool::UserLocation?
         ) -> void
 
         def to_hash: -> {
           type: OpenAI::Models::Responses::WebSearchPreviewTool::type_,
+          search_content_types: ::Array[OpenAI::Models::Responses::WebSearchPreviewTool::search_content_type],
           search_context_size: OpenAI::Models::Responses::WebSearchPreviewTool::search_context_size,
           user_location: OpenAI::Responses::WebSearchPreviewTool::UserLocation?
         }
@@ -40,6 +49,17 @@ module OpenAI
           WEB_SEARCH_PREVIEW_2025_03_11: :web_search_preview_2025_03_11
 
           def self?.values: -> ::Array[OpenAI::Models::Responses::WebSearchPreviewTool::type_]
+        end
+
+        type search_content_type = :text | :image
+
+        module SearchContentType
+          extend OpenAI::Internal::Type::Enum
+
+          TEXT: :text
+          IMAGE: :image
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::WebSearchPreviewTool::search_content_type]
         end
 
         type search_context_size = :low | :medium | :high

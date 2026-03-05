@@ -11,6 +11,8 @@ module OpenAI
         | OpenAI::Responses::ResponseFunctionWebSearch
         | OpenAI::Responses::ResponseFunctionToolCall
         | OpenAI::Responses::ResponseInputItem::FunctionCallOutput
+        | OpenAI::Responses::ResponseInputItem::ToolSearchCall
+        | OpenAI::Responses::ResponseToolSearchOutputItemParam
         | OpenAI::Responses::ResponseReasoningItem
         | OpenAI::Responses::ResponseCompactionItemParam
         | OpenAI::Responses::ResponseInputItem::ImageGenerationCall
@@ -235,6 +237,75 @@ module OpenAI
             INCOMPLETE: :incomplete
 
             def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status]
+          end
+        end
+
+        type tool_search_call =
+          {
+            arguments: top,
+            type: :tool_search_call,
+            id: String?,
+            call_id: String?,
+            execution: OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall::execution,
+            status: OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall::status?
+          }
+
+        class ToolSearchCall < OpenAI::Internal::Type::BaseModel
+          attr_accessor arguments: top
+
+          attr_accessor type: :tool_search_call
+
+          attr_accessor id: String?
+
+          attr_accessor call_id: String?
+
+          attr_reader execution: OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall::execution?
+
+          def execution=: (
+            OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall::execution
+          ) -> OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall::execution
+
+          attr_accessor status: OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall::status?
+
+          def initialize: (
+            arguments: top,
+            ?id: String?,
+            ?call_id: String?,
+            ?execution: OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall::execution,
+            ?status: OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall::status?,
+            ?type: :tool_search_call
+          ) -> void
+
+          def to_hash: -> {
+            arguments: top,
+            type: :tool_search_call,
+            id: String?,
+            call_id: String?,
+            execution: OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall::execution,
+            status: OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall::status?
+          }
+
+          type execution = :server | :client
+
+          module Execution
+            extend OpenAI::Internal::Type::Enum
+
+            SERVER: :server
+            CLIENT: :client
+
+            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall::execution]
+          end
+
+          type status = :in_progress | :completed | :incomplete
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            IN_PROGRESS: :in_progress
+            COMPLETED: :completed
+            INCOMPLETE: :incomplete
+
+            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall::status]
           end
         end
 

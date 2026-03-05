@@ -42,6 +42,12 @@ module OpenAI
         #   @return [String, nil]
         optional :id, String
 
+        # @!attribute namespace
+        #   The namespace of the function to run.
+        #
+        #   @return [String, nil]
+        optional :namespace, String
+
         # @!attribute status
         #   The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
@@ -49,7 +55,7 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Responses::ResponseFunctionToolCall::Status, nil]
         optional :status, enum: -> { OpenAI::Responses::ResponseFunctionToolCall::Status }
 
-        # @!method initialize(arguments:, call_id:, name:, id: nil, status: nil, type: :function_call)
+        # @!method initialize(arguments:, call_id:, name:, id: nil, namespace: nil, status: nil, type: :function_call)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseFunctionToolCall} for more details.
         #
@@ -64,6 +70,8 @@ module OpenAI
         #   @param name [String] The name of the function to run.
         #
         #   @param id [String] The unique ID of the function tool call.
+        #
+        #   @param namespace [String] The namespace of the function to run.
         #
         #   @param status [Symbol, OpenAI::Models::Responses::ResponseFunctionToolCall::Status] The status of the item. One of `in_progress`, `completed`, or
         #

@@ -52,6 +52,12 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::ConnectorID, nil]
         optional :connector_id, enum: -> { OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID }
 
+        # @!attribute defer_loading
+        #   Whether this MCP tool is deferred and discovered via tool search.
+        #
+        #   @return [Boolean, nil]
+        optional :defer_loading, OpenAI::Internal::Type::Boolean
+
         # @!attribute headers
         #   Optional HTTP headers to send to the MCP server. Use for authentication or other
         #   purposes.
@@ -80,7 +86,7 @@ module OpenAI
         #   @return [String, nil]
         optional :server_url, String
 
-        # @!method initialize(server_label:, allowed_tools: nil, authorization: nil, connector_id: nil, headers: nil, require_approval: nil, server_description: nil, server_url: nil, type: :mcp)
+        # @!method initialize(server_label:, allowed_tools: nil, authorization: nil, connector_id: nil, defer_loading: nil, headers: nil, require_approval: nil, server_description: nil, server_url: nil, type: :mcp)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool} for more details.
         #
@@ -95,6 +101,8 @@ module OpenAI
         #   @param authorization [String] An OAuth access token that can be used with a remote MCP server, either
         #
         #   @param connector_id [Symbol, OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::ConnectorID] Identifier for service connectors, like those available in ChatGPT. One of
+        #
+        #   @param defer_loading [Boolean] Whether this MCP tool is deferred and discovered via tool search.
         #
         #   @param headers [Hash{Symbol=>String}, nil] Optional HTTP headers to send to the MCP server. Use for authentication
         #

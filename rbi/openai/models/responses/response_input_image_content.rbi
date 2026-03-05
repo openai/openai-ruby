@@ -16,8 +16,8 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
-        # The detail level of the image to be sent to the model. One of `high`, `low`, or
-        # `auto`. Defaults to `auto`.
+        # The detail level of the image to be sent to the model. One of `high`, `low`,
+        # `auto`, or `original`. Defaults to `auto`.
         sig do
           returns(
             T.nilable(
@@ -50,8 +50,8 @@ module OpenAI
           ).returns(T.attached_class)
         end
         def self.new(
-          # The detail level of the image to be sent to the model. One of `high`, `low`, or
-          # `auto`. Defaults to `auto`.
+          # The detail level of the image to be sent to the model. One of `high`, `low`,
+          # `auto`, or `original`. Defaults to `auto`.
           detail: nil,
           # The ID of the file to be sent to the model.
           file_id: nil,
@@ -79,8 +79,8 @@ module OpenAI
         def to_hash
         end
 
-        # The detail level of the image to be sent to the model. One of `high`, `low`, or
-        # `auto`. Defaults to `auto`.
+        # The detail level of the image to be sent to the model. One of `high`, `low`,
+        # `auto`, or `original`. Defaults to `auto`.
         module Detail
           extend OpenAI::Internal::Type::Enum
 
@@ -106,6 +106,11 @@ module OpenAI
           AUTO =
             T.let(
               :auto,
+              OpenAI::Responses::ResponseInputImageContent::Detail::TaggedSymbol
+            )
+          ORIGINAL =
+            T.let(
+              :original,
               OpenAI::Responses::ResponseInputImageContent::Detail::TaggedSymbol
             )
 

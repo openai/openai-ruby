@@ -33,6 +33,12 @@ module OpenAI
         #   @return [Symbol, :function]
         required :type, const: :function
 
+        # @!attribute defer_loading
+        #   Whether this function is deferred and loaded via tool search.
+        #
+        #   @return [Boolean, nil]
+        optional :defer_loading, OpenAI::Internal::Type::Boolean
+
         # @!attribute description
         #   A description of the function. Used by the model to determine whether or not to
         #   call the function.
@@ -40,7 +46,7 @@ module OpenAI
         #   @return [String, nil]
         optional :description, String, nil?: true
 
-        # @!method initialize(name:, parameters:, strict:, description: nil, type: :function)
+        # @!method initialize(name:, parameters:, strict:, defer_loading: nil, description: nil, type: :function)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::FunctionTool} for more details.
         #
@@ -53,6 +59,8 @@ module OpenAI
         #   @param parameters [Hash{Symbol=>Object}, nil] A JSON schema object describing the parameters of the function.
         #
         #   @param strict [Boolean, nil] Whether to enforce strict parameter validation. Default `true`.
+        #
+        #   @param defer_loading [Boolean] Whether this function is deferred and loaded via tool search.
         #
         #   @param description [String, nil] A description of the function. Used by the model to determine whether or not to
         #

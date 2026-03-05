@@ -7,7 +7,8 @@ module OpenAI
           input: String,
           name: String,
           type: :custom_tool_call,
-          id: String
+          id: String,
+          namespace: String
         }
 
       class ResponseCustomToolCall < OpenAI::Internal::Type::BaseModel
@@ -23,11 +24,16 @@ module OpenAI
 
         def id=: (String) -> String
 
+        attr_reader namespace: String?
+
+        def namespace=: (String) -> String
+
         def initialize: (
           call_id: String,
           input: String,
           name: String,
           ?id: String,
+          ?namespace: String,
           ?type: :custom_tool_call
         ) -> void
 
@@ -36,7 +42,8 @@ module OpenAI
           input: String,
           name: String,
           type: :custom_tool_call,
-          id: String
+          id: String,
+          namespace: String
         }
       end
     end

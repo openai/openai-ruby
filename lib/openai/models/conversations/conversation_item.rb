@@ -39,6 +39,10 @@ module OpenAI
 
         variant :computer_call_output, -> { OpenAI::Responses::ResponseComputerToolCallOutputItem }
 
+        variant :tool_search_call, -> { OpenAI::Responses::ResponseToolSearchCall }
+
+        variant :tool_search_output, -> { OpenAI::Responses::ResponseToolSearchOutputItem }
+
         # A description of the chain of thought used by a reasoning model while generating
         # a response. Be sure to include these items in your `input` to the Responses API
         # for subsequent turns of a conversation if you are manually
@@ -604,7 +608,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Conversations::Message, OpenAI::Models::Responses::ResponseFunctionToolCallItem, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Conversations::ConversationItem::LocalShellCall, OpenAI::Models::Conversations::ConversationItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseFunctionShellToolCall, OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput, OpenAI::Models::Responses::ResponseApplyPatchToolCall, OpenAI::Models::Responses::ResponseApplyPatchToolCallOutput, OpenAI::Models::Conversations::ConversationItem::McpListTools, OpenAI::Models::Conversations::ConversationItem::McpApprovalRequest, OpenAI::Models::Conversations::ConversationItem::McpApprovalResponse, OpenAI::Models::Conversations::ConversationItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput)]
+        #   @return [Array(OpenAI::Models::Conversations::Message, OpenAI::Models::Responses::ResponseFunctionToolCallItem, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem, OpenAI::Models::Responses::ResponseToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItem, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Conversations::ConversationItem::LocalShellCall, OpenAI::Models::Conversations::ConversationItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseFunctionShellToolCall, OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput, OpenAI::Models::Responses::ResponseApplyPatchToolCall, OpenAI::Models::Responses::ResponseApplyPatchToolCallOutput, OpenAI::Models::Conversations::ConversationItem::McpListTools, OpenAI::Models::Conversations::ConversationItem::McpApprovalRequest, OpenAI::Models::Conversations::ConversationItem::McpApprovalResponse, OpenAI::Models::Conversations::ConversationItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput)]
       end
     end
 

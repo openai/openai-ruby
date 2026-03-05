@@ -12,7 +12,7 @@ module OpenAI
         progress: Integer,
         prompt: String?,
         remixed_from_video_id: String?,
-        seconds: OpenAI::Models::video_seconds,
+        seconds: OpenAI::Models::Video::seconds,
         size: OpenAI::Models::video_size,
         status: OpenAI::Models::Video::status
       }
@@ -38,7 +38,7 @@ module OpenAI
 
       attr_accessor remixed_from_video_id: String?
 
-      attr_accessor seconds: OpenAI::Models::video_seconds
+      attr_accessor seconds: OpenAI::Models::Video::seconds
 
       attr_accessor size: OpenAI::Models::video_size
 
@@ -54,7 +54,7 @@ module OpenAI
         progress: Integer,
         prompt: String?,
         remixed_from_video_id: String?,
-        seconds: OpenAI::Models::video_seconds,
+        seconds: OpenAI::Models::Video::seconds,
         size: OpenAI::Models::video_size,
         status: OpenAI::Models::Video::status,
         ?object: :video
@@ -71,10 +71,18 @@ module OpenAI
         progress: Integer,
         prompt: String?,
         remixed_from_video_id: String?,
-        seconds: OpenAI::Models::video_seconds,
+        seconds: OpenAI::Models::Video::seconds,
         size: OpenAI::Models::video_size,
         status: OpenAI::Models::Video::status
       }
+
+      type seconds = String | OpenAI::Models::video_seconds
+
+      module Seconds
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::Video::seconds]
+      end
 
       type status = :queued | :in_progress | :completed | :failed
 

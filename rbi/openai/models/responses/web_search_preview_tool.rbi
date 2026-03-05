@@ -17,6 +17,27 @@ module OpenAI
         sig { returns(OpenAI::Responses::WebSearchPreviewTool::Type::OrSymbol) }
         attr_accessor :type
 
+        sig do
+          returns(
+            T.nilable(
+              T::Array[
+                OpenAI::Responses::WebSearchPreviewTool::SearchContentType::OrSymbol
+              ]
+            )
+          )
+        end
+        attr_reader :search_content_types
+
+        sig do
+          params(
+            search_content_types:
+              T::Array[
+                OpenAI::Responses::WebSearchPreviewTool::SearchContentType::OrSymbol
+              ]
+          ).void
+        end
+        attr_writer :search_content_types
+
         # High level guidance for the amount of context window space to use for the
         # search. One of `low`, `medium`, or `high`. `medium` is the default.
         sig do
@@ -60,6 +81,10 @@ module OpenAI
         sig do
           params(
             type: OpenAI::Responses::WebSearchPreviewTool::Type::OrSymbol,
+            search_content_types:
+              T::Array[
+                OpenAI::Responses::WebSearchPreviewTool::SearchContentType::OrSymbol
+              ],
             search_context_size:
               OpenAI::Responses::WebSearchPreviewTool::SearchContextSize::OrSymbol,
             user_location:
@@ -72,6 +97,7 @@ module OpenAI
           # The type of the web search tool. One of `web_search_preview` or
           # `web_search_preview_2025_03_11`.
           type:,
+          search_content_types: nil,
           # High level guidance for the amount of context window space to use for the
           # search. One of `low`, `medium`, or `high`. `medium` is the default.
           search_context_size: nil,
@@ -84,6 +110,10 @@ module OpenAI
           override.returns(
             {
               type: OpenAI::Responses::WebSearchPreviewTool::Type::OrSymbol,
+              search_content_types:
+                T::Array[
+                  OpenAI::Responses::WebSearchPreviewTool::SearchContentType::OrSymbol
+                ],
               search_context_size:
                 OpenAI::Responses::WebSearchPreviewTool::SearchContextSize::OrSymbol,
               user_location:
@@ -120,6 +150,40 @@ module OpenAI
             override.returns(
               T::Array[
                 OpenAI::Responses::WebSearchPreviewTool::Type::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
+        end
+
+        module SearchContentType
+          extend OpenAI::Internal::Type::Enum
+
+          TaggedSymbol =
+            T.type_alias do
+              T.all(
+                Symbol,
+                OpenAI::Responses::WebSearchPreviewTool::SearchContentType
+              )
+            end
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+          TEXT =
+            T.let(
+              :text,
+              OpenAI::Responses::WebSearchPreviewTool::SearchContentType::TaggedSymbol
+            )
+          IMAGE =
+            T.let(
+              :image,
+              OpenAI::Responses::WebSearchPreviewTool::SearchContentType::TaggedSymbol
+            )
+
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Responses::WebSearchPreviewTool::SearchContentType::TaggedSymbol
               ]
             )
           end

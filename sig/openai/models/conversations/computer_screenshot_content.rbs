@@ -2,9 +2,16 @@ module OpenAI
   module Models
     module Conversations
       type computer_screenshot_content =
-        { file_id: String?, image_url: String?, type: :computer_screenshot }
+        {
+          detail: OpenAI::Models::Conversations::ComputerScreenshotContent::detail,
+          file_id: String?,
+          image_url: String?,
+          type: :computer_screenshot
+        }
 
       class ComputerScreenshotContent < OpenAI::Internal::Type::BaseModel
+        attr_accessor detail: OpenAI::Models::Conversations::ComputerScreenshotContent::detail
+
         attr_accessor file_id: String?
 
         attr_accessor image_url: String?
@@ -12,16 +19,31 @@ module OpenAI
         attr_accessor type: :computer_screenshot
 
         def initialize: (
+          detail: OpenAI::Models::Conversations::ComputerScreenshotContent::detail,
           file_id: String?,
           image_url: String?,
           ?type: :computer_screenshot
         ) -> void
 
         def to_hash: -> {
+          detail: OpenAI::Models::Conversations::ComputerScreenshotContent::detail,
           file_id: String?,
           image_url: String?,
           type: :computer_screenshot
         }
+
+        type detail = :low | :high | :auto | :original
+
+        module Detail
+          extend OpenAI::Internal::Type::Enum
+
+          LOW: :low
+          HIGH: :high
+          AUTO: :auto
+          ORIGINAL: :original
+
+          def self?.values: -> ::Array[OpenAI::Models::Conversations::ComputerScreenshotContent::detail]
+        end
       end
     end
   end
