@@ -1,50 +1,14 @@
 module OpenAI
   module Models
     module Responses
-      type computer_tool =
-        {
-          display_height: Integer,
-          display_width: Integer,
-          environment: OpenAI::Models::Responses::ComputerTool::environment,
-          type: :computer_use_preview
-        }
+      type computer_tool = { type: :computer }
 
       class ComputerTool < OpenAI::Internal::Type::BaseModel
-        attr_accessor display_height: Integer
+        attr_accessor type: :computer
 
-        attr_accessor display_width: Integer
+        def initialize: (?type: :computer) -> void
 
-        attr_accessor environment: OpenAI::Models::Responses::ComputerTool::environment
-
-        attr_accessor type: :computer_use_preview
-
-        def initialize: (
-          display_height: Integer,
-          display_width: Integer,
-          environment: OpenAI::Models::Responses::ComputerTool::environment,
-          ?type: :computer_use_preview
-        ) -> void
-
-        def to_hash: -> {
-          display_height: Integer,
-          display_width: Integer,
-          environment: OpenAI::Models::Responses::ComputerTool::environment,
-          type: :computer_use_preview
-        }
-
-        type environment = :windows | :mac | :linux | :ubuntu | :browser
-
-        module Environment
-          extend OpenAI::Internal::Type::Enum
-
-          WINDOWS: :windows
-          MAC: :mac
-          LINUX: :linux
-          UBUNTU: :ubuntu
-          BROWSER: :browser
-
-          def self?.values: -> ::Array[OpenAI::Models::Responses::ComputerTool::environment]
-        end
+        def to_hash: -> { type: :computer }
       end
     end
   end

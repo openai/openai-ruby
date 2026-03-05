@@ -16,10 +16,10 @@ module OpenAI
         variant :file_search, -> { OpenAI::Responses::FileSearchTool }
 
         # A tool that controls a virtual computer. Learn more about the [computer tool](https://platform.openai.com/docs/guides/tools-computer-use).
-        variant :computer, -> { OpenAI::Responses::ComputerUseTool }
+        variant :computer, -> { OpenAI::Responses::ComputerTool }
 
         # A tool that controls a virtual computer. Learn more about the [computer tool](https://platform.openai.com/docs/guides/tools-computer-use).
-        variant :computer_use_preview, -> { OpenAI::Responses::ComputerTool }
+        variant :computer_use_preview, -> { OpenAI::Responses::ComputerUsePreviewTool }
 
         # Give the model access to additional tools via remote Model Context Protocol
         # (MCP) servers. [Learn more about MCP](https://platform.openai.com/docs/guides/tools-remote-mcp).
@@ -772,7 +772,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerUseTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::FunctionShellTool, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::NamespaceTool, OpenAI::Models::Responses::ToolSearchTool, OpenAI::Models::Responses::ApplyPatchTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool)]
+        #   @return [Array(OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::ComputerUsePreviewTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::FunctionShellTool, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::NamespaceTool, OpenAI::Models::Responses::ToolSearchTool, OpenAI::Models::Responses::ApplyPatchTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool)]
       end
     end
   end
