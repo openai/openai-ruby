@@ -357,8 +357,8 @@ module OpenAI
                 T.any(
                   OpenAI::Responses::FunctionTool,
                   OpenAI::Responses::FileSearchTool,
-                  OpenAI::Responses::ComputerUseTool,
                   OpenAI::Responses::ComputerTool,
+                  OpenAI::Responses::ComputerUsePreviewTool,
                   OpenAI::Responses::Tool::Mcp,
                   OpenAI::Responses::Tool::CodeInterpreter,
                   OpenAI::Responses::Tool::ImageGeneration,
@@ -384,8 +384,8 @@ module OpenAI
                 T.any(
                   OpenAI::Responses::FunctionTool::OrHash,
                   OpenAI::Responses::FileSearchTool::OrHash,
-                  OpenAI::Responses::ComputerUseTool::OrHash,
                   OpenAI::Responses::ComputerTool::OrHash,
+                  OpenAI::Responses::ComputerUsePreviewTool::OrHash,
                   OpenAI::Responses::Tool::Mcp::OrHash,
                   OpenAI::Responses::Tool::CodeInterpreter::OrHash,
                   OpenAI::Responses::Tool::ImageGeneration::OrHash,
@@ -511,8 +511,8 @@ module OpenAI
                 T.any(
                   OpenAI::Responses::FunctionTool::OrHash,
                   OpenAI::Responses::FileSearchTool::OrHash,
-                  OpenAI::Responses::ComputerUseTool::OrHash,
                   OpenAI::Responses::ComputerTool::OrHash,
+                  OpenAI::Responses::ComputerUsePreviewTool::OrHash,
                   OpenAI::Responses::Tool::Mcp::OrHash,
                   OpenAI::Responses::Tool::CodeInterpreter::OrHash,
                   OpenAI::Responses::Tool::ImageGeneration::OrHash,
@@ -784,8 +784,8 @@ module OpenAI
                   T.any(
                     OpenAI::Responses::FunctionTool,
                     OpenAI::Responses::FileSearchTool,
-                    OpenAI::Responses::ComputerUseTool,
                     OpenAI::Responses::ComputerTool,
+                    OpenAI::Responses::ComputerUsePreviewTool,
                     OpenAI::Responses::Tool::Mcp,
                     OpenAI::Responses::Tool::CodeInterpreter,
                     OpenAI::Responses::Tool::ImageGeneration,

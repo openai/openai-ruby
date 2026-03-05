@@ -12,8 +12,8 @@ module OpenAI
             T.any(
               OpenAI::Responses::FunctionTool,
               OpenAI::Responses::FileSearchTool,
-              OpenAI::Responses::ComputerUseTool,
               OpenAI::Responses::ComputerTool,
+              OpenAI::Responses::ComputerUsePreviewTool,
               OpenAI::Responses::Tool::Mcp,
               OpenAI::Responses::Tool::CodeInterpreter,
               OpenAI::Responses::Tool::ImageGeneration,
