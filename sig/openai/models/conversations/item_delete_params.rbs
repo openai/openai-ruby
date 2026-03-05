@@ -2,7 +2,8 @@ module OpenAI
   module Models
     module Conversations
       type item_delete_params =
-        { conversation_id: String } & OpenAI::Internal::Type::request_parameters
+        { conversation_id: String, item_id: String }
+        & OpenAI::Internal::Type::request_parameters
 
       class ItemDeleteParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -10,13 +11,17 @@ module OpenAI
 
         attr_accessor conversation_id: String
 
+        attr_accessor item_id: String
+
         def initialize: (
           conversation_id: String,
+          item_id: String,
           ?request_options: OpenAI::request_opts
         ) -> void
 
         def to_hash: -> {
           conversation_id: String,
+          item_id: String,
           request_options: OpenAI::RequestOptions
         }
       end

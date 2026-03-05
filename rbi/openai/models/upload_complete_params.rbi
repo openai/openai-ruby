@@ -11,6 +11,9 @@ module OpenAI
           T.any(OpenAI::UploadCompleteParams, OpenAI::Internal::AnyHash)
         end
 
+      sig { returns(String) }
+      attr_accessor :upload_id
+
       # The ordered list of Part IDs.
       sig { returns(T::Array[String]) }
       attr_accessor :part_ids
@@ -25,12 +28,14 @@ module OpenAI
 
       sig do
         params(
+          upload_id: String,
           part_ids: T::Array[String],
           md5: String,
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(T.attached_class)
       end
       def self.new(
+        upload_id:,
         # The ordered list of Part IDs.
         part_ids:,
         # The optional md5 checksum for the file contents to verify if the bytes uploaded
@@ -43,6 +48,7 @@ module OpenAI
       sig do
         override.returns(
           {
+            upload_id: String,
             part_ids: T::Array[String],
             md5: String,
             request_options: OpenAI::RequestOptions

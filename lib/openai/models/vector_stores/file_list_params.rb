@@ -8,6 +8,11 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # @!attribute vector_store_id
+        #
+        #   @return [String]
+        required :vector_store_id, String
+
         # @!attribute after
         #   A cursor for use in pagination. `after` is an object ID that defines your place
         #   in the list. For instance, if you make a list request and receive 100 objects,
@@ -46,9 +51,11 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::VectorStores::FileListParams::Order, nil]
         optional :order, enum: -> { OpenAI::VectorStores::FileListParams::Order }
 
-        # @!method initialize(after: nil, before: nil, filter: nil, limit: nil, order: nil, request_options: {})
+        # @!method initialize(vector_store_id:, after: nil, before: nil, filter: nil, limit: nil, order: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::VectorStores::FileListParams} for more details.
+        #
+        #   @param vector_store_id [String]
         #
         #   @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
         #

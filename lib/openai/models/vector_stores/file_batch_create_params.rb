@@ -8,6 +8,11 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # @!attribute vector_store_id
+        #
+        #   @return [String]
+        required :vector_store_id, String
+
         # @!attribute attributes
         #   Set of 16 key-value pairs that can be attached to an object. This can be useful
         #   for storing additional information about the object in a structured format, and
@@ -49,9 +54,11 @@ module OpenAI
         #   @return [Array<OpenAI::Models::VectorStores::FileBatchCreateParams::File>, nil]
         optional :files, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::VectorStores::FileBatchCreateParams::File] }
 
-        # @!method initialize(attributes: nil, chunking_strategy: nil, file_ids: nil, files: nil, request_options: {})
+        # @!method initialize(vector_store_id:, attributes: nil, chunking_strategy: nil, file_ids: nil, files: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::VectorStores::FileBatchCreateParams} for more details.
+        #
+        #   @param vector_store_id [String]
         #
         #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #

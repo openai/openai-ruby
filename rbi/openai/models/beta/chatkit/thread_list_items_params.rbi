@@ -16,6 +16,9 @@ module OpenAI
               )
             end
 
+          sig { returns(String) }
+          attr_accessor :thread_id
+
           # List items created after this thread item ID. Defaults to null for the first
           # page.
           sig { returns(T.nilable(String)) }
@@ -59,6 +62,7 @@ module OpenAI
 
           sig do
             params(
+              thread_id: String,
               after: String,
               before: String,
               limit: Integer,
@@ -68,6 +72,7 @@ module OpenAI
             ).returns(T.attached_class)
           end
           def self.new(
+            thread_id:,
             # List items created after this thread item ID. Defaults to null for the first
             # page.
             after: nil,
@@ -85,6 +90,7 @@ module OpenAI
           sig do
             override.returns(
               {
+                thread_id: String,
                 after: String,
                 before: String,
                 limit: Integer,

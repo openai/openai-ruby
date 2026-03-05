@@ -15,6 +15,9 @@ module OpenAI
             )
           end
 
+        sig { returns(String) }
+        attr_accessor :vector_store_id
+
         # A cursor for use in pagination. `after` is an object ID that defines your place
         # in the list. For instance, if you make a list request and receive 100 objects,
         # ending with obj_foo, your subsequent call can include after=obj_foo in order to
@@ -76,6 +79,7 @@ module OpenAI
 
         sig do
           params(
+            vector_store_id: String,
             after: String,
             before: String,
             filter: OpenAI::VectorStores::FileListParams::Filter::OrSymbol,
@@ -85,6 +89,7 @@ module OpenAI
           ).returns(T.attached_class)
         end
         def self.new(
+          vector_store_id:,
           # A cursor for use in pagination. `after` is an object ID that defines your place
           # in the list. For instance, if you make a list request and receive 100 objects,
           # ending with obj_foo, your subsequent call can include after=obj_foo in order to
@@ -110,6 +115,7 @@ module OpenAI
         sig do
           override.returns(
             {
+              vector_store_id: String,
               after: String,
               before: String,
               filter: OpenAI::VectorStores::FileListParams::Filter::OrSymbol,

@@ -3,6 +3,7 @@ module OpenAI
     module Containers
       type file_list_params =
         {
+          container_id: String,
           after: String,
           limit: Integer,
           order: OpenAI::Models::Containers::FileListParams::order
@@ -12,6 +13,8 @@ module OpenAI
       class FileListParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor container_id: String
 
         attr_reader after: String?
 
@@ -28,6 +31,7 @@ module OpenAI
         ) -> OpenAI::Models::Containers::FileListParams::order
 
         def initialize: (
+          container_id: String,
           ?after: String,
           ?limit: Integer,
           ?order: OpenAI::Models::Containers::FileListParams::order,
@@ -35,6 +39,7 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
+          container_id: String,
           after: String,
           limit: Integer,
           order: OpenAI::Models::Containers::FileListParams::order,

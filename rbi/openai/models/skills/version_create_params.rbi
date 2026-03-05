@@ -15,6 +15,9 @@ module OpenAI
             )
           end
 
+        sig { returns(String) }
+        attr_accessor :skill_id
+
         # Whether to set this version as the default.
         sig { returns(T.nilable(T::Boolean)) }
         attr_reader :default
@@ -39,12 +42,14 @@ module OpenAI
 
         sig do
           params(
+            skill_id: String,
             default: T::Boolean,
             files: OpenAI::Skills::VersionCreateParams::Files::Variants,
             request_options: OpenAI::RequestOptions::OrHash
           ).returns(T.attached_class)
         end
         def self.new(
+          skill_id:,
           # Whether to set this version as the default.
           default: nil,
           # Skill files to upload (directory upload) or a single zip file.
@@ -56,6 +61,7 @@ module OpenAI
         sig do
           override.returns(
             {
+              skill_id: String,
               default: T::Boolean,
               files: OpenAI::Skills::VersionCreateParams::Files::Variants,
               request_options: OpenAI::RequestOptions

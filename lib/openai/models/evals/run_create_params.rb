@@ -8,6 +8,11 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # @!attribute eval_id
+        #
+        #   @return [String]
+        required :eval_id, String
+
         # @!attribute data_source
         #   Details about the run's data source.
         #
@@ -31,9 +36,11 @@ module OpenAI
         #   @return [String, nil]
         optional :name, String
 
-        # @!method initialize(data_source:, metadata: nil, name: nil, request_options: {})
+        # @!method initialize(eval_id:, data_source:, metadata: nil, name: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Evals::RunCreateParams} for more details.
+        #
+        #   @param eval_id [String]
         #
         #   @param data_source [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource] Details about the run's data source.
         #

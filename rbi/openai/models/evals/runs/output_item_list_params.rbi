@@ -19,6 +19,9 @@ module OpenAI
           sig { returns(String) }
           attr_accessor :eval_id
 
+          sig { returns(String) }
+          attr_accessor :run_id
+
           # Identifier for the last output item from the previous pagination request.
           sig { returns(T.nilable(String)) }
           attr_reader :after
@@ -73,6 +76,7 @@ module OpenAI
           sig do
             params(
               eval_id: String,
+              run_id: String,
               after: String,
               limit: Integer,
               order: OpenAI::Evals::Runs::OutputItemListParams::Order::OrSymbol,
@@ -83,6 +87,7 @@ module OpenAI
           end
           def self.new(
             eval_id:,
+            run_id:,
             # Identifier for the last output item from the previous pagination request.
             after: nil,
             # Number of output items to retrieve.
@@ -101,6 +106,7 @@ module OpenAI
             override.returns(
               {
                 eval_id: String,
+                run_id: String,
                 after: String,
                 limit: Integer,
                 order:

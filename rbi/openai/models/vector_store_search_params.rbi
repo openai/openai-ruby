@@ -11,6 +11,9 @@ module OpenAI
           T.any(OpenAI::VectorStoreSearchParams, OpenAI::Internal::AnyHash)
         end
 
+      sig { returns(String) }
+      attr_accessor :vector_store_id
+
       # A query string for a search
       sig { returns(OpenAI::VectorStoreSearchParams::Query::Variants) }
       attr_accessor :query
@@ -65,6 +68,7 @@ module OpenAI
 
       sig do
         params(
+          vector_store_id: String,
           query: OpenAI::VectorStoreSearchParams::Query::Variants,
           filters:
             T.any(
@@ -79,6 +83,7 @@ module OpenAI
         ).returns(T.attached_class)
       end
       def self.new(
+        vector_store_id:,
         # A query string for a search
         query:,
         # A filter to apply based on file attributes.
@@ -97,6 +102,7 @@ module OpenAI
       sig do
         override.returns(
           {
+            vector_store_id: String,
             query: OpenAI::VectorStoreSearchParams::Query::Variants,
             filters: T.any(OpenAI::ComparisonFilter, OpenAI::CompoundFilter),
             max_num_results: Integer,

@@ -7,7 +7,13 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      # @!method initialize(request_options: {})
+      # @!attribute vector_store_id
+      #
+      #   @return [String]
+      required :vector_store_id, String
+
+      # @!method initialize(vector_store_id:, request_options: {})
+      #   @param vector_store_id [String]
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
     end
   end

@@ -4,6 +4,7 @@ module OpenAI
       module Threads
         type run_create_params =
           {
+            thread_id: String,
             assistant_id: String,
             include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
             additional_instructions: String?,
@@ -27,6 +28,8 @@ module OpenAI
         class RunCreateParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor thread_id: String
 
           attr_accessor assistant_id: String
 
@@ -69,6 +72,7 @@ module OpenAI
           attr_accessor truncation_strategy: OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy?
 
           def initialize: (
+            thread_id: String,
             assistant_id: String,
             ?include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
             ?additional_instructions: String?,
@@ -90,6 +94,7 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
+            thread_id: String,
             assistant_id: String,
             include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
             additional_instructions: String?,

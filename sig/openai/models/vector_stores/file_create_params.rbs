@@ -3,6 +3,7 @@ module OpenAI
     module VectorStores
       type file_create_params =
         {
+          vector_store_id: String,
           file_id: String,
           attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileCreateParams::attribute]?,
           chunking_strategy: OpenAI::Models::file_chunking_strategy_param
@@ -12,6 +13,8 @@ module OpenAI
       class FileCreateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor vector_store_id: String
 
         attr_accessor file_id: String
 
@@ -24,6 +27,7 @@ module OpenAI
         ) -> OpenAI::Models::file_chunking_strategy_param
 
         def initialize: (
+          vector_store_id: String,
           file_id: String,
           ?attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileCreateParams::attribute]?,
           ?chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
@@ -31,6 +35,7 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
+          vector_store_id: String,
           file_id: String,
           attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileCreateParams::attribute]?,
           chunking_strategy: OpenAI::Models::file_chunking_strategy_param,

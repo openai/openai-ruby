@@ -3,6 +3,7 @@ module OpenAI
     module Skills
       type version_list_params =
         {
+          skill_id: String,
           after: String,
           limit: Integer,
           order: OpenAI::Models::Skills::VersionListParams::order
@@ -12,6 +13,8 @@ module OpenAI
       class VersionListParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor skill_id: String
 
         attr_reader after: String?
 
@@ -28,6 +31,7 @@ module OpenAI
         ) -> OpenAI::Models::Skills::VersionListParams::order
 
         def initialize: (
+          skill_id: String,
           ?after: String,
           ?limit: Integer,
           ?order: OpenAI::Models::Skills::VersionListParams::order,
@@ -35,6 +39,7 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
+          skill_id: String,
           after: String,
           limit: Integer,
           order: OpenAI::Models::Skills::VersionListParams::order,

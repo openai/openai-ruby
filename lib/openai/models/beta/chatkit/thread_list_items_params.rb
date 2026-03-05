@@ -9,6 +9,11 @@ module OpenAI
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
+          # @!attribute thread_id
+          #
+          #   @return [String]
+          required :thread_id, String
+
           # @!attribute after
           #   List items created after this thread item ID. Defaults to null for the first
           #   page.
@@ -35,9 +40,11 @@ module OpenAI
           #   @return [Symbol, OpenAI::Models::Beta::ChatKit::ThreadListItemsParams::Order, nil]
           optional :order, enum: -> { OpenAI::Beta::ChatKit::ThreadListItemsParams::Order }
 
-          # @!method initialize(after: nil, before: nil, limit: nil, order: nil, request_options: {})
+          # @!method initialize(thread_id:, after: nil, before: nil, limit: nil, order: nil, request_options: {})
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Beta::ChatKit::ThreadListItemsParams} for more details.
+          #
+          #   @param thread_id [String]
           #
           #   @param after [String] List items created after this thread item ID. Defaults to null for the first pag
           #

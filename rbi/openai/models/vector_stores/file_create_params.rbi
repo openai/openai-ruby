@@ -15,6 +15,9 @@ module OpenAI
             )
           end
 
+        sig { returns(String) }
+        attr_accessor :vector_store_id
+
         # A [File](https://platform.openai.com/docs/api-reference/files) ID that the
         # vector store should use. Useful for tools like `file_search` that can access
         # files.
@@ -65,6 +68,7 @@ module OpenAI
 
         sig do
           params(
+            vector_store_id: String,
             file_id: String,
             attributes:
               T.nilable(
@@ -82,6 +86,7 @@ module OpenAI
           ).returns(T.attached_class)
         end
         def self.new(
+          vector_store_id:,
           # A [File](https://platform.openai.com/docs/api-reference/files) ID that the
           # vector store should use. Useful for tools like `file_search` that can access
           # files.
@@ -102,6 +107,7 @@ module OpenAI
         sig do
           override.returns(
             {
+              vector_store_id: String,
               file_id: String,
               attributes:
                 T.nilable(

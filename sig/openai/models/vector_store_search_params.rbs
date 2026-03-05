@@ -2,6 +2,7 @@ module OpenAI
   module Models
     type vector_store_search_params =
       {
+        vector_store_id: String,
         query: OpenAI::Models::VectorStoreSearchParams::query,
         filters: OpenAI::Models::VectorStoreSearchParams::filters,
         max_num_results: Integer,
@@ -13,6 +14,8 @@ module OpenAI
     class VectorStoreSearchParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
+
+      attr_accessor vector_store_id: String
 
       attr_accessor query: OpenAI::Models::VectorStoreSearchParams::query
 
@@ -37,6 +40,7 @@ module OpenAI
       def rewrite_query=: (bool) -> bool
 
       def initialize: (
+        vector_store_id: String,
         query: OpenAI::Models::VectorStoreSearchParams::query,
         ?filters: OpenAI::Models::VectorStoreSearchParams::filters,
         ?max_num_results: Integer,
@@ -46,6 +50,7 @@ module OpenAI
       ) -> void
 
       def to_hash: -> {
+        vector_store_id: String,
         query: OpenAI::Models::VectorStoreSearchParams::query,
         filters: OpenAI::Models::VectorStoreSearchParams::filters,
         max_num_results: Integer,

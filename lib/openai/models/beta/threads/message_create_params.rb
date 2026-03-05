@@ -9,6 +9,11 @@ module OpenAI
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
+          # @!attribute thread_id
+          #
+          #   @return [String]
+          required :thread_id, String
+
           # @!attribute content
           #   The text contents of the message.
           #
@@ -47,9 +52,11 @@ module OpenAI
           #   @return [Hash{Symbol=>String}, nil]
           optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
-          # @!method initialize(content:, role:, attachments: nil, metadata: nil, request_options: {})
+          # @!method initialize(thread_id:, content:, role:, attachments: nil, metadata: nil, request_options: {})
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Beta::Threads::MessageCreateParams} for more details.
+          #
+          #   @param thread_id [String]
           #
           #   @param content [String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>] The text contents of the message.
           #

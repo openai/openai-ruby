@@ -3,6 +3,7 @@ module OpenAI
     module VectorStores
       type file_list_params =
         {
+          vector_store_id: String,
           after: String,
           before: String,
           filter: OpenAI::Models::VectorStores::FileListParams::filter,
@@ -14,6 +15,8 @@ module OpenAI
       class FileListParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor vector_store_id: String
 
         attr_reader after: String?
 
@@ -40,6 +43,7 @@ module OpenAI
         ) -> OpenAI::Models::VectorStores::FileListParams::order
 
         def initialize: (
+          vector_store_id: String,
           ?after: String,
           ?before: String,
           ?filter: OpenAI::Models::VectorStores::FileListParams::filter,
@@ -49,6 +53,7 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
+          vector_store_id: String,
           after: String,
           before: String,
           filter: OpenAI::Models::VectorStores::FileListParams::filter,

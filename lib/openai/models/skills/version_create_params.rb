@@ -8,6 +8,11 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # @!attribute skill_id
+        #
+        #   @return [String]
+        required :skill_id, String
+
         # @!attribute default
         #   Whether to set this version as the default.
         #
@@ -20,7 +25,9 @@ module OpenAI
         #   @return [Array<Pathname, StringIO, IO, String, OpenAI::FilePart>, Pathname, StringIO, IO, String, OpenAI::FilePart, nil]
         optional :files, union: -> { OpenAI::Skills::VersionCreateParams::Files }
 
-        # @!method initialize(default: nil, files: nil, request_options: {})
+        # @!method initialize(skill_id:, default: nil, files: nil, request_options: {})
+        #   @param skill_id [String]
+        #
         #   @param default [Boolean] Whether to set this version as the default.
         #
         #   @param files [Array<Pathname, StringIO, IO, String, OpenAI::FilePart>, Pathname, StringIO, IO, String, OpenAI::FilePart] Skill files to upload (directory upload) or a single zip file.

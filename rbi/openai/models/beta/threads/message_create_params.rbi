@@ -16,6 +16,9 @@ module OpenAI
               )
             end
 
+          sig { returns(String) }
+          attr_accessor :thread_id
+
           # The text contents of the message.
           sig do
             returns(
@@ -56,6 +59,7 @@ module OpenAI
 
           sig do
             params(
+              thread_id: String,
               content:
                 OpenAI::Beta::Threads::MessageCreateParams::Content::Variants,
               role: OpenAI::Beta::Threads::MessageCreateParams::Role::OrSymbol,
@@ -70,6 +74,7 @@ module OpenAI
             ).returns(T.attached_class)
           end
           def self.new(
+            thread_id:,
             # The text contents of the message.
             content:,
             # The role of the entity that is creating the message. Allowed values include:
@@ -95,6 +100,7 @@ module OpenAI
           sig do
             override.returns(
               {
+                thread_id: String,
                 content:
                   OpenAI::Beta::Threads::MessageCreateParams::Content::Variants,
                 role:

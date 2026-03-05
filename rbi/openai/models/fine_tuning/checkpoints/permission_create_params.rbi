@@ -16,17 +16,22 @@ module OpenAI
               )
             end
 
+          sig { returns(String) }
+          attr_accessor :fine_tuned_model_checkpoint
+
           # The project identifiers to grant access to.
           sig { returns(T::Array[String]) }
           attr_accessor :project_ids
 
           sig do
             params(
+              fine_tuned_model_checkpoint: String,
               project_ids: T::Array[String],
               request_options: OpenAI::RequestOptions::OrHash
             ).returns(T.attached_class)
           end
           def self.new(
+            fine_tuned_model_checkpoint:,
             # The project identifiers to grant access to.
             project_ids:,
             request_options: {}
@@ -36,6 +41,7 @@ module OpenAI
           sig do
             override.returns(
               {
+                fine_tuned_model_checkpoint: String,
                 project_ids: T::Array[String],
                 request_options: OpenAI::RequestOptions
               }

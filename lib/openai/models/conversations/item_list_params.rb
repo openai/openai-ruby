@@ -8,6 +8,11 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # @!attribute conversation_id
+        #
+        #   @return [String]
+        required :conversation_id, String
+
         # @!attribute after
         #   An item ID to list items after, used in pagination.
         #
@@ -53,9 +58,11 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Conversations::ItemListParams::Order, nil]
         optional :order, enum: -> { OpenAI::Conversations::ItemListParams::Order }
 
-        # @!method initialize(after: nil, include: nil, limit: nil, order: nil, request_options: {})
+        # @!method initialize(conversation_id:, after: nil, include: nil, limit: nil, order: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Conversations::ItemListParams} for more details.
+        #
+        #   @param conversation_id [String]
         #
         #   @param after [String] An item ID to list items after, used in pagination.
         #

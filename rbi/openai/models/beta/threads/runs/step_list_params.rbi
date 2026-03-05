@@ -20,6 +20,9 @@ module OpenAI
             sig { returns(String) }
             attr_accessor :thread_id
 
+            sig { returns(String) }
+            attr_accessor :run_id
+
             # A cursor for use in pagination. `after` is an object ID that defines your place
             # in the list. For instance, if you make a list request and receive 100 objects,
             # ending with obj_foo, your subsequent call can include after=obj_foo in order to
@@ -98,6 +101,7 @@ module OpenAI
             sig do
               params(
                 thread_id: String,
+                run_id: String,
                 after: String,
                 before: String,
                 include:
@@ -112,6 +116,7 @@ module OpenAI
             end
             def self.new(
               thread_id:,
+              run_id:,
               # A cursor for use in pagination. `after` is an object ID that defines your place
               # in the list. For instance, if you make a list request and receive 100 objects,
               # ending with obj_foo, your subsequent call can include after=obj_foo in order to
@@ -144,6 +149,7 @@ module OpenAI
               override.returns(
                 {
                   thread_id: String,
+                  run_id: String,
                   after: String,
                   before: String,
                   include:

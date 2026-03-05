@@ -1,15 +1,23 @@
 module OpenAI
   module Models
     type upload_cancel_params =
-      {  } & OpenAI::Internal::Type::request_parameters
+      { upload_id: String } & OpenAI::Internal::Type::request_parameters
 
     class UploadCancelParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      def initialize: (?request_options: OpenAI::request_opts) -> void
+      attr_accessor upload_id: String
 
-      def to_hash: -> { request_options: OpenAI::RequestOptions }
+      def initialize: (
+        upload_id: String,
+        ?request_options: OpenAI::request_opts
+      ) -> void
+
+      def to_hash: -> {
+        upload_id: String,
+        request_options: OpenAI::RequestOptions
+      }
     end
   end
 end

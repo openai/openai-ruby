@@ -19,18 +19,26 @@ module OpenAI
           sig { returns(String) }
           attr_accessor :thread_id
 
+          sig { returns(String) }
+          attr_accessor :message_id
+
           sig do
             params(
               thread_id: String,
+              message_id: String,
               request_options: OpenAI::RequestOptions::OrHash
             ).returns(T.attached_class)
           end
-          def self.new(thread_id:, request_options: {})
+          def self.new(thread_id:, message_id:, request_options: {})
           end
 
           sig do
             override.returns(
-              { thread_id: String, request_options: OpenAI::RequestOptions }
+              {
+                thread_id: String,
+                message_id: String,
+                request_options: OpenAI::RequestOptions
+              }
             )
           end
           def to_hash

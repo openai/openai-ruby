@@ -7,6 +7,11 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
+      # @!attribute vector_store_id
+      #
+      #   @return [String]
+      required :vector_store_id, String
+
       # @!attribute query
       #   A query string for a search
       #
@@ -38,9 +43,11 @@ module OpenAI
       #   @return [Boolean, nil]
       optional :rewrite_query, OpenAI::Internal::Type::Boolean
 
-      # @!method initialize(query:, filters: nil, max_num_results: nil, ranking_options: nil, rewrite_query: nil, request_options: {})
+      # @!method initialize(vector_store_id:, query:, filters: nil, max_num_results: nil, ranking_options: nil, rewrite_query: nil, request_options: {})
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::VectorStoreSearchParams} for more details.
+      #
+      #   @param vector_store_id [String]
       #
       #   @param query [String, Array<String>] A query string for a search
       #

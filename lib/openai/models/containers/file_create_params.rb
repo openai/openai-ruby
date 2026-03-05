@@ -8,6 +8,11 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # @!attribute container_id
+        #
+        #   @return [String]
+        required :container_id, String
+
         # @!attribute file
         #   The File object (not file name) to be uploaded.
         #
@@ -20,9 +25,11 @@ module OpenAI
         #   @return [String, nil]
         optional :file_id, String
 
-        # @!method initialize(file: nil, file_id: nil, request_options: {})
+        # @!method initialize(container_id:, file: nil, file_id: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Containers::FileCreateParams} for more details.
+        #
+        #   @param container_id [String]
         #
         #   @param file [Pathname, StringIO, IO, String, OpenAI::FilePart] The File object (not file name) to be uploaded.
         #

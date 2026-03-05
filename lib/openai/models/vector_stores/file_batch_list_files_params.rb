@@ -13,6 +13,11 @@ module OpenAI
         #   @return [String]
         required :vector_store_id, String
 
+        # @!attribute batch_id
+        #
+        #   @return [String]
+        required :batch_id, String
+
         # @!attribute after
         #   A cursor for use in pagination. `after` is an object ID that defines your place
         #   in the list. For instance, if you make a list request and receive 100 objects,
@@ -51,11 +56,13 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::VectorStores::FileBatchListFilesParams::Order, nil]
         optional :order, enum: -> { OpenAI::VectorStores::FileBatchListFilesParams::Order }
 
-        # @!method initialize(vector_store_id:, after: nil, before: nil, filter: nil, limit: nil, order: nil, request_options: {})
+        # @!method initialize(vector_store_id:, batch_id:, after: nil, before: nil, filter: nil, limit: nil, order: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::VectorStores::FileBatchListFilesParams} for more details.
         #
         #   @param vector_store_id [String]
+        #
+        #   @param batch_id [String]
         #
         #   @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
         #

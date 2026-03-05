@@ -9,6 +9,11 @@ module OpenAI
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
+          # @!attribute completion_id
+          #
+          #   @return [String]
+          required :completion_id, String
+
           # @!attribute after
           #   Identifier for the last message from the previous pagination request.
           #
@@ -28,9 +33,11 @@ module OpenAI
           #   @return [Symbol, OpenAI::Models::Chat::Completions::MessageListParams::Order, nil]
           optional :order, enum: -> { OpenAI::Chat::Completions::MessageListParams::Order }
 
-          # @!method initialize(after: nil, limit: nil, order: nil, request_options: {})
+          # @!method initialize(completion_id:, after: nil, limit: nil, order: nil, request_options: {})
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Chat::Completions::MessageListParams} for more details.
+          #
+          #   @param completion_id [String]
           #
           #   @param after [String] Identifier for the last message from the previous pagination request.
           #

@@ -9,6 +9,11 @@ module OpenAI
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
+          # @!attribute fine_tuned_model_checkpoint
+          #
+          #   @return [String]
+          required :fine_tuned_model_checkpoint, String
+
           # @!attribute after
           #   Identifier for the last permission ID from the previous pagination request.
           #
@@ -33,7 +38,9 @@ module OpenAI
           #   @return [String, nil]
           optional :project_id, String
 
-          # @!method initialize(after: nil, limit: nil, order: nil, project_id: nil, request_options: {})
+          # @!method initialize(fine_tuned_model_checkpoint:, after: nil, limit: nil, order: nil, project_id: nil, request_options: {})
+          #   @param fine_tuned_model_checkpoint [String]
+          #
           #   @param after [String] Identifier for the last permission ID from the previous pagination request.
           #
           #   @param limit [Integer] Number of permissions to retrieve.

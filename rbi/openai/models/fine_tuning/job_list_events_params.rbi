@@ -15,6 +15,9 @@ module OpenAI
             )
           end
 
+        sig { returns(String) }
+        attr_accessor :fine_tuning_job_id
+
         # Identifier for the last event from the previous pagination request.
         sig { returns(T.nilable(String)) }
         attr_reader :after
@@ -31,12 +34,14 @@ module OpenAI
 
         sig do
           params(
+            fine_tuning_job_id: String,
             after: String,
             limit: Integer,
             request_options: OpenAI::RequestOptions::OrHash
           ).returns(T.attached_class)
         end
         def self.new(
+          fine_tuning_job_id:,
           # Identifier for the last event from the previous pagination request.
           after: nil,
           # Number of events to retrieve.
@@ -48,6 +53,7 @@ module OpenAI
         sig do
           override.returns(
             {
+              fine_tuning_job_id: String,
               after: String,
               limit: Integer,
               request_options: OpenAI::RequestOptions

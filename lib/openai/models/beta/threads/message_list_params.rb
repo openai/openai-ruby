@@ -9,6 +9,11 @@ module OpenAI
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
+          # @!attribute thread_id
+          #
+          #   @return [String]
+          required :thread_id, String
+
           # @!attribute after
           #   A cursor for use in pagination. `after` is an object ID that defines your place
           #   in the list. For instance, if you make a list request and receive 100 objects,
@@ -47,9 +52,11 @@ module OpenAI
           #   @return [String, nil]
           optional :run_id, String
 
-          # @!method initialize(after: nil, before: nil, limit: nil, order: nil, run_id: nil, request_options: {})
+          # @!method initialize(thread_id:, after: nil, before: nil, limit: nil, order: nil, run_id: nil, request_options: {})
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Beta::Threads::MessageListParams} for more details.
+          #
+          #   @param thread_id [String]
           #
           #   @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
           #

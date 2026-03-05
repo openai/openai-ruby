@@ -3,6 +3,7 @@ module OpenAI
     module Beta
       type assistant_update_params =
         {
+          assistant_id: String,
           description: String?,
           instructions: String?,
           metadata: OpenAI::Models::metadata?,
@@ -20,6 +21,8 @@ module OpenAI
       class AssistantUpdateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor assistant_id: String
 
         attr_accessor description: String?
 
@@ -52,6 +55,7 @@ module OpenAI
         attr_accessor top_p: Float?
 
         def initialize: (
+          assistant_id: String,
           ?description: String?,
           ?instructions: String?,
           ?metadata: OpenAI::Models::metadata?,
@@ -67,6 +71,7 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
+          assistant_id: String,
           description: String?,
           instructions: String?,
           metadata: OpenAI::Models::metadata?,

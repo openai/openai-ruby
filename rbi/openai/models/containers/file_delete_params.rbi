@@ -18,18 +18,26 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :container_id
 
+        sig { returns(String) }
+        attr_accessor :file_id
+
         sig do
           params(
             container_id: String,
+            file_id: String,
             request_options: OpenAI::RequestOptions::OrHash
           ).returns(T.attached_class)
         end
-        def self.new(container_id:, request_options: {})
+        def self.new(container_id:, file_id:, request_options: {})
         end
 
         sig do
           override.returns(
-            { container_id: String, request_options: OpenAI::RequestOptions }
+            {
+              container_id: String,
+              file_id: String,
+              request_options: OpenAI::RequestOptions
+            }
           )
         end
         def to_hash

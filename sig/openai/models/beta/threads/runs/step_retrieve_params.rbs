@@ -7,6 +7,7 @@ module OpenAI
             {
               thread_id: String,
               run_id: String,
+              step_id: String,
               include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include]
             }
             & OpenAI::Internal::Type::request_parameters
@@ -19,6 +20,8 @@ module OpenAI
 
             attr_accessor run_id: String
 
+            attr_accessor step_id: String
+
             attr_reader include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include]?
 
             def include=: (
@@ -28,6 +31,7 @@ module OpenAI
             def initialize: (
               thread_id: String,
               run_id: String,
+              step_id: String,
               ?include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
               ?request_options: OpenAI::request_opts
             ) -> void
@@ -35,6 +39,7 @@ module OpenAI
             def to_hash: -> {
               thread_id: String,
               run_id: String,
+              step_id: String,
               include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
               request_options: OpenAI::RequestOptions
             }
