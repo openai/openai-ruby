@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.53.0 (2026-03-05)
+
+Full Changelog: [v0.52.0...v0.53.0](https://github.com/openai/openai-ruby/compare/v0.52.0...v0.53.0)
+
+### Features
+
+* **api:** The GA ComputerTool now uses the CompuerTool class. The 'computer_use_preview' tool is moved to ComputerUsePreview ([154455d](https://github.com/openai/openai-ruby/commit/154455d7ac02a6fc8a940acdb6d615c59cbce4a7))
+
 ## 0.52.0 (2026-03-05)
 
 Full Changelog: [v0.51.0...v0.52.0](https://github.com/openai/openai-ruby/compare/v0.51.0...v0.52.0)
