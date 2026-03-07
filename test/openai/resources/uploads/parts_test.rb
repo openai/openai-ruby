@@ -4,7 +4,7 @@ require_relative "../../test_helper"
 
 class OpenAI::Test::Resources::Uploads::PartsTest < OpenAI::Test::ResourceTest
   def test_create_required_params
-    response = @openai.uploads.parts.create("upload_abc123", data: Pathname(__FILE__))
+    response = @openai.uploads.parts.create("upload_abc123", data: StringIO.new("Example data"))
 
     assert_pattern do
       response => OpenAI::Uploads::UploadPart
