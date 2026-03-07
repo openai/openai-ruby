@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.53.1 (2026-03-07)
+
+Full Changelog: [v0.53.0...v0.53.1](https://github.com/openai/openai-ruby/compare/v0.53.0...v0.53.1)
+
+### Chores
+
+* **internal:** codegen related update ([2100fc4](https://github.com/openai/openai-ruby/commit/2100fc4105da779d09e15723c9ad22eb7a6ad307))
+
 ## 0.53.0 (2026-03-05)
 
 Full Changelog: [v0.52.0...v0.53.0](https://github.com/openai/openai-ruby/compare/v0.52.0...v0.53.0)
