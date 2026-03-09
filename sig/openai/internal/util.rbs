@@ -128,7 +128,8 @@ module OpenAI
         boundary: String,
         key: Symbol | String,
         val: top,
-        closing: ::Array[^-> void]
+        closing: ::Array[^-> void],
+        ?is_array: bool
       ) -> void
 
       def self?.encode_multipart_streaming: (
