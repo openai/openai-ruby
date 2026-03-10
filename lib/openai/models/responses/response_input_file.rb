@@ -10,13 +10,6 @@ module OpenAI
         #   @return [Symbol, :input_file]
         required :type, const: :input_file
 
-        # @!attribute detail
-        #   The detail level of the file to be sent to the model. One of `high` or `low`.
-        #   Defaults to `high`.
-        #
-        #   @return [Symbol, OpenAI::Models::Responses::ResponseInputFile::Detail, nil]
-        optional :detail, enum: -> { OpenAI::Responses::ResponseInputFile::Detail }
-
         # @!attribute file_data
         #   The content of the file to be sent to the model.
         #
@@ -41,13 +34,11 @@ module OpenAI
         #   @return [String, nil]
         optional :filename, String
 
-        # @!method initialize(detail: nil, file_data: nil, file_id: nil, file_url: nil, filename: nil, type: :input_file)
+        # @!method initialize(file_data: nil, file_id: nil, file_url: nil, filename: nil, type: :input_file)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseInputFile} for more details.
         #
         #   A file input to the model.
-        #
-        #   @param detail [Symbol, OpenAI::Models::Responses::ResponseInputFile::Detail] The detail level of the file to be sent to the model. One of `high` or `low`. De
         #
         #   @param file_data [String] The content of the file to be sent to the model.
         #
@@ -58,20 +49,6 @@ module OpenAI
         #   @param filename [String] The name of the file to be sent to the model.
         #
         #   @param type [Symbol, :input_file] The type of the input item. Always `input_file`.
-
-        # The detail level of the file to be sent to the model. One of `high` or `low`.
-        # Defaults to `high`.
-        #
-        # @see OpenAI::Models::Responses::ResponseInputFile#detail
-        module Detail
-          extend OpenAI::Internal::Type::Enum
-
-          LOW = :low
-          HIGH = :high
-
-          # @!method self.values
-          #   @return [Array<Symbol>]
-        end
       end
     end
   end
