@@ -4,7 +4,6 @@ module OpenAI
       type response_input_file =
         {
           type: :input_file,
-          detail: OpenAI::Models::Responses::ResponseInputFile::detail,
           file_data: String,
           file_id: String?,
           file_url: String,
@@ -13,12 +12,6 @@ module OpenAI
 
       class ResponseInputFile < OpenAI::Internal::Type::BaseModel
         attr_accessor type: :input_file
-
-        attr_reader detail: OpenAI::Models::Responses::ResponseInputFile::detail?
-
-        def detail=: (
-          OpenAI::Models::Responses::ResponseInputFile::detail
-        ) -> OpenAI::Models::Responses::ResponseInputFile::detail
 
         attr_reader file_data: String?
 
@@ -35,7 +28,6 @@ module OpenAI
         def filename=: (String) -> String
 
         def initialize: (
-          ?detail: OpenAI::Models::Responses::ResponseInputFile::detail,
           ?file_data: String,
           ?file_id: String?,
           ?file_url: String,
@@ -45,23 +37,11 @@ module OpenAI
 
         def to_hash: -> {
           type: :input_file,
-          detail: OpenAI::Models::Responses::ResponseInputFile::detail,
           file_data: String,
           file_id: String?,
           file_url: String,
           filename: String
         }
-
-        type detail = :low | :high
-
-        module Detail
-          extend OpenAI::Internal::Type::Enum
-
-          LOW: :low
-          HIGH: :high
-
-          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputFile::detail]
-        end
       end
     end
   end
