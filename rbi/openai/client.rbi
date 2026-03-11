@@ -19,6 +19,9 @@ module OpenAI
     sig { returns(T.nilable(String)) }
     attr_reader :project
 
+    sig { returns(T.nilable(String)) }
+    attr_reader :webhook_secret
+
     # Given a prompt, the model will return one or more predicted completions, and can
     # also return the probabilities of alternative tokens at each position.
     sig { returns(OpenAI::Resources::Completions) }
@@ -110,6 +113,7 @@ module OpenAI
         api_key: T.nilable(String),
         organization: T.nilable(String),
         project: T.nilable(String),
+        webhook_secret: T.nilable(String),
         base_url: T.nilable(String),
         max_retries: Integer,
         timeout: Float,
@@ -124,6 +128,8 @@ module OpenAI
       organization: ENV["OPENAI_ORG_ID"],
       # Defaults to `ENV["OPENAI_PROJECT_ID"]`
       project: ENV["OPENAI_PROJECT_ID"],
+      # Defaults to `ENV["OPENAI_WEBHOOK_SECRET"]`
+      webhook_secret: ENV["OPENAI_WEBHOOK_SECRET"],
       # Override the default base URL for the API, e.g.,
       # `"https://api.example.com/v2/"`. Defaults to `ENV["OPENAI_BASE_URL"]`
       base_url: ENV["OPENAI_BASE_URL"],
