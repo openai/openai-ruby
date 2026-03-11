@@ -14,6 +14,8 @@ module OpenAI
 
     attr_reader project: String?
 
+    attr_reader webhook_secret: String?
+
     attr_reader completions: OpenAI::Resources::Completions
 
     attr_reader chat: OpenAI::Resources::Chat
@@ -64,6 +66,7 @@ module OpenAI
       ?api_key: String?,
       ?organization: String?,
       ?project: String?,
+      ?webhook_secret: String?,
       ?base_url: String?,
       ?max_retries: Integer,
       ?timeout: Float,

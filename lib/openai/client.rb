@@ -24,6 +24,9 @@ module OpenAI
     # @return [String, nil]
     attr_reader :project
 
+    # @return [String, nil]
+    attr_reader :webhook_secret
+
     # Given a prompt, the model will return one or more predicted completions, and can
     # also return the probabilities of alternative tokens at each position.
     # @return [OpenAI::Resources::Completions]
@@ -121,6 +124,8 @@ module OpenAI
     #
     # @param project [String, nil] Defaults to `ENV["OPENAI_PROJECT_ID"]`
     #
+    # @param webhook_secret [String, nil] Defaults to `ENV["OPENAI_WEBHOOK_SECRET"]`
+    #
     # @param base_url [String, nil] Override the default base URL for the API, e.g.,
     # `"https://api.example.com/v2/"`. Defaults to `ENV["OPENAI_BASE_URL"]`
     #
@@ -135,6 +140,7 @@ module OpenAI
       api_key: ENV["OPENAI_API_KEY"],
       organization: ENV["OPENAI_ORG_ID"],
       project: ENV["OPENAI_PROJECT_ID"],
+      webhook_secret: ENV["OPENAI_WEBHOOK_SECRET"],
       base_url: ENV["OPENAI_BASE_URL"],
       max_retries: self.class::DEFAULT_MAX_RETRIES,
       timeout: self.class::DEFAULT_TIMEOUT_IN_SECONDS,
@@ -153,6 +159,7 @@ module OpenAI
       }
 
       @api_key = api_key.to_s
+      @webhook_secret = webhook_secret&.to_s
 
       super(
         base_url: base_url,
