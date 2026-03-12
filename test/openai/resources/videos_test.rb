@@ -115,7 +115,7 @@ class OpenAI::Test::Resources::VideosTest < OpenAI::Test::ResourceTest
   end
 
   def test_edit_required_params
-    response = @openai.videos.edit(prompt: "x", video: {id: "video_123"})
+    response = @openai.videos.edit(prompt: "x", video: StringIO.new("Example data"))
 
     assert_pattern do
       response => OpenAI::Video

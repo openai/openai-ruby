@@ -16,16 +16,24 @@ module OpenAI
       attr_accessor :prompt
 
       # Reference to the completed video to edit.
-      sig { returns(OpenAI::VideoEditParams::Video) }
-      attr_reader :video
-
-      sig { params(video: OpenAI::VideoEditParams::Video::OrHash).void }
-      attr_writer :video
+      sig do
+        returns(
+          T.any(
+            OpenAI::Internal::FileInput,
+            OpenAI::VideoEditParams::Video::VideoReferenceInputParam
+          )
+        )
+      end
+      attr_accessor :video
 
       sig do
         params(
           prompt: String,
-          video: OpenAI::VideoEditParams::Video::OrHash,
+          video:
+            T.any(
+              OpenAI::Internal::FileInput,
+              OpenAI::VideoEditParams::Video::VideoReferenceInputParam::OrHash
+            ),
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(T.attached_class)
       end
@@ -42,7 +50,11 @@ module OpenAI
         override.returns(
           {
             prompt: String,
-            video: OpenAI::VideoEditParams::Video,
+            video:
+              T.any(
+                OpenAI::Internal::FileInput,
+                OpenAI::VideoEditParams::Video::VideoReferenceInputParam
+              ),
             request_options: OpenAI::RequestOptions
           }
         )
@@ -50,26 +62,48 @@ module OpenAI
       def to_hash
       end
 
-      class Video < OpenAI::Internal::Type::BaseModel
-        OrHash =
+      # Reference to the completed video to edit.
+      module Video
+        extend OpenAI::Internal::Type::Union
+
+        Variants =
           T.type_alias do
-            T.any(OpenAI::VideoEditParams::Video, OpenAI::Internal::AnyHash)
+            T.any(
+              StringIO,
+              OpenAI::VideoEditParams::Video::VideoReferenceInputParam
+            )
           end
 
-        # The identifier of the completed video.
-        sig { returns(String) }
-        attr_accessor :id
+        class VideoReferenceInputParam < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::VideoEditParams::Video::VideoReferenceInputParam,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
-        # Reference to the completed video to edit.
-        sig { params(id: String).returns(T.attached_class) }
-        def self.new(
           # The identifier of the completed video.
-          id:
-        )
+          sig { returns(String) }
+          attr_accessor :id
+
+          # Reference to the completed video.
+          sig { params(id: String).returns(T.attached_class) }
+          def self.new(
+            # The identifier of the completed video.
+            id:
+          )
+          end
+
+          sig { override.returns({ id: String }) }
+          def to_hash
+          end
         end
 
-        sig { override.returns({ id: String }) }
-        def to_hash
+        sig do
+          override.returns(T::Array[OpenAI::VideoEditParams::Video::Variants])
+        end
+        def self.variants
         end
       end
     end

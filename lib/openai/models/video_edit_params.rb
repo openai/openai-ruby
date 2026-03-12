@@ -16,27 +16,41 @@ module OpenAI
       # @!attribute video
       #   Reference to the completed video to edit.
       #
-      #   @return [OpenAI::Models::VideoEditParams::Video]
-      required :video, -> { OpenAI::VideoEditParams::Video }
+      #   @return [Pathname, StringIO, IO, String, OpenAI::FilePart, OpenAI::Models::VideoEditParams::Video::VideoReferenceInputParam]
+      required :video, union: -> { OpenAI::VideoEditParams::Video }
 
       # @!method initialize(prompt:, video:, request_options: {})
       #   @param prompt [String] Text prompt that describes how to edit the source video.
       #
-      #   @param video [OpenAI::Models::VideoEditParams::Video] Reference to the completed video to edit.
+      #   @param video [Pathname, StringIO, IO, String, OpenAI::FilePart, OpenAI::Models::VideoEditParams::Video::VideoReferenceInputParam] Reference to the completed video to edit.
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
-      class Video < OpenAI::Internal::Type::BaseModel
-        # @!attribute id
-        #   The identifier of the completed video.
-        #
-        #   @return [String]
-        required :id, String
+      # Reference to the completed video to edit.
+      module Video
+        extend OpenAI::Internal::Type::Union
 
-        # @!method initialize(id:)
-        #   Reference to the completed video to edit.
-        #
-        #   @param id [String] The identifier of the completed video.
+        # Reference to the completed video to edit.
+        variant OpenAI::Internal::Type::FileInput
+
+        # Reference to the completed video.
+        variant -> { OpenAI::VideoEditParams::Video::VideoReferenceInputParam }
+
+        class VideoReferenceInputParam < OpenAI::Internal::Type::BaseModel
+          # @!attribute id
+          #   The identifier of the completed video.
+          #
+          #   @return [String]
+          required :id, String
+
+          # @!method initialize(id:)
+          #   Reference to the completed video.
+          #
+          #   @param id [String] The identifier of the completed video.
+        end
+
+        # @!method self.variants
+        #   @return [Array(StringIO, OpenAI::Models::VideoEditParams::Video::VideoReferenceInputParam)]
       end
     end
   end

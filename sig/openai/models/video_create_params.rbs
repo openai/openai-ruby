@@ -3,7 +3,7 @@ module OpenAI
     type video_create_params =
       {
         prompt: String,
-        input_reference: OpenAI::VideoCreateParams::InputReference,
+        input_reference: OpenAI::Models::VideoCreateParams::input_reference,
         model: OpenAI::Models::video_model,
         seconds: OpenAI::Models::video_seconds,
         size: OpenAI::Models::video_size
@@ -16,11 +16,11 @@ module OpenAI
 
       attr_accessor prompt: String
 
-      attr_reader input_reference: OpenAI::VideoCreateParams::InputReference?
+      attr_reader input_reference: OpenAI::Models::VideoCreateParams::input_reference?
 
       def input_reference=: (
-        OpenAI::VideoCreateParams::InputReference
-      ) -> OpenAI::VideoCreateParams::InputReference
+        OpenAI::Models::VideoCreateParams::input_reference
+      ) -> OpenAI::Models::VideoCreateParams::input_reference
 
       attr_reader model: OpenAI::Models::video_model?
 
@@ -38,7 +38,7 @@ module OpenAI
 
       def initialize: (
         prompt: String,
-        ?input_reference: OpenAI::VideoCreateParams::InputReference,
+        ?input_reference: OpenAI::Models::VideoCreateParams::input_reference,
         ?model: OpenAI::Models::video_model,
         ?seconds: OpenAI::Models::video_seconds,
         ?size: OpenAI::Models::video_size,
@@ -47,27 +47,37 @@ module OpenAI
 
       def to_hash: -> {
         prompt: String,
-        input_reference: OpenAI::VideoCreateParams::InputReference,
+        input_reference: OpenAI::Models::VideoCreateParams::input_reference,
         model: OpenAI::Models::video_model,
         seconds: OpenAI::Models::video_seconds,
         size: OpenAI::Models::video_size,
         request_options: OpenAI::RequestOptions
       }
 
-      type input_reference = { file_id: String, image_url: String }
+      type input_reference =
+        OpenAI::Internal::file_input
+        | OpenAI::VideoCreateParams::InputReference::ImageRefParam2
 
-      class InputReference < OpenAI::Internal::Type::BaseModel
-        attr_reader file_id: String?
+      module InputReference
+        extend OpenAI::Internal::Type::Union
 
-        def file_id=: (String) -> String
+        type image_ref_param2 = { file_id: String, image_url: String }
 
-        attr_reader image_url: String?
+        class ImageRefParam2 < OpenAI::Internal::Type::BaseModel
+          attr_reader file_id: String?
 
-        def image_url=: (String) -> String
+          def file_id=: (String) -> String
 
-        def initialize: (?file_id: String, ?image_url: String) -> void
+          attr_reader image_url: String?
 
-        def to_hash: -> { file_id: String, image_url: String }
+          def image_url=: (String) -> String
+
+          def initialize: (?file_id: String, ?image_url: String) -> void
+
+          def to_hash: -> { file_id: String, image_url: String }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::VideoCreateParams::input_reference]
       end
     end
   end
