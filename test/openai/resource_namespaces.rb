@@ -93,6 +93,9 @@ module OpenAI
 
       module Versions
       end
+
+      module Videos
+      end
     end
   end
 end

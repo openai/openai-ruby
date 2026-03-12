@@ -1,0 +1,24 @@
+module OpenAI
+  module Models
+    module Videos
+      type character_create_response =
+        { id: String?, created_at: Integer, name: String? }
+
+      class CharacterCreateResponse < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String?
+
+        attr_accessor created_at: Integer
+
+        attr_accessor name: String?
+
+        def initialize: (
+          id: String?,
+          created_at: Integer,
+          name: String?
+        ) -> void
+
+        def to_hash: -> { id: String?, created_at: Integer, name: String? }
+      end
+    end
+  end
+end
