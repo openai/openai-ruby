@@ -10,7 +10,11 @@ module OpenAI
       sig do
         params(
           prompt: String,
-          input_reference: OpenAI::VideoCreateParams::InputReference::OrHash,
+          input_reference:
+            T.any(
+              OpenAI::Internal::FileInput,
+              OpenAI::VideoCreateParams::InputReference::ImageRefParam2::OrHash
+            ),
           model: T.any(String, OpenAI::VideoModel::OrSymbol),
           seconds: OpenAI::VideoSeconds::OrSymbol,
           size: OpenAI::VideoSize::OrSymbol,
@@ -20,8 +24,7 @@ module OpenAI
       def create(
         # Text prompt that describes the video to generate.
         prompt:,
-        # Optional reference object that guides generation. Provide exactly one of
-        # `image_url` or `file_id`.
+        # Optional reference asset upload or reference object that guides generation.
         input_reference: nil,
         # The video generation model to use (allowed values: sora-2, sora-2-pro). Defaults
         # to `sora-2`.
@@ -108,7 +111,11 @@ module OpenAI
       sig do
         params(
           prompt: String,
-          video: OpenAI::VideoEditParams::Video::OrHash,
+          video:
+            T.any(
+              OpenAI::Internal::FileInput,
+              OpenAI::VideoEditParams::Video::VideoReferenceInputParam::OrHash
+            ),
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(OpenAI::Video)
       end
@@ -126,7 +133,11 @@ module OpenAI
         params(
           prompt: String,
           seconds: OpenAI::VideoSeconds::OrSymbol,
-          video: OpenAI::VideoExtendParams::Video::OrHash,
+          video:
+            T.any(
+              OpenAI::VideoExtendParams::Video::VideoReferenceInputParam::OrHash,
+              OpenAI::Internal::FileInput
+            ),
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(OpenAI::Video)
       end
@@ -136,7 +147,7 @@ module OpenAI
         # Length of the newly generated extension segment in seconds (allowed values: 4,
         # 8, 12, 16, 20).
         seconds:,
-        # Reference to the completed video to extend.
+        # Reference to the completed video.
         video:,
         request_options: {}
       )

@@ -15,14 +15,26 @@ module OpenAI
       sig { returns(String) }
       attr_accessor :prompt
 
-      # Optional reference object that guides generation. Provide exactly one of
-      # `image_url` or `file_id`.
-      sig { returns(T.nilable(OpenAI::VideoCreateParams::InputReference)) }
+      # Optional reference asset upload or reference object that guides generation.
+      sig do
+        returns(
+          T.nilable(
+            T.any(
+              OpenAI::Internal::FileInput,
+              OpenAI::VideoCreateParams::InputReference::ImageRefParam2
+            )
+          )
+        )
+      end
       attr_reader :input_reference
 
       sig do
         params(
-          input_reference: OpenAI::VideoCreateParams::InputReference::OrHash
+          input_reference:
+            T.any(
+              OpenAI::Internal::FileInput,
+              OpenAI::VideoCreateParams::InputReference::ImageRefParam2::OrHash
+            )
         ).void
       end
       attr_writer :input_reference
@@ -53,7 +65,11 @@ module OpenAI
       sig do
         params(
           prompt: String,
-          input_reference: OpenAI::VideoCreateParams::InputReference::OrHash,
+          input_reference:
+            T.any(
+              OpenAI::Internal::FileInput,
+              OpenAI::VideoCreateParams::InputReference::ImageRefParam2::OrHash
+            ),
           model: T.any(String, OpenAI::VideoModel::OrSymbol),
           seconds: OpenAI::VideoSeconds::OrSymbol,
           size: OpenAI::VideoSize::OrSymbol,
@@ -63,8 +79,7 @@ module OpenAI
       def self.new(
         # Text prompt that describes the video to generate.
         prompt:,
-        # Optional reference object that guides generation. Provide exactly one of
-        # `image_url` or `file_id`.
+        # Optional reference asset upload or reference object that guides generation.
         input_reference: nil,
         # The video generation model to use (allowed values: sora-2, sora-2-pro). Defaults
         # to `sora-2`.
@@ -82,7 +97,11 @@ module OpenAI
         override.returns(
           {
             prompt: String,
-            input_reference: OpenAI::VideoCreateParams::InputReference,
+            input_reference:
+              T.any(
+                OpenAI::Internal::FileInput,
+                OpenAI::VideoCreateParams::InputReference::ImageRefParam2
+              ),
             model: T.any(String, OpenAI::VideoModel::OrSymbol),
             seconds: OpenAI::VideoSeconds::OrSymbol,
             size: OpenAI::VideoSize::OrSymbol,
@@ -93,42 +112,61 @@ module OpenAI
       def to_hash
       end
 
-      class InputReference < OpenAI::Internal::Type::BaseModel
-        OrHash =
+      # Optional reference asset upload or reference object that guides generation.
+      module InputReference
+        extend OpenAI::Internal::Type::Union
+
+        Variants =
           T.type_alias do
             T.any(
-              OpenAI::VideoCreateParams::InputReference,
-              OpenAI::Internal::AnyHash
+              StringIO,
+              OpenAI::VideoCreateParams::InputReference::ImageRefParam2
             )
           end
 
-        sig { returns(T.nilable(String)) }
-        attr_reader :file_id
+        class ImageRefParam2 < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::VideoCreateParams::InputReference::ImageRefParam2,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
-        sig { params(file_id: String).void }
-        attr_writer :file_id
+          sig { returns(T.nilable(String)) }
+          attr_reader :file_id
 
-        # A fully qualified URL or base64-encoded data URL.
-        sig { returns(T.nilable(String)) }
-        attr_reader :image_url
+          sig { params(file_id: String).void }
+          attr_writer :file_id
 
-        sig { params(image_url: String).void }
-        attr_writer :image_url
-
-        # Optional reference object that guides generation. Provide exactly one of
-        # `image_url` or `file_id`.
-        sig do
-          params(file_id: String, image_url: String).returns(T.attached_class)
-        end
-        def self.new(
-          file_id: nil,
           # A fully qualified URL or base64-encoded data URL.
-          image_url: nil
-        )
+          sig { returns(T.nilable(String)) }
+          attr_reader :image_url
+
+          sig { params(image_url: String).void }
+          attr_writer :image_url
+
+          sig do
+            params(file_id: String, image_url: String).returns(T.attached_class)
+          end
+          def self.new(
+            file_id: nil,
+            # A fully qualified URL or base64-encoded data URL.
+            image_url: nil
+          )
+          end
+
+          sig { override.returns({ file_id: String, image_url: String }) }
+          def to_hash
+          end
         end
 
-        sig { override.returns({ file_id: String, image_url: String }) }
-        def to_hash
+        sig do
+          override.returns(
+            T::Array[OpenAI::VideoCreateParams::InputReference::Variants]
+          )
+        end
+        def self.variants
         end
       end
     end

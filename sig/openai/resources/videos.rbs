@@ -5,7 +5,7 @@ module OpenAI
 
       def create: (
         prompt: String,
-        ?input_reference: OpenAI::VideoCreateParams::InputReference,
+        ?input_reference: OpenAI::Models::VideoCreateParams::input_reference,
         ?model: OpenAI::Models::video_model,
         ?seconds: OpenAI::Models::video_seconds,
         ?size: OpenAI::Models::video_size,
@@ -37,14 +37,14 @@ module OpenAI
 
       def edit: (
         prompt: String,
-        video: OpenAI::VideoEditParams::Video,
+        video: OpenAI::Models::VideoEditParams::video,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Video
 
       def extend_: (
         prompt: String,
         seconds: OpenAI::Models::video_seconds,
-        video: OpenAI::VideoExtendParams::Video,
+        video: OpenAI::Models::VideoExtendParams::video,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Video
 

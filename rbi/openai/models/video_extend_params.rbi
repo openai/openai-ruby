@@ -20,18 +20,26 @@ module OpenAI
       sig { returns(OpenAI::VideoSeconds::OrSymbol) }
       attr_accessor :seconds
 
-      # Reference to the completed video to extend.
-      sig { returns(OpenAI::VideoExtendParams::Video) }
-      attr_reader :video
-
-      sig { params(video: OpenAI::VideoExtendParams::Video::OrHash).void }
-      attr_writer :video
+      # Reference to the completed video.
+      sig do
+        returns(
+          T.any(
+            OpenAI::VideoExtendParams::Video::VideoReferenceInputParam,
+            OpenAI::Internal::FileInput
+          )
+        )
+      end
+      attr_accessor :video
 
       sig do
         params(
           prompt: String,
           seconds: OpenAI::VideoSeconds::OrSymbol,
-          video: OpenAI::VideoExtendParams::Video::OrHash,
+          video:
+            T.any(
+              OpenAI::VideoExtendParams::Video::VideoReferenceInputParam::OrHash,
+              OpenAI::Internal::FileInput
+            ),
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(T.attached_class)
       end
@@ -41,7 +49,7 @@ module OpenAI
         # Length of the newly generated extension segment in seconds (allowed values: 4,
         # 8, 12, 16, 20).
         seconds:,
-        # Reference to the completed video to extend.
+        # Reference to the completed video.
         video:,
         request_options: {}
       )
@@ -52,7 +60,11 @@ module OpenAI
           {
             prompt: String,
             seconds: OpenAI::VideoSeconds::OrSymbol,
-            video: OpenAI::VideoExtendParams::Video,
+            video:
+              T.any(
+                OpenAI::VideoExtendParams::Video::VideoReferenceInputParam,
+                OpenAI::Internal::FileInput
+              ),
             request_options: OpenAI::RequestOptions
           }
         )
@@ -60,26 +72,48 @@ module OpenAI
       def to_hash
       end
 
-      class Video < OpenAI::Internal::Type::BaseModel
-        OrHash =
+      # Reference to the completed video.
+      module Video
+        extend OpenAI::Internal::Type::Union
+
+        Variants =
           T.type_alias do
-            T.any(OpenAI::VideoExtendParams::Video, OpenAI::Internal::AnyHash)
+            T.any(
+              OpenAI::VideoExtendParams::Video::VideoReferenceInputParam,
+              StringIO
+            )
           end
 
-        # The identifier of the completed video.
-        sig { returns(String) }
-        attr_accessor :id
+        class VideoReferenceInputParam < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::VideoExtendParams::Video::VideoReferenceInputParam,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
-        # Reference to the completed video to extend.
-        sig { params(id: String).returns(T.attached_class) }
-        def self.new(
           # The identifier of the completed video.
-          id:
-        )
+          sig { returns(String) }
+          attr_accessor :id
+
+          # Reference to the completed video.
+          sig { params(id: String).returns(T.attached_class) }
+          def self.new(
+            # The identifier of the completed video.
+            id:
+          )
+          end
+
+          sig { override.returns({ id: String }) }
+          def to_hash
+          end
         end
 
-        sig { override.returns({ id: String }) }
-        def to_hash
+        sig do
+          override.returns(T::Array[OpenAI::VideoExtendParams::Video::Variants])
+        end
+        def self.variants
         end
       end
     end
