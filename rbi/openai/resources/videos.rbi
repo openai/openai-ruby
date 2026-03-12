@@ -3,11 +3,14 @@
 module OpenAI
   module Resources
     class Videos
+      sig { returns(OpenAI::Resources::Videos::Character) }
+      attr_reader :character
+
       # Create a new video generation job from a prompt and optional reference assets.
       sig do
         params(
           prompt: String,
-          input_reference: OpenAI::Internal::FileInput,
+          input_reference: OpenAI::VideoCreateParams::InputReference::OrHash,
           model: T.any(String, OpenAI::VideoModel::OrSymbol),
           seconds: OpenAI::VideoSeconds::OrSymbol,
           size: OpenAI::VideoSize::OrSymbol,
@@ -17,7 +20,8 @@ module OpenAI
       def create(
         # Text prompt that describes the video to generate.
         prompt:,
-        # Optional multipart reference asset that guides generation.
+        # Optional reference object that guides generation. Provide exactly one of
+        # `image_url` or `file_id`.
         input_reference: nil,
         # The video generation model to use (allowed values: sora-2, sora-2-pro). Defaults
         # to `sora-2`.
@@ -95,6 +99,45 @@ module OpenAI
         video_id,
         # Which downloadable asset to return. Defaults to the MP4 video.
         variant: nil,
+        request_options: {}
+      )
+      end
+
+      # Create a new video generation job by editing a source video or existing
+      # generated video.
+      sig do
+        params(
+          prompt: String,
+          video: OpenAI::VideoEditParams::Video::OrHash,
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::Video)
+      end
+      def edit(
+        # Text prompt that describes how to edit the source video.
+        prompt:,
+        # Reference to the completed video to edit.
+        video:,
+        request_options: {}
+      )
+      end
+
+      # Create an extension of a completed video.
+      sig do
+        params(
+          prompt: String,
+          seconds: OpenAI::VideoSeconds::OrSymbol,
+          video: OpenAI::VideoExtendParams::Video::OrHash,
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::Video)
+      end
+      def extend_(
+        # Updated text prompt that directs the extension generation.
+        prompt:,
+        # Length of the newly generated extension segment in seconds (allowed values: 4,
+        # 8, 12, 16, 20).
+        seconds:,
+        # Reference to the completed video to extend.
+        video:,
         request_options: {}
       )
       end

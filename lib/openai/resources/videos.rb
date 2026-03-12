@@ -3,6 +3,9 @@
 module OpenAI
   module Resources
     class Videos
+      # @return [OpenAI::Resources::Videos::Character]
+      attr_reader :character
+
       # Some parameter documentations has been truncated, see
       # {OpenAI::Models::VideoCreateParams} for more details.
       #
@@ -12,7 +15,8 @@ module OpenAI
       #
       # @param prompt [String] Text prompt that describes the video to generate.
       #
-      # @param input_reference [Pathname, StringIO, IO, String, OpenAI::FilePart] Optional multipart reference asset that guides generation.
+      # @param input_reference [OpenAI::Models::VideoCreateParams::InputReference] Optional reference object that guides generation. Provide exactly one of
+      # `image\_
       #
       # @param model [String, Symbol, OpenAI::Models::VideoModel] The video generation model to use (allowed values: sora-2, sora-2-pro). Defaults
       #
@@ -136,6 +140,62 @@ module OpenAI
         )
       end
 
+      # Create a new video generation job by editing a source video or existing
+      # generated video.
+      #
+      # @overload edit(prompt:, video:, request_options: {})
+      #
+      # @param prompt [String] Text prompt that describes how to edit the source video.
+      #
+      # @param video [OpenAI::Models::VideoEditParams::Video] Reference to the completed video to edit.
+      #
+      # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+      #
+      # @return [OpenAI::Models::Video]
+      #
+      # @see OpenAI::Models::VideoEditParams
+      def edit(params)
+        parsed, options = OpenAI::VideoEditParams.dump_request(params)
+        @client.request(
+          method: :post,
+          path: "videos/edits",
+          headers: {"content-type" => "multipart/form-data"},
+          body: parsed,
+          model: OpenAI::Video,
+          options: options
+        )
+      end
+
+      # Some parameter documentations has been truncated, see
+      # {OpenAI::Models::VideoExtendParams} for more details.
+      #
+      # Create an extension of a completed video.
+      #
+      # @overload extend_(prompt:, seconds:, video:, request_options: {})
+      #
+      # @param prompt [String] Updated text prompt that directs the extension generation.
+      #
+      # @param seconds [Symbol, OpenAI::Models::VideoSeconds] Length of the newly generated extension segment in seconds (allowed values: 4, 8
+      #
+      # @param video [OpenAI::Models::VideoExtendParams::Video] Reference to the completed video to extend.
+      #
+      # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+      #
+      # @return [OpenAI::Models::Video]
+      #
+      # @see OpenAI::Models::VideoExtendParams
+      def extend_(params)
+        parsed, options = OpenAI::VideoExtendParams.dump_request(params)
+        @client.request(
+          method: :post,
+          path: "videos/extensions",
+          headers: {"content-type" => "multipart/form-data"},
+          body: parsed,
+          model: OpenAI::Video,
+          options: options
+        )
+      end
+
       # Create a remix of a completed video using a refreshed prompt.
       #
       # @overload remix(video_id, prompt:, request_options: {})
@@ -166,6 +226,7 @@ module OpenAI
       # @param client [OpenAI::Client]
       def initialize(client:)
         @client = client
+        @character = OpenAI::Resources::Videos::Character.new(client: client)
       end
     end
   end

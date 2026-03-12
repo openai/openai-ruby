@@ -1,0 +1,20 @@
+module OpenAI
+  module Resources
+    class Videos
+      class Character
+        def create: (
+          name: String,
+          video: OpenAI::Internal::file_input,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Models::Videos::CharacterCreateResponse
+
+        def get: (
+          String character_id,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Models::Videos::CharacterGetResponse
+
+        def initialize: (client: OpenAI::Client) -> void
+      end
+    end
+  end
+end

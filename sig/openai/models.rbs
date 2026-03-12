@@ -245,6 +245,10 @@ module OpenAI
 
   class VideoDownloadContentParams = OpenAI::Models::VideoDownloadContentParams
 
+  class VideoEditParams = OpenAI::Models::VideoEditParams
+
+  class VideoExtendParams = OpenAI::Models::VideoExtendParams
+
   class VideoListParams = OpenAI::Models::VideoListParams
 
   module VideoModel = OpenAI::Models::VideoModel
@@ -252,6 +256,8 @@ module OpenAI
   class VideoRemixParams = OpenAI::Models::VideoRemixParams
 
   class VideoRetrieveParams = OpenAI::Models::VideoRetrieveParams
+
+  module Videos = OpenAI::Models::Videos
 
   module VideoSeconds = OpenAI::Models::VideoSeconds
 

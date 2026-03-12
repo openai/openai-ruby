@@ -114,6 +114,58 @@ class OpenAI::Test::Resources::VideosTest < OpenAI::Test::ResourceTest
     end
   end
 
+  def test_edit_required_params
+    response = @openai.videos.edit(prompt: "x", video: {id: "video_123"})
+
+    assert_pattern do
+      response => OpenAI::Video
+    end
+
+    assert_pattern do
+      response => {
+        id: String,
+        completed_at: Integer | nil,
+        created_at: Integer,
+        error: OpenAI::VideoCreateError | nil,
+        expires_at: Integer | nil,
+        model: OpenAI::VideoModel,
+        object: Symbol,
+        progress: Integer,
+        prompt: String | nil,
+        remixed_from_video_id: String | nil,
+        seconds: OpenAI::Video::Seconds,
+        size: OpenAI::VideoSize,
+        status: OpenAI::Video::Status
+      }
+    end
+  end
+
+  def test_extend__required_params
+    response = @openai.videos.extend_(prompt: "x", seconds: :"4", video: {id: "video_123"})
+
+    assert_pattern do
+      response => OpenAI::Video
+    end
+
+    assert_pattern do
+      response => {
+        id: String,
+        completed_at: Integer | nil,
+        created_at: Integer,
+        error: OpenAI::VideoCreateError | nil,
+        expires_at: Integer | nil,
+        model: OpenAI::VideoModel,
+        object: Symbol,
+        progress: Integer,
+        prompt: String | nil,
+        remixed_from_video_id: String | nil,
+        seconds: OpenAI::Video::Seconds,
+        size: OpenAI::VideoSize,
+        status: OpenAI::Video::Status
+      }
+    end
+  end
+
   def test_remix_required_params
     response = @openai.videos.remix("video_123", prompt: "x")
 
