@@ -21,10 +21,10 @@ module OpenAI
       required :seconds, enum: -> { OpenAI::VideoSeconds }
 
       # @!attribute video
-      #   Reference to the completed video to extend.
+      #   Reference to the completed video.
       #
-      #   @return [OpenAI::Models::VideoExtendParams::Video]
-      required :video, -> { OpenAI::VideoExtendParams::Video }
+      #   @return [OpenAI::Models::VideoExtendParams::Video::VideoReferenceInputParam, Pathname, StringIO, IO, String, OpenAI::FilePart]
+      required :video, union: -> { OpenAI::VideoExtendParams::Video }
 
       # @!method initialize(prompt:, seconds:, video:, request_options: {})
       #   Some parameter documentations has been truncated, see
@@ -34,21 +34,35 @@ module OpenAI
       #
       #   @param seconds [Symbol, OpenAI::Models::VideoSeconds] Length of the newly generated extension segment in seconds (allowed values: 4, 8
       #
-      #   @param video [OpenAI::Models::VideoExtendParams::Video] Reference to the completed video to extend.
+      #   @param video [OpenAI::Models::VideoExtendParams::Video::VideoReferenceInputParam, Pathname, StringIO, IO, String, OpenAI::FilePart] Reference to the completed video.
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
-      class Video < OpenAI::Internal::Type::BaseModel
-        # @!attribute id
-        #   The identifier of the completed video.
-        #
-        #   @return [String]
-        required :id, String
+      # Reference to the completed video.
+      module Video
+        extend OpenAI::Internal::Type::Union
 
-        # @!method initialize(id:)
-        #   Reference to the completed video to extend.
-        #
-        #   @param id [String] The identifier of the completed video.
+        # Reference to the completed video.
+        variant -> { OpenAI::VideoExtendParams::Video::VideoReferenceInputParam }
+
+        # Reference to the completed video to extend.
+        variant OpenAI::Internal::Type::FileInput
+
+        class VideoReferenceInputParam < OpenAI::Internal::Type::BaseModel
+          # @!attribute id
+          #   The identifier of the completed video.
+          #
+          #   @return [String]
+          required :id, String
+
+          # @!method initialize(id:)
+          #   Reference to the completed video.
+          #
+          #   @param id [String] The identifier of the completed video.
+        end
+
+        # @!method self.variants
+        #   @return [Array(OpenAI::Models::VideoExtendParams::Video::VideoReferenceInputParam, StringIO)]
       end
     end
   end

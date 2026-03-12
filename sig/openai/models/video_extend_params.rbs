@@ -4,7 +4,7 @@ module OpenAI
       {
         prompt: String,
         seconds: OpenAI::Models::video_seconds,
-        video: OpenAI::VideoExtendParams::Video
+        video: OpenAI::Models::VideoExtendParams::video
       }
       & OpenAI::Internal::Type::request_parameters
 
@@ -16,30 +16,40 @@ module OpenAI
 
       attr_accessor seconds: OpenAI::Models::video_seconds
 
-      attr_accessor video: OpenAI::VideoExtendParams::Video
+      attr_accessor video: OpenAI::Models::VideoExtendParams::video
 
       def initialize: (
         prompt: String,
         seconds: OpenAI::Models::video_seconds,
-        video: OpenAI::VideoExtendParams::Video,
+        video: OpenAI::Models::VideoExtendParams::video,
         ?request_options: OpenAI::request_opts
       ) -> void
 
       def to_hash: -> {
         prompt: String,
         seconds: OpenAI::Models::video_seconds,
-        video: OpenAI::VideoExtendParams::Video,
+        video: OpenAI::Models::VideoExtendParams::video,
         request_options: OpenAI::RequestOptions
       }
 
-      type video = { id: String }
+      type video =
+        OpenAI::VideoExtendParams::Video::VideoReferenceInputParam
+        | OpenAI::Internal::file_input
 
-      class Video < OpenAI::Internal::Type::BaseModel
-        attr_accessor id: String
+      module Video
+        extend OpenAI::Internal::Type::Union
 
-        def initialize: (id: String) -> void
+        type video_reference_input_param = { id: String }
 
-        def to_hash: -> { id: String }
+        class VideoReferenceInputParam < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          def initialize: (id: String) -> void
+
+          def to_hash: -> { id: String }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::VideoExtendParams::video]
       end
     end
   end

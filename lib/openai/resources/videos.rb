@@ -15,8 +15,7 @@ module OpenAI
       #
       # @param prompt [String] Text prompt that describes the video to generate.
       #
-      # @param input_reference [OpenAI::Models::VideoCreateParams::InputReference] Optional reference object that guides generation. Provide exactly one of
-      # `image\_
+      # @param input_reference [Pathname, StringIO, IO, String, OpenAI::FilePart, OpenAI::Models::VideoCreateParams::InputReference::ImageRefParam2] Optional reference asset upload or reference object that guides generation.
       #
       # @param model [String, Symbol, OpenAI::Models::VideoModel] The video generation model to use (allowed values: sora-2, sora-2-pro). Defaults
       #
@@ -147,7 +146,7 @@ module OpenAI
       #
       # @param prompt [String] Text prompt that describes how to edit the source video.
       #
-      # @param video [OpenAI::Models::VideoEditParams::Video] Reference to the completed video to edit.
+      # @param video [Pathname, StringIO, IO, String, OpenAI::FilePart, OpenAI::Models::VideoEditParams::Video::VideoReferenceInputParam] Reference to the completed video to edit.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -177,7 +176,7 @@ module OpenAI
       #
       # @param seconds [Symbol, OpenAI::Models::VideoSeconds] Length of the newly generated extension segment in seconds (allowed values: 4, 8
       #
-      # @param video [OpenAI::Models::VideoExtendParams::Video] Reference to the completed video to extend.
+      # @param video [OpenAI::Models::VideoExtendParams::Video::VideoReferenceInputParam, Pathname, StringIO, IO, String, OpenAI::FilePart] Reference to the completed video.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
