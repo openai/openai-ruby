@@ -14,10 +14,11 @@ module OpenAI
       required :prompt, String
 
       # @!attribute input_reference
-      #   Optional multipart reference asset that guides generation.
+      #   Optional reference object that guides generation. Provide exactly one of
+      #   `image_url` or `file_id`.
       #
-      #   @return [Pathname, StringIO, IO, String, OpenAI::FilePart, nil]
-      optional :input_reference, OpenAI::Internal::Type::FileInput
+      #   @return [OpenAI::Models::VideoCreateParams::InputReference, nil]
+      optional :input_reference, -> { OpenAI::VideoCreateParams::InputReference }
 
       # @!attribute model
       #   The video generation model to use (allowed values: sora-2, sora-2-pro). Defaults
@@ -45,7 +46,8 @@ module OpenAI
       #
       #   @param prompt [String] Text prompt that describes the video to generate.
       #
-      #   @param input_reference [Pathname, StringIO, IO, String, OpenAI::FilePart] Optional multipart reference asset that guides generation.
+      #   @param input_reference [OpenAI::Models::VideoCreateParams::InputReference] Optional reference object that guides generation. Provide exactly one of
+      #   `image\_
       #
       #   @param model [String, Symbol, OpenAI::Models::VideoModel] The video generation model to use (allowed values: sora-2, sora-2-pro). Defaults
       #
@@ -54,6 +56,27 @@ module OpenAI
       #   @param size [Symbol, OpenAI::Models::VideoSize] Output resolution formatted as width x height (allowed values: 720x1280, 1280x72
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
+
+      class InputReference < OpenAI::Internal::Type::BaseModel
+        # @!attribute file_id
+        #
+        #   @return [String, nil]
+        optional :file_id, String
+
+        # @!attribute image_url
+        #   A fully qualified URL or base64-encoded data URL.
+        #
+        #   @return [String, nil]
+        optional :image_url, String
+
+        # @!method initialize(file_id: nil, image_url: nil)
+        #   Optional reference object that guides generation. Provide exactly one of
+        #   `image_url` or `file_id`.
+        #
+        #   @param file_id [String]
+        #
+        #   @param image_url [String] A fully qualified URL or base64-encoded data URL.
+      end
     end
   end
 end
