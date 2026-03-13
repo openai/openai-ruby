@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.55.0 (2026-03-13)
+
+Full Changelog: [v0.54.0...v0.55.0](https://github.com/openai/openai-ruby/compare/v0.54.0...v0.55.0)
+
+### Features
+
+* **api:** custom voices ([a9f7891](https://github.com/openai/openai-ruby/commit/a9f78916b97e3a59f35dbcac05c725474e6634af))
+
 ## 0.54.0 (2026-03-13)
 
 Full Changelog: [v0.53.0...v0.54.0](https://github.com/openai/openai-ruby/compare/v0.53.0...v0.54.0)
