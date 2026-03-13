@@ -60,9 +60,20 @@ module OpenAI
             | :verse
             | :marin
             | :cedar
+            | OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice::ID
 
           module Voice
             extend OpenAI::Internal::Type::Union
+
+            type id = { id: String }
+
+            class ID < OpenAI::Internal::Type::BaseModel
+              attr_accessor id: String
+
+              def initialize: (id: String) -> void
+
+              def to_hash: -> { id: String }
+            end
 
             def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::voice]
 

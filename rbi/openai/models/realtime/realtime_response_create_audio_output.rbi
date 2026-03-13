@@ -87,14 +87,17 @@ module OpenAI
 
           # The voice the model uses to respond. Supported built-in voices are `alloy`,
           # `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`, and
-          # `cedar`. Voice cannot be changed during the session once the model has responded
-          # with audio at least once.
+          # `cedar`. You may also provide a custom voice object with an `id`, for example
+          # `{ "id": "voice_1234" }`. Voice cannot be changed during the session once the
+          # model has responded with audio at least once. We recommend `marin` and `cedar`
+          # for best quality.
           sig do
             returns(
               T.nilable(
                 T.any(
                   String,
-                  OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice::OrSymbol
+                  OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice::OrSymbol,
+                  OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice::ID
                 )
               )
             )
@@ -106,7 +109,8 @@ module OpenAI
               voice:
                 T.any(
                   String,
-                  OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice::OrSymbol
+                  OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice::OrSymbol,
+                  OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice::ID::OrHash
                 )
             ).void
           end
@@ -123,7 +127,8 @@ module OpenAI
               voice:
                 T.any(
                   String,
-                  OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice::OrSymbol
+                  OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice::OrSymbol,
+                  OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice::ID::OrHash
                 )
             ).returns(T.attached_class)
           end
@@ -132,8 +137,10 @@ module OpenAI
             format_: nil,
             # The voice the model uses to respond. Supported built-in voices are `alloy`,
             # `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`, and
-            # `cedar`. Voice cannot be changed during the session once the model has responded
-            # with audio at least once.
+            # `cedar`. You may also provide a custom voice object with an `id`, for example
+            # `{ "id": "voice_1234" }`. Voice cannot be changed during the session once the
+            # model has responded with audio at least once. We recommend `marin` and `cedar`
+            # for best quality.
             voice: nil
           )
           end
@@ -150,7 +157,8 @@ module OpenAI
                 voice:
                   T.any(
                     String,
-                    OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice::OrSymbol
+                    OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice::OrSymbol,
+                    OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice::ID
                   )
               }
             )
@@ -160,8 +168,10 @@ module OpenAI
 
           # The voice the model uses to respond. Supported built-in voices are `alloy`,
           # `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`, and
-          # `cedar`. Voice cannot be changed during the session once the model has responded
-          # with audio at least once.
+          # `cedar`. You may also provide a custom voice object with an `id`, for example
+          # `{ "id": "voice_1234" }`. Voice cannot be changed during the session once the
+          # model has responded with audio at least once. We recommend `marin` and `cedar`
+          # for best quality.
           module Voice
             extend OpenAI::Internal::Type::Union
 
@@ -169,9 +179,36 @@ module OpenAI
               T.type_alias do
                 T.any(
                   String,
-                  OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice::TaggedSymbol
+                  OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice::TaggedSymbol,
+                  OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice::ID
                 )
               end
+
+            class ID < OpenAI::Internal::Type::BaseModel
+              OrHash =
+                T.type_alias do
+                  T.any(
+                    OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice::ID,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+              # The custom voice ID, e.g. `voice_1234`.
+              sig { returns(String) }
+              attr_accessor :id
+
+              # Custom voice reference.
+              sig { params(id: String).returns(T.attached_class) }
+              def self.new(
+                # The custom voice ID, e.g. `voice_1234`.
+                id:
+              )
+              end
+
+              sig { override.returns({ id: String }) }
+              def to_hash
+              end
+            end
 
             sig do
               override.returns(

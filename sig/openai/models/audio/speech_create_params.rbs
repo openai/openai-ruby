@@ -85,9 +85,20 @@ module OpenAI
           | :verse
           | :marin
           | :cedar
+          | OpenAI::Audio::SpeechCreateParams::Voice::ID
 
         module Voice
           extend OpenAI::Internal::Type::Union
+
+          type id = { id: String }
+
+          class ID < OpenAI::Internal::Type::BaseModel
+            attr_accessor id: String
+
+            def initialize: (id: String) -> void
+
+            def to_hash: -> { id: String }
+          end
 
           def self?.variants: -> ::Array[OpenAI::Models::Audio::SpeechCreateParams::voice]
 

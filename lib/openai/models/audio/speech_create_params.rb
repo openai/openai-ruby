@@ -24,11 +24,12 @@ module OpenAI
         # @!attribute voice
         #   The voice to use when generating the audio. Supported built-in voices are
         #   `alloy`, `ash`, `ballad`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage`,
-        #   `shimmer`, `verse`, `marin`, and `cedar`. Previews of the voices are available
-        #   in the
+        #   `shimmer`, `verse`, `marin`, and `cedar`. You may also provide a custom voice
+        #   object with an `id`, for example `{ "id": "voice_1234" }`. Previews of the
+        #   voices are available in the
         #   [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
         #
-        #   @return [String, Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice]
+        #   @return [String, Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice::ID, OpenAI::Models::Audio::SpeechCreateParams::Voice]
         required :voice, union: -> { OpenAI::Audio::SpeechCreateParams::Voice }
 
         # @!attribute instructions
@@ -67,7 +68,7 @@ module OpenAI
         #
         #   @param model [String, Symbol, OpenAI::Models::Audio::SpeechModel] One of the available [TTS models](https://platform.openai.com/docs/models#tts):
         #
-        #   @param voice [String, Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice] The voice to use when generating the audio. Supported built-in voices are `alloy
+        #   @param voice [String, Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice::ID, OpenAI::Models::Audio::SpeechCreateParams::Voice] The voice to use when generating the audio. Supported built-in voices are `alloy
         #
         #   @param instructions [String] Control the voice of your generated audio with additional instructions. Does not
         #
@@ -95,8 +96,9 @@ module OpenAI
 
         # The voice to use when generating the audio. Supported built-in voices are
         # `alloy`, `ash`, `ballad`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage`,
-        # `shimmer`, `verse`, `marin`, and `cedar`. Previews of the voices are available
-        # in the
+        # `shimmer`, `verse`, `marin`, and `cedar`. You may also provide a custom voice
+        # object with an `id`, for example `{ "id": "voice_1234" }`. Previews of the
+        # voices are available in the
         # [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
         module Voice
           extend OpenAI::Internal::Type::Union
@@ -123,11 +125,33 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::CEDAR }
 
+          # Custom voice reference.
+          variant -> { OpenAI::Audio::SpeechCreateParams::Voice::ID }
+
+          class ID < OpenAI::Internal::Type::BaseModel
+            # @!attribute id
+            #   The custom voice ID, e.g. `voice_1234`.
+            #
+            #   @return [String]
+            required :id, String
+
+            # @!method initialize(id:)
+            #   Custom voice reference.
+            #
+            #   @param id [String] The custom voice ID, e.g. `voice_1234`.
+          end
+
           # @!method self.variants
-          #   @return [Array(String, Symbol)]
+          #   @return [Array(String, Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice::ID)]
 
           define_sorbet_constant!(:Variants) do
-            T.type_alias { T.any(String, OpenAI::Audio::SpeechCreateParams::Voice::TaggedSymbol) }
+            T.type_alias do
+              T.any(
+                String,
+                OpenAI::Audio::SpeechCreateParams::Voice::TaggedSymbol,
+                OpenAI::Audio::SpeechCreateParams::Voice::ID
+              )
+            end
           end
 
           # @!group
