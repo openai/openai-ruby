@@ -13,7 +13,11 @@ module OpenAI
             input: String,
             model: T.any(String, OpenAI::Audio::SpeechModel::OrSymbol),
             voice:
-              T.any(String, OpenAI::Audio::SpeechCreateParams::Voice::OrSymbol),
+              T.any(
+                String,
+                OpenAI::Audio::SpeechCreateParams::Voice::OrSymbol,
+                OpenAI::Audio::SpeechCreateParams::Voice::ID::OrHash
+              ),
             instructions: String,
             response_format:
               OpenAI::Audio::SpeechCreateParams::ResponseFormat::OrSymbol,
@@ -31,8 +35,9 @@ module OpenAI
           model:,
           # The voice to use when generating the audio. Supported built-in voices are
           # `alloy`, `ash`, `ballad`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage`,
-          # `shimmer`, `verse`, `marin`, and `cedar`. Previews of the voices are available
-          # in the
+          # `shimmer`, `verse`, `marin`, and `cedar`. You may also provide a custom voice
+          # object with an `id`, for example `{ "id": "voice_1234" }`. Previews of the
+          # voices are available in the
           # [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
           voice:,
           # Control the voice of your generated audio with additional instructions. Does not
