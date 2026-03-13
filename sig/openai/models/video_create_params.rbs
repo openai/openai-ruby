@@ -55,27 +55,10 @@ module OpenAI
       }
 
       type input_reference =
-        OpenAI::Internal::file_input
-        | OpenAI::VideoCreateParams::InputReference::ImageRefParam2
+        OpenAI::Internal::file_input | OpenAI::ImageInputReferenceParam
 
       module InputReference
         extend OpenAI::Internal::Type::Union
-
-        type image_ref_param2 = { file_id: String, image_url: String }
-
-        class ImageRefParam2 < OpenAI::Internal::Type::BaseModel
-          attr_reader file_id: String?
-
-          def file_id=: (String) -> String
-
-          attr_reader image_url: String?
-
-          def image_url=: (String) -> String
-
-          def initialize: (?file_id: String, ?image_url: String) -> void
-
-          def to_hash: -> { file_id: String, image_url: String }
-        end
 
         def self?.variants: -> ::Array[OpenAI::Models::VideoCreateParams::input_reference]
       end

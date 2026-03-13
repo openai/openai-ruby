@@ -3,9 +3,6 @@
 module OpenAI
   module Resources
     class Videos
-      sig { returns(OpenAI::Resources::Videos::Character) }
-      attr_reader :character
-
       # Create a new video generation job from a prompt and optional reference assets.
       sig do
         params(
@@ -13,7 +10,7 @@ module OpenAI
           input_reference:
             T.any(
               OpenAI::Internal::FileInput,
-              OpenAI::VideoCreateParams::InputReference::ImageRefParam2::OrHash
+              OpenAI::ImageInputReferenceParam::OrHash
             ),
           model: T.any(String, OpenAI::VideoModel::OrSymbol),
           seconds: OpenAI::VideoSeconds::OrSymbol,
@@ -87,6 +84,23 @@ module OpenAI
       )
       end
 
+      # Create a character from an uploaded video.
+      sig do
+        params(
+          name: String,
+          video: OpenAI::Internal::FileInput,
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::Models::VideoCreateCharacterResponse)
+      end
+      def create_character(
+        # Display name for this API character.
+        name:,
+        # Video file used to create a character.
+        video:,
+        request_options: {}
+      )
+      end
+
       # Download the generated video bytes or a derived preview asset.
       #
       # Streams the rendered video content for the specified video job.
@@ -135,8 +149,8 @@ module OpenAI
           seconds: OpenAI::VideoSeconds::OrSymbol,
           video:
             T.any(
-              OpenAI::VideoExtendParams::Video::VideoReferenceInputParam::OrHash,
-              OpenAI::Internal::FileInput
+              OpenAI::Internal::FileInput,
+              OpenAI::VideoExtendParams::Video::VideoReferenceInputParam::OrHash
             ),
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(OpenAI::Video)
@@ -147,8 +161,22 @@ module OpenAI
         # Length of the newly generated extension segment in seconds (allowed values: 4,
         # 8, 12, 16, 20).
         seconds:,
-        # Reference to the completed video.
+        # Reference to the completed video to extend.
         video:,
+        request_options: {}
+      )
+      end
+
+      # Fetch a character.
+      sig do
+        params(
+          character_id: String,
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::Models::VideoGetCharacterResponse)
+      end
+      def get_character(
+        # The identifier of the character to retrieve.
+        character_id,
         request_options: {}
       )
       end

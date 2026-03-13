@@ -19,10 +19,7 @@ module OpenAI
       sig do
         returns(
           T.nilable(
-            T.any(
-              OpenAI::Internal::FileInput,
-              OpenAI::VideoCreateParams::InputReference::ImageRefParam2
-            )
+            T.any(OpenAI::Internal::FileInput, OpenAI::ImageInputReferenceParam)
           )
         )
       end
@@ -33,7 +30,7 @@ module OpenAI
           input_reference:
             T.any(
               OpenAI::Internal::FileInput,
-              OpenAI::VideoCreateParams::InputReference::ImageRefParam2::OrHash
+              OpenAI::ImageInputReferenceParam::OrHash
             )
         ).void
       end
@@ -68,7 +65,7 @@ module OpenAI
           input_reference:
             T.any(
               OpenAI::Internal::FileInput,
-              OpenAI::VideoCreateParams::InputReference::ImageRefParam2::OrHash
+              OpenAI::ImageInputReferenceParam::OrHash
             ),
           model: T.any(String, OpenAI::VideoModel::OrSymbol),
           seconds: OpenAI::VideoSeconds::OrSymbol,
@@ -100,7 +97,7 @@ module OpenAI
             input_reference:
               T.any(
                 OpenAI::Internal::FileInput,
-                OpenAI::VideoCreateParams::InputReference::ImageRefParam2
+                OpenAI::ImageInputReferenceParam
               ),
             model: T.any(String, OpenAI::VideoModel::OrSymbol),
             seconds: OpenAI::VideoSeconds::OrSymbol,
@@ -117,49 +114,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Union
 
         Variants =
-          T.type_alias do
-            T.any(
-              StringIO,
-              OpenAI::VideoCreateParams::InputReference::ImageRefParam2
-            )
-          end
-
-        class ImageRefParam2 < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::VideoCreateParams::InputReference::ImageRefParam2,
-                OpenAI::Internal::AnyHash
-              )
-            end
-
-          sig { returns(T.nilable(String)) }
-          attr_reader :file_id
-
-          sig { params(file_id: String).void }
-          attr_writer :file_id
-
-          # A fully qualified URL or base64-encoded data URL.
-          sig { returns(T.nilable(String)) }
-          attr_reader :image_url
-
-          sig { params(image_url: String).void }
-          attr_writer :image_url
-
-          sig do
-            params(file_id: String, image_url: String).returns(T.attached_class)
-          end
-          def self.new(
-            file_id: nil,
-            # A fully qualified URL or base64-encoded data URL.
-            image_url: nil
-          )
-          end
-
-          sig { override.returns({ file_id: String, image_url: String }) }
-          def to_hash
-          end
-        end
+          T.type_alias { T.any(StringIO, OpenAI::ImageInputReferenceParam) }
 
         sig do
           override.returns(

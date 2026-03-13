@@ -33,8 +33,8 @@ module OpenAI
       }
 
       type video =
-        OpenAI::VideoExtendParams::Video::VideoReferenceInputParam
-        | OpenAI::Internal::file_input
+        OpenAI::Internal::file_input
+        | OpenAI::VideoExtendParams::Video::VideoReferenceInputParam
 
       module Video
         extend OpenAI::Internal::Type::Union
