@@ -16,7 +16,7 @@ module OpenAI
       # @!attribute input_reference
       #   Optional reference asset upload or reference object that guides generation.
       #
-      #   @return [Pathname, StringIO, IO, String, OpenAI::FilePart, OpenAI::Models::VideoCreateParams::InputReference::ImageRefParam2, nil]
+      #   @return [Pathname, StringIO, IO, String, OpenAI::FilePart, OpenAI::Models::ImageInputReferenceParam, nil]
       optional :input_reference, union: -> { OpenAI::VideoCreateParams::InputReference }
 
       # @!attribute model
@@ -45,7 +45,7 @@ module OpenAI
       #
       #   @param prompt [String] Text prompt that describes the video to generate.
       #
-      #   @param input_reference [Pathname, StringIO, IO, String, OpenAI::FilePart, OpenAI::Models::VideoCreateParams::InputReference::ImageRefParam2] Optional reference asset upload or reference object that guides generation.
+      #   @param input_reference [Pathname, StringIO, IO, String, OpenAI::FilePart, OpenAI::Models::ImageInputReferenceParam] Optional reference asset upload or reference object that guides generation.
       #
       #   @param model [String, Symbol, OpenAI::Models::VideoModel] The video generation model to use (allowed values: sora-2, sora-2-pro). Defaults
       #
@@ -62,28 +62,10 @@ module OpenAI
         # Optional reference asset upload or reference object that guides generation.
         variant OpenAI::Internal::Type::FileInput
 
-        variant -> { OpenAI::VideoCreateParams::InputReference::ImageRefParam2 }
-
-        class ImageRefParam2 < OpenAI::Internal::Type::BaseModel
-          # @!attribute file_id
-          #
-          #   @return [String, nil]
-          optional :file_id, String
-
-          # @!attribute image_url
-          #   A fully qualified URL or base64-encoded data URL.
-          #
-          #   @return [String, nil]
-          optional :image_url, String
-
-          # @!method initialize(file_id: nil, image_url: nil)
-          #   @param file_id [String]
-          #
-          #   @param image_url [String] A fully qualified URL or base64-encoded data URL.
-        end
+        variant -> { OpenAI::ImageInputReferenceParam }
 
         # @!method self.variants
-        #   @return [Array(StringIO, OpenAI::Models::VideoCreateParams::InputReference::ImageRefParam2)]
+        #   @return [Array(StringIO, OpenAI::Models::ImageInputReferenceParam)]
       end
     end
   end
