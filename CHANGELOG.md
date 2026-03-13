@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.54.0 (2026-03-13)
+
+Full Changelog: [v0.53.0...v0.54.0](https://github.com/openai/openai-ruby/compare/v0.53.0...v0.54.0)
+
+### Features
+
+* **api:** api update ([235124c](https://github.com/openai/openai-ruby/commit/235124c18886d02e2373c8075354cd19cf928a1d))
+* **api:** manual updates ([d1ee93f](https://github.com/openai/openai-ruby/commit/d1ee93fd53b18ba7a6c38d75ecac9ab6b6eade9f))
+* **api:** manual updates ([8f13ded](https://github.com/openai/openai-ruby/commit/8f13ded017186651bbfaf679e429d7436183f8c0))
+* **api:** sora api improvements: character api, video extensions/edits, higher resolution exports. ([58a8c4d](https://github.com/openai/openai-ruby/commit/58a8c4d13897c6be6735e5255e4e7308c9a7cc44))
+* **client:** add webhook support ([3a2425f](https://github.com/openai/openai-ruby/commit/3a2425ff3ac8cfb883e38e56c1c76585ce6a8ab5))
+
+
+### Chores
+
+* **internal:** codegen related update ([2100fc4](https://github.com/openai/openai-ruby/commit/2100fc4105da779d09e15723c9ad22eb7a6ad307))
+
 ## 0.53.0 (2026-03-05)
 
 Full Changelog: [v0.52.0...v0.53.0](https://github.com/openai/openai-ruby/compare/v0.52.0...v0.53.0)
