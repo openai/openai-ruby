@@ -23,12 +23,14 @@ module OpenAI
 
         # The voice the model uses to respond. Supported built-in voices are `alloy`,
         # `ash`, `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`, `sage`, `shimmer`,
-        # `marin`, and `cedar`.
+        # `marin`, and `cedar`. You may also provide a custom voice object with an `id`,
+        # for example `{ "id": "voice_1234" }`.
         sig do
           returns(
             T.any(
               String,
-              OpenAI::Chat::ChatCompletionAudioParam::Voice::OrSymbol
+              OpenAI::Chat::ChatCompletionAudioParam::Voice::OrSymbol,
+              OpenAI::Chat::ChatCompletionAudioParam::Voice::ID
             )
           )
         end
@@ -43,7 +45,8 @@ module OpenAI
             voice:
               T.any(
                 String,
-                OpenAI::Chat::ChatCompletionAudioParam::Voice::OrSymbol
+                OpenAI::Chat::ChatCompletionAudioParam::Voice::OrSymbol,
+                OpenAI::Chat::ChatCompletionAudioParam::Voice::ID::OrHash
               )
           ).returns(T.attached_class)
         end
@@ -53,7 +56,8 @@ module OpenAI
           format_:,
           # The voice the model uses to respond. Supported built-in voices are `alloy`,
           # `ash`, `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`, `sage`, `shimmer`,
-          # `marin`, and `cedar`.
+          # `marin`, and `cedar`. You may also provide a custom voice object with an `id`,
+          # for example `{ "id": "voice_1234" }`.
           voice:
         )
         end
@@ -65,7 +69,8 @@ module OpenAI
               voice:
                 T.any(
                   String,
-                  OpenAI::Chat::ChatCompletionAudioParam::Voice::OrSymbol
+                  OpenAI::Chat::ChatCompletionAudioParam::Voice::OrSymbol,
+                  OpenAI::Chat::ChatCompletionAudioParam::Voice::ID
                 )
             }
           )
@@ -128,7 +133,8 @@ module OpenAI
 
         # The voice the model uses to respond. Supported built-in voices are `alloy`,
         # `ash`, `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`, `sage`, `shimmer`,
-        # `marin`, and `cedar`.
+        # `marin`, and `cedar`. You may also provide a custom voice object with an `id`,
+        # for example `{ "id": "voice_1234" }`.
         module Voice
           extend OpenAI::Internal::Type::Union
 
@@ -136,9 +142,36 @@ module OpenAI
             T.type_alias do
               T.any(
                 String,
-                OpenAI::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol
+                OpenAI::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol,
+                OpenAI::Chat::ChatCompletionAudioParam::Voice::ID
               )
             end
+
+          class ID < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Chat::ChatCompletionAudioParam::Voice::ID,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The custom voice ID, e.g. `voice_1234`.
+            sig { returns(String) }
+            attr_accessor :id
+
+            # Custom voice reference.
+            sig { params(id: String).returns(T.attached_class) }
+            def self.new(
+              # The custom voice ID, e.g. `voice_1234`.
+              id:
+            )
+            end
+
+            sig { override.returns({ id: String }) }
+            def to_hash
+            end
+          end
 
           sig do
             override.returns(

@@ -14,9 +14,10 @@ module OpenAI
         # @!attribute voice
         #   The voice the model uses to respond. Supported built-in voices are `alloy`,
         #   `ash`, `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`, `sage`, `shimmer`,
-        #   `marin`, and `cedar`.
+        #   `marin`, and `cedar`. You may also provide a custom voice object with an `id`,
+        #   for example `{ "id": "voice_1234" }`.
         #
-        #   @return [String, Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice]
+        #   @return [String, Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::ID, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice]
         required :voice, union: -> { OpenAI::Chat::ChatCompletionAudioParam::Voice }
 
         # @!method initialize(format_:, voice:)
@@ -29,7 +30,7 @@ module OpenAI
         #
         #   @param format_ [Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Format] Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`,
         #
-        #   @param voice [String, Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice] The voice the model uses to respond. Supported built-in voices are `alloy`, `ash
+        #   @param voice [String, Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::ID, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice] The voice the model uses to respond. Supported built-in voices are
 
         # Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`, `opus`,
         # or `pcm16`.
@@ -51,7 +52,8 @@ module OpenAI
 
         # The voice the model uses to respond. Supported built-in voices are `alloy`,
         # `ash`, `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`, `sage`, `shimmer`,
-        # `marin`, and `cedar`.
+        # `marin`, and `cedar`. You may also provide a custom voice object with an `id`,
+        # for example `{ "id": "voice_1234" }`.
         #
         # @see OpenAI::Models::Chat::ChatCompletionAudioParam#voice
         module Voice
@@ -79,11 +81,33 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::CEDAR }
 
+          # Custom voice reference.
+          variant -> { OpenAI::Chat::ChatCompletionAudioParam::Voice::ID }
+
+          class ID < OpenAI::Internal::Type::BaseModel
+            # @!attribute id
+            #   The custom voice ID, e.g. `voice_1234`.
+            #
+            #   @return [String]
+            required :id, String
+
+            # @!method initialize(id:)
+            #   Custom voice reference.
+            #
+            #   @param id [String] The custom voice ID, e.g. `voice_1234`.
+          end
+
           # @!method self.variants
-          #   @return [Array(String, Symbol)]
+          #   @return [Array(String, Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::ID)]
 
           define_sorbet_constant!(:Variants) do
-            T.type_alias { T.any(String, OpenAI::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol) }
+            T.type_alias do
+              T.any(
+                String,
+                OpenAI::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol,
+                OpenAI::Chat::ChatCompletionAudioParam::Voice::ID
+              )
+            end
           end
 
           # @!group
