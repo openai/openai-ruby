@@ -20,12 +20,12 @@ module OpenAI
       sig { returns(OpenAI::VideoSeconds::OrSymbol) }
       attr_accessor :seconds
 
-      # Reference to the completed video.
+      # Reference to the completed video to extend.
       sig do
         returns(
           T.any(
-            OpenAI::VideoExtendParams::Video::VideoReferenceInputParam,
-            OpenAI::Internal::FileInput
+            OpenAI::Internal::FileInput,
+            OpenAI::VideoExtendParams::Video::VideoReferenceInputParam
           )
         )
       end
@@ -37,8 +37,8 @@ module OpenAI
           seconds: OpenAI::VideoSeconds::OrSymbol,
           video:
             T.any(
-              OpenAI::VideoExtendParams::Video::VideoReferenceInputParam::OrHash,
-              OpenAI::Internal::FileInput
+              OpenAI::Internal::FileInput,
+              OpenAI::VideoExtendParams::Video::VideoReferenceInputParam::OrHash
             ),
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(T.attached_class)
@@ -49,7 +49,7 @@ module OpenAI
         # Length of the newly generated extension segment in seconds (allowed values: 4,
         # 8, 12, 16, 20).
         seconds:,
-        # Reference to the completed video.
+        # Reference to the completed video to extend.
         video:,
         request_options: {}
       )
@@ -62,8 +62,8 @@ module OpenAI
             seconds: OpenAI::VideoSeconds::OrSymbol,
             video:
               T.any(
-                OpenAI::VideoExtendParams::Video::VideoReferenceInputParam,
-                OpenAI::Internal::FileInput
+                OpenAI::Internal::FileInput,
+                OpenAI::VideoExtendParams::Video::VideoReferenceInputParam
               ),
             request_options: OpenAI::RequestOptions
           }
@@ -72,15 +72,15 @@ module OpenAI
       def to_hash
       end
 
-      # Reference to the completed video.
+      # Reference to the completed video to extend.
       module Video
         extend OpenAI::Internal::Type::Union
 
         Variants =
           T.type_alias do
             T.any(
-              OpenAI::VideoExtendParams::Video::VideoReferenceInputParam,
-              StringIO
+              StringIO,
+              OpenAI::VideoExtendParams::Video::VideoReferenceInputParam
             )
           end
 

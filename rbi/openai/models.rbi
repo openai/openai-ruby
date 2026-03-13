@@ -139,6 +139,8 @@ module OpenAI
 
   ImageGenStreamEvent = OpenAI::Models::ImageGenStreamEvent
 
+  ImageInputReferenceParam = OpenAI::Models::ImageInputReferenceParam
+
   ImageModel = OpenAI::Models::ImageModel
 
   ImagesResponse = OpenAI::Models::ImagesResponse
@@ -244,6 +246,8 @@ module OpenAI
 
   Video = OpenAI::Models::Video
 
+  VideoCreateCharacterParams = OpenAI::Models::VideoCreateCharacterParams
+
   VideoCreateError = OpenAI::Models::VideoCreateError
 
   VideoCreateParams = OpenAI::Models::VideoCreateParams
@@ -256,6 +260,8 @@ module OpenAI
 
   VideoExtendParams = OpenAI::Models::VideoExtendParams
 
+  VideoGetCharacterParams = OpenAI::Models::VideoGetCharacterParams
+
   VideoListParams = OpenAI::Models::VideoListParams
 
   VideoModel = OpenAI::Models::VideoModel
@@ -263,8 +269,6 @@ module OpenAI
   VideoRemixParams = OpenAI::Models::VideoRemixParams
 
   VideoRetrieveParams = OpenAI::Models::VideoRetrieveParams
-
-  Videos = OpenAI::Models::Videos
 
   VideoSeconds = OpenAI::Models::VideoSeconds
 

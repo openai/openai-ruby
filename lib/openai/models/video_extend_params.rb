@@ -21,9 +21,9 @@ module OpenAI
       required :seconds, enum: -> { OpenAI::VideoSeconds }
 
       # @!attribute video
-      #   Reference to the completed video.
+      #   Reference to the completed video to extend.
       #
-      #   @return [OpenAI::Models::VideoExtendParams::Video::VideoReferenceInputParam, Pathname, StringIO, IO, String, OpenAI::FilePart]
+      #   @return [Pathname, StringIO, IO, String, OpenAI::FilePart, OpenAI::Models::VideoExtendParams::Video::VideoReferenceInputParam]
       required :video, union: -> { OpenAI::VideoExtendParams::Video }
 
       # @!method initialize(prompt:, seconds:, video:, request_options: {})
@@ -34,19 +34,19 @@ module OpenAI
       #
       #   @param seconds [Symbol, OpenAI::Models::VideoSeconds] Length of the newly generated extension segment in seconds (allowed values: 4, 8
       #
-      #   @param video [OpenAI::Models::VideoExtendParams::Video::VideoReferenceInputParam, Pathname, StringIO, IO, String, OpenAI::FilePart] Reference to the completed video.
+      #   @param video [Pathname, StringIO, IO, String, OpenAI::FilePart, OpenAI::Models::VideoExtendParams::Video::VideoReferenceInputParam] Reference to the completed video to extend.
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
-      # Reference to the completed video.
+      # Reference to the completed video to extend.
       module Video
         extend OpenAI::Internal::Type::Union
 
-        # Reference to the completed video.
-        variant -> { OpenAI::VideoExtendParams::Video::VideoReferenceInputParam }
-
         # Reference to the completed video to extend.
         variant OpenAI::Internal::Type::FileInput
+
+        # Reference to the completed video.
+        variant -> { OpenAI::VideoExtendParams::Video::VideoReferenceInputParam }
 
         class VideoReferenceInputParam < OpenAI::Internal::Type::BaseModel
           # @!attribute id
@@ -62,7 +62,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::VideoExtendParams::Video::VideoReferenceInputParam, StringIO)]
+        #   @return [Array(StringIO, OpenAI::Models::VideoExtendParams::Video::VideoReferenceInputParam)]
       end
     end
   end

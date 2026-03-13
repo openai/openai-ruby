@@ -3,9 +3,6 @@
 module OpenAI
   module Resources
     class Videos
-      # @return [OpenAI::Resources::Videos::Character]
-      attr_reader :character
-
       # Some parameter documentations has been truncated, see
       # {OpenAI::Models::VideoCreateParams} for more details.
       #
@@ -15,7 +12,7 @@ module OpenAI
       #
       # @param prompt [String] Text prompt that describes the video to generate.
       #
-      # @param input_reference [Pathname, StringIO, IO, String, OpenAI::FilePart, OpenAI::Models::VideoCreateParams::InputReference::ImageRefParam2] Optional reference asset upload or reference object that guides generation.
+      # @param input_reference [Pathname, StringIO, IO, String, OpenAI::FilePart, OpenAI::Models::ImageInputReferenceParam] Optional reference asset upload or reference object that guides generation.
       #
       # @param model [String, Symbol, OpenAI::Models::VideoModel] The video generation model to use (allowed values: sora-2, sora-2-pro). Defaults
       #
@@ -111,6 +108,31 @@ module OpenAI
         )
       end
 
+      # Create a character from an uploaded video.
+      #
+      # @overload create_character(name:, video:, request_options: {})
+      #
+      # @param name [String] Display name for this API character.
+      #
+      # @param video [Pathname, StringIO, IO, String, OpenAI::FilePart] Video file used to create a character.
+      #
+      # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+      #
+      # @return [OpenAI::Models::VideoCreateCharacterResponse]
+      #
+      # @see OpenAI::Models::VideoCreateCharacterParams
+      def create_character(params)
+        parsed, options = OpenAI::VideoCreateCharacterParams.dump_request(params)
+        @client.request(
+          method: :post,
+          path: "videos/characters",
+          headers: {"content-type" => "multipart/form-data"},
+          body: parsed,
+          model: OpenAI::Models::VideoCreateCharacterResponse,
+          options: options
+        )
+      end
+
       # Download the generated video bytes or a derived preview asset.
       #
       # Streams the rendered video content for the specified video job.
@@ -176,7 +198,7 @@ module OpenAI
       #
       # @param seconds [Symbol, OpenAI::Models::VideoSeconds] Length of the newly generated extension segment in seconds (allowed values: 4, 8
       #
-      # @param video [OpenAI::Models::VideoExtendParams::Video::VideoReferenceInputParam, Pathname, StringIO, IO, String, OpenAI::FilePart] Reference to the completed video.
+      # @param video [Pathname, StringIO, IO, String, OpenAI::FilePart, OpenAI::Models::VideoExtendParams::Video::VideoReferenceInputParam] Reference to the completed video to extend.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -192,6 +214,26 @@ module OpenAI
           body: parsed,
           model: OpenAI::Video,
           options: options
+        )
+      end
+
+      # Fetch a character.
+      #
+      # @overload get_character(character_id, request_options: {})
+      #
+      # @param character_id [String] The identifier of the character to retrieve.
+      #
+      # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+      #
+      # @return [OpenAI::Models::VideoGetCharacterResponse]
+      #
+      # @see OpenAI::Models::VideoGetCharacterParams
+      def get_character(character_id, params = {})
+        @client.request(
+          method: :get,
+          path: ["videos/characters/%1$s", character_id],
+          model: OpenAI::Models::VideoGetCharacterResponse,
+          options: params[:request_options]
         )
       end
 
@@ -225,7 +267,6 @@ module OpenAI
       # @param client [OpenAI::Client]
       def initialize(client:)
         @client = client
-        @character = OpenAI::Resources::Videos::Character.new(client: client)
       end
     end
   end
