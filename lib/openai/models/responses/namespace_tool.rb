@@ -61,6 +61,12 @@ module OpenAI
             #   @return [Symbol, :function]
             required :type, const: :function
 
+            # @!attribute defer_loading
+            #   Whether this function should be deferred and discovered via tool search.
+            #
+            #   @return [Boolean, nil]
+            optional :defer_loading, OpenAI::Internal::Type::Boolean
+
             # @!attribute description
             #
             #   @return [String, nil]
@@ -76,11 +82,17 @@ module OpenAI
             #   @return [Boolean, nil]
             optional :strict, OpenAI::Internal::Type::Boolean, nil?: true
 
-            # @!method initialize(name:, description: nil, parameters: nil, strict: nil, type: :function)
+            # @!method initialize(name:, defer_loading: nil, description: nil, parameters: nil, strict: nil, type: :function)
             #   @param name [String]
+            #
+            #   @param defer_loading [Boolean] Whether this function should be deferred and discovered via tool search.
+            #
             #   @param description [String, nil]
+            #
             #   @param parameters [Object, nil]
+            #
             #   @param strict [Boolean, nil]
+            #
             #   @param type [Symbol, :function]
           end
 
