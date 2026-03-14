@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.56.0 (2026-03-14)
+
+Full Changelog: [v0.55.0...v0.56.0](https://github.com/openai/openai-ruby/compare/v0.55.0...v0.56.0)
+
+### Features
+
+* **api:** add /v1/videos endpoint support to batch create params ([7a661eb](https://github.com/openai/openai-ruby/commit/7a661eb405c72bb2696e0acd327ecd56d7ed6c54))
+* **api:** add defer_loading field to namespace_tool function ([2f3b9b7](https://github.com/openai/openai-ruby/commit/2f3b9b7a2fa7b63ed20d362a993d98d8cec72fc1))
+
 ## 0.55.0 (2026-03-13)
 
 Full Changelog: [v0.54.0...v0.55.0](https://github.com/openai/openai-ruby/compare/v0.54.0...v0.55.0)
