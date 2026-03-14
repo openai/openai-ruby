@@ -107,6 +107,13 @@ module OpenAI
             sig { returns(Symbol) }
             attr_accessor :type
 
+            # Whether this function should be deferred and discovered via tool search.
+            sig { returns(T.nilable(T::Boolean)) }
+            attr_reader :defer_loading
+
+            sig { params(defer_loading: T::Boolean).void }
+            attr_writer :defer_loading
+
             sig { returns(T.nilable(String)) }
             attr_accessor :description
 
@@ -119,6 +126,7 @@ module OpenAI
             sig do
               params(
                 name: String,
+                defer_loading: T::Boolean,
                 description: T.nilable(String),
                 parameters: T.nilable(T.anything),
                 strict: T.nilable(T::Boolean),
@@ -127,6 +135,8 @@ module OpenAI
             end
             def self.new(
               name:,
+              # Whether this function should be deferred and discovered via tool search.
+              defer_loading: nil,
               description: nil,
               parameters: nil,
               strict: nil,
@@ -139,6 +149,7 @@ module OpenAI
                 {
                   name: String,
                   type: Symbol,
+                  defer_loading: T::Boolean,
                   description: T.nilable(String),
                   parameters: T.nilable(T.anything),
                   strict: T.nilable(T::Boolean)
