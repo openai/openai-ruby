@@ -97,6 +97,8 @@ module OpenAI
         GTE = T.let(:gte, OpenAI::ComparisonFilter::Type::TaggedSymbol)
         LT = T.let(:lt, OpenAI::ComparisonFilter::Type::TaggedSymbol)
         LTE = T.let(:lte, OpenAI::ComparisonFilter::Type::TaggedSymbol)
+        IN = T.let(:in, OpenAI::ComparisonFilter::Type::TaggedSymbol)
+        NIN = T.let(:nin, OpenAI::ComparisonFilter::Type::TaggedSymbol)
 
         sig do
           override.returns(

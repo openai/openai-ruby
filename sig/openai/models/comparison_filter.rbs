@@ -26,7 +26,7 @@ module OpenAI
         value: OpenAI::Models::ComparisonFilter::value
       }
 
-      type type_ = :eq | :ne | :gt | :gte | :lt | :lte
+      type type_ = :eq | :ne | :gt | :gte | :lt | :lte | :in | :nin
 
       module Type
         extend OpenAI::Internal::Type::Enum
@@ -37,6 +37,8 @@ module OpenAI
         GTE: :gte
         LT: :lt
         LTE: :lte
+        IN: :in
+        NIN: :nin
 
         def self?.values: -> ::Array[OpenAI::Models::ComparisonFilter::type_]
       end
