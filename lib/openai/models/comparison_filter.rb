@@ -67,6 +67,8 @@ module OpenAI
         GTE = :gte
         LT = :lt
         LTE = :lte
+        IN = :in
+        NIN = :nin
 
         # @!method self.values
         #   @return [Array<Symbol>]
