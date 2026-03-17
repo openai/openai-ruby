@@ -21,9 +21,9 @@ module OpenAI
       #   case chat_model
       #   when OpenAI::ChatModel::GPT_5_4
       #     # ...
-      #   when OpenAI::ChatModel::GPT_5_3_CHAT_LATEST
+      #   when OpenAI::ChatModel::GPT_5_4_MINI
       #     # ...
-      #   when OpenAI::ChatModel::GPT_5_2
+      #   when OpenAI::ChatModel::GPT_5_4_NANO
       #     # ...
       #   else
       #     puts(chat_model)
@@ -33,9 +33,9 @@ module OpenAI
       #   case chat_model
       #   in :"gpt-5.4"
       #     # ...
-      #   in :"gpt-5.3-chat-latest"
+      #   in :"gpt-5.4-mini"
       #     # ...
-      #   in :"gpt-5.2"
+      #   in :"gpt-5.4-nano"
       #     # ...
       #   else
       #     puts(chat_model)
