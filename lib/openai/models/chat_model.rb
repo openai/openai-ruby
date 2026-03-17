@@ -6,6 +6,10 @@ module OpenAI
       extend OpenAI::Internal::Type::Enum
 
       GPT_5_4 = :"gpt-5.4"
+      GPT_5_4_MINI = :"gpt-5.4-mini"
+      GPT_5_4_NANO = :"gpt-5.4-nano"
+      GPT_5_4_MINI_2026_03_17 = :"gpt-5.4-mini-2026-03-17"
+      GPT_5_4_NANO_2026_03_17 = :"gpt-5.4-nano-2026-03-17"
       GPT_5_3_CHAT_LATEST = :"gpt-5.3-chat-latest"
       GPT_5_2 = :"gpt-5.2"
       GPT_5_2_2025_12_11 = :"gpt-5.2-2025-12-11"

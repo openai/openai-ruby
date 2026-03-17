@@ -9,6 +9,12 @@ module OpenAI
       OrSymbol = T.type_alias { T.any(Symbol, String) }
 
       GPT_5_4 = T.let(:"gpt-5.4", OpenAI::ChatModel::TaggedSymbol)
+      GPT_5_4_MINI = T.let(:"gpt-5.4-mini", OpenAI::ChatModel::TaggedSymbol)
+      GPT_5_4_NANO = T.let(:"gpt-5.4-nano", OpenAI::ChatModel::TaggedSymbol)
+      GPT_5_4_MINI_2026_03_17 =
+        T.let(:"gpt-5.4-mini-2026-03-17", OpenAI::ChatModel::TaggedSymbol)
+      GPT_5_4_NANO_2026_03_17 =
+        T.let(:"gpt-5.4-nano-2026-03-17", OpenAI::ChatModel::TaggedSymbol)
       GPT_5_3_CHAT_LATEST =
         T.let(:"gpt-5.3-chat-latest", OpenAI::ChatModel::TaggedSymbol)
       GPT_5_2 = T.let(:"gpt-5.2", OpenAI::ChatModel::TaggedSymbol)
