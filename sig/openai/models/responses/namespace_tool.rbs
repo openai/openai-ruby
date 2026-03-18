@@ -43,6 +43,7 @@ module OpenAI
             {
               name: String,
               type: :function,
+              defer_loading: bool,
               description: String?,
               parameters: top?,
               strict: bool?
@@ -53,6 +54,10 @@ module OpenAI
 
             attr_accessor type: :function
 
+            attr_reader defer_loading: bool?
+
+            def defer_loading=: (bool) -> bool
+
             attr_accessor description: String?
 
             attr_accessor parameters: top?
@@ -61,6 +66,7 @@ module OpenAI
 
             def initialize: (
               name: String,
+              ?defer_loading: bool,
               ?description: String?,
               ?parameters: top?,
               ?strict: bool?,
@@ -70,6 +76,7 @@ module OpenAI
             def to_hash: -> {
               name: String,
               type: :function,
+              defer_loading: bool,
               description: String?,
               parameters: top?,
               strict: bool?

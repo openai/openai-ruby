@@ -64,6 +64,7 @@ module OpenAI
         | :"/v1/moderations"
         | :"/v1/images/generations"
         | :"/v1/images/edits"
+        | :"/v1/videos"
 
       module Endpoint
         extend OpenAI::Internal::Type::Enum
@@ -75,6 +76,7 @@ module OpenAI
         V1_MODERATIONS: :"/v1/moderations"
         V1_IMAGES_GENERATIONS: :"/v1/images/generations"
         V1_IMAGES_EDITS: :"/v1/images/edits"
+        V1_VIDEOS: :"/v1/videos"
 
         def self?.values: -> ::Array[OpenAI::Models::BatchCreateParams::endpoint]
       end
