@@ -93,8 +93,6 @@ class OpenAI::Test::Resources::FilesTest < OpenAI::Test::ResourceTest
   end
 
   def test_content
-    skip("Mock server doesn't support application/binary responses")
-
     response = @openai.files.content("file_id")
 
     assert_pattern do
