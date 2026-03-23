@@ -23,6 +23,12 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Role]
         required :role, enum: -> { OpenAI::Responses::ResponseInputMessageItem::Role }
 
+        # @!attribute type
+        #   The type of the message input. Always set to `message`.
+        #
+        #   @return [Symbol, :message]
+        required :type, const: :message
+
         # @!attribute status
         #   The status of item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
@@ -30,13 +36,7 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Status, nil]
         optional :status, enum: -> { OpenAI::Responses::ResponseInputMessageItem::Status }
 
-        # @!attribute type
-        #   The type of the message input. Always set to `message`.
-        #
-        #   @return [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Type, nil]
-        optional :type, enum: -> { OpenAI::Responses::ResponseInputMessageItem::Type }
-
-        # @!method initialize(id:, content:, role:, status: nil, type: nil)
+        # @!method initialize(id:, content:, role:, status: nil, type: :message)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseInputMessageItem} for more details.
         #
@@ -48,7 +48,7 @@ module OpenAI
         #
         #   @param status [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Status] The status of item. One of `in_progress`, `completed`, or
         #
-        #   @param type [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Type] The type of the message input. Always set to `message`.
+        #   @param type [Symbol, :message] The type of the message input. Always set to `message`.
 
         # The role of the message input. One of `user`, `system`, or `developer`.
         #
@@ -74,18 +74,6 @@ module OpenAI
           IN_PROGRESS = :in_progress
           COMPLETED = :completed
           INCOMPLETE = :incomplete
-
-          # @!method self.values
-          #   @return [Array<Symbol>]
-        end
-
-        # The type of the message input. Always set to `message`.
-        #
-        # @see OpenAI::Models::Responses::ResponseInputMessageItem#type
-        module Type
-          extend OpenAI::Internal::Type::Enum
-
-          MESSAGE = :message
 
           # @!method self.values
           #   @return [Array<Symbol>]
