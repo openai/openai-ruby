@@ -6,8 +6,8 @@ module OpenAI
           id: String,
           content: OpenAI::Models::Responses::response_input_message_content_list,
           role: OpenAI::Models::Responses::ResponseInputMessageItem::role,
-          status: OpenAI::Models::Responses::ResponseInputMessageItem::status,
-          type: OpenAI::Models::Responses::ResponseInputMessageItem::type_
+          type: :message,
+          status: OpenAI::Models::Responses::ResponseInputMessageItem::status
         }
 
       class ResponseInputMessageItem < OpenAI::Internal::Type::BaseModel
@@ -17,32 +17,28 @@ module OpenAI
 
         attr_accessor role: OpenAI::Models::Responses::ResponseInputMessageItem::role
 
+        attr_accessor type: :message
+
         attr_reader status: OpenAI::Models::Responses::ResponseInputMessageItem::status?
 
         def status=: (
           OpenAI::Models::Responses::ResponseInputMessageItem::status
         ) -> OpenAI::Models::Responses::ResponseInputMessageItem::status
 
-        attr_reader type: OpenAI::Models::Responses::ResponseInputMessageItem::type_?
-
-        def type=: (
-          OpenAI::Models::Responses::ResponseInputMessageItem::type_
-        ) -> OpenAI::Models::Responses::ResponseInputMessageItem::type_
-
         def initialize: (
           id: String,
           content: OpenAI::Models::Responses::response_input_message_content_list,
           role: OpenAI::Models::Responses::ResponseInputMessageItem::role,
           ?status: OpenAI::Models::Responses::ResponseInputMessageItem::status,
-          ?type: OpenAI::Models::Responses::ResponseInputMessageItem::type_
+          ?type: :message
         ) -> void
 
         def to_hash: -> {
           id: String,
           content: OpenAI::Models::Responses::response_input_message_content_list,
           role: OpenAI::Models::Responses::ResponseInputMessageItem::role,
-          status: OpenAI::Models::Responses::ResponseInputMessageItem::status,
-          type: OpenAI::Models::Responses::ResponseInputMessageItem::type_
+          type: :message,
+          status: OpenAI::Models::Responses::ResponseInputMessageItem::status
         }
 
         type role = :user | :system | :developer
@@ -67,16 +63,6 @@ module OpenAI
           INCOMPLETE: :incomplete
 
           def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputMessageItem::status]
-        end
-
-        type type_ = :message
-
-        module Type
-          extend OpenAI::Internal::Type::Enum
-
-          MESSAGE: :message
-
-          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputMessageItem::type_]
         end
       end
     end

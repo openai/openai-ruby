@@ -31,6 +31,10 @@ module OpenAI
         end
         attr_accessor :role
 
+        # The type of the message input. Always set to `message`.
+        sig { returns(Symbol) }
+        attr_accessor :type
+
         # The status of item. One of `in_progress`, `completed`, or `incomplete`.
         # Populated when items are returned via API.
         sig do
@@ -50,23 +54,6 @@ module OpenAI
         end
         attr_writer :status
 
-        # The type of the message input. Always set to `message`.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::Responses::ResponseInputMessageItem::Type::TaggedSymbol
-            )
-          )
-        end
-        attr_reader :type
-
-        sig do
-          params(
-            type: OpenAI::Responses::ResponseInputMessageItem::Type::OrSymbol
-          ).void
-        end
-        attr_writer :type
-
         sig do
           params(
             id: String,
@@ -81,7 +68,7 @@ module OpenAI
             role: OpenAI::Responses::ResponseInputMessageItem::Role::OrSymbol,
             status:
               OpenAI::Responses::ResponseInputMessageItem::Status::OrSymbol,
-            type: OpenAI::Responses::ResponseInputMessageItem::Type::OrSymbol
+            type: Symbol
           ).returns(T.attached_class)
         end
         def self.new(
@@ -96,7 +83,7 @@ module OpenAI
           # Populated when items are returned via API.
           status: nil,
           # The type of the message input. Always set to `message`.
-          type: nil
+          type: :message
         )
         end
 
@@ -108,10 +95,9 @@ module OpenAI
                 T::Array[OpenAI::Responses::ResponseInputContent::Variants],
               role:
                 OpenAI::Responses::ResponseInputMessageItem::Role::TaggedSymbol,
+              type: Symbol,
               status:
-                OpenAI::Responses::ResponseInputMessageItem::Status::TaggedSymbol,
-              type:
-                OpenAI::Responses::ResponseInputMessageItem::Type::TaggedSymbol
+                OpenAI::Responses::ResponseInputMessageItem::Status::TaggedSymbol
             }
           )
         end
@@ -186,33 +172,6 @@ module OpenAI
             override.returns(
               T::Array[
                 OpenAI::Responses::ResponseInputMessageItem::Status::TaggedSymbol
-              ]
-            )
-          end
-          def self.values
-          end
-        end
-
-        # The type of the message input. Always set to `message`.
-        module Type
-          extend OpenAI::Internal::Type::Enum
-
-          TaggedSymbol =
-            T.type_alias do
-              T.all(Symbol, OpenAI::Responses::ResponseInputMessageItem::Type)
-            end
-          OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-          MESSAGE =
-            T.let(
-              :message,
-              OpenAI::Responses::ResponseInputMessageItem::Type::TaggedSymbol
-            )
-
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Responses::ResponseInputMessageItem::Type::TaggedSymbol
               ]
             )
           end
