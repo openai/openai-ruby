@@ -24,7 +24,8 @@ jobs:
     runs-on: ${{ github.repository == 'stainless-sdks/openai-ruby' && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
     if: |-
       github.repository == 'stainless-sdks/openai-ruby' &&
-      (github.event_name == 'push' || github.event.pull_request.head.repo.fork)
+      (github.event_name == 'push' || github.event.pull_request.head.repo.fork) &&
+      (github.event_name != 'push' || github.event.head_commit.message != 'codegen metadata')
     steps:
       - uses: actions/checkout@v6
       - name: Set up Ruby
