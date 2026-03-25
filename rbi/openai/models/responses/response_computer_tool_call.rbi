@@ -396,6 +396,10 @@ module OpenAI
             sig { returns(Integer) }
             attr_accessor :y_
 
+            # The keys being held while clicking.
+            sig { returns(T.nilable(T::Array[String])) }
+            attr_accessor :keys
+
             # A click action.
             sig do
               params(
@@ -403,6 +407,7 @@ module OpenAI
                   OpenAI::Responses::ResponseComputerToolCall::Action::Click::Button::OrSymbol,
                 x: Integer,
                 y_: Integer,
+                keys: T.nilable(T::Array[String]),
                 type: Symbol
               ).returns(T.attached_class)
             end
@@ -414,6 +419,8 @@ module OpenAI
               x:,
               # The y-coordinate where the click occurred.
               y_:,
+              # The keys being held while clicking.
+              keys: nil,
               # Specifies the event type. For a click action, this property is always `click`.
               type: :click
             )
@@ -426,7 +433,8 @@ module OpenAI
                     OpenAI::Responses::ResponseComputerToolCall::Action::Click::Button::OrSymbol,
                   type: Symbol,
                   x: Integer,
-                  y_: Integer
+                  y_: Integer,
+                  keys: T.nilable(T::Array[String])
                 }
               )
             end
@@ -494,6 +502,10 @@ module OpenAI
                 )
               end
 
+            # The keys being held while double-clicking.
+            sig { returns(T.nilable(T::Array[String])) }
+            attr_accessor :keys
+
             # Specifies the event type. For a double click action, this property is always set
             # to `double_click`.
             sig { returns(Symbol) }
@@ -509,11 +521,16 @@ module OpenAI
 
             # A double click action.
             sig do
-              params(x: Integer, y_: Integer, type: Symbol).returns(
-                T.attached_class
-              )
+              params(
+                keys: T.nilable(T::Array[String]),
+                x: Integer,
+                y_: Integer,
+                type: Symbol
+              ).returns(T.attached_class)
             end
             def self.new(
+              # The keys being held while double-clicking.
+              keys:,
               # The x-coordinate where the double click occurred.
               x:,
               # The y-coordinate where the double click occurred.
@@ -524,7 +541,16 @@ module OpenAI
             )
             end
 
-            sig { override.returns({ type: Symbol, x: Integer, y_: Integer }) }
+            sig do
+              override.returns(
+                {
+                  keys: T.nilable(T::Array[String]),
+                  type: Symbol,
+                  x: Integer,
+                  y_: Integer
+                }
+              )
+            end
             def to_hash
             end
           end
@@ -561,6 +587,10 @@ module OpenAI
             sig { returns(Symbol) }
             attr_accessor :type
 
+            # The keys being held while dragging the mouse.
+            sig { returns(T.nilable(T::Array[String])) }
+            attr_accessor :keys
+
             # A drag action.
             sig do
               params(
@@ -568,6 +598,7 @@ module OpenAI
                   T::Array[
                     OpenAI::Responses::ResponseComputerToolCall::Action::Drag::Path::OrHash
                   ],
+                keys: T.nilable(T::Array[String]),
                 type: Symbol
               ).returns(T.attached_class)
             end
@@ -582,6 +613,8 @@ module OpenAI
               # ]
               # ```
               path:,
+              # The keys being held while dragging the mouse.
+              keys: nil,
               # Specifies the event type. For a drag action, this property is always set to
               # `drag`.
               type: :drag
@@ -595,7 +628,8 @@ module OpenAI
                     T::Array[
                       OpenAI::Responses::ResponseComputerToolCall::Action::Drag::Path
                     ],
-                  type: Symbol
+                  type: Symbol,
+                  keys: T.nilable(T::Array[String])
                 }
               )
             end
@@ -697,24 +731,42 @@ module OpenAI
             sig { returns(Integer) }
             attr_accessor :y_
 
+            # The keys being held while moving the mouse.
+            sig { returns(T.nilable(T::Array[String])) }
+            attr_accessor :keys
+
             # A mouse move action.
             sig do
-              params(x: Integer, y_: Integer, type: Symbol).returns(
-                T.attached_class
-              )
+              params(
+                x: Integer,
+                y_: Integer,
+                keys: T.nilable(T::Array[String]),
+                type: Symbol
+              ).returns(T.attached_class)
             end
             def self.new(
               # The x-coordinate to move to.
               x:,
               # The y-coordinate to move to.
               y_:,
+              # The keys being held while moving the mouse.
+              keys: nil,
               # Specifies the event type. For a move action, this property is always set to
               # `move`.
               type: :move
             )
             end
 
-            sig { override.returns({ type: Symbol, x: Integer, y_: Integer }) }
+            sig do
+              override.returns(
+                {
+                  type: Symbol,
+                  x: Integer,
+                  y_: Integer,
+                  keys: T.nilable(T::Array[String])
+                }
+              )
+            end
             def to_hash
             end
           end
@@ -777,6 +829,10 @@ module OpenAI
             sig { returns(Integer) }
             attr_accessor :y_
 
+            # The keys being held while scrolling.
+            sig { returns(T.nilable(T::Array[String])) }
+            attr_accessor :keys
+
             # A scroll action.
             sig do
               params(
@@ -784,6 +840,7 @@ module OpenAI
                 scroll_y: Integer,
                 x: Integer,
                 y_: Integer,
+                keys: T.nilable(T::Array[String]),
                 type: Symbol
               ).returns(T.attached_class)
             end
@@ -796,6 +853,8 @@ module OpenAI
               x:,
               # The y-coordinate where the scroll occurred.
               y_:,
+              # The keys being held while scrolling.
+              keys: nil,
               # Specifies the event type. For a scroll action, this property is always set to
               # `scroll`.
               type: :scroll
@@ -809,7 +868,8 @@ module OpenAI
                   scroll_y: Integer,
                   type: Symbol,
                   x: Integer,
-                  y_: Integer
+                  y_: Integer,
+                  keys: T.nilable(T::Array[String])
                 }
               )
             end
