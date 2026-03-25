@@ -50,6 +50,8 @@ module OpenAI
                   OpenAI::Responses::ResponseFunctionToolCallOutputItem::OrHash,
                   OpenAI::Responses::ResponseToolSearchCall::OrHash,
                   OpenAI::Responses::ResponseToolSearchOutputItem::OrHash,
+                  OpenAI::Responses::ResponseReasoningItem::OrHash,
+                  OpenAI::Responses::ResponseCompactionItem::OrHash,
                   OpenAI::Responses::ResponseItem::ImageGenerationCall::OrHash,
                   OpenAI::Responses::ResponseCodeInterpreterToolCall::OrHash,
                   OpenAI::Responses::ResponseItem::LocalShellCall::OrHash,
@@ -61,7 +63,9 @@ module OpenAI
                   OpenAI::Responses::ResponseItem::McpListTools::OrHash,
                   OpenAI::Responses::ResponseItem::McpApprovalRequest::OrHash,
                   OpenAI::Responses::ResponseItem::McpApprovalResponse::OrHash,
-                  OpenAI::Responses::ResponseItem::McpCall::OrHash
+                  OpenAI::Responses::ResponseItem::McpCall::OrHash,
+                  OpenAI::Responses::ResponseCustomToolCallItem::OrHash,
+                  OpenAI::Responses::ResponseCustomToolCallOutputItem::OrHash
                 )
               ],
             first_id: String,

@@ -20,6 +20,8 @@ module OpenAI
               OpenAI::Responses::ResponseFunctionToolCallOutputItem,
               OpenAI::Responses::ResponseToolSearchCall,
               OpenAI::Responses::ResponseToolSearchOutputItem,
+              OpenAI::Responses::ResponseReasoningItem,
+              OpenAI::Responses::ResponseCompactionItem,
               OpenAI::Responses::ResponseItem::ImageGenerationCall,
               OpenAI::Responses::ResponseCodeInterpreterToolCall,
               OpenAI::Responses::ResponseItem::LocalShellCall,
@@ -31,7 +33,9 @@ module OpenAI
               OpenAI::Responses::ResponseItem::McpListTools,
               OpenAI::Responses::ResponseItem::McpApprovalRequest,
               OpenAI::Responses::ResponseItem::McpApprovalResponse,
-              OpenAI::Responses::ResponseItem::McpCall
+              OpenAI::Responses::ResponseItem::McpCall,
+              OpenAI::Responses::ResponseCustomToolCallItem,
+              OpenAI::Responses::ResponseCustomToolCallOutputItem
             )
           end
 

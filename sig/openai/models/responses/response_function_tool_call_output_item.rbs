@@ -6,8 +6,9 @@ module OpenAI
           id: String,
           call_id: String,
           output: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::output,
+          status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status,
           type: :function_call_output,
-          status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status
+          created_by: String
         }
 
       class ResponseFunctionToolCallOutputItem < OpenAI::Internal::Type::BaseModel
@@ -17,19 +18,20 @@ module OpenAI
 
         attr_accessor output: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::output
 
+        attr_accessor status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status
+
         attr_accessor type: :function_call_output
 
-        attr_reader status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status?
+        attr_reader created_by: String?
 
-        def status=: (
-          OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status
-        ) -> OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status
+        def created_by=: (String) -> String
 
         def initialize: (
           id: String,
           call_id: String,
           output: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::output,
-          ?status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status,
+          status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status,
+          ?created_by: String,
           ?type: :function_call_output
         ) -> void
 
@@ -37,8 +39,9 @@ module OpenAI
           id: String,
           call_id: String,
           output: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::output,
+          status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status,
           type: :function_call_output,
-          status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status
+          created_by: String
         }
 
         type output =

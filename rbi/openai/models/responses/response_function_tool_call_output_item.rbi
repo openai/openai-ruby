@@ -29,28 +29,25 @@ module OpenAI
         end
         attr_accessor :output
 
-        # The type of the function tool call output. Always `function_call_output`.
-        sig { returns(Symbol) }
-        attr_accessor :type
-
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         # Populated when items are returned via API.
         sig do
           returns(
-            T.nilable(
-              OpenAI::Responses::ResponseFunctionToolCallOutputItem::Status::TaggedSymbol
-            )
+            OpenAI::Responses::ResponseFunctionToolCallOutputItem::Status::TaggedSymbol
           )
         end
-        attr_reader :status
+        attr_accessor :status
 
-        sig do
-          params(
-            status:
-              OpenAI::Responses::ResponseFunctionToolCallOutputItem::Status::OrSymbol
-          ).void
-        end
-        attr_writer :status
+        # The type of the function tool call output. Always `function_call_output`.
+        sig { returns(Symbol) }
+        attr_accessor :type
+
+        # The identifier of the actor that created the item.
+        sig { returns(T.nilable(String)) }
+        attr_reader :created_by
+
+        sig { params(created_by: String).void }
+        attr_writer :created_by
 
         sig do
           params(
@@ -60,6 +57,7 @@ module OpenAI
               OpenAI::Responses::ResponseFunctionToolCallOutputItem::Output::Variants,
             status:
               OpenAI::Responses::ResponseFunctionToolCallOutputItem::Status::OrSymbol,
+            created_by: String,
             type: Symbol
           ).returns(T.attached_class)
         end
@@ -73,7 +71,9 @@ module OpenAI
           output:,
           # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
           # Populated when items are returned via API.
-          status: nil,
+          status:,
+          # The identifier of the actor that created the item.
+          created_by: nil,
           # The type of the function tool call output. Always `function_call_output`.
           type: :function_call_output
         )
@@ -86,9 +86,10 @@ module OpenAI
               call_id: String,
               output:
                 OpenAI::Responses::ResponseFunctionToolCallOutputItem::Output::Variants,
-              type: Symbol,
               status:
-                OpenAI::Responses::ResponseFunctionToolCallOutputItem::Status::TaggedSymbol
+                OpenAI::Responses::ResponseFunctionToolCallOutputItem::Status::TaggedSymbol,
+              type: Symbol,
+              created_by: String
             }
           )
         end

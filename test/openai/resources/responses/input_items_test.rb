@@ -29,6 +29,8 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
       in OpenAI::Responses::ResponseFunctionToolCallOutputItem
       in OpenAI::Responses::ResponseToolSearchCall
       in OpenAI::Responses::ResponseToolSearchOutputItem
+      in OpenAI::Responses::ResponseReasoningItem
+      in OpenAI::Responses::ResponseCompactionItem
       in OpenAI::Responses::ResponseItem::ImageGenerationCall
       in OpenAI::Responses::ResponseCodeInterpreterToolCall
       in OpenAI::Responses::ResponseItem::LocalShellCall
@@ -41,6 +43,8 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
       in OpenAI::Responses::ResponseItem::McpApprovalRequest
       in OpenAI::Responses::ResponseItem::McpApprovalResponse
       in OpenAI::Responses::ResponseItem::McpCall
+      in OpenAI::Responses::ResponseCustomToolCallItem
+      in OpenAI::Responses::ResponseCustomToolCallOutputItem
       end
     end
 
@@ -82,8 +86,9 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
         id: String,
         call_id: String,
         output: OpenAI::Responses::ResponseComputerToolCallOutputScreenshot,
+        status: OpenAI::Responses::ResponseComputerToolCallOutputItem::Status,
         acknowledged_safety_checks: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck]) | nil,
-        status: OpenAI::Responses::ResponseComputerToolCallOutputItem::Status | nil
+        created_by: String | nil
       }
       in {
         type: :web_search_call,
@@ -96,7 +101,8 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
         id: String,
         call_id: String,
         output: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Output,
-        status: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Status | nil
+        status: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Status,
+        created_by: String | nil
       }
       in {
         type: :tool_search_call,
@@ -116,6 +122,15 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
         tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool]),
         created_by: String | nil
       }
+      in {
+        type: :reasoning,
+        id: String,
+        summary: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseReasoningItem::Summary]),
+        content: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseReasoningItem::Content]) | nil,
+        encrypted_content: String | nil,
+        status: OpenAI::Responses::ResponseReasoningItem::Status | nil
+      }
+      in {type: :compaction, id: String, encrypted_content: String, created_by: String | nil}
       in {
         type: :image_generation_call,
         id: String,

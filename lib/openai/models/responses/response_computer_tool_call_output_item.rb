@@ -22,6 +22,13 @@ module OpenAI
         #   @return [OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot]
         required :output, -> { OpenAI::Responses::ResponseComputerToolCallOutputScreenshot }
 
+        # @!attribute status
+        #   The status of the message input. One of `in_progress`, `completed`, or
+        #   `incomplete`. Populated when input items are returned via API.
+        #
+        #   @return [Symbol, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status]
+        required :status, enum: -> { OpenAI::Responses::ResponseComputerToolCallOutputItem::Status }
+
         # @!attribute type
         #   The type of the computer tool call output. Always `computer_call_output`.
         #
@@ -36,14 +43,13 @@ module OpenAI
         optional :acknowledged_safety_checks,
                  -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck] }
 
-        # @!attribute status
-        #   The status of the message input. One of `in_progress`, `completed`, or
-        #   `incomplete`. Populated when input items are returned via API.
+        # @!attribute created_by
+        #   The identifier of the actor that created the item.
         #
-        #   @return [Symbol, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status, nil]
-        optional :status, enum: -> { OpenAI::Responses::ResponseComputerToolCallOutputItem::Status }
+        #   @return [String, nil]
+        optional :created_by, String
 
-        # @!method initialize(id:, call_id:, output:, acknowledged_safety_checks: nil, status: nil, type: :computer_call_output)
+        # @!method initialize(id:, call_id:, output:, status:, acknowledged_safety_checks: nil, created_by: nil, type: :computer_call_output)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseComputerToolCallOutputItem} for more
         #   details.
@@ -54,11 +60,29 @@ module OpenAI
         #
         #   @param output [OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot] A computer screenshot image used with the computer use tool.
         #
-        #   @param acknowledged_safety_checks [Array<OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck>] The safety checks reported by the API that have been acknowledged by the
-        #
         #   @param status [Symbol, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status] The status of the message input. One of `in_progress`, `completed`, or
         #
+        #   @param acknowledged_safety_checks [Array<OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck>] The safety checks reported by the API that have been acknowledged by the
+        #
+        #   @param created_by [String] The identifier of the actor that created the item.
+        #
         #   @param type [Symbol, :computer_call_output] The type of the computer tool call output. Always `computer_call_output`.
+
+        # The status of the message input. One of `in_progress`, `completed`, or
+        # `incomplete`. Populated when input items are returned via API.
+        #
+        # @see OpenAI::Models::Responses::ResponseComputerToolCallOutputItem#status
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          COMPLETED = :completed
+          INCOMPLETE = :incomplete
+          FAILED = :failed
+          IN_PROGRESS = :in_progress
+
+          # @!method self.values
+          #   @return [Array<Symbol>]
+        end
 
         class AcknowledgedSafetyCheck < OpenAI::Internal::Type::BaseModel
           # @!attribute id
@@ -87,21 +111,6 @@ module OpenAI
           #   @param code [String, nil] The type of the pending safety check.
           #
           #   @param message [String, nil] Details about the pending safety check.
-        end
-
-        # The status of the message input. One of `in_progress`, `completed`, or
-        # `incomplete`. Populated when input items are returned via API.
-        #
-        # @see OpenAI::Models::Responses::ResponseComputerToolCallOutputItem#status
-        module Status
-          extend OpenAI::Internal::Type::Enum
-
-          IN_PROGRESS = :in_progress
-          COMPLETED = :completed
-          INCOMPLETE = :incomplete
-
-          # @!method self.values
-          #   @return [Array<Symbol>]
         end
       end
     end
