@@ -1,5 +1,34 @@
 # Changelog
 
+## 0.57.0 (2026-03-25)
+
+Full Changelog: [v0.56.0...v0.57.0](https://github.com/openai/openai-ruby/compare/v0.56.0...v0.57.0)
+
+### Features
+
+* **api:** add keys field to computer action types ([bd5c423](https://github.com/openai/openai-ruby/commit/bd5c423eb2e37e59147795d0ba9bdd2507085dae))
+
+
+### Bug Fixes
+
+* **api:** align SDK response types with expanded item schemas ([9aaf1f2](https://github.com/openai/openai-ruby/commit/9aaf1f2fe5fb5cffb06c40635266664a6640c83d))
+* **types:** make type field required in ResponseInputMessageItem ([246318f](https://github.com/openai/openai-ruby/commit/246318fdc87b5659bbf89a6957b577b19f504e15))
+
+
+### Chores
+
+* **ci:** skip lint on metadata-only changes ([0281bf9](https://github.com/openai/openai-ruby/commit/0281bf926d03591102af929dfced76a5e8e0e325))
+* **internal:** update gitignore ([1708a02](https://github.com/openai/openai-ruby/commit/1708a0204c41628e67fe1610ba6519de5fc03a35))
+* **tests:** bump steady to v0.19.4 ([8cb70d7](https://github.com/openai/openai-ruby/commit/8cb70d74617b096ff0e83effe17c4a8bbe79b7fc))
+* **tests:** bump steady to v0.19.5 ([b662b68](https://github.com/openai/openai-ruby/commit/b662b6821751a57f4f633a7d137f4f549e6adbdc))
+* **tests:** bump steady to v0.19.6 ([6f82a97](https://github.com/openai/openai-ruby/commit/6f82a97e2349cf2bab5cc038cd65ee89a2e79d5c))
+* **tests:** bump steady to v0.19.7 ([73c4eb8](https://github.com/openai/openai-ruby/commit/73c4eb8c5c673b6208a76acc95d0dc49f32d550e))
+
+
+### Refactors
+
+* **tests:** switch from prism to steady ([9907cd8](https://github.com/openai/openai-ruby/commit/9907cd82b3dcee2823c821ed89c80aab2bed0d40))
+
 ## 0.56.0 (2026-03-17)
 
 Full Changelog: [v0.55.0...v0.56.0](https://github.com/openai/openai-ruby/compare/v0.55.0...v0.56.0)
