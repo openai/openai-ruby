@@ -188,7 +188,13 @@ module OpenAI
             #   @return [Integer]
             required :y_, Integer, api_name: :y
 
-            # @!method initialize(button:, x:, y_:, type: :click)
+            # @!attribute keys
+            #   The keys being held while clicking.
+            #
+            #   @return [Array<String>, nil]
+            optional :keys, OpenAI::Internal::Type::ArrayOf[String], nil?: true
+
+            # @!method initialize(button:, x:, y_:, keys: nil, type: :click)
             #   Some parameter documentations has been truncated, see
             #   {OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click} for more
             #   details.
@@ -200,6 +206,8 @@ module OpenAI
             #   @param x [Integer] The x-coordinate where the click occurred.
             #
             #   @param y_ [Integer] The y-coordinate where the click occurred.
+            #
+            #   @param keys [Array<String>, nil] The keys being held while clicking.
             #
             #   @param type [Symbol, :click] Specifies the event type. For a click action, this property is always `click`.
 
@@ -222,6 +230,12 @@ module OpenAI
           end
 
           class DoubleClick < OpenAI::Internal::Type::BaseModel
+            # @!attribute keys
+            #   The keys being held while double-clicking.
+            #
+            #   @return [Array<String>, nil]
+            required :keys, OpenAI::Internal::Type::ArrayOf[String], nil?: true
+
             # @!attribute type
             #   Specifies the event type. For a double click action, this property is always set
             #   to `double_click`.
@@ -241,12 +255,14 @@ module OpenAI
             #   @return [Integer]
             required :y_, Integer, api_name: :y
 
-            # @!method initialize(x:, y_:, type: :double_click)
+            # @!method initialize(keys:, x:, y_:, type: :double_click)
             #   Some parameter documentations has been truncated, see
             #   {OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick} for
             #   more details.
             #
             #   A double click action.
+            #
+            #   @param keys [Array<String>, nil] The keys being held while double-clicking.
             #
             #   @param x [Integer] The x-coordinate where the double click occurred.
             #
@@ -278,7 +294,13 @@ module OpenAI
             #   @return [Symbol, :drag]
             required :type, const: :drag
 
-            # @!method initialize(path:, type: :drag)
+            # @!attribute keys
+            #   The keys being held while dragging the mouse.
+            #
+            #   @return [Array<String>, nil]
+            optional :keys, OpenAI::Internal::Type::ArrayOf[String], nil?: true
+
+            # @!method initialize(path:, keys: nil, type: :drag)
             #   Some parameter documentations has been truncated, see
             #   {OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag} for more
             #   details.
@@ -286,6 +308,8 @@ module OpenAI
             #   A drag action.
             #
             #   @param path [Array<OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path>] An array of coordinates representing the path of the drag action. Coordinates wi
+            #
+            #   @param keys [Array<String>, nil] The keys being held while dragging the mouse.
             #
             #   @param type [Symbol, :drag] Specifies the event type. For a drag action, this property is always set to `dra
 
@@ -358,7 +382,13 @@ module OpenAI
             #   @return [Integer]
             required :y_, Integer, api_name: :y
 
-            # @!method initialize(x:, y_:, type: :move)
+            # @!attribute keys
+            #   The keys being held while moving the mouse.
+            #
+            #   @return [Array<String>, nil]
+            optional :keys, OpenAI::Internal::Type::ArrayOf[String], nil?: true
+
+            # @!method initialize(x:, y_:, keys: nil, type: :move)
             #   Some parameter documentations has been truncated, see
             #   {OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move} for more
             #   details.
@@ -368,6 +398,8 @@ module OpenAI
             #   @param x [Integer] The x-coordinate to move to.
             #
             #   @param y_ [Integer] The y-coordinate to move to.
+            #
+            #   @param keys [Array<String>, nil] The keys being held while moving the mouse.
             #
             #   @param type [Symbol, :move] Specifies the event type. For a move action, this property is always set to `mov
           end
@@ -422,7 +454,13 @@ module OpenAI
             #   @return [Integer]
             required :y_, Integer, api_name: :y
 
-            # @!method initialize(scroll_x:, scroll_y:, x:, y_:, type: :scroll)
+            # @!attribute keys
+            #   The keys being held while scrolling.
+            #
+            #   @return [Array<String>, nil]
+            optional :keys, OpenAI::Internal::Type::ArrayOf[String], nil?: true
+
+            # @!method initialize(scroll_x:, scroll_y:, x:, y_:, keys: nil, type: :scroll)
             #   Some parameter documentations has been truncated, see
             #   {OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll} for more
             #   details.
@@ -436,6 +474,8 @@ module OpenAI
             #   @param x [Integer] The x-coordinate where the scroll occurred.
             #
             #   @param y_ [Integer] The y-coordinate where the scroll occurred.
+            #
+            #   @param keys [Array<String>, nil] The keys being held while scrolling.
             #
             #   @param type [Symbol, :scroll] Specifies the event type. For a scroll action, this property is always set to `s
           end

@@ -115,7 +115,8 @@ module OpenAI
               button: OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::button,
               type: :click,
               x: Integer,
-              y_: Integer
+              y_: Integer,
+              keys: ::Array[String]?
             }
 
           class Click < OpenAI::Internal::Type::BaseModel
@@ -127,10 +128,13 @@ module OpenAI
 
             attr_accessor y_: Integer
 
+            attr_accessor keys: ::Array[String]?
+
             def initialize: (
               button: OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::button,
               x: Integer,
               y_: Integer,
+              ?keys: ::Array[String]?,
               ?type: :click
             ) -> void
 
@@ -138,7 +142,8 @@ module OpenAI
               button: OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::button,
               type: :click,
               x: Integer,
-              y_: Integer
+              y_: Integer,
+              keys: ::Array[String]?
             }
 
             type button = :left | :right | :wheel | :back | :forward
@@ -156,9 +161,17 @@ module OpenAI
             end
           end
 
-          type double_click = { type: :double_click, x: Integer, y_: Integer }
+          type double_click =
+            {
+              keys: ::Array[String]?,
+              type: :double_click,
+              x: Integer,
+              y_: Integer
+            }
 
           class DoubleClick < OpenAI::Internal::Type::BaseModel
+            attr_accessor keys: ::Array[String]?
+
             attr_accessor type: :double_click
 
             attr_accessor x: Integer
@@ -166,18 +179,25 @@ module OpenAI
             attr_accessor y_: Integer
 
             def initialize: (
+              keys: ::Array[String]?,
               x: Integer,
               y_: Integer,
               ?type: :double_click
             ) -> void
 
-            def to_hash: -> { type: :double_click, x: Integer, y_: Integer }
+            def to_hash: -> {
+              keys: ::Array[String]?,
+              type: :double_click,
+              x: Integer,
+              y_: Integer
+            }
           end
 
           type drag =
             {
               path: ::Array[OpenAI::Responses::ResponseComputerToolCall::Action::Drag::Path],
-              type: :drag
+              type: :drag,
+              keys: ::Array[String]?
             }
 
           class Drag < OpenAI::Internal::Type::BaseModel
@@ -185,14 +205,18 @@ module OpenAI
 
             attr_accessor type: :drag
 
+            attr_accessor keys: ::Array[String]?
+
             def initialize: (
               path: ::Array[OpenAI::Responses::ResponseComputerToolCall::Action::Drag::Path],
+              ?keys: ::Array[String]?,
               ?type: :drag
             ) -> void
 
             def to_hash: -> {
               path: ::Array[OpenAI::Responses::ResponseComputerToolCall::Action::Drag::Path],
-              type: :drag
+              type: :drag,
+              keys: ::Array[String]?
             }
 
             type path = { x: Integer, y_: Integer }
@@ -220,7 +244,8 @@ module OpenAI
             def to_hash: -> { keys: ::Array[String], type: :keypress }
           end
 
-          type move = { type: :move, x: Integer, y_: Integer }
+          type move =
+            { type: :move, x: Integer, y_: Integer, keys: ::Array[String]? }
 
           class Move < OpenAI::Internal::Type::BaseModel
             attr_accessor type: :move
@@ -229,9 +254,21 @@ module OpenAI
 
             attr_accessor y_: Integer
 
-            def initialize: (x: Integer, y_: Integer, ?type: :move) -> void
+            attr_accessor keys: ::Array[String]?
 
-            def to_hash: -> { type: :move, x: Integer, y_: Integer }
+            def initialize: (
+              x: Integer,
+              y_: Integer,
+              ?keys: ::Array[String]?,
+              ?type: :move
+            ) -> void
+
+            def to_hash: -> {
+              type: :move,
+              x: Integer,
+              y_: Integer,
+              keys: ::Array[String]?
+            }
           end
 
           type screenshot = { type: :screenshot }
@@ -250,7 +287,8 @@ module OpenAI
               scroll_y: Integer,
               type: :scroll,
               x: Integer,
-              y_: Integer
+              y_: Integer,
+              keys: ::Array[String]?
             }
 
           class Scroll < OpenAI::Internal::Type::BaseModel
@@ -264,11 +302,14 @@ module OpenAI
 
             attr_accessor y_: Integer
 
+            attr_accessor keys: ::Array[String]?
+
             def initialize: (
               scroll_x: Integer,
               scroll_y: Integer,
               x: Integer,
               y_: Integer,
+              ?keys: ::Array[String]?,
               ?type: :scroll
             ) -> void
 
@@ -277,7 +318,8 @@ module OpenAI
               scroll_y: Integer,
               type: :scroll,
               x: Integer,
-              y_: Integer
+              y_: Integer,
+              keys: ::Array[String]?
             }
           end
 
