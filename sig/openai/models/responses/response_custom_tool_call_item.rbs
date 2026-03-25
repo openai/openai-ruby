@@ -1,23 +1,23 @@
 module OpenAI
   module Models
     module Responses
-      type response_function_tool_call_item =
+      type response_custom_tool_call_item =
         {
           id: String,
-          status: OpenAI::Models::Responses::ResponseFunctionToolCallItem::status,
+          status: OpenAI::Models::Responses::ResponseCustomToolCallItem::status,
           created_by: String
         }
 
-      class ResponseFunctionToolCallItem < OpenAI::Models::Responses::ResponseFunctionToolCall
+      class ResponseCustomToolCallItem < OpenAI::Models::Responses::ResponseCustomToolCall
         def id: -> String
 
         def id=: (String _) -> String
 
-        def status: -> OpenAI::Models::Responses::ResponseFunctionToolCallItem::status
+        def status: -> OpenAI::Models::Responses::ResponseCustomToolCallItem::status
 
         def status=: (
-          OpenAI::Models::Responses::ResponseFunctionToolCallItem::status _
-        ) -> OpenAI::Models::Responses::ResponseFunctionToolCallItem::status
+          OpenAI::Models::Responses::ResponseCustomToolCallItem::status _
+        ) -> OpenAI::Models::Responses::ResponseCustomToolCallItem::status
 
         def created_by: -> String?
 
@@ -25,13 +25,13 @@ module OpenAI
 
         def initialize: (
           id: String,
-          status: OpenAI::Models::Responses::ResponseFunctionToolCallItem::status,
+          status: OpenAI::Models::Responses::ResponseCustomToolCallItem::status,
           ?created_by: String
         ) -> void
 
         def to_hash: -> {
           id: String,
-          status: OpenAI::Models::Responses::ResponseFunctionToolCallItem::status,
+          status: OpenAI::Models::Responses::ResponseCustomToolCallItem::status,
           created_by: String
         }
 
@@ -44,7 +44,7 @@ module OpenAI
           COMPLETED: :completed
           INCOMPLETE: :incomplete
 
-          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseFunctionToolCallItem::status]
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseCustomToolCallItem::status]
         end
       end
     end

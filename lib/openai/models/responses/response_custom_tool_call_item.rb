@@ -3,9 +3,9 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseFunctionToolCallItem < OpenAI::Models::Responses::ResponseFunctionToolCall
+      class ResponseCustomToolCallItem < OpenAI::Models::Responses::ResponseCustomToolCall
         # @!attribute id
-        #   The unique ID of the function tool call.
+        #   The unique ID of the custom tool call item.
         #
         #   @return [String]
         required :id, String
@@ -14,8 +14,8 @@ module OpenAI
         #   The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
         #
-        #   @return [Symbol, OpenAI::Models::Responses::ResponseFunctionToolCallItem::Status]
-        required :status, enum: -> { OpenAI::Responses::ResponseFunctionToolCallItem::Status }
+        #   @return [Symbol, OpenAI::Models::Responses::ResponseCustomToolCallItem::Status]
+        required :status, enum: -> { OpenAI::Responses::ResponseCustomToolCallItem::Status }
 
         # @!attribute created_by
         #   The identifier of the actor that created the item.
@@ -25,15 +25,13 @@ module OpenAI
 
         # @!method initialize(id:, status:, created_by: nil)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseFunctionToolCallItem} for more details.
+        #   {OpenAI::Models::Responses::ResponseCustomToolCallItem} for more details.
         #
-        #   A tool call to run a function. See the
-        #   [function calling guide](https://platform.openai.com/docs/guides/function-calling)
-        #   for more information.
+        #   A call to a custom tool created by the model.
         #
-        #   @param id [String] The unique ID of the function tool call.
+        #   @param id [String] The unique ID of the custom tool call item.
         #
-        #   @param status [Symbol, OpenAI::Models::Responses::ResponseFunctionToolCallItem::Status] The status of the item. One of `in_progress`, `completed`, or
+        #   @param status [Symbol, OpenAI::Models::Responses::ResponseCustomToolCallItem::Status] The status of the item. One of `in_progress`, `completed`, or
         #
         #   @param created_by [String] The identifier of the actor that created the item.
 

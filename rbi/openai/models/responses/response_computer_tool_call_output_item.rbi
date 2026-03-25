@@ -34,6 +34,15 @@ module OpenAI
         end
         attr_writer :output
 
+        # The status of the message input. One of `in_progress`, `completed`, or
+        # `incomplete`. Populated when input items are returned via API.
+        sig do
+          returns(
+            OpenAI::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol
+          )
+        end
+        attr_accessor :status
+
         # The type of the computer tool call output. Always `computer_call_output`.
         sig { returns(Symbol) }
         attr_accessor :type
@@ -61,24 +70,12 @@ module OpenAI
         end
         attr_writer :acknowledged_safety_checks
 
-        # The status of the message input. One of `in_progress`, `completed`, or
-        # `incomplete`. Populated when input items are returned via API.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol
-            )
-          )
-        end
-        attr_reader :status
+        # The identifier of the actor that created the item.
+        sig { returns(T.nilable(String)) }
+        attr_reader :created_by
 
-        sig do
-          params(
-            status:
-              OpenAI::Responses::ResponseComputerToolCallOutputItem::Status::OrSymbol
-          ).void
-        end
-        attr_writer :status
+        sig { params(created_by: String).void }
+        attr_writer :created_by
 
         sig do
           params(
@@ -86,12 +83,13 @@ module OpenAI
             call_id: String,
             output:
               OpenAI::Responses::ResponseComputerToolCallOutputScreenshot::OrHash,
+            status:
+              OpenAI::Responses::ResponseComputerToolCallOutputItem::Status::OrSymbol,
             acknowledged_safety_checks:
               T::Array[
                 OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck::OrHash
               ],
-            status:
-              OpenAI::Responses::ResponseComputerToolCallOutputItem::Status::OrSymbol,
+            created_by: String,
             type: Symbol
           ).returns(T.attached_class)
         end
@@ -102,12 +100,14 @@ module OpenAI
           call_id:,
           # A computer screenshot image used with the computer use tool.
           output:,
+          # The status of the message input. One of `in_progress`, `completed`, or
+          # `incomplete`. Populated when input items are returned via API.
+          status:,
           # The safety checks reported by the API that have been acknowledged by the
           # developer.
           acknowledged_safety_checks: nil,
-          # The status of the message input. One of `in_progress`, `completed`, or
-          # `incomplete`. Populated when input items are returned via API.
-          status: nil,
+          # The identifier of the actor that created the item.
+          created_by: nil,
           # The type of the computer tool call output. Always `computer_call_output`.
           type: :computer_call_output
         )
@@ -120,17 +120,64 @@ module OpenAI
               call_id: String,
               output:
                 OpenAI::Responses::ResponseComputerToolCallOutputScreenshot,
+              status:
+                OpenAI::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol,
               type: Symbol,
               acknowledged_safety_checks:
                 T::Array[
                   OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck
                 ],
-              status:
-                OpenAI::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol
+              created_by: String
             }
           )
         end
         def to_hash
+        end
+
+        # The status of the message input. One of `in_progress`, `completed`, or
+        # `incomplete`. Populated when input items are returned via API.
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          TaggedSymbol =
+            T.type_alias do
+              T.all(
+                Symbol,
+                OpenAI::Responses::ResponseComputerToolCallOutputItem::Status
+              )
+            end
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+          COMPLETED =
+            T.let(
+              :completed,
+              OpenAI::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol
+            )
+          INCOMPLETE =
+            T.let(
+              :incomplete,
+              OpenAI::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol
+            )
+          FAILED =
+            T.let(
+              :failed,
+              OpenAI::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol
+            )
+          IN_PROGRESS =
+            T.let(
+              :in_progress,
+              OpenAI::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol
+            )
+
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
         end
 
         class AcknowledgedSafetyCheck < OpenAI::Internal::Type::BaseModel
@@ -182,47 +229,6 @@ module OpenAI
             )
           end
           def to_hash
-          end
-        end
-
-        # The status of the message input. One of `in_progress`, `completed`, or
-        # `incomplete`. Populated when input items are returned via API.
-        module Status
-          extend OpenAI::Internal::Type::Enum
-
-          TaggedSymbol =
-            T.type_alias do
-              T.all(
-                Symbol,
-                OpenAI::Responses::ResponseComputerToolCallOutputItem::Status
-              )
-            end
-          OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-          IN_PROGRESS =
-            T.let(
-              :in_progress,
-              OpenAI::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol
-            )
-          COMPLETED =
-            T.let(
-              :completed,
-              OpenAI::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol
-            )
-          INCOMPLETE =
-            T.let(
-              :incomplete,
-              OpenAI::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol
-            )
-
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol
-              ]
-            )
-          end
-          def self.values
           end
         end
       end

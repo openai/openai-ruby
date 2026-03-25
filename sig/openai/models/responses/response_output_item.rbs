@@ -5,8 +5,10 @@ module OpenAI
         OpenAI::Responses::ResponseOutputMessage
         | OpenAI::Responses::ResponseFileSearchToolCall
         | OpenAI::Responses::ResponseFunctionToolCall
+        | OpenAI::Responses::ResponseFunctionToolCallOutputItem
         | OpenAI::Responses::ResponseFunctionWebSearch
         | OpenAI::Responses::ResponseComputerToolCall
+        | OpenAI::Responses::ResponseComputerToolCallOutputItem
         | OpenAI::Responses::ResponseReasoningItem
         | OpenAI::Responses::ResponseToolSearchCall
         | OpenAI::Responses::ResponseToolSearchOutputItem
@@ -14,6 +16,7 @@ module OpenAI
         | OpenAI::Responses::ResponseOutputItem::ImageGenerationCall
         | OpenAI::Responses::ResponseCodeInterpreterToolCall
         | OpenAI::Responses::ResponseOutputItem::LocalShellCall
+        | OpenAI::Responses::ResponseOutputItem::LocalShellCallOutput
         | OpenAI::Responses::ResponseFunctionShellToolCall
         | OpenAI::Responses::ResponseFunctionShellToolCallOutput
         | OpenAI::Responses::ResponseApplyPatchToolCall
@@ -21,7 +24,9 @@ module OpenAI
         | OpenAI::Responses::ResponseOutputItem::McpCall
         | OpenAI::Responses::ResponseOutputItem::McpListTools
         | OpenAI::Responses::ResponseOutputItem::McpApprovalRequest
+        | OpenAI::Responses::ResponseOutputItem::McpApprovalResponse
         | OpenAI::Responses::ResponseCustomToolCall
+        | OpenAI::Responses::ResponseCustomToolCallOutputItem
 
       module ResponseOutputItem
         extend OpenAI::Internal::Type::Union
@@ -159,6 +164,50 @@ module OpenAI
             INCOMPLETE: :incomplete
 
             def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseOutputItem::LocalShellCall::status]
+          end
+        end
+
+        type local_shell_call_output =
+          {
+            id: String,
+            output: String,
+            type: :local_shell_call_output,
+            status: OpenAI::Models::Responses::ResponseOutputItem::LocalShellCallOutput::status?
+          }
+
+        class LocalShellCallOutput < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor output: String
+
+          attr_accessor type: :local_shell_call_output
+
+          attr_accessor status: OpenAI::Models::Responses::ResponseOutputItem::LocalShellCallOutput::status?
+
+          def initialize: (
+            id: String,
+            output: String,
+            ?status: OpenAI::Models::Responses::ResponseOutputItem::LocalShellCallOutput::status?,
+            ?type: :local_shell_call_output
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            output: String,
+            type: :local_shell_call_output,
+            status: OpenAI::Models::Responses::ResponseOutputItem::LocalShellCallOutput::status?
+          }
+
+          type status = :in_progress | :completed | :incomplete
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            IN_PROGRESS: :in_progress
+            COMPLETED: :completed
+            INCOMPLETE: :incomplete
+
+            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseOutputItem::LocalShellCallOutput::status]
           end
         end
 
@@ -341,6 +390,43 @@ module OpenAI
             name: String,
             server_label: String,
             type: :mcp_approval_request
+          }
+        end
+
+        type mcp_approval_response =
+          {
+            id: String,
+            approval_request_id: String,
+            approve: bool,
+            type: :mcp_approval_response,
+            reason: String?
+          }
+
+        class McpApprovalResponse < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor approval_request_id: String
+
+          attr_accessor approve: bool
+
+          attr_accessor type: :mcp_approval_response
+
+          attr_accessor reason: String?
+
+          def initialize: (
+            id: String,
+            approval_request_id: String,
+            approve: bool,
+            ?reason: String?,
+            ?type: :mcp_approval_response
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            approval_request_id: String,
+            approve: bool,
+            type: :mcp_approval_response,
+            reason: String?
           }
         end
 
