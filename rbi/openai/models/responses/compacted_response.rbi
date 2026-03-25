@@ -49,8 +49,10 @@ module OpenAI
                   OpenAI::Responses::ResponseOutputMessage::OrHash,
                   OpenAI::Responses::ResponseFileSearchToolCall::OrHash,
                   OpenAI::Responses::ResponseFunctionToolCall::OrHash,
+                  OpenAI::Responses::ResponseFunctionToolCallOutputItem::OrHash,
                   OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
                   OpenAI::Responses::ResponseComputerToolCall::OrHash,
+                  OpenAI::Responses::ResponseComputerToolCallOutputItem::OrHash,
                   OpenAI::Responses::ResponseReasoningItem::OrHash,
                   OpenAI::Responses::ResponseToolSearchCall::OrHash,
                   OpenAI::Responses::ResponseToolSearchOutputItem::OrHash,
@@ -58,6 +60,7 @@ module OpenAI
                   OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::OrHash,
                   OpenAI::Responses::ResponseCodeInterpreterToolCall::OrHash,
                   OpenAI::Responses::ResponseOutputItem::LocalShellCall::OrHash,
+                  OpenAI::Responses::ResponseOutputItem::LocalShellCallOutput::OrHash,
                   OpenAI::Responses::ResponseFunctionShellToolCall::OrHash,
                   OpenAI::Responses::ResponseFunctionShellToolCallOutput::OrHash,
                   OpenAI::Responses::ResponseApplyPatchToolCall::OrHash,
@@ -65,7 +68,9 @@ module OpenAI
                   OpenAI::Responses::ResponseOutputItem::McpCall::OrHash,
                   OpenAI::Responses::ResponseOutputItem::McpListTools::OrHash,
                   OpenAI::Responses::ResponseOutputItem::McpApprovalRequest::OrHash,
-                  OpenAI::Responses::ResponseCustomToolCall::OrHash
+                  OpenAI::Responses::ResponseOutputItem::McpApprovalResponse::OrHash,
+                  OpenAI::Responses::ResponseCustomToolCall::OrHash,
+                  OpenAI::Responses::ResponseCustomToolCallOutputItem::OrHash
                 )
               ],
             usage: OpenAI::Responses::ResponseUsage::OrHash,
