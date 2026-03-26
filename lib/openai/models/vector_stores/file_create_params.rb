@@ -16,7 +16,9 @@ module OpenAI
         # @!attribute file_id
         #   A [File](https://platform.openai.com/docs/api-reference/files) ID that the
         #   vector store should use. Useful for tools like `file_search` that can access
-        #   files.
+        #   files. For multi-file ingestion, we recommend
+        #   [`file_batches`](https://platform.openai.com/docs/api-reference/vector-stores-file-batches/createBatch)
+        #   to minimize per-vector-store write requests.
         #
         #   @return [String]
         required :file_id, String
