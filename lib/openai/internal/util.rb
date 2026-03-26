@@ -571,8 +571,7 @@ module OpenAI
           y << "Content-Disposition: form-data"
 
           unless key.nil?
-            name = ERB::Util.url_encode(key.to_s)
-            y << "; name=\"#{name}\""
+            y << "; name=\"#{key}\""
           end
 
           case val
