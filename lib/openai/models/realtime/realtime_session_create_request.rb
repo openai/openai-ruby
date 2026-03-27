@@ -88,8 +88,9 @@ module OpenAI
 
         # @!attribute tracing
         #   Realtime API can write session traces to the
-        #   [Traces Dashboard](/logs?api=traces). Set to null to disable tracing. Once
-        #   tracing is enabled for a session, the configuration cannot be modified.
+        #   [Traces Dashboard](https://platform.openai.com/logs?api=traces). Set to null to
+        #   disable tracing. Once tracing is enabled for a session, the configuration cannot
+        #   be modified.
         #
         #   `auto` will create a trace for the session with default values for the workflow
         #   name, group id, and metadata.
@@ -144,7 +145,7 @@ module OpenAI
         #
         #   @param tools [Array<OpenAI::Models::Realtime::RealtimeFunctionTool, OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Mcp>] Tools available to the model.
         #
-        #   @param tracing [Symbol, :auto, OpenAI::Models::Realtime::RealtimeTracingConfig::TracingConfiguration, nil] Realtime API can write session traces to the [Traces Dashboard](/logs?api=traces
+        #   @param tracing [Symbol, :auto, OpenAI::Models::Realtime::RealtimeTracingConfig::TracingConfiguration, nil] Realtime API can write session traces to the [Traces Dashboard](https://platform
         #
         #   @param truncation [Symbol, OpenAI::Models::Realtime::RealtimeTruncation::RealtimeTruncationStrategy, OpenAI::Models::Realtime::RealtimeTruncationRetentionRatio] When the number of tokens in a conversation exceeds the model's input token limi
         #
