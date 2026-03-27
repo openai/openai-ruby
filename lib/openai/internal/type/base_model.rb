@@ -8,6 +8,11 @@ module OpenAI
         extend OpenAI::Internal::Type::Converter
         extend OpenAI::Internal::Util::SorbetRuntimeSupport
 
+        # @api public
+        #
+        # @return [Hash{String=>String}, nil]
+        attr_reader :response_headers
+
         class << self
           # @api private
           #
@@ -484,6 +489,15 @@ module OpenAI
               @coerced.store(_1, false)
             end
           end
+        end
+
+        # @api private
+        #
+        # @param headers [Hash{String=>String}]
+        # @return [self]
+        def __set_response_headers(headers)
+          @response_headers = headers
+          self
         end
 
         class << self
