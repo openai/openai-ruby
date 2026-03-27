@@ -638,6 +638,25 @@ end
 See the [official OpenAI request debugging documentation](https://developers.openai.com/api/reference/overview#debugging-requests)
 for more information.
 
+### Response headers
+
+Successful top-level typed responses and pages expose normalized HTTP response
+headers through `response_headers`:
+
+```ruby
+model = openai.models.retrieve("gpt-5.2")
+puts(model.response_headers["openai-processing-ms"])
+```
+
+Header names are lowercase and values are strings. Streaming response objects
+also expose `response_headers`; the existing `headers` reader remains available.
+Final response models returned by the Responses and Chat Completions streaming
+helpers carry the same metadata.
+
+Response headers are transport metadata, so they are not included in `to_h`,
+JSON, or YAML output. Manually constructed and nested models have
+`response_headers` set to `nil`.
+
 ### Retries
 
 Certain errors will be automatically retried 2 times by default, with a short exponential backoff.

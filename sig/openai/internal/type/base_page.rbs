@@ -7,6 +7,9 @@ module OpenAI
         # by the client.
         def _request_id: -> String?
 
+        # The normalized HTTP response headers for this page.
+        def response_headers: -> ::Hash[String, String]
+
         def next_page?: -> bool
 
         def next_page: -> instance

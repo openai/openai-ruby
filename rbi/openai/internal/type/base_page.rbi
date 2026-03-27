@@ -16,6 +16,11 @@ module OpenAI
         def _request_id
         end
 
+        # The normalized HTTP response headers for this page.
+        sig { returns(T::Hash[String, String]) }
+        def response_headers
+        end
+
         sig { overridable.returns(T::Boolean) }
         def next_page?
         end

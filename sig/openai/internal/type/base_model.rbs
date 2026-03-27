@@ -63,7 +63,11 @@ module OpenAI
         # by the client.
         def _request_id: -> String?
 
-        def _set_request_id: (String? request_id) -> self
+        # The normalized HTTP response headers. This is only populated on
+        # top-level response objects returned by the client.
+        def response_headers: -> ::Hash[String, String]?
+
+        def _set_response_metadata: (::Hash[String, String] headers) -> self
 
         def self.coerce: (
           OpenAI::Internal::Type::BaseModel | ::Hash[top, top] | top value,

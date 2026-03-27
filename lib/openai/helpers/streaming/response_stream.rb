@@ -10,6 +10,8 @@ module OpenAI
           @text_format = text_format
           @starting_after = starting_after
           @raw_stream = raw_stream
+          @headers = raw_stream.headers
+          @status = raw_stream.status
           @iterator = iterator
           @state = ResponseStreamState.new(
             text_format: text_format
@@ -17,7 +19,7 @@ module OpenAI
         end
 
         def until_done
-          each {} # rubocop:disable Lint/EmptyBlock
+          each { |_event| next }
           self
         end
 
@@ -36,7 +38,7 @@ module OpenAI
           until_done
           response = @state.completed_response
           raise RuntimeError.new("Didn't receive a 'response.completed' event") unless response
-          response
+          attach_response_metadata(response)
         end
 
         def get_output_text

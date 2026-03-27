@@ -8,6 +8,12 @@ module OpenAI
 
         attr_reader headers: ::Hash[String, String]
 
+        def response_headers: -> ::Hash[String, String]
+
+        private def attach_response_metadata: (
+          OpenAI::Internal::Type::BaseModel response
+        ) -> OpenAI::Internal::Type::BaseModel
+
         def close: -> void
 
         private def iterator: -> Enumerable[Elem]

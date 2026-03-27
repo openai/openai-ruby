@@ -26,7 +26,7 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     super
   end
 
-  def stub_streaming_response(response_body)
+  def stub_streaming_response(response_body, headers: {})
     stub_request(:post, "http://localhost/responses")
       .with(
         body: hash_including(
@@ -38,7 +38,7 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
       )
       .to_return(
         status: 200,
-        headers: {"Content-Type" => "text/event-stream"},
+        headers: {"Content-Type" => "text/event-stream"}.merge(headers),
         body: response_body
       )
   end
@@ -82,9 +82,16 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
   end
 
   def test_get_final_response
-    stub_streaming_response(basic_text_sse_response)
+    stub_streaming_response(
+      basic_text_sse_response,
+      headers: {"x-request-id" => "req_final_response", "openai-processing-ms" => "78.9"}
+    )
 
     stream = @client.responses.stream(**basic_params)
+    assert_equal(200, stream.status)
+    assert_equal("req_final_response", stream.response_headers["x-request-id"])
+    assert_equal("78.9", stream.response_headers["openai-processing-ms"])
+
     response = stream.get_final_response
 
     assert_pattern do
@@ -98,6 +105,9 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
         ]
       ]
     end
+    assert_equal("req_final_response", response._request_id)
+    assert_equal("req_final_response", response.response_headers["x-request-id"])
+    assert_equal("78.9", response.response_headers["openai-processing-ms"])
   end
 
   def test_get_output_text

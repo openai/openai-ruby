@@ -168,9 +168,15 @@ module OpenAI
         def _request_id
         end
 
+        # The normalized HTTP response headers. This is only populated on
+        # top-level response objects returned by the client.
+        sig { returns(T.nilable(T::Hash[String, String])) }
+        def response_headers
+        end
+
         # @api private
-        sig { params(request_id: T.nilable(String)).returns(T.self_type) }
-        def _set_request_id(request_id)
+        sig { params(headers: T::Hash[String, String]).returns(T.self_type) }
+        def _set_response_metadata(headers)
         end
 
         class << self

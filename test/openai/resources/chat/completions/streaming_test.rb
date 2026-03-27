@@ -26,7 +26,7 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
     super
   end
 
-  def stub_streaming_response(response_body, request_options = {})
+  def stub_streaming_response(response_body, request_options = {}, headers: {})
     default_request = {
       messages: [{content: "Hello", role: "user"}],
       model: "gpt-4o-mini",
@@ -39,7 +39,7 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
       )
       .to_return(
         status: 200,
-        headers: {"Content-Type" => "text/event-stream"},
+        headers: {"Content-Type" => "text/event-stream"}.merge(headers),
         body: response_body
       )
   end
@@ -98,9 +98,16 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
   end
 
   def test_get_final_completion
-    stub_streaming_response(completion_with_usage_sse_response)
+    stub_streaming_response(
+      completion_with_usage_sse_response,
+      headers: {"x-request-id" => "req_final_completion", "openai-processing-ms" => "34"}
+    )
 
     stream = @client.chat.completions.stream(**basic_params)
+    assert_equal(200, stream.status)
+    assert_equal("req_final_completion", stream.response_headers["x-request-id"])
+    assert_equal("34", stream.response_headers["openai-processing-ms"])
+
     completion = stream.get_final_completion
 
     assert_equal("chatcmpl-123", completion.id)
@@ -108,6 +115,13 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
     assert_equal("Test response", completion.choices.first.message.content)
     assert_equal(:stop, completion.choices.first.finish_reason)
     assert_equal(12, completion.usage.total_tokens) if completion.usage
+    assert_equal("req_final_completion", completion._request_id)
+    assert_equal("req_final_completion", completion.response_headers["x-request-id"])
+    assert_equal("34", completion.response_headers["openai-processing-ms"])
+
+    snapshot = stream.current_completion_snapshot
+    assert_equal("req_final_completion", snapshot._request_id)
+    assert_equal("req_final_completion", snapshot.response_headers["x-request-id"])
   end
 
   def test_get_output_text

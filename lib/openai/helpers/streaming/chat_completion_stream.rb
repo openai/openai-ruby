@@ -8,6 +8,8 @@ module OpenAI
 
         def initialize(raw_stream:, response_format: nil, input_tools: nil)
           @raw_stream = raw_stream
+          @headers = raw_stream.headers
+          @status = raw_stream.status
           @state = ChatCompletionStreamState.new(
             response_format: response_format,
             input_tools: input_tools
@@ -17,7 +19,7 @@ module OpenAI
 
         def get_final_completion
           until_done
-          @state.get_final_completion
+          attach_response_metadata(@state.get_final_completion)
         end
 
         def get_output_text
@@ -33,12 +35,13 @@ module OpenAI
         end
 
         def until_done
-          each {} # rubocop:disable Lint/EmptyBlock
+          each { |_event| next }
           self
         end
 
         def current_completion_snapshot
-          @state.current_completion_snapshot
+          snapshot = @state.current_completion_snapshot
+          snapshot && attach_response_metadata(snapshot)
         end
 
         def text
