@@ -7,7 +7,8 @@ module OpenAI
           content: ::Array[OpenAI::Models::Conversations::Message::content],
           role: OpenAI::Models::Conversations::Message::role,
           status: OpenAI::Models::Conversations::Message::status,
-          type: :message
+          type: :message,
+          phase: OpenAI::Models::Conversations::Message::phase?
         }
 
       class Message < OpenAI::Internal::Type::BaseModel
@@ -21,11 +22,14 @@ module OpenAI
 
         attr_accessor type: :message
 
+        attr_accessor phase: OpenAI::Models::Conversations::Message::phase?
+
         def initialize: (
           id: String,
           content: ::Array[OpenAI::Models::Conversations::Message::content],
           role: OpenAI::Models::Conversations::Message::role,
           status: OpenAI::Models::Conversations::Message::status,
+          ?phase: OpenAI::Models::Conversations::Message::phase?,
           ?type: :message
         ) -> void
 
@@ -34,7 +38,8 @@ module OpenAI
           content: ::Array[OpenAI::Models::Conversations::Message::content],
           role: OpenAI::Models::Conversations::Message::role,
           status: OpenAI::Models::Conversations::Message::status,
-          type: :message
+          type: :message,
+          phase: OpenAI::Models::Conversations::Message::phase?
         }
 
         type content =
@@ -101,6 +106,17 @@ module OpenAI
           INCOMPLETE: :incomplete
 
           def self?.values: -> ::Array[OpenAI::Models::Conversations::Message::status]
+        end
+
+        type phase = :commentary | :final_answer
+
+        module Phase
+          extend OpenAI::Internal::Type::Enum
+
+          COMMENTARY: :commentary
+          FINAL_ANSWER: :final_answer
+
+          def self?.values: -> ::Array[OpenAI::Models::Conversations::Message::phase]
         end
       end
     end

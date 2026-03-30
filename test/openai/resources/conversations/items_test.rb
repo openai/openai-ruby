@@ -69,7 +69,8 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         id: String,
         content: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Conversations::Message::Content]),
         role: OpenAI::Conversations::Message::Role,
-        status: OpenAI::Conversations::Message::Status
+        status: OpenAI::Conversations::Message::Status,
+        phase: OpenAI::Conversations::Message::Phase | nil
       }
       in {
         type: :function_call_output,
@@ -286,7 +287,8 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         id: String,
         content: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Conversations::Message::Content]),
         role: OpenAI::Conversations::Message::Role,
-        status: OpenAI::Conversations::Message::Status
+        status: OpenAI::Conversations::Message::Status,
+        phase: OpenAI::Conversations::Message::Phase | nil
       }
       in {
         type: :function_call_output,
