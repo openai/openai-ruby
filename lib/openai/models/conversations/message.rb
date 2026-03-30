@@ -36,7 +36,16 @@ module OpenAI
         #   @return [Symbol, :message]
         required :type, const: :message
 
-        # @!method initialize(id:, content:, role:, status:, type: :message)
+        # @!attribute phase
+        #   Labels an `assistant` message as intermediate commentary (`commentary`) or the
+        #   final answer (`final_answer`). For models like `gpt-5.3-codex` and beyond, when
+        #   sending follow-up requests, preserve and resend phase on all assistant messages
+        #   — dropping it can degrade performance. Not used for user messages.
+        #
+        #   @return [Symbol, OpenAI::Models::Conversations::Message::Phase, nil]
+        optional :phase, enum: -> { OpenAI::Conversations::Message::Phase }, nil?: true
+
+        # @!method initialize(id:, content:, role:, status:, phase: nil, type: :message)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Conversations::Message} for more details.
         #
@@ -49,6 +58,8 @@ module OpenAI
         #   @param role [Symbol, OpenAI::Models::Conversations::Message::Role] The role of the message. One of `unknown`, `user`, `assistant`, `system`, `criti
         #
         #   @param status [Symbol, OpenAI::Models::Conversations::Message::Status] The status of item. One of `in_progress`, `completed`, or `incomplete`. Populate
+        #
+        #   @param phase [Symbol, OpenAI::Models::Conversations::Message::Phase, nil] Labels an `assistant` message as intermediate commentary (`commentary`) or the f
         #
         #   @param type [Symbol, :message] The type of the message. Always set to `message`.
 
@@ -140,6 +151,22 @@ module OpenAI
           IN_PROGRESS = :in_progress
           COMPLETED = :completed
           INCOMPLETE = :incomplete
+
+          # @!method self.values
+          #   @return [Array<Symbol>]
+        end
+
+        # Labels an `assistant` message as intermediate commentary (`commentary`) or the
+        # final answer (`final_answer`). For models like `gpt-5.3-codex` and beyond, when
+        # sending follow-up requests, preserve and resend phase on all assistant messages
+        # — dropping it can degrade performance. Not used for user messages.
+        #
+        # @see OpenAI::Models::Conversations::Message#phase
+        module Phase
+          extend OpenAI::Internal::Type::Enum
+
+          COMMENTARY = :commentary
+          FINAL_ANSWER = :final_answer
 
           # @!method self.values
           #   @return [Array<Symbol>]

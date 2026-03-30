@@ -33,6 +33,17 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
+        # Labels an `assistant` message as intermediate commentary (`commentary`) or the
+        # final answer (`final_answer`). For models like `gpt-5.3-codex` and beyond, when
+        # sending follow-up requests, preserve and resend phase on all assistant messages
+        # — dropping it can degrade performance. Not used for user messages.
+        sig do
+          returns(
+            T.nilable(OpenAI::Conversations::Message::Phase::TaggedSymbol)
+          )
+        end
+        attr_accessor :phase
+
         # A message to or from the model.
         sig do
           params(
@@ -53,6 +64,7 @@ module OpenAI
               ],
             role: OpenAI::Conversations::Message::Role::OrSymbol,
             status: OpenAI::Conversations::Message::Status::OrSymbol,
+            phase: T.nilable(OpenAI::Conversations::Message::Phase::OrSymbol),
             type: Symbol
           ).returns(T.attached_class)
         end
@@ -67,6 +79,11 @@ module OpenAI
           # The status of item. One of `in_progress`, `completed`, or `incomplete`.
           # Populated when items are returned via API.
           status:,
+          # Labels an `assistant` message as intermediate commentary (`commentary`) or the
+          # final answer (`final_answer`). For models like `gpt-5.3-codex` and beyond, when
+          # sending follow-up requests, preserve and resend phase on all assistant messages
+          # — dropping it can degrade performance. Not used for user messages.
+          phase: nil,
           # The type of the message. Always set to `message`.
           type: :message
         )
@@ -80,7 +97,9 @@ module OpenAI
                 T::Array[OpenAI::Conversations::Message::Content::Variants],
               role: OpenAI::Conversations::Message::Role::TaggedSymbol,
               status: OpenAI::Conversations::Message::Status::TaggedSymbol,
-              type: Symbol
+              type: Symbol,
+              phase:
+                T.nilable(OpenAI::Conversations::Message::Phase::TaggedSymbol)
             }
           )
         end
@@ -221,6 +240,39 @@ module OpenAI
           sig do
             override.returns(
               T::Array[OpenAI::Conversations::Message::Status::TaggedSymbol]
+            )
+          end
+          def self.values
+          end
+        end
+
+        # Labels an `assistant` message as intermediate commentary (`commentary`) or the
+        # final answer (`final_answer`). For models like `gpt-5.3-codex` and beyond, when
+        # sending follow-up requests, preserve and resend phase on all assistant messages
+        # — dropping it can degrade performance. Not used for user messages.
+        module Phase
+          extend OpenAI::Internal::Type::Enum
+
+          TaggedSymbol =
+            T.type_alias do
+              T.all(Symbol, OpenAI::Conversations::Message::Phase)
+            end
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+          COMMENTARY =
+            T.let(
+              :commentary,
+              OpenAI::Conversations::Message::Phase::TaggedSymbol
+            )
+          FINAL_ANSWER =
+            T.let(
+              :final_answer,
+              OpenAI::Conversations::Message::Phase::TaggedSymbol
+            )
+
+          sig do
+            override.returns(
+              T::Array[OpenAI::Conversations::Message::Phase::TaggedSymbol]
             )
           end
           def self.values
