@@ -45,7 +45,11 @@ module OpenAI
         -> top?
       } -> top?
 
+      RFC_3986_NOT_PCHARS: Regexp
+
       def self?.uri_origin: (URI::Generic uri) -> String
+
+      def self?.encode_path: (String | Integer path) -> String
 
       def self?.interpolate_path: (String | ::Array[String] path) -> String
 
