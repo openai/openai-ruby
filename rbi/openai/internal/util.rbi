@@ -148,10 +148,18 @@ module OpenAI
         end
       end
 
+      # https://www.rfc-editor.org/rfc/rfc3986.html#section-3.3
+      RFC_3986_NOT_PCHARS = T.let(/[^A-Za-z0-9\-._~!$&'()*+,;=:@]+/, Regexp)
+
       class << self
         # @api private
         sig { params(uri: URI::Generic).returns(String) }
         def uri_origin(uri)
+        end
+
+        # @api private
+        sig { params(path: T.any(String, Integer)).returns(String) }
+        def encode_path(path)
         end
 
         # @api private
