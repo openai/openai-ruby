@@ -33,6 +33,11 @@ module OpenAI
             :"file_search_call.results",
             OpenAI::Responses::ResponseIncludable::TaggedSymbol
           )
+        WEB_SEARCH_CALL_RESULTS =
+          T.let(
+            :"web_search_call.results",
+            OpenAI::Responses::ResponseIncludable::TaggedSymbol
+          )
         WEB_SEARCH_CALL_ACTION_SOURCES =
           T.let(
             :"web_search_call.action.sources",
