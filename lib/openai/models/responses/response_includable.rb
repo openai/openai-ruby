@@ -25,6 +25,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         FILE_SEARCH_CALL_RESULTS = :"file_search_call.results"
+        WEB_SEARCH_CALL_RESULTS = :"web_search_call.results"
         WEB_SEARCH_CALL_ACTION_SOURCES = :"web_search_call.action.sources"
         MESSAGE_INPUT_IMAGE_IMAGE_URL = :"message.input_image.image_url"
         COMPUTER_CALL_OUTPUT_OUTPUT_IMAGE_URL = :"computer_call_output.output.image_url"
