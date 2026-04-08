@@ -107,6 +107,103 @@ puts(edited.data.first)
 
 Note that you can also pass a raw `IO` descriptor, but this disables retries, as the library can't be sure if the descriptor is a file or pipe (which cannot be rewound).
 
+## Workload Identity Authentication
+
+For secure, automated environments like cloud-managed Kubernetes, Azure, and GCP, you can use workload identity authentication with short-lived tokens from cloud identity providers instead of long-lived API keys.
+
+
+### Kubernetes Service Account
+
+```ruby
+require "openai"
+
+# Configure Kubernetes service account provider
+provider = OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new
+
+workload_identity = OpenAI::Auth::WorkloadIdentity.new(
+  client_id: ENV["OAUTH_CLIENT_ID"], # This is the default and can be omitted
+  identity_provider_id: ENV["IDENTITY_PROVIDER_ID"], # This is the default and can be omitted
+  service_account_id: ENV["SERVICE_ACCOUNT_ID"], # This is the default and can be omitted
+  provider: provider
+)
+
+client = OpenAI::Client.new(
+  workload_identity: workload_identity,
+)
+
+response = client.chat.completions.create(
+  messages: [{role: "user", content: "Hello!"}],
+  model: "gpt-5.2"
+)
+```
+
+### Azure Managed Identity
+
+```ruby
+provider = OpenAI::Auth::SubjectTokenProviders::AzureManagedIdentityTokenProvider.new
+
+workload_identity = OpenAI::Auth::WorkloadIdentity.new(
+  client_id: ENV["OAUTH_CLIENT_ID"], # This is the default and can be omitted
+  identity_provider_id: ENV["IDENTITY_PROVIDER_ID"], # This is the default and can be omitted
+  service_account_id: ENV["SERVICE_ACCOUNT_ID"], # This is the default and can be omitted
+  provider: provider
+)
+
+client = OpenAI::Client.new(
+  workload_identity: workload_identity,
+)
+```
+
+### GCP Metadata Server
+
+```ruby
+provider = OpenAI::Auth::SubjectTokenProviders::GCPIDTokenProvider.new
+
+workload_identity = OpenAI::Auth::WorkloadIdentity.new(
+  client_id: ENV["OAUTH_CLIENT_ID"], # This is the default and can be omitted
+  identity_provider_id: ENV["IDENTITY_PROVIDER_ID"], # This is the default and can be omitted
+  service_account_id: ENV["SERVICE_ACCOUNT_ID"], # This is the default and can be omitted
+  provider: provider
+)
+
+client = OpenAI::Client.new(
+  workload_identity: workload_identity,
+)
+```
+
+### Custom Token Providers
+
+You can implement custom token providers by including the `OpenAI::Auth::SubjectTokenProvider` module:
+
+```ruby
+class CustomProvider
+  include OpenAI::Auth::SubjectTokenProvider
+
+  def token_type
+    OpenAI::Auth::TokenType::JWT
+  end
+
+  def get_token
+    "custom-token"
+  end
+end
+
+provider = CustomProvider.new
+
+workload_identity = OpenAI::Auth::WorkloadIdentity.new(
+  client_id: ENV["OAUTH_CLIENT_ID"], # This is the default and can be omitted
+  identity_provider_id: ENV["IDENTITY_PROVIDER_ID"], # This is the default and can be omitted
+  service_account_id: ENV["SERVICE_ACCOUNT_ID"], # This is the default and can be omitted
+  provider: provider
+)
+
+client = OpenAI::Client.new(
+  workload_identity: workload_identity,
+  organization: ENV["OPENAI_ORG_ID"],
+  project: ENV["OPENAI_PROJECT_ID"]
+)
+```
+
 ## Webhook Verification
 
 Verifying webhook signatures is _optional but encouraged_.

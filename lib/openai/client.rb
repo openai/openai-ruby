@@ -15,6 +15,8 @@ module OpenAI
     # Default max retry delay in seconds.
     DEFAULT_MAX_RETRY_DELAY = 8.0
 
+    WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER = "workload-identity-auth"
+
     # @return [String]
     attr_reader :api_key
 
@@ -26,6 +28,10 @@ module OpenAI
 
     # @return [String, nil]
     attr_reader :webhook_secret
+
+    # @return [OpenAI::Auth::WorkloadIdentityAuth, nil]
+    # @api private
+    attr_reader :workload_identity_auth
 
     # Given a prompt, the model will return one or more predicted completions, and can
     # also return the probabilities of alternative tokens at each position.
@@ -116,13 +122,48 @@ module OpenAI
       {"authorization" => "Bearer #{@api_key}"}
     end
 
+    # @api private
+    private def request_replayable?(request)
+      body = request[:body]
+      return true if body.nil? || body.is_a?(String)
+      return false if body.respond_to?(:read)
+      true
+    end
+
+    # @api private
+    private def send_request(request, redirect_count:, retry_count:, send_retry_header:)
+      return super unless @workload_identity_auth
+
+      token = @workload_identity_auth.get_token
+      updated_headers = request[:headers].merge("authorization" => "Bearer #{token}")
+      updated_request = request.merge(headers: updated_headers)
+
+      begin
+        super(updated_request, redirect_count: redirect_count, retry_count: retry_count, send_retry_header: send_retry_header)
+      rescue OpenAI::Errors::AuthenticationError
+        raise unless retry_count.zero? && request_replayable?(request)
+        @workload_identity_auth.invalidate_token
+
+        fresh_token = @workload_identity_auth.get_token
+        refreshed_headers = request[:headers].merge("authorization" => "Bearer #{fresh_token}")
+        refreshed_request = request.merge(headers: refreshed_headers)
+
+        super(refreshed_request, redirect_count: redirect_count, retry_count: retry_count + 1, send_retry_header: send_retry_header)
+      end
+    end
+
     # Creates and returns a new client for interacting with the API.
     #
-    # @param api_key [String, nil] Defaults to `ENV["OPENAI_API_KEY"]`
+    # @param api_key [String, nil] Defaults to `ENV["OPENAI_API_KEY"]`.
+    #   Mutually exclusive with `workload_identity`.
     #
-    # @param organization [String, nil] Defaults to `ENV["OPENAI_ORG_ID"]`
+    # @param workload_identity [OpenAI::Auth::WorkloadIdentity, nil]
+    #   OAuth2 workload identity configuration for token exchange authentication.
+    #   Mutually exclusive with `api_key`.
     #
-    # @param project [String, nil] Defaults to `ENV["OPENAI_PROJECT_ID"]`
+    # @param organization [String, nil] Defaults to `ENV["OPENAI_ORG_ID"]`.
+    #
+    # @param project [String, nil] Defaults to `ENV["OPENAI_PROJECT_ID"]`.
     #
     # @param webhook_secret [String, nil] Defaults to `ENV["OPENAI_WEBHOOK_SECRET"]`
     #
@@ -138,6 +179,7 @@ module OpenAI
     # @param max_retry_delay [Float]
     def initialize(
       api_key: ENV["OPENAI_API_KEY"],
+      workload_identity: nil,
       organization: ENV["OPENAI_ORG_ID"],
       project: ENV["OPENAI_PROJECT_ID"],
       webhook_secret: ENV["OPENAI_WEBHOOK_SECRET"],
@@ -149,7 +191,20 @@ module OpenAI
     )
       base_url ||= "https://api.openai.com/v1"
 
-      if api_key.nil?
+      if workload_identity && api_key && api_key != WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER
+        raise ArgumentError.new(
+          "The `api_key` and `workload_identity` arguments are mutually exclusive; " \
+          "only one can be passed at a time."
+        )
+      end
+
+      if workload_identity
+        @workload_identity_auth = OpenAI::Auth::WorkloadIdentityAuth.new(
+          workload_identity,
+          organization
+        )
+        api_key = WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER
+      elsif api_key.nil?
         raise ArgumentError.new("api_key is required, and can be set via environ: \"OPENAI_API_KEY\"")
       end
 
