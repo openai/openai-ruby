@@ -263,5 +263,44 @@ module OpenAI
     class InternalServerError < OpenAI::Errors::APIStatusError
       HTTP_STATUS = (500..)
     end
+
+    class OAuthError < OpenAI::Errors::APIStatusError
+      # @return [OpenAI::Models::OAuthErrorCode::Variants, nil]
+      attr_reader :error_code
+
+      def initialize(status:, body:, headers:)
+        @error_code = OpenAI::Internal::Type::Converter.coerce(OpenAI::Models::OAuthErrorCode, body&.dig(:error))
+
+        message =
+          if body&.dig(:error_description)
+            body[:error_description]
+          elsif @error_code
+            @error_code
+          else
+            "OAuth2 authentication error"
+          end
+
+        super(
+          url: URI("https://auth.openai.com/oauth/token"),
+          status: status,
+          headers: headers,
+          body: body,
+          request: nil,
+          response: nil,
+          message: message
+        )
+      end
+    end
+
+    class SubjectTokenProviderError < OpenAI::Errors::Error
+      attr_reader :provider
+      attr_accessor :cause
+
+      def initialize(message:, provider:, cause: nil)
+        super(message)
+        @provider = provider
+        @cause = cause
+      end
+    end
   end
 end
