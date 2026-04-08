@@ -1,5 +1,36 @@
 # Changelog
 
+## 0.58.0 (2026-04-08)
+
+Full Changelog: [v0.57.0...v0.58.0](https://github.com/openai/openai-ruby/compare/v0.57.0...v0.58.0)
+
+### Features
+
+* **api:** add phase field to conversations message model ([a5dc6f8](https://github.com/openai/openai-ruby/commit/a5dc6f85304b7271da53b91e581cc7c124e5a3b0))
+* **api:** add WEB_SEARCH_CALL_RESULTS to ResponseIncludable enum ([a556507](https://github.com/openai/openai-ruby/commit/a55650709792c28327253e054a849ed293167fc9))
+* **client:** add support for short-lived tokens ([#1311](https://github.com/openai/openai-ruby/issues/1311)) ([a86d3bc](https://github.com/openai/openai-ruby/commit/a86d3bccd6cfe6b003d7383a525b7285ddd4b4b5))
+
+
+### Bug Fixes
+
+* align path encoding with RFC 3986 section 3.3 ([8058a6d](https://github.com/openai/openai-ruby/commit/8058a6d56f8ad87bf6cd840760eff58f1b9fd973))
+* **api:** remove web_search_call.results from ResponseIncludable enum ([2861387](https://github.com/openai/openai-ruby/commit/2861387a6f43db7d7e7cc703022b0093b27723b9))
+* **internal:** correct multipart form field name encoding ([683d14b](https://github.com/openai/openai-ruby/commit/683d14b37f2b57d5273fbb5ed1e5c6d2aea20f4d))
+* multipart encoding for file arrays ([755b444](https://github.com/openai/openai-ruby/commit/755b4448c4065a2bc2993f718e1ced82b99b6ebf))
+* variable name typo ([6b333a4](https://github.com/openai/openai-ruby/commit/6b333a4c4a76ad8cc91f6696ca8352c633381cfc))
+
+
+### Chores
+
+* **ci:** support opting out of skipping builds on metadata-only commits ([1b6ddfa](https://github.com/openai/openai-ruby/commit/1b6ddfa633228b299115e84918be246ec60e95d8))
+* **tests:** bump steady to v0.20.1 ([952ea68](https://github.com/openai/openai-ruby/commit/952ea68c40059c7dbaacc1f2238e04d7191b31d9))
+* **tests:** bump steady to v0.20.2 ([615427b](https://github.com/openai/openai-ruby/commit/615427b02e022b32824303b303a1cf1a5d528a58))
+
+
+### Documentation
+
+* **api:** update file parameter descriptions in vector_stores ([260e754](https://github.com/openai/openai-ruby/commit/260e754f501203b1a4e7c17a2ace1642b5194d52))
+
 ## 0.57.0 (2026-03-25)
 
 Full Changelog: [v0.56.0...v0.57.0](https://github.com/openai/openai-ruby/compare/v0.56.0...v0.57.0)
