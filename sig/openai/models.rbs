@@ -165,6 +165,8 @@ module OpenAI
 
   class ModerationTextInput = OpenAI::Models::ModerationTextInput
 
+  module OAuthErrorCode = OpenAI::Models::OAuthErrorCode
+
   class OtherFileChunkingStrategyObject = OpenAI::Models::OtherFileChunkingStrategyObject
 
   module Realtime = OpenAI::Models::Realtime
