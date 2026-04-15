@@ -48,7 +48,15 @@ module OpenAI
         #   @return [String, nil]
         optional :prompt_cache_key, String, nil?: true
 
-        # @!method initialize(model:, input: nil, instructions: nil, previous_response_id: nil, prompt_cache_key: nil, request_options: {})
+        # @!attribute prompt_cache_retention
+        #   How long to retain a prompt cache entry created by this request.
+        #
+        #   @return [Symbol, OpenAI::Models::Responses::ResponseCompactParams::PromptCacheRetention, nil]
+        optional :prompt_cache_retention,
+                 enum: -> { OpenAI::Responses::ResponseCompactParams::PromptCacheRetention },
+                 nil?: true
+
+        # @!method initialize(model:, input: nil, instructions: nil, previous_response_id: nil, prompt_cache_key: nil, prompt_cache_retention: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseCompactParams} for more details.
         #
@@ -61,6 +69,8 @@ module OpenAI
         #   @param previous_response_id [String, nil] The unique ID of the previous response to the model. Use this to create multi-tu
         #
         #   @param prompt_cache_key [String, nil] A key to use when reading from or writing to the prompt cache.
+        #
+        #   @param prompt_cache_retention [Symbol, OpenAI::Models::Responses::ResponseCompactParams::PromptCacheRetention, nil] How long to retain a prompt cache entry created by this request.
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -379,6 +389,17 @@ module OpenAI
           # @type [OpenAI::Internal::Type::Converter]
           ResponseInputItemArray =
             OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Responses::ResponseInputItem }]
+        end
+
+        # How long to retain a prompt cache entry created by this request.
+        module PromptCacheRetention
+          extend OpenAI::Internal::Type::Enum
+
+          IN_MEMORY = :in_memory
+          PROMPT_CACHE_RETENTION_24H = :"24h"
+
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
       end
     end
