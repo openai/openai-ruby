@@ -101,6 +101,7 @@ module OpenAI
         ?instructions: String?,
         ?previous_response_id: String?,
         ?prompt_cache_key: String?,
+        ?prompt_cache_retention: OpenAI::Models::Responses::ResponseCompactParams::prompt_cache_retention?,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Responses::CompactedResponse
 

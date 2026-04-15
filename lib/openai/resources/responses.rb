@@ -333,7 +333,7 @@ module OpenAI
       # For ZDR-compatible compaction details, see
       # [Compaction (advanced)](https://platform.openai.com/docs/guides/conversation-state#compaction-advanced).
       #
-      # @overload compact(model:, input: nil, instructions: nil, previous_response_id: nil, prompt_cache_key: nil, request_options: {})
+      # @overload compact(model:, input: nil, instructions: nil, previous_response_id: nil, prompt_cache_key: nil, prompt_cache_retention: nil, request_options: {})
       #
       # @param model [Symbol, String, OpenAI::Models::Responses::ResponseCompactParams::Model, nil] Model ID used to generate the response, like `gpt-5` or `o3`. OpenAI offers a wi
       #
@@ -344,6 +344,8 @@ module OpenAI
       # @param previous_response_id [String, nil] The unique ID of the previous response to the model. Use this to create multi-tu
       #
       # @param prompt_cache_key [String, nil] A key to use when reading from or writing to the prompt cache.
+      #
+      # @param prompt_cache_retention [Symbol, OpenAI::Models::Responses::ResponseCompactParams::PromptCacheRetention, nil] How long to retain a prompt cache entry created by this request.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
