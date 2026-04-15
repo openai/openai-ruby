@@ -988,6 +988,10 @@ module OpenAI
           instructions: T.nilable(String),
           previous_response_id: T.nilable(String),
           prompt_cache_key: T.nilable(String),
+          prompt_cache_retention:
+            T.nilable(
+              OpenAI::Responses::ResponseCompactParams::PromptCacheRetention::OrSymbol
+            ),
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(OpenAI::Responses::CompactedResponse)
       end
@@ -1012,6 +1016,8 @@ module OpenAI
         previous_response_id: nil,
         # A key to use when reading from or writing to the prompt cache.
         prompt_cache_key: nil,
+        # How long to retain a prompt cache entry created by this request.
+        prompt_cache_retention: nil,
         request_options: {}
       )
       end

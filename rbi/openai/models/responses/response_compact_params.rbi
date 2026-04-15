@@ -58,6 +58,16 @@ module OpenAI
         sig { returns(T.nilable(String)) }
         attr_accessor :prompt_cache_key
 
+        # How long to retain a prompt cache entry created by this request.
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::Responses::ResponseCompactParams::PromptCacheRetention::OrSymbol
+            )
+          )
+        end
+        attr_accessor :prompt_cache_retention
+
         sig do
           params(
             model:
@@ -74,6 +84,10 @@ module OpenAI
             instructions: T.nilable(String),
             previous_response_id: T.nilable(String),
             prompt_cache_key: T.nilable(String),
+            prompt_cache_retention:
+              T.nilable(
+                OpenAI::Responses::ResponseCompactParams::PromptCacheRetention::OrSymbol
+              ),
             request_options: OpenAI::RequestOptions::OrHash
           ).returns(T.attached_class)
         end
@@ -98,6 +112,8 @@ module OpenAI
           previous_response_id: nil,
           # A key to use when reading from or writing to the prompt cache.
           prompt_cache_key: nil,
+          # How long to retain a prompt cache entry created by this request.
+          prompt_cache_retention: nil,
           request_options: {}
         )
         end
@@ -119,6 +135,10 @@ module OpenAI
               instructions: T.nilable(String),
               previous_response_id: T.nilable(String),
               prompt_cache_key: T.nilable(String),
+              prompt_cache_retention:
+                T.nilable(
+                  OpenAI::Responses::ResponseCompactParams::PromptCacheRetention::OrSymbol
+                ),
               request_options: OpenAI::RequestOptions
             }
           )
@@ -649,6 +669,41 @@ module OpenAI
               ],
               OpenAI::Internal::Type::Converter
             )
+        end
+
+        # How long to retain a prompt cache entry created by this request.
+        module PromptCacheRetention
+          extend OpenAI::Internal::Type::Enum
+
+          TaggedSymbol =
+            T.type_alias do
+              T.all(
+                Symbol,
+                OpenAI::Responses::ResponseCompactParams::PromptCacheRetention
+              )
+            end
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+          IN_MEMORY =
+            T.let(
+              :in_memory,
+              OpenAI::Responses::ResponseCompactParams::PromptCacheRetention::TaggedSymbol
+            )
+          PROMPT_CACHE_RETENTION_24H =
+            T.let(
+              :"24h",
+              OpenAI::Responses::ResponseCompactParams::PromptCacheRetention::TaggedSymbol
+            )
+
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Responses::ResponseCompactParams::PromptCacheRetention::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
         end
       end
     end
