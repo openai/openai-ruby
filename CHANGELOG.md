@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.59.0 (2026-04-14)
+
+Full Changelog: [v0.58.0...v0.59.0](https://github.com/openai/openai-ruby/compare/v0.58.0...v0.59.0)
+
+### Features
+
+* **api:** Add detail to InputFileContent ([b747a16](https://github.com/openai/openai-ruby/commit/b747a16153e76eafadd54fd21a58db3f71d5e597))
+* **api:** add OAuthErrorCode type ([643311e](https://github.com/openai/openai-ruby/commit/643311e02e36e0cbd58f7ae954735e690d788db2))
+
+
+### Documentation
+
+* improve examples ([5aa2eba](https://github.com/openai/openai-ruby/commit/5aa2ebae024c57a4e577f52088dd5f86713da8f5))
+
 ## 0.58.0 (2026-04-08)
 
 Full Changelog: [v0.57.0...v0.58.0](https://github.com/openai/openai-ruby/compare/v0.57.0...v0.58.0)
