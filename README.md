@@ -275,7 +275,7 @@ openai.chat.completions.create(**params)
 Since this library does not depend on `sorbet-runtime`, it cannot provide [`T::Enum`](https://sorbet.org/docs/tenum) instances. Instead, we provide "tagged symbols" instead, which is always a primitive at runtime:
 
 ```ruby
-# :"in-memory"
+# :in_memory
 puts(OpenAI::Chat::CompletionCreateParams::PromptCacheRetention::IN_MEMORY)
 
 # Revealed type: `T.all(OpenAI::Chat::CompletionCreateParams::PromptCacheRetention, Symbol)`
@@ -293,7 +293,7 @@ openai.chat.completions.create(
 
 # Literal values are also permissible:
 openai.chat.completions.create(
-  prompt_cache_retention: :"in-memory",
+  prompt_cache_retention: :in_memory,
   # …
 )
 ```

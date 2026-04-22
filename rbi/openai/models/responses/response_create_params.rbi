@@ -914,7 +914,7 @@ module OpenAI
 
           IN_MEMORY =
             T.let(
-              :"in-memory",
+              :in_memory,
               OpenAI::Responses::ResponseCreateParams::PromptCacheRetention::TaggedSymbol
             )
           PROMPT_CACHE_RETENTION_24H =
