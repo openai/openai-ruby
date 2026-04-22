@@ -213,12 +213,12 @@ module OpenAI
           def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseCreateParams::input]
         end
 
-        type prompt_cache_retention = :"in-memory" | :"24h"
+        type prompt_cache_retention = :in_memory | :"24h"
 
         module PromptCacheRetention
           extend OpenAI::Internal::Type::Enum
 
-          IN_MEMORY: :"in-memory"
+          IN_MEMORY: :in_memory
           PROMPT_CACHE_RETENTION_24H: :"24h"
 
           def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseCreateParams::prompt_cache_retention]

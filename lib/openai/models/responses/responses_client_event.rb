@@ -461,7 +461,7 @@ module OpenAI
         module PromptCacheRetention
           extend OpenAI::Internal::Type::Enum
 
-          IN_MEMORY = :"in-memory"
+          IN_MEMORY = :in_memory
           PROMPT_CACHE_RETENTION_24H = :"24h"
 
           # @!method self.values
