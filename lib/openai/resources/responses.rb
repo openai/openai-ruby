@@ -321,7 +321,7 @@ module OpenAI
         @client.request(
           method: :post,
           path: "responses",
-          headers: {"accept" => "text/event-stream"},
+          headers: {"accept" => "text/event-stream", "accept-encoding" => "identity"},
           body: parsed,
           stream: OpenAI::Internal::Stream,
           model: OpenAI::Responses::ResponseStreamEvent,
@@ -401,7 +401,7 @@ module OpenAI
           method: :get,
           path: ["responses/%1$s", response_id],
           query: query,
-          headers: {"accept" => "text/event-stream"},
+          headers: {"accept" => "text/event-stream", "accept-encoding" => "identity"},
           stream: OpenAI::Internal::Stream,
           model: OpenAI::Responses::ResponseStreamEvent,
           options: options

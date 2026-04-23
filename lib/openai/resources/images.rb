@@ -154,7 +154,11 @@ module OpenAI
         @client.request(
           method: :post,
           path: "images/edits",
-          headers: {"content-type" => "multipart/form-data", "accept" => "text/event-stream"},
+          headers: {
+            "content-type" => "multipart/form-data",
+            "accept" => "text/event-stream",
+            "accept-encoding" => "identity"
+          },
           body: parsed,
           stream: OpenAI::Internal::Stream,
           model: OpenAI::ImageEditStreamEvent,
@@ -269,7 +273,7 @@ module OpenAI
         @client.request(
           method: :post,
           path: "images/generations",
-          headers: {"accept" => "text/event-stream"},
+          headers: {"accept" => "text/event-stream", "accept-encoding" => "identity"},
           body: parsed,
           stream: OpenAI::Internal::Stream,
           model: OpenAI::ImageGenStreamEvent,

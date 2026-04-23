@@ -149,7 +149,7 @@ module OpenAI
               method: :post,
               path: ["threads/%1$s/runs", thread_id],
               query: query,
-              headers: {"accept" => "text/event-stream"},
+              headers: {"accept" => "text/event-stream", "accept-encoding" => "identity"},
               body: parsed.except(*query_params),
               stream: OpenAI::Internal::Stream,
               model: OpenAI::Beta::AssistantStreamEvent,
@@ -375,7 +375,7 @@ module OpenAI
             @client.request(
               method: :post,
               path: ["threads/%1$s/runs/%2$s/submit_tool_outputs", thread_id, run_id],
-              headers: {"accept" => "text/event-stream"},
+              headers: {"accept" => "text/event-stream", "accept-encoding" => "identity"},
               body: parsed,
               stream: OpenAI::Internal::Stream,
               model: OpenAI::Beta::AssistantStreamEvent,
