@@ -243,7 +243,7 @@ module OpenAI
           @client.request(
             method: :post,
             path: "threads/runs",
-            headers: {"accept" => "text/event-stream"},
+            headers: {"accept" => "text/event-stream", "accept-encoding" => "identity"},
             body: parsed,
             stream: OpenAI::Internal::Stream,
             model: OpenAI::Beta::AssistantStreamEvent,
