@@ -111,7 +111,11 @@ module OpenAI
           @client.request(
             method: :post,
             path: "audio/transcriptions",
-            headers: {"content-type" => "multipart/form-data", "accept" => "text/event-stream"},
+            headers: {
+              "content-type" => "multipart/form-data",
+              "accept" => "text/event-stream",
+              "accept-encoding" => "identity"
+            },
             body: parsed,
             stream: OpenAI::Internal::Stream,
             model: OpenAI::Audio::TranscriptionStreamEvent,

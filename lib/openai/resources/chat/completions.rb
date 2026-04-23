@@ -238,7 +238,7 @@ module OpenAI
           @client.request(
             method: :post,
             path: "chat/completions",
-            headers: {"accept" => "text/event-stream"},
+            headers: {"accept" => "text/event-stream", "accept-encoding" => "identity"},
             body: parsed,
             stream: OpenAI::Internal::Stream,
             model: OpenAI::Chat::ChatCompletionChunk,
