@@ -21,6 +21,11 @@ module OpenAI
 
         # @api public
         #
+        # @return [Hash{String=>String}]
+        def response_headers = @headers
+
+        # @api public
+        #
         # @return [void]
         def close = OpenAI::Internal::Util.close_fused!(@iterator)
 

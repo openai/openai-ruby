@@ -18,6 +18,10 @@ module OpenAI
         sig { returns(T::Hash[String, String]) }
         attr_reader :headers
 
+        sig { returns(T::Hash[String, String]) }
+        def response_headers
+        end
+
         sig { void }
         def close
         end

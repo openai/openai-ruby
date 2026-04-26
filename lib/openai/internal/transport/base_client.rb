@@ -510,8 +510,22 @@ module OpenAI
             page.new(client: self, req: req, headers: headers, page_data: decoded)
           else
             unwrapped = OpenAI::Internal::Util.dig(decoded, unwrap)
-            OpenAI::Internal::Type::Converter.coerce(model, unwrapped)
+            attach_response_metadata(OpenAI::Internal::Type::Converter.coerce(model, unwrapped), headers)
           end
+        end
+
+        # @api private
+        #
+        # @param result [Object]
+        # @param headers [Hash{String=>String}]
+        #
+        # @return [Object]
+        private
+
+        def attach_response_metadata(result, headers)
+          return result unless result.respond_to?(:__set_response_headers)
+
+          result.__set_response_headers(headers)
         end
 
         # @api private

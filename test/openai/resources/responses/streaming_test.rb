@@ -100,6 +100,31 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     end
   end
 
+  def test_stream_exposes_openai_response_metadata
+    stub_request(:post, "http://localhost/responses")
+      .with(
+        body: hash_including(
+          instructions: "You are a helpful assistant",
+          messages: [{content: "Hello", role: "user"}],
+          model: "gpt-4",
+          stream: true
+        )
+      )
+      .to_return(
+        status: 200,
+        headers: {
+          "Content-Type" => "text/event-stream",
+          "x-request-id" => "req_stream",
+          "openai-processing-ms" => "78.9"
+        },
+        body: basic_text_sse_response
+      )
+
+    stream = @client.responses.stream(**basic_params)
+    assert_equal("req_stream", stream.response_headers["x-request-id"])
+    assert_equal("78.9", stream.response_headers["openai-processing-ms"])
+  end
+
   def test_get_output_text
     stub_streaming_response(basic_text_sse_response)
 

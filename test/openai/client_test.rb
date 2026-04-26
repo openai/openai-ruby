@@ -326,4 +326,35 @@ class OpenAITest < Minitest::Test
       headers.each { refute_empty(_1) }
     end
   end
+
+  def test_non_streaming_response_exposes_openai_response_metadata
+    stub_request(:get, "http://localhost/models/gpt-4o-mini").to_return_json(
+      status: 200,
+      headers: {"x-request-id" => "req_123", "openai-processing-ms" => "45.6"},
+      body: {id: "gpt-4o-mini", object: "model", created: 1_700_000_000, owned_by: "openai"}
+    )
+
+    openai = OpenAI::Client.new(base_url: "http://localhost", api_key: "My API Key")
+    response = openai.models.retrieve("gpt-4o-mini")
+
+    assert_equal("req_123", response.response_headers["x-request-id"])
+    assert_equal("45.6", response.response_headers["openai-processing-ms"])
+  end
+
+  def test_page_response_exposes_openai_response_metadata
+    stub_request(:get, "http://localhost/models").to_return_json(
+      status: 200,
+      headers: {"x-request-id" => "req_page", "openai-processing-ms" => "12"},
+      body: {
+        object: "list",
+        data: [{id: "gpt-4o-mini", object: "model", created: 1_700_000_000, owned_by: "openai"}]
+      }
+    )
+
+    openai = OpenAI::Client.new(base_url: "http://localhost", api_key: "My API Key")
+    response = openai.models.list
+
+    assert_equal("req_page", response.response_headers["x-request-id"])
+    assert_equal("12", response.response_headers["openai-processing-ms"])
+  end
 end
