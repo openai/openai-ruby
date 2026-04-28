@@ -1,5 +1,33 @@
 # Changelog
 
+## 0.60.0 (2026-04-28)
+
+Full Changelog: [v0.59.0...v0.60.0](https://github.com/openai/openai-ruby/compare/v0.59.0...v0.60.0)
+
+### Features
+
+* **api:** add prompt_cache_retention parameter to responses compact method ([a27cd24](https://github.com/openai/openai-ruby/commit/a27cd24ad266e52a3b3f3067158839ea570f15e1))
+* support setting headers via env ([334512e](https://github.com/openai/openai-ruby/commit/334512e35ea5f4701b1617b4268718df5fa75b12))
+
+
+### Bug Fixes
+
+* avoid gzip buffering during streaming ([ec1b1fa](https://github.com/openai/openai-ruby/commit/ec1b1fa435e2bc7f5a70b481081fc933d02ac253))
+* **types:** correct PromptCacheRetention IN_MEMORY enum value in chat/responses ([e81e954](https://github.com/openai/openai-ruby/commit/e81e9543ca20634c1e756822a6285cdc0c46d06f))
+
+
+### Chores
+
+* **ci:** remove release-doctor workflow ([0f371f5](https://github.com/openai/openai-ruby/commit/0f371f59552efd273d800570757ce61cd91b9709))
+* **internal:** more robust bootstrap script ([7bcbf5a](https://github.com/openai/openai-ruby/commit/7bcbf5aa493bb7c7f310a000735ad3ec3ae0b291))
+* **tests:** bump steady to v0.22.1 ([14594c1](https://github.com/openai/openai-ruby/commit/14594c1b3b84bf5bafc14a8c8779ea8b4507e7dc))
+
+
+### Documentation
+
+* **api:** add rate limit details to files.create documentation ([c7c9967](https://github.com/openai/openai-ruby/commit/c7c99675cd0d570d44db91a66ce8f50855a57c5d))
+* **api:** update rate limit documentation for files.create ([09e4d86](https://github.com/openai/openai-ruby/commit/09e4d86b590d0d9db32207fa9fd568bbd8025a6d))
+
 ## 0.59.0 (2026-04-14)
 
 Full Changelog: [v0.58.0...v0.59.0](https://github.com/openai/openai-ruby/compare/v0.58.0...v0.59.0)
