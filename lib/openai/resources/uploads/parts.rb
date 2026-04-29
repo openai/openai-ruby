@@ -39,6 +39,7 @@ module OpenAI
             headers: {"content-type" => "multipart/form-data"},
             body: parsed,
             model: OpenAI::Uploads::UploadPart,
+            security: {bearer_auth: true},
             options: options
           )
         end

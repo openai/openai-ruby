@@ -57,6 +57,7 @@ module OpenAI
           headers: {"content-type" => "multipart/form-data"},
           body: parsed,
           model: OpenAI::FileObject,
+          security: {bearer_auth: true},
           options: options
         )
       end
@@ -77,6 +78,7 @@ module OpenAI
           method: :get,
           path: ["files/%1$s", file_id],
           model: OpenAI::FileObject,
+          security: {bearer_auth: true},
           options: params[:request_options]
         )
       end
@@ -110,6 +112,7 @@ module OpenAI
           query: query,
           page: OpenAI::Internal::CursorPage,
           model: OpenAI::FileObject,
+          security: {bearer_auth: true},
           options: options
         )
       end
@@ -130,6 +133,7 @@ module OpenAI
           method: :delete,
           path: ["files/%1$s", file_id],
           model: OpenAI::FileDeleted,
+          security: {bearer_auth: true},
           options: params[:request_options]
         )
       end
@@ -151,6 +155,7 @@ module OpenAI
           path: ["files/%1$s/content", file_id],
           headers: {"accept" => "application/binary"},
           model: StringIO,
+          security: {bearer_auth: true},
           options: params[:request_options]
         )
       end

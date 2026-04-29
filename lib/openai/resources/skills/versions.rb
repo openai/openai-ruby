@@ -30,6 +30,7 @@ module OpenAI
             headers: {"content-type" => "multipart/form-data"},
             body: parsed,
             model: OpenAI::Skills::SkillVersion,
+            security: {bearer_auth: true},
             options: options
           )
         end
@@ -57,6 +58,7 @@ module OpenAI
             method: :get,
             path: ["skills/%1$s/versions/%2$s", skill_id, version],
             model: OpenAI::Skills::SkillVersion,
+            security: {bearer_auth: true},
             options: options
           )
         end
@@ -87,6 +89,7 @@ module OpenAI
             query: query,
             page: OpenAI::Internal::CursorPage,
             model: OpenAI::Skills::SkillVersion,
+            security: {bearer_auth: true},
             options: options
           )
         end
@@ -114,6 +117,7 @@ module OpenAI
             method: :delete,
             path: ["skills/%1$s/versions/%2$s", skill_id, version],
             model: OpenAI::Skills::DeletedSkillVersion,
+            security: {bearer_auth: true},
             options: options
           )
         end

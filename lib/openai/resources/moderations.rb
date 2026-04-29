@@ -29,6 +29,7 @@ module OpenAI
           path: "moderations",
           body: parsed,
           model: OpenAI::Models::ModerationCreateResponse,
+          security: {bearer_auth: true},
           options: options
         )
       end

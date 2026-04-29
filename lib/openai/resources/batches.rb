@@ -28,7 +28,14 @@ module OpenAI
       # @see OpenAI::Models::BatchCreateParams
       def create(params)
         parsed, options = OpenAI::BatchCreateParams.dump_request(params)
-        @client.request(method: :post, path: "batches", body: parsed, model: OpenAI::Batch, options: options)
+        @client.request(
+          method: :post,
+          path: "batches",
+          body: parsed,
+          model: OpenAI::Batch,
+          security: {bearer_auth: true},
+          options: options
+        )
       end
 
       # Retrieves a batch.
@@ -47,6 +54,7 @@ module OpenAI
           method: :get,
           path: ["batches/%1$s", batch_id],
           model: OpenAI::Batch,
+          security: {bearer_auth: true},
           options: params[:request_options]
         )
       end
@@ -76,6 +84,7 @@ module OpenAI
           query: query,
           page: OpenAI::Internal::CursorPage,
           model: OpenAI::Batch,
+          security: {bearer_auth: true},
           options: options
         )
       end
@@ -98,6 +107,7 @@ module OpenAI
           method: :post,
           path: ["batches/%1$s/cancel", batch_id],
           model: OpenAI::Batch,
+          security: {bearer_auth: true},
           options: params[:request_options]
         )
       end

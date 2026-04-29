@@ -59,6 +59,10 @@ module OpenAI
                   ]
                 ),
               model: T.nilable(OpenAI::Internal::Type::Converter::Input),
+              security:
+                T.nilable(
+                  { bearer_auth: T::Boolean, admin_api_key_auth: T::Boolean }
+                ),
               options: T.nilable(OpenAI::RequestOptions::OrHash)
             }
           end
@@ -236,7 +240,7 @@ module OpenAI
         # Execute the request specified by `req`. This is the method that all resource
         # methods call into.
         #
-        # @overload request(method, path, query: {}, headers: {}, body: nil, unwrap: nil, page: nil, stream: nil, model: OpenAI::Internal::Type::Unknown, options: {})
+        # @overload request(method, path, query: {}, headers: {}, body: nil, unwrap: nil, page: nil, stream: nil, model: OpenAI::Internal::Type::Unknown, security: {bearer_auth: true, admin_api_key_auth: true}, options: {})
         sig do
           params(
             method: Symbol,
@@ -286,6 +290,10 @@ module OpenAI
                 ]
               ),
             model: T.nilable(OpenAI::Internal::Type::Converter::Input),
+            security:
+              T.nilable(
+                { bearer_auth: T::Boolean, admin_api_key_auth: T::Boolean }
+              ),
             options: T.nilable(OpenAI::RequestOptions::OrHash)
           ).returns(T.anything)
         end
@@ -299,6 +307,7 @@ module OpenAI
           page: nil,
           stream: nil,
           model: OpenAI::Internal::Type::Unknown,
+          security: { bearer_auth: true, admin_api_key_auth: true },
           options: {}
         )
         end

@@ -33,6 +33,7 @@ module OpenAI
               query: query,
               page: OpenAI::Internal::CursorPage,
               model: OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint,
+              security: {bearer_auth: true},
               options: options
             )
           end

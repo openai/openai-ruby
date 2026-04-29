@@ -35,6 +35,7 @@ module OpenAI
             headers: {"content-type" => "multipart/form-data"},
             body: parsed,
             model: OpenAI::Models::Audio::TranslationCreateResponse,
+            security: {bearer_auth: true},
             options: options
           )
         end

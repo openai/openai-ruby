@@ -40,6 +40,7 @@ module OpenAI
           path: "evals",
           body: parsed,
           model: OpenAI::Models::EvalCreateResponse,
+          security: {bearer_auth: true},
           options: options
         )
       end
@@ -60,6 +61,7 @@ module OpenAI
           method: :get,
           path: ["evals/%1$s", eval_id],
           model: OpenAI::Models::EvalRetrieveResponse,
+          security: {bearer_auth: true},
           options: params[:request_options]
         )
       end
@@ -89,6 +91,7 @@ module OpenAI
           path: ["evals/%1$s", eval_id],
           body: parsed,
           model: OpenAI::Models::EvalUpdateResponse,
+          security: {bearer_auth: true},
           options: options
         )
       end
@@ -122,6 +125,7 @@ module OpenAI
           query: query,
           page: OpenAI::Internal::CursorPage,
           model: OpenAI::Models::EvalListResponse,
+          security: {bearer_auth: true},
           options: options
         )
       end
@@ -142,6 +146,7 @@ module OpenAI
           method: :delete,
           path: ["evals/%1$s", eval_id],
           model: OpenAI::Models::EvalDeleteResponse,
+          security: {bearer_auth: true},
           options: params[:request_options]
         )
       end

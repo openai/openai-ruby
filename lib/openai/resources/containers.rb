@@ -34,6 +34,7 @@ module OpenAI
           path: "containers",
           body: parsed,
           model: OpenAI::Models::ContainerCreateResponse,
+          security: {bearer_auth: true},
           options: options
         )
       end
@@ -53,6 +54,7 @@ module OpenAI
           method: :get,
           path: ["containers/%1$s", container_id],
           model: OpenAI::Models::ContainerRetrieveResponse,
+          security: {bearer_auth: true},
           options: params[:request_options]
         )
       end
@@ -86,6 +88,7 @@ module OpenAI
           query: query,
           page: OpenAI::Internal::CursorPage,
           model: OpenAI::Models::ContainerListResponse,
+          security: {bearer_auth: true},
           options: options
         )
       end
@@ -106,6 +109,7 @@ module OpenAI
           method: :delete,
           path: ["containers/%1$s", container_id],
           model: NilClass,
+          security: {bearer_auth: true},
           options: params[:request_options]
         )
       end

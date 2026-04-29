@@ -31,6 +31,7 @@ module OpenAI
           path: "conversations",
           body: parsed,
           model: OpenAI::Conversations::Conversation,
+          security: {bearer_auth: true},
           options: options
         )
       end
@@ -51,6 +52,7 @@ module OpenAI
           method: :get,
           path: ["conversations/%1$s", conversation_id],
           model: OpenAI::Conversations::Conversation,
+          security: {bearer_auth: true},
           options: params[:request_options]
         )
       end
@@ -78,6 +80,7 @@ module OpenAI
           path: ["conversations/%1$s", conversation_id],
           body: parsed,
           model: OpenAI::Conversations::Conversation,
+          security: {bearer_auth: true},
           options: options
         )
       end
@@ -98,6 +101,7 @@ module OpenAI
           method: :delete,
           path: ["conversations/%1$s", conversation_id],
           model: OpenAI::Conversations::ConversationDeletedResource,
+          security: {bearer_auth: true},
           options: params[:request_options]
         )
       end

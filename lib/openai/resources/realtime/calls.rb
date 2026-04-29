@@ -50,6 +50,7 @@ module OpenAI
             path: ["realtime/calls/%1$s/accept", call_id],
             body: parsed,
             model: NilClass,
+            security: {bearer_auth: true},
             options: options
           )
         end
@@ -73,6 +74,7 @@ module OpenAI
             method: :post,
             path: ["realtime/calls/%1$s/hangup", call_id],
             model: NilClass,
+            security: {bearer_auth: true},
             options: params[:request_options]
           )
         end
@@ -100,6 +102,7 @@ module OpenAI
             path: ["realtime/calls/%1$s/refer", call_id],
             body: parsed,
             model: NilClass,
+            security: {bearer_auth: true},
             options: options
           )
         end
@@ -127,6 +130,7 @@ module OpenAI
             path: ["realtime/calls/%1$s/reject", call_id],
             body: parsed,
             model: NilClass,
+            security: {bearer_auth: true},
             options: options
           )
         end

@@ -34,6 +34,7 @@ module OpenAI
               body: parsed,
               page: OpenAI::Internal::Page,
               model: OpenAI::Models::FineTuning::Checkpoints::PermissionCreateResponse,
+              security: {bearer_auth: true},
               options: options
             )
           end
@@ -74,6 +75,7 @@ module OpenAI
               path: ["fine_tuning/checkpoints/%1$s/permissions", fine_tuned_model_checkpoint],
               query: query,
               model: OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse,
+              security: {bearer_auth: true},
               options: options
             )
           end
@@ -113,6 +115,7 @@ module OpenAI
               query: query,
               page: OpenAI::Internal::ConversationCursorPage,
               model: OpenAI::Models::FineTuning::Checkpoints::PermissionListResponse,
+              security: {bearer_auth: true},
               options: options
             )
           end
@@ -151,6 +154,7 @@ module OpenAI
                 permission_id
               ],
               model: OpenAI::Models::FineTuning::Checkpoints::PermissionDeleteResponse,
+              security: {bearer_auth: true},
               options: options
             )
           end

@@ -40,6 +40,7 @@ module OpenAI
           path: "vector_stores",
           body: parsed,
           model: OpenAI::VectorStore,
+          security: {bearer_auth: true},
           options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
         )
       end
@@ -60,6 +61,7 @@ module OpenAI
           method: :get,
           path: ["vector_stores/%1$s", vector_store_id],
           model: OpenAI::VectorStore,
+          security: {bearer_auth: true},
           options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **params[:request_options].to_h}
         )
       end
@@ -91,6 +93,7 @@ module OpenAI
           path: ["vector_stores/%1$s", vector_store_id],
           body: parsed,
           model: OpenAI::VectorStore,
+          security: {bearer_auth: true},
           options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
         )
       end
@@ -124,6 +127,7 @@ module OpenAI
           query: query,
           page: OpenAI::Internal::CursorPage,
           model: OpenAI::VectorStore,
+          security: {bearer_auth: true},
           options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
         )
       end
@@ -144,6 +148,7 @@ module OpenAI
           method: :delete,
           path: ["vector_stores/%1$s", vector_store_id],
           model: OpenAI::VectorStoreDeleted,
+          security: {bearer_auth: true},
           options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **params[:request_options].to_h}
         )
       end
@@ -181,6 +186,7 @@ module OpenAI
           body: parsed,
           page: OpenAI::Internal::Page,
           model: OpenAI::Models::VectorStoreSearchResponse,
+          security: {bearer_auth: true},
           options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
         )
       end

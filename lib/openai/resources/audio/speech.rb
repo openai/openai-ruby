@@ -41,6 +41,7 @@ module OpenAI
             headers: {"accept" => "application/octet-stream"},
             body: parsed,
             model: StringIO,
+            security: {bearer_auth: true},
             options: options
           )
         end

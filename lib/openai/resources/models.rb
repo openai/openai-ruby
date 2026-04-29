@@ -21,6 +21,7 @@ module OpenAI
           method: :get,
           path: ["models/%1$s", model],
           model: OpenAI::Model,
+          security: {bearer_auth: true},
           options: params[:request_options]
         )
       end
@@ -41,6 +42,7 @@ module OpenAI
           path: "models",
           page: OpenAI::Internal::Page,
           model: OpenAI::Model,
+          security: {bearer_auth: true},
           options: params[:request_options]
         )
       end
@@ -62,6 +64,7 @@ module OpenAI
           method: :delete,
           path: ["models/%1$s", model],
           model: OpenAI::ModelDeleted,
+          security: {bearer_auth: true},
           options: params[:request_options]
         )
       end

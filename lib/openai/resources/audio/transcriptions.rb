@@ -57,6 +57,7 @@ module OpenAI
             headers: {"content-type" => "multipart/form-data"},
             body: parsed,
             model: OpenAI::Models::Audio::TranscriptionCreateResponse,
+            security: {bearer_auth: true},
             options: options
           )
         end
@@ -119,6 +120,7 @@ module OpenAI
             body: parsed,
             stream: OpenAI::Internal::Stream,
             model: OpenAI::Audio::TranscriptionStreamEvent,
+            security: {bearer_auth: true},
             options: options
           )
         end

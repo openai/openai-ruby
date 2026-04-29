@@ -35,6 +35,7 @@ module OpenAI
             query: query,
             page: OpenAI::Internal::CursorPage,
             model: OpenAI::Responses::ResponseItem,
+            security: {bearer_auth: true},
             options: options
           )
         end

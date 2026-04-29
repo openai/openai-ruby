@@ -31,6 +31,7 @@ module OpenAI
               path: "fine_tuning/alpha/graders/run",
               body: parsed,
               model: OpenAI::Models::FineTuning::Alpha::GraderRunResponse,
+              security: {bearer_auth: true},
               options: options
             )
           end
@@ -53,6 +54,7 @@ module OpenAI
               path: "fine_tuning/alpha/graders/validate",
               body: parsed,
               model: OpenAI::Models::FineTuning::Alpha::GraderValidateResponse,
+              security: {bearer_auth: true},
               options: options
             )
           end

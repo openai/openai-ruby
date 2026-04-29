@@ -35,6 +35,7 @@ module OpenAI
             path: ["containers/%1$s/files", container_id],
             body: parsed,
             model: OpenAI::Models::Containers::FileCreateResponse,
+            security: {bearer_auth: true},
             options: options
           )
         end
@@ -60,6 +61,7 @@ module OpenAI
             method: :get,
             path: ["containers/%1$s/files/%2$s", container_id, file_id],
             model: OpenAI::Models::Containers::FileRetrieveResponse,
+            security: {bearer_auth: true},
             options: options
           )
         end
@@ -93,6 +95,7 @@ module OpenAI
             query: query,
             page: OpenAI::Internal::CursorPage,
             model: OpenAI::Models::Containers::FileListResponse,
+            security: {bearer_auth: true},
             options: options
           )
         end
@@ -118,6 +121,7 @@ module OpenAI
             method: :delete,
             path: ["containers/%1$s/files/%2$s", container_id, file_id],
             model: NilClass,
+            security: {bearer_auth: true},
             options: options
           )
         end

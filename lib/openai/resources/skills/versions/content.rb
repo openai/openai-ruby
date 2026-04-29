@@ -29,6 +29,7 @@ module OpenAI
               path: ["skills/%1$s/versions/%2$s/content", skill_id, version],
               headers: {"accept" => "application/binary"},
               model: StringIO,
+              security: {bearer_auth: true},
               options: options
             )
           end

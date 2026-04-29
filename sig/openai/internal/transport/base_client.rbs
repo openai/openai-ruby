@@ -20,6 +20,7 @@ module OpenAI
             page: Class?,
             stream: Class?,
             model: OpenAI::Internal::Type::Converter::input?,
+            security: { bearer_auth: bool, admin_api_key_auth: bool }?,
             options: OpenAI::request_opts?
           }
         type request_input =
@@ -123,6 +124,7 @@ module OpenAI
           ?page: Class?,
           ?stream: Class?,
           ?model: OpenAI::Internal::Type::Converter::input?,
+          ?security: { bearer_auth: bool, admin_api_key_auth: bool }?,
           ?options: OpenAI::request_opts?
         ) -> top
 

@@ -34,6 +34,7 @@ module OpenAI
           path: "embeddings",
           body: parsed,
           model: OpenAI::CreateEmbeddingResponse,
+          security: {bearer_auth: true},
           options: options
         )
       end

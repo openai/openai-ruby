@@ -33,6 +33,7 @@ module OpenAI
           headers: {"content-type" => "multipart/form-data"},
           body: parsed,
           model: OpenAI::Video,
+          security: {bearer_auth: true},
           options: options
         )
       end
@@ -53,6 +54,7 @@ module OpenAI
           method: :get,
           path: ["videos/%1$s", video_id],
           model: OpenAI::Video,
+          security: {bearer_auth: true},
           options: params[:request_options]
         )
       end
@@ -84,6 +86,7 @@ module OpenAI
           query: query,
           page: OpenAI::Internal::ConversationCursorPage,
           model: OpenAI::Video,
+          security: {bearer_auth: true},
           options: options
         )
       end
@@ -104,6 +107,7 @@ module OpenAI
           method: :delete,
           path: ["videos/%1$s", video_id],
           model: OpenAI::Models::VideoDeleteResponse,
+          security: {bearer_auth: true},
           options: params[:request_options]
         )
       end
@@ -129,6 +133,7 @@ module OpenAI
           headers: {"content-type" => "multipart/form-data"},
           body: parsed,
           model: OpenAI::Models::VideoCreateCharacterResponse,
+          security: {bearer_auth: true},
           options: options
         )
       end
@@ -157,6 +162,7 @@ module OpenAI
           query: query,
           headers: {"accept" => "application/binary"},
           model: StringIO,
+          security: {bearer_auth: true},
           options: options
         )
       end
@@ -183,6 +189,7 @@ module OpenAI
           headers: {"content-type" => "multipart/form-data"},
           body: parsed,
           model: OpenAI::Video,
+          security: {bearer_auth: true},
           options: options
         )
       end
@@ -213,6 +220,7 @@ module OpenAI
           headers: {"content-type" => "multipart/form-data"},
           body: parsed,
           model: OpenAI::Video,
+          security: {bearer_auth: true},
           options: options
         )
       end
@@ -233,6 +241,7 @@ module OpenAI
           method: :get,
           path: ["videos/characters/%1$s", character_id],
           model: OpenAI::Models::VideoGetCharacterResponse,
+          security: {bearer_auth: true},
           options: params[:request_options]
         )
       end
@@ -258,6 +267,7 @@ module OpenAI
           headers: {"content-type" => "multipart/form-data"},
           body: parsed,
           model: OpenAI::Video,
+          security: {bearer_auth: true},
           options: options
         )
       end

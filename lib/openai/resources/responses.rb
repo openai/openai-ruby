@@ -108,6 +108,7 @@ module OpenAI
           body: parsed,
           unwrap: unwrap,
           model: OpenAI::Responses::Response,
+          security: {bearer_auth: true},
           options: options
         )
       end
@@ -325,6 +326,7 @@ module OpenAI
           body: parsed,
           stream: OpenAI::Internal::Stream,
           model: OpenAI::Responses::ResponseStreamEvent,
+          security: {bearer_auth: true},
           options: options
         )
       end
@@ -363,6 +365,7 @@ module OpenAI
           path: ["responses/%1$s", response_id],
           query: query,
           model: OpenAI::Responses::Response,
+          security: {bearer_auth: true},
           options: options
         )
       end
@@ -404,6 +407,7 @@ module OpenAI
           headers: {"accept" => "text/event-stream", "accept-encoding" => "identity"},
           stream: OpenAI::Internal::Stream,
           model: OpenAI::Responses::ResponseStreamEvent,
+          security: {bearer_auth: true},
           options: options
         )
       end
@@ -439,6 +443,7 @@ module OpenAI
           method: :delete,
           path: ["responses/%1$s", response_id],
           model: NilClass,
+          security: {bearer_auth: true},
           options: params[:request_options]
         )
       end
@@ -461,6 +466,7 @@ module OpenAI
           method: :post,
           path: ["responses/%1$s/cancel", response_id],
           model: OpenAI::Responses::Response,
+          security: {bearer_auth: true},
           options: params[:request_options]
         )
       end
@@ -501,6 +507,7 @@ module OpenAI
           path: "responses/compact",
           body: parsed,
           model: OpenAI::Responses::CompactedResponse,
+          security: {bearer_auth: true},
           options: options
         )
       end

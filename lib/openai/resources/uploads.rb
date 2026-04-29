@@ -52,7 +52,14 @@ module OpenAI
       # @see OpenAI::Models::UploadCreateParams
       def create(params)
         parsed, options = OpenAI::UploadCreateParams.dump_request(params)
-        @client.request(method: :post, path: "uploads", body: parsed, model: OpenAI::Upload, options: options)
+        @client.request(
+          method: :post,
+          path: "uploads",
+          body: parsed,
+          model: OpenAI::Upload,
+          security: {bearer_auth: true},
+          options: options
+        )
       end
 
       # Some parameter documentations has been truncated, see
@@ -76,6 +83,7 @@ module OpenAI
           method: :post,
           path: ["uploads/%1$s/cancel", upload_id],
           model: OpenAI::Upload,
+          security: {bearer_auth: true},
           options: params[:request_options]
         )
       end
@@ -119,6 +127,7 @@ module OpenAI
           path: ["uploads/%1$s/complete", upload_id],
           body: parsed,
           model: OpenAI::Upload,
+          security: {bearer_auth: true},
           options: options
         )
       end
