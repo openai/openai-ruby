@@ -28,6 +28,7 @@ module OpenAI
           headers: {"content-type" => "multipart/form-data"},
           body: parsed,
           model: OpenAI::Skill,
+          security: {bearer_auth: true},
           options: options
         )
       end
@@ -48,6 +49,7 @@ module OpenAI
           method: :get,
           path: ["skills/%1$s", skill_id],
           model: OpenAI::Skill,
+          security: {bearer_auth: true},
           options: params[:request_options]
         )
       end
@@ -72,6 +74,7 @@ module OpenAI
           path: ["skills/%1$s", skill_id],
           body: parsed,
           model: OpenAI::Skill,
+          security: {bearer_auth: true},
           options: options
         )
       end
@@ -103,6 +106,7 @@ module OpenAI
           query: query,
           page: OpenAI::Internal::CursorPage,
           model: OpenAI::Skill,
+          security: {bearer_auth: true},
           options: options
         )
       end
@@ -123,6 +127,7 @@ module OpenAI
           method: :delete,
           path: ["skills/%1$s", skill_id],
           model: OpenAI::DeletedSkill,
+          security: {bearer_auth: true},
           options: params[:request_options]
         )
       end

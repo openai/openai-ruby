@@ -37,6 +37,7 @@ module OpenAI
               query: query,
               page: OpenAI::Internal::CursorPage,
               model: OpenAI::Chat::ChatCompletionStoreMessage,
+              security: {bearer_auth: true},
               options: options
             )
           end

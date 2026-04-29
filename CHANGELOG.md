@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.61.0 (2026-04-29)
+
+Full Changelog: [v0.60.0...v0.61.0](https://github.com/openai/openai-ruby/compare/v0.60.0...v0.61.0)
+
+### Features
+
+* **api:** add support for Admin API Keys per endpoint ([0074885](https://github.com/openai/openai-ruby/commit/0074885734380280c790b6fcfdf8aad0639de854))
+
+
+### Bug Fixes
+
+* **api:** support admin api key auth ([095bf67](https://github.com/openai/openai-ruby/commit/095bf67e2d13483adb7d370761663c0babf862ee))
+
 ## 0.60.0 (2026-04-28)
 
 Full Changelog: [v0.59.0...v0.60.0](https://github.com/openai/openai-ruby/compare/v0.59.0...v0.60.0)

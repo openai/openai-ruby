@@ -38,6 +38,7 @@ module OpenAI
             path: ["evals/%1$s/runs", eval_id],
             body: parsed,
             model: OpenAI::Models::Evals::RunCreateResponse,
+            security: {bearer_auth: true},
             options: options
           )
         end
@@ -65,6 +66,7 @@ module OpenAI
             method: :get,
             path: ["evals/%1$s/runs/%2$s", eval_id, run_id],
             model: OpenAI::Models::Evals::RunRetrieveResponse,
+            security: {bearer_auth: true},
             options: options
           )
         end
@@ -100,6 +102,7 @@ module OpenAI
             query: query,
             page: OpenAI::Internal::CursorPage,
             model: OpenAI::Models::Evals::RunListResponse,
+            security: {bearer_auth: true},
             options: options
           )
         end
@@ -127,6 +130,7 @@ module OpenAI
             method: :delete,
             path: ["evals/%1$s/runs/%2$s", eval_id, run_id],
             model: OpenAI::Models::Evals::RunDeleteResponse,
+            security: {bearer_auth: true},
             options: options
           )
         end
@@ -154,6 +158,7 @@ module OpenAI
             method: :post,
             path: ["evals/%1$s/runs/%2$s", eval_id, run_id],
             model: OpenAI::Models::Evals::RunCancelResponse,
+            security: {bearer_auth: true},
             options: options
           )
         end

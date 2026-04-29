@@ -10,8 +10,11 @@ module OpenAI
 
     DEFAULT_MAX_RETRY_DELAY = T.let(8.0, Float)
 
-    sig { returns(String) }
+    sig { returns(T.nilable(String)) }
     attr_reader :api_key
+
+    sig { returns(T.nilable(String)) }
+    attr_reader :admin_api_key
 
     sig { returns(T.nilable(String)) }
     attr_reader :organization
@@ -79,6 +82,9 @@ module OpenAI
     sig { returns(OpenAI::Resources::Uploads) }
     attr_reader :uploads
 
+    sig { returns(OpenAI::Resources::Admin) }
+    attr_reader :admin
+
     sig { returns(OpenAI::Resources::Responses) }
     attr_reader :responses
 
@@ -103,14 +109,34 @@ module OpenAI
     attr_reader :videos
 
     # @api private
-    sig { override.returns(T::Hash[String, String]) }
-    private def auth_headers
+    sig do
+      override
+        .params(
+          security: {
+            bearer_auth: T::Boolean,
+            admin_api_key_auth: T::Boolean
+          }
+        )
+        .returns(T::Hash[String, String])
+    end
+    private def auth_headers(security:)
+    end
+
+    # @api private
+    sig { returns(T::Hash[String, String]) }
+    private def bearer_auth
+    end
+
+    # @api private
+    sig { returns(T::Hash[String, String]) }
+    private def admin_api_key_auth
     end
 
     # Creates and returns a new client for interacting with the API.
     sig do
       params(
         api_key: T.nilable(String),
+        admin_api_key: T.nilable(String),
         organization: T.nilable(String),
         project: T.nilable(String),
         webhook_secret: T.nilable(String),
@@ -124,6 +150,8 @@ module OpenAI
     def self.new(
       # Defaults to `ENV["OPENAI_API_KEY"]`
       api_key: ENV["OPENAI_API_KEY"],
+      # Defaults to `ENV["OPENAI_ADMIN_KEY"]`
+      admin_api_key: ENV["OPENAI_ADMIN_KEY"],
       # Defaults to `ENV["OPENAI_ORG_ID"]`
       organization: ENV["OPENAI_ORG_ID"],
       # Defaults to `ENV["OPENAI_PROJECT_ID"]`

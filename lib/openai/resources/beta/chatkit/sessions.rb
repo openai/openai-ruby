@@ -34,6 +34,7 @@ module OpenAI
               path: "chatkit/sessions",
               body: parsed,
               model: OpenAI::Beta::ChatKit::ChatSession,
+              security: {bearer_auth: true},
               options: {extra_headers: {"OpenAI-Beta" => "chatkit_beta=v1"}, **options}
             )
           end
@@ -56,6 +57,7 @@ module OpenAI
               method: :post,
               path: ["chatkit/sessions/%1$s/cancel", session_id],
               model: OpenAI::Beta::ChatKit::ChatSession,
+              security: {bearer_auth: true},
               options: {extra_headers: {"OpenAI-Beta" => "chatkit_beta=v1"}, **params[:request_options].to_h}
             )
           end

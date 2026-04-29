@@ -48,7 +48,11 @@ class OpenAI::Test::SingletonClient < OpenAI::Client
   TEST_API_BASE_URL = ENV.fetch("TEST_API_BASE_URL", "http://localhost:4010")
 
   def initialize
-    super(base_url: OpenAI::Test::SingletonClient::TEST_API_BASE_URL, api_key: "My API Key")
+    super(
+      base_url: OpenAI::Test::SingletonClient::TEST_API_BASE_URL,
+      api_key: "My API Key",
+      admin_api_key: "My Admin API Key"
+    )
   end
 end
 

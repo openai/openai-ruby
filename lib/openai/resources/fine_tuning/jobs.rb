@@ -52,6 +52,7 @@ module OpenAI
             path: "fine_tuning/jobs",
             body: parsed,
             model: OpenAI::FineTuning::FineTuningJob,
+            security: {bearer_auth: true},
             options: options
           )
         end
@@ -77,6 +78,7 @@ module OpenAI
             method: :get,
             path: ["fine_tuning/jobs/%1$s", fine_tuning_job_id],
             model: OpenAI::FineTuning::FineTuningJob,
+            security: {bearer_auth: true},
             options: params[:request_options]
           )
         end
@@ -108,6 +110,7 @@ module OpenAI
             query: query,
             page: OpenAI::Internal::CursorPage,
             model: OpenAI::FineTuning::FineTuningJob,
+            security: {bearer_auth: true},
             options: options
           )
         end
@@ -131,6 +134,7 @@ module OpenAI
             method: :post,
             path: ["fine_tuning/jobs/%1$s/cancel", fine_tuning_job_id],
             model: OpenAI::FineTuning::FineTuningJob,
+            security: {bearer_auth: true},
             options: params[:request_options]
           )
         end
@@ -162,6 +166,7 @@ module OpenAI
             query: query,
             page: OpenAI::Internal::CursorPage,
             model: OpenAI::FineTuning::FineTuningJobEvent,
+            security: {bearer_auth: true},
             options: options
           )
         end
@@ -185,6 +190,7 @@ module OpenAI
             method: :post,
             path: ["fine_tuning/jobs/%1$s/pause", fine_tuning_job_id],
             model: OpenAI::FineTuning::FineTuningJob,
+            security: {bearer_auth: true},
             options: params[:request_options]
           )
         end
@@ -208,6 +214,7 @@ module OpenAI
             method: :post,
             path: ["fine_tuning/jobs/%1$s/resume", fine_tuning_job_id],
             model: OpenAI::FineTuning::FineTuningJob,
+            security: {bearer_auth: true},
             options: params[:request_options]
           )
         end

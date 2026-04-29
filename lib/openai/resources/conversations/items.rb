@@ -33,6 +33,7 @@ module OpenAI
             query: query,
             body: parsed.except(*query_params),
             model: OpenAI::Conversations::ConversationItemList,
+            security: {bearer_auth: true},
             options: options
           )
         end
@@ -67,6 +68,7 @@ module OpenAI
             path: ["conversations/%1$s/items/%2$s", conversation_id, item_id],
             query: query,
             model: OpenAI::Conversations::ConversationItem,
+            security: {bearer_auth: true},
             options: options
           )
         end
@@ -102,6 +104,7 @@ module OpenAI
             query: query,
             page: OpenAI::Internal::ConversationCursorPage,
             model: OpenAI::Conversations::ConversationItem,
+            security: {bearer_auth: true},
             options: options
           )
         end
@@ -129,6 +132,7 @@ module OpenAI
             method: :delete,
             path: ["conversations/%1$s/items/%2$s", conversation_id, item_id],
             model: OpenAI::Conversations::Conversation,
+            security: {bearer_auth: true},
             options: options
           )
         end

@@ -162,6 +162,7 @@ module OpenAI
             body: parsed,
             unwrap: unwrap,
             model: OpenAI::Chat::ChatCompletion,
+            security: {bearer_auth: true},
             options: options
           )
         end
@@ -376,6 +377,7 @@ module OpenAI
             body: parsed,
             stream: OpenAI::Internal::Stream,
             model: OpenAI::Chat::ChatCompletionChunk,
+            security: {bearer_auth: true},
             options: options
           )
         end
@@ -397,6 +399,7 @@ module OpenAI
             method: :get,
             path: ["chat/completions/%1$s", completion_id],
             model: OpenAI::Chat::ChatCompletion,
+            security: {bearer_auth: true},
             options: params[:request_options]
           )
         end
@@ -426,6 +429,7 @@ module OpenAI
             path: ["chat/completions/%1$s", completion_id],
             body: parsed,
             model: OpenAI::Chat::ChatCompletion,
+            security: {bearer_auth: true},
             options: options
           )
         end
@@ -462,6 +466,7 @@ module OpenAI
             query: query,
             page: OpenAI::Internal::CursorPage,
             model: OpenAI::Chat::ChatCompletion,
+            security: {bearer_auth: true},
             options: options
           )
         end
@@ -483,6 +488,7 @@ module OpenAI
             method: :delete,
             path: ["chat/completions/%1$s", completion_id],
             model: OpenAI::Chat::ChatCompletionDeleted,
+            security: {bearer_auth: true},
             options: params[:request_options]
           )
         end

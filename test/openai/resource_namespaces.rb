@@ -3,6 +3,9 @@
 module OpenAI
   module Test
     module Resources
+      module Admin
+      end
+
       module Alpha
       end
 

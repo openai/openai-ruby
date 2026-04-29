@@ -8,7 +8,11 @@ module OpenAI
 
     DEFAULT_MAX_RETRY_DELAY: Float
 
-    attr_reader api_key: String
+    attr_reader api_key: String?
+
+    attr_reader admin_api_key: String?
+
+    attr_reader workload_identity_auth: untyped?
 
     attr_reader organization: String?
 
@@ -46,6 +50,8 @@ module OpenAI
 
     attr_reader uploads: OpenAI::Resources::Uploads
 
+    attr_reader admin: OpenAI::Resources::Admin
+
     attr_reader responses: OpenAI::Resources::Responses
 
     attr_reader realtime: OpenAI::Resources::Realtime
@@ -60,10 +66,18 @@ module OpenAI
 
     attr_reader videos: OpenAI::Resources::Videos
 
-    private def auth_headers: -> ::Hash[String, String]
+    private def auth_headers: (
+      security: { bearer_auth: bool, admin_api_key_auth: bool }
+    ) -> ::Hash[String, String]
+
+    private def bearer_auth: -> ::Hash[String, String]
+
+    private def admin_api_key_auth: -> ::Hash[String, String]
 
     def initialize: (
       ?api_key: String?,
+      ?admin_api_key: String?,
+      ?workload_identity: untyped?,
       ?organization: String?,
       ?project: String?,
       ?webhook_secret: String?,
