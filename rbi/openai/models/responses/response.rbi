@@ -14,7 +14,7 @@ module OpenAI
         attr_accessor :id
 
         # Unix timestamp (in seconds) of when this Response was created.
-        sig { returns(Float) }
+        sig { returns(Integer) }
         attr_accessor :created_at
 
         # An error object returned when the model fails to generate a Response.
@@ -141,7 +141,7 @@ module OpenAI
 
         # Unix timestamp (in seconds) of when this Response was completed. Only present
         # when the status is `completed`.
-        sig { returns(T.nilable(Float)) }
+        sig { returns(T.nilable(Integer)) }
         attr_accessor :completed_at
 
         # The conversation that this response belonged to. Input items and output items
@@ -318,7 +318,7 @@ module OpenAI
         sig do
           params(
             id: String,
-            created_at: Float,
+            created_at: Integer,
             error: T.nilable(OpenAI::Responses::ResponseError::OrHash),
             incomplete_details:
               T.nilable(OpenAI::Responses::Response::IncompleteDetails::OrHash),
@@ -396,7 +396,7 @@ module OpenAI
               ],
             top_p: T.nilable(Float),
             background: T.nilable(T::Boolean),
-            completed_at: T.nilable(Float),
+            completed_at: T.nilable(Integer),
             conversation:
               T.nilable(OpenAI::Responses::Response::Conversation::OrHash),
             max_output_tokens: T.nilable(Integer),
@@ -597,7 +597,7 @@ module OpenAI
           override.returns(
             {
               id: String,
-              created_at: Float,
+              created_at: Integer,
               error: T.nilable(OpenAI::Responses::ResponseError),
               incomplete_details:
                 T.nilable(OpenAI::Responses::Response::IncompleteDetails),
@@ -613,7 +613,7 @@ module OpenAI
               tools: T::Array[OpenAI::Responses::Tool::Variants],
               top_p: T.nilable(Float),
               background: T.nilable(T::Boolean),
-              completed_at: T.nilable(Float),
+              completed_at: T.nilable(Integer),
               conversation:
                 T.nilable(OpenAI::Responses::Response::Conversation),
               max_output_tokens: T.nilable(Integer),
