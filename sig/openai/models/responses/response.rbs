@@ -4,7 +4,7 @@ module OpenAI
       type response =
         {
           id: String,
-          created_at: Float,
+          created_at: Integer,
           error: OpenAI::Responses::ResponseError?,
           incomplete_details: OpenAI::Responses::Response::IncompleteDetails?,
           instructions: OpenAI::Models::Responses::Response::instructions?,
@@ -18,7 +18,7 @@ module OpenAI
           tools: ::Array[OpenAI::Models::Responses::tool],
           top_p: Float?,
           background: bool?,
-          completed_at: Float?,
+          completed_at: Integer?,
           conversation: OpenAI::Responses::Response::Conversation?,
           max_output_tokens: Integer?,
           max_tool_calls: Integer?,
@@ -40,7 +40,7 @@ module OpenAI
       class Response < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
-        attr_accessor created_at: Float
+        attr_accessor created_at: Integer
 
         attr_accessor error: OpenAI::Responses::ResponseError?
 
@@ -68,7 +68,7 @@ module OpenAI
 
         attr_accessor background: bool?
 
-        attr_accessor completed_at: Float?
+        attr_accessor completed_at: Integer?
 
         attr_accessor conversation: OpenAI::Responses::Response::Conversation?
 
@@ -122,7 +122,7 @@ module OpenAI
 
         def initialize: (
           id: String,
-          created_at: Float,
+          created_at: Integer,
           error: OpenAI::Responses::ResponseError?,
           incomplete_details: OpenAI::Responses::Response::IncompleteDetails?,
           instructions: OpenAI::Models::Responses::Response::instructions?,
@@ -135,7 +135,7 @@ module OpenAI
           tools: ::Array[OpenAI::Models::Responses::tool],
           top_p: Float?,
           ?background: bool?,
-          ?completed_at: Float?,
+          ?completed_at: Integer?,
           ?conversation: OpenAI::Responses::Response::Conversation?,
           ?max_output_tokens: Integer?,
           ?max_tool_calls: Integer?,
@@ -157,7 +157,7 @@ module OpenAI
 
         def to_hash: -> {
           id: String,
-          created_at: Float,
+          created_at: Integer,
           error: OpenAI::Responses::ResponseError?,
           incomplete_details: OpenAI::Responses::Response::IncompleteDetails?,
           instructions: OpenAI::Models::Responses::Response::instructions?,
@@ -171,7 +171,7 @@ module OpenAI
           tools: ::Array[OpenAI::Models::Responses::tool],
           top_p: Float?,
           background: bool?,
-          completed_at: Float?,
+          completed_at: Integer?,
           conversation: OpenAI::Responses::Response::Conversation?,
           max_output_tokens: Integer?,
           max_tool_calls: Integer?,
