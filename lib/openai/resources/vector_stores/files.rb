@@ -33,6 +33,7 @@ module OpenAI
             path: ["vector_stores/%1$s/files", vector_store_id],
             body: parsed,
             model: OpenAI::VectorStores::VectorStoreFile,
+            security: {bearer_auth: true},
             options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
           )
         end
@@ -60,6 +61,7 @@ module OpenAI
             method: :get,
             path: ["vector_stores/%1$s/files/%2$s", vector_store_id, file_id],
             model: OpenAI::VectorStores::VectorStoreFile,
+            security: {bearer_auth: true},
             options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
           )
         end
@@ -93,6 +95,7 @@ module OpenAI
             path: ["vector_stores/%1$s/files/%2$s", vector_store_id, file_id],
             body: parsed,
             model: OpenAI::VectorStores::VectorStoreFile,
+            security: {bearer_auth: true},
             options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
           )
         end
@@ -130,6 +133,7 @@ module OpenAI
             query: query,
             page: OpenAI::Internal::CursorPage,
             model: OpenAI::VectorStores::VectorStoreFile,
+            security: {bearer_auth: true},
             options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
           )
         end
@@ -160,6 +164,7 @@ module OpenAI
             method: :delete,
             path: ["vector_stores/%1$s/files/%2$s", vector_store_id, file_id],
             model: OpenAI::VectorStores::VectorStoreFileDeleted,
+            security: {bearer_auth: true},
             options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
           )
         end
@@ -188,6 +193,7 @@ module OpenAI
             path: ["vector_stores/%1$s/files/%2$s/content", vector_store_id, file_id],
             page: OpenAI::Internal::Page,
             model: OpenAI::Models::VectorStores::FileContentResponse,
+            security: {bearer_auth: true},
             options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
           )
         end

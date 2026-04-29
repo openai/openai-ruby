@@ -35,6 +35,7 @@ module OpenAI
               method: :get,
               path: ["evals/%1$s/runs/%2$s/output_items/%3$s", eval_id, run_id, output_item_id],
               model: OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse,
+              security: {bearer_auth: true},
               options: options
             )
           end
@@ -76,6 +77,7 @@ module OpenAI
               query: query,
               page: OpenAI::Internal::CursorPage,
               model: OpenAI::Models::Evals::Runs::OutputItemListResponse,
+              security: {bearer_auth: true},
               options: options
             )
           end

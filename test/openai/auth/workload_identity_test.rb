@@ -30,7 +30,9 @@ class WorkloadIdentityTest < Minitest::Test
   def test_kubernetes_provider_success
     File.write(@token_path, "k8s-jwt-token\n")
 
-    provider = OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(token_path: @token_path)
+    provider = OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(
+      token_path: @token_path
+    )
     assert_equal(OpenAI::Auth::TokenType::JWT, provider.token_type)
     assert_equal("k8s-jwt-token", provider.get_token)
   end
@@ -113,7 +115,9 @@ class WorkloadIdentityTest < Minitest::Test
 
   def test_workload_identity_auth_token_exchange
     File.write(@token_path, "k8s-jwt-token")
-    provider = OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(token_path: @token_path)
+    provider = OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(
+      token_path: @token_path
+    )
 
     stub_request(:post, "https://auth.openai.com/oauth/token")
       .with(
@@ -146,7 +150,9 @@ class WorkloadIdentityTest < Minitest::Test
 
   def test_workload_identity_auth_oauth_error
     File.write(@token_path, "k8s-jwt-token")
-    provider = OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(token_path: @token_path)
+    provider = OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(
+      token_path: @token_path
+    )
 
     stub_request(:post, "https://auth.openai.com/oauth/token")
       .to_return(
@@ -179,7 +185,9 @@ class WorkloadIdentityTest < Minitest::Test
 
   def test_workload_identity_client_initialization
     File.write(@token_path, "k8s-jwt-token")
-    provider = OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(token_path: @token_path)
+    provider = OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(
+      token_path: @token_path
+    )
 
     config = OpenAI::Auth::WorkloadIdentity.new(
       client_id: "test-client",
@@ -190,6 +198,7 @@ class WorkloadIdentityTest < Minitest::Test
 
     client = OpenAI::Client.new(
       base_url: "http://localhost",
+      api_key: nil,
       workload_identity: config,
       organization: "org-123",
       project: "proj-456"
@@ -221,7 +230,9 @@ class WorkloadIdentityTest < Minitest::Test
 
   def test_401_retry_with_token_invalidation
     File.write(@token_path, "k8s-jwt-token")
-    provider = OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(token_path: @token_path)
+    provider = OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(
+      token_path: @token_path
+    )
 
     stub_request(:post, "https://auth.openai.com/oauth/token")
       .to_return(status: 200, body: JSON.generate({"access_token" => "first-token", "expires_in" => 3600}))
@@ -273,6 +284,7 @@ class WorkloadIdentityTest < Minitest::Test
 
     client = OpenAI::Client.new(
       base_url: "http://localhost",
+      api_key: nil,
       workload_identity: config,
       organization: "org-123",
       project: "proj-456"
@@ -290,7 +302,9 @@ class WorkloadIdentityTest < Minitest::Test
 
   def test_workload_identity_token_caching
     File.write(@token_path, "k8s-jwt-token")
-    provider = OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(token_path: @token_path)
+    provider = OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(
+      token_path: @token_path
+    )
 
     stub_request(:post, "https://auth.openai.com/oauth/token")
       .to_return(
@@ -333,6 +347,7 @@ class WorkloadIdentityTest < Minitest::Test
 
     client = OpenAI::Client.new(
       base_url: "http://localhost",
+      api_key: nil,
       workload_identity: config,
       organization: "org-123",
       project: "proj-456"

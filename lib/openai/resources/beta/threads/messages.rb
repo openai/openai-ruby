@@ -39,6 +39,7 @@ module OpenAI
               path: ["threads/%1$s/messages", thread_id],
               body: parsed,
               model: OpenAI::Beta::Threads::Message,
+              security: {bearer_auth: true},
               options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
             )
           end
@@ -71,6 +72,7 @@ module OpenAI
               method: :get,
               path: ["threads/%1$s/messages/%2$s", thread_id, message_id],
               model: OpenAI::Beta::Threads::Message,
+              security: {bearer_auth: true},
               options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
             )
           end
@@ -106,6 +108,7 @@ module OpenAI
               path: ["threads/%1$s/messages/%2$s", thread_id, message_id],
               body: parsed,
               model: OpenAI::Beta::Threads::Message,
+              security: {bearer_auth: true},
               options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
             )
           end
@@ -145,6 +148,7 @@ module OpenAI
               query: query,
               page: OpenAI::Internal::CursorPage,
               model: OpenAI::Beta::Threads::Message,
+              security: {bearer_auth: true},
               options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
             )
           end
@@ -174,6 +178,7 @@ module OpenAI
               method: :delete,
               path: ["threads/%1$s/messages/%2$s", thread_id, message_id],
               model: OpenAI::Beta::Threads::MessageDeleted,
+              security: {bearer_auth: true},
               options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
             )
           end

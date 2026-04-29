@@ -67,6 +67,7 @@ module OpenAI
           path: "completions",
           body: parsed,
           model: OpenAI::Completion,
+          security: {bearer_auth: true},
           options: options
         )
       end
@@ -136,6 +137,7 @@ module OpenAI
           body: parsed,
           stream: OpenAI::Internal::Stream,
           model: OpenAI::Completion,
+          security: {bearer_auth: true},
           options: options
         )
       end

@@ -48,6 +48,7 @@ module OpenAI
             path: "assistants",
             body: parsed,
             model: OpenAI::Beta::Assistant,
+            security: {bearer_auth: true},
             options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
           )
         end
@@ -70,6 +71,7 @@ module OpenAI
             method: :get,
             path: ["assistants/%1$s", assistant_id],
             model: OpenAI::Beta::Assistant,
+            security: {bearer_auth: true},
             options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **params[:request_options].to_h}
           )
         end
@@ -119,6 +121,7 @@ module OpenAI
             path: ["assistants/%1$s", assistant_id],
             body: parsed,
             model: OpenAI::Beta::Assistant,
+            security: {bearer_auth: true},
             options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
           )
         end
@@ -154,6 +157,7 @@ module OpenAI
             query: query,
             page: OpenAI::Internal::CursorPage,
             model: OpenAI::Beta::Assistant,
+            security: {bearer_auth: true},
             options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
           )
         end
@@ -176,6 +180,7 @@ module OpenAI
             method: :delete,
             path: ["assistants/%1$s", assistant_id],
             model: OpenAI::Beta::AssistantDeleted,
+            security: {bearer_auth: true},
             options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **params[:request_options].to_h}
           )
         end

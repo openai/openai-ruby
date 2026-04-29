@@ -41,6 +41,7 @@ module OpenAI
             path: "realtime/client_secrets",
             body: parsed,
             model: OpenAI::Models::Realtime::ClientSecretCreateResponse,
+            security: {bearer_auth: true},
             options: options
           )
         end

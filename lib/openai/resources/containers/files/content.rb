@@ -27,6 +27,7 @@ module OpenAI
               path: ["containers/%1$s/files/%2$s/content", container_id, file_id],
               headers: {"accept" => "application/binary"},
               model: StringIO,
+              security: {bearer_auth: true},
               options: options
             )
           end
