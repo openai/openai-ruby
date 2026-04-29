@@ -1,0 +1,24 @@
+module OpenAI
+  module Resources
+    class Admin
+      class Organization
+        class AuditLogs
+          def list: (
+            ?actor_emails: ::Array[String],
+            ?actor_ids: ::Array[String],
+            ?after: String,
+            ?before: String,
+            ?effective_at: OpenAI::Admin::Organization::AuditLogListParams::EffectiveAt,
+            ?event_types: ::Array[OpenAI::Models::Admin::Organization::AuditLogListParams::event_type],
+            ?limit: Integer,
+            ?project_ids: ::Array[String],
+            ?resource_ids: ::Array[String],
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Internal::ConversationCursorPage[OpenAI::Models::Admin::Organization::AuditLogListResponse]
+
+          def initialize: (client: OpenAI::Client) -> void
+        end
+      end
+    end
+  end
+end

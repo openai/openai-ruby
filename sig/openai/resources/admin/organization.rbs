@@ -2,6 +2,8 @@ module OpenAI
   module Resources
     class Admin
       class Organization
+        attr_reader audit_logs: OpenAI::Resources::Admin::Organization::AuditLogs
+
         def initialize: (client: OpenAI::Client) -> void
       end
     end
