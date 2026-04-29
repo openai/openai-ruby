@@ -12,6 +12,8 @@ module OpenAI
 
     attr_reader admin_api_key: String?
 
+    attr_reader workload_identity_auth: untyped?
+
     attr_reader organization: String?
 
     attr_reader project: String?
@@ -75,6 +77,7 @@ module OpenAI
     def initialize: (
       ?api_key: String?,
       ?admin_api_key: String?,
+      ?workload_identity: untyped?,
       ?organization: String?,
       ?project: String?,
       ?webhook_secret: String?,

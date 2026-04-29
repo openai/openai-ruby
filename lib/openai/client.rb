@@ -125,7 +125,12 @@ module OpenAI
     #
     # @return [Hash{String=>String}]
     private def auth_headers(security:)
-      {bearer_auth:, admin_api_key_auth:}.slice(*security.keys).values.reduce({}, :merge)
+      headers = {bearer_auth:, admin_api_key_auth:}.slice(*security.keys).values.reduce({}, :merge)
+      if headers.empty? && security.any? { |_, enabled| enabled }
+        raise ArgumentError,
+              "Could not resolve authentication method. Expected either api_key or admin_api_key to be set."
+      end
+      headers
     end
 
     # @api private
@@ -137,6 +142,14 @@ module OpenAI
       {"authorization" => "Bearer #{@api_key}"}
     end
 
+    # @api private
+    #
+    # @return [Hash{String=>String}]
+    private def admin_api_key_auth
+      return {} if @admin_api_key.nil?
+
+      {"authorization" => "Bearer #{@admin_api_key}"}
+    end
 
     # Creates and returns a new client for interacting with the API.
     #
@@ -204,6 +217,7 @@ module OpenAI
     def initialize(
       api_key: ENV["OPENAI_API_KEY"],
       admin_api_key: ENV["OPENAI_ADMIN_KEY"],
+      workload_identity: nil,
       organization: ENV["OPENAI_ORG_ID"],
       project: ENV["OPENAI_PROJECT_ID"],
       webhook_secret: ENV["OPENAI_WEBHOOK_SECRET"],
@@ -215,6 +229,14 @@ module OpenAI
     )
       base_url ||= "https://api.openai.com/v1"
 
+      if !api_key.nil? && !workload_identity.nil?
+        raise ArgumentError, "`api_key` and `workload_identity` are mutually exclusive"
+      end
+
+      if api_key.nil? && admin_api_key.nil? && workload_identity.nil?
+        raise ArgumentError,
+              "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable."
+      end
 
       headers = {
         "openai-organization" => (@organization = organization&.to_s),
@@ -232,7 +254,16 @@ module OpenAI
         headers = parsed.merge(headers)
       end
 
-      @api_key = api_key&.to_s
+      if workload_identity.nil?
+        @api_key = api_key&.to_s
+        @workload_identity_auth = nil
+      else
+        @api_key = WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER
+        @workload_identity_auth = OpenAI::Auth::WorkloadIdentityAuth.new(
+          workload_identity,
+          organization&.to_s
+        )
+      end
       @admin_api_key = admin_api_key&.to_s
       @webhook_secret = webhook_secret&.to_s
 
