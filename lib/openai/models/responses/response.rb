@@ -16,8 +16,8 @@ module OpenAI
         # @!attribute created_at
         #   Unix timestamp (in seconds) of when this Response was created.
         #
-        #   @return [Float]
-        required :created_at, Float
+        #   @return [Integer]
+        required :created_at, Integer
 
         # @!attribute error
         #   An error object returned when the model fails to generate a Response.
@@ -148,8 +148,8 @@ module OpenAI
         #   Unix timestamp (in seconds) of when this Response was completed. Only present
         #   when the status is `completed`.
         #
-        #   @return [Float, nil]
-        optional :completed_at, Float, nil?: true
+        #   @return [Integer, nil]
+        optional :completed_at, Integer, nil?: true
 
         # @!attribute conversation
         #   The conversation that this response belonged to. Input items and output items
@@ -312,7 +312,7 @@ module OpenAI
         #
         #   @param id [String] Unique identifier for this Response.
         #
-        #   @param created_at [Float] Unix timestamp (in seconds) of when this Response was created.
+        #   @param created_at [Integer] Unix timestamp (in seconds) of when this Response was created.
         #
         #   @param error [OpenAI::Models::Responses::ResponseError, nil] An error object returned when the model fails to generate a Response.
         #
@@ -338,7 +338,7 @@ module OpenAI
         #
         #   @param background [Boolean, nil] Whether to run the model response in the background.
         #
-        #   @param completed_at [Float, nil] Unix timestamp (in seconds) of when this Response was completed.
+        #   @param completed_at [Integer, nil] Unix timestamp (in seconds) of when this Response was completed.
         #
         #   @param conversation [OpenAI::Models::Responses::Response::Conversation, nil] The conversation that this response belonged to. Input items and output items fr
         #
