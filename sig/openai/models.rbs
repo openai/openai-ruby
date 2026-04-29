@@ -1,4 +1,6 @@
 module OpenAI
+  module Admin = OpenAI::Models::Admin
+
   module AllModels = OpenAI::Models::AllModels
 
   module Audio = OpenAI::Models::Audio

@@ -1,6 +1,8 @@
 # typed: strong
 
 module OpenAI
+  Admin = OpenAI::Models::Admin
+
   AllModels = OpenAI::Models::AllModels
 
   Audio = OpenAI::Models::Audio
