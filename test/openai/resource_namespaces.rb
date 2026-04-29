@@ -4,6 +4,8 @@ module OpenAI
   module Test
     module Resources
       module Admin
+        module Organization
+        end
       end
 
       module Alpha
@@ -67,6 +69,9 @@ module OpenAI
       end
 
       module Jobs
+      end
+
+      module Organization
       end
 
       module Realtime

@@ -39,6 +39,8 @@ module OpenAI
     mod.define_sorbet_constant!(const) { T.type_alias { mod.to_sorbet_type } }
   end
 
+  Admin = OpenAI::Models::Admin
+
   AllModels = OpenAI::Models::AllModels
 
   Audio = OpenAI::Models::Audio
