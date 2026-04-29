@@ -31,7 +31,19 @@ module OpenAI
           #
           # @raise [ArgumentError]
           def validate!(req)
-            keys = [:method, :path, :query, :headers, :body, :unwrap, :page, :stream, :model, :options]
+            keys = [
+              :method,
+              :path,
+              :query,
+              :headers,
+              :body,
+              :unwrap,
+              :page,
+              :stream,
+              :model,
+              :security,
+              :options
+            ]
             case req
             in Hash
               req.each_key do |k|
@@ -252,6 +264,8 @@ module OpenAI
         #
         #   @option req [OpenAI::Internal::Type::Converter, Class, nil] :model
         #
+        #   @option req [Hash{Symbol=>Boolean}, nil] :security
+        #
         # @param opts [Hash{Symbol=>Object}] .
         #
         #   @option opts [String, nil] :idempotency_key
@@ -276,7 +290,12 @@ module OpenAI
 
           headers = OpenAI::Internal::Util.normalized_headers(
             @headers,
-            auth_headers,
+            auth_headers(
+              security: req.fetch(
+                :security,
+                {bearer_auth: true, admin_api_key_auth: true}
+              )
+            ),
             req[:headers].to_h,
             opts[:extra_headers].to_h
           )
@@ -439,7 +458,7 @@ module OpenAI
         # Execute the request specified by `req`. This is the method that all resource
         # methods call into.
         #
-        # @overload request(method, path, query: {}, headers: {}, body: nil, unwrap: nil, page: nil, stream: nil, model: OpenAI::Internal::Type::Unknown, options: {})
+        # @overload request(method, path, query: {}, headers: {}, body: nil, unwrap: nil, page: nil, stream: nil, model: OpenAI::Internal::Type::Unknown, security: {bearer_auth: true, admin_api_key_auth: true}, options: {})
         #
         # @param method [Symbol]
         #
@@ -458,6 +477,8 @@ module OpenAI
         # @param stream [Class<OpenAI::Internal::Type::BaseStream>, nil]
         #
         # @param model [OpenAI::Internal::Type::Converter, Class, nil]
+        #
+        # @param security [Hash{Symbol=>Boolean}, nil]
         #
         # @param options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] .
         #
@@ -551,6 +572,7 @@ module OpenAI
               page: T.nilable(T::Class[OpenAI::Internal::Type::BasePage[OpenAI::Internal::Type::BaseModel]]),
               stream: T.nilable(T::Class[OpenAI::Internal::Type::BaseStream[T.anything, OpenAI::Internal::Type::BaseModel]]),
               model: T.nilable(OpenAI::Internal::Type::Converter::Input),
+              security: T.nilable({bearer_auth: T::Boolean, admin_api_key_auth: T::Boolean}),
               options: T.nilable(OpenAI::RequestOptions::OrHash)
             }
           end

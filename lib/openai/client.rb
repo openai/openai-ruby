@@ -15,8 +15,11 @@ module OpenAI
     # Default max retry delay in seconds.
     DEFAULT_MAX_RETRY_DELAY = 8.0
 
-    # @return [String]
+    # @return [String, nil]
     attr_reader :api_key
+
+    # @return [String, nil]
+    attr_reader :admin_api_key
 
     # @return [String, nil]
     attr_reader :organization
@@ -84,6 +87,9 @@ module OpenAI
     # @return [OpenAI::Resources::Uploads]
     attr_reader :uploads
 
+    # @return [OpenAI::Resources::Admin]
+    attr_reader :admin
+
     # @return [OpenAI::Resources::Responses]
     attr_reader :responses
 
@@ -109,16 +115,36 @@ module OpenAI
 
     # @api private
     #
+    # @param security [Hash{Symbol=>Boolean}]
+    #
     # @return [Hash{String=>String}]
-    private def auth_headers
+    private def auth_headers(security:)
+      {bearer_auth:, admin_api_key_auth:}.slice(*security.keys).values.reduce({}, :merge)
+    end
+
+    # @api private
+    #
+    # @return [Hash{String=>String}]
+    private def bearer_auth
       return {} if @api_key.nil?
 
       {"authorization" => "Bearer #{@api_key}"}
     end
 
+    # @api private
+    #
+    # @return [Hash{String=>String}]
+    private def admin_api_key_auth
+      return {} if @admin_api_key.nil?
+
+      {"authorization" => "Bearer #{@admin_api_key}"}
+    end
+
     # Creates and returns a new client for interacting with the API.
     #
     # @param api_key [String, nil] Defaults to `ENV["OPENAI_API_KEY"]`
+    #
+    # @param admin_api_key [String, nil] Defaults to `ENV["OPENAI_ADMIN_KEY"]`
     #
     # @param organization [String, nil] Defaults to `ENV["OPENAI_ORG_ID"]`
     #
@@ -138,6 +164,7 @@ module OpenAI
     # @param max_retry_delay [Float]
     def initialize(
       api_key: ENV["OPENAI_API_KEY"],
+      admin_api_key: ENV["OPENAI_ADMIN_KEY"],
       organization: ENV["OPENAI_ORG_ID"],
       project: ENV["OPENAI_PROJECT_ID"],
       webhook_secret: ENV["OPENAI_WEBHOOK_SECRET"],
@@ -148,10 +175,6 @@ module OpenAI
       max_retry_delay: self.class::DEFAULT_MAX_RETRY_DELAY
     )
       base_url ||= "https://api.openai.com/v1"
-
-      if api_key.nil?
-        raise ArgumentError.new("api_key is required, and can be set via environ: \"OPENAI_API_KEY\"")
-      end
 
       headers = {
         "openai-organization" => (@organization = organization&.to_s),
@@ -169,7 +192,8 @@ module OpenAI
         headers = parsed.merge(headers)
       end
 
-      @api_key = api_key.to_s
+      @api_key = api_key&.to_s
+      @admin_api_key = admin_api_key&.to_s
       @webhook_secret = webhook_secret&.to_s
 
       super(
@@ -196,6 +220,7 @@ module OpenAI
       @beta = OpenAI::Resources::Beta.new(client: self)
       @batches = OpenAI::Resources::Batches.new(client: self)
       @uploads = OpenAI::Resources::Uploads.new(client: self)
+      @admin = OpenAI::Resources::Admin.new(client: self)
       @responses = OpenAI::Resources::Responses.new(client: self)
       @realtime = OpenAI::Resources::Realtime.new(client: self)
       @conversations = OpenAI::Resources::Conversations.new(client: self)

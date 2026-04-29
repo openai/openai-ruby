@@ -21,6 +21,7 @@ module OpenAI
               method: :get,
               path: ["chatkit/threads/%1$s", thread_id],
               model: OpenAI::Beta::ChatKit::ChatKitThread,
+              security: {bearer_auth: true},
               options: {extra_headers: {"OpenAI-Beta" => "chatkit_beta=v1"}, **params[:request_options].to_h}
             )
           end
@@ -56,6 +57,7 @@ module OpenAI
               query: query,
               page: OpenAI::Internal::ConversationCursorPage,
               model: OpenAI::Beta::ChatKit::ChatKitThread,
+              security: {bearer_auth: true},
               options: {extra_headers: {"OpenAI-Beta" => "chatkit_beta=v1"}, **options}
             )
           end
@@ -76,6 +78,7 @@ module OpenAI
               method: :delete,
               path: ["chatkit/threads/%1$s", thread_id],
               model: OpenAI::Models::Beta::ChatKit::ThreadDeleteResponse,
+              security: {bearer_auth: true},
               options: {extra_headers: {"OpenAI-Beta" => "chatkit_beta=v1"}, **params[:request_options].to_h}
             )
           end
@@ -111,6 +114,7 @@ module OpenAI
               query: query,
               page: OpenAI::Internal::ConversationCursorPage,
               model: OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data,
+              security: {bearer_auth: true},
               options: {extra_headers: {"OpenAI-Beta" => "chatkit_beta=v1"}, **options}
             )
           end

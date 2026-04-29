@@ -21,6 +21,7 @@ module OpenAI
             path: ["skills/%1$s/content", skill_id],
             headers: {"accept" => "application/binary"},
             model: StringIO,
+            security: {bearer_auth: true},
             options: params[:request_options]
           )
         end

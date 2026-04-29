@@ -48,6 +48,7 @@ module OpenAI
             path: "responses/input_tokens",
             body: parsed,
             model: OpenAI::Models::Responses::InputTokenCountResponse,
+            security: {bearer_auth: true},
             options: options
           )
         end

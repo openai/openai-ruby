@@ -36,6 +36,7 @@ module OpenAI
           headers: {"content-type" => "multipart/form-data"},
           body: parsed,
           model: OpenAI::ImagesResponse,
+          security: {bearer_auth: true},
           options: options
         )
       end
@@ -96,6 +97,7 @@ module OpenAI
           headers: {"content-type" => "multipart/form-data"},
           body: parsed,
           model: OpenAI::ImagesResponse,
+          security: {bearer_auth: true},
           options: options
         )
       end
@@ -162,6 +164,7 @@ module OpenAI
           body: parsed,
           stream: OpenAI::Internal::Stream,
           model: OpenAI::ImageEditStreamEvent,
+          security: {bearer_auth: true},
           options: options
         )
       end
@@ -218,6 +221,7 @@ module OpenAI
           path: "images/generations",
           body: parsed,
           model: OpenAI::ImagesResponse,
+          security: {bearer_auth: true},
           options: options
         )
       end
@@ -277,6 +281,7 @@ module OpenAI
           body: parsed,
           stream: OpenAI::Internal::Stream,
           model: OpenAI::ImageGenStreamEvent,
+          security: {bearer_auth: true},
           options: options
         )
       end

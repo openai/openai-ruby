@@ -42,6 +42,7 @@ module OpenAI
             path: "threads",
             body: parsed,
             model: OpenAI::Beta::Thread,
+            security: {bearer_auth: true},
             options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
           )
         end
@@ -64,6 +65,7 @@ module OpenAI
             method: :get,
             path: ["threads/%1$s", thread_id],
             model: OpenAI::Beta::Thread,
+            security: {bearer_auth: true},
             options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **params[:request_options].to_h}
           )
         end
@@ -95,6 +97,7 @@ module OpenAI
             path: ["threads/%1$s", thread_id],
             body: parsed,
             model: OpenAI::Beta::Thread,
+            security: {bearer_auth: true},
             options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
           )
         end
@@ -117,6 +120,7 @@ module OpenAI
             method: :delete,
             path: ["threads/%1$s", thread_id],
             model: OpenAI::Beta::ThreadDeleted,
+            security: {bearer_auth: true},
             options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **params[:request_options].to_h}
           )
         end
@@ -178,6 +182,7 @@ module OpenAI
             path: "threads/runs",
             body: parsed,
             model: OpenAI::Beta::Threads::Run,
+            security: {bearer_auth: true},
             options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
           )
         end
@@ -243,6 +248,7 @@ module OpenAI
             body: parsed,
             stream: OpenAI::Internal::Stream,
             model: OpenAI::Beta::AssistantStreamEvent,
+            security: {bearer_auth: true},
             options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
           )
         end
