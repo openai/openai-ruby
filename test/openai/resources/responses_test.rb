@@ -13,7 +13,7 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
     assert_pattern do
       response => {
         id: String,
-        created_at: Integer,
+        created_at: Float,
         error: OpenAI::Responses::ResponseError | nil,
         incomplete_details: OpenAI::Responses::Response::IncompleteDetails | nil,
         instructions: OpenAI::Responses::Response::Instructions | nil,
@@ -27,7 +27,7 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
         tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool]),
         top_p: Float | nil,
         background: OpenAI::Internal::Type::Boolean | nil,
-        completed_at: Integer | nil,
+        completed_at: Float | nil,
         conversation: OpenAI::Responses::Response::Conversation | nil,
         max_output_tokens: Integer | nil,
         max_tool_calls: Integer | nil,
@@ -58,7 +58,7 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
     assert_pattern do
       response => {
         id: String,
-        created_at: Integer,
+        created_at: Float,
         error: OpenAI::Responses::ResponseError | nil,
         incomplete_details: OpenAI::Responses::Response::IncompleteDetails | nil,
         instructions: OpenAI::Responses::Response::Instructions | nil,
@@ -72,7 +72,7 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
         tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool]),
         top_p: Float | nil,
         background: OpenAI::Internal::Type::Boolean | nil,
-        completed_at: Integer | nil,
+        completed_at: Float | nil,
         conversation: OpenAI::Responses::Response::Conversation | nil,
         max_output_tokens: Integer | nil,
         max_tool_calls: Integer | nil,
@@ -111,7 +111,7 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
     assert_pattern do
       response => {
         id: String,
-        created_at: Integer,
+        created_at: Float,
         error: OpenAI::Responses::ResponseError | nil,
         incomplete_details: OpenAI::Responses::Response::IncompleteDetails | nil,
         instructions: OpenAI::Responses::Response::Instructions | nil,
@@ -125,7 +125,7 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
         tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool]),
         top_p: Float | nil,
         background: OpenAI::Internal::Type::Boolean | nil,
-        completed_at: Integer | nil,
+        completed_at: Float | nil,
         conversation: OpenAI::Responses::Response::Conversation | nil,
         max_output_tokens: Integer | nil,
         max_tool_calls: Integer | nil,
