@@ -53,6 +53,22 @@ class OpenAITest < Minitest::Test
     assert_equal("Bearer My Admin API Key", admin_headers["authorization"])
   end
 
+  def test_client_auth_ignores_disabled_security_schemes
+    openai = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      admin_api_key: "My Admin API Key"
+    )
+
+    bearer_headers = openai.send(:auth_headers, security: {bearer_auth: true, admin_api_key_auth: false})
+    admin_headers = openai.send(:auth_headers, security: {bearer_auth: false, admin_api_key_auth: true})
+    disabled_headers = openai.send(:auth_headers, security: {bearer_auth: false, admin_api_key_auth: false})
+
+    assert_equal("Bearer My API Key", bearer_headers["authorization"])
+    assert_equal("Bearer My Admin API Key", admin_headers["authorization"])
+    assert_empty(disabled_headers)
+  end
+
   def test_client_auth_allows_admin_api_key_only
     openai = OpenAI::Client.new(
       base_url: "http://localhost",
@@ -75,6 +91,63 @@ class OpenAITest < Minitest::Test
     end
 
     assert_match(/Missing credentials/, error.message)
+  end
+
+  def test_chat_completion_stream_uses_bearer_auth
+    stub_request(:post, "http://localhost/chat/completions")
+      .with(headers: {"Authorization" => "Bearer My API Key"})
+      .to_return(status: 200, body: "data: [DONE]\n\n", headers: {"Content-Type" => "text/event-stream"})
+
+    openai =
+      OpenAI::Client.new(
+        base_url: "http://localhost",
+        api_key: "My API Key",
+        admin_api_key: "My Admin API Key"
+      )
+
+    stream = openai.chat.completions.stream(
+      messages: [{content: "string", role: :developer}],
+      model: :"gpt-5.4"
+    )
+
+    assert_instance_of(OpenAI::Streaming::ChatCompletionStream, stream)
+    assert_requested(:post, "http://localhost/chat/completions", times: 1)
+  end
+
+  def test_response_stream_create_uses_bearer_auth
+    stub_request(:post, "http://localhost/responses")
+      .with(headers: {"Authorization" => "Bearer My API Key"})
+      .to_return(status: 200, body: "data: [DONE]\n\n", headers: {"Content-Type" => "text/event-stream"})
+
+    openai =
+      OpenAI::Client.new(
+        base_url: "http://localhost",
+        api_key: "My API Key",
+        admin_api_key: "My Admin API Key"
+      )
+
+    stream = openai.responses.stream({})
+
+    assert_instance_of(OpenAI::Streaming::ResponseStream, stream)
+    assert_requested(:post, "http://localhost/responses", times: 1)
+  end
+
+  def test_response_stream_retrieve_uses_bearer_auth
+    stub_request(:get, "http://localhost/responses/resp_123")
+      .with(headers: {"Authorization" => "Bearer My API Key"}, query: {"stream" => "true"})
+      .to_return(status: 200, body: "data: [DONE]\n\n", headers: {"Content-Type" => "text/event-stream"})
+
+    openai =
+      OpenAI::Client.new(
+        base_url: "http://localhost",
+        api_key: "My API Key",
+        admin_api_key: "My Admin API Key"
+      )
+
+    stream = openai.responses.stream(response_id: "resp_123")
+
+    assert_instance_of(OpenAI::Streaming::ResponseStream, stream)
+    assert_requested(:get, "http://localhost/responses/resp_123?stream=true", times: 1)
   end
 
   def test_client_default_request_default_retry_attempts

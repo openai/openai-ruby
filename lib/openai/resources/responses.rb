@@ -224,6 +224,7 @@ module OpenAI
             stream: OpenAI::Internal::Stream,
             model: OpenAI::Models::Responses::ResponseStreamEvent,
             unwrap: unwrap,
+            security: {bearer_auth: true},
             options: options
           )
         end
@@ -422,6 +423,7 @@ module OpenAI
           headers: {"accept" => "text/event-stream"},
           stream: OpenAI::Internal::Stream,
           model: OpenAI::Responses::ResponseStreamEvent,
+          security: {bearer_auth: true},
           options: options,
           unwrap: unwrap
         )

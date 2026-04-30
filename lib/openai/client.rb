@@ -125,8 +125,9 @@ module OpenAI
     #
     # @return [Hash{String=>String}]
     private def auth_headers(security:)
-      headers = {bearer_auth:, admin_api_key_auth:}.slice(*security.keys).values.reduce({}, :merge)
-      if headers.empty? && security.any? { |_, enabled| enabled }
+      enabled_security = security.select { |_, enabled| enabled }
+      headers = {bearer_auth:, admin_api_key_auth:}.slice(*enabled_security.keys).values.reduce({}, :merge)
+      if headers.empty? && enabled_security.any?
         raise ArgumentError,
               "Could not resolve authentication method. Expected either api_key or admin_api_key to be set."
       end
@@ -169,12 +170,20 @@ module OpenAI
     private def send_request(request, redirect_count:, retry_count:, send_retry_header:)
       return super unless @workload_identity_auth
 
+      workload_identity_auth_header = "Bearer #{WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER}"
+      return super unless request[:headers]["authorization"] == workload_identity_auth_header
+
       token = @workload_identity_auth.get_token
       updated_headers = request[:headers].merge("authorization" => "Bearer #{token}")
       updated_request = request.merge(headers: updated_headers)
 
       begin
-        super(updated_request, redirect_count: redirect_count, retry_count: retry_count, send_retry_header: send_retry_header)
+        super(
+          updated_request,
+          redirect_count: redirect_count,
+          retry_count: retry_count,
+          send_retry_header: send_retry_header
+        )
       rescue OpenAI::Errors::AuthenticationError
         raise unless retry_count.zero? && request_replayable?(request)
         @workload_identity_auth.invalidate_token
@@ -183,7 +192,12 @@ module OpenAI
         refreshed_headers = request[:headers].merge("authorization" => "Bearer #{fresh_token}")
         refreshed_request = request.merge(headers: refreshed_headers)
 
-        super(refreshed_request, redirect_count: redirect_count, retry_count: retry_count + 1, send_retry_header: send_retry_header)
+        super(
+          refreshed_request,
+          redirect_count: redirect_count,
+          retry_count: retry_count + 1,
+          send_retry_header: send_retry_header
+        )
       end
     end
 
