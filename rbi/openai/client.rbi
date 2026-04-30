@@ -113,8 +113,8 @@ module OpenAI
       override
         .params(
           security: {
-            bearer_auth: T::Boolean,
-            admin_api_key_auth: T::Boolean
+            bearer_auth?: T::Boolean,
+            admin_api_key_auth?: T::Boolean
           }
         )
         .returns(T::Hash[String, String])

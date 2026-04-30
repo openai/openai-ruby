@@ -228,6 +228,46 @@ class WorkloadIdentityTest < Minitest::Test
     assert_match(/mutually exclusive/, error.message)
   end
 
+  def test_workload_identity_preserves_admin_auth_requests
+    provider = OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(
+      token_path: @token_path
+    )
+    config = OpenAI::Auth::WorkloadIdentity.new(
+      client_id: "test-client",
+      identity_provider_id: "idp-123",
+      service_account_id: "sa-456",
+      provider: provider
+    )
+
+    stub_request(:get, "http://localhost/admin/test")
+      .with(headers: {"Authorization" => "Bearer My Admin API Key"})
+      .to_return(
+        status: 200,
+        body: JSON.generate({"ok" => true}),
+        headers: {"Content-Type" => "application/json"}
+      )
+
+    client = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: nil,
+      admin_api_key: "My Admin API Key",
+      workload_identity: config,
+      organization: "org-123",
+      project: "proj-456"
+    )
+
+    response = client.request(
+      method: :get,
+      path: "admin/test",
+      model: OpenAI::Internal::Type::Unknown,
+      security: {admin_api_key_auth: true}
+    )
+
+    assert_equal({ok: true}, response)
+    assert_requested(:get, "http://localhost/admin/test", times: 1)
+    assert_not_requested(:post, "https://auth.openai.com/oauth/token")
+  end
+
   def test_401_retry_with_token_invalidation
     File.write(@token_path, "k8s-jwt-token")
     provider = OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(
