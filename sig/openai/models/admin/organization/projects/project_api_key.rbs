@@ -1,0 +1,108 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        class ProjectAPIKey = Projects::ProjectAPIKey
+
+        module Projects
+          type project_api_key =
+            {
+              id: String,
+              created_at: Integer,
+              last_used_at: Integer,
+              name: String,
+              object: :"organization.project.api_key",
+              owner: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner,
+              redacted_value: String
+            }
+
+          class ProjectAPIKey < OpenAI::Internal::Type::BaseModel
+            attr_accessor id: String
+
+            attr_accessor created_at: Integer
+
+            attr_accessor last_used_at: Integer
+
+            attr_accessor name: String
+
+            attr_accessor object: :"organization.project.api_key"
+
+            attr_accessor owner: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner
+
+            attr_accessor redacted_value: String
+
+            def initialize: (
+              id: String,
+              created_at: Integer,
+              last_used_at: Integer,
+              name: String,
+              owner: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner,
+              redacted_value: String,
+              ?object: :"organization.project.api_key"
+            ) -> void
+
+            def to_hash: -> {
+              id: String,
+              created_at: Integer,
+              last_used_at: Integer,
+              name: String,
+              object: :"organization.project.api_key",
+              owner: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner,
+              redacted_value: String
+            }
+
+            type owner =
+              {
+                service_account: OpenAI::Admin::Organization::Projects::ProjectServiceAccount,
+                type: OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::type_,
+                user: OpenAI::Admin::Organization::Projects::ProjectUser
+              }
+
+            class Owner < OpenAI::Internal::Type::BaseModel
+              attr_reader service_account: OpenAI::Admin::Organization::Projects::ProjectServiceAccount?
+
+              def service_account=: (
+                OpenAI::Admin::Organization::Projects::ProjectServiceAccount
+              ) -> OpenAI::Admin::Organization::Projects::ProjectServiceAccount
+
+              attr_reader type: OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::type_?
+
+              def type=: (
+                OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::type_
+              ) -> OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::type_
+
+              attr_reader user: OpenAI::Admin::Organization::Projects::ProjectUser?
+
+              def user=: (
+                OpenAI::Admin::Organization::Projects::ProjectUser
+              ) -> OpenAI::Admin::Organization::Projects::ProjectUser
+
+              def initialize: (
+                ?service_account: OpenAI::Admin::Organization::Projects::ProjectServiceAccount,
+                ?type: OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::type_,
+                ?user: OpenAI::Admin::Organization::Projects::ProjectUser
+              ) -> void
+
+              def to_hash: -> {
+                service_account: OpenAI::Admin::Organization::Projects::ProjectServiceAccount,
+                type: OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::type_,
+                user: OpenAI::Admin::Organization::Projects::ProjectUser
+              }
+
+              type type_ = :user | :service_account
+
+              module Type
+                extend OpenAI::Internal::Type::Enum
+
+                USER: :user
+                SERVICE_ACCOUNT: :service_account
+
+                def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::type_]
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+end

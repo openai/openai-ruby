@@ -1,0 +1,32 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type project_update_params =
+          { project_id: String, name: String }
+          & OpenAI::Internal::Type::request_parameters
+
+        class ProjectUpdateParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor project_id: String
+
+          attr_accessor name: String
+
+          def initialize: (
+            project_id: String,
+            name: String,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            project_id: String,
+            name: String,
+            request_options: OpenAI::RequestOptions
+          }
+        end
+      end
+    end
+  end
+end

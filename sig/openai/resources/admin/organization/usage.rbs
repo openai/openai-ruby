@@ -1,0 +1,132 @@
+module OpenAI
+  module Resources
+    class Admin
+      class Organization
+        class Usage
+          def audio_speeches: (
+            start_time: Integer,
+            ?api_key_ids: ::Array[String],
+            ?bucket_width: OpenAI::Models::Admin::Organization::UsageAudioSpeechesParams::bucket_width,
+            ?end_time: Integer,
+            ?group_by: ::Array[OpenAI::Models::Admin::Organization::UsageAudioSpeechesParams::group_by],
+            ?limit: Integer,
+            ?models: ::Array[String],
+            ?page: String,
+            ?project_ids: ::Array[String],
+            ?user_ids: ::Array[String],
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse
+
+          def audio_transcriptions: (
+            start_time: Integer,
+            ?api_key_ids: ::Array[String],
+            ?bucket_width: OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsParams::bucket_width,
+            ?end_time: Integer,
+            ?group_by: ::Array[OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsParams::group_by],
+            ?limit: Integer,
+            ?models: ::Array[String],
+            ?page: String,
+            ?project_ids: ::Array[String],
+            ?user_ids: ::Array[String],
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse
+
+          def code_interpreter_sessions: (
+            start_time: Integer,
+            ?bucket_width: OpenAI::Models::Admin::Organization::UsageCodeInterpreterSessionsParams::bucket_width,
+            ?end_time: Integer,
+            ?group_by: ::Array[OpenAI::Models::Admin::Organization::UsageCodeInterpreterSessionsParams::group_by],
+            ?limit: Integer,
+            ?page: String,
+            ?project_ids: ::Array[String],
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Admin::Organization::UsageCodeInterpreterSessionsResponse
+
+          def completions: (
+            start_time: Integer,
+            ?api_key_ids: ::Array[String],
+            ?batch: bool,
+            ?bucket_width: OpenAI::Models::Admin::Organization::UsageCompletionsParams::bucket_width,
+            ?end_time: Integer,
+            ?group_by: ::Array[OpenAI::Models::Admin::Organization::UsageCompletionsParams::group_by],
+            ?limit: Integer,
+            ?models: ::Array[String],
+            ?page: String,
+            ?project_ids: ::Array[String],
+            ?user_ids: ::Array[String],
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Admin::Organization::UsageCompletionsResponse
+
+          def costs: (
+            start_time: Integer,
+            ?api_key_ids: ::Array[String],
+            ?bucket_width: OpenAI::Models::Admin::Organization::UsageCostsParams::bucket_width,
+            ?end_time: Integer,
+            ?group_by: ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::group_by],
+            ?limit: Integer,
+            ?page: String,
+            ?project_ids: ::Array[String],
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Admin::Organization::UsageCostsResponse
+
+          def embeddings: (
+            start_time: Integer,
+            ?api_key_ids: ::Array[String],
+            ?bucket_width: OpenAI::Models::Admin::Organization::UsageEmbeddingsParams::bucket_width,
+            ?end_time: Integer,
+            ?group_by: ::Array[OpenAI::Models::Admin::Organization::UsageEmbeddingsParams::group_by],
+            ?limit: Integer,
+            ?models: ::Array[String],
+            ?page: String,
+            ?project_ids: ::Array[String],
+            ?user_ids: ::Array[String],
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse
+
+          def images: (
+            start_time: Integer,
+            ?api_key_ids: ::Array[String],
+            ?bucket_width: OpenAI::Models::Admin::Organization::UsageImagesParams::bucket_width,
+            ?end_time: Integer,
+            ?group_by: ::Array[OpenAI::Models::Admin::Organization::UsageImagesParams::group_by],
+            ?limit: Integer,
+            ?models: ::Array[String],
+            ?page: String,
+            ?project_ids: ::Array[String],
+            ?sizes: ::Array[OpenAI::Models::Admin::Organization::UsageImagesParams::size],
+            ?sources: ::Array[OpenAI::Models::Admin::Organization::UsageImagesParams::source],
+            ?user_ids: ::Array[String],
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Admin::Organization::UsageImagesResponse
+
+          def moderations: (
+            start_time: Integer,
+            ?api_key_ids: ::Array[String],
+            ?bucket_width: OpenAI::Models::Admin::Organization::UsageModerationsParams::bucket_width,
+            ?end_time: Integer,
+            ?group_by: ::Array[OpenAI::Models::Admin::Organization::UsageModerationsParams::group_by],
+            ?limit: Integer,
+            ?models: ::Array[String],
+            ?page: String,
+            ?project_ids: ::Array[String],
+            ?user_ids: ::Array[String],
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Admin::Organization::UsageModerationsResponse
+
+          def vector_stores: (
+            start_time: Integer,
+            ?bucket_width: OpenAI::Models::Admin::Organization::UsageVectorStoresParams::bucket_width,
+            ?end_time: Integer,
+            ?group_by: ::Array[OpenAI::Models::Admin::Organization::UsageVectorStoresParams::group_by],
+            ?limit: Integer,
+            ?page: String,
+            ?project_ids: ::Array[String],
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Admin::Organization::UsageVectorStoresResponse
+
+          def initialize: (client: OpenAI::Client) -> void
+        end
+      end
+    end
+  end
+end

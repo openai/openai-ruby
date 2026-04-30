@@ -1,0 +1,48 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        class ProjectGroup = Projects::ProjectGroup
+
+        module Projects
+          type project_group =
+            {
+              created_at: Integer,
+              group_id: String,
+              group_name: String,
+              object: :"project.group",
+              project_id: String
+            }
+
+          class ProjectGroup < OpenAI::Internal::Type::BaseModel
+            attr_accessor created_at: Integer
+
+            attr_accessor group_id: String
+
+            attr_accessor group_name: String
+
+            attr_accessor object: :"project.group"
+
+            attr_accessor project_id: String
+
+            def initialize: (
+              created_at: Integer,
+              group_id: String,
+              group_name: String,
+              project_id: String,
+              ?object: :"project.group"
+            ) -> void
+
+            def to_hash: -> {
+              created_at: Integer,
+              group_id: String,
+              group_name: String,
+              object: :"project.group",
+              project_id: String
+            }
+          end
+        end
+      end
+    end
+  end
+end

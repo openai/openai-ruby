@@ -1,0 +1,76 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        module Groups
+          type role_list_response =
+            {
+              id: String,
+              created_at: Integer?,
+              created_by: String?,
+              created_by_user_obj: ::Hash[Symbol, top]?,
+              description: String?,
+              metadata: ::Hash[Symbol, top]?,
+              name: String,
+              permissions: ::Array[String],
+              predefined_role: bool,
+              resource_type: String,
+              updated_at: Integer?
+            }
+
+          class RoleListResponse < OpenAI::Internal::Type::BaseModel
+            attr_accessor id: String
+
+            attr_accessor created_at: Integer?
+
+            attr_accessor created_by: String?
+
+            attr_accessor created_by_user_obj: ::Hash[Symbol, top]?
+
+            attr_accessor description: String?
+
+            attr_accessor metadata: ::Hash[Symbol, top]?
+
+            attr_accessor name: String
+
+            attr_accessor permissions: ::Array[String]
+
+            attr_accessor predefined_role: bool
+
+            attr_accessor resource_type: String
+
+            attr_accessor updated_at: Integer?
+
+            def initialize: (
+              id: String,
+              created_at: Integer?,
+              created_by: String?,
+              created_by_user_obj: ::Hash[Symbol, top]?,
+              description: String?,
+              metadata: ::Hash[Symbol, top]?,
+              name: String,
+              permissions: ::Array[String],
+              predefined_role: bool,
+              resource_type: String,
+              updated_at: Integer?
+            ) -> void
+
+            def to_hash: -> {
+              id: String,
+              created_at: Integer?,
+              created_by: String?,
+              created_by_user_obj: ::Hash[Symbol, top]?,
+              description: String?,
+              metadata: ::Hash[Symbol, top]?,
+              name: String,
+              permissions: ::Array[String],
+              predefined_role: bool,
+              resource_type: String,
+              updated_at: Integer?
+            }
+          end
+        end
+      end
+    end
+  end
+end

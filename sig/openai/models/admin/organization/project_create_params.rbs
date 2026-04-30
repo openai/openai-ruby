@@ -1,0 +1,56 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type project_create_params =
+          {
+            name: String,
+            geography: OpenAI::Models::Admin::Organization::ProjectCreateParams::geography
+          }
+          & OpenAI::Internal::Type::request_parameters
+
+        class ProjectCreateParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor name: String
+
+          attr_reader geography: OpenAI::Models::Admin::Organization::ProjectCreateParams::geography?
+
+          def geography=: (
+            OpenAI::Models::Admin::Organization::ProjectCreateParams::geography
+          ) -> OpenAI::Models::Admin::Organization::ProjectCreateParams::geography
+
+          def initialize: (
+            name: String,
+            ?geography: OpenAI::Models::Admin::Organization::ProjectCreateParams::geography,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            name: String,
+            geography: OpenAI::Models::Admin::Organization::ProjectCreateParams::geography,
+            request_options: OpenAI::RequestOptions
+          }
+
+          type geography = :US | :EU | :JP | :IN | :KR | :CA | :AU | :SG
+
+          module Geography
+            extend OpenAI::Internal::Type::Enum
+
+            US: :US
+            EU: :EU
+            JP: :JP
+            IN: :IN
+            KR: :KR
+            CA: :CA
+            AU: :AU
+            SG: :SG
+
+            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::ProjectCreateParams::geography]
+          end
+        end
+      end
+    end
+  end
+end

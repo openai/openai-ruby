@@ -1,0 +1,62 @@
+module OpenAI
+  module Models
+    module Admin
+      class OrganizationUser = Organization::OrganizationUser
+
+      module Organization
+        type organization_user =
+          {
+            id: String,
+            added_at: Integer,
+            email: String,
+            name: String,
+            object: :"organization.user",
+            role: OpenAI::Models::Admin::Organization::OrganizationUser::role
+          }
+
+        class OrganizationUser < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor added_at: Integer
+
+          attr_accessor email: String
+
+          attr_accessor name: String
+
+          attr_accessor object: :"organization.user"
+
+          attr_accessor role: OpenAI::Models::Admin::Organization::OrganizationUser::role
+
+          def initialize: (
+            id: String,
+            added_at: Integer,
+            email: String,
+            name: String,
+            role: OpenAI::Models::Admin::Organization::OrganizationUser::role,
+            ?object: :"organization.user"
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            added_at: Integer,
+            email: String,
+            name: String,
+            object: :"organization.user",
+            role: OpenAI::Models::Admin::Organization::OrganizationUser::role
+          }
+
+          type role = :owner | :reader
+
+          module Role
+            extend OpenAI::Internal::Type::Enum
+
+            OWNER: :owner
+            READER: :reader
+
+            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::OrganizationUser::role]
+          end
+        end
+      end
+    end
+  end
+end

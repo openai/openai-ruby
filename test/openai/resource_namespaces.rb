@@ -5,6 +5,19 @@ module OpenAI
     module Resources
       module Admin
         module Organization
+          module Groups
+          end
+
+          module Projects
+            module Groups
+            end
+
+            module Users
+            end
+          end
+
+          module Users
+          end
         end
       end
 
@@ -68,10 +81,34 @@ module OpenAI
       module Graders
       end
 
+      module Groups
+      end
+
       module Jobs
       end
 
       module Organization
+        module Groups
+        end
+
+        module Projects
+          module Groups
+          end
+
+          module Users
+          end
+        end
+
+        module Users
+        end
+      end
+
+      module Projects
+        module Groups
+        end
+
+        module Users
+        end
       end
 
       module Realtime
@@ -94,6 +131,9 @@ module OpenAI
       end
 
       module Uploads
+      end
+
+      module Users
       end
 
       module VectorStores

@@ -1,0 +1,39 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type group =
+          {
+            id: String,
+            created_at: Integer,
+            is_scim_managed: bool,
+            name: String
+          }
+
+        class Group < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor created_at: Integer
+
+          attr_accessor is_scim_managed: bool
+
+          attr_accessor name: String
+
+          def initialize: (
+            id: String,
+            created_at: Integer,
+            is_scim_managed: bool,
+            name: String
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            created_at: Integer,
+            is_scim_managed: bool,
+            name: String
+          }
+        end
+      end
+    end
+  end
+end

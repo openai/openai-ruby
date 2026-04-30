@@ -1,0 +1,32 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type certificate_update_params =
+          { certificate_id: String, name: String }
+          & OpenAI::Internal::Type::request_parameters
+
+        class CertificateUpdateParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor certificate_id: String
+
+          attr_accessor name: String
+
+          def initialize: (
+            certificate_id: String,
+            name: String,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            certificate_id: String,
+            name: String,
+            request_options: OpenAI::RequestOptions
+          }
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,38 @@
+module OpenAI
+  module Resources
+    class Admin
+      class Organization
+        class Groups
+          attr_reader users: OpenAI::Resources::Admin::Organization::Groups::Users
+
+          attr_reader roles: OpenAI::Resources::Admin::Organization::Groups::Roles
+
+          def create: (
+            name: String,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::Group
+
+          def update: (
+            String group_id,
+            name: String,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Admin::Organization::GroupUpdateResponse
+
+          def list: (
+            ?after: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Admin::Organization::GroupListParams::order,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Internal::CursorPage[OpenAI::Admin::Organization::Group]
+
+          def delete: (
+            String group_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Admin::Organization::GroupDeleteResponse
+
+          def initialize: (client: OpenAI::Client) -> void
+        end
+      end
+    end
+  end
+end

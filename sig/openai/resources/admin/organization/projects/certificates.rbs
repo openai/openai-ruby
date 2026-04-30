@@ -1,0 +1,33 @@
+module OpenAI
+  module Resources
+    class Admin
+      class Organization
+        class Projects
+          class Certificates
+            def list: (
+              String project_id,
+              ?after: String,
+              ?limit: Integer,
+              ?order: OpenAI::Models::Admin::Organization::Projects::CertificateListParams::order,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Internal::ConversationCursorPage[OpenAI::Admin::Organization::Certificate]
+
+            def activate: (
+              String project_id,
+              certificate_ids: ::Array[String],
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Internal::Page[OpenAI::Admin::Organization::Certificate]
+
+            def deactivate: (
+              String project_id,
+              certificate_ids: ::Array[String],
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Internal::Page[OpenAI::Admin::Organization::Certificate]
+
+            def initialize: (client: OpenAI::Client) -> void
+          end
+        end
+      end
+    end
+  end
+end

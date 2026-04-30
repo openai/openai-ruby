@@ -1,0 +1,32 @@
+module OpenAI
+  module Resources
+    class Admin
+      class Organization
+        class Projects
+          class APIKeys
+            def retrieve: (
+              String key_id,
+              project_id: String,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Admin::Organization::Projects::ProjectAPIKey
+
+            def list: (
+              String project_id,
+              ?after: String,
+              ?limit: Integer,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Internal::ConversationCursorPage[OpenAI::Admin::Organization::Projects::ProjectAPIKey]
+
+            def delete: (
+              String key_id,
+              project_id: String,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Models::Admin::Organization::Projects::APIKeyDeleteResponse
+
+            def initialize: (client: OpenAI::Client) -> void
+          end
+        end
+      end
+    end
+  end
+end

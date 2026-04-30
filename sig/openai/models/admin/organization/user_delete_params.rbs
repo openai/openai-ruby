@@ -1,0 +1,27 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type user_delete_params =
+          { user_id: String } & OpenAI::Internal::Type::request_parameters
+
+        class UserDeleteParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor user_id: String
+
+          def initialize: (
+            user_id: String,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            user_id: String,
+            request_options: OpenAI::RequestOptions
+          }
+        end
+      end
+    end
+  end
+end
