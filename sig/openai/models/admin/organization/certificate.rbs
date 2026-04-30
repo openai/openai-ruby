@@ -1,0 +1,95 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type certificate =
+          {
+            id: String,
+            certificate_details: OpenAI::Admin::Organization::Certificate::CertificateDetails,
+            created_at: Integer,
+            name: String,
+            object: OpenAI::Models::Admin::Organization::Certificate::object,
+            active: bool
+          }
+
+        class Certificate < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor certificate_details: OpenAI::Admin::Organization::Certificate::CertificateDetails
+
+          attr_accessor created_at: Integer
+
+          attr_accessor name: String
+
+          attr_accessor object: OpenAI::Models::Admin::Organization::Certificate::object
+
+          attr_reader active: bool?
+
+          def active=: (bool) -> bool
+
+          def initialize: (
+            id: String,
+            certificate_details: OpenAI::Admin::Organization::Certificate::CertificateDetails,
+            created_at: Integer,
+            name: String,
+            object: OpenAI::Models::Admin::Organization::Certificate::object,
+            ?active: bool
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            certificate_details: OpenAI::Admin::Organization::Certificate::CertificateDetails,
+            created_at: Integer,
+            name: String,
+            object: OpenAI::Models::Admin::Organization::Certificate::object,
+            active: bool
+          }
+
+          type certificate_details =
+            { content: String, expires_at: Integer, valid_at: Integer }
+
+          class CertificateDetails < OpenAI::Internal::Type::BaseModel
+            attr_reader content: String?
+
+            def content=: (String) -> String
+
+            attr_reader expires_at: Integer?
+
+            def expires_at=: (Integer) -> Integer
+
+            attr_reader valid_at: Integer?
+
+            def valid_at=: (Integer) -> Integer
+
+            def initialize: (
+              ?content: String,
+              ?expires_at: Integer,
+              ?valid_at: Integer
+            ) -> void
+
+            def to_hash: -> {
+              content: String,
+              expires_at: Integer,
+              valid_at: Integer
+            }
+          end
+
+          type object =
+            :certificate
+            | :"organization.certificate"
+            | :"organization.project.certificate"
+
+          module Object
+            extend OpenAI::Internal::Type::Enum
+
+            CERTIFICATE: :certificate
+            ORGANIZATION_CERTIFICATE: :"organization.certificate"
+            ORGANIZATION_PROJECT_CERTIFICATE: :"organization.project.certificate"
+
+            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Certificate::object]
+          end
+        end
+      end
+    end
+  end
+end

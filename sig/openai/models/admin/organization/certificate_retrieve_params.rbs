@@ -1,0 +1,49 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type certificate_retrieve_params =
+          {
+            certificate_id: String,
+            include: ::Array[OpenAI::Models::Admin::Organization::CertificateRetrieveParams::include_]
+          }
+          & OpenAI::Internal::Type::request_parameters
+
+        class CertificateRetrieveParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor certificate_id: String
+
+          attr_reader include: ::Array[OpenAI::Models::Admin::Organization::CertificateRetrieveParams::include_]?
+
+          def include=: (
+            ::Array[OpenAI::Models::Admin::Organization::CertificateRetrieveParams::include_]
+          ) -> ::Array[OpenAI::Models::Admin::Organization::CertificateRetrieveParams::include_]
+
+          def initialize: (
+            certificate_id: String,
+            ?include: ::Array[OpenAI::Models::Admin::Organization::CertificateRetrieveParams::include_],
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            certificate_id: String,
+            include: ::Array[OpenAI::Models::Admin::Organization::CertificateRetrieveParams::include_],
+            request_options: OpenAI::RequestOptions
+          }
+
+          type include_ = :content
+
+          module Include
+            extend OpenAI::Internal::Type::Enum
+
+            CONTENT: :content
+
+            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::CertificateRetrieveParams::include_]
+          end
+        end
+      end
+    end
+  end
+end

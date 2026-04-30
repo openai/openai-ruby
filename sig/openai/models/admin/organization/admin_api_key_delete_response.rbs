@@ -1,0 +1,28 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type admin_api_key_delete_response =
+          { id: String, deleted: bool, object: String }
+
+        class AdminAPIKeyDeleteResponse < OpenAI::Internal::Type::BaseModel
+          attr_reader id: String?
+
+          def id=: (String) -> String
+
+          attr_reader deleted: bool?
+
+          def deleted=: (bool) -> bool
+
+          attr_reader object: String?
+
+          def object=: (String) -> String
+
+          def initialize: (?id: String, ?deleted: bool, ?object: String) -> void
+
+          def to_hash: -> { id: String, deleted: bool, object: String }
+        end
+      end
+    end
+  end
+end

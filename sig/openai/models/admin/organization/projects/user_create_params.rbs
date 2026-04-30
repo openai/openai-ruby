@@ -1,0 +1,53 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        module Projects
+          type user_create_params =
+            {
+              project_id: String,
+              role: OpenAI::Models::Admin::Organization::Projects::UserCreateParams::role,
+              user_id: String
+            }
+            & OpenAI::Internal::Type::request_parameters
+
+          class UserCreateParams < OpenAI::Internal::Type::BaseModel
+            extend OpenAI::Internal::Type::RequestParameters::Converter
+            include OpenAI::Internal::Type::RequestParameters
+
+            attr_accessor project_id: String
+
+            attr_accessor role: OpenAI::Models::Admin::Organization::Projects::UserCreateParams::role
+
+            attr_accessor user_id: String
+
+            def initialize: (
+              project_id: String,
+              role: OpenAI::Models::Admin::Organization::Projects::UserCreateParams::role,
+              user_id: String,
+              ?request_options: OpenAI::request_opts
+            ) -> void
+
+            def to_hash: -> {
+              project_id: String,
+              role: OpenAI::Models::Admin::Organization::Projects::UserCreateParams::role,
+              user_id: String,
+              request_options: OpenAI::RequestOptions
+            }
+
+            type role = :owner | :member
+
+            module Role
+              extend OpenAI::Internal::Type::Enum
+
+              OWNER: :owner
+              MEMBER: :member
+
+              def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Projects::UserCreateParams::role]
+            end
+          end
+        end
+      end
+    end
+  end
+end

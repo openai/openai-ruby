@@ -1,0 +1,115 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type admin_api_key =
+          {
+            id: String,
+            created_at: Integer,
+            last_used_at: Integer?,
+            name: String,
+            object: String,
+            owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
+            redacted_value: String,
+            value: String
+          }
+
+        class AdminAPIKey < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor created_at: Integer
+
+          attr_accessor last_used_at: Integer?
+
+          attr_accessor name: String
+
+          attr_accessor object: String
+
+          attr_accessor owner: OpenAI::Admin::Organization::AdminAPIKey::Owner
+
+          attr_accessor redacted_value: String
+
+          attr_reader value: String?
+
+          def value=: (String) -> String
+
+          def initialize: (
+            id: String,
+            created_at: Integer,
+            last_used_at: Integer?,
+            name: String,
+            object: String,
+            owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
+            redacted_value: String,
+            ?value: String
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            created_at: Integer,
+            last_used_at: Integer?,
+            name: String,
+            object: String,
+            owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
+            redacted_value: String,
+            value: String
+          }
+
+          type owner =
+            {
+              id: String,
+              created_at: Integer,
+              name: String,
+              object: String,
+              role: String,
+              type: String
+            }
+
+          class Owner < OpenAI::Internal::Type::BaseModel
+            attr_reader id: String?
+
+            def id=: (String) -> String
+
+            attr_reader created_at: Integer?
+
+            def created_at=: (Integer) -> Integer
+
+            attr_reader name: String?
+
+            def name=: (String) -> String
+
+            attr_reader object: String?
+
+            def object=: (String) -> String
+
+            attr_reader role: String?
+
+            def role=: (String) -> String
+
+            attr_reader type: String?
+
+            def type=: (String) -> String
+
+            def initialize: (
+              ?id: String,
+              ?created_at: Integer,
+              ?name: String,
+              ?object: String,
+              ?role: String,
+              ?type: String
+            ) -> void
+
+            def to_hash: -> {
+              id: String,
+              created_at: Integer,
+              name: String,
+              object: String,
+              role: String,
+              type: String
+            }
+          end
+        end
+      end
+    end
+  end
+end

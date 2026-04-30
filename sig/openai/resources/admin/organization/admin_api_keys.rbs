@@ -1,0 +1,33 @@
+module OpenAI
+  module Resources
+    class Admin
+      class Organization
+        class AdminAPIKeys
+          def create: (
+            name: String,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::AdminAPIKey
+
+          def retrieve: (
+            String key_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::AdminAPIKey
+
+          def list: (
+            ?after: String?,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Admin::Organization::AdminAPIKeyListParams::order,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Internal::CursorPage[OpenAI::Admin::Organization::AdminAPIKey]
+
+          def delete: (
+            String key_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Admin::Organization::AdminAPIKeyDeleteResponse
+
+          def initialize: (client: OpenAI::Client) -> void
+        end
+      end
+    end
+  end
+end

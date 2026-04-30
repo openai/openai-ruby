@@ -1,0 +1,38 @@
+module OpenAI
+  module Resources
+    class Admin
+      class Organization
+        class Roles
+          def create: (
+            permissions: ::Array[String],
+            role_name: String,
+            ?description: String?,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::Role
+
+          def update: (
+            String role_id,
+            ?description: String?,
+            ?permissions: ::Array[String]?,
+            ?role_name: String?,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::Role
+
+          def list: (
+            ?after: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Admin::Organization::RoleListParams::order,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Internal::CursorPage[OpenAI::Admin::Organization::Role]
+
+          def delete: (
+            String role_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Admin::Organization::RoleDeleteResponse
+
+          def initialize: (client: OpenAI::Client) -> void
+        end
+      end
+    end
+  end
+end

@@ -50,6 +50,26 @@ TEST_PATHS=(
 	test/openai/resources/admin_test.rb
 	test/openai/resources/admin/organization_test.rb
 	test/openai/resources/admin/organization/audit_logs_test.rb
+	test/openai/resources/admin/organization/admin_api_keys_test.rb
+	test/openai/resources/admin/organization/usage_test.rb
+	test/openai/resources/admin/organization/invites_test.rb
+	test/openai/resources/admin/organization/users_test.rb
+	test/openai/resources/admin/organization/users/roles_test.rb
+	test/openai/resources/admin/organization/groups_test.rb
+	test/openai/resources/admin/organization/groups/users_test.rb
+	test/openai/resources/admin/organization/groups/roles_test.rb
+	test/openai/resources/admin/organization/roles_test.rb
+	test/openai/resources/admin/organization/certificates_test.rb
+	test/openai/resources/admin/organization/projects_test.rb
+	test/openai/resources/admin/organization/projects/users_test.rb
+	test/openai/resources/admin/organization/projects/users/roles_test.rb
+	test/openai/resources/admin/organization/projects/service_accounts_test.rb
+	test/openai/resources/admin/organization/projects/api_keys_test.rb
+	test/openai/resources/admin/organization/projects/rate_limits_test.rb
+	test/openai/resources/admin/organization/projects/groups_test.rb
+	test/openai/resources/admin/organization/projects/groups/roles_test.rb
+	test/openai/resources/admin/organization/projects/roles_test.rb
+	test/openai/resources/admin/organization/projects/certificates_test.rb
 	test/openai/resources/responses_test.rb
 	test/openai/resources/responses/input_items_test.rb
 	test/openai/resources/responses/input_tokens_test.rb

@@ -1,0 +1,42 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type project_list_params =
+          { after: String, include_archived: bool, limit: Integer }
+          & OpenAI::Internal::Type::request_parameters
+
+        class ProjectListParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_reader after: String?
+
+          def after=: (String) -> String
+
+          attr_reader include_archived: bool?
+
+          def include_archived=: (bool) -> bool
+
+          attr_reader limit: Integer?
+
+          def limit=: (Integer) -> Integer
+
+          def initialize: (
+            ?after: String,
+            ?include_archived: bool,
+            ?limit: Integer,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            after: String,
+            include_archived: bool,
+            limit: Integer,
+            request_options: OpenAI::RequestOptions
+          }
+        end
+      end
+    end
+  end
+end
