@@ -252,6 +252,7 @@ module OpenAI
             body: parsed,
             stream: OpenAI::Internal::Stream,
             model: OpenAI::Chat::ChatCompletionChunk,
+            security: {bearer_auth: true},
             options: options
           )
 

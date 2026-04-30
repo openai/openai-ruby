@@ -61,7 +61,7 @@ module OpenAI
               model: T.nilable(OpenAI::Internal::Type::Converter::Input),
               security:
                 T.nilable(
-                  { bearer_auth: T::Boolean, admin_api_key_auth: T::Boolean }
+                  { bearer_auth?: T::Boolean, admin_api_key_auth?: T::Boolean }
                 ),
               options: T.nilable(OpenAI::RequestOptions::OrHash)
             }
@@ -292,7 +292,7 @@ module OpenAI
             model: T.nilable(OpenAI::Internal::Type::Converter::Input),
             security:
               T.nilable(
-                { bearer_auth: T::Boolean, admin_api_key_auth: T::Boolean }
+                { bearer_auth?: T::Boolean, admin_api_key_auth?: T::Boolean }
               ),
             options: T.nilable(OpenAI::RequestOptions::OrHash)
           ).returns(T.anything)
