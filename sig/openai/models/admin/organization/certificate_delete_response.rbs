@@ -1,0 +1,20 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type certificate_delete_response =
+          { id: String, object: :"certificate.deleted" }
+
+        class CertificateDeleteResponse < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor object: :"certificate.deleted"
+
+          def initialize: (id: String, ?object: :"certificate.deleted") -> void
+
+          def to_hash: -> { id: String, object: :"certificate.deleted" }
+        end
+      end
+    end
+  end
+end

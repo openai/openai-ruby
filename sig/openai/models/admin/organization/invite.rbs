@@ -1,0 +1,132 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type invite =
+          {
+            id: String,
+            email: String,
+            expires_at: Integer,
+            invited_at: Integer,
+            object: :"organization.invite",
+            role: OpenAI::Models::Admin::Organization::Invite::role,
+            status: OpenAI::Models::Admin::Organization::Invite::status,
+            accepted_at: Integer,
+            projects: ::Array[OpenAI::Admin::Organization::Invite::Project]
+          }
+
+        class Invite < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor email: String
+
+          attr_accessor expires_at: Integer
+
+          attr_accessor invited_at: Integer
+
+          attr_accessor object: :"organization.invite"
+
+          attr_accessor role: OpenAI::Models::Admin::Organization::Invite::role
+
+          attr_accessor status: OpenAI::Models::Admin::Organization::Invite::status
+
+          attr_reader accepted_at: Integer?
+
+          def accepted_at=: (Integer) -> Integer
+
+          attr_reader projects: ::Array[OpenAI::Admin::Organization::Invite::Project]?
+
+          def projects=: (
+            ::Array[OpenAI::Admin::Organization::Invite::Project]
+          ) -> ::Array[OpenAI::Admin::Organization::Invite::Project]
+
+          def initialize: (
+            id: String,
+            email: String,
+            expires_at: Integer,
+            invited_at: Integer,
+            role: OpenAI::Models::Admin::Organization::Invite::role,
+            status: OpenAI::Models::Admin::Organization::Invite::status,
+            ?accepted_at: Integer,
+            ?projects: ::Array[OpenAI::Admin::Organization::Invite::Project],
+            ?object: :"organization.invite"
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            email: String,
+            expires_at: Integer,
+            invited_at: Integer,
+            object: :"organization.invite",
+            role: OpenAI::Models::Admin::Organization::Invite::role,
+            status: OpenAI::Models::Admin::Organization::Invite::status,
+            accepted_at: Integer,
+            projects: ::Array[OpenAI::Admin::Organization::Invite::Project]
+          }
+
+          type role = :owner | :reader
+
+          module Role
+            extend OpenAI::Internal::Type::Enum
+
+            OWNER: :owner
+            READER: :reader
+
+            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Invite::role]
+          end
+
+          type status = :accepted | :expired | :pending
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            ACCEPTED: :accepted
+            EXPIRED: :expired
+            PENDING: :pending
+
+            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Invite::status]
+          end
+
+          type project =
+            {
+              id: String,
+              role: OpenAI::Models::Admin::Organization::Invite::Project::role
+            }
+
+          class Project < OpenAI::Internal::Type::BaseModel
+            attr_reader id: String?
+
+            def id=: (String) -> String
+
+            attr_reader role: OpenAI::Models::Admin::Organization::Invite::Project::role?
+
+            def role=: (
+              OpenAI::Models::Admin::Organization::Invite::Project::role
+            ) -> OpenAI::Models::Admin::Organization::Invite::Project::role
+
+            def initialize: (
+              ?id: String,
+              ?role: OpenAI::Models::Admin::Organization::Invite::Project::role
+            ) -> void
+
+            def to_hash: -> {
+              id: String,
+              role: OpenAI::Models::Admin::Organization::Invite::Project::role
+            }
+
+            type role = :member | :owner
+
+            module Role
+              extend OpenAI::Internal::Type::Enum
+
+              MEMBER: :member
+              OWNER: :owner
+
+              def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Invite::Project::role]
+            end
+          end
+        end
+      end
+    end
+  end
+end

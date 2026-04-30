@@ -1,0 +1,34 @@
+module OpenAI
+  module Resources
+    class Admin
+      class Organization
+        class Invites
+          def create: (
+            email: String,
+            role: OpenAI::Models::Admin::Organization::InviteCreateParams::role,
+            ?projects: ::Array[OpenAI::Admin::Organization::InviteCreateParams::Project],
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::Invite
+
+          def retrieve: (
+            String invite_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::Invite
+
+          def list: (
+            ?after: String,
+            ?limit: Integer,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Internal::ConversationCursorPage[OpenAI::Admin::Organization::Invite]
+
+          def delete: (
+            String invite_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Admin::Organization::InviteDeleteResponse
+
+          def initialize: (client: OpenAI::Client) -> void
+        end
+      end
+    end
+  end
+end

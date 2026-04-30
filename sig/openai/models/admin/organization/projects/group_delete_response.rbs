@@ -1,0 +1,25 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        module Projects
+          type group_delete_response =
+            { deleted: bool, object: :"project.group.deleted" }
+
+          class GroupDeleteResponse < OpenAI::Internal::Type::BaseModel
+            attr_accessor deleted: bool
+
+            attr_accessor object: :"project.group.deleted"
+
+            def initialize: (
+              deleted: bool,
+              ?object: :"project.group.deleted"
+            ) -> void
+
+            def to_hash: -> { deleted: bool, object: :"project.group.deleted" }
+          end
+        end
+      end
+    end
+  end
+end

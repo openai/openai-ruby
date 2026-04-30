@@ -1,0 +1,36 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        module Projects
+          type api_key_delete_response =
+            {
+              id: String,
+              deleted: bool,
+              object: :"organization.project.api_key.deleted"
+            }
+
+          class APIKeyDeleteResponse < OpenAI::Internal::Type::BaseModel
+            attr_accessor id: String
+
+            attr_accessor deleted: bool
+
+            attr_accessor object: :"organization.project.api_key.deleted"
+
+            def initialize: (
+              id: String,
+              deleted: bool,
+              ?object: :"organization.project.api_key.deleted"
+            ) -> void
+
+            def to_hash: -> {
+              id: String,
+              deleted: bool,
+              object: :"organization.project.api_key.deleted"
+            }
+          end
+        end
+      end
+    end
+  end
+end

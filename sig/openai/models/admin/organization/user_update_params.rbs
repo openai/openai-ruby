@@ -1,0 +1,46 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type user_update_params =
+          {
+            user_id: String,
+            role: OpenAI::Models::Admin::Organization::UserUpdateParams::role
+          }
+          & OpenAI::Internal::Type::request_parameters
+
+        class UserUpdateParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor user_id: String
+
+          attr_accessor role: OpenAI::Models::Admin::Organization::UserUpdateParams::role
+
+          def initialize: (
+            user_id: String,
+            role: OpenAI::Models::Admin::Organization::UserUpdateParams::role,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            user_id: String,
+            role: OpenAI::Models::Admin::Organization::UserUpdateParams::role,
+            request_options: OpenAI::RequestOptions
+          }
+
+          type role = :owner | :reader
+
+          module Role
+            extend OpenAI::Internal::Type::Enum
+
+            OWNER: :owner
+            READER: :reader
+
+            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::UserUpdateParams::role]
+          end
+        end
+      end
+    end
+  end
+end

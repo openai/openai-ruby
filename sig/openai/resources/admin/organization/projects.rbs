@@ -1,0 +1,54 @@
+module OpenAI
+  module Resources
+    class Admin
+      class Organization
+        class Projects
+          attr_reader users: OpenAI::Resources::Admin::Organization::Projects::Users
+
+          attr_reader service_accounts: OpenAI::Resources::Admin::Organization::Projects::ServiceAccounts
+
+          attr_reader api_keys: OpenAI::Resources::Admin::Organization::Projects::APIKeys
+
+          attr_reader rate_limits: OpenAI::Resources::Admin::Organization::Projects::RateLimits
+
+          attr_reader groups: OpenAI::Resources::Admin::Organization::Projects::Groups
+
+          attr_reader roles: OpenAI::Resources::Admin::Organization::Projects::Roles
+
+          attr_reader certificates: OpenAI::Resources::Admin::Organization::Projects::Certificates
+
+          def create: (
+            name: String,
+            ?geography: OpenAI::Models::Admin::Organization::ProjectCreateParams::geography,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::Project
+
+          def retrieve: (
+            String project_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::Project
+
+          def update: (
+            String project_id,
+            name: String,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::Project
+
+          def list: (
+            ?after: String,
+            ?include_archived: bool,
+            ?limit: Integer,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Internal::ConversationCursorPage[OpenAI::Admin::Organization::Project]
+
+          def archive: (
+            String project_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::Project
+
+          def initialize: (client: OpenAI::Client) -> void
+        end
+      end
+    end
+  end
+end

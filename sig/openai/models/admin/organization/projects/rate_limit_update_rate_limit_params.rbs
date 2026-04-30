@@ -1,0 +1,79 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        module Projects
+          type rate_limit_update_rate_limit_params =
+            {
+              project_id: String,
+              rate_limit_id: String,
+              :batch_1_day_max_input_tokens => Integer,
+              :max_audio_megabytes_per_1_minute => Integer,
+              :max_images_per_1_minute => Integer,
+              :max_requests_per_1_day => Integer,
+              :max_requests_per_1_minute => Integer,
+              :max_tokens_per_1_minute => Integer
+            }
+            & OpenAI::Internal::Type::request_parameters
+
+          class RateLimitUpdateRateLimitParams < OpenAI::Internal::Type::BaseModel
+            extend OpenAI::Internal::Type::RequestParameters::Converter
+            include OpenAI::Internal::Type::RequestParameters
+
+            attr_accessor project_id: String
+
+            attr_accessor rate_limit_id: String
+
+            attr_reader batch_1_day_max_input_tokens: Integer?
+
+            def batch_1_day_max_input_tokens=: (Integer) -> Integer
+
+            attr_reader max_audio_megabytes_per_1_minute: Integer?
+
+            def max_audio_megabytes_per_1_minute=: (Integer) -> Integer
+
+            attr_reader max_images_per_1_minute: Integer?
+
+            def max_images_per_1_minute=: (Integer) -> Integer
+
+            attr_reader max_requests_per_1_day: Integer?
+
+            def max_requests_per_1_day=: (Integer) -> Integer
+
+            attr_reader max_requests_per_1_minute: Integer?
+
+            def max_requests_per_1_minute=: (Integer) -> Integer
+
+            attr_reader max_tokens_per_1_minute: Integer?
+
+            def max_tokens_per_1_minute=: (Integer) -> Integer
+
+            def initialize: (
+              project_id: String,
+              rate_limit_id: String,
+              ?batch_1_day_max_input_tokens: Integer,
+              ?max_audio_megabytes_per_1_minute: Integer,
+              ?max_images_per_1_minute: Integer,
+              ?max_requests_per_1_day: Integer,
+              ?max_requests_per_1_minute: Integer,
+              ?max_tokens_per_1_minute: Integer,
+              ?request_options: OpenAI::request_opts
+            ) -> void
+
+            def to_hash: -> {
+              project_id: String,
+              rate_limit_id: String,
+              :batch_1_day_max_input_tokens => Integer,
+              :max_audio_megabytes_per_1_minute => Integer,
+              :max_images_per_1_minute => Integer,
+              :max_requests_per_1_day => Integer,
+              :max_requests_per_1_minute => Integer,
+              :max_tokens_per_1_minute => Integer,
+              request_options: OpenAI::RequestOptions
+            }
+          end
+        end
+      end
+    end
+  end
+end

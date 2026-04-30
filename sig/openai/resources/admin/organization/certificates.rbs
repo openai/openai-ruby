@@ -1,0 +1,51 @@
+module OpenAI
+  module Resources
+    class Admin
+      class Organization
+        class Certificates
+          def create: (
+            content: String,
+            ?name: String,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::Certificate
+
+          def retrieve: (
+            String certificate_id,
+            ?include: ::Array[OpenAI::Models::Admin::Organization::CertificateRetrieveParams::include_],
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::Certificate
+
+          def update: (
+            String certificate_id,
+            name: String,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::Certificate
+
+          def list: (
+            ?after: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Admin::Organization::CertificateListParams::order,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Internal::ConversationCursorPage[OpenAI::Admin::Organization::Certificate]
+
+          def delete: (
+            String certificate_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Admin::Organization::CertificateDeleteResponse
+
+          def activate: (
+            certificate_ids: ::Array[String],
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Internal::Page[OpenAI::Admin::Organization::Certificate]
+
+          def deactivate: (
+            certificate_ids: ::Array[String],
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Internal::Page[OpenAI::Admin::Organization::Certificate]
+
+          def initialize: (client: OpenAI::Client) -> void
+        end
+      end
+    end
+  end
+end

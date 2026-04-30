@@ -1,0 +1,36 @@
+module OpenAI
+  module Resources
+    class Admin
+      class Organization
+        class Users
+          attr_reader roles: OpenAI::Resources::Admin::Organization::Users::Roles
+
+          def retrieve: (
+            String user_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::OrganizationUser
+
+          def update: (
+            String user_id,
+            role: OpenAI::Models::Admin::Organization::UserUpdateParams::role,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::OrganizationUser
+
+          def list: (
+            ?after: String,
+            ?emails: ::Array[String],
+            ?limit: Integer,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Internal::ConversationCursorPage[OpenAI::Admin::Organization::OrganizationUser]
+
+          def delete: (
+            String user_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Admin::Organization::UserDeleteResponse
+
+          def initialize: (client: OpenAI::Client) -> void
+        end
+      end
+    end
+  end
+end

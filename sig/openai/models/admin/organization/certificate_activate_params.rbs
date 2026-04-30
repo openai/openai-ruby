@@ -1,0 +1,28 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type certificate_activate_params =
+          { certificate_ids: ::Array[String] }
+          & OpenAI::Internal::Type::request_parameters
+
+        class CertificateActivateParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor certificate_ids: ::Array[String]
+
+          def initialize: (
+            certificate_ids: ::Array[String],
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            certificate_ids: ::Array[String],
+            request_options: OpenAI::RequestOptions
+          }
+        end
+      end
+    end
+  end
+end

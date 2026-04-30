@@ -1,0 +1,38 @@
+module OpenAI
+  module Resources
+    class Admin
+      class Organization
+        class Projects
+          class Groups
+            class Roles
+              def create: (
+                String group_id,
+                project_id: String,
+                role_id: String,
+                ?request_options: OpenAI::request_opts
+              ) -> OpenAI::Models::Admin::Organization::Projects::Groups::RoleCreateResponse
+
+              def list: (
+                String group_id,
+                project_id: String,
+                ?after: String,
+                ?limit: Integer,
+                ?order: OpenAI::Models::Admin::Organization::Projects::Groups::RoleListParams::order,
+                ?request_options: OpenAI::request_opts
+              ) -> OpenAI::Internal::CursorPage[OpenAI::Models::Admin::Organization::Projects::Groups::RoleListResponse]
+
+              def delete: (
+                String role_id,
+                project_id: String,
+                group_id: String,
+                ?request_options: OpenAI::request_opts
+              ) -> OpenAI::Models::Admin::Organization::Projects::Groups::RoleDeleteResponse
+
+              def initialize: (client: OpenAI::Client) -> void
+            end
+          end
+        end
+      end
+    end
+  end
+end

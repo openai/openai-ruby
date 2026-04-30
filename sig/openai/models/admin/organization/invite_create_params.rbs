@@ -1,0 +1,88 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type invite_create_params =
+          {
+            email: String,
+            role: OpenAI::Models::Admin::Organization::InviteCreateParams::role,
+            projects: ::Array[OpenAI::Admin::Organization::InviteCreateParams::Project]
+          }
+          & OpenAI::Internal::Type::request_parameters
+
+        class InviteCreateParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor email: String
+
+          attr_accessor role: OpenAI::Models::Admin::Organization::InviteCreateParams::role
+
+          attr_reader projects: ::Array[OpenAI::Admin::Organization::InviteCreateParams::Project]?
+
+          def projects=: (
+            ::Array[OpenAI::Admin::Organization::InviteCreateParams::Project]
+          ) -> ::Array[OpenAI::Admin::Organization::InviteCreateParams::Project]
+
+          def initialize: (
+            email: String,
+            role: OpenAI::Models::Admin::Organization::InviteCreateParams::role,
+            ?projects: ::Array[OpenAI::Admin::Organization::InviteCreateParams::Project],
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            email: String,
+            role: OpenAI::Models::Admin::Organization::InviteCreateParams::role,
+            projects: ::Array[OpenAI::Admin::Organization::InviteCreateParams::Project],
+            request_options: OpenAI::RequestOptions
+          }
+
+          type role = :reader | :owner
+
+          module Role
+            extend OpenAI::Internal::Type::Enum
+
+            READER: :reader
+            OWNER: :owner
+
+            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::InviteCreateParams::role]
+          end
+
+          type project =
+            {
+              id: String,
+              role: OpenAI::Models::Admin::Organization::InviteCreateParams::Project::role
+            }
+
+          class Project < OpenAI::Internal::Type::BaseModel
+            attr_accessor id: String
+
+            attr_accessor role: OpenAI::Models::Admin::Organization::InviteCreateParams::Project::role
+
+            def initialize: (
+              id: String,
+              role: OpenAI::Models::Admin::Organization::InviteCreateParams::Project::role
+            ) -> void
+
+            def to_hash: -> {
+              id: String,
+              role: OpenAI::Models::Admin::Organization::InviteCreateParams::Project::role
+            }
+
+            type role = :member | :owner
+
+            module Role
+              extend OpenAI::Internal::Type::Enum
+
+              MEMBER: :member
+              OWNER: :owner
+
+              def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::InviteCreateParams::Project::role]
+            end
+          end
+        end
+      end
+    end
+  end
+end

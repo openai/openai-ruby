@@ -1,0 +1,76 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        class ProjectRateLimit = Projects::ProjectRateLimit
+
+        module Projects
+          type project_rate_limit =
+            {
+              id: String,
+              :max_requests_per_1_minute => Integer,
+              :max_tokens_per_1_minute => Integer,
+              model: String,
+              object: :"project.rate_limit",
+              :batch_1_day_max_input_tokens => Integer,
+              :max_audio_megabytes_per_1_minute => Integer,
+              :max_images_per_1_minute => Integer,
+              :max_requests_per_1_day => Integer
+            }
+
+          class ProjectRateLimit < OpenAI::Internal::Type::BaseModel
+            attr_accessor id: String
+
+            attr_accessor max_requests_per_1_minute: Integer
+
+            attr_accessor max_tokens_per_1_minute: Integer
+
+            attr_accessor model: String
+
+            attr_accessor object: :"project.rate_limit"
+
+            attr_reader batch_1_day_max_input_tokens: Integer?
+
+            def batch_1_day_max_input_tokens=: (Integer) -> Integer
+
+            attr_reader max_audio_megabytes_per_1_minute: Integer?
+
+            def max_audio_megabytes_per_1_minute=: (Integer) -> Integer
+
+            attr_reader max_images_per_1_minute: Integer?
+
+            def max_images_per_1_minute=: (Integer) -> Integer
+
+            attr_reader max_requests_per_1_day: Integer?
+
+            def max_requests_per_1_day=: (Integer) -> Integer
+
+            def initialize: (
+              id: String,
+              max_requests_per_1_minute: Integer,
+              max_tokens_per_1_minute: Integer,
+              model: String,
+              ?batch_1_day_max_input_tokens: Integer,
+              ?max_audio_megabytes_per_1_minute: Integer,
+              ?max_images_per_1_minute: Integer,
+              ?max_requests_per_1_day: Integer,
+              ?object: :"project.rate_limit"
+            ) -> void
+
+            def to_hash: -> {
+              id: String,
+              :max_requests_per_1_minute => Integer,
+              :max_tokens_per_1_minute => Integer,
+              model: String,
+              object: :"project.rate_limit",
+              :batch_1_day_max_input_tokens => Integer,
+              :max_audio_megabytes_per_1_minute => Integer,
+              :max_images_per_1_minute => Integer,
+              :max_requests_per_1_day => Integer
+            }
+          end
+        end
+      end
+    end
+  end
+end
