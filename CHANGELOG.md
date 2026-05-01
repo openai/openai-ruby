@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.61.0 (2026-05-01)
+
+Full Changelog: [v0.60.0...v0.61.0](https://github.com/openai/openai-ruby/compare/v0.60.0...v0.61.0)
+
+### Features
+
+* **api:** add org user/project/group fields, remove enums, update role types ([867521b](https://github.com/openai/openai-ruby/commit/867521b925b4bfb44ee66acf7b7fc43907d6a050))
+* **api:** add support for Admin API Keys per endpoint ([0074885](https://github.com/openai/openai-ruby/commit/0074885734380280c790b6fcfdf8aad0639de854))
+* **api:** admin API updates ([dadc042](https://github.com/openai/openai-ruby/commit/dadc0422becbe1b9df587928068d24ba5c69ec8e))
+* **api:** manual updates ([5f9b9a5](https://github.com/openai/openai-ruby/commit/5f9b9a59377d79c7f4de7bc1514cfd934f93989f))
+* **api:** manual updates ([4ebefdc](https://github.com/openai/openai-ruby/commit/4ebefdc5e923124475a2bc2b5fd9364704067301))
+
+
+### Bug Fixes
+
+* **api:** preserve selected auth scheme ([2479660](https://github.com/openai/openai-ruby/commit/2479660121cb6ecdb449c1a1e661a77bc93d60b1))
+* **api:** support admin api key auth ([095bf67](https://github.com/openai/openai-ruby/commit/095bf67e2d13483adb7d370761663c0babf862ee))
+* **types:** correct timestamp fields to Float in Response model ([943333d](https://github.com/openai/openai-ruby/commit/943333da4e7931af036c59a7795a53641ae04ec7))
+* **types:** correct timestamp types to Integer in Response model ([d98683c](https://github.com/openai/openai-ruby/commit/d98683cedd697c3f919ec2e3afc9c7d0b69d7ab6))
+
 ## 0.60.0 (2026-04-28)
 
 Full Changelog: [v0.59.0...v0.60.0](https://github.com/openai/openai-ruby/compare/v0.59.0...v0.60.0)
