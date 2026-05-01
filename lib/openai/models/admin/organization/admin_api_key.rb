@@ -18,18 +18,6 @@ module OpenAI
           #   @return [Integer]
           required :created_at, Integer
 
-          # @!attribute last_used_at
-          #   The Unix timestamp (in seconds) of when the API key was last used
-          #
-          #   @return [Integer, nil]
-          required :last_used_at, Integer, nil?: true
-
-          # @!attribute name
-          #   The name of the API key
-          #
-          #   @return [String]
-          required :name, String
-
           # @!attribute object
           #   The object type, which is always `organization.admin_api_key`
           #
@@ -47,28 +35,32 @@ module OpenAI
           #   @return [String]
           required :redacted_value, String
 
-          # @!attribute value
-          #   The value of the API key. Only shown on create.
+          # @!attribute last_used_at
+          #   The Unix timestamp (in seconds) of when the API key was last used
+          #
+          #   @return [Integer, nil]
+          optional :last_used_at, Integer, nil?: true
+
+          # @!attribute name
+          #   The name of the API key
           #
           #   @return [String, nil]
-          optional :value, String
+          optional :name, String, nil?: true
 
-          # @!method initialize(id:, created_at:, last_used_at:, name:, owner:, redacted_value:, value: nil, object: :"organization.admin_api_key")
+          # @!method initialize(id:, created_at:, owner:, redacted_value:, last_used_at: nil, name: nil, object: :"organization.admin_api_key")
           #   Represents an individual Admin API key in an org.
           #
           #   @param id [String] The identifier, which can be referenced in API endpoints
           #
           #   @param created_at [Integer] The Unix timestamp (in seconds) of when the API key was created
           #
-          #   @param last_used_at [Integer, nil] The Unix timestamp (in seconds) of when the API key was last used
-          #
-          #   @param name [String] The name of the API key
-          #
           #   @param owner [OpenAI::Models::Admin::Organization::AdminAPIKey::Owner]
           #
           #   @param redacted_value [String] The redacted value of the API key
           #
-          #   @param value [String] The value of the API key. Only shown on create.
+          #   @param last_used_at [Integer, nil] The Unix timestamp (in seconds) of when the API key was last used
+          #
+          #   @param name [String, nil] The name of the API key
           #
           #   @param object [Symbol, :"organization.admin_api_key"] The object type, which is always `organization.admin_api_key`
 

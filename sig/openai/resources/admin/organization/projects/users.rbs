@@ -8,8 +8,9 @@ module OpenAI
 
             def create: (
               String project_id,
-              role: OpenAI::Models::Admin::Organization::Projects::UserCreateParams::role,
-              user_id: String,
+              role: String,
+              ?email: String?,
+              ?user_id: String?,
               ?request_options: OpenAI::request_opts
             ) -> OpenAI::Admin::Organization::Projects::ProjectUser
 
@@ -22,7 +23,7 @@ module OpenAI
             def update: (
               String user_id,
               project_id: String,
-              role: OpenAI::Models::Admin::Organization::Projects::UserUpdateParams::role,
+              ?role: String?,
               ?request_options: OpenAI::request_opts
             ) -> OpenAI::Admin::Organization::Projects::ProjectUser
 

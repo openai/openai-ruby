@@ -12,7 +12,10 @@ module OpenAI
 
           def update: (
             String user_id,
-            ?role: OpenAI::Models::Admin::Organization::UserUpdateParams::role,
+            ?developer_persona: String?,
+            ?role: String?,
+            ?role_id: String?,
+            ?technical_level: String?,
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Admin::Organization::OrganizationUser
 

@@ -15,44 +15,32 @@ module OpenAI
           #   @return [String]
           required :name, String
 
+          # @!attribute external_key_id
+          #   External key ID to associate with the project.
+          #
+          #   @return [String, nil]
+          optional :external_key_id, String, nil?: true
+
           # @!attribute geography
           #   Create the project with the specified data residency region. Your organization
           #   must have access to Data residency functionality in order to use. See
           #   [data residency controls](https://platform.openai.com/docs/guides/your-data#data-residency-controls)
           #   to review the functionality and limitations of setting this field.
           #
-          #   @return [Symbol, OpenAI::Models::Admin::Organization::ProjectCreateParams::Geography, nil]
-          optional :geography, enum: -> { OpenAI::Admin::Organization::ProjectCreateParams::Geography }
+          #   @return [String, nil]
+          optional :geography, String, nil?: true
 
-          # @!method initialize(name:, geography: nil, request_options: {})
+          # @!method initialize(name:, external_key_id: nil, geography: nil, request_options: {})
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Admin::Organization::ProjectCreateParams} for more details.
           #
           #   @param name [String] The friendly name of the project, this name appears in reports.
           #
-          #   @param geography [Symbol, OpenAI::Models::Admin::Organization::ProjectCreateParams::Geography] Create the project with the specified data residency region. Your organization m
+          #   @param external_key_id [String, nil] External key ID to associate with the project.
+          #
+          #   @param geography [String, nil] Create the project with the specified data residency region. Your organization m
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-
-          # Create the project with the specified data residency region. Your organization
-          # must have access to Data residency functionality in order to use. See
-          # [data residency controls](https://platform.openai.com/docs/guides/your-data#data-residency-controls)
-          # to review the functionality and limitations of setting this field.
-          module Geography
-            extend OpenAI::Internal::Type::Enum
-
-            US = :US
-            EU = :EU
-            JP = :JP
-            IN = :IN
-            KR = :KR
-            CA = :CA
-            AU = :AU
-            SG = :SG
-
-            # @!method self.values
-            #   @return [Array<Symbol>]
-          end
         end
       end
     end

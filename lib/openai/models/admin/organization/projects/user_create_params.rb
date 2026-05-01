@@ -18,34 +18,31 @@ module OpenAI
             # @!attribute role
             #   `owner` or `member`
             #
-            #   @return [Symbol, OpenAI::Models::Admin::Organization::Projects::UserCreateParams::Role]
-            required :role, enum: -> { OpenAI::Admin::Organization::Projects::UserCreateParams::Role }
+            #   @return [String]
+            required :role, String
+
+            # @!attribute email
+            #   Email of the user to add.
+            #
+            #   @return [String, nil]
+            optional :email, String, nil?: true
 
             # @!attribute user_id
             #   The ID of the user.
             #
-            #   @return [String]
-            required :user_id, String
+            #   @return [String, nil]
+            optional :user_id, String, nil?: true
 
-            # @!method initialize(project_id:, role:, user_id:, request_options: {})
+            # @!method initialize(project_id:, role:, email: nil, user_id: nil, request_options: {})
             #   @param project_id [String]
             #
-            #   @param role [Symbol, OpenAI::Models::Admin::Organization::Projects::UserCreateParams::Role] `owner` or `member`
+            #   @param role [String] `owner` or `member`
             #
-            #   @param user_id [String] The ID of the user.
+            #   @param email [String, nil] Email of the user to add.
+            #
+            #   @param user_id [String, nil] The ID of the user.
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-
-            # `owner` or `member`
-            module Role
-              extend OpenAI::Internal::Type::Enum
-
-              OWNER = :owner
-              MEMBER = :member
-
-              # @!method self.values
-              #   @return [Array<Symbol>]
-            end
           end
         end
       end

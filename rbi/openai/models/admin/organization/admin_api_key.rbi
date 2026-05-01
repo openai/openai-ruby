@@ -21,14 +21,6 @@ module OpenAI
           sig { returns(Integer) }
           attr_accessor :created_at
 
-          # The Unix timestamp (in seconds) of when the API key was last used
-          sig { returns(T.nilable(Integer)) }
-          attr_accessor :last_used_at
-
-          # The name of the API key
-          sig { returns(String) }
-          attr_accessor :name
-
           # The object type, which is always `organization.admin_api_key`
           sig { returns(Symbol) }
           attr_accessor :object
@@ -47,23 +39,23 @@ module OpenAI
           sig { returns(String) }
           attr_accessor :redacted_value
 
-          # The value of the API key. Only shown on create.
-          sig { returns(T.nilable(String)) }
-          attr_reader :value
+          # The Unix timestamp (in seconds) of when the API key was last used
+          sig { returns(T.nilable(Integer)) }
+          attr_accessor :last_used_at
 
-          sig { params(value: String).void }
-          attr_writer :value
+          # The name of the API key
+          sig { returns(T.nilable(String)) }
+          attr_accessor :name
 
           # Represents an individual Admin API key in an org.
           sig do
             params(
               id: String,
               created_at: Integer,
-              last_used_at: T.nilable(Integer),
-              name: String,
               owner: OpenAI::Admin::Organization::AdminAPIKey::Owner::OrHash,
               redacted_value: String,
-              value: String,
+              last_used_at: T.nilable(Integer),
+              name: T.nilable(String),
               object: Symbol
             ).returns(T.attached_class)
           end
@@ -72,15 +64,13 @@ module OpenAI
             id:,
             # The Unix timestamp (in seconds) of when the API key was created
             created_at:,
-            # The Unix timestamp (in seconds) of when the API key was last used
-            last_used_at:,
-            # The name of the API key
-            name:,
             owner:,
             # The redacted value of the API key
             redacted_value:,
-            # The value of the API key. Only shown on create.
-            value: nil,
+            # The Unix timestamp (in seconds) of when the API key was last used
+            last_used_at: nil,
+            # The name of the API key
+            name: nil,
             # The object type, which is always `organization.admin_api_key`
             object: :"organization.admin_api_key"
           )
@@ -91,12 +81,11 @@ module OpenAI
               {
                 id: String,
                 created_at: Integer,
-                last_used_at: T.nilable(Integer),
-                name: String,
                 object: Symbol,
                 owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
                 redacted_value: String,
-                value: String
+                last_used_at: T.nilable(Integer),
+                name: T.nilable(String)
               }
             )
           end

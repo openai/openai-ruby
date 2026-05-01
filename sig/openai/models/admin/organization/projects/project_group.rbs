@@ -10,6 +10,7 @@ module OpenAI
               created_at: Integer,
               group_id: String,
               group_name: String,
+              group_type: String,
               object: :"project.group",
               project_id: String
             }
@@ -21,6 +22,8 @@ module OpenAI
 
             attr_accessor group_name: String
 
+            attr_accessor group_type: String
+
             attr_accessor object: :"project.group"
 
             attr_accessor project_id: String
@@ -29,6 +32,7 @@ module OpenAI
               created_at: Integer,
               group_id: String,
               group_name: String,
+              group_type: String,
               project_id: String,
               ?object: :"project.group"
             ) -> void
@@ -37,6 +41,7 @@ module OpenAI
               created_at: Integer,
               group_id: String,
               group_name: String,
+              group_type: String,
               object: :"project.group",
               project_id: String
             }

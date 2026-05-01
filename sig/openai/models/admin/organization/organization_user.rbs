@@ -8,10 +8,20 @@ module OpenAI
           {
             id: String,
             added_at: Integer,
-            email: String,
-            name: String,
             object: :"organization.user",
-            role: OpenAI::Models::Admin::Organization::OrganizationUser::role
+            api_key_last_used_at: Integer?,
+            created: Integer,
+            developer_persona: String?,
+            email: String?,
+            is_default: bool,
+            is_scale_tier_authorized_purchaser: bool?,
+            is_scim_managed: bool,
+            is_service_account: bool,
+            name: String?,
+            projects: OpenAI::Admin::Organization::OrganizationUser::Projects?,
+            role: String?,
+            technical_level: String?,
+            user: OpenAI::Admin::Organization::OrganizationUser::User
           }
 
         class OrganizationUser < OpenAI::Internal::Type::BaseModel
@@ -19,41 +29,174 @@ module OpenAI
 
           attr_accessor added_at: Integer
 
-          attr_accessor email: String
-
-          attr_accessor name: String
-
           attr_accessor object: :"organization.user"
 
-          attr_accessor role: OpenAI::Models::Admin::Organization::OrganizationUser::role
+          attr_accessor api_key_last_used_at: Integer?
+
+          attr_reader created: Integer?
+
+          def created=: (Integer) -> Integer
+
+          attr_accessor developer_persona: String?
+
+          attr_accessor email: String?
+
+          attr_reader is_default: bool?
+
+          def is_default=: (bool) -> bool
+
+          attr_accessor is_scale_tier_authorized_purchaser: bool?
+
+          attr_reader is_scim_managed: bool?
+
+          def is_scim_managed=: (bool) -> bool
+
+          attr_reader is_service_account: bool?
+
+          def is_service_account=: (bool) -> bool
+
+          attr_accessor name: String?
+
+          attr_accessor projects: OpenAI::Admin::Organization::OrganizationUser::Projects?
+
+          attr_accessor role: String?
+
+          attr_accessor technical_level: String?
+
+          attr_reader user: OpenAI::Admin::Organization::OrganizationUser::User?
+
+          def user=: (
+            OpenAI::Admin::Organization::OrganizationUser::User
+          ) -> OpenAI::Admin::Organization::OrganizationUser::User
 
           def initialize: (
             id: String,
             added_at: Integer,
-            email: String,
-            name: String,
-            role: OpenAI::Models::Admin::Organization::OrganizationUser::role,
+            ?api_key_last_used_at: Integer?,
+            ?created: Integer,
+            ?developer_persona: String?,
+            ?email: String?,
+            ?is_default: bool,
+            ?is_scale_tier_authorized_purchaser: bool?,
+            ?is_scim_managed: bool,
+            ?is_service_account: bool,
+            ?name: String?,
+            ?projects: OpenAI::Admin::Organization::OrganizationUser::Projects?,
+            ?role: String?,
+            ?technical_level: String?,
+            ?user: OpenAI::Admin::Organization::OrganizationUser::User,
             ?object: :"organization.user"
           ) -> void
 
           def to_hash: -> {
             id: String,
             added_at: Integer,
-            email: String,
-            name: String,
             object: :"organization.user",
-            role: OpenAI::Models::Admin::Organization::OrganizationUser::role
+            api_key_last_used_at: Integer?,
+            created: Integer,
+            developer_persona: String?,
+            email: String?,
+            is_default: bool,
+            is_scale_tier_authorized_purchaser: bool?,
+            is_scim_managed: bool,
+            is_service_account: bool,
+            name: String?,
+            projects: OpenAI::Admin::Organization::OrganizationUser::Projects?,
+            role: String?,
+            technical_level: String?,
+            user: OpenAI::Admin::Organization::OrganizationUser::User
           }
 
-          type role = :owner | :reader
+          type projects =
+            {
+              data: ::Array[OpenAI::Admin::Organization::OrganizationUser::Projects::Data],
+              object: :list
+            }
 
-          module Role
-            extend OpenAI::Internal::Type::Enum
+          class Projects < OpenAI::Internal::Type::BaseModel
+            attr_accessor data: ::Array[OpenAI::Admin::Organization::OrganizationUser::Projects::Data]
 
-            OWNER: :owner
-            READER: :reader
+            attr_accessor object: :list
 
-            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::OrganizationUser::role]
+            def initialize: (
+              data: ::Array[OpenAI::Admin::Organization::OrganizationUser::Projects::Data],
+              ?object: :list
+            ) -> void
+
+            def to_hash: -> {
+              data: ::Array[OpenAI::Admin::Organization::OrganizationUser::Projects::Data],
+              object: :list
+            }
+
+            type data = { id: String?, name: String?, role: String? }
+
+            class Data < OpenAI::Internal::Type::BaseModel
+              attr_accessor id: String?
+
+              attr_accessor name: String?
+
+              attr_accessor role: String?
+
+              def initialize: (
+                ?id: String?,
+                ?name: String?,
+                ?role: String?
+              ) -> void
+
+              def to_hash: -> { id: String?, name: String?, role: String? }
+            end
+          end
+
+          type user =
+            {
+              id: String,
+              object: :user,
+              banned: bool?,
+              banned_at: Integer?,
+              email: String?,
+              enabled: bool?,
+              name: String?,
+              picture: String?
+            }
+
+          class User < OpenAI::Internal::Type::BaseModel
+            attr_accessor id: String
+
+            attr_accessor object: :user
+
+            attr_accessor banned: bool?
+
+            attr_accessor banned_at: Integer?
+
+            attr_accessor email: String?
+
+            attr_accessor enabled: bool?
+
+            attr_accessor name: String?
+
+            attr_accessor picture: String?
+
+            def initialize: (
+              id: String,
+              ?banned: bool?,
+              ?banned_at: Integer?,
+              ?email: String?,
+              ?enabled: bool?,
+              ?name: String?,
+              ?picture: String?,
+              ?object: :user
+            ) -> void
+
+            def to_hash: -> {
+              id: String,
+              object: :user,
+              banned: bool?,
+              banned_at: Integer?,
+              email: String?,
+              enabled: bool?,
+              name: String?,
+              picture: String?
+            }
           end
         end
       end

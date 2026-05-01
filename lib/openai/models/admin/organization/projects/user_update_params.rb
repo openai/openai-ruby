@@ -23,28 +23,17 @@ module OpenAI
             # @!attribute role
             #   `owner` or `member`
             #
-            #   @return [Symbol, OpenAI::Models::Admin::Organization::Projects::UserUpdateParams::Role]
-            required :role, enum: -> { OpenAI::Admin::Organization::Projects::UserUpdateParams::Role }
+            #   @return [String, nil]
+            optional :role, String, nil?: true
 
-            # @!method initialize(project_id:, user_id:, role:, request_options: {})
+            # @!method initialize(project_id:, user_id:, role: nil, request_options: {})
             #   @param project_id [String]
             #
             #   @param user_id [String]
             #
-            #   @param role [Symbol, OpenAI::Models::Admin::Organization::Projects::UserUpdateParams::Role] `owner` or `member`
+            #   @param role [String, nil] `owner` or `member`
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-
-            # `owner` or `member`
-            module Role
-              extend OpenAI::Internal::Type::Enum
-
-              OWNER = :owner
-              MEMBER = :member
-
-              # @!method self.values
-              #   @return [Array<Symbol>]
-            end
           end
         end
       end

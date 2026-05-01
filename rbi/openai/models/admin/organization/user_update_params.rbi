@@ -19,36 +19,42 @@ module OpenAI
           sig { returns(String) }
           attr_accessor :user_id
 
-          # `owner` or `reader`
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Admin::Organization::UserUpdateParams::Role::OrSymbol
-              )
-            )
-          end
-          attr_reader :role
+          # Developer persona metadata.
+          sig { returns(T.nilable(String)) }
+          attr_accessor :developer_persona
 
-          sig do
-            params(
-              role:
-                OpenAI::Admin::Organization::UserUpdateParams::Role::OrSymbol
-            ).void
-          end
-          attr_writer :role
+          # `owner` or `reader`
+          sig { returns(T.nilable(String)) }
+          attr_accessor :role
+
+          # Role ID to assign to the user.
+          sig { returns(T.nilable(String)) }
+          attr_accessor :role_id
+
+          # Technical level metadata.
+          sig { returns(T.nilable(String)) }
+          attr_accessor :technical_level
 
           sig do
             params(
               user_id: String,
-              role:
-                OpenAI::Admin::Organization::UserUpdateParams::Role::OrSymbol,
+              developer_persona: T.nilable(String),
+              role: T.nilable(String),
+              role_id: T.nilable(String),
+              technical_level: T.nilable(String),
               request_options: OpenAI::RequestOptions::OrHash
             ).returns(T.attached_class)
           end
           def self.new(
             user_id:,
+            # Developer persona metadata.
+            developer_persona: nil,
             # `owner` or `reader`
             role: nil,
+            # Role ID to assign to the user.
+            role_id: nil,
+            # Technical level metadata.
+            technical_level: nil,
             request_options: {}
           )
           end
@@ -57,48 +63,15 @@ module OpenAI
             override.returns(
               {
                 user_id: String,
-                role:
-                  OpenAI::Admin::Organization::UserUpdateParams::Role::OrSymbol,
+                developer_persona: T.nilable(String),
+                role: T.nilable(String),
+                role_id: T.nilable(String),
+                technical_level: T.nilable(String),
                 request_options: OpenAI::RequestOptions
               }
             )
           end
           def to_hash
-          end
-
-          # `owner` or `reader`
-          module Role
-            extend OpenAI::Internal::Type::Enum
-
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Admin::Organization::UserUpdateParams::Role
-                )
-              end
-            OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-            OWNER =
-              T.let(
-                :owner,
-                OpenAI::Admin::Organization::UserUpdateParams::Role::TaggedSymbol
-              )
-            READER =
-              T.let(
-                :reader,
-                OpenAI::Admin::Organization::UserUpdateParams::Role::TaggedSymbol
-              )
-
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Admin::Organization::UserUpdateParams::Role::TaggedSymbol
-                ]
-              )
-            end
-            def self.values
-            end
           end
         end
       end

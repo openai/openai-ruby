@@ -4,8 +4,7 @@ require_relative "../../../../test_helper"
 
 class OpenAI::Test::Resources::Admin::Organization::Projects::UsersTest < OpenAI::Test::ResourceTest
   def test_create_required_params
-    response =
-      @openai.admin.organization.projects.users.create("project_id", role: :owner, user_id: "user_id")
+    response = @openai.admin.organization.projects.users.create("project_id", role: "role")
 
     assert_pattern do
       response => OpenAI::Admin::Organization::Projects::ProjectUser
@@ -15,10 +14,10 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::UsersTest < OpenAI
       response => {
         id: String,
         added_at: Integer,
-        email: String,
-        name: String,
         object: Symbol,
-        role: OpenAI::Admin::Organization::Projects::ProjectUser::Role
+        role: String,
+        email: String | nil,
+        name: String | nil
       }
     end
   end
@@ -34,17 +33,16 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::UsersTest < OpenAI
       response => {
         id: String,
         added_at: Integer,
-        email: String,
-        name: String,
         object: Symbol,
-        role: OpenAI::Admin::Organization::Projects::ProjectUser::Role
+        role: String,
+        email: String | nil,
+        name: String | nil
       }
     end
   end
 
   def test_update_required_params
-    response =
-      @openai.admin.organization.projects.users.update("user_id", project_id: "project_id", role: :owner)
+    response = @openai.admin.organization.projects.users.update("user_id", project_id: "project_id")
 
     assert_pattern do
       response => OpenAI::Admin::Organization::Projects::ProjectUser
@@ -54,10 +52,10 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::UsersTest < OpenAI
       response => {
         id: String,
         added_at: Integer,
-        email: String,
-        name: String,
         object: Symbol,
-        role: OpenAI::Admin::Organization::Projects::ProjectUser::Role
+        role: String,
+        email: String | nil,
+        name: String | nil
       }
     end
   end
@@ -80,10 +78,10 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::UsersTest < OpenAI
       row => {
         id: String,
         added_at: Integer,
-        email: String,
-        name: String,
         object: Symbol,
-        role: OpenAI::Admin::Organization::Projects::ProjectUser::Role
+        role: String,
+        email: String | nil,
+        name: String | nil
       }
     end
   end

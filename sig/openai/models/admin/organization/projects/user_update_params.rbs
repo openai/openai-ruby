@@ -4,11 +4,7 @@ module OpenAI
       module Organization
         module Projects
           type user_update_params =
-            {
-              project_id: String,
-              user_id: String,
-              role: OpenAI::Models::Admin::Organization::Projects::UserUpdateParams::role
-            }
+            { project_id: String, user_id: String, role: String? }
             & OpenAI::Internal::Type::request_parameters
 
           class UserUpdateParams < OpenAI::Internal::Type::BaseModel
@@ -19,32 +15,21 @@ module OpenAI
 
             attr_accessor user_id: String
 
-            attr_accessor role: OpenAI::Models::Admin::Organization::Projects::UserUpdateParams::role
+            attr_accessor role: String?
 
             def initialize: (
               project_id: String,
               user_id: String,
-              role: OpenAI::Models::Admin::Organization::Projects::UserUpdateParams::role,
+              ?role: String?,
               ?request_options: OpenAI::request_opts
             ) -> void
 
             def to_hash: -> {
               project_id: String,
               user_id: String,
-              role: OpenAI::Models::Admin::Organization::Projects::UserUpdateParams::role,
+              role: String?,
               request_options: OpenAI::RequestOptions
             }
-
-            type role = :owner | :member
-
-            module Role
-              extend OpenAI::Internal::Type::Enum
-
-              OWNER: :owner
-              MEMBER: :member
-
-              def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Projects::UserUpdateParams::role]
-            end
           end
         end
       end

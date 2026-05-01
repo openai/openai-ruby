@@ -21,23 +21,23 @@ module OpenAI
             attr_accessor :project_id
 
             # `owner` or `member`
-            sig do
-              returns(
-                OpenAI::Admin::Organization::Projects::UserCreateParams::Role::OrSymbol
-              )
-            end
+            sig { returns(String) }
             attr_accessor :role
 
+            # Email of the user to add.
+            sig { returns(T.nilable(String)) }
+            attr_accessor :email
+
             # The ID of the user.
-            sig { returns(String) }
+            sig { returns(T.nilable(String)) }
             attr_accessor :user_id
 
             sig do
               params(
                 project_id: String,
-                role:
-                  OpenAI::Admin::Organization::Projects::UserCreateParams::Role::OrSymbol,
-                user_id: String,
+                role: String,
+                email: T.nilable(String),
+                user_id: T.nilable(String),
                 request_options: OpenAI::RequestOptions::OrHash
               ).returns(T.attached_class)
             end
@@ -45,8 +45,10 @@ module OpenAI
               project_id:,
               # `owner` or `member`
               role:,
+              # Email of the user to add.
+              email: nil,
               # The ID of the user.
-              user_id:,
+              user_id: nil,
               request_options: {}
             )
             end
@@ -55,49 +57,14 @@ module OpenAI
               override.returns(
                 {
                   project_id: String,
-                  role:
-                    OpenAI::Admin::Organization::Projects::UserCreateParams::Role::OrSymbol,
-                  user_id: String,
+                  role: String,
+                  email: T.nilable(String),
+                  user_id: T.nilable(String),
                   request_options: OpenAI::RequestOptions
                 }
               )
             end
             def to_hash
-            end
-
-            # `owner` or `member`
-            module Role
-              extend OpenAI::Internal::Type::Enum
-
-              TaggedSymbol =
-                T.type_alias do
-                  T.all(
-                    Symbol,
-                    OpenAI::Admin::Organization::Projects::UserCreateParams::Role
-                  )
-                end
-              OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-              OWNER =
-                T.let(
-                  :owner,
-                  OpenAI::Admin::Organization::Projects::UserCreateParams::Role::TaggedSymbol
-                )
-              MEMBER =
-                T.let(
-                  :member,
-                  OpenAI::Admin::Organization::Projects::UserCreateParams::Role::TaggedSymbol
-                )
-
-              sig do
-                override.returns(
-                  T::Array[
-                    OpenAI::Admin::Organization::Projects::UserCreateParams::Role::TaggedSymbol
-                  ]
-                )
-              end
-              def self.values
-              end
             end
           end
         end

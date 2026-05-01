@@ -24,17 +24,17 @@ module OpenAI
           #   @return [String]
           required :email, String
 
-          # @!attribute expires_at
-          #   The Unix timestamp (in seconds) of when the invite expires.
-          #
-          #   @return [Integer, nil]
-          required :expires_at, Integer, nil?: true
-
           # @!attribute object
           #   The object type, which is always `organization.invite`
           #
           #   @return [Symbol, :"organization.invite"]
           required :object, const: :"organization.invite"
+
+          # @!attribute projects
+          #   The projects that were granted membership upon acceptance of the invite.
+          #
+          #   @return [Array<OpenAI::Models::Admin::Organization::Invite::Project>]
+          required :projects, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Admin::Organization::Invite::Project] }
 
           # @!attribute role
           #   `owner` or `reader`
@@ -54,13 +54,13 @@ module OpenAI
           #   @return [Integer, nil]
           optional :accepted_at, Integer, nil?: true
 
-          # @!attribute projects
-          #   The projects that were granted membership upon acceptance of the invite.
+          # @!attribute expires_at
+          #   The Unix timestamp (in seconds) of when the invite expires.
           #
-          #   @return [Array<OpenAI::Models::Admin::Organization::Invite::Project>, nil]
-          optional :projects, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Admin::Organization::Invite::Project] }
+          #   @return [Integer, nil]
+          optional :expires_at, Integer, nil?: true
 
-          # @!method initialize(id:, created_at:, email:, expires_at:, role:, status:, accepted_at: nil, projects: nil, object: :"organization.invite")
+          # @!method initialize(id:, created_at:, email:, projects:, role:, status:, accepted_at: nil, expires_at: nil, object: :"organization.invite")
           #   Represents an individual `invite` to the organization.
           #
           #   @param id [String] The identifier, which can be referenced in API endpoints
@@ -69,7 +69,7 @@ module OpenAI
           #
           #   @param email [String] The email address of the individual to whom the invite was sent
           #
-          #   @param expires_at [Integer, nil] The Unix timestamp (in seconds) of when the invite expires.
+          #   @param projects [Array<OpenAI::Models::Admin::Organization::Invite::Project>] The projects that were granted membership upon acceptance of the invite.
           #
           #   @param role [Symbol, OpenAI::Models::Admin::Organization::Invite::Role] `owner` or `reader`
           #
@@ -77,9 +77,41 @@ module OpenAI
           #
           #   @param accepted_at [Integer, nil] The Unix timestamp (in seconds) of when the invite was accepted.
           #
-          #   @param projects [Array<OpenAI::Models::Admin::Organization::Invite::Project>] The projects that were granted membership upon acceptance of the invite.
+          #   @param expires_at [Integer, nil] The Unix timestamp (in seconds) of when the invite expires.
           #
           #   @param object [Symbol, :"organization.invite"] The object type, which is always `organization.invite`
+
+          class Project < OpenAI::Internal::Type::BaseModel
+            # @!attribute id
+            #   Project's public ID
+            #
+            #   @return [String]
+            required :id, String
+
+            # @!attribute role
+            #   Project membership role
+            #
+            #   @return [Symbol, OpenAI::Models::Admin::Organization::Invite::Project::Role]
+            required :role, enum: -> { OpenAI::Admin::Organization::Invite::Project::Role }
+
+            # @!method initialize(id:, role:)
+            #   @param id [String] Project's public ID
+            #
+            #   @param role [Symbol, OpenAI::Models::Admin::Organization::Invite::Project::Role] Project membership role
+
+            # Project membership role
+            #
+            # @see OpenAI::Models::Admin::Organization::Invite::Project#role
+            module Role
+              extend OpenAI::Internal::Type::Enum
+
+              MEMBER = :member
+              OWNER = :owner
+
+              # @!method self.values
+              #   @return [Array<Symbol>]
+            end
+          end
 
           # `owner` or `reader`
           #
@@ -106,38 +138,6 @@ module OpenAI
 
             # @!method self.values
             #   @return [Array<Symbol>]
-          end
-
-          class Project < OpenAI::Internal::Type::BaseModel
-            # @!attribute id
-            #   Project's public ID
-            #
-            #   @return [String, nil]
-            optional :id, String
-
-            # @!attribute role
-            #   Project membership role
-            #
-            #   @return [Symbol, OpenAI::Models::Admin::Organization::Invite::Project::Role, nil]
-            optional :role, enum: -> { OpenAI::Admin::Organization::Invite::Project::Role }
-
-            # @!method initialize(id: nil, role: nil)
-            #   @param id [String] Project's public ID
-            #
-            #   @param role [Symbol, OpenAI::Models::Admin::Organization::Invite::Project::Role] Project membership role
-
-            # Project membership role
-            #
-            # @see OpenAI::Models::Admin::Organization::Invite::Project#role
-            module Role
-              extend OpenAI::Internal::Type::Enum
-
-              MEMBER = :member
-              OWNER = :owner
-
-              # @!method self.values
-              #   @return [Array<Symbol>]
-            end
           end
         end
       end

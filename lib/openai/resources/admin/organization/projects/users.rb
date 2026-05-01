@@ -12,13 +12,15 @@ module OpenAI
             # Adds a user to the project. Users must already be members of the organization to
             # be added to a project.
             #
-            # @overload create(project_id, role:, user_id:, request_options: {})
+            # @overload create(project_id, role:, email: nil, user_id: nil, request_options: {})
             #
             # @param project_id [String] The ID of the project.
             #
-            # @param role [Symbol, OpenAI::Models::Admin::Organization::Projects::UserCreateParams::Role] `owner` or `member`
+            # @param role [String] `owner` or `member`
             #
-            # @param user_id [String] The ID of the user.
+            # @param email [String, nil] Email of the user to add.
+            #
+            # @param user_id [String, nil] The ID of the user.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
@@ -67,13 +69,13 @@ module OpenAI
 
             # Modifies a user's role in the project.
             #
-            # @overload update(user_id, project_id:, role:, request_options: {})
+            # @overload update(user_id, project_id:, role: nil, request_options: {})
             #
             # @param user_id [String] Path param: The ID of the user.
             #
             # @param project_id [String] Path param: The ID of the project.
             #
-            # @param role [Symbol, OpenAI::Models::Admin::Organization::Projects::UserUpdateParams::Role] Body param: `owner` or `member`
+            # @param role [String, nil] Body param: `owner` or `member`
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #

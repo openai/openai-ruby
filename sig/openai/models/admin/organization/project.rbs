@@ -6,10 +6,11 @@ module OpenAI
           {
             id: String,
             created_at: Integer,
-            name: String,
             object: :"organization.project",
-            status: OpenAI::Models::Admin::Organization::Project::status,
-            archived_at: Integer?
+            archived_at: Integer?,
+            external_key_id: String?,
+            name: String?,
+            status: String?
           }
 
         class Project < OpenAI::Internal::Type::BaseModel
@@ -17,42 +18,35 @@ module OpenAI
 
           attr_accessor created_at: Integer
 
-          attr_accessor name: String
-
           attr_accessor object: :"organization.project"
 
-          attr_accessor status: OpenAI::Models::Admin::Organization::Project::status
-
           attr_accessor archived_at: Integer?
+
+          attr_accessor external_key_id: String?
+
+          attr_accessor name: String?
+
+          attr_accessor status: String?
 
           def initialize: (
             id: String,
             created_at: Integer,
-            name: String,
-            status: OpenAI::Models::Admin::Organization::Project::status,
             ?archived_at: Integer?,
+            ?external_key_id: String?,
+            ?name: String?,
+            ?status: String?,
             ?object: :"organization.project"
           ) -> void
 
           def to_hash: -> {
             id: String,
             created_at: Integer,
-            name: String,
             object: :"organization.project",
-            status: OpenAI::Models::Admin::Organization::Project::status,
-            archived_at: Integer?
+            archived_at: Integer?,
+            external_key_id: String?,
+            name: String?,
+            status: String?
           }
-
-          type status = :active | :archived
-
-          module Status
-            extend OpenAI::Internal::Type::Enum
-
-            ACTIVE: :active
-            ARCHIVED: :archived
-
-            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Project::status]
-          end
         end
       end
     end
