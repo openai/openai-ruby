@@ -12,11 +12,13 @@ module OpenAI
 
           attr_accessor certificate_id: String
 
-          attr_accessor name: String
+          attr_reader name: String?
+
+          def name=: (String) -> String
 
           def initialize: (
             certificate_id: String,
-            name: String,
+            ?name: String,
             ?request_options: OpenAI::request_opts
           ) -> void
 

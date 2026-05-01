@@ -10,9 +10,9 @@ module OpenAI
           #
           # Organizations can upload up to 50 certificates.
           #
-          # @overload create(content:, name: nil, request_options: {})
+          # @overload create(certificate:, name: nil, request_options: {})
           #
-          # @param content [String] The certificate content in PEM format
+          # @param certificate [String] The certificate content in PEM format
           #
           # @param name [String] An optional name for the certificate
           #
@@ -67,7 +67,7 @@ module OpenAI
 
           # Modify a certificate. Note that only the name can be modified.
           #
-          # @overload update(certificate_id, name:, request_options: {})
+          # @overload update(certificate_id, name: nil, request_options: {})
           #
           # @param certificate_id [String] Unique ID of the certificate to modify.
           #
@@ -78,7 +78,7 @@ module OpenAI
           # @return [OpenAI::Models::Admin::Organization::Certificate]
           #
           # @see OpenAI::Models::Admin::Organization::CertificateUpdateParams
-          def update(certificate_id, params)
+          def update(certificate_id, params = {})
             parsed, options = OpenAI::Admin::Organization::CertificateUpdateParams.dump_request(params)
             @client.request(
               method: :post,
@@ -105,7 +105,7 @@ module OpenAI
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
-          # @return [OpenAI::Internal::ConversationCursorPage<OpenAI::Models::Admin::Organization::Certificate>]
+          # @return [OpenAI::Internal::ConversationCursorPage<OpenAI::Models::Admin::Organization::CertificateListResponse>]
           #
           # @see OpenAI::Models::Admin::Organization::CertificateListParams
           def list(params = {})
@@ -116,7 +116,7 @@ module OpenAI
               path: "organization/certificates",
               query: query,
               page: OpenAI::Internal::ConversationCursorPage,
-              model: OpenAI::Admin::Organization::Certificate,
+              model: OpenAI::Models::Admin::Organization::CertificateListResponse,
               security: {admin_api_key_auth: true},
               options: options
             )
@@ -154,7 +154,7 @@ module OpenAI
           # @param certificate_ids [Array<String>]
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
-          # @return [OpenAI::Internal::Page<OpenAI::Models::Admin::Organization::Certificate>]
+          # @return [OpenAI::Internal::Page<OpenAI::Models::Admin::Organization::CertificateActivateResponse>]
           #
           # @see OpenAI::Models::Admin::Organization::CertificateActivateParams
           def activate(params)
@@ -164,7 +164,7 @@ module OpenAI
               path: "organization/certificates/activate",
               body: parsed,
               page: OpenAI::Internal::Page,
-              model: OpenAI::Admin::Organization::Certificate,
+              model: OpenAI::Models::Admin::Organization::CertificateActivateResponse,
               security: {admin_api_key_auth: true},
               options: options
             )
@@ -179,7 +179,7 @@ module OpenAI
           # @param certificate_ids [Array<String>]
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
-          # @return [OpenAI::Internal::Page<OpenAI::Models::Admin::Organization::Certificate>]
+          # @return [OpenAI::Internal::Page<OpenAI::Models::Admin::Organization::CertificateDeactivateResponse>]
           #
           # @see OpenAI::Models::Admin::Organization::CertificateDeactivateParams
           def deactivate(params)
@@ -189,7 +189,7 @@ module OpenAI
               path: "organization/certificates/deactivate",
               body: parsed,
               page: OpenAI::Internal::Page,
-              model: OpenAI::Admin::Organization::Certificate,
+              model: OpenAI::Models::Admin::Organization::CertificateDeactivateResponse,
               security: {admin_api_key_auth: true},
               options: options
             )

@@ -12,12 +12,6 @@ module OpenAI
           #   @return [String]
           required :id, String
 
-          # @!attribute actor
-          #   The actor who performed the audit logged action.
-          #
-          #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor]
-          required :actor, -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor }
-
           # @!attribute effective_at
           #   The Unix timestamp (in seconds) of the event.
           #
@@ -29,6 +23,12 @@ module OpenAI
           #
           #   @return [Symbol, OpenAI::Models::Admin::Organization::AuditLogListResponse::Type]
           required :type, enum: -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::Type }
+
+          # @!attribute actor
+          #   The actor who performed the audit logged action.
+          #
+          #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor, nil]
+          optional :actor, -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor }, nil?: true
 
           # @!attribute api_key_created
           #   The details for events with this `type`.
@@ -411,7 +411,7 @@ module OpenAI
                    -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated },
                    api_name: :"user.updated"
 
-          # @!method initialize(id:, actor:, effective_at:, type:, api_key_created: nil, api_key_deleted: nil, api_key_updated: nil, certificate_created: nil, certificate_deleted: nil, certificate_updated: nil, certificates_activated: nil, certificates_deactivated: nil, checkpoint_permission_created: nil, checkpoint_permission_deleted: nil, external_key_registered: nil, external_key_removed: nil, group_created: nil, group_deleted: nil, group_updated: nil, invite_accepted: nil, invite_deleted: nil, invite_sent: nil, ip_allowlist_config_activated: nil, ip_allowlist_config_deactivated: nil, ip_allowlist_created: nil, ip_allowlist_deleted: nil, ip_allowlist_updated: nil, login_failed: nil, login_succeeded: nil, logout_failed: nil, logout_succeeded: nil, organization_updated: nil, project: nil, project_archived: nil, project_created: nil, project_deleted: nil, project_updated: nil, rate_limit_deleted: nil, rate_limit_updated: nil, role_assignment_created: nil, role_assignment_deleted: nil, role_created: nil, role_deleted: nil, role_updated: nil, scim_disabled: nil, scim_enabled: nil, service_account_created: nil, service_account_deleted: nil, service_account_updated: nil, user_added: nil, user_deleted: nil, user_updated: nil)
+          # @!method initialize(id:, effective_at:, type:, actor: nil, api_key_created: nil, api_key_deleted: nil, api_key_updated: nil, certificate_created: nil, certificate_deleted: nil, certificate_updated: nil, certificates_activated: nil, certificates_deactivated: nil, checkpoint_permission_created: nil, checkpoint_permission_deleted: nil, external_key_registered: nil, external_key_removed: nil, group_created: nil, group_deleted: nil, group_updated: nil, invite_accepted: nil, invite_deleted: nil, invite_sent: nil, ip_allowlist_config_activated: nil, ip_allowlist_config_deactivated: nil, ip_allowlist_created: nil, ip_allowlist_deleted: nil, ip_allowlist_updated: nil, login_failed: nil, login_succeeded: nil, logout_failed: nil, logout_succeeded: nil, organization_updated: nil, project: nil, project_archived: nil, project_created: nil, project_deleted: nil, project_updated: nil, rate_limit_deleted: nil, rate_limit_updated: nil, role_assignment_created: nil, role_assignment_deleted: nil, role_created: nil, role_deleted: nil, role_updated: nil, scim_disabled: nil, scim_enabled: nil, service_account_created: nil, service_account_deleted: nil, service_account_updated: nil, user_added: nil, user_deleted: nil, user_updated: nil)
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Admin::Organization::AuditLogListResponse} for more details.
           #
@@ -419,11 +419,11 @@ module OpenAI
           #
           #   @param id [String] The ID of this log.
           #
-          #   @param actor [OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor] The actor who performed the audit logged action.
-          #
           #   @param effective_at [Integer] The Unix timestamp (in seconds) of the event.
           #
           #   @param type [Symbol, OpenAI::Models::Admin::Organization::AuditLogListResponse::Type] The event type.
+          #
+          #   @param actor [OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor, nil] The actor who performed the audit logged action.
           #
           #   @param api_key_created [OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyCreated] The details for events with this `type`.
           #
@@ -520,6 +520,68 @@ module OpenAI
           #   @param user_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::UserDeleted] The details for events with this `type`.
           #
           #   @param user_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated] The details for events with this `type`.
+
+          # The event type.
+          #
+          # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#type
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            API_KEY_CREATED = :"api_key.created"
+            API_KEY_UPDATED = :"api_key.updated"
+            API_KEY_DELETED = :"api_key.deleted"
+            CERTIFICATE_CREATED = :"certificate.created"
+            CERTIFICATE_UPDATED = :"certificate.updated"
+            CERTIFICATE_DELETED = :"certificate.deleted"
+            CERTIFICATES_ACTIVATED = :"certificates.activated"
+            CERTIFICATES_DEACTIVATED = :"certificates.deactivated"
+            CHECKPOINT_PERMISSION_CREATED = :"checkpoint.permission.created"
+            CHECKPOINT_PERMISSION_DELETED = :"checkpoint.permission.deleted"
+            EXTERNAL_KEY_REGISTERED = :"external_key.registered"
+            EXTERNAL_KEY_REMOVED = :"external_key.removed"
+            GROUP_CREATED = :"group.created"
+            GROUP_UPDATED = :"group.updated"
+            GROUP_DELETED = :"group.deleted"
+            INVITE_SENT = :"invite.sent"
+            INVITE_ACCEPTED = :"invite.accepted"
+            INVITE_DELETED = :"invite.deleted"
+            IP_ALLOWLIST_CREATED = :"ip_allowlist.created"
+            IP_ALLOWLIST_UPDATED = :"ip_allowlist.updated"
+            IP_ALLOWLIST_DELETED = :"ip_allowlist.deleted"
+            IP_ALLOWLIST_CONFIG_ACTIVATED = :"ip_allowlist.config.activated"
+            IP_ALLOWLIST_CONFIG_DEACTIVATED = :"ip_allowlist.config.deactivated"
+            LOGIN_SUCCEEDED = :"login.succeeded"
+            LOGIN_FAILED = :"login.failed"
+            LOGOUT_SUCCEEDED = :"logout.succeeded"
+            LOGOUT_FAILED = :"logout.failed"
+            ORGANIZATION_UPDATED = :"organization.updated"
+            PROJECT_CREATED = :"project.created"
+            PROJECT_UPDATED = :"project.updated"
+            PROJECT_ARCHIVED = :"project.archived"
+            PROJECT_DELETED = :"project.deleted"
+            RATE_LIMIT_UPDATED = :"rate_limit.updated"
+            RATE_LIMIT_DELETED = :"rate_limit.deleted"
+            RESOURCE_DELETED = :"resource.deleted"
+            TUNNEL_CREATED = :"tunnel.created"
+            TUNNEL_UPDATED = :"tunnel.updated"
+            TUNNEL_DELETED = :"tunnel.deleted"
+            ROLE_CREATED = :"role.created"
+            ROLE_UPDATED = :"role.updated"
+            ROLE_DELETED = :"role.deleted"
+            ROLE_ASSIGNMENT_CREATED = :"role.assignment.created"
+            ROLE_ASSIGNMENT_DELETED = :"role.assignment.deleted"
+            SCIM_ENABLED = :"scim.enabled"
+            SCIM_DISABLED = :"scim.disabled"
+            SERVICE_ACCOUNT_CREATED = :"service_account.created"
+            SERVICE_ACCOUNT_UPDATED = :"service_account.updated"
+            SERVICE_ACCOUNT_DELETED = :"service_account.deleted"
+            USER_ADDED = :"user.added"
+            USER_UPDATED = :"user.updated"
+            USER_DELETED = :"user.deleted"
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#actor
           class Actor < OpenAI::Internal::Type::BaseModel
@@ -695,68 +757,6 @@ module OpenAI
               # @!method self.values
               #   @return [Array<Symbol>]
             end
-          end
-
-          # The event type.
-          #
-          # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#type
-          module Type
-            extend OpenAI::Internal::Type::Enum
-
-            API_KEY_CREATED = :"api_key.created"
-            API_KEY_UPDATED = :"api_key.updated"
-            API_KEY_DELETED = :"api_key.deleted"
-            CERTIFICATE_CREATED = :"certificate.created"
-            CERTIFICATE_UPDATED = :"certificate.updated"
-            CERTIFICATE_DELETED = :"certificate.deleted"
-            CERTIFICATES_ACTIVATED = :"certificates.activated"
-            CERTIFICATES_DEACTIVATED = :"certificates.deactivated"
-            CHECKPOINT_PERMISSION_CREATED = :"checkpoint.permission.created"
-            CHECKPOINT_PERMISSION_DELETED = :"checkpoint.permission.deleted"
-            EXTERNAL_KEY_REGISTERED = :"external_key.registered"
-            EXTERNAL_KEY_REMOVED = :"external_key.removed"
-            GROUP_CREATED = :"group.created"
-            GROUP_UPDATED = :"group.updated"
-            GROUP_DELETED = :"group.deleted"
-            INVITE_SENT = :"invite.sent"
-            INVITE_ACCEPTED = :"invite.accepted"
-            INVITE_DELETED = :"invite.deleted"
-            IP_ALLOWLIST_CREATED = :"ip_allowlist.created"
-            IP_ALLOWLIST_UPDATED = :"ip_allowlist.updated"
-            IP_ALLOWLIST_DELETED = :"ip_allowlist.deleted"
-            IP_ALLOWLIST_CONFIG_ACTIVATED = :"ip_allowlist.config.activated"
-            IP_ALLOWLIST_CONFIG_DEACTIVATED = :"ip_allowlist.config.deactivated"
-            LOGIN_SUCCEEDED = :"login.succeeded"
-            LOGIN_FAILED = :"login.failed"
-            LOGOUT_SUCCEEDED = :"logout.succeeded"
-            LOGOUT_FAILED = :"logout.failed"
-            ORGANIZATION_UPDATED = :"organization.updated"
-            PROJECT_CREATED = :"project.created"
-            PROJECT_UPDATED = :"project.updated"
-            PROJECT_ARCHIVED = :"project.archived"
-            PROJECT_DELETED = :"project.deleted"
-            RATE_LIMIT_UPDATED = :"rate_limit.updated"
-            RATE_LIMIT_DELETED = :"rate_limit.deleted"
-            RESOURCE_DELETED = :"resource.deleted"
-            TUNNEL_CREATED = :"tunnel.created"
-            TUNNEL_UPDATED = :"tunnel.updated"
-            TUNNEL_DELETED = :"tunnel.deleted"
-            ROLE_CREATED = :"role.created"
-            ROLE_UPDATED = :"role.updated"
-            ROLE_DELETED = :"role.deleted"
-            ROLE_ASSIGNMENT_CREATED = :"role.assignment.created"
-            ROLE_ASSIGNMENT_DELETED = :"role.assignment.deleted"
-            SCIM_ENABLED = :"scim.enabled"
-            SCIM_DISABLED = :"scim.disabled"
-            SERVICE_ACCOUNT_CREATED = :"service_account.created"
-            SERVICE_ACCOUNT_UPDATED = :"service_account.updated"
-            SERVICE_ACCOUNT_DELETED = :"service_account.deleted"
-            USER_ADDED = :"user.added"
-            USER_UPDATED = :"user.updated"
-            USER_DELETED = :"user.deleted"
-
-            # @!method self.values
-            #   @return [Array<Symbol>]
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#api_key_created

@@ -28,7 +28,7 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::Groups::RolesTest 
     response = @openai.admin.organization.projects.groups.roles.list("group_id", project_id: "project_id")
 
     assert_pattern do
-      response => OpenAI::Internal::CursorPage
+      response => OpenAI::Internal::NextCursorPage
     end
 
     row = response.to_enum.first

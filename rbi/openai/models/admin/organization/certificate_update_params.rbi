@@ -20,8 +20,11 @@ module OpenAI
           attr_accessor :certificate_id
 
           # The updated name for the certificate
-          sig { returns(String) }
-          attr_accessor :name
+          sig { returns(T.nilable(String)) }
+          attr_reader :name
+
+          sig { params(name: String).void }
+          attr_writer :name
 
           sig do
             params(
@@ -33,7 +36,7 @@ module OpenAI
           def self.new(
             certificate_id:,
             # The updated name for the certificate
-            name:,
+            name: nil,
             request_options: {}
           )
           end

@@ -11,14 +11,14 @@ module OpenAI
           # Organizations can upload up to 50 certificates.
           sig do
             params(
-              content: String,
+              certificate: String,
               name: String,
               request_options: OpenAI::RequestOptions::OrHash
             ).returns(OpenAI::Admin::Organization::Certificate)
           end
           def create(
             # The certificate content in PEM format
-            content:,
+            certificate:,
             # An optional name for the certificate
             name: nil,
             request_options: {}
@@ -60,7 +60,7 @@ module OpenAI
             # Unique ID of the certificate to modify.
             certificate_id,
             # The updated name for the certificate
-            name:,
+            name: nil,
             request_options: {}
           )
           end
@@ -75,7 +75,7 @@ module OpenAI
               request_options: OpenAI::RequestOptions::OrHash
             ).returns(
               OpenAI::Internal::ConversationCursorPage[
-                OpenAI::Admin::Organization::Certificate
+                OpenAI::Models::Admin::Organization::CertificateListResponse
               ]
             )
           end
@@ -121,7 +121,9 @@ module OpenAI
               certificate_ids: T::Array[String],
               request_options: OpenAI::RequestOptions::OrHash
             ).returns(
-              OpenAI::Internal::Page[OpenAI::Admin::Organization::Certificate]
+              OpenAI::Internal::Page[
+                OpenAI::Models::Admin::Organization::CertificateActivateResponse
+              ]
             )
           end
           def activate(certificate_ids:, request_options: {})
@@ -135,7 +137,9 @@ module OpenAI
               certificate_ids: T::Array[String],
               request_options: OpenAI::RequestOptions::OrHash
             ).returns(
-              OpenAI::Internal::Page[OpenAI::Admin::Organization::Certificate]
+              OpenAI::Internal::Page[
+                OpenAI::Models::Admin::Organization::CertificateDeactivateResponse
+              ]
             )
           end
           def deactivate(certificate_ids:, request_options: {})

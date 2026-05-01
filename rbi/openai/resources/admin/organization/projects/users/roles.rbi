@@ -40,7 +40,7 @@ module OpenAI
                     OpenAI::Admin::Organization::Projects::Users::RoleListParams::Order::OrSymbol,
                   request_options: OpenAI::RequestOptions::OrHash
                 ).returns(
-                  OpenAI::Internal::CursorPage[
+                  OpenAI::Internal::NextCursorPage[
                     OpenAI::Models::Admin::Organization::Projects::Users::RoleListResponse
                   ]
                 )

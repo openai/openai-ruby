@@ -14,17 +14,17 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::CertificatesTest <
     return if row.nil?
 
     assert_pattern do
-      row => OpenAI::Admin::Organization::Certificate
+      row => OpenAI::Models::Admin::Organization::Projects::CertificateListResponse
     end
 
     assert_pattern do
       row => {
         id: String,
-        certificate_details: OpenAI::Admin::Organization::Certificate::CertificateDetails,
+        active: OpenAI::Internal::Type::Boolean,
+        certificate_details: OpenAI::Models::Admin::Organization::Projects::CertificateListResponse::CertificateDetails,
         created_at: Integer,
-        name: String,
-        object: OpenAI::Admin::Organization::Certificate::Object,
-        active: OpenAI::Internal::Type::Boolean | nil
+        name: String | nil,
+        object: Symbol
       }
     end
   end
@@ -41,17 +41,17 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::CertificatesTest <
     return if row.nil?
 
     assert_pattern do
-      row => OpenAI::Admin::Organization::Certificate
+      row => OpenAI::Models::Admin::Organization::Projects::CertificateActivateResponse
     end
 
     assert_pattern do
       row => {
         id: String,
-        certificate_details: OpenAI::Admin::Organization::Certificate::CertificateDetails,
+        active: OpenAI::Internal::Type::Boolean,
+        certificate_details: OpenAI::Models::Admin::Organization::Projects::CertificateActivateResponse::CertificateDetails,
         created_at: Integer,
-        name: String,
-        object: OpenAI::Admin::Organization::Certificate::Object,
-        active: OpenAI::Internal::Type::Boolean | nil
+        name: String | nil,
+        object: Symbol
       }
     end
   end
@@ -68,17 +68,17 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::CertificatesTest <
     return if row.nil?
 
     assert_pattern do
-      row => OpenAI::Admin::Organization::Certificate
+      row => OpenAI::Models::Admin::Organization::Projects::CertificateDeactivateResponse
     end
 
     assert_pattern do
       row => {
         id: String,
-        certificate_details: OpenAI::Admin::Organization::Certificate::CertificateDetails,
+        active: OpenAI::Internal::Type::Boolean,
+        certificate_details: OpenAI::Models::Admin::Organization::Projects::CertificateDeactivateResponse::CertificateDetails,
         created_at: Integer,
-        name: String,
-        object: OpenAI::Admin::Organization::Certificate::Object,
-        active: OpenAI::Internal::Type::Boolean | nil
+        name: String | nil,
+        object: Symbol
       }
     end
   end

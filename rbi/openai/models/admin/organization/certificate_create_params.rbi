@@ -18,7 +18,7 @@ module OpenAI
 
           # The certificate content in PEM format
           sig { returns(String) }
-          attr_accessor :content
+          attr_accessor :certificate
 
           # An optional name for the certificate
           sig { returns(T.nilable(String)) }
@@ -29,14 +29,14 @@ module OpenAI
 
           sig do
             params(
-              content: String,
+              certificate: String,
               name: String,
               request_options: OpenAI::RequestOptions::OrHash
             ).returns(T.attached_class)
           end
           def self.new(
             # The certificate content in PEM format
-            content:,
+            certificate:,
             # An optional name for the certificate
             name: nil,
             request_options: {}
@@ -46,7 +46,7 @@ module OpenAI
           sig do
             override.returns(
               {
-                content: String,
+                certificate: String,
                 name: String,
                 request_options: OpenAI::RequestOptions
               }

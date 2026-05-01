@@ -13,7 +13,7 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::ServiceAccountsTes
     assert_pattern do
       response => {
         id: String,
-        api_key: OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey,
+        api_key: OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey | nil,
         created_at: Integer,
         name: String,
         object: Symbol,

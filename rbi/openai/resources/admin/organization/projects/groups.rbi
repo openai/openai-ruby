@@ -43,7 +43,7 @@ module OpenAI
                   OpenAI::Admin::Organization::Projects::GroupListParams::Order::OrSymbol,
                 request_options: OpenAI::RequestOptions::OrHash
               ).returns(
-                OpenAI::Internal::CursorPage[
+                OpenAI::Internal::NextCursorPage[
                   OpenAI::Admin::Organization::Projects::ProjectGroup
                 ]
               )

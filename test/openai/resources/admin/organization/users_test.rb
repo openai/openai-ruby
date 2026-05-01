@@ -22,8 +22,8 @@ class OpenAI::Test::Resources::Admin::Organization::UsersTest < OpenAI::Test::Re
     end
   end
 
-  def test_update_required_params
-    response = @openai.admin.organization.users.update("user_id", role: :owner)
+  def test_update
+    response = @openai.admin.organization.users.update("user_id")
 
     assert_pattern do
       response => OpenAI::Admin::Organization::OrganizationUser

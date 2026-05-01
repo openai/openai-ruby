@@ -5,7 +5,7 @@ module OpenAI
         class Projects
           class APIKeys
             def retrieve: (
-              String key_id,
+              String api_key_id,
               project_id: String,
               ?request_options: OpenAI::request_opts
             ) -> OpenAI::Admin::Organization::Projects::ProjectAPIKey
@@ -18,7 +18,7 @@ module OpenAI
             ) -> OpenAI::Internal::ConversationCursorPage[OpenAI::Admin::Organization::Projects::ProjectAPIKey]
 
             def delete: (
-              String key_id,
+              String api_key_id,
               project_id: String,
               ?request_options: OpenAI::request_opts
             ) -> OpenAI::Models::Admin::Organization::Projects::APIKeyDeleteResponse

@@ -1,0 +1,65 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type certificate_list_response =
+          {
+            id: String,
+            active: bool,
+            certificate_details: OpenAI::Models::Admin::Organization::CertificateListResponse::CertificateDetails,
+            created_at: Integer,
+            name: String?,
+            object: :"organization.certificate"
+          }
+
+        class CertificateListResponse < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor active: bool
+
+          attr_accessor certificate_details: OpenAI::Models::Admin::Organization::CertificateListResponse::CertificateDetails
+
+          attr_accessor created_at: Integer
+
+          attr_accessor name: String?
+
+          attr_accessor object: :"organization.certificate"
+
+          def initialize: (
+            id: String,
+            active: bool,
+            certificate_details: OpenAI::Models::Admin::Organization::CertificateListResponse::CertificateDetails,
+            created_at: Integer,
+            name: String?,
+            ?object: :"organization.certificate"
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            active: bool,
+            certificate_details: OpenAI::Models::Admin::Organization::CertificateListResponse::CertificateDetails,
+            created_at: Integer,
+            name: String?,
+            object: :"organization.certificate"
+          }
+
+          type certificate_details = { expires_at: Integer, valid_at: Integer }
+
+          class CertificateDetails < OpenAI::Internal::Type::BaseModel
+            attr_reader expires_at: Integer?
+
+            def expires_at=: (Integer) -> Integer
+
+            attr_reader valid_at: Integer?
+
+            def valid_at=: (Integer) -> Integer
+
+            def initialize: (?expires_at: Integer, ?valid_at: Integer) -> void
+
+            def to_hash: -> { expires_at: Integer, valid_at: Integer }
+          end
+        end
+      end
+    end
+  end
+end

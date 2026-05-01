@@ -51,7 +51,9 @@ module OpenAI
                 OpenAI::Admin::Organization::GroupListParams::Order::OrSymbol,
               request_options: OpenAI::RequestOptions::OrHash
             ).returns(
-              OpenAI::Internal::CursorPage[OpenAI::Admin::Organization::Group]
+              OpenAI::Internal::NextCursorPage[
+                OpenAI::Admin::Organization::Group
+              ]
             )
           end
           def list(

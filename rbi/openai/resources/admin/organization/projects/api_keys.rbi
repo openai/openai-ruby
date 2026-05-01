@@ -9,14 +9,14 @@ module OpenAI
             # Retrieves an API key in the project.
             sig do
               params(
-                key_id: String,
+                api_key_id: String,
                 project_id: String,
                 request_options: OpenAI::RequestOptions::OrHash
               ).returns(OpenAI::Admin::Organization::Projects::ProjectAPIKey)
             end
             def retrieve(
               # The ID of the API key.
-              key_id,
+              api_key_id,
               # The ID of the project.
               project_id:,
               request_options: {}
@@ -57,7 +57,7 @@ module OpenAI
             # service account.
             sig do
               params(
-                key_id: String,
+                api_key_id: String,
                 project_id: String,
                 request_options: OpenAI::RequestOptions::OrHash
               ).returns(
@@ -66,7 +66,7 @@ module OpenAI
             end
             def delete(
               # The ID of the API key.
-              key_id,
+              api_key_id,
               # The ID of the project.
               project_id:,
               request_options: {}

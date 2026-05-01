@@ -12,6 +12,12 @@ module OpenAI
           #   @return [String]
           required :id, String
 
+          # @!attribute created_at
+          #   The Unix timestamp (in seconds) of when the invite was sent.
+          #
+          #   @return [Integer]
+          required :created_at, Integer
+
           # @!attribute email
           #   The email address of the individual to whom the invite was sent
           #
@@ -21,14 +27,8 @@ module OpenAI
           # @!attribute expires_at
           #   The Unix timestamp (in seconds) of when the invite expires.
           #
-          #   @return [Integer]
-          required :expires_at, Integer
-
-          # @!attribute invited_at
-          #   The Unix timestamp (in seconds) of when the invite was sent.
-          #
-          #   @return [Integer]
-          required :invited_at, Integer
+          #   @return [Integer, nil]
+          required :expires_at, Integer, nil?: true
 
           # @!attribute object
           #   The object type, which is always `organization.invite`
@@ -52,7 +52,7 @@ module OpenAI
           #   The Unix timestamp (in seconds) of when the invite was accepted.
           #
           #   @return [Integer, nil]
-          optional :accepted_at, Integer
+          optional :accepted_at, Integer, nil?: true
 
           # @!attribute projects
           #   The projects that were granted membership upon acceptance of the invite.
@@ -60,22 +60,22 @@ module OpenAI
           #   @return [Array<OpenAI::Models::Admin::Organization::Invite::Project>, nil]
           optional :projects, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Admin::Organization::Invite::Project] }
 
-          # @!method initialize(id:, email:, expires_at:, invited_at:, role:, status:, accepted_at: nil, projects: nil, object: :"organization.invite")
+          # @!method initialize(id:, created_at:, email:, expires_at:, role:, status:, accepted_at: nil, projects: nil, object: :"organization.invite")
           #   Represents an individual `invite` to the organization.
           #
           #   @param id [String] The identifier, which can be referenced in API endpoints
           #
+          #   @param created_at [Integer] The Unix timestamp (in seconds) of when the invite was sent.
+          #
           #   @param email [String] The email address of the individual to whom the invite was sent
           #
-          #   @param expires_at [Integer] The Unix timestamp (in seconds) of when the invite expires.
-          #
-          #   @param invited_at [Integer] The Unix timestamp (in seconds) of when the invite was sent.
+          #   @param expires_at [Integer, nil] The Unix timestamp (in seconds) of when the invite expires.
           #
           #   @param role [Symbol, OpenAI::Models::Admin::Organization::Invite::Role] `owner` or `reader`
           #
           #   @param status [Symbol, OpenAI::Models::Admin::Organization::Invite::Status] `accepted`,`expired`, or `pending`
           #
-          #   @param accepted_at [Integer] The Unix timestamp (in seconds) of when the invite was accepted.
+          #   @param accepted_at [Integer, nil] The Unix timestamp (in seconds) of when the invite was accepted.
           #
           #   @param projects [Array<OpenAI::Models::Admin::Organization::Invite::Project>] The projects that were granted membership upon acceptance of the invite.
           #

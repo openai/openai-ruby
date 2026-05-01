@@ -6,7 +6,7 @@ module OpenAI
           def create: (
             name: String,
             ?request_options: OpenAI::request_opts
-          ) -> OpenAI::Admin::Organization::AdminAPIKey
+          ) -> OpenAI::Models::Admin::Organization::AdminAPIKeyCreateResponse
 
           def retrieve: (
             String key_id,

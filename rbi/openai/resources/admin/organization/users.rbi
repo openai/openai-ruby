@@ -35,7 +35,7 @@ module OpenAI
             # The ID of the user.
             user_id,
             # `owner` or `reader`
-            role:,
+            role: nil,
             request_options: {}
           )
           end

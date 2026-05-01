@@ -17,17 +17,17 @@ module OpenAI
           sig { returns(String) }
           attr_accessor :id
 
+          # The Unix timestamp (in seconds) of when the invite was sent.
+          sig { returns(Integer) }
+          attr_accessor :created_at
+
           # The email address of the individual to whom the invite was sent
           sig { returns(String) }
           attr_accessor :email
 
           # The Unix timestamp (in seconds) of when the invite expires.
-          sig { returns(Integer) }
+          sig { returns(T.nilable(Integer)) }
           attr_accessor :expires_at
-
-          # The Unix timestamp (in seconds) of when the invite was sent.
-          sig { returns(Integer) }
-          attr_accessor :invited_at
 
           # The object type, which is always `organization.invite`
           sig { returns(Symbol) }
@@ -47,10 +47,7 @@ module OpenAI
 
           # The Unix timestamp (in seconds) of when the invite was accepted.
           sig { returns(T.nilable(Integer)) }
-          attr_reader :accepted_at
-
-          sig { params(accepted_at: Integer).void }
-          attr_writer :accepted_at
+          attr_accessor :accepted_at
 
           # The projects that were granted membership upon acceptance of the invite.
           sig do
@@ -72,12 +69,12 @@ module OpenAI
           sig do
             params(
               id: String,
+              created_at: Integer,
               email: String,
-              expires_at: Integer,
-              invited_at: Integer,
+              expires_at: T.nilable(Integer),
               role: OpenAI::Admin::Organization::Invite::Role::OrSymbol,
               status: OpenAI::Admin::Organization::Invite::Status::OrSymbol,
-              accepted_at: Integer,
+              accepted_at: T.nilable(Integer),
               projects:
                 T::Array[OpenAI::Admin::Organization::Invite::Project::OrHash],
               object: Symbol
@@ -86,12 +83,12 @@ module OpenAI
           def self.new(
             # The identifier, which can be referenced in API endpoints
             id:,
+            # The Unix timestamp (in seconds) of when the invite was sent.
+            created_at:,
             # The email address of the individual to whom the invite was sent
             email:,
             # The Unix timestamp (in seconds) of when the invite expires.
             expires_at:,
-            # The Unix timestamp (in seconds) of when the invite was sent.
-            invited_at:,
             # `owner` or `reader`
             role:,
             # `accepted`,`expired`, or `pending`
@@ -109,14 +106,14 @@ module OpenAI
             override.returns(
               {
                 id: String,
+                created_at: Integer,
                 email: String,
-                expires_at: Integer,
-                invited_at: Integer,
+                expires_at: T.nilable(Integer),
                 object: Symbol,
                 role: OpenAI::Admin::Organization::Invite::Role::TaggedSymbol,
                 status:
                   OpenAI::Admin::Organization::Invite::Status::TaggedSymbol,
-                accepted_at: Integer,
+                accepted_at: T.nilable(Integer),
                 projects: T::Array[OpenAI::Admin::Organization::Invite::Project]
               }
             )

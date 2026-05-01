@@ -22,10 +22,20 @@ module OpenAI
           # `owner` or `reader`
           sig do
             returns(
-              OpenAI::Admin::Organization::UserUpdateParams::Role::OrSymbol
+              T.nilable(
+                OpenAI::Admin::Organization::UserUpdateParams::Role::OrSymbol
+              )
             )
           end
-          attr_accessor :role
+          attr_reader :role
+
+          sig do
+            params(
+              role:
+                OpenAI::Admin::Organization::UserUpdateParams::Role::OrSymbol
+            ).void
+          end
+          attr_writer :role
 
           sig do
             params(
@@ -38,7 +48,7 @@ module OpenAI
           def self.new(
             user_id:,
             # `owner` or `reader`
-            role:,
+            role: nil,
             request_options: {}
           )
           end

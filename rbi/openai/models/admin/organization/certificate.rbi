@@ -37,7 +37,7 @@ module OpenAI
           attr_accessor :created_at
 
           # The name of the certificate.
-          sig { returns(String) }
+          sig { returns(T.nilable(String)) }
           attr_accessor :name
 
           # The object type.
@@ -70,7 +70,7 @@ module OpenAI
               certificate_details:
                 OpenAI::Admin::Organization::Certificate::CertificateDetails::OrHash,
               created_at: Integer,
-              name: String,
+              name: T.nilable(String),
               object:
                 OpenAI::Admin::Organization::Certificate::Object::OrSymbol,
               active: T::Boolean
@@ -106,7 +106,7 @@ module OpenAI
                 certificate_details:
                   OpenAI::Admin::Organization::Certificate::CertificateDetails,
                 created_at: Integer,
-                name: String,
+                name: T.nilable(String),
                 object:
                   OpenAI::Admin::Organization::Certificate::Object::TaggedSymbol,
                 active: T::Boolean

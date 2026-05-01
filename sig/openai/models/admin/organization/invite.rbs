@@ -5,24 +5,24 @@ module OpenAI
         type invite =
           {
             id: String,
+            created_at: Integer,
             email: String,
-            expires_at: Integer,
-            invited_at: Integer,
+            expires_at: Integer?,
             object: :"organization.invite",
             role: OpenAI::Models::Admin::Organization::Invite::role,
             status: OpenAI::Models::Admin::Organization::Invite::status,
-            accepted_at: Integer,
+            accepted_at: Integer?,
             projects: ::Array[OpenAI::Admin::Organization::Invite::Project]
           }
 
         class Invite < OpenAI::Internal::Type::BaseModel
           attr_accessor id: String
 
+          attr_accessor created_at: Integer
+
           attr_accessor email: String
 
-          attr_accessor expires_at: Integer
-
-          attr_accessor invited_at: Integer
+          attr_accessor expires_at: Integer?
 
           attr_accessor object: :"organization.invite"
 
@@ -30,9 +30,7 @@ module OpenAI
 
           attr_accessor status: OpenAI::Models::Admin::Organization::Invite::status
 
-          attr_reader accepted_at: Integer?
-
-          def accepted_at=: (Integer) -> Integer
+          attr_accessor accepted_at: Integer?
 
           attr_reader projects: ::Array[OpenAI::Admin::Organization::Invite::Project]?
 
@@ -42,25 +40,25 @@ module OpenAI
 
           def initialize: (
             id: String,
+            created_at: Integer,
             email: String,
-            expires_at: Integer,
-            invited_at: Integer,
+            expires_at: Integer?,
             role: OpenAI::Models::Admin::Organization::Invite::role,
             status: OpenAI::Models::Admin::Organization::Invite::status,
-            ?accepted_at: Integer,
+            ?accepted_at: Integer?,
             ?projects: ::Array[OpenAI::Admin::Organization::Invite::Project],
             ?object: :"organization.invite"
           ) -> void
 
           def to_hash: -> {
             id: String,
+            created_at: Integer,
             email: String,
-            expires_at: Integer,
-            invited_at: Integer,
+            expires_at: Integer?,
             object: :"organization.invite",
             role: OpenAI::Models::Admin::Organization::Invite::role,
             status: OpenAI::Models::Admin::Organization::Invite::status,
-            accepted_at: Integer,
+            accepted_at: Integer?,
             projects: ::Array[OpenAI::Admin::Organization::Invite::Project]
           }
 
