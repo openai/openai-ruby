@@ -21,6 +21,10 @@ module OpenAI
           sig { returns(Integer) }
           attr_accessor :created_at
 
+          # The type of the group.
+          sig { returns(String) }
+          attr_accessor :group_type
+
           # Whether the group is managed through SCIM and controlled by your identity
           # provider.
           sig { returns(T::Boolean) }
@@ -35,6 +39,7 @@ module OpenAI
             params(
               id: String,
               created_at: Integer,
+              group_type: String,
               is_scim_managed: T::Boolean,
               name: String
             ).returns(T.attached_class)
@@ -44,6 +49,8 @@ module OpenAI
             id:,
             # Unix timestamp (in seconds) when the group was created.
             created_at:,
+            # The type of the group.
+            group_type:,
             # Whether the group is managed through SCIM and controlled by your identity
             # provider.
             is_scim_managed:,
@@ -57,6 +64,7 @@ module OpenAI
               {
                 id: String,
                 created_at: Integer,
+                group_type: String,
                 is_scim_managed: T::Boolean,
                 name: String
               }

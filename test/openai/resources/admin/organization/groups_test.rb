@@ -14,6 +14,7 @@ class OpenAI::Test::Resources::Admin::Organization::GroupsTest < OpenAI::Test::R
       response => {
         id: String,
         created_at: Integer,
+        group_type: String,
         is_scim_managed: OpenAI::Internal::Type::Boolean,
         name: String
       }
@@ -55,6 +56,7 @@ class OpenAI::Test::Resources::Admin::Organization::GroupsTest < OpenAI::Test::R
       row => {
         id: String,
         created_at: Integer,
+        group_type: String,
         is_scim_managed: OpenAI::Internal::Type::Boolean,
         name: String
       }

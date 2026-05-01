@@ -19,7 +19,8 @@ module OpenAI
 
           def create: (
             name: String,
-            ?geography: OpenAI::Models::Admin::Organization::ProjectCreateParams::geography,
+            ?external_key_id: String?,
+            ?geography: String?,
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Admin::Organization::Project
 
@@ -30,7 +31,9 @@ module OpenAI
 
           def update: (
             String project_id,
-            name: String,
+            ?external_key_id: String?,
+            ?geography: String?,
+            ?name: String?,
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Admin::Organization::Project
 

@@ -3,7 +3,12 @@ module OpenAI
     module Admin
       module Organization
         type project_update_params =
-          { project_id: String, name: String }
+          {
+            project_id: String,
+            external_key_id: String?,
+            geography: String?,
+            name: String?
+          }
           & OpenAI::Internal::Type::request_parameters
 
         class ProjectUpdateParams < OpenAI::Internal::Type::BaseModel
@@ -12,17 +17,25 @@ module OpenAI
 
           attr_accessor project_id: String
 
-          attr_accessor name: String
+          attr_accessor external_key_id: String?
+
+          attr_accessor geography: String?
+
+          attr_accessor name: String?
 
           def initialize: (
             project_id: String,
-            name: String,
+            ?external_key_id: String?,
+            ?geography: String?,
+            ?name: String?,
             ?request_options: OpenAI::request_opts
           ) -> void
 
           def to_hash: -> {
             project_id: String,
-            name: String,
+            external_key_id: String?,
+            geography: String?,
+            name: String?,
             request_options: OpenAI::RequestOptions
           }
         end

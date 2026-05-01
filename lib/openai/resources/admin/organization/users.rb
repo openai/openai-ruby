@@ -31,11 +31,17 @@ module OpenAI
 
           # Modifies a user's role in the organization.
           #
-          # @overload update(user_id, role: nil, request_options: {})
+          # @overload update(user_id, developer_persona: nil, role: nil, role_id: nil, technical_level: nil, request_options: {})
           #
           # @param user_id [String] The ID of the user.
           #
-          # @param role [Symbol, OpenAI::Models::Admin::Organization::UserUpdateParams::Role] `owner` or `reader`
+          # @param developer_persona [String, nil] Developer persona metadata.
+          #
+          # @param role [String, nil] `owner` or `reader`
+          #
+          # @param role_id [String, nil] Role ID to assign to the user.
+          #
+          # @param technical_level [String, nil] Technical level metadata.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #

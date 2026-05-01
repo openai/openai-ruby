@@ -18,6 +18,12 @@ module OpenAI
           #   @return [Integer]
           required :created_at, Integer
 
+          # @!attribute group_type
+          #   The type of the group.
+          #
+          #   @return [String]
+          required :group_type, String
+
           # @!attribute is_scim_managed
           #   Whether the group is managed through SCIM and controlled by your identity
           #   provider.
@@ -31,7 +37,7 @@ module OpenAI
           #   @return [String]
           required :name, String
 
-          # @!method initialize(id:, created_at:, is_scim_managed:, name:)
+          # @!method initialize(id:, created_at:, group_type:, is_scim_managed:, name:)
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Admin::Organization::Group} for more details.
           #
@@ -40,6 +46,8 @@ module OpenAI
           #   @param id [String] Identifier for the group.
           #
           #   @param created_at [Integer] Unix timestamp (in seconds) when the group was created.
+          #
+          #   @param group_type [String] The type of the group.
           #
           #   @param is_scim_managed [Boolean] Whether the group is managed through SCIM and controlled by your identity provid
           #

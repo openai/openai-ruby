@@ -5,7 +5,10 @@ module OpenAI
         type user_update_params =
           {
             user_id: String,
-            role: OpenAI::Models::Admin::Organization::UserUpdateParams::role
+            developer_persona: String?,
+            role: String?,
+            role_id: String?,
+            technical_level: String?
           }
           & OpenAI::Internal::Type::request_parameters
 
@@ -15,34 +18,31 @@ module OpenAI
 
           attr_accessor user_id: String
 
-          attr_reader role: OpenAI::Models::Admin::Organization::UserUpdateParams::role?
+          attr_accessor developer_persona: String?
 
-          def role=: (
-            OpenAI::Models::Admin::Organization::UserUpdateParams::role
-          ) -> OpenAI::Models::Admin::Organization::UserUpdateParams::role
+          attr_accessor role: String?
+
+          attr_accessor role_id: String?
+
+          attr_accessor technical_level: String?
 
           def initialize: (
             user_id: String,
-            ?role: OpenAI::Models::Admin::Organization::UserUpdateParams::role,
+            ?developer_persona: String?,
+            ?role: String?,
+            ?role_id: String?,
+            ?technical_level: String?,
             ?request_options: OpenAI::request_opts
           ) -> void
 
           def to_hash: -> {
             user_id: String,
-            role: OpenAI::Models::Admin::Organization::UserUpdateParams::role,
+            developer_persona: String?,
+            role: String?,
+            role_id: String?,
+            technical_level: String?,
             request_options: OpenAI::RequestOptions
           }
-
-          type role = :owner | :reader
-
-          module Role
-            extend OpenAI::Internal::Type::Enum
-
-            OWNER: :owner
-            READER: :reader
-
-            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::UserUpdateParams::role]
-          end
         end
       end
     end

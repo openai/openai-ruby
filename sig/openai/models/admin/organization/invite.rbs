@@ -7,12 +7,12 @@ module OpenAI
             id: String,
             created_at: Integer,
             email: String,
-            expires_at: Integer?,
             object: :"organization.invite",
+            projects: ::Array[OpenAI::Admin::Organization::Invite::Project],
             role: OpenAI::Models::Admin::Organization::Invite::role,
             status: OpenAI::Models::Admin::Organization::Invite::status,
             accepted_at: Integer?,
-            projects: ::Array[OpenAI::Admin::Organization::Invite::Project]
+            expires_at: Integer?
           }
 
         class Invite < OpenAI::Internal::Type::BaseModel
@@ -22,9 +22,9 @@ module OpenAI
 
           attr_accessor email: String
 
-          attr_accessor expires_at: Integer?
-
           attr_accessor object: :"organization.invite"
+
+          attr_accessor projects: ::Array[OpenAI::Admin::Organization::Invite::Project]
 
           attr_accessor role: OpenAI::Models::Admin::Organization::Invite::role
 
@@ -32,21 +32,17 @@ module OpenAI
 
           attr_accessor accepted_at: Integer?
 
-          attr_reader projects: ::Array[OpenAI::Admin::Organization::Invite::Project]?
-
-          def projects=: (
-            ::Array[OpenAI::Admin::Organization::Invite::Project]
-          ) -> ::Array[OpenAI::Admin::Organization::Invite::Project]
+          attr_accessor expires_at: Integer?
 
           def initialize: (
             id: String,
             created_at: Integer,
             email: String,
-            expires_at: Integer?,
+            projects: ::Array[OpenAI::Admin::Organization::Invite::Project],
             role: OpenAI::Models::Admin::Organization::Invite::role,
             status: OpenAI::Models::Admin::Organization::Invite::status,
             ?accepted_at: Integer?,
-            ?projects: ::Array[OpenAI::Admin::Organization::Invite::Project],
+            ?expires_at: Integer?,
             ?object: :"organization.invite"
           ) -> void
 
@@ -54,13 +50,46 @@ module OpenAI
             id: String,
             created_at: Integer,
             email: String,
-            expires_at: Integer?,
             object: :"organization.invite",
+            projects: ::Array[OpenAI::Admin::Organization::Invite::Project],
             role: OpenAI::Models::Admin::Organization::Invite::role,
             status: OpenAI::Models::Admin::Organization::Invite::status,
             accepted_at: Integer?,
-            projects: ::Array[OpenAI::Admin::Organization::Invite::Project]
+            expires_at: Integer?
           }
+
+          type project =
+            {
+              id: String,
+              role: OpenAI::Models::Admin::Organization::Invite::Project::role
+            }
+
+          class Project < OpenAI::Internal::Type::BaseModel
+            attr_accessor id: String
+
+            attr_accessor role: OpenAI::Models::Admin::Organization::Invite::Project::role
+
+            def initialize: (
+              id: String,
+              role: OpenAI::Models::Admin::Organization::Invite::Project::role
+            ) -> void
+
+            def to_hash: -> {
+              id: String,
+              role: OpenAI::Models::Admin::Organization::Invite::Project::role
+            }
+
+            type role = :member | :owner
+
+            module Role
+              extend OpenAI::Internal::Type::Enum
+
+              MEMBER: :member
+              OWNER: :owner
+
+              def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Invite::Project::role]
+            end
+          end
 
           type role = :owner | :reader
 
@@ -83,45 +112,6 @@ module OpenAI
             PENDING: :pending
 
             def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Invite::status]
-          end
-
-          type project =
-            {
-              id: String,
-              role: OpenAI::Models::Admin::Organization::Invite::Project::role
-            }
-
-          class Project < OpenAI::Internal::Type::BaseModel
-            attr_reader id: String?
-
-            def id=: (String) -> String
-
-            attr_reader role: OpenAI::Models::Admin::Organization::Invite::Project::role?
-
-            def role=: (
-              OpenAI::Models::Admin::Organization::Invite::Project::role
-            ) -> OpenAI::Models::Admin::Organization::Invite::Project::role
-
-            def initialize: (
-              ?id: String,
-              ?role: OpenAI::Models::Admin::Organization::Invite::Project::role
-            ) -> void
-
-            def to_hash: -> {
-              id: String,
-              role: OpenAI::Models::Admin::Organization::Invite::Project::role
-            }
-
-            type role = :member | :owner
-
-            module Role
-              extend OpenAI::Internal::Type::Enum
-
-              MEMBER: :member
-              OWNER: :owner
-
-              def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Invite::Project::role]
-            end
           end
         end
       end

@@ -51,14 +51,16 @@ module OpenAI
           sig do
             params(
               name: String,
-              geography:
-                OpenAI::Admin::Organization::ProjectCreateParams::Geography::OrSymbol,
+              external_key_id: T.nilable(String),
+              geography: T.nilable(String),
               request_options: OpenAI::RequestOptions::OrHash
             ).returns(OpenAI::Admin::Organization::Project)
           end
           def create(
             # The friendly name of the project, this name appears in reports.
             name:,
+            # External key ID to associate with the project.
+            external_key_id: nil,
             # Create the project with the specified data residency region. Your organization
             # must have access to Data residency functionality in order to use. See
             # [data residency controls](https://platform.openai.com/docs/guides/your-data#data-residency-controls)
@@ -86,15 +88,21 @@ module OpenAI
           sig do
             params(
               project_id: String,
-              name: String,
+              external_key_id: T.nilable(String),
+              geography: T.nilable(String),
+              name: T.nilable(String),
               request_options: OpenAI::RequestOptions::OrHash
             ).returns(OpenAI::Admin::Organization::Project)
           end
           def update(
             # The ID of the project.
             project_id,
+            # External key ID to associate with the project.
+            external_key_id: nil,
+            # Geography for the project.
+            geography: nil,
             # The updated name of the project, this name appears in reports.
-            name:,
+            name: nil,
             request_options: {}
           )
           end

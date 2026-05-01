@@ -24,35 +24,30 @@ module OpenAI
             sig { returns(Integer) }
             attr_accessor :added_at
 
-            # The email address of the user
-            sig { returns(String) }
-            attr_accessor :email
-
-            # The name of the user
-            sig { returns(String) }
-            attr_accessor :name
-
             # The object type, which is always `organization.project.user`
             sig { returns(Symbol) }
             attr_accessor :object
 
             # `owner` or `member`
-            sig do
-              returns(
-                OpenAI::Admin::Organization::Projects::ProjectUser::Role::TaggedSymbol
-              )
-            end
+            sig { returns(String) }
             attr_accessor :role
+
+            # The email address of the user
+            sig { returns(T.nilable(String)) }
+            attr_accessor :email
+
+            # The name of the user
+            sig { returns(T.nilable(String)) }
+            attr_accessor :name
 
             # Represents an individual user in a project.
             sig do
               params(
                 id: String,
                 added_at: Integer,
-                email: String,
-                name: String,
-                role:
-                  OpenAI::Admin::Organization::Projects::ProjectUser::Role::OrSymbol,
+                role: String,
+                email: T.nilable(String),
+                name: T.nilable(String),
                 object: Symbol
               ).returns(T.attached_class)
             end
@@ -61,12 +56,12 @@ module OpenAI
               id:,
               # The Unix timestamp (in seconds) of when the project was added.
               added_at:,
-              # The email address of the user
-              email:,
-              # The name of the user
-              name:,
               # `owner` or `member`
               role:,
+              # The email address of the user
+              email: nil,
+              # The name of the user
+              name: nil,
               # The object type, which is always `organization.project.user`
               object: :"organization.project.user"
             )
@@ -77,50 +72,14 @@ module OpenAI
                 {
                   id: String,
                   added_at: Integer,
-                  email: String,
-                  name: String,
                   object: Symbol,
-                  role:
-                    OpenAI::Admin::Organization::Projects::ProjectUser::Role::TaggedSymbol
+                  role: String,
+                  email: T.nilable(String),
+                  name: T.nilable(String)
                 }
               )
             end
             def to_hash
-            end
-
-            # `owner` or `member`
-            module Role
-              extend OpenAI::Internal::Type::Enum
-
-              TaggedSymbol =
-                T.type_alias do
-                  T.all(
-                    Symbol,
-                    OpenAI::Admin::Organization::Projects::ProjectUser::Role
-                  )
-                end
-              OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-              OWNER =
-                T.let(
-                  :owner,
-                  OpenAI::Admin::Organization::Projects::ProjectUser::Role::TaggedSymbol
-                )
-              MEMBER =
-                T.let(
-                  :member,
-                  OpenAI::Admin::Organization::Projects::ProjectUser::Role::TaggedSymbol
-                )
-
-              sig do
-                override.returns(
-                  T::Array[
-                    OpenAI::Admin::Organization::Projects::ProjectUser::Role::TaggedSymbol
-                  ]
-                )
-              end
-              def self.values
-              end
             end
           end
         end

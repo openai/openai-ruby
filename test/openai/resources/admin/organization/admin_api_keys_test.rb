@@ -22,12 +22,11 @@ class OpenAI::Test::Resources::Admin::Organization::AdminAPIKeysTest < OpenAI::T
       response => {
         id: String,
         created_at: Integer,
-        last_used_at: Integer | nil,
-        name: String,
         object: Symbol,
         owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
         redacted_value: String,
-        value: String | nil
+        last_used_at: Integer | nil,
+        name: String | nil
       }
     end
   end
@@ -50,12 +49,11 @@ class OpenAI::Test::Resources::Admin::Organization::AdminAPIKeysTest < OpenAI::T
       row => {
         id: String,
         created_at: Integer,
-        last_used_at: Integer | nil,
-        name: String,
         object: Symbol,
         owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
         redacted_value: String,
-        value: String | nil
+        last_used_at: Integer | nil,
+        name: String | nil
       }
     end
   end
