@@ -32,11 +32,13 @@ module OpenAI
           # Create a new project in the organization. Projects can be created and archived,
           # but cannot be deleted.
           #
-          # @overload create(name:, geography: nil, request_options: {})
+          # @overload create(name:, external_key_id: nil, geography: nil, request_options: {})
           #
           # @param name [String] The friendly name of the project, this name appears in reports.
           #
-          # @param geography [Symbol, OpenAI::Models::Admin::Organization::ProjectCreateParams::Geography] Create the project with the specified data residency region. Your organization m
+          # @param external_key_id [String, nil] External key ID to associate with the project.
+          #
+          # @param geography [String, nil] Create the project with the specified data residency region. Your organization m
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -78,18 +80,22 @@ module OpenAI
 
           # Modifies a project in the organization.
           #
-          # @overload update(project_id, name:, request_options: {})
+          # @overload update(project_id, external_key_id: nil, geography: nil, name: nil, request_options: {})
           #
           # @param project_id [String] The ID of the project.
           #
-          # @param name [String] The updated name of the project, this name appears in reports.
+          # @param external_key_id [String, nil] External key ID to associate with the project.
+          #
+          # @param geography [String, nil] Geography for the project.
+          #
+          # @param name [String, nil] The updated name of the project, this name appears in reports.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
           # @return [OpenAI::Models::Admin::Organization::Project]
           #
           # @see OpenAI::Models::Admin::Organization::ProjectUpdateParams
-          def update(project_id, params)
+          def update(project_id, params = {})
             parsed, options = OpenAI::Admin::Organization::ProjectUpdateParams.dump_request(params)
             @client.request(
               method: :post,

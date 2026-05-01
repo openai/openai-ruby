@@ -14,10 +14,11 @@ class OpenAI::Test::Resources::Admin::Organization::ProjectsTest < OpenAI::Test:
       response => {
         id: String,
         created_at: Integer,
-        name: String,
         object: Symbol,
-        status: OpenAI::Admin::Organization::Project::Status,
-        archived_at: Integer | nil
+        archived_at: Integer | nil,
+        external_key_id: String | nil,
+        name: String | nil,
+        status: String | nil
       }
     end
   end
@@ -33,16 +34,17 @@ class OpenAI::Test::Resources::Admin::Organization::ProjectsTest < OpenAI::Test:
       response => {
         id: String,
         created_at: Integer,
-        name: String,
         object: Symbol,
-        status: OpenAI::Admin::Organization::Project::Status,
-        archived_at: Integer | nil
+        archived_at: Integer | nil,
+        external_key_id: String | nil,
+        name: String | nil,
+        status: String | nil
       }
     end
   end
 
-  def test_update_required_params
-    response = @openai.admin.organization.projects.update("project_id", name: "name")
+  def test_update
+    response = @openai.admin.organization.projects.update("project_id")
 
     assert_pattern do
       response => OpenAI::Admin::Organization::Project
@@ -52,10 +54,11 @@ class OpenAI::Test::Resources::Admin::Organization::ProjectsTest < OpenAI::Test:
       response => {
         id: String,
         created_at: Integer,
-        name: String,
         object: Symbol,
-        status: OpenAI::Admin::Organization::Project::Status,
-        archived_at: Integer | nil
+        archived_at: Integer | nil,
+        external_key_id: String | nil,
+        name: String | nil,
+        status: String | nil
       }
     end
   end
@@ -78,10 +81,11 @@ class OpenAI::Test::Resources::Admin::Organization::ProjectsTest < OpenAI::Test:
       row => {
         id: String,
         created_at: Integer,
-        name: String,
         object: Symbol,
-        status: OpenAI::Admin::Organization::Project::Status,
-        archived_at: Integer | nil
+        archived_at: Integer | nil,
+        external_key_id: String | nil,
+        name: String | nil,
+        status: String | nil
       }
     end
   end
@@ -97,10 +101,11 @@ class OpenAI::Test::Resources::Admin::Organization::ProjectsTest < OpenAI::Test:
       response => {
         id: String,
         created_at: Integer,
-        name: String,
         object: Symbol,
-        status: OpenAI::Admin::Organization::Project::Status,
-        archived_at: Integer | nil
+        archived_at: Integer | nil,
+        external_key_id: String | nil,
+        name: String | nil,
+        status: String | nil
       }
     end
   end

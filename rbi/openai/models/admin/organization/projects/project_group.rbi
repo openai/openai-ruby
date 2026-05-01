@@ -28,6 +28,10 @@ module OpenAI
             sig { returns(String) }
             attr_accessor :group_name
 
+            # The type of the group.
+            sig { returns(String) }
+            attr_accessor :group_type
+
             # Always `project.group`.
             sig { returns(Symbol) }
             attr_accessor :object
@@ -42,6 +46,7 @@ module OpenAI
                 created_at: Integer,
                 group_id: String,
                 group_name: String,
+                group_type: String,
                 project_id: String,
                 object: Symbol
               ).returns(T.attached_class)
@@ -53,6 +58,8 @@ module OpenAI
               group_id:,
               # Display name of the group.
               group_name:,
+              # The type of the group.
+              group_type:,
               # Identifier of the project.
               project_id:,
               # Always `project.group`.
@@ -66,6 +73,7 @@ module OpenAI
                   created_at: Integer,
                   group_id: String,
                   group_name: String,
+                  group_type: String,
                   object: Symbol,
                   project_id: String
                 }

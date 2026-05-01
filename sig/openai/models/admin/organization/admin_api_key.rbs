@@ -6,12 +6,11 @@ module OpenAI
           {
             id: String,
             created_at: Integer,
-            last_used_at: Integer?,
-            name: String,
             object: :"organization.admin_api_key",
             owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
             redacted_value: String,
-            value: String
+            last_used_at: Integer?,
+            name: String?
           }
 
         class AdminAPIKey < OpenAI::Internal::Type::BaseModel
@@ -19,40 +18,34 @@ module OpenAI
 
           attr_accessor created_at: Integer
 
-          attr_accessor last_used_at: Integer?
-
-          attr_accessor name: String
-
           attr_accessor object: :"organization.admin_api_key"
 
           attr_accessor owner: OpenAI::Admin::Organization::AdminAPIKey::Owner
 
           attr_accessor redacted_value: String
 
-          attr_reader value: String?
+          attr_accessor last_used_at: Integer?
 
-          def value=: (String) -> String
+          attr_accessor name: String?
 
           def initialize: (
             id: String,
             created_at: Integer,
-            last_used_at: Integer?,
-            name: String,
             owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
             redacted_value: String,
-            ?value: String,
+            ?last_used_at: Integer?,
+            ?name: String?,
             ?object: :"organization.admin_api_key"
           ) -> void
 
           def to_hash: -> {
             id: String,
             created_at: Integer,
-            last_used_at: Integer?,
-            name: String,
             object: :"organization.admin_api_key",
             owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
             redacted_value: String,
-            value: String
+            last_used_at: Integer?,
+            name: String?
           }
 
           type owner =

@@ -14,29 +14,42 @@ module OpenAI
           #   @return [String]
           required :user_id, String
 
+          # @!attribute developer_persona
+          #   Developer persona metadata.
+          #
+          #   @return [String, nil]
+          optional :developer_persona, String, nil?: true
+
           # @!attribute role
           #   `owner` or `reader`
           #
-          #   @return [Symbol, OpenAI::Models::Admin::Organization::UserUpdateParams::Role, nil]
-          optional :role, enum: -> { OpenAI::Admin::Organization::UserUpdateParams::Role }
+          #   @return [String, nil]
+          optional :role, String, nil?: true
 
-          # @!method initialize(user_id:, role: nil, request_options: {})
+          # @!attribute role_id
+          #   Role ID to assign to the user.
+          #
+          #   @return [String, nil]
+          optional :role_id, String, nil?: true
+
+          # @!attribute technical_level
+          #   Technical level metadata.
+          #
+          #   @return [String, nil]
+          optional :technical_level, String, nil?: true
+
+          # @!method initialize(user_id:, developer_persona: nil, role: nil, role_id: nil, technical_level: nil, request_options: {})
           #   @param user_id [String]
           #
-          #   @param role [Symbol, OpenAI::Models::Admin::Organization::UserUpdateParams::Role] `owner` or `reader`
+          #   @param developer_persona [String, nil] Developer persona metadata.
+          #
+          #   @param role [String, nil] `owner` or `reader`
+          #
+          #   @param role_id [String, nil] Role ID to assign to the user.
+          #
+          #   @param technical_level [String, nil] Technical level metadata.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-
-          # `owner` or `reader`
-          module Role
-            extend OpenAI::Internal::Type::Enum
-
-            OWNER = :owner
-            READER = :reader
-
-            # @!method self.values
-            #   @return [Array<Symbol>]
-          end
         end
       end
     end

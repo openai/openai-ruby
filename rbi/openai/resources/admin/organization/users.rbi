@@ -26,16 +26,24 @@ module OpenAI
           sig do
             params(
               user_id: String,
-              role:
-                OpenAI::Admin::Organization::UserUpdateParams::Role::OrSymbol,
+              developer_persona: T.nilable(String),
+              role: T.nilable(String),
+              role_id: T.nilable(String),
+              technical_level: T.nilable(String),
               request_options: OpenAI::RequestOptions::OrHash
             ).returns(OpenAI::Admin::Organization::OrganizationUser)
           end
           def update(
             # The ID of the user.
             user_id,
+            # Developer persona metadata.
+            developer_persona: nil,
             # `owner` or `reader`
             role: nil,
+            # Role ID to assign to the user.
+            role_id: nil,
+            # Technical level metadata.
+            technical_level: nil,
             request_options: {}
           )
           end

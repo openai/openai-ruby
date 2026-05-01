@@ -25,6 +25,12 @@ module OpenAI
             #   @return [String]
             required :group_name, String
 
+            # @!attribute group_type
+            #   The type of the group.
+            #
+            #   @return [String]
+            required :group_type, String
+
             # @!attribute object
             #   Always `project.group`.
             #
@@ -37,7 +43,7 @@ module OpenAI
             #   @return [String]
             required :project_id, String
 
-            # @!method initialize(created_at:, group_id:, group_name:, project_id:, object: :"project.group")
+            # @!method initialize(created_at:, group_id:, group_name:, group_type:, project_id:, object: :"project.group")
             #   Details about a group's membership in a project.
             #
             #   @param created_at [Integer] Unix timestamp (in seconds) when the group was granted project access.
@@ -45,6 +51,8 @@ module OpenAI
             #   @param group_id [String] Identifier of the group that has access to the project.
             #
             #   @param group_name [String] Display name of the group.
+            #
+            #   @param group_type [String] The type of the group.
             #
             #   @param project_id [String] Identifier of the project.
             #

@@ -21,32 +21,35 @@ module OpenAI
           sig { returns(Integer) }
           attr_accessor :created_at
 
-          # The name of the project. This appears in reporting.
-          sig { returns(String) }
-          attr_accessor :name
-
           # The object type, which is always `organization.project`
           sig { returns(Symbol) }
           attr_accessor :object
 
-          # `active` or `archived`
-          sig do
-            returns(OpenAI::Admin::Organization::Project::Status::TaggedSymbol)
-          end
-          attr_accessor :status
-
           # The Unix timestamp (in seconds) of when the project was archived or `null`.
           sig { returns(T.nilable(Integer)) }
           attr_accessor :archived_at
+
+          # The external key associated with the project.
+          sig { returns(T.nilable(String)) }
+          attr_accessor :external_key_id
+
+          # The name of the project. This appears in reporting.
+          sig { returns(T.nilable(String)) }
+          attr_accessor :name
+
+          # `active` or `archived`
+          sig { returns(T.nilable(String)) }
+          attr_accessor :status
 
           # Represents an individual project.
           sig do
             params(
               id: String,
               created_at: Integer,
-              name: String,
-              status: OpenAI::Admin::Organization::Project::Status::OrSymbol,
               archived_at: T.nilable(Integer),
+              external_key_id: T.nilable(String),
+              name: T.nilable(String),
+              status: T.nilable(String),
               object: Symbol
             ).returns(T.attached_class)
           end
@@ -55,12 +58,14 @@ module OpenAI
             id:,
             # The Unix timestamp (in seconds) of when the project was created.
             created_at:,
-            # The name of the project. This appears in reporting.
-            name:,
-            # `active` or `archived`
-            status:,
             # The Unix timestamp (in seconds) of when the project was archived or `null`.
             archived_at: nil,
+            # The external key associated with the project.
+            external_key_id: nil,
+            # The name of the project. This appears in reporting.
+            name: nil,
+            # `active` or `archived`
+            status: nil,
             # The object type, which is always `organization.project`
             object: :"organization.project"
           )
@@ -71,47 +76,15 @@ module OpenAI
               {
                 id: String,
                 created_at: Integer,
-                name: String,
                 object: Symbol,
-                status:
-                  OpenAI::Admin::Organization::Project::Status::TaggedSymbol,
-                archived_at: T.nilable(Integer)
+                archived_at: T.nilable(Integer),
+                external_key_id: T.nilable(String),
+                name: T.nilable(String),
+                status: T.nilable(String)
               }
             )
           end
           def to_hash
-          end
-
-          # `active` or `archived`
-          module Status
-            extend OpenAI::Internal::Type::Enum
-
-            TaggedSymbol =
-              T.type_alias do
-                T.all(Symbol, OpenAI::Admin::Organization::Project::Status)
-              end
-            OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-            ACTIVE =
-              T.let(
-                :active,
-                OpenAI::Admin::Organization::Project::Status::TaggedSymbol
-              )
-            ARCHIVED =
-              T.let(
-                :archived,
-                OpenAI::Admin::Organization::Project::Status::TaggedSymbol
-              )
-
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Admin::Organization::Project::Status::TaggedSymbol
-                ]
-              )
-            end
-            def self.values
-            end
           end
         end
       end

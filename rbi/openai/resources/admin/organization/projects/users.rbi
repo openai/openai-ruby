@@ -18,9 +18,9 @@ module OpenAI
             sig do
               params(
                 project_id: String,
-                role:
-                  OpenAI::Admin::Organization::Projects::UserCreateParams::Role::OrSymbol,
-                user_id: String,
+                role: String,
+                email: T.nilable(String),
+                user_id: T.nilable(String),
                 request_options: OpenAI::RequestOptions::OrHash
               ).returns(OpenAI::Admin::Organization::Projects::ProjectUser)
             end
@@ -29,8 +29,10 @@ module OpenAI
               project_id,
               # `owner` or `member`
               role:,
+              # Email of the user to add.
+              email: nil,
               # The ID of the user.
-              user_id:,
+              user_id: nil,
               request_options: {}
             )
             end
@@ -57,8 +59,7 @@ module OpenAI
               params(
                 user_id: String,
                 project_id: String,
-                role:
-                  OpenAI::Admin::Organization::Projects::UserUpdateParams::Role::OrSymbol,
+                role: T.nilable(String),
                 request_options: OpenAI::RequestOptions::OrHash
               ).returns(OpenAI::Admin::Organization::Projects::ProjectUser)
             end
@@ -68,7 +69,7 @@ module OpenAI
               # Path param: The ID of the project.
               project_id:,
               # Body param: `owner` or `member`
-              role:,
+              role: nil,
               request_options: {}
             )
             end

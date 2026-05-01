@@ -16,6 +16,7 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::GroupsTest < OpenA
         created_at: Integer,
         group_id: String,
         group_name: String,
+        group_type: String,
         object: Symbol,
         project_id: String
       }
@@ -41,6 +42,7 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::GroupsTest < OpenA
         created_at: Integer,
         group_id: String,
         group_name: String,
+        group_type: String,
         object: Symbol,
         project_id: String
       }

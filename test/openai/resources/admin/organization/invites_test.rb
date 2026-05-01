@@ -15,12 +15,12 @@ class OpenAI::Test::Resources::Admin::Organization::InvitesTest < OpenAI::Test::
         id: String,
         created_at: Integer,
         email: String,
-        expires_at: Integer | nil,
         object: Symbol,
+        projects: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Admin::Organization::Invite::Project]),
         role: OpenAI::Admin::Organization::Invite::Role,
         status: OpenAI::Admin::Organization::Invite::Status,
         accepted_at: Integer | nil,
-        projects: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Admin::Organization::Invite::Project]) | nil
+        expires_at: Integer | nil
       }
     end
   end
@@ -37,12 +37,12 @@ class OpenAI::Test::Resources::Admin::Organization::InvitesTest < OpenAI::Test::
         id: String,
         created_at: Integer,
         email: String,
-        expires_at: Integer | nil,
         object: Symbol,
+        projects: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Admin::Organization::Invite::Project]),
         role: OpenAI::Admin::Organization::Invite::Role,
         status: OpenAI::Admin::Organization::Invite::Status,
         accepted_at: Integer | nil,
-        projects: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Admin::Organization::Invite::Project]) | nil
+        expires_at: Integer | nil
       }
     end
   end
@@ -66,12 +66,12 @@ class OpenAI::Test::Resources::Admin::Organization::InvitesTest < OpenAI::Test::
         id: String,
         created_at: Integer,
         email: String,
-        expires_at: Integer | nil,
         object: Symbol,
+        projects: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Admin::Organization::Invite::Project]),
         role: OpenAI::Admin::Organization::Invite::Role,
         status: OpenAI::Admin::Organization::Invite::Status,
         accepted_at: Integer | nil,
-        projects: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Admin::Organization::Invite::Project]) | nil
+        expires_at: Integer | nil
       }
     end
   end
