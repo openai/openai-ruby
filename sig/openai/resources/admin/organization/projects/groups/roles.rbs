@@ -19,7 +19,7 @@ module OpenAI
                 ?limit: Integer,
                 ?order: OpenAI::Models::Admin::Organization::Projects::Groups::RoleListParams::order,
                 ?request_options: OpenAI::request_opts
-              ) -> OpenAI::Internal::CursorPage[OpenAI::Models::Admin::Organization::Projects::Groups::RoleListResponse]
+              ) -> OpenAI::Internal::NextCursorPage[OpenAI::Models::Admin::Organization::Projects::Groups::RoleListResponse]
 
               def delete: (
                 String role_id,

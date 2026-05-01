@@ -54,7 +54,7 @@ module OpenAI
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
-            # @return [OpenAI::Internal::CursorPage<OpenAI::Models::Admin::Organization::Projects::ProjectGroup>]
+            # @return [OpenAI::Internal::NextCursorPage<OpenAI::Models::Admin::Organization::Projects::ProjectGroup>]
             #
             # @see OpenAI::Models::Admin::Organization::Projects::GroupListParams
             def list(project_id, params = {})
@@ -64,7 +64,7 @@ module OpenAI
                 method: :get,
                 path: ["organization/projects/%1$s/groups", project_id],
                 query: query,
-                page: OpenAI::Internal::CursorPage,
+                page: OpenAI::Internal::NextCursorPage,
                 model: OpenAI::Admin::Organization::Projects::ProjectGroup,
                 security: {admin_api_key_auth: true},
                 options: options

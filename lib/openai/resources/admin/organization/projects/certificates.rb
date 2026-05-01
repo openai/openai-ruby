@@ -24,7 +24,7 @@ module OpenAI
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
-            # @return [OpenAI::Internal::ConversationCursorPage<OpenAI::Models::Admin::Organization::Certificate>]
+            # @return [OpenAI::Internal::ConversationCursorPage<OpenAI::Models::Admin::Organization::Projects::CertificateListResponse>]
             #
             # @see OpenAI::Models::Admin::Organization::Projects::CertificateListParams
             def list(project_id, params = {})
@@ -35,7 +35,7 @@ module OpenAI
                 path: ["organization/projects/%1$s/certificates", project_id],
                 query: query,
                 page: OpenAI::Internal::ConversationCursorPage,
-                model: OpenAI::Admin::Organization::Certificate,
+                model: OpenAI::Models::Admin::Organization::Projects::CertificateListResponse,
                 security: {admin_api_key_auth: true},
                 options: options
               )
@@ -53,7 +53,7 @@ module OpenAI
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
-            # @return [OpenAI::Internal::Page<OpenAI::Models::Admin::Organization::Certificate>]
+            # @return [OpenAI::Internal::Page<OpenAI::Models::Admin::Organization::Projects::CertificateActivateResponse>]
             #
             # @see OpenAI::Models::Admin::Organization::Projects::CertificateActivateParams
             def activate(project_id, params)
@@ -63,7 +63,7 @@ module OpenAI
                 path: ["organization/projects/%1$s/certificates/activate", project_id],
                 body: parsed,
                 page: OpenAI::Internal::Page,
-                model: OpenAI::Admin::Organization::Certificate,
+                model: OpenAI::Models::Admin::Organization::Projects::CertificateActivateResponse,
                 security: {admin_api_key_auth: true},
                 options: options
               )
@@ -80,7 +80,7 @@ module OpenAI
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
-            # @return [OpenAI::Internal::Page<OpenAI::Models::Admin::Organization::Certificate>]
+            # @return [OpenAI::Internal::Page<OpenAI::Models::Admin::Organization::Projects::CertificateDeactivateResponse>]
             #
             # @see OpenAI::Models::Admin::Organization::Projects::CertificateDeactivateParams
             def deactivate(project_id, params)
@@ -90,7 +90,7 @@ module OpenAI
                 path: ["organization/projects/%1$s/certificates/deactivate", project_id],
                 body: parsed,
                 page: OpenAI::Internal::Page,
-                model: OpenAI::Admin::Organization::Certificate,
+                model: OpenAI::Models::Admin::Organization::Projects::CertificateDeactivateResponse,
                 security: {admin_api_key_auth: true},
                 options: options
               )

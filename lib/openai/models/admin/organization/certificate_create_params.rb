@@ -9,11 +9,11 @@ module OpenAI
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
-          # @!attribute content
+          # @!attribute certificate
           #   The certificate content in PEM format
           #
           #   @return [String]
-          required :content, String
+          required :certificate, String
 
           # @!attribute name
           #   An optional name for the certificate
@@ -21,8 +21,8 @@ module OpenAI
           #   @return [String, nil]
           optional :name, String
 
-          # @!method initialize(content:, name: nil, request_options: {})
-          #   @param content [String] The certificate content in PEM format
+          # @!method initialize(certificate:, name: nil, request_options: {})
+          #   @param certificate [String] The certificate content in PEM format
           #
           #   @param name [String] An optional name for the certificate
           #

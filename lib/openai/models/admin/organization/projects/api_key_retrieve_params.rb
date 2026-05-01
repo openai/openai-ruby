@@ -15,14 +15,14 @@ module OpenAI
             #   @return [String]
             required :project_id, String
 
-            # @!attribute key_id
+            # @!attribute api_key_id
             #
             #   @return [String]
-            required :key_id, String
+            required :api_key_id, String
 
-            # @!method initialize(project_id:, key_id:, request_options: {})
+            # @!method initialize(project_id:, api_key_id:, request_options: {})
             #   @param project_id [String]
-            #   @param key_id [String]
+            #   @param api_key_id [String]
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
           end
         end

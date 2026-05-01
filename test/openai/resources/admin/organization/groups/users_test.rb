@@ -23,24 +23,21 @@ class OpenAI::Test::Resources::Admin::Organization::Groups::UsersTest < OpenAI::
     response = @openai.admin.organization.groups.users.list("group_id")
 
     assert_pattern do
-      response => OpenAI::Internal::CursorPage
+      response => OpenAI::Internal::NextCursorPage
     end
 
     row = response.to_enum.first
     return if row.nil?
 
     assert_pattern do
-      row => OpenAI::Admin::Organization::OrganizationUser
+      row => OpenAI::Admin::Organization::Groups::OrganizationGroupUser
     end
 
     assert_pattern do
       row => {
         id: String,
-        added_at: Integer,
-        email: String,
-        name: String,
-        object: Symbol,
-        role: OpenAI::Admin::Organization::OrganizationUser::Role
+        email: String | nil,
+        name: String
       }
     end
   end

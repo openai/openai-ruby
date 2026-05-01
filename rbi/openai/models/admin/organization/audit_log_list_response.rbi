@@ -17,22 +17,6 @@ module OpenAI
           sig { returns(String) }
           attr_accessor :id
 
-          # The actor who performed the audit logged action.
-          sig do
-            returns(
-              OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor
-            )
-          end
-          attr_reader :actor
-
-          sig do
-            params(
-              actor:
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::OrHash
-            ).void
-          end
-          attr_writer :actor
-
           # The Unix timestamp (in seconds) of the event.
           sig { returns(Integer) }
           attr_accessor :effective_at
@@ -44,6 +28,26 @@ module OpenAI
             )
           end
           attr_accessor :type
+
+          # The actor who performed the audit logged action.
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor
+              )
+            )
+          end
+          attr_reader :actor
+
+          sig do
+            params(
+              actor:
+                T.nilable(
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::OrHash
+                )
+            ).void
+          end
+          attr_writer :actor
 
           # The details for events with this `type`.
           sig do
@@ -894,11 +898,13 @@ module OpenAI
           sig do
             params(
               id: String,
-              actor:
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::OrHash,
               effective_at: Integer,
               type:
                 OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::OrSymbol,
+              actor:
+                T.nilable(
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::OrHash
+                ),
               api_key_created:
                 OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyCreated::OrHash,
               api_key_deleted:
@@ -998,12 +1004,12 @@ module OpenAI
           def self.new(
             # The ID of this log.
             id:,
-            # The actor who performed the audit logged action.
-            actor:,
             # The Unix timestamp (in seconds) of the event.
             effective_at:,
             # The event type.
             type:,
+            # The actor who performed the audit logged action.
+            actor: nil,
             # The details for events with this `type`.
             api_key_created: nil,
             # The details for events with this `type`.
@@ -1110,11 +1116,13 @@ module OpenAI
             override.returns(
               {
                 id: String,
-                actor:
-                  OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor,
                 effective_at: Integer,
                 type:
                   OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol,
+                actor:
+                  T.nilable(
+                    OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor
+                  ),
                 api_key_created:
                   OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyCreated,
                 api_key_deleted:
@@ -1213,6 +1221,286 @@ module OpenAI
             )
           end
           def to_hash
+          end
+
+          # The event type.
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol =
+              T.type_alias do
+                T.all(
+                  Symbol,
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::Type
+                )
+              end
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            API_KEY_CREATED =
+              T.let(
+                :"api_key.created",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            API_KEY_UPDATED =
+              T.let(
+                :"api_key.updated",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            API_KEY_DELETED =
+              T.let(
+                :"api_key.deleted",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            CERTIFICATE_CREATED =
+              T.let(
+                :"certificate.created",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            CERTIFICATE_UPDATED =
+              T.let(
+                :"certificate.updated",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            CERTIFICATE_DELETED =
+              T.let(
+                :"certificate.deleted",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            CERTIFICATES_ACTIVATED =
+              T.let(
+                :"certificates.activated",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            CERTIFICATES_DEACTIVATED =
+              T.let(
+                :"certificates.deactivated",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            CHECKPOINT_PERMISSION_CREATED =
+              T.let(
+                :"checkpoint.permission.created",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            CHECKPOINT_PERMISSION_DELETED =
+              T.let(
+                :"checkpoint.permission.deleted",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            EXTERNAL_KEY_REGISTERED =
+              T.let(
+                :"external_key.registered",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            EXTERNAL_KEY_REMOVED =
+              T.let(
+                :"external_key.removed",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            GROUP_CREATED =
+              T.let(
+                :"group.created",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            GROUP_UPDATED =
+              T.let(
+                :"group.updated",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            GROUP_DELETED =
+              T.let(
+                :"group.deleted",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            INVITE_SENT =
+              T.let(
+                :"invite.sent",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            INVITE_ACCEPTED =
+              T.let(
+                :"invite.accepted",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            INVITE_DELETED =
+              T.let(
+                :"invite.deleted",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            IP_ALLOWLIST_CREATED =
+              T.let(
+                :"ip_allowlist.created",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            IP_ALLOWLIST_UPDATED =
+              T.let(
+                :"ip_allowlist.updated",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            IP_ALLOWLIST_DELETED =
+              T.let(
+                :"ip_allowlist.deleted",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            IP_ALLOWLIST_CONFIG_ACTIVATED =
+              T.let(
+                :"ip_allowlist.config.activated",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            IP_ALLOWLIST_CONFIG_DEACTIVATED =
+              T.let(
+                :"ip_allowlist.config.deactivated",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            LOGIN_SUCCEEDED =
+              T.let(
+                :"login.succeeded",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            LOGIN_FAILED =
+              T.let(
+                :"login.failed",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            LOGOUT_SUCCEEDED =
+              T.let(
+                :"logout.succeeded",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            LOGOUT_FAILED =
+              T.let(
+                :"logout.failed",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            ORGANIZATION_UPDATED =
+              T.let(
+                :"organization.updated",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            PROJECT_CREATED =
+              T.let(
+                :"project.created",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            PROJECT_UPDATED =
+              T.let(
+                :"project.updated",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            PROJECT_ARCHIVED =
+              T.let(
+                :"project.archived",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            PROJECT_DELETED =
+              T.let(
+                :"project.deleted",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            RATE_LIMIT_UPDATED =
+              T.let(
+                :"rate_limit.updated",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            RATE_LIMIT_DELETED =
+              T.let(
+                :"rate_limit.deleted",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            RESOURCE_DELETED =
+              T.let(
+                :"resource.deleted",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            TUNNEL_CREATED =
+              T.let(
+                :"tunnel.created",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            TUNNEL_UPDATED =
+              T.let(
+                :"tunnel.updated",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            TUNNEL_DELETED =
+              T.let(
+                :"tunnel.deleted",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            ROLE_CREATED =
+              T.let(
+                :"role.created",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            ROLE_UPDATED =
+              T.let(
+                :"role.updated",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            ROLE_DELETED =
+              T.let(
+                :"role.deleted",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            ROLE_ASSIGNMENT_CREATED =
+              T.let(
+                :"role.assignment.created",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            ROLE_ASSIGNMENT_DELETED =
+              T.let(
+                :"role.assignment.deleted",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            SCIM_ENABLED =
+              T.let(
+                :"scim.enabled",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            SCIM_DISABLED =
+              T.let(
+                :"scim.disabled",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            SERVICE_ACCOUNT_CREATED =
+              T.let(
+                :"service_account.created",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            SERVICE_ACCOUNT_UPDATED =
+              T.let(
+                :"service_account.updated",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            SERVICE_ACCOUNT_DELETED =
+              T.let(
+                :"service_account.deleted",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            USER_ADDED =
+              T.let(
+                :"user.added",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            USER_UPDATED =
+              T.let(
+                :"user.updated",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            USER_DELETED =
+              T.let(
+                :"user.deleted",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+                ]
+              )
+            end
+            def self.values
+            end
           end
 
           class Actor < OpenAI::Internal::Type::BaseModel
@@ -1665,286 +1953,6 @@ module OpenAI
               end
               def self.values
               end
-            end
-          end
-
-          # The event type.
-          module Type
-            extend OpenAI::Internal::Type::Enum
-
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Models::Admin::Organization::AuditLogListResponse::Type
-                )
-              end
-            OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-            API_KEY_CREATED =
-              T.let(
-                :"api_key.created",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            API_KEY_UPDATED =
-              T.let(
-                :"api_key.updated",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            API_KEY_DELETED =
-              T.let(
-                :"api_key.deleted",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            CERTIFICATE_CREATED =
-              T.let(
-                :"certificate.created",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            CERTIFICATE_UPDATED =
-              T.let(
-                :"certificate.updated",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            CERTIFICATE_DELETED =
-              T.let(
-                :"certificate.deleted",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            CERTIFICATES_ACTIVATED =
-              T.let(
-                :"certificates.activated",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            CERTIFICATES_DEACTIVATED =
-              T.let(
-                :"certificates.deactivated",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            CHECKPOINT_PERMISSION_CREATED =
-              T.let(
-                :"checkpoint.permission.created",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            CHECKPOINT_PERMISSION_DELETED =
-              T.let(
-                :"checkpoint.permission.deleted",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            EXTERNAL_KEY_REGISTERED =
-              T.let(
-                :"external_key.registered",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            EXTERNAL_KEY_REMOVED =
-              T.let(
-                :"external_key.removed",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            GROUP_CREATED =
-              T.let(
-                :"group.created",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            GROUP_UPDATED =
-              T.let(
-                :"group.updated",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            GROUP_DELETED =
-              T.let(
-                :"group.deleted",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            INVITE_SENT =
-              T.let(
-                :"invite.sent",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            INVITE_ACCEPTED =
-              T.let(
-                :"invite.accepted",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            INVITE_DELETED =
-              T.let(
-                :"invite.deleted",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            IP_ALLOWLIST_CREATED =
-              T.let(
-                :"ip_allowlist.created",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            IP_ALLOWLIST_UPDATED =
-              T.let(
-                :"ip_allowlist.updated",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            IP_ALLOWLIST_DELETED =
-              T.let(
-                :"ip_allowlist.deleted",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            IP_ALLOWLIST_CONFIG_ACTIVATED =
-              T.let(
-                :"ip_allowlist.config.activated",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            IP_ALLOWLIST_CONFIG_DEACTIVATED =
-              T.let(
-                :"ip_allowlist.config.deactivated",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            LOGIN_SUCCEEDED =
-              T.let(
-                :"login.succeeded",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            LOGIN_FAILED =
-              T.let(
-                :"login.failed",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            LOGOUT_SUCCEEDED =
-              T.let(
-                :"logout.succeeded",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            LOGOUT_FAILED =
-              T.let(
-                :"logout.failed",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            ORGANIZATION_UPDATED =
-              T.let(
-                :"organization.updated",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            PROJECT_CREATED =
-              T.let(
-                :"project.created",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            PROJECT_UPDATED =
-              T.let(
-                :"project.updated",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            PROJECT_ARCHIVED =
-              T.let(
-                :"project.archived",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            PROJECT_DELETED =
-              T.let(
-                :"project.deleted",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            RATE_LIMIT_UPDATED =
-              T.let(
-                :"rate_limit.updated",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            RATE_LIMIT_DELETED =
-              T.let(
-                :"rate_limit.deleted",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            RESOURCE_DELETED =
-              T.let(
-                :"resource.deleted",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            TUNNEL_CREATED =
-              T.let(
-                :"tunnel.created",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            TUNNEL_UPDATED =
-              T.let(
-                :"tunnel.updated",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            TUNNEL_DELETED =
-              T.let(
-                :"tunnel.deleted",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            ROLE_CREATED =
-              T.let(
-                :"role.created",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            ROLE_UPDATED =
-              T.let(
-                :"role.updated",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            ROLE_DELETED =
-              T.let(
-                :"role.deleted",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            ROLE_ASSIGNMENT_CREATED =
-              T.let(
-                :"role.assignment.created",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            ROLE_ASSIGNMENT_DELETED =
-              T.let(
-                :"role.assignment.deleted",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            SCIM_ENABLED =
-              T.let(
-                :"scim.enabled",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            SCIM_DISABLED =
-              T.let(
-                :"scim.disabled",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            SERVICE_ACCOUNT_CREATED =
-              T.let(
-                :"service_account.created",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            SERVICE_ACCOUNT_UPDATED =
-              T.let(
-                :"service_account.updated",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            SERVICE_ACCOUNT_DELETED =
-              T.let(
-                :"service_account.deleted",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            USER_ADDED =
-              T.let(
-                :"user.added",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            USER_UPDATED =
-              T.let(
-                :"user.updated",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-            USER_DELETED =
-              T.let(
-                :"user.deleted",
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-              )
-
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
-                ]
-              )
-            end
-            def self.values
             end
           end
 

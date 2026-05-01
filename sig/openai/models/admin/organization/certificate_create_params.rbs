@@ -3,27 +3,27 @@ module OpenAI
     module Admin
       module Organization
         type certificate_create_params =
-          { content: String, name: String }
+          { certificate: String, name: String }
           & OpenAI::Internal::Type::request_parameters
 
         class CertificateCreateParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
-          attr_accessor content: String
+          attr_accessor certificate: String
 
           attr_reader name: String?
 
           def name=: (String) -> String
 
           def initialize: (
-            content: String,
+            certificate: String,
             ?name: String,
             ?request_options: OpenAI::request_opts
           ) -> void
 
           def to_hash: -> {
-            content: String,
+            certificate: String,
             name: String,
             request_options: OpenAI::RequestOptions
           }

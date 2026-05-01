@@ -8,9 +8,9 @@ module OpenAI
           class APIKeys
             # Retrieves an API key in the project.
             #
-            # @overload retrieve(key_id, project_id:, request_options: {})
+            # @overload retrieve(api_key_id, project_id:, request_options: {})
             #
-            # @param key_id [String] The ID of the API key.
+            # @param api_key_id [String] The ID of the API key.
             #
             # @param project_id [String] The ID of the project.
             #
@@ -19,7 +19,7 @@ module OpenAI
             # @return [OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey]
             #
             # @see OpenAI::Models::Admin::Organization::Projects::APIKeyRetrieveParams
-            def retrieve(key_id, params)
+            def retrieve(api_key_id, params)
               parsed, options = OpenAI::Admin::Organization::Projects::APIKeyRetrieveParams.dump_request(params)
               project_id =
                 parsed.delete(:project_id) do
@@ -27,7 +27,7 @@ module OpenAI
                 end
               @client.request(
                 method: :get,
-                path: ["organization/projects/%1$s/api_keys/%2$s", project_id, key_id],
+                path: ["organization/projects/%1$s/api_keys/%2$s", project_id, api_key_id],
                 model: OpenAI::Admin::Organization::Projects::ProjectAPIKey,
                 security: {admin_api_key_auth: true},
                 options: options
@@ -72,9 +72,9 @@ module OpenAI
             # Returns confirmation of the key deletion, or an error if the key belonged to a
             # service account.
             #
-            # @overload delete(key_id, project_id:, request_options: {})
+            # @overload delete(api_key_id, project_id:, request_options: {})
             #
-            # @param key_id [String] The ID of the API key.
+            # @param api_key_id [String] The ID of the API key.
             #
             # @param project_id [String] The ID of the project.
             #
@@ -83,7 +83,7 @@ module OpenAI
             # @return [OpenAI::Models::Admin::Organization::Projects::APIKeyDeleteResponse]
             #
             # @see OpenAI::Models::Admin::Organization::Projects::APIKeyDeleteParams
-            def delete(key_id, params)
+            def delete(api_key_id, params)
               parsed, options = OpenAI::Admin::Organization::Projects::APIKeyDeleteParams.dump_request(params)
               project_id =
                 parsed.delete(:project_id) do
@@ -91,7 +91,7 @@ module OpenAI
                 end
               @client.request(
                 method: :delete,
-                path: ["organization/projects/%1$s/api_keys/%2$s", project_id, key_id],
+                path: ["organization/projects/%1$s/api_keys/%2$s", project_id, api_key_id],
                 model: OpenAI::Models::Admin::Organization::Projects::APIKeyDeleteResponse,
                 security: {admin_api_key_auth: true},
                 options: options

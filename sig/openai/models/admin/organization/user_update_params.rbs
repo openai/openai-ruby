@@ -15,11 +15,15 @@ module OpenAI
 
           attr_accessor user_id: String
 
-          attr_accessor role: OpenAI::Models::Admin::Organization::UserUpdateParams::role
+          attr_reader role: OpenAI::Models::Admin::Organization::UserUpdateParams::role?
+
+          def role=: (
+            OpenAI::Models::Admin::Organization::UserUpdateParams::role
+          ) -> OpenAI::Models::Admin::Organization::UserUpdateParams::role
 
           def initialize: (
             user_id: String,
-            role: OpenAI::Models::Admin::Organization::UserUpdateParams::role,
+            ?role: OpenAI::Models::Admin::Organization::UserUpdateParams::role,
             ?request_options: OpenAI::request_opts
           ) -> void
 

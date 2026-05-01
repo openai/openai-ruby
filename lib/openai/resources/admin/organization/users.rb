@@ -31,7 +31,7 @@ module OpenAI
 
           # Modifies a user's role in the organization.
           #
-          # @overload update(user_id, role:, request_options: {})
+          # @overload update(user_id, role: nil, request_options: {})
           #
           # @param user_id [String] The ID of the user.
           #
@@ -42,7 +42,7 @@ module OpenAI
           # @return [OpenAI::Models::Admin::Organization::OrganizationUser]
           #
           # @see OpenAI::Models::Admin::Organization::UserUpdateParams
-          def update(user_id, params)
+          def update(user_id, params = {})
             parsed, options = OpenAI::Admin::Organization::UserUpdateParams.dump_request(params)
             @client.request(
               method: :post,

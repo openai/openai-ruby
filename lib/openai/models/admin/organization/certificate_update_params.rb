@@ -17,10 +17,10 @@ module OpenAI
           # @!attribute name
           #   The updated name for the certificate
           #
-          #   @return [String]
-          required :name, String
+          #   @return [String, nil]
+          optional :name, String
 
-          # @!method initialize(certificate_id:, name:, request_options: {})
+          # @!method initialize(certificate_id:, name: nil, request_options: {})
           #   @param certificate_id [String]
           #
           #   @param name [String] The updated name for the certificate

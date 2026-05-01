@@ -41,7 +41,7 @@ class OpenAI::Test::Resources::Admin::Organization::GroupsTest < OpenAI::Test::R
     response = @openai.admin.organization.groups.list
 
     assert_pattern do
-      response => OpenAI::Internal::CursorPage
+      response => OpenAI::Internal::NextCursorPage
     end
 
     row = response.to_enum.first

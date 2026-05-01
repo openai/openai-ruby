@@ -4,7 +4,7 @@ require_relative "../../../../test_helper"
 
 class OpenAI::Test::Resources::Admin::Organization::Projects::APIKeysTest < OpenAI::Test::ResourceTest
   def test_retrieve_required_params
-    response = @openai.admin.organization.projects.api_keys.retrieve("key_id", project_id: "project_id")
+    response = @openai.admin.organization.projects.api_keys.retrieve("api_key_id", project_id: "project_id")
 
     assert_pattern do
       response => OpenAI::Admin::Organization::Projects::ProjectAPIKey
@@ -14,7 +14,7 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::APIKeysTest < Open
       response => {
         id: String,
         created_at: Integer,
-        last_used_at: Integer,
+        last_used_at: Integer | nil,
         name: String,
         object: Symbol,
         owner: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner,
@@ -41,7 +41,7 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::APIKeysTest < Open
       row => {
         id: String,
         created_at: Integer,
-        last_used_at: Integer,
+        last_used_at: Integer | nil,
         name: String,
         object: Symbol,
         owner: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner,
@@ -51,7 +51,7 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::APIKeysTest < Open
   end
 
   def test_delete_required_params
-    response = @openai.admin.organization.projects.api_keys.delete("key_id", project_id: "project_id")
+    response = @openai.admin.organization.projects.api_keys.delete("api_key_id", project_id: "project_id")
 
     assert_pattern do
       response => OpenAI::Models::Admin::Organization::Projects::APIKeyDeleteResponse

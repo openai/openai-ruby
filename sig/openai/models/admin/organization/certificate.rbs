@@ -7,7 +7,7 @@ module OpenAI
             id: String,
             certificate_details: OpenAI::Admin::Organization::Certificate::CertificateDetails,
             created_at: Integer,
-            name: String,
+            name: String?,
             object: OpenAI::Models::Admin::Organization::Certificate::object,
             active: bool
           }
@@ -19,7 +19,7 @@ module OpenAI
 
           attr_accessor created_at: Integer
 
-          attr_accessor name: String
+          attr_accessor name: String?
 
           attr_accessor object: OpenAI::Models::Admin::Organization::Certificate::object
 
@@ -31,7 +31,7 @@ module OpenAI
             id: String,
             certificate_details: OpenAI::Admin::Organization::Certificate::CertificateDetails,
             created_at: Integer,
-            name: String,
+            name: String?,
             object: OpenAI::Models::Admin::Organization::Certificate::object,
             ?active: bool
           ) -> void
@@ -40,7 +40,7 @@ module OpenAI
             id: String,
             certificate_details: OpenAI::Admin::Organization::Certificate::CertificateDetails,
             created_at: Integer,
-            name: String,
+            name: String?,
             object: OpenAI::Models::Admin::Organization::Certificate::object,
             active: bool
           }

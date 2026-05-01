@@ -30,7 +30,7 @@ module OpenAI
           attr_accessor :name
 
           # The object type, which is always `organization.admin_api_key`
-          sig { returns(String) }
+          sig { returns(Symbol) }
           attr_accessor :object
 
           sig { returns(OpenAI::Admin::Organization::AdminAPIKey::Owner) }
@@ -61,10 +61,10 @@ module OpenAI
               created_at: Integer,
               last_used_at: T.nilable(Integer),
               name: String,
-              object: String,
               owner: OpenAI::Admin::Organization::AdminAPIKey::Owner::OrHash,
               redacted_value: String,
-              value: String
+              value: String,
+              object: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -76,13 +76,13 @@ module OpenAI
             last_used_at:,
             # The name of the API key
             name:,
-            # The object type, which is always `organization.admin_api_key`
-            object:,
             owner:,
             # The redacted value of the API key
             redacted_value:,
             # The value of the API key. Only shown on create.
-            value: nil
+            value: nil,
+            # The object type, which is always `organization.admin_api_key`
+            object: :"organization.admin_api_key"
           )
           end
 
@@ -93,7 +93,7 @@ module OpenAI
                 created_at: Integer,
                 last_used_at: T.nilable(Integer),
                 name: String,
-                object: String,
+                object: Symbol,
                 owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
                 redacted_value: String,
                 value: String

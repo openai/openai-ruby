@@ -57,7 +57,9 @@ module OpenAI
                 OpenAI::Admin::Organization::RoleListParams::Order::OrSymbol,
               request_options: OpenAI::RequestOptions::OrHash
             ).returns(
-              OpenAI::Internal::CursorPage[OpenAI::Admin::Organization::Role]
+              OpenAI::Internal::NextCursorPage[
+                OpenAI::Admin::Organization::Role
+              ]
             )
           end
           def list(

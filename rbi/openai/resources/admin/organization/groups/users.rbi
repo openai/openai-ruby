@@ -35,8 +35,8 @@ module OpenAI
                   OpenAI::Admin::Organization::Groups::UserListParams::Order::OrSymbol,
                 request_options: OpenAI::RequestOptions::OrHash
               ).returns(
-                OpenAI::Internal::CursorPage[
-                  OpenAI::Admin::Organization::OrganizationUser
+                OpenAI::Internal::NextCursorPage[
+                  OpenAI::Admin::Organization::Groups::OrganizationGroupUser
                 ]
               )
             end

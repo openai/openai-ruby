@@ -1,0 +1,24 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        module Groups
+          type organization_group_user =
+            { id: String, email: String?, name: String }
+
+          class OrganizationGroupUser < OpenAI::Internal::Type::BaseModel
+            attr_accessor id: String
+
+            attr_accessor email: String?
+
+            attr_accessor name: String
+
+            def initialize: (id: String, email: String?, name: String) -> void
+
+            def to_hash: -> { id: String, email: String?, name: String }
+          end
+        end
+      end
+    end
+  end
+end

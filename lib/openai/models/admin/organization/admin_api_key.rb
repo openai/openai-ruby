@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Admin
       module Organization
-        # @see OpenAI::Resources::Admin::Organization::AdminAPIKeys#create
+        # @see OpenAI::Resources::Admin::Organization::AdminAPIKeys#retrieve
         class AdminAPIKey < OpenAI::Internal::Type::BaseModel
           # @!attribute id
           #   The identifier, which can be referenced in API endpoints
@@ -33,8 +33,8 @@ module OpenAI
           # @!attribute object
           #   The object type, which is always `organization.admin_api_key`
           #
-          #   @return [String]
-          required :object, String
+          #   @return [Symbol, :"organization.admin_api_key"]
+          required :object, const: :"organization.admin_api_key"
 
           # @!attribute owner
           #
@@ -53,7 +53,7 @@ module OpenAI
           #   @return [String, nil]
           optional :value, String
 
-          # @!method initialize(id:, created_at:, last_used_at:, name:, object:, owner:, redacted_value:, value: nil)
+          # @!method initialize(id:, created_at:, last_used_at:, name:, owner:, redacted_value:, value: nil, object: :"organization.admin_api_key")
           #   Represents an individual Admin API key in an org.
           #
           #   @param id [String] The identifier, which can be referenced in API endpoints
@@ -64,13 +64,13 @@ module OpenAI
           #
           #   @param name [String] The name of the API key
           #
-          #   @param object [String] The object type, which is always `organization.admin_api_key`
-          #
           #   @param owner [OpenAI::Models::Admin::Organization::AdminAPIKey::Owner]
           #
           #   @param redacted_value [String] The redacted value of the API key
           #
           #   @param value [String] The value of the API key. Only shown on create.
+          #
+          #   @param object [Symbol, :"organization.admin_api_key"] The object type, which is always `organization.admin_api_key`
 
           # @see OpenAI::Models::Admin::Organization::AdminAPIKey#owner
           class Owner < OpenAI::Internal::Type::BaseModel

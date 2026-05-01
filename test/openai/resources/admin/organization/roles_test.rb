@@ -47,7 +47,7 @@ class OpenAI::Test::Resources::Admin::Organization::RolesTest < OpenAI::Test::Re
     response = @openai.admin.organization.roles.list
 
     assert_pattern do
-      response => OpenAI::Internal::CursorPage
+      response => OpenAI::Internal::NextCursorPage
     end
 
     row = response.to_enum.first
