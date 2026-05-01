@@ -19,8 +19,8 @@ module OpenAI
 
           # @!attribute next_page
           #
-          #   @return [String]
-          required :next_page, String
+          #   @return [String, nil]
+          required :next_page, String, nil?: true
 
           # @!attribute object
           #
@@ -30,7 +30,7 @@ module OpenAI
           # @!method initialize(data:, has_more:, next_page:, object: :page)
           #   @param data [Array<OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data>]
           #   @param has_more [Boolean]
-          #   @param next_page [String]
+          #   @param next_page [String, nil]
           #   @param object [Symbol, :page]
 
           class Data < OpenAI::Internal::Type::BaseModel
@@ -44,10 +44,10 @@ module OpenAI
             #   @return [Symbol, :bucket]
             required :object, const: :bucket
 
-            # @!attribute result
+            # @!attribute results
             #
             #   @return [Array<OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationUsageCompletionsResult, OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationUsageEmbeddingsResult, OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationUsageModerationsResult, OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationUsageImagesResult, OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationUsageAudioSpeechesResult, OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationUsageAudioTranscriptionsResult, OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationUsageVectorStoresResult, OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationUsageCodeInterpreterSessionsResult, OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationCostsResult>]
-            required :result,
+            required :results,
                      -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result] }
 
             # @!attribute start_time
@@ -55,9 +55,9 @@ module OpenAI
             #   @return [Integer]
             required :start_time, Integer
 
-            # @!method initialize(end_time:, result:, start_time:, object: :bucket)
+            # @!method initialize(end_time:, results:, start_time:, object: :bucket)
             #   @param end_time [Integer]
-            #   @param result [Array<OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationUsageCompletionsResult, OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationUsageEmbeddingsResult, OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationUsageModerationsResult, OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationUsageImagesResult, OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationUsageAudioSpeechesResult, OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationUsageAudioTranscriptionsResult, OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationUsageVectorStoresResult, OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationUsageCodeInterpreterSessionsResult, OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationCostsResult>]
+            #   @param results [Array<OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationUsageCompletionsResult, OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationUsageEmbeddingsResult, OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationUsageModerationsResult, OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationUsageImagesResult, OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationUsageAudioSpeechesResult, OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationUsageAudioTranscriptionsResult, OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationUsageVectorStoresResult, OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationUsageCodeInterpreterSessionsResult, OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationCostsResult>]
             #   @param start_time [Integer]
             #   @param object [Symbol, :bucket]
 
@@ -617,16 +617,16 @@ module OpenAI
               end
 
               class OrganizationUsageCodeInterpreterSessionsResult < OpenAI::Internal::Type::BaseModel
+                # @!attribute num_sessions
+                #   The number of code interpreter sessions.
+                #
+                #   @return [Integer]
+                required :num_sessions, Integer
+
                 # @!attribute object
                 #
                 #   @return [Symbol, :"organization.usage.code_interpreter_sessions.result"]
                 required :object, const: :"organization.usage.code_interpreter_sessions.result"
-
-                # @!attribute num_sessions
-                #   The number of code interpreter sessions.
-                #
-                #   @return [Integer, nil]
-                optional :num_sessions, Integer
 
                 # @!attribute project_id
                 #   When `group_by=project_id`, this field provides the project ID of the grouped
@@ -635,7 +635,7 @@ module OpenAI
                 #   @return [String, nil]
                 optional :project_id, String, nil?: true
 
-                # @!method initialize(num_sessions: nil, project_id: nil, object: :"organization.usage.code_interpreter_sessions.result")
+                # @!method initialize(num_sessions:, project_id: nil, object: :"organization.usage.code_interpreter_sessions.result")
                 #   Some parameter documentations has been truncated, see
                 #   {OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationUsageCodeInterpreterSessionsResult}
                 #   for more details.

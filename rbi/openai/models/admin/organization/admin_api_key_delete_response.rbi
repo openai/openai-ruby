@@ -13,35 +13,30 @@ module OpenAI
               )
             end
 
-          sig { returns(T.nilable(String)) }
-          attr_reader :id
+          sig { returns(String) }
+          attr_accessor :id
 
-          sig { params(id: String).void }
-          attr_writer :id
+          sig { returns(T::Boolean) }
+          attr_accessor :deleted
 
-          sig { returns(T.nilable(T::Boolean)) }
-          attr_reader :deleted
-
-          sig { params(deleted: T::Boolean).void }
-          attr_writer :deleted
-
-          sig { returns(T.nilable(String)) }
-          attr_reader :object
-
-          sig { params(object: String).void }
-          attr_writer :object
+          sig { returns(Symbol) }
+          attr_accessor :object
 
           sig do
-            params(id: String, deleted: T::Boolean, object: String).returns(
+            params(id: String, deleted: T::Boolean, object: Symbol).returns(
               T.attached_class
             )
           end
-          def self.new(id: nil, deleted: nil, object: nil)
+          def self.new(
+            id:,
+            deleted:,
+            object: :"organization.admin_api_key.deleted"
+          )
           end
 
           sig do
             override.returns(
-              { id: String, deleted: T::Boolean, object: String }
+              { id: String, deleted: T::Boolean, object: Symbol }
             )
           end
           def to_hash

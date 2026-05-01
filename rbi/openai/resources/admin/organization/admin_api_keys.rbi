@@ -10,7 +10,9 @@ module OpenAI
             params(
               name: String,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Admin::Organization::AdminAPIKey)
+            ).returns(
+              OpenAI::Models::Admin::Organization::AdminAPIKeyCreateResponse
+            )
           end
           def create(name:, request_options: {})
           end

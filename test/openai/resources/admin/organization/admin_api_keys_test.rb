@@ -7,20 +7,7 @@ class OpenAI::Test::Resources::Admin::Organization::AdminAPIKeysTest < OpenAI::T
     response = @openai.admin.organization.admin_api_keys.create(name: "New Admin Key")
 
     assert_pattern do
-      response => OpenAI::Admin::Organization::AdminAPIKey
-    end
-
-    assert_pattern do
-      response => {
-        id: String,
-        created_at: Integer,
-        last_used_at: Integer | nil,
-        name: String,
-        object: String,
-        owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
-        redacted_value: String,
-        value: String | nil
-      }
+      response => OpenAI::Models::Admin::Organization::AdminAPIKeyCreateResponse
     end
   end
 
@@ -37,7 +24,7 @@ class OpenAI::Test::Resources::Admin::Organization::AdminAPIKeysTest < OpenAI::T
         created_at: Integer,
         last_used_at: Integer | nil,
         name: String,
-        object: String,
+        object: Symbol,
         owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
         redacted_value: String,
         value: String | nil
@@ -65,7 +52,7 @@ class OpenAI::Test::Resources::Admin::Organization::AdminAPIKeysTest < OpenAI::T
         created_at: Integer,
         last_used_at: Integer | nil,
         name: String,
-        object: String,
+        object: Symbol,
         owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
         redacted_value: String,
         value: String | nil
@@ -82,9 +69,9 @@ class OpenAI::Test::Resources::Admin::Organization::AdminAPIKeysTest < OpenAI::T
 
     assert_pattern do
       response => {
-        id: String | nil,
-        deleted: OpenAI::Internal::Type::Boolean | nil,
-        object: String | nil
+        id: String,
+        deleted: OpenAI::Internal::Type::Boolean,
+        object: Symbol
       }
     end
   end

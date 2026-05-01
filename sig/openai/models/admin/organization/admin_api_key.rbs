@@ -8,7 +8,7 @@ module OpenAI
             created_at: Integer,
             last_used_at: Integer?,
             name: String,
-            object: String,
+            object: :"organization.admin_api_key",
             owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
             redacted_value: String,
             value: String
@@ -23,7 +23,7 @@ module OpenAI
 
           attr_accessor name: String
 
-          attr_accessor object: String
+          attr_accessor object: :"organization.admin_api_key"
 
           attr_accessor owner: OpenAI::Admin::Organization::AdminAPIKey::Owner
 
@@ -38,10 +38,10 @@ module OpenAI
             created_at: Integer,
             last_used_at: Integer?,
             name: String,
-            object: String,
             owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
             redacted_value: String,
-            ?value: String
+            ?value: String,
+            ?object: :"organization.admin_api_key"
           ) -> void
 
           def to_hash: -> {
@@ -49,7 +49,7 @@ module OpenAI
             created_at: Integer,
             last_used_at: Integer?,
             name: String,
-            object: String,
+            object: :"organization.admin_api_key",
             owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
             redacted_value: String,
             value: String

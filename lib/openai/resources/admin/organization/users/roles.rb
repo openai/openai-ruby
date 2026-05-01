@@ -48,7 +48,7 @@ module OpenAI
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
-            # @return [OpenAI::Internal::CursorPage<OpenAI::Models::Admin::Organization::Users::RoleListResponse>]
+            # @return [OpenAI::Internal::NextCursorPage<OpenAI::Models::Admin::Organization::Users::RoleListResponse>]
             #
             # @see OpenAI::Models::Admin::Organization::Users::RoleListParams
             def list(user_id, params = {})
@@ -58,7 +58,7 @@ module OpenAI
                 method: :get,
                 path: ["organization/users/%1$s/roles", user_id],
                 query: query,
-                page: OpenAI::Internal::CursorPage,
+                page: OpenAI::Internal::NextCursorPage,
                 model: OpenAI::Models::Admin::Organization::Users::RoleListResponse,
                 security: {admin_api_key_auth: true},
                 options: options

@@ -25,7 +25,7 @@ module OpenAI
           sig { returns(T::Boolean) }
           attr_accessor :has_more
 
-          sig { returns(String) }
+          sig { returns(T.nilable(String)) }
           attr_accessor :next_page
 
           sig { returns(Symbol) }
@@ -38,7 +38,7 @@ module OpenAI
                   OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::OrHash
                 ],
               has_more: T::Boolean,
-              next_page: String,
+              next_page: T.nilable(String),
               object: Symbol
             ).returns(T.attached_class)
           end
@@ -53,7 +53,7 @@ module OpenAI
                     OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data
                   ],
                 has_more: T::Boolean,
-                next_page: String,
+                next_page: T.nilable(String),
                 object: Symbol
               }
             )
@@ -83,7 +83,7 @@ module OpenAI
                 ]
               )
             end
-            attr_accessor :result
+            attr_accessor :results
 
             sig { returns(Integer) }
             attr_accessor :start_time
@@ -91,7 +91,7 @@ module OpenAI
             sig do
               params(
                 end_time: Integer,
-                result:
+                results:
                   T::Array[
                     T.any(
                       OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationUsageCompletionsResult::OrHash,
@@ -109,7 +109,7 @@ module OpenAI
                 object: Symbol
               ).returns(T.attached_class)
             end
-            def self.new(end_time:, result:, start_time:, object: :bucket)
+            def self.new(end_time:, results:, start_time:, object: :bucket)
             end
 
             sig do
@@ -117,7 +117,7 @@ module OpenAI
                 {
                   end_time: Integer,
                   object: Symbol,
-                  result:
+                  results:
                     T::Array[
                       OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::Variants
                     ],
@@ -837,15 +837,12 @@ module OpenAI
                     )
                   end
 
+                # The number of code interpreter sessions.
+                sig { returns(Integer) }
+                attr_accessor :num_sessions
+
                 sig { returns(Symbol) }
                 attr_accessor :object
-
-                # The number of code interpreter sessions.
-                sig { returns(T.nilable(Integer)) }
-                attr_reader :num_sessions
-
-                sig { params(num_sessions: Integer).void }
-                attr_writer :num_sessions
 
                 # When `group_by=project_id`, this field provides the project ID of the grouped
                 # usage result.
@@ -863,7 +860,7 @@ module OpenAI
                 end
                 def self.new(
                   # The number of code interpreter sessions.
-                  num_sessions: nil,
+                  num_sessions:,
                   # When `group_by=project_id`, this field provides the project ID of the grouped
                   # usage result.
                   project_id: nil,
@@ -874,8 +871,8 @@ module OpenAI
                 sig do
                   override.returns(
                     {
-                      object: Symbol,
                       num_sessions: Integer,
+                      object: Symbol,
                       project_id: T.nilable(String)
                     }
                   )

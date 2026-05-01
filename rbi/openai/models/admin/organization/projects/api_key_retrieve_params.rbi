@@ -21,23 +21,23 @@ module OpenAI
             attr_accessor :project_id
 
             sig { returns(String) }
-            attr_accessor :key_id
+            attr_accessor :api_key_id
 
             sig do
               params(
                 project_id: String,
-                key_id: String,
+                api_key_id: String,
                 request_options: OpenAI::RequestOptions::OrHash
               ).returns(T.attached_class)
             end
-            def self.new(project_id:, key_id:, request_options: {})
+            def self.new(project_id:, api_key_id:, request_options: {})
             end
 
             sig do
               override.returns(
                 {
                   project_id: String,
-                  key_id: String,
+                  api_key_id: String,
                   request_options: OpenAI::RequestOptions
                 }
               )

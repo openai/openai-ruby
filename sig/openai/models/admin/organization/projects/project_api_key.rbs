@@ -9,7 +9,7 @@ module OpenAI
             {
               id: String,
               created_at: Integer,
-              last_used_at: Integer,
+              last_used_at: Integer?,
               name: String,
               object: :"organization.project.api_key",
               owner: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner,
@@ -21,7 +21,7 @@ module OpenAI
 
             attr_accessor created_at: Integer
 
-            attr_accessor last_used_at: Integer
+            attr_accessor last_used_at: Integer?
 
             attr_accessor name: String
 
@@ -34,7 +34,7 @@ module OpenAI
             def initialize: (
               id: String,
               created_at: Integer,
-              last_used_at: Integer,
+              last_used_at: Integer?,
               name: String,
               owner: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner,
               redacted_value: String,
@@ -44,7 +44,7 @@ module OpenAI
             def to_hash: -> {
               id: String,
               created_at: Integer,
-              last_used_at: Integer,
+              last_used_at: Integer?,
               name: String,
               object: :"organization.project.api_key",
               owner: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner,
@@ -53,17 +53,17 @@ module OpenAI
 
             type owner =
               {
-                service_account: OpenAI::Admin::Organization::Projects::ProjectServiceAccount,
+                service_account: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::ServiceAccount,
                 type: OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::type_,
-                user: OpenAI::Admin::Organization::Projects::ProjectUser
+                user: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::User
               }
 
             class Owner < OpenAI::Internal::Type::BaseModel
-              attr_reader service_account: OpenAI::Admin::Organization::Projects::ProjectServiceAccount?
+              attr_reader service_account: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::ServiceAccount?
 
               def service_account=: (
-                OpenAI::Admin::Organization::Projects::ProjectServiceAccount
-              ) -> OpenAI::Admin::Organization::Projects::ProjectServiceAccount
+                OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::ServiceAccount
+              ) -> OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::ServiceAccount
 
               attr_reader type: OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::type_?
 
@@ -71,23 +71,50 @@ module OpenAI
                 OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::type_
               ) -> OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::type_
 
-              attr_reader user: OpenAI::Admin::Organization::Projects::ProjectUser?
+              attr_reader user: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::User?
 
               def user=: (
-                OpenAI::Admin::Organization::Projects::ProjectUser
-              ) -> OpenAI::Admin::Organization::Projects::ProjectUser
+                OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::User
+              ) -> OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::User
 
               def initialize: (
-                ?service_account: OpenAI::Admin::Organization::Projects::ProjectServiceAccount,
+                ?service_account: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::ServiceAccount,
                 ?type: OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::type_,
-                ?user: OpenAI::Admin::Organization::Projects::ProjectUser
+                ?user: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::User
               ) -> void
 
               def to_hash: -> {
-                service_account: OpenAI::Admin::Organization::Projects::ProjectServiceAccount,
+                service_account: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::ServiceAccount,
                 type: OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::type_,
-                user: OpenAI::Admin::Organization::Projects::ProjectUser
+                user: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::User
               }
+
+              type service_account =
+                { id: String, created_at: Integer, name: String, role: String }
+
+              class ServiceAccount < OpenAI::Internal::Type::BaseModel
+                attr_accessor id: String
+
+                attr_accessor created_at: Integer
+
+                attr_accessor name: String
+
+                attr_accessor role: String
+
+                def initialize: (
+                  id: String,
+                  created_at: Integer,
+                  name: String,
+                  role: String
+                ) -> void
+
+                def to_hash: -> {
+                  id: String,
+                  created_at: Integer,
+                  name: String,
+                  role: String
+                }
+              end
 
               type type_ = :user | :service_account
 
@@ -98,6 +125,43 @@ module OpenAI
                 SERVICE_ACCOUNT: :service_account
 
                 def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::type_]
+              end
+
+              type user =
+                {
+                  id: String,
+                  created_at: Integer,
+                  email: String,
+                  name: String,
+                  role: String
+                }
+
+              class User < OpenAI::Internal::Type::BaseModel
+                attr_accessor id: String
+
+                attr_accessor created_at: Integer
+
+                attr_accessor email: String
+
+                attr_accessor name: String
+
+                attr_accessor role: String
+
+                def initialize: (
+                  id: String,
+                  created_at: Integer,
+                  email: String,
+                  name: String,
+                  role: String
+                ) -> void
+
+                def to_hash: -> {
+                  id: String,
+                  created_at: Integer,
+                  email: String,
+                  name: String,
+                  role: String
+                }
               end
             end
           end

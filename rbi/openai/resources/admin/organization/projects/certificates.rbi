@@ -17,7 +17,7 @@ module OpenAI
                 request_options: OpenAI::RequestOptions::OrHash
               ).returns(
                 OpenAI::Internal::ConversationCursorPage[
-                  OpenAI::Admin::Organization::Certificate
+                  OpenAI::Models::Admin::Organization::Projects::CertificateListResponse
                 ]
               )
             end
@@ -48,7 +48,9 @@ module OpenAI
                 certificate_ids: T::Array[String],
                 request_options: OpenAI::RequestOptions::OrHash
               ).returns(
-                OpenAI::Internal::Page[OpenAI::Admin::Organization::Certificate]
+                OpenAI::Internal::Page[
+                  OpenAI::Models::Admin::Organization::Projects::CertificateActivateResponse
+                ]
               )
             end
             def activate(
@@ -67,7 +69,9 @@ module OpenAI
                 certificate_ids: T::Array[String],
                 request_options: OpenAI::RequestOptions::OrHash
               ).returns(
-                OpenAI::Internal::Page[OpenAI::Admin::Organization::Certificate]
+                OpenAI::Internal::Page[
+                  OpenAI::Models::Admin::Organization::Projects::CertificateDeactivateResponse
+                ]
               )
             end
             def deactivate(

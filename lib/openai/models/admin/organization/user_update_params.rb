@@ -17,10 +17,10 @@ module OpenAI
           # @!attribute role
           #   `owner` or `reader`
           #
-          #   @return [Symbol, OpenAI::Models::Admin::Organization::UserUpdateParams::Role]
-          required :role, enum: -> { OpenAI::Admin::Organization::UserUpdateParams::Role }
+          #   @return [Symbol, OpenAI::Models::Admin::Organization::UserUpdateParams::Role, nil]
+          optional :role, enum: -> { OpenAI::Admin::Organization::UserUpdateParams::Role }
 
-          # @!method initialize(user_id:, role:, request_options: {})
+          # @!method initialize(user_id:, role: nil, request_options: {})
           #   @param user_id [String]
           #
           #   @param role [Symbol, OpenAI::Models::Admin::Organization::UserUpdateParams::Role] `owner` or `reader`

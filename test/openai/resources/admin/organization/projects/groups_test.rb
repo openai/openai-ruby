@@ -26,7 +26,7 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::GroupsTest < OpenA
     response = @openai.admin.organization.projects.groups.list("project_id")
 
     assert_pattern do
-      response => OpenAI::Internal::CursorPage
+      response => OpenAI::Internal::NextCursorPage
     end
 
     row = response.to_enum.first

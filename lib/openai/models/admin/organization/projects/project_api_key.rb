@@ -22,8 +22,8 @@ module OpenAI
             # @!attribute last_used_at
             #   The Unix timestamp (in seconds) of when the API key was last used.
             #
-            #   @return [Integer]
-            required :last_used_at, Integer
+            #   @return [Integer, nil]
+            required :last_used_at, Integer, nil?: true
 
             # @!attribute name
             #   The name of the API key
@@ -55,7 +55,7 @@ module OpenAI
             #
             #   @param created_at [Integer] The Unix timestamp (in seconds) of when the API key was created
             #
-            #   @param last_used_at [Integer] The Unix timestamp (in seconds) of when the API key was last used.
+            #   @param last_used_at [Integer, nil] The Unix timestamp (in seconds) of when the API key was last used.
             #
             #   @param name [String] The name of the API key
             #
@@ -68,10 +68,11 @@ module OpenAI
             # @see OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey#owner
             class Owner < OpenAI::Internal::Type::BaseModel
               # @!attribute service_account
-              #   Represents an individual service account in a project.
+              #   The service account that owns a project API key.
               #
-              #   @return [OpenAI::Models::Admin::Organization::Projects::ProjectServiceAccount, nil]
-              optional :service_account, -> { OpenAI::Admin::Organization::Projects::ProjectServiceAccount }
+              #   @return [OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::ServiceAccount, nil]
+              optional :service_account,
+                       -> { OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::ServiceAccount }
 
               # @!attribute type
               #   `user` or `service_account`
@@ -80,17 +81,55 @@ module OpenAI
               optional :type, enum: -> { OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::Type }
 
               # @!attribute user
-              #   Represents an individual user in a project.
+              #   The user that owns a project API key.
               #
-              #   @return [OpenAI::Models::Admin::Organization::Projects::ProjectUser, nil]
-              optional :user, -> { OpenAI::Admin::Organization::Projects::ProjectUser }
+              #   @return [OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::User, nil]
+              optional :user, -> { OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::User }
 
               # @!method initialize(service_account: nil, type: nil, user: nil)
-              #   @param service_account [OpenAI::Models::Admin::Organization::Projects::ProjectServiceAccount] Represents an individual service account in a project.
+              #   @param service_account [OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::ServiceAccount] The service account that owns a project API key.
               #
               #   @param type [Symbol, OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::Type] `user` or `service_account`
               #
-              #   @param user [OpenAI::Models::Admin::Organization::Projects::ProjectUser] Represents an individual user in a project.
+              #   @param user [OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::User] The user that owns a project API key.
+
+              # @see OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner#service_account
+              class ServiceAccount < OpenAI::Internal::Type::BaseModel
+                # @!attribute id
+                #   The identifier, which can be referenced in API endpoints
+                #
+                #   @return [String]
+                required :id, String
+
+                # @!attribute created_at
+                #   The Unix timestamp (in seconds) of when the service account was created.
+                #
+                #   @return [Integer]
+                required :created_at, Integer
+
+                # @!attribute name
+                #   The name of the service account.
+                #
+                #   @return [String]
+                required :name, String
+
+                # @!attribute role
+                #   The service account's project role.
+                #
+                #   @return [String]
+                required :role, String
+
+                # @!method initialize(id:, created_at:, name:, role:)
+                #   The service account that owns a project API key.
+                #
+                #   @param id [String] The identifier, which can be referenced in API endpoints
+                #
+                #   @param created_at [Integer] The Unix timestamp (in seconds) of when the service account was created.
+                #
+                #   @param name [String] The name of the service account.
+                #
+                #   @param role [String] The service account's project role.
+              end
 
               # `user` or `service_account`
               #
@@ -103,6 +142,52 @@ module OpenAI
 
                 # @!method self.values
                 #   @return [Array<Symbol>]
+              end
+
+              # @see OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner#user
+              class User < OpenAI::Internal::Type::BaseModel
+                # @!attribute id
+                #   The identifier, which can be referenced in API endpoints
+                #
+                #   @return [String]
+                required :id, String
+
+                # @!attribute created_at
+                #   The Unix timestamp (in seconds) of when the user was created.
+                #
+                #   @return [Integer]
+                required :created_at, Integer
+
+                # @!attribute email
+                #   The email address of the user.
+                #
+                #   @return [String]
+                required :email, String
+
+                # @!attribute name
+                #   The name of the user.
+                #
+                #   @return [String]
+                required :name, String
+
+                # @!attribute role
+                #   The user's project role.
+                #
+                #   @return [String]
+                required :role, String
+
+                # @!method initialize(id:, created_at:, email:, name:, role:)
+                #   The user that owns a project API key.
+                #
+                #   @param id [String] The identifier, which can be referenced in API endpoints
+                #
+                #   @param created_at [Integer] The Unix timestamp (in seconds) of when the user was created.
+                #
+                #   @param email [String] The email address of the user.
+                #
+                #   @param name [String] The name of the user.
+                #
+                #   @param role [String] The user's project role.
               end
             end
           end

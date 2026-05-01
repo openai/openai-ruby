@@ -19,7 +19,9 @@ module OpenAI
 
             sig do
               returns(
-                OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey
+                T.nilable(
+                  OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey
+                )
               )
             end
             attr_reader :api_key
@@ -27,7 +29,9 @@ module OpenAI
             sig do
               params(
                 api_key:
-                  OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey::OrHash
+                  T.nilable(
+                    OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey::OrHash
+                  )
               ).void
             end
             attr_writer :api_key
@@ -49,7 +53,9 @@ module OpenAI
               params(
                 id: String,
                 api_key:
-                  OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey::OrHash,
+                  T.nilable(
+                    OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey::OrHash
+                  ),
                 created_at: Integer,
                 name: String,
                 object: Symbol,
@@ -72,7 +78,9 @@ module OpenAI
                 {
                   id: String,
                   api_key:
-                    OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey,
+                    T.nilable(
+                      OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey
+                    ),
                   created_at: Integer,
                   name: String,
                   object: Symbol,

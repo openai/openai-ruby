@@ -20,9 +20,9 @@ class OpenAI::Test::Resources::Admin::Organization::AuditLogsTest < OpenAI::Test
     assert_pattern do
       row => {
         id: String,
-        actor: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor,
         effective_at: Integer,
         type: OpenAI::Models::Admin::Organization::AuditLogListResponse::Type,
+        actor: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor | nil,
         api_key_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyCreated | nil,
         api_key_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyDeleted | nil,
         api_key_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated | nil,

@@ -12,7 +12,7 @@ module OpenAI
           # @param name [String]
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
-          # @return [OpenAI::Models::Admin::Organization::AdminAPIKey]
+          # @return [OpenAI::Models::Admin::Organization::AdminAPIKeyCreateResponse]
           #
           # @see OpenAI::Models::Admin::Organization::AdminAPIKeyCreateParams
           def create(params)
@@ -21,7 +21,7 @@ module OpenAI
               method: :post,
               path: "organization/admin_api_keys",
               body: parsed,
-              model: OpenAI::Admin::Organization::AdminAPIKey,
+              model: OpenAI::Models::Admin::Organization::AdminAPIKeyCreateResponse,
               security: {admin_api_key_auth: true},
               options: options
             )

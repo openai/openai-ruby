@@ -10,19 +10,19 @@ module OpenAI
               ?limit: Integer,
               ?order: OpenAI::Models::Admin::Organization::Projects::CertificateListParams::order,
               ?request_options: OpenAI::request_opts
-            ) -> OpenAI::Internal::ConversationCursorPage[OpenAI::Admin::Organization::Certificate]
+            ) -> OpenAI::Internal::ConversationCursorPage[OpenAI::Models::Admin::Organization::Projects::CertificateListResponse]
 
             def activate: (
               String project_id,
               certificate_ids: ::Array[String],
               ?request_options: OpenAI::request_opts
-            ) -> OpenAI::Internal::Page[OpenAI::Admin::Organization::Certificate]
+            ) -> OpenAI::Internal::Page[OpenAI::Models::Admin::Organization::Projects::CertificateActivateResponse]
 
             def deactivate: (
               String project_id,
               certificate_ids: ::Array[String],
               ?request_options: OpenAI::request_opts
-            ) -> OpenAI::Internal::Page[OpenAI::Admin::Organization::Certificate]
+            ) -> OpenAI::Internal::Page[OpenAI::Models::Admin::Organization::Projects::CertificateDeactivateResponse]
 
             def initialize: (client: OpenAI::Client) -> void
           end

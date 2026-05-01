@@ -26,8 +26,8 @@ module OpenAI
           # @!attribute name
           #   The name of the certificate.
           #
-          #   @return [String]
-          required :name, String
+          #   @return [String, nil]
+          required :name, String, nil?: true
 
           # @!attribute object
           #   The object type.
@@ -61,7 +61,7 @@ module OpenAI
           #
           #   @param created_at [Integer] The Unix timestamp (in seconds) of when the certificate was uploaded.
           #
-          #   @param name [String] The name of the certificate.
+          #   @param name [String, nil] The name of the certificate.
           #
           #   @param object [Symbol, OpenAI::Models::Admin::Organization::Certificate::Object] The object type.
           #

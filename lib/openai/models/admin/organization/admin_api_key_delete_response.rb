@@ -8,23 +8,23 @@ module OpenAI
         class AdminAPIKeyDeleteResponse < OpenAI::Internal::Type::BaseModel
           # @!attribute id
           #
-          #   @return [String, nil]
-          optional :id, String
+          #   @return [String]
+          required :id, String
 
           # @!attribute deleted
           #
-          #   @return [Boolean, nil]
-          optional :deleted, OpenAI::Internal::Type::Boolean
+          #   @return [Boolean]
+          required :deleted, OpenAI::Internal::Type::Boolean
 
           # @!attribute object
           #
-          #   @return [String, nil]
-          optional :object, String
+          #   @return [Symbol, :"organization.admin_api_key.deleted"]
+          required :object, const: :"organization.admin_api_key.deleted"
 
-          # @!method initialize(id: nil, deleted: nil, object: nil)
+          # @!method initialize(id:, deleted:, object: :"organization.admin_api_key.deleted")
           #   @param id [String]
           #   @param deleted [Boolean]
-          #   @param object [String]
+          #   @param object [Symbol, :"organization.admin_api_key.deleted"]
         end
       end
     end

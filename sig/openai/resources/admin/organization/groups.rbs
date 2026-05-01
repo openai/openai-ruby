@@ -23,7 +23,7 @@ module OpenAI
             ?limit: Integer,
             ?order: OpenAI::Models::Admin::Organization::GroupListParams::order,
             ?request_options: OpenAI::request_opts
-          ) -> OpenAI::Internal::CursorPage[OpenAI::Admin::Organization::Group]
+          ) -> OpenAI::Internal::NextCursorPage[OpenAI::Admin::Organization::Group]
 
           def delete: (
             String group_id,

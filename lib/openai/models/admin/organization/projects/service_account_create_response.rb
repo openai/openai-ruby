@@ -14,9 +14,10 @@ module OpenAI
 
             # @!attribute api_key
             #
-            #   @return [OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey]
+            #   @return [OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey, nil]
             required :api_key,
-                     -> { OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey }
+                     -> { OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey },
+                     nil?: true
 
             # @!attribute created_at
             #
@@ -42,7 +43,7 @@ module OpenAI
             # @!method initialize(id:, api_key:, created_at:, name:, object: :"organization.project.service_account", role: :member)
             #   @param id [String]
             #
-            #   @param api_key [OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey]
+            #   @param api_key [OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey, nil]
             #
             #   @param created_at [Integer]
             #

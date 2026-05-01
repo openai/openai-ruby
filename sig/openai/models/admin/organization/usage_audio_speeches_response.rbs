@@ -6,7 +6,7 @@ module OpenAI
           {
             data: ::Array[OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse::Data],
             has_more: bool,
-            next_page: String,
+            next_page: String?,
             object: :page
           }
 
@@ -15,21 +15,21 @@ module OpenAI
 
           attr_accessor has_more: bool
 
-          attr_accessor next_page: String
+          attr_accessor next_page: String?
 
           attr_accessor object: :page
 
           def initialize: (
             data: ::Array[OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse::Data],
             has_more: bool,
-            next_page: String,
+            next_page: String?,
             ?object: :page
           ) -> void
 
           def to_hash: -> {
             data: ::Array[OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse::Data],
             has_more: bool,
-            next_page: String,
+            next_page: String?,
             object: :page
           }
 
@@ -37,7 +37,7 @@ module OpenAI
             {
               end_time: Integer,
               object: :bucket,
-              result: ::Array[OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse::Data::result],
+              results: ::Array[OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse::Data::result],
               start_time: Integer
             }
 
@@ -46,13 +46,13 @@ module OpenAI
 
             attr_accessor object: :bucket
 
-            attr_accessor result: ::Array[OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse::Data::result]
+            attr_accessor results: ::Array[OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse::Data::result]
 
             attr_accessor start_time: Integer
 
             def initialize: (
               end_time: Integer,
-              result: ::Array[OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse::Data::result],
+              results: ::Array[OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse::Data::result],
               start_time: Integer,
               ?object: :bucket
             ) -> void
@@ -60,7 +60,7 @@ module OpenAI
             def to_hash: -> {
               end_time: Integer,
               object: :bucket,
-              result: ::Array[OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse::Data::result],
+              results: ::Array[OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse::Data::result],
               start_time: Integer
             }
 
@@ -435,29 +435,27 @@ module OpenAI
 
               type organization_usage_code_interpreter_sessions_result =
                 {
-                  object: :"organization.usage.code_interpreter_sessions.result",
                   num_sessions: Integer,
+                  object: :"organization.usage.code_interpreter_sessions.result",
                   project_id: String?
                 }
 
               class OrganizationUsageCodeInterpreterSessionsResult < OpenAI::Internal::Type::BaseModel
+                attr_accessor num_sessions: Integer
+
                 attr_accessor object: :"organization.usage.code_interpreter_sessions.result"
-
-                attr_reader num_sessions: Integer?
-
-                def num_sessions=: (Integer) -> Integer
 
                 attr_accessor project_id: String?
 
                 def initialize: (
-                  ?num_sessions: Integer,
+                  num_sessions: Integer,
                   ?project_id: String?,
                   ?object: :"organization.usage.code_interpreter_sessions.result"
                 ) -> void
 
                 def to_hash: -> {
-                  object: :"organization.usage.code_interpreter_sessions.result",
                   num_sessions: Integer,
+                  object: :"organization.usage.code_interpreter_sessions.result",
                   project_id: String?
                 }
               end

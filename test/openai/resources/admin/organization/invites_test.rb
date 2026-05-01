@@ -13,9 +13,9 @@ class OpenAI::Test::Resources::Admin::Organization::InvitesTest < OpenAI::Test::
     assert_pattern do
       response => {
         id: String,
+        created_at: Integer,
         email: String,
-        expires_at: Integer,
-        invited_at: Integer,
+        expires_at: Integer | nil,
         object: Symbol,
         role: OpenAI::Admin::Organization::Invite::Role,
         status: OpenAI::Admin::Organization::Invite::Status,
@@ -35,9 +35,9 @@ class OpenAI::Test::Resources::Admin::Organization::InvitesTest < OpenAI::Test::
     assert_pattern do
       response => {
         id: String,
+        created_at: Integer,
         email: String,
-        expires_at: Integer,
-        invited_at: Integer,
+        expires_at: Integer | nil,
         object: Symbol,
         role: OpenAI::Admin::Organization::Invite::Role,
         status: OpenAI::Admin::Organization::Invite::Status,
@@ -64,9 +64,9 @@ class OpenAI::Test::Resources::Admin::Organization::InvitesTest < OpenAI::Test::
     assert_pattern do
       row => {
         id: String,
+        created_at: Integer,
         email: String,
-        expires_at: Integer,
-        invited_at: Integer,
+        expires_at: Integer | nil,
         object: Symbol,
         role: OpenAI::Admin::Organization::Invite::Role,
         status: OpenAI::Admin::Organization::Invite::Status,
