@@ -112,6 +112,8 @@ module OpenAI
       end
 
       module Realtime
+        module Translations
+        end
       end
 
       module Responses
@@ -128,6 +130,9 @@ module OpenAI
       module Threads
         module Runs
         end
+      end
+
+      module Translations
       end
 
       module Uploads

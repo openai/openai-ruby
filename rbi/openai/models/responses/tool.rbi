@@ -1388,9 +1388,24 @@ module OpenAI
                 :"gpt-image-1-mini",
                 OpenAI::Responses::Tool::ImageGeneration::Model::TaggedSymbol
               )
+            GPT_IMAGE_2 =
+              T.let(
+                :"gpt-image-2",
+                OpenAI::Responses::Tool::ImageGeneration::Model::TaggedSymbol
+              )
+            GPT_IMAGE_2_2026_04_21 =
+              T.let(
+                :"gpt-image-2-2026-04-21",
+                OpenAI::Responses::Tool::ImageGeneration::Model::TaggedSymbol
+              )
             GPT_IMAGE_1_5 =
               T.let(
                 :"gpt-image-1.5",
+                OpenAI::Responses::Tool::ImageGeneration::Model::TaggedSymbol
+              )
+            CHATGPT_IMAGE_LATEST =
+              T.let(
+                :"chatgpt-image-latest",
                 OpenAI::Responses::Tool::ImageGeneration::Model::TaggedSymbol
               )
           end

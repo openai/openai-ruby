@@ -62,7 +62,7 @@ module OpenAI
       #
       # @param mask [Pathname, StringIO, IO, String, OpenAI::FilePart] An additional image whose fully transparent areas (e.g. where alpha is zero) ind
       #
-      # @param model [String, Symbol, OpenAI::Models::ImageModel, nil] The model to use for image generation. Defaults to `gpt-image-1.5`.
+      # @param model [String, Symbol, OpenAI::Models::ImageModel, nil] The model to use for image generation. One of `dall-e-2` or a GPT image model (`
       #
       # @param n [Integer, nil] The number of images to generate. Must be between 1 and 10.
       #
@@ -123,7 +123,7 @@ module OpenAI
       #
       # @param mask [Pathname, StringIO, IO, String, OpenAI::FilePart] An additional image whose fully transparent areas (e.g. where alpha is zero) ind
       #
-      # @param model [String, Symbol, OpenAI::Models::ImageModel, nil] The model to use for image generation. Defaults to `gpt-image-1.5`.
+      # @param model [String, Symbol, OpenAI::Models::ImageModel, nil] The model to use for image generation. One of `dall-e-2` or a GPT image model (`
       #
       # @param n [Integer, nil] The number of images to generate. Must be between 1 and 10.
       #

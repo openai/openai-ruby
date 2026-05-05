@@ -31,8 +31,9 @@ module OpenAI
 
       # @!attribute model
       #   The model to use for image generation. One of `dall-e-2`, `dall-e-3`, or a GPT
-      #   image model (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`). Defaults to
-      #   `dall-e-2` unless a parameter specific to the GPT image models is used.
+      #   image model (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
+      #   or `gpt-image-2-2026-04-21`). Defaults to `dall-e-2` unless a parameter specific
+      #   to the GPT image models is used.
       #
       #   @return [String, Symbol, OpenAI::Models::ImageModel, nil]
       optional :model, union: -> { OpenAI::ImageGenerateParams::Model }, nil?: true
@@ -176,14 +177,15 @@ module OpenAI
       end
 
       # The model to use for image generation. One of `dall-e-2`, `dall-e-3`, or a GPT
-      # image model (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`). Defaults to
-      # `dall-e-2` unless a parameter specific to the GPT image models is used.
+      # image model (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
+      # or `gpt-image-2-2026-04-21`). Defaults to `dall-e-2` unless a parameter specific
+      # to the GPT image models is used.
       module Model
         extend OpenAI::Internal::Type::Union
 
         variant String
 
-        # The model to use for image generation. One of `dall-e-2`, `dall-e-3`, or a GPT image model (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`). Defaults to `dall-e-2` unless a parameter specific to the GPT image models is used.
+        # The model to use for image generation. One of `dall-e-2`, `dall-e-3`, or a GPT image model (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`, or `gpt-image-2-2026-04-21`). Defaults to `dall-e-2` unless a parameter specific to the GPT image models is used.
         variant enum: -> { OpenAI::ImageModel }
 
         # @!method self.variants
