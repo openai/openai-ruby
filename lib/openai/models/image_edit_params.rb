@@ -12,10 +12,10 @@ module OpenAI
       # @!attribute image
       #   The image(s) to edit. Must be a supported image file or an array of images.
       #
-      #   For the GPT image models (`gpt-image-1`, `gpt-image-1-mini`, and
-      #   `gpt-image-1.5`), each image should be a `png`, `webp`, or `jpg` file less than
-      #   50MB. You can provide up to 16 images. `chatgpt-image-latest` follows the same
-      #   input constraints as GPT image models.
+      #   For the GPT image models (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`,
+      #   `gpt-image-2`, `gpt-image-2-2026-04-21`, and `chatgpt-image-latest`), each image
+      #   should be a `png`, `webp`, or `jpg` file less than 50MB. You can provide up to
+      #   16 images.
       #
       #   For `dall-e-2`, you can only provide one image, and it should be a square `png`
       #   file less than 4MB.
@@ -61,7 +61,10 @@ module OpenAI
       optional :mask, OpenAI::Internal::Type::FileInput
 
       # @!attribute model
-      #   The model to use for image generation. Defaults to `gpt-image-1.5`.
+      #   The model to use for image generation. One of `dall-e-2` or a GPT image model
+      #   (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
+      #   `gpt-image-2-2026-04-21`, or `chatgpt-image-latest`). Defaults to
+      #   `gpt-image-1.5`.
       #
       #   @return [String, Symbol, OpenAI::Models::ImageModel, nil]
       optional :model, union: -> { OpenAI::ImageEditParams::Model }, nil?: true
@@ -145,7 +148,7 @@ module OpenAI
       #
       #   @param mask [Pathname, StringIO, IO, String, OpenAI::FilePart] An additional image whose fully transparent areas (e.g. where alpha is zero) ind
       #
-      #   @param model [String, Symbol, OpenAI::Models::ImageModel, nil] The model to use for image generation. Defaults to `gpt-image-1.5`.
+      #   @param model [String, Symbol, OpenAI::Models::ImageModel, nil] The model to use for image generation. One of `dall-e-2` or a GPT image model (`
       #
       #   @param n [Integer, nil] The number of images to generate. Must be between 1 and 10.
       #
@@ -167,10 +170,10 @@ module OpenAI
 
       # The image(s) to edit. Must be a supported image file or an array of images.
       #
-      # For the GPT image models (`gpt-image-1`, `gpt-image-1-mini`, and
-      # `gpt-image-1.5`), each image should be a `png`, `webp`, or `jpg` file less than
-      # 50MB. You can provide up to 16 images. `chatgpt-image-latest` follows the same
-      # input constraints as GPT image models.
+      # For the GPT image models (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`,
+      # `gpt-image-2`, `gpt-image-2-2026-04-21`, and `chatgpt-image-latest`), each image
+      # should be a `png`, `webp`, or `jpg` file less than 50MB. You can provide up to
+      # 16 images.
       #
       # For `dall-e-2`, you can only provide one image, and it should be a square `png`
       # file less than 4MB.
@@ -220,13 +223,16 @@ module OpenAI
         #   @return [Array<Symbol>]
       end
 
-      # The model to use for image generation. Defaults to `gpt-image-1.5`.
+      # The model to use for image generation. One of `dall-e-2` or a GPT image model
+      # (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
+      # `gpt-image-2-2026-04-21`, or `chatgpt-image-latest`). Defaults to
+      # `gpt-image-1.5`.
       module Model
         extend OpenAI::Internal::Type::Union
 
         variant String
 
-        # The model to use for image generation. Defaults to `gpt-image-1.5`.
+        # The model to use for image generation. One of `dall-e-2` or a GPT image model (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`, or `chatgpt-image-latest`). Defaults to `gpt-image-1.5`.
         variant enum: -> { OpenAI::ImageModel }
 
         # @!method self.variants
