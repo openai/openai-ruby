@@ -19,9 +19,14 @@ module OpenAI
 
       # @!attribute background
       #   Allows to set transparency for the background of the generated image(s). This
-      #   parameter is only supported for the GPT image models. Must be one of
-      #   `transparent`, `opaque` or `auto` (default value). When `auto` is used, the
-      #   model will automatically determine the best background for the image.
+      #   parameter is only supported for GPT image models that support transparent
+      #   backgrounds. Must be one of `transparent`, `opaque`, or `auto` (default value).
+      #   When `auto` is used, the model will automatically determine the best background
+      #   for the image.
+      #
+      #   `gpt-image-2` and `gpt-image-2-2026-04-21` do not support transparent
+      #   backgrounds. Requests with `background` set to `transparent` will return an
+      #   error for these models; use `opaque` or `auto` instead.
       #
       #   If `transparent`, the output format needs to support transparency, so it should
       #   be set to either `png` (default value) or `webp`.
@@ -101,13 +106,20 @@ module OpenAI
       optional :response_format, enum: -> { OpenAI::ImageGenerateParams::ResponseFormat }, nil?: true
 
       # @!attribute size
-      #   The size of the generated images. Must be one of `1024x1024`, `1536x1024`
-      #   (landscape), `1024x1536` (portrait), or `auto` (default value) for the GPT image
-      #   models, one of `256x256`, `512x512`, or `1024x1024` for `dall-e-2`, and one of
-      #   `1024x1024`, `1792x1024`, or `1024x1792` for `dall-e-3`.
+      #   The size of the generated images. For `gpt-image-2` and
+      #   `gpt-image-2-2026-04-21`, arbitrary resolutions are supported as `WIDTHxHEIGHT`
+      #   strings, for example `1536x864`. Width and height must both be divisible by 16
+      #   and the requested aspect ratio must be between 1:3 and 3:1. Resolutions above
+      #   `2560x1440` are experimental, and the maximum supported resolution is
+      #   `3840x2160`. The requested size must also satisfy the model's current pixel and
+      #   edge limits. The standard sizes `1024x1024`, `1536x1024`, and `1024x1536` are
+      #   supported by the GPT image models; `auto` is supported for models that allow
+      #   automatic sizing. For `dall-e-2`, use one of `256x256`, `512x512`, or
+      #   `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or
+      #   `1024x1792`.
       #
-      #   @return [Symbol, OpenAI::Models::ImageGenerateParams::Size, nil]
-      optional :size, enum: -> { OpenAI::ImageGenerateParams::Size }, nil?: true
+      #   @return [String, nil]
+      optional :size, String, nil?: true
 
       # @!attribute style
       #   The style of the generated images. This parameter is only supported for
@@ -150,7 +162,7 @@ module OpenAI
       #
       #   @param response_format [Symbol, OpenAI::Models::ImageGenerateParams::ResponseFormat, nil] The format in which generated images with `dall-e-2` and `dall-e-3` are returned
       #
-      #   @param size [Symbol, OpenAI::Models::ImageGenerateParams::Size, nil] The size of the generated images. Must be one of `1024x1024`, `1536x1024` (lands
+      #   @param size [String, nil] The size of the generated images. For `gpt-image-2` and `gpt-image-2-2026-04-21`
       #
       #   @param style [Symbol, OpenAI::Models::ImageGenerateParams::Style, nil] The style of the generated images. This parameter is only supported for `dall-e-
       #
@@ -159,9 +171,14 @@ module OpenAI
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
       # Allows to set transparency for the background of the generated image(s). This
-      # parameter is only supported for the GPT image models. Must be one of
-      # `transparent`, `opaque` or `auto` (default value). When `auto` is used, the
-      # model will automatically determine the best background for the image.
+      # parameter is only supported for GPT image models that support transparent
+      # backgrounds. Must be one of `transparent`, `opaque`, or `auto` (default value).
+      # When `auto` is used, the model will automatically determine the best background
+      # for the image.
+      #
+      # `gpt-image-2` and `gpt-image-2-2026-04-21` do not support transparent
+      # backgrounds. Requests with `background` set to `transparent` will return an
+      # error for these models; use `opaque` or `auto` instead.
       #
       # If `transparent`, the output format needs to support transparency, so it should
       # be set to either `png` (default value) or `webp`.
@@ -248,26 +265,6 @@ module OpenAI
 
         URL = :url
         B64_JSON = :b64_json
-
-        # @!method self.values
-        #   @return [Array<Symbol>]
-      end
-
-      # The size of the generated images. Must be one of `1024x1024`, `1536x1024`
-      # (landscape), `1024x1536` (portrait), or `auto` (default value) for the GPT image
-      # models, one of `256x256`, `512x512`, or `1024x1024` for `dall-e-2`, and one of
-      # `1024x1024`, `1792x1024`, or `1024x1792` for `dall-e-3`.
-      module Size
-        extend OpenAI::Internal::Type::Enum
-
-        AUTO = :auto
-        SIZE_1024X1024 = :"1024x1024"
-        SIZE_1536X1024 = :"1536x1024"
-        SIZE_1024X1536 = :"1024x1536"
-        SIZE_256X256 = :"256x256"
-        SIZE_512X512 = :"512x512"
-        SIZE_1792X1024 = :"1792x1024"
-        SIZE_1024X1792 = :"1024x1792"
 
         # @!method self.values
         #   @return [Array<Symbol>]

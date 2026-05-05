@@ -5,8 +5,6 @@ module OpenAI
 
       attr_reader calls: OpenAI::Resources::Realtime::Calls
 
-      attr_reader translations: OpenAI::Resources::Realtime::Translations
-
       def initialize: (client: OpenAI::Client) -> void
     end
   end

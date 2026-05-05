@@ -495,8 +495,18 @@ module OpenAI
           optional :action, enum: -> { OpenAI::Responses::Tool::ImageGeneration::Action }
 
           # @!attribute background
-          #   Background type for the generated image. One of `transparent`, `opaque`, or
-          #   `auto`. Default: `auto`.
+          #   Allows to set transparency for the background of the generated image(s). This
+          #   parameter is only supported for GPT image models that support transparent
+          #   backgrounds. Must be one of `transparent`, `opaque`, or `auto` (default value).
+          #   When `auto` is used, the model will automatically determine the best background
+          #   for the image.
+          #
+          #   `gpt-image-2` and `gpt-image-2-2026-04-21` do not support transparent
+          #   backgrounds. Requests with `background` set to `transparent` will return an
+          #   error for these models; use `opaque` or `auto` instead.
+          #
+          #   If `transparent`, the output format needs to support transparency, so it should
+          #   be set to either `png` (default value) or `webp`.
           #
           #   @return [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Background, nil]
           optional :background, enum: -> { OpenAI::Responses::Tool::ImageGeneration::Background }
@@ -561,11 +571,20 @@ module OpenAI
           optional :quality, enum: -> { OpenAI::Responses::Tool::ImageGeneration::Quality }
 
           # @!attribute size
-          #   The size of the generated image. One of `1024x1024`, `1024x1536`, `1536x1024`,
-          #   or `auto`. Default: `auto`.
+          #   The size of the generated images. For `gpt-image-2` and
+          #   `gpt-image-2-2026-04-21`, arbitrary resolutions are supported as `WIDTHxHEIGHT`
+          #   strings, for example `1536x864`. Width and height must both be divisible by 16
+          #   and the requested aspect ratio must be between 1:3 and 3:1. Resolutions above
+          #   `2560x1440` are experimental, and the maximum supported resolution is
+          #   `3840x2160`. The requested size must also satisfy the model's current pixel and
+          #   edge limits. The standard sizes `1024x1024`, `1536x1024`, and `1024x1536` are
+          #   supported by the GPT image models; `auto` is supported for models that allow
+          #   automatic sizing. For `dall-e-2`, use one of `256x256`, `512x512`, or
+          #   `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or
+          #   `1024x1792`.
           #
-          #   @return [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Size, nil]
-          optional :size, enum: -> { OpenAI::Responses::Tool::ImageGeneration::Size }
+          #   @return [String, nil]
+          optional :size, String
 
           # @!method initialize(action: nil, background: nil, input_fidelity: nil, input_image_mask: nil, model: nil, moderation: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, size: nil, type: :image_generation)
           #   Some parameter documentations has been truncated, see
@@ -575,7 +594,7 @@ module OpenAI
           #
           #   @param action [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Action] Whether to generate a new image or edit an existing image. Default: `auto`.
           #
-          #   @param background [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Background] Background type for the generated image. One of `transparent`,
+          #   @param background [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Background] Allows to set transparency for the background of the generated image(s).
           #
           #   @param input_fidelity [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::InputFidelity, nil] Control how much effort the model will exert to match the style and features, es
           #
@@ -593,7 +612,7 @@ module OpenAI
           #
           #   @param quality [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Quality] The quality of the generated image. One of `low`, `medium`, `high`,
           #
-          #   @param size [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Size] The size of the generated image. One of `1024x1024`, `1024x1536`,
+          #   @param size [String] The size of the generated images. For `gpt-image-2` and `gpt-image-2-2026-04-21`
           #
           #   @param type [Symbol, :image_generation] The type of the image generation tool. Always `image_generation`.
 
@@ -611,8 +630,18 @@ module OpenAI
             #   @return [Array<Symbol>]
           end
 
-          # Background type for the generated image. One of `transparent`, `opaque`, or
-          # `auto`. Default: `auto`.
+          # Allows to set transparency for the background of the generated image(s). This
+          # parameter is only supported for GPT image models that support transparent
+          # backgrounds. Must be one of `transparent`, `opaque`, or `auto` (default value).
+          # When `auto` is used, the model will automatically determine the best background
+          # for the image.
+          #
+          # `gpt-image-2` and `gpt-image-2-2026-04-21` do not support transparent
+          # backgrounds. Requests with `background` set to `transparent` will return an
+          # error for these models; use `opaque` or `auto` instead.
+          #
+          # If `transparent`, the output format needs to support transparency, so it should
+          # be set to either `png` (default value) or `webp`.
           #
           # @see OpenAI::Models::Responses::Tool::ImageGeneration#background
           module Background
@@ -746,22 +775,6 @@ module OpenAI
             LOW = :low
             MEDIUM = :medium
             HIGH = :high
-            AUTO = :auto
-
-            # @!method self.values
-            #   @return [Array<Symbol>]
-          end
-
-          # The size of the generated image. One of `1024x1024`, `1024x1536`, `1536x1024`,
-          # or `auto`. Default: `auto`.
-          #
-          # @see OpenAI::Models::Responses::Tool::ImageGeneration#size
-          module Size
-            extend OpenAI::Internal::Type::Enum
-
-            SIZE_1024X1024 = :"1024x1024"
-            SIZE_1024X1536 = :"1024x1536"
-            SIZE_1536X1024 = :"1536x1024"
             AUTO = :auto
 
             # @!method self.values
