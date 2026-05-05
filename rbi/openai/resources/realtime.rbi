@@ -9,9 +9,6 @@ module OpenAI
       sig { returns(OpenAI::Resources::Realtime::Calls) }
       attr_reader :calls
 
-      sig { returns(OpenAI::Resources::Realtime::Translations) }
-      attr_reader :translations
-
       # @api private
       sig { params(client: OpenAI::Client).returns(T.attached_class) }
       def self.new(client:)

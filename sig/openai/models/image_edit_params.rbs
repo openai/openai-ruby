@@ -14,7 +14,7 @@ module OpenAI
         partial_images: Integer?,
         quality: OpenAI::Models::ImageEditParams::quality?,
         response_format: OpenAI::Models::ImageEditParams::response_format?,
-        size: OpenAI::Models::ImageEditParams::size?,
+        size: String?,
         user: String
       }
       & OpenAI::Internal::Type::request_parameters
@@ -49,7 +49,7 @@ module OpenAI
 
       attr_accessor response_format: OpenAI::Models::ImageEditParams::response_format?
 
-      attr_accessor size: OpenAI::Models::ImageEditParams::size?
+      attr_accessor size: String?
 
       attr_reader user: String?
 
@@ -68,7 +68,7 @@ module OpenAI
         ?partial_images: Integer?,
         ?quality: OpenAI::Models::ImageEditParams::quality?,
         ?response_format: OpenAI::Models::ImageEditParams::response_format?,
-        ?size: OpenAI::Models::ImageEditParams::size?,
+        ?size: String?,
         ?user: String,
         ?request_options: OpenAI::request_opts
       ) -> void
@@ -86,7 +86,7 @@ module OpenAI
         partial_images: Integer?,
         quality: OpenAI::Models::ImageEditParams::quality?,
         response_format: OpenAI::Models::ImageEditParams::response_format?,
-        size: OpenAI::Models::ImageEditParams::size?,
+        size: String?,
         user: String,
         request_options: OpenAI::RequestOptions
       }
@@ -168,27 +168,6 @@ module OpenAI
         B64_JSON: :b64_json
 
         def self?.values: -> ::Array[OpenAI::Models::ImageEditParams::response_format]
-      end
-
-      type size =
-        :"256x256"
-        | :"512x512"
-        | :"1024x1024"
-        | :"1536x1024"
-        | :"1024x1536"
-        | :auto
-
-      module Size
-        extend OpenAI::Internal::Type::Enum
-
-        SIZE_256X256: :"256x256"
-        SIZE_512X512: :"512x512"
-        SIZE_1024X1024: :"1024x1024"
-        SIZE_1536X1024: :"1536x1024"
-        SIZE_1024X1536: :"1024x1536"
-        AUTO: :auto
-
-        def self?.values: -> ::Array[OpenAI::Models::ImageEditParams::size]
       end
     end
   end
