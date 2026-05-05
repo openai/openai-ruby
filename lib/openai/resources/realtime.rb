@@ -9,6 +9,9 @@ module OpenAI
       # @return [OpenAI::Resources::Realtime::Calls]
       attr_reader :calls
 
+      # @return [OpenAI::Resources::Realtime::Translations]
+      attr_reader :translations
+
       # @api private
       #
       # @param client [OpenAI::Client]
@@ -16,6 +19,7 @@ module OpenAI
         @client = client
         @client_secrets = OpenAI::Resources::Realtime::ClientSecrets.new(client: client)
         @calls = OpenAI::Resources::Realtime::Calls.new(client: client)
+        @translations = OpenAI::Resources::Realtime::Translations.new(client: client)
       end
     end
   end

@@ -493,7 +493,13 @@ module OpenAI
           end
 
           type model =
-            String | :"gpt-image-1" | :"gpt-image-1-mini" | :"gpt-image-1.5"
+            String
+            | :"gpt-image-1"
+            | :"gpt-image-1-mini"
+            | :"gpt-image-2"
+            | :"gpt-image-2-2026-04-21"
+            | :"gpt-image-1.5"
+            | :"chatgpt-image-latest"
 
           module Model
             extend OpenAI::Internal::Type::Union
@@ -502,7 +508,10 @@ module OpenAI
 
             GPT_IMAGE_1: :"gpt-image-1"
             GPT_IMAGE_1_MINI: :"gpt-image-1-mini"
+            GPT_IMAGE_2: :"gpt-image-2"
+            GPT_IMAGE_2_2026_04_21: :"gpt-image-2-2026-04-21"
             GPT_IMAGE_1_5: :"gpt-image-1.5"
+            CHATGPT_IMAGE_LATEST: :"chatgpt-image-latest"
           end
 
           type moderation = :auto | :low

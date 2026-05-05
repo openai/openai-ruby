@@ -1,0 +1,11 @@
+module OpenAI
+  module Resources
+    class Realtime
+      class Translations
+        class Calls
+          def initialize: (client: OpenAI::Client) -> void
+        end
+      end
+    end
+  end
+end

@@ -679,7 +679,13 @@ module OpenAI
 
             variant const: -> { OpenAI::Models::Responses::Tool::ImageGeneration::Model::GPT_IMAGE_1_MINI }
 
+            variant const: -> { OpenAI::Models::Responses::Tool::ImageGeneration::Model::GPT_IMAGE_2 }
+
+            variant const: -> { OpenAI::Models::Responses::Tool::ImageGeneration::Model::GPT_IMAGE_2_2026_04_21 }
+
             variant const: -> { OpenAI::Models::Responses::Tool::ImageGeneration::Model::GPT_IMAGE_1_5 }
+
+            variant const: -> { OpenAI::Models::Responses::Tool::ImageGeneration::Model::CHATGPT_IMAGE_LATEST }
 
             # @!method self.variants
             #   @return [Array(String, Symbol)]
@@ -692,7 +698,10 @@ module OpenAI
 
             GPT_IMAGE_1 = :"gpt-image-1"
             GPT_IMAGE_1_MINI = :"gpt-image-1-mini"
+            GPT_IMAGE_2 = :"gpt-image-2"
+            GPT_IMAGE_2_2026_04_21 = :"gpt-image-2-2026-04-21"
             GPT_IMAGE_1_5 = :"gpt-image-1.5"
+            CHATGPT_IMAGE_LATEST = :"chatgpt-image-latest"
 
             # @!endgroup
           end
