@@ -6,6 +6,8 @@ module OpenAI
       # Specify additional output data to include in the model response. Currently
       # supported values are:
       #
+      # - `web_search_call.results`: Include the search results of the web search tool
+      #   call.
       # - `web_search_call.action.sources`: Include the sources of the web search tool
       #   call.
       # - `code_interpreter_call.outputs`: Includes the outputs of python code execution
