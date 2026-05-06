@@ -81,7 +81,7 @@ module OpenAI
           required :logprob, Float
 
           # @!attribute top_logprobs
-          #   The log probability of the top 20 most likely tokens.
+          #   The log probabilities of up to 20 of the most likely tokens.
           #
           #   @return [Array<OpenAI::Models::Responses::ResponseTextDeltaEvent::Logprob::TopLogprob>, nil]
           optional :top_logprobs,
@@ -99,7 +99,7 @@ module OpenAI
           #
           #   @param logprob [Float] The log probability of this token.
           #
-          #   @param top_logprobs [Array<OpenAI::Models::Responses::ResponseTextDeltaEvent::Logprob::TopLogprob>] The log probability of the top 20 most likely tokens.
+          #   @param top_logprobs [Array<OpenAI::Models::Responses::ResponseTextDeltaEvent::Logprob::TopLogprob>] The log probabilities of up to 20 of the most likely tokens.
 
           class TopLogprob < OpenAI::Internal::Type::BaseModel
             # @!attribute token

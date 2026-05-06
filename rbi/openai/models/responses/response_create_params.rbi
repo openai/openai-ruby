@@ -395,8 +395,9 @@ module OpenAI
         end
         attr_writer :tools
 
-        # An integer between 0 and 20 specifying the number of most likely tokens to
-        # return at each token position, each with an associated log probability.
+        # An integer between 0 and 20 specifying the maximum number of most likely tokens
+        # to return at each token position, each with an associated log probability. In
+        # some cases, the number of returned tokens may be fewer than requested.
         sig { returns(T.nilable(Integer)) }
         attr_accessor :top_logprobs
 
@@ -683,8 +684,9 @@ module OpenAI
           #   [function calling](https://platform.openai.com/docs/guides/function-calling).
           #   You can also use custom tools to call your own code.
           tools: nil,
-          # An integer between 0 and 20 specifying the number of most likely tokens to
-          # return at each token position, each with an associated log probability.
+          # An integer between 0 and 20 specifying the maximum number of most likely tokens
+          # to return at each token position, each with an associated log probability. In
+          # some cases, the number of returned tokens may be fewer than requested.
           top_logprobs: nil,
           # An alternative to sampling with temperature, called nucleus sampling, where the
           # model considers the results of the tokens with top_p probability mass. So 0.1

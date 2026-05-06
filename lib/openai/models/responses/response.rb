@@ -269,8 +269,9 @@ module OpenAI
         optional :text, -> { OpenAI::Responses::ResponseTextConfig }
 
         # @!attribute top_logprobs
-        #   An integer between 0 and 20 specifying the number of most likely tokens to
-        #   return at each token position, each with an associated log probability.
+        #   An integer between 0 and 20 specifying the maximum number of most likely tokens
+        #   to return at each token position, each with an associated log probability. In
+        #   some cases, the number of returned tokens may be fewer than requested.
         #
         #   @return [Integer, nil]
         optional :top_logprobs, Integer, nil?: true
@@ -364,7 +365,7 @@ module OpenAI
         #
         #   @param text [OpenAI::Models::Responses::ResponseTextConfig] Configuration options for a text response from the model. Can be plain
         #
-        #   @param top_logprobs [Integer, nil] An integer between 0 and 20 specifying the number of most likely tokens to
+        #   @param top_logprobs [Integer, nil] An integer between 0 and 20 specifying the maximum number of most likely
         #
         #   @param truncation [Symbol, OpenAI::Models::Responses::Response::Truncation, nil] The truncation strategy to use for the model response.
         #

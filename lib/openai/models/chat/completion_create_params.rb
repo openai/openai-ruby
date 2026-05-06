@@ -335,8 +335,9 @@ module OpenAI
         optional :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Chat::ChatCompletionTool] }
 
         # @!attribute top_logprobs
-        #   An integer between 0 and 20 specifying the number of most likely tokens to
-        #   return at each token position, each with an associated log probability.
+        #   An integer between 0 and 20 specifying the maximum number of most likely tokens
+        #   to return at each token position, each with an associated log probability. In
+        #   some cases, the number of returned tokens may be fewer than requested.
         #   `logprobs` must be set to `true` if this parameter is used.
         #
         #   @return [Integer, nil]
@@ -442,7 +443,7 @@ module OpenAI
         #
         #   @param tools [Array<OpenAI::Models::Chat::ChatCompletionFunctionTool, OpenAI::Models::Chat::ChatCompletionCustomTool>] A list of tools the model may call. You can provide either
         #
-        #   @param top_logprobs [Integer, nil] An integer between 0 and 20 specifying the number of most likely tokens to
+        #   @param top_logprobs [Integer, nil] An integer between 0 and 20 specifying the maximum number of most likely
         #
         #   @param top_p [Float, nil] An alternative to sampling with temperature, called nucleus sampling,
         #

@@ -318,8 +318,9 @@ module OpenAI
           # [custom tools](https://platform.openai.com/docs/guides/function-calling#custom-tools)
           # or [function tools](https://platform.openai.com/docs/guides/function-calling).
           tools: nil,
-          # An integer between 0 and 20 specifying the number of most likely tokens to
-          # return at each token position, each with an associated log probability.
+          # An integer between 0 and 20 specifying the maximum number of most likely tokens
+          # to return at each token position, each with an associated log probability. In
+          # some cases, the number of returned tokens may be fewer than requested.
           # `logprobs` must be set to `true` if this parameter is used.
           top_logprobs: nil,
           # An alternative to sampling with temperature, called nucleus sampling, where the
@@ -656,8 +657,9 @@ module OpenAI
           # [custom tools](https://platform.openai.com/docs/guides/function-calling#custom-tools)
           # or [function tools](https://platform.openai.com/docs/guides/function-calling).
           tools: nil,
-          # An integer between 0 and 20 specifying the number of most likely tokens to
-          # return at each token position, each with an associated log probability.
+          # An integer between 0 and 20 specifying the maximum number of most likely tokens
+          # to return at each token position, each with an associated log probability. In
+          # some cases, the number of returned tokens may be fewer than requested.
           # `logprobs` must be set to `true` if this parameter is used.
           top_logprobs: nil,
           # An alternative to sampling with temperature, called nucleus sampling, where the
