@@ -347,7 +347,7 @@ module OpenAI
             output_format: OpenAI::Models::Responses::Tool::ImageGeneration::output_format,
             partial_images: Integer,
             quality: OpenAI::Models::Responses::Tool::ImageGeneration::quality,
-            size: String
+            size: OpenAI::Models::Responses::Tool::ImageGeneration::size
           }
 
         class ImageGeneration < OpenAI::Internal::Type::BaseModel
@@ -405,9 +405,11 @@ module OpenAI
             OpenAI::Models::Responses::Tool::ImageGeneration::quality
           ) -> OpenAI::Models::Responses::Tool::ImageGeneration::quality
 
-          attr_reader size: String?
+          attr_reader size: OpenAI::Models::Responses::Tool::ImageGeneration::size?
 
-          def size=: (String) -> String
+          def size=: (
+            OpenAI::Models::Responses::Tool::ImageGeneration::size
+          ) -> OpenAI::Models::Responses::Tool::ImageGeneration::size
 
           def initialize: (
             ?action: OpenAI::Models::Responses::Tool::ImageGeneration::action,
@@ -420,7 +422,7 @@ module OpenAI
             ?output_format: OpenAI::Models::Responses::Tool::ImageGeneration::output_format,
             ?partial_images: Integer,
             ?quality: OpenAI::Models::Responses::Tool::ImageGeneration::quality,
-            ?size: String,
+            ?size: OpenAI::Models::Responses::Tool::ImageGeneration::size,
             ?type: :image_generation
           ) -> void
 
@@ -436,7 +438,7 @@ module OpenAI
             output_format: OpenAI::Models::Responses::Tool::ImageGeneration::output_format,
             partial_images: Integer,
             quality: OpenAI::Models::Responses::Tool::ImageGeneration::quality,
-            size: String
+            size: OpenAI::Models::Responses::Tool::ImageGeneration::size
           }
 
           type action = :generate | :edit | :auto
@@ -546,6 +548,20 @@ module OpenAI
             AUTO: :auto
 
             def self?.values: -> ::Array[OpenAI::Models::Responses::Tool::ImageGeneration::quality]
+          end
+
+          type size =
+            String | :"1024x1024" | :"1024x1536" | :"1536x1024" | :auto
+
+          module Size
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Responses::Tool::ImageGeneration::size]
+
+            SIZE_1024X1024: :"1024x1024"
+            SIZE_1024X1536: :"1024x1536"
+            SIZE_1536X1024: :"1536x1024"
+            AUTO: :auto
           end
         end
 

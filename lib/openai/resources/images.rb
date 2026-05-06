@@ -76,7 +76,7 @@ module OpenAI
       #
       # @param response_format [Symbol, OpenAI::Models::ImageEditParams::ResponseFormat, nil] The format in which the generated images are returned. Must be one of `url` or `
       #
-      # @param size [String, nil] The size of the generated images. For `gpt-image-2` and `gpt-image-2-2026-04-21`
+      # @param size [String, Symbol, OpenAI::Models::ImageEditParams::Size, nil] The size of the generated images. For `gpt-image-2` and `gpt-image-2-2026-04-21`
       #
       # @param user [String] A unique identifier representing your end-user, which can help OpenAI to monitor
       #
@@ -137,7 +137,7 @@ module OpenAI
       #
       # @param response_format [Symbol, OpenAI::Models::ImageEditParams::ResponseFormat, nil] The format in which the generated images are returned. Must be one of `url` or `
       #
-      # @param size [String, nil] The size of the generated images. For `gpt-image-2` and `gpt-image-2-2026-04-21`
+      # @param size [String, Symbol, OpenAI::Models::ImageEditParams::Size, nil] The size of the generated images. For `gpt-image-2` and `gpt-image-2-2026-04-21`
       #
       # @param user [String] A unique identifier representing your end-user, which can help OpenAI to monitor
       #
@@ -199,7 +199,7 @@ module OpenAI
       #
       # @param response_format [Symbol, OpenAI::Models::ImageGenerateParams::ResponseFormat, nil] The format in which generated images with `dall-e-2` and `dall-e-3` are returned
       #
-      # @param size [String, nil] The size of the generated images. For `gpt-image-2` and `gpt-image-2-2026-04-21`
+      # @param size [String, Symbol, OpenAI::Models::ImageGenerateParams::Size, nil] The size of the generated images. For `gpt-image-2` and `gpt-image-2-2026-04-21`
       #
       # @param style [Symbol, OpenAI::Models::ImageGenerateParams::Style, nil] The style of the generated images. This parameter is only supported for `dall-e-
       #
@@ -256,7 +256,7 @@ module OpenAI
       #
       # @param response_format [Symbol, OpenAI::Models::ImageGenerateParams::ResponseFormat, nil] The format in which generated images with `dall-e-2` and `dall-e-3` are returned
       #
-      # @param size [String, nil] The size of the generated images. For `gpt-image-2` and `gpt-image-2-2026-04-21`
+      # @param size [String, Symbol, OpenAI::Models::ImageGenerateParams::Size, nil] The size of the generated images. For `gpt-image-2` and `gpt-image-2-2026-04-21`
       #
       # @param style [Symbol, OpenAI::Models::ImageGenerateParams::Style, nil] The style of the generated images. This parameter is only supported for `dall-e-
       #

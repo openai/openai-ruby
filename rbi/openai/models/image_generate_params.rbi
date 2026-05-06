@@ -108,7 +108,11 @@ module OpenAI
       # automatic sizing. For `dall-e-2`, use one of `256x256`, `512x512`, or
       # `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or
       # `1024x1792`.
-      sig { returns(T.nilable(String)) }
+      sig do
+        returns(
+          T.nilable(T.any(String, OpenAI::ImageGenerateParams::Size::OrSymbol))
+        )
+      end
       attr_accessor :size
 
       # The style of the generated images. This parameter is only supported for
@@ -143,7 +147,10 @@ module OpenAI
           quality: T.nilable(OpenAI::ImageGenerateParams::Quality::OrSymbol),
           response_format:
             T.nilable(OpenAI::ImageGenerateParams::ResponseFormat::OrSymbol),
-          size: T.nilable(String),
+          size:
+            T.nilable(
+              T.any(String, OpenAI::ImageGenerateParams::Size::OrSymbol)
+            ),
           style: T.nilable(OpenAI::ImageGenerateParams::Style::OrSymbol),
           user: String,
           request_options: OpenAI::RequestOptions::OrHash
@@ -248,7 +255,10 @@ module OpenAI
             quality: T.nilable(OpenAI::ImageGenerateParams::Quality::OrSymbol),
             response_format:
               T.nilable(OpenAI::ImageGenerateParams::ResponseFormat::OrSymbol),
-            size: T.nilable(String),
+            size:
+              T.nilable(
+                T.any(String, OpenAI::ImageGenerateParams::Size::OrSymbol)
+              ),
             style: T.nilable(OpenAI::ImageGenerateParams::Style::OrSymbol),
             user: String,
             request_options: OpenAI::RequestOptions
@@ -429,6 +439,54 @@ module OpenAI
         end
         def self.values
         end
+      end
+
+      # The size of the generated images. For `gpt-image-2` and
+      # `gpt-image-2-2026-04-21`, arbitrary resolutions are supported as `WIDTHxHEIGHT`
+      # strings, for example `1536x864`. Width and height must both be divisible by 16
+      # and the requested aspect ratio must be between 1:3 and 3:1. Resolutions above
+      # `2560x1440` are experimental, and the maximum supported resolution is
+      # `3840x2160`. The requested size must also satisfy the model's current pixel and
+      # edge limits. The standard sizes `1024x1024`, `1536x1024`, and `1024x1536` are
+      # supported by the GPT image models; `auto` is supported for models that allow
+      # automatic sizing. For `dall-e-2`, use one of `256x256`, `512x512`, or
+      # `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or
+      # `1024x1792`.
+      module Size
+        extend OpenAI::Internal::Type::Union
+
+        Variants =
+          T.type_alias do
+            T.any(String, OpenAI::ImageGenerateParams::Size::TaggedSymbol)
+          end
+
+        sig do
+          override.returns(
+            T::Array[OpenAI::ImageGenerateParams::Size::Variants]
+          )
+        end
+        def self.variants
+        end
+
+        TaggedSymbol =
+          T.type_alias { T.all(Symbol, OpenAI::ImageGenerateParams::Size) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+        AUTO = T.let(:auto, OpenAI::ImageGenerateParams::Size::TaggedSymbol)
+        SIZE_1024X1024 =
+          T.let(:"1024x1024", OpenAI::ImageGenerateParams::Size::TaggedSymbol)
+        SIZE_1536X1024 =
+          T.let(:"1536x1024", OpenAI::ImageGenerateParams::Size::TaggedSymbol)
+        SIZE_1024X1536 =
+          T.let(:"1024x1536", OpenAI::ImageGenerateParams::Size::TaggedSymbol)
+        SIZE_256X256 =
+          T.let(:"256x256", OpenAI::ImageGenerateParams::Size::TaggedSymbol)
+        SIZE_512X512 =
+          T.let(:"512x512", OpenAI::ImageGenerateParams::Size::TaggedSymbol)
+        SIZE_1792X1024 =
+          T.let(:"1792x1024", OpenAI::ImageGenerateParams::Size::TaggedSymbol)
+        SIZE_1024X1792 =
+          T.let(:"1024x1792", OpenAI::ImageGenerateParams::Size::TaggedSymbol)
       end
 
       # The style of the generated images. This parameter is only supported for
