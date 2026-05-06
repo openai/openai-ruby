@@ -581,8 +581,8 @@ module OpenAI
           #   `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or
           #   `1024x1792`.
           #
-          #   @return [String, nil]
-          optional :size, String
+          #   @return [String, Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Size, nil]
+          optional :size, union: -> { OpenAI::Responses::Tool::ImageGeneration::Size }
 
           # @!method initialize(action: nil, background: nil, input_fidelity: nil, input_image_mask: nil, model: nil, moderation: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, size: nil, type: :image_generation)
           #   Some parameter documentations has been truncated, see
@@ -610,7 +610,7 @@ module OpenAI
           #
           #   @param quality [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Quality] The quality of the generated image. One of `low`, `medium`, `high`,
           #
-          #   @param size [String] The size of the generated images. For `gpt-image-2` and `gpt-image-2-2026-04-21`
+          #   @param size [String, Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Size] The size of the generated images. For `gpt-image-2` and `gpt-image-2-2026-04-21`
           #
           #   @param type [Symbol, :image_generation] The type of the image generation tool. Always `image_generation`.
 
@@ -777,6 +777,49 @@ module OpenAI
 
             # @!method self.values
             #   @return [Array<Symbol>]
+          end
+
+          # The size of the generated images. For `gpt-image-2` and
+          # `gpt-image-2-2026-04-21`, arbitrary resolutions are supported as `WIDTHxHEIGHT`
+          # strings, for example `1536x864`. Width and height must both be divisible by 16
+          # and the requested aspect ratio must be between 1:3 and 3:1. Resolutions above
+          # `2560x1440` are experimental, and the maximum supported resolution is
+          # `3840x2160`. The requested size must also satisfy the model's current pixel and
+          # edge limits. The standard sizes `1024x1024`, `1536x1024`, and `1024x1536` are
+          # supported by the GPT image models; `auto` is supported for models that allow
+          # automatic sizing. For `dall-e-2`, use one of `256x256`, `512x512`, or
+          # `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or
+          # `1024x1792`.
+          #
+          # @see OpenAI::Models::Responses::Tool::ImageGeneration#size
+          module Size
+            extend OpenAI::Internal::Type::Union
+
+            variant String
+
+            variant const: -> { OpenAI::Models::Responses::Tool::ImageGeneration::Size::SIZE_1024X1024 }
+
+            variant const: -> { OpenAI::Models::Responses::Tool::ImageGeneration::Size::SIZE_1024X1536 }
+
+            variant const: -> { OpenAI::Models::Responses::Tool::ImageGeneration::Size::SIZE_1536X1024 }
+
+            variant const: -> { OpenAI::Models::Responses::Tool::ImageGeneration::Size::AUTO }
+
+            # @!method self.variants
+            #   @return [Array(String, Symbol)]
+
+            define_sorbet_constant!(:Variants) do
+              T.type_alias { T.any(String, OpenAI::Responses::Tool::ImageGeneration::Size::TaggedSymbol) }
+            end
+
+            # @!group
+
+            SIZE_1024X1024 = :"1024x1024"
+            SIZE_1024X1536 = :"1024x1536"
+            SIZE_1536X1024 = :"1536x1024"
+            AUTO = :auto
+
+            # @!endgroup
           end
         end
 
