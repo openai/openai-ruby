@@ -12,7 +12,7 @@ module OpenAI
         partial_images: Integer?,
         quality: OpenAI::Models::ImageGenerateParams::quality?,
         response_format: OpenAI::Models::ImageGenerateParams::response_format?,
-        size: String?,
+        size: OpenAI::Models::ImageGenerateParams::size?,
         style: OpenAI::Models::ImageGenerateParams::style?,
         user: String
       }
@@ -42,7 +42,7 @@ module OpenAI
 
       attr_accessor response_format: OpenAI::Models::ImageGenerateParams::response_format?
 
-      attr_accessor size: String?
+      attr_accessor size: OpenAI::Models::ImageGenerateParams::size?
 
       attr_accessor style: OpenAI::Models::ImageGenerateParams::style?
 
@@ -61,7 +61,7 @@ module OpenAI
         ?partial_images: Integer?,
         ?quality: OpenAI::Models::ImageGenerateParams::quality?,
         ?response_format: OpenAI::Models::ImageGenerateParams::response_format?,
-        ?size: String?,
+        ?size: OpenAI::Models::ImageGenerateParams::size?,
         ?style: OpenAI::Models::ImageGenerateParams::style?,
         ?user: String,
         ?request_options: OpenAI::request_opts
@@ -78,7 +78,7 @@ module OpenAI
         partial_images: Integer?,
         quality: OpenAI::Models::ImageGenerateParams::quality?,
         response_format: OpenAI::Models::ImageGenerateParams::response_format?,
-        size: String?,
+        size: OpenAI::Models::ImageGenerateParams::size?,
         style: OpenAI::Models::ImageGenerateParams::style?,
         user: String,
         request_options: OpenAI::RequestOptions
@@ -151,6 +151,32 @@ module OpenAI
         B64_JSON: :b64_json
 
         def self?.values: -> ::Array[OpenAI::Models::ImageGenerateParams::response_format]
+      end
+
+      type size =
+        String
+        | :auto
+        | :"1024x1024"
+        | :"1536x1024"
+        | :"1024x1536"
+        | :"256x256"
+        | :"512x512"
+        | :"1792x1024"
+        | :"1024x1792"
+
+      module Size
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::ImageGenerateParams::size]
+
+        AUTO: :auto
+        SIZE_1024X1024: :"1024x1024"
+        SIZE_1536X1024: :"1536x1024"
+        SIZE_1024X1536: :"1024x1536"
+        SIZE_256X256: :"256x256"
+        SIZE_512X512: :"512x512"
+        SIZE_1792X1024: :"1792x1024"
+        SIZE_1024X1792: :"1024x1792"
       end
 
       type style = :vivid | :natural

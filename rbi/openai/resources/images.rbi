@@ -65,7 +65,8 @@ module OpenAI
           quality: T.nilable(OpenAI::ImageEditParams::Quality::OrSymbol),
           response_format:
             T.nilable(OpenAI::ImageEditParams::ResponseFormat::OrSymbol),
-          size: T.nilable(String),
+          size:
+            T.nilable(T.any(String, OpenAI::ImageEditParams::Size::OrSymbol)),
           user: String,
           stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
@@ -183,7 +184,8 @@ module OpenAI
           quality: T.nilable(OpenAI::ImageEditParams::Quality::OrSymbol),
           response_format:
             T.nilable(OpenAI::ImageEditParams::ResponseFormat::OrSymbol),
-          size: T.nilable(String),
+          size:
+            T.nilable(T.any(String, OpenAI::ImageEditParams::Size::OrSymbol)),
           user: String,
           stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
@@ -301,7 +303,10 @@ module OpenAI
           quality: T.nilable(OpenAI::ImageGenerateParams::Quality::OrSymbol),
           response_format:
             T.nilable(OpenAI::ImageGenerateParams::ResponseFormat::OrSymbol),
-          size: T.nilable(String),
+          size:
+            T.nilable(
+              T.any(String, OpenAI::ImageGenerateParams::Size::OrSymbol)
+            ),
           style: T.nilable(OpenAI::ImageGenerateParams::Style::OrSymbol),
           user: String,
           stream: T.noreturn,
@@ -413,7 +418,10 @@ module OpenAI
           quality: T.nilable(OpenAI::ImageGenerateParams::Quality::OrSymbol),
           response_format:
             T.nilable(OpenAI::ImageGenerateParams::ResponseFormat::OrSymbol),
-          size: T.nilable(String),
+          size:
+            T.nilable(
+              T.any(String, OpenAI::ImageGenerateParams::Size::OrSymbol)
+            ),
           style: T.nilable(OpenAI::ImageGenerateParams::Style::OrSymbol),
           user: String,
           stream: T.noreturn,

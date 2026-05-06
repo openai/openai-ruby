@@ -1093,10 +1093,27 @@ module OpenAI
           # automatic sizing. For `dall-e-2`, use one of `256x256`, `512x512`, or
           # `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or
           # `1024x1792`.
-          sig { returns(T.nilable(String)) }
+          sig do
+            returns(
+              T.nilable(
+                T.any(
+                  String,
+                  OpenAI::Responses::Tool::ImageGeneration::Size::OrSymbol
+                )
+              )
+            )
+          end
           attr_reader :size
 
-          sig { params(size: String).void }
+          sig do
+            params(
+              size:
+                T.any(
+                  String,
+                  OpenAI::Responses::Tool::ImageGeneration::Size::OrSymbol
+                )
+            ).void
+          end
           attr_writer :size
 
           # A tool that generates images using the GPT image models.
@@ -1125,7 +1142,11 @@ module OpenAI
               partial_images: Integer,
               quality:
                 OpenAI::Responses::Tool::ImageGeneration::Quality::OrSymbol,
-              size: String,
+              size:
+                T.any(
+                  String,
+                  OpenAI::Responses::Tool::ImageGeneration::Size::OrSymbol
+                ),
               type: Symbol
             ).returns(T.attached_class)
           end
@@ -1212,7 +1233,11 @@ module OpenAI
                 partial_images: Integer,
                 quality:
                   OpenAI::Responses::Tool::ImageGeneration::Quality::OrSymbol,
-                size: String
+                size:
+                  T.any(
+                    String,
+                    OpenAI::Responses::Tool::ImageGeneration::Size::OrSymbol
+                  )
               }
             )
           end
@@ -1565,6 +1590,66 @@ module OpenAI
             end
             def self.values
             end
+          end
+
+          # The size of the generated images. For `gpt-image-2` and
+          # `gpt-image-2-2026-04-21`, arbitrary resolutions are supported as `WIDTHxHEIGHT`
+          # strings, for example `1536x864`. Width and height must both be divisible by 16
+          # and the requested aspect ratio must be between 1:3 and 3:1. Resolutions above
+          # `2560x1440` are experimental, and the maximum supported resolution is
+          # `3840x2160`. The requested size must also satisfy the model's current pixel and
+          # edge limits. The standard sizes `1024x1024`, `1536x1024`, and `1024x1536` are
+          # supported by the GPT image models; `auto` is supported for models that allow
+          # automatic sizing. For `dall-e-2`, use one of `256x256`, `512x512`, or
+          # `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or
+          # `1024x1792`.
+          module Size
+            extend OpenAI::Internal::Type::Union
+
+            Variants =
+              T.type_alias do
+                T.any(
+                  String,
+                  OpenAI::Responses::Tool::ImageGeneration::Size::TaggedSymbol
+                )
+              end
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Responses::Tool::ImageGeneration::Size::Variants
+                ]
+              )
+            end
+            def self.variants
+            end
+
+            TaggedSymbol =
+              T.type_alias do
+                T.all(Symbol, OpenAI::Responses::Tool::ImageGeneration::Size)
+              end
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            SIZE_1024X1024 =
+              T.let(
+                :"1024x1024",
+                OpenAI::Responses::Tool::ImageGeneration::Size::TaggedSymbol
+              )
+            SIZE_1024X1536 =
+              T.let(
+                :"1024x1536",
+                OpenAI::Responses::Tool::ImageGeneration::Size::TaggedSymbol
+              )
+            SIZE_1536X1024 =
+              T.let(
+                :"1536x1024",
+                OpenAI::Responses::Tool::ImageGeneration::Size::TaggedSymbol
+              )
+            AUTO =
+              T.let(
+                :auto,
+                OpenAI::Responses::Tool::ImageGeneration::Size::TaggedSymbol
+              )
           end
         end
 
