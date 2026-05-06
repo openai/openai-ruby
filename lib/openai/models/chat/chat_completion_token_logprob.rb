@@ -29,8 +29,7 @@ module OpenAI
 
         # @!attribute top_logprobs
         #   List of the most likely tokens and their log probability, at this token
-        #   position. In rare cases, there may be fewer than the number of requested
-        #   `top_logprobs` returned.
+        #   position. The number of entries may be fewer than the requested `top_logprobs`.
         #
         #   @return [Array<OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob>]
         required :top_logprobs,

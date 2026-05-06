@@ -926,6 +926,11 @@ module OpenAI
                 sig { returns(T.nilable(String)) }
                 attr_accessor :project_id
 
+                # When `group_by=line_item`, this field provides the quantity of the grouped costs
+                # result.
+                sig { returns(T.nilable(Float)) }
+                attr_accessor :quantity
+
                 # The aggregated costs details of the specific time bucket.
                 sig do
                   params(
@@ -934,6 +939,7 @@ module OpenAI
                     api_key_id: T.nilable(String),
                     line_item: T.nilable(String),
                     project_id: T.nilable(String),
+                    quantity: T.nilable(Float),
                     object: Symbol
                   ).returns(T.attached_class)
                 end
@@ -949,6 +955,9 @@ module OpenAI
                   # When `group_by=project_id`, this field provides the project ID of the grouped
                   # costs result.
                   project_id: nil,
+                  # When `group_by=line_item`, this field provides the quantity of the grouped costs
+                  # result.
+                  quantity: nil,
                   object: :"organization.costs.result"
                 )
                 end
@@ -961,7 +970,8 @@ module OpenAI
                         OpenAI::Models::Admin::Organization::UsageVectorStoresResponse::Data::Result::OrganizationCostsResult::Amount,
                       api_key_id: T.nilable(String),
                       line_item: T.nilable(String),
-                      project_id: T.nilable(String)
+                      project_id: T.nilable(String),
+                      quantity: T.nilable(Float)
                     }
                   )
                 end

@@ -466,7 +466,8 @@ module OpenAI
                   amount: OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationCostsResult::Amount,
                   api_key_id: String?,
                   line_item: String?,
-                  project_id: String?
+                  project_id: String?,
+                  quantity: Float?
                 }
 
               class OrganizationCostsResult < OpenAI::Internal::Type::BaseModel
@@ -484,11 +485,14 @@ module OpenAI
 
                 attr_accessor project_id: String?
 
+                attr_accessor quantity: Float?
+
                 def initialize: (
                   ?amount: OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationCostsResult::Amount,
                   ?api_key_id: String?,
                   ?line_item: String?,
                   ?project_id: String?,
+                  ?quantity: Float?,
                   ?object: :"organization.costs.result"
                 ) -> void
 
@@ -497,7 +501,8 @@ module OpenAI
                   amount: OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationCostsResult::Amount,
                   api_key_id: String?,
                   line_item: String?,
-                  project_id: String?
+                  project_id: String?,
+                  quantity: Float?
                 }
 
                 type amount = { currency: String, value: Float }
