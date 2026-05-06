@@ -277,8 +277,9 @@ module OpenAI
         sig { params(text: OpenAI::Responses::ResponseTextConfig::OrHash).void }
         attr_writer :text
 
-        # An integer between 0 and 20 specifying the number of most likely tokens to
-        # return at each token position, each with an associated log probability.
+        # An integer between 0 and 20 specifying the maximum number of most likely tokens
+        # to return at each token position, each with an associated log probability. In
+        # some cases, the number of returned tokens may be fewer than requested.
         sig { returns(T.nilable(Integer)) }
         attr_accessor :top_logprobs
 
@@ -568,8 +569,9 @@ module OpenAI
           # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
           # - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
           text: nil,
-          # An integer between 0 and 20 specifying the number of most likely tokens to
-          # return at each token position, each with an associated log probability.
+          # An integer between 0 and 20 specifying the maximum number of most likely tokens
+          # to return at each token position, each with an associated log probability. In
+          # some cases, the number of returned tokens may be fewer than requested.
           top_logprobs: nil,
           # The truncation strategy to use for the model response.
           #

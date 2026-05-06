@@ -76,7 +76,7 @@ module OpenAI
       #
       # @param tools [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::ComputerUsePreviewTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::FunctionShellTool, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::NamespaceTool, OpenAI::Models::Responses::ToolSearchTool, OpenAI::Models::Responses::ApplyPatchTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool>] An array of tools the model may call while generating a response. You
       #
-      # @param top_logprobs [Integer, nil] An integer between 0 and 20 specifying the number of most likely tokens to
+      # @param top_logprobs [Integer, nil] An integer between 0 and 20 specifying the maximum number of most likely
       #
       # @param top_p [Float, nil] An alternative to sampling with temperature, called nucleus sampling,
       #
@@ -299,7 +299,7 @@ module OpenAI
       #
       # @param tools [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::ComputerUsePreviewTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::FunctionShellTool, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::NamespaceTool, OpenAI::Models::Responses::ToolSearchTool, OpenAI::Models::Responses::ApplyPatchTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool>] An array of tools the model may call while generating a response. You
       #
-      # @param top_logprobs [Integer, nil] An integer between 0 and 20 specifying the number of most likely tokens to
+      # @param top_logprobs [Integer, nil] An integer between 0 and 20 specifying the maximum number of most likely
       #
       # @param top_p [Float, nil] An alternative to sampling with temperature, called nucleus sampling,
       #

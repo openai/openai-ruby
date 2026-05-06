@@ -109,7 +109,7 @@ module OpenAI
           sig { returns(Float) }
           attr_accessor :logprob
 
-          # The log probability of the top 20 most likely tokens.
+          # The log probabilities of up to 20 of the most likely tokens.
           sig do
             returns(
               T.nilable(
@@ -149,7 +149,7 @@ module OpenAI
             token:,
             # The log probability of this token.
             logprob:,
-            # The log probability of the top 20 most likely tokens.
+            # The log probabilities of up to 20 of the most likely tokens.
             top_logprobs: nil
           )
           end

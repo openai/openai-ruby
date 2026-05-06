@@ -32,8 +32,7 @@ module OpenAI
         attr_accessor :logprob
 
         # List of the most likely tokens and their log probability, at this token
-        # position. In rare cases, there may be fewer than the number of requested
-        # `top_logprobs` returned.
+        # position. The number of entries may be fewer than the requested `top_logprobs`.
         sig do
           returns(
             T::Array[OpenAI::Chat::ChatCompletionTokenLogprob::TopLogprob]
@@ -65,8 +64,7 @@ module OpenAI
           # unlikely.
           logprob:,
           # List of the most likely tokens and their log probability, at this token
-          # position. In rare cases, there may be fewer than the number of requested
-          # `top_logprobs` returned.
+          # position. The number of entries may be fewer than the requested `top_logprobs`.
           top_logprobs:
         )
         end

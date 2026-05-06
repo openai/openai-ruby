@@ -684,7 +684,14 @@ module OpenAI
                 #   @return [String, nil]
                 optional :project_id, String, nil?: true
 
-                # @!method initialize(amount: nil, api_key_id: nil, line_item: nil, project_id: nil, object: :"organization.costs.result")
+                # @!attribute quantity
+                #   When `group_by=line_item`, this field provides the quantity of the grouped costs
+                #   result.
+                #
+                #   @return [Float, nil]
+                optional :quantity, Float, nil?: true
+
+                # @!method initialize(amount: nil, api_key_id: nil, line_item: nil, project_id: nil, quantity: nil, object: :"organization.costs.result")
                 #   Some parameter documentations has been truncated, see
                 #   {OpenAI::Models::Admin::Organization::UsageVectorStoresResponse::Data::Result::OrganizationCostsResult}
                 #   for more details.
@@ -698,6 +705,8 @@ module OpenAI
                 #   @param line_item [String, nil] When `group_by=line_item`, this field provides the line item of the grouped cost
                 #
                 #   @param project_id [String, nil] When `group_by=project_id`, this field provides the project ID of the grouped co
+                #
+                #   @param quantity [Float, nil] When `group_by=line_item`, this field provides the quantity of the grouped costs
                 #
                 #   @param object [Symbol, :"organization.costs.result"]
 
