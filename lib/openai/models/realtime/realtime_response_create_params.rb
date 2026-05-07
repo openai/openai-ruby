@@ -73,12 +73,25 @@ module OpenAI
         optional :output_modalities,
                  -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeResponseCreateParams::OutputModality] }
 
+        # @!attribute parallel_tool_calls
+        #   Whether the model may call multiple tools in parallel. Only supported by
+        #   reasoning Realtime models such as `gpt-realtime-2`.
+        #
+        #   @return [Boolean, nil]
+        optional :parallel_tool_calls, OpenAI::Internal::Type::Boolean
+
         # @!attribute prompt
         #   Reference to a prompt template and its variables.
         #   [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
         #
         #   @return [OpenAI::Models::Responses::ResponsePrompt, nil]
         optional :prompt, -> { OpenAI::Responses::ResponsePrompt }, nil?: true
+
+        # @!attribute reasoning
+        #   Configuration for reasoning-capable Realtime models such as `gpt-realtime-2`.
+        #
+        #   @return [OpenAI::Models::Realtime::RealtimeReasoning, nil]
+        optional :reasoning, -> { OpenAI::Realtime::RealtimeReasoning }
 
         # @!attribute tool_choice
         #   How the model chooses tools. Provide one of the string modes or force a specific
@@ -94,7 +107,7 @@ module OpenAI
         optional :tools,
                  -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Realtime::RealtimeResponseCreateParams::Tool] }
 
-        # @!method initialize(audio: nil, conversation: nil, input: nil, instructions: nil, max_output_tokens: nil, metadata: nil, output_modalities: nil, prompt: nil, tool_choice: nil, tools: nil)
+        # @!method initialize(audio: nil, conversation: nil, input: nil, instructions: nil, max_output_tokens: nil, metadata: nil, output_modalities: nil, parallel_tool_calls: nil, prompt: nil, reasoning: nil, tool_choice: nil, tools: nil)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Realtime::RealtimeResponseCreateParams} for more details.
         #
@@ -114,7 +127,11 @@ module OpenAI
         #
         #   @param output_modalities [Array<Symbol, OpenAI::Models::Realtime::RealtimeResponseCreateParams::OutputModality>] The set of modalities the model used to respond, currently the only possible val
         #
+        #   @param parallel_tool_calls [Boolean] Whether the model may call multiple tools in parallel. Only supported by
+        #
         #   @param prompt [OpenAI::Models::Responses::ResponsePrompt, nil] Reference to a prompt template and its variables.
+        #
+        #   @param reasoning [OpenAI::Models::Realtime::RealtimeReasoning] Configuration for reasoning-capable Realtime models such as `gpt-realtime-2`.
         #
         #   @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp] How the model chooses tools. Provide one of the string modes or force a specific
         #

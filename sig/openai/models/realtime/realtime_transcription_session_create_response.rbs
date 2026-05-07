@@ -79,7 +79,7 @@ module OpenAI
               format_: OpenAI::Models::Realtime::realtime_audio_formats,
               noise_reduction: OpenAI::Realtime::RealtimeTranscriptionSessionCreateResponse::Audio::Input::NoiseReduction,
               transcription: OpenAI::Realtime::AudioTranscription,
-              turn_detection: OpenAI::Realtime::RealtimeTranscriptionSessionTurnDetection
+              turn_detection: OpenAI::Realtime::RealtimeTranscriptionSessionTurnDetection?
             }
 
           class Input < OpenAI::Internal::Type::BaseModel
@@ -101,24 +101,20 @@ module OpenAI
               OpenAI::Realtime::AudioTranscription
             ) -> OpenAI::Realtime::AudioTranscription
 
-            attr_reader turn_detection: OpenAI::Realtime::RealtimeTranscriptionSessionTurnDetection?
-
-            def turn_detection=: (
-              OpenAI::Realtime::RealtimeTranscriptionSessionTurnDetection
-            ) -> OpenAI::Realtime::RealtimeTranscriptionSessionTurnDetection
+            attr_accessor turn_detection: OpenAI::Realtime::RealtimeTranscriptionSessionTurnDetection?
 
             def initialize: (
               ?format_: OpenAI::Models::Realtime::realtime_audio_formats,
               ?noise_reduction: OpenAI::Realtime::RealtimeTranscriptionSessionCreateResponse::Audio::Input::NoiseReduction,
               ?transcription: OpenAI::Realtime::AudioTranscription,
-              ?turn_detection: OpenAI::Realtime::RealtimeTranscriptionSessionTurnDetection
+              ?turn_detection: OpenAI::Realtime::RealtimeTranscriptionSessionTurnDetection?
             ) -> void
 
             def to_hash: -> {
               format_: OpenAI::Models::Realtime::realtime_audio_formats,
               noise_reduction: OpenAI::Realtime::RealtimeTranscriptionSessionCreateResponse::Audio::Input::NoiseReduction,
               transcription: OpenAI::Realtime::AudioTranscription,
-              turn_detection: OpenAI::Realtime::RealtimeTranscriptionSessionTurnDetection
+              turn_detection: OpenAI::Realtime::RealtimeTranscriptionSessionTurnDetection?
             }
 
             type noise_reduction =

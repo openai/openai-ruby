@@ -14,16 +14,13 @@ module OpenAI
             )
           end
 
-        # Ephemeral key returned by the API.
-        sig { returns(OpenAI::Realtime::RealtimeSessionClientSecret) }
-        attr_reader :client_secret
+        # Unique identifier for the session that looks like `sess_1234567890abcdef`.
+        sig { returns(String) }
+        attr_accessor :id
 
-        sig do
-          params(
-            client_secret: OpenAI::Realtime::RealtimeSessionClientSecret::OrHash
-          ).void
-        end
-        attr_writer :client_secret
+        # The object type. Always `realtime.session`.
+        sig { returns(Symbol) }
+        attr_accessor :object
 
         # The type of session to create. Always `realtime` for the Realtime API.
         sig { returns(Symbol) }
@@ -44,6 +41,13 @@ module OpenAI
           ).void
         end
         attr_writer :audio
+
+        # Expiration timestamp for the session, in seconds since epoch.
+        sig { returns(T.nilable(Integer)) }
+        attr_reader :expires_at
+
+        sig { params(expires_at: Integer).void }
+        attr_writer :expires_at
 
         # Additional fields to include in server outputs.
         #
@@ -160,6 +164,15 @@ module OpenAI
         end
         attr_writer :prompt
 
+        # Configuration for reasoning-capable Realtime models such as `gpt-realtime-2`.
+        sig { returns(T.nilable(OpenAI::Realtime::RealtimeReasoning)) }
+        attr_reader :reasoning
+
+        sig do
+          params(reasoning: OpenAI::Realtime::RealtimeReasoning::OrHash).void
+        end
+        attr_writer :reasoning
+
         # How the model chooses tools. Provide one of the string modes or force a specific
         # function/MCP tool.
         sig do
@@ -258,14 +271,13 @@ module OpenAI
         end
         attr_writer :truncation
 
-        # A new Realtime session configuration, with an ephemeral key. Default TTL for
-        # keys is one minute.
+        # A Realtime session configuration object.
         sig do
           params(
-            client_secret:
-              OpenAI::Realtime::RealtimeSessionClientSecret::OrHash,
+            id: String,
             audio:
               OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::OrHash,
+            expires_at: Integer,
             include:
               T::Array[
                 OpenAI::Realtime::RealtimeSessionCreateResponse::Include::OrSymbol
@@ -282,6 +294,7 @@ module OpenAI
                 OpenAI::Realtime::RealtimeSessionCreateResponse::OutputModality::OrSymbol
               ],
             prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
+            reasoning: OpenAI::Realtime::RealtimeReasoning::OrHash,
             tool_choice:
               T.any(
                 OpenAI::Responses::ToolChoiceOptions::OrSymbol,
@@ -307,14 +320,17 @@ module OpenAI
                 OpenAI::Realtime::RealtimeTruncation::RealtimeTruncationStrategy::OrSymbol,
                 OpenAI::Realtime::RealtimeTruncationRetentionRatio::OrHash
               ),
+            object: Symbol,
             type: Symbol
           ).returns(T.attached_class)
         end
         def self.new(
-          # Ephemeral key returned by the API.
-          client_secret:,
+          # Unique identifier for the session that looks like `sess_1234567890abcdef`.
+          id:,
           # Configuration for input and output audio.
           audio: nil,
+          # Expiration timestamp for the session, in seconds since epoch.
+          expires_at: nil,
           # Additional fields to include in server outputs.
           #
           # `item.input_audio_transcription.logprobs`: Include logprobs for input audio
@@ -346,6 +362,8 @@ module OpenAI
           # Reference to a prompt template and its variables.
           # [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
           prompt: nil,
+          # Configuration for reasoning-capable Realtime models such as `gpt-realtime-2`.
+          reasoning: nil,
           # How the model chooses tools. Provide one of the string modes or force a specific
           # function/MCP tool.
           tool_choice: nil,
@@ -378,6 +396,8 @@ module OpenAI
           # but would instead return an error if the conversation exceeds the model's input
           # token limit.
           truncation: nil,
+          # The object type. Always `realtime.session`.
+          object: :"realtime.session",
           # The type of session to create. Always `realtime` for the Realtime API.
           type: :realtime
         )
@@ -386,9 +406,11 @@ module OpenAI
         sig do
           override.returns(
             {
-              client_secret: OpenAI::Realtime::RealtimeSessionClientSecret,
+              id: String,
+              object: Symbol,
               type: Symbol,
               audio: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio,
+              expires_at: Integer,
               include:
                 T::Array[
                   OpenAI::Realtime::RealtimeSessionCreateResponse::Include::TaggedSymbol
@@ -403,6 +425,7 @@ module OpenAI
                   OpenAI::Realtime::RealtimeSessionCreateResponse::OutputModality::TaggedSymbol
                 ],
               prompt: T.nilable(OpenAI::Responses::ResponsePrompt),
+              reasoning: OpenAI::Realtime::RealtimeReasoning,
               tool_choice:
                 OpenAI::Realtime::RealtimeSessionCreateResponse::ToolChoice::Variants,
               tools:
@@ -539,14 +562,6 @@ module OpenAI
             end
             attr_writer :noise_reduction
 
-            # Configuration for input audio transcription, defaults to off and can be set to
-            # `null` to turn off once on. Input audio transcription is not native to the
-            # model, since the model consumes audio directly. Transcription runs
-            # asynchronously through
-            # [the /audio/transcriptions endpoint](https://platform.openai.com/docs/api-reference/audio/createTranscription)
-            # and should be treated as guidance of input audio content rather than precisely
-            # what the model heard. The client can optionally set the language and prompt for
-            # transcription, these offer additional guidance to the transcription service.
             sig { returns(T.nilable(OpenAI::Realtime::AudioTranscription)) }
             attr_reader :transcription
 
@@ -570,6 +585,9 @@ module OpenAI
             # trails off with "uhhm", the model will score a low probability of turn end and
             # wait longer for the user to continue speaking. This can be useful for more
             # natural conversations, but may have a higher latency.
+            #
+            # For `gpt-realtime-whisper` transcription sessions, turn detection must be set to
+            # `null`; VAD is not supported.
             sig do
               returns(
                 T.nilable(
@@ -608,14 +626,6 @@ module OpenAI
               # detection accuracy (reducing false positives) and model performance by improving
               # perception of the input audio.
               noise_reduction: nil,
-              # Configuration for input audio transcription, defaults to off and can be set to
-              # `null` to turn off once on. Input audio transcription is not native to the
-              # model, since the model consumes audio directly. Transcription runs
-              # asynchronously through
-              # [the /audio/transcriptions endpoint](https://platform.openai.com/docs/api-reference/audio/createTranscription)
-              # and should be treated as guidance of input audio content rather than precisely
-              # what the model heard. The client can optionally set the language and prompt for
-              # transcription, these offer additional guidance to the transcription service.
               transcription: nil,
               # Configuration for turn detection, ether Server VAD or Semantic VAD. This can be
               # set to `null` to turn off, in which case the client must manually trigger model
@@ -630,6 +640,9 @@ module OpenAI
               # trails off with "uhhm", the model will score a low probability of turn end and
               # wait longer for the user to continue speaking. This can be useful for more
               # natural conversations, but may have a higher latency.
+              #
+              # For `gpt-realtime-whisper` transcription sessions, turn detection must be set to
+              # `null`; VAD is not supported.
               turn_detection: nil
             )
             end
@@ -717,6 +730,9 @@ module OpenAI
             # trails off with "uhhm", the model will score a low probability of turn end and
             # wait longer for the user to continue speaking. This can be useful for more
             # natural conversations, but may have a higher latency.
+            #
+            # For `gpt-realtime-whisper` transcription sessions, turn detection must be set to
+            # `null`; VAD is not supported.
             module TurnDetection
               extend OpenAI::Internal::Type::Union
 
@@ -1326,6 +1342,11 @@ module OpenAI
           GPT_REALTIME_1_5 =
             T.let(
               :"gpt-realtime-1.5",
+              OpenAI::Realtime::RealtimeSessionCreateResponse::Model::TaggedSymbol
+            )
+          GPT_REALTIME_2 =
+            T.let(
+              :"gpt-realtime-2",
               OpenAI::Realtime::RealtimeSessionCreateResponse::Model::TaggedSymbol
             )
           GPT_REALTIME_2025_08_28 =

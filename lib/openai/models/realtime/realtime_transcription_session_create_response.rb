@@ -91,7 +91,6 @@ module OpenAI
                      -> { OpenAI::Realtime::RealtimeTranscriptionSessionCreateResponse::Audio::Input::NoiseReduction }
 
             # @!attribute transcription
-            #   Configuration of the transcription model.
             #
             #   @return [OpenAI::Models::Realtime::AudioTranscription, nil]
             optional :transcription, -> { OpenAI::Realtime::AudioTranscription }
@@ -99,10 +98,15 @@ module OpenAI
             # @!attribute turn_detection
             #   Configuration for turn detection. Can be set to `null` to turn off. Server VAD
             #   means that the model will detect the start and end of speech based on audio
-            #   volume and respond at the end of user speech.
+            #   volume and respond at the end of user speech. For `gpt-realtime-whisper`, this
+            #   must be `null`; VAD is not supported.
             #
             #   @return [OpenAI::Models::Realtime::RealtimeTranscriptionSessionTurnDetection, nil]
-            optional :turn_detection, -> { OpenAI::Realtime::RealtimeTranscriptionSessionTurnDetection }
+            optional :turn_detection,
+                     -> {
+                       OpenAI::Realtime::RealtimeTranscriptionSessionTurnDetection
+                     },
+                     nil?: true
 
             # @!method initialize(format_: nil, noise_reduction: nil, transcription: nil, turn_detection: nil)
             #   Some parameter documentations has been truncated, see
@@ -113,9 +117,9 @@ module OpenAI
             #
             #   @param noise_reduction [OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateResponse::Audio::Input::NoiseReduction] Configuration for input audio noise reduction.
             #
-            #   @param transcription [OpenAI::Models::Realtime::AudioTranscription] Configuration of the transcription model.
+            #   @param transcription [OpenAI::Models::Realtime::AudioTranscription]
             #
-            #   @param turn_detection [OpenAI::Models::Realtime::RealtimeTranscriptionSessionTurnDetection] Configuration for turn detection. Can be set to `null` to turn off. Server
+            #   @param turn_detection [OpenAI::Models::Realtime::RealtimeTranscriptionSessionTurnDetection, nil] Configuration for turn detection. Can be set to `null` to turn off. Server
 
             # @see OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateResponse::Audio::Input#noise_reduction
             class NoiseReduction < OpenAI::Internal::Type::BaseModel

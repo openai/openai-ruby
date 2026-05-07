@@ -55,7 +55,6 @@ module OpenAI
           optional :input_audio_format, String
 
           # @!attribute input_audio_transcription
-          #   Configuration of the transcription model.
           #
           #   @return [OpenAI::Models::Realtime::AudioTranscription, nil]
           optional :input_audio_transcription, -> { OpenAI::Realtime::AudioTranscription }
@@ -92,7 +91,7 @@ module OpenAI
           #
           #   @param input_audio_format [String] The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
           #
-          #   @param input_audio_transcription [OpenAI::Models::Realtime::AudioTranscription] Configuration of the transcription model.
+          #   @param input_audio_transcription [OpenAI::Models::Realtime::AudioTranscription]
           #
           #   @param modalities [Array<Symbol, OpenAI::Models::Realtime::TranscriptionSessionUpdatedEvent::Session::Modality>] The set of modalities the model can respond with. To disable audio,
           #
