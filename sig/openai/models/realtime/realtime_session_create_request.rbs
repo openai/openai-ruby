@@ -10,7 +10,9 @@ module OpenAI
           max_output_tokens: OpenAI::Models::Realtime::RealtimeSessionCreateRequest::max_output_tokens,
           model: OpenAI::Models::Realtime::RealtimeSessionCreateRequest::model,
           output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateRequest::output_modality],
+          parallel_tool_calls: bool,
           prompt: OpenAI::Responses::ResponsePrompt?,
+          reasoning: OpenAI::Realtime::RealtimeReasoning,
           tool_choice: OpenAI::Models::Realtime::realtime_tool_choice_config,
           tools: OpenAI::Models::Realtime::realtime_tools_config,
           tracing: OpenAI::Models::Realtime::realtime_tracing_config?,
@@ -54,7 +56,17 @@ module OpenAI
           ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateRequest::output_modality]
         ) -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateRequest::output_modality]
 
+        attr_reader parallel_tool_calls: bool?
+
+        def parallel_tool_calls=: (bool) -> bool
+
         attr_accessor prompt: OpenAI::Responses::ResponsePrompt?
+
+        attr_reader reasoning: OpenAI::Realtime::RealtimeReasoning?
+
+        def reasoning=: (
+          OpenAI::Realtime::RealtimeReasoning
+        ) -> OpenAI::Realtime::RealtimeReasoning
 
         attr_reader tool_choice: OpenAI::Models::Realtime::realtime_tool_choice_config?
 
@@ -83,7 +95,9 @@ module OpenAI
           ?max_output_tokens: OpenAI::Models::Realtime::RealtimeSessionCreateRequest::max_output_tokens,
           ?model: OpenAI::Models::Realtime::RealtimeSessionCreateRequest::model,
           ?output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateRequest::output_modality],
+          ?parallel_tool_calls: bool,
           ?prompt: OpenAI::Responses::ResponsePrompt?,
+          ?reasoning: OpenAI::Realtime::RealtimeReasoning,
           ?tool_choice: OpenAI::Models::Realtime::realtime_tool_choice_config,
           ?tools: OpenAI::Models::Realtime::realtime_tools_config,
           ?tracing: OpenAI::Models::Realtime::realtime_tracing_config?,
@@ -99,7 +113,9 @@ module OpenAI
           max_output_tokens: OpenAI::Models::Realtime::RealtimeSessionCreateRequest::max_output_tokens,
           model: OpenAI::Models::Realtime::RealtimeSessionCreateRequest::model,
           output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateRequest::output_modality],
+          parallel_tool_calls: bool,
           prompt: OpenAI::Responses::ResponsePrompt?,
+          reasoning: OpenAI::Realtime::RealtimeReasoning,
           tool_choice: OpenAI::Models::Realtime::realtime_tool_choice_config,
           tools: OpenAI::Models::Realtime::realtime_tools_config,
           tracing: OpenAI::Models::Realtime::realtime_tracing_config?,
@@ -128,6 +144,7 @@ module OpenAI
           String
           | :"gpt-realtime"
           | :"gpt-realtime-1.5"
+          | :"gpt-realtime-2"
           | :"gpt-realtime-2025-08-28"
           | :"gpt-4o-realtime-preview"
           | :"gpt-4o-realtime-preview-2024-10-01"
@@ -150,6 +167,7 @@ module OpenAI
 
           GPT_REALTIME: :"gpt-realtime"
           GPT_REALTIME_1_5: :"gpt-realtime-1.5"
+          GPT_REALTIME_2: :"gpt-realtime-2"
           GPT_REALTIME_2025_08_28: :"gpt-realtime-2025-08-28"
           GPT_4O_REALTIME_PREVIEW: :"gpt-4o-realtime-preview"
           GPT_4O_REALTIME_PREVIEW_2024_10_01: :"gpt-4o-realtime-preview-2024-10-01"

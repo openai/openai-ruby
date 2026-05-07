@@ -224,7 +224,6 @@ module OpenAI
             end
             attr_writer :noise_reduction
 
-            # Configuration of the transcription model.
             sig { returns(T.nilable(OpenAI::Realtime::AudioTranscription)) }
             attr_reader :transcription
 
@@ -237,7 +236,8 @@ module OpenAI
 
             # Configuration for turn detection. Can be set to `null` to turn off. Server VAD
             # means that the model will detect the start and end of speech based on audio
-            # volume and respond at the end of user speech.
+            # volume and respond at the end of user speech. For `gpt-realtime-whisper`, this
+            # must be `null`; VAD is not supported.
             sig do
               returns(
                 T.nilable(
@@ -250,7 +250,9 @@ module OpenAI
             sig do
               params(
                 turn_detection:
-                  OpenAI::Realtime::RealtimeTranscriptionSessionTurnDetection::OrHash
+                  T.nilable(
+                    OpenAI::Realtime::RealtimeTranscriptionSessionTurnDetection::OrHash
+                  )
               ).void
             end
             attr_writer :turn_detection
@@ -267,7 +269,9 @@ module OpenAI
                   OpenAI::Realtime::RealtimeTranscriptionSessionCreateResponse::Audio::Input::NoiseReduction::OrHash,
                 transcription: OpenAI::Realtime::AudioTranscription::OrHash,
                 turn_detection:
-                  OpenAI::Realtime::RealtimeTranscriptionSessionTurnDetection::OrHash
+                  T.nilable(
+                    OpenAI::Realtime::RealtimeTranscriptionSessionTurnDetection::OrHash
+                  )
               ).returns(T.attached_class)
             end
             def self.new(
@@ -275,11 +279,11 @@ module OpenAI
               format_: nil,
               # Configuration for input audio noise reduction.
               noise_reduction: nil,
-              # Configuration of the transcription model.
               transcription: nil,
               # Configuration for turn detection. Can be set to `null` to turn off. Server VAD
               # means that the model will detect the start and end of speech based on audio
-              # volume and respond at the end of user speech.
+              # volume and respond at the end of user speech. For `gpt-realtime-whisper`, this
+              # must be `null`; VAD is not supported.
               turn_detection: nil
             )
             end
@@ -292,7 +296,9 @@ module OpenAI
                     OpenAI::Realtime::RealtimeTranscriptionSessionCreateResponse::Audio::Input::NoiseReduction,
                   transcription: OpenAI::Realtime::AudioTranscription,
                   turn_detection:
-                    OpenAI::Realtime::RealtimeTranscriptionSessionTurnDetection
+                    T.nilable(
+                      OpenAI::Realtime::RealtimeTranscriptionSessionTurnDetection
+                    )
                 }
               )
             end

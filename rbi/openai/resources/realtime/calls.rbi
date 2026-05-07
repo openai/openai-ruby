@@ -25,7 +25,9 @@ module OpenAI
               T::Array[
                 OpenAI::Realtime::RealtimeSessionCreateRequest::OutputModality::OrSymbol
               ],
+            parallel_tool_calls: T::Boolean,
             prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
+            reasoning: OpenAI::Realtime::RealtimeReasoning::OrHash,
             tool_choice:
               T.any(
                 OpenAI::Responses::ToolChoiceOptions::OrSymbol,
@@ -90,9 +92,14 @@ module OpenAI
           # can be used to make the model respond with text only. It is not possible to
           # request both `text` and `audio` at the same time.
           output_modalities: nil,
+          # Whether the model may call multiple tools in parallel. Only supported by
+          # reasoning Realtime models such as `gpt-realtime-2`.
+          parallel_tool_calls: nil,
           # Reference to a prompt template and its variables.
           # [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
           prompt: nil,
+          # Configuration for reasoning-capable Realtime models such as `gpt-realtime-2`.
+          reasoning: nil,
           # How the model chooses tools. Provide one of the string modes or force a specific
           # function/MCP tool.
           tool_choice: nil,

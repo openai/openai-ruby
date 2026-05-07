@@ -3,12 +3,19 @@ module OpenAI
     module Realtime
       type audio_transcription =
         {
+          delay: OpenAI::Models::Realtime::AudioTranscription::delay,
           language: String,
           model: OpenAI::Models::Realtime::AudioTranscription::model,
           prompt: String
         }
 
       class AudioTranscription < OpenAI::Internal::Type::BaseModel
+        attr_reader delay: OpenAI::Models::Realtime::AudioTranscription::delay?
+
+        def delay=: (
+          OpenAI::Models::Realtime::AudioTranscription::delay
+        ) -> OpenAI::Models::Realtime::AudioTranscription::delay
+
         attr_reader language: String?
 
         def language=: (String) -> String
@@ -24,16 +31,32 @@ module OpenAI
         def prompt=: (String) -> String
 
         def initialize: (
+          ?delay: OpenAI::Models::Realtime::AudioTranscription::delay,
           ?language: String,
           ?model: OpenAI::Models::Realtime::AudioTranscription::model,
           ?prompt: String
         ) -> void
 
         def to_hash: -> {
+          delay: OpenAI::Models::Realtime::AudioTranscription::delay,
           language: String,
           model: OpenAI::Models::Realtime::AudioTranscription::model,
           prompt: String
         }
+
+        type delay = :minimal | :low | :medium | :high | :xhigh
+
+        module Delay
+          extend OpenAI::Internal::Type::Enum
+
+          MINIMAL: :minimal
+          LOW: :low
+          MEDIUM: :medium
+          HIGH: :high
+          XHIGH: :xhigh
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::AudioTranscription::delay]
+        end
 
         type model =
           String
@@ -42,6 +65,7 @@ module OpenAI
           | :"gpt-4o-mini-transcribe-2025-12-15"
           | :"gpt-4o-transcribe"
           | :"gpt-4o-transcribe-diarize"
+          | :"gpt-realtime-whisper"
 
         module Model
           extend OpenAI::Internal::Type::Union
@@ -53,6 +77,7 @@ module OpenAI
           GPT_4O_MINI_TRANSCRIBE_2025_12_15: :"gpt-4o-mini-transcribe-2025-12-15"
           GPT_4O_TRANSCRIBE: :"gpt-4o-transcribe"
           GPT_4O_TRANSCRIBE_DIARIZE: :"gpt-4o-transcribe-diarize"
+          GPT_REALTIME_WHISPER: :"gpt-realtime-whisper"
         end
       end
     end
