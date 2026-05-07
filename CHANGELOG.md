@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.62.0 (2026-05-07)
+
+Full Changelog: [v0.61.0...v0.62.0](https://github.com/openai/openai-ruby/compare/v0.61.0...v0.62.0)
+
+### Features
+
+* **api:** add quantity field to organization usage costs results ([2085700](https://github.com/openai/openai-ruby/commit/2085700725c2325e880a715ce3b13b4efce7b5d4))
+* **api:** add web_search_call.results includable option ([b486412](https://github.com/openai/openai-ruby/commit/b4864127789424527497aa6097d93ea06e9aa4f7))
+* **api:** launch realtime translate + update image 2 ([0e642fb](https://github.com/openai/openai-ruby/commit/0e642fbf02845ff94b8eda0fca7e8348adc3ac37))
+* **api:** manual updates ([4baf155](https://github.com/openai/openai-ruby/commit/4baf155ef74ffdf533dfba330e15f7accf1e5351))
+* **api:** manual updates ([20c8209](https://github.com/openai/openai-ruby/commit/20c82091b6c24668e90ed895dfc7e88b0aafd977))
+* **api:** realtime 2 ([1718781](https://github.com/openai/openai-ruby/commit/17187817c580b642d61ea754aa63782a16af94bc))
+
+
+### Bug Fixes
+
+* **api:** fix imagegen `size` enum regression ([51548cd](https://github.com/openai/openai-ruby/commit/51548cd04ab8f3a16e980bd2318ddb42ee75ce6c))
+
 ## 0.61.0 (2026-05-01)
 
 Full Changelog: [v0.60.0...v0.61.0](https://github.com/openai/openai-ruby/compare/v0.60.0...v0.61.0)
