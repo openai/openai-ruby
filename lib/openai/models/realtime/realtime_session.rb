@@ -170,6 +170,9 @@ module OpenAI
         #   wait longer for the user to continue speaking. This can be useful for more
         #   natural conversations, but may have a higher latency.
         #
+        #   For `gpt-realtime-whisper` transcription sessions, turn detection must be set to
+        #   `null`; VAD is not supported.
+        #
         #   @return [OpenAI::Models::Realtime::RealtimeSession::TurnDetection::ServerVad, OpenAI::Models::Realtime::RealtimeSession::TurnDetection::SemanticVad, nil]
         optional :turn_detection, union: -> { OpenAI::Realtime::RealtimeSession::TurnDetection }, nil?: true
 
@@ -467,6 +470,9 @@ module OpenAI
         # trails off with "uhhm", the model will score a low probability of turn end and
         # wait longer for the user to continue speaking. This can be useful for more
         # natural conversations, but may have a higher latency.
+        #
+        # For `gpt-realtime-whisper` transcription sessions, turn detection must be set to
+        # `null`; VAD is not supported.
         #
         # @see OpenAI::Models::Realtime::RealtimeSession#turn_detection
         module TurnDetection

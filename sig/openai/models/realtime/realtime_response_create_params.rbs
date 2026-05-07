@@ -10,7 +10,9 @@ module OpenAI
           max_output_tokens: OpenAI::Models::Realtime::RealtimeResponseCreateParams::max_output_tokens,
           metadata: OpenAI::Models::metadata?,
           output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::output_modality],
+          parallel_tool_calls: bool,
           prompt: OpenAI::Responses::ResponsePrompt?,
+          reasoning: OpenAI::Realtime::RealtimeReasoning,
           tool_choice: OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool_choice,
           tools: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool]
         }
@@ -52,7 +54,17 @@ module OpenAI
           ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::output_modality]
         ) -> ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::output_modality]
 
+        attr_reader parallel_tool_calls: bool?
+
+        def parallel_tool_calls=: (bool) -> bool
+
         attr_accessor prompt: OpenAI::Responses::ResponsePrompt?
+
+        attr_reader reasoning: OpenAI::Realtime::RealtimeReasoning?
+
+        def reasoning=: (
+          OpenAI::Realtime::RealtimeReasoning
+        ) -> OpenAI::Realtime::RealtimeReasoning
 
         attr_reader tool_choice: OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool_choice?
 
@@ -74,7 +86,9 @@ module OpenAI
           ?max_output_tokens: OpenAI::Models::Realtime::RealtimeResponseCreateParams::max_output_tokens,
           ?metadata: OpenAI::Models::metadata?,
           ?output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::output_modality],
+          ?parallel_tool_calls: bool,
           ?prompt: OpenAI::Responses::ResponsePrompt?,
+          ?reasoning: OpenAI::Realtime::RealtimeReasoning,
           ?tool_choice: OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool_choice,
           ?tools: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool]
         ) -> void
@@ -87,7 +101,9 @@ module OpenAI
           max_output_tokens: OpenAI::Models::Realtime::RealtimeResponseCreateParams::max_output_tokens,
           metadata: OpenAI::Models::metadata?,
           output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::output_modality],
+          parallel_tool_calls: bool,
           prompt: OpenAI::Responses::ResponsePrompt?,
+          reasoning: OpenAI::Realtime::RealtimeReasoning,
           tool_choice: OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool_choice,
           tools: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool]
         }

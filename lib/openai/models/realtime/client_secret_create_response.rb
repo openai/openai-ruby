@@ -43,8 +43,7 @@ module OpenAI
 
           discriminator :type
 
-          # A new Realtime session configuration, with an ephemeral key. Default TTL
-          # for keys is one minute.
+          # A Realtime session configuration object.
           variant :realtime, -> { OpenAI::Realtime::RealtimeSessionCreateResponse }
 
           # A Realtime transcription session configuration object.

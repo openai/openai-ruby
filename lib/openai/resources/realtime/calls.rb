@@ -10,7 +10,7 @@ module OpenAI
         # Accept an incoming SIP call and configure the realtime session that will handle
         # it.
         #
-        # @overload accept(call_id, audio: nil, include: nil, instructions: nil, max_output_tokens: nil, model: nil, output_modalities: nil, prompt: nil, tool_choice: nil, tools: nil, tracing: nil, truncation: nil, type: :realtime, request_options: {})
+        # @overload accept(call_id, audio: nil, include: nil, instructions: nil, max_output_tokens: nil, model: nil, output_modalities: nil, parallel_tool_calls: nil, prompt: nil, reasoning: nil, tool_choice: nil, tools: nil, tracing: nil, truncation: nil, type: :realtime, request_options: {})
         #
         # @param call_id [String] The identifier for the call provided in the
         #
@@ -26,7 +26,11 @@ module OpenAI
         #
         # @param output_modalities [Array<Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateRequest::OutputModality>] The set of modalities the model can respond with. It defaults to `["audio"]`, in
         #
+        # @param parallel_tool_calls [Boolean] Whether the model may call multiple tools in parallel. Only supported by
+        #
         # @param prompt [OpenAI::Models::Responses::ResponsePrompt, nil] Reference to a prompt template and its variables.
+        #
+        # @param reasoning [OpenAI::Models::Realtime::RealtimeReasoning] Configuration for reasoning-capable Realtime models such as `gpt-realtime-2`.
         #
         # @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp] How the model chooses tools. Provide one of the string modes or force a specific
         #

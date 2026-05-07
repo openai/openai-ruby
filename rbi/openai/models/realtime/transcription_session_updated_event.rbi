@@ -108,7 +108,6 @@ module OpenAI
           sig { params(input_audio_format: String).void }
           attr_writer :input_audio_format
 
-          # Configuration of the transcription model.
           sig { returns(T.nilable(OpenAI::Realtime::AudioTranscription)) }
           attr_reader :input_audio_transcription
 
@@ -189,7 +188,6 @@ module OpenAI
             client_secret:,
             # The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
             input_audio_format: nil,
-            # Configuration of the transcription model.
             input_audio_transcription: nil,
             # The set of modalities the model can respond with. To disable audio, set this to
             # ["text"].

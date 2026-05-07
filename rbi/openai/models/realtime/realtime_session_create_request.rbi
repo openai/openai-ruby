@@ -125,6 +125,14 @@ module OpenAI
         end
         attr_writer :output_modalities
 
+        # Whether the model may call multiple tools in parallel. Only supported by
+        # reasoning Realtime models such as `gpt-realtime-2`.
+        sig { returns(T.nilable(T::Boolean)) }
+        attr_reader :parallel_tool_calls
+
+        sig { params(parallel_tool_calls: T::Boolean).void }
+        attr_writer :parallel_tool_calls
+
         # Reference to a prompt template and its variables.
         # [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
         sig { returns(T.nilable(OpenAI::Responses::ResponsePrompt)) }
@@ -136,6 +144,15 @@ module OpenAI
           ).void
         end
         attr_writer :prompt
+
+        # Configuration for reasoning-capable Realtime models such as `gpt-realtime-2`.
+        sig { returns(T.nilable(OpenAI::Realtime::RealtimeReasoning)) }
+        attr_reader :reasoning
+
+        sig do
+          params(reasoning: OpenAI::Realtime::RealtimeReasoning::OrHash).void
+        end
+        attr_writer :reasoning
 
         # How the model chooses tools. Provide one of the string modes or force a specific
         # function/MCP tool.
@@ -271,7 +288,9 @@ module OpenAI
               T::Array[
                 OpenAI::Realtime::RealtimeSessionCreateRequest::OutputModality::OrSymbol
               ],
+            parallel_tool_calls: T::Boolean,
             prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
+            reasoning: OpenAI::Realtime::RealtimeReasoning::OrHash,
             tool_choice:
               T.any(
                 OpenAI::Responses::ToolChoiceOptions::OrSymbol,
@@ -331,9 +350,14 @@ module OpenAI
           # can be used to make the model respond with text only. It is not possible to
           # request both `text` and `audio` at the same time.
           output_modalities: nil,
+          # Whether the model may call multiple tools in parallel. Only supported by
+          # reasoning Realtime models such as `gpt-realtime-2`.
+          parallel_tool_calls: nil,
           # Reference to a prompt template and its variables.
           # [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
           prompt: nil,
+          # Configuration for reasoning-capable Realtime models such as `gpt-realtime-2`.
+          reasoning: nil,
           # How the model chooses tools. Provide one of the string modes or force a specific
           # function/MCP tool.
           tool_choice: nil,
@@ -391,7 +415,9 @@ module OpenAI
                 T::Array[
                   OpenAI::Realtime::RealtimeSessionCreateRequest::OutputModality::OrSymbol
                 ],
+              parallel_tool_calls: T::Boolean,
               prompt: T.nilable(OpenAI::Responses::ResponsePrompt),
+              reasoning: OpenAI::Realtime::RealtimeReasoning,
               tool_choice:
                 T.any(
                   OpenAI::Responses::ToolChoiceOptions::OrSymbol,
@@ -510,6 +536,11 @@ module OpenAI
           GPT_REALTIME_1_5 =
             T.let(
               :"gpt-realtime-1.5",
+              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
+            )
+          GPT_REALTIME_2 =
+            T.let(
+              :"gpt-realtime-2",
               OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
             )
           GPT_REALTIME_2025_08_28 =
