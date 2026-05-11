@@ -68,6 +68,16 @@ module OpenAI
         end
         attr_accessor :prompt_cache_retention
 
+        # The service tier to use for this request.
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::Responses::ResponseCompactParams::ServiceTier::OrSymbol
+            )
+          )
+        end
+        attr_accessor :service_tier
+
         sig do
           params(
             model:
@@ -87,6 +97,10 @@ module OpenAI
             prompt_cache_retention:
               T.nilable(
                 OpenAI::Responses::ResponseCompactParams::PromptCacheRetention::OrSymbol
+              ),
+            service_tier:
+              T.nilable(
+                OpenAI::Responses::ResponseCompactParams::ServiceTier::OrSymbol
               ),
             request_options: OpenAI::RequestOptions::OrHash
           ).returns(T.attached_class)
@@ -114,6 +128,8 @@ module OpenAI
           prompt_cache_key: nil,
           # How long to retain a prompt cache entry created by this request.
           prompt_cache_retention: nil,
+          # The service tier to use for this request.
+          service_tier: nil,
           request_options: {}
         )
         end
@@ -138,6 +154,10 @@ module OpenAI
               prompt_cache_retention:
                 T.nilable(
                   OpenAI::Responses::ResponseCompactParams::PromptCacheRetention::OrSymbol
+                ),
+              service_tier:
+                T.nilable(
+                  OpenAI::Responses::ResponseCompactParams::ServiceTier::OrSymbol
                 ),
               request_options: OpenAI::RequestOptions
             }
@@ -699,6 +719,51 @@ module OpenAI
             override.returns(
               T::Array[
                 OpenAI::Responses::ResponseCompactParams::PromptCacheRetention::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
+        end
+
+        # The service tier to use for this request.
+        module ServiceTier
+          extend OpenAI::Internal::Type::Enum
+
+          TaggedSymbol =
+            T.type_alias do
+              T.all(
+                Symbol,
+                OpenAI::Responses::ResponseCompactParams::ServiceTier
+              )
+            end
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+          AUTO =
+            T.let(
+              :auto,
+              OpenAI::Responses::ResponseCompactParams::ServiceTier::TaggedSymbol
+            )
+          DEFAULT =
+            T.let(
+              :default,
+              OpenAI::Responses::ResponseCompactParams::ServiceTier::TaggedSymbol
+            )
+          FLEX =
+            T.let(
+              :flex,
+              OpenAI::Responses::ResponseCompactParams::ServiceTier::TaggedSymbol
+            )
+          PRIORITY =
+            T.let(
+              :priority,
+              OpenAI::Responses::ResponseCompactParams::ServiceTier::TaggedSymbol
+            )
+
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Responses::ResponseCompactParams::ServiceTier::TaggedSymbol
               ]
             )
           end
