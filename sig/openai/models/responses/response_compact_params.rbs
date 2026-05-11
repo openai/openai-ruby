@@ -8,7 +8,8 @@ module OpenAI
           instructions: String?,
           previous_response_id: String?,
           prompt_cache_key: String?,
-          prompt_cache_retention: OpenAI::Models::Responses::ResponseCompactParams::prompt_cache_retention?
+          prompt_cache_retention: OpenAI::Models::Responses::ResponseCompactParams::prompt_cache_retention?,
+          service_tier: OpenAI::Models::Responses::ResponseCompactParams::service_tier?
         }
         & OpenAI::Internal::Type::request_parameters
 
@@ -28,6 +29,8 @@ module OpenAI
 
         attr_accessor prompt_cache_retention: OpenAI::Models::Responses::ResponseCompactParams::prompt_cache_retention?
 
+        attr_accessor service_tier: OpenAI::Models::Responses::ResponseCompactParams::service_tier?
+
         def initialize: (
           model: OpenAI::Models::Responses::ResponseCompactParams::model?,
           ?input: OpenAI::Models::Responses::ResponseCompactParams::input?,
@@ -35,6 +38,7 @@ module OpenAI
           ?previous_response_id: String?,
           ?prompt_cache_key: String?,
           ?prompt_cache_retention: OpenAI::Models::Responses::ResponseCompactParams::prompt_cache_retention?,
+          ?service_tier: OpenAI::Models::Responses::ResponseCompactParams::service_tier?,
           ?request_options: OpenAI::request_opts
         ) -> void
 
@@ -45,6 +49,7 @@ module OpenAI
           previous_response_id: String?,
           prompt_cache_key: String?,
           prompt_cache_retention: OpenAI::Models::Responses::ResponseCompactParams::prompt_cache_retention?,
+          service_tier: OpenAI::Models::Responses::ResponseCompactParams::service_tier?,
           request_options: OpenAI::RequestOptions
         }
 
@@ -262,6 +267,19 @@ module OpenAI
           PROMPT_CACHE_RETENTION_24H: :"24h"
 
           def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseCompactParams::prompt_cache_retention]
+        end
+
+        type service_tier = :auto | :default | :flex | :priority
+
+        module ServiceTier
+          extend OpenAI::Internal::Type::Enum
+
+          AUTO: :auto
+          DEFAULT: :default
+          FLEX: :flex
+          PRIORITY: :priority
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseCompactParams::service_tier]
         end
       end
     end

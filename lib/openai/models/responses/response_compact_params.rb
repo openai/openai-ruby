@@ -56,7 +56,13 @@ module OpenAI
                  enum: -> { OpenAI::Responses::ResponseCompactParams::PromptCacheRetention },
                  nil?: true
 
-        # @!method initialize(model:, input: nil, instructions: nil, previous_response_id: nil, prompt_cache_key: nil, prompt_cache_retention: nil, request_options: {})
+        # @!attribute service_tier
+        #   The service tier to use for this request.
+        #
+        #   @return [Symbol, OpenAI::Models::Responses::ResponseCompactParams::ServiceTier, nil]
+        optional :service_tier, enum: -> { OpenAI::Responses::ResponseCompactParams::ServiceTier }, nil?: true
+
+        # @!method initialize(model:, input: nil, instructions: nil, previous_response_id: nil, prompt_cache_key: nil, prompt_cache_retention: nil, service_tier: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseCompactParams} for more details.
         #
@@ -71,6 +77,8 @@ module OpenAI
         #   @param prompt_cache_key [String, nil] A key to use when reading from or writing to the prompt cache.
         #
         #   @param prompt_cache_retention [Symbol, OpenAI::Models::Responses::ResponseCompactParams::PromptCacheRetention, nil] How long to retain a prompt cache entry created by this request.
+        #
+        #   @param service_tier [Symbol, OpenAI::Models::Responses::ResponseCompactParams::ServiceTier, nil] The service tier to use for this request.
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -397,6 +405,19 @@ module OpenAI
 
           IN_MEMORY = :in_memory
           PROMPT_CACHE_RETENTION_24H = :"24h"
+
+          # @!method self.values
+          #   @return [Array<Symbol>]
+        end
+
+        # The service tier to use for this request.
+        module ServiceTier
+          extend OpenAI::Internal::Type::Enum
+
+          AUTO = :auto
+          DEFAULT = :default
+          FLEX = :flex
+          PRIORITY = :priority
 
           # @!method self.values
           #   @return [Array<Symbol>]
