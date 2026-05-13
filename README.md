@@ -111,6 +111,7 @@ Note that you can also pass a raw `IO` descriptor, but this disables retries, as
 
 For secure, automated environments like cloud-managed Kubernetes, Azure, and GCP, you can use workload identity authentication with short-lived tokens from cloud identity providers instead of long-lived API keys.
 
+`client_id` remains available as an optional parameter for token exchange setups that require an explicit OAuth client ID.
 
 ### Kubernetes Service Account
 
@@ -121,7 +122,6 @@ require "openai"
 provider = OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new
 
 workload_identity = OpenAI::Auth::WorkloadIdentity.new(
-  client_id: ENV["OAUTH_CLIENT_ID"], # This is the default and can be omitted
   identity_provider_id: ENV["IDENTITY_PROVIDER_ID"], # This is the default and can be omitted
   service_account_id: ENV["SERVICE_ACCOUNT_ID"], # This is the default and can be omitted
   provider: provider
@@ -143,7 +143,6 @@ response = client.chat.completions.create(
 provider = OpenAI::Auth::SubjectTokenProviders::AzureManagedIdentityTokenProvider.new
 
 workload_identity = OpenAI::Auth::WorkloadIdentity.new(
-  client_id: ENV["OAUTH_CLIENT_ID"], # This is the default and can be omitted
   identity_provider_id: ENV["IDENTITY_PROVIDER_ID"], # This is the default and can be omitted
   service_account_id: ENV["SERVICE_ACCOUNT_ID"], # This is the default and can be omitted
   provider: provider
@@ -160,7 +159,6 @@ client = OpenAI::Client.new(
 provider = OpenAI::Auth::SubjectTokenProviders::GCPIDTokenProvider.new
 
 workload_identity = OpenAI::Auth::WorkloadIdentity.new(
-  client_id: ENV["OAUTH_CLIENT_ID"], # This is the default and can be omitted
   identity_provider_id: ENV["IDENTITY_PROVIDER_ID"], # This is the default and can be omitted
   service_account_id: ENV["SERVICE_ACCOUNT_ID"], # This is the default and can be omitted
   provider: provider
@@ -191,7 +189,6 @@ end
 provider = CustomProvider.new
 
 workload_identity = OpenAI::Auth::WorkloadIdentity.new(
-  client_id: ENV["OAUTH_CLIENT_ID"], # This is the default and can be omitted
   identity_provider_id: ENV["IDENTITY_PROVIDER_ID"], # This is the default and can be omitted
   service_account_id: ENV["SERVICE_ACCOUNT_ID"], # This is the default and can be omitted
   provider: provider

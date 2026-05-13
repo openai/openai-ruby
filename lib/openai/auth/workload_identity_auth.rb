@@ -92,14 +92,15 @@ module OpenAI
 
         request = Net::HTTP::Post.new(@token_exchange_url)
         request["Content-Type"] = "application/json"
-        request.body = JSON.generate(
+        body = {
           grant_type: TOKEN_EXCHANGE_GRANT_TYPE,
-          client_id: @config.client_id,
           subject_token: subject_token,
           subject_token_type: subject_token_type,
           identity_provider_id: @config.identity_provider_id,
           service_account_id: @config.service_account_id
-        )
+        }
+        body[:client_id] = @config.client_id unless @config.client_id.nil?
+        request.body = JSON.generate(body)
 
         response = Net::HTTP.start(
           @token_exchange_url.hostname,
