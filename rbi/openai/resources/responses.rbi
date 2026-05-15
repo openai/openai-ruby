@@ -994,6 +994,10 @@ module OpenAI
             T.nilable(
               OpenAI::Responses::ResponseCompactParams::PromptCacheRetention::OrSymbol
             ),
+          service_tier:
+            T.nilable(
+              OpenAI::Responses::ResponseCompactParams::ServiceTier::OrSymbol
+            ),
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(OpenAI::Responses::CompactedResponse)
       end
@@ -1020,6 +1024,8 @@ module OpenAI
         prompt_cache_key: nil,
         # How long to retain a prompt cache entry created by this request.
         prompt_cache_retention: nil,
+        # The service tier to use for this request.
+        service_tier: nil,
         request_options: {}
       )
       end

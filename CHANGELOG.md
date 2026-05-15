@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.63.0 (2026-05-13)
+
+Full Changelog: [v0.62.0...v0.63.0](https://github.com/openai/openai-ruby/compare/v0.62.0...v0.63.0)
+
+### Features
+
+* **api:** add service_tier parameter to responses compact method ([b0ed0cb](https://github.com/openai/openai-ruby/commit/b0ed0cbce8afbf6a2d099dbfed4c4d734ac10d0d))
+
 ## 0.62.0 (2026-05-07)
 
 Full Changelog: [v0.61.0...v0.62.0](https://github.com/openai/openai-ruby/compare/v0.61.0...v0.62.0)

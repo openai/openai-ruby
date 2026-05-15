@@ -120,6 +120,39 @@ class WorkloadIdentityTest < Minitest::Test
     )
 
     stub_request(:post, "https://auth.openai.com/oauth/token")
+      .with do |request|
+        JSON.parse(request.body) == {
+          "grant_type" => "urn:ietf:params:oauth:grant-type:token-exchange",
+          "subject_token" => "k8s-jwt-token",
+          "subject_token_type" => "urn:ietf:params:oauth:token-type:jwt",
+          "identity_provider_id" => "idp-123",
+          "service_account_id" => "sa-456"
+        }
+      end
+      .to_return(
+        status: 200,
+        body: JSON.generate({"access_token" => "oauth-access-token", "expires_in" => 3600})
+      )
+
+    config = OpenAI::Auth::WorkloadIdentity.new(
+      identity_provider_id: "idp-123",
+      service_account_id: "sa-456",
+      provider: provider
+    )
+
+    auth = OpenAI::Auth::WorkloadIdentityAuth.new(config, "org-123")
+    token = auth.get_token
+
+    assert_equal("oauth-access-token", token)
+  end
+
+  def test_workload_identity_auth_token_exchange_with_optional_client_id
+    File.write(@token_path, "k8s-jwt-token")
+    provider = OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(
+      token_path: @token_path
+    )
+
+    stub_request(:post, "https://auth.openai.com/oauth/token")
       .with(
         body: hash_including(
           "grant_type" => "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -136,10 +169,10 @@ class WorkloadIdentityTest < Minitest::Test
       )
 
     config = OpenAI::Auth::WorkloadIdentity.new(
-      client_id: "test-client",
       identity_provider_id: "idp-123",
       service_account_id: "sa-456",
-      provider: provider
+      provider: provider,
+      client_id: "test-client"
     )
 
     auth = OpenAI::Auth::WorkloadIdentityAuth.new(config, "org-123")
@@ -166,7 +199,6 @@ class WorkloadIdentityTest < Minitest::Test
       )
 
     config = OpenAI::Auth::WorkloadIdentity.new(
-      client_id: "bad-client",
       identity_provider_id: "idp-123",
       service_account_id: "sa-456",
       provider: provider
@@ -190,7 +222,6 @@ class WorkloadIdentityTest < Minitest::Test
     )
 
     config = OpenAI::Auth::WorkloadIdentity.new(
-      client_id: "test-client",
       identity_provider_id: "idp-123",
       service_account_id: "sa-456",
       provider: provider
@@ -210,7 +241,6 @@ class WorkloadIdentityTest < Minitest::Test
   def test_workload_identity_mutually_exclusive_with_api_key
     provider = OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new
     config = OpenAI::Auth::WorkloadIdentity.new(
-      client_id: "test-client",
       identity_provider_id: "idp-123",
       service_account_id: "sa-456",
       provider: provider
@@ -233,7 +263,6 @@ class WorkloadIdentityTest < Minitest::Test
       token_path: @token_path
     )
     config = OpenAI::Auth::WorkloadIdentity.new(
-      client_id: "test-client",
       identity_provider_id: "idp-123",
       service_account_id: "sa-456",
       provider: provider
@@ -316,7 +345,6 @@ class WorkloadIdentityTest < Minitest::Test
       )
 
     config = OpenAI::Auth::WorkloadIdentity.new(
-      client_id: "test-client",
       identity_provider_id: "idp-123",
       service_account_id: "sa-456",
       provider: provider
@@ -379,7 +407,6 @@ class WorkloadIdentityTest < Minitest::Test
       )
 
     config = OpenAI::Auth::WorkloadIdentity.new(
-      client_id: "test-client",
       identity_provider_id: "idp-123",
       service_account_id: "sa-456",
       provider: provider

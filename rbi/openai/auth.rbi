@@ -18,7 +18,7 @@ module OpenAI
     end
 
     class WorkloadIdentity
-      sig { returns(String) }
+      sig { returns(T.nilable(String)) }
       attr_reader :client_id
 
       sig { returns(String) }
@@ -35,18 +35,18 @@ module OpenAI
 
       sig do
         params(
-          client_id: T.any(String, Symbol),
           identity_provider_id: T.any(String, Symbol),
           service_account_id: T.any(String, Symbol),
           provider: SubjectTokenProvider,
+          client_id: T.nilable(T.any(String, Symbol)),
           refresh_buffer_seconds: Integer
         ).void
       end
       def initialize(
-        client_id:,
         identity_provider_id:,
         service_account_id:,
         provider:,
+        client_id: nil,
         refresh_buffer_seconds: 1200
       )
       end
