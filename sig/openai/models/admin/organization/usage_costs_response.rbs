@@ -73,6 +73,8 @@ module OpenAI
               | OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageAudioTranscriptionsResult
               | OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageVectorStoresResult
               | OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageCodeInterpreterSessionsResult
+              | OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageFileSearchesResult
+              | OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageWebSearchesResult
               | OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationCostsResult
 
             module Result
@@ -457,6 +459,100 @@ module OpenAI
                   num_sessions: Integer,
                   object: :"organization.usage.code_interpreter_sessions.result",
                   project_id: String?
+                }
+              end
+
+              type organization_usage_file_searches_result =
+                {
+                  num_requests: Integer,
+                  object: :"organization.usage.file_searches.result",
+                  api_key_id: String?,
+                  project_id: String?,
+                  user_id: String?,
+                  vector_store_id: String?
+                }
+
+              class OrganizationUsageFileSearchesResult < OpenAI::Internal::Type::BaseModel
+                attr_accessor num_requests: Integer
+
+                attr_accessor object: :"organization.usage.file_searches.result"
+
+                attr_accessor api_key_id: String?
+
+                attr_accessor project_id: String?
+
+                attr_accessor user_id: String?
+
+                attr_accessor vector_store_id: String?
+
+                def initialize: (
+                  num_requests: Integer,
+                  ?api_key_id: String?,
+                  ?project_id: String?,
+                  ?user_id: String?,
+                  ?vector_store_id: String?,
+                  ?object: :"organization.usage.file_searches.result"
+                ) -> void
+
+                def to_hash: -> {
+                  num_requests: Integer,
+                  object: :"organization.usage.file_searches.result",
+                  api_key_id: String?,
+                  project_id: String?,
+                  user_id: String?,
+                  vector_store_id: String?
+                }
+              end
+
+              type organization_usage_web_searches_result =
+                {
+                  num_model_requests: Integer,
+                  num_requests: Integer,
+                  object: :"organization.usage.web_searches.result",
+                  api_key_id: String?,
+                  context_level: String?,
+                  model: String?,
+                  project_id: String?,
+                  user_id: String?
+                }
+
+              class OrganizationUsageWebSearchesResult < OpenAI::Internal::Type::BaseModel
+                attr_accessor num_model_requests: Integer
+
+                attr_accessor num_requests: Integer
+
+                attr_accessor object: :"organization.usage.web_searches.result"
+
+                attr_accessor api_key_id: String?
+
+                attr_accessor context_level: String?
+
+                attr_accessor model: String?
+
+                attr_accessor project_id: String?
+
+                attr_accessor user_id: String?
+
+                def initialize: (
+                  num_model_requests: Integer,
+                  num_requests: Integer,
+                  ?api_key_id: String?,
+                  ?context_level: String?,
+                  ?model: String?,
+                  ?project_id: String?,
+                  ?user_id: String?,
+                  ?object: :"organization.usage.web_searches.result"
+                ) -> void
+
+                def to_hash: -> {
+                  num_model_requests: Integer,
+                  num_requests: Integer,
+                  object: :"organization.usage.web_searches.result",
+                  api_key_id: String?,
+                  context_level: String?,
+                  model: String?,
+                  project_id: String?,
+                  user_id: String?
                 }
               end
 

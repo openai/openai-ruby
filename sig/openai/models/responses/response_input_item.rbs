@@ -29,6 +29,7 @@ module OpenAI
         | OpenAI::Responses::ResponseInputItem::McpCall
         | OpenAI::Responses::ResponseCustomToolCallOutput
         | OpenAI::Responses::ResponseCustomToolCall
+        | OpenAI::Responses::ResponseInputItem::CompactionTrigger
         | OpenAI::Responses::ResponseInputItem::ItemReference
 
       module ResponseInputItem
@@ -1008,6 +1009,16 @@ module OpenAI
 
             def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::McpCall::status]
           end
+        end
+
+        type compaction_trigger = { type: :compaction_trigger }
+
+        class CompactionTrigger < OpenAI::Internal::Type::BaseModel
+          attr_accessor type: :compaction_trigger
+
+          def initialize: (?type: :compaction_trigger) -> void
+
+          def to_hash: -> { type: :compaction_trigger }
         end
 
         type item_reference =

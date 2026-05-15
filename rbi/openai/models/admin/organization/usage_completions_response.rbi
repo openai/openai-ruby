@@ -102,6 +102,8 @@ module OpenAI
                       OpenAI::Models::Admin::Organization::UsageCompletionsResponse::Data::Result::OrganizationUsageAudioTranscriptionsResult::OrHash,
                       OpenAI::Models::Admin::Organization::UsageCompletionsResponse::Data::Result::OrganizationUsageVectorStoresResult::OrHash,
                       OpenAI::Models::Admin::Organization::UsageCompletionsResponse::Data::Result::OrganizationUsageCodeInterpreterSessionsResult::OrHash,
+                      OpenAI::Models::Admin::Organization::UsageCompletionsResponse::Data::Result::OrganizationUsageFileSearchesResult::OrHash,
+                      OpenAI::Models::Admin::Organization::UsageCompletionsResponse::Data::Result::OrganizationUsageWebSearchesResult::OrHash,
                       OpenAI::Models::Admin::Organization::UsageCompletionsResponse::Data::Result::OrganizationCostsResult::OrHash
                     )
                   ],
@@ -143,6 +145,8 @@ module OpenAI
                     OpenAI::Models::Admin::Organization::UsageCompletionsResponse::Data::Result::OrganizationUsageAudioTranscriptionsResult,
                     OpenAI::Models::Admin::Organization::UsageCompletionsResponse::Data::Result::OrganizationUsageVectorStoresResult,
                     OpenAI::Models::Admin::Organization::UsageCompletionsResponse::Data::Result::OrganizationUsageCodeInterpreterSessionsResult,
+                    OpenAI::Models::Admin::Organization::UsageCompletionsResponse::Data::Result::OrganizationUsageFileSearchesResult,
+                    OpenAI::Models::Admin::Organization::UsageCompletionsResponse::Data::Result::OrganizationUsageWebSearchesResult,
                     OpenAI::Models::Admin::Organization::UsageCompletionsResponse::Data::Result::OrganizationCostsResult
                   )
                 end
@@ -874,6 +878,188 @@ module OpenAI
                       num_sessions: Integer,
                       object: Symbol,
                       project_id: T.nilable(String)
+                    }
+                  )
+                end
+                def to_hash
+                end
+              end
+
+              class OrganizationUsageFileSearchesResult < OpenAI::Internal::Type::BaseModel
+                OrHash =
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Models::Admin::Organization::UsageCompletionsResponse::Data::Result::OrganizationUsageFileSearchesResult,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
+
+                # The count of file search calls.
+                sig { returns(Integer) }
+                attr_accessor :num_requests
+
+                sig { returns(Symbol) }
+                attr_accessor :object
+
+                # When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                # usage result.
+                sig { returns(T.nilable(String)) }
+                attr_accessor :api_key_id
+
+                # When `group_by=project_id`, this field provides the project ID of the grouped
+                # usage result.
+                sig { returns(T.nilable(String)) }
+                attr_accessor :project_id
+
+                # When `group_by=user_id`, this field provides the user ID of the grouped usage
+                # result.
+                sig { returns(T.nilable(String)) }
+                attr_accessor :user_id
+
+                # When `group_by=vector_store_id`, this field provides the vector store ID of the
+                # grouped usage result.
+                sig { returns(T.nilable(String)) }
+                attr_accessor :vector_store_id
+
+                # The aggregated file search calls usage details of the specific time bucket.
+                sig do
+                  params(
+                    num_requests: Integer,
+                    api_key_id: T.nilable(String),
+                    project_id: T.nilable(String),
+                    user_id: T.nilable(String),
+                    vector_store_id: T.nilable(String),
+                    object: Symbol
+                  ).returns(T.attached_class)
+                end
+                def self.new(
+                  # The count of file search calls.
+                  num_requests:,
+                  # When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                  # usage result.
+                  api_key_id: nil,
+                  # When `group_by=project_id`, this field provides the project ID of the grouped
+                  # usage result.
+                  project_id: nil,
+                  # When `group_by=user_id`, this field provides the user ID of the grouped usage
+                  # result.
+                  user_id: nil,
+                  # When `group_by=vector_store_id`, this field provides the vector store ID of the
+                  # grouped usage result.
+                  vector_store_id: nil,
+                  object: :"organization.usage.file_searches.result"
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {
+                      num_requests: Integer,
+                      object: Symbol,
+                      api_key_id: T.nilable(String),
+                      project_id: T.nilable(String),
+                      user_id: T.nilable(String),
+                      vector_store_id: T.nilable(String)
+                    }
+                  )
+                end
+                def to_hash
+                end
+              end
+
+              class OrganizationUsageWebSearchesResult < OpenAI::Internal::Type::BaseModel
+                OrHash =
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Models::Admin::Organization::UsageCompletionsResponse::Data::Result::OrganizationUsageWebSearchesResult,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
+
+                # The count of model requests.
+                sig { returns(Integer) }
+                attr_accessor :num_model_requests
+
+                # The count of web search calls.
+                sig { returns(Integer) }
+                attr_accessor :num_requests
+
+                sig { returns(Symbol) }
+                attr_accessor :object
+
+                # When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                # usage result.
+                sig { returns(T.nilable(String)) }
+                attr_accessor :api_key_id
+
+                # When `group_by=context_level`, this field provides the search context size of
+                # the grouped usage result.
+                sig { returns(T.nilable(String)) }
+                attr_accessor :context_level
+
+                # When `group_by=model`, this field provides the model name of the grouped usage
+                # result.
+                sig { returns(T.nilable(String)) }
+                attr_accessor :model
+
+                # When `group_by=project_id`, this field provides the project ID of the grouped
+                # usage result.
+                sig { returns(T.nilable(String)) }
+                attr_accessor :project_id
+
+                # When `group_by=user_id`, this field provides the user ID of the grouped usage
+                # result.
+                sig { returns(T.nilable(String)) }
+                attr_accessor :user_id
+
+                # The aggregated web search calls usage details of the specific time bucket.
+                sig do
+                  params(
+                    num_model_requests: Integer,
+                    num_requests: Integer,
+                    api_key_id: T.nilable(String),
+                    context_level: T.nilable(String),
+                    model: T.nilable(String),
+                    project_id: T.nilable(String),
+                    user_id: T.nilable(String),
+                    object: Symbol
+                  ).returns(T.attached_class)
+                end
+                def self.new(
+                  # The count of model requests.
+                  num_model_requests:,
+                  # The count of web search calls.
+                  num_requests:,
+                  # When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                  # usage result.
+                  api_key_id: nil,
+                  # When `group_by=context_level`, this field provides the search context size of
+                  # the grouped usage result.
+                  context_level: nil,
+                  # When `group_by=model`, this field provides the model name of the grouped usage
+                  # result.
+                  model: nil,
+                  # When `group_by=project_id`, this field provides the project ID of the grouped
+                  # usage result.
+                  project_id: nil,
+                  # When `group_by=user_id`, this field provides the user ID of the grouped usage
+                  # result.
+                  user_id: nil,
+                  object: :"organization.usage.web_searches.result"
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {
+                      num_model_requests: Integer,
+                      num_requests: Integer,
+                      object: Symbol,
+                      api_key_id: T.nilable(String),
+                      context_level: T.nilable(String),
+                      model: T.nilable(String),
+                      project_id: T.nilable(String),
+                      user_id: T.nilable(String)
                     }
                   )
                 end

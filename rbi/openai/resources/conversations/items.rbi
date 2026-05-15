@@ -39,6 +39,7 @@ module OpenAI
                   OpenAI::Responses::ResponseInputItem::McpCall::OrHash,
                   OpenAI::Responses::ResponseCustomToolCallOutput::OrHash,
                   OpenAI::Responses::ResponseCustomToolCall::OrHash,
+                  OpenAI::Responses::ResponseInputItem::CompactionTrigger::OrHash,
                   OpenAI::Responses::ResponseInputItem::ItemReference::OrHash
                 )
               ],
