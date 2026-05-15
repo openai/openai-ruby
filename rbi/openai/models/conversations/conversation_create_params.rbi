@@ -49,6 +49,7 @@ module OpenAI
                   OpenAI::Responses::ResponseInputItem::McpCall,
                   OpenAI::Responses::ResponseCustomToolCallOutput,
                   OpenAI::Responses::ResponseCustomToolCall,
+                  OpenAI::Responses::ResponseInputItem::CompactionTrigger,
                   OpenAI::Responses::ResponseInputItem::ItemReference
                 )
               ]
@@ -99,6 +100,7 @@ module OpenAI
                     OpenAI::Responses::ResponseInputItem::McpCall::OrHash,
                     OpenAI::Responses::ResponseCustomToolCallOutput::OrHash,
                     OpenAI::Responses::ResponseCustomToolCall::OrHash,
+                    OpenAI::Responses::ResponseInputItem::CompactionTrigger::OrHash,
                     OpenAI::Responses::ResponseInputItem::ItemReference::OrHash
                   )
                 ]
@@ -156,6 +158,7 @@ module OpenAI
                       OpenAI::Responses::ResponseInputItem::McpCall,
                       OpenAI::Responses::ResponseCustomToolCallOutput,
                       OpenAI::Responses::ResponseCustomToolCall,
+                      OpenAI::Responses::ResponseInputItem::CompactionTrigger,
                       OpenAI::Responses::ResponseInputItem::ItemReference
                     )
                   ]

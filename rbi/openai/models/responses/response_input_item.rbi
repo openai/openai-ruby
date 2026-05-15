@@ -41,6 +41,7 @@ module OpenAI
               OpenAI::Responses::ResponseInputItem::McpCall,
               OpenAI::Responses::ResponseCustomToolCallOutput,
               OpenAI::Responses::ResponseCustomToolCall,
+              OpenAI::Responses::ResponseInputItem::CompactionTrigger,
               OpenAI::Responses::ResponseInputItem::ItemReference
             )
           end
@@ -2484,6 +2485,32 @@ module OpenAI
             end
             def self.values
             end
+          end
+        end
+
+        class CompactionTrigger < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseInputItem::CompactionTrigger,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The type of the item. Always `compaction_trigger`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # Compacts the current context. Must be the final input item.
+          sig { params(type: Symbol).returns(T.attached_class) }
+          def self.new(
+            # The type of the item. Always `compaction_trigger`.
+            type: :compaction_trigger
+          )
+          end
+
+          sig { override.returns({ type: Symbol }) }
+          def to_hash
           end
         end
 
