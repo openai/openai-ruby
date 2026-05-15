@@ -46,7 +46,7 @@ module OpenAI
 
             # @!attribute results
             #
-            #   @return [Array<OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageCompletionsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageEmbeddingsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageModerationsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageImagesResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageAudioSpeechesResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageAudioTranscriptionsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageVectorStoresResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageCodeInterpreterSessionsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationCostsResult>]
+            #   @return [Array<OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageCompletionsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageEmbeddingsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageModerationsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageImagesResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageAudioSpeechesResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageAudioTranscriptionsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageVectorStoresResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageCodeInterpreterSessionsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageFileSearchesResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageWebSearchesResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationCostsResult>]
             required :results,
                      -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result] }
 
@@ -57,7 +57,7 @@ module OpenAI
 
             # @!method initialize(end_time:, results:, start_time:, object: :bucket)
             #   @param end_time [Integer]
-            #   @param results [Array<OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageCompletionsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageEmbeddingsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageModerationsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageImagesResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageAudioSpeechesResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageAudioTranscriptionsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageVectorStoresResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageCodeInterpreterSessionsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationCostsResult>]
+            #   @param results [Array<OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageCompletionsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageEmbeddingsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageModerationsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageImagesResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageAudioSpeechesResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageAudioTranscriptionsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageVectorStoresResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageCodeInterpreterSessionsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageFileSearchesResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageWebSearchesResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationCostsResult>]
             #   @param start_time [Integer]
             #   @param object [Symbol, :bucket]
 
@@ -98,6 +98,14 @@ module OpenAI
               # The aggregated code interpreter sessions usage details of the specific time bucket.
               variant :"organization.usage.code_interpreter_sessions.result",
                       -> { OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageCodeInterpreterSessionsResult }
+
+              # The aggregated file search calls usage details of the specific time bucket.
+              variant :"organization.usage.file_searches.result",
+                      -> { OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageFileSearchesResult }
+
+              # The aggregated web search calls usage details of the specific time bucket.
+              variant :"organization.usage.web_searches.result",
+                      -> { OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageWebSearchesResult }
 
               # The aggregated costs details of the specific time bucket.
               variant :"organization.costs.result",
@@ -650,6 +658,143 @@ module OpenAI
                 #   @param object [Symbol, :"organization.usage.code_interpreter_sessions.result"]
               end
 
+              class OrganizationUsageFileSearchesResult < OpenAI::Internal::Type::BaseModel
+                # @!attribute num_requests
+                #   The count of file search calls.
+                #
+                #   @return [Integer]
+                required :num_requests, Integer
+
+                # @!attribute object
+                #
+                #   @return [Symbol, :"organization.usage.file_searches.result"]
+                required :object, const: :"organization.usage.file_searches.result"
+
+                # @!attribute api_key_id
+                #   When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                #   usage result.
+                #
+                #   @return [String, nil]
+                optional :api_key_id, String, nil?: true
+
+                # @!attribute project_id
+                #   When `group_by=project_id`, this field provides the project ID of the grouped
+                #   usage result.
+                #
+                #   @return [String, nil]
+                optional :project_id, String, nil?: true
+
+                # @!attribute user_id
+                #   When `group_by=user_id`, this field provides the user ID of the grouped usage
+                #   result.
+                #
+                #   @return [String, nil]
+                optional :user_id, String, nil?: true
+
+                # @!attribute vector_store_id
+                #   When `group_by=vector_store_id`, this field provides the vector store ID of the
+                #   grouped usage result.
+                #
+                #   @return [String, nil]
+                optional :vector_store_id, String, nil?: true
+
+                # @!method initialize(num_requests:, api_key_id: nil, project_id: nil, user_id: nil, vector_store_id: nil, object: :"organization.usage.file_searches.result")
+                #   Some parameter documentations has been truncated, see
+                #   {OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageFileSearchesResult}
+                #   for more details.
+                #
+                #   The aggregated file search calls usage details of the specific time bucket.
+                #
+                #   @param num_requests [Integer] The count of file search calls.
+                #
+                #   @param api_key_id [String, nil] When `group_by=api_key_id`, this field provides the API key ID of the grouped us
+                #
+                #   @param project_id [String, nil] When `group_by=project_id`, this field provides the project ID of the grouped us
+                #
+                #   @param user_id [String, nil] When `group_by=user_id`, this field provides the user ID of the grouped usage re
+                #
+                #   @param vector_store_id [String, nil] When `group_by=vector_store_id`, this field provides the vector store ID of the
+                #
+                #   @param object [Symbol, :"organization.usage.file_searches.result"]
+              end
+
+              class OrganizationUsageWebSearchesResult < OpenAI::Internal::Type::BaseModel
+                # @!attribute num_model_requests
+                #   The count of model requests.
+                #
+                #   @return [Integer]
+                required :num_model_requests, Integer
+
+                # @!attribute num_requests
+                #   The count of web search calls.
+                #
+                #   @return [Integer]
+                required :num_requests, Integer
+
+                # @!attribute object
+                #
+                #   @return [Symbol, :"organization.usage.web_searches.result"]
+                required :object, const: :"organization.usage.web_searches.result"
+
+                # @!attribute api_key_id
+                #   When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                #   usage result.
+                #
+                #   @return [String, nil]
+                optional :api_key_id, String, nil?: true
+
+                # @!attribute context_level
+                #   When `group_by=context_level`, this field provides the search context size of
+                #   the grouped usage result.
+                #
+                #   @return [String, nil]
+                optional :context_level, String, nil?: true
+
+                # @!attribute model
+                #   When `group_by=model`, this field provides the model name of the grouped usage
+                #   result.
+                #
+                #   @return [String, nil]
+                optional :model, String, nil?: true
+
+                # @!attribute project_id
+                #   When `group_by=project_id`, this field provides the project ID of the grouped
+                #   usage result.
+                #
+                #   @return [String, nil]
+                optional :project_id, String, nil?: true
+
+                # @!attribute user_id
+                #   When `group_by=user_id`, this field provides the user ID of the grouped usage
+                #   result.
+                #
+                #   @return [String, nil]
+                optional :user_id, String, nil?: true
+
+                # @!method initialize(num_model_requests:, num_requests:, api_key_id: nil, context_level: nil, model: nil, project_id: nil, user_id: nil, object: :"organization.usage.web_searches.result")
+                #   Some parameter documentations has been truncated, see
+                #   {OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageWebSearchesResult}
+                #   for more details.
+                #
+                #   The aggregated web search calls usage details of the specific time bucket.
+                #
+                #   @param num_model_requests [Integer] The count of model requests.
+                #
+                #   @param num_requests [Integer] The count of web search calls.
+                #
+                #   @param api_key_id [String, nil] When `group_by=api_key_id`, this field provides the API key ID of the grouped us
+                #
+                #   @param context_level [String, nil] When `group_by=context_level`, this field provides the search context size of th
+                #
+                #   @param model [String, nil] When `group_by=model`, this field provides the model name of the grouped usage r
+                #
+                #   @param project_id [String, nil] When `group_by=project_id`, this field provides the project ID of the grouped us
+                #
+                #   @param user_id [String, nil] When `group_by=user_id`, this field provides the user ID of the grouped usage re
+                #
+                #   @param object [Symbol, :"organization.usage.web_searches.result"]
+              end
+
               class OrganizationCostsResult < OpenAI::Internal::Type::BaseModel
                 # @!attribute object
                 #
@@ -734,7 +879,7 @@ module OpenAI
               end
 
               # @!method self.variants
-              #   @return [Array(OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageCompletionsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageEmbeddingsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageModerationsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageImagesResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageAudioSpeechesResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageAudioTranscriptionsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageVectorStoresResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageCodeInterpreterSessionsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationCostsResult)]
+              #   @return [Array(OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageCompletionsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageEmbeddingsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageModerationsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageImagesResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageAudioSpeechesResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageAudioTranscriptionsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageVectorStoresResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageCodeInterpreterSessionsResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageFileSearchesResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationUsageWebSearchesResult, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data::Result::OrganizationCostsResult)]
             end
           end
         end
