@@ -1,0 +1,30 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        class ProjectModelPermissionsDeleted = Projects::ProjectModelPermissionsDeleted
+
+        module Projects
+          type project_model_permissions_deleted =
+            { deleted: bool, object: :"project.model_permissions.deleted" }
+
+          class ProjectModelPermissionsDeleted < OpenAI::Internal::Type::BaseModel
+            attr_accessor deleted: bool
+
+            attr_accessor object: :"project.model_permissions.deleted"
+
+            def initialize: (
+              deleted: bool,
+              ?object: :"project.model_permissions.deleted"
+            ) -> void
+
+            def to_hash: -> {
+              deleted: bool,
+              object: :"project.model_permissions.deleted"
+            }
+          end
+        end
+      end
+    end
+  end
+end

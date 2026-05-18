@@ -314,6 +314,61 @@ module OpenAI
           )
           end
 
+          # Get file search calls usage details for the organization.
+          sig do
+            params(
+              start_time: Integer,
+              api_key_ids: T::Array[String],
+              bucket_width:
+                OpenAI::Admin::Organization::UsageFileSearchCallsParams::BucketWidth::OrSymbol,
+              end_time: Integer,
+              group_by:
+                T::Array[
+                  OpenAI::Admin::Organization::UsageFileSearchCallsParams::GroupBy::OrSymbol
+                ],
+              limit: Integer,
+              page: String,
+              project_ids: T::Array[String],
+              user_ids: T::Array[String],
+              vector_store_ids: T::Array[String],
+              request_options: OpenAI::RequestOptions::OrHash
+            ).returns(
+              OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse
+            )
+          end
+          def file_search_calls(
+            # Start time (Unix seconds) of the query time range, inclusive.
+            start_time:,
+            # Return only usage for these API keys.
+            api_key_ids: nil,
+            # Width of each time bucket in response. Currently `1m`, `1h` and `1d` are
+            # supported, default to `1d`.
+            bucket_width: nil,
+            # End time (Unix seconds) of the query time range, exclusive.
+            end_time: nil,
+            # Group the usage data by the specified fields. Support fields include
+            # `project_id`, `user_id`, `api_key_id`, `vector_store_id` or any combination of
+            # them.
+            group_by: nil,
+            # Specifies the number of buckets to return.
+            #
+            # - `bucket_width=1d`: default: 7, max: 31
+            # - `bucket_width=1h`: default: 24, max: 168
+            # - `bucket_width=1m`: default: 60, max: 1440
+            limit: nil,
+            # A cursor for use in pagination. Corresponding to the `next_page` field from the
+            # previous response.
+            page: nil,
+            # Return only usage for these projects.
+            project_ids: nil,
+            # Return only usage for these users.
+            user_ids: nil,
+            # Return only usage for these vector stores.
+            vector_store_ids: nil,
+            request_options: {}
+          )
+          end
+
           # Get images usage details for the organization.
           sig do
             params(
@@ -476,6 +531,67 @@ module OpenAI
             page: nil,
             # Return only usage for these projects.
             project_ids: nil,
+            request_options: {}
+          )
+          end
+
+          # Get web search calls usage details for the organization.
+          sig do
+            params(
+              start_time: Integer,
+              api_key_ids: T::Array[String],
+              bucket_width:
+                OpenAI::Admin::Organization::UsageWebSearchCallsParams::BucketWidth::OrSymbol,
+              context_levels:
+                T::Array[
+                  OpenAI::Admin::Organization::UsageWebSearchCallsParams::ContextLevel::OrSymbol
+                ],
+              end_time: Integer,
+              group_by:
+                T::Array[
+                  OpenAI::Admin::Organization::UsageWebSearchCallsParams::GroupBy::OrSymbol
+                ],
+              limit: Integer,
+              models: T::Array[String],
+              page: String,
+              project_ids: T::Array[String],
+              user_ids: T::Array[String],
+              request_options: OpenAI::RequestOptions::OrHash
+            ).returns(
+              OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse
+            )
+          end
+          def web_search_calls(
+            # Start time (Unix seconds) of the query time range, inclusive.
+            start_time:,
+            # Return only usage for these API keys.
+            api_key_ids: nil,
+            # Width of each time bucket in response. Currently `1m`, `1h` and `1d` are
+            # supported, default to `1d`.
+            bucket_width: nil,
+            # Return only web search usage for these context levels.
+            context_levels: nil,
+            # End time (Unix seconds) of the query time range, exclusive.
+            end_time: nil,
+            # Group the usage data by the specified fields. Support fields include
+            # `project_id`, `user_id`, `api_key_id`, `model`, `context_level` or any
+            # combination of them.
+            group_by: nil,
+            # Specifies the number of buckets to return.
+            #
+            # - `bucket_width=1d`: default: 7, max: 31
+            # - `bucket_width=1h`: default: 24, max: 168
+            # - `bucket_width=1m`: default: 60, max: 1440
+            limit: nil,
+            # Return only usage for these models.
+            models: nil,
+            # A cursor for use in pagination. Corresponding to the `next_page` field from the
+            # previous response.
+            page: nil,
+            # Return only usage for these projects.
+            project_ids: nil,
+            # Return only usage for these users.
+            user_ids: nil,
             request_options: {}
           )
           end
