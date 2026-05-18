@@ -30,6 +30,20 @@ module OpenAI
           attr_reader :rate_limits
 
           sig do
+            returns(
+              OpenAI::Resources::Admin::Organization::Projects::ModelPermissions
+            )
+          end
+          attr_reader :model_permissions
+
+          sig do
+            returns(
+              OpenAI::Resources::Admin::Organization::Projects::HostedToolPermissions
+            )
+          end
+          attr_reader :hosted_tool_permissions
+
+          sig do
             returns(OpenAI::Resources::Admin::Organization::Projects::Groups)
           end
           attr_reader :groups

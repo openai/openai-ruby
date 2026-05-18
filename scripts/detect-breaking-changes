@@ -66,6 +66,8 @@ TEST_PATHS=(
 	test/openai/resources/admin/organization/projects/service_accounts_test.rb
 	test/openai/resources/admin/organization/projects/api_keys_test.rb
 	test/openai/resources/admin/organization/projects/rate_limits_test.rb
+	test/openai/resources/admin/organization/projects/model_permissions_test.rb
+	test/openai/resources/admin/organization/projects/hosted_tool_permissions_test.rb
 	test/openai/resources/admin/organization/projects/groups_test.rb
 	test/openai/resources/admin/organization/projects/groups/roles_test.rb
 	test/openai/resources/admin/organization/projects/roles_test.rb

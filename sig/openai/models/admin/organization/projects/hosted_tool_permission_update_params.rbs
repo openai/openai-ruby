@@ -1,0 +1,107 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        module Projects
+          type hosted_tool_permission_update_params =
+            {
+              project_id: String,
+              code_interpreter: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::CodeInterpreter?,
+              file_search: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::FileSearch?,
+              image_generation: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::ImageGeneration?,
+              mcp: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::Mcp?,
+              web_search: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::WebSearch?
+            }
+            & OpenAI::Internal::Type::request_parameters
+
+          class HostedToolPermissionUpdateParams < OpenAI::Internal::Type::BaseModel
+            extend OpenAI::Internal::Type::RequestParameters::Converter
+            include OpenAI::Internal::Type::RequestParameters
+
+            attr_accessor project_id: String
+
+            attr_accessor code_interpreter: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::CodeInterpreter?
+
+            attr_accessor file_search: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::FileSearch?
+
+            attr_accessor image_generation: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::ImageGeneration?
+
+            attr_accessor mcp: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::Mcp?
+
+            attr_accessor web_search: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::WebSearch?
+
+            def initialize: (
+              project_id: String,
+              ?code_interpreter: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::CodeInterpreter?,
+              ?file_search: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::FileSearch?,
+              ?image_generation: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::ImageGeneration?,
+              ?mcp: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::Mcp?,
+              ?web_search: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::WebSearch?,
+              ?request_options: OpenAI::request_opts
+            ) -> void
+
+            def to_hash: -> {
+              project_id: String,
+              code_interpreter: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::CodeInterpreter?,
+              file_search: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::FileSearch?,
+              image_generation: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::ImageGeneration?,
+              mcp: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::Mcp?,
+              web_search: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::WebSearch?,
+              request_options: OpenAI::RequestOptions
+            }
+
+            type code_interpreter = { enabled: bool }
+
+            class CodeInterpreter < OpenAI::Internal::Type::BaseModel
+              attr_accessor enabled: bool
+
+              def initialize: (enabled: bool) -> void
+
+              def to_hash: -> { enabled: bool }
+            end
+
+            type file_search = { enabled: bool }
+
+            class FileSearch < OpenAI::Internal::Type::BaseModel
+              attr_accessor enabled: bool
+
+              def initialize: (enabled: bool) -> void
+
+              def to_hash: -> { enabled: bool }
+            end
+
+            type image_generation = { enabled: bool }
+
+            class ImageGeneration < OpenAI::Internal::Type::BaseModel
+              attr_accessor enabled: bool
+
+              def initialize: (enabled: bool) -> void
+
+              def to_hash: -> { enabled: bool }
+            end
+
+            type mcp = { enabled: bool }
+
+            class Mcp < OpenAI::Internal::Type::BaseModel
+              attr_accessor enabled: bool
+
+              def initialize: (enabled: bool) -> void
+
+              def to_hash: -> { enabled: bool }
+            end
+
+            type web_search = { enabled: bool }
+
+            class WebSearch < OpenAI::Internal::Type::BaseModel
+              attr_accessor enabled: bool
+
+              def initialize: (enabled: bool) -> void
+
+              def to_hash: -> { enabled: bool }
+            end
+          end
+        end
+      end
+    end
+  end
+end

@@ -17,6 +17,12 @@ module OpenAI
           # @return [OpenAI::Resources::Admin::Organization::Projects::RateLimits]
           attr_reader :rate_limits
 
+          # @return [OpenAI::Resources::Admin::Organization::Projects::ModelPermissions]
+          attr_reader :model_permissions
+
+          # @return [OpenAI::Resources::Admin::Organization::Projects::HostedToolPermissions]
+          attr_reader :hosted_tool_permissions
+
           # @return [OpenAI::Resources::Admin::Organization::Projects::Groups]
           attr_reader :groups
 
@@ -170,6 +176,10 @@ module OpenAI
             @service_accounts = OpenAI::Resources::Admin::Organization::Projects::ServiceAccounts.new(client: client)
             @api_keys = OpenAI::Resources::Admin::Organization::Projects::APIKeys.new(client: client)
             @rate_limits = OpenAI::Resources::Admin::Organization::Projects::RateLimits.new(client: client)
+            @model_permissions =
+              OpenAI::Resources::Admin::Organization::Projects::ModelPermissions.new(client: client)
+            @hosted_tool_permissions =
+              OpenAI::Resources::Admin::Organization::Projects::HostedToolPermissions.new(client: client)
             @groups = OpenAI::Resources::Admin::Organization::Projects::Groups.new(client: client)
             @roles = OpenAI::Resources::Admin::Organization::Projects::Roles.new(client: client)
             @certificates = OpenAI::Resources::Admin::Organization::Projects::Certificates.new(client: client)
