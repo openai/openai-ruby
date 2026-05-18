@@ -1,0 +1,628 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type usage_web_search_calls_response =
+          {
+            data: ::Array[OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data],
+            has_more: bool,
+            next_page: String?,
+            object: :page
+          }
+
+        class UsageWebSearchCallsResponse < OpenAI::Internal::Type::BaseModel
+          attr_accessor data: ::Array[OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data]
+
+          attr_accessor has_more: bool
+
+          attr_accessor next_page: String?
+
+          attr_accessor object: :page
+
+          def initialize: (
+            data: ::Array[OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data],
+            has_more: bool,
+            next_page: String?,
+            ?object: :page
+          ) -> void
+
+          def to_hash: -> {
+            data: ::Array[OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data],
+            has_more: bool,
+            next_page: String?,
+            object: :page
+          }
+
+          type data =
+            {
+              end_time: Integer,
+              object: :bucket,
+              results: ::Array[OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data::result],
+              start_time: Integer
+            }
+
+          class Data < OpenAI::Internal::Type::BaseModel
+            attr_accessor end_time: Integer
+
+            attr_accessor object: :bucket
+
+            attr_accessor results: ::Array[OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data::result]
+
+            attr_accessor start_time: Integer
+
+            def initialize: (
+              end_time: Integer,
+              results: ::Array[OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data::result],
+              start_time: Integer,
+              ?object: :bucket
+            ) -> void
+
+            def to_hash: -> {
+              end_time: Integer,
+              object: :bucket,
+              results: ::Array[OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data::result],
+              start_time: Integer
+            }
+
+            type result =
+              OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data::Result::OrganizationUsageCompletionsResult
+              | OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data::Result::OrganizationUsageEmbeddingsResult
+              | OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data::Result::OrganizationUsageModerationsResult
+              | OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data::Result::OrganizationUsageImagesResult
+              | OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data::Result::OrganizationUsageAudioSpeechesResult
+              | OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data::Result::OrganizationUsageAudioTranscriptionsResult
+              | OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data::Result::OrganizationUsageVectorStoresResult
+              | OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data::Result::OrganizationUsageCodeInterpreterSessionsResult
+              | OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data::Result::OrganizationUsageFileSearchesResult
+              | OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data::Result::OrganizationUsageWebSearchesResult
+              | OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data::Result::OrganizationCostsResult
+
+            module Result
+              extend OpenAI::Internal::Type::Union
+
+              type organization_usage_completions_result =
+                {
+                  input_tokens: Integer,
+                  num_model_requests: Integer,
+                  object: :"organization.usage.completions.result",
+                  output_tokens: Integer,
+                  api_key_id: String?,
+                  batch: bool?,
+                  input_audio_tokens: Integer,
+                  input_cached_tokens: Integer,
+                  model: String?,
+                  output_audio_tokens: Integer,
+                  project_id: String?,
+                  service_tier: String?,
+                  user_id: String?
+                }
+
+              class OrganizationUsageCompletionsResult < OpenAI::Internal::Type::BaseModel
+                attr_accessor input_tokens: Integer
+
+                attr_accessor num_model_requests: Integer
+
+                attr_accessor object: :"organization.usage.completions.result"
+
+                attr_accessor output_tokens: Integer
+
+                attr_accessor api_key_id: String?
+
+                attr_accessor batch: bool?
+
+                attr_reader input_audio_tokens: Integer?
+
+                def input_audio_tokens=: (Integer) -> Integer
+
+                attr_reader input_cached_tokens: Integer?
+
+                def input_cached_tokens=: (Integer) -> Integer
+
+                attr_accessor model: String?
+
+                attr_reader output_audio_tokens: Integer?
+
+                def output_audio_tokens=: (Integer) -> Integer
+
+                attr_accessor project_id: String?
+
+                attr_accessor service_tier: String?
+
+                attr_accessor user_id: String?
+
+                def initialize: (
+                  input_tokens: Integer,
+                  num_model_requests: Integer,
+                  output_tokens: Integer,
+                  ?api_key_id: String?,
+                  ?batch: bool?,
+                  ?input_audio_tokens: Integer,
+                  ?input_cached_tokens: Integer,
+                  ?model: String?,
+                  ?output_audio_tokens: Integer,
+                  ?project_id: String?,
+                  ?service_tier: String?,
+                  ?user_id: String?,
+                  ?object: :"organization.usage.completions.result"
+                ) -> void
+
+                def to_hash: -> {
+                  input_tokens: Integer,
+                  num_model_requests: Integer,
+                  object: :"organization.usage.completions.result",
+                  output_tokens: Integer,
+                  api_key_id: String?,
+                  batch: bool?,
+                  input_audio_tokens: Integer,
+                  input_cached_tokens: Integer,
+                  model: String?,
+                  output_audio_tokens: Integer,
+                  project_id: String?,
+                  service_tier: String?,
+                  user_id: String?
+                }
+              end
+
+              type organization_usage_embeddings_result =
+                {
+                  input_tokens: Integer,
+                  num_model_requests: Integer,
+                  object: :"organization.usage.embeddings.result",
+                  api_key_id: String?,
+                  model: String?,
+                  project_id: String?,
+                  user_id: String?
+                }
+
+              class OrganizationUsageEmbeddingsResult < OpenAI::Internal::Type::BaseModel
+                attr_accessor input_tokens: Integer
+
+                attr_accessor num_model_requests: Integer
+
+                attr_accessor object: :"organization.usage.embeddings.result"
+
+                attr_accessor api_key_id: String?
+
+                attr_accessor model: String?
+
+                attr_accessor project_id: String?
+
+                attr_accessor user_id: String?
+
+                def initialize: (
+                  input_tokens: Integer,
+                  num_model_requests: Integer,
+                  ?api_key_id: String?,
+                  ?model: String?,
+                  ?project_id: String?,
+                  ?user_id: String?,
+                  ?object: :"organization.usage.embeddings.result"
+                ) -> void
+
+                def to_hash: -> {
+                  input_tokens: Integer,
+                  num_model_requests: Integer,
+                  object: :"organization.usage.embeddings.result",
+                  api_key_id: String?,
+                  model: String?,
+                  project_id: String?,
+                  user_id: String?
+                }
+              end
+
+              type organization_usage_moderations_result =
+                {
+                  input_tokens: Integer,
+                  num_model_requests: Integer,
+                  object: :"organization.usage.moderations.result",
+                  api_key_id: String?,
+                  model: String?,
+                  project_id: String?,
+                  user_id: String?
+                }
+
+              class OrganizationUsageModerationsResult < OpenAI::Internal::Type::BaseModel
+                attr_accessor input_tokens: Integer
+
+                attr_accessor num_model_requests: Integer
+
+                attr_accessor object: :"organization.usage.moderations.result"
+
+                attr_accessor api_key_id: String?
+
+                attr_accessor model: String?
+
+                attr_accessor project_id: String?
+
+                attr_accessor user_id: String?
+
+                def initialize: (
+                  input_tokens: Integer,
+                  num_model_requests: Integer,
+                  ?api_key_id: String?,
+                  ?model: String?,
+                  ?project_id: String?,
+                  ?user_id: String?,
+                  ?object: :"organization.usage.moderations.result"
+                ) -> void
+
+                def to_hash: -> {
+                  input_tokens: Integer,
+                  num_model_requests: Integer,
+                  object: :"organization.usage.moderations.result",
+                  api_key_id: String?,
+                  model: String?,
+                  project_id: String?,
+                  user_id: String?
+                }
+              end
+
+              type organization_usage_images_result =
+                {
+                  images: Integer,
+                  num_model_requests: Integer,
+                  object: :"organization.usage.images.result",
+                  api_key_id: String?,
+                  model: String?,
+                  project_id: String?,
+                  size: String?,
+                  source: String?,
+                  user_id: String?
+                }
+
+              class OrganizationUsageImagesResult < OpenAI::Internal::Type::BaseModel
+                attr_accessor images: Integer
+
+                attr_accessor num_model_requests: Integer
+
+                attr_accessor object: :"organization.usage.images.result"
+
+                attr_accessor api_key_id: String?
+
+                attr_accessor model: String?
+
+                attr_accessor project_id: String?
+
+                attr_accessor size: String?
+
+                attr_accessor source: String?
+
+                attr_accessor user_id: String?
+
+                def initialize: (
+                  images: Integer,
+                  num_model_requests: Integer,
+                  ?api_key_id: String?,
+                  ?model: String?,
+                  ?project_id: String?,
+                  ?size: String?,
+                  ?source: String?,
+                  ?user_id: String?,
+                  ?object: :"organization.usage.images.result"
+                ) -> void
+
+                def to_hash: -> {
+                  images: Integer,
+                  num_model_requests: Integer,
+                  object: :"organization.usage.images.result",
+                  api_key_id: String?,
+                  model: String?,
+                  project_id: String?,
+                  size: String?,
+                  source: String?,
+                  user_id: String?
+                }
+              end
+
+              type organization_usage_audio_speeches_result =
+                {
+                  characters: Integer,
+                  num_model_requests: Integer,
+                  object: :"organization.usage.audio_speeches.result",
+                  api_key_id: String?,
+                  model: String?,
+                  project_id: String?,
+                  user_id: String?
+                }
+
+              class OrganizationUsageAudioSpeechesResult < OpenAI::Internal::Type::BaseModel
+                attr_accessor characters: Integer
+
+                attr_accessor num_model_requests: Integer
+
+                attr_accessor object: :"organization.usage.audio_speeches.result"
+
+                attr_accessor api_key_id: String?
+
+                attr_accessor model: String?
+
+                attr_accessor project_id: String?
+
+                attr_accessor user_id: String?
+
+                def initialize: (
+                  characters: Integer,
+                  num_model_requests: Integer,
+                  ?api_key_id: String?,
+                  ?model: String?,
+                  ?project_id: String?,
+                  ?user_id: String?,
+                  ?object: :"organization.usage.audio_speeches.result"
+                ) -> void
+
+                def to_hash: -> {
+                  characters: Integer,
+                  num_model_requests: Integer,
+                  object: :"organization.usage.audio_speeches.result",
+                  api_key_id: String?,
+                  model: String?,
+                  project_id: String?,
+                  user_id: String?
+                }
+              end
+
+              type organization_usage_audio_transcriptions_result =
+                {
+                  num_model_requests: Integer,
+                  object: :"organization.usage.audio_transcriptions.result",
+                  seconds: Integer,
+                  api_key_id: String?,
+                  model: String?,
+                  project_id: String?,
+                  user_id: String?
+                }
+
+              class OrganizationUsageAudioTranscriptionsResult < OpenAI::Internal::Type::BaseModel
+                attr_accessor num_model_requests: Integer
+
+                attr_accessor object: :"organization.usage.audio_transcriptions.result"
+
+                attr_accessor seconds: Integer
+
+                attr_accessor api_key_id: String?
+
+                attr_accessor model: String?
+
+                attr_accessor project_id: String?
+
+                attr_accessor user_id: String?
+
+                def initialize: (
+                  num_model_requests: Integer,
+                  seconds: Integer,
+                  ?api_key_id: String?,
+                  ?model: String?,
+                  ?project_id: String?,
+                  ?user_id: String?,
+                  ?object: :"organization.usage.audio_transcriptions.result"
+                ) -> void
+
+                def to_hash: -> {
+                  num_model_requests: Integer,
+                  object: :"organization.usage.audio_transcriptions.result",
+                  seconds: Integer,
+                  api_key_id: String?,
+                  model: String?,
+                  project_id: String?,
+                  user_id: String?
+                }
+              end
+
+              type organization_usage_vector_stores_result =
+                {
+                  object: :"organization.usage.vector_stores.result",
+                  usage_bytes: Integer,
+                  project_id: String?
+                }
+
+              class OrganizationUsageVectorStoresResult < OpenAI::Internal::Type::BaseModel
+                attr_accessor object: :"organization.usage.vector_stores.result"
+
+                attr_accessor usage_bytes: Integer
+
+                attr_accessor project_id: String?
+
+                def initialize: (
+                  usage_bytes: Integer,
+                  ?project_id: String?,
+                  ?object: :"organization.usage.vector_stores.result"
+                ) -> void
+
+                def to_hash: -> {
+                  object: :"organization.usage.vector_stores.result",
+                  usage_bytes: Integer,
+                  project_id: String?
+                }
+              end
+
+              type organization_usage_code_interpreter_sessions_result =
+                {
+                  num_sessions: Integer,
+                  object: :"organization.usage.code_interpreter_sessions.result",
+                  project_id: String?
+                }
+
+              class OrganizationUsageCodeInterpreterSessionsResult < OpenAI::Internal::Type::BaseModel
+                attr_accessor num_sessions: Integer
+
+                attr_accessor object: :"organization.usage.code_interpreter_sessions.result"
+
+                attr_accessor project_id: String?
+
+                def initialize: (
+                  num_sessions: Integer,
+                  ?project_id: String?,
+                  ?object: :"organization.usage.code_interpreter_sessions.result"
+                ) -> void
+
+                def to_hash: -> {
+                  num_sessions: Integer,
+                  object: :"organization.usage.code_interpreter_sessions.result",
+                  project_id: String?
+                }
+              end
+
+              type organization_usage_file_searches_result =
+                {
+                  num_requests: Integer,
+                  object: :"organization.usage.file_searches.result",
+                  api_key_id: String?,
+                  project_id: String?,
+                  user_id: String?,
+                  vector_store_id: String?
+                }
+
+              class OrganizationUsageFileSearchesResult < OpenAI::Internal::Type::BaseModel
+                attr_accessor num_requests: Integer
+
+                attr_accessor object: :"organization.usage.file_searches.result"
+
+                attr_accessor api_key_id: String?
+
+                attr_accessor project_id: String?
+
+                attr_accessor user_id: String?
+
+                attr_accessor vector_store_id: String?
+
+                def initialize: (
+                  num_requests: Integer,
+                  ?api_key_id: String?,
+                  ?project_id: String?,
+                  ?user_id: String?,
+                  ?vector_store_id: String?,
+                  ?object: :"organization.usage.file_searches.result"
+                ) -> void
+
+                def to_hash: -> {
+                  num_requests: Integer,
+                  object: :"organization.usage.file_searches.result",
+                  api_key_id: String?,
+                  project_id: String?,
+                  user_id: String?,
+                  vector_store_id: String?
+                }
+              end
+
+              type organization_usage_web_searches_result =
+                {
+                  num_model_requests: Integer,
+                  num_requests: Integer,
+                  object: :"organization.usage.web_searches.result",
+                  api_key_id: String?,
+                  context_level: String?,
+                  model: String?,
+                  project_id: String?,
+                  user_id: String?
+                }
+
+              class OrganizationUsageWebSearchesResult < OpenAI::Internal::Type::BaseModel
+                attr_accessor num_model_requests: Integer
+
+                attr_accessor num_requests: Integer
+
+                attr_accessor object: :"organization.usage.web_searches.result"
+
+                attr_accessor api_key_id: String?
+
+                attr_accessor context_level: String?
+
+                attr_accessor model: String?
+
+                attr_accessor project_id: String?
+
+                attr_accessor user_id: String?
+
+                def initialize: (
+                  num_model_requests: Integer,
+                  num_requests: Integer,
+                  ?api_key_id: String?,
+                  ?context_level: String?,
+                  ?model: String?,
+                  ?project_id: String?,
+                  ?user_id: String?,
+                  ?object: :"organization.usage.web_searches.result"
+                ) -> void
+
+                def to_hash: -> {
+                  num_model_requests: Integer,
+                  num_requests: Integer,
+                  object: :"organization.usage.web_searches.result",
+                  api_key_id: String?,
+                  context_level: String?,
+                  model: String?,
+                  project_id: String?,
+                  user_id: String?
+                }
+              end
+
+              type organization_costs_result =
+                {
+                  object: :"organization.costs.result",
+                  amount: OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data::Result::OrganizationCostsResult::Amount,
+                  api_key_id: String?,
+                  line_item: String?,
+                  project_id: String?,
+                  quantity: Float?
+                }
+
+              class OrganizationCostsResult < OpenAI::Internal::Type::BaseModel
+                attr_accessor object: :"organization.costs.result"
+
+                attr_reader amount: OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data::Result::OrganizationCostsResult::Amount?
+
+                def amount=: (
+                  OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data::Result::OrganizationCostsResult::Amount
+                ) -> OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data::Result::OrganizationCostsResult::Amount
+
+                attr_accessor api_key_id: String?
+
+                attr_accessor line_item: String?
+
+                attr_accessor project_id: String?
+
+                attr_accessor quantity: Float?
+
+                def initialize: (
+                  ?amount: OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data::Result::OrganizationCostsResult::Amount,
+                  ?api_key_id: String?,
+                  ?line_item: String?,
+                  ?project_id: String?,
+                  ?quantity: Float?,
+                  ?object: :"organization.costs.result"
+                ) -> void
+
+                def to_hash: -> {
+                  object: :"organization.costs.result",
+                  amount: OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data::Result::OrganizationCostsResult::Amount,
+                  api_key_id: String?,
+                  line_item: String?,
+                  project_id: String?,
+                  quantity: Float?
+                }
+
+                type amount = { currency: String, value: Float }
+
+                class Amount < OpenAI::Internal::Type::BaseModel
+                  attr_reader currency: String?
+
+                  def currency=: (String) -> String
+
+                  attr_reader value: Float?
+
+                  def value=: (Float) -> Float
+
+                  def initialize: (?currency: String, ?value: Float) -> void
+
+                  def to_hash: -> { currency: String, value: Float }
+                end
+              end
+
+              def self?.variants: -> ::Array[OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data::result]
+            end
+          end
+        end
+      end
+    end
+  end
+end

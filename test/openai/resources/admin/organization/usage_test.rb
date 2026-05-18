@@ -105,6 +105,23 @@ class OpenAI::Test::Resources::Admin::Organization::UsageTest < OpenAI::Test::Re
     end
   end
 
+  def test_file_search_calls_required_params
+    response = @openai.admin.organization.usage.file_search_calls(start_time: 0)
+
+    assert_pattern do
+      response => OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse
+    end
+
+    assert_pattern do
+      response => {
+        data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse::Data]),
+        has_more: OpenAI::Internal::Type::Boolean,
+        next_page: String | nil,
+        object: Symbol
+      }
+    end
+  end
+
   def test_images_required_params
     response = @openai.admin.organization.usage.images(start_time: 0)
 
@@ -149,6 +166,23 @@ class OpenAI::Test::Resources::Admin::Organization::UsageTest < OpenAI::Test::Re
     assert_pattern do
       response => {
         data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::UsageVectorStoresResponse::Data]),
+        has_more: OpenAI::Internal::Type::Boolean,
+        next_page: String | nil,
+        object: Symbol
+      }
+    end
+  end
+
+  def test_web_search_calls_required_params
+    response = @openai.admin.organization.usage.web_search_calls(start_time: 0)
+
+    assert_pattern do
+      response => OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse
+    end
+
+    assert_pattern do
+      response => {
+        data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data]),
         has_more: OpenAI::Internal::Type::Boolean,
         next_page: String | nil,
         object: Symbol

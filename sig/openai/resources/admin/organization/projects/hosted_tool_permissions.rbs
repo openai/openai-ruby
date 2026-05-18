@@ -1,0 +1,28 @@
+module OpenAI
+  module Resources
+    class Admin
+      class Organization
+        class Projects
+          class HostedToolPermissions
+            def retrieve: (
+              String project_id,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions
+
+            def update: (
+              String project_id,
+              ?code_interpreter: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::CodeInterpreter?,
+              ?file_search: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::FileSearch?,
+              ?image_generation: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::ImageGeneration?,
+              ?mcp: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::Mcp?,
+              ?web_search: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::WebSearch?,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions
+
+            def initialize: (client: OpenAI::Client) -> void
+          end
+        end
+      end
+    end
+  end
+end

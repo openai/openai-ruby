@@ -11,6 +11,10 @@ module OpenAI
 
           attr_reader rate_limits: OpenAI::Resources::Admin::Organization::Projects::RateLimits
 
+          attr_reader model_permissions: OpenAI::Resources::Admin::Organization::Projects::ModelPermissions
+
+          attr_reader hosted_tool_permissions: OpenAI::Resources::Admin::Organization::Projects::HostedToolPermissions
+
           attr_reader groups: OpenAI::Resources::Admin::Organization::Projects::Groups
 
           attr_reader roles: OpenAI::Resources::Admin::Organization::Projects::Roles
