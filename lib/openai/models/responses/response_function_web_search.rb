@@ -132,7 +132,7 @@ module OpenAI
 
           class OpenPage < OpenAI::Internal::Type::BaseModel
             # @!attribute type
-            #   The action type.
+            #   The action type. Always `open_page`.
             #
             #   @return [Symbol, :open_page]
             required :type, const: :open_page
@@ -152,7 +152,7 @@ module OpenAI
             #
             #   @param url [String, nil] The URL opened by the model.
             #
-            #   @param type [Symbol, :open_page] The action type.
+            #   @param type [Symbol, :open_page] The action type. Always `open_page`.
           end
 
           class Find < OpenAI::Internal::Type::BaseModel
