@@ -268,8 +268,13 @@ module OpenAI
         end
 
         # @api private
-        sig { params(max_len: T.nilable(Integer)).returns(String) }
+        sig { params(max_len: T.nilable(Integer)).returns(T.nilable(String)) }
         private def read_enum(max_len)
+        end
+
+        # @api private
+        sig { params(max_len: Integer).returns(String) }
+        private def read_buffer(max_len)
         end
 
         # @api private
