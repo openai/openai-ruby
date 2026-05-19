@@ -421,18 +421,38 @@ module OpenAI
         #
         # @param max_len [Integer, nil]
         #
-        # @return [String]
+        # @return [String, nil]
         private def read_enum(max_len)
           case max_len
           in nil
-            @stream.to_a.join
+            # `loop` rescues StopIteration, but this method handles it below.
+            # rubocop:disable Style/InfiniteLoop
+            @buf << @stream.next.b while true
+            # rubocop:enable Style/InfiniteLoop
+          in Integer if max_len.negative?
+            raise ArgumentError, "negative length #{max_len} given"
           in Integer
-            @buf << @stream.next while @buf.length < max_len
-            @buf.slice!(..max_len)
+            @buf << @stream.next.b while @buf.bytesize < max_len
+            read_buffer(max_len)
           end
         rescue StopIteration
+          return @buf.slice!(0..) if max_len.nil?
+
           @stream = nil
-          @buf.slice!(0..)
+          return nil if @buf.bytesize.zero?
+
+          read_buffer(max_len)
+        end
+
+        # @api private
+        #
+        # @param max_len [Integer]
+        #
+        # @return [String]
+        private def read_buffer(max_len)
+          read = @buf.byteslice(0, max_len)
+          @buf = @buf.byteslice(max_len..) || String.new
+          read
         end
 
         # @api private
@@ -444,14 +464,24 @@ module OpenAI
         def read(max_len = nil, out_string = nil)
           case @stream
           in nil
-            nil
+            raise ArgumentError, "negative length #{max_len} given" if max_len&.negative?
+
+            read = max_len.nil? || max_len.zero? ? +"" : nil
+            case out_string
+            in String
+              out_string.replace(read || +"")
+              read.nil? ? nil : out_string
+            in nil
+              read
+            end
           in IO | StringIO
             @stream.read(max_len, out_string)
           in Enumerator
             read = read_enum(max_len)
             case out_string
             in String
-              out_string.replace(read)
+              out_string.replace(read || +"")
+              read.nil? ? nil : out_string
             in nil
               read
             end
