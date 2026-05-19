@@ -306,7 +306,10 @@ module OpenAI
       JSON_CONTENT =
         T.let(%r{^application/(?:[a-zA-Z0-9.-]+\+)?json(?!l)}, Regexp)
       JSONL_CONTENT =
-        T.let(%r{^application/(:?x-(?:n|l)djson)|(:?(?:x-)?jsonl)}, Regexp)
+        T.let(
+          %r{\Aapplication/(?:x-(?:n|l)djson|(?:x-)?jsonl)[ \t]*(?:;|\z)}i,
+          Regexp
+        )
 
       class << self
         # @api private
