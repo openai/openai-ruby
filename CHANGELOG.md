@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.64.0 (2026-05-21)
+
+Full Changelog: [v0.63.0...v0.64.0](https://github.com/openai/openai-ruby/compare/v0.63.0...v0.64.0)
+
+### Features
+
+* **api:** api update ([88261ad](https://github.com/openai/openai-ruby/commit/88261adcad8082d440272cb71ff666e6efc3e5de))
+* **api:** manual updates ([5849206](https://github.com/openai/openai-ruby/commit/58492060e9f6d4dbe1a4c51a38436f356cb3815e))
+* **api:** update OpenAPI spec or Stainless config ([4a0328a](https://github.com/openai/openai-ruby/commit/4a0328ac6b7b7bb641c89df65abf46392b9d68bf))
+
+
+### Bug Fixes
+
+* **client:** elide content type header on requests without body ([e73f132](https://github.com/openai/openai-ruby/commit/e73f132c81c4e87edd9e968e30807236d496ea53))
+
+
+### Chores
+
+* **api:** docs updates ([3861ed8](https://github.com/openai/openai-ruby/commit/3861ed8091dda9bef2b5e870fc5d0b38e0b0fcb8))
+
 ## 0.63.0 (2026-05-13)
 
 Full Changelog: [v0.62.0...v0.63.0](https://github.com/openai/openai-ruby/compare/v0.62.0...v0.63.0)
