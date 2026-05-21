@@ -26,6 +26,12 @@ module OpenAI
         sig { returns(OpenAI::Resources::Admin::Organization::Roles) }
         attr_reader :roles
 
+        sig { returns(OpenAI::Resources::Admin::Organization::DataRetention) }
+        attr_reader :data_retention
+
+        sig { returns(OpenAI::Resources::Admin::Organization::SpendAlerts) }
+        attr_reader :spend_alerts
+
         sig { returns(OpenAI::Resources::Admin::Organization::Certificates) }
         attr_reader :certificates
 

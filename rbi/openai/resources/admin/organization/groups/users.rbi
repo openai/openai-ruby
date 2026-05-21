@@ -25,6 +25,25 @@ module OpenAI
             )
             end
 
+            # Retrieves a user in a group.
+            sig do
+              params(
+                user_id: String,
+                group_id: String,
+                request_options: OpenAI::RequestOptions::OrHash
+              ).returns(
+                OpenAI::Models::Admin::Organization::Groups::UserRetrieveResponse
+              )
+            end
+            def retrieve(
+              # The ID of the user to retrieve from the group.
+              user_id,
+              # The ID of the group to inspect.
+              group_id:,
+              request_options: {}
+            )
+            end
+
             # Lists the users assigned to a group.
             sig do
               params(

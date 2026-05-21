@@ -33,6 +33,27 @@ module OpenAI
             )
             end
 
+            # Retrieves a project's group.
+            sig do
+              params(
+                group_id: String,
+                project_id: String,
+                group_type:
+                  OpenAI::Admin::Organization::Projects::GroupRetrieveParams::GroupType::OrSymbol,
+                request_options: OpenAI::RequestOptions::OrHash
+              ).returns(OpenAI::Admin::Organization::Projects::ProjectGroup)
+            end
+            def retrieve(
+              # Path param: The ID of the group to retrieve.
+              group_id,
+              # Path param: The ID of the project to inspect.
+              project_id:,
+              # Query param: The type of group to retrieve.
+              group_type: nil,
+              request_options: {}
+            )
+            end
+
             # Lists the groups that have access to a project.
             sig do
               params(

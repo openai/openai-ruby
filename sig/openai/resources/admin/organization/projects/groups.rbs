@@ -13,6 +13,13 @@ module OpenAI
               ?request_options: OpenAI::request_opts
             ) -> OpenAI::Admin::Organization::Projects::ProjectGroup
 
+            def retrieve: (
+              String group_id,
+              project_id: String,
+              ?group_type: OpenAI::Models::Admin::Organization::Projects::GroupRetrieveParams::group_type,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Admin::Organization::Projects::ProjectGroup
+
             def list: (
               String project_id,
               ?after: String,

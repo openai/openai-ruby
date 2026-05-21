@@ -10,7 +10,7 @@ module OpenAI
               created_at: Integer,
               group_id: String,
               group_name: String,
-              group_type: String,
+              group_type: OpenAI::Models::Admin::Organization::Projects::ProjectGroup::group_type,
               object: :"project.group",
               project_id: String
             }
@@ -22,7 +22,7 @@ module OpenAI
 
             attr_accessor group_name: String
 
-            attr_accessor group_type: String
+            attr_accessor group_type: OpenAI::Models::Admin::Organization::Projects::ProjectGroup::group_type
 
             attr_accessor object: :"project.group"
 
@@ -32,7 +32,7 @@ module OpenAI
               created_at: Integer,
               group_id: String,
               group_name: String,
-              group_type: String,
+              group_type: OpenAI::Models::Admin::Organization::Projects::ProjectGroup::group_type,
               project_id: String,
               ?object: :"project.group"
             ) -> void
@@ -41,10 +41,21 @@ module OpenAI
               created_at: Integer,
               group_id: String,
               group_name: String,
-              group_type: String,
+              group_type: OpenAI::Models::Admin::Organization::Projects::ProjectGroup::group_type,
               object: :"project.group",
               project_id: String
             }
+
+            type group_type = :group | :tenant_group
+
+            module GroupType
+              extend OpenAI::Internal::Type::Enum
+
+              GROUP: :group
+              TENANT_GROUP: :tenant_group
+
+              def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Projects::ProjectGroup::group_type]
+            end
           end
         end
       end

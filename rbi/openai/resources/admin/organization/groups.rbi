@@ -25,6 +25,20 @@ module OpenAI
           )
           end
 
+          # Retrieves a group.
+          sig do
+            params(
+              group_id: String,
+              request_options: OpenAI::RequestOptions::OrHash
+            ).returns(OpenAI::Admin::Organization::Group)
+          end
+          def retrieve(
+            # The ID of the group to retrieve.
+            group_id,
+            request_options: {}
+          )
+          end
+
           # Updates a group's information.
           sig do
             params(

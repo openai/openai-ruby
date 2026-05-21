@@ -1,0 +1,97 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type spend_alert_update_params =
+          {
+            alert_id: String,
+            currency: OpenAI::Models::Admin::Organization::SpendAlertUpdateParams::currency,
+            interval: OpenAI::Models::Admin::Organization::SpendAlertUpdateParams::interval,
+            notification_channel: OpenAI::Admin::Organization::SpendAlertUpdateParams::NotificationChannel,
+            threshold_amount: Integer
+          }
+          & OpenAI::Internal::Type::request_parameters
+
+        class SpendAlertUpdateParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor alert_id: String
+
+          attr_accessor currency: OpenAI::Models::Admin::Organization::SpendAlertUpdateParams::currency
+
+          attr_accessor interval: OpenAI::Models::Admin::Organization::SpendAlertUpdateParams::interval
+
+          attr_accessor notification_channel: OpenAI::Admin::Organization::SpendAlertUpdateParams::NotificationChannel
+
+          attr_accessor threshold_amount: Integer
+
+          def initialize: (
+            alert_id: String,
+            currency: OpenAI::Models::Admin::Organization::SpendAlertUpdateParams::currency,
+            interval: OpenAI::Models::Admin::Organization::SpendAlertUpdateParams::interval,
+            notification_channel: OpenAI::Admin::Organization::SpendAlertUpdateParams::NotificationChannel,
+            threshold_amount: Integer,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            alert_id: String,
+            currency: OpenAI::Models::Admin::Organization::SpendAlertUpdateParams::currency,
+            interval: OpenAI::Models::Admin::Organization::SpendAlertUpdateParams::interval,
+            notification_channel: OpenAI::Admin::Organization::SpendAlertUpdateParams::NotificationChannel,
+            threshold_amount: Integer,
+            request_options: OpenAI::RequestOptions
+          }
+
+          type currency = :USD
+
+          module Currency
+            extend OpenAI::Internal::Type::Enum
+
+            USD: :USD
+
+            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::SpendAlertUpdateParams::currency]
+          end
+
+          type interval = :month
+
+          module Interval
+            extend OpenAI::Internal::Type::Enum
+
+            MONTH: :month
+
+            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::SpendAlertUpdateParams::interval]
+          end
+
+          type notification_channel =
+            {
+              recipients: ::Array[String],
+              type: :email,
+              subject_prefix: String?
+            }
+
+          class NotificationChannel < OpenAI::Internal::Type::BaseModel
+            attr_accessor recipients: ::Array[String]
+
+            attr_accessor type: :email
+
+            attr_accessor subject_prefix: String?
+
+            def initialize: (
+              recipients: ::Array[String],
+              ?subject_prefix: String?,
+              ?type: :email
+            ) -> void
+
+            def to_hash: -> {
+              recipients: ::Array[String],
+              type: :email,
+              subject_prefix: String?
+            }
+          end
+        end
+      end
+    end
+  end
+end

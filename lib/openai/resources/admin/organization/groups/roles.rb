@@ -31,6 +31,34 @@ module OpenAI
               )
             end
 
+            # Retrieves an organization role assigned to a group.
+            #
+            # @overload retrieve(role_id, group_id:, request_options: {})
+            #
+            # @param role_id [String] The ID of the organization role to retrieve for the group.
+            #
+            # @param group_id [String] The ID of the group to inspect.
+            #
+            # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+            #
+            # @return [OpenAI::Models::Admin::Organization::Groups::RoleRetrieveResponse]
+            #
+            # @see OpenAI::Models::Admin::Organization::Groups::RoleRetrieveParams
+            def retrieve(role_id, params)
+              parsed, options = OpenAI::Admin::Organization::Groups::RoleRetrieveParams.dump_request(params)
+              group_id =
+                parsed.delete(:group_id) do
+                  raise ArgumentError.new("missing required path argument #{_1}")
+                end
+              @client.request(
+                method: :get,
+                path: ["organization/groups/%1$s/roles/%2$s", group_id, role_id],
+                model: OpenAI::Models::Admin::Organization::Groups::RoleRetrieveResponse,
+                security: {admin_api_key_auth: true},
+                options: options
+              )
+            end
+
             # Some parameter documentations has been truncated, see
             # {OpenAI::Models::Admin::Organization::Groups::RoleListParams} for more details.
             #

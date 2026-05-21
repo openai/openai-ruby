@@ -35,6 +35,34 @@ module OpenAI
               )
             end
 
+            # Retrieves a project role.
+            #
+            # @overload retrieve(role_id, project_id:, request_options: {})
+            #
+            # @param role_id [String] The ID of the role to retrieve.
+            #
+            # @param project_id [String] The ID of the project.
+            #
+            # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+            #
+            # @return [OpenAI::Models::Admin::Organization::Role]
+            #
+            # @see OpenAI::Models::Admin::Organization::Projects::RoleRetrieveParams
+            def retrieve(role_id, params)
+              parsed, options = OpenAI::Admin::Organization::Projects::RoleRetrieveParams.dump_request(params)
+              project_id =
+                parsed.delete(:project_id) do
+                  raise ArgumentError.new("missing required path argument #{_1}")
+                end
+              @client.request(
+                method: :get,
+                path: ["projects/%1$s/roles/%2$s", project_id, role_id],
+                model: OpenAI::Admin::Organization::Role,
+                security: {admin_api_key_auth: true},
+                options: options
+              )
+            end
+
             # Updates an existing project role.
             #
             # @overload update(role_id, project_id:, description: nil, permissions: nil, role_name: nil, request_options: {})

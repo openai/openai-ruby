@@ -29,6 +29,12 @@ module OpenAI
           # @return [OpenAI::Resources::Admin::Organization::Projects::Roles]
           attr_reader :roles
 
+          # @return [OpenAI::Resources::Admin::Organization::Projects::DataRetention]
+          attr_reader :data_retention
+
+          # @return [OpenAI::Resources::Admin::Organization::Projects::SpendAlerts]
+          attr_reader :spend_alerts
+
           # @return [OpenAI::Resources::Admin::Organization::Projects::Certificates]
           attr_reader :certificates
 
@@ -182,6 +188,8 @@ module OpenAI
               OpenAI::Resources::Admin::Organization::Projects::HostedToolPermissions.new(client: client)
             @groups = OpenAI::Resources::Admin::Organization::Projects::Groups.new(client: client)
             @roles = OpenAI::Resources::Admin::Organization::Projects::Roles.new(client: client)
+            @data_retention = OpenAI::Resources::Admin::Organization::Projects::DataRetention.new(client: client)
+            @spend_alerts = OpenAI::Resources::Admin::Organization::Projects::SpendAlerts.new(client: client)
             @certificates = OpenAI::Resources::Admin::Organization::Projects::Certificates.new(client: client)
           end
         end

@@ -19,6 +19,25 @@ class OpenAI::Test::Resources::Admin::Organization::Groups::UsersTest < OpenAI::
     end
   end
 
+  def test_retrieve_required_params
+    response = @openai.admin.organization.groups.users.retrieve("user_id", group_id: "group_id")
+
+    assert_pattern do
+      response => OpenAI::Models::Admin::Organization::Groups::UserRetrieveResponse
+    end
+
+    assert_pattern do
+      response => {
+        id: String,
+        email: String | nil,
+        is_service_account: OpenAI::Internal::Type::Boolean | nil,
+        name: String,
+        picture: String | nil,
+        user_type: OpenAI::Models::Admin::Organization::Groups::UserRetrieveResponse::UserType
+      }
+    end
+  end
+
   def test_list
     response = @openai.admin.organization.groups.users.list("group_id")
 

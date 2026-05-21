@@ -14,7 +14,25 @@ class OpenAI::Test::Resources::Admin::Organization::GroupsTest < OpenAI::Test::R
       response => {
         id: String,
         created_at: Integer,
-        group_type: String,
+        group_type: OpenAI::Admin::Organization::Group::GroupType,
+        is_scim_managed: OpenAI::Internal::Type::Boolean,
+        name: String
+      }
+    end
+  end
+
+  def test_retrieve
+    response = @openai.admin.organization.groups.retrieve("group_id")
+
+    assert_pattern do
+      response => OpenAI::Admin::Organization::Group
+    end
+
+    assert_pattern do
+      response => {
+        id: String,
+        created_at: Integer,
+        group_type: OpenAI::Admin::Organization::Group::GroupType,
         is_scim_managed: OpenAI::Internal::Type::Boolean,
         name: String
       }
@@ -56,7 +74,7 @@ class OpenAI::Test::Resources::Admin::Organization::GroupsTest < OpenAI::Test::R
       row => {
         id: String,
         created_at: Integer,
-        group_type: String,
+        group_type: OpenAI::Admin::Organization::Group::GroupType,
         is_scim_managed: OpenAI::Internal::Type::Boolean,
         name: String
       }
