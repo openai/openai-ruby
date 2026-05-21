@@ -29,6 +29,23 @@ module OpenAI
             )
             end
 
+            # Retrieves a project role.
+            sig do
+              params(
+                role_id: String,
+                project_id: String,
+                request_options: OpenAI::RequestOptions::OrHash
+              ).returns(OpenAI::Admin::Organization::Role)
+            end
+            def retrieve(
+              # The ID of the role to retrieve.
+              role_id,
+              # The ID of the project.
+              project_id:,
+              request_options: {}
+            )
+            end
+
             # Updates an existing project role.
             sig do
               params(

@@ -25,6 +25,20 @@ module OpenAI
           )
           end
 
+          # Retrieves an organization role.
+          sig do
+            params(
+              role_id: String,
+              request_options: OpenAI::RequestOptions::OrHash
+            ).returns(OpenAI::Admin::Organization::Role)
+          end
+          def retrieve(
+            # The ID of the role to retrieve.
+            role_id,
+            request_options: {}
+          )
+          end
+
           # Updates an existing organization role.
           sig do
             params(

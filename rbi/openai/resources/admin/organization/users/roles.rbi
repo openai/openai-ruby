@@ -25,6 +25,25 @@ module OpenAI
             )
             end
 
+            # Retrieves an organization role assigned to a user.
+            sig do
+              params(
+                role_id: String,
+                user_id: String,
+                request_options: OpenAI::RequestOptions::OrHash
+              ).returns(
+                OpenAI::Models::Admin::Organization::Users::RoleRetrieveResponse
+              )
+            end
+            def retrieve(
+              # The ID of the organization role to retrieve for the user.
+              role_id,
+              # The ID of the user to inspect.
+              user_id:,
+              request_options: {}
+            )
+            end
+
             # Lists the organization roles assigned to a user within the organization.
             sig do
               params(

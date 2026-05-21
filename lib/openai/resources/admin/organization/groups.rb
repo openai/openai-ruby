@@ -34,6 +34,27 @@ module OpenAI
             )
           end
 
+          # Retrieves a group.
+          #
+          # @overload retrieve(group_id, request_options: {})
+          #
+          # @param group_id [String] The ID of the group to retrieve.
+          #
+          # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+          #
+          # @return [OpenAI::Models::Admin::Organization::Group]
+          #
+          # @see OpenAI::Models::Admin::Organization::GroupRetrieveParams
+          def retrieve(group_id, params = {})
+            @client.request(
+              method: :get,
+              path: ["organization/groups/%1$s", group_id],
+              model: OpenAI::Admin::Organization::Group,
+              security: {admin_api_key_auth: true},
+              options: params[:request_options]
+            )
+          end
+
           # Updates a group's information.
           #
           # @overload update(group_id, name:, request_options: {})

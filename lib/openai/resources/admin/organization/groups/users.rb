@@ -31,6 +31,34 @@ module OpenAI
               )
             end
 
+            # Retrieves a user in a group.
+            #
+            # @overload retrieve(user_id, group_id:, request_options: {})
+            #
+            # @param user_id [String] The ID of the user to retrieve from the group.
+            #
+            # @param group_id [String] The ID of the group to inspect.
+            #
+            # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+            #
+            # @return [OpenAI::Models::Admin::Organization::Groups::UserRetrieveResponse]
+            #
+            # @see OpenAI::Models::Admin::Organization::Groups::UserRetrieveParams
+            def retrieve(user_id, params)
+              parsed, options = OpenAI::Admin::Organization::Groups::UserRetrieveParams.dump_request(params)
+              group_id =
+                parsed.delete(:group_id) do
+                  raise ArgumentError.new("missing required path argument #{_1}")
+                end
+              @client.request(
+                method: :get,
+                path: ["organization/groups/%1$s/users/%2$s", group_id, user_id],
+                model: OpenAI::Models::Admin::Organization::Groups::UserRetrieveResponse,
+                security: {admin_api_key_auth: true},
+                options: options
+              )
+            end
+
             # Some parameter documentations has been truncated, see
             # {OpenAI::Models::Admin::Organization::Groups::UserListParams} for more details.
             #

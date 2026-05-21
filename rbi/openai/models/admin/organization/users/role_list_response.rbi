@@ -18,6 +18,18 @@ module OpenAI
             sig { returns(String) }
             attr_accessor :id
 
+            # Principals from which the role assignment is inherited, when available.
+            sig do
+              returns(
+                T.nilable(
+                  T::Array[
+                    OpenAI::Models::Admin::Organization::Users::RoleListResponse::AssignmentSource
+                  ]
+                )
+              )
+            end
+            attr_accessor :assignment_sources
+
             # When the role was created.
             sig { returns(T.nilable(Integer)) }
             attr_accessor :created_at
@@ -63,6 +75,12 @@ module OpenAI
             sig do
               params(
                 id: String,
+                assignment_sources:
+                  T.nilable(
+                    T::Array[
+                      OpenAI::Models::Admin::Organization::Users::RoleListResponse::AssignmentSource::OrHash
+                    ]
+                  ),
                 created_at: T.nilable(Integer),
                 created_by: T.nilable(String),
                 created_by_user_obj: T.nilable(T::Hash[Symbol, T.anything]),
@@ -78,6 +96,8 @@ module OpenAI
             def self.new(
               # Identifier for the role.
               id:,
+              # Principals from which the role assignment is inherited, when available.
+              assignment_sources:,
               # When the role was created.
               created_at:,
               # Identifier of the actor who created the role.
@@ -105,6 +125,12 @@ module OpenAI
               override.returns(
                 {
                   id: String,
+                  assignment_sources:
+                    T.nilable(
+                      T::Array[
+                        OpenAI::Models::Admin::Organization::Users::RoleListResponse::AssignmentSource
+                      ]
+                    ),
                   created_at: T.nilable(Integer),
                   created_by: T.nilable(String),
                   created_by_user_obj: T.nilable(T::Hash[Symbol, T.anything]),
@@ -119,6 +145,38 @@ module OpenAI
               )
             end
             def to_hash
+            end
+
+            class AssignmentSource < OpenAI::Internal::Type::BaseModel
+              OrHash =
+                T.type_alias do
+                  T.any(
+                    OpenAI::Models::Admin::Organization::Users::RoleListResponse::AssignmentSource,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+              sig { returns(String) }
+              attr_accessor :principal_id
+
+              sig { returns(String) }
+              attr_accessor :principal_type
+
+              sig do
+                params(principal_id: String, principal_type: String).returns(
+                  T.attached_class
+                )
+              end
+              def self.new(principal_id:, principal_type:)
+              end
+
+              sig do
+                override.returns(
+                  { principal_id: String, principal_type: String }
+                )
+              end
+              def to_hash
+              end
             end
           end
         end

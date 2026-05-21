@@ -24,6 +24,36 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::Users::RolesTest <
     end
   end
 
+  def test_retrieve_required_params
+    response =
+      @openai.admin.organization.projects.users.roles.retrieve(
+        "role_id",
+        project_id: "project_id",
+        user_id: "user_id"
+      )
+
+    assert_pattern do
+      response => OpenAI::Models::Admin::Organization::Projects::Users::RoleRetrieveResponse
+    end
+
+    assert_pattern do
+      response => {
+        id: String,
+        assignment_sources: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::Projects::Users::RoleRetrieveResponse::AssignmentSource]) | nil,
+        created_at: Integer | nil,
+        created_by: String | nil,
+        created_by_user_obj: ^(OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]) | nil,
+        description: String | nil,
+        metadata: ^(OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]) | nil,
+        name: String,
+        permissions: ^(OpenAI::Internal::Type::ArrayOf[String]),
+        predefined_role: OpenAI::Internal::Type::Boolean,
+        resource_type: String,
+        updated_at: Integer | nil
+      }
+    end
+  end
+
   def test_list_required_params
     response = @openai.admin.organization.projects.users.roles.list("user_id", project_id: "project_id")
 
@@ -41,6 +71,7 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::Users::RolesTest <
     assert_pattern do
       row => {
         id: String,
+        assignment_sources: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::Projects::Users::RoleListResponse::AssignmentSource]) | nil,
         created_at: Integer | nil,
         created_by: String | nil,
         created_by_user_obj: ^(OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]) | nil,

@@ -25,6 +25,25 @@ module OpenAI
             )
             end
 
+            # Retrieves an organization role assigned to a group.
+            sig do
+              params(
+                role_id: String,
+                group_id: String,
+                request_options: OpenAI::RequestOptions::OrHash
+              ).returns(
+                OpenAI::Models::Admin::Organization::Groups::RoleRetrieveResponse
+              )
+            end
+            def retrieve(
+              # The ID of the organization role to retrieve for the group.
+              role_id,
+              # The ID of the group to inspect.
+              group_id:,
+              request_options: {}
+            )
+            end
+
             # Lists the organization roles assigned to a group within the organization.
             sig do
               params(

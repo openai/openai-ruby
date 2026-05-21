@@ -36,6 +36,38 @@ module OpenAI
               )
             end
 
+            # Retrieves a project's group.
+            #
+            # @overload retrieve(group_id, project_id:, group_type: nil, request_options: {})
+            #
+            # @param group_id [String] Path param: The ID of the group to retrieve.
+            #
+            # @param project_id [String] Path param: The ID of the project to inspect.
+            #
+            # @param group_type [Symbol, OpenAI::Models::Admin::Organization::Projects::GroupRetrieveParams::GroupType] Query param: The type of group to retrieve.
+            #
+            # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+            #
+            # @return [OpenAI::Models::Admin::Organization::Projects::ProjectGroup]
+            #
+            # @see OpenAI::Models::Admin::Organization::Projects::GroupRetrieveParams
+            def retrieve(group_id, params)
+              parsed, options = OpenAI::Admin::Organization::Projects::GroupRetrieveParams.dump_request(params)
+              query = OpenAI::Internal::Util.encode_query_params(parsed)
+              project_id =
+                parsed.delete(:project_id) do
+                  raise ArgumentError.new("missing required path argument #{_1}")
+                end
+              @client.request(
+                method: :get,
+                path: ["organization/projects/%1$s/groups/%2$s", project_id, group_id],
+                query: query,
+                model: OpenAI::Admin::Organization::Projects::ProjectGroup,
+                security: {admin_api_key_auth: true},
+                options: options
+              )
+            end
+
             # Some parameter documentations has been truncated, see
             # {OpenAI::Models::Admin::Organization::Projects::GroupListParams} for more
             # details.

@@ -16,7 +16,26 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::GroupsTest < OpenA
         created_at: Integer,
         group_id: String,
         group_name: String,
-        group_type: String,
+        group_type: OpenAI::Admin::Organization::Projects::ProjectGroup::GroupType,
+        object: Symbol,
+        project_id: String
+      }
+    end
+  end
+
+  def test_retrieve_required_params
+    response = @openai.admin.organization.projects.groups.retrieve("group_id", project_id: "project_id")
+
+    assert_pattern do
+      response => OpenAI::Admin::Organization::Projects::ProjectGroup
+    end
+
+    assert_pattern do
+      response => {
+        created_at: Integer,
+        group_id: String,
+        group_name: String,
+        group_type: OpenAI::Admin::Organization::Projects::ProjectGroup::GroupType,
         object: Symbol,
         project_id: String
       }
@@ -42,7 +61,7 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::GroupsTest < OpenA
         created_at: Integer,
         group_id: String,
         group_name: String,
-        group_type: String,
+        group_type: OpenAI::Admin::Organization::Projects::ProjectGroup::GroupType,
         object: Symbol,
         project_id: String
       }

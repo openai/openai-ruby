@@ -29,6 +29,28 @@ module OpenAI
               )
               end
 
+              # Retrieves a project role assigned to a user.
+              sig do
+                params(
+                  role_id: String,
+                  project_id: String,
+                  user_id: String,
+                  request_options: OpenAI::RequestOptions::OrHash
+                ).returns(
+                  OpenAI::Models::Admin::Organization::Projects::Users::RoleRetrieveResponse
+                )
+              end
+              def retrieve(
+                # The ID of the project role to retrieve for the user.
+                role_id,
+                # The ID of the project to inspect.
+                project_id:,
+                # The ID of the user to inspect.
+                user_id:,
+                request_options: {}
+              )
+              end
+
               # Lists the project roles assigned to a user within a project.
               sig do
                 params(
