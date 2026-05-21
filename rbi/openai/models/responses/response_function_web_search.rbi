@@ -234,7 +234,7 @@ module OpenAI
                 )
               end
 
-            # The action type. Always `open_page`.
+            # The action type.
             sig { returns(Symbol) }
             attr_accessor :type
 
@@ -251,7 +251,7 @@ module OpenAI
             def self.new(
               # The URL opened by the model.
               url: nil,
-              # The action type. Always `open_page`.
+              # The action type.
               type: :open_page
             )
             end

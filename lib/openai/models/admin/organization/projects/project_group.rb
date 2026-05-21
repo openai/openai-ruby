@@ -28,8 +28,8 @@ module OpenAI
             # @!attribute group_type
             #   The type of the group.
             #
-            #   @return [String]
-            required :group_type, String
+            #   @return [Symbol, OpenAI::Models::Admin::Organization::Projects::ProjectGroup::GroupType]
+            required :group_type, enum: -> { OpenAI::Admin::Organization::Projects::ProjectGroup::GroupType }
 
             # @!attribute object
             #   Always `project.group`.
@@ -52,11 +52,24 @@ module OpenAI
             #
             #   @param group_name [String] Display name of the group.
             #
-            #   @param group_type [String] The type of the group.
+            #   @param group_type [Symbol, OpenAI::Models::Admin::Organization::Projects::ProjectGroup::GroupType] The type of the group.
             #
             #   @param project_id [String] Identifier of the project.
             #
             #   @param object [Symbol, :"project.group"] Always `project.group`.
+
+            # The type of the group.
+            #
+            # @see OpenAI::Models::Admin::Organization::Projects::ProjectGroup#group_type
+            module GroupType
+              extend OpenAI::Internal::Type::Enum
+
+              GROUP = :group
+              TENANT_GROUP = :tenant_group
+
+              # @!method self.values
+              #   @return [Array<Symbol>]
+            end
           end
         end
 

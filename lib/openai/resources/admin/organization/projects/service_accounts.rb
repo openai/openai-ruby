@@ -61,6 +61,39 @@ module OpenAI
               )
             end
 
+            # Updates a service account in the project.
+            #
+            # @overload update(service_account_id, project_id:, name: nil, role: nil, request_options: {})
+            #
+            # @param service_account_id [String] Path param: The ID of the service account.
+            #
+            # @param project_id [String] Path param: The ID of the project.
+            #
+            # @param name [String] Body param: The updated service account name.
+            #
+            # @param role [Symbol, OpenAI::Models::Admin::Organization::Projects::ServiceAccountUpdateParams::Role] Body param: The updated service account role.
+            #
+            # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+            #
+            # @return [OpenAI::Models::Admin::Organization::Projects::ProjectServiceAccount]
+            #
+            # @see OpenAI::Models::Admin::Organization::Projects::ServiceAccountUpdateParams
+            def update(service_account_id, params)
+              parsed, options = OpenAI::Admin::Organization::Projects::ServiceAccountUpdateParams.dump_request(params)
+              project_id =
+                parsed.delete(:project_id) do
+                  raise ArgumentError.new("missing required path argument #{_1}")
+                end
+              @client.request(
+                method: :post,
+                path: ["organization/projects/%1$s/service_accounts/%2$s", project_id, service_account_id],
+                body: parsed,
+                model: OpenAI::Admin::Organization::Projects::ProjectServiceAccount,
+                security: {admin_api_key_auth: true},
+                options: options
+              )
+            end
+
             # Some parameter documentations has been truncated, see
             # {OpenAI::Models::Admin::Organization::Projects::ServiceAccountListParams} for
             # more details.

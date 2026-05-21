@@ -6,7 +6,7 @@ module OpenAI
           {
             id: String,
             created_at: Integer,
-            group_type: String,
+            group_type: OpenAI::Models::Admin::Organization::Group::group_type,
             is_scim_managed: bool,
             name: String
           }
@@ -16,7 +16,7 @@ module OpenAI
 
           attr_accessor created_at: Integer
 
-          attr_accessor group_type: String
+          attr_accessor group_type: OpenAI::Models::Admin::Organization::Group::group_type
 
           attr_accessor is_scim_managed: bool
 
@@ -25,7 +25,7 @@ module OpenAI
           def initialize: (
             id: String,
             created_at: Integer,
-            group_type: String,
+            group_type: OpenAI::Models::Admin::Organization::Group::group_type,
             is_scim_managed: bool,
             name: String
           ) -> void
@@ -33,10 +33,21 @@ module OpenAI
           def to_hash: -> {
             id: String,
             created_at: Integer,
-            group_type: String,
+            group_type: OpenAI::Models::Admin::Organization::Group::group_type,
             is_scim_managed: bool,
             name: String
           }
+
+          type group_type = :group | :tenant_group
+
+          module GroupType
+            extend OpenAI::Internal::Type::Enum
+
+            GROUP: :group
+            TENANT_GROUP: :tenant_group
+
+            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Group::group_type]
+          end
         end
       end
     end

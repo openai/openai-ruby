@@ -13,6 +13,14 @@ module OpenAI
             #   @return [String]
             required :id, String
 
+            # @!attribute assignment_sources
+            #   Principals from which the role assignment is inherited, when available.
+            #
+            #   @return [Array<OpenAI::Models::Admin::Organization::Users::RoleListResponse::AssignmentSource>, nil]
+            required :assignment_sources,
+                     -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::Users::RoleListResponse::AssignmentSource] },
+                     nil?: true
+
             # @!attribute created_at
             #   When the role was created.
             #
@@ -75,11 +83,13 @@ module OpenAI
             #   @return [Integer, nil]
             required :updated_at, Integer, nil?: true
 
-            # @!method initialize(id:, created_at:, created_by:, created_by_user_obj:, description:, metadata:, name:, permissions:, predefined_role:, resource_type:, updated_at:)
+            # @!method initialize(id:, assignment_sources:, created_at:, created_by:, created_by_user_obj:, description:, metadata:, name:, permissions:, predefined_role:, resource_type:, updated_at:)
             #   Detailed information about a role assignment entry returned when listing
             #   assignments.
             #
             #   @param id [String] Identifier for the role.
+            #
+            #   @param assignment_sources [Array<OpenAI::Models::Admin::Organization::Users::RoleListResponse::AssignmentSource>, nil] Principals from which the role assignment is inherited, when available.
             #
             #   @param created_at [Integer, nil] When the role was created.
             #
@@ -100,6 +110,22 @@ module OpenAI
             #   @param resource_type [String] Resource type the role applies to.
             #
             #   @param updated_at [Integer, nil] When the role was last updated.
+
+            class AssignmentSource < OpenAI::Internal::Type::BaseModel
+              # @!attribute principal_id
+              #
+              #   @return [String]
+              required :principal_id, String
+
+              # @!attribute principal_type
+              #
+              #   @return [String]
+              required :principal_type, String
+
+              # @!method initialize(principal_id:, principal_type:)
+              #   @param principal_id [String]
+              #   @param principal_type [String]
+            end
           end
         end
       end

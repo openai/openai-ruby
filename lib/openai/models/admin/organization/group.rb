@@ -21,8 +21,8 @@ module OpenAI
           # @!attribute group_type
           #   The type of the group.
           #
-          #   @return [String]
-          required :group_type, String
+          #   @return [Symbol, OpenAI::Models::Admin::Organization::Group::GroupType]
+          required :group_type, enum: -> { OpenAI::Admin::Organization::Group::GroupType }
 
           # @!attribute is_scim_managed
           #   Whether the group is managed through SCIM and controlled by your identity
@@ -47,11 +47,24 @@ module OpenAI
           #
           #   @param created_at [Integer] Unix timestamp (in seconds) when the group was created.
           #
-          #   @param group_type [String] The type of the group.
+          #   @param group_type [Symbol, OpenAI::Models::Admin::Organization::Group::GroupType] The type of the group.
           #
           #   @param is_scim_managed [Boolean] Whether the group is managed through SCIM and controlled by your identity provid
           #
           #   @param name [String] Display name of the group.
+
+          # The type of the group.
+          #
+          # @see OpenAI::Models::Admin::Organization::Group#group_type
+          module GroupType
+            extend OpenAI::Internal::Type::Enum
+
+            GROUP = :group
+            TENANT_GROUP = :tenant_group
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
         end
       end
     end

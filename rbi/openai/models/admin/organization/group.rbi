@@ -22,7 +22,9 @@ module OpenAI
           attr_accessor :created_at
 
           # The type of the group.
-          sig { returns(String) }
+          sig do
+            returns(OpenAI::Admin::Organization::Group::GroupType::TaggedSymbol)
+          end
           attr_accessor :group_type
 
           # Whether the group is managed through SCIM and controlled by your identity
@@ -39,7 +41,8 @@ module OpenAI
             params(
               id: String,
               created_at: Integer,
-              group_type: String,
+              group_type:
+                OpenAI::Admin::Organization::Group::GroupType::OrSymbol,
               is_scim_managed: T::Boolean,
               name: String
             ).returns(T.attached_class)
@@ -64,13 +67,46 @@ module OpenAI
               {
                 id: String,
                 created_at: Integer,
-                group_type: String,
+                group_type:
+                  OpenAI::Admin::Organization::Group::GroupType::TaggedSymbol,
                 is_scim_managed: T::Boolean,
                 name: String
               }
             )
           end
           def to_hash
+          end
+
+          # The type of the group.
+          module GroupType
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol =
+              T.type_alias do
+                T.all(Symbol, OpenAI::Admin::Organization::Group::GroupType)
+              end
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            GROUP =
+              T.let(
+                :group,
+                OpenAI::Admin::Organization::Group::GroupType::TaggedSymbol
+              )
+            TENANT_GROUP =
+              T.let(
+                :tenant_group,
+                OpenAI::Admin::Organization::Group::GroupType::TaggedSymbol
+              )
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Admin::Organization::Group::GroupType::TaggedSymbol
+                ]
+              )
+            end
+            def self.values
+            end
           end
         end
       end

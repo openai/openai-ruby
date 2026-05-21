@@ -29,7 +29,11 @@ module OpenAI
             attr_accessor :group_name
 
             # The type of the group.
-            sig { returns(String) }
+            sig do
+              returns(
+                OpenAI::Admin::Organization::Projects::ProjectGroup::GroupType::TaggedSymbol
+              )
+            end
             attr_accessor :group_type
 
             # Always `project.group`.
@@ -46,7 +50,8 @@ module OpenAI
                 created_at: Integer,
                 group_id: String,
                 group_name: String,
-                group_type: String,
+                group_type:
+                  OpenAI::Admin::Organization::Projects::ProjectGroup::GroupType::OrSymbol,
                 project_id: String,
                 object: Symbol
               ).returns(T.attached_class)
@@ -73,13 +78,49 @@ module OpenAI
                   created_at: Integer,
                   group_id: String,
                   group_name: String,
-                  group_type: String,
+                  group_type:
+                    OpenAI::Admin::Organization::Projects::ProjectGroup::GroupType::TaggedSymbol,
                   object: Symbol,
                   project_id: String
                 }
               )
             end
             def to_hash
+            end
+
+            # The type of the group.
+            module GroupType
+              extend OpenAI::Internal::Type::Enum
+
+              TaggedSymbol =
+                T.type_alias do
+                  T.all(
+                    Symbol,
+                    OpenAI::Admin::Organization::Projects::ProjectGroup::GroupType
+                  )
+                end
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+              GROUP =
+                T.let(
+                  :group,
+                  OpenAI::Admin::Organization::Projects::ProjectGroup::GroupType::TaggedSymbol
+                )
+              TENANT_GROUP =
+                T.let(
+                  :tenant_group,
+                  OpenAI::Admin::Organization::Projects::ProjectGroup::GroupType::TaggedSymbol
+                )
+
+              sig do
+                override.returns(
+                  T::Array[
+                    OpenAI::Admin::Organization::Projects::ProjectGroup::GroupType::TaggedSymbol
+                  ]
+                )
+              end
+              def self.values
+              end
             end
           end
         end

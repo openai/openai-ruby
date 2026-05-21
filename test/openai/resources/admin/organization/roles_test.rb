@@ -23,6 +23,26 @@ class OpenAI::Test::Resources::Admin::Organization::RolesTest < OpenAI::Test::Re
     end
   end
 
+  def test_retrieve
+    response = @openai.admin.organization.roles.retrieve("role_id")
+
+    assert_pattern do
+      response => OpenAI::Admin::Organization::Role
+    end
+
+    assert_pattern do
+      response => {
+        id: String,
+        description: String | nil,
+        name: String,
+        object: Symbol,
+        permissions: ^(OpenAI::Internal::Type::ArrayOf[String]),
+        predefined_role: OpenAI::Internal::Type::Boolean,
+        resource_type: String
+      }
+    end
+  end
+
   def test_update
     response = @openai.admin.organization.roles.update("role_id")
 

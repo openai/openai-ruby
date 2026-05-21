@@ -1,0 +1,62 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        module Groups
+          type user_retrieve_response =
+            {
+              id: String,
+              email: String?,
+              is_service_account: bool?,
+              name: String,
+              picture: String?,
+              user_type: OpenAI::Models::Admin::Organization::Groups::UserRetrieveResponse::user_type
+            }
+
+          class UserRetrieveResponse < OpenAI::Internal::Type::BaseModel
+            attr_accessor id: String
+
+            attr_accessor email: String?
+
+            attr_accessor is_service_account: bool?
+
+            attr_accessor name: String
+
+            attr_accessor picture: String?
+
+            attr_accessor user_type: OpenAI::Models::Admin::Organization::Groups::UserRetrieveResponse::user_type
+
+            def initialize: (
+              id: String,
+              email: String?,
+              is_service_account: bool?,
+              name: String,
+              picture: String?,
+              user_type: OpenAI::Models::Admin::Organization::Groups::UserRetrieveResponse::user_type
+            ) -> void
+
+            def to_hash: -> {
+              id: String,
+              email: String?,
+              is_service_account: bool?,
+              name: String,
+              picture: String?,
+              user_type: OpenAI::Models::Admin::Organization::Groups::UserRetrieveResponse::user_type
+            }
+
+            type user_type = :user | :tenant_user
+
+            module UserType
+              extend OpenAI::Internal::Type::Enum
+
+              USER: :user
+              TENANT_USER: :tenant_user
+
+              def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Groups::UserRetrieveResponse::user_type]
+            end
+          end
+        end
+      end
+    end
+  end
+end

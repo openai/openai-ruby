@@ -29,6 +29,28 @@ module OpenAI
               )
               end
 
+              # Retrieves a project role assigned to a group.
+              sig do
+                params(
+                  role_id: String,
+                  project_id: String,
+                  group_id: String,
+                  request_options: OpenAI::RequestOptions::OrHash
+                ).returns(
+                  OpenAI::Models::Admin::Organization::Projects::Groups::RoleRetrieveResponse
+                )
+              end
+              def retrieve(
+                # The ID of the project role to retrieve for the group.
+                role_id,
+                # The ID of the project to inspect.
+                project_id:,
+                # The ID of the group to inspect.
+                group_id:,
+                request_options: {}
+              )
+              end
+
               # Lists the project roles assigned to a group within a project.
               sig do
                 params(

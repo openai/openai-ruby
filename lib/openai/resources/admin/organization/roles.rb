@@ -32,6 +32,27 @@ module OpenAI
             )
           end
 
+          # Retrieves an organization role.
+          #
+          # @overload retrieve(role_id, request_options: {})
+          #
+          # @param role_id [String] The ID of the role to retrieve.
+          #
+          # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+          #
+          # @return [OpenAI::Models::Admin::Organization::Role]
+          #
+          # @see OpenAI::Models::Admin::Organization::RoleRetrieveParams
+          def retrieve(role_id, params = {})
+            @client.request(
+              method: :get,
+              path: ["organization/roles/%1$s", role_id],
+              model: OpenAI::Admin::Organization::Role,
+              security: {admin_api_key_auth: true},
+              options: params[:request_options]
+            )
+          end
+
           # Updates an existing organization role.
           #
           # @overload update(role_id, description: nil, permissions: nil, role_name: nil, request_options: {})
