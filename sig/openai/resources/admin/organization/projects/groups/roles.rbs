@@ -12,6 +12,13 @@ module OpenAI
                 ?request_options: OpenAI::request_opts
               ) -> OpenAI::Models::Admin::Organization::Projects::Groups::RoleCreateResponse
 
+              def retrieve: (
+                String role_id,
+                project_id: String,
+                group_id: String,
+                ?request_options: OpenAI::request_opts
+              ) -> OpenAI::Models::Admin::Organization::Projects::Groups::RoleRetrieveResponse
+
               def list: (
                 String group_id,
                 project_id: String,

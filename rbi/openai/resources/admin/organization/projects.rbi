@@ -55,6 +55,20 @@ module OpenAI
 
           sig do
             returns(
+              OpenAI::Resources::Admin::Organization::Projects::DataRetention
+            )
+          end
+          attr_reader :data_retention
+
+          sig do
+            returns(
+              OpenAI::Resources::Admin::Organization::Projects::SpendAlerts
+            )
+          end
+          attr_reader :spend_alerts
+
+          sig do
+            returns(
               OpenAI::Resources::Admin::Organization::Projects::Certificates
             )
           end

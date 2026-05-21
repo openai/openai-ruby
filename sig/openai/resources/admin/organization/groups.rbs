@@ -12,6 +12,11 @@ module OpenAI
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Admin::Organization::Group
 
+          def retrieve: (
+            String group_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::Group
+
           def update: (
             String group_id,
             name: String,

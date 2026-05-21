@@ -38,6 +38,40 @@ module OpenAI
                 )
               end
 
+              # Retrieves a project role assigned to a group.
+              #
+              # @overload retrieve(role_id, project_id:, group_id:, request_options: {})
+              #
+              # @param role_id [String] The ID of the project role to retrieve for the group.
+              #
+              # @param project_id [String] The ID of the project to inspect.
+              #
+              # @param group_id [String] The ID of the group to inspect.
+              #
+              # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+              #
+              # @return [OpenAI::Models::Admin::Organization::Projects::Groups::RoleRetrieveResponse]
+              #
+              # @see OpenAI::Models::Admin::Organization::Projects::Groups::RoleRetrieveParams
+              def retrieve(role_id, params)
+                parsed, options = OpenAI::Admin::Organization::Projects::Groups::RoleRetrieveParams.dump_request(params)
+                project_id =
+                  parsed.delete(:project_id) do
+                    raise ArgumentError.new("missing required path argument #{_1}")
+                  end
+                group_id =
+                  parsed.delete(:group_id) do
+                    raise ArgumentError.new("missing required path argument #{_1}")
+                  end
+                @client.request(
+                  method: :get,
+                  path: ["projects/%1$s/groups/%2$s/roles/%3$s", project_id, group_id, role_id],
+                  model: OpenAI::Models::Admin::Organization::Projects::Groups::RoleRetrieveResponse,
+                  security: {admin_api_key_auth: true},
+                  options: options
+                )
+              end
+
               # Some parameter documentations has been truncated, see
               # {OpenAI::Models::Admin::Organization::Projects::Groups::RoleListParams} for more
               # details.

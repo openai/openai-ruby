@@ -6,6 +6,7 @@ module OpenAI
           type role_list_response =
             {
               id: String,
+              assignment_sources: ::Array[OpenAI::Models::Admin::Organization::Users::RoleListResponse::AssignmentSource]?,
               created_at: Integer?,
               created_by: String?,
               created_by_user_obj: ::Hash[Symbol, top]?,
@@ -20,6 +21,8 @@ module OpenAI
 
           class RoleListResponse < OpenAI::Internal::Type::BaseModel
             attr_accessor id: String
+
+            attr_accessor assignment_sources: ::Array[OpenAI::Models::Admin::Organization::Users::RoleListResponse::AssignmentSource]?
 
             attr_accessor created_at: Integer?
 
@@ -43,6 +46,7 @@ module OpenAI
 
             def initialize: (
               id: String,
+              assignment_sources: ::Array[OpenAI::Models::Admin::Organization::Users::RoleListResponse::AssignmentSource]?,
               created_at: Integer?,
               created_by: String?,
               created_by_user_obj: ::Hash[Symbol, top]?,
@@ -57,6 +61,7 @@ module OpenAI
 
             def to_hash: -> {
               id: String,
+              assignment_sources: ::Array[OpenAI::Models::Admin::Organization::Users::RoleListResponse::AssignmentSource]?,
               created_at: Integer?,
               created_by: String?,
               created_by_user_obj: ::Hash[Symbol, top]?,
@@ -68,6 +73,22 @@ module OpenAI
               resource_type: String,
               updated_at: Integer?
             }
+
+            type assignment_source =
+              { principal_id: String, principal_type: String }
+
+            class AssignmentSource < OpenAI::Internal::Type::BaseModel
+              attr_accessor principal_id: String
+
+              attr_accessor principal_type: String
+
+              def initialize: (
+                principal_id: String,
+                principal_type: String
+              ) -> void
+
+              def to_hash: -> { principal_id: String, principal_type: String }
+            end
           end
         end
       end

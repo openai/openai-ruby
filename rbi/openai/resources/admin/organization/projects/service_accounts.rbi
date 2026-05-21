@@ -45,6 +45,32 @@ module OpenAI
             )
             end
 
+            # Updates a service account in the project.
+            sig do
+              params(
+                service_account_id: String,
+                project_id: String,
+                name: String,
+                role:
+                  OpenAI::Admin::Organization::Projects::ServiceAccountUpdateParams::Role::OrSymbol,
+                request_options: OpenAI::RequestOptions::OrHash
+              ).returns(
+                OpenAI::Admin::Organization::Projects::ProjectServiceAccount
+              )
+            end
+            def update(
+              # Path param: The ID of the service account.
+              service_account_id,
+              # Path param: The ID of the project.
+              project_id:,
+              # Body param: The updated service account name.
+              name: nil,
+              # Body param: The updated service account role.
+              role: nil,
+              request_options: {}
+            )
+            end
+
             # Returns a list of service accounts in the project.
             sig do
               params(

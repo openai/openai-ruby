@@ -1,0 +1,97 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        module Users
+          type role_retrieve_response =
+            {
+              id: String,
+              assignment_sources: ::Array[OpenAI::Models::Admin::Organization::Users::RoleRetrieveResponse::AssignmentSource]?,
+              created_at: Integer?,
+              created_by: String?,
+              created_by_user_obj: ::Hash[Symbol, top]?,
+              description: String?,
+              metadata: ::Hash[Symbol, top]?,
+              name: String,
+              permissions: ::Array[String],
+              predefined_role: bool,
+              resource_type: String,
+              updated_at: Integer?
+            }
+
+          class RoleRetrieveResponse < OpenAI::Internal::Type::BaseModel
+            attr_accessor id: String
+
+            attr_accessor assignment_sources: ::Array[OpenAI::Models::Admin::Organization::Users::RoleRetrieveResponse::AssignmentSource]?
+
+            attr_accessor created_at: Integer?
+
+            attr_accessor created_by: String?
+
+            attr_accessor created_by_user_obj: ::Hash[Symbol, top]?
+
+            attr_accessor description: String?
+
+            attr_accessor metadata: ::Hash[Symbol, top]?
+
+            attr_accessor name: String
+
+            attr_accessor permissions: ::Array[String]
+
+            attr_accessor predefined_role: bool
+
+            attr_accessor resource_type: String
+
+            attr_accessor updated_at: Integer?
+
+            def initialize: (
+              id: String,
+              assignment_sources: ::Array[OpenAI::Models::Admin::Organization::Users::RoleRetrieveResponse::AssignmentSource]?,
+              created_at: Integer?,
+              created_by: String?,
+              created_by_user_obj: ::Hash[Symbol, top]?,
+              description: String?,
+              metadata: ::Hash[Symbol, top]?,
+              name: String,
+              permissions: ::Array[String],
+              predefined_role: bool,
+              resource_type: String,
+              updated_at: Integer?
+            ) -> void
+
+            def to_hash: -> {
+              id: String,
+              assignment_sources: ::Array[OpenAI::Models::Admin::Organization::Users::RoleRetrieveResponse::AssignmentSource]?,
+              created_at: Integer?,
+              created_by: String?,
+              created_by_user_obj: ::Hash[Symbol, top]?,
+              description: String?,
+              metadata: ::Hash[Symbol, top]?,
+              name: String,
+              permissions: ::Array[String],
+              predefined_role: bool,
+              resource_type: String,
+              updated_at: Integer?
+            }
+
+            type assignment_source =
+              { principal_id: String, principal_type: String }
+
+            class AssignmentSource < OpenAI::Internal::Type::BaseModel
+              attr_accessor principal_id: String
+
+              attr_accessor principal_type: String
+
+              def initialize: (
+                principal_id: String,
+                principal_type: String
+              ) -> void
+
+              def to_hash: -> { principal_id: String, principal_type: String }
+            end
+          end
+        end
+      end
+    end
+  end
+end

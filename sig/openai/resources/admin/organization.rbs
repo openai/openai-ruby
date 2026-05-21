@@ -16,6 +16,10 @@ module OpenAI
 
         attr_reader roles: OpenAI::Resources::Admin::Organization::Roles
 
+        attr_reader data_retention: OpenAI::Resources::Admin::Organization::DataRetention
+
+        attr_reader spend_alerts: OpenAI::Resources::Admin::Organization::SpendAlerts
+
         attr_reader certificates: OpenAI::Resources::Admin::Organization::Certificates
 
         attr_reader projects: OpenAI::Resources::Admin::Organization::Projects
