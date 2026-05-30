@@ -582,7 +582,7 @@ module OpenAI
         #
         # @return [String]
         private def escape_multipart_filename(filename)
-          filename.to_s.gsub(/["\\]/) { "\\#{_1}" }.delete("\r\n")
+          filename.to_s.gsub(/["\\]/) { "\\#{_1}" }.delete("\r\n").b
         end
 
         # @api private

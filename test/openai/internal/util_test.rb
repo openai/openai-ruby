@@ -271,6 +271,18 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
     refute_includes(body, "\r\nEvil:")
   end
 
+  def test_multipart_filename_encoding_with_binary_content
+    file = OpenAI::FilePart.new(StringIO.new("\xFF".b), filename: "\u00E9.png")
+    _headers, stream = OpenAI::Internal::Util.encode_content(
+      {"content-type" => "multipart/form-data"},
+      {"f" => [file]}
+    )
+    body = stream.respond_to?(:read) ? stream.read : stream.to_a.join
+
+    assert_equal(Encoding::ASCII_8BIT, body.encoding)
+    assert_includes(body, "filename=\"\u00E9.png\"".b)
+  end
+
   def test_hash_encode
     headers = {"content-type" => "multipart/form-data"}
     cases = {
