@@ -245,7 +245,7 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
       fileinput => %w[upload abc],
       OpenAI::FilePart.new(StringIO.new("abc")) => ["", "abc"],
       file => [file.basename.to_path, /^class OpenAI/],
-      OpenAI::FilePart.new(file, filename: "d o g") => ["d%20o%20g", /^class OpenAI/]
+      OpenAI::FilePart.new(file, filename: "d o g") => ["d o g", /^class OpenAI/]
     }
     cases.each do |body, testcase|
       filename, val = testcase
@@ -257,6 +257,18 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
         io.read => ^val
       end
     end
+  end
+
+  def test_multipart_filename_quoting
+    file = OpenAI::FilePart.new(StringIO.new("x"), filename: "a \"b\"\r\nEvil: 1.md")
+    _headers, stream = OpenAI::Internal::Util.encode_content(
+      {"content-type" => "multipart/form-data"},
+      {"f" => [file]}
+    )
+    body = stream.respond_to?(:read) ? stream.read : stream.to_a.join
+
+    assert_includes(body, %q(filename="a \"b\"Evil: 1.md"))
+    refute_includes(body, "\r\nEvil:")
   end
 
   def test_hash_encode
