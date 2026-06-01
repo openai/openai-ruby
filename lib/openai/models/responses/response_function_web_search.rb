@@ -64,12 +64,6 @@ module OpenAI
           variant :find_in_page, -> { OpenAI::Responses::ResponseFunctionWebSearch::Action::FindInPage }
 
           class Search < OpenAI::Internal::Type::BaseModel
-            # @!attribute query
-            #   [DEPRECATED] The search query.
-            #
-            #   @return [String]
-            required :query, String
-
             # @!attribute type
             #   The action type.
             #
@@ -82,6 +76,14 @@ module OpenAI
             #   @return [Array<String>, nil]
             optional :queries, OpenAI::Internal::Type::ArrayOf[String]
 
+            # @!attribute query
+            #   @deprecated
+            #
+            #   The search query.
+            #
+            #   @return [String, nil]
+            optional :query, String
+
             # @!attribute sources
             #   The sources used in the search.
             #
@@ -89,16 +91,16 @@ module OpenAI
             optional :sources,
                      -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source] }
 
-            # @!method initialize(query:, queries: nil, sources: nil, type: :search)
+            # @!method initialize(queries: nil, query: nil, sources: nil, type: :search)
             #   Some parameter documentations has been truncated, see
             #   {OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Search} for more
             #   details.
             #
             #   Action type "search" - Performs a web search query.
             #
-            #   @param query [String] [DEPRECATED] The search query.
-            #
             #   @param queries [Array<String>] The search queries.
+            #
+            #   @param query [String] The search query.
             #
             #   @param sources [Array<OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Search::Source>] The sources used in the search.
             #

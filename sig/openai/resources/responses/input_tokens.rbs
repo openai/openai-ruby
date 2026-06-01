@@ -8,6 +8,7 @@ module OpenAI
           ?instructions: String?,
           ?model: String?,
           ?parallel_tool_calls: bool?,
+          ?personality: OpenAI::Models::Responses::InputTokenCountParams::personality,
           ?previous_response_id: String?,
           ?reasoning: OpenAI::Reasoning?,
           ?text: OpenAI::Responses::InputTokenCountParams::Text?,

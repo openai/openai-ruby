@@ -20,6 +20,7 @@ module OpenAI
               OpenAI::Responses::ResponseFunctionToolCallOutputItem,
               OpenAI::Responses::ResponseToolSearchCall,
               OpenAI::Responses::ResponseToolSearchOutputItem,
+              OpenAI::Responses::ResponseItem::AdditionalTools,
               OpenAI::Responses::ResponseReasoningItem,
               OpenAI::Responses::ResponseCompactionItem,
               OpenAI::Responses::ResponseItem::ImageGenerationCall,
@@ -38,6 +39,155 @@ module OpenAI
               OpenAI::Responses::ResponseCustomToolCallOutputItem
             )
           end
+
+        class AdditionalTools < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseItem::AdditionalTools,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The unique ID of the additional tools item.
+          sig { returns(String) }
+          attr_accessor :id
+
+          # The role that provided the additional tools.
+          sig do
+            returns(
+              OpenAI::Responses::ResponseItem::AdditionalTools::Role::TaggedSymbol
+            )
+          end
+          attr_accessor :role
+
+          # The additional tool definitions made available at this item.
+          sig { returns(T::Array[OpenAI::Responses::Tool::Variants]) }
+          attr_accessor :tools
+
+          # The type of the item. Always `additional_tools`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          sig do
+            params(
+              id: String,
+              role:
+                OpenAI::Responses::ResponseItem::AdditionalTools::Role::OrSymbol,
+              tools:
+                T::Array[
+                  T.any(
+                    OpenAI::Responses::FunctionTool::OrHash,
+                    OpenAI::Responses::FileSearchTool::OrHash,
+                    OpenAI::Responses::ComputerTool::OrHash,
+                    OpenAI::Responses::ComputerUsePreviewTool::OrHash,
+                    OpenAI::Responses::Tool::Mcp::OrHash,
+                    OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                    OpenAI::Responses::Tool::ImageGeneration::OrHash,
+                    OpenAI::Responses::Tool::LocalShell::OrHash,
+                    OpenAI::Responses::FunctionShellTool::OrHash,
+                    OpenAI::Responses::CustomTool::OrHash,
+                    OpenAI::Responses::NamespaceTool::OrHash,
+                    OpenAI::Responses::ToolSearchTool::OrHash,
+                    OpenAI::Responses::ApplyPatchTool::OrHash,
+                    OpenAI::Responses::WebSearchTool::OrHash,
+                    OpenAI::Responses::WebSearchPreviewTool::OrHash
+                  )
+                ],
+              type: Symbol
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # The unique ID of the additional tools item.
+            id:,
+            # The role that provided the additional tools.
+            role:,
+            # The additional tool definitions made available at this item.
+            tools:,
+            # The type of the item. Always `additional_tools`.
+            type: :additional_tools
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                id: String,
+                role:
+                  OpenAI::Responses::ResponseItem::AdditionalTools::Role::TaggedSymbol,
+                tools: T::Array[OpenAI::Responses::Tool::Variants],
+                type: Symbol
+              }
+            )
+          end
+          def to_hash
+          end
+
+          # The role that provided the additional tools.
+          module Role
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol =
+              T.type_alias do
+                T.all(
+                  Symbol,
+                  OpenAI::Responses::ResponseItem::AdditionalTools::Role
+                )
+              end
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            UNKNOWN =
+              T.let(
+                :unknown,
+                OpenAI::Responses::ResponseItem::AdditionalTools::Role::TaggedSymbol
+              )
+            USER =
+              T.let(
+                :user,
+                OpenAI::Responses::ResponseItem::AdditionalTools::Role::TaggedSymbol
+              )
+            ASSISTANT =
+              T.let(
+                :assistant,
+                OpenAI::Responses::ResponseItem::AdditionalTools::Role::TaggedSymbol
+              )
+            SYSTEM =
+              T.let(
+                :system,
+                OpenAI::Responses::ResponseItem::AdditionalTools::Role::TaggedSymbol
+              )
+            CRITIC =
+              T.let(
+                :critic,
+                OpenAI::Responses::ResponseItem::AdditionalTools::Role::TaggedSymbol
+              )
+            DISCRIMINATOR =
+              T.let(
+                :discriminator,
+                OpenAI::Responses::ResponseItem::AdditionalTools::Role::TaggedSymbol
+              )
+            DEVELOPER =
+              T.let(
+                :developer,
+                OpenAI::Responses::ResponseItem::AdditionalTools::Role::TaggedSymbol
+              )
+            TOOL =
+              T.let(
+                :tool,
+                OpenAI::Responses::ResponseItem::AdditionalTools::Role::TaggedSymbol
+              )
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Responses::ResponseItem::AdditionalTools::Role::TaggedSymbol
+                ]
+              )
+            end
+            def self.values
+            end
+          end
+        end
 
         class ImageGenerationCall < OpenAI::Internal::Type::BaseModel
           OrHash =

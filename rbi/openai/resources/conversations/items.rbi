@@ -23,6 +23,7 @@ module OpenAI
                   OpenAI::Responses::ResponseInputItem::FunctionCallOutput::OrHash,
                   OpenAI::Responses::ResponseInputItem::ToolSearchCall::OrHash,
                   OpenAI::Responses::ResponseToolSearchOutputItemParam::OrHash,
+                  OpenAI::Responses::ResponseInputItem::AdditionalTools::OrHash,
                   OpenAI::Responses::ResponseReasoningItem::OrHash,
                   OpenAI::Responses::ResponseCompactionItemParam::OrHash,
                   OpenAI::Responses::ResponseInputItem::ImageGenerationCall::OrHash,

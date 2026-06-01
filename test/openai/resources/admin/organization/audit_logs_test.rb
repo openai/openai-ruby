@@ -70,7 +70,13 @@ class OpenAI::Test::Resources::Admin::Organization::AuditLogsTest < OpenAI::Test
         service_account_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated | nil,
         user_added: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded | nil,
         user_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserDeleted | nil,
-        user_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated | nil
+        user_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated | nil,
+        workload_identity_provider_mapping_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated | nil,
+        workload_identity_provider_mapping_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted | nil,
+        workload_identity_provider_mapping_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated | nil,
+        workload_identity_provider_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated | nil,
+        workload_identity_provider_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted | nil,
+        workload_identity_provider_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated | nil
       }
     end
   end

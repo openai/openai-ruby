@@ -24,6 +24,11 @@ module OpenAI
             instructions: T.nilable(String),
             model: T.nilable(String),
             parallel_tool_calls: T.nilable(T::Boolean),
+            personality:
+              T.any(
+                String,
+                OpenAI::Responses::InputTokenCountParams::Personality::OrSymbol
+              ),
             previous_response_id: T.nilable(String),
             reasoning: T.nilable(OpenAI::Reasoning::OrHash),
             text:
@@ -89,6 +94,10 @@ module OpenAI
           model: nil,
           # Whether to allow the model to run tool calls in parallel.
           parallel_tool_calls: nil,
+          # A model-owned style preset to apply to this request. Omit this parameter to use
+          # the model's default style. Supported values may expand over time. Values must be
+          # at most 64 characters.
+          personality: nil,
           # The unique ID of the previous response to the model. Use this to create
           # multi-turn conversations. Learn more about
           # [conversation state](https://platform.openai.com/docs/guides/conversation-state).

@@ -29,6 +29,7 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
       in OpenAI::Responses::ResponseFunctionToolCallOutputItem
       in OpenAI::Responses::ResponseToolSearchCall
       in OpenAI::Responses::ResponseToolSearchOutputItem
+      in OpenAI::Responses::ResponseItem::AdditionalTools
       in OpenAI::Responses::ResponseReasoningItem
       in OpenAI::Responses::ResponseCompactionItem
       in OpenAI::Responses::ResponseItem::ImageGenerationCall
@@ -121,6 +122,12 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
         status: OpenAI::Responses::ResponseToolSearchOutputItem::Status,
         tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool]),
         created_by: String | nil
+      }
+      in {
+        type: :additional_tools,
+        id: String,
+        role: OpenAI::Responses::ResponseItem::AdditionalTools::Role,
+        tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool])
       }
       in {
         type: :reasoning,

@@ -13,6 +13,7 @@ module OpenAI
         | OpenAI::Responses::ResponseInputItem::FunctionCallOutput
         | OpenAI::Responses::ResponseInputItem::ToolSearchCall
         | OpenAI::Responses::ResponseToolSearchOutputItemParam
+        | OpenAI::Responses::ResponseInputItem::AdditionalTools
         | OpenAI::Responses::ResponseReasoningItem
         | OpenAI::Responses::ResponseCompactionItemParam
         | OpenAI::Responses::ResponseInputItem::ImageGenerationCall
@@ -308,6 +309,38 @@ module OpenAI
 
             def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall::status]
           end
+        end
+
+        type additional_tools =
+          {
+            role: :developer,
+            tools: ::Array[OpenAI::Models::Responses::tool],
+            type: :additional_tools,
+            id: String?
+          }
+
+        class AdditionalTools < OpenAI::Internal::Type::BaseModel
+          attr_accessor role: :developer
+
+          attr_accessor tools: ::Array[OpenAI::Models::Responses::tool]
+
+          attr_accessor type: :additional_tools
+
+          attr_accessor id: String?
+
+          def initialize: (
+            tools: ::Array[OpenAI::Models::Responses::tool],
+            ?id: String?,
+            ?role: :developer,
+            ?type: :additional_tools
+          ) -> void
+
+          def to_hash: -> {
+            role: :developer,
+            tools: ::Array[OpenAI::Models::Responses::tool],
+            type: :additional_tools,
+            id: String?
+          }
         end
 
         type image_generation_call =

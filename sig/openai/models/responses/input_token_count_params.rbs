@@ -8,6 +8,7 @@ module OpenAI
           instructions: String?,
           model: String?,
           parallel_tool_calls: bool?,
+          personality: OpenAI::Models::Responses::InputTokenCountParams::personality,
           previous_response_id: String?,
           reasoning: OpenAI::Reasoning?,
           text: OpenAI::Responses::InputTokenCountParams::Text?,
@@ -31,6 +32,12 @@ module OpenAI
 
         attr_accessor parallel_tool_calls: bool?
 
+        attr_reader personality: OpenAI::Models::Responses::InputTokenCountParams::personality?
+
+        def personality=: (
+          OpenAI::Models::Responses::InputTokenCountParams::personality
+        ) -> OpenAI::Models::Responses::InputTokenCountParams::personality
+
         attr_accessor previous_response_id: String?
 
         attr_accessor reasoning: OpenAI::Reasoning?
@@ -53,6 +60,7 @@ module OpenAI
           ?instructions: String?,
           ?model: String?,
           ?parallel_tool_calls: bool?,
+          ?personality: OpenAI::Models::Responses::InputTokenCountParams::personality,
           ?previous_response_id: String?,
           ?reasoning: OpenAI::Reasoning?,
           ?text: OpenAI::Responses::InputTokenCountParams::Text?,
@@ -68,6 +76,7 @@ module OpenAI
           instructions: String?,
           model: String?,
           parallel_tool_calls: bool?,
+          personality: OpenAI::Models::Responses::InputTokenCountParams::personality,
           previous_response_id: String?,
           reasoning: OpenAI::Reasoning?,
           text: OpenAI::Responses::InputTokenCountParams::Text?,
@@ -95,6 +104,17 @@ module OpenAI
           def self?.variants: -> ::Array[OpenAI::Models::Responses::InputTokenCountParams::input]
 
           ResponseInputItemArray: OpenAI::Internal::Type::Converter
+        end
+
+        type personality = String | :friendly | :pragmatic
+
+        module Personality
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::InputTokenCountParams::personality]
+
+          FRIENDLY: :friendly
+          PRAGMATIC: :pragmatic
         end
 
         type text =

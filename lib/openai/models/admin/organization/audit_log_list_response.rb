@@ -411,7 +411,55 @@ module OpenAI
                    -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated },
                    api_name: :"user.updated"
 
-          # @!method initialize(id:, effective_at:, type:, actor: nil, api_key_created: nil, api_key_deleted: nil, api_key_updated: nil, certificate_created: nil, certificate_deleted: nil, certificate_updated: nil, certificates_activated: nil, certificates_deactivated: nil, checkpoint_permission_created: nil, checkpoint_permission_deleted: nil, external_key_registered: nil, external_key_removed: nil, group_created: nil, group_deleted: nil, group_updated: nil, invite_accepted: nil, invite_deleted: nil, invite_sent: nil, ip_allowlist_config_activated: nil, ip_allowlist_config_deactivated: nil, ip_allowlist_created: nil, ip_allowlist_deleted: nil, ip_allowlist_updated: nil, login_failed: nil, login_succeeded: nil, logout_failed: nil, logout_succeeded: nil, organization_updated: nil, project: nil, project_archived: nil, project_created: nil, project_deleted: nil, project_updated: nil, rate_limit_deleted: nil, rate_limit_updated: nil, role_assignment_created: nil, role_assignment_deleted: nil, role_created: nil, role_deleted: nil, role_updated: nil, scim_disabled: nil, scim_enabled: nil, service_account_created: nil, service_account_deleted: nil, service_account_updated: nil, user_added: nil, user_deleted: nil, user_updated: nil)
+          # @!attribute workload_identity_provider_mapping_created
+          #   The details for events with this `type`.
+          #
+          #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated, nil]
+          optional :workload_identity_provider_mapping_created,
+                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated },
+                   api_name: :"workload_identity_provider_mapping.created"
+
+          # @!attribute workload_identity_provider_mapping_deleted
+          #   The details for events with this `type`.
+          #
+          #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted, nil]
+          optional :workload_identity_provider_mapping_deleted,
+                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted },
+                   api_name: :"workload_identity_provider_mapping.deleted"
+
+          # @!attribute workload_identity_provider_mapping_updated
+          #   The details for events with this `type`.
+          #
+          #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated, nil]
+          optional :workload_identity_provider_mapping_updated,
+                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated },
+                   api_name: :"workload_identity_provider_mapping.updated"
+
+          # @!attribute workload_identity_provider_created
+          #   The details for events with this `type`.
+          #
+          #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated, nil]
+          optional :workload_identity_provider_created,
+                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated },
+                   api_name: :"workload_identity_provider.created"
+
+          # @!attribute workload_identity_provider_deleted
+          #   The details for events with this `type`.
+          #
+          #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted, nil]
+          optional :workload_identity_provider_deleted,
+                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted },
+                   api_name: :"workload_identity_provider.deleted"
+
+          # @!attribute workload_identity_provider_updated
+          #   The details for events with this `type`.
+          #
+          #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated, nil]
+          optional :workload_identity_provider_updated,
+                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated },
+                   api_name: :"workload_identity_provider.updated"
+
+          # @!method initialize(id:, effective_at:, type:, actor: nil, api_key_created: nil, api_key_deleted: nil, api_key_updated: nil, certificate_created: nil, certificate_deleted: nil, certificate_updated: nil, certificates_activated: nil, certificates_deactivated: nil, checkpoint_permission_created: nil, checkpoint_permission_deleted: nil, external_key_registered: nil, external_key_removed: nil, group_created: nil, group_deleted: nil, group_updated: nil, invite_accepted: nil, invite_deleted: nil, invite_sent: nil, ip_allowlist_config_activated: nil, ip_allowlist_config_deactivated: nil, ip_allowlist_created: nil, ip_allowlist_deleted: nil, ip_allowlist_updated: nil, login_failed: nil, login_succeeded: nil, logout_failed: nil, logout_succeeded: nil, organization_updated: nil, project: nil, project_archived: nil, project_created: nil, project_deleted: nil, project_updated: nil, rate_limit_deleted: nil, rate_limit_updated: nil, role_assignment_created: nil, role_assignment_deleted: nil, role_created: nil, role_deleted: nil, role_updated: nil, scim_disabled: nil, scim_enabled: nil, service_account_created: nil, service_account_deleted: nil, service_account_updated: nil, user_added: nil, user_deleted: nil, user_updated: nil, workload_identity_provider_mapping_created: nil, workload_identity_provider_mapping_deleted: nil, workload_identity_provider_mapping_updated: nil, workload_identity_provider_created: nil, workload_identity_provider_deleted: nil, workload_identity_provider_updated: nil)
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Admin::Organization::AuditLogListResponse} for more details.
           #
@@ -520,6 +568,18 @@ module OpenAI
           #   @param user_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::UserDeleted] The details for events with this `type`.
           #
           #   @param user_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated] The details for events with this `type`.
+          #
+          #   @param workload_identity_provider_mapping_created [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated] The details for events with this `type`.
+          #
+          #   @param workload_identity_provider_mapping_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted] The details for events with this `type`.
+          #
+          #   @param workload_identity_provider_mapping_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated] The details for events with this `type`.
+          #
+          #   @param workload_identity_provider_created [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated] The details for events with this `type`.
+          #
+          #   @param workload_identity_provider_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted] The details for events with this `type`.
+          #
+          #   @param workload_identity_provider_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated] The details for events with this `type`.
 
           # The event type.
           #
@@ -565,6 +625,12 @@ module OpenAI
             TUNNEL_CREATED = :"tunnel.created"
             TUNNEL_UPDATED = :"tunnel.updated"
             TUNNEL_DELETED = :"tunnel.deleted"
+            WORKLOAD_IDENTITY_PROVIDER_CREATED = :"workload_identity_provider.created"
+            WORKLOAD_IDENTITY_PROVIDER_UPDATED = :"workload_identity_provider.updated"
+            WORKLOAD_IDENTITY_PROVIDER_DELETED = :"workload_identity_provider.deleted"
+            WORKLOAD_IDENTITY_PROVIDER_MAPPING_CREATED = :"workload_identity_provider_mapping.created"
+            WORKLOAD_IDENTITY_PROVIDER_MAPPING_UPDATED = :"workload_identity_provider_mapping.updated"
+            WORKLOAD_IDENTITY_PROVIDER_MAPPING_DELETED = :"workload_identity_provider_mapping.deleted"
             ROLE_CREATED = :"role.created"
             ROLE_UPDATED = :"role.updated"
             ROLE_DELETED = :"role.deleted"
@@ -2191,6 +2257,170 @@ module OpenAI
               #
               #   @param role [String] The role of the user. Is either `owner` or `member`.
             end
+          end
+
+          # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#workload_identity_provider_mapping_created
+          class WorkloadIdentityProviderMappingCreated < OpenAI::Internal::Type::BaseModel
+            # @!attribute id
+            #   The workload identity provider mapping ID.
+            #
+            #   @return [String, nil]
+            optional :id, String
+
+            # @!attribute data
+            #   The payload used to create the workload identity provider mapping.
+            #
+            #   @return [Object, nil]
+            optional :data, OpenAI::Internal::Type::Unknown
+
+            # @!attribute identity_provider_id
+            #   The workload identity provider ID.
+            #
+            #   @return [String, nil]
+            optional :identity_provider_id, String
+
+            # @!method initialize(id: nil, data: nil, identity_provider_id: nil)
+            #   The details for events with this `type`.
+            #
+            #   @param id [String] The workload identity provider mapping ID.
+            #
+            #   @param data [Object] The payload used to create the workload identity provider mapping.
+            #
+            #   @param identity_provider_id [String] The workload identity provider ID.
+          end
+
+          # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#workload_identity_provider_mapping_deleted
+          class WorkloadIdentityProviderMappingDeleted < OpenAI::Internal::Type::BaseModel
+            # @!attribute id
+            #   The workload identity provider mapping ID.
+            #
+            #   @return [String, nil]
+            optional :id, String
+
+            # @!attribute identity_provider_id
+            #   The workload identity provider ID.
+            #
+            #   @return [String, nil]
+            optional :identity_provider_id, String
+
+            # @!attribute project_id
+            #   The project ID.
+            #
+            #   @return [String, nil]
+            optional :project_id, String
+
+            # @!attribute service_account_id
+            #   The mapped service account ID.
+            #
+            #   @return [String, nil]
+            optional :service_account_id, String
+
+            # @!method initialize(id: nil, identity_provider_id: nil, project_id: nil, service_account_id: nil)
+            #   The details for events with this `type`.
+            #
+            #   @param id [String] The workload identity provider mapping ID.
+            #
+            #   @param identity_provider_id [String] The workload identity provider ID.
+            #
+            #   @param project_id [String] The project ID.
+            #
+            #   @param service_account_id [String] The mapped service account ID.
+          end
+
+          # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#workload_identity_provider_mapping_updated
+          class WorkloadIdentityProviderMappingUpdated < OpenAI::Internal::Type::BaseModel
+            # @!attribute id
+            #   The workload identity provider mapping ID.
+            #
+            #   @return [String, nil]
+            optional :id, String
+
+            # @!attribute changes_requested
+            #   The payload used to update the workload identity provider mapping.
+            #
+            #   @return [Object, nil]
+            optional :changes_requested, OpenAI::Internal::Type::Unknown
+
+            # @!attribute identity_provider_id
+            #   The workload identity provider ID.
+            #
+            #   @return [String, nil]
+            optional :identity_provider_id, String
+
+            # @!method initialize(id: nil, changes_requested: nil, identity_provider_id: nil)
+            #   The details for events with this `type`.
+            #
+            #   @param id [String] The workload identity provider mapping ID.
+            #
+            #   @param changes_requested [Object] The payload used to update the workload identity provider mapping.
+            #
+            #   @param identity_provider_id [String] The workload identity provider ID.
+          end
+
+          # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#workload_identity_provider_created
+          class WorkloadIdentityProviderCreated < OpenAI::Internal::Type::BaseModel
+            # @!attribute id
+            #   The workload identity provider ID.
+            #
+            #   @return [String, nil]
+            optional :id, String
+
+            # @!attribute data
+            #   The payload used to create the workload identity provider.
+            #
+            #   @return [Object, nil]
+            optional :data, OpenAI::Internal::Type::Unknown
+
+            # @!method initialize(id: nil, data: nil)
+            #   The details for events with this `type`.
+            #
+            #   @param id [String] The workload identity provider ID.
+            #
+            #   @param data [Object] The payload used to create the workload identity provider.
+          end
+
+          # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#workload_identity_provider_deleted
+          class WorkloadIdentityProviderDeleted < OpenAI::Internal::Type::BaseModel
+            # @!attribute id
+            #   The workload identity provider ID.
+            #
+            #   @return [String, nil]
+            optional :id, String
+
+            # @!attribute name
+            #   The workload identity provider name.
+            #
+            #   @return [String, nil]
+            optional :name, String
+
+            # @!method initialize(id: nil, name: nil)
+            #   The details for events with this `type`.
+            #
+            #   @param id [String] The workload identity provider ID.
+            #
+            #   @param name [String] The workload identity provider name.
+          end
+
+          # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#workload_identity_provider_updated
+          class WorkloadIdentityProviderUpdated < OpenAI::Internal::Type::BaseModel
+            # @!attribute id
+            #   The workload identity provider ID.
+            #
+            #   @return [String, nil]
+            optional :id, String
+
+            # @!attribute changes_requested
+            #   The payload used to update the workload identity provider.
+            #
+            #   @return [Object, nil]
+            optional :changes_requested, OpenAI::Internal::Type::Unknown
+
+            # @!method initialize(id: nil, changes_requested: nil)
+            #   The details for events with this `type`.
+            #
+            #   @param id [String] The workload identity provider ID.
+            #
+            #   @param changes_requested [Object] The payload used to update the workload identity provider.
           end
         end
       end
