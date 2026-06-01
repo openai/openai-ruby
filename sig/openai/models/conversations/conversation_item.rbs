@@ -14,6 +14,7 @@ module OpenAI
         | OpenAI::Responses::ResponseComputerToolCallOutputItem
         | OpenAI::Responses::ResponseToolSearchCall
         | OpenAI::Responses::ResponseToolSearchOutputItem
+        | OpenAI::Conversations::ConversationItem::AdditionalTools
         | OpenAI::Responses::ResponseReasoningItem
         | OpenAI::Responses::ResponseCompactionItem
         | OpenAI::Responses::ResponseCodeInterpreterToolCall
@@ -75,6 +76,63 @@ module OpenAI
             FAILED: :failed
 
             def self?.values: -> ::Array[OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::status]
+          end
+        end
+
+        type additional_tools =
+          {
+            id: String,
+            role: OpenAI::Models::Conversations::ConversationItem::AdditionalTools::role,
+            tools: ::Array[OpenAI::Models::Responses::tool],
+            type: :additional_tools
+          }
+
+        class AdditionalTools < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor role: OpenAI::Models::Conversations::ConversationItem::AdditionalTools::role
+
+          attr_accessor tools: ::Array[OpenAI::Models::Responses::tool]
+
+          attr_accessor type: :additional_tools
+
+          def initialize: (
+            id: String,
+            role: OpenAI::Models::Conversations::ConversationItem::AdditionalTools::role,
+            tools: ::Array[OpenAI::Models::Responses::tool],
+            ?type: :additional_tools
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            role: OpenAI::Models::Conversations::ConversationItem::AdditionalTools::role,
+            tools: ::Array[OpenAI::Models::Responses::tool],
+            type: :additional_tools
+          }
+
+          type role =
+            :unknown
+            | :user
+            | :assistant
+            | :system
+            | :critic
+            | :discriminator
+            | :developer
+            | :tool
+
+          module Role
+            extend OpenAI::Internal::Type::Enum
+
+            UNKNOWN: :unknown
+            USER: :user
+            ASSISTANT: :assistant
+            SYSTEM: :system
+            CRITIC: :critic
+            DISCRIMINATOR: :discriminator
+            DEVELOPER: :developer
+            TOOL: :tool
+
+            def self?.values: -> ::Array[OpenAI::Models::Conversations::ConversationItem::AdditionalTools::role]
           end
         end
 

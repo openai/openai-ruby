@@ -25,6 +25,7 @@ module OpenAI
               OpenAI::Responses::ResponseInputItem::FunctionCallOutput,
               OpenAI::Responses::ResponseInputItem::ToolSearchCall,
               OpenAI::Responses::ResponseToolSearchOutputItemParam,
+              OpenAI::Responses::ResponseInputItem::AdditionalTools,
               OpenAI::Responses::ResponseReasoningItem,
               OpenAI::Responses::ResponseCompactionItemParam,
               OpenAI::Responses::ResponseInputItem::ImageGenerationCall,
@@ -831,6 +832,125 @@ module OpenAI
             end
             def self.values
             end
+          end
+        end
+
+        class AdditionalTools < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseInputItem::AdditionalTools,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The role that provided the additional tools. Only `developer` is supported.
+          sig { returns(Symbol) }
+          attr_accessor :role
+
+          # A list of additional tools made available at this item.
+          sig do
+            returns(
+              T::Array[
+                T.any(
+                  OpenAI::Responses::FunctionTool,
+                  OpenAI::Responses::FileSearchTool,
+                  OpenAI::Responses::ComputerTool,
+                  OpenAI::Responses::ComputerUsePreviewTool,
+                  OpenAI::Responses::Tool::Mcp,
+                  OpenAI::Responses::Tool::CodeInterpreter,
+                  OpenAI::Responses::Tool::ImageGeneration,
+                  OpenAI::Responses::Tool::LocalShell,
+                  OpenAI::Responses::FunctionShellTool,
+                  OpenAI::Responses::CustomTool,
+                  OpenAI::Responses::NamespaceTool,
+                  OpenAI::Responses::ToolSearchTool,
+                  OpenAI::Responses::ApplyPatchTool,
+                  OpenAI::Responses::WebSearchTool,
+                  OpenAI::Responses::WebSearchPreviewTool
+                )
+              ]
+            )
+          end
+          attr_accessor :tools
+
+          # The item type. Always `additional_tools`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # The unique ID of this additional tools item.
+          sig { returns(T.nilable(String)) }
+          attr_accessor :id
+
+          sig do
+            params(
+              tools:
+                T::Array[
+                  T.any(
+                    OpenAI::Responses::FunctionTool::OrHash,
+                    OpenAI::Responses::FileSearchTool::OrHash,
+                    OpenAI::Responses::ComputerTool::OrHash,
+                    OpenAI::Responses::ComputerUsePreviewTool::OrHash,
+                    OpenAI::Responses::Tool::Mcp::OrHash,
+                    OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                    OpenAI::Responses::Tool::ImageGeneration::OrHash,
+                    OpenAI::Responses::Tool::LocalShell::OrHash,
+                    OpenAI::Responses::FunctionShellTool::OrHash,
+                    OpenAI::Responses::CustomTool::OrHash,
+                    OpenAI::Responses::NamespaceTool::OrHash,
+                    OpenAI::Responses::ToolSearchTool::OrHash,
+                    OpenAI::Responses::ApplyPatchTool::OrHash,
+                    OpenAI::Responses::WebSearchTool::OrHash,
+                    OpenAI::Responses::WebSearchPreviewTool::OrHash
+                  )
+                ],
+              id: T.nilable(String),
+              role: Symbol,
+              type: Symbol
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # A list of additional tools made available at this item.
+            tools:,
+            # The unique ID of this additional tools item.
+            id: nil,
+            # The role that provided the additional tools. Only `developer` is supported.
+            role: :developer,
+            # The item type. Always `additional_tools`.
+            type: :additional_tools
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                role: Symbol,
+                tools:
+                  T::Array[
+                    T.any(
+                      OpenAI::Responses::FunctionTool,
+                      OpenAI::Responses::FileSearchTool,
+                      OpenAI::Responses::ComputerTool,
+                      OpenAI::Responses::ComputerUsePreviewTool,
+                      OpenAI::Responses::Tool::Mcp,
+                      OpenAI::Responses::Tool::CodeInterpreter,
+                      OpenAI::Responses::Tool::ImageGeneration,
+                      OpenAI::Responses::Tool::LocalShell,
+                      OpenAI::Responses::FunctionShellTool,
+                      OpenAI::Responses::CustomTool,
+                      OpenAI::Responses::NamespaceTool,
+                      OpenAI::Responses::ToolSearchTool,
+                      OpenAI::Responses::ApplyPatchTool,
+                      OpenAI::Responses::WebSearchTool,
+                      OpenAI::Responses::WebSearchPreviewTool
+                    )
+                  ],
+                type: Symbol,
+                id: T.nilable(String)
+              }
+            )
+          end
+          def to_hash
           end
         end
 

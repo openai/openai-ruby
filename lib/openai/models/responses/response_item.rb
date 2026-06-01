@@ -38,6 +38,8 @@ module OpenAI
 
         variant :tool_search_output, -> { OpenAI::Responses::ResponseToolSearchOutputItem }
 
+        variant :additional_tools, -> { OpenAI::Responses::ResponseItem::AdditionalTools }
+
         # A description of the chain of thought used by a reasoning model while generating
         # a response. Be sure to include these items in your `input` to the Responses API
         # for subsequent turns of a conversation if you are manually
@@ -88,6 +90,60 @@ module OpenAI
 
         # The output of a custom tool call from your code, being sent back to the model.
         variant :custom_tool_call_output, -> { OpenAI::Responses::ResponseCustomToolCallOutputItem }
+
+        class AdditionalTools < OpenAI::Internal::Type::BaseModel
+          # @!attribute id
+          #   The unique ID of the additional tools item.
+          #
+          #   @return [String]
+          required :id, String
+
+          # @!attribute role
+          #   The role that provided the additional tools.
+          #
+          #   @return [Symbol, OpenAI::Models::Responses::ResponseItem::AdditionalTools::Role]
+          required :role, enum: -> { OpenAI::Responses::ResponseItem::AdditionalTools::Role }
+
+          # @!attribute tools
+          #   The additional tool definitions made available at this item.
+          #
+          #   @return [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::ComputerUsePreviewTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::FunctionShellTool, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::NamespaceTool, OpenAI::Models::Responses::ToolSearchTool, OpenAI::Models::Responses::ApplyPatchTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool>]
+          required :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool] }
+
+          # @!attribute type
+          #   The type of the item. Always `additional_tools`.
+          #
+          #   @return [Symbol, :additional_tools]
+          required :type, const: :additional_tools
+
+          # @!method initialize(id:, role:, tools:, type: :additional_tools)
+          #   @param id [String] The unique ID of the additional tools item.
+          #
+          #   @param role [Symbol, OpenAI::Models::Responses::ResponseItem::AdditionalTools::Role] The role that provided the additional tools.
+          #
+          #   @param tools [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::ComputerUsePreviewTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::FunctionShellTool, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::NamespaceTool, OpenAI::Models::Responses::ToolSearchTool, OpenAI::Models::Responses::ApplyPatchTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool>] The additional tool definitions made available at this item.
+          #
+          #   @param type [Symbol, :additional_tools] The type of the item. Always `additional_tools`.
+
+          # The role that provided the additional tools.
+          #
+          # @see OpenAI::Models::Responses::ResponseItem::AdditionalTools#role
+          module Role
+            extend OpenAI::Internal::Type::Enum
+
+            UNKNOWN = :unknown
+            USER = :user
+            ASSISTANT = :assistant
+            SYSTEM = :system
+            CRITIC = :critic
+            DISCRIMINATOR = :discriminator
+            DEVELOPER = :developer
+            TOOL = :tool
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
+        end
 
         class ImageGenerationCall < OpenAI::Internal::Type::BaseModel
           # @!attribute id
@@ -605,7 +661,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Responses::ResponseInputMessageItem, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCallItem, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem, OpenAI::Models::Responses::ResponseToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItem, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItem, OpenAI::Models::Responses::ResponseItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseItem::LocalShellCall, OpenAI::Models::Responses::ResponseItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseFunctionShellToolCall, OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput, OpenAI::Models::Responses::ResponseApplyPatchToolCall, OpenAI::Models::Responses::ResponseApplyPatchToolCallOutput, OpenAI::Models::Responses::ResponseItem::McpListTools, OpenAI::Models::Responses::ResponseItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallItem, OpenAI::Models::Responses::ResponseCustomToolCallOutputItem)]
+        #   @return [Array(OpenAI::Models::Responses::ResponseInputMessageItem, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCallItem, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem, OpenAI::Models::Responses::ResponseToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItem, OpenAI::Models::Responses::ResponseItem::AdditionalTools, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItem, OpenAI::Models::Responses::ResponseItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseItem::LocalShellCall, OpenAI::Models::Responses::ResponseItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseFunctionShellToolCall, OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput, OpenAI::Models::Responses::ResponseApplyPatchToolCall, OpenAI::Models::Responses::ResponseApplyPatchToolCallOutput, OpenAI::Models::Responses::ResponseItem::McpListTools, OpenAI::Models::Responses::ResponseItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallItem, OpenAI::Models::Responses::ResponseCustomToolCallOutputItem)]
       end
     end
   end

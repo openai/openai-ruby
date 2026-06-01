@@ -894,6 +894,114 @@ module OpenAI
           end
           attr_writer :user_updated
 
+          # The details for events with this `type`.
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated
+              )
+            )
+          end
+          attr_reader :workload_identity_provider_mapping_created
+
+          sig do
+            params(
+              workload_identity_provider_mapping_created:
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated::OrHash
+            ).void
+          end
+          attr_writer :workload_identity_provider_mapping_created
+
+          # The details for events with this `type`.
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted
+              )
+            )
+          end
+          attr_reader :workload_identity_provider_mapping_deleted
+
+          sig do
+            params(
+              workload_identity_provider_mapping_deleted:
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted::OrHash
+            ).void
+          end
+          attr_writer :workload_identity_provider_mapping_deleted
+
+          # The details for events with this `type`.
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated
+              )
+            )
+          end
+          attr_reader :workload_identity_provider_mapping_updated
+
+          sig do
+            params(
+              workload_identity_provider_mapping_updated:
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated::OrHash
+            ).void
+          end
+          attr_writer :workload_identity_provider_mapping_updated
+
+          # The details for events with this `type`.
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated
+              )
+            )
+          end
+          attr_reader :workload_identity_provider_created
+
+          sig do
+            params(
+              workload_identity_provider_created:
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated::OrHash
+            ).void
+          end
+          attr_writer :workload_identity_provider_created
+
+          # The details for events with this `type`.
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted
+              )
+            )
+          end
+          attr_reader :workload_identity_provider_deleted
+
+          sig do
+            params(
+              workload_identity_provider_deleted:
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted::OrHash
+            ).void
+          end
+          attr_writer :workload_identity_provider_deleted
+
+          # The details for events with this `type`.
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated
+              )
+            )
+          end
+          attr_reader :workload_identity_provider_updated
+
+          sig do
+            params(
+              workload_identity_provider_updated:
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated::OrHash
+            ).void
+          end
+          attr_writer :workload_identity_provider_updated
+
           # A log of a user action or configuration change within this organization.
           sig do
             params(
@@ -998,7 +1106,19 @@ module OpenAI
               user_deleted:
                 OpenAI::Models::Admin::Organization::AuditLogListResponse::UserDeleted::OrHash,
               user_updated:
-                OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated::OrHash
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated::OrHash,
+              workload_identity_provider_mapping_created:
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated::OrHash,
+              workload_identity_provider_mapping_deleted:
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted::OrHash,
+              workload_identity_provider_mapping_updated:
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated::OrHash,
+              workload_identity_provider_created:
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated::OrHash,
+              workload_identity_provider_deleted:
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted::OrHash,
+              workload_identity_provider_updated:
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated::OrHash
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1108,7 +1228,19 @@ module OpenAI
             # The details for events with this `type`.
             user_deleted: nil,
             # The details for events with this `type`.
-            user_updated: nil
+            user_updated: nil,
+            # The details for events with this `type`.
+            workload_identity_provider_mapping_created: nil,
+            # The details for events with this `type`.
+            workload_identity_provider_mapping_deleted: nil,
+            # The details for events with this `type`.
+            workload_identity_provider_mapping_updated: nil,
+            # The details for events with this `type`.
+            workload_identity_provider_created: nil,
+            # The details for events with this `type`.
+            workload_identity_provider_deleted: nil,
+            # The details for events with this `type`.
+            workload_identity_provider_updated: nil
           )
           end
 
@@ -1216,7 +1348,19 @@ module OpenAI
                 user_deleted:
                   OpenAI::Models::Admin::Organization::AuditLogListResponse::UserDeleted,
                 user_updated:
-                  OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated,
+                workload_identity_provider_mapping_created:
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated,
+                workload_identity_provider_mapping_deleted:
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted,
+                workload_identity_provider_mapping_updated:
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated,
+                workload_identity_provider_created:
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated,
+                workload_identity_provider_deleted:
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted,
+                workload_identity_provider_updated:
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated
               }
             )
           end
@@ -1424,6 +1568,36 @@ module OpenAI
             TUNNEL_DELETED =
               T.let(
                 :"tunnel.deleted",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            WORKLOAD_IDENTITY_PROVIDER_CREATED =
+              T.let(
+                :"workload_identity_provider.created",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            WORKLOAD_IDENTITY_PROVIDER_UPDATED =
+              T.let(
+                :"workload_identity_provider.updated",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            WORKLOAD_IDENTITY_PROVIDER_DELETED =
+              T.let(
+                :"workload_identity_provider.deleted",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            WORKLOAD_IDENTITY_PROVIDER_MAPPING_CREATED =
+              T.let(
+                :"workload_identity_provider_mapping.created",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            WORKLOAD_IDENTITY_PROVIDER_MAPPING_UPDATED =
+              T.let(
+                :"workload_identity_provider_mapping.updated",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            WORKLOAD_IDENTITY_PROVIDER_MAPPING_DELETED =
+              T.let(
+                :"workload_identity_provider_mapping.deleted",
                 OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
               )
             ROLE_CREATED =
@@ -5093,6 +5267,318 @@ module OpenAI
               sig { override.returns({ role: String }) }
               def to_hash
               end
+            end
+          end
+
+          class WorkloadIdentityProviderMappingCreated < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The workload identity provider mapping ID.
+            sig { returns(T.nilable(String)) }
+            attr_reader :id
+
+            sig { params(id: String).void }
+            attr_writer :id
+
+            # The payload used to create the workload identity provider mapping.
+            sig { returns(T.nilable(T.anything)) }
+            attr_reader :data
+
+            sig { params(data: T.anything).void }
+            attr_writer :data
+
+            # The workload identity provider ID.
+            sig { returns(T.nilable(String)) }
+            attr_reader :identity_provider_id
+
+            sig { params(identity_provider_id: String).void }
+            attr_writer :identity_provider_id
+
+            # The details for events with this `type`.
+            sig do
+              params(
+                id: String,
+                data: T.anything,
+                identity_provider_id: String
+              ).returns(T.attached_class)
+            end
+            def self.new(
+              # The workload identity provider mapping ID.
+              id: nil,
+              # The payload used to create the workload identity provider mapping.
+              data: nil,
+              # The workload identity provider ID.
+              identity_provider_id: nil
+            )
+            end
+
+            sig do
+              override.returns(
+                { id: String, data: T.anything, identity_provider_id: String }
+              )
+            end
+            def to_hash
+            end
+          end
+
+          class WorkloadIdentityProviderMappingDeleted < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The workload identity provider mapping ID.
+            sig { returns(T.nilable(String)) }
+            attr_reader :id
+
+            sig { params(id: String).void }
+            attr_writer :id
+
+            # The workload identity provider ID.
+            sig { returns(T.nilable(String)) }
+            attr_reader :identity_provider_id
+
+            sig { params(identity_provider_id: String).void }
+            attr_writer :identity_provider_id
+
+            # The project ID.
+            sig { returns(T.nilable(String)) }
+            attr_reader :project_id
+
+            sig { params(project_id: String).void }
+            attr_writer :project_id
+
+            # The mapped service account ID.
+            sig { returns(T.nilable(String)) }
+            attr_reader :service_account_id
+
+            sig { params(service_account_id: String).void }
+            attr_writer :service_account_id
+
+            # The details for events with this `type`.
+            sig do
+              params(
+                id: String,
+                identity_provider_id: String,
+                project_id: String,
+                service_account_id: String
+              ).returns(T.attached_class)
+            end
+            def self.new(
+              # The workload identity provider mapping ID.
+              id: nil,
+              # The workload identity provider ID.
+              identity_provider_id: nil,
+              # The project ID.
+              project_id: nil,
+              # The mapped service account ID.
+              service_account_id: nil
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  id: String,
+                  identity_provider_id: String,
+                  project_id: String,
+                  service_account_id: String
+                }
+              )
+            end
+            def to_hash
+            end
+          end
+
+          class WorkloadIdentityProviderMappingUpdated < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The workload identity provider mapping ID.
+            sig { returns(T.nilable(String)) }
+            attr_reader :id
+
+            sig { params(id: String).void }
+            attr_writer :id
+
+            # The payload used to update the workload identity provider mapping.
+            sig { returns(T.nilable(T.anything)) }
+            attr_reader :changes_requested
+
+            sig { params(changes_requested: T.anything).void }
+            attr_writer :changes_requested
+
+            # The workload identity provider ID.
+            sig { returns(T.nilable(String)) }
+            attr_reader :identity_provider_id
+
+            sig { params(identity_provider_id: String).void }
+            attr_writer :identity_provider_id
+
+            # The details for events with this `type`.
+            sig do
+              params(
+                id: String,
+                changes_requested: T.anything,
+                identity_provider_id: String
+              ).returns(T.attached_class)
+            end
+            def self.new(
+              # The workload identity provider mapping ID.
+              id: nil,
+              # The payload used to update the workload identity provider mapping.
+              changes_requested: nil,
+              # The workload identity provider ID.
+              identity_provider_id: nil
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  id: String,
+                  changes_requested: T.anything,
+                  identity_provider_id: String
+                }
+              )
+            end
+            def to_hash
+            end
+          end
+
+          class WorkloadIdentityProviderCreated < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The workload identity provider ID.
+            sig { returns(T.nilable(String)) }
+            attr_reader :id
+
+            sig { params(id: String).void }
+            attr_writer :id
+
+            # The payload used to create the workload identity provider.
+            sig { returns(T.nilable(T.anything)) }
+            attr_reader :data
+
+            sig { params(data: T.anything).void }
+            attr_writer :data
+
+            # The details for events with this `type`.
+            sig do
+              params(id: String, data: T.anything).returns(T.attached_class)
+            end
+            def self.new(
+              # The workload identity provider ID.
+              id: nil,
+              # The payload used to create the workload identity provider.
+              data: nil
+            )
+            end
+
+            sig { override.returns({ id: String, data: T.anything }) }
+            def to_hash
+            end
+          end
+
+          class WorkloadIdentityProviderDeleted < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The workload identity provider ID.
+            sig { returns(T.nilable(String)) }
+            attr_reader :id
+
+            sig { params(id: String).void }
+            attr_writer :id
+
+            # The workload identity provider name.
+            sig { returns(T.nilable(String)) }
+            attr_reader :name
+
+            sig { params(name: String).void }
+            attr_writer :name
+
+            # The details for events with this `type`.
+            sig { params(id: String, name: String).returns(T.attached_class) }
+            def self.new(
+              # The workload identity provider ID.
+              id: nil,
+              # The workload identity provider name.
+              name: nil
+            )
+            end
+
+            sig { override.returns({ id: String, name: String }) }
+            def to_hash
+            end
+          end
+
+          class WorkloadIdentityProviderUpdated < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The workload identity provider ID.
+            sig { returns(T.nilable(String)) }
+            attr_reader :id
+
+            sig { params(id: String).void }
+            attr_writer :id
+
+            # The payload used to update the workload identity provider.
+            sig { returns(T.nilable(T.anything)) }
+            attr_reader :changes_requested
+
+            sig { params(changes_requested: T.anything).void }
+            attr_writer :changes_requested
+
+            # The details for events with this `type`.
+            sig do
+              params(id: String, changes_requested: T.anything).returns(
+                T.attached_class
+              )
+            end
+            def self.new(
+              # The workload identity provider ID.
+              id: nil,
+              # The payload used to update the workload identity provider.
+              changes_requested: nil
+            )
+            end
+
+            sig do
+              override.returns({ id: String, changes_requested: T.anything })
+            end
+            def to_hash
             end
           end
         end
