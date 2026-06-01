@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.65.0 (2026-06-01)
+
+Full Changelog: [v0.64.0...v0.65.0](https://github.com/openai/openai-ruby/compare/v0.64.0...v0.65.0)
+
+### Features
+
+* **api:** workload identity in audit logs, additional_tools item in responses, fix ActionSearch.query to be optional. ([5d44823](https://github.com/openai/openai-ruby/commit/5d4482389d152decbc9e8b90ad2ed8e1d1243d43))
+
 ## 0.64.0 (2026-05-21)
 
 Full Changelog: [v0.63.0...v0.64.0](https://github.com/openai/openai-ruby/compare/v0.63.0...v0.64.0)
