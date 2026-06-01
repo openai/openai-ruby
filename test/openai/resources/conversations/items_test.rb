@@ -44,6 +44,7 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
       in OpenAI::Responses::ResponseComputerToolCallOutputItem
       in OpenAI::Responses::ResponseToolSearchCall
       in OpenAI::Responses::ResponseToolSearchOutputItem
+      in OpenAI::Conversations::ConversationItem::AdditionalTools
       in OpenAI::Responses::ResponseReasoningItem
       in OpenAI::Responses::ResponseCompactionItem
       in OpenAI::Responses::ResponseCodeInterpreterToolCall
@@ -134,6 +135,12 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         status: OpenAI::Responses::ResponseToolSearchOutputItem::Status,
         tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool]),
         created_by: String | nil
+      }
+      in {
+        type: :additional_tools,
+        id: String,
+        role: OpenAI::Conversations::ConversationItem::AdditionalTools::Role,
+        tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool])
       }
       in {
         type: :reasoning,
@@ -262,6 +269,7 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
       in OpenAI::Responses::ResponseComputerToolCallOutputItem
       in OpenAI::Responses::ResponseToolSearchCall
       in OpenAI::Responses::ResponseToolSearchOutputItem
+      in OpenAI::Conversations::ConversationItem::AdditionalTools
       in OpenAI::Responses::ResponseReasoningItem
       in OpenAI::Responses::ResponseCompactionItem
       in OpenAI::Responses::ResponseCodeInterpreterToolCall
@@ -352,6 +360,12 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         status: OpenAI::Responses::ResponseToolSearchOutputItem::Status,
         tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool]),
         created_by: String | nil
+      }
+      in {
+        type: :additional_tools,
+        id: String,
+        role: OpenAI::Conversations::ConversationItem::AdditionalTools::Role,
+        tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool])
       }
       in {
         type: :reasoning,

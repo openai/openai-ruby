@@ -467,6 +467,36 @@ module OpenAI
                 :"tunnel.deleted",
                 OpenAI::Admin::Organization::AuditLogListParams::EventType::TaggedSymbol
               )
+            WORKLOAD_IDENTITY_PROVIDER_CREATED =
+              T.let(
+                :"workload_identity_provider.created",
+                OpenAI::Admin::Organization::AuditLogListParams::EventType::TaggedSymbol
+              )
+            WORKLOAD_IDENTITY_PROVIDER_UPDATED =
+              T.let(
+                :"workload_identity_provider.updated",
+                OpenAI::Admin::Organization::AuditLogListParams::EventType::TaggedSymbol
+              )
+            WORKLOAD_IDENTITY_PROVIDER_DELETED =
+              T.let(
+                :"workload_identity_provider.deleted",
+                OpenAI::Admin::Organization::AuditLogListParams::EventType::TaggedSymbol
+              )
+            WORKLOAD_IDENTITY_PROVIDER_MAPPING_CREATED =
+              T.let(
+                :"workload_identity_provider_mapping.created",
+                OpenAI::Admin::Organization::AuditLogListParams::EventType::TaggedSymbol
+              )
+            WORKLOAD_IDENTITY_PROVIDER_MAPPING_UPDATED =
+              T.let(
+                :"workload_identity_provider_mapping.updated",
+                OpenAI::Admin::Organization::AuditLogListParams::EventType::TaggedSymbol
+              )
+            WORKLOAD_IDENTITY_PROVIDER_MAPPING_DELETED =
+              T.let(
+                :"workload_identity_provider_mapping.deleted",
+                OpenAI::Admin::Organization::AuditLogListParams::EventType::TaggedSymbol
+              )
             ROLE_CREATED =
               T.let(
                 :"role.created",

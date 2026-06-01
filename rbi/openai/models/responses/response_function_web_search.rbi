@@ -113,10 +113,6 @@ module OpenAI
                 )
               end
 
-            # [DEPRECATED] The search query.
-            sig { returns(String) }
-            attr_accessor :query
-
             # The action type.
             sig { returns(Symbol) }
             attr_accessor :type
@@ -127,6 +123,13 @@ module OpenAI
 
             sig { params(queries: T::Array[String]).void }
             attr_writer :queries
+
+            # The search query.
+            sig { returns(T.nilable(String)) }
+            attr_reader :query
+
+            sig { params(query: String).void }
+            attr_writer :query
 
             # The sources used in the search.
             sig do
@@ -153,8 +156,8 @@ module OpenAI
             # Action type "search" - Performs a web search query.
             sig do
               params(
-                query: String,
                 queries: T::Array[String],
+                query: String,
                 sources:
                   T::Array[
                     OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source::OrHash
@@ -163,10 +166,10 @@ module OpenAI
               ).returns(T.attached_class)
             end
             def self.new(
-              # [DEPRECATED] The search query.
-              query:,
               # The search queries.
               queries: nil,
+              # The search query.
+              query: nil,
               # The sources used in the search.
               sources: nil,
               # The action type.
@@ -177,9 +180,9 @@ module OpenAI
             sig do
               override.returns(
                 {
-                  query: String,
                   type: Symbol,
                   queries: T::Array[String],
+                  query: String,
                   sources:
                     T::Array[
                       OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source

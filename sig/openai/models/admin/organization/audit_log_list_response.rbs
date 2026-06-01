@@ -55,7 +55,13 @@ module OpenAI
             service_account_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated,
             user_added: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded,
             user_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserDeleted,
-            user_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated
+            user_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated,
+            workload_identity_provider_mapping_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated,
+            workload_identity_provider_mapping_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted,
+            workload_identity_provider_mapping_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated,
+            workload_identity_provider_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated,
+            workload_identity_provider_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted,
+            workload_identity_provider_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated
           }
 
         class AuditLogListResponse < OpenAI::Internal::Type::BaseModel
@@ -351,6 +357,42 @@ module OpenAI
             OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated
 
+          attr_reader workload_identity_provider_mapping_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated?
+
+          def workload_identity_provider_mapping_created=: (
+            OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated
+          ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated
+
+          attr_reader workload_identity_provider_mapping_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted?
+
+          def workload_identity_provider_mapping_deleted=: (
+            OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted
+          ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted
+
+          attr_reader workload_identity_provider_mapping_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated?
+
+          def workload_identity_provider_mapping_updated=: (
+            OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated
+          ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated
+
+          attr_reader workload_identity_provider_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated?
+
+          def workload_identity_provider_created=: (
+            OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated
+          ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated
+
+          attr_reader workload_identity_provider_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted?
+
+          def workload_identity_provider_deleted=: (
+            OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted
+          ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted
+
+          attr_reader workload_identity_provider_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated?
+
+          def workload_identity_provider_updated=: (
+            OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated
+          ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated
+
           def initialize: (
             id: String,
             effective_at: Integer,
@@ -403,7 +445,13 @@ module OpenAI
             ?service_account_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated,
             ?user_added: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded,
             ?user_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserDeleted,
-            ?user_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated
+            ?user_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated,
+            ?workload_identity_provider_mapping_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated,
+            ?workload_identity_provider_mapping_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted,
+            ?workload_identity_provider_mapping_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated,
+            ?workload_identity_provider_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated,
+            ?workload_identity_provider_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted,
+            ?workload_identity_provider_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated
           ) -> void
 
           def to_hash: -> {
@@ -458,7 +506,13 @@ module OpenAI
             service_account_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated,
             user_added: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded,
             user_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserDeleted,
-            user_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated
+            user_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated,
+            workload_identity_provider_mapping_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated,
+            workload_identity_provider_mapping_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted,
+            workload_identity_provider_mapping_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated,
+            workload_identity_provider_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated,
+            workload_identity_provider_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted,
+            workload_identity_provider_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated
           }
 
           type type_ =
@@ -500,6 +554,12 @@ module OpenAI
             | :"tunnel.created"
             | :"tunnel.updated"
             | :"tunnel.deleted"
+            | :"workload_identity_provider.created"
+            | :"workload_identity_provider.updated"
+            | :"workload_identity_provider.deleted"
+            | :"workload_identity_provider_mapping.created"
+            | :"workload_identity_provider_mapping.updated"
+            | :"workload_identity_provider_mapping.deleted"
             | :"role.created"
             | :"role.updated"
             | :"role.deleted"
@@ -555,6 +615,12 @@ module OpenAI
             TUNNEL_CREATED: :"tunnel.created"
             TUNNEL_UPDATED: :"tunnel.updated"
             TUNNEL_DELETED: :"tunnel.deleted"
+            WORKLOAD_IDENTITY_PROVIDER_CREATED: :"workload_identity_provider.created"
+            WORKLOAD_IDENTITY_PROVIDER_UPDATED: :"workload_identity_provider.updated"
+            WORKLOAD_IDENTITY_PROVIDER_DELETED: :"workload_identity_provider.deleted"
+            WORKLOAD_IDENTITY_PROVIDER_MAPPING_CREATED: :"workload_identity_provider_mapping.created"
+            WORKLOAD_IDENTITY_PROVIDER_MAPPING_UPDATED: :"workload_identity_provider_mapping.updated"
+            WORKLOAD_IDENTITY_PROVIDER_MAPPING_DELETED: :"workload_identity_provider_mapping.deleted"
             ROLE_CREATED: :"role.created"
             ROLE_UPDATED: :"role.updated"
             ROLE_DELETED: :"role.deleted"
@@ -2167,6 +2233,153 @@ module OpenAI
 
               def to_hash: -> { role: String }
             end
+          end
+
+          type workload_identity_provider_mapping_created =
+            { id: String, data: top, identity_provider_id: String }
+
+          class WorkloadIdentityProviderMappingCreated < OpenAI::Internal::Type::BaseModel
+            attr_reader id: String?
+
+            def id=: (String) -> String
+
+            attr_reader data: top?
+
+            def data=: (top) -> top
+
+            attr_reader identity_provider_id: String?
+
+            def identity_provider_id=: (String) -> String
+
+            def initialize: (
+              ?id: String,
+              ?data: top,
+              ?identity_provider_id: String
+            ) -> void
+
+            def to_hash: -> {
+              id: String,
+              data: top,
+              identity_provider_id: String
+            }
+          end
+
+          type workload_identity_provider_mapping_deleted =
+            {
+              id: String,
+              identity_provider_id: String,
+              project_id: String,
+              service_account_id: String
+            }
+
+          class WorkloadIdentityProviderMappingDeleted < OpenAI::Internal::Type::BaseModel
+            attr_reader id: String?
+
+            def id=: (String) -> String
+
+            attr_reader identity_provider_id: String?
+
+            def identity_provider_id=: (String) -> String
+
+            attr_reader project_id: String?
+
+            def project_id=: (String) -> String
+
+            attr_reader service_account_id: String?
+
+            def service_account_id=: (String) -> String
+
+            def initialize: (
+              ?id: String,
+              ?identity_provider_id: String,
+              ?project_id: String,
+              ?service_account_id: String
+            ) -> void
+
+            def to_hash: -> {
+              id: String,
+              identity_provider_id: String,
+              project_id: String,
+              service_account_id: String
+            }
+          end
+
+          type workload_identity_provider_mapping_updated =
+            { id: String, changes_requested: top, identity_provider_id: String }
+
+          class WorkloadIdentityProviderMappingUpdated < OpenAI::Internal::Type::BaseModel
+            attr_reader id: String?
+
+            def id=: (String) -> String
+
+            attr_reader changes_requested: top?
+
+            def changes_requested=: (top) -> top
+
+            attr_reader identity_provider_id: String?
+
+            def identity_provider_id=: (String) -> String
+
+            def initialize: (
+              ?id: String,
+              ?changes_requested: top,
+              ?identity_provider_id: String
+            ) -> void
+
+            def to_hash: -> {
+              id: String,
+              changes_requested: top,
+              identity_provider_id: String
+            }
+          end
+
+          type workload_identity_provider_created = { id: String, data: top }
+
+          class WorkloadIdentityProviderCreated < OpenAI::Internal::Type::BaseModel
+            attr_reader id: String?
+
+            def id=: (String) -> String
+
+            attr_reader data: top?
+
+            def data=: (top) -> top
+
+            def initialize: (?id: String, ?data: top) -> void
+
+            def to_hash: -> { id: String, data: top }
+          end
+
+          type workload_identity_provider_deleted = { id: String, name: String }
+
+          class WorkloadIdentityProviderDeleted < OpenAI::Internal::Type::BaseModel
+            attr_reader id: String?
+
+            def id=: (String) -> String
+
+            attr_reader name: String?
+
+            def name=: (String) -> String
+
+            def initialize: (?id: String, ?name: String) -> void
+
+            def to_hash: -> { id: String, name: String }
+          end
+
+          type workload_identity_provider_updated =
+            { id: String, changes_requested: top }
+
+          class WorkloadIdentityProviderUpdated < OpenAI::Internal::Type::BaseModel
+            attr_reader id: String?
+
+            def id=: (String) -> String
+
+            attr_reader changes_requested: top?
+
+            def changes_requested=: (top) -> top
+
+            def initialize: (?id: String, ?changes_requested: top) -> void
+
+            def to_hash: -> { id: String, changes_requested: top }
           end
         end
       end

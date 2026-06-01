@@ -55,6 +55,32 @@ module OpenAI
         sig { returns(T.nilable(T::Boolean)) }
         attr_accessor :parallel_tool_calls
 
+        # A model-owned style preset to apply to this request. Omit this parameter to use
+        # the model's default style. Supported values may expand over time. Values must be
+        # at most 64 characters.
+        sig do
+          returns(
+            T.nilable(
+              T.any(
+                String,
+                OpenAI::Responses::InputTokenCountParams::Personality::OrSymbol
+              )
+            )
+          )
+        end
+        attr_reader :personality
+
+        sig do
+          params(
+            personality:
+              T.any(
+                String,
+                OpenAI::Responses::InputTokenCountParams::Personality::OrSymbol
+              )
+          ).void
+        end
+        attr_writer :personality
+
         # The unique ID of the previous response to the model. Use this to create
         # multi-turn conversations. Learn more about
         # [conversation state](https://platform.openai.com/docs/guides/conversation-state).
@@ -174,6 +200,11 @@ module OpenAI
             instructions: T.nilable(String),
             model: T.nilable(String),
             parallel_tool_calls: T.nilable(T::Boolean),
+            personality:
+              T.any(
+                String,
+                OpenAI::Responses::InputTokenCountParams::Personality::OrSymbol
+              ),
             previous_response_id: T.nilable(String),
             reasoning: T.nilable(OpenAI::Reasoning::OrHash),
             text:
@@ -239,6 +270,10 @@ module OpenAI
           model: nil,
           # Whether to allow the model to run tool calls in parallel.
           parallel_tool_calls: nil,
+          # A model-owned style preset to apply to this request. Omit this parameter to use
+          # the model's default style. Supported values may expand over time. Values must be
+          # at most 64 characters.
+          personality: nil,
           # The unique ID of the previous response to the model. Use this to create
           # multi-turn conversations. Learn more about
           # [conversation state](https://platform.openai.com/docs/guides/conversation-state).
@@ -282,6 +317,11 @@ module OpenAI
               instructions: T.nilable(String),
               model: T.nilable(String),
               parallel_tool_calls: T.nilable(T::Boolean),
+              personality:
+                T.any(
+                  String,
+                  OpenAI::Responses::InputTokenCountParams::Personality::OrSymbol
+                ),
               previous_response_id: T.nilable(String),
               reasoning: T.nilable(OpenAI::Reasoning),
               text: T.nilable(OpenAI::Responses::InputTokenCountParams::Text),
@@ -380,6 +420,51 @@ module OpenAI
                 union: OpenAI::Responses::ResponseInputItem
               ],
               OpenAI::Internal::Type::Converter
+            )
+        end
+
+        # A model-owned style preset to apply to this request. Omit this parameter to use
+        # the model's default style. Supported values may expand over time. Values must be
+        # at most 64 characters.
+        module Personality
+          extend OpenAI::Internal::Type::Union
+
+          Variants =
+            T.type_alias do
+              T.any(
+                String,
+                OpenAI::Responses::InputTokenCountParams::Personality::TaggedSymbol
+              )
+            end
+
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Responses::InputTokenCountParams::Personality::Variants
+              ]
+            )
+          end
+          def self.variants
+          end
+
+          TaggedSymbol =
+            T.type_alias do
+              T.all(
+                Symbol,
+                OpenAI::Responses::InputTokenCountParams::Personality
+              )
+            end
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+          FRIENDLY =
+            T.let(
+              :friendly,
+              OpenAI::Responses::InputTokenCountParams::Personality::TaggedSymbol
+            )
+          PRAGMATIC =
+            T.let(
+              :pragmatic,
+              OpenAI::Responses::InputTokenCountParams::Personality::TaggedSymbol
             )
         end
 
