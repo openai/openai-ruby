@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.66.0 (2026-06-03)
+
+Full Changelog: [v0.65.0...v0.66.0](https://github.com/openai/openai-ruby/compare/v0.65.0...v0.66.0)
+
+### Features
+
+* **api:** responses.moderation and chat_completions.moderation ([39eeb8b](https://github.com/openai/openai-ruby/commit/39eeb8b3152476aff78c54f196f2e360f58d3408))
+
 ## 0.65.0 (2026-06-01)
 
 Full Changelog: [v0.64.0...v0.65.0](https://github.com/openai/openai-ruby/compare/v0.64.0...v0.65.0)
