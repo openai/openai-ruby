@@ -180,6 +180,22 @@ module OpenAI
         end
         attr_accessor :modalities
 
+        # Configuration for running moderation on the request input and generated output.
+        sig do
+          returns(T.nilable(OpenAI::Chat::CompletionCreateParams::Moderation))
+        end
+        attr_reader :moderation
+
+        sig do
+          params(
+            moderation:
+              T.nilable(
+                OpenAI::Chat::CompletionCreateParams::Moderation::OrHash
+              )
+          ).void
+        end
+        attr_writer :moderation
+
         # How many chat completion choices to generate for each input message. Note that
         # you will be charged based on the number of generated tokens across all of the
         # choices. Keep `n` as `1` to minimize costs.
@@ -534,6 +550,10 @@ module OpenAI
                   OpenAI::Chat::CompletionCreateParams::Modality::OrSymbol
                 ]
               ),
+            moderation:
+              T.nilable(
+                OpenAI::Chat::CompletionCreateParams::Moderation::OrHash
+              ),
             n: T.nilable(Integer),
             parallel_tool_calls: T::Boolean,
             prediction:
@@ -673,6 +693,8 @@ module OpenAI
           #
           # `["text", "audio"]`
           modalities: nil,
+          # Configuration for running moderation on the request input and generated output.
+          moderation: nil,
           # How many chat completion choices to generate for each input message. Note that
           # you will be charged based on the number of generated tokens across all of the
           # choices. Keep `n` as `1` to minimize costs.
@@ -856,6 +878,8 @@ module OpenAI
                     OpenAI::Chat::CompletionCreateParams::Modality::OrSymbol
                   ]
                 ),
+              moderation:
+                T.nilable(OpenAI::Chat::CompletionCreateParams::Moderation),
               n: T.nilable(Integer),
               parallel_tool_calls: T::Boolean,
               prediction:
@@ -1109,6 +1133,34 @@ module OpenAI
             )
           end
           def self.values
+          end
+        end
+
+        class Moderation < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Chat::CompletionCreateParams::Moderation,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The moderation model to use for moderated completions, e.g.
+          # 'omni-moderation-latest'.
+          sig { returns(String) }
+          attr_accessor :model
+
+          # Configuration for running moderation on the request input and generated output.
+          sig { params(model: String).returns(T.attached_class) }
+          def self.new(
+            # The moderation model to use for moderated completions, e.g.
+            # 'omni-moderation-latest'.
+            model:
+          )
+          end
+
+          sig { override.returns({ model: String }) }
+          def to_hash
           end
         end
 

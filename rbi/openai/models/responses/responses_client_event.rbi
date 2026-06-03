@@ -154,6 +154,24 @@ module OpenAI
         end
         attr_writer :model
 
+        # Configuration for running moderation on the input and output of this response.
+        sig do
+          returns(
+            T.nilable(OpenAI::Responses::ResponsesClientEvent::Moderation)
+          )
+        end
+        attr_reader :moderation
+
+        sig do
+          params(
+            moderation:
+              T.nilable(
+                OpenAI::Responses::ResponsesClientEvent::Moderation::OrHash
+              )
+          ).void
+        end
+        attr_writer :moderation
+
         # Whether to allow the model to run tool calls in parallel.
         sig { returns(T.nilable(T::Boolean)) }
         attr_accessor :parallel_tool_calls
@@ -485,6 +503,10 @@ module OpenAI
                 OpenAI::ChatModel::OrSymbol,
                 OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
               ),
+            moderation:
+              T.nilable(
+                OpenAI::Responses::ResponsesClientEvent::Moderation::OrHash
+              ),
             parallel_tool_calls: T.nilable(T::Boolean),
             previous_response_id: T.nilable(String),
             prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
@@ -616,6 +638,8 @@ module OpenAI
           # [model guide](https://platform.openai.com/docs/models) to browse and compare
           # available models.
           model: nil,
+          # Configuration for running moderation on the input and output of this response.
+          moderation: nil,
           # Whether to allow the model to run tool calls in parallel.
           parallel_tool_calls: nil,
           # The unique ID of the previous response to the model. Use this to create
@@ -777,6 +801,8 @@ module OpenAI
                   OpenAI::ChatModel::OrSymbol,
                   OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
                 ),
+              moderation:
+                T.nilable(OpenAI::Responses::ResponsesClientEvent::Moderation),
               parallel_tool_calls: T.nilable(T::Boolean),
               previous_response_id: T.nilable(String),
               prompt: T.nilable(OpenAI::Responses::ResponsePrompt),
@@ -931,6 +957,34 @@ module OpenAI
             )
           end
           def self.variants
+          end
+        end
+
+        class Moderation < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponsesClientEvent::Moderation,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The moderation model to use for moderated completions, e.g.
+          # 'omni-moderation-latest'.
+          sig { returns(String) }
+          attr_accessor :model
+
+          # Configuration for running moderation on the input and output of this response.
+          sig { params(model: String).returns(T.attached_class) }
+          def self.new(
+            # The moderation model to use for moderated completions, e.g.
+            # 'omni-moderation-latest'.
+            model:
+          )
+          end
+
+          sig { override.returns({ model: String }) }
+          def to_hash
           end
         end
 

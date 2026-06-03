@@ -18,6 +18,7 @@ class OpenAI::Test::Resources::Chat::CompletionsTest < OpenAI::Test::ResourceTes
         created: Integer,
         model: String,
         object: Symbol,
+        moderation: OpenAI::Chat::ChatCompletion::Moderation | nil,
         service_tier: OpenAI::Chat::ChatCompletion::ServiceTier | nil,
         system_fingerprint: String | nil,
         usage: OpenAI::CompletionUsage | nil
@@ -39,6 +40,7 @@ class OpenAI::Test::Resources::Chat::CompletionsTest < OpenAI::Test::ResourceTes
         created: Integer,
         model: String,
         object: Symbol,
+        moderation: OpenAI::Chat::ChatCompletion::Moderation | nil,
         service_tier: OpenAI::Chat::ChatCompletion::ServiceTier | nil,
         system_fingerprint: String | nil,
         usage: OpenAI::CompletionUsage | nil
@@ -60,6 +62,7 @@ class OpenAI::Test::Resources::Chat::CompletionsTest < OpenAI::Test::ResourceTes
         created: Integer,
         model: String,
         object: Symbol,
+        moderation: OpenAI::Chat::ChatCompletion::Moderation | nil,
         service_tier: OpenAI::Chat::ChatCompletion::ServiceTier | nil,
         system_fingerprint: String | nil,
         usage: OpenAI::CompletionUsage | nil
@@ -88,6 +91,7 @@ class OpenAI::Test::Resources::Chat::CompletionsTest < OpenAI::Test::ResourceTes
         created: Integer,
         model: String,
         object: Symbol,
+        moderation: OpenAI::Chat::ChatCompletion::Moderation | nil,
         service_tier: OpenAI::Chat::ChatCompletion::ServiceTier | nil,
         system_fingerprint: String | nil,
         usage: OpenAI::CompletionUsage | nil

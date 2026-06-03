@@ -175,6 +175,13 @@ module OpenAI
         #   @return [Integer, nil]
         optional :max_tool_calls, Integer, nil?: true
 
+        # @!attribute moderation
+        #   Moderation results for the response input and output, if moderated completions
+        #   were requested.
+        #
+        #   @return [OpenAI::Models::Responses::Response::Moderation, nil]
+        optional :moderation, -> { OpenAI::Responses::Response::Moderation }, nil?: true
+
         # @!attribute previous_response_id
         #   The unique ID of the previous response to the model. Use this to create
         #   multi-turn conversations. Learn more about
@@ -315,7 +322,7 @@ module OpenAI
         #   @return [String, nil]
         optional :user, String
 
-        # @!method initialize(id:, created_at:, error:, incomplete_details:, instructions:, metadata:, model:, output:, parallel_tool_calls:, temperature:, tool_choice:, tools:, top_p:, background: nil, completed_at: nil, conversation: nil, max_output_tokens: nil, max_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, status: nil, text: nil, top_logprobs: nil, truncation: nil, usage: nil, user: nil, object: :response)
+        # @!method initialize(id:, created_at:, error:, incomplete_details:, instructions:, metadata:, model:, output:, parallel_tool_calls:, temperature:, tool_choice:, tools:, top_p:, background: nil, completed_at: nil, conversation: nil, max_output_tokens: nil, max_tool_calls: nil, moderation: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, status: nil, text: nil, top_logprobs: nil, truncation: nil, usage: nil, user: nil, object: :response)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::Response} for more details.
         #
@@ -354,6 +361,8 @@ module OpenAI
         #   @param max_output_tokens [Integer, nil] An upper bound for the number of tokens that can be generated for a response, in
         #
         #   @param max_tool_calls [Integer, nil] The maximum number of total calls to built-in tools that can be processed in a r
+        #
+        #   @param moderation [OpenAI::Models::Responses::Response::Moderation, nil] Moderation results for the response input and output, if moderated completions w
         #
         #   @param previous_response_id [String, nil] The unique ID of the previous response to the model. Use this to
         #
@@ -493,6 +502,271 @@ module OpenAI
           #   from this response were automatically added to this conversation.
           #
           #   @param id [String] The unique ID of the conversation that this response was associated with.
+        end
+
+        # @see OpenAI::Models::Responses::Response#moderation
+        class Moderation < OpenAI::Internal::Type::BaseModel
+          # @!attribute input
+          #   Moderation for the response input.
+          #
+          #   @return [OpenAI::Models::Responses::Response::Moderation::Input::ModerationResult, OpenAI::Models::Responses::Response::Moderation::Input::Error]
+          required :input, union: -> { OpenAI::Responses::Response::Moderation::Input }
+
+          # @!attribute output
+          #   Moderation for the response output.
+          #
+          #   @return [OpenAI::Models::Responses::Response::Moderation::Output::ModerationResult, OpenAI::Models::Responses::Response::Moderation::Output::Error]
+          required :output, union: -> { OpenAI::Responses::Response::Moderation::Output }
+
+          # @!method initialize(input:, output:)
+          #   Moderation results for the response input and output, if moderated completions
+          #   were requested.
+          #
+          #   @param input [OpenAI::Models::Responses::Response::Moderation::Input::ModerationResult, OpenAI::Models::Responses::Response::Moderation::Input::Error] Moderation for the response input.
+          #
+          #   @param output [OpenAI::Models::Responses::Response::Moderation::Output::ModerationResult, OpenAI::Models::Responses::Response::Moderation::Output::Error] Moderation for the response output.
+
+          # Moderation for the response input.
+          #
+          # @see OpenAI::Models::Responses::Response::Moderation#input
+          module Input
+            extend OpenAI::Internal::Type::Union
+
+            discriminator :type
+
+            # A moderation result produced for the response input or output.
+            variant :moderation_result, -> { OpenAI::Responses::Response::Moderation::Input::ModerationResult }
+
+            # An error produced while attempting moderation for the response input or output.
+            variant :error, -> { OpenAI::Responses::Response::Moderation::Input::Error }
+
+            class ModerationResult < OpenAI::Internal::Type::BaseModel
+              # @!attribute categories
+              #   A dictionary of moderation categories to booleans, True if the input is flagged
+              #   under this category.
+              #
+              #   @return [Hash{Symbol=>Boolean}]
+              required :categories, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Boolean]
+
+              # @!attribute category_applied_input_types
+              #   Which modalities of input are reflected by the score for each category.
+              #
+              #   @return [Hash{Symbol=>Array<Symbol, OpenAI::Models::Responses::Response::Moderation::Input::ModerationResult::CategoryAppliedInputType>}]
+              required :category_applied_input_types,
+                       -> do
+                         OpenAI::Internal::Type::HashOf[
+                           OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Responses::Response::Moderation::Input::ModerationResult::CategoryAppliedInputType]
+                         ]
+                       end
+
+              # @!attribute category_scores
+              #   A dictionary of moderation categories to scores.
+              #
+              #   @return [Hash{Symbol=>Float}]
+              required :category_scores, OpenAI::Internal::Type::HashOf[Float]
+
+              # @!attribute flagged
+              #   A boolean indicating whether the content was flagged by any category.
+              #
+              #   @return [Boolean]
+              required :flagged, OpenAI::Internal::Type::Boolean
+
+              # @!attribute model
+              #   The moderation model that produced this result.
+              #
+              #   @return [String]
+              required :model, String
+
+              # @!attribute type
+              #   The object type, which was always `moderation_result` for successful moderation
+              #   results.
+              #
+              #   @return [Symbol, :moderation_result]
+              required :type, const: :moderation_result
+
+              # @!method initialize(categories:, category_applied_input_types:, category_scores:, flagged:, model:, type: :moderation_result)
+              #   Some parameter documentations has been truncated, see
+              #   {OpenAI::Models::Responses::Response::Moderation::Input::ModerationResult} for
+              #   more details.
+              #
+              #   A moderation result produced for the response input or output.
+              #
+              #   @param categories [Hash{Symbol=>Boolean}] A dictionary of moderation categories to booleans, True if the input is flagged
+              #
+              #   @param category_applied_input_types [Hash{Symbol=>Array<Symbol, OpenAI::Models::Responses::Response::Moderation::Input::ModerationResult::CategoryAppliedInputType>}] Which modalities of input are reflected by the score for each category.
+              #
+              #   @param category_scores [Hash{Symbol=>Float}] A dictionary of moderation categories to scores.
+              #
+              #   @param flagged [Boolean] A boolean indicating whether the content was flagged by any category.
+              #
+              #   @param model [String] The moderation model that produced this result.
+              #
+              #   @param type [Symbol, :moderation_result] The object type, which was always `moderation_result` for successful moderation
+
+              module CategoryAppliedInputType
+                extend OpenAI::Internal::Type::Enum
+
+                TEXT = :text
+                IMAGE = :image
+
+                # @!method self.values
+                #   @return [Array<Symbol>]
+              end
+            end
+
+            class Error < OpenAI::Internal::Type::BaseModel
+              # @!attribute code
+              #   The error code.
+              #
+              #   @return [String]
+              required :code, String
+
+              # @!attribute message
+              #   The error message.
+              #
+              #   @return [String]
+              required :message, String
+
+              # @!attribute type
+              #   The object type, which was always `error` for moderation failures.
+              #
+              #   @return [Symbol, :error]
+              required :type, const: :error
+
+              # @!method initialize(code:, message:, type: :error)
+              #   An error produced while attempting moderation for the response input or output.
+              #
+              #   @param code [String] The error code.
+              #
+              #   @param message [String] The error message.
+              #
+              #   @param type [Symbol, :error] The object type, which was always `error` for moderation failures.
+            end
+
+            # @!method self.variants
+            #   @return [Array(OpenAI::Models::Responses::Response::Moderation::Input::ModerationResult, OpenAI::Models::Responses::Response::Moderation::Input::Error)]
+          end
+
+          # Moderation for the response output.
+          #
+          # @see OpenAI::Models::Responses::Response::Moderation#output
+          module Output
+            extend OpenAI::Internal::Type::Union
+
+            discriminator :type
+
+            # A moderation result produced for the response input or output.
+            variant :moderation_result, -> { OpenAI::Responses::Response::Moderation::Output::ModerationResult }
+
+            # An error produced while attempting moderation for the response input or output.
+            variant :error, -> { OpenAI::Responses::Response::Moderation::Output::Error }
+
+            class ModerationResult < OpenAI::Internal::Type::BaseModel
+              # @!attribute categories
+              #   A dictionary of moderation categories to booleans, True if the input is flagged
+              #   under this category.
+              #
+              #   @return [Hash{Symbol=>Boolean}]
+              required :categories, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Boolean]
+
+              # @!attribute category_applied_input_types
+              #   Which modalities of input are reflected by the score for each category.
+              #
+              #   @return [Hash{Symbol=>Array<Symbol, OpenAI::Models::Responses::Response::Moderation::Output::ModerationResult::CategoryAppliedInputType>}]
+              required :category_applied_input_types,
+                       -> do
+                         OpenAI::Internal::Type::HashOf[
+                           OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Responses::Response::Moderation::Output::ModerationResult::CategoryAppliedInputType]
+                         ]
+                       end
+
+              # @!attribute category_scores
+              #   A dictionary of moderation categories to scores.
+              #
+              #   @return [Hash{Symbol=>Float}]
+              required :category_scores, OpenAI::Internal::Type::HashOf[Float]
+
+              # @!attribute flagged
+              #   A boolean indicating whether the content was flagged by any category.
+              #
+              #   @return [Boolean]
+              required :flagged, OpenAI::Internal::Type::Boolean
+
+              # @!attribute model
+              #   The moderation model that produced this result.
+              #
+              #   @return [String]
+              required :model, String
+
+              # @!attribute type
+              #   The object type, which was always `moderation_result` for successful moderation
+              #   results.
+              #
+              #   @return [Symbol, :moderation_result]
+              required :type, const: :moderation_result
+
+              # @!method initialize(categories:, category_applied_input_types:, category_scores:, flagged:, model:, type: :moderation_result)
+              #   Some parameter documentations has been truncated, see
+              #   {OpenAI::Models::Responses::Response::Moderation::Output::ModerationResult} for
+              #   more details.
+              #
+              #   A moderation result produced for the response input or output.
+              #
+              #   @param categories [Hash{Symbol=>Boolean}] A dictionary of moderation categories to booleans, True if the input is flagged
+              #
+              #   @param category_applied_input_types [Hash{Symbol=>Array<Symbol, OpenAI::Models::Responses::Response::Moderation::Output::ModerationResult::CategoryAppliedInputType>}] Which modalities of input are reflected by the score for each category.
+              #
+              #   @param category_scores [Hash{Symbol=>Float}] A dictionary of moderation categories to scores.
+              #
+              #   @param flagged [Boolean] A boolean indicating whether the content was flagged by any category.
+              #
+              #   @param model [String] The moderation model that produced this result.
+              #
+              #   @param type [Symbol, :moderation_result] The object type, which was always `moderation_result` for successful moderation
+
+              module CategoryAppliedInputType
+                extend OpenAI::Internal::Type::Enum
+
+                TEXT = :text
+                IMAGE = :image
+
+                # @!method self.values
+                #   @return [Array<Symbol>]
+              end
+            end
+
+            class Error < OpenAI::Internal::Type::BaseModel
+              # @!attribute code
+              #   The error code.
+              #
+              #   @return [String]
+              required :code, String
+
+              # @!attribute message
+              #   The error message.
+              #
+              #   @return [String]
+              required :message, String
+
+              # @!attribute type
+              #   The object type, which was always `error` for moderation failures.
+              #
+              #   @return [Symbol, :error]
+              required :type, const: :error
+
+              # @!method initialize(code:, message:, type: :error)
+              #   An error produced while attempting moderation for the response input or output.
+              #
+              #   @param code [String] The error code.
+              #
+              #   @param message [String] The error message.
+              #
+              #   @param type [Symbol, :error] The object type, which was always `error` for moderation failures.
+            end
+
+            # @!method self.variants
+            #   @return [Array(OpenAI::Models::Responses::Response::Moderation::Output::ModerationResult, OpenAI::Models::Responses::Response::Moderation::Output::Error)]
+          end
         end
 
         # The retention policy for the prompt cache. Set to `24h` to enable extended

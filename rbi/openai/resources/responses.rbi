@@ -53,6 +53,10 @@ module OpenAI
               OpenAI::ChatModel::OrSymbol,
               OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
             ),
+          moderation:
+            T.nilable(
+              OpenAI::Responses::ResponseCreateParams::Moderation::OrHash
+            ),
           parallel_tool_calls: T.nilable(T::Boolean),
           previous_response_id: T.nilable(String),
           prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
@@ -184,6 +188,8 @@ module OpenAI
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
         # available models.
         model: nil,
+        # Configuration for running moderation on the input and output of this response.
+        moderation: nil,
         # Whether to allow the model to run tool calls in parallel.
         parallel_tool_calls: nil,
         # The unique ID of the previous response to the model. Use this to create
@@ -354,6 +360,10 @@ module OpenAI
               OpenAI::ChatModel::OrSymbol,
               OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
             ),
+          moderation:
+            T.nilable(
+              OpenAI::Responses::ResponseCreateParams::Moderation::OrHash
+            ),
           parallel_tool_calls: T.nilable(T::Boolean),
           previous_response_id: T.nilable(String),
           prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
@@ -489,6 +499,8 @@ module OpenAI
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
         # available models.
         model: nil,
+        # Configuration for running moderation on the input and output of this response.
+        moderation: nil,
         # Whether to allow the model to run tool calls in parallel.
         parallel_tool_calls: nil,
         # The unique ID of the previous response to the model. Use this to create
