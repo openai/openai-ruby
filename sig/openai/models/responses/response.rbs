@@ -22,6 +22,7 @@ module OpenAI
           conversation: OpenAI::Responses::Response::Conversation?,
           max_output_tokens: Integer?,
           max_tool_calls: Integer?,
+          moderation: OpenAI::Responses::Response::Moderation?,
           previous_response_id: String?,
           prompt: OpenAI::Responses::ResponsePrompt?,
           prompt_cache_key: String,
@@ -75,6 +76,8 @@ module OpenAI
         attr_accessor max_output_tokens: Integer?
 
         attr_accessor max_tool_calls: Integer?
+
+        attr_accessor moderation: OpenAI::Responses::Response::Moderation?
 
         attr_accessor previous_response_id: String?
 
@@ -139,6 +142,7 @@ module OpenAI
           ?conversation: OpenAI::Responses::Response::Conversation?,
           ?max_output_tokens: Integer?,
           ?max_tool_calls: Integer?,
+          ?moderation: OpenAI::Responses::Response::Moderation?,
           ?previous_response_id: String?,
           ?prompt: OpenAI::Responses::ResponsePrompt?,
           ?prompt_cache_key: String,
@@ -175,6 +179,7 @@ module OpenAI
           conversation: OpenAI::Responses::Response::Conversation?,
           max_output_tokens: Integer?,
           max_tool_calls: Integer?,
+          moderation: OpenAI::Responses::Response::Moderation?,
           previous_response_id: String?,
           prompt: OpenAI::Responses::ResponsePrompt?,
           prompt_cache_key: String,
@@ -257,6 +262,190 @@ module OpenAI
           def initialize: (id: String) -> void
 
           def to_hash: -> { id: String }
+        end
+
+        type moderation =
+          {
+            input: OpenAI::Models::Responses::Response::Moderation::input,
+            output: OpenAI::Models::Responses::Response::Moderation::output
+          }
+
+        class Moderation < OpenAI::Internal::Type::BaseModel
+          attr_accessor input: OpenAI::Models::Responses::Response::Moderation::input
+
+          attr_accessor output: OpenAI::Models::Responses::Response::Moderation::output
+
+          def initialize: (
+            input: OpenAI::Models::Responses::Response::Moderation::input,
+            output: OpenAI::Models::Responses::Response::Moderation::output
+          ) -> void
+
+          def to_hash: -> {
+            input: OpenAI::Models::Responses::Response::Moderation::input,
+            output: OpenAI::Models::Responses::Response::Moderation::output
+          }
+
+          type input =
+            OpenAI::Responses::Response::Moderation::Input::ModerationResult
+            | OpenAI::Responses::Response::Moderation::Input::Error
+
+          module Input
+            extend OpenAI::Internal::Type::Union
+
+            type moderation_result =
+              {
+                categories: ::Hash[Symbol, bool],
+                category_applied_input_types: ::Hash[Symbol, ::Array[OpenAI::Models::Responses::Response::Moderation::Input::ModerationResult::category_applied_input_type]],
+                category_scores: ::Hash[Symbol, Float],
+                flagged: bool,
+                model: String,
+                type: :moderation_result
+              }
+
+            class ModerationResult < OpenAI::Internal::Type::BaseModel
+              attr_accessor categories: ::Hash[Symbol, bool]
+
+              attr_accessor category_applied_input_types: ::Hash[Symbol, ::Array[OpenAI::Models::Responses::Response::Moderation::Input::ModerationResult::category_applied_input_type]]
+
+              attr_accessor category_scores: ::Hash[Symbol, Float]
+
+              attr_accessor flagged: bool
+
+              attr_accessor model: String
+
+              attr_accessor type: :moderation_result
+
+              def initialize: (
+                categories: ::Hash[Symbol, bool],
+                category_applied_input_types: ::Hash[Symbol, ::Array[OpenAI::Models::Responses::Response::Moderation::Input::ModerationResult::category_applied_input_type]],
+                category_scores: ::Hash[Symbol, Float],
+                flagged: bool,
+                model: String,
+                ?type: :moderation_result
+              ) -> void
+
+              def to_hash: -> {
+                categories: ::Hash[Symbol, bool],
+                category_applied_input_types: ::Hash[Symbol, ::Array[OpenAI::Models::Responses::Response::Moderation::Input::ModerationResult::category_applied_input_type]],
+                category_scores: ::Hash[Symbol, Float],
+                flagged: bool,
+                model: String,
+                type: :moderation_result
+              }
+
+              type category_applied_input_type = :text | :image
+
+              module CategoryAppliedInputType
+                extend OpenAI::Internal::Type::Enum
+
+                TEXT: :text
+                IMAGE: :image
+
+                def self?.values: -> ::Array[OpenAI::Models::Responses::Response::Moderation::Input::ModerationResult::category_applied_input_type]
+              end
+            end
+
+            type error = { code: String, message: String, type: :error }
+
+            class Error < OpenAI::Internal::Type::BaseModel
+              attr_accessor code: String
+
+              attr_accessor message: String
+
+              attr_accessor type: :error
+
+              def initialize: (
+                code: String,
+                message: String,
+                ?type: :error
+              ) -> void
+
+              def to_hash: -> { code: String, message: String, type: :error }
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Responses::Response::Moderation::input]
+          end
+
+          type output =
+            OpenAI::Responses::Response::Moderation::Output::ModerationResult
+            | OpenAI::Responses::Response::Moderation::Output::Error
+
+          module Output
+            extend OpenAI::Internal::Type::Union
+
+            type moderation_result =
+              {
+                categories: ::Hash[Symbol, bool],
+                category_applied_input_types: ::Hash[Symbol, ::Array[OpenAI::Models::Responses::Response::Moderation::Output::ModerationResult::category_applied_input_type]],
+                category_scores: ::Hash[Symbol, Float],
+                flagged: bool,
+                model: String,
+                type: :moderation_result
+              }
+
+            class ModerationResult < OpenAI::Internal::Type::BaseModel
+              attr_accessor categories: ::Hash[Symbol, bool]
+
+              attr_accessor category_applied_input_types: ::Hash[Symbol, ::Array[OpenAI::Models::Responses::Response::Moderation::Output::ModerationResult::category_applied_input_type]]
+
+              attr_accessor category_scores: ::Hash[Symbol, Float]
+
+              attr_accessor flagged: bool
+
+              attr_accessor model: String
+
+              attr_accessor type: :moderation_result
+
+              def initialize: (
+                categories: ::Hash[Symbol, bool],
+                category_applied_input_types: ::Hash[Symbol, ::Array[OpenAI::Models::Responses::Response::Moderation::Output::ModerationResult::category_applied_input_type]],
+                category_scores: ::Hash[Symbol, Float],
+                flagged: bool,
+                model: String,
+                ?type: :moderation_result
+              ) -> void
+
+              def to_hash: -> {
+                categories: ::Hash[Symbol, bool],
+                category_applied_input_types: ::Hash[Symbol, ::Array[OpenAI::Models::Responses::Response::Moderation::Output::ModerationResult::category_applied_input_type]],
+                category_scores: ::Hash[Symbol, Float],
+                flagged: bool,
+                model: String,
+                type: :moderation_result
+              }
+
+              type category_applied_input_type = :text | :image
+
+              module CategoryAppliedInputType
+                extend OpenAI::Internal::Type::Enum
+
+                TEXT: :text
+                IMAGE: :image
+
+                def self?.values: -> ::Array[OpenAI::Models::Responses::Response::Moderation::Output::ModerationResult::category_applied_input_type]
+              end
+            end
+
+            type error = { code: String, message: String, type: :error }
+
+            class Error < OpenAI::Internal::Type::BaseModel
+              attr_accessor code: String
+
+              attr_accessor message: String
+
+              attr_accessor type: :error
+
+              def initialize: (
+                code: String,
+                message: String,
+                ?type: :error
+              ) -> void
+
+              def to_hash: -> { code: String, message: String, type: :error }
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Responses::Response::Moderation::output]
+          end
         end
 
         type prompt_cache_retention = :in_memory | :"24h"

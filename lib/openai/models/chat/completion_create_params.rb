@@ -151,6 +151,12 @@ module OpenAI
                  -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Chat::CompletionCreateParams::Modality] },
                  nil?: true
 
+        # @!attribute moderation
+        #   Configuration for running moderation on the request input and generated output.
+        #
+        #   @return [OpenAI::Models::Chat::CompletionCreateParams::Moderation, nil]
+        optional :moderation, -> { OpenAI::Chat::CompletionCreateParams::Moderation }, nil?: true
+
         # @!attribute n
         #   How many chat completion choices to generate for each input message. Note that
         #   you will be charged based on the number of generated tokens across all of the
@@ -394,7 +400,7 @@ module OpenAI
         #   @return [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions, nil]
         optional :web_search_options, -> { OpenAI::Chat::CompletionCreateParams::WebSearchOptions }
 
-        # @!method initialize(messages:, model:, audio: nil, frequency_penalty: nil, function_call: nil, functions: nil, logit_bias: nil, logprobs: nil, max_completion_tokens: nil, max_tokens: nil, metadata: nil, modalities: nil, n: nil, parallel_tool_calls: nil, prediction: nil, presence_penalty: nil, prompt_cache_key: nil, prompt_cache_retention: nil, reasoning_effort: nil, response_format: nil, safety_identifier: nil, seed: nil, service_tier: nil, stop: nil, store: nil, stream_options: nil, temperature: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, user: nil, verbosity: nil, web_search_options: nil, request_options: {})
+        # @!method initialize(messages:, model:, audio: nil, frequency_penalty: nil, function_call: nil, functions: nil, logit_bias: nil, logprobs: nil, max_completion_tokens: nil, max_tokens: nil, metadata: nil, modalities: nil, moderation: nil, n: nil, parallel_tool_calls: nil, prediction: nil, presence_penalty: nil, prompt_cache_key: nil, prompt_cache_retention: nil, reasoning_effort: nil, response_format: nil, safety_identifier: nil, seed: nil, service_tier: nil, stop: nil, store: nil, stream_options: nil, temperature: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, user: nil, verbosity: nil, web_search_options: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Chat::CompletionCreateParams} for more details.
         #
@@ -421,6 +427,8 @@ module OpenAI
         #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #
         #   @param modalities [Array<Symbol, OpenAI::Models::Chat::CompletionCreateParams::Modality>, nil] Output types that you would like the model to generate.
+        #
+        #   @param moderation [OpenAI::Models::Chat::CompletionCreateParams::Moderation, nil] Configuration for running moderation on the request input and generated output.
         #
         #   @param n [Integer, nil] How many chat completion choices to generate for each input message. Note that y
         #
@@ -577,6 +585,23 @@ module OpenAI
 
           # @!method self.values
           #   @return [Array<Symbol>]
+        end
+
+        class Moderation < OpenAI::Internal::Type::BaseModel
+          # @!attribute model
+          #   The moderation model to use for moderated completions, e.g.
+          #   'omni-moderation-latest'.
+          #
+          #   @return [String]
+          required :model, String
+
+          # @!method initialize(model:)
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Chat::CompletionCreateParams::Moderation} for more details.
+          #
+          #   Configuration for running moderation on the request input and generated output.
+          #
+          #   @param model [String] The moderation model to use for moderated completions, e.g. 'omni-moderation-lat
         end
 
         # The retention policy for the prompt cache. Set to `24h` to enable extended
