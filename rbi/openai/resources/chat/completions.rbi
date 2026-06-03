@@ -67,6 +67,10 @@ module OpenAI
                   OpenAI::Chat::CompletionCreateParams::Modality::OrSymbol
                 ]
               ),
+            moderation:
+              T.nilable(
+                OpenAI::Chat::CompletionCreateParams::Moderation::OrHash
+              ),
             n: T.nilable(Integer),
             parallel_tool_calls: T::Boolean,
             prediction:
@@ -209,6 +213,8 @@ module OpenAI
           #
           # `["text", "audio"]`
           modalities: nil,
+          # Configuration for running moderation on the request input and generated output.
+          moderation: nil,
           # How many chat completion choices to generate for each input message. Note that
           # you will be charged based on the number of generated tokens across all of the
           # choices. Keep `n` as `1` to minimize costs.
@@ -416,6 +422,10 @@ module OpenAI
                   OpenAI::Chat::CompletionCreateParams::Modality::OrSymbol
                 ]
               ),
+            moderation:
+              T.nilable(
+                OpenAI::Chat::CompletionCreateParams::Moderation::OrHash
+              ),
             n: T.nilable(Integer),
             parallel_tool_calls: T::Boolean,
             prediction:
@@ -556,6 +566,8 @@ module OpenAI
           #
           # `["text", "audio"]`
           modalities: nil,
+          # Configuration for running moderation on the request input and generated output.
+          moderation: nil,
           # How many chat completion choices to generate for each input message. Note that
           # you will be charged based on the number of generated tokens across all of the
           # choices. Keep `n` as `1` to minimize costs.

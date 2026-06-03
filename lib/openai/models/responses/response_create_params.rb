@@ -127,6 +127,12 @@ module OpenAI
         #   @return [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel::ResponsesOnlyModel, nil]
         optional :model, union: -> { OpenAI::ResponsesModel }
 
+        # @!attribute moderation
+        #   Configuration for running moderation on the input and output of this response.
+        #
+        #   @return [OpenAI::Models::Responses::ResponseCreateParams::Moderation, nil]
+        optional :moderation, -> { OpenAI::Responses::ResponseCreateParams::Moderation }, nil?: true
+
         # @!attribute parallel_tool_calls
         #   Whether to allow the model to run tool calls in parallel.
         #
@@ -328,7 +334,7 @@ module OpenAI
         #   @return [String, nil]
         optional :user, String
 
-        # @!method initialize(background: nil, context_management: nil, conversation: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
+        # @!method initialize(background: nil, context_management: nil, conversation: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, moderation: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseCreateParams} for more details.
         #
@@ -351,6 +357,8 @@ module OpenAI
         #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #
         #   @param model [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel::ResponsesOnlyModel] Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI
+        #
+        #   @param moderation [OpenAI::Models::Responses::ResponseCreateParams::Moderation, nil] Configuration for running moderation on the input and output of this response.
         #
         #   @param parallel_tool_calls [Boolean, nil] Whether to allow the model to run tool calls in parallel.
         #
@@ -448,6 +456,23 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam, OpenAI::Models::Responses::ResponseInputItem::AdditionalTools, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger, OpenAI::Models::Responses::ResponseInputItem::ItemReference>)]
+        end
+
+        class Moderation < OpenAI::Internal::Type::BaseModel
+          # @!attribute model
+          #   The moderation model to use for moderated completions, e.g.
+          #   'omni-moderation-latest'.
+          #
+          #   @return [String]
+          required :model, String
+
+          # @!method initialize(model:)
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Responses::ResponseCreateParams::Moderation} for more details.
+          #
+          #   Configuration for running moderation on the input and output of this response.
+          #
+          #   @param model [String] The moderation model to use for moderated completions, e.g. 'omni-moderation-lat
         end
 
         # The retention policy for the prompt cache. Set to `24h` to enable extended

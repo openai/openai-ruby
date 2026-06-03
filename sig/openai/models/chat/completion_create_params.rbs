@@ -15,6 +15,7 @@ module OpenAI
           max_tokens: Integer?,
           metadata: OpenAI::Models::metadata?,
           modalities: ::Array[OpenAI::Models::Chat::CompletionCreateParams::modality]?,
+          moderation: OpenAI::Chat::CompletionCreateParams::Moderation?,
           n: Integer?,
           parallel_tool_calls: bool,
           prediction: OpenAI::Chat::ChatCompletionPredictionContent?,
@@ -75,6 +76,8 @@ module OpenAI
         attr_accessor metadata: OpenAI::Models::metadata?
 
         attr_accessor modalities: ::Array[OpenAI::Models::Chat::CompletionCreateParams::modality]?
+
+        attr_accessor moderation: OpenAI::Chat::CompletionCreateParams::Moderation?
 
         attr_accessor n: Integer?
 
@@ -157,6 +160,7 @@ module OpenAI
           ?max_tokens: Integer?,
           ?metadata: OpenAI::Models::metadata?,
           ?modalities: ::Array[OpenAI::Models::Chat::CompletionCreateParams::modality]?,
+          ?moderation: OpenAI::Chat::CompletionCreateParams::Moderation?,
           ?n: Integer?,
           ?parallel_tool_calls: bool,
           ?prediction: OpenAI::Chat::ChatCompletionPredictionContent?,
@@ -195,6 +199,7 @@ module OpenAI
           max_tokens: Integer?,
           metadata: OpenAI::Models::metadata?,
           modalities: ::Array[OpenAI::Models::Chat::CompletionCreateParams::modality]?,
+          moderation: OpenAI::Chat::CompletionCreateParams::Moderation?,
           n: Integer?,
           parallel_tool_calls: bool,
           prediction: OpenAI::Chat::ChatCompletionPredictionContent?,
@@ -291,6 +296,16 @@ module OpenAI
           AUDIO: :audio
 
           def self?.values: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::modality]
+        end
+
+        type moderation = { model: String }
+
+        class Moderation < OpenAI::Internal::Type::BaseModel
+          attr_accessor model: String
+
+          def initialize: (model: String) -> void
+
+          def to_hash: -> { model: String }
         end
 
         type prompt_cache_retention = :in_memory | :"24h"

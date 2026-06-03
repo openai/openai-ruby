@@ -37,6 +37,13 @@ module OpenAI
         #   @return [Symbol, :"chat.completion.chunk"]
         required :object, const: :"chat.completion.chunk"
 
+        # @!attribute moderation
+        #   Moderation results for the request input and generated output. Present on the
+        #   moderation chunk when moderated completions are requested.
+        #
+        #   @return [OpenAI::Models::Chat::ChatCompletionChunk::Moderation, nil]
+        optional :moderation, -> { OpenAI::Chat::ChatCompletionChunk::Moderation }, nil?: true
+
         # @!attribute service_tier
         #   Specifies the processing type used for serving the request.
         #
@@ -80,7 +87,7 @@ module OpenAI
         #   @return [OpenAI::Models::CompletionUsage, nil]
         optional :usage, -> { OpenAI::CompletionUsage }, nil?: true
 
-        # @!method initialize(id:, choices:, created:, model:, service_tier: nil, system_fingerprint: nil, usage: nil, object: :"chat.completion.chunk")
+        # @!method initialize(id:, choices:, created:, model:, moderation: nil, service_tier: nil, system_fingerprint: nil, usage: nil, object: :"chat.completion.chunk")
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Chat::ChatCompletionChunk} for more details.
         #
@@ -95,6 +102,8 @@ module OpenAI
         #   @param created [Integer] The Unix timestamp (in seconds) of when the chat completion was created. Each ch
         #
         #   @param model [String] The model to generate the completion.
+        #
+        #   @param moderation [OpenAI::Models::Chat::ChatCompletionChunk::Moderation, nil] Moderation results for the request input and generated output. Present
         #
         #   @param service_tier [Symbol, OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier, nil] Specifies the processing type used for serving the request.
         #
@@ -367,6 +376,337 @@ module OpenAI
             #   @param content [Array<OpenAI::Models::Chat::ChatCompletionTokenLogprob>, nil] A list of message content tokens with log probability information.
             #
             #   @param refusal [Array<OpenAI::Models::Chat::ChatCompletionTokenLogprob>, nil] A list of message refusal tokens with log probability information.
+          end
+        end
+
+        # @see OpenAI::Models::Chat::ChatCompletionChunk#moderation
+        class Moderation < OpenAI::Internal::Type::BaseModel
+          # @!attribute input
+          #   Moderation for the request input.
+          #
+          #   @return [OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults, OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Input::Error]
+          required :input, union: -> { OpenAI::Chat::ChatCompletionChunk::Moderation::Input }
+
+          # @!attribute output
+          #   Moderation for the generated output.
+          #
+          #   @return [OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults, OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Output::Error]
+          required :output, union: -> { OpenAI::Chat::ChatCompletionChunk::Moderation::Output }
+
+          # @!method initialize(input:, output:)
+          #   Moderation results for the request input and generated output. Present on the
+          #   moderation chunk when moderated completions are requested.
+          #
+          #   @param input [OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults, OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Input::Error] Moderation for the request input.
+          #
+          #   @param output [OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults, OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Output::Error] Moderation for the generated output.
+
+          # Moderation for the request input.
+          #
+          # @see OpenAI::Models::Chat::ChatCompletionChunk::Moderation#input
+          module Input
+            extend OpenAI::Internal::Type::Union
+
+            discriminator :type
+
+            # Successful moderation results for the request input or generated output.
+            variant :moderation_results,
+                    -> { OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults }
+
+            # An error produced while attempting moderation.
+            variant :error, -> { OpenAI::Chat::ChatCompletionChunk::Moderation::Input::Error }
+
+            class ModerationResults < OpenAI::Internal::Type::BaseModel
+              # @!attribute model
+              #   The moderation model used to generate the results.
+              #
+              #   @return [String]
+              required :model, String
+
+              # @!attribute results
+              #   A list of moderation results.
+              #
+              #   @return [Array<OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result>]
+              required :results,
+                       -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result] }
+
+              # @!attribute type
+              #   The object type, which is always `moderation_results`.
+              #
+              #   @return [Symbol, :moderation_results]
+              required :type, const: :moderation_results
+
+              # @!method initialize(model:, results:, type: :moderation_results)
+              #   Successful moderation results for the request input or generated output.
+              #
+              #   @param model [String] The moderation model used to generate the results.
+              #
+              #   @param results [Array<OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result>] A list of moderation results.
+              #
+              #   @param type [Symbol, :moderation_results] The object type, which is always `moderation_results`.
+
+              class Result < OpenAI::Internal::Type::BaseModel
+                # @!attribute categories
+                #   A dictionary of moderation categories to booleans, True if the input is flagged
+                #   under this category.
+                #
+                #   @return [Hash{Symbol=>Boolean}]
+                required :categories, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Boolean]
+
+                # @!attribute category_applied_input_types
+                #   Which modalities of input are reflected by the score for each category.
+                #
+                #   @return [Hash{Symbol=>Array<Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result::CategoryAppliedInputType>}]
+                required :category_applied_input_types,
+                         -> do
+                           OpenAI::Internal::Type::HashOf[
+                             OpenAI::Internal::Type::ArrayOf[
+                               enum: OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result::CategoryAppliedInputType
+                             ]
+                           ]
+                         end
+
+                # @!attribute category_scores
+                #   A dictionary of moderation categories to scores.
+                #
+                #   @return [Hash{Symbol=>Float}]
+                required :category_scores, OpenAI::Internal::Type::HashOf[Float]
+
+                # @!attribute flagged
+                #   A boolean indicating whether the content was flagged by any category.
+                #
+                #   @return [Boolean]
+                required :flagged, OpenAI::Internal::Type::Boolean
+
+                # @!attribute model
+                #   The moderation model that produced this result.
+                #
+                #   @return [String]
+                required :model, String
+
+                # @!attribute type
+                #   The object type, which was always `moderation_result` for successful moderation
+                #   results.
+                #
+                #   @return [Symbol, :moderation_result]
+                required :type, const: :moderation_result
+
+                # @!method initialize(categories:, category_applied_input_types:, category_scores:, flagged:, model:, type: :moderation_result)
+                #   Some parameter documentations has been truncated, see
+                #   {OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result}
+                #   for more details.
+                #
+                #   A moderation result produced for the response input or output.
+                #
+                #   @param categories [Hash{Symbol=>Boolean}] A dictionary of moderation categories to booleans, True if the input is flagged
+                #
+                #   @param category_applied_input_types [Hash{Symbol=>Array<Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result::CategoryAppliedInputType>}] Which modalities of input are reflected by the score for each category.
+                #
+                #   @param category_scores [Hash{Symbol=>Float}] A dictionary of moderation categories to scores.
+                #
+                #   @param flagged [Boolean] A boolean indicating whether the content was flagged by any category.
+                #
+                #   @param model [String] The moderation model that produced this result.
+                #
+                #   @param type [Symbol, :moderation_result] The object type, which was always `moderation_result` for successful moderation
+
+                module CategoryAppliedInputType
+                  extend OpenAI::Internal::Type::Enum
+
+                  TEXT = :text
+                  IMAGE = :image
+
+                  # @!method self.values
+                  #   @return [Array<Symbol>]
+                end
+              end
+            end
+
+            class Error < OpenAI::Internal::Type::BaseModel
+              # @!attribute code
+              #   The error code.
+              #
+              #   @return [String]
+              required :code, String
+
+              # @!attribute message
+              #   The error message.
+              #
+              #   @return [String]
+              required :message, String
+
+              # @!attribute type
+              #   The object type, which is always `error`.
+              #
+              #   @return [Symbol, :error]
+              required :type, const: :error
+
+              # @!method initialize(code:, message:, type: :error)
+              #   An error produced while attempting moderation.
+              #
+              #   @param code [String] The error code.
+              #
+              #   @param message [String] The error message.
+              #
+              #   @param type [Symbol, :error] The object type, which is always `error`.
+            end
+
+            # @!method self.variants
+            #   @return [Array(OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults, OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Input::Error)]
+          end
+
+          # Moderation for the generated output.
+          #
+          # @see OpenAI::Models::Chat::ChatCompletionChunk::Moderation#output
+          module Output
+            extend OpenAI::Internal::Type::Union
+
+            discriminator :type
+
+            # Successful moderation results for the request input or generated output.
+            variant :moderation_results,
+                    -> { OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults }
+
+            # An error produced while attempting moderation.
+            variant :error, -> { OpenAI::Chat::ChatCompletionChunk::Moderation::Output::Error }
+
+            class ModerationResults < OpenAI::Internal::Type::BaseModel
+              # @!attribute model
+              #   The moderation model used to generate the results.
+              #
+              #   @return [String]
+              required :model, String
+
+              # @!attribute results
+              #   A list of moderation results.
+              #
+              #   @return [Array<OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result>]
+              required :results,
+                       -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result] }
+
+              # @!attribute type
+              #   The object type, which is always `moderation_results`.
+              #
+              #   @return [Symbol, :moderation_results]
+              required :type, const: :moderation_results
+
+              # @!method initialize(model:, results:, type: :moderation_results)
+              #   Successful moderation results for the request input or generated output.
+              #
+              #   @param model [String] The moderation model used to generate the results.
+              #
+              #   @param results [Array<OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result>] A list of moderation results.
+              #
+              #   @param type [Symbol, :moderation_results] The object type, which is always `moderation_results`.
+
+              class Result < OpenAI::Internal::Type::BaseModel
+                # @!attribute categories
+                #   A dictionary of moderation categories to booleans, True if the input is flagged
+                #   under this category.
+                #
+                #   @return [Hash{Symbol=>Boolean}]
+                required :categories, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Boolean]
+
+                # @!attribute category_applied_input_types
+                #   Which modalities of input are reflected by the score for each category.
+                #
+                #   @return [Hash{Symbol=>Array<Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result::CategoryAppliedInputType>}]
+                required :category_applied_input_types,
+                         -> do
+                           OpenAI::Internal::Type::HashOf[
+                             OpenAI::Internal::Type::ArrayOf[
+                               enum: OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result::CategoryAppliedInputType
+                             ]
+                           ]
+                         end
+
+                # @!attribute category_scores
+                #   A dictionary of moderation categories to scores.
+                #
+                #   @return [Hash{Symbol=>Float}]
+                required :category_scores, OpenAI::Internal::Type::HashOf[Float]
+
+                # @!attribute flagged
+                #   A boolean indicating whether the content was flagged by any category.
+                #
+                #   @return [Boolean]
+                required :flagged, OpenAI::Internal::Type::Boolean
+
+                # @!attribute model
+                #   The moderation model that produced this result.
+                #
+                #   @return [String]
+                required :model, String
+
+                # @!attribute type
+                #   The object type, which was always `moderation_result` for successful moderation
+                #   results.
+                #
+                #   @return [Symbol, :moderation_result]
+                required :type, const: :moderation_result
+
+                # @!method initialize(categories:, category_applied_input_types:, category_scores:, flagged:, model:, type: :moderation_result)
+                #   Some parameter documentations has been truncated, see
+                #   {OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result}
+                #   for more details.
+                #
+                #   A moderation result produced for the response input or output.
+                #
+                #   @param categories [Hash{Symbol=>Boolean}] A dictionary of moderation categories to booleans, True if the input is flagged
+                #
+                #   @param category_applied_input_types [Hash{Symbol=>Array<Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result::CategoryAppliedInputType>}] Which modalities of input are reflected by the score for each category.
+                #
+                #   @param category_scores [Hash{Symbol=>Float}] A dictionary of moderation categories to scores.
+                #
+                #   @param flagged [Boolean] A boolean indicating whether the content was flagged by any category.
+                #
+                #   @param model [String] The moderation model that produced this result.
+                #
+                #   @param type [Symbol, :moderation_result] The object type, which was always `moderation_result` for successful moderation
+
+                module CategoryAppliedInputType
+                  extend OpenAI::Internal::Type::Enum
+
+                  TEXT = :text
+                  IMAGE = :image
+
+                  # @!method self.values
+                  #   @return [Array<Symbol>]
+                end
+              end
+            end
+
+            class Error < OpenAI::Internal::Type::BaseModel
+              # @!attribute code
+              #   The error code.
+              #
+              #   @return [String]
+              required :code, String
+
+              # @!attribute message
+              #   The error message.
+              #
+              #   @return [String]
+              required :message, String
+
+              # @!attribute type
+              #   The object type, which is always `error`.
+              #
+              #   @return [Symbol, :error]
+              required :type, const: :error
+
+              # @!method initialize(code:, message:, type: :error)
+              #   An error produced while attempting moderation.
+              #
+              #   @param code [String] The error code.
+              #
+              #   @param message [String] The error message.
+              #
+              #   @param type [Symbol, :error] The object type, which is always `error`.
+            end
+
+            # @!method self.variants
+            #   @return [Array(OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults, OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Output::Error)]
           end
         end
 

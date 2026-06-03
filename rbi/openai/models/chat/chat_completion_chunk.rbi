@@ -34,6 +34,21 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :object
 
+        # Moderation results for the request input and generated output. Present on the
+        # moderation chunk when moderated completions are requested.
+        sig do
+          returns(T.nilable(OpenAI::Chat::ChatCompletionChunk::Moderation))
+        end
+        attr_reader :moderation
+
+        sig do
+          params(
+            moderation:
+              T.nilable(OpenAI::Chat::ChatCompletionChunk::Moderation::OrHash)
+          ).void
+        end
+        attr_writer :moderation
+
         # Specifies the processing type used for serving the request.
         #
         # - If set to 'auto', then the request will be processed with the service tier
@@ -91,6 +106,8 @@ module OpenAI
               T::Array[OpenAI::Chat::ChatCompletionChunk::Choice::OrHash],
             created: Integer,
             model: String,
+            moderation:
+              T.nilable(OpenAI::Chat::ChatCompletionChunk::Moderation::OrHash),
             service_tier:
               T.nilable(
                 OpenAI::Chat::ChatCompletionChunk::ServiceTier::OrSymbol
@@ -112,6 +129,9 @@ module OpenAI
           created:,
           # The model to generate the completion.
           model:,
+          # Moderation results for the request input and generated output. Present on the
+          # moderation chunk when moderated completions are requested.
+          moderation: nil,
           # Specifies the processing type used for serving the request.
           #
           # - If set to 'auto', then the request will be processed with the service tier
@@ -154,6 +174,8 @@ module OpenAI
               created: Integer,
               model: String,
               object: Symbol,
+              moderation:
+                T.nilable(OpenAI::Chat::ChatCompletionChunk::Moderation),
               service_tier:
                 T.nilable(
                   OpenAI::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol
@@ -777,6 +799,605 @@ module OpenAI
               )
             end
             def to_hash
+            end
+          end
+        end
+
+        class Moderation < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Chat::ChatCompletionChunk::Moderation,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # Moderation for the request input.
+          sig do
+            returns(
+              OpenAI::Chat::ChatCompletionChunk::Moderation::Input::Variants
+            )
+          end
+          attr_accessor :input
+
+          # Moderation for the generated output.
+          sig do
+            returns(
+              OpenAI::Chat::ChatCompletionChunk::Moderation::Output::Variants
+            )
+          end
+          attr_accessor :output
+
+          # Moderation results for the request input and generated output. Present on the
+          # moderation chunk when moderated completions are requested.
+          sig do
+            params(
+              input:
+                T.any(
+                  OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::OrHash,
+                  OpenAI::Chat::ChatCompletionChunk::Moderation::Input::Error::OrHash
+                ),
+              output:
+                T.any(
+                  OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::OrHash,
+                  OpenAI::Chat::ChatCompletionChunk::Moderation::Output::Error::OrHash
+                )
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # Moderation for the request input.
+            input:,
+            # Moderation for the generated output.
+            output:
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                input:
+                  OpenAI::Chat::ChatCompletionChunk::Moderation::Input::Variants,
+                output:
+                  OpenAI::Chat::ChatCompletionChunk::Moderation::Output::Variants
+              }
+            )
+          end
+          def to_hash
+          end
+
+          # Moderation for the request input.
+          module Input
+            extend OpenAI::Internal::Type::Union
+
+            Variants =
+              T.type_alias do
+                T.any(
+                  OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults,
+                  OpenAI::Chat::ChatCompletionChunk::Moderation::Input::Error
+                )
+              end
+
+            class ModerationResults < OpenAI::Internal::Type::BaseModel
+              OrHash =
+                T.type_alias do
+                  T.any(
+                    OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+              # The moderation model used to generate the results.
+              sig { returns(String) }
+              attr_accessor :model
+
+              # A list of moderation results.
+              sig do
+                returns(
+                  T::Array[
+                    OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result
+                  ]
+                )
+              end
+              attr_accessor :results
+
+              # The object type, which is always `moderation_results`.
+              sig { returns(Symbol) }
+              attr_accessor :type
+
+              # Successful moderation results for the request input or generated output.
+              sig do
+                params(
+                  model: String,
+                  results:
+                    T::Array[
+                      OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result::OrHash
+                    ],
+                  type: Symbol
+                ).returns(T.attached_class)
+              end
+              def self.new(
+                # The moderation model used to generate the results.
+                model:,
+                # A list of moderation results.
+                results:,
+                # The object type, which is always `moderation_results`.
+                type: :moderation_results
+              )
+              end
+
+              sig do
+                override.returns(
+                  {
+                    model: String,
+                    results:
+                      T::Array[
+                        OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result
+                      ],
+                    type: Symbol
+                  }
+                )
+              end
+              def to_hash
+              end
+
+              class Result < OpenAI::Internal::Type::BaseModel
+                OrHash =
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
+
+                # A dictionary of moderation categories to booleans, True if the input is flagged
+                # under this category.
+                sig { returns(T::Hash[Symbol, T::Boolean]) }
+                attr_accessor :categories
+
+                # Which modalities of input are reflected by the score for each category.
+                sig do
+                  returns(
+                    T::Hash[
+                      Symbol,
+                      T::Array[
+                        OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result::CategoryAppliedInputType::TaggedSymbol
+                      ]
+                    ]
+                  )
+                end
+                attr_accessor :category_applied_input_types
+
+                # A dictionary of moderation categories to scores.
+                sig { returns(T::Hash[Symbol, Float]) }
+                attr_accessor :category_scores
+
+                # A boolean indicating whether the content was flagged by any category.
+                sig { returns(T::Boolean) }
+                attr_accessor :flagged
+
+                # The moderation model that produced this result.
+                sig { returns(String) }
+                attr_accessor :model
+
+                # The object type, which was always `moderation_result` for successful moderation
+                # results.
+                sig { returns(Symbol) }
+                attr_accessor :type
+
+                # A moderation result produced for the response input or output.
+                sig do
+                  params(
+                    categories: T::Hash[Symbol, T::Boolean],
+                    category_applied_input_types:
+                      T::Hash[
+                        Symbol,
+                        T::Array[
+                          OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result::CategoryAppliedInputType::OrSymbol
+                        ]
+                      ],
+                    category_scores: T::Hash[Symbol, Float],
+                    flagged: T::Boolean,
+                    model: String,
+                    type: Symbol
+                  ).returns(T.attached_class)
+                end
+                def self.new(
+                  # A dictionary of moderation categories to booleans, True if the input is flagged
+                  # under this category.
+                  categories:,
+                  # Which modalities of input are reflected by the score for each category.
+                  category_applied_input_types:,
+                  # A dictionary of moderation categories to scores.
+                  category_scores:,
+                  # A boolean indicating whether the content was flagged by any category.
+                  flagged:,
+                  # The moderation model that produced this result.
+                  model:,
+                  # The object type, which was always `moderation_result` for successful moderation
+                  # results.
+                  type: :moderation_result
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {
+                      categories: T::Hash[Symbol, T::Boolean],
+                      category_applied_input_types:
+                        T::Hash[
+                          Symbol,
+                          T::Array[
+                            OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result::CategoryAppliedInputType::TaggedSymbol
+                          ]
+                        ],
+                      category_scores: T::Hash[Symbol, Float],
+                      flagged: T::Boolean,
+                      model: String,
+                      type: Symbol
+                    }
+                  )
+                end
+                def to_hash
+                end
+
+                module CategoryAppliedInputType
+                  extend OpenAI::Internal::Type::Enum
+
+                  TaggedSymbol =
+                    T.type_alias do
+                      T.all(
+                        Symbol,
+                        OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result::CategoryAppliedInputType
+                      )
+                    end
+                  OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+                  TEXT =
+                    T.let(
+                      :text,
+                      OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result::CategoryAppliedInputType::TaggedSymbol
+                    )
+                  IMAGE =
+                    T.let(
+                      :image,
+                      OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result::CategoryAppliedInputType::TaggedSymbol
+                    )
+
+                  sig do
+                    override.returns(
+                      T::Array[
+                        OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result::CategoryAppliedInputType::TaggedSymbol
+                      ]
+                    )
+                  end
+                  def self.values
+                  end
+                end
+              end
+            end
+
+            class Error < OpenAI::Internal::Type::BaseModel
+              OrHash =
+                T.type_alias do
+                  T.any(
+                    OpenAI::Chat::ChatCompletionChunk::Moderation::Input::Error,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+              # The error code.
+              sig { returns(String) }
+              attr_accessor :code
+
+              # The error message.
+              sig { returns(String) }
+              attr_accessor :message
+
+              # The object type, which is always `error`.
+              sig { returns(Symbol) }
+              attr_accessor :type
+
+              # An error produced while attempting moderation.
+              sig do
+                params(code: String, message: String, type: Symbol).returns(
+                  T.attached_class
+                )
+              end
+              def self.new(
+                # The error code.
+                code:,
+                # The error message.
+                message:,
+                # The object type, which is always `error`.
+                type: :error
+              )
+              end
+
+              sig do
+                override.returns(
+                  { code: String, message: String, type: Symbol }
+                )
+              end
+              def to_hash
+              end
+            end
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Chat::ChatCompletionChunk::Moderation::Input::Variants
+                ]
+              )
+            end
+            def self.variants
+            end
+          end
+
+          # Moderation for the generated output.
+          module Output
+            extend OpenAI::Internal::Type::Union
+
+            Variants =
+              T.type_alias do
+                T.any(
+                  OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults,
+                  OpenAI::Chat::ChatCompletionChunk::Moderation::Output::Error
+                )
+              end
+
+            class ModerationResults < OpenAI::Internal::Type::BaseModel
+              OrHash =
+                T.type_alias do
+                  T.any(
+                    OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+              # The moderation model used to generate the results.
+              sig { returns(String) }
+              attr_accessor :model
+
+              # A list of moderation results.
+              sig do
+                returns(
+                  T::Array[
+                    OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result
+                  ]
+                )
+              end
+              attr_accessor :results
+
+              # The object type, which is always `moderation_results`.
+              sig { returns(Symbol) }
+              attr_accessor :type
+
+              # Successful moderation results for the request input or generated output.
+              sig do
+                params(
+                  model: String,
+                  results:
+                    T::Array[
+                      OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result::OrHash
+                    ],
+                  type: Symbol
+                ).returns(T.attached_class)
+              end
+              def self.new(
+                # The moderation model used to generate the results.
+                model:,
+                # A list of moderation results.
+                results:,
+                # The object type, which is always `moderation_results`.
+                type: :moderation_results
+              )
+              end
+
+              sig do
+                override.returns(
+                  {
+                    model: String,
+                    results:
+                      T::Array[
+                        OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result
+                      ],
+                    type: Symbol
+                  }
+                )
+              end
+              def to_hash
+              end
+
+              class Result < OpenAI::Internal::Type::BaseModel
+                OrHash =
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
+
+                # A dictionary of moderation categories to booleans, True if the input is flagged
+                # under this category.
+                sig { returns(T::Hash[Symbol, T::Boolean]) }
+                attr_accessor :categories
+
+                # Which modalities of input are reflected by the score for each category.
+                sig do
+                  returns(
+                    T::Hash[
+                      Symbol,
+                      T::Array[
+                        OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result::CategoryAppliedInputType::TaggedSymbol
+                      ]
+                    ]
+                  )
+                end
+                attr_accessor :category_applied_input_types
+
+                # A dictionary of moderation categories to scores.
+                sig { returns(T::Hash[Symbol, Float]) }
+                attr_accessor :category_scores
+
+                # A boolean indicating whether the content was flagged by any category.
+                sig { returns(T::Boolean) }
+                attr_accessor :flagged
+
+                # The moderation model that produced this result.
+                sig { returns(String) }
+                attr_accessor :model
+
+                # The object type, which was always `moderation_result` for successful moderation
+                # results.
+                sig { returns(Symbol) }
+                attr_accessor :type
+
+                # A moderation result produced for the response input or output.
+                sig do
+                  params(
+                    categories: T::Hash[Symbol, T::Boolean],
+                    category_applied_input_types:
+                      T::Hash[
+                        Symbol,
+                        T::Array[
+                          OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result::CategoryAppliedInputType::OrSymbol
+                        ]
+                      ],
+                    category_scores: T::Hash[Symbol, Float],
+                    flagged: T::Boolean,
+                    model: String,
+                    type: Symbol
+                  ).returns(T.attached_class)
+                end
+                def self.new(
+                  # A dictionary of moderation categories to booleans, True if the input is flagged
+                  # under this category.
+                  categories:,
+                  # Which modalities of input are reflected by the score for each category.
+                  category_applied_input_types:,
+                  # A dictionary of moderation categories to scores.
+                  category_scores:,
+                  # A boolean indicating whether the content was flagged by any category.
+                  flagged:,
+                  # The moderation model that produced this result.
+                  model:,
+                  # The object type, which was always `moderation_result` for successful moderation
+                  # results.
+                  type: :moderation_result
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {
+                      categories: T::Hash[Symbol, T::Boolean],
+                      category_applied_input_types:
+                        T::Hash[
+                          Symbol,
+                          T::Array[
+                            OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result::CategoryAppliedInputType::TaggedSymbol
+                          ]
+                        ],
+                      category_scores: T::Hash[Symbol, Float],
+                      flagged: T::Boolean,
+                      model: String,
+                      type: Symbol
+                    }
+                  )
+                end
+                def to_hash
+                end
+
+                module CategoryAppliedInputType
+                  extend OpenAI::Internal::Type::Enum
+
+                  TaggedSymbol =
+                    T.type_alias do
+                      T.all(
+                        Symbol,
+                        OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result::CategoryAppliedInputType
+                      )
+                    end
+                  OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+                  TEXT =
+                    T.let(
+                      :text,
+                      OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result::CategoryAppliedInputType::TaggedSymbol
+                    )
+                  IMAGE =
+                    T.let(
+                      :image,
+                      OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result::CategoryAppliedInputType::TaggedSymbol
+                    )
+
+                  sig do
+                    override.returns(
+                      T::Array[
+                        OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result::CategoryAppliedInputType::TaggedSymbol
+                      ]
+                    )
+                  end
+                  def self.values
+                  end
+                end
+              end
+            end
+
+            class Error < OpenAI::Internal::Type::BaseModel
+              OrHash =
+                T.type_alias do
+                  T.any(
+                    OpenAI::Chat::ChatCompletionChunk::Moderation::Output::Error,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+              # The error code.
+              sig { returns(String) }
+              attr_accessor :code
+
+              # The error message.
+              sig { returns(String) }
+              attr_accessor :message
+
+              # The object type, which is always `error`.
+              sig { returns(Symbol) }
+              attr_accessor :type
+
+              # An error produced while attempting moderation.
+              sig do
+                params(code: String, message: String, type: Symbol).returns(
+                  T.attached_class
+                )
+              end
+              def self.new(
+                # The error code.
+                code:,
+                # The error message.
+                message:,
+                # The object type, which is always `error`.
+                type: :error
+              )
+              end
+
+              sig do
+                override.returns(
+                  { code: String, message: String, type: Symbol }
+                )
+              end
+              def to_hash
+              end
+            end
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Chat::ChatCompletionChunk::Moderation::Output::Variants
+                ]
+              )
+            end
+            def self.variants
             end
           end
         end
