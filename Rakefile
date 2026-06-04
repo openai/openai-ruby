@@ -11,10 +11,11 @@ require "rubocop/rake_task"
 tapioca = "sorbet/tapioca"
 examples = "examples"
 ignore_file = ".ignore"
+pkg = "pkg"
 
 FILES_ENV = "FORMAT_FILE"
 
-CLEAN.push(*%w[.idea/ .ruby-lsp/ .yardoc/ doc/], *FileList["*.gem"], ignore_file)
+CLEAN.push(*%w[.idea/ .ruby-lsp/ .yardoc/ doc/], *FileList["*.gem"], pkg, ignore_file)
 
 CLOBBER.push(*%w[sorbet/rbi/annotations/ sorbet/rbi/gems/], tapioca)
 
@@ -131,6 +132,7 @@ multitask(:"typecheck:steep") do
 end
 
 directory(examples)
+directory(pkg)
 
 desc("Typecheck `*.rbi`")
 multitask("typecheck:sorbet": examples) do
@@ -153,7 +155,7 @@ multitask(:"build:docs") do
 end
 
 desc("Build ruby gem")
-multitask(:"build:gem") do
+multitask(:"build:gem" => pkg) do
   # optimizing for grepping through the gem bundle: many tools honour `.ignore` files, including VSCode
   #
   # both `rbi` and `sig` directories are navigable by their respective tool chains and therefore can be ignored by tools such as `rg`
@@ -162,11 +164,15 @@ multitask(:"build:gem") do
     sig/*
   GLOB
 
-  sh(*%w[gem build -- openai.gemspec])
+  # RubyGems' release-gem action waits for pkg/*.gem after running rake release,
+  # so build with RubyGems' normal versioned filename and move the artifact there.
+  rm_rf(FileList["*.gem", "#{pkg}/*.gem"])
+  sh(*%w[gem build openai.gemspec])
+  mv(*FileList["*.gem"], pkg)
   rm_rf(ignore_file)
 end
 
 desc("Release ruby gem")
 multitask(release: [:"build:gem"]) do
-  sh(*%w[gem push], *FileList["*.gem"])
+  sh(*%w[gem push], *FileList["#{pkg}/*.gem"])
 end
