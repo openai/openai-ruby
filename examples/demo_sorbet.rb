@@ -37,7 +37,7 @@ begin
   # if you have sorbet LSP enabled, and uncomment the two lines below
   #   you will see a red squiggly line on `params` due to a quirk of the sorbet type system.
   #
-  # this file will still infact, run correctly as uncommented.
+  # this file will, in fact, still run correctly when uncommented.
 
   # completion = client.chat.completions.create(params)
   # pp(completion.choices.first&.message&.content)
