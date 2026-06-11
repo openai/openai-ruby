@@ -18,6 +18,7 @@ jobs:
   build:
     timeout-minutes: 10
     name: build
+    environment: CI
     permissions:
       contents: read
       id-token: write
@@ -56,6 +57,7 @@ jobs:
   lint:
     timeout-minutes: 10
     name: lint
+    environment: CI
     runs-on: ${{ github.repository == 'stainless-sdks/openai-ruby' && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
     if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
 
@@ -73,6 +75,7 @@ jobs:
   test-ruby:
     timeout-minutes: 10
     name: test (ruby ${{ matrix.ruby-version }})
+    environment: CI
     runs-on: ${{ github.repository == 'stainless-sdks/openai-ruby' && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
     if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
     strategy:
@@ -95,6 +98,7 @@ jobs:
     name: test
     needs: test-ruby
     if: ${{ always() && needs.test-ruby.result != 'skipped' }}
+    environment: CI
     runs-on: ${{ github.repository == 'stainless-sdks/openai-ruby' && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
     steps:
       - if: ${{ needs.test-ruby.result == 'failure' || needs.test-ruby.result == 'cancelled' }}
