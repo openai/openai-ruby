@@ -8,6 +8,8 @@ module OpenAI
 
         def initialize(raw_stream:, response_format: nil, input_tools: nil)
           @raw_stream = raw_stream
+          @headers = raw_stream.headers
+          @status = raw_stream.status
           @state = ChatCompletionStreamState.new(
             response_format: response_format,
             input_tools: input_tools

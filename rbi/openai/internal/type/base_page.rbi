@@ -25,6 +25,10 @@ module OpenAI
         def to_enum
         end
 
+        sig { returns(T.nilable(T::Hash[String, String])) }
+        attr_reader :response_headers
+        end
+
         # @api private
         sig do
           params(
@@ -35,6 +39,10 @@ module OpenAI
           ).void
         end
         def initialize(client:, req:, headers:, page_data:)
+        end
+
+        sig { params(headers: T::Hash[String, String]).returns(T.self_type) }
+        def __set_response_headers(headers)
         end
       end
     end

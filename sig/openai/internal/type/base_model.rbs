@@ -77,6 +77,8 @@ module OpenAI
 
         def []: (Symbol key) -> top?
 
+        def response_headers: -> ::Hash[String, String]?
+
         def to_h: -> ::Hash[Symbol, top]
 
         alias to_hash to_h
@@ -90,6 +92,8 @@ module OpenAI
         def to_yaml: (*top a) -> String
 
         def initialize: (?::Hash[Symbol, top] | instance data) -> void
+
+        def __set_response_headers: (::Hash[String, String] headers) -> self
 
         def self.inspect: (?depth: Integer) -> String
 
