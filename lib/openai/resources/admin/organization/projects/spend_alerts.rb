@@ -37,6 +37,34 @@ module OpenAI
               )
             end
 
+            # Retrieves a project spend alert.
+            #
+            # @overload retrieve(alert_id, project_id:, request_options: {})
+            #
+            # @param alert_id [String] The ID of the spend alert to retrieve.
+            #
+            # @param project_id [String] The ID of the project.
+            #
+            # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+            #
+            # @return [OpenAI::Models::Admin::Organization::Projects::ProjectSpendAlert]
+            #
+            # @see OpenAI::Models::Admin::Organization::Projects::SpendAlertRetrieveParams
+            def retrieve(alert_id, params)
+              parsed, options = OpenAI::Admin::Organization::Projects::SpendAlertRetrieveParams.dump_request(params)
+              project_id =
+                parsed.delete(:project_id) do
+                  raise ArgumentError.new("missing required path argument #{_1}")
+                end
+              @client.request(
+                method: :get,
+                path: ["organization/projects/%1$s/spend_alerts/%2$s", project_id, alert_id],
+                model: OpenAI::Admin::Organization::Projects::ProjectSpendAlert,
+                security: {admin_api_key_auth: true},
+                options: options
+              )
+            end
+
             # Updates a project spend alert.
             #
             # @overload update(alert_id, project_id:, currency:, interval:, notification_channel:, threshold_amount:, request_options: {})

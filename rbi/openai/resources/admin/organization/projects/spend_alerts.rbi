@@ -37,6 +37,25 @@ module OpenAI
             )
             end
 
+            # Retrieves a project spend alert.
+            sig do
+              params(
+                alert_id: String,
+                project_id: String,
+                request_options: OpenAI::RequestOptions::OrHash
+              ).returns(
+                OpenAI::Admin::Organization::Projects::ProjectSpendAlert
+              )
+            end
+            def retrieve(
+              # The ID of the spend alert to retrieve.
+              alert_id,
+              # The ID of the project.
+              project_id:,
+              request_options: {}
+            )
+            end
+
             # Updates a project spend alert.
             sig do
               params(

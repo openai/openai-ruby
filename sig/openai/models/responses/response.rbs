@@ -27,7 +27,7 @@ module OpenAI
           prompt: OpenAI::Responses::ResponsePrompt?,
           prompt_cache_key: String,
           prompt_cache_retention: OpenAI::Models::Responses::Response::prompt_cache_retention?,
-          reasoning: OpenAI::Responses::Response::Reasoning?,
+          reasoning: OpenAI::Reasoning?,
           safety_identifier: String,
           service_tier: OpenAI::Models::Responses::Response::service_tier?,
           status: OpenAI::Models::Responses::response_status,
@@ -89,7 +89,7 @@ module OpenAI
 
         attr_accessor prompt_cache_retention: OpenAI::Models::Responses::Response::prompt_cache_retention?
 
-        attr_accessor reasoning: OpenAI::Responses::Response::Reasoning?
+        attr_accessor reasoning: OpenAI::Reasoning?
 
         attr_reader safety_identifier: String?
 
@@ -147,7 +147,7 @@ module OpenAI
           ?prompt: OpenAI::Responses::ResponsePrompt?,
           ?prompt_cache_key: String,
           ?prompt_cache_retention: OpenAI::Models::Responses::Response::prompt_cache_retention?,
-          ?reasoning: OpenAI::Responses::Response::Reasoning?,
+          ?reasoning: OpenAI::Reasoning?,
           ?safety_identifier: String,
           ?service_tier: OpenAI::Models::Responses::Response::service_tier?,
           ?status: OpenAI::Models::Responses::response_status,
@@ -184,7 +184,7 @@ module OpenAI
           prompt: OpenAI::Responses::ResponsePrompt?,
           prompt_cache_key: String,
           prompt_cache_retention: OpenAI::Models::Responses::Response::prompt_cache_retention?,
-          reasoning: OpenAI::Responses::Response::Reasoning?,
+          reasoning: OpenAI::Reasoning?,
           safety_identifier: String,
           service_tier: OpenAI::Models::Responses::Response::service_tier?,
           status: OpenAI::Models::Responses::response_status,
@@ -457,88 +457,6 @@ module OpenAI
           PROMPT_CACHE_RETENTION_24H: :"24h"
 
           def self?.values: -> ::Array[OpenAI::Models::Responses::Response::prompt_cache_retention]
-        end
-
-        type reasoning =
-          {
-            context: OpenAI::Models::Responses::Response::Reasoning::context?,
-            effort: OpenAI::Models::Responses::Response::Reasoning::effort?,
-            summary: OpenAI::Models::Responses::Response::Reasoning::summary?,
-            generate_summary: OpenAI::Models::Responses::Response::Reasoning::generate_summary?
-          }
-
-        class Reasoning < OpenAI::Internal::Type::BaseModel
-          attr_accessor context: OpenAI::Models::Responses::Response::Reasoning::context?
-
-          attr_accessor effort: OpenAI::Models::Responses::Response::Reasoning::effort?
-
-          attr_accessor summary: OpenAI::Models::Responses::Response::Reasoning::summary?
-
-          attr_accessor generate_summary: OpenAI::Models::Responses::Response::Reasoning::generate_summary?
-
-          def initialize: (
-            context: OpenAI::Models::Responses::Response::Reasoning::context?,
-            effort: OpenAI::Models::Responses::Response::Reasoning::effort?,
-            summary: OpenAI::Models::Responses::Response::Reasoning::summary?,
-            ?generate_summary: OpenAI::Models::Responses::Response::Reasoning::generate_summary?
-          ) -> void
-
-          def to_hash: -> {
-            context: OpenAI::Models::Responses::Response::Reasoning::context?,
-            effort: OpenAI::Models::Responses::Response::Reasoning::effort?,
-            summary: OpenAI::Models::Responses::Response::Reasoning::summary?,
-            generate_summary: OpenAI::Models::Responses::Response::Reasoning::generate_summary?
-          }
-
-          type context = :current_turn | :all_turns
-
-          module Context
-            extend OpenAI::Internal::Type::Enum
-
-            CURRENT_TURN: :current_turn
-            ALL_TURNS: :all_turns
-
-            def self?.values: -> ::Array[OpenAI::Models::Responses::Response::Reasoning::context]
-          end
-
-          type effort = :none | :minimal | :low | :medium | :high | :xhigh
-
-          module Effort
-            extend OpenAI::Internal::Type::Enum
-
-            NONE: :none
-            MINIMAL: :minimal
-            LOW: :low
-            MEDIUM: :medium
-            HIGH: :high
-            XHIGH: :xhigh
-
-            def self?.values: -> ::Array[OpenAI::Models::Responses::Response::Reasoning::effort]
-          end
-
-          type summary = :concise | :detailed | :auto
-
-          module Summary
-            extend OpenAI::Internal::Type::Enum
-
-            CONCISE: :concise
-            DETAILED: :detailed
-            AUTO: :auto
-
-            def self?.values: -> ::Array[OpenAI::Models::Responses::Response::Reasoning::summary]
-          end
-
-          type generate_summary = :concise | :detailed | :auto
-
-          module GenerateSummary
-            extend OpenAI::Internal::Type::Enum
-
-            CONCISE: :concise
-            DETAILED: :detailed
-            AUTO: :auto
-
-            def self?.values: -> ::Array[OpenAI::Models::Responses::Response::Reasoning::generate_summary]
-          end
         end
 
         type service_tier = :auto | :default | :flex | :scale | :priority
