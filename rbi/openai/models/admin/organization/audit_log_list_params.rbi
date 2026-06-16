@@ -109,12 +109,23 @@ module OpenAI
           attr_writer :project_ids
 
           # Return only events performed on these targets. For example, a project ID
-          # updated.
+          # updated. For ChatGPT connector role events, use the workspace connector resource
+          # ID shown in `details.id`, such as `<workspace_id>__<connector_id>`.
           sig { returns(T.nilable(T::Array[String])) }
           attr_reader :resource_ids
 
           sig { params(resource_ids: T::Array[String]).void }
           attr_writer :resource_ids
+
+          # Return only tenant-scoped events associated with this organization. Required for
+          # tenant-scoped events such as `role.bound_to_resource` and
+          # `role.unbound_from_resource`. When `true`, all supplied event types must be
+          # tenant-scoped.
+          sig { returns(T.nilable(T::Boolean)) }
+          attr_reader :tenant_only
+
+          sig { params(tenant_only: T::Boolean).void }
+          attr_writer :tenant_only
 
           sig do
             params(
@@ -131,6 +142,7 @@ module OpenAI
               limit: Integer,
               project_ids: T::Array[String],
               resource_ids: T::Array[String],
+              tenant_only: T::Boolean,
               request_options: OpenAI::RequestOptions::OrHash
             ).returns(T.attached_class)
           end
@@ -162,8 +174,14 @@ module OpenAI
             # Return only events for these projects.
             project_ids: nil,
             # Return only events performed on these targets. For example, a project ID
-            # updated.
+            # updated. For ChatGPT connector role events, use the workspace connector resource
+            # ID shown in `details.id`, such as `<workspace_id>__<connector_id>`.
             resource_ids: nil,
+            # Return only tenant-scoped events associated with this organization. Required for
+            # tenant-scoped events such as `role.bound_to_resource` and
+            # `role.unbound_from_resource`. When `true`, all supplied event types must be
+            # tenant-scoped.
+            tenant_only: nil,
             request_options: {}
           )
           end
@@ -184,6 +202,7 @@ module OpenAI
                 limit: Integer,
                 project_ids: T::Array[String],
                 resource_ids: T::Array[String],
+                tenant_only: T::Boolean,
                 request_options: OpenAI::RequestOptions
               }
             )
@@ -520,6 +539,16 @@ module OpenAI
             ROLE_ASSIGNMENT_DELETED =
               T.let(
                 :"role.assignment.deleted",
+                OpenAI::Admin::Organization::AuditLogListParams::EventType::TaggedSymbol
+              )
+            ROLE_BOUND_TO_RESOURCE =
+              T.let(
+                :"role.bound_to_resource",
+                OpenAI::Admin::Organization::AuditLogListParams::EventType::TaggedSymbol
+              )
+            ROLE_UNBOUND_FROM_RESOURCE =
+              T.let(
+                :"role.unbound_from_resource",
                 OpenAI::Admin::Organization::AuditLogListParams::EventType::TaggedSymbol
               )
             SCIM_ENABLED =

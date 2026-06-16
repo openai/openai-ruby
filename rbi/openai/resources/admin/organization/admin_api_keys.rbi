@@ -9,12 +9,19 @@ module OpenAI
           sig do
             params(
               name: String,
+              expires_in_seconds: Integer,
               request_options: OpenAI::RequestOptions::OrHash
             ).returns(
               OpenAI::Models::Admin::Organization::AdminAPIKeyCreateResponse
             )
           end
-          def create(name:, request_options: {})
+          def create(
+            name:,
+            # The number of seconds until the API key expires. Omit this field for a key that
+            # does not expire.
+            expires_in_seconds: nil,
+            request_options: {}
+          )
           end
 
           # Retrieve a single organization API key

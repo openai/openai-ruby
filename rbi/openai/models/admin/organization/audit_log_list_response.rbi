@@ -700,6 +700,24 @@ module OpenAI
           sig do
             returns(
               T.nilable(
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource
+              )
+            )
+          end
+          attr_reader :role_bound_to_resource
+
+          sig do
+            params(
+              role_bound_to_resource:
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::OrHash
+            ).void
+          end
+          attr_writer :role_bound_to_resource
+
+          # The details for events with this `type`.
+          sig do
+            returns(
+              T.nilable(
                 OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleCreated
               )
             )
@@ -731,6 +749,24 @@ module OpenAI
             ).void
           end
           attr_writer :role_deleted
+
+          # The details for events with this `type`.
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource
+              )
+            )
+          end
+          attr_reader :role_unbound_from_resource
+
+          sig do
+            params(
+              role_unbound_from_resource:
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::OrHash
+            ).void
+          end
+          attr_writer :role_unbound_from_resource
 
           # The details for events with this `type`.
           sig do
@@ -1085,10 +1121,14 @@ module OpenAI
                 OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentCreated::OrHash,
               role_assignment_deleted:
                 OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentDeleted::OrHash,
+              role_bound_to_resource:
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::OrHash,
               role_created:
                 OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleCreated::OrHash,
               role_deleted:
                 OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleDeleted::OrHash,
+              role_unbound_from_resource:
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::OrHash,
               role_updated:
                 OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated::OrHash,
               scim_disabled:
@@ -1208,9 +1248,13 @@ module OpenAI
             # The details for events with this `type`.
             role_assignment_deleted: nil,
             # The details for events with this `type`.
+            role_bound_to_resource: nil,
+            # The details for events with this `type`.
             role_created: nil,
             # The details for events with this `type`.
             role_deleted: nil,
+            # The details for events with this `type`.
+            role_unbound_from_resource: nil,
             # The details for events with this `type`.
             role_updated: nil,
             # The details for events with this `type`.
@@ -1327,10 +1371,14 @@ module OpenAI
                   OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentCreated,
                 role_assignment_deleted:
                   OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentDeleted,
+                role_bound_to_resource:
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource,
                 role_created:
                   OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleCreated,
                 role_deleted:
                   OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleDeleted,
+                role_unbound_from_resource:
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource,
                 role_updated:
                   OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated,
                 scim_disabled:
@@ -1623,6 +1671,16 @@ module OpenAI
             ROLE_ASSIGNMENT_DELETED =
               T.let(
                 :"role.assignment.deleted",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            ROLE_BOUND_TO_RESOURCE =
+              T.let(
+                :"role.bound_to_resource",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
+            ROLE_UNBOUND_FROM_RESOURCE =
+              T.let(
+                :"role.unbound_from_resource",
                 OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
               )
             SCIM_ENABLED =
@@ -4506,6 +4564,211 @@ module OpenAI
             end
           end
 
+          class RoleBoundToResource < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The ID of the resource the role was bound to. ChatGPT workspace connector
+            # resources use `<workspace_id>__<connector_id>`.
+            sig { returns(T.nilable(String)) }
+            attr_reader :id
+
+            sig { params(id: String).void }
+            attr_writer :id
+
+            # The connector ID for a ChatGPT workspace connector resource.
+            sig { returns(T.nilable(String)) }
+            attr_reader :connector_id
+
+            sig { params(connector_id: String).void }
+            attr_writer :connector_id
+
+            # The connector display name for a ChatGPT workspace connector resource, or the
+            # connector ID when the display name could not be resolved.
+            sig { returns(T.nilable(String)) }
+            attr_reader :connector_name
+
+            sig { params(connector_name: String).void }
+            attr_writer :connector_name
+
+            # Whether the connector is enabled for the role.
+            sig { returns(T.nilable(T::Boolean)) }
+            attr_reader :enabled
+
+            sig { params(enabled: T::Boolean).void }
+            attr_writer :enabled
+
+            # The permissions granted to the role for the resource.
+            sig { returns(T.nilable(T::Array[String])) }
+            attr_reader :permissions
+
+            sig { params(permissions: T::Array[String]).void }
+            attr_writer :permissions
+
+            # The ID of the resource the role was bound to.
+            sig { returns(T.nilable(String)) }
+            attr_reader :resource_id
+
+            sig { params(resource_id: String).void }
+            attr_writer :resource_id
+
+            # The type of resource the role was bound to.
+            sig { returns(T.nilable(String)) }
+            attr_reader :resource_type
+
+            sig { params(resource_type: String).void }
+            attr_writer :resource_type
+
+            # The ID of the role that was bound to the resource.
+            sig { returns(T.nilable(String)) }
+            attr_reader :role_id
+
+            sig { params(role_id: String).void }
+            attr_writer :role_id
+
+            # The connector role mutation path that produced the event.
+            sig do
+              returns(
+                T.nilable(
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::Source::TaggedSymbol
+                )
+              )
+            end
+            attr_reader :source
+
+            sig do
+              params(
+                source:
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::Source::OrSymbol
+              ).void
+            end
+            attr_writer :source
+
+            # The workspace ID for a ChatGPT workspace connector resource.
+            sig { returns(T.nilable(String)) }
+            attr_reader :workspace_id
+
+            sig { params(workspace_id: String).void }
+            attr_writer :workspace_id
+
+            # The details for events with this `type`.
+            sig do
+              params(
+                id: String,
+                connector_id: String,
+                connector_name: String,
+                enabled: T::Boolean,
+                permissions: T::Array[String],
+                resource_id: String,
+                resource_type: String,
+                role_id: String,
+                source:
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::Source::OrSymbol,
+                workspace_id: String
+              ).returns(T.attached_class)
+            end
+            def self.new(
+              # The ID of the resource the role was bound to. ChatGPT workspace connector
+              # resources use `<workspace_id>__<connector_id>`.
+              id: nil,
+              # The connector ID for a ChatGPT workspace connector resource.
+              connector_id: nil,
+              # The connector display name for a ChatGPT workspace connector resource, or the
+              # connector ID when the display name could not be resolved.
+              connector_name: nil,
+              # Whether the connector is enabled for the role.
+              enabled: nil,
+              # The permissions granted to the role for the resource.
+              permissions: nil,
+              # The ID of the resource the role was bound to.
+              resource_id: nil,
+              # The type of resource the role was bound to.
+              resource_type: nil,
+              # The ID of the role that was bound to the resource.
+              role_id: nil,
+              # The connector role mutation path that produced the event.
+              source: nil,
+              # The workspace ID for a ChatGPT workspace connector resource.
+              workspace_id: nil
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  id: String,
+                  connector_id: String,
+                  connector_name: String,
+                  enabled: T::Boolean,
+                  permissions: T::Array[String],
+                  resource_id: String,
+                  resource_type: String,
+                  role_id: String,
+                  source:
+                    OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::Source::TaggedSymbol,
+                  workspace_id: String
+                }
+              )
+            end
+            def to_hash
+            end
+
+            # The connector role mutation path that produced the event.
+            module Source
+              extend OpenAI::Internal::Type::Enum
+
+              TaggedSymbol =
+                T.type_alias do
+                  T.all(
+                    Symbol,
+                    OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::Source
+                  )
+                end
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+              ROLE_TOGGLE =
+                T.let(
+                  :role_toggle,
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::Source::TaggedSymbol
+                )
+              ROLE_CONNECTOR_UPDATE =
+                T.let(
+                  :role_connector_update,
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::Source::TaggedSymbol
+                )
+              ROLE_DELETE =
+                T.let(
+                  :role_delete,
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::Source::TaggedSymbol
+                )
+              WORKSPACE_PERMISSIONS =
+                T.let(
+                  :workspace_permissions,
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::Source::TaggedSymbol
+                )
+              CONNECTOR_PUBLISH =
+                T.let(
+                  :connector_publish,
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::Source::TaggedSymbol
+                )
+
+              sig do
+                override.returns(
+                  T::Array[
+                    OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::Source::TaggedSymbol
+                  ]
+                )
+              end
+              def self.values
+              end
+            end
+          end
+
           class RoleCreated < OpenAI::Internal::Type::BaseModel
             OrHash =
               T.type_alias do
@@ -4615,6 +4878,211 @@ module OpenAI
 
             sig { override.returns({ id: String }) }
             def to_hash
+            end
+          end
+
+          class RoleUnboundFromResource < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The ID of the resource the role was unbound from. ChatGPT workspace connector
+            # resources use `<workspace_id>__<connector_id>`.
+            sig { returns(T.nilable(String)) }
+            attr_reader :id
+
+            sig { params(id: String).void }
+            attr_writer :id
+
+            # The connector ID for a ChatGPT workspace connector resource.
+            sig { returns(T.nilable(String)) }
+            attr_reader :connector_id
+
+            sig { params(connector_id: String).void }
+            attr_writer :connector_id
+
+            # The connector display name for a ChatGPT workspace connector resource, or the
+            # connector ID when the display name could not be resolved.
+            sig { returns(T.nilable(String)) }
+            attr_reader :connector_name
+
+            sig { params(connector_name: String).void }
+            attr_writer :connector_name
+
+            # Whether the connector is enabled for the role.
+            sig { returns(T.nilable(T::Boolean)) }
+            attr_reader :enabled
+
+            sig { params(enabled: T::Boolean).void }
+            attr_writer :enabled
+
+            # The permissions remaining for the role after the change.
+            sig { returns(T.nilable(T::Array[String])) }
+            attr_reader :permissions
+
+            sig { params(permissions: T::Array[String]).void }
+            attr_writer :permissions
+
+            # The ID of the resource the role was unbound from.
+            sig { returns(T.nilable(String)) }
+            attr_reader :resource_id
+
+            sig { params(resource_id: String).void }
+            attr_writer :resource_id
+
+            # The type of resource the role was unbound from.
+            sig { returns(T.nilable(String)) }
+            attr_reader :resource_type
+
+            sig { params(resource_type: String).void }
+            attr_writer :resource_type
+
+            # The ID of the role that was unbound from the resource.
+            sig { returns(T.nilable(String)) }
+            attr_reader :role_id
+
+            sig { params(role_id: String).void }
+            attr_writer :role_id
+
+            # The connector role mutation path that produced the event.
+            sig do
+              returns(
+                T.nilable(
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::Source::TaggedSymbol
+                )
+              )
+            end
+            attr_reader :source
+
+            sig do
+              params(
+                source:
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::Source::OrSymbol
+              ).void
+            end
+            attr_writer :source
+
+            # The workspace ID for a ChatGPT workspace connector resource.
+            sig { returns(T.nilable(String)) }
+            attr_reader :workspace_id
+
+            sig { params(workspace_id: String).void }
+            attr_writer :workspace_id
+
+            # The details for events with this `type`.
+            sig do
+              params(
+                id: String,
+                connector_id: String,
+                connector_name: String,
+                enabled: T::Boolean,
+                permissions: T::Array[String],
+                resource_id: String,
+                resource_type: String,
+                role_id: String,
+                source:
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::Source::OrSymbol,
+                workspace_id: String
+              ).returns(T.attached_class)
+            end
+            def self.new(
+              # The ID of the resource the role was unbound from. ChatGPT workspace connector
+              # resources use `<workspace_id>__<connector_id>`.
+              id: nil,
+              # The connector ID for a ChatGPT workspace connector resource.
+              connector_id: nil,
+              # The connector display name for a ChatGPT workspace connector resource, or the
+              # connector ID when the display name could not be resolved.
+              connector_name: nil,
+              # Whether the connector is enabled for the role.
+              enabled: nil,
+              # The permissions remaining for the role after the change.
+              permissions: nil,
+              # The ID of the resource the role was unbound from.
+              resource_id: nil,
+              # The type of resource the role was unbound from.
+              resource_type: nil,
+              # The ID of the role that was unbound from the resource.
+              role_id: nil,
+              # The connector role mutation path that produced the event.
+              source: nil,
+              # The workspace ID for a ChatGPT workspace connector resource.
+              workspace_id: nil
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  id: String,
+                  connector_id: String,
+                  connector_name: String,
+                  enabled: T::Boolean,
+                  permissions: T::Array[String],
+                  resource_id: String,
+                  resource_type: String,
+                  role_id: String,
+                  source:
+                    OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::Source::TaggedSymbol,
+                  workspace_id: String
+                }
+              )
+            end
+            def to_hash
+            end
+
+            # The connector role mutation path that produced the event.
+            module Source
+              extend OpenAI::Internal::Type::Enum
+
+              TaggedSymbol =
+                T.type_alias do
+                  T.all(
+                    Symbol,
+                    OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::Source
+                  )
+                end
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+              ROLE_TOGGLE =
+                T.let(
+                  :role_toggle,
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::Source::TaggedSymbol
+                )
+              ROLE_CONNECTOR_UPDATE =
+                T.let(
+                  :role_connector_update,
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::Source::TaggedSymbol
+                )
+              ROLE_DELETE =
+                T.let(
+                  :role_delete,
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::Source::TaggedSymbol
+                )
+              WORKSPACE_PERMISSIONS =
+                T.let(
+                  :workspace_permissions,
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::Source::TaggedSymbol
+                )
+              CONNECTOR_PUBLISH =
+                T.let(
+                  :connector_publish,
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::Source::TaggedSymbol
+                )
+
+              sig do
+                override.returns(
+                  T::Array[
+                    OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::Source::TaggedSymbol
+                  ]
+                )
+              end
+              def self.values
+              end
             end
           end
 

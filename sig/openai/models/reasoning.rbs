@@ -2,12 +2,15 @@ module OpenAI
   module Models
     type reasoning =
       {
+        context: OpenAI::Models::Reasoning::context?,
         effort: OpenAI::Models::reasoning_effort?,
         generate_summary: OpenAI::Models::Reasoning::generate_summary?,
         summary: OpenAI::Models::Reasoning::summary?
       }
 
     class Reasoning < OpenAI::Internal::Type::BaseModel
+      attr_accessor context: OpenAI::Models::Reasoning::context?
+
       attr_accessor effort: OpenAI::Models::reasoning_effort?
 
       attr_accessor generate_summary: OpenAI::Models::Reasoning::generate_summary?
@@ -15,16 +18,30 @@ module OpenAI
       attr_accessor summary: OpenAI::Models::Reasoning::summary?
 
       def initialize: (
+        ?context: OpenAI::Models::Reasoning::context?,
         ?effort: OpenAI::Models::reasoning_effort?,
         ?generate_summary: OpenAI::Models::Reasoning::generate_summary?,
         ?summary: OpenAI::Models::Reasoning::summary?
       ) -> void
 
       def to_hash: -> {
+        context: OpenAI::Models::Reasoning::context?,
         effort: OpenAI::Models::reasoning_effort?,
         generate_summary: OpenAI::Models::Reasoning::generate_summary?,
         summary: OpenAI::Models::Reasoning::summary?
       }
+
+      type context = :auto | :current_turn | :all_turns
+
+      module Context
+        extend OpenAI::Internal::Type::Enum
+
+        AUTO: :auto
+        CURRENT_TURN: :current_turn
+        ALL_TURNS: :all_turns
+
+        def self?.values: -> ::Array[OpenAI::Models::Reasoning::context]
+      end
 
       type generate_summary = :auto | :concise | :detailed
 

@@ -22,6 +22,7 @@ class OpenAI::Test::Resources::Admin::Organization::AdminAPIKeysTest < OpenAI::T
       response => {
         id: String,
         created_at: Integer,
+        expires_at: Integer | nil,
         object: Symbol,
         owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
         redacted_value: String,
@@ -49,6 +50,7 @@ class OpenAI::Test::Resources::Admin::Organization::AdminAPIKeysTest < OpenAI::T
       row => {
         id: String,
         created_at: Integer,
+        expires_at: Integer | nil,
         object: Symbol,
         owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
         redacted_value: String,

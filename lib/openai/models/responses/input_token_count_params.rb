@@ -100,6 +100,8 @@ module OpenAI
         optional :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool] }, nil?: true
 
         # @!attribute truncation
+        #   @deprecated
+        #
         #   The truncation strategy to use for the model response. - `auto`: If the input to
         #   this Response exceeds the model's context window size, the model will truncate
         #   the response to fit the context window by dropping items from the beginning of
@@ -303,6 +305,8 @@ module OpenAI
           #   @return [Array(Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceAllowed, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp, OpenAI::Models::Responses::ToolChoiceCustom, OpenAI::Models::Responses::ToolChoiceApplyPatch, OpenAI::Models::Responses::ToolChoiceShell)]
         end
 
+        # @deprecated
+        #
         # The truncation strategy to use for the model response. - `auto`: If the input to
         # this Response exceeds the model's context window size, the model will truncate
         # the response to fit the context window by dropping items from the beginning of

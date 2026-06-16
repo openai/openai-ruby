@@ -18,6 +18,12 @@ module OpenAI
           #   @return [Integer]
           required :created_at, Integer
 
+          # @!attribute expires_at
+          #   The Unix timestamp (in seconds) of when the API key expires
+          #
+          #   @return [Integer, nil]
+          required :expires_at, Integer, nil?: true
+
           # @!attribute object
           #   The object type, which is always `organization.admin_api_key`
           #
@@ -47,12 +53,14 @@ module OpenAI
           #   @return [String, nil]
           optional :name, String, nil?: true
 
-          # @!method initialize(id:, created_at:, owner:, redacted_value:, last_used_at: nil, name: nil, object: :"organization.admin_api_key")
+          # @!method initialize(id:, created_at:, expires_at:, owner:, redacted_value:, last_used_at: nil, name: nil, object: :"organization.admin_api_key")
           #   Represents an individual Admin API key in an org.
           #
           #   @param id [String] The identifier, which can be referenced in API endpoints
           #
           #   @param created_at [Integer] The Unix timestamp (in seconds) of when the API key was created
+          #
+          #   @param expires_at [Integer, nil] The Unix timestamp (in seconds) of when the API key expires
           #
           #   @param owner [OpenAI::Models::Admin::Organization::AdminAPIKey::Owner]
           #

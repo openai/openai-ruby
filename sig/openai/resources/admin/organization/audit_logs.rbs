@@ -13,6 +13,7 @@ module OpenAI
             ?limit: Integer,
             ?project_ids: ::Array[String],
             ?resource_ids: ::Array[String],
+            ?tenant_only: bool,
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Internal::ConversationCursorPage[OpenAI::Models::Admin::Organization::AuditLogListResponse]
 

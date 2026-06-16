@@ -3,6 +3,14 @@
 module OpenAI
   module Models
     class Reasoning < OpenAI::Internal::Type::BaseModel
+      # @!attribute context
+      #   Controls which reasoning items are rendered back to the model on later turns.
+      #   When returned on a response, this is the effective reasoning context mode used
+      #   for the response.
+      #
+      #   @return [Symbol, OpenAI::Models::Reasoning::Context, nil]
+      optional :context, enum: -> { OpenAI::Reasoning::Context }, nil?: true
+
       # @!attribute effort
       #   Constrains effort on reasoning for
       #   [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
@@ -44,7 +52,7 @@ module OpenAI
       #   @return [Symbol, OpenAI::Models::Reasoning::Summary, nil]
       optional :summary, enum: -> { OpenAI::Reasoning::Summary }, nil?: true
 
-      # @!method initialize(effort: nil, generate_summary: nil, summary: nil)
+      # @!method initialize(context: nil, effort: nil, generate_summary: nil, summary: nil)
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::Reasoning} for more details.
       #
@@ -53,11 +61,29 @@ module OpenAI
       #   Configuration options for
       #   [reasoning models](https://platform.openai.com/docs/guides/reasoning).
       #
+      #   @param context [Symbol, OpenAI::Models::Reasoning::Context, nil] Controls which reasoning items are rendered back to the model on later turns.
+      #
       #   @param effort [Symbol, OpenAI::Models::ReasoningEffort, nil] Constrains effort on reasoning for
       #
       #   @param generate_summary [Symbol, OpenAI::Models::Reasoning::GenerateSummary, nil] **Deprecated:** use `summary` instead.
       #
       #   @param summary [Symbol, OpenAI::Models::Reasoning::Summary, nil] A summary of the reasoning performed by the model. This can be
+
+      # Controls which reasoning items are rendered back to the model on later turns.
+      # When returned on a response, this is the effective reasoning context mode used
+      # for the response.
+      #
+      # @see OpenAI::Models::Reasoning#context
+      module Context
+        extend OpenAI::Internal::Type::Enum
+
+        AUTO = :auto
+        CURRENT_TURN = :current_turn
+        ALL_TURNS = :all_turns
+
+        # @!method self.values
+        #   @return [Array<Symbol>]
+      end
 
       # @deprecated
       #
