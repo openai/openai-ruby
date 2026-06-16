@@ -232,15 +232,14 @@ module OpenAI
         end
         attr_accessor :prompt_cache_retention
 
-        # Reasoning configuration and metadata that were used for the response.
-        sig { returns(T.nilable(OpenAI::Responses::Response::Reasoning)) }
+        # **gpt-5 and o-series models only**
+        #
+        # Configuration options for
+        # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
+        sig { returns(T.nilable(OpenAI::Reasoning)) }
         attr_reader :reasoning
 
-        sig do
-          params(
-            reasoning: T.nilable(OpenAI::Responses::Response::Reasoning::OrHash)
-          ).void
-        end
+        sig { params(reasoning: T.nilable(OpenAI::Reasoning::OrHash)).void }
         attr_writer :reasoning
 
         # A stable identifier used to help detect users of your application that may be
@@ -434,8 +433,7 @@ module OpenAI
               T.nilable(
                 OpenAI::Responses::Response::PromptCacheRetention::OrSymbol
               ),
-            reasoning:
-              T.nilable(OpenAI::Responses::Response::Reasoning::OrHash),
+            reasoning: T.nilable(OpenAI::Reasoning::OrHash),
             safety_identifier: String,
             service_tier:
               T.nilable(OpenAI::Responses::Response::ServiceTier::OrSymbol),
@@ -568,7 +566,10 @@ module OpenAI
           # - Organizations with ZDR enabled default to `in_memory` when
           #   `prompt_cache_retention` is not specified.
           prompt_cache_retention: nil,
-          # Reasoning configuration and metadata that were used for the response.
+          # **gpt-5 and o-series models only**
+          #
+          # Configuration options for
+          # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
           reasoning: nil,
           # A stable identifier used to help detect users of your application that may be
           # violating OpenAI's usage policies. The IDs should be a string that uniquely
@@ -662,7 +663,7 @@ module OpenAI
                 T.nilable(
                   OpenAI::Responses::Response::PromptCacheRetention::TaggedSymbol
                 ),
-              reasoning: T.nilable(OpenAI::Responses::Response::Reasoning),
+              reasoning: T.nilable(OpenAI::Reasoning),
               safety_identifier: String,
               service_tier:
                 T.nilable(
@@ -1365,275 +1366,6 @@ module OpenAI
             )
           end
           def self.values
-          end
-        end
-
-        class Reasoning < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::Response::Reasoning,
-                OpenAI::Internal::AnyHash
-              )
-            end
-
-          # The effective reasoning context mode used for the response.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Responses::Response::Reasoning::Context::TaggedSymbol
-              )
-            )
-          end
-          attr_accessor :context
-
-          # The reasoning effort that was requested for the model, if specified.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Responses::Response::Reasoning::Effort::TaggedSymbol
-              )
-            )
-          end
-          attr_accessor :effort
-
-          # A model-generated summary of its reasoning that was produced, if available.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Responses::Response::Reasoning::Summary::TaggedSymbol
-              )
-            )
-          end
-          attr_accessor :summary
-
-          # Deprecated. `summary` was used instead.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Responses::Response::Reasoning::GenerateSummary::TaggedSymbol
-              )
-            )
-          end
-          attr_accessor :generate_summary
-
-          # Reasoning configuration and metadata that were used for the response.
-          sig do
-            params(
-              context:
-                T.nilable(
-                  OpenAI::Responses::Response::Reasoning::Context::OrSymbol
-                ),
-              effort:
-                T.nilable(
-                  OpenAI::Responses::Response::Reasoning::Effort::OrSymbol
-                ),
-              summary:
-                T.nilable(
-                  OpenAI::Responses::Response::Reasoning::Summary::OrSymbol
-                ),
-              generate_summary:
-                T.nilable(
-                  OpenAI::Responses::Response::Reasoning::GenerateSummary::OrSymbol
-                )
-            ).returns(T.attached_class)
-          end
-          def self.new(
-            # The effective reasoning context mode used for the response.
-            context:,
-            # The reasoning effort that was requested for the model, if specified.
-            effort:,
-            # A model-generated summary of its reasoning that was produced, if available.
-            summary:,
-            # Deprecated. `summary` was used instead.
-            generate_summary: nil
-          )
-          end
-
-          sig do
-            override.returns(
-              {
-                context:
-                  T.nilable(
-                    OpenAI::Responses::Response::Reasoning::Context::TaggedSymbol
-                  ),
-                effort:
-                  T.nilable(
-                    OpenAI::Responses::Response::Reasoning::Effort::TaggedSymbol
-                  ),
-                summary:
-                  T.nilable(
-                    OpenAI::Responses::Response::Reasoning::Summary::TaggedSymbol
-                  ),
-                generate_summary:
-                  T.nilable(
-                    OpenAI::Responses::Response::Reasoning::GenerateSummary::TaggedSymbol
-                  )
-              }
-            )
-          end
-          def to_hash
-          end
-
-          # The effective reasoning context mode used for the response.
-          module Context
-            extend OpenAI::Internal::Type::Enum
-
-            TaggedSymbol =
-              T.type_alias do
-                T.all(Symbol, OpenAI::Responses::Response::Reasoning::Context)
-              end
-            OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-            CURRENT_TURN =
-              T.let(
-                :current_turn,
-                OpenAI::Responses::Response::Reasoning::Context::TaggedSymbol
-              )
-            ALL_TURNS =
-              T.let(
-                :all_turns,
-                OpenAI::Responses::Response::Reasoning::Context::TaggedSymbol
-              )
-
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::Response::Reasoning::Context::TaggedSymbol
-                ]
-              )
-            end
-            def self.values
-            end
-          end
-
-          # The reasoning effort that was requested for the model, if specified.
-          module Effort
-            extend OpenAI::Internal::Type::Enum
-
-            TaggedSymbol =
-              T.type_alias do
-                T.all(Symbol, OpenAI::Responses::Response::Reasoning::Effort)
-              end
-            OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-            NONE =
-              T.let(
-                :none,
-                OpenAI::Responses::Response::Reasoning::Effort::TaggedSymbol
-              )
-            MINIMAL =
-              T.let(
-                :minimal,
-                OpenAI::Responses::Response::Reasoning::Effort::TaggedSymbol
-              )
-            LOW =
-              T.let(
-                :low,
-                OpenAI::Responses::Response::Reasoning::Effort::TaggedSymbol
-              )
-            MEDIUM =
-              T.let(
-                :medium,
-                OpenAI::Responses::Response::Reasoning::Effort::TaggedSymbol
-              )
-            HIGH =
-              T.let(
-                :high,
-                OpenAI::Responses::Response::Reasoning::Effort::TaggedSymbol
-              )
-            XHIGH =
-              T.let(
-                :xhigh,
-                OpenAI::Responses::Response::Reasoning::Effort::TaggedSymbol
-              )
-
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::Response::Reasoning::Effort::TaggedSymbol
-                ]
-              )
-            end
-            def self.values
-            end
-          end
-
-          # A model-generated summary of its reasoning that was produced, if available.
-          module Summary
-            extend OpenAI::Internal::Type::Enum
-
-            TaggedSymbol =
-              T.type_alias do
-                T.all(Symbol, OpenAI::Responses::Response::Reasoning::Summary)
-              end
-            OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-            CONCISE =
-              T.let(
-                :concise,
-                OpenAI::Responses::Response::Reasoning::Summary::TaggedSymbol
-              )
-            DETAILED =
-              T.let(
-                :detailed,
-                OpenAI::Responses::Response::Reasoning::Summary::TaggedSymbol
-              )
-            AUTO =
-              T.let(
-                :auto,
-                OpenAI::Responses::Response::Reasoning::Summary::TaggedSymbol
-              )
-
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::Response::Reasoning::Summary::TaggedSymbol
-                ]
-              )
-            end
-            def self.values
-            end
-          end
-
-          # Deprecated. `summary` was used instead.
-          module GenerateSummary
-            extend OpenAI::Internal::Type::Enum
-
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Responses::Response::Reasoning::GenerateSummary
-                )
-              end
-            OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-            CONCISE =
-              T.let(
-                :concise,
-                OpenAI::Responses::Response::Reasoning::GenerateSummary::TaggedSymbol
-              )
-            DETAILED =
-              T.let(
-                :detailed,
-                OpenAI::Responses::Response::Reasoning::GenerateSummary::TaggedSymbol
-              )
-            AUTO =
-              T.let(
-                :auto,
-                OpenAI::Responses::Response::Reasoning::GenerateSummary::TaggedSymbol
-              )
-
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::Response::Reasoning::GenerateSummary::TaggedSymbol
-                ]
-              )
-            end
-            def self.values
-            end
           end
         end
 

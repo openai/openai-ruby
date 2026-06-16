@@ -226,10 +226,13 @@ module OpenAI
                  nil?: true
 
         # @!attribute reasoning
-        #   Reasoning configuration and metadata that were used for the response.
+        #   **gpt-5 and o-series models only**
         #
-        #   @return [OpenAI::Models::Responses::Response::Reasoning, nil]
-        optional :reasoning, -> { OpenAI::Responses::Response::Reasoning }, nil?: true
+        #   Configuration options for
+        #   [reasoning models](https://platform.openai.com/docs/guides/reasoning).
+        #
+        #   @return [OpenAI::Models::Reasoning, nil]
+        optional :reasoning, -> { OpenAI::Reasoning }, nil?: true
 
         # @!attribute safety_identifier
         #   A stable identifier used to help detect users of your application that may be
@@ -389,7 +392,7 @@ module OpenAI
         #
         #   @param prompt_cache_retention [Symbol, OpenAI::Models::Responses::Response::PromptCacheRetention, nil] The retention policy for the prompt cache. Set to `24h` to enable extended promp
         #
-        #   @param reasoning [OpenAI::Models::Responses::Response::Reasoning, nil] Reasoning configuration and metadata that were used for the response.
+        #   @param reasoning [OpenAI::Models::Reasoning, nil] **gpt-5 and o-series models only**
         #
         #   @param safety_identifier [String] A stable identifier used to help detect users of your application that may be vi
         #
@@ -808,104 +811,6 @@ module OpenAI
 
           # @!method self.values
           #   @return [Array<Symbol>]
-        end
-
-        # @see OpenAI::Models::Responses::Response#reasoning
-        class Reasoning < OpenAI::Internal::Type::BaseModel
-          # @!attribute context
-          #   The effective reasoning context mode used for the response.
-          #
-          #   @return [Symbol, OpenAI::Models::Responses::Response::Reasoning::Context, nil]
-          required :context, enum: -> { OpenAI::Responses::Response::Reasoning::Context }, nil?: true
-
-          # @!attribute effort
-          #   The reasoning effort that was requested for the model, if specified.
-          #
-          #   @return [Symbol, OpenAI::Models::Responses::Response::Reasoning::Effort, nil]
-          required :effort, enum: -> { OpenAI::Responses::Response::Reasoning::Effort }, nil?: true
-
-          # @!attribute summary
-          #   A model-generated summary of its reasoning that was produced, if available.
-          #
-          #   @return [Symbol, OpenAI::Models::Responses::Response::Reasoning::Summary, nil]
-          required :summary, enum: -> { OpenAI::Responses::Response::Reasoning::Summary }, nil?: true
-
-          # @!attribute generate_summary
-          #   Deprecated. `summary` was used instead.
-          #
-          #   @return [Symbol, OpenAI::Models::Responses::Response::Reasoning::GenerateSummary, nil]
-          optional :generate_summary,
-                   enum: -> { OpenAI::Responses::Response::Reasoning::GenerateSummary },
-                   nil?: true
-
-          # @!method initialize(context:, effort:, summary:, generate_summary: nil)
-          #   Reasoning configuration and metadata that were used for the response.
-          #
-          #   @param context [Symbol, OpenAI::Models::Responses::Response::Reasoning::Context, nil] The effective reasoning context mode used for the response.
-          #
-          #   @param effort [Symbol, OpenAI::Models::Responses::Response::Reasoning::Effort, nil] The reasoning effort that was requested for the model, if specified.
-          #
-          #   @param summary [Symbol, OpenAI::Models::Responses::Response::Reasoning::Summary, nil] A model-generated summary of its reasoning that was produced, if available.
-          #
-          #   @param generate_summary [Symbol, OpenAI::Models::Responses::Response::Reasoning::GenerateSummary, nil] Deprecated. `summary` was used instead.
-
-          # The effective reasoning context mode used for the response.
-          #
-          # @see OpenAI::Models::Responses::Response::Reasoning#context
-          module Context
-            extend OpenAI::Internal::Type::Enum
-
-            CURRENT_TURN = :current_turn
-            ALL_TURNS = :all_turns
-
-            # @!method self.values
-            #   @return [Array<Symbol>]
-          end
-
-          # The reasoning effort that was requested for the model, if specified.
-          #
-          # @see OpenAI::Models::Responses::Response::Reasoning#effort
-          module Effort
-            extend OpenAI::Internal::Type::Enum
-
-            NONE = :none
-            MINIMAL = :minimal
-            LOW = :low
-            MEDIUM = :medium
-            HIGH = :high
-            XHIGH = :xhigh
-
-            # @!method self.values
-            #   @return [Array<Symbol>]
-          end
-
-          # A model-generated summary of its reasoning that was produced, if available.
-          #
-          # @see OpenAI::Models::Responses::Response::Reasoning#summary
-          module Summary
-            extend OpenAI::Internal::Type::Enum
-
-            CONCISE = :concise
-            DETAILED = :detailed
-            AUTO = :auto
-
-            # @!method self.values
-            #   @return [Array<Symbol>]
-          end
-
-          # Deprecated. `summary` was used instead.
-          #
-          # @see OpenAI::Models::Responses::Response::Reasoning#generate_summary
-          module GenerateSummary
-            extend OpenAI::Internal::Type::Enum
-
-            CONCISE = :concise
-            DETAILED = :detailed
-            AUTO = :auto
-
-            # @!method self.values
-            #   @return [Array<Symbol>]
-          end
         end
 
         # Specifies the processing type used for serving the request.
