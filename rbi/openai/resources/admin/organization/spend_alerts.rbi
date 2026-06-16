@@ -31,6 +31,20 @@ module OpenAI
           )
           end
 
+          # Retrieves an organization spend alert.
+          sig do
+            params(
+              alert_id: String,
+              request_options: OpenAI::RequestOptions::OrHash
+            ).returns(OpenAI::Admin::Organization::OrganizationSpendAlert)
+          end
+          def retrieve(
+            # The ID of the spend alert to retrieve.
+            alert_id,
+            request_options: {}
+          )
+          end
+
           # Updates an organization spend alert.
           sig do
             params(

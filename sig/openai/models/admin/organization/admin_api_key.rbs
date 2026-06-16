@@ -6,6 +6,7 @@ module OpenAI
           {
             id: String,
             created_at: Integer,
+            expires_at: Integer?,
             object: :"organization.admin_api_key",
             owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
             redacted_value: String,
@@ -17,6 +18,8 @@ module OpenAI
           attr_accessor id: String
 
           attr_accessor created_at: Integer
+
+          attr_accessor expires_at: Integer?
 
           attr_accessor object: :"organization.admin_api_key"
 
@@ -31,6 +34,7 @@ module OpenAI
           def initialize: (
             id: String,
             created_at: Integer,
+            expires_at: Integer?,
             owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
             redacted_value: String,
             ?last_used_at: Integer?,
@@ -41,6 +45,7 @@ module OpenAI
           def to_hash: -> {
             id: String,
             created_at: Integer,
+            expires_at: Integer?,
             object: :"organization.admin_api_key",
             owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
             redacted_value: String,

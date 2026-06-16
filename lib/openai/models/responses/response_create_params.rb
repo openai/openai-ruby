@@ -311,6 +311,8 @@ module OpenAI
         optional :top_p, Float, nil?: true
 
         # @!attribute truncation
+        #   @deprecated
+        #
         #   The truncation strategy to use for the model response.
         #
         #   - `auto`: If the input to this Response exceeds the model's context window size,
@@ -590,6 +592,8 @@ module OpenAI
           #   @return [Array(Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceAllowed, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp, OpenAI::Models::Responses::ToolChoiceCustom, OpenAI::Models::Responses::ToolChoiceApplyPatch, OpenAI::Models::Responses::ToolChoiceShell)]
         end
 
+        # @deprecated
+        #
         # The truncation strategy to use for the model response.
         #
         # - `auto`: If the input to this Response exceeds the model's context window size,

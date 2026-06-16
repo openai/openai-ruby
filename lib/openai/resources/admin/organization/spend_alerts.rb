@@ -34,6 +34,27 @@ module OpenAI
             )
           end
 
+          # Retrieves an organization spend alert.
+          #
+          # @overload retrieve(alert_id, request_options: {})
+          #
+          # @param alert_id [String] The ID of the spend alert to retrieve.
+          #
+          # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+          #
+          # @return [OpenAI::Models::Admin::Organization::OrganizationSpendAlert]
+          #
+          # @see OpenAI::Models::Admin::Organization::SpendAlertRetrieveParams
+          def retrieve(alert_id, params = {})
+            @client.request(
+              method: :get,
+              path: ["organization/spend_alerts/%1$s", alert_id],
+              model: OpenAI::Admin::Organization::OrganizationSpendAlert,
+              security: {admin_api_key_auth: true},
+              options: params[:request_options]
+            )
+          end
+
           # Updates an organization spend alert.
           #
           # @overload update(alert_id, currency:, interval:, notification_channel:, threshold_amount:, request_options: {})

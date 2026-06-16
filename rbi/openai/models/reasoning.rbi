@@ -6,6 +6,12 @@ module OpenAI
       OrHash =
         T.type_alias { T.any(OpenAI::Reasoning, OpenAI::Internal::AnyHash) }
 
+      # Controls which reasoning items are rendered back to the model on later turns.
+      # When returned on a response, this is the effective reasoning context mode used
+      # for the response.
+      sig { returns(T.nilable(OpenAI::Reasoning::Context::OrSymbol)) }
+      attr_accessor :context
+
       # Constrains effort on reasoning for
       # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
       # supported values are `none`, `minimal`, `low`, `medium`, `high`, and `xhigh`.
@@ -45,6 +51,7 @@ module OpenAI
       # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
       sig do
         params(
+          context: T.nilable(OpenAI::Reasoning::Context::OrSymbol),
           effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
           generate_summary:
             T.nilable(OpenAI::Reasoning::GenerateSummary::OrSymbol),
@@ -52,6 +59,10 @@ module OpenAI
         ).returns(T.attached_class)
       end
       def self.new(
+        # Controls which reasoning items are rendered back to the model on later turns.
+        # When returned on a response, this is the effective reasoning context mode used
+        # for the response.
+        context: nil,
         # Constrains effort on reasoning for
         # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
         # supported values are `none`, `minimal`, `low`, `medium`, `high`, and `xhigh`.
@@ -85,6 +96,7 @@ module OpenAI
       sig do
         override.returns(
           {
+            context: T.nilable(OpenAI::Reasoning::Context::OrSymbol),
             effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
             generate_summary:
               T.nilable(OpenAI::Reasoning::GenerateSummary::OrSymbol),
@@ -93,6 +105,28 @@ module OpenAI
         )
       end
       def to_hash
+      end
+
+      # Controls which reasoning items are rendered back to the model on later turns.
+      # When returned on a response, this is the effective reasoning context mode used
+      # for the response.
+      module Context
+        extend OpenAI::Internal::Type::Enum
+
+        TaggedSymbol =
+          T.type_alias { T.all(Symbol, OpenAI::Reasoning::Context) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+        AUTO = T.let(:auto, OpenAI::Reasoning::Context::TaggedSymbol)
+        CURRENT_TURN =
+          T.let(:current_turn, OpenAI::Reasoning::Context::TaggedSymbol)
+        ALL_TURNS = T.let(:all_turns, OpenAI::Reasoning::Context::TaggedSymbol)
+
+        sig do
+          override.returns(T::Array[OpenAI::Reasoning::Context::TaggedSymbol])
+        end
+        def self.values
+        end
       end
 
       # **Deprecated:** use `summary` instead.

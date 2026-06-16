@@ -11,6 +11,11 @@ module OpenAI
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Admin::Organization::OrganizationSpendAlert
 
+          def retrieve: (
+            String alert_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::OrganizationSpendAlert
+
           def update: (
             String alert_id,
             currency: OpenAI::Models::Admin::Organization::SpendAlertUpdateParams::currency,

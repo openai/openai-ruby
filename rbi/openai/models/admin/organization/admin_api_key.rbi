@@ -21,6 +21,10 @@ module OpenAI
           sig { returns(Integer) }
           attr_accessor :created_at
 
+          # The Unix timestamp (in seconds) of when the API key expires
+          sig { returns(T.nilable(Integer)) }
+          attr_accessor :expires_at
+
           # The object type, which is always `organization.admin_api_key`
           sig { returns(Symbol) }
           attr_accessor :object
@@ -52,6 +56,7 @@ module OpenAI
             params(
               id: String,
               created_at: Integer,
+              expires_at: T.nilable(Integer),
               owner: OpenAI::Admin::Organization::AdminAPIKey::Owner::OrHash,
               redacted_value: String,
               last_used_at: T.nilable(Integer),
@@ -64,6 +69,8 @@ module OpenAI
             id:,
             # The Unix timestamp (in seconds) of when the API key was created
             created_at:,
+            # The Unix timestamp (in seconds) of when the API key expires
+            expires_at:,
             owner:,
             # The redacted value of the API key
             redacted_value:,
@@ -81,6 +88,7 @@ module OpenAI
               {
                 id: String,
                 created_at: Integer,
+                expires_at: T.nilable(Integer),
                 object: Symbol,
                 owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
                 redacted_value: String,

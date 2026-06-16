@@ -13,6 +13,12 @@ module OpenAI
               ?request_options: OpenAI::request_opts
             ) -> OpenAI::Admin::Organization::Projects::ProjectSpendAlert
 
+            def retrieve: (
+              String alert_id,
+              project_id: String,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Admin::Organization::Projects::ProjectSpendAlert
+
             def update: (
               String alert_id,
               project_id: String,

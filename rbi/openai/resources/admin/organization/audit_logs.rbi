@@ -22,6 +22,7 @@ module OpenAI
               limit: Integer,
               project_ids: T::Array[String],
               resource_ids: T::Array[String],
+              tenant_only: T::Boolean,
               request_options: OpenAI::RequestOptions::OrHash
             ).returns(
               OpenAI::Internal::ConversationCursorPage[
@@ -57,8 +58,14 @@ module OpenAI
             # Return only events for these projects.
             project_ids: nil,
             # Return only events performed on these targets. For example, a project ID
-            # updated.
+            # updated. For ChatGPT connector role events, use the workspace connector resource
+            # ID shown in `details.id`, such as `<workspace_id>__<connector_id>`.
             resource_ids: nil,
+            # Return only tenant-scoped events associated with this organization. Required for
+            # tenant-scoped events such as `role.bound_to_resource` and
+            # `role.unbound_from_resource`. When `true`, all supplied event types must be
+            # tenant-scoped.
+            tenant_only: nil,
             request_options: {}
           )
           end

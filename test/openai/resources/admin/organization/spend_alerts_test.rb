@@ -28,6 +28,25 @@ class OpenAI::Test::Resources::Admin::Organization::SpendAlertsTest < OpenAI::Te
     end
   end
 
+  def test_retrieve
+    response = @openai.admin.organization.spend_alerts.retrieve("alert_id")
+
+    assert_pattern do
+      response => OpenAI::Admin::Organization::OrganizationSpendAlert
+    end
+
+    assert_pattern do
+      response => {
+        id: String,
+        currency: OpenAI::Admin::Organization::OrganizationSpendAlert::Currency,
+        interval: OpenAI::Admin::Organization::OrganizationSpendAlert::Interval,
+        notification_channel: OpenAI::Admin::Organization::OrganizationSpendAlert::NotificationChannel,
+        object: Symbol,
+        threshold_amount: Integer
+      }
+    end
+  end
+
   def test_update_required_params
     response =
       @openai.admin.organization.spend_alerts.update(

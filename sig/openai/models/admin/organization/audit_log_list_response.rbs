@@ -45,8 +45,10 @@ module OpenAI
             rate_limit_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated,
             role_assignment_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentCreated,
             role_assignment_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentDeleted,
+            role_bound_to_resource: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource,
             role_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleCreated,
             role_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleDeleted,
+            role_unbound_from_resource: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource,
             role_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated,
             scim_disabled: OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimDisabled,
             scim_enabled: OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimEnabled,
@@ -291,6 +293,12 @@ module OpenAI
             OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentDeleted
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentDeleted
 
+          attr_reader role_bound_to_resource: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource?
+
+          def role_bound_to_resource=: (
+            OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource
+          ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource
+
           attr_reader role_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleCreated?
 
           def role_created=: (
@@ -302,6 +310,12 @@ module OpenAI
           def role_deleted=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleDeleted
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleDeleted
+
+          attr_reader role_unbound_from_resource: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource?
+
+          def role_unbound_from_resource=: (
+            OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource
+          ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource
 
           attr_reader role_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated?
 
@@ -435,8 +449,10 @@ module OpenAI
             ?rate_limit_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated,
             ?role_assignment_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentCreated,
             ?role_assignment_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentDeleted,
+            ?role_bound_to_resource: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource,
             ?role_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleCreated,
             ?role_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleDeleted,
+            ?role_unbound_from_resource: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource,
             ?role_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated,
             ?scim_disabled: OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimDisabled,
             ?scim_enabled: OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimEnabled,
@@ -496,8 +512,10 @@ module OpenAI
             rate_limit_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated,
             role_assignment_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentCreated,
             role_assignment_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentDeleted,
+            role_bound_to_resource: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource,
             role_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleCreated,
             role_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleDeleted,
+            role_unbound_from_resource: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource,
             role_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated,
             scim_disabled: OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimDisabled,
             scim_enabled: OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimEnabled,
@@ -565,6 +583,8 @@ module OpenAI
             | :"role.deleted"
             | :"role.assignment.created"
             | :"role.assignment.deleted"
+            | :"role.bound_to_resource"
+            | :"role.unbound_from_resource"
             | :"scim.enabled"
             | :"scim.disabled"
             | :"service_account.created"
@@ -626,6 +646,8 @@ module OpenAI
             ROLE_DELETED: :"role.deleted"
             ROLE_ASSIGNMENT_CREATED: :"role.assignment.created"
             ROLE_ASSIGNMENT_DELETED: :"role.assignment.deleted"
+            ROLE_BOUND_TO_RESOURCE: :"role.bound_to_resource"
+            ROLE_UNBOUND_FROM_RESOURCE: :"role.unbound_from_resource"
             SCIM_ENABLED: :"scim.enabled"
             SCIM_DISABLED: :"scim.disabled"
             SERVICE_ACCOUNT_CREATED: :"service_account.created"
@@ -1879,6 +1901,109 @@ module OpenAI
             }
           end
 
+          type role_bound_to_resource =
+            {
+              id: String,
+              connector_id: String,
+              connector_name: String,
+              enabled: bool,
+              permissions: ::Array[String],
+              resource_id: String,
+              resource_type: String,
+              role_id: String,
+              source: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::source,
+              workspace_id: String
+            }
+
+          class RoleBoundToResource < OpenAI::Internal::Type::BaseModel
+            attr_reader id: String?
+
+            def id=: (String) -> String
+
+            attr_reader connector_id: String?
+
+            def connector_id=: (String) -> String
+
+            attr_reader connector_name: String?
+
+            def connector_name=: (String) -> String
+
+            attr_reader enabled: bool?
+
+            def enabled=: (bool) -> bool
+
+            attr_reader permissions: ::Array[String]?
+
+            def permissions=: (::Array[String]) -> ::Array[String]
+
+            attr_reader resource_id: String?
+
+            def resource_id=: (String) -> String
+
+            attr_reader resource_type: String?
+
+            def resource_type=: (String) -> String
+
+            attr_reader role_id: String?
+
+            def role_id=: (String) -> String
+
+            attr_reader source: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::source?
+
+            def source=: (
+              OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::source
+            ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::source
+
+            attr_reader workspace_id: String?
+
+            def workspace_id=: (String) -> String
+
+            def initialize: (
+              ?id: String,
+              ?connector_id: String,
+              ?connector_name: String,
+              ?enabled: bool,
+              ?permissions: ::Array[String],
+              ?resource_id: String,
+              ?resource_type: String,
+              ?role_id: String,
+              ?source: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::source,
+              ?workspace_id: String
+            ) -> void
+
+            def to_hash: -> {
+              id: String,
+              connector_id: String,
+              connector_name: String,
+              enabled: bool,
+              permissions: ::Array[String],
+              resource_id: String,
+              resource_type: String,
+              role_id: String,
+              source: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::source,
+              workspace_id: String
+            }
+
+            type source =
+              :role_toggle
+              | :role_connector_update
+              | :role_delete
+              | :workspace_permissions
+              | :connector_publish
+
+            module Source
+              extend OpenAI::Internal::Type::Enum
+
+              ROLE_TOGGLE: :role_toggle
+              ROLE_CONNECTOR_UPDATE: :role_connector_update
+              ROLE_DELETE: :role_delete
+              WORKSPACE_PERMISSIONS: :workspace_permissions
+              CONNECTOR_PUBLISH: :connector_publish
+
+              def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::source]
+            end
+          end
+
           type role_created =
             {
               id: String,
@@ -1936,6 +2061,109 @@ module OpenAI
             def initialize: (?id: String) -> void
 
             def to_hash: -> { id: String }
+          end
+
+          type role_unbound_from_resource =
+            {
+              id: String,
+              connector_id: String,
+              connector_name: String,
+              enabled: bool,
+              permissions: ::Array[String],
+              resource_id: String,
+              resource_type: String,
+              role_id: String,
+              source: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::source,
+              workspace_id: String
+            }
+
+          class RoleUnboundFromResource < OpenAI::Internal::Type::BaseModel
+            attr_reader id: String?
+
+            def id=: (String) -> String
+
+            attr_reader connector_id: String?
+
+            def connector_id=: (String) -> String
+
+            attr_reader connector_name: String?
+
+            def connector_name=: (String) -> String
+
+            attr_reader enabled: bool?
+
+            def enabled=: (bool) -> bool
+
+            attr_reader permissions: ::Array[String]?
+
+            def permissions=: (::Array[String]) -> ::Array[String]
+
+            attr_reader resource_id: String?
+
+            def resource_id=: (String) -> String
+
+            attr_reader resource_type: String?
+
+            def resource_type=: (String) -> String
+
+            attr_reader role_id: String?
+
+            def role_id=: (String) -> String
+
+            attr_reader source: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::source?
+
+            def source=: (
+              OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::source
+            ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::source
+
+            attr_reader workspace_id: String?
+
+            def workspace_id=: (String) -> String
+
+            def initialize: (
+              ?id: String,
+              ?connector_id: String,
+              ?connector_name: String,
+              ?enabled: bool,
+              ?permissions: ::Array[String],
+              ?resource_id: String,
+              ?resource_type: String,
+              ?role_id: String,
+              ?source: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::source,
+              ?workspace_id: String
+            ) -> void
+
+            def to_hash: -> {
+              id: String,
+              connector_id: String,
+              connector_name: String,
+              enabled: bool,
+              permissions: ::Array[String],
+              resource_id: String,
+              resource_type: String,
+              role_id: String,
+              source: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::source,
+              workspace_id: String
+            }
+
+            type source =
+              :role_toggle
+              | :role_connector_update
+              | :role_delete
+              | :workspace_permissions
+              | :connector_publish
+
+            module Source
+              extend OpenAI::Internal::Type::Enum
+
+              ROLE_TOGGLE: :role_toggle
+              ROLE_CONNECTOR_UPDATE: :role_connector_update
+              ROLE_DELETE: :role_delete
+              WORKSPACE_PERMISSIONS: :workspace_permissions
+              CONNECTOR_PUBLISH: :connector_publish
+
+              def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::source]
+            end
           end
 
           type role_updated =
