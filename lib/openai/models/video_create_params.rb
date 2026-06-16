@@ -62,7 +62,6 @@ module OpenAI
         # Optional reference asset upload or reference object that guides generation.
         variant OpenAI::Internal::Type::FileInput
 
-        # Optional reference asset upload or reference object that guides generation. Provide exactly one of `image_url` or `file_id` when using an object.
         variant -> { OpenAI::ImageInputReferenceParam }
 
         # @!method self.variants

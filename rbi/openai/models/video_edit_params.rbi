@@ -87,7 +87,7 @@ module OpenAI
           sig { returns(String) }
           attr_accessor :id
 
-          # Reference to the completed video to edit.
+          # Reference to the completed video.
           sig { params(id: String).returns(T.attached_class) }
           def self.new(
             # The identifier of the completed video.
