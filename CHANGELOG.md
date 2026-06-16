@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.67.0 (2026-06-16)
+
+Full Changelog: [v0.66.1...v0.67.0](https://github.com/openai/openai-ruby/compare/v0.66.1...v0.67.0)
+
+### Features
+
+* **api:** admin spend_alerts ([7bc8139](https://github.com/openai/openai-ruby/commit/7bc8139c6e7d4c9624b96d81aca14db2c8fd5a8b))
+* **api:** manual updates ([d7a432a](https://github.com/openai/openai-ruby/commit/d7a432a466a3e833b874240ddd8847e3e92d53c3))
+* **api:** update OpenAPI spec or Stainless config ([5f3ae65](https://github.com/openai/openai-ruby/commit/5f3ae65830ce5a2af1ac9eedd91c35f5a3159b6d))
+
+
+### Bug Fixes
+
+* **client:** send content-type header for requests with an omitted optional body ([156b511](https://github.com/openai/openai-ruby/commit/156b511934314f694c7a2cede3dcc53c268547db))
+
 ## 0.66.1 (2026-06-04)
 
 Full Changelog: [v0.66.0...v0.66.1](https://github.com/openai/openai-ruby/compare/v0.66.0...v0.66.1)
