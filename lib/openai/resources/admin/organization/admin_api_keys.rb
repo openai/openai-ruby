@@ -5,11 +5,17 @@ module OpenAI
     class Admin
       class Organization
         class AdminAPIKeys
+          # Some parameter documentations has been truncated, see
+          # {OpenAI::Models::Admin::Organization::AdminAPIKeyCreateParams} for more details.
+          #
           # Create an organization admin API key
           #
-          # @overload create(name:, request_options: {})
+          # @overload create(name:, expires_in_seconds: nil, request_options: {})
           #
           # @param name [String]
+          #
+          # @param expires_in_seconds [Integer] The number of seconds until the API key expires. Omit this field for a key that
+          #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
           # @return [OpenAI::Models::Admin::Organization::AdminAPIKeyCreateResponse]

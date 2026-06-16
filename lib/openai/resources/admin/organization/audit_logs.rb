@@ -11,7 +11,7 @@ module OpenAI
           #
           # List user actions and configuration changes within this organization.
           #
-          # @overload list(actor_emails: nil, actor_ids: nil, after: nil, before: nil, effective_at: nil, event_types: nil, limit: nil, project_ids: nil, resource_ids: nil, request_options: {})
+          # @overload list(actor_emails: nil, actor_ids: nil, after: nil, before: nil, effective_at: nil, event_types: nil, limit: nil, project_ids: nil, resource_ids: nil, tenant_only: nil, request_options: {})
           #
           # @param actor_emails [Array<String>] Return only events performed by users with these emails.
           #
@@ -30,6 +30,8 @@ module OpenAI
           # @param project_ids [Array<String>] Return only events for these projects.
           #
           # @param resource_ids [Array<String>] Return only events performed on these targets. For example, a project ID updated
+          #
+          # @param tenant_only [Boolean] Return only tenant-scoped events associated with this organization. Required for
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #

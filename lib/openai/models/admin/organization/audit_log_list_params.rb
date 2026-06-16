@@ -70,12 +70,22 @@ module OpenAI
 
           # @!attribute resource_ids
           #   Return only events performed on these targets. For example, a project ID
-          #   updated.
+          #   updated. For ChatGPT connector role events, use the workspace connector resource
+          #   ID shown in `details.id`, such as `<workspace_id>__<connector_id>`.
           #
           #   @return [Array<String>, nil]
           optional :resource_ids, OpenAI::Internal::Type::ArrayOf[String]
 
-          # @!method initialize(actor_emails: nil, actor_ids: nil, after: nil, before: nil, effective_at: nil, event_types: nil, limit: nil, project_ids: nil, resource_ids: nil, request_options: {})
+          # @!attribute tenant_only
+          #   Return only tenant-scoped events associated with this organization. Required for
+          #   tenant-scoped events such as `role.bound_to_resource` and
+          #   `role.unbound_from_resource`. When `true`, all supplied event types must be
+          #   tenant-scoped.
+          #
+          #   @return [Boolean, nil]
+          optional :tenant_only, OpenAI::Internal::Type::Boolean
+
+          # @!method initialize(actor_emails: nil, actor_ids: nil, after: nil, before: nil, effective_at: nil, event_types: nil, limit: nil, project_ids: nil, resource_ids: nil, tenant_only: nil, request_options: {})
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Admin::Organization::AuditLogListParams} for more details.
           #
@@ -96,6 +106,8 @@ module OpenAI
           #   @param project_ids [Array<String>] Return only events for these projects.
           #
           #   @param resource_ids [Array<String>] Return only events performed on these targets. For example, a project ID updated
+          #
+          #   @param tenant_only [Boolean] Return only tenant-scoped events associated with this organization. Required for
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -196,6 +208,8 @@ module OpenAI
             ROLE_DELETED = :"role.deleted"
             ROLE_ASSIGNMENT_CREATED = :"role.assignment.created"
             ROLE_ASSIGNMENT_DELETED = :"role.assignment.deleted"
+            ROLE_BOUND_TO_RESOURCE = :"role.bound_to_resource"
+            ROLE_UNBOUND_FROM_RESOURCE = :"role.unbound_from_resource"
             SCIM_ENABLED = :"scim.enabled"
             SCIM_DISABLED = :"scim.disabled"
             SERVICE_ACCOUNT_CREATED = :"service_account.created"

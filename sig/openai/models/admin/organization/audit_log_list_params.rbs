@@ -12,7 +12,8 @@ module OpenAI
             event_types: ::Array[OpenAI::Models::Admin::Organization::AuditLogListParams::event_type],
             limit: Integer,
             project_ids: ::Array[String],
-            resource_ids: ::Array[String]
+            resource_ids: ::Array[String],
+            tenant_only: bool
           }
           & OpenAI::Internal::Type::request_parameters
 
@@ -60,6 +61,10 @@ module OpenAI
 
           def resource_ids=: (::Array[String]) -> ::Array[String]
 
+          attr_reader tenant_only: bool?
+
+          def tenant_only=: (bool) -> bool
+
           def initialize: (
             ?actor_emails: ::Array[String],
             ?actor_ids: ::Array[String],
@@ -70,6 +75,7 @@ module OpenAI
             ?limit: Integer,
             ?project_ids: ::Array[String],
             ?resource_ids: ::Array[String],
+            ?tenant_only: bool,
             ?request_options: OpenAI::request_opts
           ) -> void
 
@@ -83,6 +89,7 @@ module OpenAI
             limit: Integer,
             project_ids: ::Array[String],
             resource_ids: ::Array[String],
+            tenant_only: bool,
             request_options: OpenAI::RequestOptions
           }
 
@@ -171,6 +178,8 @@ module OpenAI
             | :"role.deleted"
             | :"role.assignment.created"
             | :"role.assignment.deleted"
+            | :"role.bound_to_resource"
+            | :"role.unbound_from_resource"
             | :"scim.enabled"
             | :"scim.disabled"
             | :"service_account.created"
@@ -232,6 +241,8 @@ module OpenAI
             ROLE_DELETED: :"role.deleted"
             ROLE_ASSIGNMENT_CREATED: :"role.assignment.created"
             ROLE_ASSIGNMENT_DELETED: :"role.assignment.deleted"
+            ROLE_BOUND_TO_RESOURCE: :"role.bound_to_resource"
+            ROLE_UNBOUND_FROM_RESOURCE: :"role.unbound_from_resource"
             SCIM_ENABLED: :"scim.enabled"
             SCIM_DISABLED: :"scim.disabled"
             SERVICE_ACCOUNT_CREATED: :"service_account.created"

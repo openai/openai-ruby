@@ -5,6 +5,7 @@ module OpenAI
         class AdminAPIKeys
           def create: (
             name: String,
+            ?expires_in_seconds: Integer,
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::Admin::Organization::AdminAPIKeyCreateResponse
 

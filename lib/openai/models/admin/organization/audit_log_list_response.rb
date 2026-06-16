@@ -323,6 +323,14 @@ module OpenAI
                    -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentDeleted },
                    api_name: :"role.assignment.deleted"
 
+          # @!attribute role_bound_to_resource
+          #   The details for events with this `type`.
+          #
+          #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource, nil]
+          optional :role_bound_to_resource,
+                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource },
+                   api_name: :"role.bound_to_resource"
+
           # @!attribute role_created
           #   The details for events with this `type`.
           #
@@ -338,6 +346,14 @@ module OpenAI
           optional :role_deleted,
                    -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleDeleted },
                    api_name: :"role.deleted"
+
+          # @!attribute role_unbound_from_resource
+          #   The details for events with this `type`.
+          #
+          #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource, nil]
+          optional :role_unbound_from_resource,
+                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource },
+                   api_name: :"role.unbound_from_resource"
 
           # @!attribute role_updated
           #   The details for events with this `type`.
@@ -459,7 +475,7 @@ module OpenAI
                    -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated },
                    api_name: :"workload_identity_provider.updated"
 
-          # @!method initialize(id:, effective_at:, type:, actor: nil, api_key_created: nil, api_key_deleted: nil, api_key_updated: nil, certificate_created: nil, certificate_deleted: nil, certificate_updated: nil, certificates_activated: nil, certificates_deactivated: nil, checkpoint_permission_created: nil, checkpoint_permission_deleted: nil, external_key_registered: nil, external_key_removed: nil, group_created: nil, group_deleted: nil, group_updated: nil, invite_accepted: nil, invite_deleted: nil, invite_sent: nil, ip_allowlist_config_activated: nil, ip_allowlist_config_deactivated: nil, ip_allowlist_created: nil, ip_allowlist_deleted: nil, ip_allowlist_updated: nil, login_failed: nil, login_succeeded: nil, logout_failed: nil, logout_succeeded: nil, organization_updated: nil, project: nil, project_archived: nil, project_created: nil, project_deleted: nil, project_updated: nil, rate_limit_deleted: nil, rate_limit_updated: nil, role_assignment_created: nil, role_assignment_deleted: nil, role_created: nil, role_deleted: nil, role_updated: nil, scim_disabled: nil, scim_enabled: nil, service_account_created: nil, service_account_deleted: nil, service_account_updated: nil, user_added: nil, user_deleted: nil, user_updated: nil, workload_identity_provider_mapping_created: nil, workload_identity_provider_mapping_deleted: nil, workload_identity_provider_mapping_updated: nil, workload_identity_provider_created: nil, workload_identity_provider_deleted: nil, workload_identity_provider_updated: nil)
+          # @!method initialize(id:, effective_at:, type:, actor: nil, api_key_created: nil, api_key_deleted: nil, api_key_updated: nil, certificate_created: nil, certificate_deleted: nil, certificate_updated: nil, certificates_activated: nil, certificates_deactivated: nil, checkpoint_permission_created: nil, checkpoint_permission_deleted: nil, external_key_registered: nil, external_key_removed: nil, group_created: nil, group_deleted: nil, group_updated: nil, invite_accepted: nil, invite_deleted: nil, invite_sent: nil, ip_allowlist_config_activated: nil, ip_allowlist_config_deactivated: nil, ip_allowlist_created: nil, ip_allowlist_deleted: nil, ip_allowlist_updated: nil, login_failed: nil, login_succeeded: nil, logout_failed: nil, logout_succeeded: nil, organization_updated: nil, project: nil, project_archived: nil, project_created: nil, project_deleted: nil, project_updated: nil, rate_limit_deleted: nil, rate_limit_updated: nil, role_assignment_created: nil, role_assignment_deleted: nil, role_bound_to_resource: nil, role_created: nil, role_deleted: nil, role_unbound_from_resource: nil, role_updated: nil, scim_disabled: nil, scim_enabled: nil, service_account_created: nil, service_account_deleted: nil, service_account_updated: nil, user_added: nil, user_deleted: nil, user_updated: nil, workload_identity_provider_mapping_created: nil, workload_identity_provider_mapping_deleted: nil, workload_identity_provider_mapping_updated: nil, workload_identity_provider_created: nil, workload_identity_provider_deleted: nil, workload_identity_provider_updated: nil)
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Admin::Organization::AuditLogListResponse} for more details.
           #
@@ -547,9 +563,13 @@ module OpenAI
           #
           #   @param role_assignment_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentDeleted] The details for events with this `type`.
           #
+          #   @param role_bound_to_resource [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource] The details for events with this `type`.
+          #
           #   @param role_created [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleCreated] The details for events with this `type`.
           #
           #   @param role_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleDeleted] The details for events with this `type`.
+          #
+          #   @param role_unbound_from_resource [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource] The details for events with this `type`.
           #
           #   @param role_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated] The details for events with this `type`.
           #
@@ -636,6 +656,8 @@ module OpenAI
             ROLE_DELETED = :"role.deleted"
             ROLE_ASSIGNMENT_CREATED = :"role.assignment.created"
             ROLE_ASSIGNMENT_DELETED = :"role.assignment.deleted"
+            ROLE_BOUND_TO_RESOURCE = :"role.bound_to_resource"
+            ROLE_UNBOUND_FROM_RESOURCE = :"role.unbound_from_resource"
             SCIM_ENABLED = :"scim.enabled"
             SCIM_DISABLED = :"scim.disabled"
             SERVICE_ACCOUNT_CREATED = :"service_account.created"
@@ -1911,6 +1933,115 @@ module OpenAI
             #   @param resource_type [String] The type of resource the role assignment was scoped to.
           end
 
+          # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#role_bound_to_resource
+          class RoleBoundToResource < OpenAI::Internal::Type::BaseModel
+            # @!attribute id
+            #   The ID of the resource the role was bound to. ChatGPT workspace connector
+            #   resources use `<workspace_id>__<connector_id>`.
+            #
+            #   @return [String, nil]
+            optional :id, String
+
+            # @!attribute connector_id
+            #   The connector ID for a ChatGPT workspace connector resource.
+            #
+            #   @return [String, nil]
+            optional :connector_id, String
+
+            # @!attribute connector_name
+            #   The connector display name for a ChatGPT workspace connector resource, or the
+            #   connector ID when the display name could not be resolved.
+            #
+            #   @return [String, nil]
+            optional :connector_name, String
+
+            # @!attribute enabled
+            #   Whether the connector is enabled for the role.
+            #
+            #   @return [Boolean, nil]
+            optional :enabled, OpenAI::Internal::Type::Boolean
+
+            # @!attribute permissions
+            #   The permissions granted to the role for the resource.
+            #
+            #   @return [Array<String>, nil]
+            optional :permissions, OpenAI::Internal::Type::ArrayOf[String]
+
+            # @!attribute resource_id
+            #   The ID of the resource the role was bound to.
+            #
+            #   @return [String, nil]
+            optional :resource_id, String
+
+            # @!attribute resource_type
+            #   The type of resource the role was bound to.
+            #
+            #   @return [String, nil]
+            optional :resource_type, String
+
+            # @!attribute role_id
+            #   The ID of the role that was bound to the resource.
+            #
+            #   @return [String, nil]
+            optional :role_id, String
+
+            # @!attribute source
+            #   The connector role mutation path that produced the event.
+            #
+            #   @return [Symbol, OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::Source, nil]
+            optional :source,
+                     enum: -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::Source }
+
+            # @!attribute workspace_id
+            #   The workspace ID for a ChatGPT workspace connector resource.
+            #
+            #   @return [String, nil]
+            optional :workspace_id, String
+
+            # @!method initialize(id: nil, connector_id: nil, connector_name: nil, enabled: nil, permissions: nil, resource_id: nil, resource_type: nil, role_id: nil, source: nil, workspace_id: nil)
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource}
+            #   for more details.
+            #
+            #   The details for events with this `type`.
+            #
+            #   @param id [String] The ID of the resource the role was bound to. ChatGPT workspace connector resour
+            #
+            #   @param connector_id [String] The connector ID for a ChatGPT workspace connector resource.
+            #
+            #   @param connector_name [String] The connector display name for a ChatGPT workspace connector resource, or the co
+            #
+            #   @param enabled [Boolean] Whether the connector is enabled for the role.
+            #
+            #   @param permissions [Array<String>] The permissions granted to the role for the resource.
+            #
+            #   @param resource_id [String] The ID of the resource the role was bound to.
+            #
+            #   @param resource_type [String] The type of resource the role was bound to.
+            #
+            #   @param role_id [String] The ID of the role that was bound to the resource.
+            #
+            #   @param source [Symbol, OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::Source] The connector role mutation path that produced the event.
+            #
+            #   @param workspace_id [String] The workspace ID for a ChatGPT workspace connector resource.
+
+            # The connector role mutation path that produced the event.
+            #
+            # @see OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource#source
+            module Source
+              extend OpenAI::Internal::Type::Enum
+
+              ROLE_TOGGLE = :role_toggle
+              ROLE_CONNECTOR_UPDATE = :role_connector_update
+              ROLE_DELETE = :role_delete
+              WORKSPACE_PERMISSIONS = :workspace_permissions
+              CONNECTOR_PUBLISH = :connector_publish
+
+              # @!method self.values
+              #   @return [Array<Symbol>]
+            end
+          end
+
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#role_created
           class RoleCreated < OpenAI::Internal::Type::BaseModel
             # @!attribute id
@@ -1969,6 +2100,115 @@ module OpenAI
             #   The details for events with this `type`.
             #
             #   @param id [String] The role ID.
+          end
+
+          # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#role_unbound_from_resource
+          class RoleUnboundFromResource < OpenAI::Internal::Type::BaseModel
+            # @!attribute id
+            #   The ID of the resource the role was unbound from. ChatGPT workspace connector
+            #   resources use `<workspace_id>__<connector_id>`.
+            #
+            #   @return [String, nil]
+            optional :id, String
+
+            # @!attribute connector_id
+            #   The connector ID for a ChatGPT workspace connector resource.
+            #
+            #   @return [String, nil]
+            optional :connector_id, String
+
+            # @!attribute connector_name
+            #   The connector display name for a ChatGPT workspace connector resource, or the
+            #   connector ID when the display name could not be resolved.
+            #
+            #   @return [String, nil]
+            optional :connector_name, String
+
+            # @!attribute enabled
+            #   Whether the connector is enabled for the role.
+            #
+            #   @return [Boolean, nil]
+            optional :enabled, OpenAI::Internal::Type::Boolean
+
+            # @!attribute permissions
+            #   The permissions remaining for the role after the change.
+            #
+            #   @return [Array<String>, nil]
+            optional :permissions, OpenAI::Internal::Type::ArrayOf[String]
+
+            # @!attribute resource_id
+            #   The ID of the resource the role was unbound from.
+            #
+            #   @return [String, nil]
+            optional :resource_id, String
+
+            # @!attribute resource_type
+            #   The type of resource the role was unbound from.
+            #
+            #   @return [String, nil]
+            optional :resource_type, String
+
+            # @!attribute role_id
+            #   The ID of the role that was unbound from the resource.
+            #
+            #   @return [String, nil]
+            optional :role_id, String
+
+            # @!attribute source
+            #   The connector role mutation path that produced the event.
+            #
+            #   @return [Symbol, OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::Source, nil]
+            optional :source,
+                     enum: -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::Source }
+
+            # @!attribute workspace_id
+            #   The workspace ID for a ChatGPT workspace connector resource.
+            #
+            #   @return [String, nil]
+            optional :workspace_id, String
+
+            # @!method initialize(id: nil, connector_id: nil, connector_name: nil, enabled: nil, permissions: nil, resource_id: nil, resource_type: nil, role_id: nil, source: nil, workspace_id: nil)
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource}
+            #   for more details.
+            #
+            #   The details for events with this `type`.
+            #
+            #   @param id [String] The ID of the resource the role was unbound from. ChatGPT workspace connector re
+            #
+            #   @param connector_id [String] The connector ID for a ChatGPT workspace connector resource.
+            #
+            #   @param connector_name [String] The connector display name for a ChatGPT workspace connector resource, or the co
+            #
+            #   @param enabled [Boolean] Whether the connector is enabled for the role.
+            #
+            #   @param permissions [Array<String>] The permissions remaining for the role after the change.
+            #
+            #   @param resource_id [String] The ID of the resource the role was unbound from.
+            #
+            #   @param resource_type [String] The type of resource the role was unbound from.
+            #
+            #   @param role_id [String] The ID of the role that was unbound from the resource.
+            #
+            #   @param source [Symbol, OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::Source] The connector role mutation path that produced the event.
+            #
+            #   @param workspace_id [String] The workspace ID for a ChatGPT workspace connector resource.
+
+            # The connector role mutation path that produced the event.
+            #
+            # @see OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource#source
+            module Source
+              extend OpenAI::Internal::Type::Enum
+
+              ROLE_TOGGLE = :role_toggle
+              ROLE_CONNECTOR_UPDATE = :role_connector_update
+              ROLE_DELETE = :role_delete
+              WORKSPACE_PERMISSIONS = :workspace_permissions
+              CONNECTOR_PUBLISH = :connector_publish
+
+              # @!method self.values
+              #   @return [Array<Symbol>]
+            end
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#role_updated
