@@ -87,8 +87,8 @@ module OpenAI
 
           # @!attribute connector_id
           #   Identifier for service connectors, like those available in ChatGPT. One of
-          #   `server_url` or `connector_id` must be provided. Learn more about service
-          #   connectors
+          #   `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more about
+          #   service connectors
           #   [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).
           #
           #   Currently supported `connector_id` values are:
@@ -131,13 +131,20 @@ module OpenAI
           optional :server_description, String
 
           # @!attribute server_url
-          #   The URL for the MCP server. One of `server_url` or `connector_id` must be
-          #   provided.
+          #   The URL for the MCP server. One of `server_url`, `connector_id`, or `tunnel_id`
+          #   must be provided.
           #
           #   @return [String, nil]
           optional :server_url, String
 
-          # @!method initialize(server_label:, allowed_tools: nil, authorization: nil, connector_id: nil, defer_loading: nil, headers: nil, require_approval: nil, server_description: nil, server_url: nil, type: :mcp)
+          # @!attribute tunnel_id
+          #   The Secure MCP Tunnel ID to use instead of a direct server URL. One of
+          #   `server_url`, `connector_id`, or `tunnel_id` must be provided.
+          #
+          #   @return [String, nil]
+          optional :tunnel_id, String
+
+          # @!method initialize(server_label:, allowed_tools: nil, authorization: nil, connector_id: nil, defer_loading: nil, headers: nil, require_approval: nil, server_description: nil, server_url: nil, tunnel_id: nil, type: :mcp)
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Responses::Tool::Mcp} for more details.
           #
@@ -161,7 +168,9 @@ module OpenAI
           #
           #   @param server_description [String] Optional description of the MCP server, used to provide more context.
           #
-          #   @param server_url [String] The URL for the MCP server. One of `server_url` or `connector_id` must be
+          #   @param server_url [String] The URL for the MCP server. One of `server_url`, `connector_id`, or
+          #
+          #   @param tunnel_id [String] The Secure MCP Tunnel ID to use instead of a direct server URL. One of
           #
           #   @param type [Symbol, :mcp] The type of the MCP tool. Always `mcp`.
 
@@ -213,8 +222,8 @@ module OpenAI
           end
 
           # Identifier for service connectors, like those available in ChatGPT. One of
-          # `server_url` or `connector_id` must be provided. Learn more about service
-          # connectors
+          # `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more about
+          # service connectors
           # [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).
           #
           # Currently supported `connector_id` values are:
