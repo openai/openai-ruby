@@ -1531,8 +1531,8 @@ module OpenAI
             attr_writer :authorization
 
             # Identifier for service connectors, like those available in ChatGPT. One of
-            # `server_url` or `connector_id` must be provided. Learn more about service
-            # connectors
+            # `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more about
+            # service connectors
             # [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).
             #
             # Currently supported `connector_id` values are:
@@ -1591,13 +1591,21 @@ module OpenAI
             sig { params(server_description: String).void }
             attr_writer :server_description
 
-            # The URL for the MCP server. One of `server_url` or `connector_id` must be
-            # provided.
+            # The URL for the MCP server. One of `server_url`, `connector_id`, or `tunnel_id`
+            # must be provided.
             sig { returns(T.nilable(String)) }
             attr_reader :server_url
 
             sig { params(server_url: String).void }
             attr_writer :server_url
+
+            # The Secure MCP Tunnel ID to use instead of a direct server URL. One of
+            # `server_url`, `connector_id`, or `tunnel_id` must be provided.
+            sig { returns(T.nilable(String)) }
+            attr_reader :tunnel_id
+
+            sig { params(tunnel_id: String).void }
+            attr_writer :tunnel_id
 
             # Give the model access to additional tools via remote Model Context Protocol
             # (MCP) servers.
@@ -1626,6 +1634,7 @@ module OpenAI
                   ),
                 server_description: String,
                 server_url: String,
+                tunnel_id: String,
                 type: Symbol
               ).returns(T.attached_class)
             end
@@ -1639,8 +1648,8 @@ module OpenAI
               # OAuth authorization flow and provide the token here.
               authorization: nil,
               # Identifier for service connectors, like those available in ChatGPT. One of
-              # `server_url` or `connector_id` must be provided. Learn more about service
-              # connectors
+              # `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more about
+              # service connectors
               # [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).
               #
               # Currently supported `connector_id` values are:
@@ -1663,9 +1672,12 @@ module OpenAI
               require_approval: nil,
               # Optional description of the MCP server, used to provide more context.
               server_description: nil,
-              # The URL for the MCP server. One of `server_url` or `connector_id` must be
-              # provided.
+              # The URL for the MCP server. One of `server_url`, `connector_id`, or `tunnel_id`
+              # must be provided.
               server_url: nil,
+              # The Secure MCP Tunnel ID to use instead of a direct server URL. One of
+              # `server_url`, `connector_id`, or `tunnel_id` must be provided.
+              tunnel_id: nil,
               # The type of the MCP tool. Always `mcp`.
               type: :mcp
             )
@@ -1690,7 +1702,8 @@ module OpenAI
                       OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::Variants
                     ),
                   server_description: String,
-                  server_url: String
+                  server_url: String,
+                  tunnel_id: String
                 }
               )
             end
@@ -1780,8 +1793,8 @@ module OpenAI
             end
 
             # Identifier for service connectors, like those available in ChatGPT. One of
-            # `server_url` or `connector_id` must be provided. Learn more about service
-            # connectors
+            # `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more about
+            # service connectors
             # [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).
             #
             # Currently supported `connector_id` values are:

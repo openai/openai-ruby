@@ -33,7 +33,7 @@ module OpenAI
         # Reference to the completed video to edit.
         variant OpenAI::Internal::Type::FileInput
 
-        # Reference to the completed video.
+        # Reference to the completed video to edit.
         variant -> { OpenAI::VideoEditParams::Video::VideoReferenceInputParam }
 
         class VideoReferenceInputParam < OpenAI::Internal::Type::BaseModel
@@ -44,7 +44,7 @@ module OpenAI
           required :id, String
 
           # @!method initialize(id:)
-          #   Reference to the completed video.
+          #   Reference to the completed video to edit.
           #
           #   @param id [String] The identifier of the completed video.
         end
