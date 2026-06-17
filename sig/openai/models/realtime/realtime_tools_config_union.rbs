@@ -19,7 +19,8 @@ module OpenAI
             headers: ::Hash[Symbol, String]?,
             require_approval: OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Mcp::require_approval?,
             server_description: String,
-            server_url: String
+            server_url: String,
+            tunnel_id: String
           }
 
         class Mcp < OpenAI::Internal::Type::BaseModel
@@ -55,6 +56,10 @@ module OpenAI
 
           def server_url=: (String) -> String
 
+          attr_reader tunnel_id: String?
+
+          def tunnel_id=: (String) -> String
+
           def initialize: (
             server_label: String,
             ?allowed_tools: OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Mcp::allowed_tools?,
@@ -65,6 +70,7 @@ module OpenAI
             ?require_approval: OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Mcp::require_approval?,
             ?server_description: String,
             ?server_url: String,
+            ?tunnel_id: String,
             ?type: :mcp
           ) -> void
 
@@ -78,7 +84,8 @@ module OpenAI
             headers: ::Hash[Symbol, String]?,
             require_approval: OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Mcp::require_approval?,
             server_description: String,
-            server_url: String
+            server_url: String,
+            tunnel_id: String
           }
 
           type allowed_tools =
