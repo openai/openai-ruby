@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.68.0 (2026-06-17)
+
+Full Changelog: [v0.67.0...v0.68.0](https://github.com/openai/openai-ruby/compare/v0.67.0...v0.68.0)
+
+### Features
+
+* **api:** update OpenAPI spec or Stainless config ([e127868](https://github.com/openai/openai-ruby/commit/e1278686c33b1981c7f4db0eb3c27f2cf2b155ac))
+
 ## 0.67.0 (2026-06-16)
 
 Full Changelog: [v0.66.1...v0.67.0](https://github.com/openai/openai-ruby/compare/v0.66.1...v0.67.0)
