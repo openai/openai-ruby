@@ -10,6 +10,8 @@ module OpenAI
           @text_format = text_format
           @starting_after = starting_after
           @raw_stream = raw_stream
+          @headers = raw_stream.headers
+          @status = raw_stream.status
           @iterator = iterator
           @state = ResponseStreamState.new(
             text_format: text_format

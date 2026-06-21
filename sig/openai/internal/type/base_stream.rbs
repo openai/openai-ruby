@@ -8,6 +8,8 @@ module OpenAI
 
         attr_reader headers: ::Hash[String, String]
 
+        def response_headers: -> ::Hash[String, String]
+
         def close: -> void
 
         private def iterator: -> Enumerable[Elem]
