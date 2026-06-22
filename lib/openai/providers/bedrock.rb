@@ -255,7 +255,7 @@ module OpenAI
         def resolve_base_url(base_url, region)
           return base_url if base_url
           raise OpenAI::Errors::Error, MISSING_REGION_MESSAGE if region.nil?
-          "https://bedrock-mantle.#{region}.api.aws/openai/v1"
+          "https://bedrock-mantle.#{region}.api.aws/v1"
         end
 
         def normalize_base_url(base_url)

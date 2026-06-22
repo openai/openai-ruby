@@ -17,14 +17,14 @@ response = client.responses.create(
 puts(response.output_text)
 ```
 
-The provider uses `https://bedrock-mantle.<region>.api.aws/openai/v1` by default and exposes the normal SDK resources. AWS controls which endpoints and features are supported; unsupported calls surface as normal API errors.
+The provider uses `https://bedrock-mantle.<region>.api.aws/v1` by default and exposes the normal SDK resources. AWS controls which endpoints and features are supported; unsupported calls surface as normal API errors.
 
 The region is resolved from the explicit `region` option, `AWS_REGION`, `AWS_DEFAULT_REGION`, or the selected AWS profile. Override the endpoint with `base_url` or `AWS_BEDROCK_BASE_URL`:
 
 ```ruby
 provider = OpenAI::Providers.bedrock(
   region: "us-west-2",
-  base_url: "https://bedrock.example.com/openai/v1"
+  base_url: "https://bedrock.example.com/v1"
 )
 ```
 

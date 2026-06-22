@@ -65,7 +65,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
   end
 
   def test_bearer_provider_owns_endpoint_and_authentication
-    stub_request(:get, "https://bedrock-mantle.us-east-1.api.aws/openai/v1/models")
+    stub_request(:get, "https://bedrock-mantle.us-east-1.api.aws/v1/models")
       .to_return_json(status: 200, body: {})
 
     client = OpenAI::Client.new(
@@ -73,8 +73,8 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
     )
     client.request({method: :get, path: "models"})
 
-    assert_equal("https://bedrock-mantle.us-east-1.api.aws/openai/v1", client.base_url.to_s)
-    assert_requested(:get, "https://bedrock-mantle.us-east-1.api.aws/openai/v1/models") do |request|
+    assert_equal("https://bedrock-mantle.us-east-1.api.aws/v1", client.base_url.to_s)
+    assert_requested(:get, "https://bedrock-mantle.us-east-1.api.aws/v1/models") do |request|
       assert_equal("Bearer bedrock-token", request.headers["Authorization"])
     end
   end
@@ -86,7 +86,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
     ENV["OPENAI_ORG_ID"] = "org-example"
     ENV["OPENAI_PROJECT_ID"] = "project-example"
     ENV["OPENAI_CUSTOM_HEADERS"] = "x-openai-custom: should-not-leak"
-    url = "https://bedrock-mantle.us-east-1.api.aws/openai/v1/models"
+    url = "https://bedrock-mantle.us-east-1.api.aws/v1/models"
     stub_request(:get, url).to_return_json(status: 200, body: {})
 
     client = OpenAI::Client.new(
@@ -125,7 +125,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
         aws_session_token = file-session-token
       INI
     )
-    url = "https://bedrock-mantle.us-east-1.api.aws/openai/v1/models"
+    url = "https://bedrock-mantle.us-east-1.api.aws/v1/models"
     stub_request(:get, url).to_return_json(status: 200, body: {})
 
     client = OpenAI::Client.new(
@@ -170,7 +170,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
       INI
     )
     reset_shared_config
-    url = "https://bedrock-mantle.us-west-2.api.aws/openai/v1/models"
+    url = "https://bedrock-mantle.us-west-2.api.aws/v1/models"
     stub_request(:get, url).to_return_json(status: 200, body: {})
 
     client = OpenAI::Client.new(provider: OpenAI::Providers.bedrock(profile: "engineering"))
@@ -193,7 +193,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
       INI
     )
     reset_shared_config
-    url = "https://bedrock-mantle.us-west-2.api.aws/openai/v1/models"
+    url = "https://bedrock-mantle.us-west-2.api.aws/v1/models"
     stub_request(:get, url).to_return_json(status: 200, body: {})
 
     client = OpenAI::Client.new(
@@ -241,7 +241,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
       INI
     )
     reset_shared_config
-    url = "https://bedrock-mantle.us-east-2.api.aws/openai/v1/models"
+    url = "https://bedrock-mantle.us-east-2.api.aws/v1/models"
     stub_request(:get, url).to_return_json(status: 200, body: {})
 
     client = OpenAI::Client.new(provider: OpenAI::Providers.bedrock(api_key: nil))
@@ -273,7 +273,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
     )
 
     assert_equal("https://environment.example/openai/v1", environment_client.base_url.to_s)
-    assert_equal("https://bedrock-mantle.us-west-2.api.aws/openai/v1", derived_client.base_url.to_s)
+    assert_equal("https://bedrock-mantle.us-west-2.api.aws/v1", derived_client.base_url.to_s)
     assert_equal("https://explicit.example/openai/v1", custom_client.base_url.to_s)
 
     sigv4_runtime = OpenAI::Internal::Provider.configure(
@@ -323,7 +323,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
   end
 
   def test_sigv4_signs_the_serialized_body_sent_by_the_transport
-    url = "https://bedrock-mantle.us-east-1.api.aws/openai/v1/responses"
+    url = "https://bedrock-mantle.us-east-1.api.aws/v1/responses"
     requests = []
     stub_request(:post, url).to_return do |request|
       requests << request
@@ -356,7 +356,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
       calls += 1
       Aws::Credentials.new("retry-access-#{calls}", "retry-secret-#{calls}")
     end
-    url = "https://bedrock-mantle.us-east-1.api.aws/openai/v1/models"
+    url = "https://bedrock-mantle.us-east-1.api.aws/v1/models"
     authorizations = []
     retry_counts = []
     stub_request(:get, url).to_return do |request|
@@ -435,7 +435,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
     runtime = OpenAI::Internal::Provider.configure(provider)
     request = {
       method: :get,
-      url: URI("https://bedrock-mantle.us-east-1.api.aws/openai/v1/models"),
+      url: URI("https://bedrock-mantle.us-east-1.api.aws/v1/models"),
       headers: {},
       body: nil
     }
@@ -497,7 +497,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
     )
     custom_auth = {
       method: :get,
-      url: URI("https://bedrock-mantle.us-east-1.api.aws/openai/v1/models"),
+      url: URI("https://bedrock-mantle.us-east-1.api.aws/v1/models"),
       headers: {"authorization" => "Bearer custom"},
       body: nil
     }
@@ -522,8 +522,8 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
       access_key_id: "access-key",
       secret_access_key: "secret-key"
     )
-    source = "https://bedrock-mantle.us-east-1.api.aws/openai/v1/models"
-    target = "https://bedrock-mantle.us-east-1.api.aws/openai/v1/redirected"
+    source = "https://bedrock-mantle.us-east-1.api.aws/v1/models"
+    target = "https://bedrock-mantle.us-east-1.api.aws/v1/redirected"
     stub_request(:get, source).to_return(status: 307, headers: {"location" => target}, body: "")
     stub_request(:get, target).to_return_json(status: 200, body: {})
 
@@ -537,14 +537,14 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
     mismatched = OpenAI::Internal::Provider.configure(
       OpenAI::Providers.bedrock(
         region: "us-east-1",
-        base_url: "https://bedrock-mantle.us-west-2.api.aws/openai/v1",
+        base_url: "https://bedrock-mantle.us-west-2.api.aws/v1",
         access_key_id: "access-key",
         secret_access_key: "secret-key"
       )
     )
     request = {
       method: :get,
-      url: URI("https://bedrock-mantle.us-west-2.api.aws/openai/v1/models"),
+      url: URI("https://bedrock-mantle.us-west-2.api.aws/v1/models"),
       headers: {},
       body: nil
     }
@@ -663,7 +663,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
     Aws.instance_variable_set(:@shared_config, nil)
   end
 
-  private def bedrock_request(url = "https://bedrock-mantle.us-east-1.api.aws/openai/v1/models")
+  private def bedrock_request(url = "https://bedrock-mantle.us-east-1.api.aws/v1/models")
     {method: :get, url: URI(url), headers: {}, body: nil}
   end
 end
