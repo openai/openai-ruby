@@ -232,6 +232,14 @@ module OpenAI
         # @return [Hash{String=>String}]
         private def auth_headers = {}
 
+        # Apply final per-attempt request transformations after retry headers are
+        # set and immediately before the request reaches the transport.
+        #
+        # @api private
+        private def prepare_request(request, **_context)
+          request
+        end
+
         # @api private
         #
         # @return [String]
@@ -372,6 +380,24 @@ module OpenAI
         end
 
         # @api private
+        private def raise_status_error!(url:, status:, headers:, response:, stream:)
+          decoded = Kernel.then do
+            OpenAI::Internal::Util.decode_content(headers, stream: stream, suppress_error: true)
+          ensure
+            self.class.reap_connection!(status, stream: stream)
+          end
+
+          raise OpenAI::Errors::APIStatusError.for(
+            url: url,
+            status: status,
+            headers: headers,
+            body: decoded,
+            request: nil,
+            response: response
+          )
+        end
+
+        # @api private
         #
         # @param request [Hash{Symbol=>Object}] .
         #
@@ -396,12 +422,22 @@ module OpenAI
         # @raise [OpenAI::Errors::APIError]
         # @return [Array(Integer, Net::HTTPResponse, Enumerable<String>)]
         def send_request(request, redirect_count:, retry_count:, send_retry_header:)
-          url, headers, max_retries, timeout = request.fetch_values(:url, :headers, :max_retries, :timeout)
-          input = {**request.except(:timeout), deadline: OpenAI::Internal::Util.monotonic_secs + timeout}
-
           if send_retry_header
-            headers["x-stainless-retry-count"] = retry_count.to_s
+            request = request.merge(
+              headers: request.fetch(:headers).merge("x-stainless-retry-count" => retry_count.to_s)
+            )
           end
+
+          prepared_request = prepare_request(
+            request,
+            redirect_count: redirect_count,
+            retry_count: retry_count
+          )
+          url, max_retries, timeout = prepared_request.fetch_values(:url, :max_retries, :timeout)
+          input = {
+            **prepared_request.except(:timeout, :follow_redirects, :provider_auth),
+            deadline: OpenAI::Internal::Util.monotonic_secs + timeout
+          }
 
           begin
             status, response, stream = @requester.execute(input)
@@ -409,6 +445,25 @@ module OpenAI
             status = e
           end
           headers = OpenAI::Internal::Util.normalized_headers(response&.each_header&.to_h)
+
+          terminal_status =
+            case status
+            in 300..399
+              prepared_request[:follow_redirects] == false
+            in (400..)
+              retry_count >= max_retries || !self.class.should_retry?(status, headers: headers)
+            else
+              false
+            end
+          if terminal_status
+            raise_status_error!(
+              url: url,
+              status: status,
+              headers: headers,
+              response: response,
+              stream: stream
+            )
+          end
 
           case status
           in ..299
@@ -421,30 +476,19 @@ module OpenAI
           in 300..399
             self.class.reap_connection!(status, stream: stream)
 
-            request = self.class.follow_redirect(request, status: status, response_headers: headers)
+            redirected_request = self.class.follow_redirect(
+              prepared_request,
+              status: status,
+              response_headers: headers
+            )
             send_request(
-              request,
+              redirected_request,
               redirect_count: redirect_count + 1,
               retry_count: retry_count,
               send_retry_header: send_retry_header
             )
           in OpenAI::Errors::APIConnectionError if retry_count >= max_retries
             raise status
-          in (400..) if retry_count >= max_retries || !self.class.should_retry?(status, headers: headers)
-            decoded = Kernel.then do
-              OpenAI::Internal::Util.decode_content(headers, stream: stream, suppress_error: true)
-            ensure
-              self.class.reap_connection!(status, stream: stream)
-            end
-
-            raise OpenAI::Errors::APIStatusError.for(
-              url: url,
-              status: status,
-              headers: headers,
-              body: decoded,
-              request: nil,
-              response: response
-            )
           in (400..) | OpenAI::Errors::APIConnectionError
             self.class.reap_connection!(status, stream: stream)
 

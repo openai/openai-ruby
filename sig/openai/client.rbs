@@ -67,12 +67,18 @@ module OpenAI
     attr_reader videos: OpenAI::Resources::Videos
 
     private def auth_headers: (
-      security: { bearer_auth?: bool, admin_api_key_auth?: bool }
+      security: { :bearer_auth? => bool, :admin_api_key_auth? => bool }
     ) -> ::Hash[String, String]
 
     private def bearer_auth: -> ::Hash[String, String]
 
     private def admin_api_key_auth: -> ::Hash[String, String]
+
+    private def prepare_request: (
+      OpenAI::Internal::Transport::BaseClient::request_input request,
+      redirect_count: Integer,
+      retry_count: Integer
+    ) -> OpenAI::Internal::Transport::BaseClient::request_input
 
     def initialize: (
       ?api_key: String?,
@@ -81,6 +87,7 @@ module OpenAI
       ?organization: String?,
       ?project: String?,
       ?webhook_secret: String?,
+      ?provider: OpenAI::Internal::Provider::Handle?,
       ?base_url: String?,
       ?max_retries: Integer,
       ?timeout: Float,
