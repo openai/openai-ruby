@@ -227,7 +227,7 @@ module OpenAI
     #
     # @param webhook_secret [String, nil] Defaults to `ENV["OPENAI_WEBHOOK_SECRET"]`
     #
-    # @param provider [OpenAI::Internal::Provider::Handle, nil] Configure a supported
+    # @param provider [OpenAI::Provider, nil] Configure a supported
     #   third-party provider. Provider authentication and routing cannot be combined
     #   with top-level `api_key`, `admin_api_key`, `workload_identity`, or `base_url`.
     #
@@ -256,7 +256,7 @@ module OpenAI
       max_retry_delay: self.class::DEFAULT_MAX_RETRY_DELAY
     )
       provider_runtime = nil
-      if provider
+      unless provider.nil?
         provider_name = OpenAI::Internal::Provider.name(provider)
         conflicts = {
           api_key: api_key,
@@ -271,8 +271,7 @@ module OpenAI
           message =
             "`provider` cannot be combined with top-level #{formatted}. Move provider " \
             "authentication and routing options into `#{provider_name}(...)`."
-          raise OpenAI::Errors::Error,
-                message
+          raise ArgumentError, message
         end
         provider_runtime = OpenAI::Internal::Provider.configure(provider)
       end

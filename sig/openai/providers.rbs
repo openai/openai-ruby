@@ -10,6 +10,6 @@ module OpenAI
       ?session_token: String?,
       ?profile: String?,
       ?credentials_provider: untyped
-    ) -> OpenAI::Internal::Provider::Handle
+    ) -> OpenAI::Provider
   end
 end

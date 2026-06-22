@@ -154,7 +154,7 @@ module OpenAI
         organization: T.nilable(String),
         project: T.nilable(String),
         webhook_secret: T.nilable(String),
-        provider: T.nilable(OpenAI::Internal::Provider::Handle),
+        provider: T.nilable(OpenAI::Provider),
         base_url: T.nilable(String),
         max_retries: Integer,
         timeout: Float,

@@ -1,10 +1,6 @@
 module OpenAI
   module Internal
     module Provider
-      class Handle
-        def inspect: -> String
-      end
-
       class Runtime
         attr_accessor name: String
         attr_accessor base_url: String
@@ -23,10 +19,10 @@ module OpenAI
 
       def self.create: (
         untyped definition
-      ) -> OpenAI::Internal::Provider::Handle
-      def self.name: (OpenAI::Internal::Provider::Handle provider) -> String
+      ) -> OpenAI::Provider
+      def self.name: (OpenAI::Provider provider) -> String
       def self.configure: (
-        OpenAI::Internal::Provider::Handle provider
+        OpenAI::Provider provider
       ) -> OpenAI::Internal::Provider::Runtime
     end
   end

@@ -106,7 +106,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
   def test_provider_rejects_top_level_authentication_and_routing
     provider = OpenAI::Providers.bedrock(region: "us-east-1", api_key: "bedrock-token")
 
-    error = assert_raises(OpenAI::Errors::Error) do
+    error = assert_raises(ArgumentError) do
       OpenAI::Client.new(provider: provider, api_key: "openai-key", base_url: "https://example.com")
     end
 
@@ -207,7 +207,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
   end
 
   def test_missing_named_profile_reports_a_credential_resolution_error
-    error = assert_raises(OpenAI::Errors::Error) do
+    error = assert_raises(ArgumentError) do
       OpenAI::Client.new(provider: OpenAI::Providers.bedrock(profile: "missing"))
     end
     assert_equal(OpenAI::Providers::Bedrock::MISSING_REGION_MESSAGE, error.message)
@@ -553,17 +553,17 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
   end
 
   def test_authentication_modes_are_validated
-    assert_raises(OpenAI::Errors::Error) do
+    assert_raises(ArgumentError) do
       OpenAI::Providers.bedrock(region: "us-east-1", access_key_id: "access-key")
     end
-    assert_raises(OpenAI::Errors::Error) do
+    assert_raises(ArgumentError) do
       OpenAI::Providers.bedrock(
         region: "us-east-1",
         api_key: "bedrock-token",
         profile: "engineering"
       )
     end
-    assert_raises(OpenAI::Errors::Error) do
+    assert_raises(ArgumentError) do
       OpenAI::Providers.bedrock(
         region: "us-east-1",
         access_key_id: "access-key",
@@ -576,13 +576,18 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
   def test_provider_handles_are_opaque_and_reject_foreign_values
     provider = OpenAI::Providers.bedrock(region: "us-east-1", api_key: "bedrock-token")
 
+    assert_instance_of(OpenAI::Provider, provider)
     assert_equal("#<OpenAI::Provider>", provider.inspect)
     assert_predicate(provider, :frozen?)
     assert_raises(NoMethodError) { provider.definition }
+    assert_raises(NoMethodError) { OpenAI::Provider.new(Object.new) }
 
-    error = assert_raises(OpenAI::Errors::Error) do
+    error = assert_raises(ArgumentError) do
       OpenAI::Internal::Provider.name(Object.new)
     end
+    assert_match(/Invalid provider/, error.message)
+
+    error = assert_raises(ArgumentError) { OpenAI::Client.new(provider: false) }
     assert_match(/Invalid provider/, error.message)
   end
 
@@ -614,12 +619,14 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
         /mutually exclusive/
       ],
       [{region: "us-east-1", token_provider: Object.new}, /must respond to `call`/],
+      [{region: "us-east-1", token_provider: false}, /must respond to `call`/],
       [{region: "us-east-1", credentials_provider: Object.new}, /must respond to `call` or `credentials`/],
+      [{region: "us-east-1", credentials_provider: false}, /must respond to `call` or `credentials`/],
       [{api_key: "token"}, /requires an AWS region/]
     ]
 
     cases.each do |options, message|
-      error = assert_raises(OpenAI::Errors::Error, options.inspect) do
+      error = assert_raises(ArgumentError, options.inspect) do
         OpenAI::Providers.bedrock(**options)
       end
       assert_match(message, error.message, options.inspect)
@@ -633,30 +640,26 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
     assert_equal("https://example.com", client.base_url.to_s)
   end
 
-  def test_unexpected_signing_errors_use_auth_specific_messages
-    providers = [
-      [
-        OpenAI::Providers.bedrock(region: "us-east-1", api_key: nil),
-        OpenAI::Providers::Bedrock::MISSING_CREDENTIALS_MESSAGE
-      ],
-      [
-        OpenAI::Providers.bedrock(
-          region: "us-east-1",
-          access_key_id: "access-key",
-          secret_access_key: "secret-key"
-        ),
-        OpenAI::Providers::Bedrock::CREDENTIAL_RESOLUTION_MESSAGE
-      ]
-    ]
-
-    providers.each do |provider, message|
-      runtime = OpenAI::Internal::Provider.configure(provider)
-      request = bedrock_request.except(:method)
-
-      error = assert_raises(OpenAI::Errors::Error) { runtime.prepare_request.call(request) }
-      assert_equal(message, error.message)
-      assert_instance_of(KeyError, error.cause)
+  def test_internal_request_errors_are_not_reported_as_credential_errors
+    bearer_runtime = OpenAI::Internal::Provider.configure(
+      OpenAI::Providers.bedrock(region: "us-east-1", api_key: "bedrock-token")
+    )
+    error = assert_raises(KeyError) do
+      bearer_runtime.prepare_request.call(bedrock_request.except(:url))
     end
+    assert_match(/url/, error.message)
+
+    sigv4_runtime = OpenAI::Internal::Provider.configure(
+      OpenAI::Providers.bedrock(
+        region: "us-east-1",
+        access_key_id: "access-key",
+        secret_access_key: "secret-key"
+      )
+    )
+    error = assert_raises(KeyError) do
+      sigv4_runtime.prepare_request.call(bedrock_request.except(:method))
+    end
+    assert_match(/method/, error.message)
   end
 
   private def reset_shared_config

@@ -67,7 +67,7 @@ module OpenAI
           else
             Bedrock.load_aws!
             region = @region || Bedrock.profile_region(@profile)
-            raise OpenAI::Errors::Error, MISSING_REGION_MESSAGE if region.nil?
+            raise ArgumentError, MISSING_REGION_MESSAGE if region.nil?
 
             base_url = Bedrock.resolve_base_url(@base_url, region)
             credentials =
@@ -105,16 +105,21 @@ module OpenAI
         def prepare_request(request)
           Bedrock.validate_origin!(request.fetch(:url), @base_url, action: "authenticate")
           headers = Bedrock.provider_headers(request, marker: BEARER_AUTH_MARKER)
-          token = @token_provider.call
-          unless token.is_a?(String) && !token.strip.empty?
-            raise OpenAI::Errors::Error,
-                  "The Bedrock bearer credential provider must return a non-empty string."
-          end
+          token = resolve_token
 
           request.merge(
             headers: headers.merge("authorization" => "Bearer #{token}"),
             provider_auth: BEARER_AUTH_MARKER
           )
+        end
+
+        private def resolve_token
+          token = @token_provider.call
+          unless token.is_a?(String) && !token.strip.empty?
+            raise OpenAI::Errors::Error,
+                  "The Bedrock bearer credential provider must return a non-empty string."
+          end
+          token
         rescue OpenAI::Errors::Error
           raise
         rescue StandardError => e
@@ -145,7 +150,7 @@ module OpenAI
 
           headers = Bedrock.provider_headers(request, marker: SIGV4_AUTH_MARKER)
           SIGNING_HEADERS.each { headers.delete(_1) }
-          signature = @signer.sign_request(
+          signature = sign_request(
             http_method: request.fetch(:method).to_s.upcase,
             url: url.to_s,
             headers: headers,
@@ -157,6 +162,10 @@ module OpenAI
             follow_redirects: false,
             provider_auth: SIGV4_AUTH_MARKER
           )
+        end
+
+        private def sign_request(**options)
+          @signer.sign_request(**options)
         rescue OpenAI::Errors::Error
           raise
         rescue StandardError => e
@@ -254,21 +263,21 @@ module OpenAI
 
         def resolve_base_url(base_url, region)
           return base_url if base_url
-          raise OpenAI::Errors::Error, MISSING_REGION_MESSAGE if region.nil?
+          raise ArgumentError, MISSING_REGION_MESSAGE if region.nil?
           "https://bedrock-mantle.#{region}.api.aws/v1"
         end
 
         def normalize_base_url(base_url)
           uri = URI(base_url)
           unless uri.is_a?(URI::HTTP) && uri.host
-            raise OpenAI::Errors::Error, "The Bedrock `base_url` must be an absolute HTTP or HTTPS URL."
+            raise ArgumentError, "The Bedrock `base_url` must be an absolute HTTP or HTTPS URL."
           end
           uri.path = uri.path.sub(%r{/responses(?:/.*)?\z}, "")
           uri.path = "" if uri.path == "/"
           uri.to_s.sub(%r{/\z}, "")
         rescue URI::InvalidURIError => e
           message = "The Bedrock `base_url` must be an absolute HTTP or HTTPS URL."
-          raise OpenAI::Errors::Error.new(message), cause: e
+          raise ArgumentError.new(message), cause: e
         end
 
         def profile_region(profile)
@@ -361,7 +370,7 @@ module OpenAI
       # @param credentials_provider [#credentials, #call, nil] Refreshable AWS
       #   credentials provider. A callable must return an AWS credential identity.
       #
-      # @return [OpenAI::Internal::Provider::Handle]
+      # @return [OpenAI::Provider]
       def bedrock(
         region: nil,
         base_url: OpenAI::Internal::OMIT,
@@ -375,14 +384,14 @@ module OpenAI
       )
         normalized_region = Bedrock.normalize_optional_string(region)
         if !region.nil? && normalized_region.nil?
-          raise OpenAI::Errors::Error, "The Bedrock AWS `region` must not be empty."
+          raise ArgumentError, "The Bedrock AWS `region` must not be empty."
         end
         normalized_region ||= Bedrock.normalize_optional_string(ENV["AWS_REGION"]) ||
                               Bedrock.normalize_optional_string(ENV["AWS_DEFAULT_REGION"])
 
         normalized_profile = Bedrock.normalize_optional_string(profile)
         if !profile.nil? && normalized_profile.nil?
-          raise OpenAI::Errors::Error, "The Bedrock AWS `profile` must not be empty."
+          raise ArgumentError, "The Bedrock AWS `profile` must not be empty."
         end
 
         configured_base_url =
@@ -392,7 +401,7 @@ module OpenAI
             nil
           else
             normalized = Bedrock.normalize_optional_string(base_url)
-            raise(OpenAI::Errors::Error, "The Bedrock `base_url` must not be empty.") unless normalized
+            raise(ArgumentError, "The Bedrock `base_url` must not be empty.") unless normalized
             normalized
           end
         configured_base_url = Bedrock.normalize_base_url(configured_base_url) if configured_base_url
@@ -400,45 +409,45 @@ module OpenAI
         has_access_key = !access_key_id.nil?
         has_secret_key = !secret_access_key.nil?
         if has_access_key != has_secret_key || (!session_token.nil? && !has_access_key)
-          raise OpenAI::Errors::Error, Bedrock::PARTIAL_STATIC_CREDENTIALS_MESSAGE
+          raise ArgumentError, Bedrock::PARTIAL_STATIC_CREDENTIALS_MESSAGE
         end
         normalized_access_key_id = Bedrock.normalize_optional_string(access_key_id)
         normalized_secret_access_key = Bedrock.normalize_optional_string(secret_access_key)
         normalized_session_token = Bedrock.normalize_optional_string(session_token)
         if has_access_key && [normalized_access_key_id, normalized_secret_access_key].any?(&:nil?)
-          raise OpenAI::Errors::Error,
+          raise ArgumentError,
                 "Static AWS credentials require non-empty `access_key_id` and `secret_access_key` values."
         end
         if !session_token.nil? && normalized_session_token.nil?
-          raise OpenAI::Errors::Error, "A static AWS `session_token` must not be empty when provided."
+          raise ArgumentError, "A static AWS `session_token` must not be empty when provided."
         end
 
         explicit_api_key = !api_key.equal?(OpenAI::Internal::OMIT) && !api_key.nil?
         normalized_api_key = Bedrock.normalize_optional_string(api_key)
         if explicit_api_key && normalized_api_key.nil?
-          raise OpenAI::Errors::Error, "The Bedrock bearer credential must not be empty."
+          raise ArgumentError, "The Bedrock bearer credential must not be empty."
         end
-        if explicit_api_key && token_provider
-          raise OpenAI::Errors::Error,
+        if explicit_api_key && !token_provider.nil?
+          raise ArgumentError,
                 "The `api_key` and `token_provider` options are mutually exclusive. Configure only one."
         end
-        if token_provider && !token_provider.respond_to?(:call)
-          raise OpenAI::Errors::Error, "The Bedrock `token_provider` must respond to `call`."
+        if !token_provider.nil? && !token_provider.respond_to?(:call)
+          raise ArgumentError, "The Bedrock `token_provider` must respond to `call`."
         end
-        if credentials_provider &&
+        if !credentials_provider.nil? &&
            !credentials_provider.respond_to?(:call) &&
            !credentials_provider.respond_to?(:credentials)
-          raise OpenAI::Errors::Error,
+          raise ArgumentError,
                 "The Bedrock `credentials_provider` must respond to `call` or `credentials`."
         end
 
         explicit_bearer = explicit_api_key || !token_provider.nil?
         aws_modes = [has_access_key, !normalized_profile.nil?, !credentials_provider.nil?].count(true)
         if aws_modes > 1
-          raise OpenAI::Errors::Error, Bedrock::AMBIGUOUS_AWS_AUTH_MESSAGE
+          raise ArgumentError, Bedrock::AMBIGUOUS_AWS_AUTH_MESSAGE
         end
         if explicit_bearer && aws_modes.positive?
-          raise OpenAI::Errors::Error, Bedrock::AMBIGUOUS_AUTH_MESSAGE
+          raise ArgumentError, Bedrock::AMBIGUOUS_AUTH_MESSAGE
         end
 
         skip_environment_bearer = !api_key.equal?(OpenAI::Internal::OMIT) && api_key.nil?
@@ -449,7 +458,7 @@ module OpenAI
           if explicit_api_key
             normalized_api_key.freeze
             -> { normalized_api_key }
-          elsif token_provider
+          elsif !token_provider.nil?
             token_provider
           elsif environment_bearer
             lambda do
@@ -459,7 +468,7 @@ module OpenAI
           end
 
         if bearer_provider && configured_base_url.nil? && normalized_region.nil?
-          raise OpenAI::Errors::Error, Bedrock::MISSING_REGION_MESSAGE
+          raise ArgumentError, Bedrock::MISSING_REGION_MESSAGE
         end
 
         definition = Bedrock::Definition.new(

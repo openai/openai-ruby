@@ -14,7 +14,7 @@ module OpenAI
           session_token: T.nilable(String),
           profile: T.nilable(String),
           credentials_provider: T.untyped
-        ).returns(OpenAI::Internal::Provider::Handle)
+        ).returns(OpenAI::Provider)
       end
       def bedrock(
         region: nil,

@@ -87,7 +87,7 @@ module OpenAI
       ?organization: String?,
       ?project: String?,
       ?webhook_secret: String?,
-      ?provider: OpenAI::Internal::Provider::Handle?,
+      ?provider: OpenAI::Provider?,
       ?base_url: String?,
       ?max_retries: Integer,
       ?timeout: Float,

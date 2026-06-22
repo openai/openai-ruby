@@ -3,12 +3,6 @@
 module OpenAI
   module Internal
     module Provider
-      class Handle
-        sig { returns(String) }
-        def inspect
-        end
-      end
-
       class Runtime
         sig { returns(String) }
         attr_accessor :name
@@ -33,21 +27,19 @@ module OpenAI
 
       class << self
         sig do
-          params(definition: T.untyped).returns(
-            OpenAI::Internal::Provider::Handle
-          )
+          params(definition: T.untyped).returns(OpenAI::Provider)
         end
         def create(definition)
         end
 
         sig do
-          params(provider: OpenAI::Internal::Provider::Handle).returns(String)
+          params(provider: OpenAI::Provider).returns(String)
         end
         def name(provider)
         end
 
         sig do
-          params(provider: OpenAI::Internal::Provider::Handle).returns(
+          params(provider: OpenAI::Provider).returns(
             OpenAI::Internal::Provider::Runtime
           )
         end
