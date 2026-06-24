@@ -1,0 +1,15 @@
+module OpenAI
+  module Providers
+    def self.bedrock: (
+      ?region: String?,
+      ?base_url: String?,
+      ?api_key: String?,
+      ?token_provider: (^-> String)?,
+      ?access_key_id: String?,
+      ?secret_access_key: String?,
+      ?session_token: String?,
+      ?profile: String?,
+      ?credentials_provider: untyped
+    ) -> OpenAI::Provider
+  end
+end

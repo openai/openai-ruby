@@ -1,0 +1,23 @@
+{
+  "$comment": "Uses AWS SigV4 documentation test credentials. These are public examples, not real AWS credentials.",
+  "signingDate": "2025-01-02T03:04:05.000Z",
+  "region": "us-east-1",
+  "service": "bedrock-mantle",
+  "credentials": {
+    "accessKeyId": "AKIDEXAMPLE",
+    "secretAccessKey": "wJalrXUtnFEMI/K7MDENG+bPxRfiCYEXAMPLEKEY",
+    "sessionToken": "fixture-session-token"
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://bedrock-mantle.us-east-1.api.aws/v1/responses",
+    "body": "{\"model\":\"gpt-4o\",\"input\":\"hello\"}",
+    "contentType": "application/json"
+  },
+  "expected": {
+    "date": "20250102T030405Z",
+    "payloadHash": "50329e51ad520f21b77bad0b01999930ff556cd1bf18434701251ba6c9f877bc",
+    "canonicalRequestHash": "af8212c327679e6b6a7092b129c24b82a921bf85bcce1fbd0126acded824e489",
+    "authorization": "AWS4-HMAC-SHA256 Credential=AKIDEXAMPLE/20250102/us-east-1/bedrock-mantle/aws4_request, SignedHeaders=content-type;host;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=b81279dd7a01b9681012a7cf068f8ab7f663b85f0742741b509315ad22e32175"
+  }
+}

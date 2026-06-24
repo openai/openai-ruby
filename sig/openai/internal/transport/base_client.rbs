@@ -20,7 +20,7 @@ module OpenAI
             page: Class?,
             stream: Class?,
             model: OpenAI::Internal::Type::Converter::input?,
-            security: { bearer_auth?: bool, admin_api_key_auth?: bool }?,
+            security: { :bearer_auth? => bool, :admin_api_key_auth? => bool }?,
             options: OpenAI::request_opts?
           }
         type request_input =
@@ -30,7 +30,9 @@ module OpenAI
             headers: ::Hash[String, String],
             body: top,
             max_retries: Integer,
-            timeout: Float
+            timeout: Float,
+            :follow_redirects? => bool,
+            :provider_auth? => Symbol
           }
 
         MAX_REDIRECTS: 20
@@ -88,6 +90,12 @@ module OpenAI
 
         private def auth_headers: -> ::Hash[String, String]
 
+        private def prepare_request: (
+          OpenAI::Internal::Transport::BaseClient::request_input request,
+          redirect_count: Integer,
+          retry_count: Integer
+        ) -> OpenAI::Internal::Transport::BaseClient::request_input
+
         private def user_agent: -> String
 
         private def generate_idempotency_key: -> String
@@ -101,6 +109,14 @@ module OpenAI
           ::Hash[String, String] headers,
           retry_count: Integer
         ) -> Float
+
+        private def raise_status_error!: (
+          url: URI::Generic,
+          status: Integer,
+          headers: ::Hash[String, String],
+          response: top,
+          stream: Enumerable[String]
+        ) -> bot
 
         def send_request: (
           OpenAI::Internal::Transport::BaseClient::request_input request,
@@ -124,7 +140,7 @@ module OpenAI
           ?page: Class?,
           ?stream: Class?,
           ?model: OpenAI::Internal::Type::Converter::input?,
-          ?security: { bearer_auth?: bool, admin_api_key_auth?: bool }?,
+          ?security: { :bearer_auth? => bool, :admin_api_key_auth? => bool }?,
           ?options: OpenAI::request_opts?
         ) -> top
 

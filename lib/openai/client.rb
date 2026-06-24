@@ -125,6 +125,8 @@ module OpenAI
     #
     # @return [Hash{String=>String}]
     private def auth_headers(security:)
+      return {} if @provider_runtime
+
       enabled_security = security.select { |_, enabled| enabled }
       headers = {bearer_auth:, admin_api_key_auth:}.slice(*enabled_security.keys).values.reduce({}, :merge)
       if headers.empty? && enabled_security.any?
@@ -164,6 +166,13 @@ module OpenAI
       return true if body.nil? || body.is_a?(String)
       return false if body.respond_to?(:read)
       true
+    end
+
+    # @api private
+    private def prepare_request(request, redirect_count:, retry_count:)
+      preparer = @provider_runtime&.prepare_request
+      return super unless preparer
+      preparer.call(request)
     end
 
     # @api private
@@ -218,6 +227,10 @@ module OpenAI
     #
     # @param webhook_secret [String, nil] Defaults to `ENV["OPENAI_WEBHOOK_SECRET"]`
     #
+    # @param provider [OpenAI::Provider, nil] Configure a supported
+    #   third-party provider. Provider authentication and routing cannot be combined
+    #   with top-level `api_key`, `admin_api_key`, `workload_identity`, or `base_url`.
+    #
     # @param base_url [String, nil] Override the default base URL for the API, e.g.,
     # `"https://api.example.com/v2/"`. Defaults to `ENV["OPENAI_BASE_URL"]`
     #
@@ -229,25 +242,65 @@ module OpenAI
     #
     # @param max_retry_delay [Float]
     def initialize(
-      api_key: ENV["OPENAI_API_KEY"],
-      admin_api_key: ENV["OPENAI_ADMIN_KEY"],
+      api_key: OpenAI::Internal::OMIT,
+      admin_api_key: OpenAI::Internal::OMIT,
       workload_identity: nil,
-      organization: ENV["OPENAI_ORG_ID"],
-      project: ENV["OPENAI_PROJECT_ID"],
-      webhook_secret: ENV["OPENAI_WEBHOOK_SECRET"],
-      base_url: ENV["OPENAI_BASE_URL"],
+      organization: OpenAI::Internal::OMIT,
+      project: OpenAI::Internal::OMIT,
+      webhook_secret: OpenAI::Internal::OMIT,
+      provider: nil,
+      base_url: OpenAI::Internal::OMIT,
       max_retries: self.class::DEFAULT_MAX_RETRIES,
       timeout: self.class::DEFAULT_TIMEOUT_IN_SECONDS,
       initial_retry_delay: self.class::DEFAULT_INITIAL_RETRY_DELAY,
       max_retry_delay: self.class::DEFAULT_MAX_RETRY_DELAY
     )
+      provider_runtime = nil
+      unless provider.nil?
+        provider_name = OpenAI::Internal::Provider.name(provider)
+        conflicts = {
+          api_key: api_key,
+          admin_api_key: admin_api_key,
+          workload_identity: workload_identity,
+          base_url: base_url
+        }.filter_map do |name, value|
+          name unless value.equal?(OpenAI::Internal::OMIT) || value.nil?
+        end
+        unless conflicts.empty?
+          formatted = conflicts.map { "`#{_1}`" }.join(", ")
+          message =
+            "`provider` cannot be combined with top-level #{formatted}. Move provider " \
+            "authentication and routing options into `#{provider_name}(...)`."
+          raise ArgumentError, message
+        end
+        provider_runtime = OpenAI::Internal::Provider.configure(provider)
+      end
+
+      api_key = ENV["OPENAI_API_KEY"] if api_key.equal?(OpenAI::Internal::OMIT) && provider_runtime.nil?
+      if admin_api_key.equal?(OpenAI::Internal::OMIT) && provider_runtime.nil?
+        admin_api_key = ENV["OPENAI_ADMIN_KEY"]
+      end
+      if organization.equal?(OpenAI::Internal::OMIT) && provider_runtime.nil?
+        organization = ENV["OPENAI_ORG_ID"]
+      end
+      project = ENV["OPENAI_PROJECT_ID"] if project.equal?(OpenAI::Internal::OMIT) && provider_runtime.nil?
+      webhook_secret = ENV["OPENAI_WEBHOOK_SECRET"] if webhook_secret.equal?(OpenAI::Internal::OMIT)
+      base_url = ENV["OPENAI_BASE_URL"] if base_url.equal?(OpenAI::Internal::OMIT) && provider_runtime.nil?
+
+      api_key = nil if api_key.equal?(OpenAI::Internal::OMIT)
+      admin_api_key = nil if admin_api_key.equal?(OpenAI::Internal::OMIT)
+      organization = nil if organization.equal?(OpenAI::Internal::OMIT)
+      project = nil if project.equal?(OpenAI::Internal::OMIT)
+      webhook_secret = nil if webhook_secret.equal?(OpenAI::Internal::OMIT)
+      base_url = provider_runtime.base_url if provider_runtime
+      base_url = nil if base_url.equal?(OpenAI::Internal::OMIT)
       base_url ||= "https://api.openai.com/v1"
 
       if !api_key.nil? && !workload_identity.nil?
         raise ArgumentError, "`api_key` and `workload_identity` are mutually exclusive"
       end
 
-      if api_key.nil? && admin_api_key.nil? && workload_identity.nil?
+      if provider_runtime.nil? && api_key.nil? && admin_api_key.nil? && workload_identity.nil?
         raise ArgumentError,
               "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable."
       end
@@ -256,7 +309,7 @@ module OpenAI
         "openai-organization" => (@organization = organization&.to_s),
         "openai-project" => (@project = project&.to_s)
       }
-      custom_headers_env = ENV["OPENAI_CUSTOM_HEADERS"]
+      custom_headers_env = ENV["OPENAI_CUSTOM_HEADERS"] unless provider_runtime
       unless custom_headers_env.nil?
         parsed = {}
         custom_headers_env.split("\n").each do |line|
@@ -280,6 +333,7 @@ module OpenAI
       end
       @admin_api_key = admin_api_key&.to_s
       @webhook_secret = webhook_secret&.to_s
+      @provider_runtime = provider_runtime
 
       super(
         base_url: base_url,
