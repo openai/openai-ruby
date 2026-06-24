@@ -575,6 +575,18 @@ module OpenAI
 
         # @api private
         #
+        # Multipart filenames are quoted-strings, not URI path segments. Escape header
+        # delimiters and remove CR/LF without encoding ordinary filename characters.
+        #
+        # @param filename [Pathname, String]
+        #
+        # @return [String]
+        private def escape_multipart_filename(filename)
+          filename.to_s.gsub(/["\\]/) { "\\#{_1}" }.delete("\r\n").b
+        end
+
+        # @api private
+        #
         # @param y [Enumerator::Yielder]
         # @param boundary [String]
         # @param key [Symbol, String]
@@ -590,10 +602,10 @@ module OpenAI
 
           case val
           in OpenAI::FilePart unless val.filename.nil?
-            filename = encode_path(val.filename)
+            filename = escape_multipart_filename(val.filename)
             y << "; filename=\"#{filename}\""
           in Pathname | IO
-            filename = encode_path(::File.basename(val.to_path))
+            filename = escape_multipart_filename(::File.basename(val.to_path))
             y << "; filename=\"#{filename}\""
           else
           end
