@@ -329,6 +329,23 @@ class OpenAI::Test::UtilIOAdapterTest < Minitest::Test
     end
   end
 
+  def test_read_respects_max_len_for_enumerator
+    input =
+      Enumerator.new do |y|
+        y << "ab"
+        y << "cd"
+        y << "ef"
+      end
+
+    # rubocop:disable Lint/EmptyBlock
+    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(input) {}
+    # rubocop:enable Lint/EmptyBlock
+
+    assert_equal("abc", adapter.read(3))
+    assert_equal("def", adapter.read(3))
+    assert_nil(adapter.read(3))
+  end
+
   def test_copy_write
     cases = {
       StringIO.new => "",

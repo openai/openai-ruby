@@ -428,11 +428,11 @@ module OpenAI
             @stream.to_a.join
           in Integer
             @buf << @stream.next while @buf.length < max_len
-            @buf.slice!(..max_len)
+            @buf.slice!(0, max_len)
           end
         rescue StopIteration
           @stream = nil
-          @buf.slice!(0..)
+          @buf.empty? ? nil : @buf.slice!(0..)
         end
 
         # @api private
