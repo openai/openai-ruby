@@ -60,7 +60,7 @@ module OpenAI
     optional :max_retries, Integer
 
     # @!attribute timeout
-    #   Request timeout in seconds.
+    #   Request timeout in seconds. Pass `nil` to disable the timeout.
     #
     #   @return [Float, nil]
     optional :timeout, Float
