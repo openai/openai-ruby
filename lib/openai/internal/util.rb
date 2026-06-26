@@ -428,11 +428,11 @@ module OpenAI
             @stream.to_a.join
           in Integer
             @buf << @stream.next while @buf.length < max_len
-            @buf.slice!(..max_len)
+            @buf.slice!(0, max_len)
           end
         rescue StopIteration
           @stream = nil
-          @buf.slice!(0..)
+          @buf.empty? ? nil : @buf.slice!(0..)
         end
 
         # @api private
@@ -442,21 +442,23 @@ module OpenAI
         #
         # @return [String, nil]
         def read(max_len = nil, out_string = nil)
-          case @stream
-          in nil
-            nil
-          in IO | StringIO
-            @stream.read(max_len, out_string)
-          in Enumerator
-            read = read_enum(max_len)
-            case out_string
-            in String
-              out_string.replace(read)
+          read =
+            case @stream
             in nil
-              read
+              nil
+            in IO | StringIO
+              return @stream.read(max_len, out_string).tap(&@blk)
+            in Enumerator
+              read_enum(max_len)
             end
-          end
-            .tap(&@blk)
+
+          case out_string
+          in String
+            out_string.replace(read || "")
+            read.nil? ? nil : out_string
+          in nil
+            read
+          end.tap(&@blk)
         end
 
         # @api private
