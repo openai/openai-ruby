@@ -12,6 +12,7 @@ module OpenAI
         KEEP_ALIVE_TIMEOUT = 30
 
         DEFAULT_MAX_CONNECTIONS = [Etc.nprocessors, 99].max
+        UNBOUNDED_POOL_WAIT_TIMEOUT = 60
 
         class << self
           # @api private
@@ -109,7 +110,12 @@ module OpenAI
             end
 
           if deadline.nil?
-            pool.with(&blk)
+            loop do
+              # `connection_pool` cannot disable checkout timeouts, so retry a long
+              # wait interval indefinitely when the request timeout is disabled.
+              return pool.with(timeout: self.class::UNBOUNDED_POOL_WAIT_TIMEOUT, &blk)
+            rescue ConnectionPool::TimeoutError
+            end
           else
             timeout = deadline - OpenAI::Internal::Util.monotonic_secs
             pool.with(timeout: timeout, &blk)
