@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "etc"
 require "pathname"
 require "securerandom"
 require "shellwords"
@@ -37,7 +38,11 @@ multitask(:test) do
   ruby(*%w[-w -e], rb, verbose: false) { fail unless _1 }
 end
 
-xargs = %w[xargs --no-run-if-empty --null --max-procs=0 --max-args=300 --]
+# Cap parallelism at the CPU count. `--max-procs=0` spawns one process per
+# 300-file batch with no upper bound; on large SDKs (thousands of files) that
+# oversubscribes CPUs and stacks up rubocop processes, exhausting memory and
+# slowing CI to the point of timing out.
+xargs = %W[xargs --no-run-if-empty --null --max-procs=#{Etc.nprocessors} --max-args=300 --]
 ruby_opt = {"RUBYOPT" => [ENV["RUBYOPT"], "--encoding=UTF-8"].compact.join(" ")}
 
 filtered = ->(ext, dirs) do
