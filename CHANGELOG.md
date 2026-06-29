@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.68.1 (2026-06-29)
+
+Full Changelog: [v0.68.0...v0.68.1](https://github.com/openai/openai-ruby/compare/v0.68.0...v0.68.1)
+
+### Bug Fixes
+
+* multipart filename quoting ([#279](https://github.com/openai/openai-ruby/issues/279)) ([0c2c79a](https://github.com/openai/openai-ruby/commit/0c2c79a03df51e56b8f34bbf905c5798536d9ed8))
+
+
+### Chores
+
+* **internal:** bound formatter parallelism to CPU count ([3f18a30](https://github.com/openai/openai-ruby/commit/3f18a305b3c854e190b332862e7faa991910fa02))
+
+
+### Documentation
+
+* fix wording in Sorbet example ([#290](https://github.com/openai/openai-ruby/issues/290)) ([2f34487](https://github.com/openai/openai-ruby/commit/2f34487e709761320107e142e6bfbbd0dfc82ba0))
+
 ## 0.68.0 (2026-06-17)
 
 Full Changelog: [v0.67.0...v0.68.0](https://github.com/openai/openai-ruby/compare/v0.67.0...v0.68.0)
