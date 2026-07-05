@@ -345,6 +345,15 @@ class OpenAI::Test::BaseModelTest < Minitest::Test
     optional :b, M6
   end
 
+  class M7 < OpenAI::Internal::Type::BaseModel
+    required :a, Integer
+  end
+
+  class M8 < OpenAI::Internal::Type::BaseModel
+    optional :item, M7
+    optional :items, OpenAI::Internal::Type::ArrayOf[M7]
+  end
+
   def test_coerce
     cases = {
       [M1, {}] => [{yes: 1, no: 1}, {}],
@@ -446,6 +455,23 @@ class OpenAI::Test::BaseModelTest < Minitest::Test
         end
       end
     end
+  end
+
+  def test_constructor_stores_coerced_nested_models
+    model = M8.new(item: {a: 1}, items: [{a: 2}])
+
+    assert_instance_of(M7, model.item)
+    assert_instance_of(M7, model.items.fetch(0))
+    assert_instance_of(M7, model.to_h.fetch(:item))
+    assert_instance_of(M7, model.to_h.fetch(:items).fetch(0))
+
+    model.item = {a: 3}
+    model.items = [{a: 4}]
+
+    assert_instance_of(M7, model.item)
+    assert_instance_of(M7, model.items.fetch(0))
+    assert_instance_of(M7, model.to_h.fetch(:item))
+    assert_instance_of(M7, model.to_h.fetch(:items).fetch(0))
   end
 
   def test_inplace_modification
