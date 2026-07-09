@@ -22,6 +22,8 @@ module OpenAI
               OpenAI::Responses::ResponseToolSearchOutputItem,
               OpenAI::Responses::ResponseItem::AdditionalTools,
               OpenAI::Responses::ResponseReasoningItem,
+              OpenAI::Responses::ResponseItem::Program,
+              OpenAI::Responses::ResponseItem::ProgramOutput,
               OpenAI::Responses::ResponseCompactionItem,
               OpenAI::Responses::ResponseItem::ImageGenerationCall,
               OpenAI::Responses::ResponseCodeInterpreterToolCall,
@@ -83,6 +85,7 @@ module OpenAI
                     OpenAI::Responses::ComputerUsePreviewTool::OrHash,
                     OpenAI::Responses::Tool::Mcp::OrHash,
                     OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                    OpenAI::Responses::Tool::ProgrammaticToolCalling::OrHash,
                     OpenAI::Responses::Tool::ImageGeneration::OrHash,
                     OpenAI::Responses::Tool::LocalShell::OrHash,
                     OpenAI::Responses::FunctionShellTool::OrHash,
@@ -181,6 +184,181 @@ module OpenAI
               override.returns(
                 T::Array[
                   OpenAI::Responses::ResponseItem::AdditionalTools::Role::TaggedSymbol
+                ]
+              )
+            end
+            def self.values
+            end
+          end
+        end
+
+        class Program < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseItem::Program,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The unique ID of the program item.
+          sig { returns(String) }
+          attr_accessor :id
+
+          # The stable call ID of the program item.
+          sig { returns(String) }
+          attr_accessor :call_id
+
+          # The JavaScript source executed by programmatic tool calling.
+          sig { returns(String) }
+          attr_accessor :code
+
+          # Opaque program replay fingerprint that must be round-tripped.
+          sig { returns(String) }
+          attr_accessor :fingerprint
+
+          # The type of the item. Always `program`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          sig do
+            params(
+              id: String,
+              call_id: String,
+              code: String,
+              fingerprint: String,
+              type: Symbol
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # The unique ID of the program item.
+            id:,
+            # The stable call ID of the program item.
+            call_id:,
+            # The JavaScript source executed by programmatic tool calling.
+            code:,
+            # Opaque program replay fingerprint that must be round-tripped.
+            fingerprint:,
+            # The type of the item. Always `program`.
+            type: :program
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                id: String,
+                call_id: String,
+                code: String,
+                fingerprint: String,
+                type: Symbol
+              }
+            )
+          end
+          def to_hash
+          end
+        end
+
+        class ProgramOutput < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseItem::ProgramOutput,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The unique ID of the program output item.
+          sig { returns(String) }
+          attr_accessor :id
+
+          # The call ID of the program item.
+          sig { returns(String) }
+          attr_accessor :call_id
+
+          # The result produced by the program item.
+          sig { returns(String) }
+          attr_accessor :result
+
+          # The terminal status of the program output item.
+          sig do
+            returns(
+              OpenAI::Responses::ResponseItem::ProgramOutput::Status::TaggedSymbol
+            )
+          end
+          attr_accessor :status
+
+          # The type of the item. Always `program_output`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          sig do
+            params(
+              id: String,
+              call_id: String,
+              result: String,
+              status:
+                OpenAI::Responses::ResponseItem::ProgramOutput::Status::OrSymbol,
+              type: Symbol
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # The unique ID of the program output item.
+            id:,
+            # The call ID of the program item.
+            call_id:,
+            # The result produced by the program item.
+            result:,
+            # The terminal status of the program output item.
+            status:,
+            # The type of the item. Always `program_output`.
+            type: :program_output
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                id: String,
+                call_id: String,
+                result: String,
+                status:
+                  OpenAI::Responses::ResponseItem::ProgramOutput::Status::TaggedSymbol,
+                type: Symbol
+              }
+            )
+          end
+          def to_hash
+          end
+
+          # The terminal status of the program output item.
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol =
+              T.type_alias do
+                T.all(
+                  Symbol,
+                  OpenAI::Responses::ResponseItem::ProgramOutput::Status
+                )
+              end
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            COMPLETED =
+              T.let(
+                :completed,
+                OpenAI::Responses::ResponseItem::ProgramOutput::Status::TaggedSymbol
+              )
+            INCOMPLETE =
+              T.let(
+                :incomplete,
+                OpenAI::Responses::ResponseItem::ProgramOutput::Status::TaggedSymbol
+              )
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Responses::ResponseItem::ProgramOutput::Status::TaggedSymbol
                 ]
               )
             end

@@ -17,6 +17,16 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
+        # The tool invocation context(s).
+        sig do
+          returns(
+            T.nilable(
+              T::Array[OpenAI::Responses::CustomTool::AllowedCaller::OrSymbol]
+            )
+          )
+        end
+        attr_accessor :allowed_callers
+
         # Whether this tool should be deferred and discovered via tool search.
         sig { returns(T.nilable(T::Boolean)) }
         attr_reader :defer_loading
@@ -60,6 +70,10 @@ module OpenAI
         sig do
           params(
             name: String,
+            allowed_callers:
+              T.nilable(
+                T::Array[OpenAI::Responses::CustomTool::AllowedCaller::OrSymbol]
+              ),
             defer_loading: T::Boolean,
             description: String,
             format_:
@@ -73,6 +87,8 @@ module OpenAI
         def self.new(
           # The name of the custom tool, used to identify it in tool calls.
           name:,
+          # The tool invocation context(s).
+          allowed_callers: nil,
           # Whether this tool should be deferred and discovered via tool search.
           defer_loading: nil,
           # Optional description of the custom tool, used to provide more context.
@@ -89,6 +105,12 @@ module OpenAI
             {
               name: String,
               type: Symbol,
+              allowed_callers:
+                T.nilable(
+                  T::Array[
+                    OpenAI::Responses::CustomTool::AllowedCaller::OrSymbol
+                  ]
+                ),
               defer_loading: T::Boolean,
               description: String,
               format_:
@@ -100,6 +122,37 @@ module OpenAI
           )
         end
         def to_hash
+        end
+
+        module AllowedCaller
+          extend OpenAI::Internal::Type::Enum
+
+          TaggedSymbol =
+            T.type_alias do
+              T.all(Symbol, OpenAI::Responses::CustomTool::AllowedCaller)
+            end
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+          DIRECT =
+            T.let(
+              :direct,
+              OpenAI::Responses::CustomTool::AllowedCaller::TaggedSymbol
+            )
+          PROGRAMMATIC =
+            T.let(
+              :programmatic,
+              OpenAI::Responses::CustomTool::AllowedCaller::TaggedSymbol
+            )
+
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Responses::CustomTool::AllowedCaller::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
         end
       end
     end

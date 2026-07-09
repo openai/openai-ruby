@@ -204,11 +204,42 @@ module OpenAI
         sig { params(prompt_cache_key: String).void }
         attr_writer :prompt_cache_key
 
+        # Options for prompt caching. Supported for `gpt-5.6` and later models. By
+        # default, OpenAI automatically chooses one implicit cache breakpoint. You can add
+        # explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
+        # request can write up to four breakpoints. For cache matching, OpenAI considers
+        # up to the latest 80 breakpoints in the conversation, without a content-block
+        # lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
+        # `ttl` defaults to `30m`, which is currently the only supported value. See the
+        # [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
+        # for current details.
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions
+            )
+          )
+        end
+        attr_reader :prompt_cache_options
+
+        sig do
+          params(
+            prompt_cache_options:
+              OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::OrHash
+          ).void
+        end
+        attr_writer :prompt_cache_options
+
+        # Deprecated. Use `prompt_cache_options.ttl` instead.
+        #
         # The retention policy for the prompt cache. Set to `24h` to enable extended
         # prompt caching, which keeps cached prefixes active for longer, up to a maximum
         # of 24 hours.
         # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
-        # For `gpt-5.5`, `gpt-5.5-pro`, and future models, only `24h` is supported.
+        # This field expresses a maximum retention policy, while
+        # `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
+        # are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
+        # models, only `24h` is supported.
         #
         # For older models that support both `in_memory` and `24h`, the default depends on
         # your organization's data retention policy:
@@ -334,6 +365,7 @@ module OpenAI
                 OpenAI::Responses::ToolChoiceFunction,
                 OpenAI::Responses::ToolChoiceMcp,
                 OpenAI::Responses::ToolChoiceCustom,
+                OpenAI::Responses::ResponsesClientEvent::ToolChoice::SpecificProgrammaticToolCallingParam,
                 OpenAI::Responses::ToolChoiceApplyPatch,
                 OpenAI::Responses::ToolChoiceShell
               )
@@ -352,6 +384,7 @@ module OpenAI
                 OpenAI::Responses::ToolChoiceFunction::OrHash,
                 OpenAI::Responses::ToolChoiceMcp::OrHash,
                 OpenAI::Responses::ToolChoiceCustom::OrHash,
+                OpenAI::Responses::ResponsesClientEvent::ToolChoice::SpecificProgrammaticToolCallingParam::OrHash,
                 OpenAI::Responses::ToolChoiceApplyPatch::OrHash,
                 OpenAI::Responses::ToolChoiceShell::OrHash
               )
@@ -389,6 +422,7 @@ module OpenAI
                   OpenAI::Responses::ComputerUsePreviewTool,
                   OpenAI::Responses::Tool::Mcp,
                   OpenAI::Responses::Tool::CodeInterpreter,
+                  OpenAI::Responses::Tool::ProgrammaticToolCalling,
                   OpenAI::Responses::Tool::ImageGeneration,
                   OpenAI::Responses::Tool::LocalShell,
                   OpenAI::Responses::FunctionShellTool,
@@ -416,6 +450,7 @@ module OpenAI
                   OpenAI::Responses::ComputerUsePreviewTool::OrHash,
                   OpenAI::Responses::Tool::Mcp::OrHash,
                   OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                  OpenAI::Responses::Tool::ProgrammaticToolCalling::OrHash,
                   OpenAI::Responses::Tool::ImageGeneration::OrHash,
                   OpenAI::Responses::Tool::LocalShell::OrHash,
                   OpenAI::Responses::FunctionShellTool::OrHash,
@@ -511,6 +546,8 @@ module OpenAI
             previous_response_id: T.nilable(String),
             prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
             prompt_cache_key: String,
+            prompt_cache_options:
+              OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::OrHash,
             prompt_cache_retention:
               T.nilable(
                 OpenAI::Responses::ResponsesClientEvent::PromptCacheRetention::OrSymbol
@@ -537,6 +574,7 @@ module OpenAI
                 OpenAI::Responses::ToolChoiceFunction::OrHash,
                 OpenAI::Responses::ToolChoiceMcp::OrHash,
                 OpenAI::Responses::ToolChoiceCustom::OrHash,
+                OpenAI::Responses::ResponsesClientEvent::ToolChoice::SpecificProgrammaticToolCallingParam::OrHash,
                 OpenAI::Responses::ToolChoiceApplyPatch::OrHash,
                 OpenAI::Responses::ToolChoiceShell::OrHash
               ),
@@ -549,6 +587,7 @@ module OpenAI
                   OpenAI::Responses::ComputerUsePreviewTool::OrHash,
                   OpenAI::Responses::Tool::Mcp::OrHash,
                   OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                  OpenAI::Responses::Tool::ProgrammaticToolCalling::OrHash,
                   OpenAI::Responses::Tool::ImageGeneration::OrHash,
                   OpenAI::Responses::Tool::LocalShell::OrHash,
                   OpenAI::Responses::FunctionShellTool::OrHash,
@@ -654,11 +693,26 @@ module OpenAI
           # hit rates. Replaces the `user` field.
           # [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
           prompt_cache_key: nil,
+          # Options for prompt caching. Supported for `gpt-5.6` and later models. By
+          # default, OpenAI automatically chooses one implicit cache breakpoint. You can add
+          # explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
+          # request can write up to four breakpoints. For cache matching, OpenAI considers
+          # up to the latest 80 breakpoints in the conversation, without a content-block
+          # lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
+          # `ttl` defaults to `30m`, which is currently the only supported value. See the
+          # [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
+          # for current details.
+          prompt_cache_options: nil,
+          # Deprecated. Use `prompt_cache_options.ttl` instead.
+          #
           # The retention policy for the prompt cache. Set to `24h` to enable extended
           # prompt caching, which keeps cached prefixes active for longer, up to a maximum
           # of 24 hours.
           # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
-          # For `gpt-5.5`, `gpt-5.5-pro`, and future models, only `24h` is supported.
+          # This field expresses a maximum retention policy, while
+          # `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
+          # are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
+          # models, only `24h` is supported.
           #
           # For older models that support both `in_memory` and `24h`, the default depends on
           # your organization's data retention policy:
@@ -807,6 +861,8 @@ module OpenAI
               previous_response_id: T.nilable(String),
               prompt: T.nilable(OpenAI::Responses::ResponsePrompt),
               prompt_cache_key: String,
+              prompt_cache_options:
+                OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions,
               prompt_cache_retention:
                 T.nilable(
                   OpenAI::Responses::ResponsesClientEvent::PromptCacheRetention::OrSymbol
@@ -833,6 +889,7 @@ module OpenAI
                   OpenAI::Responses::ToolChoiceFunction,
                   OpenAI::Responses::ToolChoiceMcp,
                   OpenAI::Responses::ToolChoiceCustom,
+                  OpenAI::Responses::ResponsesClientEvent::ToolChoice::SpecificProgrammaticToolCallingParam,
                   OpenAI::Responses::ToolChoiceApplyPatch,
                   OpenAI::Responses::ToolChoiceShell
                 ),
@@ -845,6 +902,7 @@ module OpenAI
                     OpenAI::Responses::ComputerUsePreviewTool,
                     OpenAI::Responses::Tool::Mcp,
                     OpenAI::Responses::Tool::CodeInterpreter,
+                    OpenAI::Responses::Tool::ProgrammaticToolCalling,
                     OpenAI::Responses::Tool::ImageGeneration,
                     OpenAI::Responses::Tool::LocalShell,
                     OpenAI::Responses::FunctionShellTool,
@@ -974,25 +1032,472 @@ module OpenAI
           sig { returns(String) }
           attr_accessor :model
 
+          # The policy to apply to moderated response input and output.
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Responses::ResponsesClientEvent::Moderation::Policy
+              )
+            )
+          end
+          attr_reader :policy
+
+          sig do
+            params(
+              policy:
+                T.nilable(
+                  OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::OrHash
+                )
+            ).void
+          end
+          attr_writer :policy
+
           # Configuration for running moderation on the input and output of this response.
-          sig { params(model: String).returns(T.attached_class) }
+          sig do
+            params(
+              model: String,
+              policy:
+                T.nilable(
+                  OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::OrHash
+                )
+            ).returns(T.attached_class)
+          end
           def self.new(
             # The moderation model to use for moderated completions, e.g.
             # 'omni-moderation-latest'.
-            model:
+            model:,
+            # The policy to apply to moderated response input and output.
+            policy: nil
           )
           end
 
-          sig { override.returns({ model: String }) }
+          sig do
+            override.returns(
+              {
+                model: String,
+                policy:
+                  T.nilable(
+                    OpenAI::Responses::ResponsesClientEvent::Moderation::Policy
+                  )
+              }
+            )
+          end
           def to_hash
+          end
+
+          class Policy < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponsesClientEvent::Moderation::Policy,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The moderation policy for the response input.
+            sig do
+              returns(
+                T.nilable(
+                  OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Input
+                )
+              )
+            end
+            attr_reader :input
+
+            sig do
+              params(
+                input:
+                  T.nilable(
+                    OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Input::OrHash
+                  )
+              ).void
+            end
+            attr_writer :input
+
+            # The moderation policy for the response output.
+            sig do
+              returns(
+                T.nilable(
+                  OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Output
+                )
+              )
+            end
+            attr_reader :output
+
+            sig do
+              params(
+                output:
+                  T.nilable(
+                    OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Output::OrHash
+                  )
+              ).void
+            end
+            attr_writer :output
+
+            # The policy to apply to moderated response input and output.
+            sig do
+              params(
+                input:
+                  T.nilable(
+                    OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Input::OrHash
+                  ),
+                output:
+                  T.nilable(
+                    OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Output::OrHash
+                  )
+              ).returns(T.attached_class)
+            end
+            def self.new(
+              # The moderation policy for the response input.
+              input: nil,
+              # The moderation policy for the response output.
+              output: nil
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  input:
+                    T.nilable(
+                      OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Input
+                    ),
+                  output:
+                    T.nilable(
+                      OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Output
+                    )
+                }
+              )
+            end
+            def to_hash
+            end
+
+            class Input < OpenAI::Internal::Type::BaseModel
+              OrHash =
+                T.type_alias do
+                  T.any(
+                    OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Input,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+              sig do
+                returns(
+                  OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Input::Mode::OrSymbol
+                )
+              end
+              attr_accessor :mode
+
+              # The moderation policy for the response input.
+              sig do
+                params(
+                  mode:
+                    OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Input::Mode::OrSymbol
+                ).returns(T.attached_class)
+              end
+              def self.new(mode:)
+              end
+
+              sig do
+                override.returns(
+                  {
+                    mode:
+                      OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Input::Mode::OrSymbol
+                  }
+                )
+              end
+              def to_hash
+              end
+
+              module Mode
+                extend OpenAI::Internal::Type::Enum
+
+                TaggedSymbol =
+                  T.type_alias do
+                    T.all(
+                      Symbol,
+                      OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Input::Mode
+                    )
+                  end
+                OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+                SCORE =
+                  T.let(
+                    :score,
+                    OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Input::Mode::TaggedSymbol
+                  )
+                BLOCK =
+                  T.let(
+                    :block,
+                    OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Input::Mode::TaggedSymbol
+                  )
+
+                sig do
+                  override.returns(
+                    T::Array[
+                      OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Input::Mode::TaggedSymbol
+                    ]
+                  )
+                end
+                def self.values
+                end
+              end
+            end
+
+            class Output < OpenAI::Internal::Type::BaseModel
+              OrHash =
+                T.type_alias do
+                  T.any(
+                    OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Output,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+              sig do
+                returns(
+                  OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Output::Mode::OrSymbol
+                )
+              end
+              attr_accessor :mode
+
+              # The moderation policy for the response output.
+              sig do
+                params(
+                  mode:
+                    OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Output::Mode::OrSymbol
+                ).returns(T.attached_class)
+              end
+              def self.new(mode:)
+              end
+
+              sig do
+                override.returns(
+                  {
+                    mode:
+                      OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Output::Mode::OrSymbol
+                  }
+                )
+              end
+              def to_hash
+              end
+
+              module Mode
+                extend OpenAI::Internal::Type::Enum
+
+                TaggedSymbol =
+                  T.type_alias do
+                    T.all(
+                      Symbol,
+                      OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Output::Mode
+                    )
+                  end
+                OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+                SCORE =
+                  T.let(
+                    :score,
+                    OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Output::Mode::TaggedSymbol
+                  )
+                BLOCK =
+                  T.let(
+                    :block,
+                    OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Output::Mode::TaggedSymbol
+                  )
+
+                sig do
+                  override.returns(
+                    T::Array[
+                      OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Output::Mode::TaggedSymbol
+                    ]
+                  )
+                end
+                def self.values
+                end
+              end
+            end
           end
         end
 
+        class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # Controls whether OpenAI automatically creates an implicit cache breakpoint.
+          # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
+          # and writes up to the latest three explicit breakpoints in the request. With
+          # `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
+          # latest four explicit breakpoints. If there are no explicit breakpoints, the
+          # request does not use prompt caching.
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Mode::OrSymbol
+              )
+            )
+          end
+          attr_reader :mode
+
+          sig do
+            params(
+              mode:
+                OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Mode::OrSymbol
+            ).void
+          end
+          attr_writer :mode
+
+          # The minimum lifetime applied to every implicit and explicit cache breakpoint
+          # written by the request. Defaults to `30m`, which is currently the only supported
+          # value. The backend may retain cache entries for longer.
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Ttl::OrSymbol
+              )
+            )
+          end
+          attr_reader :ttl
+
+          sig do
+            params(
+              ttl:
+                OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Ttl::OrSymbol
+            ).void
+          end
+          attr_writer :ttl
+
+          # Options for prompt caching. Supported for `gpt-5.6` and later models. By
+          # default, OpenAI automatically chooses one implicit cache breakpoint. You can add
+          # explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
+          # request can write up to four breakpoints. For cache matching, OpenAI considers
+          # up to the latest 80 breakpoints in the conversation, without a content-block
+          # lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
+          # `ttl` defaults to `30m`, which is currently the only supported value. See the
+          # [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
+          # for current details.
+          sig do
+            params(
+              mode:
+                OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Mode::OrSymbol,
+              ttl:
+                OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Ttl::OrSymbol
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # Controls whether OpenAI automatically creates an implicit cache breakpoint.
+            # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
+            # and writes up to the latest three explicit breakpoints in the request. With
+            # `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
+            # latest four explicit breakpoints. If there are no explicit breakpoints, the
+            # request does not use prompt caching.
+            mode: nil,
+            # The minimum lifetime applied to every implicit and explicit cache breakpoint
+            # written by the request. Defaults to `30m`, which is currently the only supported
+            # value. The backend may retain cache entries for longer.
+            ttl: nil
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                mode:
+                  OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Mode::OrSymbol,
+                ttl:
+                  OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Ttl::OrSymbol
+              }
+            )
+          end
+          def to_hash
+          end
+
+          # Controls whether OpenAI automatically creates an implicit cache breakpoint.
+          # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
+          # and writes up to the latest three explicit breakpoints in the request. With
+          # `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
+          # latest four explicit breakpoints. If there are no explicit breakpoints, the
+          # request does not use prompt caching.
+          module Mode
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol =
+              T.type_alias do
+                T.all(
+                  Symbol,
+                  OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Mode
+                )
+              end
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            IMPLICIT =
+              T.let(
+                :implicit,
+                OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Mode::TaggedSymbol
+              )
+            EXPLICIT =
+              T.let(
+                :explicit,
+                OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Mode::TaggedSymbol
+              )
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Mode::TaggedSymbol
+                ]
+              )
+            end
+            def self.values
+            end
+          end
+
+          # The minimum lifetime applied to every implicit and explicit cache breakpoint
+          # written by the request. Defaults to `30m`, which is currently the only supported
+          # value. The backend may retain cache entries for longer.
+          module Ttl
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol =
+              T.type_alias do
+                T.all(
+                  Symbol,
+                  OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Ttl
+                )
+              end
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            TTL_30M =
+              T.let(
+                :"30m",
+                OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Ttl::TaggedSymbol
+              )
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Ttl::TaggedSymbol
+                ]
+              )
+            end
+            def self.values
+            end
+          end
+        end
+
+        # Deprecated. Use `prompt_cache_options.ttl` instead.
+        #
         # The retention policy for the prompt cache. Set to `24h` to enable extended
         # prompt caching, which keeps cached prefixes active for longer, up to a maximum
         # of 24 hours.
         # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
-        # For `gpt-5.5`, `gpt-5.5-pro`, and future models, only `24h` is supported.
+        # This field expresses a maximum retention policy, while
+        # `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
+        # are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
+        # models, only `24h` is supported.
         #
         # For older models that support both `in_memory` and `24h`, the default depends on
         # your organization's data retention policy:
@@ -1155,10 +1660,36 @@ module OpenAI
                 OpenAI::Responses::ToolChoiceFunction,
                 OpenAI::Responses::ToolChoiceMcp,
                 OpenAI::Responses::ToolChoiceCustom,
+                OpenAI::Responses::ResponsesClientEvent::ToolChoice::SpecificProgrammaticToolCallingParam,
                 OpenAI::Responses::ToolChoiceApplyPatch,
                 OpenAI::Responses::ToolChoiceShell
               )
             end
+
+          class SpecificProgrammaticToolCallingParam < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponsesClientEvent::ToolChoice::SpecificProgrammaticToolCallingParam,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The tool to call. Always `programmatic_tool_calling`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig { params(type: Symbol).returns(T.attached_class) }
+            def self.new(
+              # The tool to call. Always `programmatic_tool_calling`.
+              type: :programmatic_tool_calling
+            )
+            end
+
+            sig { override.returns({ type: Symbol }) }
+            def to_hash
+            end
+          end
 
           sig do
             override.returns(

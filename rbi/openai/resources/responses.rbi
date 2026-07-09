@@ -61,6 +61,8 @@ module OpenAI
           previous_response_id: T.nilable(String),
           prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
           prompt_cache_key: String,
+          prompt_cache_options:
+            OpenAI::Responses::ResponseCreateParams::PromptCacheOptions::OrHash,
           prompt_cache_retention:
             T.nilable(
               OpenAI::Responses::ResponseCreateParams::PromptCacheRetention::OrSymbol
@@ -90,6 +92,7 @@ module OpenAI
               OpenAI::Responses::ToolChoiceFunction::OrHash,
               OpenAI::Responses::ToolChoiceMcp::OrHash,
               OpenAI::Responses::ToolChoiceCustom::OrHash,
+              OpenAI::Responses::ResponseCreateParams::ToolChoice::SpecificProgrammaticToolCallingParam::OrHash,
               OpenAI::Responses::ToolChoiceApplyPatch::OrHash,
               OpenAI::Responses::ToolChoiceShell::OrHash
             ),
@@ -102,6 +105,7 @@ module OpenAI
                 OpenAI::Responses::ComputerUsePreviewTool::OrHash,
                 OpenAI::Responses::Tool::Mcp::OrHash,
                 OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                OpenAI::Responses::Tool::ProgrammaticToolCalling::OrHash,
                 OpenAI::Responses::Tool::ImageGeneration::OrHash,
                 OpenAI::Responses::Tool::LocalShell::OrHash,
                 OpenAI::Responses::FunctionShellTool::OrHash,
@@ -208,11 +212,26 @@ module OpenAI
         # hit rates. Replaces the `user` field.
         # [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
         prompt_cache_key: nil,
+        # Options for prompt caching. Supported for `gpt-5.6` and later models. By
+        # default, OpenAI automatically chooses one implicit cache breakpoint. You can add
+        # explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
+        # request can write up to four breakpoints. For cache matching, OpenAI considers
+        # up to the latest 80 breakpoints in the conversation, without a content-block
+        # lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
+        # `ttl` defaults to `30m`, which is currently the only supported value. See the
+        # [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
+        # for current details.
+        prompt_cache_options: nil,
+        # Deprecated. Use `prompt_cache_options.ttl` instead.
+        #
         # The retention policy for the prompt cache. Set to `24h` to enable extended
         # prompt caching, which keeps cached prefixes active for longer, up to a maximum
         # of 24 hours.
         # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
-        # For `gpt-5.5`, `gpt-5.5-pro`, and future models, only `24h` is supported.
+        # This field expresses a maximum retention policy, while
+        # `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
+        # are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
+        # models, only `24h` is supported.
         #
         # For older models that support both `in_memory` and `24h`, the default depends on
         # your organization's data retention policy:
@@ -372,6 +391,8 @@ module OpenAI
           previous_response_id: T.nilable(String),
           prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
           prompt_cache_key: String,
+          prompt_cache_options:
+            OpenAI::Responses::ResponseCreateParams::PromptCacheOptions::OrHash,
           prompt_cache_retention:
             T.nilable(
               OpenAI::Responses::ResponseCreateParams::PromptCacheRetention::OrSymbol
@@ -403,6 +424,7 @@ module OpenAI
               OpenAI::Responses::ToolChoiceFunction::OrHash,
               OpenAI::Responses::ToolChoiceMcp::OrHash,
               OpenAI::Responses::ToolChoiceCustom::OrHash,
+              OpenAI::Responses::ResponseCreateParams::ToolChoice::SpecificProgrammaticToolCallingParam::OrHash,
               OpenAI::Responses::ToolChoiceApplyPatch::OrHash,
               OpenAI::Responses::ToolChoiceShell::OrHash
             ),
@@ -415,6 +437,7 @@ module OpenAI
                 OpenAI::Responses::ComputerUsePreviewTool::OrHash,
                 OpenAI::Responses::Tool::Mcp::OrHash,
                 OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                OpenAI::Responses::Tool::ProgrammaticToolCalling::OrHash,
                 OpenAI::Responses::Tool::ImageGeneration::OrHash,
                 OpenAI::Responses::Tool::LocalShell::OrHash,
                 OpenAI::Responses::FunctionShellTool::OrHash,
@@ -525,11 +548,26 @@ module OpenAI
         # hit rates. Replaces the `user` field.
         # [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
         prompt_cache_key: nil,
+        # Options for prompt caching. Supported for `gpt-5.6` and later models. By
+        # default, OpenAI automatically chooses one implicit cache breakpoint. You can add
+        # explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
+        # request can write up to four breakpoints. For cache matching, OpenAI considers
+        # up to the latest 80 breakpoints in the conversation, without a content-block
+        # lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
+        # `ttl` defaults to `30m`, which is currently the only supported value. See the
+        # [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
+        # for current details.
+        prompt_cache_options: nil,
+        # Deprecated. Use `prompt_cache_options.ttl` instead.
+        #
         # The retention policy for the prompt cache. Set to `24h` to enable extended
         # prompt caching, which keeps cached prefixes active for longer, up to a maximum
         # of 24 hours.
         # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
-        # For `gpt-5.5`, `gpt-5.5-pro`, and future models, only `24h` is supported.
+        # This field expresses a maximum retention policy, while
+        # `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
+        # are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
+        # models, only `24h` is supported.
         #
         # For older models that support both `in_memory` and `24h`, the default depends on
         # your organization's data retention policy:
@@ -1018,6 +1056,10 @@ module OpenAI
           instructions: T.nilable(String),
           previous_response_id: T.nilable(String),
           prompt_cache_key: T.nilable(String),
+          prompt_cache_options:
+            T.nilable(
+              OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::OrHash
+            ),
           prompt_cache_retention:
             T.nilable(
               OpenAI::Responses::ResponseCompactParams::PromptCacheRetention::OrSymbol
@@ -1050,6 +1092,16 @@ module OpenAI
         previous_response_id: nil,
         # A key to use when reading from or writing to the prompt cache.
         prompt_cache_key: nil,
+        # Options for prompt caching. Supported for `gpt-5.6` and later models. By
+        # default, OpenAI automatically chooses one implicit cache breakpoint. You can add
+        # explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
+        # request can write up to four breakpoints. For cache matching, OpenAI considers
+        # up to the latest 80 breakpoints in the conversation, without a content-block
+        # lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
+        # `ttl` defaults to `30m`, which is currently the only supported value. See the
+        # [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
+        # for current details.
+        prompt_cache_options: nil,
         # How long to retain a prompt cache entry created by this request.
         prompt_cache_retention: nil,
         # The service tier to use for this request.

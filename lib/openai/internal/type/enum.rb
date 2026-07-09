@@ -19,11 +19,11 @@ module OpenAI
       # @example
       #   # `chat_model` is a `OpenAI::ChatModel`
       #   case chat_model
-      #   when OpenAI::ChatModel::GPT_5_4
+      #   when OpenAI::ChatModel::GPT_5_6_SOL
       #     # ...
-      #   when OpenAI::ChatModel::GPT_5_4_MINI
+      #   when OpenAI::ChatModel::GPT_5_6_TERRA
       #     # ...
-      #   when OpenAI::ChatModel::GPT_5_4_NANO
+      #   when OpenAI::ChatModel::GPT_5_6_LUNA
       #     # ...
       #   else
       #     puts(chat_model)
@@ -31,11 +31,11 @@ module OpenAI
       #
       # @example
       #   case chat_model
-      #   in :"gpt-5.4"
+      #   in :"gpt-5.6-sol"
       #     # ...
-      #   in :"gpt-5.4-mini"
+      #   in :"gpt-5.6-terra"
       #     # ...
-      #   in :"gpt-5.4-nano"
+      #   in :"gpt-5.6-luna"
       #     # ...
       #   else
       #     puts(chat_model)

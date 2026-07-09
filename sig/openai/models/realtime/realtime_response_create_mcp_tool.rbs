@@ -5,6 +5,7 @@ module OpenAI
         {
           server_label: String,
           type: :mcp,
+          allowed_callers: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::allowed_caller]?,
           allowed_tools: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::allowed_tools?,
           authorization: String,
           connector_id: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::connector_id,
@@ -20,6 +21,8 @@ module OpenAI
         attr_accessor server_label: String
 
         attr_accessor type: :mcp
+
+        attr_accessor allowed_callers: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::allowed_caller]?
 
         attr_accessor allowed_tools: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::allowed_tools?
 
@@ -55,6 +58,7 @@ module OpenAI
 
         def initialize: (
           server_label: String,
+          ?allowed_callers: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::allowed_caller]?,
           ?allowed_tools: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::allowed_tools?,
           ?authorization: String,
           ?connector_id: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::connector_id,
@@ -70,6 +74,7 @@ module OpenAI
         def to_hash: -> {
           server_label: String,
           type: :mcp,
+          allowed_callers: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::allowed_caller]?,
           allowed_tools: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::allowed_tools?,
           authorization: String,
           connector_id: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::connector_id,
@@ -80,6 +85,17 @@ module OpenAI
           server_url: String,
           tunnel_id: String
         }
+
+        type allowed_caller = :direct | :programmatic
+
+        module AllowedCaller
+          extend OpenAI::Internal::Type::Enum
+
+          DIRECT: :direct
+          PROGRAMMATIC: :programmatic
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::allowed_caller]
+        end
 
         type allowed_tools =
           ::Array[String]

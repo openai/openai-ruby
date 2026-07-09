@@ -52,7 +52,9 @@ module OpenAI
                 OpenAI::Responses::ResponseCustomToolCallOutput,
                 OpenAI::Responses::ResponseCustomToolCall,
                 OpenAI::Responses::ResponseInputItem::CompactionTrigger,
-                OpenAI::Responses::ResponseInputItem::ItemReference
+                OpenAI::Responses::ResponseInputItem::ItemReference,
+                OpenAI::Responses::ResponseInputItem::Program,
+                OpenAI::Responses::ResponseInputItem::ProgramOutput
               )
             ]
           )
@@ -111,7 +113,9 @@ module OpenAI
                   OpenAI::Responses::ResponseCustomToolCallOutput::OrHash,
                   OpenAI::Responses::ResponseCustomToolCall::OrHash,
                   OpenAI::Responses::ResponseInputItem::CompactionTrigger::OrHash,
-                  OpenAI::Responses::ResponseInputItem::ItemReference::OrHash
+                  OpenAI::Responses::ResponseInputItem::ItemReference::OrHash,
+                  OpenAI::Responses::ResponseInputItem::Program::OrHash,
+                  OpenAI::Responses::ResponseInputItem::ProgramOutput::OrHash
                 )
               ],
             include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
@@ -166,7 +170,9 @@ module OpenAI
                     OpenAI::Responses::ResponseCustomToolCallOutput,
                     OpenAI::Responses::ResponseCustomToolCall,
                     OpenAI::Responses::ResponseInputItem::CompactionTrigger,
-                    OpenAI::Responses::ResponseInputItem::ItemReference
+                    OpenAI::Responses::ResponseInputItem::ItemReference,
+                    OpenAI::Responses::ResponseInputItem::Program,
+                    OpenAI::Responses::ResponseInputItem::ProgramOutput
                   )
                 ],
               include:

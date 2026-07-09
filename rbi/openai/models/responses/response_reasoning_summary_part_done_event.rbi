@@ -48,6 +48,25 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
+        # The completion status of the summary part. Omitted when the part completed
+        # normally and set to `incomplete` when generation was interrupted.
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status::TaggedSymbol
+            )
+          )
+        end
+        attr_reader :status
+
+        sig do
+          params(
+            status:
+              OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status::OrSymbol
+          ).void
+        end
+        attr_writer :status
+
         # Emitted when a reasoning summary part is completed.
         sig do
           params(
@@ -57,6 +76,8 @@ module OpenAI
               OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part::OrHash,
             sequence_number: Integer,
             summary_index: Integer,
+            status:
+              OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status::OrSymbol,
             type: Symbol
           ).returns(T.attached_class)
         end
@@ -71,6 +92,9 @@ module OpenAI
           sequence_number:,
           # The index of the summary part within the reasoning summary.
           summary_index:,
+          # The completion status of the summary part. Omitted when the part completed
+          # normally and set to `incomplete` when generation was interrupted.
+          status: nil,
           # The type of the event. Always `response.reasoning_summary_part.done`.
           type: :"response.reasoning_summary_part.done"
         )
@@ -85,7 +109,9 @@ module OpenAI
                 OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part,
               sequence_number: Integer,
               summary_index: Integer,
-              type: Symbol
+              type: Symbol,
+              status:
+                OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status::TaggedSymbol
             }
           )
         end
@@ -121,6 +147,37 @@ module OpenAI
 
           sig { override.returns({ text: String, type: Symbol }) }
           def to_hash
+          end
+        end
+
+        # The completion status of the summary part. Omitted when the part completed
+        # normally and set to `incomplete` when generation was interrupted.
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          TaggedSymbol =
+            T.type_alias do
+              T.all(
+                Symbol,
+                OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status
+              )
+            end
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+          INCOMPLETE =
+            T.let(
+              :incomplete,
+              OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status::TaggedSymbol
+            )
+
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
           end
         end
       end

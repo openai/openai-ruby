@@ -41,7 +41,9 @@ module OpenAI
                   OpenAI::Responses::ResponseCustomToolCallOutput::OrHash,
                   OpenAI::Responses::ResponseCustomToolCall::OrHash,
                   OpenAI::Responses::ResponseInputItem::CompactionTrigger::OrHash,
-                  OpenAI::Responses::ResponseInputItem::ItemReference::OrHash
+                  OpenAI::Responses::ResponseInputItem::ItemReference::OrHash,
+                  OpenAI::Responses::ResponseInputItem::Program::OrHash,
+                  OpenAI::Responses::ResponseInputItem::ProgramOutput::OrHash
                 )
               ],
             include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],

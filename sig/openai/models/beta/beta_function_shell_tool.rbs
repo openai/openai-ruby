@@ -1,0 +1,56 @@
+module OpenAI
+  module Models
+    class BetaFunctionShellTool = Beta::BetaFunctionShellTool
+
+    module Beta
+      type beta_function_shell_tool =
+        {
+          type: :shell,
+          allowed_callers: ::Array[OpenAI::Models::Beta::BetaFunctionShellTool::allowed_caller]?,
+          environment: OpenAI::Models::Beta::BetaFunctionShellTool::environment?
+        }
+
+      class BetaFunctionShellTool < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :shell
+
+        attr_accessor allowed_callers: ::Array[OpenAI::Models::Beta::BetaFunctionShellTool::allowed_caller]?
+
+        attr_accessor environment: OpenAI::Models::Beta::BetaFunctionShellTool::environment?
+
+        def initialize: (
+          ?allowed_callers: ::Array[OpenAI::Models::Beta::BetaFunctionShellTool::allowed_caller]?,
+          ?environment: OpenAI::Models::Beta::BetaFunctionShellTool::environment?,
+          ?type: :shell
+        ) -> void
+
+        def to_hash: -> {
+          type: :shell,
+          allowed_callers: ::Array[OpenAI::Models::Beta::BetaFunctionShellTool::allowed_caller]?,
+          environment: OpenAI::Models::Beta::BetaFunctionShellTool::environment?
+        }
+
+        type allowed_caller = :direct | :programmatic
+
+        module AllowedCaller
+          extend OpenAI::Internal::Type::Enum
+
+          DIRECT: :direct
+          PROGRAMMATIC: :programmatic
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaFunctionShellTool::allowed_caller]
+        end
+
+        type environment =
+          OpenAI::Beta::BetaContainerAuto
+          | OpenAI::Beta::BetaLocalEnvironment
+          | OpenAI::Beta::BetaContainerReference
+
+        module Environment
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaFunctionShellTool::environment]
+        end
+      end
+    end
+  end
+end

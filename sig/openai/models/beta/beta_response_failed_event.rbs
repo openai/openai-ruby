@@ -1,0 +1,49 @@
+module OpenAI
+  module Models
+    class BetaResponseFailedEvent = Beta::BetaResponseFailedEvent
+
+    module Beta
+      type beta_response_failed_event =
+        {
+          response: OpenAI::Beta::BetaResponse,
+          sequence_number: Integer,
+          type: :"response.failed",
+          agent: OpenAI::Beta::BetaResponseFailedEvent::Agent?
+        }
+
+      class BetaResponseFailedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor response: OpenAI::Beta::BetaResponse
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor type: :"response.failed"
+
+        attr_accessor agent: OpenAI::Beta::BetaResponseFailedEvent::Agent?
+
+        def initialize: (
+          response: OpenAI::Beta::BetaResponse,
+          sequence_number: Integer,
+          ?agent: OpenAI::Beta::BetaResponseFailedEvent::Agent?,
+          ?type: :"response.failed"
+        ) -> void
+
+        def to_hash: -> {
+          response: OpenAI::Beta::BetaResponse,
+          sequence_number: Integer,
+          type: :"response.failed",
+          agent: OpenAI::Beta::BetaResponseFailedEvent::Agent?
+        }
+
+        type agent = { agent_name: String }
+
+        class Agent < OpenAI::Internal::Type::BaseModel
+          attr_accessor agent_name: String
+
+          def initialize: (agent_name: String) -> void
+
+          def to_hash: -> { agent_name: String }
+        end
+      end
+    end
+  end
+end

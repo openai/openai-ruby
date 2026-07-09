@@ -8,6 +8,7 @@ module OpenAI
           name: String,
           type: :function_call,
           id: String,
+          caller_: OpenAI::Models::Responses::ResponseFunctionToolCall::caller_?,
           namespace: String,
           status: OpenAI::Models::Responses::ResponseFunctionToolCall::status
         }
@@ -25,6 +26,8 @@ module OpenAI
 
         def id=: (String) -> String
 
+        attr_accessor caller_: OpenAI::Models::Responses::ResponseFunctionToolCall::caller_?
+
         attr_reader namespace: String?
 
         def namespace=: (String) -> String
@@ -40,6 +43,7 @@ module OpenAI
           call_id: String,
           name: String,
           ?id: String,
+          ?caller_: OpenAI::Models::Responses::ResponseFunctionToolCall::caller_?,
           ?namespace: String,
           ?status: OpenAI::Models::Responses::ResponseFunctionToolCall::status,
           ?type: :function_call
@@ -51,9 +55,42 @@ module OpenAI
           name: String,
           type: :function_call,
           id: String,
+          caller_: OpenAI::Models::Responses::ResponseFunctionToolCall::caller_?,
           namespace: String,
           status: OpenAI::Models::Responses::ResponseFunctionToolCall::status
         }
+
+        type caller_ =
+          OpenAI::Responses::ResponseFunctionToolCall::Caller::Direct
+          | OpenAI::Responses::ResponseFunctionToolCall::Caller::Program
+
+        module Caller
+          extend OpenAI::Internal::Type::Union
+
+          type direct = { type: :direct }
+
+          class Direct < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :direct
+
+            def initialize: (?type: :direct) -> void
+
+            def to_hash: -> { type: :direct }
+          end
+
+          type program = { caller_id: String, type: :program }
+
+          class Program < OpenAI::Internal::Type::BaseModel
+            attr_accessor caller_id: String
+
+            attr_accessor type: :program
+
+            def initialize: (caller_id: String, ?type: :program) -> void
+
+            def to_hash: -> { caller_id: String, type: :program }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseFunctionToolCall::caller_]
+        end
 
         type status = :in_progress | :completed | :incomplete
 

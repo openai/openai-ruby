@@ -5,6 +5,9 @@ module OpenAI
     module ChatModel
       extend OpenAI::Internal::Type::Enum
 
+      GPT_5_6_SOL = :"gpt-5.6-sol"
+      GPT_5_6_TERRA = :"gpt-5.6-terra"
+      GPT_5_6_LUNA = :"gpt-5.6-luna"
       GPT_5_4 = :"gpt-5.4"
       GPT_5_4_MINI = :"gpt-5.4-mini"
       GPT_5_4_NANO = :"gpt-5.4-nano"

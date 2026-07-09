@@ -43,16 +43,42 @@ module OpenAI
           sig { returns(Symbol) }
           attr_accessor :type
 
+          # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+          # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+          # token block.
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Chat::ChatCompletionContentPart::File::PromptCacheBreakpoint
+              )
+            )
+          end
+          attr_reader :prompt_cache_breakpoint
+
+          sig do
+            params(
+              prompt_cache_breakpoint:
+                OpenAI::Chat::ChatCompletionContentPart::File::PromptCacheBreakpoint::OrHash
+            ).void
+          end
+          attr_writer :prompt_cache_breakpoint
+
           # Learn about [file inputs](https://platform.openai.com/docs/guides/text) for text
           # generation.
           sig do
             params(
               file: OpenAI::Chat::ChatCompletionContentPart::File::File::OrHash,
+              prompt_cache_breakpoint:
+                OpenAI::Chat::ChatCompletionContentPart::File::PromptCacheBreakpoint::OrHash,
               type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
             file:,
+            # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+            # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+            # token block.
+            prompt_cache_breakpoint: nil,
             # The type of the content part. Always `file`.
             type: :file
           )
@@ -62,7 +88,9 @@ module OpenAI
             override.returns(
               {
                 file: OpenAI::Chat::ChatCompletionContentPart::File::File,
-                type: Symbol
+                type: Symbol,
+                prompt_cache_breakpoint:
+                  OpenAI::Chat::ChatCompletionContentPart::File::PromptCacheBreakpoint
               }
             )
           end
@@ -123,6 +151,34 @@ module OpenAI
                 { file_data: String, file_id: String, filename: String }
               )
             end
+            def to_hash
+            end
+          end
+
+          class PromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Chat::ChatCompletionContentPart::File::PromptCacheBreakpoint,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The breakpoint mode. Always `explicit`.
+            sig { returns(Symbol) }
+            attr_accessor :mode
+
+            # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+            # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+            # token block.
+            sig { params(mode: Symbol).returns(T.attached_class) }
+            def self.new(
+              # The breakpoint mode. Always `explicit`.
+              mode: :explicit
+            )
+            end
+
+            sig { override.returns({ mode: Symbol }) }
             def to_hash
             end
           end

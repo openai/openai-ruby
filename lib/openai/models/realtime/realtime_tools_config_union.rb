@@ -30,6 +30,16 @@ module OpenAI
           #   @return [Symbol, :mcp]
           required :type, const: :mcp
 
+          # @!attribute allowed_callers
+          #   The tool invocation context(s).
+          #
+          #   @return [Array<Symbol, OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Mcp::AllowedCaller>, nil]
+          optional :allowed_callers,
+                   -> {
+                     OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeToolsConfigUnion::Mcp::AllowedCaller]
+                   },
+                   nil?: true
+
           # @!attribute allowed_tools
           #   List of allowed tool names or a filter object.
           #
@@ -107,7 +117,7 @@ module OpenAI
           #   @return [String, nil]
           optional :tunnel_id, String
 
-          # @!method initialize(server_label:, allowed_tools: nil, authorization: nil, connector_id: nil, defer_loading: nil, headers: nil, require_approval: nil, server_description: nil, server_url: nil, tunnel_id: nil, type: :mcp)
+          # @!method initialize(server_label:, allowed_callers: nil, allowed_tools: nil, authorization: nil, connector_id: nil, defer_loading: nil, headers: nil, require_approval: nil, server_description: nil, server_url: nil, tunnel_id: nil, type: :mcp)
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Mcp} for more details.
           #
@@ -116,6 +126,8 @@ module OpenAI
           #   [Learn more about MCP](https://platform.openai.com/docs/guides/tools-remote-mcp).
           #
           #   @param server_label [String] A label for this MCP server, used to identify it in tool calls.
+          #
+          #   @param allowed_callers [Array<Symbol, OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Mcp::AllowedCaller>, nil] The tool invocation context(s).
           #
           #   @param allowed_tools [Array<String>, OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Mcp::AllowedTools::McpToolFilter, nil] List of allowed tool names or a filter object.
           #
@@ -136,6 +148,16 @@ module OpenAI
           #   @param tunnel_id [String] The Secure MCP Tunnel ID to use instead of a direct server URL. One of
           #
           #   @param type [Symbol, :mcp] The type of the MCP tool. Always `mcp`.
+
+          module AllowedCaller
+            extend OpenAI::Internal::Type::Enum
+
+            DIRECT = :direct
+            PROGRAMMATIC = :programmatic
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
 
           # List of allowed tool names or a filter object.
           #

@@ -15,10 +15,24 @@ module OpenAI
         #   @return [Symbol, :image_url]
         required :type, const: :image_url
 
-        # @!method initialize(image_url:, type: :image_url)
+        # @!attribute prompt_cache_breakpoint
+        #   Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+        #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+        #   token block.
+        #
+        #   @return [OpenAI::Models::Chat::ChatCompletionContentPartImage::PromptCacheBreakpoint, nil]
+        optional :prompt_cache_breakpoint,
+                 -> { OpenAI::Chat::ChatCompletionContentPartImage::PromptCacheBreakpoint }
+
+        # @!method initialize(image_url:, prompt_cache_breakpoint: nil, type: :image_url)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Chat::ChatCompletionContentPartImage} for more details.
+        #
         #   Learn about [image inputs](https://platform.openai.com/docs/guides/vision).
         #
         #   @param image_url [OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL]
+        #
+        #   @param prompt_cache_breakpoint [OpenAI::Models::Chat::ChatCompletionContentPartImage::PromptCacheBreakpoint] Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
         #
         #   @param type [Symbol, :image_url] The type of the content part.
 
@@ -60,6 +74,22 @@ module OpenAI
             # @!method self.values
             #   @return [Array<Symbol>]
           end
+        end
+
+        # @see OpenAI::Models::Chat::ChatCompletionContentPartImage#prompt_cache_breakpoint
+        class PromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
+          # @!attribute mode
+          #   The breakpoint mode. Always `explicit`.
+          #
+          #   @return [Symbol, :explicit]
+          required :mode, const: :explicit
+
+          # @!method initialize(mode: :explicit)
+          #   Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+          #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+          #   token block.
+          #
+          #   @param mode [Symbol, :explicit] The breakpoint mode. Always `explicit`.
         end
       end
     end

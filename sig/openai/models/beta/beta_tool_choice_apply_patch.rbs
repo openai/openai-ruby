@@ -1,0 +1,17 @@
+module OpenAI
+  module Models
+    class BetaToolChoiceApplyPatch = Beta::BetaToolChoiceApplyPatch
+
+    module Beta
+      type beta_tool_choice_apply_patch = { type: :apply_patch }
+
+      class BetaToolChoiceApplyPatch < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :apply_patch
+
+        def initialize: (?type: :apply_patch) -> void
+
+        def to_hash: -> { type: :apply_patch }
+      end
+    end
+  end
+end

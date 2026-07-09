@@ -37,14 +37,23 @@ module OpenAI
           total_tokens: Integer
         }
 
-        type input_tokens_details = { cached_tokens: Integer }
+        type input_tokens_details =
+          { cache_write_tokens: Integer, cached_tokens: Integer }
 
         class InputTokensDetails < OpenAI::Internal::Type::BaseModel
+          attr_accessor cache_write_tokens: Integer
+
           attr_accessor cached_tokens: Integer
 
-          def initialize: (cached_tokens: Integer) -> void
+          def initialize: (
+            cache_write_tokens: Integer,
+            cached_tokens: Integer
+          ) -> void
 
-          def to_hash: -> { cached_tokens: Integer }
+          def to_hash: -> {
+            cache_write_tokens: Integer,
+            cached_tokens: Integer
+          }
         end
 
         type output_tokens_details = { reasoning_tokens: Integer }

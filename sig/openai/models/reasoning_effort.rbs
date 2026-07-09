@@ -1,6 +1,7 @@
 module OpenAI
   module Models
-    type reasoning_effort = :none | :minimal | :low | :medium | :high | :xhigh
+    type reasoning_effort =
+      :none | :minimal | :low | :medium | :high | :xhigh | :max
 
     module ReasoningEffort
       extend OpenAI::Internal::Type::Enum
@@ -11,6 +12,7 @@ module OpenAI
       MEDIUM: :medium
       HIGH: :high
       XHIGH: :xhigh
+      MAX: :max
 
       def self?.values: -> ::Array[OpenAI::Models::reasoning_effort]
     end

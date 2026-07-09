@@ -8,6 +8,7 @@ module OpenAI
           instructions: String?,
           previous_response_id: String?,
           prompt_cache_key: String?,
+          prompt_cache_options: OpenAI::Responses::ResponseCompactParams::PromptCacheOptions?,
           prompt_cache_retention: OpenAI::Models::Responses::ResponseCompactParams::prompt_cache_retention?,
           service_tier: OpenAI::Models::Responses::ResponseCompactParams::service_tier?
         }
@@ -27,6 +28,8 @@ module OpenAI
 
         attr_accessor prompt_cache_key: String?
 
+        attr_accessor prompt_cache_options: OpenAI::Responses::ResponseCompactParams::PromptCacheOptions?
+
         attr_accessor prompt_cache_retention: OpenAI::Models::Responses::ResponseCompactParams::prompt_cache_retention?
 
         attr_accessor service_tier: OpenAI::Models::Responses::ResponseCompactParams::service_tier?
@@ -37,6 +40,7 @@ module OpenAI
           ?instructions: String?,
           ?previous_response_id: String?,
           ?prompt_cache_key: String?,
+          ?prompt_cache_options: OpenAI::Responses::ResponseCompactParams::PromptCacheOptions?,
           ?prompt_cache_retention: OpenAI::Models::Responses::ResponseCompactParams::prompt_cache_retention?,
           ?service_tier: OpenAI::Models::Responses::ResponseCompactParams::service_tier?,
           ?request_options: OpenAI::request_opts
@@ -48,13 +52,17 @@ module OpenAI
           instructions: String?,
           previous_response_id: String?,
           prompt_cache_key: String?,
+          prompt_cache_options: OpenAI::Responses::ResponseCompactParams::PromptCacheOptions?,
           prompt_cache_retention: OpenAI::Models::Responses::ResponseCompactParams::prompt_cache_retention?,
           service_tier: OpenAI::Models::Responses::ResponseCompactParams::service_tier?,
           request_options: OpenAI::RequestOptions
         }
 
         type model =
-          :"gpt-5.4"
+          :"gpt-5.6-sol"
+          | :"gpt-5.6-terra"
+          | :"gpt-5.6-luna"
+          | :"gpt-5.4"
           | :"gpt-5.4-mini"
           | :"gpt-5.4-nano"
           | :"gpt-5.4-mini-2026-03-17"
@@ -153,6 +161,9 @@ module OpenAI
 
           def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseCompactParams::model]
 
+          GPT_5_6_SOL: :"gpt-5.6-sol"
+          GPT_5_6_TERRA: :"gpt-5.6-terra"
+          GPT_5_6_LUNA: :"gpt-5.6-luna"
           GPT_5_4: :"gpt-5.4"
           GPT_5_4_MINI: :"gpt-5.4-mini"
           GPT_5_4_NANO: :"gpt-5.4-nano"
@@ -256,6 +267,57 @@ module OpenAI
           def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseCompactParams::input]
 
           ResponseInputItemArray: OpenAI::Internal::Type::Converter
+        end
+
+        type prompt_cache_options =
+          {
+            mode: OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::mode,
+            ttl: OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::ttl
+          }
+
+        class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
+          attr_reader mode: OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::mode?
+
+          def mode=: (
+            OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::mode
+          ) -> OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::mode
+
+          attr_reader ttl: OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::ttl?
+
+          def ttl=: (
+            OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::ttl
+          ) -> OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::ttl
+
+          def initialize: (
+            ?mode: OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::mode,
+            ?ttl: OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::ttl
+          ) -> void
+
+          def to_hash: -> {
+            mode: OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::mode,
+            ttl: OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::ttl
+          }
+
+          type mode = :implicit | :explicit
+
+          module Mode
+            extend OpenAI::Internal::Type::Enum
+
+            IMPLICIT: :implicit
+            EXPLICIT: :explicit
+
+            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::mode]
+          end
+
+          type ttl = :"30m"
+
+          module Ttl
+            extend OpenAI::Internal::Type::Enum
+
+            TTL_30M: :"30m"
+
+            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::ttl]
+          end
         end
 
         type prompt_cache_retention = :in_memory | :"24h"

@@ -1,0 +1,18 @@
+module OpenAI
+  module Models
+    module BetaResponseFunctionCallOutputItem = Beta::BetaResponseFunctionCallOutputItem
+
+    module Beta
+      type beta_response_function_call_output_item =
+        OpenAI::Beta::BetaResponseInputTextContent
+        | OpenAI::Beta::BetaResponseInputImageContent
+        | OpenAI::Beta::BetaResponseInputFileContent
+
+      module BetaResponseFunctionCallOutputItem
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::beta_response_function_call_output_item]
+      end
+    end
+  end
+end

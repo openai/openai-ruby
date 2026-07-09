@@ -33,6 +33,16 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
+        # The execution context that produced this tool call.
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::Responses::ResponseApplyPatchToolCallOutput::Caller::Variants
+            )
+          )
+        end
+        attr_accessor :caller_
+
         # The ID of the entity that created this tool call output.
         sig { returns(T.nilable(String)) }
         attr_reader :created_by
@@ -51,6 +61,13 @@ module OpenAI
             call_id: String,
             status:
               OpenAI::Responses::ResponseApplyPatchToolCallOutput::Status::OrSymbol,
+            caller_:
+              T.nilable(
+                T.any(
+                  OpenAI::Responses::ResponseApplyPatchToolCallOutput::Caller::Direct::OrHash,
+                  OpenAI::Responses::ResponseApplyPatchToolCallOutput::Caller::Program::OrHash
+                )
+              ),
             created_by: String,
             output: T.nilable(String),
             type: Symbol
@@ -64,6 +81,8 @@ module OpenAI
           call_id:,
           # The status of the apply patch tool call output. One of `completed` or `failed`.
           status:,
+          # The execution context that produced this tool call.
+          caller_: nil,
           # The ID of the entity that created this tool call output.
           created_by: nil,
           # Optional textual output returned by the apply patch tool.
@@ -81,6 +100,10 @@ module OpenAI
               status:
                 OpenAI::Responses::ResponseApplyPatchToolCallOutput::Status::TaggedSymbol,
               type: Symbol,
+              caller_:
+                T.nilable(
+                  OpenAI::Responses::ResponseApplyPatchToolCallOutput::Caller::Variants
+                ),
               created_by: String,
               output: T.nilable(String)
             }
@@ -121,6 +144,81 @@ module OpenAI
             )
           end
           def self.values
+          end
+        end
+
+        # The execution context that produced this tool call.
+        module Caller
+          extend OpenAI::Internal::Type::Union
+
+          Variants =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseApplyPatchToolCallOutput::Caller::Direct,
+                OpenAI::Responses::ResponseApplyPatchToolCallOutput::Caller::Program
+              )
+            end
+
+          class Direct < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseApplyPatchToolCallOutput::Caller::Direct,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig { params(type: Symbol).returns(T.attached_class) }
+            def self.new(type: :direct)
+            end
+
+            sig { override.returns({ type: Symbol }) }
+            def to_hash
+            end
+          end
+
+          class Program < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseApplyPatchToolCallOutput::Caller::Program,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The call ID of the program item that produced this tool call.
+            sig { returns(String) }
+            attr_accessor :caller_id
+
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(caller_id: String, type: Symbol).returns(T.attached_class)
+            end
+            def self.new(
+              # The call ID of the program item that produced this tool call.
+              caller_id:,
+              type: :program
+            )
+            end
+
+            sig { override.returns({ caller_id: String, type: Symbol }) }
+            def to_hash
+            end
+          end
+
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Responses::ResponseApplyPatchToolCallOutput::Caller::Variants
+              ]
+            )
+          end
+          def self.variants
           end
         end
       end

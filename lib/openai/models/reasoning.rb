@@ -12,19 +12,12 @@ module OpenAI
       optional :context, enum: -> { OpenAI::Reasoning::Context }, nil?: true
 
       # @!attribute effort
-      #   Constrains effort on reasoning for
-      #   [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-      #   supported values are `none`, `minimal`, `low`, `medium`, `high`, and `xhigh`.
-      #   Reducing reasoning effort can result in faster responses and fewer tokens used
-      #   on reasoning in a response.
-      #
-      #   - `gpt-5.1` defaults to `none`, which does not perform reasoning. The supported
-      #     reasoning values for `gpt-5.1` are `none`, `low`, `medium`, and `high`. Tool
-      #     calls are supported for all reasoning values in gpt-5.1.
-      #   - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
-      #     support `none`.
-      #   - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
-      #   - `xhigh` is supported for all models after `gpt-5.1-codex-max`.
+      #   Constrains effort on reasoning for reasoning models. Currently supported values
+      #   are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
+      #   reasoning effort can result in faster responses and fewer tokens used on
+      #   reasoning in a response. Not all reasoning models support every value. See the
+      #   [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+      #   model-specific support.
       #
       #   @return [Symbol, OpenAI::Models::ReasoningEffort, nil]
       optional :effort, enum: -> { OpenAI::ReasoningEffort }, nil?: true
@@ -41,6 +34,14 @@ module OpenAI
       #   @return [Symbol, OpenAI::Models::Reasoning::GenerateSummary, nil]
       optional :generate_summary, enum: -> { OpenAI::Reasoning::GenerateSummary }, nil?: true
 
+      # @!attribute mode
+      #   Controls the reasoning execution mode for the request.
+      #
+      #   When returned on a response, this is the effective execution mode.
+      #
+      #   @return [String, Symbol, OpenAI::Models::Reasoning::Mode, nil]
+      optional :mode, union: -> { OpenAI::Reasoning::Mode }
+
       # @!attribute summary
       #   A summary of the reasoning performed by the model. This can be useful for
       #   debugging and understanding the model's reasoning process. One of `auto`,
@@ -52,7 +53,7 @@ module OpenAI
       #   @return [Symbol, OpenAI::Models::Reasoning::Summary, nil]
       optional :summary, enum: -> { OpenAI::Reasoning::Summary }, nil?: true
 
-      # @!method initialize(context: nil, effort: nil, generate_summary: nil, summary: nil)
+      # @!method initialize(context: nil, effort: nil, generate_summary: nil, mode: nil, summary: nil)
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::Reasoning} for more details.
       #
@@ -63,9 +64,11 @@ module OpenAI
       #
       #   @param context [Symbol, OpenAI::Models::Reasoning::Context, nil] Controls which reasoning items are rendered back to the model on later turns.
       #
-      #   @param effort [Symbol, OpenAI::Models::ReasoningEffort, nil] Constrains effort on reasoning for
+      #   @param effort [Symbol, OpenAI::Models::ReasoningEffort, nil] Constrains effort on reasoning for reasoning models. Currently supported
       #
       #   @param generate_summary [Symbol, OpenAI::Models::Reasoning::GenerateSummary, nil] **Deprecated:** use `summary` instead.
+      #
+      #   @param mode [String, Symbol, OpenAI::Models::Reasoning::Mode] Controls the reasoning execution mode for the request.
       #
       #   @param summary [Symbol, OpenAI::Models::Reasoning::Summary, nil] A summary of the reasoning performed by the model. This can be
 
@@ -103,6 +106,35 @@ module OpenAI
 
         # @!method self.values
         #   @return [Array<Symbol>]
+      end
+
+      # Controls the reasoning execution mode for the request.
+      #
+      # When returned on a response, this is the effective execution mode.
+      #
+      # @see OpenAI::Models::Reasoning#mode
+      module Mode
+        extend OpenAI::Internal::Type::Union
+
+        variant String
+
+        variant const: -> { OpenAI::Models::Reasoning::Mode::STANDARD }
+
+        variant const: -> { OpenAI::Models::Reasoning::Mode::PRO }
+
+        # @!method self.variants
+        #   @return [Array(String, Symbol)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias { T.any(String, OpenAI::Reasoning::Mode::TaggedSymbol) }
+        end
+
+        # @!group
+
+        STANDARD = :standard
+        PRO = :pro
+
+        # @!endgroup
       end
 
       # A summary of the reasoning performed by the model. This can be useful for
