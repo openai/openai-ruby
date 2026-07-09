@@ -34,6 +34,15 @@ module OpenAI
         #   @return [String, nil]
         optional :id, String
 
+        # @!attribute caller_
+        #   The execution context that produced this tool call.
+        #
+        #   @return [OpenAI::Models::Responses::ResponseFunctionToolCall::Caller::Direct, OpenAI::Models::Responses::ResponseFunctionToolCall::Caller::Program, nil]
+        optional :caller_,
+                 union: -> { OpenAI::Responses::ResponseFunctionToolCall::Caller },
+                 api_name: :caller,
+                 nil?: true
+
         # @!attribute namespace
         #   The namespace of the function to run.
         #
@@ -47,7 +56,7 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Responses::ResponseFunctionToolCall::Status, nil]
         optional :status, enum: -> { OpenAI::Responses::ResponseFunctionToolCall::Status }
 
-        # @!method initialize(arguments:, call_id:, name:, id: nil, namespace: nil, status: nil, type: :function_call)
+        # @!method initialize(arguments:, call_id:, name:, id: nil, caller_: nil, namespace: nil, status: nil, type: :function_call)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseFunctionToolCall} for more details.
         #
@@ -63,11 +72,57 @@ module OpenAI
         #
         #   @param id [String] The unique ID of the function tool call.
         #
+        #   @param caller_ [OpenAI::Models::Responses::ResponseFunctionToolCall::Caller::Direct, OpenAI::Models::Responses::ResponseFunctionToolCall::Caller::Program, nil] The execution context that produced this tool call.
+        #
         #   @param namespace [String] The namespace of the function to run.
         #
         #   @param status [Symbol, OpenAI::Models::Responses::ResponseFunctionToolCall::Status] The status of the item. One of `in_progress`, `completed`, or
         #
         #   @param type [Symbol, :function_call] The type of the function tool call. Always `function_call`.
+
+        # The execution context that produced this tool call.
+        #
+        # @see OpenAI::Models::Responses::ResponseFunctionToolCall#caller_
+        module Caller
+          extend OpenAI::Internal::Type::Union
+
+          discriminator :type
+
+          variant :direct, -> { OpenAI::Responses::ResponseFunctionToolCall::Caller::Direct }
+
+          variant :program, -> { OpenAI::Responses::ResponseFunctionToolCall::Caller::Program }
+
+          class Direct < OpenAI::Internal::Type::BaseModel
+            # @!attribute type
+            #
+            #   @return [Symbol, :direct]
+            required :type, const: :direct
+
+            # @!method initialize(type: :direct)
+            #   @param type [Symbol, :direct]
+          end
+
+          class Program < OpenAI::Internal::Type::BaseModel
+            # @!attribute caller_id
+            #   The call ID of the program item that produced this tool call.
+            #
+            #   @return [String]
+            required :caller_id, String
+
+            # @!attribute type
+            #
+            #   @return [Symbol, :program]
+            required :type, const: :program
+
+            # @!method initialize(caller_id:, type: :program)
+            #   @param caller_id [String] The call ID of the program item that produced this tool call.
+            #
+            #   @param type [Symbol, :program]
+          end
+
+          # @!method self.variants
+          #   @return [Array(OpenAI::Models::Responses::ResponseFunctionToolCall::Caller::Direct, OpenAI::Models::Responses::ResponseFunctionToolCall::Caller::Program)]
+        end
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         # Populated when items are returned via API.

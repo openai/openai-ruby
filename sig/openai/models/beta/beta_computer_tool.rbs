@@ -1,0 +1,17 @@
+module OpenAI
+  module Models
+    class BetaComputerTool = Beta::BetaComputerTool
+
+    module Beta
+      type beta_computer_tool = { type: :computer }
+
+      class BetaComputerTool < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :computer
+
+        def initialize: (?type: :computer) -> void
+
+        def to_hash: -> { type: :computer }
+      end
+    end
+  end
+end

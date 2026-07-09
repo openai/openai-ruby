@@ -36,6 +36,19 @@ module OpenAI
         sig { params(id: String).void }
         attr_writer :id
 
+        # The execution context that produced this tool call.
+        sig do
+          returns(
+            T.nilable(
+              T.any(
+                OpenAI::Responses::ResponseCustomToolCallOutput::Caller::Direct,
+                OpenAI::Responses::ResponseCustomToolCallOutput::Caller::Program
+              )
+            )
+          )
+        end
+        attr_accessor :caller_
+
         # The output of a custom tool call from your code, being sent back to the model.
         sig do
           params(
@@ -43,6 +56,13 @@ module OpenAI
             output:
               OpenAI::Responses::ResponseCustomToolCallOutput::Output::Variants,
             id: String,
+            caller_:
+              T.nilable(
+                T.any(
+                  OpenAI::Responses::ResponseCustomToolCallOutput::Caller::Direct::OrHash,
+                  OpenAI::Responses::ResponseCustomToolCallOutput::Caller::Program::OrHash
+                )
+              ),
             type: Symbol
           ).returns(T.attached_class)
         end
@@ -54,6 +74,8 @@ module OpenAI
           output:,
           # The unique ID of the custom tool call output in the OpenAI platform.
           id: nil,
+          # The execution context that produced this tool call.
+          caller_: nil,
           # The type of the custom tool call output. Always `custom_tool_call_output`.
           type: :custom_tool_call_output
         )
@@ -66,7 +88,14 @@ module OpenAI
               output:
                 OpenAI::Responses::ResponseCustomToolCallOutput::Output::Variants,
               type: Symbol,
-              id: String
+              id: String,
+              caller_:
+                T.nilable(
+                  T.any(
+                    OpenAI::Responses::ResponseCustomToolCallOutput::Caller::Direct,
+                    OpenAI::Responses::ResponseCustomToolCallOutput::Caller::Program
+                  )
+                )
             }
           )
         end
@@ -130,6 +159,87 @@ module OpenAI
               ],
               OpenAI::Internal::Type::Converter
             )
+        end
+
+        # The execution context that produced this tool call.
+        module Caller
+          extend OpenAI::Internal::Type::Union
+
+          Variants =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseCustomToolCallOutput::Caller::Direct,
+                OpenAI::Responses::ResponseCustomToolCallOutput::Caller::Program
+              )
+            end
+
+          class Direct < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseCustomToolCallOutput::Caller::Direct,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The caller type. Always `direct`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig { params(type: Symbol).returns(T.attached_class) }
+            def self.new(
+              # The caller type. Always `direct`.
+              type: :direct
+            )
+            end
+
+            sig { override.returns({ type: Symbol }) }
+            def to_hash
+            end
+          end
+
+          class Program < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseCustomToolCallOutput::Caller::Program,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The call ID of the program item that produced this tool call.
+            sig { returns(String) }
+            attr_accessor :caller_id
+
+            # The caller type. Always `program`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(caller_id: String, type: Symbol).returns(T.attached_class)
+            end
+            def self.new(
+              # The call ID of the program item that produced this tool call.
+              caller_id:,
+              # The caller type. Always `program`.
+              type: :program
+            )
+            end
+
+            sig { override.returns({ caller_id: String, type: Symbol }) }
+            def to_hash
+            end
+          end
+
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Responses::ResponseCustomToolCallOutput::Caller::Variants
+              ]
+            )
+          end
+          def self.variants
+          end
         end
       end
     end

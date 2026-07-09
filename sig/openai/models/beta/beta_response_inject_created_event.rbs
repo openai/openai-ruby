@@ -1,0 +1,41 @@
+module OpenAI
+  module Models
+    class BetaResponseInjectCreatedEvent = Beta::BetaResponseInjectCreatedEvent
+
+    module Beta
+      type beta_response_inject_created_event =
+        {
+          response_id: String,
+          sequence_number: Integer,
+          type: :"response.inject.created",
+          stream_id: String
+        }
+
+      class BetaResponseInjectCreatedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor response_id: String
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor type: :"response.inject.created"
+
+        attr_reader stream_id: String?
+
+        def stream_id=: (String) -> String
+
+        def initialize: (
+          response_id: String,
+          sequence_number: Integer,
+          ?stream_id: String,
+          ?type: :"response.inject.created"
+        ) -> void
+
+        def to_hash: -> {
+          response_id: String,
+          sequence_number: Integer,
+          type: :"response.inject.created",
+          stream_id: String
+        }
+      end
+    end
+  end
+end

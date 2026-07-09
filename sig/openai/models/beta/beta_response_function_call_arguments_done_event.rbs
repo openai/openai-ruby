@@ -1,0 +1,64 @@
+module OpenAI
+  module Models
+    class BetaResponseFunctionCallArgumentsDoneEvent = Beta::BetaResponseFunctionCallArgumentsDoneEvent
+
+    module Beta
+      type beta_response_function_call_arguments_done_event =
+        {
+          arguments: String,
+          item_id: String,
+          name: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.function_call_arguments.done",
+          agent: OpenAI::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent?
+        }
+
+      class BetaResponseFunctionCallArgumentsDoneEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor arguments: String
+
+        attr_accessor item_id: String
+
+        attr_accessor name: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor type: :"response.function_call_arguments.done"
+
+        attr_accessor agent: OpenAI::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent?
+
+        def initialize: (
+          arguments: String,
+          item_id: String,
+          name: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          ?agent: OpenAI::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent?,
+          ?type: :"response.function_call_arguments.done"
+        ) -> void
+
+        def to_hash: -> {
+          arguments: String,
+          item_id: String,
+          name: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.function_call_arguments.done",
+          agent: OpenAI::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent?
+        }
+
+        type agent = { agent_name: String }
+
+        class Agent < OpenAI::Internal::Type::BaseModel
+          attr_accessor agent_name: String
+
+          def initialize: (agent_name: String) -> void
+
+          def to_hash: -> { agent_name: String }
+        end
+      end
+    end
+  end
+end

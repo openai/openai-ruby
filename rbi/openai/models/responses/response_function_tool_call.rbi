@@ -35,6 +35,19 @@ module OpenAI
         sig { params(id: String).void }
         attr_writer :id
 
+        # The execution context that produced this tool call.
+        sig do
+          returns(
+            T.nilable(
+              T.any(
+                OpenAI::Responses::ResponseFunctionToolCall::Caller::Direct,
+                OpenAI::Responses::ResponseFunctionToolCall::Caller::Program
+              )
+            )
+          )
+        end
+        attr_accessor :caller_
+
         # The namespace of the function to run.
         sig { returns(T.nilable(String)) }
         attr_reader :namespace
@@ -70,6 +83,13 @@ module OpenAI
             call_id: String,
             name: String,
             id: String,
+            caller_:
+              T.nilable(
+                T.any(
+                  OpenAI::Responses::ResponseFunctionToolCall::Caller::Direct::OrHash,
+                  OpenAI::Responses::ResponseFunctionToolCall::Caller::Program::OrHash
+                )
+              ),
             namespace: String,
             status:
               OpenAI::Responses::ResponseFunctionToolCall::Status::OrSymbol,
@@ -85,6 +105,8 @@ module OpenAI
           name:,
           # The unique ID of the function tool call.
           id: nil,
+          # The execution context that produced this tool call.
+          caller_: nil,
           # The namespace of the function to run.
           namespace: nil,
           # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
@@ -103,6 +125,13 @@ module OpenAI
               name: String,
               type: Symbol,
               id: String,
+              caller_:
+                T.nilable(
+                  T.any(
+                    OpenAI::Responses::ResponseFunctionToolCall::Caller::Direct,
+                    OpenAI::Responses::ResponseFunctionToolCall::Caller::Program
+                  )
+                ),
               namespace: String,
               status:
                 OpenAI::Responses::ResponseFunctionToolCall::Status::OrSymbol
@@ -110,6 +139,81 @@ module OpenAI
           )
         end
         def to_hash
+        end
+
+        # The execution context that produced this tool call.
+        module Caller
+          extend OpenAI::Internal::Type::Union
+
+          Variants =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseFunctionToolCall::Caller::Direct,
+                OpenAI::Responses::ResponseFunctionToolCall::Caller::Program
+              )
+            end
+
+          class Direct < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseFunctionToolCall::Caller::Direct,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig { params(type: Symbol).returns(T.attached_class) }
+            def self.new(type: :direct)
+            end
+
+            sig { override.returns({ type: Symbol }) }
+            def to_hash
+            end
+          end
+
+          class Program < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseFunctionToolCall::Caller::Program,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The call ID of the program item that produced this tool call.
+            sig { returns(String) }
+            attr_accessor :caller_id
+
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(caller_id: String, type: Symbol).returns(T.attached_class)
+            end
+            def self.new(
+              # The call ID of the program item that produced this tool call.
+              caller_id:,
+              type: :program
+            )
+            end
+
+            sig { override.returns({ caller_id: String, type: Symbol }) }
+            def to_hash
+            end
+          end
+
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Responses::ResponseFunctionToolCall::Caller::Variants
+              ]
+            )
+          end
+          def self.variants
+          end
         end
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.

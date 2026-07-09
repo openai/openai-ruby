@@ -1,0 +1,47 @@
+module OpenAI
+  module Models
+    module Beta
+      type response_delete_params =
+        {
+          response_id: String,
+          betas: ::Array[OpenAI::Models::Beta::ResponseDeleteParams::beta]
+        }
+        & OpenAI::Internal::Type::request_parameters
+
+      class ResponseDeleteParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor response_id: String
+
+        attr_reader betas: ::Array[OpenAI::Models::Beta::ResponseDeleteParams::beta]?
+
+        def betas=: (
+          ::Array[OpenAI::Models::Beta::ResponseDeleteParams::beta]
+        ) -> ::Array[OpenAI::Models::Beta::ResponseDeleteParams::beta]
+
+        def initialize: (
+          response_id: String,
+          ?betas: ::Array[OpenAI::Models::Beta::ResponseDeleteParams::beta],
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          response_id: String,
+          betas: ::Array[OpenAI::Models::Beta::ResponseDeleteParams::beta],
+          request_options: OpenAI::RequestOptions
+        }
+
+        type beta = :"responses_multi_agent=v1"
+
+        module Beta
+          extend OpenAI::Internal::Type::Enum
+
+          RESPONSES_MULTI_AGENT_V1: :"responses_multi_agent=v1"
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::ResponseDeleteParams::beta]
+        end
+      end
+    end
+  end
+end

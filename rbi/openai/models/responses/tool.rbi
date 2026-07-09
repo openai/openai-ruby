@@ -16,6 +16,7 @@ module OpenAI
               OpenAI::Responses::ComputerUsePreviewTool,
               OpenAI::Responses::Tool::Mcp,
               OpenAI::Responses::Tool::CodeInterpreter,
+              OpenAI::Responses::Tool::ProgrammaticToolCalling,
               OpenAI::Responses::Tool::ImageGeneration,
               OpenAI::Responses::Tool::LocalShell,
               OpenAI::Responses::FunctionShellTool,
@@ -41,6 +42,16 @@ module OpenAI
           # The type of the MCP tool. Always `mcp`.
           sig { returns(Symbol) }
           attr_accessor :type
+
+          # The tool invocation context(s).
+          sig do
+            returns(
+              T.nilable(
+                T::Array[OpenAI::Responses::Tool::Mcp::AllowedCaller::OrSymbol]
+              )
+            )
+          end
+          attr_accessor :allowed_callers
 
           # List of allowed tool names or a filter object.
           sig do
@@ -147,6 +158,12 @@ module OpenAI
           sig do
             params(
               server_label: String,
+              allowed_callers:
+                T.nilable(
+                  T::Array[
+                    OpenAI::Responses::Tool::Mcp::AllowedCaller::OrSymbol
+                  ]
+                ),
               allowed_tools:
                 T.nilable(
                   T.any(
@@ -174,6 +191,8 @@ module OpenAI
           def self.new(
             # A label for this MCP server, used to identify it in tool calls.
             server_label:,
+            # The tool invocation context(s).
+            allowed_callers: nil,
             # List of allowed tool names or a filter object.
             allowed_tools: nil,
             # An OAuth access token that can be used with a remote MCP server, either with a
@@ -221,6 +240,12 @@ module OpenAI
               {
                 server_label: String,
                 type: Symbol,
+                allowed_callers:
+                  T.nilable(
+                    T::Array[
+                      OpenAI::Responses::Tool::Mcp::AllowedCaller::OrSymbol
+                    ]
+                  ),
                 allowed_tools:
                   T.nilable(
                     T.any(
@@ -247,6 +272,37 @@ module OpenAI
             )
           end
           def to_hash
+          end
+
+          module AllowedCaller
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol =
+              T.type_alias do
+                T.all(Symbol, OpenAI::Responses::Tool::Mcp::AllowedCaller)
+              end
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            DIRECT =
+              T.let(
+                :direct,
+                OpenAI::Responses::Tool::Mcp::AllowedCaller::TaggedSymbol
+              )
+            PROGRAMMATIC =
+              T.let(
+                :programmatic,
+                OpenAI::Responses::Tool::Mcp::AllowedCaller::TaggedSymbol
+              )
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Responses::Tool::Mcp::AllowedCaller::TaggedSymbol
+                ]
+              )
+            end
+            def self.values
+            end
           end
 
           # List of allowed tool names or a filter object.
@@ -675,6 +731,18 @@ module OpenAI
           sig { returns(Symbol) }
           attr_accessor :type
 
+          # The tool invocation context(s).
+          sig do
+            returns(
+              T.nilable(
+                T::Array[
+                  OpenAI::Responses::Tool::CodeInterpreter::AllowedCaller::OrSymbol
+                ]
+              )
+            )
+          end
+          attr_accessor :allowed_callers
+
           # A tool that runs Python code to help generate a response to a prompt.
           sig do
             params(
@@ -682,6 +750,12 @@ module OpenAI
                 T.any(
                   String,
                   OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::OrHash
+                ),
+              allowed_callers:
+                T.nilable(
+                  T::Array[
+                    OpenAI::Responses::Tool::CodeInterpreter::AllowedCaller::OrSymbol
+                  ]
                 ),
               type: Symbol
             ).returns(T.attached_class)
@@ -691,6 +765,8 @@ module OpenAI
             # specifies uploaded file IDs to make available to your code, along with an
             # optional `memory_limit` setting.
             container:,
+            # The tool invocation context(s).
+            allowed_callers: nil,
             # The type of the code interpreter tool. Always `code_interpreter`.
             type: :code_interpreter
           )
@@ -704,7 +780,13 @@ module OpenAI
                     String,
                     OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto
                   ),
-                type: Symbol
+                type: Symbol,
+                allowed_callers:
+                  T.nilable(
+                    T::Array[
+                      OpenAI::Responses::Tool::CodeInterpreter::AllowedCaller::OrSymbol
+                    ]
+                  )
               }
             )
           end
@@ -906,6 +988,65 @@ module OpenAI
             end
             def self.variants
             end
+          end
+
+          module AllowedCaller
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol =
+              T.type_alias do
+                T.all(
+                  Symbol,
+                  OpenAI::Responses::Tool::CodeInterpreter::AllowedCaller
+                )
+              end
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            DIRECT =
+              T.let(
+                :direct,
+                OpenAI::Responses::Tool::CodeInterpreter::AllowedCaller::TaggedSymbol
+              )
+            PROGRAMMATIC =
+              T.let(
+                :programmatic,
+                OpenAI::Responses::Tool::CodeInterpreter::AllowedCaller::TaggedSymbol
+              )
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Responses::Tool::CodeInterpreter::AllowedCaller::TaggedSymbol
+                ]
+              )
+            end
+            def self.values
+            end
+          end
+        end
+
+        class ProgrammaticToolCalling < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::Tool::ProgrammaticToolCalling,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The type of the tool. Always `programmatic_tool_calling`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          sig { params(type: Symbol).returns(T.attached_class) }
+          def self.new(
+            # The type of the tool. Always `programmatic_tool_calling`.
+            type: :programmatic_tool_calling
+          )
+          end
+
+          sig { override.returns({ type: Symbol }) }
+          def to_hash
           end
         end
 

@@ -113,6 +113,10 @@ module OpenAI
         # An internal identifier for an item to reference.
         variant :item_reference, -> { OpenAI::Responses::ResponseInputItem::ItemReference }
 
+        variant :program, -> { OpenAI::Responses::ResponseInputItem::Program }
+
+        variant :program_output, -> { OpenAI::Responses::ResponseInputItem::ProgramOutput }
+
         class Message < OpenAI::Internal::Type::BaseModel
           # @!attribute content
           #   A list of one or many input items to the model, containing different content
@@ -333,6 +337,15 @@ module OpenAI
           #   @return [String, nil]
           optional :id, String, nil?: true
 
+          # @!attribute caller_
+          #   The execution context that produced this tool call.
+          #
+          #   @return [OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Caller::Direct, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Caller::Program, nil]
+          optional :caller_,
+                   union: -> { OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Caller },
+                   api_name: :caller,
+                   nil?: true
+
           # @!attribute status
           #   The status of the item. One of `in_progress`, `completed`, or `incomplete`.
           #   Populated when items are returned via API.
@@ -342,7 +355,7 @@ module OpenAI
                    enum: -> { OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Status },
                    nil?: true
 
-          # @!method initialize(call_id:, output:, id: nil, status: nil, type: :function_call_output)
+          # @!method initialize(call_id:, output:, id: nil, caller_: nil, status: nil, type: :function_call_output)
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput} for more
           #   details.
@@ -354,6 +367,8 @@ module OpenAI
           #   @param output [String, Array<OpenAI::Models::Responses::ResponseInputTextContent, OpenAI::Models::Responses::ResponseInputImageContent, OpenAI::Models::Responses::ResponseInputFileContent>] Text, image, or file output of the function tool call.
           #
           #   @param id [String, nil] The unique ID of the function tool call output. Populated when this item is retu
+          #
+          #   @param caller_ [OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Caller::Direct, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Caller::Program, nil] The execution context that produced this tool call.
           #
           #   @param status [Symbol, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status, nil] The status of the item. One of `in_progress`, `completed`, or `incomplete`. Popu
           #
@@ -373,6 +388,52 @@ module OpenAI
 
             # @!method self.variants
             #   @return [Array(String, Array<OpenAI::Models::Responses::ResponseInputTextContent, OpenAI::Models::Responses::ResponseInputImageContent, OpenAI::Models::Responses::ResponseInputFileContent>)]
+          end
+
+          # The execution context that produced this tool call.
+          #
+          # @see OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput#caller_
+          module Caller
+            extend OpenAI::Internal::Type::Union
+
+            discriminator :type
+
+            variant :direct, -> { OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Caller::Direct }
+
+            variant :program, -> { OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Caller::Program }
+
+            class Direct < OpenAI::Internal::Type::BaseModel
+              # @!attribute type
+              #   The caller type. Always `direct`.
+              #
+              #   @return [Symbol, :direct]
+              required :type, const: :direct
+
+              # @!method initialize(type: :direct)
+              #   @param type [Symbol, :direct] The caller type. Always `direct`.
+            end
+
+            class Program < OpenAI::Internal::Type::BaseModel
+              # @!attribute caller_id
+              #   The call ID of the program item that produced this tool call.
+              #
+              #   @return [String]
+              required :caller_id, String
+
+              # @!attribute type
+              #   The caller type. Always `program`.
+              #
+              #   @return [Symbol, :program]
+              required :type, const: :program
+
+              # @!method initialize(caller_id:, type: :program)
+              #   @param caller_id [String] The call ID of the program item that produced this tool call.
+              #
+              #   @param type [Symbol, :program] The caller type. Always `program`.
+            end
+
+            # @!method self.variants
+            #   @return [Array(OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Caller::Direct, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Caller::Program)]
           end
 
           # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
@@ -483,7 +544,7 @@ module OpenAI
           # @!attribute tools
           #   A list of additional tools made available at this item.
           #
-          #   @return [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::ComputerUsePreviewTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::FunctionShellTool, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::NamespaceTool, OpenAI::Models::Responses::ToolSearchTool, OpenAI::Models::Responses::ApplyPatchTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool>]
+          #   @return [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::ComputerUsePreviewTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ProgrammaticToolCalling, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::FunctionShellTool, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::NamespaceTool, OpenAI::Models::Responses::ToolSearchTool, OpenAI::Models::Responses::ApplyPatchTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool>]
           required :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool] }
 
           # @!attribute type
@@ -499,7 +560,7 @@ module OpenAI
           optional :id, String, nil?: true
 
           # @!method initialize(tools:, id: nil, role: :developer, type: :additional_tools)
-          #   @param tools [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::ComputerUsePreviewTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::FunctionShellTool, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::NamespaceTool, OpenAI::Models::Responses::ToolSearchTool, OpenAI::Models::Responses::ApplyPatchTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool>] A list of additional tools made available at this item.
+          #   @param tools [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::ComputerUsePreviewTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ProgrammaticToolCalling, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::FunctionShellTool, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::NamespaceTool, OpenAI::Models::Responses::ToolSearchTool, OpenAI::Models::Responses::ApplyPatchTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool>] A list of additional tools made available at this item.
           #
           #   @param id [String, nil] The unique ID of this additional tools item.
           #
@@ -763,6 +824,15 @@ module OpenAI
           #   @return [String, nil]
           optional :id, String, nil?: true
 
+          # @!attribute caller_
+          #   The execution context that produced this tool call.
+          #
+          #   @return [OpenAI::Models::Responses::ResponseInputItem::ShellCall::Caller::Direct, OpenAI::Models::Responses::ResponseInputItem::ShellCall::Caller::Program, nil]
+          optional :caller_,
+                   union: -> { OpenAI::Responses::ResponseInputItem::ShellCall::Caller },
+                   api_name: :caller,
+                   nil?: true
+
           # @!attribute environment
           #   The environment to execute the shell commands in.
           #
@@ -778,7 +848,7 @@ module OpenAI
           #   @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::ShellCall::Status, nil]
           optional :status, enum: -> { OpenAI::Responses::ResponseInputItem::ShellCall::Status }, nil?: true
 
-          # @!method initialize(action:, call_id:, id: nil, environment: nil, status: nil, type: :shell_call)
+          # @!method initialize(action:, call_id:, id: nil, caller_: nil, environment: nil, status: nil, type: :shell_call)
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Responses::ResponseInputItem::ShellCall} for more details.
           #
@@ -789,6 +859,8 @@ module OpenAI
           #   @param call_id [String] The unique ID of the shell tool call generated by the model.
           #
           #   @param id [String, nil] The unique ID of the shell tool call. Populated when this item is returned via A
+          #
+          #   @param caller_ [OpenAI::Models::Responses::ResponseInputItem::ShellCall::Caller::Direct, OpenAI::Models::Responses::ResponseInputItem::ShellCall::Caller::Program, nil] The execution context that produced this tool call.
           #
           #   @param environment [OpenAI::Models::Responses::LocalEnvironment, OpenAI::Models::Responses::ContainerReference, nil] The environment to execute the shell commands in.
           #
@@ -829,6 +901,52 @@ module OpenAI
             #   @param max_output_length [Integer, nil] Maximum number of UTF-8 characters to capture from combined stdout and stderr ou
             #
             #   @param timeout_ms [Integer, nil] Maximum wall-clock time in milliseconds to allow the shell commands to run.
+          end
+
+          # The execution context that produced this tool call.
+          #
+          # @see OpenAI::Models::Responses::ResponseInputItem::ShellCall#caller_
+          module Caller
+            extend OpenAI::Internal::Type::Union
+
+            discriminator :type
+
+            variant :direct, -> { OpenAI::Responses::ResponseInputItem::ShellCall::Caller::Direct }
+
+            variant :program, -> { OpenAI::Responses::ResponseInputItem::ShellCall::Caller::Program }
+
+            class Direct < OpenAI::Internal::Type::BaseModel
+              # @!attribute type
+              #   The caller type. Always `direct`.
+              #
+              #   @return [Symbol, :direct]
+              required :type, const: :direct
+
+              # @!method initialize(type: :direct)
+              #   @param type [Symbol, :direct] The caller type. Always `direct`.
+            end
+
+            class Program < OpenAI::Internal::Type::BaseModel
+              # @!attribute caller_id
+              #   The call ID of the program item that produced this tool call.
+              #
+              #   @return [String]
+              required :caller_id, String
+
+              # @!attribute type
+              #   The caller type. Always `program`.
+              #
+              #   @return [Symbol, :program]
+              required :type, const: :program
+
+              # @!method initialize(caller_id:, type: :program)
+              #   @param caller_id [String] The call ID of the program item that produced this tool call.
+              #
+              #   @param type [Symbol, :program] The caller type. Always `program`.
+            end
+
+            # @!method self.variants
+            #   @return [Array(OpenAI::Models::Responses::ResponseInputItem::ShellCall::Caller::Direct, OpenAI::Models::Responses::ResponseInputItem::ShellCall::Caller::Program)]
           end
 
           # The environment to execute the shell commands in.
@@ -891,6 +1009,15 @@ module OpenAI
           #   @return [String, nil]
           optional :id, String, nil?: true
 
+          # @!attribute caller_
+          #   The execution context that produced this tool call.
+          #
+          #   @return [OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput::Caller::Direct, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput::Caller::Program, nil]
+          optional :caller_,
+                   union: -> { OpenAI::Responses::ResponseInputItem::ShellCallOutput::Caller },
+                   api_name: :caller,
+                   nil?: true
+
           # @!attribute max_output_length
           #   The maximum number of UTF-8 characters captured for this shell call's combined
           #   output.
@@ -908,7 +1035,7 @@ module OpenAI
                    },
                    nil?: true
 
-          # @!method initialize(call_id:, output:, id: nil, max_output_length: nil, status: nil, type: :shell_call_output)
+          # @!method initialize(call_id:, output:, id: nil, caller_: nil, max_output_length: nil, status: nil, type: :shell_call_output)
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput} for more
           #   details.
@@ -921,11 +1048,59 @@ module OpenAI
           #
           #   @param id [String, nil] The unique ID of the shell tool call output. Populated when this item is returne
           #
+          #   @param caller_ [OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput::Caller::Direct, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput::Caller::Program, nil] The execution context that produced this tool call.
+          #
           #   @param max_output_length [Integer, nil] The maximum number of UTF-8 characters captured for this shell call's combined o
           #
           #   @param status [Symbol, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput::Status, nil] The status of the shell call output.
           #
           #   @param type [Symbol, :shell_call_output] The type of the item. Always `shell_call_output`.
+
+          # The execution context that produced this tool call.
+          #
+          # @see OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput#caller_
+          module Caller
+            extend OpenAI::Internal::Type::Union
+
+            discriminator :type
+
+            variant :direct, -> { OpenAI::Responses::ResponseInputItem::ShellCallOutput::Caller::Direct }
+
+            variant :program, -> { OpenAI::Responses::ResponseInputItem::ShellCallOutput::Caller::Program }
+
+            class Direct < OpenAI::Internal::Type::BaseModel
+              # @!attribute type
+              #   The caller type. Always `direct`.
+              #
+              #   @return [Symbol, :direct]
+              required :type, const: :direct
+
+              # @!method initialize(type: :direct)
+              #   @param type [Symbol, :direct] The caller type. Always `direct`.
+            end
+
+            class Program < OpenAI::Internal::Type::BaseModel
+              # @!attribute caller_id
+              #   The call ID of the program item that produced this tool call.
+              #
+              #   @return [String]
+              required :caller_id, String
+
+              # @!attribute type
+              #   The caller type. Always `program`.
+              #
+              #   @return [Symbol, :program]
+              required :type, const: :program
+
+              # @!method initialize(caller_id:, type: :program)
+              #   @param caller_id [String] The call ID of the program item that produced this tool call.
+              #
+              #   @param type [Symbol, :program] The caller type. Always `program`.
+            end
+
+            # @!method self.variants
+            #   @return [Array(OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput::Caller::Direct, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput::Caller::Program)]
+          end
 
           # The status of the shell call output.
           #
@@ -975,7 +1150,16 @@ module OpenAI
           #   @return [String, nil]
           optional :id, String, nil?: true
 
-          # @!method initialize(call_id:, operation:, status:, id: nil, type: :apply_patch_call)
+          # @!attribute caller_
+          #   The execution context that produced this tool call.
+          #
+          #   @return [OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::Caller::Direct, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::Caller::Program, nil]
+          optional :caller_,
+                   union: -> { OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Caller },
+                   api_name: :caller,
+                   nil?: true
+
+          # @!method initialize(call_id:, operation:, status:, id: nil, caller_: nil, type: :apply_patch_call)
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall} for more details.
           #
@@ -989,6 +1173,8 @@ module OpenAI
           #   @param status [Symbol, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::Status] The status of the apply patch tool call. One of `in_progress` or `completed`.
           #
           #   @param id [String, nil] The unique ID of the apply patch tool call. Populated when this item is returned
+          #
+          #   @param caller_ [OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::Caller::Direct, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::Caller::Program, nil] The execution context that produced this tool call.
           #
           #   @param type [Symbol, :apply_patch_call] The type of the item. Always `apply_patch_call`.
 
@@ -1105,6 +1291,52 @@ module OpenAI
             # @!method self.values
             #   @return [Array<Symbol>]
           end
+
+          # The execution context that produced this tool call.
+          #
+          # @see OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall#caller_
+          module Caller
+            extend OpenAI::Internal::Type::Union
+
+            discriminator :type
+
+            variant :direct, -> { OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Caller::Direct }
+
+            variant :program, -> { OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Caller::Program }
+
+            class Direct < OpenAI::Internal::Type::BaseModel
+              # @!attribute type
+              #   The caller type. Always `direct`.
+              #
+              #   @return [Symbol, :direct]
+              required :type, const: :direct
+
+              # @!method initialize(type: :direct)
+              #   @param type [Symbol, :direct] The caller type. Always `direct`.
+            end
+
+            class Program < OpenAI::Internal::Type::BaseModel
+              # @!attribute caller_id
+              #   The call ID of the program item that produced this tool call.
+              #
+              #   @return [String]
+              required :caller_id, String
+
+              # @!attribute type
+              #   The caller type. Always `program`.
+              #
+              #   @return [Symbol, :program]
+              required :type, const: :program
+
+              # @!method initialize(caller_id:, type: :program)
+              #   @param caller_id [String] The call ID of the program item that produced this tool call.
+              #
+              #   @param type [Symbol, :program] The caller type. Always `program`.
+            end
+
+            # @!method self.variants
+            #   @return [Array(OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::Caller::Direct, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::Caller::Program)]
+          end
         end
 
         class ApplyPatchCallOutput < OpenAI::Internal::Type::BaseModel
@@ -1133,6 +1365,15 @@ module OpenAI
           #   @return [String, nil]
           optional :id, String, nil?: true
 
+          # @!attribute caller_
+          #   The execution context that produced this tool call.
+          #
+          #   @return [OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller::Direct, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller::Program, nil]
+          optional :caller_,
+                   union: -> { OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller },
+                   api_name: :caller,
+                   nil?: true
+
           # @!attribute output
           #   Optional human-readable log text from the apply patch tool (e.g., patch results
           #   or errors).
@@ -1140,7 +1381,7 @@ module OpenAI
           #   @return [String, nil]
           optional :output, String, nil?: true
 
-          # @!method initialize(call_id:, status:, id: nil, output: nil, type: :apply_patch_call_output)
+          # @!method initialize(call_id:, status:, id: nil, caller_: nil, output: nil, type: :apply_patch_call_output)
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput} for more
           #   details.
@@ -1152,6 +1393,8 @@ module OpenAI
           #   @param status [Symbol, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput::Status] The status of the apply patch tool call output. One of `completed` or `failed`.
           #
           #   @param id [String, nil] The unique ID of the apply patch tool call output. Populated when this item is r
+          #
+          #   @param caller_ [OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller::Direct, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller::Program, nil] The execution context that produced this tool call.
           #
           #   @param output [String, nil] Optional human-readable log text from the apply patch tool (e.g., patch results
           #
@@ -1168,6 +1411,52 @@ module OpenAI
 
             # @!method self.values
             #   @return [Array<Symbol>]
+          end
+
+          # The execution context that produced this tool call.
+          #
+          # @see OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput#caller_
+          module Caller
+            extend OpenAI::Internal::Type::Union
+
+            discriminator :type
+
+            variant :direct, -> { OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller::Direct }
+
+            variant :program, -> { OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller::Program }
+
+            class Direct < OpenAI::Internal::Type::BaseModel
+              # @!attribute type
+              #   The caller type. Always `direct`.
+              #
+              #   @return [Symbol, :direct]
+              required :type, const: :direct
+
+              # @!method initialize(type: :direct)
+              #   @param type [Symbol, :direct] The caller type. Always `direct`.
+            end
+
+            class Program < OpenAI::Internal::Type::BaseModel
+              # @!attribute caller_id
+              #   The call ID of the program item that produced this tool call.
+              #
+              #   @return [String]
+              required :caller_id, String
+
+              # @!attribute type
+              #   The caller type. Always `program`.
+              #
+              #   @return [Symbol, :program]
+              required :type, const: :program
+
+              # @!method initialize(caller_id:, type: :program)
+              #   @param caller_id [String] The call ID of the program item that produced this tool call.
+              #
+              #   @param type [Symbol, :program] The caller type. Always `program`.
+            end
+
+            # @!method self.variants
+            #   @return [Array(OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller::Direct, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller::Program)]
           end
         end
 
@@ -1505,8 +1794,107 @@ module OpenAI
           end
         end
 
+        class Program < OpenAI::Internal::Type::BaseModel
+          # @!attribute id
+          #   The unique ID of this program item.
+          #
+          #   @return [String]
+          required :id, String
+
+          # @!attribute call_id
+          #   The stable call ID of the program item.
+          #
+          #   @return [String]
+          required :call_id, String
+
+          # @!attribute code
+          #   The JavaScript source executed by programmatic tool calling.
+          #
+          #   @return [String]
+          required :code, String
+
+          # @!attribute fingerprint
+          #   Opaque program replay fingerprint that must be round-tripped.
+          #
+          #   @return [String]
+          required :fingerprint, String
+
+          # @!attribute type
+          #   The item type. Always `program`.
+          #
+          #   @return [Symbol, :program]
+          required :type, const: :program
+
+          # @!method initialize(id:, call_id:, code:, fingerprint:, type: :program)
+          #   @param id [String] The unique ID of this program item.
+          #
+          #   @param call_id [String] The stable call ID of the program item.
+          #
+          #   @param code [String] The JavaScript source executed by programmatic tool calling.
+          #
+          #   @param fingerprint [String] Opaque program replay fingerprint that must be round-tripped.
+          #
+          #   @param type [Symbol, :program] The item type. Always `program`.
+        end
+
+        class ProgramOutput < OpenAI::Internal::Type::BaseModel
+          # @!attribute id
+          #   The unique ID of this program output item.
+          #
+          #   @return [String]
+          required :id, String
+
+          # @!attribute call_id
+          #   The call ID of the program item.
+          #
+          #   @return [String]
+          required :call_id, String
+
+          # @!attribute result
+          #   The result produced by the program item.
+          #
+          #   @return [String]
+          required :result, String
+
+          # @!attribute status
+          #   The terminal status of the program output.
+          #
+          #   @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::ProgramOutput::Status]
+          required :status, enum: -> { OpenAI::Responses::ResponseInputItem::ProgramOutput::Status }
+
+          # @!attribute type
+          #   The item type. Always `program_output`.
+          #
+          #   @return [Symbol, :program_output]
+          required :type, const: :program_output
+
+          # @!method initialize(id:, call_id:, result:, status:, type: :program_output)
+          #   @param id [String] The unique ID of this program output item.
+          #
+          #   @param call_id [String] The call ID of the program item.
+          #
+          #   @param result [String] The result produced by the program item.
+          #
+          #   @param status [Symbol, OpenAI::Models::Responses::ResponseInputItem::ProgramOutput::Status] The terminal status of the program output.
+          #
+          #   @param type [Symbol, :program_output] The item type. Always `program_output`.
+
+          # The terminal status of the program output.
+          #
+          # @see OpenAI::Models::Responses::ResponseInputItem::ProgramOutput#status
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            COMPLETED = :completed
+            INCOMPLETE = :incomplete
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
+        end
+
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam, OpenAI::Models::Responses::ResponseInputItem::AdditionalTools, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger, OpenAI::Models::Responses::ResponseInputItem::ItemReference)]
+        #   @return [Array(OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam, OpenAI::Models::Responses::ResponseInputItem::AdditionalTools, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger, OpenAI::Models::Responses::ResponseInputItem::ItemReference, OpenAI::Models::Responses::ResponseInputItem::Program, OpenAI::Models::Responses::ResponseInputItem::ProgramOutput)]
       end
     end
   end

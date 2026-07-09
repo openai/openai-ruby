@@ -21,7 +21,7 @@ module OpenAI
         # @!attribute input
         #   Text, image, or file inputs to the model, used to generate a response
         #
-        #   @return [String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam, OpenAI::Models::Responses::ResponseInputItem::AdditionalTools, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger, OpenAI::Models::Responses::ResponseInputItem::ItemReference>, nil]
+        #   @return [String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam, OpenAI::Models::Responses::ResponseInputItem::AdditionalTools, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger, OpenAI::Models::Responses::ResponseInputItem::ItemReference, OpenAI::Models::Responses::ResponseInputItem::Program, OpenAI::Models::Responses::ResponseInputItem::ProgramOutput>, nil]
         optional :input, union: -> { OpenAI::Responses::ResponseCompactParams::Input }, nil?: true
 
         # @!attribute instructions
@@ -48,7 +48,25 @@ module OpenAI
         #   @return [String, nil]
         optional :prompt_cache_key, String, nil?: true
 
+        # @!attribute prompt_cache_options
+        #   Options for prompt caching. Supported for `gpt-5.6` and later models. By
+        #   default, OpenAI automatically chooses one implicit cache breakpoint. You can add
+        #   explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
+        #   request can write up to four breakpoints. For cache matching, OpenAI considers
+        #   up to the latest 80 breakpoints in the conversation, without a content-block
+        #   lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
+        #   `ttl` defaults to `30m`, which is currently the only supported value. See the
+        #   [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
+        #   for current details.
+        #
+        #   @return [OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions, nil]
+        optional :prompt_cache_options,
+                 -> { OpenAI::Responses::ResponseCompactParams::PromptCacheOptions },
+                 nil?: true
+
         # @!attribute prompt_cache_retention
+        #   @deprecated
+        #
         #   How long to retain a prompt cache entry created by this request.
         #
         #   @return [Symbol, OpenAI::Models::Responses::ResponseCompactParams::PromptCacheRetention, nil]
@@ -62,19 +80,21 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Responses::ResponseCompactParams::ServiceTier, nil]
         optional :service_tier, enum: -> { OpenAI::Responses::ResponseCompactParams::ServiceTier }, nil?: true
 
-        # @!method initialize(model:, input: nil, instructions: nil, previous_response_id: nil, prompt_cache_key: nil, prompt_cache_retention: nil, service_tier: nil, request_options: {})
+        # @!method initialize(model:, input: nil, instructions: nil, previous_response_id: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, service_tier: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseCompactParams} for more details.
         #
         #   @param model [Symbol, String, OpenAI::Models::Responses::ResponseCompactParams::Model, nil] Model ID used to generate the response, like `gpt-5` or `o3`. OpenAI offers a wi
         #
-        #   @param input [String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam, OpenAI::Models::Responses::ResponseInputItem::AdditionalTools, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger, OpenAI::Models::Responses::ResponseInputItem::ItemReference>, nil] Text, image, or file inputs to the model, used to generate a response
+        #   @param input [String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam, OpenAI::Models::Responses::ResponseInputItem::AdditionalTools, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger, OpenAI::Models::Responses::ResponseInputItem::ItemReference, OpenAI::Models::Responses::ResponseInputItem::Program, OpenAI::Models::Responses::ResponseInputItem::ProgramOutput>, nil] Text, image, or file inputs to the model, used to generate a response
         #
         #   @param instructions [String, nil] A system (or developer) message inserted into the model's context.
         #
         #   @param previous_response_id [String, nil] The unique ID of the previous response to the model. Use this to create multi-tu
         #
         #   @param prompt_cache_key [String, nil] A key to use when reading from or writing to the prompt cache.
+        #
+        #   @param prompt_cache_options [OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions, nil] Options for prompt caching. Supported for `gpt-5.6` and later models. By default
         #
         #   @param prompt_cache_retention [Symbol, OpenAI::Models::Responses::ResponseCompactParams::PromptCacheRetention, nil] How long to retain a prompt cache entry created by this request.
         #
@@ -89,6 +109,12 @@ module OpenAI
         # available models.
         module Model
           extend OpenAI::Internal::Type::Union
+
+          variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_5_6_SOL }
+
+          variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_5_6_TERRA }
+
+          variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_5_6_LUNA }
 
           variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_5_4 }
 
@@ -285,6 +311,9 @@ module OpenAI
 
           # @!group
 
+          GPT_5_6_SOL = :"gpt-5.6-sol"
+          GPT_5_6_TERRA = :"gpt-5.6-terra"
+          GPT_5_6_LUNA = :"gpt-5.6-luna"
           GPT_5_4 = :"gpt-5.4"
           GPT_5_4_MINI = :"gpt-5.4-mini"
           GPT_5_4_NANO = :"gpt-5.4-nano"
@@ -392,13 +421,87 @@ module OpenAI
           variant -> { OpenAI::Models::Responses::ResponseCompactParams::Input::ResponseInputItemArray }
 
           # @!method self.variants
-          #   @return [Array(String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam, OpenAI::Models::Responses::ResponseInputItem::AdditionalTools, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger, OpenAI::Models::Responses::ResponseInputItem::ItemReference>)]
+          #   @return [Array(String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam, OpenAI::Models::Responses::ResponseInputItem::AdditionalTools, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger, OpenAI::Models::Responses::ResponseInputItem::ItemReference, OpenAI::Models::Responses::ResponseInputItem::Program, OpenAI::Models::Responses::ResponseInputItem::ProgramOutput>)]
 
           # @type [OpenAI::Internal::Type::Converter]
           ResponseInputItemArray =
             OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Responses::ResponseInputItem }]
         end
 
+        class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
+          # @!attribute mode
+          #   Controls whether OpenAI automatically creates an implicit cache breakpoint.
+          #   Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
+          #   and writes up to the latest three explicit breakpoints in the request. With
+          #   `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
+          #   latest four explicit breakpoints. If there are no explicit breakpoints, the
+          #   request does not use prompt caching.
+          #
+          #   @return [Symbol, OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::Mode, nil]
+          optional :mode, enum: -> { OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Mode }
+
+          # @!attribute ttl
+          #   The minimum lifetime applied to every implicit and explicit cache breakpoint
+          #   written by the request. Defaults to `30m`, which is currently the only supported
+          #   value. The backend may retain cache entries for longer.
+          #
+          #   @return [Symbol, OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::Ttl, nil]
+          optional :ttl, enum: -> { OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Ttl }
+
+          # @!method initialize(mode: nil, ttl: nil)
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions} for more
+          #   details.
+          #
+          #   Options for prompt caching. Supported for `gpt-5.6` and later models. By
+          #   default, OpenAI automatically chooses one implicit cache breakpoint. You can add
+          #   explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
+          #   request can write up to four breakpoints. For cache matching, OpenAI considers
+          #   up to the latest 80 breakpoints in the conversation, without a content-block
+          #   lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
+          #   `ttl` defaults to `30m`, which is currently the only supported value. See the
+          #   [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
+          #   for current details.
+          #
+          #   @param mode [Symbol, OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::Mode] Controls whether OpenAI automatically creates an implicit cache breakpoint. Defa
+          #
+          #   @param ttl [Symbol, OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::Ttl] The minimum lifetime applied to every implicit and explicit cache breakpoint wri
+
+          # Controls whether OpenAI automatically creates an implicit cache breakpoint.
+          # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
+          # and writes up to the latest three explicit breakpoints in the request. With
+          # `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
+          # latest four explicit breakpoints. If there are no explicit breakpoints, the
+          # request does not use prompt caching.
+          #
+          # @see OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions#mode
+          module Mode
+            extend OpenAI::Internal::Type::Enum
+
+            IMPLICIT = :implicit
+            EXPLICIT = :explicit
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
+
+          # The minimum lifetime applied to every implicit and explicit cache breakpoint
+          # written by the request. Defaults to `30m`, which is currently the only supported
+          # value. The backend may retain cache entries for longer.
+          #
+          # @see OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions#ttl
+          module Ttl
+            extend OpenAI::Internal::Type::Enum
+
+            TTL_30M = :"30m"
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
+        end
+
+        # @deprecated
+        #
         # How long to retain a prompt cache entry created by this request.
         module PromptCacheRetention
           extend OpenAI::Internal::Type::Enum

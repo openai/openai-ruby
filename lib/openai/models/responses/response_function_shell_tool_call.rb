@@ -44,13 +44,22 @@ module OpenAI
         #   @return [Symbol, :shell_call]
         required :type, const: :shell_call
 
+        # @!attribute caller_
+        #   The execution context that produced this tool call.
+        #
+        #   @return [OpenAI::Models::Responses::ResponseFunctionShellToolCall::Caller::Direct, OpenAI::Models::Responses::ResponseFunctionShellToolCall::Caller::Program, nil]
+        optional :caller_,
+                 union: -> { OpenAI::Responses::ResponseFunctionShellToolCall::Caller },
+                 api_name: :caller,
+                 nil?: true
+
         # @!attribute created_by
         #   The ID of the entity that created this tool call.
         #
         #   @return [String, nil]
         optional :created_by, String
 
-        # @!method initialize(id:, action:, call_id:, environment:, status:, created_by: nil, type: :shell_call)
+        # @!method initialize(id:, action:, call_id:, environment:, status:, caller_: nil, created_by: nil, type: :shell_call)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseFunctionShellToolCall} for more details.
         #
@@ -65,6 +74,8 @@ module OpenAI
         #   @param environment [OpenAI::Models::Responses::ResponseLocalEnvironment, OpenAI::Models::Responses::ResponseContainerReference, nil] Represents the use of a local environment to perform shell actions.
         #
         #   @param status [Symbol, OpenAI::Models::Responses::ResponseFunctionShellToolCall::Status] The status of the shell call. One of `in_progress`, `completed`, or `incomplete`
+        #
+        #   @param caller_ [OpenAI::Models::Responses::ResponseFunctionShellToolCall::Caller::Direct, OpenAI::Models::Responses::ResponseFunctionShellToolCall::Caller::Program, nil] The execution context that produced this tool call.
         #
         #   @param created_by [String] The ID of the entity that created this tool call.
         #
@@ -130,6 +141,50 @@ module OpenAI
 
           # @!method self.values
           #   @return [Array<Symbol>]
+        end
+
+        # The execution context that produced this tool call.
+        #
+        # @see OpenAI::Models::Responses::ResponseFunctionShellToolCall#caller_
+        module Caller
+          extend OpenAI::Internal::Type::Union
+
+          discriminator :type
+
+          variant :direct, -> { OpenAI::Responses::ResponseFunctionShellToolCall::Caller::Direct }
+
+          variant :program, -> { OpenAI::Responses::ResponseFunctionShellToolCall::Caller::Program }
+
+          class Direct < OpenAI::Internal::Type::BaseModel
+            # @!attribute type
+            #
+            #   @return [Symbol, :direct]
+            required :type, const: :direct
+
+            # @!method initialize(type: :direct)
+            #   @param type [Symbol, :direct]
+          end
+
+          class Program < OpenAI::Internal::Type::BaseModel
+            # @!attribute caller_id
+            #   The call ID of the program item that produced this tool call.
+            #
+            #   @return [String]
+            required :caller_id, String
+
+            # @!attribute type
+            #
+            #   @return [Symbol, :program]
+            required :type, const: :program
+
+            # @!method initialize(caller_id:, type: :program)
+            #   @param caller_id [String] The call ID of the program item that produced this tool call.
+            #
+            #   @param type [Symbol, :program]
+          end
+
+          # @!method self.variants
+          #   @return [Array(OpenAI::Models::Responses::ResponseFunctionShellToolCall::Caller::Direct, OpenAI::Models::Responses::ResponseFunctionShellToolCall::Caller::Program)]
         end
       end
     end

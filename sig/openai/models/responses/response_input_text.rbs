@@ -1,16 +1,45 @@
 module OpenAI
   module Models
     module Responses
-      type response_input_text = { text: String, type: :input_text }
+      type response_input_text =
+        {
+          text: String,
+          type: :input_text,
+          prompt_cache_breakpoint: OpenAI::Responses::ResponseInputText::PromptCacheBreakpoint
+        }
 
       class ResponseInputText < OpenAI::Internal::Type::BaseModel
         attr_accessor text: String
 
         attr_accessor type: :input_text
 
-        def initialize: (text: String, ?type: :input_text) -> void
+        attr_reader prompt_cache_breakpoint: OpenAI::Responses::ResponseInputText::PromptCacheBreakpoint?
 
-        def to_hash: -> { text: String, type: :input_text }
+        def prompt_cache_breakpoint=: (
+          OpenAI::Responses::ResponseInputText::PromptCacheBreakpoint
+        ) -> OpenAI::Responses::ResponseInputText::PromptCacheBreakpoint
+
+        def initialize: (
+          text: String,
+          ?prompt_cache_breakpoint: OpenAI::Responses::ResponseInputText::PromptCacheBreakpoint,
+          ?type: :input_text
+        ) -> void
+
+        def to_hash: -> {
+          text: String,
+          type: :input_text,
+          prompt_cache_breakpoint: OpenAI::Responses::ResponseInputText::PromptCacheBreakpoint
+        }
+
+        type prompt_cache_breakpoint = { mode: :explicit }
+
+        class PromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
+          attr_accessor mode: :explicit
+
+          def initialize: (?mode: :explicit) -> void
+
+          def to_hash: -> { mode: :explicit }
+        end
       end
     end
   end

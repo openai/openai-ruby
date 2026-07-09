@@ -1,0 +1,34 @@
+module OpenAI
+  module Models
+    class BetaResponseInjectEvent = Beta::BetaResponseInjectEvent
+
+    module Beta
+      type beta_response_inject_event =
+        {
+          input: ::Array[OpenAI::Models::Beta::beta_response_input_item],
+          response_id: String,
+          type: :"response.inject"
+        }
+
+      class BetaResponseInjectEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor input: ::Array[OpenAI::Models::Beta::beta_response_input_item]
+
+        attr_accessor response_id: String
+
+        attr_accessor type: :"response.inject"
+
+        def initialize: (
+          input: ::Array[OpenAI::Models::Beta::beta_response_input_item],
+          response_id: String,
+          ?type: :"response.inject"
+        ) -> void
+
+        def to_hash: -> {
+          input: ::Array[OpenAI::Models::Beta::beta_response_input_item],
+          response_id: String,
+          type: :"response.inject"
+        }
+      end
+    end
+  end
+end

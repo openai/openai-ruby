@@ -1,0 +1,325 @@
+module OpenAI
+  module Models
+    module Beta
+      module Responses
+        type input_token_count_params =
+          {
+            conversation: OpenAI::Models::Beta::Responses::InputTokenCountParams::conversation?,
+            input: OpenAI::Models::Beta::Responses::InputTokenCountParams::input?,
+            instructions: String?,
+            model: String?,
+            parallel_tool_calls: bool?,
+            personality: OpenAI::Models::Beta::Responses::InputTokenCountParams::personality,
+            previous_response_id: String?,
+            reasoning: OpenAI::Beta::Responses::InputTokenCountParams::Reasoning?,
+            text: OpenAI::Beta::Responses::InputTokenCountParams::Text?,
+            tool_choice: OpenAI::Models::Beta::Responses::InputTokenCountParams::tool_choice?,
+            tools: ::Array[OpenAI::Models::Beta::beta_tool]?,
+            truncation: OpenAI::Models::Beta::Responses::InputTokenCountParams::truncation,
+            betas: ::Array[OpenAI::Models::Beta::Responses::InputTokenCountParams::beta]
+          }
+          & OpenAI::Internal::Type::request_parameters
+
+        class InputTokenCountParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor conversation: OpenAI::Models::Beta::Responses::InputTokenCountParams::conversation?
+
+          attr_accessor input: OpenAI::Models::Beta::Responses::InputTokenCountParams::input?
+
+          attr_accessor instructions: String?
+
+          attr_accessor model: String?
+
+          attr_accessor parallel_tool_calls: bool?
+
+          attr_reader personality: OpenAI::Models::Beta::Responses::InputTokenCountParams::personality?
+
+          def personality=: (
+            OpenAI::Models::Beta::Responses::InputTokenCountParams::personality
+          ) -> OpenAI::Models::Beta::Responses::InputTokenCountParams::personality
+
+          attr_accessor previous_response_id: String?
+
+          attr_accessor reasoning: OpenAI::Beta::Responses::InputTokenCountParams::Reasoning?
+
+          attr_accessor text: OpenAI::Beta::Responses::InputTokenCountParams::Text?
+
+          attr_accessor tool_choice: OpenAI::Models::Beta::Responses::InputTokenCountParams::tool_choice?
+
+          attr_accessor tools: ::Array[OpenAI::Models::Beta::beta_tool]?
+
+          attr_reader truncation: OpenAI::Models::Beta::Responses::InputTokenCountParams::truncation?
+
+          def truncation=: (
+            OpenAI::Models::Beta::Responses::InputTokenCountParams::truncation
+          ) -> OpenAI::Models::Beta::Responses::InputTokenCountParams::truncation
+
+          attr_reader betas: ::Array[OpenAI::Models::Beta::Responses::InputTokenCountParams::beta]?
+
+          def betas=: (
+            ::Array[OpenAI::Models::Beta::Responses::InputTokenCountParams::beta]
+          ) -> ::Array[OpenAI::Models::Beta::Responses::InputTokenCountParams::beta]
+
+          def initialize: (
+            ?conversation: OpenAI::Models::Beta::Responses::InputTokenCountParams::conversation?,
+            ?input: OpenAI::Models::Beta::Responses::InputTokenCountParams::input?,
+            ?instructions: String?,
+            ?model: String?,
+            ?parallel_tool_calls: bool?,
+            ?personality: OpenAI::Models::Beta::Responses::InputTokenCountParams::personality,
+            ?previous_response_id: String?,
+            ?reasoning: OpenAI::Beta::Responses::InputTokenCountParams::Reasoning?,
+            ?text: OpenAI::Beta::Responses::InputTokenCountParams::Text?,
+            ?tool_choice: OpenAI::Models::Beta::Responses::InputTokenCountParams::tool_choice?,
+            ?tools: ::Array[OpenAI::Models::Beta::beta_tool]?,
+            ?truncation: OpenAI::Models::Beta::Responses::InputTokenCountParams::truncation,
+            ?betas: ::Array[OpenAI::Models::Beta::Responses::InputTokenCountParams::beta],
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            conversation: OpenAI::Models::Beta::Responses::InputTokenCountParams::conversation?,
+            input: OpenAI::Models::Beta::Responses::InputTokenCountParams::input?,
+            instructions: String?,
+            model: String?,
+            parallel_tool_calls: bool?,
+            personality: OpenAI::Models::Beta::Responses::InputTokenCountParams::personality,
+            previous_response_id: String?,
+            reasoning: OpenAI::Beta::Responses::InputTokenCountParams::Reasoning?,
+            text: OpenAI::Beta::Responses::InputTokenCountParams::Text?,
+            tool_choice: OpenAI::Models::Beta::Responses::InputTokenCountParams::tool_choice?,
+            tools: ::Array[OpenAI::Models::Beta::beta_tool]?,
+            truncation: OpenAI::Models::Beta::Responses::InputTokenCountParams::truncation,
+            betas: ::Array[OpenAI::Models::Beta::Responses::InputTokenCountParams::beta],
+            request_options: OpenAI::RequestOptions
+          }
+
+          type conversation =
+            String | OpenAI::Beta::BetaResponseConversationParam
+
+          module Conversation
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::Responses::InputTokenCountParams::conversation]
+          end
+
+          type input =
+            String | ::Array[OpenAI::Models::Beta::beta_response_input_item]
+
+          module Input
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::Responses::InputTokenCountParams::input]
+
+            BetaResponseInputItemArray: OpenAI::Internal::Type::Converter
+          end
+
+          type personality = String | :friendly | :pragmatic
+
+          module Personality
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::Responses::InputTokenCountParams::personality]
+
+            FRIENDLY: :friendly
+            PRAGMATIC: :pragmatic
+          end
+
+          type reasoning =
+            {
+              context: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::context?,
+              effort: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::effort?,
+              generate_summary: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::generate_summary?,
+              mode: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::mode,
+              summary: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::summary?
+            }
+
+          class Reasoning < OpenAI::Internal::Type::BaseModel
+            attr_accessor context: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::context?
+
+            attr_accessor effort: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::effort?
+
+            attr_accessor generate_summary: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::generate_summary?
+
+            attr_reader mode: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::mode?
+
+            def mode=: (
+              OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::mode
+            ) -> OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::mode
+
+            attr_accessor summary: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::summary?
+
+            def initialize: (
+              ?context: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::context?,
+              ?effort: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::effort?,
+              ?generate_summary: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::generate_summary?,
+              ?mode: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::mode,
+              ?summary: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::summary?
+            ) -> void
+
+            def to_hash: -> {
+              context: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::context?,
+              effort: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::effort?,
+              generate_summary: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::generate_summary?,
+              mode: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::mode,
+              summary: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::summary?
+            }
+
+            type context = :auto | :current_turn | :all_turns
+
+            module Context
+              extend OpenAI::Internal::Type::Enum
+
+              AUTO: :auto
+              CURRENT_TURN: :current_turn
+              ALL_TURNS: :all_turns
+
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::context]
+            end
+
+            type effort =
+              :none | :minimal | :low | :medium | :high | :xhigh | :max
+
+            module Effort
+              extend OpenAI::Internal::Type::Enum
+
+              NONE: :none
+              MINIMAL: :minimal
+              LOW: :low
+              MEDIUM: :medium
+              HIGH: :high
+              XHIGH: :xhigh
+              MAX: :max
+
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::effort]
+            end
+
+            type generate_summary = :auto | :concise | :detailed
+
+            module GenerateSummary
+              extend OpenAI::Internal::Type::Enum
+
+              AUTO: :auto
+              CONCISE: :concise
+              DETAILED: :detailed
+
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::generate_summary]
+            end
+
+            type mode = String | :standard | :pro
+
+            module Mode
+              extend OpenAI::Internal::Type::Union
+
+              def self?.variants: -> ::Array[OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::mode]
+
+              STANDARD: :standard
+              PRO: :pro
+            end
+
+            type summary = :auto | :concise | :detailed
+
+            module Summary
+              extend OpenAI::Internal::Type::Enum
+
+              AUTO: :auto
+              CONCISE: :concise
+              DETAILED: :detailed
+
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::summary]
+            end
+          end
+
+          type text =
+            {
+              format_: OpenAI::Models::Beta::beta_response_format_text_config,
+              verbosity: OpenAI::Models::Beta::Responses::InputTokenCountParams::Text::verbosity?
+            }
+
+          class Text < OpenAI::Internal::Type::BaseModel
+            attr_reader format_: OpenAI::Models::Beta::beta_response_format_text_config?
+
+            def format_=: (
+              OpenAI::Models::Beta::beta_response_format_text_config
+            ) -> OpenAI::Models::Beta::beta_response_format_text_config
+
+            attr_accessor verbosity: OpenAI::Models::Beta::Responses::InputTokenCountParams::Text::verbosity?
+
+            def initialize: (
+              ?format_: OpenAI::Models::Beta::beta_response_format_text_config,
+              ?verbosity: OpenAI::Models::Beta::Responses::InputTokenCountParams::Text::verbosity?
+            ) -> void
+
+            def to_hash: -> {
+              format_: OpenAI::Models::Beta::beta_response_format_text_config,
+              verbosity: OpenAI::Models::Beta::Responses::InputTokenCountParams::Text::verbosity?
+            }
+
+            type verbosity = :low | :medium | :high
+
+            module Verbosity
+              extend OpenAI::Internal::Type::Enum
+
+              LOW: :low
+              MEDIUM: :medium
+              HIGH: :high
+
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Responses::InputTokenCountParams::Text::verbosity]
+            end
+          end
+
+          type tool_choice =
+            OpenAI::Models::Beta::beta_tool_choice_options
+            | OpenAI::Beta::BetaToolChoiceAllowed
+            | OpenAI::Beta::BetaToolChoiceTypes
+            | OpenAI::Beta::BetaToolChoiceFunction
+            | OpenAI::Beta::BetaToolChoiceMcp
+            | OpenAI::Beta::BetaToolChoiceCustom
+            | OpenAI::Beta::Responses::InputTokenCountParams::ToolChoice::BetaSpecificProgrammaticToolCallingParam
+            | OpenAI::Beta::BetaToolChoiceApplyPatch
+            | OpenAI::Beta::BetaToolChoiceShell
+
+          module ToolChoice
+            extend OpenAI::Internal::Type::Union
+
+            type beta_specific_programmatic_tool_calling_param =
+              { type: :programmatic_tool_calling }
+
+            class BetaSpecificProgrammaticToolCallingParam < OpenAI::Internal::Type::BaseModel
+              attr_accessor type: :programmatic_tool_calling
+
+              def initialize: (?type: :programmatic_tool_calling) -> void
+
+              def to_hash: -> { type: :programmatic_tool_calling }
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::Responses::InputTokenCountParams::tool_choice]
+          end
+
+          type truncation = :auto | :disabled
+
+          module Truncation
+            extend OpenAI::Internal::Type::Enum
+
+            AUTO: :auto
+            DISABLED: :disabled
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::Responses::InputTokenCountParams::truncation]
+          end
+
+          type beta = :"responses_multi_agent=v1"
+
+          module Beta
+            extend OpenAI::Internal::Type::Enum
+
+            RESPONSES_MULTI_AGENT_V1: :"responses_multi_agent=v1"
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::Responses::InputTokenCountParams::beta]
+          end
+        end
+      end
+    end
+  end
+end

@@ -35,6 +35,19 @@ module OpenAI
         sig { params(id: String).void }
         attr_writer :id
 
+        # The execution context that produced this tool call.
+        sig do
+          returns(
+            T.nilable(
+              T.any(
+                OpenAI::Responses::ResponseCustomToolCall::Caller::Direct,
+                OpenAI::Responses::ResponseCustomToolCall::Caller::Program
+              )
+            )
+          )
+        end
+        attr_accessor :caller_
+
         # The namespace of the custom tool being called.
         sig { returns(T.nilable(String)) }
         attr_reader :namespace
@@ -49,6 +62,13 @@ module OpenAI
             input: String,
             name: String,
             id: String,
+            caller_:
+              T.nilable(
+                T.any(
+                  OpenAI::Responses::ResponseCustomToolCall::Caller::Direct::OrHash,
+                  OpenAI::Responses::ResponseCustomToolCall::Caller::Program::OrHash
+                )
+              ),
             namespace: String,
             type: Symbol
           ).returns(T.attached_class)
@@ -62,6 +82,8 @@ module OpenAI
           name:,
           # The unique ID of the custom tool call in the OpenAI platform.
           id: nil,
+          # The execution context that produced this tool call.
+          caller_: nil,
           # The namespace of the custom tool being called.
           namespace: nil,
           # The type of the custom tool call. Always `custom_tool_call`.
@@ -77,11 +99,93 @@ module OpenAI
               name: String,
               type: Symbol,
               id: String,
+              caller_:
+                T.nilable(
+                  T.any(
+                    OpenAI::Responses::ResponseCustomToolCall::Caller::Direct,
+                    OpenAI::Responses::ResponseCustomToolCall::Caller::Program
+                  )
+                ),
               namespace: String
             }
           )
         end
         def to_hash
+        end
+
+        # The execution context that produced this tool call.
+        module Caller
+          extend OpenAI::Internal::Type::Union
+
+          Variants =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseCustomToolCall::Caller::Direct,
+                OpenAI::Responses::ResponseCustomToolCall::Caller::Program
+              )
+            end
+
+          class Direct < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseCustomToolCall::Caller::Direct,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig { params(type: Symbol).returns(T.attached_class) }
+            def self.new(type: :direct)
+            end
+
+            sig { override.returns({ type: Symbol }) }
+            def to_hash
+            end
+          end
+
+          class Program < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseCustomToolCall::Caller::Program,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The call ID of the program item that produced this tool call.
+            sig { returns(String) }
+            attr_accessor :caller_id
+
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(caller_id: String, type: Symbol).returns(T.attached_class)
+            end
+            def self.new(
+              # The call ID of the program item that produced this tool call.
+              caller_id:,
+              type: :program
+            )
+            end
+
+            sig { override.returns({ caller_id: String, type: Symbol }) }
+            def to_hash
+            end
+          end
+
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Responses::ResponseCustomToolCall::Caller::Variants
+              ]
+            )
+          end
+          def self.variants
+          end
         end
       end
     end

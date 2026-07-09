@@ -241,11 +241,40 @@ module OpenAI
         sig { params(prompt_cache_key: String).void }
         attr_writer :prompt_cache_key
 
+        # Options for prompt caching. Supported for `gpt-5.6` and later models. By
+        # default, OpenAI automatically chooses one implicit cache breakpoint. You can add
+        # explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
+        # request can write up to four breakpoints. For cache matching, OpenAI considers
+        # up to the latest 80 breakpoints in the conversation, without a content-block
+        # lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
+        # `ttl` defaults to `30m`, which is currently the only supported value. See the
+        # [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
+        # for current details.
+        sig do
+          returns(
+            T.nilable(OpenAI::Chat::CompletionCreateParams::PromptCacheOptions)
+          )
+        end
+        attr_reader :prompt_cache_options
+
+        sig do
+          params(
+            prompt_cache_options:
+              OpenAI::Chat::CompletionCreateParams::PromptCacheOptions::OrHash
+          ).void
+        end
+        attr_writer :prompt_cache_options
+
+        # Deprecated. Use `prompt_cache_options.ttl` instead.
+        #
         # The retention policy for the prompt cache. Set to `24h` to enable extended
         # prompt caching, which keeps cached prefixes active for longer, up to a maximum
         # of 24 hours.
         # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
-        # For `gpt-5.5`, `gpt-5.5-pro`, and future models, only `24h` is supported.
+        # This field expresses a maximum retention policy, while
+        # `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
+        # are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
+        # models, only `24h` is supported.
         #
         # For older models that support both `in_memory` and `24h`, the default depends on
         # your organization's data retention policy:
@@ -262,19 +291,12 @@ module OpenAI
         end
         attr_accessor :prompt_cache_retention
 
-        # Constrains effort on reasoning for
-        # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-        # supported values are `none`, `minimal`, `low`, `medium`, `high`, and `xhigh`.
-        # Reducing reasoning effort can result in faster responses and fewer tokens used
-        # on reasoning in a response.
-        #
-        # - `gpt-5.1` defaults to `none`, which does not perform reasoning. The supported
-        #   reasoning values for `gpt-5.1` are `none`, `low`, `medium`, and `high`. Tool
-        #   calls are supported for all reasoning values in gpt-5.1.
-        # - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
-        #   support `none`.
-        # - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
-        # - `xhigh` is supported for all models after `gpt-5.1-codex-max`.
+        # Constrains effort on reasoning for reasoning models. Currently supported values
+        # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
+        # reasoning effort can result in faster responses and fewer tokens used on
+        # reasoning in a response. Not all reasoning models support every value. See the
+        # [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+        # model-specific support.
         sig { returns(T.nilable(OpenAI::ReasoningEffort::OrSymbol)) }
         attr_accessor :reasoning_effort
 
@@ -560,6 +582,8 @@ module OpenAI
               T.nilable(OpenAI::Chat::ChatCompletionPredictionContent::OrHash),
             presence_penalty: T.nilable(Float),
             prompt_cache_key: String,
+            prompt_cache_options:
+              OpenAI::Chat::CompletionCreateParams::PromptCacheOptions::OrHash,
             prompt_cache_retention:
               T.nilable(
                 OpenAI::Chat::CompletionCreateParams::PromptCacheRetention::OrSymbol
@@ -714,11 +738,26 @@ module OpenAI
           # hit rates. Replaces the `user` field.
           # [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
           prompt_cache_key: nil,
+          # Options for prompt caching. Supported for `gpt-5.6` and later models. By
+          # default, OpenAI automatically chooses one implicit cache breakpoint. You can add
+          # explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
+          # request can write up to four breakpoints. For cache matching, OpenAI considers
+          # up to the latest 80 breakpoints in the conversation, without a content-block
+          # lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
+          # `ttl` defaults to `30m`, which is currently the only supported value. See the
+          # [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
+          # for current details.
+          prompt_cache_options: nil,
+          # Deprecated. Use `prompt_cache_options.ttl` instead.
+          #
           # The retention policy for the prompt cache. Set to `24h` to enable extended
           # prompt caching, which keeps cached prefixes active for longer, up to a maximum
           # of 24 hours.
           # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
-          # For `gpt-5.5`, `gpt-5.5-pro`, and future models, only `24h` is supported.
+          # This field expresses a maximum retention policy, while
+          # `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
+          # are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
+          # models, only `24h` is supported.
           #
           # For older models that support both `in_memory` and `24h`, the default depends on
           # your organization's data retention policy:
@@ -727,19 +766,12 @@ module OpenAI
           # - Organizations with ZDR enabled default to `in_memory` when
           #   `prompt_cache_retention` is not specified.
           prompt_cache_retention: nil,
-          # Constrains effort on reasoning for
-          # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-          # supported values are `none`, `minimal`, `low`, `medium`, `high`, and `xhigh`.
-          # Reducing reasoning effort can result in faster responses and fewer tokens used
-          # on reasoning in a response.
-          #
-          # - `gpt-5.1` defaults to `none`, which does not perform reasoning. The supported
-          #   reasoning values for `gpt-5.1` are `none`, `low`, `medium`, and `high`. Tool
-          #   calls are supported for all reasoning values in gpt-5.1.
-          # - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
-          #   support `none`.
-          # - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
-          # - `xhigh` is supported for all models after `gpt-5.1-codex-max`.
+          # Constrains effort on reasoning for reasoning models. Currently supported values
+          # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
+          # reasoning effort can result in faster responses and fewer tokens used on
+          # reasoning in a response. Not all reasoning models support every value. See the
+          # [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+          # model-specific support.
           reasoning_effort: nil,
           # An object specifying the format that the model must output.
           #
@@ -886,6 +918,8 @@ module OpenAI
                 T.nilable(OpenAI::Chat::ChatCompletionPredictionContent),
               presence_penalty: T.nilable(Float),
               prompt_cache_key: String,
+              prompt_cache_options:
+                OpenAI::Chat::CompletionCreateParams::PromptCacheOptions,
               prompt_cache_retention:
                 T.nilable(
                   OpenAI::Chat::CompletionCreateParams::PromptCacheRetention::OrSymbol
@@ -1150,25 +1184,472 @@ module OpenAI
           sig { returns(String) }
           attr_accessor :model
 
+          # The policy to apply to moderated response input and output.
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Chat::CompletionCreateParams::Moderation::Policy
+              )
+            )
+          end
+          attr_reader :policy
+
+          sig do
+            params(
+              policy:
+                T.nilable(
+                  OpenAI::Chat::CompletionCreateParams::Moderation::Policy::OrHash
+                )
+            ).void
+          end
+          attr_writer :policy
+
           # Configuration for running moderation on the request input and generated output.
-          sig { params(model: String).returns(T.attached_class) }
+          sig do
+            params(
+              model: String,
+              policy:
+                T.nilable(
+                  OpenAI::Chat::CompletionCreateParams::Moderation::Policy::OrHash
+                )
+            ).returns(T.attached_class)
+          end
           def self.new(
             # The moderation model to use for moderated completions, e.g.
             # 'omni-moderation-latest'.
-            model:
+            model:,
+            # The policy to apply to moderated response input and output.
+            policy: nil
           )
           end
 
-          sig { override.returns({ model: String }) }
+          sig do
+            override.returns(
+              {
+                model: String,
+                policy:
+                  T.nilable(
+                    OpenAI::Chat::CompletionCreateParams::Moderation::Policy
+                  )
+              }
+            )
+          end
           def to_hash
+          end
+
+          class Policy < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Chat::CompletionCreateParams::Moderation::Policy,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The moderation policy for the response input.
+            sig do
+              returns(
+                T.nilable(
+                  OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Input
+                )
+              )
+            end
+            attr_reader :input
+
+            sig do
+              params(
+                input:
+                  T.nilable(
+                    OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Input::OrHash
+                  )
+              ).void
+            end
+            attr_writer :input
+
+            # The moderation policy for the response output.
+            sig do
+              returns(
+                T.nilable(
+                  OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Output
+                )
+              )
+            end
+            attr_reader :output
+
+            sig do
+              params(
+                output:
+                  T.nilable(
+                    OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Output::OrHash
+                  )
+              ).void
+            end
+            attr_writer :output
+
+            # The policy to apply to moderated response input and output.
+            sig do
+              params(
+                input:
+                  T.nilable(
+                    OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Input::OrHash
+                  ),
+                output:
+                  T.nilable(
+                    OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Output::OrHash
+                  )
+              ).returns(T.attached_class)
+            end
+            def self.new(
+              # The moderation policy for the response input.
+              input: nil,
+              # The moderation policy for the response output.
+              output: nil
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  input:
+                    T.nilable(
+                      OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Input
+                    ),
+                  output:
+                    T.nilable(
+                      OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Output
+                    )
+                }
+              )
+            end
+            def to_hash
+            end
+
+            class Input < OpenAI::Internal::Type::BaseModel
+              OrHash =
+                T.type_alias do
+                  T.any(
+                    OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Input,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+              sig do
+                returns(
+                  OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Input::Mode::OrSymbol
+                )
+              end
+              attr_accessor :mode
+
+              # The moderation policy for the response input.
+              sig do
+                params(
+                  mode:
+                    OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Input::Mode::OrSymbol
+                ).returns(T.attached_class)
+              end
+              def self.new(mode:)
+              end
+
+              sig do
+                override.returns(
+                  {
+                    mode:
+                      OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Input::Mode::OrSymbol
+                  }
+                )
+              end
+              def to_hash
+              end
+
+              module Mode
+                extend OpenAI::Internal::Type::Enum
+
+                TaggedSymbol =
+                  T.type_alias do
+                    T.all(
+                      Symbol,
+                      OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Input::Mode
+                    )
+                  end
+                OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+                SCORE =
+                  T.let(
+                    :score,
+                    OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Input::Mode::TaggedSymbol
+                  )
+                BLOCK =
+                  T.let(
+                    :block,
+                    OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Input::Mode::TaggedSymbol
+                  )
+
+                sig do
+                  override.returns(
+                    T::Array[
+                      OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Input::Mode::TaggedSymbol
+                    ]
+                  )
+                end
+                def self.values
+                end
+              end
+            end
+
+            class Output < OpenAI::Internal::Type::BaseModel
+              OrHash =
+                T.type_alias do
+                  T.any(
+                    OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Output,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+              sig do
+                returns(
+                  OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Output::Mode::OrSymbol
+                )
+              end
+              attr_accessor :mode
+
+              # The moderation policy for the response output.
+              sig do
+                params(
+                  mode:
+                    OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Output::Mode::OrSymbol
+                ).returns(T.attached_class)
+              end
+              def self.new(mode:)
+              end
+
+              sig do
+                override.returns(
+                  {
+                    mode:
+                      OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Output::Mode::OrSymbol
+                  }
+                )
+              end
+              def to_hash
+              end
+
+              module Mode
+                extend OpenAI::Internal::Type::Enum
+
+                TaggedSymbol =
+                  T.type_alias do
+                    T.all(
+                      Symbol,
+                      OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Output::Mode
+                    )
+                  end
+                OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+                SCORE =
+                  T.let(
+                    :score,
+                    OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Output::Mode::TaggedSymbol
+                  )
+                BLOCK =
+                  T.let(
+                    :block,
+                    OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Output::Mode::TaggedSymbol
+                  )
+
+                sig do
+                  override.returns(
+                    T::Array[
+                      OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Output::Mode::TaggedSymbol
+                    ]
+                  )
+                end
+                def self.values
+                end
+              end
+            end
           end
         end
 
+        class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Chat::CompletionCreateParams::PromptCacheOptions,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # Controls whether OpenAI automatically creates an implicit cache breakpoint.
+          # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
+          # and writes up to the latest three explicit breakpoints in the request. With
+          # `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
+          # latest four explicit breakpoints. If there are no explicit breakpoints, the
+          # request does not use prompt caching.
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Chat::CompletionCreateParams::PromptCacheOptions::Mode::OrSymbol
+              )
+            )
+          end
+          attr_reader :mode
+
+          sig do
+            params(
+              mode:
+                OpenAI::Chat::CompletionCreateParams::PromptCacheOptions::Mode::OrSymbol
+            ).void
+          end
+          attr_writer :mode
+
+          # The minimum lifetime applied to every implicit and explicit cache breakpoint
+          # written by the request. Defaults to `30m`, which is currently the only supported
+          # value. The backend may retain cache entries for longer.
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Chat::CompletionCreateParams::PromptCacheOptions::Ttl::OrSymbol
+              )
+            )
+          end
+          attr_reader :ttl
+
+          sig do
+            params(
+              ttl:
+                OpenAI::Chat::CompletionCreateParams::PromptCacheOptions::Ttl::OrSymbol
+            ).void
+          end
+          attr_writer :ttl
+
+          # Options for prompt caching. Supported for `gpt-5.6` and later models. By
+          # default, OpenAI automatically chooses one implicit cache breakpoint. You can add
+          # explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
+          # request can write up to four breakpoints. For cache matching, OpenAI considers
+          # up to the latest 80 breakpoints in the conversation, without a content-block
+          # lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
+          # `ttl` defaults to `30m`, which is currently the only supported value. See the
+          # [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
+          # for current details.
+          sig do
+            params(
+              mode:
+                OpenAI::Chat::CompletionCreateParams::PromptCacheOptions::Mode::OrSymbol,
+              ttl:
+                OpenAI::Chat::CompletionCreateParams::PromptCacheOptions::Ttl::OrSymbol
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # Controls whether OpenAI automatically creates an implicit cache breakpoint.
+            # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
+            # and writes up to the latest three explicit breakpoints in the request. With
+            # `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
+            # latest four explicit breakpoints. If there are no explicit breakpoints, the
+            # request does not use prompt caching.
+            mode: nil,
+            # The minimum lifetime applied to every implicit and explicit cache breakpoint
+            # written by the request. Defaults to `30m`, which is currently the only supported
+            # value. The backend may retain cache entries for longer.
+            ttl: nil
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                mode:
+                  OpenAI::Chat::CompletionCreateParams::PromptCacheOptions::Mode::OrSymbol,
+                ttl:
+                  OpenAI::Chat::CompletionCreateParams::PromptCacheOptions::Ttl::OrSymbol
+              }
+            )
+          end
+          def to_hash
+          end
+
+          # Controls whether OpenAI automatically creates an implicit cache breakpoint.
+          # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
+          # and writes up to the latest three explicit breakpoints in the request. With
+          # `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
+          # latest four explicit breakpoints. If there are no explicit breakpoints, the
+          # request does not use prompt caching.
+          module Mode
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol =
+              T.type_alias do
+                T.all(
+                  Symbol,
+                  OpenAI::Chat::CompletionCreateParams::PromptCacheOptions::Mode
+                )
+              end
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            IMPLICIT =
+              T.let(
+                :implicit,
+                OpenAI::Chat::CompletionCreateParams::PromptCacheOptions::Mode::TaggedSymbol
+              )
+            EXPLICIT =
+              T.let(
+                :explicit,
+                OpenAI::Chat::CompletionCreateParams::PromptCacheOptions::Mode::TaggedSymbol
+              )
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Chat::CompletionCreateParams::PromptCacheOptions::Mode::TaggedSymbol
+                ]
+              )
+            end
+            def self.values
+            end
+          end
+
+          # The minimum lifetime applied to every implicit and explicit cache breakpoint
+          # written by the request. Defaults to `30m`, which is currently the only supported
+          # value. The backend may retain cache entries for longer.
+          module Ttl
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol =
+              T.type_alias do
+                T.all(
+                  Symbol,
+                  OpenAI::Chat::CompletionCreateParams::PromptCacheOptions::Ttl
+                )
+              end
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            TTL_30M =
+              T.let(
+                :"30m",
+                OpenAI::Chat::CompletionCreateParams::PromptCacheOptions::Ttl::TaggedSymbol
+              )
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Chat::CompletionCreateParams::PromptCacheOptions::Ttl::TaggedSymbol
+                ]
+              )
+            end
+            def self.values
+            end
+          end
+        end
+
+        # Deprecated. Use `prompt_cache_options.ttl` instead.
+        #
         # The retention policy for the prompt cache. Set to `24h` to enable extended
         # prompt caching, which keeps cached prefixes active for longer, up to a maximum
         # of 24 hours.
         # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
-        # For `gpt-5.5`, `gpt-5.5-pro`, and future models, only `24h` is supported.
+        # This field expresses a maximum retention policy, while
+        # `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
+        # are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
+        # models, only `24h` is supported.
         #
         # For older models that support both `in_memory` and `24h`, the default depends on
         # your organization's data retention policy:

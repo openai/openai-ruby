@@ -17,7 +17,8 @@ module OpenAI
       | OpenAI::Webhooks::ResponseCancelledWebhookEvent
       | OpenAI::Webhooks::ResponseCompletedWebhookEvent
       | OpenAI::Webhooks::ResponseFailedWebhookEvent
-      | OpenAI::Webhooks::ResponseIncompleteWebhookEvent)
+      | OpenAI::Webhooks::ResponseIncompleteWebhookEvent
+      | OpenAI::Webhooks::SafetyIdentifierBlockedWebhookEvent)
 
       def initialize: (client: OpenAI::Client) -> void
     end

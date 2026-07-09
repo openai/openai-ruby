@@ -18,6 +18,7 @@ module OpenAI
           previous_response_id: String?,
           prompt: OpenAI::Responses::ResponsePrompt?,
           prompt_cache_key: String,
+          prompt_cache_options: OpenAI::Responses::ResponseCreateParams::PromptCacheOptions,
           prompt_cache_retention: OpenAI::Models::Responses::ResponseCreateParams::prompt_cache_retention?,
           reasoning: OpenAI::Reasoning?,
           safety_identifier: String,
@@ -79,6 +80,12 @@ module OpenAI
 
         def prompt_cache_key=: (String) -> String
 
+        attr_reader prompt_cache_options: OpenAI::Responses::ResponseCreateParams::PromptCacheOptions?
+
+        def prompt_cache_options=: (
+          OpenAI::Responses::ResponseCreateParams::PromptCacheOptions
+        ) -> OpenAI::Responses::ResponseCreateParams::PromptCacheOptions
+
         attr_accessor prompt_cache_retention: OpenAI::Models::Responses::ResponseCreateParams::prompt_cache_retention?
 
         attr_accessor reasoning: OpenAI::Reasoning?
@@ -139,6 +146,7 @@ module OpenAI
           ?previous_response_id: String?,
           ?prompt: OpenAI::Responses::ResponsePrompt?,
           ?prompt_cache_key: String,
+          ?prompt_cache_options: OpenAI::Responses::ResponseCreateParams::PromptCacheOptions,
           ?prompt_cache_retention: OpenAI::Models::Responses::ResponseCreateParams::prompt_cache_retention?,
           ?reasoning: OpenAI::Reasoning?,
           ?safety_identifier: String,
@@ -172,6 +180,7 @@ module OpenAI
           previous_response_id: String?,
           prompt: OpenAI::Responses::ResponsePrompt?,
           prompt_cache_key: String,
+          prompt_cache_options: OpenAI::Responses::ResponseCreateParams::PromptCacheOptions,
           prompt_cache_retention: OpenAI::Models::Responses::ResponseCreateParams::prompt_cache_retention?,
           reasoning: OpenAI::Reasoning?,
           safety_identifier: String,
@@ -218,14 +227,155 @@ module OpenAI
           def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseCreateParams::input]
         end
 
-        type moderation = { model: String }
+        type moderation =
+          {
+            model: String,
+            policy: OpenAI::Responses::ResponseCreateParams::Moderation::Policy?
+          }
 
         class Moderation < OpenAI::Internal::Type::BaseModel
           attr_accessor model: String
 
-          def initialize: (model: String) -> void
+          attr_accessor policy: OpenAI::Responses::ResponseCreateParams::Moderation::Policy?
 
-          def to_hash: -> { model: String }
+          def initialize: (
+            model: String,
+            ?policy: OpenAI::Responses::ResponseCreateParams::Moderation::Policy?
+          ) -> void
+
+          def to_hash: -> {
+            model: String,
+            policy: OpenAI::Responses::ResponseCreateParams::Moderation::Policy?
+          }
+
+          type policy =
+            {
+              input: OpenAI::Responses::ResponseCreateParams::Moderation::Policy::Input?,
+              output: OpenAI::Responses::ResponseCreateParams::Moderation::Policy::Output?
+            }
+
+          class Policy < OpenAI::Internal::Type::BaseModel
+            attr_accessor input: OpenAI::Responses::ResponseCreateParams::Moderation::Policy::Input?
+
+            attr_accessor output: OpenAI::Responses::ResponseCreateParams::Moderation::Policy::Output?
+
+            def initialize: (
+              ?input: OpenAI::Responses::ResponseCreateParams::Moderation::Policy::Input?,
+              ?output: OpenAI::Responses::ResponseCreateParams::Moderation::Policy::Output?
+            ) -> void
+
+            def to_hash: -> {
+              input: OpenAI::Responses::ResponseCreateParams::Moderation::Policy::Input?,
+              output: OpenAI::Responses::ResponseCreateParams::Moderation::Policy::Output?
+            }
+
+            type input =
+              {
+                mode: OpenAI::Models::Responses::ResponseCreateParams::Moderation::Policy::Input::mode
+              }
+
+            class Input < OpenAI::Internal::Type::BaseModel
+              attr_accessor mode: OpenAI::Models::Responses::ResponseCreateParams::Moderation::Policy::Input::mode
+
+              def initialize: (
+                mode: OpenAI::Models::Responses::ResponseCreateParams::Moderation::Policy::Input::mode
+              ) -> void
+
+              def to_hash: -> {
+                mode: OpenAI::Models::Responses::ResponseCreateParams::Moderation::Policy::Input::mode
+              }
+
+              type mode = :score | :block
+
+              module Mode
+                extend OpenAI::Internal::Type::Enum
+
+                SCORE: :score
+                BLOCK: :block
+
+                def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseCreateParams::Moderation::Policy::Input::mode]
+              end
+            end
+
+            type output =
+              {
+                mode: OpenAI::Models::Responses::ResponseCreateParams::Moderation::Policy::Output::mode
+              }
+
+            class Output < OpenAI::Internal::Type::BaseModel
+              attr_accessor mode: OpenAI::Models::Responses::ResponseCreateParams::Moderation::Policy::Output::mode
+
+              def initialize: (
+                mode: OpenAI::Models::Responses::ResponseCreateParams::Moderation::Policy::Output::mode
+              ) -> void
+
+              def to_hash: -> {
+                mode: OpenAI::Models::Responses::ResponseCreateParams::Moderation::Policy::Output::mode
+              }
+
+              type mode = :score | :block
+
+              module Mode
+                extend OpenAI::Internal::Type::Enum
+
+                SCORE: :score
+                BLOCK: :block
+
+                def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseCreateParams::Moderation::Policy::Output::mode]
+              end
+            end
+          end
+        end
+
+        type prompt_cache_options =
+          {
+            mode: OpenAI::Models::Responses::ResponseCreateParams::PromptCacheOptions::mode,
+            ttl: OpenAI::Models::Responses::ResponseCreateParams::PromptCacheOptions::ttl
+          }
+
+        class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
+          attr_reader mode: OpenAI::Models::Responses::ResponseCreateParams::PromptCacheOptions::mode?
+
+          def mode=: (
+            OpenAI::Models::Responses::ResponseCreateParams::PromptCacheOptions::mode
+          ) -> OpenAI::Models::Responses::ResponseCreateParams::PromptCacheOptions::mode
+
+          attr_reader ttl: OpenAI::Models::Responses::ResponseCreateParams::PromptCacheOptions::ttl?
+
+          def ttl=: (
+            OpenAI::Models::Responses::ResponseCreateParams::PromptCacheOptions::ttl
+          ) -> OpenAI::Models::Responses::ResponseCreateParams::PromptCacheOptions::ttl
+
+          def initialize: (
+            ?mode: OpenAI::Models::Responses::ResponseCreateParams::PromptCacheOptions::mode,
+            ?ttl: OpenAI::Models::Responses::ResponseCreateParams::PromptCacheOptions::ttl
+          ) -> void
+
+          def to_hash: -> {
+            mode: OpenAI::Models::Responses::ResponseCreateParams::PromptCacheOptions::mode,
+            ttl: OpenAI::Models::Responses::ResponseCreateParams::PromptCacheOptions::ttl
+          }
+
+          type mode = :implicit | :explicit
+
+          module Mode
+            extend OpenAI::Internal::Type::Enum
+
+            IMPLICIT: :implicit
+            EXPLICIT: :explicit
+
+            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseCreateParams::PromptCacheOptions::mode]
+          end
+
+          type ttl = :"30m"
+
+          module Ttl
+            extend OpenAI::Internal::Type::Enum
+
+            TTL_30M: :"30m"
+
+            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseCreateParams::PromptCacheOptions::ttl]
+          end
         end
 
         type prompt_cache_retention = :in_memory | :"24h"
@@ -272,11 +422,23 @@ module OpenAI
           | OpenAI::Responses::ToolChoiceFunction
           | OpenAI::Responses::ToolChoiceMcp
           | OpenAI::Responses::ToolChoiceCustom
+          | OpenAI::Responses::ResponseCreateParams::ToolChoice::SpecificProgrammaticToolCallingParam
           | OpenAI::Responses::ToolChoiceApplyPatch
           | OpenAI::Responses::ToolChoiceShell
 
         module ToolChoice
           extend OpenAI::Internal::Type::Union
+
+          type specific_programmatic_tool_calling_param =
+            { type: :programmatic_tool_calling }
+
+          class SpecificProgrammaticToolCallingParam < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :programmatic_tool_calling
+
+            def initialize: (?type: :programmatic_tool_calling) -> void
+
+            def to_hash: -> { type: :programmatic_tool_calling }
+          end
 
           def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseCreateParams::tool_choice]
         end

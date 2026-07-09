@@ -12,19 +12,12 @@ module OpenAI
       sig { returns(T.nilable(OpenAI::Reasoning::Context::OrSymbol)) }
       attr_accessor :context
 
-      # Constrains effort on reasoning for
-      # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-      # supported values are `none`, `minimal`, `low`, `medium`, `high`, and `xhigh`.
-      # Reducing reasoning effort can result in faster responses and fewer tokens used
-      # on reasoning in a response.
-      #
-      # - `gpt-5.1` defaults to `none`, which does not perform reasoning. The supported
-      #   reasoning values for `gpt-5.1` are `none`, `low`, `medium`, and `high`. Tool
-      #   calls are supported for all reasoning values in gpt-5.1.
-      # - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
-      #   support `none`.
-      # - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
-      # - `xhigh` is supported for all models after `gpt-5.1-codex-max`.
+      # Constrains effort on reasoning for reasoning models. Currently supported values
+      # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
+      # reasoning effort can result in faster responses and fewer tokens used on
+      # reasoning in a response. Not all reasoning models support every value. See the
+      # [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+      # model-specific support.
       sig { returns(T.nilable(OpenAI::ReasoningEffort::OrSymbol)) }
       attr_accessor :effort
 
@@ -35,6 +28,19 @@ module OpenAI
       # `concise`, or `detailed`.
       sig { returns(T.nilable(OpenAI::Reasoning::GenerateSummary::OrSymbol)) }
       attr_accessor :generate_summary
+
+      # Controls the reasoning execution mode for the request.
+      #
+      # When returned on a response, this is the effective execution mode.
+      sig do
+        returns(T.nilable(T.any(String, OpenAI::Reasoning::Mode::OrSymbol)))
+      end
+      attr_reader :mode
+
+      sig do
+        params(mode: T.any(String, OpenAI::Reasoning::Mode::OrSymbol)).void
+      end
+      attr_writer :mode
 
       # A summary of the reasoning performed by the model. This can be useful for
       # debugging and understanding the model's reasoning process. One of `auto`,
@@ -55,6 +61,7 @@ module OpenAI
           effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
           generate_summary:
             T.nilable(OpenAI::Reasoning::GenerateSummary::OrSymbol),
+          mode: T.any(String, OpenAI::Reasoning::Mode::OrSymbol),
           summary: T.nilable(OpenAI::Reasoning::Summary::OrSymbol)
         ).returns(T.attached_class)
       end
@@ -63,19 +70,12 @@ module OpenAI
         # When returned on a response, this is the effective reasoning context mode used
         # for the response.
         context: nil,
-        # Constrains effort on reasoning for
-        # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-        # supported values are `none`, `minimal`, `low`, `medium`, `high`, and `xhigh`.
-        # Reducing reasoning effort can result in faster responses and fewer tokens used
-        # on reasoning in a response.
-        #
-        # - `gpt-5.1` defaults to `none`, which does not perform reasoning. The supported
-        #   reasoning values for `gpt-5.1` are `none`, `low`, `medium`, and `high`. Tool
-        #   calls are supported for all reasoning values in gpt-5.1.
-        # - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
-        #   support `none`.
-        # - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
-        # - `xhigh` is supported for all models after `gpt-5.1-codex-max`.
+        # Constrains effort on reasoning for reasoning models. Currently supported values
+        # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
+        # reasoning effort can result in faster responses and fewer tokens used on
+        # reasoning in a response. Not all reasoning models support every value. See the
+        # [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+        # model-specific support.
         effort: nil,
         # **Deprecated:** use `summary` instead.
         #
@@ -83,6 +83,10 @@ module OpenAI
         # debugging and understanding the model's reasoning process. One of `auto`,
         # `concise`, or `detailed`.
         generate_summary: nil,
+        # Controls the reasoning execution mode for the request.
+        #
+        # When returned on a response, this is the effective execution mode.
+        mode: nil,
         # A summary of the reasoning performed by the model. This can be useful for
         # debugging and understanding the model's reasoning process. One of `auto`,
         # `concise`, or `detailed`.
@@ -100,6 +104,7 @@ module OpenAI
             effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
             generate_summary:
               T.nilable(OpenAI::Reasoning::GenerateSummary::OrSymbol),
+            mode: T.any(String, OpenAI::Reasoning::Mode::OrSymbol),
             summary: T.nilable(OpenAI::Reasoning::Summary::OrSymbol)
           }
         )
@@ -154,6 +159,26 @@ module OpenAI
         end
         def self.values
         end
+      end
+
+      # Controls the reasoning execution mode for the request.
+      #
+      # When returned on a response, this is the effective execution mode.
+      module Mode
+        extend OpenAI::Internal::Type::Union
+
+        Variants =
+          T.type_alias { T.any(String, OpenAI::Reasoning::Mode::TaggedSymbol) }
+
+        sig { override.returns(T::Array[OpenAI::Reasoning::Mode::Variants]) }
+        def self.variants
+        end
+
+        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Reasoning::Mode) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+        STANDARD = T.let(:standard, OpenAI::Reasoning::Mode::TaggedSymbol)
+        PRO = T.let(:pro, OpenAI::Reasoning::Mode::TaggedSymbol)
       end
 
       # A summary of the reasoning performed by the model. This can be useful for

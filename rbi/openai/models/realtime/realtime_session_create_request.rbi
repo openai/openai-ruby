@@ -543,6 +543,16 @@ module OpenAI
               :"gpt-realtime-2",
               OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
             )
+          GPT_REALTIME_2_1 =
+            T.let(
+              :"gpt-realtime-2.1",
+              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
+            )
+          GPT_REALTIME_2_1_MINI =
+            T.let(
+              :"gpt-realtime-2.1-mini",
+              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
+            )
           GPT_REALTIME_2025_08_28 =
             T.let(
               :"gpt-realtime-2025-08-28",

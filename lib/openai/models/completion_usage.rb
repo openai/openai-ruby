@@ -99,16 +99,24 @@ module OpenAI
         #   @return [Integer, nil]
         optional :audio_tokens, Integer
 
+        # @!attribute cache_write_tokens
+        #   The unadjusted number of prompt tokens written to cache.
+        #
+        #   @return [Integer, nil]
+        optional :cache_write_tokens, Integer
+
         # @!attribute cached_tokens
         #   Cached tokens present in the prompt.
         #
         #   @return [Integer, nil]
         optional :cached_tokens, Integer
 
-        # @!method initialize(audio_tokens: nil, cached_tokens: nil)
+        # @!method initialize(audio_tokens: nil, cache_write_tokens: nil, cached_tokens: nil)
         #   Breakdown of tokens used in the prompt.
         #
         #   @param audio_tokens [Integer] Audio input tokens present in the prompt.
+        #
+        #   @param cache_write_tokens [Integer] The unadjusted number of prompt tokens written to cache.
         #
         #   @param cached_tokens [Integer] Cached tokens present in the prompt.
       end

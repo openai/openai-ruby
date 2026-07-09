@@ -46,6 +46,8 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
       in OpenAI::Responses::ResponseToolSearchOutputItem
       in OpenAI::Conversations::ConversationItem::AdditionalTools
       in OpenAI::Responses::ResponseReasoningItem
+      in OpenAI::Conversations::ConversationItem::Program
+      in OpenAI::Conversations::ConversationItem::ProgramOutput
       in OpenAI::Responses::ResponseCompactionItem
       in OpenAI::Responses::ResponseCodeInterpreterToolCall
       in OpenAI::Conversations::ConversationItem::LocalShellCall
@@ -79,6 +81,7 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         call_id: String,
         output: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Output,
         status: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Status,
+        caller_: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Caller | nil,
         created_by: String | nil
       }
       in {
@@ -150,6 +153,14 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         encrypted_content: String | nil,
         status: OpenAI::Responses::ResponseReasoningItem::Status | nil
       }
+      in {type: :program, id: String, call_id: String, code: String, fingerprint: String}
+      in {
+        type: :program_output,
+        id: String,
+        call_id: String,
+        result: String,
+        status: OpenAI::Conversations::ConversationItem::ProgramOutput::Status
+      }
       in {type: :compaction, id: String, encrypted_content: String, created_by: String | nil}
       in {
         type: :code_interpreter_call,
@@ -179,6 +190,7 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         call_id: String,
         environment: OpenAI::Responses::ResponseFunctionShellToolCall::Environment | nil,
         status: OpenAI::Responses::ResponseFunctionShellToolCall::Status,
+        caller_: OpenAI::Responses::ResponseFunctionShellToolCall::Caller | nil,
         created_by: String | nil
       }
       in {
@@ -188,6 +200,7 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         max_output_length: Integer | nil,
         output: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output]),
         status: OpenAI::Responses::ResponseFunctionShellToolCallOutput::Status,
+        caller_: OpenAI::Responses::ResponseFunctionShellToolCallOutput::Caller | nil,
         created_by: String | nil
       }
       in {
@@ -196,6 +209,7 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         call_id: String,
         operation: OpenAI::Responses::ResponseApplyPatchToolCall::Operation,
         status: OpenAI::Responses::ResponseApplyPatchToolCall::Status,
+        caller_: OpenAI::Responses::ResponseApplyPatchToolCall::Caller | nil,
         created_by: String | nil
       }
       in {
@@ -203,6 +217,7 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         id: String,
         call_id: String,
         status: OpenAI::Responses::ResponseApplyPatchToolCallOutput::Status,
+        caller_: OpenAI::Responses::ResponseApplyPatchToolCallOutput::Caller | nil,
         created_by: String | nil,
         output: String | nil
       }
@@ -232,12 +247,21 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         output: String | nil,
         status: OpenAI::Conversations::ConversationItem::McpCall::Status | nil
       }
-      in {type: :custom_tool_call, call_id: String, input: String, name: String, id: String | nil, namespace: String | nil}
+      in {
+        type: :custom_tool_call,
+        call_id: String,
+        input: String,
+        name: String,
+        id: String | nil,
+        caller_: OpenAI::Responses::ResponseCustomToolCall::Caller | nil,
+        namespace: String | nil
+      }
       in {
         type: :custom_tool_call_output,
         call_id: String,
         output: OpenAI::Responses::ResponseCustomToolCallOutput::Output,
-        id: String | nil
+        id: String | nil,
+        caller_: OpenAI::Responses::ResponseCustomToolCallOutput::Caller | nil
       }
       end
     end
@@ -271,6 +295,8 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
       in OpenAI::Responses::ResponseToolSearchOutputItem
       in OpenAI::Conversations::ConversationItem::AdditionalTools
       in OpenAI::Responses::ResponseReasoningItem
+      in OpenAI::Conversations::ConversationItem::Program
+      in OpenAI::Conversations::ConversationItem::ProgramOutput
       in OpenAI::Responses::ResponseCompactionItem
       in OpenAI::Responses::ResponseCodeInterpreterToolCall
       in OpenAI::Conversations::ConversationItem::LocalShellCall
@@ -304,6 +330,7 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         call_id: String,
         output: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Output,
         status: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Status,
+        caller_: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Caller | nil,
         created_by: String | nil
       }
       in {
@@ -375,6 +402,14 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         encrypted_content: String | nil,
         status: OpenAI::Responses::ResponseReasoningItem::Status | nil
       }
+      in {type: :program, id: String, call_id: String, code: String, fingerprint: String}
+      in {
+        type: :program_output,
+        id: String,
+        call_id: String,
+        result: String,
+        status: OpenAI::Conversations::ConversationItem::ProgramOutput::Status
+      }
       in {type: :compaction, id: String, encrypted_content: String, created_by: String | nil}
       in {
         type: :code_interpreter_call,
@@ -404,6 +439,7 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         call_id: String,
         environment: OpenAI::Responses::ResponseFunctionShellToolCall::Environment | nil,
         status: OpenAI::Responses::ResponseFunctionShellToolCall::Status,
+        caller_: OpenAI::Responses::ResponseFunctionShellToolCall::Caller | nil,
         created_by: String | nil
       }
       in {
@@ -413,6 +449,7 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         max_output_length: Integer | nil,
         output: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output]),
         status: OpenAI::Responses::ResponseFunctionShellToolCallOutput::Status,
+        caller_: OpenAI::Responses::ResponseFunctionShellToolCallOutput::Caller | nil,
         created_by: String | nil
       }
       in {
@@ -421,6 +458,7 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         call_id: String,
         operation: OpenAI::Responses::ResponseApplyPatchToolCall::Operation,
         status: OpenAI::Responses::ResponseApplyPatchToolCall::Status,
+        caller_: OpenAI::Responses::ResponseApplyPatchToolCall::Caller | nil,
         created_by: String | nil
       }
       in {
@@ -428,6 +466,7 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         id: String,
         call_id: String,
         status: OpenAI::Responses::ResponseApplyPatchToolCallOutput::Status,
+        caller_: OpenAI::Responses::ResponseApplyPatchToolCallOutput::Caller | nil,
         created_by: String | nil,
         output: String | nil
       }
@@ -457,12 +496,21 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         output: String | nil,
         status: OpenAI::Conversations::ConversationItem::McpCall::Status | nil
       }
-      in {type: :custom_tool_call, call_id: String, input: String, name: String, id: String | nil, namespace: String | nil}
+      in {
+        type: :custom_tool_call,
+        call_id: String,
+        input: String,
+        name: String,
+        id: String | nil,
+        caller_: OpenAI::Responses::ResponseCustomToolCall::Caller | nil,
+        namespace: String | nil
+      }
       in {
         type: :custom_tool_call_output,
         call_id: String,
         output: OpenAI::Responses::ResponseCustomToolCallOutput::Output,
-        id: String | nil
+        id: String | nil,
+        caller_: OpenAI::Responses::ResponseCustomToolCallOutput::Caller | nil
       }
       end
     end

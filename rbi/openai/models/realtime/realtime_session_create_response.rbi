@@ -1349,6 +1349,16 @@ module OpenAI
               :"gpt-realtime-2",
               OpenAI::Realtime::RealtimeSessionCreateResponse::Model::TaggedSymbol
             )
+          GPT_REALTIME_2_1 =
+            T.let(
+              :"gpt-realtime-2.1",
+              OpenAI::Realtime::RealtimeSessionCreateResponse::Model::TaggedSymbol
+            )
+          GPT_REALTIME_2_1_MINI =
+            T.let(
+              :"gpt-realtime-2.1-mini",
+              OpenAI::Realtime::RealtimeSessionCreateResponse::Model::TaggedSymbol
+            )
           GPT_REALTIME_2025_08_28 =
             T.let(
               :"gpt-realtime-2025-08-28",
@@ -1511,6 +1521,18 @@ module OpenAI
             sig { returns(Symbol) }
             attr_accessor :type
 
+            # The tool invocation context(s).
+            sig do
+              returns(
+                T.nilable(
+                  T::Array[
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedCaller::TaggedSymbol
+                  ]
+                )
+              )
+            end
+            attr_accessor :allowed_callers
+
             # List of allowed tool names or a filter object.
             sig do
               returns(
@@ -1613,6 +1635,12 @@ module OpenAI
             sig do
               params(
                 server_label: String,
+                allowed_callers:
+                  T.nilable(
+                    T::Array[
+                      OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedCaller::OrSymbol
+                    ]
+                  ),
                 allowed_tools:
                   T.nilable(
                     T.any(
@@ -1641,6 +1669,8 @@ module OpenAI
             def self.new(
               # A label for this MCP server, used to identify it in tool calls.
               server_label:,
+              # The tool invocation context(s).
+              allowed_callers: nil,
               # List of allowed tool names or a filter object.
               allowed_tools: nil,
               # An OAuth access token that can be used with a remote MCP server, either with a
@@ -1688,6 +1718,12 @@ module OpenAI
                 {
                   server_label: String,
                   type: Symbol,
+                  allowed_callers:
+                    T.nilable(
+                      T::Array[
+                        OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedCaller::TaggedSymbol
+                      ]
+                    ),
                   allowed_tools:
                     T.nilable(
                       OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedTools::Variants
@@ -1708,6 +1744,40 @@ module OpenAI
               )
             end
             def to_hash
+            end
+
+            module AllowedCaller
+              extend OpenAI::Internal::Type::Enum
+
+              TaggedSymbol =
+                T.type_alias do
+                  T.all(
+                    Symbol,
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedCaller
+                  )
+                end
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+              DIRECT =
+                T.let(
+                  :direct,
+                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedCaller::TaggedSymbol
+                )
+              PROGRAMMATIC =
+                T.let(
+                  :programmatic,
+                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedCaller::TaggedSymbol
+                )
+
+              sig do
+                override.returns(
+                  T::Array[
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedCaller::TaggedSymbol
+                  ]
+                )
+              end
+              def self.values
+              end
             end
 
             # List of allowed tool names or a filter object.

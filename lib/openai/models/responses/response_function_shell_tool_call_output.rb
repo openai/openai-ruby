@@ -44,13 +44,22 @@ module OpenAI
         #   @return [Symbol, :shell_call_output]
         required :type, const: :shell_call_output
 
+        # @!attribute caller_
+        #   The execution context that produced this tool call.
+        #
+        #   @return [OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::Caller::Direct, OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::Caller::Program, nil]
+        optional :caller_,
+                 union: -> { OpenAI::Responses::ResponseFunctionShellToolCallOutput::Caller },
+                 api_name: :caller,
+                 nil?: true
+
         # @!attribute created_by
         #   The identifier of the actor that created the item.
         #
         #   @return [String, nil]
         optional :created_by, String
 
-        # @!method initialize(id:, call_id:, max_output_length:, output:, status:, created_by: nil, type: :shell_call_output)
+        # @!method initialize(id:, call_id:, max_output_length:, output:, status:, caller_: nil, created_by: nil, type: :shell_call_output)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput} for more
         #   details.
@@ -66,6 +75,8 @@ module OpenAI
         #   @param output [Array<OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::Output>] An array of shell call output contents
         #
         #   @param status [Symbol, OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::Status] The status of the shell call output. One of `in_progress`, `completed`, or `inco
+        #
+        #   @param caller_ [OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::Caller::Direct, OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::Caller::Program, nil] The execution context that produced this tool call.
         #
         #   @param created_by [String] The identifier of the actor that created the item.
         #
@@ -179,6 +190,50 @@ module OpenAI
 
           # @!method self.values
           #   @return [Array<Symbol>]
+        end
+
+        # The execution context that produced this tool call.
+        #
+        # @see OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput#caller_
+        module Caller
+          extend OpenAI::Internal::Type::Union
+
+          discriminator :type
+
+          variant :direct, -> { OpenAI::Responses::ResponseFunctionShellToolCallOutput::Caller::Direct }
+
+          variant :program, -> { OpenAI::Responses::ResponseFunctionShellToolCallOutput::Caller::Program }
+
+          class Direct < OpenAI::Internal::Type::BaseModel
+            # @!attribute type
+            #
+            #   @return [Symbol, :direct]
+            required :type, const: :direct
+
+            # @!method initialize(type: :direct)
+            #   @param type [Symbol, :direct]
+          end
+
+          class Program < OpenAI::Internal::Type::BaseModel
+            # @!attribute caller_id
+            #   The call ID of the program item that produced this tool call.
+            #
+            #   @return [String]
+            required :caller_id, String
+
+            # @!attribute type
+            #
+            #   @return [Symbol, :program]
+            required :type, const: :program
+
+            # @!method initialize(caller_id:, type: :program)
+            #   @param caller_id [String] The call ID of the program item that produced this tool call.
+            #
+            #   @param type [Symbol, :program]
+          end
+
+          # @!method self.variants
+          #   @return [Array(OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::Caller::Direct, OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::Caller::Program)]
         end
       end
     end

@@ -1,0 +1,138 @@
+module OpenAI
+  module Models
+    class BetaResponseFunctionToolCallOutputItem = Beta::BetaResponseFunctionToolCallOutputItem
+
+    module Beta
+      type beta_response_function_tool_call_output_item =
+        {
+          id: String,
+          call_id: String,
+          output: OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::output,
+          status: OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::status,
+          type: :function_call_output,
+          agent: OpenAI::Beta::BetaResponseFunctionToolCallOutputItem::Agent?,
+          caller_: OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::caller_?,
+          created_by: String
+        }
+
+      class BetaResponseFunctionToolCallOutputItem < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor call_id: String
+
+        attr_accessor output: OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::output
+
+        attr_accessor status: OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::status
+
+        attr_accessor type: :function_call_output
+
+        attr_accessor agent: OpenAI::Beta::BetaResponseFunctionToolCallOutputItem::Agent?
+
+        attr_accessor caller_: OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::caller_?
+
+        attr_reader created_by: String?
+
+        def created_by=: (String) -> String
+
+        def initialize: (
+          id: String,
+          call_id: String,
+          output: OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::output,
+          status: OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::status,
+          ?agent: OpenAI::Beta::BetaResponseFunctionToolCallOutputItem::Agent?,
+          ?caller_: OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::caller_?,
+          ?created_by: String,
+          ?type: :function_call_output
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          call_id: String,
+          output: OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::output,
+          status: OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::status,
+          type: :function_call_output,
+          agent: OpenAI::Beta::BetaResponseFunctionToolCallOutputItem::Agent?,
+          caller_: OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::caller_?,
+          created_by: String
+        }
+
+        type output =
+          String
+          | ::Array[OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::Output::output_content_list]
+
+        module Output
+          extend OpenAI::Internal::Type::Union
+
+          type output_content_list =
+            OpenAI::Beta::BetaResponseInputText
+            | OpenAI::Beta::BetaResponseInputImage
+            | OpenAI::Beta::BetaResponseInputFile
+
+          module OutputContentList
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::Output::output_content_list]
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::output]
+
+          OutputContentListArray: OpenAI::Internal::Type::Converter
+        end
+
+        type status = :in_progress | :completed | :incomplete
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          IN_PROGRESS: :in_progress
+          COMPLETED: :completed
+          INCOMPLETE: :incomplete
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::status]
+        end
+
+        type agent = { agent_name: String }
+
+        class Agent < OpenAI::Internal::Type::BaseModel
+          attr_accessor agent_name: String
+
+          def initialize: (agent_name: String) -> void
+
+          def to_hash: -> { agent_name: String }
+        end
+
+        type caller_ =
+          OpenAI::Beta::BetaResponseFunctionToolCallOutputItem::Caller::Direct
+          | OpenAI::Beta::BetaResponseFunctionToolCallOutputItem::Caller::Program
+
+        module Caller
+          extend OpenAI::Internal::Type::Union
+
+          type direct = { type: :direct }
+
+          class Direct < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :direct
+
+            def initialize: (?type: :direct) -> void
+
+            def to_hash: -> { type: :direct }
+          end
+
+          type program = { caller_id: String, type: :program }
+
+          class Program < OpenAI::Internal::Type::BaseModel
+            attr_accessor caller_id: String
+
+            attr_accessor type: :program
+
+            def initialize: (caller_id: String, ?type: :program) -> void
+
+            def to_hash: -> { caller_id: String, type: :program }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::caller_]
+        end
+      end
+    end
+  end
+end

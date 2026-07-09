@@ -1,0 +1,128 @@
+module OpenAI
+  module Resources
+    class Beta
+      class Responses
+        attr_reader input_items: OpenAI::Resources::Beta::Responses::InputItems
+
+        attr_reader input_tokens: OpenAI::Resources::Beta::Responses::InputTokens
+
+        def create: (
+          ?background: bool?,
+          ?context_management: ::Array[OpenAI::Beta::ResponseCreateParams::ContextManagement]?,
+          ?conversation: OpenAI::Models::Beta::ResponseCreateParams::conversation?,
+          ?include: ::Array[OpenAI::Models::Beta::beta_response_includable]?,
+          ?input: OpenAI::Models::Beta::ResponseCreateParams::input,
+          ?instructions: String?,
+          ?max_output_tokens: Integer?,
+          ?max_tool_calls: Integer?,
+          ?metadata: ::Hash[Symbol, String]?,
+          ?model: OpenAI::Models::Beta::ResponseCreateParams::model,
+          ?moderation: OpenAI::Beta::ResponseCreateParams::Moderation?,
+          ?multi_agent: OpenAI::Beta::ResponseCreateParams::MultiAgent?,
+          ?parallel_tool_calls: bool?,
+          ?previous_response_id: String?,
+          ?prompt: OpenAI::Beta::BetaResponsePrompt?,
+          ?prompt_cache_key: String,
+          ?prompt_cache_options: OpenAI::Beta::ResponseCreateParams::PromptCacheOptions,
+          ?prompt_cache_retention: OpenAI::Models::Beta::ResponseCreateParams::prompt_cache_retention?,
+          ?reasoning: OpenAI::Beta::ResponseCreateParams::Reasoning?,
+          ?safety_identifier: String,
+          ?service_tier: OpenAI::Models::Beta::ResponseCreateParams::service_tier?,
+          ?store: bool?,
+          ?stream_options: OpenAI::Beta::ResponseCreateParams::StreamOptions?,
+          ?temperature: Float?,
+          ?text: OpenAI::Beta::BetaResponseTextConfig,
+          ?tool_choice: OpenAI::Models::Beta::ResponseCreateParams::tool_choice,
+          ?tools: ::Array[OpenAI::Models::Beta::beta_tool],
+          ?top_logprobs: Integer?,
+          ?top_p: Float?,
+          ?truncation: OpenAI::Models::Beta::ResponseCreateParams::truncation?,
+          ?user: String,
+          ?betas: ::Array[OpenAI::Models::Beta::ResponseCreateParams::beta],
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Beta::BetaResponse
+
+        def stream_raw: (
+          ?background: bool?,
+          ?context_management: ::Array[OpenAI::Beta::ResponseCreateParams::ContextManagement]?,
+          ?conversation: OpenAI::Models::Beta::ResponseCreateParams::conversation?,
+          ?include: ::Array[OpenAI::Models::Beta::beta_response_includable]?,
+          ?input: OpenAI::Models::Beta::ResponseCreateParams::input,
+          ?instructions: String?,
+          ?max_output_tokens: Integer?,
+          ?max_tool_calls: Integer?,
+          ?metadata: ::Hash[Symbol, String]?,
+          ?model: OpenAI::Models::Beta::ResponseCreateParams::model,
+          ?moderation: OpenAI::Beta::ResponseCreateParams::Moderation?,
+          ?multi_agent: OpenAI::Beta::ResponseCreateParams::MultiAgent?,
+          ?parallel_tool_calls: bool?,
+          ?previous_response_id: String?,
+          ?prompt: OpenAI::Beta::BetaResponsePrompt?,
+          ?prompt_cache_key: String,
+          ?prompt_cache_options: OpenAI::Beta::ResponseCreateParams::PromptCacheOptions,
+          ?prompt_cache_retention: OpenAI::Models::Beta::ResponseCreateParams::prompt_cache_retention?,
+          ?reasoning: OpenAI::Beta::ResponseCreateParams::Reasoning?,
+          ?safety_identifier: String,
+          ?service_tier: OpenAI::Models::Beta::ResponseCreateParams::service_tier?,
+          ?store: bool?,
+          ?stream_options: OpenAI::Beta::ResponseCreateParams::StreamOptions?,
+          ?temperature: Float?,
+          ?text: OpenAI::Beta::BetaResponseTextConfig,
+          ?tool_choice: OpenAI::Models::Beta::ResponseCreateParams::tool_choice,
+          ?tools: ::Array[OpenAI::Models::Beta::beta_tool],
+          ?top_logprobs: Integer?,
+          ?top_p: Float?,
+          ?truncation: OpenAI::Models::Beta::ResponseCreateParams::truncation?,
+          ?user: String,
+          ?betas: ::Array[OpenAI::Models::Beta::ResponseCreateParams::beta],
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Internal::Stream[OpenAI::Models::Beta::beta_response_stream_event]
+
+        def retrieve: (
+          String response_id,
+          ?include: ::Array[OpenAI::Models::Beta::beta_response_includable],
+          ?include_obfuscation: bool,
+          ?starting_after: Integer,
+          ?betas: ::Array[OpenAI::Models::Beta::ResponseRetrieveParams::beta],
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Beta::BetaResponse
+
+        def retrieve_streaming: (
+          String response_id,
+          ?include: ::Array[OpenAI::Models::Beta::beta_response_includable],
+          ?include_obfuscation: bool,
+          ?starting_after: Integer,
+          ?betas: ::Array[OpenAI::Models::Beta::ResponseRetrieveParams::beta],
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Internal::Stream[OpenAI::Models::Beta::beta_response_stream_event]
+
+        def delete: (
+          String response_id,
+          ?betas: ::Array[OpenAI::Models::Beta::ResponseDeleteParams::beta],
+          ?request_options: OpenAI::request_opts
+        ) -> nil
+
+        def cancel: (
+          String response_id,
+          ?betas: ::Array[OpenAI::Models::Beta::ResponseCancelParams::beta],
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Beta::BetaResponse
+
+        def compact: (
+          model: OpenAI::Models::Beta::ResponseCompactParams::model?,
+          ?input: OpenAI::Models::Beta::ResponseCompactParams::input?,
+          ?instructions: String?,
+          ?previous_response_id: String?,
+          ?prompt_cache_key: String?,
+          ?prompt_cache_options: OpenAI::Beta::ResponseCompactParams::PromptCacheOptions?,
+          ?prompt_cache_retention: OpenAI::Models::Beta::ResponseCompactParams::prompt_cache_retention?,
+          ?service_tier: OpenAI::Models::Beta::ResponseCompactParams::service_tier?,
+          ?betas: ::Array[OpenAI::Models::Beta::ResponseCompactParams::beta],
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Beta::BetaCompactedResponse
+
+        def initialize: (client: OpenAI::Client) -> void
+      end
+    end
+  end
+end

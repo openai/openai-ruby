@@ -49,6 +49,16 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
+        # The execution context that produced this tool call.
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::Responses::ResponseFunctionShellToolCallOutput::Caller::Variants
+            )
+          )
+        end
+        attr_accessor :caller_
+
         # The identifier of the actor that created the item.
         sig { returns(T.nilable(String)) }
         attr_reader :created_by
@@ -68,6 +78,13 @@ module OpenAI
               ],
             status:
               OpenAI::Responses::ResponseFunctionShellToolCallOutput::Status::OrSymbol,
+            caller_:
+              T.nilable(
+                T.any(
+                  OpenAI::Responses::ResponseFunctionShellToolCallOutput::Caller::Direct::OrHash,
+                  OpenAI::Responses::ResponseFunctionShellToolCallOutput::Caller::Program::OrHash
+                )
+              ),
             created_by: String,
             type: Symbol
           ).returns(T.attached_class)
@@ -86,6 +103,8 @@ module OpenAI
           # The status of the shell call output. One of `in_progress`, `completed`, or
           # `incomplete`.
           status:,
+          # The execution context that produced this tool call.
+          caller_: nil,
           # The identifier of the actor that created the item.
           created_by: nil,
           # The type of the shell call output. Always `shell_call_output`.
@@ -106,6 +125,10 @@ module OpenAI
               status:
                 OpenAI::Responses::ResponseFunctionShellToolCallOutput::Status::TaggedSymbol,
               type: Symbol,
+              caller_:
+                T.nilable(
+                  OpenAI::Responses::ResponseFunctionShellToolCallOutput::Caller::Variants
+                ),
               created_by: String
             }
           )
@@ -311,6 +334,81 @@ module OpenAI
             )
           end
           def self.values
+          end
+        end
+
+        # The execution context that produced this tool call.
+        module Caller
+          extend OpenAI::Internal::Type::Union
+
+          Variants =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseFunctionShellToolCallOutput::Caller::Direct,
+                OpenAI::Responses::ResponseFunctionShellToolCallOutput::Caller::Program
+              )
+            end
+
+          class Direct < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseFunctionShellToolCallOutput::Caller::Direct,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig { params(type: Symbol).returns(T.attached_class) }
+            def self.new(type: :direct)
+            end
+
+            sig { override.returns({ type: Symbol }) }
+            def to_hash
+            end
+          end
+
+          class Program < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseFunctionShellToolCallOutput::Caller::Program,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The call ID of the program item that produced this tool call.
+            sig { returns(String) }
+            attr_accessor :caller_id
+
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(caller_id: String, type: Symbol).returns(T.attached_class)
+            end
+            def self.new(
+              # The call ID of the program item that produced this tool call.
+              caller_id:,
+              type: :program
+            )
+            end
+
+            sig { override.returns({ caller_id: String, type: Symbol }) }
+            def to_hash
+            end
+          end
+
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Responses::ResponseFunctionShellToolCallOutput::Caller::Variants
+              ]
+            )
+          end
+          def self.variants
           end
         end
       end

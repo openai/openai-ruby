@@ -50,6 +50,12 @@ module OpenAI
 
         # @see OpenAI::Models::Responses::ResponseUsage#input_tokens_details
         class InputTokensDetails < OpenAI::Internal::Type::BaseModel
+          # @!attribute cache_write_tokens
+          #   The number of input tokens that were written to the cache.
+          #
+          #   @return [Integer]
+          required :cache_write_tokens, Integer
+
           # @!attribute cached_tokens
           #   The number of tokens that were retrieved from the cache.
           #   [More on prompt caching](https://platform.openai.com/docs/guides/prompt-caching).
@@ -57,11 +63,13 @@ module OpenAI
           #   @return [Integer]
           required :cached_tokens, Integer
 
-          # @!method initialize(cached_tokens:)
+          # @!method initialize(cache_write_tokens:, cached_tokens:)
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Responses::ResponseUsage::InputTokensDetails} for more details.
           #
           #   A detailed breakdown of the input tokens.
+          #
+          #   @param cache_write_tokens [Integer] The number of input tokens that were written to the cache.
           #
           #   @param cached_tokens [Integer] The number of tokens that were retrieved from the cache.
         end
