@@ -11,6 +11,8 @@ on:
         default: false
         type: boolean
 
+permissions: {}
+
 jobs:
   release:
     name: release
