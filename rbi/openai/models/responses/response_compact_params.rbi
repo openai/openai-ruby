@@ -58,6 +58,34 @@ module OpenAI
         sig { returns(T.nilable(String)) }
         attr_accessor :prompt_cache_key
 
+        # Options for prompt caching. Supported for `gpt-5.6` and later models. By
+        # default, OpenAI automatically chooses one implicit cache breakpoint. You can add
+        # explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
+        # request can write up to four breakpoints. For cache matching, OpenAI considers
+        # up to the latest 80 breakpoints in the conversation, without a content-block
+        # lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
+        # `ttl` defaults to `30m`, which is currently the only supported value. See the
+        # [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
+        # for current details.
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::Responses::ResponseCompactParams::PromptCacheOptions
+            )
+          )
+        end
+        attr_reader :prompt_cache_options
+
+        sig do
+          params(
+            prompt_cache_options:
+              T.nilable(
+                OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::OrHash
+              )
+          ).void
+        end
+        attr_writer :prompt_cache_options
+
         # How long to retain a prompt cache entry created by this request.
         sig do
           returns(
@@ -94,6 +122,10 @@ module OpenAI
             instructions: T.nilable(String),
             previous_response_id: T.nilable(String),
             prompt_cache_key: T.nilable(String),
+            prompt_cache_options:
+              T.nilable(
+                OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::OrHash
+              ),
             prompt_cache_retention:
               T.nilable(
                 OpenAI::Responses::ResponseCompactParams::PromptCacheRetention::OrSymbol
@@ -126,6 +158,16 @@ module OpenAI
           previous_response_id: nil,
           # A key to use when reading from or writing to the prompt cache.
           prompt_cache_key: nil,
+          # Options for prompt caching. Supported for `gpt-5.6` and later models. By
+          # default, OpenAI automatically chooses one implicit cache breakpoint. You can add
+          # explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
+          # request can write up to four breakpoints. For cache matching, OpenAI considers
+          # up to the latest 80 breakpoints in the conversation, without a content-block
+          # lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
+          # `ttl` defaults to `30m`, which is currently the only supported value. See the
+          # [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
+          # for current details.
+          prompt_cache_options: nil,
           # How long to retain a prompt cache entry created by this request.
           prompt_cache_retention: nil,
           # The service tier to use for this request.
@@ -151,6 +193,10 @@ module OpenAI
               instructions: T.nilable(String),
               previous_response_id: T.nilable(String),
               prompt_cache_key: T.nilable(String),
+              prompt_cache_options:
+                T.nilable(
+                  OpenAI::Responses::ResponseCompactParams::PromptCacheOptions
+                ),
               prompt_cache_retention:
                 T.nilable(
                   OpenAI::Responses::ResponseCompactParams::PromptCacheRetention::OrSymbol
@@ -198,6 +244,21 @@ module OpenAI
             end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
+          GPT_5_6_SOL =
+            T.let(
+              :"gpt-5.6-sol",
+              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+            )
+          GPT_5_6_TERRA =
+            T.let(
+              :"gpt-5.6-terra",
+              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+            )
+          GPT_5_6_LUNA =
+            T.let(
+              :"gpt-5.6-luna",
+              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+            )
           GPT_5_4 =
             T.let(
               :"gpt-5.4",
@@ -689,6 +750,176 @@ module OpenAI
               ],
               OpenAI::Internal::Type::Converter
             )
+        end
+
+        class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseCompactParams::PromptCacheOptions,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # Controls whether OpenAI automatically creates an implicit cache breakpoint.
+          # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
+          # and writes up to the latest three explicit breakpoints in the request. With
+          # `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
+          # latest four explicit breakpoints. If there are no explicit breakpoints, the
+          # request does not use prompt caching.
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Mode::OrSymbol
+              )
+            )
+          end
+          attr_reader :mode
+
+          sig do
+            params(
+              mode:
+                OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Mode::OrSymbol
+            ).void
+          end
+          attr_writer :mode
+
+          # The minimum lifetime applied to every implicit and explicit cache breakpoint
+          # written by the request. Defaults to `30m`, which is currently the only supported
+          # value. The backend may retain cache entries for longer.
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Ttl::OrSymbol
+              )
+            )
+          end
+          attr_reader :ttl
+
+          sig do
+            params(
+              ttl:
+                OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Ttl::OrSymbol
+            ).void
+          end
+          attr_writer :ttl
+
+          # Options for prompt caching. Supported for `gpt-5.6` and later models. By
+          # default, OpenAI automatically chooses one implicit cache breakpoint. You can add
+          # explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
+          # request can write up to four breakpoints. For cache matching, OpenAI considers
+          # up to the latest 80 breakpoints in the conversation, without a content-block
+          # lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
+          # `ttl` defaults to `30m`, which is currently the only supported value. See the
+          # [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
+          # for current details.
+          sig do
+            params(
+              mode:
+                OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Mode::OrSymbol,
+              ttl:
+                OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Ttl::OrSymbol
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # Controls whether OpenAI automatically creates an implicit cache breakpoint.
+            # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
+            # and writes up to the latest three explicit breakpoints in the request. With
+            # `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
+            # latest four explicit breakpoints. If there are no explicit breakpoints, the
+            # request does not use prompt caching.
+            mode: nil,
+            # The minimum lifetime applied to every implicit and explicit cache breakpoint
+            # written by the request. Defaults to `30m`, which is currently the only supported
+            # value. The backend may retain cache entries for longer.
+            ttl: nil
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                mode:
+                  OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Mode::OrSymbol,
+                ttl:
+                  OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Ttl::OrSymbol
+              }
+            )
+          end
+          def to_hash
+          end
+
+          # Controls whether OpenAI automatically creates an implicit cache breakpoint.
+          # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
+          # and writes up to the latest three explicit breakpoints in the request. With
+          # `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
+          # latest four explicit breakpoints. If there are no explicit breakpoints, the
+          # request does not use prompt caching.
+          module Mode
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol =
+              T.type_alias do
+                T.all(
+                  Symbol,
+                  OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Mode
+                )
+              end
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            IMPLICIT =
+              T.let(
+                :implicit,
+                OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Mode::TaggedSymbol
+              )
+            EXPLICIT =
+              T.let(
+                :explicit,
+                OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Mode::TaggedSymbol
+              )
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Mode::TaggedSymbol
+                ]
+              )
+            end
+            def self.values
+            end
+          end
+
+          # The minimum lifetime applied to every implicit and explicit cache breakpoint
+          # written by the request. Defaults to `30m`, which is currently the only supported
+          # value. The backend may retain cache entries for longer.
+          module Ttl
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol =
+              T.type_alias do
+                T.all(
+                  Symbol,
+                  OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Ttl
+                )
+              end
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            TTL_30M =
+              T.let(
+                :"30m",
+                OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Ttl::TaggedSymbol
+              )
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Ttl::TaggedSymbol
+                ]
+              )
+            end
+            def self.values
+            end
+          end
         end
 
         # How long to retain a prompt cache entry created by this request.

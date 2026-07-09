@@ -125,6 +125,7 @@ module OpenAI
                 OpenAI::Responses::ToolChoiceFunction,
                 OpenAI::Responses::ToolChoiceMcp,
                 OpenAI::Responses::ToolChoiceCustom,
+                OpenAI::Responses::InputTokenCountParams::ToolChoice::SpecificProgrammaticToolCallingParam,
                 OpenAI::Responses::ToolChoiceApplyPatch,
                 OpenAI::Responses::ToolChoiceShell
               )
@@ -146,6 +147,7 @@ module OpenAI
                   OpenAI::Responses::ComputerUsePreviewTool,
                   OpenAI::Responses::Tool::Mcp,
                   OpenAI::Responses::Tool::CodeInterpreter,
+                  OpenAI::Responses::Tool::ProgrammaticToolCalling,
                   OpenAI::Responses::Tool::ImageGeneration,
                   OpenAI::Responses::Tool::LocalShell,
                   OpenAI::Responses::FunctionShellTool,
@@ -218,6 +220,7 @@ module OpenAI
                   OpenAI::Responses::ToolChoiceFunction::OrHash,
                   OpenAI::Responses::ToolChoiceMcp::OrHash,
                   OpenAI::Responses::ToolChoiceCustom::OrHash,
+                  OpenAI::Responses::InputTokenCountParams::ToolChoice::SpecificProgrammaticToolCallingParam::OrHash,
                   OpenAI::Responses::ToolChoiceApplyPatch::OrHash,
                   OpenAI::Responses::ToolChoiceShell::OrHash
                 )
@@ -232,6 +235,7 @@ module OpenAI
                     OpenAI::Responses::ComputerUsePreviewTool::OrHash,
                     OpenAI::Responses::Tool::Mcp::OrHash,
                     OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                    OpenAI::Responses::Tool::ProgrammaticToolCalling::OrHash,
                     OpenAI::Responses::Tool::ImageGeneration::OrHash,
                     OpenAI::Responses::Tool::LocalShell::OrHash,
                     OpenAI::Responses::FunctionShellTool::OrHash,
@@ -334,6 +338,7 @@ module OpenAI
                     OpenAI::Responses::ToolChoiceFunction,
                     OpenAI::Responses::ToolChoiceMcp,
                     OpenAI::Responses::ToolChoiceCustom,
+                    OpenAI::Responses::InputTokenCountParams::ToolChoice::SpecificProgrammaticToolCallingParam,
                     OpenAI::Responses::ToolChoiceApplyPatch,
                     OpenAI::Responses::ToolChoiceShell
                   )
@@ -348,6 +353,7 @@ module OpenAI
                       OpenAI::Responses::ComputerUsePreviewTool,
                       OpenAI::Responses::Tool::Mcp,
                       OpenAI::Responses::Tool::CodeInterpreter,
+                      OpenAI::Responses::Tool::ProgrammaticToolCalling,
                       OpenAI::Responses::Tool::ImageGeneration,
                       OpenAI::Responses::Tool::LocalShell,
                       OpenAI::Responses::FunctionShellTool,
@@ -643,10 +649,36 @@ module OpenAI
                 OpenAI::Responses::ToolChoiceFunction,
                 OpenAI::Responses::ToolChoiceMcp,
                 OpenAI::Responses::ToolChoiceCustom,
+                OpenAI::Responses::InputTokenCountParams::ToolChoice::SpecificProgrammaticToolCallingParam,
                 OpenAI::Responses::ToolChoiceApplyPatch,
                 OpenAI::Responses::ToolChoiceShell
               )
             end
+
+          class SpecificProgrammaticToolCallingParam < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::InputTokenCountParams::ToolChoice::SpecificProgrammaticToolCallingParam,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The tool to call. Always `programmatic_tool_calling`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig { params(type: Symbol).returns(T.attached_class) }
+            def self.new(
+              # The tool to call. Always `programmatic_tool_calling`.
+              type: :programmatic_tool_calling
+            )
+            end
+
+            sig { override.returns({ type: Symbol }) }
+            def to_hash
+            end
+          end
 
           sig do
             override.returns(

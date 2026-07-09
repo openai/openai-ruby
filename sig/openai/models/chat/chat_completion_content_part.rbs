@@ -15,7 +15,8 @@ module OpenAI
         type file =
           {
             file: OpenAI::Chat::ChatCompletionContentPart::File::File,
-            type: :file
+            type: :file,
+            prompt_cache_breakpoint: OpenAI::Chat::ChatCompletionContentPart::File::PromptCacheBreakpoint
           }
 
         class File < OpenAI::Internal::Type::BaseModel
@@ -23,14 +24,22 @@ module OpenAI
 
           attr_accessor type: :file
 
+          attr_reader prompt_cache_breakpoint: OpenAI::Chat::ChatCompletionContentPart::File::PromptCacheBreakpoint?
+
+          def prompt_cache_breakpoint=: (
+            OpenAI::Chat::ChatCompletionContentPart::File::PromptCacheBreakpoint
+          ) -> OpenAI::Chat::ChatCompletionContentPart::File::PromptCacheBreakpoint
+
           def initialize: (
             file: OpenAI::Chat::ChatCompletionContentPart::File::File,
+            ?prompt_cache_breakpoint: OpenAI::Chat::ChatCompletionContentPart::File::PromptCacheBreakpoint,
             ?type: :file
           ) -> void
 
           def to_hash: -> {
             file: OpenAI::Chat::ChatCompletionContentPart::File::File,
-            type: :file
+            type: :file,
+            prompt_cache_breakpoint: OpenAI::Chat::ChatCompletionContentPart::File::PromptCacheBreakpoint
           }
 
           type file = { file_data: String, file_id: String, filename: String }
@@ -59,6 +68,16 @@ module OpenAI
               file_id: String,
               filename: String
             }
+          end
+
+          type prompt_cache_breakpoint = { mode: :explicit }
+
+          class PromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
+            attr_accessor mode: :explicit
+
+            def initialize: (?mode: :explicit) -> void
+
+            def to_hash: -> { mode: :explicit }
           end
         end
 

@@ -510,19 +510,12 @@ module OpenAI
                 sig { returns(T.nilable(String)) }
                 attr_accessor :model
 
-                # Constrains effort on reasoning for
-                # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-                # supported values are `none`, `minimal`, `low`, `medium`, `high`, and `xhigh`.
-                # Reducing reasoning effort can result in faster responses and fewer tokens used
-                # on reasoning in a response.
-                #
-                # - `gpt-5.1` defaults to `none`, which does not perform reasoning. The supported
-                #   reasoning values for `gpt-5.1` are `none`, `low`, `medium`, and `high`. Tool
-                #   calls are supported for all reasoning values in gpt-5.1.
-                # - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
-                #   support `none`.
-                # - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
-                # - `xhigh` is supported for all models after `gpt-5.1-codex-max`.
+                # Constrains effort on reasoning for reasoning models. Currently supported values
+                # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
+                # reasoning effort can result in faster responses and fewer tokens used on
+                # reasoning in a response. Not all reasoning models support every value. See the
+                # [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+                # model-specific support.
                 sig do
                   returns(T.nilable(OpenAI::ReasoningEffort::TaggedSymbol))
                 end
@@ -577,19 +570,12 @@ module OpenAI
                   # The name of the model to find responses for. This is a query parameter used to
                   # select responses.
                   model: nil,
-                  # Constrains effort on reasoning for
-                  # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-                  # supported values are `none`, `minimal`, `low`, `medium`, `high`, and `xhigh`.
-                  # Reducing reasoning effort can result in faster responses and fewer tokens used
-                  # on reasoning in a response.
-                  #
-                  # - `gpt-5.1` defaults to `none`, which does not perform reasoning. The supported
-                  #   reasoning values for `gpt-5.1` are `none`, `low`, `medium`, and `high`. Tool
-                  #   calls are supported for all reasoning values in gpt-5.1.
-                  # - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
-                  #   support `none`.
-                  # - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
-                  # - `xhigh` is supported for all models after `gpt-5.1-codex-max`.
+                  # Constrains effort on reasoning for reasoning models. Currently supported values
+                  # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
+                  # reasoning effort can result in faster responses and fewer tokens used on
+                  # reasoning in a response. Not all reasoning models support every value. See the
+                  # [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+                  # model-specific support.
                   reasoning_effort: nil,
                   # Sampling temperature. This is a query parameter used to select responses.
                   temperature: nil,
@@ -1134,19 +1120,12 @@ module OpenAI
               sig { params(max_completion_tokens: Integer).void }
               attr_writer :max_completion_tokens
 
-              # Constrains effort on reasoning for
-              # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-              # supported values are `none`, `minimal`, `low`, `medium`, `high`, and `xhigh`.
-              # Reducing reasoning effort can result in faster responses and fewer tokens used
-              # on reasoning in a response.
-              #
-              # - `gpt-5.1` defaults to `none`, which does not perform reasoning. The supported
-              #   reasoning values for `gpt-5.1` are `none`, `low`, `medium`, and `high`. Tool
-              #   calls are supported for all reasoning values in gpt-5.1.
-              # - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
-              #   support `none`.
-              # - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
-              # - `xhigh` is supported for all models after `gpt-5.1-codex-max`.
+              # Constrains effort on reasoning for reasoning models. Currently supported values
+              # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
+              # reasoning effort can result in faster responses and fewer tokens used on
+              # reasoning in a response. Not all reasoning models support every value. See the
+              # [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+              # model-specific support.
               sig { returns(T.nilable(OpenAI::ReasoningEffort::TaggedSymbol)) }
               attr_accessor :reasoning_effort
 
@@ -1216,6 +1195,7 @@ module OpenAI
                         OpenAI::Responses::ComputerUsePreviewTool::OrHash,
                         OpenAI::Responses::Tool::Mcp::OrHash,
                         OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                        OpenAI::Responses::Tool::ProgrammaticToolCalling::OrHash,
                         OpenAI::Responses::Tool::ImageGeneration::OrHash,
                         OpenAI::Responses::Tool::LocalShell::OrHash,
                         OpenAI::Responses::FunctionShellTool::OrHash,
@@ -1256,6 +1236,7 @@ module OpenAI
                         OpenAI::Responses::ComputerUsePreviewTool::OrHash,
                         OpenAI::Responses::Tool::Mcp::OrHash,
                         OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                        OpenAI::Responses::Tool::ProgrammaticToolCalling::OrHash,
                         OpenAI::Responses::Tool::ImageGeneration::OrHash,
                         OpenAI::Responses::Tool::LocalShell::OrHash,
                         OpenAI::Responses::FunctionShellTool::OrHash,
@@ -1273,19 +1254,12 @@ module OpenAI
               def self.new(
                 # The maximum number of tokens in the generated output.
                 max_completion_tokens: nil,
-                # Constrains effort on reasoning for
-                # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-                # supported values are `none`, `minimal`, `low`, `medium`, `high`, and `xhigh`.
-                # Reducing reasoning effort can result in faster responses and fewer tokens used
-                # on reasoning in a response.
-                #
-                # - `gpt-5.1` defaults to `none`, which does not perform reasoning. The supported
-                #   reasoning values for `gpt-5.1` are `none`, `low`, `medium`, and `high`. Tool
-                #   calls are supported for all reasoning values in gpt-5.1.
-                # - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
-                #   support `none`.
-                # - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
-                # - `xhigh` is supported for all models after `gpt-5.1-codex-max`.
+                # Constrains effort on reasoning for reasoning models. Currently supported values
+                # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
+                # reasoning effort can result in faster responses and fewer tokens used on
+                # reasoning in a response. Not all reasoning models support every value. See the
+                # [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+                # model-specific support.
                 reasoning_effort: nil,
                 # A seed value to initialize the randomness, during sampling.
                 seed: nil,

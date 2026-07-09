@@ -42,6 +42,7 @@ module OpenAI
                   OpenAI::Responses::ToolChoiceFunction::OrHash,
                   OpenAI::Responses::ToolChoiceMcp::OrHash,
                   OpenAI::Responses::ToolChoiceCustom::OrHash,
+                  OpenAI::Responses::InputTokenCountParams::ToolChoice::SpecificProgrammaticToolCallingParam::OrHash,
                   OpenAI::Responses::ToolChoiceApplyPatch::OrHash,
                   OpenAI::Responses::ToolChoiceShell::OrHash
                 )
@@ -56,6 +57,7 @@ module OpenAI
                     OpenAI::Responses::ComputerUsePreviewTool::OrHash,
                     OpenAI::Responses::Tool::Mcp::OrHash,
                     OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                    OpenAI::Responses::Tool::ProgrammaticToolCalling::OrHash,
                     OpenAI::Responses::Tool::ImageGeneration::OrHash,
                     OpenAI::Responses::Tool::LocalShell::OrHash,
                     OpenAI::Responses::FunctionShellTool::OrHash,

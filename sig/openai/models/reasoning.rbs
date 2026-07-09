@@ -5,6 +5,7 @@ module OpenAI
         context: OpenAI::Models::Reasoning::context?,
         effort: OpenAI::Models::reasoning_effort?,
         generate_summary: OpenAI::Models::Reasoning::generate_summary?,
+        mode: OpenAI::Models::Reasoning::mode,
         summary: OpenAI::Models::Reasoning::summary?
       }
 
@@ -15,12 +16,19 @@ module OpenAI
 
       attr_accessor generate_summary: OpenAI::Models::Reasoning::generate_summary?
 
+      attr_reader mode: OpenAI::Models::Reasoning::mode?
+
+      def mode=: (
+        OpenAI::Models::Reasoning::mode
+      ) -> OpenAI::Models::Reasoning::mode
+
       attr_accessor summary: OpenAI::Models::Reasoning::summary?
 
       def initialize: (
         ?context: OpenAI::Models::Reasoning::context?,
         ?effort: OpenAI::Models::reasoning_effort?,
         ?generate_summary: OpenAI::Models::Reasoning::generate_summary?,
+        ?mode: OpenAI::Models::Reasoning::mode,
         ?summary: OpenAI::Models::Reasoning::summary?
       ) -> void
 
@@ -28,6 +36,7 @@ module OpenAI
         context: OpenAI::Models::Reasoning::context?,
         effort: OpenAI::Models::reasoning_effort?,
         generate_summary: OpenAI::Models::Reasoning::generate_summary?,
+        mode: OpenAI::Models::Reasoning::mode,
         summary: OpenAI::Models::Reasoning::summary?
       }
 
@@ -53,6 +62,17 @@ module OpenAI
         DETAILED: :detailed
 
         def self?.values: -> ::Array[OpenAI::Models::Reasoning::generate_summary]
+      end
+
+      type mode = String | :standard | :pro
+
+      module Mode
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::Reasoning::mode]
+
+        STANDARD: :standard
+        PRO: :pro
       end
 
       type summary = :auto | :concise | :detailed

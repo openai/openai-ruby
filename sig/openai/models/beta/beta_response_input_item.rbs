@@ -1,0 +1,2064 @@
+module OpenAI
+  module Models
+    module BetaResponseInputItem = Beta::BetaResponseInputItem
+
+    module Beta
+      type beta_response_input_item =
+        OpenAI::Beta::BetaEasyInputMessage
+        | OpenAI::Beta::BetaResponseInputItem::Message
+        | OpenAI::Beta::BetaResponseOutputMessage
+        | OpenAI::Beta::BetaResponseFileSearchToolCall
+        | OpenAI::Beta::BetaResponseComputerToolCall
+        | OpenAI::Beta::BetaResponseInputItem::ComputerCallOutput
+        | OpenAI::Beta::BetaResponseFunctionWebSearch
+        | OpenAI::Beta::BetaResponseFunctionToolCall
+        | OpenAI::Beta::BetaResponseInputItem::FunctionCallOutput
+        | OpenAI::Beta::BetaResponseInputItem::AgentMessage
+        | OpenAI::Beta::BetaResponseInputItem::MultiAgentCall
+        | OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput
+        | OpenAI::Beta::BetaResponseInputItem::ToolSearchCall
+        | OpenAI::Beta::BetaResponseToolSearchOutputItemParam
+        | OpenAI::Beta::BetaResponseInputItem::AdditionalTools
+        | OpenAI::Beta::BetaResponseReasoningItem
+        | OpenAI::Beta::BetaResponseCompactionItemParam
+        | OpenAI::Beta::BetaResponseInputItem::ImageGenerationCall
+        | OpenAI::Beta::BetaResponseCodeInterpreterToolCall
+        | OpenAI::Beta::BetaResponseInputItem::LocalShellCall
+        | OpenAI::Beta::BetaResponseInputItem::LocalShellCallOutput
+        | OpenAI::Beta::BetaResponseInputItem::ShellCall
+        | OpenAI::Beta::BetaResponseInputItem::ShellCallOutput
+        | OpenAI::Beta::BetaResponseInputItem::ApplyPatchCall
+        | OpenAI::Beta::BetaResponseInputItem::ApplyPatchCallOutput
+        | OpenAI::Beta::BetaResponseInputItem::McpListTools
+        | OpenAI::Beta::BetaResponseInputItem::McpApprovalRequest
+        | OpenAI::Beta::BetaResponseInputItem::McpApprovalResponse
+        | OpenAI::Beta::BetaResponseInputItem::McpCall
+        | OpenAI::Beta::BetaResponseCustomToolCallOutput
+        | OpenAI::Beta::BetaResponseCustomToolCall
+        | OpenAI::Beta::BetaResponseInputItem::CompactionTrigger
+        | OpenAI::Beta::BetaResponseInputItem::ItemReference
+        | OpenAI::Beta::BetaResponseInputItem::Program
+        | OpenAI::Beta::BetaResponseInputItem::ProgramOutput
+
+      module BetaResponseInputItem
+        extend OpenAI::Internal::Type::Union
+
+        type message =
+          {
+            content: OpenAI::Models::Beta::beta_response_input_message_content_list,
+            role: OpenAI::Models::Beta::BetaResponseInputItem::Message::role,
+            agent: OpenAI::Beta::BetaResponseInputItem::Message::Agent?,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::Message::status,
+            type: OpenAI::Models::Beta::BetaResponseInputItem::Message::type_
+          }
+
+        class Message < OpenAI::Internal::Type::BaseModel
+          attr_accessor content: OpenAI::Models::Beta::beta_response_input_message_content_list
+
+          attr_accessor role: OpenAI::Models::Beta::BetaResponseInputItem::Message::role
+
+          attr_accessor agent: OpenAI::Beta::BetaResponseInputItem::Message::Agent?
+
+          attr_reader status: OpenAI::Models::Beta::BetaResponseInputItem::Message::status?
+
+          def status=: (
+            OpenAI::Models::Beta::BetaResponseInputItem::Message::status
+          ) -> OpenAI::Models::Beta::BetaResponseInputItem::Message::status
+
+          attr_reader type: OpenAI::Models::Beta::BetaResponseInputItem::Message::type_?
+
+          def type=: (
+            OpenAI::Models::Beta::BetaResponseInputItem::Message::type_
+          ) -> OpenAI::Models::Beta::BetaResponseInputItem::Message::type_
+
+          def initialize: (
+            content: OpenAI::Models::Beta::beta_response_input_message_content_list,
+            role: OpenAI::Models::Beta::BetaResponseInputItem::Message::role,
+            ?agent: OpenAI::Beta::BetaResponseInputItem::Message::Agent?,
+            ?status: OpenAI::Models::Beta::BetaResponseInputItem::Message::status,
+            ?type: OpenAI::Models::Beta::BetaResponseInputItem::Message::type_
+          ) -> void
+
+          def to_hash: -> {
+            content: OpenAI::Models::Beta::beta_response_input_message_content_list,
+            role: OpenAI::Models::Beta::BetaResponseInputItem::Message::role,
+            agent: OpenAI::Beta::BetaResponseInputItem::Message::Agent?,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::Message::status,
+            type: OpenAI::Models::Beta::BetaResponseInputItem::Message::type_
+          }
+
+          type role = :user | :system | :developer
+
+          module Role
+            extend OpenAI::Internal::Type::Enum
+
+            USER: :user
+            SYSTEM: :system
+            DEVELOPER: :developer
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::Message::role]
+          end
+
+          type agent = { agent_name: String }
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            attr_accessor agent_name: String
+
+            def initialize: (agent_name: String) -> void
+
+            def to_hash: -> { agent_name: String }
+          end
+
+          type status = :in_progress | :completed | :incomplete
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            IN_PROGRESS: :in_progress
+            COMPLETED: :completed
+            INCOMPLETE: :incomplete
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::Message::status]
+          end
+
+          type type_ = :message
+
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            MESSAGE: :message
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::Message::type_]
+          end
+        end
+
+        type computer_call_output =
+          {
+            call_id: String,
+            output: OpenAI::Beta::BetaResponseComputerToolCallOutputScreenshot,
+            type: :computer_call_output,
+            id: String?,
+            acknowledged_safety_checks: ::Array[OpenAI::Beta::BetaResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck]?,
+            agent: OpenAI::Beta::BetaResponseInputItem::ComputerCallOutput::Agent?,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::ComputerCallOutput::status?
+          }
+
+        class ComputerCallOutput < OpenAI::Internal::Type::BaseModel
+          attr_accessor call_id: String
+
+          attr_accessor output: OpenAI::Beta::BetaResponseComputerToolCallOutputScreenshot
+
+          attr_accessor type: :computer_call_output
+
+          attr_accessor id: String?
+
+          attr_accessor acknowledged_safety_checks: ::Array[OpenAI::Beta::BetaResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck]?
+
+          attr_accessor agent: OpenAI::Beta::BetaResponseInputItem::ComputerCallOutput::Agent?
+
+          attr_accessor status: OpenAI::Models::Beta::BetaResponseInputItem::ComputerCallOutput::status?
+
+          def initialize: (
+            call_id: String,
+            output: OpenAI::Beta::BetaResponseComputerToolCallOutputScreenshot,
+            ?id: String?,
+            ?acknowledged_safety_checks: ::Array[OpenAI::Beta::BetaResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck]?,
+            ?agent: OpenAI::Beta::BetaResponseInputItem::ComputerCallOutput::Agent?,
+            ?status: OpenAI::Models::Beta::BetaResponseInputItem::ComputerCallOutput::status?,
+            ?type: :computer_call_output
+          ) -> void
+
+          def to_hash: -> {
+            call_id: String,
+            output: OpenAI::Beta::BetaResponseComputerToolCallOutputScreenshot,
+            type: :computer_call_output,
+            id: String?,
+            acknowledged_safety_checks: ::Array[OpenAI::Beta::BetaResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck]?,
+            agent: OpenAI::Beta::BetaResponseInputItem::ComputerCallOutput::Agent?,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::ComputerCallOutput::status?
+          }
+
+          type acknowledged_safety_check =
+            { id: String, code: String?, message: String? }
+
+          class AcknowledgedSafetyCheck < OpenAI::Internal::Type::BaseModel
+            attr_accessor id: String
+
+            attr_accessor code: String?
+
+            attr_accessor message: String?
+
+            def initialize: (
+              id: String,
+              ?code: String?,
+              ?message: String?
+            ) -> void
+
+            def to_hash: -> { id: String, code: String?, message: String? }
+          end
+
+          type agent = { agent_name: String }
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            attr_accessor agent_name: String
+
+            def initialize: (agent_name: String) -> void
+
+            def to_hash: -> { agent_name: String }
+          end
+
+          type status = :in_progress | :completed | :incomplete
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            IN_PROGRESS: :in_progress
+            COMPLETED: :completed
+            INCOMPLETE: :incomplete
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::ComputerCallOutput::status]
+          end
+        end
+
+        type function_call_output =
+          {
+            call_id: String,
+            output: OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput::output,
+            type: :function_call_output,
+            id: String?,
+            agent: OpenAI::Beta::BetaResponseInputItem::FunctionCallOutput::Agent?,
+            caller_: OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput::caller_?,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput::status?
+          }
+
+        class FunctionCallOutput < OpenAI::Internal::Type::BaseModel
+          attr_accessor call_id: String
+
+          attr_accessor output: OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput::output
+
+          attr_accessor type: :function_call_output
+
+          attr_accessor id: String?
+
+          attr_accessor agent: OpenAI::Beta::BetaResponseInputItem::FunctionCallOutput::Agent?
+
+          attr_accessor caller_: OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput::caller_?
+
+          attr_accessor status: OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput::status?
+
+          def initialize: (
+            call_id: String,
+            output: OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput::output,
+            ?id: String?,
+            ?agent: OpenAI::Beta::BetaResponseInputItem::FunctionCallOutput::Agent?,
+            ?caller_: OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput::caller_?,
+            ?status: OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput::status?,
+            ?type: :function_call_output
+          ) -> void
+
+          def to_hash: -> {
+            call_id: String,
+            output: OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput::output,
+            type: :function_call_output,
+            id: String?,
+            agent: OpenAI::Beta::BetaResponseInputItem::FunctionCallOutput::Agent?,
+            caller_: OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput::caller_?,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput::status?
+          }
+
+          type output =
+            String
+            | OpenAI::Models::Beta::beta_response_function_call_output_item_list
+
+          module Output
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput::output]
+          end
+
+          type agent = { agent_name: String }
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            attr_accessor agent_name: String
+
+            def initialize: (agent_name: String) -> void
+
+            def to_hash: -> { agent_name: String }
+          end
+
+          type caller_ =
+            OpenAI::Beta::BetaResponseInputItem::FunctionCallOutput::Caller::Direct
+            | OpenAI::Beta::BetaResponseInputItem::FunctionCallOutput::Caller::Program
+
+          module Caller
+            extend OpenAI::Internal::Type::Union
+
+            type direct = { type: :direct }
+
+            class Direct < OpenAI::Internal::Type::BaseModel
+              attr_accessor type: :direct
+
+              def initialize: (?type: :direct) -> void
+
+              def to_hash: -> { type: :direct }
+            end
+
+            type program = { caller_id: String, type: :program }
+
+            class Program < OpenAI::Internal::Type::BaseModel
+              attr_accessor caller_id: String
+
+              attr_accessor type: :program
+
+              def initialize: (caller_id: String, ?type: :program) -> void
+
+              def to_hash: -> { caller_id: String, type: :program }
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput::caller_]
+          end
+
+          type status = :in_progress | :completed | :incomplete
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            IN_PROGRESS: :in_progress
+            COMPLETED: :completed
+            INCOMPLETE: :incomplete
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput::status]
+          end
+        end
+
+        type agent_message =
+          {
+            author: String,
+            content: ::Array[OpenAI::Models::Beta::BetaResponseInputItem::AgentMessage::content],
+            recipient: String,
+            type: :agent_message,
+            id: String?,
+            agent: OpenAI::Beta::BetaResponseInputItem::AgentMessage::Agent?
+          }
+
+        class AgentMessage < OpenAI::Internal::Type::BaseModel
+          attr_accessor author: String
+
+          attr_accessor content: ::Array[OpenAI::Models::Beta::BetaResponseInputItem::AgentMessage::content]
+
+          attr_accessor recipient: String
+
+          attr_accessor type: :agent_message
+
+          attr_accessor id: String?
+
+          attr_accessor agent: OpenAI::Beta::BetaResponseInputItem::AgentMessage::Agent?
+
+          def initialize: (
+            author: String,
+            content: ::Array[OpenAI::Models::Beta::BetaResponseInputItem::AgentMessage::content],
+            recipient: String,
+            ?id: String?,
+            ?agent: OpenAI::Beta::BetaResponseInputItem::AgentMessage::Agent?,
+            ?type: :agent_message
+          ) -> void
+
+          def to_hash: -> {
+            author: String,
+            content: ::Array[OpenAI::Models::Beta::BetaResponseInputItem::AgentMessage::content],
+            recipient: String,
+            type: :agent_message,
+            id: String?,
+            agent: OpenAI::Beta::BetaResponseInputItem::AgentMessage::Agent?
+          }
+
+          type content =
+            OpenAI::Beta::BetaResponseInputTextContent
+            | OpenAI::Beta::BetaResponseInputImageContent
+            | OpenAI::Beta::BetaResponseInputItem::AgentMessage::Content::EncryptedContent
+
+          module Content
+            extend OpenAI::Internal::Type::Union
+
+            type encrypted_content =
+              { encrypted_content: String, type: :encrypted_content }
+
+            class EncryptedContent < OpenAI::Internal::Type::BaseModel
+              attr_accessor encrypted_content: String
+
+              attr_accessor type: :encrypted_content
+
+              def initialize: (
+                encrypted_content: String,
+                ?type: :encrypted_content
+              ) -> void
+
+              def to_hash: -> {
+                encrypted_content: String,
+                type: :encrypted_content
+              }
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::AgentMessage::content]
+          end
+
+          type agent = { agent_name: String }
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            attr_accessor agent_name: String
+
+            def initialize: (agent_name: String) -> void
+
+            def to_hash: -> { agent_name: String }
+          end
+        end
+
+        type multi_agent_call =
+          {
+            action: OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCall::action,
+            arguments: String,
+            call_id: String,
+            type: :multi_agent_call,
+            id: String?,
+            agent: OpenAI::Beta::BetaResponseInputItem::MultiAgentCall::Agent?
+          }
+
+        class MultiAgentCall < OpenAI::Internal::Type::BaseModel
+          attr_accessor action: OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCall::action
+
+          attr_accessor arguments: String
+
+          attr_accessor call_id: String
+
+          attr_accessor type: :multi_agent_call
+
+          attr_accessor id: String?
+
+          attr_accessor agent: OpenAI::Beta::BetaResponseInputItem::MultiAgentCall::Agent?
+
+          def initialize: (
+            action: OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCall::action,
+            arguments: String,
+            call_id: String,
+            ?id: String?,
+            ?agent: OpenAI::Beta::BetaResponseInputItem::MultiAgentCall::Agent?,
+            ?type: :multi_agent_call
+          ) -> void
+
+          def to_hash: -> {
+            action: OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCall::action,
+            arguments: String,
+            call_id: String,
+            type: :multi_agent_call,
+            id: String?,
+            agent: OpenAI::Beta::BetaResponseInputItem::MultiAgentCall::Agent?
+          }
+
+          type action =
+            :spawn_agent
+            | :interrupt_agent
+            | :list_agents
+            | :send_message
+            | :followup_task
+            | :wait_agent
+
+          module Action
+            extend OpenAI::Internal::Type::Enum
+
+            SPAWN_AGENT: :spawn_agent
+            INTERRUPT_AGENT: :interrupt_agent
+            LIST_AGENTS: :list_agents
+            SEND_MESSAGE: :send_message
+            FOLLOWUP_TASK: :followup_task
+            WAIT_AGENT: :wait_agent
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCall::action]
+          end
+
+          type agent = { agent_name: String }
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            attr_accessor agent_name: String
+
+            def initialize: (agent_name: String) -> void
+
+            def to_hash: -> { agent_name: String }
+          end
+        end
+
+        type multi_agent_call_output =
+          {
+            action: OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::action,
+            call_id: String,
+            output: ::Array[OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output],
+            type: :multi_agent_call_output,
+            id: String?,
+            agent: OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Agent?
+          }
+
+        class MultiAgentCallOutput < OpenAI::Internal::Type::BaseModel
+          attr_accessor action: OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::action
+
+          attr_accessor call_id: String
+
+          attr_accessor output: ::Array[OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output]
+
+          attr_accessor type: :multi_agent_call_output
+
+          attr_accessor id: String?
+
+          attr_accessor agent: OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Agent?
+
+          def initialize: (
+            action: OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::action,
+            call_id: String,
+            output: ::Array[OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output],
+            ?id: String?,
+            ?agent: OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Agent?,
+            ?type: :multi_agent_call_output
+          ) -> void
+
+          def to_hash: -> {
+            action: OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::action,
+            call_id: String,
+            output: ::Array[OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output],
+            type: :multi_agent_call_output,
+            id: String?,
+            agent: OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Agent?
+          }
+
+          type action =
+            :spawn_agent
+            | :interrupt_agent
+            | :list_agents
+            | :send_message
+            | :followup_task
+            | :wait_agent
+
+          module Action
+            extend OpenAI::Internal::Type::Enum
+
+            SPAWN_AGENT: :spawn_agent
+            INTERRUPT_AGENT: :interrupt_agent
+            LIST_AGENTS: :list_agents
+            SEND_MESSAGE: :send_message
+            FOLLOWUP_TASK: :followup_task
+            WAIT_AGENT: :wait_agent
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::action]
+          end
+
+          type output =
+            {
+              text: String,
+              type: :output_text,
+              annotations: OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::annotations
+            }
+
+          class Output < OpenAI::Internal::Type::BaseModel
+            attr_accessor text: String
+
+            attr_accessor type: :output_text
+
+            attr_reader annotations: OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::annotations?
+
+            def annotations=: (
+              OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::annotations
+            ) -> OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::annotations
+
+            def initialize: (
+              text: String,
+              ?annotations: OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::annotations,
+              ?type: :output_text
+            ) -> void
+
+            def to_hash: -> {
+              text: String,
+              type: :output_text,
+              annotations: OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::annotations
+            }
+
+            type annotations =
+              ::Array[OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember0]
+              | ::Array[OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember1]
+              | ::Array[OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember2]
+
+            module Annotations
+              extend OpenAI::Internal::Type::Union
+
+              type union_member0 =
+                {
+                  file_id: String,
+                  filename: String,
+                  index: Integer,
+                  type: :file_citation
+                }
+
+              class UnionMember0 < OpenAI::Internal::Type::BaseModel
+                attr_accessor file_id: String
+
+                attr_accessor filename: String
+
+                attr_accessor index: Integer
+
+                attr_accessor type: :file_citation
+
+                def initialize: (
+                  file_id: String,
+                  filename: String,
+                  index: Integer,
+                  ?type: :file_citation
+                ) -> void
+
+                def to_hash: -> {
+                  file_id: String,
+                  filename: String,
+                  index: Integer,
+                  type: :file_citation
+                }
+              end
+
+              type union_member1 =
+                {
+                  end_index: Integer,
+                  start_index: Integer,
+                  title: String,
+                  type: :url_citation,
+                  url: String
+                }
+
+              class UnionMember1 < OpenAI::Internal::Type::BaseModel
+                attr_accessor end_index: Integer
+
+                attr_accessor start_index: Integer
+
+                attr_accessor title: String
+
+                attr_accessor type: :url_citation
+
+                attr_accessor url: String
+
+                def initialize: (
+                  end_index: Integer,
+                  start_index: Integer,
+                  title: String,
+                  url: String,
+                  ?type: :url_citation
+                ) -> void
+
+                def to_hash: -> {
+                  end_index: Integer,
+                  start_index: Integer,
+                  title: String,
+                  type: :url_citation,
+                  url: String
+                }
+              end
+
+              type union_member2 =
+                {
+                  container_id: String,
+                  end_index: Integer,
+                  file_id: String,
+                  filename: String,
+                  start_index: Integer,
+                  type: :container_file_citation
+                }
+
+              class UnionMember2 < OpenAI::Internal::Type::BaseModel
+                attr_accessor container_id: String
+
+                attr_accessor end_index: Integer
+
+                attr_accessor file_id: String
+
+                attr_accessor filename: String
+
+                attr_accessor start_index: Integer
+
+                attr_accessor type: :container_file_citation
+
+                def initialize: (
+                  container_id: String,
+                  end_index: Integer,
+                  file_id: String,
+                  filename: String,
+                  start_index: Integer,
+                  ?type: :container_file_citation
+                ) -> void
+
+                def to_hash: -> {
+                  container_id: String,
+                  end_index: Integer,
+                  file_id: String,
+                  filename: String,
+                  start_index: Integer,
+                  type: :container_file_citation
+                }
+              end
+
+              def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::annotations]
+
+              UnionMember0Array: OpenAI::Internal::Type::Converter
+
+              UnionMember1Array: OpenAI::Internal::Type::Converter
+
+              UnionMember2Array: OpenAI::Internal::Type::Converter
+            end
+          end
+
+          type agent = { agent_name: String }
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            attr_accessor agent_name: String
+
+            def initialize: (agent_name: String) -> void
+
+            def to_hash: -> { agent_name: String }
+          end
+        end
+
+        type tool_search_call =
+          {
+            arguments: top,
+            type: :tool_search_call,
+            id: String?,
+            agent: OpenAI::Beta::BetaResponseInputItem::ToolSearchCall::Agent?,
+            call_id: String?,
+            execution: OpenAI::Models::Beta::BetaResponseInputItem::ToolSearchCall::execution,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::ToolSearchCall::status?
+          }
+
+        class ToolSearchCall < OpenAI::Internal::Type::BaseModel
+          attr_accessor arguments: top
+
+          attr_accessor type: :tool_search_call
+
+          attr_accessor id: String?
+
+          attr_accessor agent: OpenAI::Beta::BetaResponseInputItem::ToolSearchCall::Agent?
+
+          attr_accessor call_id: String?
+
+          attr_reader execution: OpenAI::Models::Beta::BetaResponseInputItem::ToolSearchCall::execution?
+
+          def execution=: (
+            OpenAI::Models::Beta::BetaResponseInputItem::ToolSearchCall::execution
+          ) -> OpenAI::Models::Beta::BetaResponseInputItem::ToolSearchCall::execution
+
+          attr_accessor status: OpenAI::Models::Beta::BetaResponseInputItem::ToolSearchCall::status?
+
+          def initialize: (
+            arguments: top,
+            ?id: String?,
+            ?agent: OpenAI::Beta::BetaResponseInputItem::ToolSearchCall::Agent?,
+            ?call_id: String?,
+            ?execution: OpenAI::Models::Beta::BetaResponseInputItem::ToolSearchCall::execution,
+            ?status: OpenAI::Models::Beta::BetaResponseInputItem::ToolSearchCall::status?,
+            ?type: :tool_search_call
+          ) -> void
+
+          def to_hash: -> {
+            arguments: top,
+            type: :tool_search_call,
+            id: String?,
+            agent: OpenAI::Beta::BetaResponseInputItem::ToolSearchCall::Agent?,
+            call_id: String?,
+            execution: OpenAI::Models::Beta::BetaResponseInputItem::ToolSearchCall::execution,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::ToolSearchCall::status?
+          }
+
+          type agent = { agent_name: String }
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            attr_accessor agent_name: String
+
+            def initialize: (agent_name: String) -> void
+
+            def to_hash: -> { agent_name: String }
+          end
+
+          type execution = :server | :client
+
+          module Execution
+            extend OpenAI::Internal::Type::Enum
+
+            SERVER: :server
+            CLIENT: :client
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::ToolSearchCall::execution]
+          end
+
+          type status = :in_progress | :completed | :incomplete
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            IN_PROGRESS: :in_progress
+            COMPLETED: :completed
+            INCOMPLETE: :incomplete
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::ToolSearchCall::status]
+          end
+        end
+
+        type additional_tools =
+          {
+            role: :developer,
+            tools: ::Array[OpenAI::Models::Beta::beta_tool],
+            type: :additional_tools,
+            id: String?,
+            agent: OpenAI::Beta::BetaResponseInputItem::AdditionalTools::Agent?
+          }
+
+        class AdditionalTools < OpenAI::Internal::Type::BaseModel
+          attr_accessor role: :developer
+
+          attr_accessor tools: ::Array[OpenAI::Models::Beta::beta_tool]
+
+          attr_accessor type: :additional_tools
+
+          attr_accessor id: String?
+
+          attr_accessor agent: OpenAI::Beta::BetaResponseInputItem::AdditionalTools::Agent?
+
+          def initialize: (
+            tools: ::Array[OpenAI::Models::Beta::beta_tool],
+            ?id: String?,
+            ?agent: OpenAI::Beta::BetaResponseInputItem::AdditionalTools::Agent?,
+            ?role: :developer,
+            ?type: :additional_tools
+          ) -> void
+
+          def to_hash: -> {
+            role: :developer,
+            tools: ::Array[OpenAI::Models::Beta::beta_tool],
+            type: :additional_tools,
+            id: String?,
+            agent: OpenAI::Beta::BetaResponseInputItem::AdditionalTools::Agent?
+          }
+
+          type agent = { agent_name: String }
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            attr_accessor agent_name: String
+
+            def initialize: (agent_name: String) -> void
+
+            def to_hash: -> { agent_name: String }
+          end
+        end
+
+        type image_generation_call =
+          {
+            id: String,
+            result: String?,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::status,
+            type: :image_generation_call,
+            agent: OpenAI::Beta::BetaResponseInputItem::ImageGenerationCall::Agent?
+          }
+
+        class ImageGenerationCall < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor result: String?
+
+          attr_accessor status: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::status
+
+          attr_accessor type: :image_generation_call
+
+          attr_accessor agent: OpenAI::Beta::BetaResponseInputItem::ImageGenerationCall::Agent?
+
+          def initialize: (
+            id: String,
+            result: String?,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::status,
+            ?agent: OpenAI::Beta::BetaResponseInputItem::ImageGenerationCall::Agent?,
+            ?type: :image_generation_call
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            result: String?,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::status,
+            type: :image_generation_call,
+            agent: OpenAI::Beta::BetaResponseInputItem::ImageGenerationCall::Agent?
+          }
+
+          type status = :in_progress | :completed | :generating | :failed
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            IN_PROGRESS: :in_progress
+            COMPLETED: :completed
+            GENERATING: :generating
+            FAILED: :failed
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::status]
+          end
+
+          type agent = { agent_name: String }
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            attr_accessor agent_name: String
+
+            def initialize: (agent_name: String) -> void
+
+            def to_hash: -> { agent_name: String }
+          end
+        end
+
+        type local_shell_call =
+          {
+            id: String,
+            action: OpenAI::Beta::BetaResponseInputItem::LocalShellCall::Action,
+            call_id: String,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCall::status,
+            type: :local_shell_call,
+            agent: OpenAI::Beta::BetaResponseInputItem::LocalShellCall::Agent?
+          }
+
+        class LocalShellCall < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor action: OpenAI::Beta::BetaResponseInputItem::LocalShellCall::Action
+
+          attr_accessor call_id: String
+
+          attr_accessor status: OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCall::status
+
+          attr_accessor type: :local_shell_call
+
+          attr_accessor agent: OpenAI::Beta::BetaResponseInputItem::LocalShellCall::Agent?
+
+          def initialize: (
+            id: String,
+            action: OpenAI::Beta::BetaResponseInputItem::LocalShellCall::Action,
+            call_id: String,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCall::status,
+            ?agent: OpenAI::Beta::BetaResponseInputItem::LocalShellCall::Agent?,
+            ?type: :local_shell_call
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            action: OpenAI::Beta::BetaResponseInputItem::LocalShellCall::Action,
+            call_id: String,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCall::status,
+            type: :local_shell_call,
+            agent: OpenAI::Beta::BetaResponseInputItem::LocalShellCall::Agent?
+          }
+
+          type action =
+            {
+              command: ::Array[String],
+              env: ::Hash[Symbol, String],
+              type: :exec,
+              timeout_ms: Integer?,
+              user: String?,
+              working_directory: String?
+            }
+
+          class Action < OpenAI::Internal::Type::BaseModel
+            attr_accessor command: ::Array[String]
+
+            attr_accessor env: ::Hash[Symbol, String]
+
+            attr_accessor type: :exec
+
+            attr_accessor timeout_ms: Integer?
+
+            attr_accessor user: String?
+
+            attr_accessor working_directory: String?
+
+            def initialize: (
+              command: ::Array[String],
+              env: ::Hash[Symbol, String],
+              ?timeout_ms: Integer?,
+              ?user: String?,
+              ?working_directory: String?,
+              ?type: :exec
+            ) -> void
+
+            def to_hash: -> {
+              command: ::Array[String],
+              env: ::Hash[Symbol, String],
+              type: :exec,
+              timeout_ms: Integer?,
+              user: String?,
+              working_directory: String?
+            }
+          end
+
+          type status = :in_progress | :completed | :incomplete
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            IN_PROGRESS: :in_progress
+            COMPLETED: :completed
+            INCOMPLETE: :incomplete
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCall::status]
+          end
+
+          type agent = { agent_name: String }
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            attr_accessor agent_name: String
+
+            def initialize: (agent_name: String) -> void
+
+            def to_hash: -> { agent_name: String }
+          end
+        end
+
+        type local_shell_call_output =
+          {
+            id: String,
+            output: String,
+            type: :local_shell_call_output,
+            agent: OpenAI::Beta::BetaResponseInputItem::LocalShellCallOutput::Agent?,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCallOutput::status?
+          }
+
+        class LocalShellCallOutput < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor output: String
+
+          attr_accessor type: :local_shell_call_output
+
+          attr_accessor agent: OpenAI::Beta::BetaResponseInputItem::LocalShellCallOutput::Agent?
+
+          attr_accessor status: OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCallOutput::status?
+
+          def initialize: (
+            id: String,
+            output: String,
+            ?agent: OpenAI::Beta::BetaResponseInputItem::LocalShellCallOutput::Agent?,
+            ?status: OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCallOutput::status?,
+            ?type: :local_shell_call_output
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            output: String,
+            type: :local_shell_call_output,
+            agent: OpenAI::Beta::BetaResponseInputItem::LocalShellCallOutput::Agent?,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCallOutput::status?
+          }
+
+          type agent = { agent_name: String }
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            attr_accessor agent_name: String
+
+            def initialize: (agent_name: String) -> void
+
+            def to_hash: -> { agent_name: String }
+          end
+
+          type status = :in_progress | :completed | :incomplete
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            IN_PROGRESS: :in_progress
+            COMPLETED: :completed
+            INCOMPLETE: :incomplete
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCallOutput::status]
+          end
+        end
+
+        type shell_call =
+          {
+            action: OpenAI::Beta::BetaResponseInputItem::ShellCall::Action,
+            call_id: String,
+            type: :shell_call,
+            id: String?,
+            agent: OpenAI::Beta::BetaResponseInputItem::ShellCall::Agent?,
+            caller_: OpenAI::Models::Beta::BetaResponseInputItem::ShellCall::caller_?,
+            environment: OpenAI::Models::Beta::BetaResponseInputItem::ShellCall::environment?,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::ShellCall::status?
+          }
+
+        class ShellCall < OpenAI::Internal::Type::BaseModel
+          attr_accessor action: OpenAI::Beta::BetaResponseInputItem::ShellCall::Action
+
+          attr_accessor call_id: String
+
+          attr_accessor type: :shell_call
+
+          attr_accessor id: String?
+
+          attr_accessor agent: OpenAI::Beta::BetaResponseInputItem::ShellCall::Agent?
+
+          attr_accessor caller_: OpenAI::Models::Beta::BetaResponseInputItem::ShellCall::caller_?
+
+          attr_accessor environment: OpenAI::Models::Beta::BetaResponseInputItem::ShellCall::environment?
+
+          attr_accessor status: OpenAI::Models::Beta::BetaResponseInputItem::ShellCall::status?
+
+          def initialize: (
+            action: OpenAI::Beta::BetaResponseInputItem::ShellCall::Action,
+            call_id: String,
+            ?id: String?,
+            ?agent: OpenAI::Beta::BetaResponseInputItem::ShellCall::Agent?,
+            ?caller_: OpenAI::Models::Beta::BetaResponseInputItem::ShellCall::caller_?,
+            ?environment: OpenAI::Models::Beta::BetaResponseInputItem::ShellCall::environment?,
+            ?status: OpenAI::Models::Beta::BetaResponseInputItem::ShellCall::status?,
+            ?type: :shell_call
+          ) -> void
+
+          def to_hash: -> {
+            action: OpenAI::Beta::BetaResponseInputItem::ShellCall::Action,
+            call_id: String,
+            type: :shell_call,
+            id: String?,
+            agent: OpenAI::Beta::BetaResponseInputItem::ShellCall::Agent?,
+            caller_: OpenAI::Models::Beta::BetaResponseInputItem::ShellCall::caller_?,
+            environment: OpenAI::Models::Beta::BetaResponseInputItem::ShellCall::environment?,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::ShellCall::status?
+          }
+
+          type action =
+            {
+              commands: ::Array[String],
+              max_output_length: Integer?,
+              timeout_ms: Integer?
+            }
+
+          class Action < OpenAI::Internal::Type::BaseModel
+            attr_accessor commands: ::Array[String]
+
+            attr_accessor max_output_length: Integer?
+
+            attr_accessor timeout_ms: Integer?
+
+            def initialize: (
+              commands: ::Array[String],
+              ?max_output_length: Integer?,
+              ?timeout_ms: Integer?
+            ) -> void
+
+            def to_hash: -> {
+              commands: ::Array[String],
+              max_output_length: Integer?,
+              timeout_ms: Integer?
+            }
+          end
+
+          type agent = { agent_name: String }
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            attr_accessor agent_name: String
+
+            def initialize: (agent_name: String) -> void
+
+            def to_hash: -> { agent_name: String }
+          end
+
+          type caller_ =
+            OpenAI::Beta::BetaResponseInputItem::ShellCall::Caller::Direct
+            | OpenAI::Beta::BetaResponseInputItem::ShellCall::Caller::Program
+
+          module Caller
+            extend OpenAI::Internal::Type::Union
+
+            type direct = { type: :direct }
+
+            class Direct < OpenAI::Internal::Type::BaseModel
+              attr_accessor type: :direct
+
+              def initialize: (?type: :direct) -> void
+
+              def to_hash: -> { type: :direct }
+            end
+
+            type program = { caller_id: String, type: :program }
+
+            class Program < OpenAI::Internal::Type::BaseModel
+              attr_accessor caller_id: String
+
+              attr_accessor type: :program
+
+              def initialize: (caller_id: String, ?type: :program) -> void
+
+              def to_hash: -> { caller_id: String, type: :program }
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::ShellCall::caller_]
+          end
+
+          type environment =
+            OpenAI::Beta::BetaLocalEnvironment
+            | OpenAI::Beta::BetaContainerReference
+
+          module Environment
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::ShellCall::environment]
+          end
+
+          type status = :in_progress | :completed | :incomplete
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            IN_PROGRESS: :in_progress
+            COMPLETED: :completed
+            INCOMPLETE: :incomplete
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::ShellCall::status]
+          end
+        end
+
+        type shell_call_output =
+          {
+            call_id: String,
+            output: ::Array[OpenAI::Beta::BetaResponseFunctionShellCallOutputContent],
+            type: :shell_call_output,
+            id: String?,
+            agent: OpenAI::Beta::BetaResponseInputItem::ShellCallOutput::Agent?,
+            caller_: OpenAI::Models::Beta::BetaResponseInputItem::ShellCallOutput::caller_?,
+            max_output_length: Integer?,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::ShellCallOutput::status?
+          }
+
+        class ShellCallOutput < OpenAI::Internal::Type::BaseModel
+          attr_accessor call_id: String
+
+          attr_accessor output: ::Array[OpenAI::Beta::BetaResponseFunctionShellCallOutputContent]
+
+          attr_accessor type: :shell_call_output
+
+          attr_accessor id: String?
+
+          attr_accessor agent: OpenAI::Beta::BetaResponseInputItem::ShellCallOutput::Agent?
+
+          attr_accessor caller_: OpenAI::Models::Beta::BetaResponseInputItem::ShellCallOutput::caller_?
+
+          attr_accessor max_output_length: Integer?
+
+          attr_accessor status: OpenAI::Models::Beta::BetaResponseInputItem::ShellCallOutput::status?
+
+          def initialize: (
+            call_id: String,
+            output: ::Array[OpenAI::Beta::BetaResponseFunctionShellCallOutputContent],
+            ?id: String?,
+            ?agent: OpenAI::Beta::BetaResponseInputItem::ShellCallOutput::Agent?,
+            ?caller_: OpenAI::Models::Beta::BetaResponseInputItem::ShellCallOutput::caller_?,
+            ?max_output_length: Integer?,
+            ?status: OpenAI::Models::Beta::BetaResponseInputItem::ShellCallOutput::status?,
+            ?type: :shell_call_output
+          ) -> void
+
+          def to_hash: -> {
+            call_id: String,
+            output: ::Array[OpenAI::Beta::BetaResponseFunctionShellCallOutputContent],
+            type: :shell_call_output,
+            id: String?,
+            agent: OpenAI::Beta::BetaResponseInputItem::ShellCallOutput::Agent?,
+            caller_: OpenAI::Models::Beta::BetaResponseInputItem::ShellCallOutput::caller_?,
+            max_output_length: Integer?,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::ShellCallOutput::status?
+          }
+
+          type agent = { agent_name: String }
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            attr_accessor agent_name: String
+
+            def initialize: (agent_name: String) -> void
+
+            def to_hash: -> { agent_name: String }
+          end
+
+          type caller_ =
+            OpenAI::Beta::BetaResponseInputItem::ShellCallOutput::Caller::Direct
+            | OpenAI::Beta::BetaResponseInputItem::ShellCallOutput::Caller::Program
+
+          module Caller
+            extend OpenAI::Internal::Type::Union
+
+            type direct = { type: :direct }
+
+            class Direct < OpenAI::Internal::Type::BaseModel
+              attr_accessor type: :direct
+
+              def initialize: (?type: :direct) -> void
+
+              def to_hash: -> { type: :direct }
+            end
+
+            type program = { caller_id: String, type: :program }
+
+            class Program < OpenAI::Internal::Type::BaseModel
+              attr_accessor caller_id: String
+
+              attr_accessor type: :program
+
+              def initialize: (caller_id: String, ?type: :program) -> void
+
+              def to_hash: -> { caller_id: String, type: :program }
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::ShellCallOutput::caller_]
+          end
+
+          type status = :in_progress | :completed | :incomplete
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            IN_PROGRESS: :in_progress
+            COMPLETED: :completed
+            INCOMPLETE: :incomplete
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::ShellCallOutput::status]
+          end
+        end
+
+        type apply_patch_call =
+          {
+            call_id: String,
+            operation: OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall::operation,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall::status,
+            type: :apply_patch_call,
+            id: String?,
+            agent: OpenAI::Beta::BetaResponseInputItem::ApplyPatchCall::Agent?,
+            caller_: OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall::caller_?
+          }
+
+        class ApplyPatchCall < OpenAI::Internal::Type::BaseModel
+          attr_accessor call_id: String
+
+          attr_accessor operation: OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall::operation
+
+          attr_accessor status: OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall::status
+
+          attr_accessor type: :apply_patch_call
+
+          attr_accessor id: String?
+
+          attr_accessor agent: OpenAI::Beta::BetaResponseInputItem::ApplyPatchCall::Agent?
+
+          attr_accessor caller_: OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall::caller_?
+
+          def initialize: (
+            call_id: String,
+            operation: OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall::operation,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall::status,
+            ?id: String?,
+            ?agent: OpenAI::Beta::BetaResponseInputItem::ApplyPatchCall::Agent?,
+            ?caller_: OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall::caller_?,
+            ?type: :apply_patch_call
+          ) -> void
+
+          def to_hash: -> {
+            call_id: String,
+            operation: OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall::operation,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall::status,
+            type: :apply_patch_call,
+            id: String?,
+            agent: OpenAI::Beta::BetaResponseInputItem::ApplyPatchCall::Agent?,
+            caller_: OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall::caller_?
+          }
+
+          type operation =
+            OpenAI::Beta::BetaResponseInputItem::ApplyPatchCall::Operation::CreateFile
+            | OpenAI::Beta::BetaResponseInputItem::ApplyPatchCall::Operation::DeleteFile
+            | OpenAI::Beta::BetaResponseInputItem::ApplyPatchCall::Operation::UpdateFile
+
+          module Operation
+            extend OpenAI::Internal::Type::Union
+
+            type create_file =
+              { diff: String, path: String, type: :create_file }
+
+            class CreateFile < OpenAI::Internal::Type::BaseModel
+              attr_accessor diff: String
+
+              attr_accessor path: String
+
+              attr_accessor type: :create_file
+
+              def initialize: (
+                diff: String,
+                path: String,
+                ?type: :create_file
+              ) -> void
+
+              def to_hash: -> { diff: String, path: String, type: :create_file }
+            end
+
+            type delete_file = { path: String, type: :delete_file }
+
+            class DeleteFile < OpenAI::Internal::Type::BaseModel
+              attr_accessor path: String
+
+              attr_accessor type: :delete_file
+
+              def initialize: (path: String, ?type: :delete_file) -> void
+
+              def to_hash: -> { path: String, type: :delete_file }
+            end
+
+            type update_file =
+              { diff: String, path: String, type: :update_file }
+
+            class UpdateFile < OpenAI::Internal::Type::BaseModel
+              attr_accessor diff: String
+
+              attr_accessor path: String
+
+              attr_accessor type: :update_file
+
+              def initialize: (
+                diff: String,
+                path: String,
+                ?type: :update_file
+              ) -> void
+
+              def to_hash: -> { diff: String, path: String, type: :update_file }
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall::operation]
+          end
+
+          type status = :in_progress | :completed
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            IN_PROGRESS: :in_progress
+            COMPLETED: :completed
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall::status]
+          end
+
+          type agent = { agent_name: String }
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            attr_accessor agent_name: String
+
+            def initialize: (agent_name: String) -> void
+
+            def to_hash: -> { agent_name: String }
+          end
+
+          type caller_ =
+            OpenAI::Beta::BetaResponseInputItem::ApplyPatchCall::Caller::Direct
+            | OpenAI::Beta::BetaResponseInputItem::ApplyPatchCall::Caller::Program
+
+          module Caller
+            extend OpenAI::Internal::Type::Union
+
+            type direct = { type: :direct }
+
+            class Direct < OpenAI::Internal::Type::BaseModel
+              attr_accessor type: :direct
+
+              def initialize: (?type: :direct) -> void
+
+              def to_hash: -> { type: :direct }
+            end
+
+            type program = { caller_id: String, type: :program }
+
+            class Program < OpenAI::Internal::Type::BaseModel
+              attr_accessor caller_id: String
+
+              attr_accessor type: :program
+
+              def initialize: (caller_id: String, ?type: :program) -> void
+
+              def to_hash: -> { caller_id: String, type: :program }
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall::caller_]
+          end
+        end
+
+        type apply_patch_call_output =
+          {
+            call_id: String,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCallOutput::status,
+            type: :apply_patch_call_output,
+            id: String?,
+            agent: OpenAI::Beta::BetaResponseInputItem::ApplyPatchCallOutput::Agent?,
+            caller_: OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCallOutput::caller_?,
+            output: String?
+          }
+
+        class ApplyPatchCallOutput < OpenAI::Internal::Type::BaseModel
+          attr_accessor call_id: String
+
+          attr_accessor status: OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCallOutput::status
+
+          attr_accessor type: :apply_patch_call_output
+
+          attr_accessor id: String?
+
+          attr_accessor agent: OpenAI::Beta::BetaResponseInputItem::ApplyPatchCallOutput::Agent?
+
+          attr_accessor caller_: OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCallOutput::caller_?
+
+          attr_accessor output: String?
+
+          def initialize: (
+            call_id: String,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCallOutput::status,
+            ?id: String?,
+            ?agent: OpenAI::Beta::BetaResponseInputItem::ApplyPatchCallOutput::Agent?,
+            ?caller_: OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCallOutput::caller_?,
+            ?output: String?,
+            ?type: :apply_patch_call_output
+          ) -> void
+
+          def to_hash: -> {
+            call_id: String,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCallOutput::status,
+            type: :apply_patch_call_output,
+            id: String?,
+            agent: OpenAI::Beta::BetaResponseInputItem::ApplyPatchCallOutput::Agent?,
+            caller_: OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCallOutput::caller_?,
+            output: String?
+          }
+
+          type status = :completed | :failed
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            COMPLETED: :completed
+            FAILED: :failed
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCallOutput::status]
+          end
+
+          type agent = { agent_name: String }
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            attr_accessor agent_name: String
+
+            def initialize: (agent_name: String) -> void
+
+            def to_hash: -> { agent_name: String }
+          end
+
+          type caller_ =
+            OpenAI::Beta::BetaResponseInputItem::ApplyPatchCallOutput::Caller::Direct
+            | OpenAI::Beta::BetaResponseInputItem::ApplyPatchCallOutput::Caller::Program
+
+          module Caller
+            extend OpenAI::Internal::Type::Union
+
+            type direct = { type: :direct }
+
+            class Direct < OpenAI::Internal::Type::BaseModel
+              attr_accessor type: :direct
+
+              def initialize: (?type: :direct) -> void
+
+              def to_hash: -> { type: :direct }
+            end
+
+            type program = { caller_id: String, type: :program }
+
+            class Program < OpenAI::Internal::Type::BaseModel
+              attr_accessor caller_id: String
+
+              attr_accessor type: :program
+
+              def initialize: (caller_id: String, ?type: :program) -> void
+
+              def to_hash: -> { caller_id: String, type: :program }
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCallOutput::caller_]
+          end
+        end
+
+        type mcp_list_tools =
+          {
+            id: String,
+            server_label: String,
+            tools: ::Array[OpenAI::Beta::BetaResponseInputItem::McpListTools::Tool],
+            type: :mcp_list_tools,
+            agent: OpenAI::Beta::BetaResponseInputItem::McpListTools::Agent?,
+            error: String?
+          }
+
+        class McpListTools < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor server_label: String
+
+          attr_accessor tools: ::Array[OpenAI::Beta::BetaResponseInputItem::McpListTools::Tool]
+
+          attr_accessor type: :mcp_list_tools
+
+          attr_accessor agent: OpenAI::Beta::BetaResponseInputItem::McpListTools::Agent?
+
+          attr_accessor error: String?
+
+          def initialize: (
+            id: String,
+            server_label: String,
+            tools: ::Array[OpenAI::Beta::BetaResponseInputItem::McpListTools::Tool],
+            ?agent: OpenAI::Beta::BetaResponseInputItem::McpListTools::Agent?,
+            ?error: String?,
+            ?type: :mcp_list_tools
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            server_label: String,
+            tools: ::Array[OpenAI::Beta::BetaResponseInputItem::McpListTools::Tool],
+            type: :mcp_list_tools,
+            agent: OpenAI::Beta::BetaResponseInputItem::McpListTools::Agent?,
+            error: String?
+          }
+
+          type tool =
+            {
+              input_schema: top,
+              name: String,
+              annotations: top?,
+              description: String?
+            }
+
+          class Tool < OpenAI::Internal::Type::BaseModel
+            attr_accessor input_schema: top
+
+            attr_accessor name: String
+
+            attr_accessor annotations: top?
+
+            attr_accessor description: String?
+
+            def initialize: (
+              input_schema: top,
+              name: String,
+              ?annotations: top?,
+              ?description: String?
+            ) -> void
+
+            def to_hash: -> {
+              input_schema: top,
+              name: String,
+              annotations: top?,
+              description: String?
+            }
+          end
+
+          type agent = { agent_name: String }
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            attr_accessor agent_name: String
+
+            def initialize: (agent_name: String) -> void
+
+            def to_hash: -> { agent_name: String }
+          end
+        end
+
+        type mcp_approval_request =
+          {
+            id: String,
+            arguments: String,
+            name: String,
+            server_label: String,
+            type: :mcp_approval_request,
+            agent: OpenAI::Beta::BetaResponseInputItem::McpApprovalRequest::Agent?
+          }
+
+        class McpApprovalRequest < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor arguments: String
+
+          attr_accessor name: String
+
+          attr_accessor server_label: String
+
+          attr_accessor type: :mcp_approval_request
+
+          attr_accessor agent: OpenAI::Beta::BetaResponseInputItem::McpApprovalRequest::Agent?
+
+          def initialize: (
+            id: String,
+            arguments: String,
+            name: String,
+            server_label: String,
+            ?agent: OpenAI::Beta::BetaResponseInputItem::McpApprovalRequest::Agent?,
+            ?type: :mcp_approval_request
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            arguments: String,
+            name: String,
+            server_label: String,
+            type: :mcp_approval_request,
+            agent: OpenAI::Beta::BetaResponseInputItem::McpApprovalRequest::Agent?
+          }
+
+          type agent = { agent_name: String }
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            attr_accessor agent_name: String
+
+            def initialize: (agent_name: String) -> void
+
+            def to_hash: -> { agent_name: String }
+          end
+        end
+
+        type mcp_approval_response =
+          {
+            approval_request_id: String,
+            approve: bool,
+            type: :mcp_approval_response,
+            id: String?,
+            agent: OpenAI::Beta::BetaResponseInputItem::McpApprovalResponse::Agent?,
+            reason: String?
+          }
+
+        class McpApprovalResponse < OpenAI::Internal::Type::BaseModel
+          attr_accessor approval_request_id: String
+
+          attr_accessor approve: bool
+
+          attr_accessor type: :mcp_approval_response
+
+          attr_accessor id: String?
+
+          attr_accessor agent: OpenAI::Beta::BetaResponseInputItem::McpApprovalResponse::Agent?
+
+          attr_accessor reason: String?
+
+          def initialize: (
+            approval_request_id: String,
+            approve: bool,
+            ?id: String?,
+            ?agent: OpenAI::Beta::BetaResponseInputItem::McpApprovalResponse::Agent?,
+            ?reason: String?,
+            ?type: :mcp_approval_response
+          ) -> void
+
+          def to_hash: -> {
+            approval_request_id: String,
+            approve: bool,
+            type: :mcp_approval_response,
+            id: String?,
+            agent: OpenAI::Beta::BetaResponseInputItem::McpApprovalResponse::Agent?,
+            reason: String?
+          }
+
+          type agent = { agent_name: String }
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            attr_accessor agent_name: String
+
+            def initialize: (agent_name: String) -> void
+
+            def to_hash: -> { agent_name: String }
+          end
+        end
+
+        type mcp_call =
+          {
+            id: String,
+            arguments: String,
+            name: String,
+            server_label: String,
+            type: :mcp_call,
+            agent: OpenAI::Beta::BetaResponseInputItem::McpCall::Agent?,
+            approval_request_id: String?,
+            error: String?,
+            output: String?,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::McpCall::status
+          }
+
+        class McpCall < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor arguments: String
+
+          attr_accessor name: String
+
+          attr_accessor server_label: String
+
+          attr_accessor type: :mcp_call
+
+          attr_accessor agent: OpenAI::Beta::BetaResponseInputItem::McpCall::Agent?
+
+          attr_accessor approval_request_id: String?
+
+          attr_accessor error: String?
+
+          attr_accessor output: String?
+
+          attr_reader status: OpenAI::Models::Beta::BetaResponseInputItem::McpCall::status?
+
+          def status=: (
+            OpenAI::Models::Beta::BetaResponseInputItem::McpCall::status
+          ) -> OpenAI::Models::Beta::BetaResponseInputItem::McpCall::status
+
+          def initialize: (
+            id: String,
+            arguments: String,
+            name: String,
+            server_label: String,
+            ?agent: OpenAI::Beta::BetaResponseInputItem::McpCall::Agent?,
+            ?approval_request_id: String?,
+            ?error: String?,
+            ?output: String?,
+            ?status: OpenAI::Models::Beta::BetaResponseInputItem::McpCall::status,
+            ?type: :mcp_call
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            arguments: String,
+            name: String,
+            server_label: String,
+            type: :mcp_call,
+            agent: OpenAI::Beta::BetaResponseInputItem::McpCall::Agent?,
+            approval_request_id: String?,
+            error: String?,
+            output: String?,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::McpCall::status
+          }
+
+          type agent = { agent_name: String }
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            attr_accessor agent_name: String
+
+            def initialize: (agent_name: String) -> void
+
+            def to_hash: -> { agent_name: String }
+          end
+
+          type status =
+            :in_progress | :completed | :incomplete | :calling | :failed
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            IN_PROGRESS: :in_progress
+            COMPLETED: :completed
+            INCOMPLETE: :incomplete
+            CALLING: :calling
+            FAILED: :failed
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::McpCall::status]
+          end
+        end
+
+        type compaction_trigger =
+          {
+            type: :compaction_trigger,
+            agent: OpenAI::Beta::BetaResponseInputItem::CompactionTrigger::Agent?
+          }
+
+        class CompactionTrigger < OpenAI::Internal::Type::BaseModel
+          attr_accessor type: :compaction_trigger
+
+          attr_accessor agent: OpenAI::Beta::BetaResponseInputItem::CompactionTrigger::Agent?
+
+          def initialize: (
+            ?agent: OpenAI::Beta::BetaResponseInputItem::CompactionTrigger::Agent?,
+            ?type: :compaction_trigger
+          ) -> void
+
+          def to_hash: -> {
+            type: :compaction_trigger,
+            agent: OpenAI::Beta::BetaResponseInputItem::CompactionTrigger::Agent?
+          }
+
+          type agent = { agent_name: String }
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            attr_accessor agent_name: String
+
+            def initialize: (agent_name: String) -> void
+
+            def to_hash: -> { agent_name: String }
+          end
+        end
+
+        type item_reference =
+          {
+            id: String,
+            agent: OpenAI::Beta::BetaResponseInputItem::ItemReference::Agent?,
+            type: OpenAI::Models::Beta::BetaResponseInputItem::ItemReference::type_?
+          }
+
+        class ItemReference < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor agent: OpenAI::Beta::BetaResponseInputItem::ItemReference::Agent?
+
+          attr_accessor type: OpenAI::Models::Beta::BetaResponseInputItem::ItemReference::type_?
+
+          def initialize: (
+            id: String,
+            ?agent: OpenAI::Beta::BetaResponseInputItem::ItemReference::Agent?,
+            ?type: OpenAI::Models::Beta::BetaResponseInputItem::ItemReference::type_?
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            agent: OpenAI::Beta::BetaResponseInputItem::ItemReference::Agent?,
+            type: OpenAI::Models::Beta::BetaResponseInputItem::ItemReference::type_?
+          }
+
+          type agent = { agent_name: String }
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            attr_accessor agent_name: String
+
+            def initialize: (agent_name: String) -> void
+
+            def to_hash: -> { agent_name: String }
+          end
+
+          type type_ = :item_reference
+
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            ITEM_REFERENCE: :item_reference
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::ItemReference::type_]
+          end
+        end
+
+        type program =
+          {
+            id: String,
+            call_id: String,
+            code: String,
+            fingerprint: String,
+            type: :program,
+            agent: OpenAI::Beta::BetaResponseInputItem::Program::Agent?
+          }
+
+        class Program < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor call_id: String
+
+          attr_accessor code: String
+
+          attr_accessor fingerprint: String
+
+          attr_accessor type: :program
+
+          attr_accessor agent: OpenAI::Beta::BetaResponseInputItem::Program::Agent?
+
+          def initialize: (
+            id: String,
+            call_id: String,
+            code: String,
+            fingerprint: String,
+            ?agent: OpenAI::Beta::BetaResponseInputItem::Program::Agent?,
+            ?type: :program
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            call_id: String,
+            code: String,
+            fingerprint: String,
+            type: :program,
+            agent: OpenAI::Beta::BetaResponseInputItem::Program::Agent?
+          }
+
+          type agent = { agent_name: String }
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            attr_accessor agent_name: String
+
+            def initialize: (agent_name: String) -> void
+
+            def to_hash: -> { agent_name: String }
+          end
+        end
+
+        type program_output =
+          {
+            id: String,
+            call_id: String,
+            result: String,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::ProgramOutput::status,
+            type: :program_output,
+            agent: OpenAI::Beta::BetaResponseInputItem::ProgramOutput::Agent?
+          }
+
+        class ProgramOutput < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor call_id: String
+
+          attr_accessor result: String
+
+          attr_accessor status: OpenAI::Models::Beta::BetaResponseInputItem::ProgramOutput::status
+
+          attr_accessor type: :program_output
+
+          attr_accessor agent: OpenAI::Beta::BetaResponseInputItem::ProgramOutput::Agent?
+
+          def initialize: (
+            id: String,
+            call_id: String,
+            result: String,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::ProgramOutput::status,
+            ?agent: OpenAI::Beta::BetaResponseInputItem::ProgramOutput::Agent?,
+            ?type: :program_output
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            call_id: String,
+            result: String,
+            status: OpenAI::Models::Beta::BetaResponseInputItem::ProgramOutput::status,
+            type: :program_output,
+            agent: OpenAI::Beta::BetaResponseInputItem::ProgramOutput::Agent?
+          }
+
+          type status = :completed | :incomplete
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            COMPLETED: :completed
+            INCOMPLETE: :incomplete
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::ProgramOutput::status]
+          end
+
+          type agent = { agent_name: String }
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            attr_accessor agent_name: String
+
+            def initialize: (agent_name: String) -> void
+
+            def to_hash: -> { agent_name: String }
+          end
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::beta_response_input_item]
+      end
+    end
+  end
+end

@@ -1,0 +1,63 @@
+# frozen_string_literal: true
+
+module OpenAI
+  module Models
+    module Beta
+      class BetaResponseError < OpenAI::Internal::Type::BaseModel
+        # @!attribute code
+        #   The error code for the response.
+        #
+        #   @return [Symbol, OpenAI::Models::Beta::BetaResponseError::Code]
+        required :code, enum: -> { OpenAI::Beta::BetaResponseError::Code }
+
+        # @!attribute message
+        #   A human-readable description of the error.
+        #
+        #   @return [String]
+        required :message, String
+
+        # @!method initialize(code:, message:)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Beta::BetaResponseError} for more details.
+        #
+        #   An error object returned when the model fails to generate a Response.
+        #
+        #   @param code [Symbol, OpenAI::Models::Beta::BetaResponseError::Code] The error code for the response.
+        #
+        #   @param message [String] A human-readable description of the error.
+
+        # The error code for the response.
+        #
+        # @see OpenAI::Models::Beta::BetaResponseError#code
+        module Code
+          extend OpenAI::Internal::Type::Enum
+
+          SERVER_ERROR = :server_error
+          RATE_LIMIT_EXCEEDED = :rate_limit_exceeded
+          INVALID_PROMPT = :invalid_prompt
+          BIO_POLICY = :bio_policy
+          VECTOR_STORE_TIMEOUT = :vector_store_timeout
+          INVALID_IMAGE = :invalid_image
+          INVALID_IMAGE_FORMAT = :invalid_image_format
+          INVALID_BASE64_IMAGE = :invalid_base64_image
+          INVALID_IMAGE_URL = :invalid_image_url
+          IMAGE_TOO_LARGE = :image_too_large
+          IMAGE_TOO_SMALL = :image_too_small
+          IMAGE_PARSE_ERROR = :image_parse_error
+          IMAGE_CONTENT_POLICY_VIOLATION = :image_content_policy_violation
+          INVALID_IMAGE_MODE = :invalid_image_mode
+          IMAGE_FILE_TOO_LARGE = :image_file_too_large
+          UNSUPPORTED_IMAGE_MEDIA_TYPE = :unsupported_image_media_type
+          EMPTY_IMAGE_FILE = :empty_image_file
+          FAILED_TO_DOWNLOAD_IMAGE = :failed_to_download_image
+          IMAGE_FILE_NOT_FOUND = :image_file_not_found
+
+          # @!method self.values
+          #   @return [Array<Symbol>]
+        end
+      end
+    end
+
+    BetaResponseError = Beta::BetaResponseError
+  end
+end

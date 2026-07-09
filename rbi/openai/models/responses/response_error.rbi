@@ -68,6 +68,11 @@ module OpenAI
               :invalid_prompt,
               OpenAI::Responses::ResponseError::Code::TaggedSymbol
             )
+          BIO_POLICY =
+            T.let(
+              :bio_policy,
+              OpenAI::Responses::ResponseError::Code::TaggedSymbol
+            )
           VECTOR_STORE_TIMEOUT =
             T.let(
               :vector_store_timeout,

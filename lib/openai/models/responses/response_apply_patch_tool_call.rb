@@ -36,13 +36,22 @@ module OpenAI
         #   @return [Symbol, :apply_patch_call]
         required :type, const: :apply_patch_call
 
+        # @!attribute caller_
+        #   The execution context that produced this tool call.
+        #
+        #   @return [OpenAI::Models::Responses::ResponseApplyPatchToolCall::Caller::Direct, OpenAI::Models::Responses::ResponseApplyPatchToolCall::Caller::Program, nil]
+        optional :caller_,
+                 union: -> { OpenAI::Responses::ResponseApplyPatchToolCall::Caller },
+                 api_name: :caller,
+                 nil?: true
+
         # @!attribute created_by
         #   The ID of the entity that created this tool call.
         #
         #   @return [String, nil]
         optional :created_by, String
 
-        # @!method initialize(id:, call_id:, operation:, status:, created_by: nil, type: :apply_patch_call)
+        # @!method initialize(id:, call_id:, operation:, status:, caller_: nil, created_by: nil, type: :apply_patch_call)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseApplyPatchToolCall} for more details.
         #
@@ -55,6 +64,8 @@ module OpenAI
         #   @param operation [OpenAI::Models::Responses::ResponseApplyPatchToolCall::Operation::CreateFile, OpenAI::Models::Responses::ResponseApplyPatchToolCall::Operation::DeleteFile, OpenAI::Models::Responses::ResponseApplyPatchToolCall::Operation::UpdateFile] One of the create_file, delete_file, or update_file operations applied via apply
         #
         #   @param status [Symbol, OpenAI::Models::Responses::ResponseApplyPatchToolCall::Status] The status of the apply patch tool call. One of `in_progress` or `completed`.
+        #
+        #   @param caller_ [OpenAI::Models::Responses::ResponseApplyPatchToolCall::Caller::Direct, OpenAI::Models::Responses::ResponseApplyPatchToolCall::Caller::Program, nil] The execution context that produced this tool call.
         #
         #   @param created_by [String] The ID of the entity that created this tool call.
         #
@@ -172,6 +183,50 @@ module OpenAI
 
           # @!method self.values
           #   @return [Array<Symbol>]
+        end
+
+        # The execution context that produced this tool call.
+        #
+        # @see OpenAI::Models::Responses::ResponseApplyPatchToolCall#caller_
+        module Caller
+          extend OpenAI::Internal::Type::Union
+
+          discriminator :type
+
+          variant :direct, -> { OpenAI::Responses::ResponseApplyPatchToolCall::Caller::Direct }
+
+          variant :program, -> { OpenAI::Responses::ResponseApplyPatchToolCall::Caller::Program }
+
+          class Direct < OpenAI::Internal::Type::BaseModel
+            # @!attribute type
+            #
+            #   @return [Symbol, :direct]
+            required :type, const: :direct
+
+            # @!method initialize(type: :direct)
+            #   @param type [Symbol, :direct]
+          end
+
+          class Program < OpenAI::Internal::Type::BaseModel
+            # @!attribute caller_id
+            #   The call ID of the program item that produced this tool call.
+            #
+            #   @return [String]
+            required :caller_id, String
+
+            # @!attribute type
+            #
+            #   @return [Symbol, :program]
+            required :type, const: :program
+
+            # @!method initialize(caller_id:, type: :program)
+            #   @param caller_id [String] The call ID of the program item that produced this tool call.
+            #
+            #   @param type [Symbol, :program]
+          end
+
+          # @!method self.variants
+          #   @return [Array(OpenAI::Models::Responses::ResponseApplyPatchToolCall::Caller::Direct, OpenAI::Models::Responses::ResponseApplyPatchToolCall::Caller::Program)]
         end
       end
     end

@@ -107,6 +107,18 @@ module OpenAI
             sig { returns(Symbol) }
             attr_accessor :type
 
+            # The tool invocation context(s).
+            sig do
+              returns(
+                T.nilable(
+                  T::Array[
+                    OpenAI::Responses::NamespaceTool::Tool::Function::AllowedCaller::OrSymbol
+                  ]
+                )
+              )
+            end
+            attr_accessor :allowed_callers
+
             # Whether this function should be deferred and discovered via tool search.
             sig { returns(T.nilable(T::Boolean)) }
             attr_reader :defer_loading
@@ -117,17 +129,32 @@ module OpenAI
             sig { returns(T.nilable(String)) }
             attr_accessor :description
 
+            # A JSON Schema describing the JSON value encoded in string outputs for this
+            # function tool. This does not describe content-array outputs.
+            sig { returns(T.nilable(T::Hash[Symbol, T.anything])) }
+            attr_accessor :output_schema
+
             sig { returns(T.nilable(T.anything)) }
             attr_accessor :parameters
 
+            # Whether to enforce strict parameter validation. If omitted, Responses attempts
+            # to use strict validation when the schema is compatible, and falls back to
+            # non-strict validation otherwise.
             sig { returns(T.nilable(T::Boolean)) }
             attr_accessor :strict
 
             sig do
               params(
                 name: String,
+                allowed_callers:
+                  T.nilable(
+                    T::Array[
+                      OpenAI::Responses::NamespaceTool::Tool::Function::AllowedCaller::OrSymbol
+                    ]
+                  ),
                 defer_loading: T::Boolean,
                 description: T.nilable(String),
+                output_schema: T.nilable(T::Hash[Symbol, T.anything]),
                 parameters: T.nilable(T.anything),
                 strict: T.nilable(T::Boolean),
                 type: Symbol
@@ -135,10 +162,18 @@ module OpenAI
             end
             def self.new(
               name:,
+              # The tool invocation context(s).
+              allowed_callers: nil,
               # Whether this function should be deferred and discovered via tool search.
               defer_loading: nil,
               description: nil,
+              # A JSON Schema describing the JSON value encoded in string outputs for this
+              # function tool. This does not describe content-array outputs.
+              output_schema: nil,
               parameters: nil,
+              # Whether to enforce strict parameter validation. If omitted, Responses attempts
+              # to use strict validation when the schema is compatible, and falls back to
+              # non-strict validation otherwise.
               strict: nil,
               type: :function
             )
@@ -149,14 +184,55 @@ module OpenAI
                 {
                   name: String,
                   type: Symbol,
+                  allowed_callers:
+                    T.nilable(
+                      T::Array[
+                        OpenAI::Responses::NamespaceTool::Tool::Function::AllowedCaller::OrSymbol
+                      ]
+                    ),
                   defer_loading: T::Boolean,
                   description: T.nilable(String),
+                  output_schema: T.nilable(T::Hash[Symbol, T.anything]),
                   parameters: T.nilable(T.anything),
                   strict: T.nilable(T::Boolean)
                 }
               )
             end
             def to_hash
+            end
+
+            module AllowedCaller
+              extend OpenAI::Internal::Type::Enum
+
+              TaggedSymbol =
+                T.type_alias do
+                  T.all(
+                    Symbol,
+                    OpenAI::Responses::NamespaceTool::Tool::Function::AllowedCaller
+                  )
+                end
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+              DIRECT =
+                T.let(
+                  :direct,
+                  OpenAI::Responses::NamespaceTool::Tool::Function::AllowedCaller::TaggedSymbol
+                )
+              PROGRAMMATIC =
+                T.let(
+                  :programmatic,
+                  OpenAI::Responses::NamespaceTool::Tool::Function::AllowedCaller::TaggedSymbol
+                )
+
+              sig do
+                override.returns(
+                  T::Array[
+                    OpenAI::Responses::NamespaceTool::Tool::Function::AllowedCaller::TaggedSymbol
+                  ]
+                )
+              end
+              def self.values
+              end
             end
           end
 

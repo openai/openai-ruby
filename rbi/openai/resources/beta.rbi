@@ -3,6 +3,9 @@
 module OpenAI
   module Resources
     class Beta
+      sig { returns(OpenAI::Resources::Beta::Responses) }
+      attr_reader :responses
+
       sig { returns(OpenAI::Resources::Beta::ChatKit) }
       attr_reader :chatkit
 

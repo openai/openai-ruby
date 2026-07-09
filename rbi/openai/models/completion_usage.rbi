@@ -183,6 +183,13 @@ module OpenAI
         sig { params(audio_tokens: Integer).void }
         attr_writer :audio_tokens
 
+        # The unadjusted number of prompt tokens written to cache.
+        sig { returns(T.nilable(Integer)) }
+        attr_reader :cache_write_tokens
+
+        sig { params(cache_write_tokens: Integer).void }
+        attr_writer :cache_write_tokens
+
         # Cached tokens present in the prompt.
         sig { returns(T.nilable(Integer)) }
         attr_reader :cached_tokens
@@ -192,20 +199,30 @@ module OpenAI
 
         # Breakdown of tokens used in the prompt.
         sig do
-          params(audio_tokens: Integer, cached_tokens: Integer).returns(
-            T.attached_class
-          )
+          params(
+            audio_tokens: Integer,
+            cache_write_tokens: Integer,
+            cached_tokens: Integer
+          ).returns(T.attached_class)
         end
         def self.new(
           # Audio input tokens present in the prompt.
           audio_tokens: nil,
+          # The unadjusted number of prompt tokens written to cache.
+          cache_write_tokens: nil,
           # Cached tokens present in the prompt.
           cached_tokens: nil
         )
         end
 
         sig do
-          override.returns({ audio_tokens: Integer, cached_tokens: Integer })
+          override.returns(
+            {
+              audio_tokens: Integer,
+              cache_write_tokens: Integer,
+              cached_tokens: Integer
+            }
+          )
         end
         def to_hash
         end

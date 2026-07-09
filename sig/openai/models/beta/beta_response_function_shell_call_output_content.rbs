@@ -1,0 +1,66 @@
+module OpenAI
+  module Models
+    class BetaResponseFunctionShellCallOutputContent = Beta::BetaResponseFunctionShellCallOutputContent
+
+    module Beta
+      type beta_response_function_shell_call_output_content =
+        {
+          outcome: OpenAI::Models::Beta::BetaResponseFunctionShellCallOutputContent::outcome,
+          stderr: String,
+          stdout: String
+        }
+
+      class BetaResponseFunctionShellCallOutputContent < OpenAI::Internal::Type::BaseModel
+        attr_accessor outcome: OpenAI::Models::Beta::BetaResponseFunctionShellCallOutputContent::outcome
+
+        attr_accessor stderr: String
+
+        attr_accessor stdout: String
+
+        def initialize: (
+          outcome: OpenAI::Models::Beta::BetaResponseFunctionShellCallOutputContent::outcome,
+          stderr: String,
+          stdout: String
+        ) -> void
+
+        def to_hash: -> {
+          outcome: OpenAI::Models::Beta::BetaResponseFunctionShellCallOutputContent::outcome,
+          stderr: String,
+          stdout: String
+        }
+
+        type outcome =
+          OpenAI::Beta::BetaResponseFunctionShellCallOutputContent::Outcome::Timeout
+          | OpenAI::Beta::BetaResponseFunctionShellCallOutputContent::Outcome::Exit
+
+        module Outcome
+          extend OpenAI::Internal::Type::Union
+
+          type timeout = { type: :timeout }
+
+          class Timeout < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :timeout
+
+            def initialize: (?type: :timeout) -> void
+
+            def to_hash: -> { type: :timeout }
+          end
+
+          type exit_ = { exit_code: Integer, type: :exit }
+
+          class Exit < OpenAI::Internal::Type::BaseModel
+            attr_accessor exit_code: Integer
+
+            attr_accessor type: :exit
+
+            def initialize: (exit_code: Integer, ?type: :exit) -> void
+
+            def to_hash: -> { exit_code: Integer, type: :exit }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseFunctionShellCallOutputContent::outcome]
+        end
+      end
+    end
+  end
+end

@@ -22,7 +22,7 @@ module OpenAI
                  nil?: true
 
         # @!attribute strict
-        #   Whether to enforce strict parameter validation. Default `true`.
+        #   Whether strict parameter validation is enforced for this function tool.
         #
         #   @return [Boolean, nil]
         required :strict, OpenAI::Internal::Type::Boolean, nil?: true
@@ -32,6 +32,14 @@ module OpenAI
         #
         #   @return [Symbol, :function]
         required :type, const: :function
+
+        # @!attribute allowed_callers
+        #   The tool invocation context(s).
+        #
+        #   @return [Array<Symbol, OpenAI::Models::Responses::FunctionTool::AllowedCaller>, nil]
+        optional :allowed_callers,
+                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Responses::FunctionTool::AllowedCaller] },
+                 nil?: true
 
         # @!attribute defer_loading
         #   Whether this function is deferred and loaded via tool search.
@@ -46,7 +54,14 @@ module OpenAI
         #   @return [String, nil]
         optional :description, String, nil?: true
 
-        # @!method initialize(name:, parameters:, strict:, defer_loading: nil, description: nil, type: :function)
+        # @!attribute output_schema
+        #   A JSON schema object describing the JSON value encoded in string outputs for
+        #   this function.
+        #
+        #   @return [Hash{Symbol=>Object}, nil]
+        optional :output_schema, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown], nil?: true
+
+        # @!method initialize(name:, parameters:, strict:, allowed_callers: nil, defer_loading: nil, description: nil, output_schema: nil, type: :function)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::FunctionTool} for more details.
         #
@@ -58,13 +73,27 @@ module OpenAI
         #
         #   @param parameters [Hash{Symbol=>Object}, nil] A JSON schema object describing the parameters of the function.
         #
-        #   @param strict [Boolean, nil] Whether to enforce strict parameter validation. Default `true`.
+        #   @param strict [Boolean, nil] Whether strict parameter validation is enforced for this function tool.
+        #
+        #   @param allowed_callers [Array<Symbol, OpenAI::Models::Responses::FunctionTool::AllowedCaller>, nil] The tool invocation context(s).
         #
         #   @param defer_loading [Boolean] Whether this function is deferred and loaded via tool search.
         #
         #   @param description [String, nil] A description of the function. Used by the model to determine whether or not to
         #
+        #   @param output_schema [Hash{Symbol=>Object}, nil] A JSON schema object describing the JSON value encoded in string outputs for thi
+        #
         #   @param type [Symbol, :function] The type of the function tool. Always `function`.
+
+        module AllowedCaller
+          extend OpenAI::Internal::Type::Enum
+
+          DIRECT = :direct
+          PROGRAMMATIC = :programmatic
+
+          # @!method self.values
+          #   @return [Array<Symbol>]
+        end
       end
     end
   end

@@ -25,7 +25,8 @@ module OpenAI
             OpenAI::Webhooks::ResponseCancelledWebhookEvent,
             OpenAI::Webhooks::ResponseCompletedWebhookEvent,
             OpenAI::Webhooks::ResponseFailedWebhookEvent,
-            OpenAI::Webhooks::ResponseIncompleteWebhookEvent
+            OpenAI::Webhooks::ResponseIncompleteWebhookEvent,
+            OpenAI::Webhooks::SafetyIdentifierBlockedWebhookEvent
           )
         )
       end

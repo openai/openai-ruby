@@ -34,13 +34,22 @@ module OpenAI
         #   @return [String, nil]
         optional :id, String
 
+        # @!attribute caller_
+        #   The execution context that produced this tool call.
+        #
+        #   @return [OpenAI::Models::Responses::ResponseCustomToolCall::Caller::Direct, OpenAI::Models::Responses::ResponseCustomToolCall::Caller::Program, nil]
+        optional :caller_,
+                 union: -> { OpenAI::Responses::ResponseCustomToolCall::Caller },
+                 api_name: :caller,
+                 nil?: true
+
         # @!attribute namespace
         #   The namespace of the custom tool being called.
         #
         #   @return [String, nil]
         optional :namespace, String
 
-        # @!method initialize(call_id:, input:, name:, id: nil, namespace: nil, type: :custom_tool_call)
+        # @!method initialize(call_id:, input:, name:, id: nil, caller_: nil, namespace: nil, type: :custom_tool_call)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseCustomToolCall} for more details.
         #
@@ -54,9 +63,55 @@ module OpenAI
         #
         #   @param id [String] The unique ID of the custom tool call in the OpenAI platform.
         #
+        #   @param caller_ [OpenAI::Models::Responses::ResponseCustomToolCall::Caller::Direct, OpenAI::Models::Responses::ResponseCustomToolCall::Caller::Program, nil] The execution context that produced this tool call.
+        #
         #   @param namespace [String] The namespace of the custom tool being called.
         #
         #   @param type [Symbol, :custom_tool_call] The type of the custom tool call. Always `custom_tool_call`.
+
+        # The execution context that produced this tool call.
+        #
+        # @see OpenAI::Models::Responses::ResponseCustomToolCall#caller_
+        module Caller
+          extend OpenAI::Internal::Type::Union
+
+          discriminator :type
+
+          variant :direct, -> { OpenAI::Responses::ResponseCustomToolCall::Caller::Direct }
+
+          variant :program, -> { OpenAI::Responses::ResponseCustomToolCall::Caller::Program }
+
+          class Direct < OpenAI::Internal::Type::BaseModel
+            # @!attribute type
+            #
+            #   @return [Symbol, :direct]
+            required :type, const: :direct
+
+            # @!method initialize(type: :direct)
+            #   @param type [Symbol, :direct]
+          end
+
+          class Program < OpenAI::Internal::Type::BaseModel
+            # @!attribute caller_id
+            #   The call ID of the program item that produced this tool call.
+            #
+            #   @return [String]
+            required :caller_id, String
+
+            # @!attribute type
+            #
+            #   @return [Symbol, :program]
+            required :type, const: :program
+
+            # @!method initialize(caller_id:, type: :program)
+            #   @param caller_id [String] The call ID of the program item that produced this tool call.
+            #
+            #   @param type [Symbol, :program]
+          end
+
+          # @!method self.variants
+          #   @return [Array(OpenAI::Models::Responses::ResponseCustomToolCall::Caller::Direct, OpenAI::Models::Responses::ResponseCustomToolCall::Caller::Program)]
+        end
       end
     end
   end

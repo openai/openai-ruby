@@ -31,6 +31,8 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
       in OpenAI::Responses::ResponseToolSearchOutputItem
       in OpenAI::Responses::ResponseItem::AdditionalTools
       in OpenAI::Responses::ResponseReasoningItem
+      in OpenAI::Responses::ResponseItem::Program
+      in OpenAI::Responses::ResponseItem::ProgramOutput
       in OpenAI::Responses::ResponseCompactionItem
       in OpenAI::Responses::ResponseItem::ImageGenerationCall
       in OpenAI::Responses::ResponseCodeInterpreterToolCall
@@ -103,6 +105,7 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
         call_id: String,
         output: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Output,
         status: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Status,
+        caller_: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Caller | nil,
         created_by: String | nil
       }
       in {
@@ -136,6 +139,14 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
         content: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseReasoningItem::Content]) | nil,
         encrypted_content: String | nil,
         status: OpenAI::Responses::ResponseReasoningItem::Status | nil
+      }
+      in {type: :program, id: String, call_id: String, code: String, fingerprint: String}
+      in {
+        type: :program_output,
+        id: String,
+        call_id: String,
+        result: String,
+        status: OpenAI::Responses::ResponseItem::ProgramOutput::Status
       }
       in {type: :compaction, id: String, encrypted_content: String, created_by: String | nil}
       in {
@@ -172,6 +183,7 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
         call_id: String,
         environment: OpenAI::Responses::ResponseFunctionShellToolCall::Environment | nil,
         status: OpenAI::Responses::ResponseFunctionShellToolCall::Status,
+        caller_: OpenAI::Responses::ResponseFunctionShellToolCall::Caller | nil,
         created_by: String | nil
       }
       in {
@@ -181,6 +193,7 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
         max_output_length: Integer | nil,
         output: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output]),
         status: OpenAI::Responses::ResponseFunctionShellToolCallOutput::Status,
+        caller_: OpenAI::Responses::ResponseFunctionShellToolCallOutput::Caller | nil,
         created_by: String | nil
       }
       in {
@@ -189,6 +202,7 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
         call_id: String,
         operation: OpenAI::Responses::ResponseApplyPatchToolCall::Operation,
         status: OpenAI::Responses::ResponseApplyPatchToolCall::Status,
+        caller_: OpenAI::Responses::ResponseApplyPatchToolCall::Caller | nil,
         created_by: String | nil
       }
       in {
@@ -196,6 +210,7 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
         id: String,
         call_id: String,
         status: OpenAI::Responses::ResponseApplyPatchToolCallOutput::Status,
+        caller_: OpenAI::Responses::ResponseApplyPatchToolCallOutput::Caller | nil,
         created_by: String | nil,
         output: String | nil
       }

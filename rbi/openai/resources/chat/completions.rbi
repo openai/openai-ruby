@@ -77,6 +77,8 @@ module OpenAI
               T.nilable(OpenAI::Chat::ChatCompletionPredictionContent::OrHash),
             presence_penalty: T.nilable(Float),
             prompt_cache_key: String,
+            prompt_cache_options:
+              OpenAI::Chat::CompletionCreateParams::PromptCacheOptions::OrHash,
             prompt_cache_retention:
               T.nilable(
                 OpenAI::Chat::CompletionCreateParams::PromptCacheRetention::OrSymbol
@@ -234,11 +236,26 @@ module OpenAI
           # hit rates. Replaces the `user` field.
           # [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
           prompt_cache_key: nil,
+          # Options for prompt caching. Supported for `gpt-5.6` and later models. By
+          # default, OpenAI automatically chooses one implicit cache breakpoint. You can add
+          # explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
+          # request can write up to four breakpoints. For cache matching, OpenAI considers
+          # up to the latest 80 breakpoints in the conversation, without a content-block
+          # lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
+          # `ttl` defaults to `30m`, which is currently the only supported value. See the
+          # [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
+          # for current details.
+          prompt_cache_options: nil,
+          # Deprecated. Use `prompt_cache_options.ttl` instead.
+          #
           # The retention policy for the prompt cache. Set to `24h` to enable extended
           # prompt caching, which keeps cached prefixes active for longer, up to a maximum
           # of 24 hours.
           # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
-          # For `gpt-5.5`, `gpt-5.5-pro`, and future models, only `24h` is supported.
+          # This field expresses a maximum retention policy, while
+          # `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
+          # are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
+          # models, only `24h` is supported.
           #
           # For older models that support both `in_memory` and `24h`, the default depends on
           # your organization's data retention policy:
@@ -247,19 +264,12 @@ module OpenAI
           # - Organizations with ZDR enabled default to `in_memory` when
           #   `prompt_cache_retention` is not specified.
           prompt_cache_retention: nil,
-          # Constrains effort on reasoning for
-          # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-          # supported values are `none`, `minimal`, `low`, `medium`, `high`, and `xhigh`.
-          # Reducing reasoning effort can result in faster responses and fewer tokens used
-          # on reasoning in a response.
-          #
-          # - `gpt-5.1` defaults to `none`, which does not perform reasoning. The supported
-          #   reasoning values for `gpt-5.1` are `none`, `low`, `medium`, and `high`. Tool
-          #   calls are supported for all reasoning values in gpt-5.1.
-          # - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
-          #   support `none`.
-          # - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
-          # - `xhigh` is supported for all models after `gpt-5.1-codex-max`.
+          # Constrains effort on reasoning for reasoning models. Currently supported values
+          # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
+          # reasoning effort can result in faster responses and fewer tokens used on
+          # reasoning in a response. Not all reasoning models support every value. See the
+          # [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+          # model-specific support.
           reasoning_effort: nil,
           # An object specifying the format that the model must output.
           #
@@ -432,6 +442,8 @@ module OpenAI
               T.nilable(OpenAI::Chat::ChatCompletionPredictionContent::OrHash),
             presence_penalty: T.nilable(Float),
             prompt_cache_key: String,
+            prompt_cache_options:
+              OpenAI::Chat::CompletionCreateParams::PromptCacheOptions::OrHash,
             prompt_cache_retention:
               T.nilable(
                 OpenAI::Chat::CompletionCreateParams::PromptCacheRetention::OrSymbol
@@ -587,11 +599,26 @@ module OpenAI
           # hit rates. Replaces the `user` field.
           # [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
           prompt_cache_key: nil,
+          # Options for prompt caching. Supported for `gpt-5.6` and later models. By
+          # default, OpenAI automatically chooses one implicit cache breakpoint. You can add
+          # explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
+          # request can write up to four breakpoints. For cache matching, OpenAI considers
+          # up to the latest 80 breakpoints in the conversation, without a content-block
+          # lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
+          # `ttl` defaults to `30m`, which is currently the only supported value. See the
+          # [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
+          # for current details.
+          prompt_cache_options: nil,
+          # Deprecated. Use `prompt_cache_options.ttl` instead.
+          #
           # The retention policy for the prompt cache. Set to `24h` to enable extended
           # prompt caching, which keeps cached prefixes active for longer, up to a maximum
           # of 24 hours.
           # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
-          # For `gpt-5.5`, `gpt-5.5-pro`, and future models, only `24h` is supported.
+          # This field expresses a maximum retention policy, while
+          # `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
+          # are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
+          # models, only `24h` is supported.
           #
           # For older models that support both `in_memory` and `24h`, the default depends on
           # your organization's data retention policy:
@@ -600,19 +627,12 @@ module OpenAI
           # - Organizations with ZDR enabled default to `in_memory` when
           #   `prompt_cache_retention` is not specified.
           prompt_cache_retention: nil,
-          # Constrains effort on reasoning for
-          # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-          # supported values are `none`, `minimal`, `low`, `medium`, `high`, and `xhigh`.
-          # Reducing reasoning effort can result in faster responses and fewer tokens used
-          # on reasoning in a response.
-          #
-          # - `gpt-5.1` defaults to `none`, which does not perform reasoning. The supported
-          #   reasoning values for `gpt-5.1` are `none`, `low`, `medium`, and `high`. Tool
-          #   calls are supported for all reasoning values in gpt-5.1.
-          # - All models before `gpt-5.1` default to `medium` reasoning effort, and do not
-          #   support `none`.
-          # - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort.
-          # - `xhigh` is supported for all models after `gpt-5.1-codex-max`.
+          # Constrains effort on reasoning for reasoning models. Currently supported values
+          # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
+          # reasoning effort can result in faster responses and fewer tokens used on
+          # reasoning in a response. Not all reasoning models support every value. See the
+          # [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+          # model-specific support.
           reasoning_effort: nil,
           # An object specifying the format that the model must output.
           #

@@ -6,7 +6,8 @@ module OpenAI
           type: :input_image,
           detail: OpenAI::Models::Responses::ResponseInputImageContent::detail?,
           file_id: String?,
-          image_url: String?
+          image_url: String?,
+          prompt_cache_breakpoint: OpenAI::Responses::ResponseInputImageContent::PromptCacheBreakpoint?
         }
 
       class ResponseInputImageContent < OpenAI::Internal::Type::BaseModel
@@ -18,10 +19,13 @@ module OpenAI
 
         attr_accessor image_url: String?
 
+        attr_accessor prompt_cache_breakpoint: OpenAI::Responses::ResponseInputImageContent::PromptCacheBreakpoint?
+
         def initialize: (
           ?detail: OpenAI::Models::Responses::ResponseInputImageContent::detail?,
           ?file_id: String?,
           ?image_url: String?,
+          ?prompt_cache_breakpoint: OpenAI::Responses::ResponseInputImageContent::PromptCacheBreakpoint?,
           ?type: :input_image
         ) -> void
 
@@ -29,7 +33,8 @@ module OpenAI
           type: :input_image,
           detail: OpenAI::Models::Responses::ResponseInputImageContent::detail?,
           file_id: String?,
-          image_url: String?
+          image_url: String?,
+          prompt_cache_breakpoint: OpenAI::Responses::ResponseInputImageContent::PromptCacheBreakpoint?
         }
 
         type detail = :low | :high | :auto | :original
@@ -43,6 +48,16 @@ module OpenAI
           ORIGINAL: :original
 
           def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputImageContent::detail]
+        end
+
+        type prompt_cache_breakpoint = { mode: :explicit }
+
+        class PromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
+          attr_accessor mode: :explicit
+
+          def initialize: (?mode: :explicit) -> void
+
+          def to_hash: -> { mode: :explicit }
         end
       end
     end
