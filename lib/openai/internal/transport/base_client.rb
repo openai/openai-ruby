@@ -168,7 +168,7 @@ module OpenAI
         # @return [URI::Generic]
         attr_reader :base_url
 
-        # @return [Float]
+        # @return [Float, nil]
         attr_reader :timeout
 
         # @return [Integer]
@@ -193,7 +193,7 @@ module OpenAI
         # @api private
         #
         # @param base_url [String]
-        # @param timeout [Float]
+        # @param timeout [Float, nil]
         # @param max_retries [Integer]
         # @param initial_retry_delay [Float]
         # @param max_retry_delay [Float]
@@ -310,8 +310,8 @@ module OpenAI
             headers["x-stainless-retry-count"] = "0"
           end
 
-          timeout = opts.fetch(:timeout, @timeout).to_f.clamp(0..)
-          unless headers.key?("x-stainless-timeout") || timeout.zero?
+          timeout = opts.fetch(:timeout, @timeout)&.to_f&.clamp(0..)
+          unless headers.key?("x-stainless-timeout") || timeout.nil? || timeout.zero?
             headers["x-stainless-timeout"] = timeout.to_s
           end
 
@@ -385,7 +385,7 @@ module OpenAI
         #
         #   @option request [Integer] :max_retries
         #
-        #   @option request [Float] :timeout
+        #   @option request [Float, nil] :timeout
         #
         # @param redirect_count [Integer]
         #
@@ -397,7 +397,7 @@ module OpenAI
         # @return [Array(Integer, Net::HTTPResponse, Enumerable<String>)]
         def send_request(request, redirect_count:, retry_count:, send_retry_header:)
           url, headers, max_retries, timeout = request.fetch_values(:url, :headers, :max_retries, :timeout)
-          input = {**request.except(:timeout), deadline: OpenAI::Internal::Util.monotonic_secs + timeout}
+          input = {**request.except(:timeout), deadline: timeout.nil? ? nil : OpenAI::Internal::Util.monotonic_secs + timeout}
 
           if send_retry_header
             headers["x-stainless-retry-count"] = retry_count.to_s
@@ -590,7 +590,7 @@ module OpenAI
               headers: T::Hash[String, String],
               body: T.anything,
               max_retries: Integer,
-              timeout: Float
+              timeout: T.nilable(Float)
             }
           end
         end

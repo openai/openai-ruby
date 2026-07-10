@@ -366,6 +366,50 @@ class OpenAITest < Minitest::Test
     assert_requested(:any, /./, headers: {"x-stainless-retry-count" => "42"}, times: 3)
   end
 
+  def test_request_timeout_nil_omits_timeout_header_and_deadline
+    response_class =
+      Struct.new(:headers) do
+        def each_header = headers.each
+      end
+
+    requester =
+      Class.new do
+        attr_reader :request
+
+        define_method(:initialize) do |response_class|
+          @response_class = response_class
+        end
+
+        def execute(request)
+          @request = request
+          [200, @response_class.new({}), [].each]
+        end
+      end.new(response_class)
+
+    openai =
+      OpenAI::Client.new(
+        base_url: "http://localhost",
+        api_key: "My API Key",
+        admin_api_key: "My Admin API Key",
+        timeout: 30
+      )
+    openai.instance_variable_set(:@requester, requester)
+
+    request =
+      openai.send(
+        :build_request,
+        {method: :post, path: "/chat/completions", body: {}, headers: nil, query: nil},
+        {timeout: nil}
+      )
+
+    assert_nil(request[:timeout])
+    refute_includes(request[:headers].keys.map(&:downcase), "x-stainless-timeout")
+
+    openai.send(:send_request, request, redirect_count: 0, retry_count: 0, send_retry_header: true)
+
+    assert_nil(requester.request[:deadline])
+  end
+
   def test_client_redirect_307
     stub_request(:post, "http://localhost/chat/completions").to_return_json(
       status: 307,
@@ -521,6 +565,46 @@ class OpenAITest < Minitest::Test
       headers = req.headers.transform_keys(&:downcase)
       expected = req.body.nil? ? ["accept"] : %w[accept content-type]
       headers.fetch_values(*expected).each { refute_empty(_1) }
+    end
+  end
+
+  def test_client_timeout_nil_disables_timeout_header
+    stub_request(:post, "http://localhost/chat/completions").to_return_json(status: 200, body: {})
+
+    openai =
+      OpenAI::Client.new(
+        base_url: "http://localhost",
+        api_key: "My API Key",
+        admin_api_key: "My Admin API Key",
+        timeout: nil
+      )
+
+    openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"gpt-5.4")
+
+    assert_requested(:post, "http://localhost/chat/completions") do |req|
+      refute_includes(req.headers.keys.map(&:downcase), "x-stainless-timeout")
+    end
+  end
+
+  def test_request_timeout_nil_overrides_client_default_timeout_header
+    stub_request(:post, "http://localhost/chat/completions").to_return_json(status: 200, body: {})
+
+    openai =
+      OpenAI::Client.new(
+        base_url: "http://localhost",
+        api_key: "My API Key",
+        admin_api_key: "My Admin API Key",
+        timeout: 30
+      )
+
+    openai.chat.completions.create(
+      messages: [{content: "string", role: :developer}],
+      model: :"gpt-5.4",
+      request_options: {timeout: nil}
+    )
+
+    assert_requested(:post, "http://localhost/chat/completions") do |req|
+      refute_includes(req.headers.keys.map(&:downcase), "x-stainless-timeout")
     end
   end
 end

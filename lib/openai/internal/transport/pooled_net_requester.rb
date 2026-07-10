@@ -12,6 +12,7 @@ module OpenAI
         KEEP_ALIVE_TIMEOUT = 30
 
         DEFAULT_MAX_CONNECTIONS = [Etc.nprocessors, 99].max
+        UNBOUNDED_POOL_WAIT_TIMEOUT = 60
 
         class << self
           # @api private
@@ -42,9 +43,9 @@ module OpenAI
           # @api private
           #
           # @param conn [Net::HTTP]
-          # @param deadline [Float]
+          # @param deadline [Float, nil]
           def calibrate_socket_timeout(conn, deadline)
-            timeout = deadline - OpenAI::Internal::Util.monotonic_secs
+            timeout = deadline&.-(OpenAI::Internal::Util.monotonic_secs)
             conn.open_timeout = conn.read_timeout = conn.write_timeout = conn.continue_timeout = timeout
           end
 
@@ -94,14 +95,13 @@ module OpenAI
         # @api private
         #
         # @param url [URI::Generic]
-        # @param deadline [Float]
+        # @param deadline [Float, nil]
         # @param blk [Proc]
         #
         # @raise [Timeout::Error]
         # @yieldparam [Net::HTTP]
         private def with_pool(url, deadline:, &blk)
           origin = OpenAI::Internal::Util.uri_origin(url)
-          timeout = deadline - OpenAI::Internal::Util.monotonic_secs
           pool =
             @mutex.synchronize do
               @pools[origin] ||= ConnectionPool.new(size: @size) do
@@ -109,7 +109,17 @@ module OpenAI
               end
             end
 
-          pool.with(timeout: timeout, &blk)
+          if deadline.nil?
+            loop do
+              # `connection_pool` cannot disable checkout timeouts, so retry a long
+              # wait interval indefinitely when the request timeout is disabled.
+              return pool.with(timeout: self.class::UNBOUNDED_POOL_WAIT_TIMEOUT, &blk)
+            rescue ConnectionPool::TimeoutError
+            end
+          else
+            timeout = deadline - OpenAI::Internal::Util.monotonic_secs
+            pool.with(timeout: timeout, &blk)
+          end
         end
 
         # @api private
@@ -124,7 +134,7 @@ module OpenAI
         #
         #   @option request [Object] :body
         #
-        #   @option request [Float] :deadline
+        #   @option request [Float, nil] :deadline
         #
         # @return [Array(Integer, Net::HTTPResponse, Enumerable<String>)]
         def execute(request)
@@ -202,7 +212,9 @@ module OpenAI
         end
 
         define_sorbet_constant!(:Request) do
-          T.type_alias { {method: Symbol, url: URI::Generic, headers: T::Hash[String, String], body: T.anything, deadline: Float} }
+          T.type_alias do
+            {method: Symbol, url: URI::Generic, headers: T::Hash[String, String], body: T.anything, deadline: T.nilable(Float)}
+          end
         end
       end
     end
