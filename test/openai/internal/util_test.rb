@@ -228,10 +228,11 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
       {"content-type" => "multipart/form-data"},
       Pathname(__FILE__)
     )
-    assert_pattern do
-      headers.fetch("content-type") => /boundary=(.+)$/
-    end
-    field, = Regexp.last_match.captures
+    boundary_prefix = "multipart/form-data; boundary="
+    content_type = headers.fetch("content-type")
+    assert(content_type.start_with?(boundary_prefix))
+    field = content_type.delete_prefix(boundary_prefix)
+    refute_empty(field)
     assert(field.length < 70 - 6)
   end
 
