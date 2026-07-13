@@ -29,6 +29,8 @@ module OpenAI
                 project_id: String,
                 after: String,
                 limit: Integer,
+                owner_project_access:
+                  OpenAI::Admin::Organization::Projects::APIKeyListParams::OwnerProjectAccess::OrSymbol,
                 request_options: OpenAI::RequestOptions::OrHash
               ).returns(
                 OpenAI::Internal::ConversationCursorPage[
@@ -47,6 +49,12 @@ module OpenAI
               # A limit on the number of objects to be returned. Limit can range between 1 and
               # 100, and the default is 20.
               limit: nil,
+              # Filter API keys by whether the owner currently has effective access to the
+              # project. Use `active` for owners with access, `inactive` for owners without
+              # access, or `any` for all enabled project API keys. If omitted, the endpoint
+              # applies its existing membership-based visibility rules, which may exclude some
+              # enabled keys.
+              owner_project_access: nil,
               request_options: {}
             )
             end

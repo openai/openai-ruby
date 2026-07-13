@@ -60,8 +60,9 @@ module OpenAI
         end
         attr_writer :content
 
-        # The encrypted content of the reasoning item - populated when a response is
-        # generated with `reasoning.encrypted_content` in the `include` parameter.
+        # The encrypted content of the reasoning item. This is populated by default for
+        # reasoning items returned by `POST /v1/responses` and WebSocket `response.create`
+        # requests.
         sig { returns(T.nilable(String)) }
         attr_accessor :encrypted_content
 
@@ -112,8 +113,9 @@ module OpenAI
           agent: nil,
           # Reasoning text content.
           content: nil,
-          # The encrypted content of the reasoning item - populated when a response is
-          # generated with `reasoning.encrypted_content` in the `include` parameter.
+          # The encrypted content of the reasoning item. This is populated by default for
+          # reasoning items returned by `POST /v1/responses` and WebSocket `response.create`
+          # requests.
           encrypted_content: nil,
           # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
           # Populated when items are returned via API.
