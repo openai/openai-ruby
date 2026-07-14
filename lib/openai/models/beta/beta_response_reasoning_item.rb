@@ -37,8 +37,9 @@ module OpenAI
                  -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponseReasoningItem::Content] }
 
         # @!attribute encrypted_content
-        #   The encrypted content of the reasoning item - populated when a response is
-        #   generated with `reasoning.encrypted_content` in the `include` parameter.
+        #   The encrypted content of the reasoning item. This is populated by default for
+        #   reasoning items returned by `POST /v1/responses` and WebSocket `response.create`
+        #   requests.
         #
         #   @return [String, nil]
         optional :encrypted_content, String, nil?: true
@@ -67,7 +68,7 @@ module OpenAI
         #
         #   @param content [Array<OpenAI::Models::Beta::BetaResponseReasoningItem::Content>] Reasoning text content.
         #
-        #   @param encrypted_content [String, nil] The encrypted content of the reasoning item - populated when a response is
+        #   @param encrypted_content [String, nil] The encrypted content of the reasoning item. This is populated by default
         #
         #   @param status [Symbol, OpenAI::Models::Beta::BetaResponseReasoningItem::Status] The status of the item. One of `in_progress`, `completed`, or
         #

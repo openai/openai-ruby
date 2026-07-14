@@ -17,7 +17,6 @@ module OpenAI
         | OpenAI::Webhooks::ResponseCompletedWebhookEvent
         | OpenAI::Webhooks::ResponseFailedWebhookEvent
         | OpenAI::Webhooks::ResponseIncompleteWebhookEvent
-        | OpenAI::Webhooks::SafetyIdentifierBlockedWebhookEvent
 
       module UnwrapWebhookEvent
         extend OpenAI::Internal::Type::Union

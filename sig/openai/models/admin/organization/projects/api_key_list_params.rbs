@@ -4,7 +4,12 @@ module OpenAI
       module Organization
         module Projects
           type api_key_list_params =
-            { project_id: String, after: String, limit: Integer }
+            {
+              project_id: String,
+              after: String,
+              limit: Integer,
+              owner_project_access: OpenAI::Models::Admin::Organization::Projects::APIKeyListParams::owner_project_access
+            }
             & OpenAI::Internal::Type::request_parameters
 
           class APIKeyListParams < OpenAI::Internal::Type::BaseModel
@@ -21,10 +26,17 @@ module OpenAI
 
             def limit=: (Integer) -> Integer
 
+            attr_reader owner_project_access: OpenAI::Models::Admin::Organization::Projects::APIKeyListParams::owner_project_access?
+
+            def owner_project_access=: (
+              OpenAI::Models::Admin::Organization::Projects::APIKeyListParams::owner_project_access
+            ) -> OpenAI::Models::Admin::Organization::Projects::APIKeyListParams::owner_project_access
+
             def initialize: (
               project_id: String,
               ?after: String,
               ?limit: Integer,
+              ?owner_project_access: OpenAI::Models::Admin::Organization::Projects::APIKeyListParams::owner_project_access,
               ?request_options: OpenAI::request_opts
             ) -> void
 
@@ -32,8 +44,21 @@ module OpenAI
               project_id: String,
               after: String,
               limit: Integer,
+              owner_project_access: OpenAI::Models::Admin::Organization::Projects::APIKeyListParams::owner_project_access,
               request_options: OpenAI::RequestOptions
             }
+
+            type owner_project_access = :active | :inactive | :any
+
+            module OwnerProjectAccess
+              extend OpenAI::Internal::Type::Enum
+
+              ACTIVE: :active
+              INACTIVE: :inactive
+              ANY: :any
+
+              def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Projects::APIKeyListParams::owner_project_access]
+            end
           end
         end
       end

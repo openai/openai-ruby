@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.70.0 (2026-07-14)
+
+Full Changelog: [v0.69.0...v0.70.0](https://github.com/openai/openai-ruby/compare/v0.69.0...v0.70.0)
+
+### Features
+
+* **api:** add owner_project_access to APIKeyListParams ([2741c65](https://github.com/openai/openai-ruby/commit/2741c6534029f6bb2fb26e3390bbffd30b7febc7))
+
+
+### Chores
+
+* **deps-dev:** bump activesupport from 8.1.1 to 8.1.2.1 ([#301](https://github.com/openai/openai-ruby/issues/301)) ([78727df](https://github.com/openai/openai-ruby/commit/78727dfdce3b6b890dbaabc2e55d17f72e4448ba))
+* **deps-dev:** bump addressable from 2.8.7 to 2.9.0 ([#298](https://github.com/openai/openai-ruby/issues/298)) ([6737a88](https://github.com/openai/openai-ruby/commit/6737a8875d5322bf63cc7721fee9cb69742c58b6))
+* **deps-dev:** bump yard from 0.9.37 to 0.9.44 ([#297](https://github.com/openai/openai-ruby/issues/297)) ([857dd68](https://github.com/openai/openai-ruby/commit/857dd6896271218715fc2187bbc918fabb4dba61))
+* fix CodeQL parsing of Sorbet fallback ([#303](https://github.com/openai/openai-ruby/issues/303)) ([7d0dcaf](https://github.com/openai/openai-ruby/commit/7d0dcaf72eafaa7184e2945a8f051ecb8395c158))
+* Harden GitHub Actions permissions ([#292](https://github.com/openai/openai-ruby/issues/292)) ([0a478dc](https://github.com/openai/openai-ruby/commit/0a478dca89668d9d1de58d710822810922189871))
+
 ## 0.69.0 (2026-07-09)
 
 Full Changelog: [v0.68.0...v0.69.0](https://github.com/openai/openai-ruby/compare/v0.68.0...v0.69.0)

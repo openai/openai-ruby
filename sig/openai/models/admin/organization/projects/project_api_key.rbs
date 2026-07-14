@@ -13,6 +13,7 @@ module OpenAI
               name: String,
               object: :"organization.project.api_key",
               owner: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner,
+              owner_project_access: OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::owner_project_access,
               redacted_value: String
             }
 
@@ -29,6 +30,8 @@ module OpenAI
 
             attr_accessor owner: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner
 
+            attr_accessor owner_project_access: OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::owner_project_access
+
             attr_accessor redacted_value: String
 
             def initialize: (
@@ -37,6 +40,7 @@ module OpenAI
               last_used_at: Integer?,
               name: String,
               owner: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner,
+              owner_project_access: OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::owner_project_access,
               redacted_value: String,
               ?object: :"organization.project.api_key"
             ) -> void
@@ -48,6 +52,7 @@ module OpenAI
               name: String,
               object: :"organization.project.api_key",
               owner: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner,
+              owner_project_access: OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::owner_project_access,
               redacted_value: String
             }
 
@@ -163,6 +168,17 @@ module OpenAI
                   role: String
                 }
               end
+            end
+
+            type owner_project_access = :active | :inactive
+
+            module OwnerProjectAccess
+              extend OpenAI::Internal::Type::Enum
+
+              ACTIVE: :active
+              INACTIVE: :inactive
+
+              def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::owner_project_access]
             end
           end
         end
