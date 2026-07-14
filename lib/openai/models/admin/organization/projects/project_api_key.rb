@@ -42,13 +42,20 @@ module OpenAI
             #   @return [OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner]
             required :owner, -> { OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner }
 
+            # @!attribute owner_project_access
+            #   Whether the API key's owner currently has effective access to the project.
+            #
+            #   @return [Symbol, OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::OwnerProjectAccess]
+            required :owner_project_access,
+                     enum: -> { OpenAI::Admin::Organization::Projects::ProjectAPIKey::OwnerProjectAccess }
+
             # @!attribute redacted_value
             #   The redacted value of the API key
             #
             #   @return [String]
             required :redacted_value, String
 
-            # @!method initialize(id:, created_at:, last_used_at:, name:, owner:, redacted_value:, object: :"organization.project.api_key")
+            # @!method initialize(id:, created_at:, last_used_at:, name:, owner:, owner_project_access:, redacted_value:, object: :"organization.project.api_key")
             #   Represents an individual API key in a project.
             #
             #   @param id [String] The identifier, which can be referenced in API endpoints
@@ -60,6 +67,8 @@ module OpenAI
             #   @param name [String] The name of the API key
             #
             #   @param owner [OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner]
+            #
+            #   @param owner_project_access [Symbol, OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::OwnerProjectAccess] Whether the API key's owner currently has effective access to the project.
             #
             #   @param redacted_value [String] The redacted value of the API key
             #
@@ -189,6 +198,19 @@ module OpenAI
                 #
                 #   @param role [String] The user's project role.
               end
+            end
+
+            # Whether the API key's owner currently has effective access to the project.
+            #
+            # @see OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey#owner_project_access
+            module OwnerProjectAccess
+              extend OpenAI::Internal::Type::Enum
+
+              ACTIVE = :active
+              INACTIVE = :inactive
+
+              # @!method self.values
+              #   @return [Array<Symbol>]
             end
           end
         end

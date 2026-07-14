@@ -14,6 +14,7 @@ module OpenAI
               String project_id,
               ?after: String,
               ?limit: Integer,
+              ?owner_project_access: OpenAI::Models::Admin::Organization::Projects::APIKeyListParams::owner_project_access,
               ?request_options: OpenAI::request_opts
             ) -> OpenAI::Internal::ConversationCursorPage[OpenAI::Admin::Organization::Projects::ProjectAPIKey]
 
