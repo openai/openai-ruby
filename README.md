@@ -107,6 +107,56 @@ puts(edited.data.first)
 
 Note that you can also pass a raw `IO` descriptor, but this disables retries, as the library can't be sure if the descriptor is a file or pipe (which cannot be rewound).
 
+## Amazon Bedrock
+
+Use the standard client with the Bedrock provider to call OpenAI models through Amazon Bedrock's OpenAI-compatible API. Add `aws-sdk-core` to your application for AWS credential discovery and SigV4 signing:
+
+```ruby
+gem "openai"
+gem "aws-sdk-core", "~> 3"
+```
+
+With your normal AWS credentials configured, only the region is required:
+
+```ruby
+require "openai"
+
+client = OpenAI::Client.new(
+  provider: OpenAI::Providers.bedrock(region: "us-west-2")
+)
+
+response = client.responses.create(
+  model: ENV.fetch("BEDROCK_MODEL"),
+  input: "Say hello!"
+)
+
+puts(response.output_text)
+```
+
+The provider uses the standard AWS credential chain, including environment credentials, `~/.aws/credentials`, `~/.aws/config`, `AWS_PROFILE`, named profiles, SSO and assume-role profiles, and workload credentials. Select a profile explicitly with:
+
+```ruby
+client = OpenAI::Client.new(
+  provider: OpenAI::Providers.bedrock(
+    region: "us-west-2",
+    profile: "engineering"
+  )
+)
+```
+
+`AWS_BEARER_TOKEN_BEDROCK` and explicit Bedrock bearer credentials are also supported. Bearer authentication does not load or require `aws-sdk-core`:
+
+```ruby
+client = OpenAI::Client.new(
+  provider: OpenAI::Providers.bedrock(
+    region: "us-west-2",
+    api_key: ENV.fetch("AWS_BEARER_TOKEN_BEDROCK")
+  )
+)
+```
+
+See [bedrock.md](bedrock.md) for authentication precedence, static and refreshable credentials, endpoint configuration, and SigV4 request constraints.
+
 ## Workload Identity Authentication
 
 For secure, automated environments like cloud-managed Kubernetes, Azure, and GCP, you can use workload identity authentication with short-lived tokens from cloud identity providers instead of long-lived API keys.

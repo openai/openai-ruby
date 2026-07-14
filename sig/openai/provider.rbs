@@ -1,0 +1,5 @@
+module OpenAI
+  class Provider
+    def inspect: -> String
+  end
+end

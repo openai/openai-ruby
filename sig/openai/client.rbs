@@ -74,6 +74,12 @@ module OpenAI
 
     private def admin_api_key_auth: -> ::Hash[String, String]
 
+    private def prepare_request: (
+      OpenAI::Internal::Transport::BaseClient::request_input request,
+      redirect_count: Integer,
+      retry_count: Integer
+    ) -> OpenAI::Internal::Transport::BaseClient::request_input
+
     def initialize: (
       ?api_key: String?,
       ?admin_api_key: String?,
@@ -81,6 +87,7 @@ module OpenAI
       ?organization: String?,
       ?project: String?,
       ?webhook_secret: String?,
+      ?provider: OpenAI::Provider?,
       ?base_url: String?,
       ?max_retries: Integer,
       ?timeout: Float,

@@ -189,6 +189,19 @@ module OpenAI
         end
 
         # @api private
+        sig do
+          overridable
+            .params(
+              request: OpenAI::Internal::Transport::BaseClient::RequestInput,
+              redirect_count: Integer,
+              retry_count: Integer
+            )
+            .returns(OpenAI::Internal::Transport::BaseClient::RequestInput)
+        end
+        private def prepare_request(request, redirect_count:, retry_count:)
+        end
+
+        # @api private
         sig { returns(String) }
         private def user_agent
         end
@@ -218,6 +231,25 @@ module OpenAI
           ).returns(Float)
         end
         private def retry_delay(headers, retry_count:)
+        end
+
+        # @api private
+        sig do
+          params(
+            url: URI::Generic,
+            status: Integer,
+            headers: T::Hash[String, String],
+            response: Net::HTTPResponse,
+            stream: T::Enumerable[String]
+          ).returns(T.noreturn)
+        end
+        private def raise_status_error!(
+          url:,
+          status:,
+          headers:,
+          response:,
+          stream:
+        )
         end
 
         # @api private

@@ -17,6 +17,7 @@ end
 
 group :development, :test do
   gem "async"
+  gem "aws-sdk-core", "~> 3"
   gem "minitest"
   gem "minitest-focus"
   gem "minitest-hooks"

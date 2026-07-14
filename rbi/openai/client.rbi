@@ -132,14 +132,29 @@ module OpenAI
     private def admin_api_key_auth
     end
 
+    # @api private
+    sig do
+      override
+        .params(
+          request: OpenAI::Internal::Transport::BaseClient::RequestInput,
+          redirect_count: Integer,
+          retry_count: Integer
+        )
+        .returns(OpenAI::Internal::Transport::BaseClient::RequestInput)
+    end
+    private def prepare_request(request, redirect_count:, retry_count:)
+    end
+
     # Creates and returns a new client for interacting with the API.
     sig do
       params(
         api_key: T.nilable(String),
         admin_api_key: T.nilable(String),
+        workload_identity: T.nilable(OpenAI::Auth::WorkloadIdentity),
         organization: T.nilable(String),
         project: T.nilable(String),
         webhook_secret: T.nilable(String),
+        provider: T.nilable(OpenAI::Provider),
         base_url: T.nilable(String),
         max_retries: Integer,
         timeout: Float,
@@ -152,12 +167,14 @@ module OpenAI
       api_key: ENV["OPENAI_API_KEY"],
       # Defaults to `ENV["OPENAI_ADMIN_KEY"]`
       admin_api_key: ENV["OPENAI_ADMIN_KEY"],
+      workload_identity: nil,
       # Defaults to `ENV["OPENAI_ORG_ID"]`
       organization: ENV["OPENAI_ORG_ID"],
       # Defaults to `ENV["OPENAI_PROJECT_ID"]`
       project: ENV["OPENAI_PROJECT_ID"],
       # Defaults to `ENV["OPENAI_WEBHOOK_SECRET"]`
       webhook_secret: ENV["OPENAI_WEBHOOK_SECRET"],
+      provider: nil,
       # Override the default base URL for the API, e.g.,
       # `"https://api.example.com/v2/"`. Defaults to `ENV["OPENAI_BASE_URL"]`
       base_url: ENV["OPENAI_BASE_URL"],
