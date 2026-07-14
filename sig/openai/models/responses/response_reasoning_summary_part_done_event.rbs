@@ -8,7 +8,8 @@ module OpenAI
           part: OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part,
           sequence_number: Integer,
           summary_index: Integer,
-          type: :"response.reasoning_summary_part.done"
+          type: :"response.reasoning_summary_part.done",
+          status: OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent::status
         }
 
       class ResponseReasoningSummaryPartDoneEvent < OpenAI::Internal::Type::BaseModel
@@ -24,12 +25,19 @@ module OpenAI
 
         attr_accessor type: :"response.reasoning_summary_part.done"
 
+        attr_reader status: OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent::status?
+
+        def status=: (
+          OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent::status
+        ) -> OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent::status
+
         def initialize: (
           item_id: String,
           output_index: Integer,
           part: OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part,
           sequence_number: Integer,
           summary_index: Integer,
+          ?status: OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent::status,
           ?type: :"response.reasoning_summary_part.done"
         ) -> void
 
@@ -39,7 +47,8 @@ module OpenAI
           part: OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part,
           sequence_number: Integer,
           summary_index: Integer,
-          type: :"response.reasoning_summary_part.done"
+          type: :"response.reasoning_summary_part.done",
+          status: OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent::status
         }
 
         type part = { text: String, type: :summary_text }
@@ -52,6 +61,16 @@ module OpenAI
           def initialize: (text: String, ?type: :summary_text) -> void
 
           def to_hash: -> { text: String, type: :summary_text }
+        end
+
+        type status = :incomplete
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          INCOMPLETE: :incomplete
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent::status]
         end
       end
     end

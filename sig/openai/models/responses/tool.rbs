@@ -8,6 +8,7 @@ module OpenAI
         | OpenAI::Responses::ComputerUsePreviewTool
         | OpenAI::Responses::Tool::Mcp
         | OpenAI::Responses::Tool::CodeInterpreter
+        | OpenAI::Responses::Tool::ProgrammaticToolCalling
         | OpenAI::Responses::Tool::ImageGeneration
         | OpenAI::Responses::Tool::LocalShell
         | OpenAI::Responses::FunctionShellTool
@@ -25,6 +26,7 @@ module OpenAI
           {
             server_label: String,
             type: :mcp,
+            allowed_callers: ::Array[OpenAI::Models::Responses::Tool::Mcp::allowed_caller]?,
             allowed_tools: OpenAI::Models::Responses::Tool::Mcp::allowed_tools?,
             authorization: String,
             connector_id: OpenAI::Models::Responses::Tool::Mcp::connector_id,
@@ -40,6 +42,8 @@ module OpenAI
           attr_accessor server_label: String
 
           attr_accessor type: :mcp
+
+          attr_accessor allowed_callers: ::Array[OpenAI::Models::Responses::Tool::Mcp::allowed_caller]?
 
           attr_accessor allowed_tools: OpenAI::Models::Responses::Tool::Mcp::allowed_tools?
 
@@ -75,6 +79,7 @@ module OpenAI
 
           def initialize: (
             server_label: String,
+            ?allowed_callers: ::Array[OpenAI::Models::Responses::Tool::Mcp::allowed_caller]?,
             ?allowed_tools: OpenAI::Models::Responses::Tool::Mcp::allowed_tools?,
             ?authorization: String,
             ?connector_id: OpenAI::Models::Responses::Tool::Mcp::connector_id,
@@ -90,6 +95,7 @@ module OpenAI
           def to_hash: -> {
             server_label: String,
             type: :mcp,
+            allowed_callers: ::Array[OpenAI::Models::Responses::Tool::Mcp::allowed_caller]?,
             allowed_tools: OpenAI::Models::Responses::Tool::Mcp::allowed_tools?,
             authorization: String,
             connector_id: OpenAI::Models::Responses::Tool::Mcp::connector_id,
@@ -100,6 +106,17 @@ module OpenAI
             server_url: String,
             tunnel_id: String
           }
+
+          type allowed_caller = :direct | :programmatic
+
+          module AllowedCaller
+            extend OpenAI::Internal::Type::Enum
+
+            DIRECT: :direct
+            PROGRAMMATIC: :programmatic
+
+            def self?.values: -> ::Array[OpenAI::Models::Responses::Tool::Mcp::allowed_caller]
+          end
 
           type allowed_tools =
             ::Array[String]
@@ -251,7 +268,8 @@ module OpenAI
         type code_interpreter =
           {
             container: OpenAI::Models::Responses::Tool::CodeInterpreter::container,
-            type: :code_interpreter
+            type: :code_interpreter,
+            allowed_callers: ::Array[OpenAI::Models::Responses::Tool::CodeInterpreter::allowed_caller]?
           }
 
         class CodeInterpreter < OpenAI::Internal::Type::BaseModel
@@ -259,14 +277,18 @@ module OpenAI
 
           attr_accessor type: :code_interpreter
 
+          attr_accessor allowed_callers: ::Array[OpenAI::Models::Responses::Tool::CodeInterpreter::allowed_caller]?
+
           def initialize: (
             container: OpenAI::Models::Responses::Tool::CodeInterpreter::container,
+            ?allowed_callers: ::Array[OpenAI::Models::Responses::Tool::CodeInterpreter::allowed_caller]?,
             ?type: :code_interpreter
           ) -> void
 
           def to_hash: -> {
             container: OpenAI::Models::Responses::Tool::CodeInterpreter::container,
-            type: :code_interpreter
+            type: :code_interpreter,
+            allowed_callers: ::Array[OpenAI::Models::Responses::Tool::CodeInterpreter::allowed_caller]?
           }
 
           type container =
@@ -339,6 +361,27 @@ module OpenAI
 
             def self?.variants: -> ::Array[OpenAI::Models::Responses::Tool::CodeInterpreter::container]
           end
+
+          type allowed_caller = :direct | :programmatic
+
+          module AllowedCaller
+            extend OpenAI::Internal::Type::Enum
+
+            DIRECT: :direct
+            PROGRAMMATIC: :programmatic
+
+            def self?.values: -> ::Array[OpenAI::Models::Responses::Tool::CodeInterpreter::allowed_caller]
+          end
+        end
+
+        type programmatic_tool_calling = { type: :programmatic_tool_calling }
+
+        class ProgrammaticToolCalling < OpenAI::Internal::Type::BaseModel
+          attr_accessor type: :programmatic_tool_calling
+
+          def initialize: (?type: :programmatic_tool_calling) -> void
+
+          def to_hash: -> { type: :programmatic_tool_calling }
         end
 
         type image_generation =

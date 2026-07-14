@@ -8,7 +8,8 @@ module OpenAI
           file_data: String?,
           file_id: String?,
           file_url: String?,
-          filename: String?
+          filename: String?,
+          prompt_cache_breakpoint: OpenAI::Responses::ResponseInputFileContent::PromptCacheBreakpoint?
         }
 
       class ResponseInputFileContent < OpenAI::Internal::Type::BaseModel
@@ -28,12 +29,15 @@ module OpenAI
 
         attr_accessor filename: String?
 
+        attr_accessor prompt_cache_breakpoint: OpenAI::Responses::ResponseInputFileContent::PromptCacheBreakpoint?
+
         def initialize: (
           ?detail: OpenAI::Models::Responses::ResponseInputFileContent::detail,
           ?file_data: String?,
           ?file_id: String?,
           ?file_url: String?,
           ?filename: String?,
+          ?prompt_cache_breakpoint: OpenAI::Responses::ResponseInputFileContent::PromptCacheBreakpoint?,
           ?type: :input_file
         ) -> void
 
@@ -43,18 +47,30 @@ module OpenAI
           file_data: String?,
           file_id: String?,
           file_url: String?,
-          filename: String?
+          filename: String?,
+          prompt_cache_breakpoint: OpenAI::Responses::ResponseInputFileContent::PromptCacheBreakpoint?
         }
 
-        type detail = :low | :high
+        type detail = :auto | :low | :high
 
         module Detail
           extend OpenAI::Internal::Type::Enum
 
+          AUTO: :auto
           LOW: :low
           HIGH: :high
 
           def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputFileContent::detail]
+        end
+
+        type prompt_cache_breakpoint = { mode: :explicit }
+
+        class PromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
+          attr_accessor mode: :explicit
+
+          def initialize: (?mode: :explicit) -> void
+
+          def to_hash: -> { mode: :explicit }
         end
       end
     end

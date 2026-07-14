@@ -1,0 +1,40 @@
+module OpenAI
+  module Models
+    class BetaApplyPatchTool = Beta::BetaApplyPatchTool
+
+    module Beta
+      type beta_apply_patch_tool =
+        {
+          type: :apply_patch,
+          allowed_callers: ::Array[OpenAI::Models::Beta::BetaApplyPatchTool::allowed_caller]?
+        }
+
+      class BetaApplyPatchTool < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :apply_patch
+
+        attr_accessor allowed_callers: ::Array[OpenAI::Models::Beta::BetaApplyPatchTool::allowed_caller]?
+
+        def initialize: (
+          ?allowed_callers: ::Array[OpenAI::Models::Beta::BetaApplyPatchTool::allowed_caller]?,
+          ?type: :apply_patch
+        ) -> void
+
+        def to_hash: -> {
+          type: :apply_patch,
+          allowed_callers: ::Array[OpenAI::Models::Beta::BetaApplyPatchTool::allowed_caller]?
+        }
+
+        type allowed_caller = :direct | :programmatic
+
+        module AllowedCaller
+          extend OpenAI::Internal::Type::Enum
+
+          DIRECT: :direct
+          PROGRAMMATIC: :programmatic
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaApplyPatchTool::allowed_caller]
+        end
+      end
+    end
+  end
+end

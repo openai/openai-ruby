@@ -68,6 +68,7 @@ module OpenAI
                   OpenAI::Responses::ComputerUsePreviewTool::OrHash,
                   OpenAI::Responses::Tool::Mcp::OrHash,
                   OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                  OpenAI::Responses::Tool::ProgrammaticToolCalling::OrHash,
                   OpenAI::Responses::Tool::ImageGeneration::OrHash,
                   OpenAI::Responses::Tool::LocalShell::OrHash,
                   OpenAI::Responses::FunctionShellTool::OrHash,

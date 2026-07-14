@@ -211,11 +211,31 @@ module OpenAI
         sig { params(prompt_cache_key: String).void }
         attr_writer :prompt_cache_key
 
+        # The prompt-caching options that were applied to the response. Supported for
+        # `gpt-5.6` and later models.
+        sig do
+          returns(T.nilable(OpenAI::Responses::Response::PromptCacheOptions))
+        end
+        attr_reader :prompt_cache_options
+
+        sig do
+          params(
+            prompt_cache_options:
+              OpenAI::Responses::Response::PromptCacheOptions::OrHash
+          ).void
+        end
+        attr_writer :prompt_cache_options
+
+        # Deprecated. Use `prompt_cache_options.ttl` instead.
+        #
         # The retention policy for the prompt cache. Set to `24h` to enable extended
         # prompt caching, which keeps cached prefixes active for longer, up to a maximum
         # of 24 hours.
         # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
-        # For `gpt-5.5`, `gpt-5.5-pro`, and future models, only `24h` is supported.
+        # This field expresses a maximum retention policy, while
+        # `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
+        # are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
+        # models, only `24h` is supported.
         #
         # For older models that support both `in_memory` and `24h`, the default depends on
         # your organization's data retention policy:
@@ -364,6 +384,8 @@ module OpenAI
                   OpenAI::Responses::ResponseComputerToolCall::OrHash,
                   OpenAI::Responses::ResponseComputerToolCallOutputItem::OrHash,
                   OpenAI::Responses::ResponseReasoningItem::OrHash,
+                  OpenAI::Responses::ResponseOutputItem::Program::OrHash,
+                  OpenAI::Responses::ResponseOutputItem::ProgramOutput::OrHash,
                   OpenAI::Responses::ResponseToolSearchCall::OrHash,
                   OpenAI::Responses::ResponseToolSearchOutputItem::OrHash,
                   OpenAI::Responses::ResponseOutputItem::AdditionalTools::OrHash,
@@ -394,6 +416,7 @@ module OpenAI
                 OpenAI::Responses::ToolChoiceFunction::OrHash,
                 OpenAI::Responses::ToolChoiceMcp::OrHash,
                 OpenAI::Responses::ToolChoiceCustom::OrHash,
+                OpenAI::Responses::Response::ToolChoice::SpecificProgrammaticToolCallingParam::OrHash,
                 OpenAI::Responses::ToolChoiceApplyPatch::OrHash,
                 OpenAI::Responses::ToolChoiceShell::OrHash
               ),
@@ -406,6 +429,7 @@ module OpenAI
                   OpenAI::Responses::ComputerUsePreviewTool::OrHash,
                   OpenAI::Responses::Tool::Mcp::OrHash,
                   OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                  OpenAI::Responses::Tool::ProgrammaticToolCalling::OrHash,
                   OpenAI::Responses::Tool::ImageGeneration::OrHash,
                   OpenAI::Responses::Tool::LocalShell::OrHash,
                   OpenAI::Responses::FunctionShellTool::OrHash,
@@ -429,6 +453,8 @@ module OpenAI
             previous_response_id: T.nilable(String),
             prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
             prompt_cache_key: String,
+            prompt_cache_options:
+              OpenAI::Responses::Response::PromptCacheOptions::OrHash,
             prompt_cache_retention:
               T.nilable(
                 OpenAI::Responses::Response::PromptCacheRetention::OrSymbol
@@ -553,11 +579,19 @@ module OpenAI
           # hit rates. Replaces the `user` field.
           # [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
           prompt_cache_key: nil,
+          # The prompt-caching options that were applied to the response. Supported for
+          # `gpt-5.6` and later models.
+          prompt_cache_options: nil,
+          # Deprecated. Use `prompt_cache_options.ttl` instead.
+          #
           # The retention policy for the prompt cache. Set to `24h` to enable extended
           # prompt caching, which keeps cached prefixes active for longer, up to a maximum
           # of 24 hours.
           # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
-          # For `gpt-5.5`, `gpt-5.5-pro`, and future models, only `24h` is supported.
+          # This field expresses a maximum retention policy, while
+          # `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
+          # are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
+          # models, only `24h` is supported.
           #
           # For older models that support both `in_memory` and `24h`, the default depends on
           # your organization's data retention policy:
@@ -659,6 +693,8 @@ module OpenAI
               previous_response_id: T.nilable(String),
               prompt: T.nilable(OpenAI::Responses::ResponsePrompt),
               prompt_cache_key: String,
+              prompt_cache_options:
+                OpenAI::Responses::Response::PromptCacheOptions,
               prompt_cache_retention:
                 T.nilable(
                   OpenAI::Responses::Response::PromptCacheRetention::TaggedSymbol
@@ -819,10 +855,36 @@ module OpenAI
                 OpenAI::Responses::ToolChoiceFunction,
                 OpenAI::Responses::ToolChoiceMcp,
                 OpenAI::Responses::ToolChoiceCustom,
+                OpenAI::Responses::Response::ToolChoice::SpecificProgrammaticToolCallingParam,
                 OpenAI::Responses::ToolChoiceApplyPatch,
                 OpenAI::Responses::ToolChoiceShell
               )
             end
+
+          class SpecificProgrammaticToolCallingParam < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::Response::ToolChoice::SpecificProgrammaticToolCallingParam,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The tool to call. Always `programmatic_tool_calling`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig { params(type: Symbol).returns(T.attached_class) }
+            def self.new(
+              # The tool to call. Always `programmatic_tool_calling`.
+              type: :programmatic_tool_calling
+            )
+            end
+
+            sig { override.returns({ type: Symbol }) }
+            def to_hash
+            end
+          end
 
           sig do
             override.returns(
@@ -1326,11 +1388,138 @@ module OpenAI
           end
         end
 
+        class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::Response::PromptCacheOptions,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # Whether implicit prompt-cache breakpoints were enabled.
+          sig do
+            returns(
+              OpenAI::Responses::Response::PromptCacheOptions::Mode::TaggedSymbol
+            )
+          end
+          attr_accessor :mode
+
+          # The minimum lifetime applied to each cache breakpoint.
+          sig do
+            returns(
+              OpenAI::Responses::Response::PromptCacheOptions::Ttl::TaggedSymbol
+            )
+          end
+          attr_accessor :ttl
+
+          # The prompt-caching options that were applied to the response. Supported for
+          # `gpt-5.6` and later models.
+          sig do
+            params(
+              mode:
+                OpenAI::Responses::Response::PromptCacheOptions::Mode::OrSymbol,
+              ttl:
+                OpenAI::Responses::Response::PromptCacheOptions::Ttl::OrSymbol
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # Whether implicit prompt-cache breakpoints were enabled.
+            mode:,
+            # The minimum lifetime applied to each cache breakpoint.
+            ttl:
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                mode:
+                  OpenAI::Responses::Response::PromptCacheOptions::Mode::TaggedSymbol,
+                ttl:
+                  OpenAI::Responses::Response::PromptCacheOptions::Ttl::TaggedSymbol
+              }
+            )
+          end
+          def to_hash
+          end
+
+          # Whether implicit prompt-cache breakpoints were enabled.
+          module Mode
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol =
+              T.type_alias do
+                T.all(
+                  Symbol,
+                  OpenAI::Responses::Response::PromptCacheOptions::Mode
+                )
+              end
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            IMPLICIT =
+              T.let(
+                :implicit,
+                OpenAI::Responses::Response::PromptCacheOptions::Mode::TaggedSymbol
+              )
+            EXPLICIT =
+              T.let(
+                :explicit,
+                OpenAI::Responses::Response::PromptCacheOptions::Mode::TaggedSymbol
+              )
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Responses::Response::PromptCacheOptions::Mode::TaggedSymbol
+                ]
+              )
+            end
+            def self.values
+            end
+          end
+
+          # The minimum lifetime applied to each cache breakpoint.
+          module Ttl
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol =
+              T.type_alias do
+                T.all(
+                  Symbol,
+                  OpenAI::Responses::Response::PromptCacheOptions::Ttl
+                )
+              end
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            TTL_30M =
+              T.let(
+                :"30m",
+                OpenAI::Responses::Response::PromptCacheOptions::Ttl::TaggedSymbol
+              )
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Responses::Response::PromptCacheOptions::Ttl::TaggedSymbol
+                ]
+              )
+            end
+            def self.values
+            end
+          end
+        end
+
+        # Deprecated. Use `prompt_cache_options.ttl` instead.
+        #
         # The retention policy for the prompt cache. Set to `24h` to enable extended
         # prompt caching, which keeps cached prefixes active for longer, up to a maximum
         # of 24 hours.
         # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
-        # For `gpt-5.5`, `gpt-5.5-pro`, and future models, only `24h` is supported.
+        # This field expresses a maximum retention policy, while
+        # `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
+        # are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
+        # models, only `24h` is supported.
         #
         # For older models that support both `in_memory` and `24h`, the default depends on
         # your organization's data retention policy:

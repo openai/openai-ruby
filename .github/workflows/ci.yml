@@ -14,6 +14,8 @@ on:
       - 'stl-preview-head/**'
       - 'stl-preview-base/**'
 
+permissions: {}
+
 jobs:
   build:
     timeout-minutes: 10
@@ -27,6 +29,8 @@ jobs:
       (github.event_name == 'push' || github.event.pull_request.head.repo.fork) && (github.event_name != 'push' || github.event.head_commit.message != 'codegen metadata')
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
       - name: Set up Ruby
         uses: ruby/setup-ruby@c515ec17f69368147deb311832da000dd229d338 # v1
         with:
@@ -56,11 +60,15 @@ jobs:
   lint:
     timeout-minutes: 10
     name: lint
+    permissions:
+      contents: read
     runs-on: ${{ github.repository == 'stainless-sdks/openai-ruby' && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
     if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
 
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
       - name: Set up Ruby
         uses: ruby/setup-ruby@c515ec17f69368147deb311832da000dd229d338 # v1
         with:
@@ -73,6 +81,8 @@ jobs:
   test-ruby:
     timeout-minutes: 10
     name: test (ruby ${{ matrix.ruby-version }})
+    permissions:
+      contents: read
     runs-on: ${{ github.repository == 'stainless-sdks/openai-ruby' && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
     if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
     strategy:
@@ -81,6 +91,8 @@ jobs:
         ruby-version: ['3.2', '3.3', '3.4', '4.0']
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
       - name: Set up Ruby
         uses: ruby/setup-ruby@c515ec17f69368147deb311832da000dd229d338 # v1
         with:
@@ -95,6 +107,7 @@ jobs:
     name: test
     needs: test-ruby
     if: ${{ always() && needs.test-ruby.result != 'skipped' }}
+    permissions: {}
     runs-on: ${{ github.repository == 'stainless-sdks/openai-ruby' && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
     steps:
       - if: ${{ needs.test-ruby.result == 'failure' || needs.test-ruby.result == 'cancelled' }}

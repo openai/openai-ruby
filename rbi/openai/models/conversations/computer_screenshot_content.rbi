@@ -34,6 +34,26 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
+        # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+        # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+        # token block.
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint
+            )
+          )
+        end
+        attr_reader :prompt_cache_breakpoint
+
+        sig do
+          params(
+            prompt_cache_breakpoint:
+              OpenAI::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint::OrHash
+          ).void
+        end
+        attr_writer :prompt_cache_breakpoint
+
         # A screenshot of a computer.
         sig do
           params(
@@ -41,6 +61,8 @@ module OpenAI
               OpenAI::Conversations::ComputerScreenshotContent::Detail::OrSymbol,
             file_id: T.nilable(String),
             image_url: T.nilable(String),
+            prompt_cache_breakpoint:
+              OpenAI::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint::OrHash,
             type: Symbol
           ).returns(T.attached_class)
         end
@@ -52,6 +74,10 @@ module OpenAI
           file_id:,
           # The URL of the screenshot image.
           image_url:,
+          # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+          # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+          # token block.
+          prompt_cache_breakpoint: nil,
           # Specifies the event type. For a computer screenshot, this property is always set
           # to `computer_screenshot`.
           type: :computer_screenshot
@@ -65,7 +91,9 @@ module OpenAI
                 OpenAI::Conversations::ComputerScreenshotContent::Detail::TaggedSymbol,
               file_id: T.nilable(String),
               image_url: T.nilable(String),
-              type: Symbol
+              type: Symbol,
+              prompt_cache_breakpoint:
+                OpenAI::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint
             }
           )
         end
@@ -115,6 +143,34 @@ module OpenAI
             )
           end
           def self.values
+          end
+        end
+
+        class PromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The breakpoint mode. Always `explicit`.
+          sig { returns(Symbol) }
+          attr_accessor :mode
+
+          # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+          # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+          # token block.
+          sig { params(mode: Symbol).returns(T.attached_class) }
+          def self.new(
+            # The breakpoint mode. Always `explicit`.
+            mode: :explicit
+          )
+          end
+
+          sig { override.returns({ mode: Symbol }) }
+          def to_hash
           end
         end
       end

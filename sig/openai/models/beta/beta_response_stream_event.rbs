@@ -1,0 +1,68 @@
+module OpenAI
+  module Models
+    module BetaResponseStreamEvent = Beta::BetaResponseStreamEvent
+
+    module Beta
+      type beta_response_stream_event =
+        OpenAI::Beta::BetaResponseAudioDeltaEvent
+        | OpenAI::Beta::BetaResponseAudioDoneEvent
+        | OpenAI::Beta::BetaResponseAudioTranscriptDeltaEvent
+        | OpenAI::Beta::BetaResponseAudioTranscriptDoneEvent
+        | OpenAI::Beta::BetaResponseCodeInterpreterCallCodeDeltaEvent
+        | OpenAI::Beta::BetaResponseCodeInterpreterCallCodeDoneEvent
+        | OpenAI::Beta::BetaResponseCodeInterpreterCallCompletedEvent
+        | OpenAI::Beta::BetaResponseCodeInterpreterCallInProgressEvent
+        | OpenAI::Beta::BetaResponseCodeInterpreterCallInterpretingEvent
+        | OpenAI::Beta::BetaResponseCompletedEvent
+        | OpenAI::Beta::BetaResponseContentPartAddedEvent
+        | OpenAI::Beta::BetaResponseContentPartDoneEvent
+        | OpenAI::Beta::BetaResponseCreatedEvent
+        | OpenAI::Beta::BetaResponseErrorEvent
+        | OpenAI::Beta::BetaResponseFileSearchCallCompletedEvent
+        | OpenAI::Beta::BetaResponseFileSearchCallInProgressEvent
+        | OpenAI::Beta::BetaResponseFileSearchCallSearchingEvent
+        | OpenAI::Beta::BetaResponseFunctionCallArgumentsDeltaEvent
+        | OpenAI::Beta::BetaResponseFunctionCallArgumentsDoneEvent
+        | OpenAI::Beta::BetaResponseInProgressEvent
+        | OpenAI::Beta::BetaResponseFailedEvent
+        | OpenAI::Beta::BetaResponseIncompleteEvent
+        | OpenAI::Beta::BetaResponseOutputItemAddedEvent
+        | OpenAI::Beta::BetaResponseOutputItemDoneEvent
+        | OpenAI::Beta::BetaResponseReasoningSummaryPartAddedEvent
+        | OpenAI::Beta::BetaResponseReasoningSummaryPartDoneEvent
+        | OpenAI::Beta::BetaResponseReasoningSummaryTextDeltaEvent
+        | OpenAI::Beta::BetaResponseReasoningSummaryTextDoneEvent
+        | OpenAI::Beta::BetaResponseReasoningTextDeltaEvent
+        | OpenAI::Beta::BetaResponseReasoningTextDoneEvent
+        | OpenAI::Beta::BetaResponseRefusalDeltaEvent
+        | OpenAI::Beta::BetaResponseRefusalDoneEvent
+        | OpenAI::Beta::BetaResponseTextDeltaEvent
+        | OpenAI::Beta::BetaResponseTextDoneEvent
+        | OpenAI::Beta::BetaResponseWebSearchCallCompletedEvent
+        | OpenAI::Beta::BetaResponseWebSearchCallInProgressEvent
+        | OpenAI::Beta::BetaResponseWebSearchCallSearchingEvent
+        | OpenAI::Beta::BetaResponseImageGenCallCompletedEvent
+        | OpenAI::Beta::BetaResponseImageGenCallGeneratingEvent
+        | OpenAI::Beta::BetaResponseImageGenCallInProgressEvent
+        | OpenAI::Beta::BetaResponseImageGenCallPartialImageEvent
+        | OpenAI::Beta::BetaResponseMcpCallArgumentsDeltaEvent
+        | OpenAI::Beta::BetaResponseMcpCallArgumentsDoneEvent
+        | OpenAI::Beta::BetaResponseMcpCallCompletedEvent
+        | OpenAI::Beta::BetaResponseMcpCallFailedEvent
+        | OpenAI::Beta::BetaResponseMcpCallInProgressEvent
+        | OpenAI::Beta::BetaResponseMcpListToolsCompletedEvent
+        | OpenAI::Beta::BetaResponseMcpListToolsFailedEvent
+        | OpenAI::Beta::BetaResponseMcpListToolsInProgressEvent
+        | OpenAI::Beta::BetaResponseOutputTextAnnotationAddedEvent
+        | OpenAI::Beta::BetaResponseQueuedEvent
+        | OpenAI::Beta::BetaResponseCustomToolCallInputDeltaEvent
+        | OpenAI::Beta::BetaResponseCustomToolCallInputDoneEvent
+
+      module BetaResponseStreamEvent
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::beta_response_stream_event]
+      end
+    end
+  end
+end

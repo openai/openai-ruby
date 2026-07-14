@@ -61,6 +61,16 @@ module OpenAI
             #   @return [Symbol, :function]
             required :type, const: :function
 
+            # @!attribute allowed_callers
+            #   The tool invocation context(s).
+            #
+            #   @return [Array<Symbol, OpenAI::Models::Responses::NamespaceTool::Tool::Function::AllowedCaller>, nil]
+            optional :allowed_callers,
+                     -> {
+                       OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Responses::NamespaceTool::Tool::Function::AllowedCaller]
+                     },
+                     nil?: true
+
             # @!attribute defer_loading
             #   Whether this function should be deferred and discovered via tool search.
             #
@@ -72,28 +82,57 @@ module OpenAI
             #   @return [String, nil]
             optional :description, String, nil?: true
 
+            # @!attribute output_schema
+            #   A JSON Schema describing the JSON value encoded in string outputs for this
+            #   function tool. This does not describe content-array outputs.
+            #
+            #   @return [Hash{Symbol=>Object}, nil]
+            optional :output_schema,
+                     OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown],
+                     nil?: true
+
             # @!attribute parameters
             #
             #   @return [Object, nil]
             optional :parameters, OpenAI::Internal::Type::Unknown, nil?: true
 
             # @!attribute strict
+            #   Whether to enforce strict parameter validation. If omitted, Responses attempts
+            #   to use strict validation when the schema is compatible, and falls back to
+            #   non-strict validation otherwise.
             #
             #   @return [Boolean, nil]
             optional :strict, OpenAI::Internal::Type::Boolean, nil?: true
 
-            # @!method initialize(name:, defer_loading: nil, description: nil, parameters: nil, strict: nil, type: :function)
+            # @!method initialize(name:, allowed_callers: nil, defer_loading: nil, description: nil, output_schema: nil, parameters: nil, strict: nil, type: :function)
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Responses::NamespaceTool::Tool::Function} for more details.
+            #
             #   @param name [String]
+            #
+            #   @param allowed_callers [Array<Symbol, OpenAI::Models::Responses::NamespaceTool::Tool::Function::AllowedCaller>, nil] The tool invocation context(s).
             #
             #   @param defer_loading [Boolean] Whether this function should be deferred and discovered via tool search.
             #
             #   @param description [String, nil]
             #
+            #   @param output_schema [Hash{Symbol=>Object}, nil] A JSON Schema describing the JSON value encoded in string outputs for this funct
+            #
             #   @param parameters [Object, nil]
             #
-            #   @param strict [Boolean, nil]
+            #   @param strict [Boolean, nil] Whether to enforce strict parameter validation. If omitted, Responses attempts t
             #
             #   @param type [Symbol, :function]
+
+            module AllowedCaller
+              extend OpenAI::Internal::Type::Enum
+
+              DIRECT = :direct
+              PROGRAMMATIC = :programmatic
+
+              # @!method self.values
+              #   @return [Array<Symbol>]
+            end
           end
 
           # @!method self.variants

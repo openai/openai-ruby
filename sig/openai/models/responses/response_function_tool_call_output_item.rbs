@@ -8,6 +8,7 @@ module OpenAI
           output: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::output,
           status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status,
           type: :function_call_output,
+          caller_: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::caller_?,
           created_by: String
         }
 
@@ -22,6 +23,8 @@ module OpenAI
 
         attr_accessor type: :function_call_output
 
+        attr_accessor caller_: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::caller_?
+
         attr_reader created_by: String?
 
         def created_by=: (String) -> String
@@ -31,6 +34,7 @@ module OpenAI
           call_id: String,
           output: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::output,
           status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status,
+          ?caller_: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::caller_?,
           ?created_by: String,
           ?type: :function_call_output
         ) -> void
@@ -41,6 +45,7 @@ module OpenAI
           output: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::output,
           status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status,
           type: :function_call_output,
+          caller_: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::caller_?,
           created_by: String
         }
 
@@ -77,6 +82,38 @@ module OpenAI
           INCOMPLETE: :incomplete
 
           def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status]
+        end
+
+        type caller_ =
+          OpenAI::Responses::ResponseFunctionToolCallOutputItem::Caller::Direct
+          | OpenAI::Responses::ResponseFunctionToolCallOutputItem::Caller::Program
+
+        module Caller
+          extend OpenAI::Internal::Type::Union
+
+          type direct = { type: :direct }
+
+          class Direct < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :direct
+
+            def initialize: (?type: :direct) -> void
+
+            def to_hash: -> { type: :direct }
+          end
+
+          type program = { caller_id: String, type: :program }
+
+          class Program < OpenAI::Internal::Type::BaseModel
+            attr_accessor caller_id: String
+
+            attr_accessor type: :program
+
+            def initialize: (caller_id: String, ?type: :program) -> void
+
+            def to_hash: -> { caller_id: String, type: :program }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::caller_]
         end
       end
     end

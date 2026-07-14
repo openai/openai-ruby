@@ -31,7 +31,18 @@ module OpenAI
             #   @return [Integer, nil]
             optional :limit, Integer
 
-            # @!method initialize(project_id:, after: nil, limit: nil, request_options: {})
+            # @!attribute owner_project_access
+            #   Filter API keys by whether the owner currently has effective access to the
+            #   project. Use `active` for owners with access, `inactive` for owners without
+            #   access, or `any` for all enabled project API keys. If omitted, the endpoint
+            #   applies its existing membership-based visibility rules, which may exclude some
+            #   enabled keys.
+            #
+            #   @return [Symbol, OpenAI::Models::Admin::Organization::Projects::APIKeyListParams::OwnerProjectAccess, nil]
+            optional :owner_project_access,
+                     enum: -> { OpenAI::Admin::Organization::Projects::APIKeyListParams::OwnerProjectAccess }
+
+            # @!method initialize(project_id:, after: nil, limit: nil, owner_project_access: nil, request_options: {})
             #   Some parameter documentations has been truncated, see
             #   {OpenAI::Models::Admin::Organization::Projects::APIKeyListParams} for more
             #   details.
@@ -42,7 +53,25 @@ module OpenAI
             #
             #   @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
             #
+            #   @param owner_project_access [Symbol, OpenAI::Models::Admin::Organization::Projects::APIKeyListParams::OwnerProjectAccess] Filter API keys by whether the owner currently has effective access to the proje
+            #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
+
+            # Filter API keys by whether the owner currently has effective access to the
+            # project. Use `active` for owners with access, `inactive` for owners without
+            # access, or `any` for all enabled project API keys. If omitted, the endpoint
+            # applies its existing membership-based visibility rules, which may exclude some
+            # enabled keys.
+            module OwnerProjectAccess
+              extend OpenAI::Internal::Type::Enum
+
+              ACTIVE = :active
+              INACTIVE = :inactive
+              ANY = :any
+
+              # @!method self.values
+              #   @return [Array<Symbol>]
+            end
           end
         end
       end

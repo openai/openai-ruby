@@ -35,6 +35,7 @@ module OpenAI
           SERVER_ERROR = :server_error
           RATE_LIMIT_EXCEEDED = :rate_limit_exceeded
           INVALID_PROMPT = :invalid_prompt
+          BIO_POLICY = :bio_policy
           VECTOR_STORE_TIMEOUT = :vector_store_timeout
           INVALID_IMAGE = :invalid_image
           INVALID_IMAGE_FORMAT = :invalid_image_format

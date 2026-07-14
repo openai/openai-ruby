@@ -9,6 +9,7 @@ module OpenAI
           output: ::Array[OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output],
           status: OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::status,
           type: :shell_call_output,
+          caller_: OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::caller_?,
           created_by: String
         }
 
@@ -25,6 +26,8 @@ module OpenAI
 
         attr_accessor type: :shell_call_output
 
+        attr_accessor caller_: OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::caller_?
+
         attr_reader created_by: String?
 
         def created_by=: (String) -> String
@@ -35,6 +38,7 @@ module OpenAI
           max_output_length: Integer?,
           output: ::Array[OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output],
           status: OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::status,
+          ?caller_: OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::caller_?,
           ?created_by: String,
           ?type: :shell_call_output
         ) -> void
@@ -46,6 +50,7 @@ module OpenAI
           output: ::Array[OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output],
           status: OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::status,
           type: :shell_call_output,
+          caller_: OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::caller_?,
           created_by: String
         }
 
@@ -125,6 +130,38 @@ module OpenAI
           INCOMPLETE: :incomplete
 
           def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::status]
+        end
+
+        type caller_ =
+          OpenAI::Responses::ResponseFunctionShellToolCallOutput::Caller::Direct
+          | OpenAI::Responses::ResponseFunctionShellToolCallOutput::Caller::Program
+
+        module Caller
+          extend OpenAI::Internal::Type::Union
+
+          type direct = { type: :direct }
+
+          class Direct < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :direct
+
+            def initialize: (?type: :direct) -> void
+
+            def to_hash: -> { type: :direct }
+          end
+
+          type program = { caller_id: String, type: :program }
+
+          class Program < OpenAI::Internal::Type::BaseModel
+            attr_accessor caller_id: String
+
+            attr_accessor type: :program
+
+            def initialize: (caller_id: String, ?type: :program) -> void
+
+            def to_hash: -> { caller_id: String, type: :program }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::caller_]
         end
       end
     end

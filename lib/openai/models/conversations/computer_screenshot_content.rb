@@ -30,7 +30,16 @@ module OpenAI
         #   @return [Symbol, :computer_screenshot]
         required :type, const: :computer_screenshot
 
-        # @!method initialize(detail:, file_id:, image_url:, type: :computer_screenshot)
+        # @!attribute prompt_cache_breakpoint
+        #   Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+        #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+        #   token block.
+        #
+        #   @return [OpenAI::Models::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint, nil]
+        optional :prompt_cache_breakpoint,
+                 -> { OpenAI::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint }
+
+        # @!method initialize(detail:, file_id:, image_url:, prompt_cache_breakpoint: nil, type: :computer_screenshot)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Conversations::ComputerScreenshotContent} for more details.
         #
@@ -41,6 +50,8 @@ module OpenAI
         #   @param file_id [String, nil] The identifier of an uploaded file that contains the screenshot.
         #
         #   @param image_url [String, nil] The URL of the screenshot image.
+        #
+        #   @param prompt_cache_breakpoint [OpenAI::Models::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint] Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
         #
         #   @param type [Symbol, :computer_screenshot] Specifies the event type. For a computer screenshot, this property is always set
 
@@ -58,6 +69,22 @@ module OpenAI
 
           # @!method self.values
           #   @return [Array<Symbol>]
+        end
+
+        # @see OpenAI::Models::Conversations::ComputerScreenshotContent#prompt_cache_breakpoint
+        class PromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
+          # @!attribute mode
+          #   The breakpoint mode. Always `explicit`.
+          #
+          #   @return [Symbol, :explicit]
+          required :mode, const: :explicit
+
+          # @!method initialize(mode: :explicit)
+          #   Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+          #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+          #   token block.
+          #
+          #   @param mode [Symbol, :explicit] The breakpoint mode. Always `explicit`.
         end
       end
     end

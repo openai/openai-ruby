@@ -35,6 +35,7 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
         previous_response_id: String | nil,
         prompt: OpenAI::Responses::ResponsePrompt | nil,
         prompt_cache_key: String | nil,
+        prompt_cache_options: OpenAI::Responses::Response::PromptCacheOptions | nil,
         prompt_cache_retention: OpenAI::Responses::Response::PromptCacheRetention | nil,
         reasoning: OpenAI::Reasoning | nil,
         safety_identifier: String | nil,
@@ -81,6 +82,7 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
         previous_response_id: String | nil,
         prompt: OpenAI::Responses::ResponsePrompt | nil,
         prompt_cache_key: String | nil,
+        prompt_cache_options: OpenAI::Responses::Response::PromptCacheOptions | nil,
         prompt_cache_retention: OpenAI::Responses::Response::PromptCacheRetention | nil,
         reasoning: OpenAI::Reasoning | nil,
         safety_identifier: String | nil,
@@ -135,6 +137,7 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
         previous_response_id: String | nil,
         prompt: OpenAI::Responses::ResponsePrompt | nil,
         prompt_cache_key: String | nil,
+        prompt_cache_options: OpenAI::Responses::Response::PromptCacheOptions | nil,
         prompt_cache_retention: OpenAI::Responses::Response::PromptCacheRetention | nil,
         reasoning: OpenAI::Reasoning | nil,
         safety_identifier: String | nil,
@@ -150,7 +153,7 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
   end
 
   def test_compact_required_params
-    response = @openai.responses.compact(model: :"gpt-5.4")
+    response = @openai.responses.compact(model: :"gpt-5.6-sol")
 
     assert_pattern do
       response => OpenAI::Responses::CompactedResponse

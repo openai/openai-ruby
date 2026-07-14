@@ -30,6 +30,8 @@ module OpenAI
         # A tool that runs Python code to help generate a response to a prompt.
         variant :code_interpreter, -> { OpenAI::Responses::Tool::CodeInterpreter }
 
+        variant :programmatic_tool_calling, -> { OpenAI::Responses::Tool::ProgrammaticToolCalling }
+
         # A tool that generates images using the GPT image models.
         variant :image_generation, -> { OpenAI::Responses::Tool::ImageGeneration }
 
@@ -70,6 +72,14 @@ module OpenAI
           #
           #   @return [Symbol, :mcp]
           required :type, const: :mcp
+
+          # @!attribute allowed_callers
+          #   The tool invocation context(s).
+          #
+          #   @return [Array<Symbol, OpenAI::Models::Responses::Tool::Mcp::AllowedCaller>, nil]
+          optional :allowed_callers,
+                   -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Responses::Tool::Mcp::AllowedCaller] },
+                   nil?: true
 
           # @!attribute allowed_tools
           #   List of allowed tool names or a filter object.
@@ -144,7 +154,7 @@ module OpenAI
           #   @return [String, nil]
           optional :tunnel_id, String
 
-          # @!method initialize(server_label:, allowed_tools: nil, authorization: nil, connector_id: nil, defer_loading: nil, headers: nil, require_approval: nil, server_description: nil, server_url: nil, tunnel_id: nil, type: :mcp)
+          # @!method initialize(server_label:, allowed_callers: nil, allowed_tools: nil, authorization: nil, connector_id: nil, defer_loading: nil, headers: nil, require_approval: nil, server_description: nil, server_url: nil, tunnel_id: nil, type: :mcp)
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Responses::Tool::Mcp} for more details.
           #
@@ -153,6 +163,8 @@ module OpenAI
           #   [Learn more about MCP](https://platform.openai.com/docs/guides/tools-remote-mcp).
           #
           #   @param server_label [String] A label for this MCP server, used to identify it in tool calls.
+          #
+          #   @param allowed_callers [Array<Symbol, OpenAI::Models::Responses::Tool::Mcp::AllowedCaller>, nil] The tool invocation context(s).
           #
           #   @param allowed_tools [Array<String>, OpenAI::Models::Responses::Tool::Mcp::AllowedTools::McpToolFilter, nil] List of allowed tool names or a filter object.
           #
@@ -173,6 +185,16 @@ module OpenAI
           #   @param tunnel_id [String] The Secure MCP Tunnel ID to use instead of a direct server URL. One of
           #
           #   @param type [Symbol, :mcp] The type of the MCP tool. Always `mcp`.
+
+          module AllowedCaller
+            extend OpenAI::Internal::Type::Enum
+
+            DIRECT = :direct
+            PROGRAMMATIC = :programmatic
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
 
           # List of allowed tool names or a filter object.
           #
@@ -387,13 +409,25 @@ module OpenAI
           #   @return [Symbol, :code_interpreter]
           required :type, const: :code_interpreter
 
-          # @!method initialize(container:, type: :code_interpreter)
+          # @!attribute allowed_callers
+          #   The tool invocation context(s).
+          #
+          #   @return [Array<Symbol, OpenAI::Models::Responses::Tool::CodeInterpreter::AllowedCaller>, nil]
+          optional :allowed_callers,
+                   -> {
+                     OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Responses::Tool::CodeInterpreter::AllowedCaller]
+                   },
+                   nil?: true
+
+          # @!method initialize(container:, allowed_callers: nil, type: :code_interpreter)
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Responses::Tool::CodeInterpreter} for more details.
           #
           #   A tool that runs Python code to help generate a response to a prompt.
           #
           #   @param container [String, OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto] The code interpreter container. Can be a container ID or an object that
+          #
+          #   @param allowed_callers [Array<Symbol, OpenAI::Models::Responses::Tool::CodeInterpreter::AllowedCaller>, nil] The tool invocation context(s).
           #
           #   @param type [Symbol, :code_interpreter] The type of the code interpreter tool. Always `code_interpreter`.
 
@@ -488,6 +522,27 @@ module OpenAI
             # @!method self.variants
             #   @return [Array(String, OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto)]
           end
+
+          module AllowedCaller
+            extend OpenAI::Internal::Type::Enum
+
+            DIRECT = :direct
+            PROGRAMMATIC = :programmatic
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
+        end
+
+        class ProgrammaticToolCalling < OpenAI::Internal::Type::BaseModel
+          # @!attribute type
+          #   The type of the tool. Always `programmatic_tool_calling`.
+          #
+          #   @return [Symbol, :programmatic_tool_calling]
+          required :type, const: :programmatic_tool_calling
+
+          # @!method initialize(type: :programmatic_tool_calling)
+          #   @param type [Symbol, :programmatic_tool_calling] The type of the tool. Always `programmatic_tool_calling`.
         end
 
         class ImageGeneration < OpenAI::Internal::Type::BaseModel
@@ -848,7 +903,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::ComputerUsePreviewTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::FunctionShellTool, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::NamespaceTool, OpenAI::Models::Responses::ToolSearchTool, OpenAI::Models::Responses::ApplyPatchTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool)]
+        #   @return [Array(OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::ComputerUsePreviewTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ProgrammaticToolCalling, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::FunctionShellTool, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::NamespaceTool, OpenAI::Models::Responses::ToolSearchTool, OpenAI::Models::Responses::ApplyPatchTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool)]
       end
     end
   end

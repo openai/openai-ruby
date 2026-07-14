@@ -162,11 +162,23 @@ module OpenAI
           | OpenAI::Responses::ToolChoiceFunction
           | OpenAI::Responses::ToolChoiceMcp
           | OpenAI::Responses::ToolChoiceCustom
+          | OpenAI::Responses::InputTokenCountParams::ToolChoice::SpecificProgrammaticToolCallingParam
           | OpenAI::Responses::ToolChoiceApplyPatch
           | OpenAI::Responses::ToolChoiceShell
 
         module ToolChoice
           extend OpenAI::Internal::Type::Union
+
+          type specific_programmatic_tool_calling_param =
+            { type: :programmatic_tool_calling }
+
+          class SpecificProgrammaticToolCallingParam < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :programmatic_tool_calling
+
+            def initialize: (?type: :programmatic_tool_calling) -> void
+
+            def to_hash: -> { type: :programmatic_tool_calling }
+          end
 
           def self?.variants: -> ::Array[OpenAI::Models::Responses::InputTokenCountParams::tool_choice]
         end

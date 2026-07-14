@@ -31,6 +31,9 @@ module OpenAI
         module ChatKit
         end
 
+        module Responses
+        end
+
         module Threads
           module Runs
           end

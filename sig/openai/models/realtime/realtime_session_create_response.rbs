@@ -437,6 +437,8 @@ module OpenAI
           | :"gpt-realtime"
           | :"gpt-realtime-1.5"
           | :"gpt-realtime-2"
+          | :"gpt-realtime-2.1"
+          | :"gpt-realtime-2.1-mini"
           | :"gpt-realtime-2025-08-28"
           | :"gpt-4o-realtime-preview"
           | :"gpt-4o-realtime-preview-2024-10-01"
@@ -460,6 +462,8 @@ module OpenAI
           GPT_REALTIME: :"gpt-realtime"
           GPT_REALTIME_1_5: :"gpt-realtime-1.5"
           GPT_REALTIME_2: :"gpt-realtime-2"
+          GPT_REALTIME_2_1: :"gpt-realtime-2.1"
+          GPT_REALTIME_2_1_MINI: :"gpt-realtime-2.1-mini"
           GPT_REALTIME_2025_08_28: :"gpt-realtime-2025-08-28"
           GPT_4O_REALTIME_PREVIEW: :"gpt-4o-realtime-preview"
           GPT_4O_REALTIME_PREVIEW_2024_10_01: :"gpt-4o-realtime-preview-2024-10-01"
@@ -509,6 +513,7 @@ module OpenAI
             {
               server_label: String,
               type: :mcp,
+              allowed_callers: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::allowed_caller]?,
               allowed_tools: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::allowed_tools?,
               authorization: String,
               connector_id: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::connector_id,
@@ -524,6 +529,8 @@ module OpenAI
             attr_accessor server_label: String
 
             attr_accessor type: :mcp
+
+            attr_accessor allowed_callers: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::allowed_caller]?
 
             attr_accessor allowed_tools: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::allowed_tools?
 
@@ -559,6 +566,7 @@ module OpenAI
 
             def initialize: (
               server_label: String,
+              ?allowed_callers: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::allowed_caller]?,
               ?allowed_tools: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::allowed_tools?,
               ?authorization: String,
               ?connector_id: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::connector_id,
@@ -574,6 +582,7 @@ module OpenAI
             def to_hash: -> {
               server_label: String,
               type: :mcp,
+              allowed_callers: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::allowed_caller]?,
               allowed_tools: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::allowed_tools?,
               authorization: String,
               connector_id: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::connector_id,
@@ -584,6 +593,17 @@ module OpenAI
               server_url: String,
               tunnel_id: String
             }
+
+            type allowed_caller = :direct | :programmatic
+
+            module AllowedCaller
+              extend OpenAI::Internal::Type::Enum
+
+              DIRECT: :direct
+              PROGRAMMATIC: :programmatic
+
+              def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::allowed_caller]
+            end
 
             type allowed_tools =
               ::Array[String]

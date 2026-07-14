@@ -620,6 +620,10 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_REALTIME_2 }
 
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_REALTIME_2_1 }
+
+          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_REALTIME_2_1_MINI }
+
           variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_REALTIME_2025_08_28 }
 
           variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_4O_REALTIME_PREVIEW }
@@ -660,6 +664,8 @@ module OpenAI
           GPT_REALTIME = :"gpt-realtime"
           GPT_REALTIME_1_5 = :"gpt-realtime-1.5"
           GPT_REALTIME_2 = :"gpt-realtime-2"
+          GPT_REALTIME_2_1 = :"gpt-realtime-2.1"
+          GPT_REALTIME_2_1_MINI = :"gpt-realtime-2.1-mini"
           GPT_REALTIME_2025_08_28 = :"gpt-realtime-2025-08-28"
           GPT_4O_REALTIME_PREVIEW = :"gpt-4o-realtime-preview"
           GPT_4O_REALTIME_PREVIEW_2024_10_01 = :"gpt-4o-realtime-preview-2024-10-01"
@@ -739,6 +745,16 @@ module OpenAI
             #
             #   @return [Symbol, :mcp]
             required :type, const: :mcp
+
+            # @!attribute allowed_callers
+            #   The tool invocation context(s).
+            #
+            #   @return [Array<Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedCaller>, nil]
+            optional :allowed_callers,
+                     -> {
+                       OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedCaller]
+                     },
+                     nil?: true
 
             # @!attribute allowed_tools
             #   List of allowed tool names or a filter object.
@@ -822,7 +838,7 @@ module OpenAI
             #   @return [String, nil]
             optional :tunnel_id, String
 
-            # @!method initialize(server_label:, allowed_tools: nil, authorization: nil, connector_id: nil, defer_loading: nil, headers: nil, require_approval: nil, server_description: nil, server_url: nil, tunnel_id: nil, type: :mcp)
+            # @!method initialize(server_label:, allowed_callers: nil, allowed_tools: nil, authorization: nil, connector_id: nil, defer_loading: nil, headers: nil, require_approval: nil, server_description: nil, server_url: nil, tunnel_id: nil, type: :mcp)
             #   Some parameter documentations has been truncated, see
             #   {OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool} for
             #   more details.
@@ -832,6 +848,8 @@ module OpenAI
             #   [Learn more about MCP](https://platform.openai.com/docs/guides/tools-remote-mcp).
             #
             #   @param server_label [String] A label for this MCP server, used to identify it in tool calls.
+            #
+            #   @param allowed_callers [Array<Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedCaller>, nil] The tool invocation context(s).
             #
             #   @param allowed_tools [Array<String>, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedTools::McpToolFilter, nil] List of allowed tool names or a filter object.
             #
@@ -852,6 +870,16 @@ module OpenAI
             #   @param tunnel_id [String] The Secure MCP Tunnel ID to use instead of a direct server URL. One of
             #
             #   @param type [Symbol, :mcp] The type of the MCP tool. Always `mcp`.
+
+            module AllowedCaller
+              extend OpenAI::Internal::Type::Enum
+
+              DIRECT = :direct
+              PROGRAMMATIC = :programmatic
+
+              # @!method self.values
+              #   @return [Array<Symbol>]
+            end
 
             # List of allowed tool names or a filter object.
             #

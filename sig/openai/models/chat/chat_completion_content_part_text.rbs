@@ -3,16 +3,45 @@ module OpenAI
     class ChatCompletionContentPartText = Chat::ChatCompletionContentPartText
 
     module Chat
-      type chat_completion_content_part_text = { text: String, type: :text }
+      type chat_completion_content_part_text =
+        {
+          text: String,
+          type: :text,
+          prompt_cache_breakpoint: OpenAI::Chat::ChatCompletionContentPartText::PromptCacheBreakpoint
+        }
 
       class ChatCompletionContentPartText < OpenAI::Internal::Type::BaseModel
         attr_accessor text: String
 
         attr_accessor type: :text
 
-        def initialize: (text: String, ?type: :text) -> void
+        attr_reader prompt_cache_breakpoint: OpenAI::Chat::ChatCompletionContentPartText::PromptCacheBreakpoint?
 
-        def to_hash: -> { text: String, type: :text }
+        def prompt_cache_breakpoint=: (
+          OpenAI::Chat::ChatCompletionContentPartText::PromptCacheBreakpoint
+        ) -> OpenAI::Chat::ChatCompletionContentPartText::PromptCacheBreakpoint
+
+        def initialize: (
+          text: String,
+          ?prompt_cache_breakpoint: OpenAI::Chat::ChatCompletionContentPartText::PromptCacheBreakpoint,
+          ?type: :text
+        ) -> void
+
+        def to_hash: -> {
+          text: String,
+          type: :text,
+          prompt_cache_breakpoint: OpenAI::Chat::ChatCompletionContentPartText::PromptCacheBreakpoint
+        }
+
+        type prompt_cache_breakpoint = { mode: :explicit }
+
+        class PromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
+          attr_accessor mode: :explicit
+
+          def initialize: (?mode: :explicit) -> void
+
+          def to_hash: -> { mode: :explicit }
+        end
       end
     end
   end

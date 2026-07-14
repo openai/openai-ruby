@@ -1,0 +1,860 @@
+module OpenAI
+  module Models
+    class BetaResponse = Beta::BetaResponse
+
+    module Beta
+      type beta_response =
+        {
+          id: String,
+          created_at: Float,
+          error: OpenAI::Beta::BetaResponseError?,
+          incomplete_details: OpenAI::Beta::BetaResponse::IncompleteDetails?,
+          instructions: OpenAI::Models::Beta::BetaResponse::instructions?,
+          metadata: ::Hash[Symbol, String]?,
+          model: OpenAI::Models::Beta::BetaResponse::model,
+          object: :response,
+          output: ::Array[OpenAI::Models::Beta::beta_response_output_item],
+          parallel_tool_calls: bool,
+          temperature: Float?,
+          tool_choice: OpenAI::Models::Beta::BetaResponse::tool_choice,
+          tools: ::Array[OpenAI::Models::Beta::beta_tool],
+          top_p: Float?,
+          background: bool?,
+          completed_at: Float?,
+          conversation: OpenAI::Beta::BetaResponse::Conversation?,
+          max_output_tokens: Integer?,
+          max_tool_calls: Integer?,
+          moderation: OpenAI::Beta::BetaResponse::Moderation?,
+          previous_response_id: String?,
+          prompt: OpenAI::Beta::BetaResponsePrompt?,
+          prompt_cache_key: String,
+          prompt_cache_options: OpenAI::Beta::BetaResponse::PromptCacheOptions,
+          prompt_cache_retention: OpenAI::Models::Beta::BetaResponse::prompt_cache_retention?,
+          reasoning: OpenAI::Beta::BetaResponse::Reasoning?,
+          safety_identifier: String,
+          service_tier: OpenAI::Models::Beta::BetaResponse::service_tier?,
+          status: OpenAI::Models::Beta::beta_response_status,
+          text: OpenAI::Beta::BetaResponseTextConfig,
+          top_logprobs: Integer?,
+          truncation: OpenAI::Models::Beta::BetaResponse::truncation?,
+          usage: OpenAI::Beta::BetaResponseUsage,
+          user: String
+        }
+
+      class BetaResponse < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor created_at: Float
+
+        attr_accessor error: OpenAI::Beta::BetaResponseError?
+
+        attr_accessor incomplete_details: OpenAI::Beta::BetaResponse::IncompleteDetails?
+
+        attr_accessor instructions: OpenAI::Models::Beta::BetaResponse::instructions?
+
+        attr_accessor metadata: ::Hash[Symbol, String]?
+
+        attr_accessor model: OpenAI::Models::Beta::BetaResponse::model
+
+        attr_accessor object: :response
+
+        attr_accessor output: ::Array[OpenAI::Models::Beta::beta_response_output_item]
+
+        attr_accessor parallel_tool_calls: bool
+
+        attr_accessor temperature: Float?
+
+        attr_accessor tool_choice: OpenAI::Models::Beta::BetaResponse::tool_choice
+
+        attr_accessor tools: ::Array[OpenAI::Models::Beta::beta_tool]
+
+        attr_accessor top_p: Float?
+
+        attr_accessor background: bool?
+
+        attr_accessor completed_at: Float?
+
+        attr_accessor conversation: OpenAI::Beta::BetaResponse::Conversation?
+
+        attr_accessor max_output_tokens: Integer?
+
+        attr_accessor max_tool_calls: Integer?
+
+        attr_accessor moderation: OpenAI::Beta::BetaResponse::Moderation?
+
+        attr_accessor previous_response_id: String?
+
+        attr_accessor prompt: OpenAI::Beta::BetaResponsePrompt?
+
+        attr_reader prompt_cache_key: String?
+
+        def prompt_cache_key=: (String) -> String
+
+        attr_reader prompt_cache_options: OpenAI::Beta::BetaResponse::PromptCacheOptions?
+
+        def prompt_cache_options=: (
+          OpenAI::Beta::BetaResponse::PromptCacheOptions
+        ) -> OpenAI::Beta::BetaResponse::PromptCacheOptions
+
+        attr_accessor prompt_cache_retention: OpenAI::Models::Beta::BetaResponse::prompt_cache_retention?
+
+        attr_accessor reasoning: OpenAI::Beta::BetaResponse::Reasoning?
+
+        attr_reader safety_identifier: String?
+
+        def safety_identifier=: (String) -> String
+
+        attr_accessor service_tier: OpenAI::Models::Beta::BetaResponse::service_tier?
+
+        attr_reader status: OpenAI::Models::Beta::beta_response_status?
+
+        def status=: (
+          OpenAI::Models::Beta::beta_response_status
+        ) -> OpenAI::Models::Beta::beta_response_status
+
+        attr_reader text: OpenAI::Beta::BetaResponseTextConfig?
+
+        def text=: (
+          OpenAI::Beta::BetaResponseTextConfig
+        ) -> OpenAI::Beta::BetaResponseTextConfig
+
+        attr_accessor top_logprobs: Integer?
+
+        attr_accessor truncation: OpenAI::Models::Beta::BetaResponse::truncation?
+
+        attr_reader usage: OpenAI::Beta::BetaResponseUsage?
+
+        def usage=: (
+          OpenAI::Beta::BetaResponseUsage
+        ) -> OpenAI::Beta::BetaResponseUsage
+
+        attr_reader user: String?
+
+        def user=: (String) -> String
+
+        def initialize: (
+          id: String,
+          created_at: Float,
+          error: OpenAI::Beta::BetaResponseError?,
+          incomplete_details: OpenAI::Beta::BetaResponse::IncompleteDetails?,
+          instructions: OpenAI::Models::Beta::BetaResponse::instructions?,
+          metadata: ::Hash[Symbol, String]?,
+          model: OpenAI::Models::Beta::BetaResponse::model,
+          output: ::Array[OpenAI::Models::Beta::beta_response_output_item],
+          parallel_tool_calls: bool,
+          temperature: Float?,
+          tool_choice: OpenAI::Models::Beta::BetaResponse::tool_choice,
+          tools: ::Array[OpenAI::Models::Beta::beta_tool],
+          top_p: Float?,
+          ?background: bool?,
+          ?completed_at: Float?,
+          ?conversation: OpenAI::Beta::BetaResponse::Conversation?,
+          ?max_output_tokens: Integer?,
+          ?max_tool_calls: Integer?,
+          ?moderation: OpenAI::Beta::BetaResponse::Moderation?,
+          ?previous_response_id: String?,
+          ?prompt: OpenAI::Beta::BetaResponsePrompt?,
+          ?prompt_cache_key: String,
+          ?prompt_cache_options: OpenAI::Beta::BetaResponse::PromptCacheOptions,
+          ?prompt_cache_retention: OpenAI::Models::Beta::BetaResponse::prompt_cache_retention?,
+          ?reasoning: OpenAI::Beta::BetaResponse::Reasoning?,
+          ?safety_identifier: String,
+          ?service_tier: OpenAI::Models::Beta::BetaResponse::service_tier?,
+          ?status: OpenAI::Models::Beta::beta_response_status,
+          ?text: OpenAI::Beta::BetaResponseTextConfig,
+          ?top_logprobs: Integer?,
+          ?truncation: OpenAI::Models::Beta::BetaResponse::truncation?,
+          ?usage: OpenAI::Beta::BetaResponseUsage,
+          ?user: String,
+          ?object: :response
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          created_at: Float,
+          error: OpenAI::Beta::BetaResponseError?,
+          incomplete_details: OpenAI::Beta::BetaResponse::IncompleteDetails?,
+          instructions: OpenAI::Models::Beta::BetaResponse::instructions?,
+          metadata: ::Hash[Symbol, String]?,
+          model: OpenAI::Models::Beta::BetaResponse::model,
+          object: :response,
+          output: ::Array[OpenAI::Models::Beta::beta_response_output_item],
+          parallel_tool_calls: bool,
+          temperature: Float?,
+          tool_choice: OpenAI::Models::Beta::BetaResponse::tool_choice,
+          tools: ::Array[OpenAI::Models::Beta::beta_tool],
+          top_p: Float?,
+          background: bool?,
+          completed_at: Float?,
+          conversation: OpenAI::Beta::BetaResponse::Conversation?,
+          max_output_tokens: Integer?,
+          max_tool_calls: Integer?,
+          moderation: OpenAI::Beta::BetaResponse::Moderation?,
+          previous_response_id: String?,
+          prompt: OpenAI::Beta::BetaResponsePrompt?,
+          prompt_cache_key: String,
+          prompt_cache_options: OpenAI::Beta::BetaResponse::PromptCacheOptions,
+          prompt_cache_retention: OpenAI::Models::Beta::BetaResponse::prompt_cache_retention?,
+          reasoning: OpenAI::Beta::BetaResponse::Reasoning?,
+          safety_identifier: String,
+          service_tier: OpenAI::Models::Beta::BetaResponse::service_tier?,
+          status: OpenAI::Models::Beta::beta_response_status,
+          text: OpenAI::Beta::BetaResponseTextConfig,
+          top_logprobs: Integer?,
+          truncation: OpenAI::Models::Beta::BetaResponse::truncation?,
+          usage: OpenAI::Beta::BetaResponseUsage,
+          user: String
+        }
+
+        type incomplete_details =
+          {
+            reason: OpenAI::Models::Beta::BetaResponse::IncompleteDetails::reason
+          }
+
+        class IncompleteDetails < OpenAI::Internal::Type::BaseModel
+          attr_reader reason: OpenAI::Models::Beta::BetaResponse::IncompleteDetails::reason?
+
+          def reason=: (
+            OpenAI::Models::Beta::BetaResponse::IncompleteDetails::reason
+          ) -> OpenAI::Models::Beta::BetaResponse::IncompleteDetails::reason
+
+          def initialize: (
+            ?reason: OpenAI::Models::Beta::BetaResponse::IncompleteDetails::reason
+          ) -> void
+
+          def to_hash: -> {
+            reason: OpenAI::Models::Beta::BetaResponse::IncompleteDetails::reason
+          }
+
+          type reason = :max_output_tokens | :content_filter
+
+          module Reason
+            extend OpenAI::Internal::Type::Enum
+
+            MAX_OUTPUT_TOKENS: :max_output_tokens
+            CONTENT_FILTER: :content_filter
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponse::IncompleteDetails::reason]
+          end
+        end
+
+        type instructions =
+          String | ::Array[OpenAI::Models::Beta::beta_response_input_item]
+
+        module Instructions
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponse::instructions]
+
+          BetaResponseInputItemArray: OpenAI::Internal::Type::Converter
+        end
+
+        type model =
+          :"gpt-5.6-sol"
+          | :"gpt-5.6-terra"
+          | :"gpt-5.6-luna"
+          | :"gpt-5.4"
+          | :"gpt-5.4-mini"
+          | :"gpt-5.4-nano"
+          | :"gpt-5.4-mini-2026-03-17"
+          | :"gpt-5.4-nano-2026-03-17"
+          | :"gpt-5.3-chat-latest"
+          | :"gpt-5.2"
+          | :"gpt-5.2-2025-12-11"
+          | :"gpt-5.2-chat-latest"
+          | :"gpt-5.2-pro"
+          | :"gpt-5.2-pro-2025-12-11"
+          | :"gpt-5.1"
+          | :"gpt-5.1-2025-11-13"
+          | :"gpt-5.1-codex"
+          | :"gpt-5.1-mini"
+          | :"gpt-5.1-chat-latest"
+          | :"gpt-5"
+          | :"gpt-5-mini"
+          | :"gpt-5-nano"
+          | :"gpt-5-2025-08-07"
+          | :"gpt-5-mini-2025-08-07"
+          | :"gpt-5-nano-2025-08-07"
+          | :"gpt-5-chat-latest"
+          | :"gpt-4.1"
+          | :"gpt-4.1-mini"
+          | :"gpt-4.1-nano"
+          | :"gpt-4.1-2025-04-14"
+          | :"gpt-4.1-mini-2025-04-14"
+          | :"gpt-4.1-nano-2025-04-14"
+          | :"o4-mini"
+          | :"o4-mini-2025-04-16"
+          | :o3
+          | :"o3-2025-04-16"
+          | :"o3-mini"
+          | :"o3-mini-2025-01-31"
+          | :o1
+          | :"o1-2024-12-17"
+          | :"o1-preview"
+          | :"o1-preview-2024-09-12"
+          | :"o1-mini"
+          | :"o1-mini-2024-09-12"
+          | :"gpt-4o"
+          | :"gpt-4o-2024-11-20"
+          | :"gpt-4o-2024-08-06"
+          | :"gpt-4o-2024-05-13"
+          | :"gpt-4o-audio-preview"
+          | :"gpt-4o-audio-preview-2024-10-01"
+          | :"gpt-4o-audio-preview-2024-12-17"
+          | :"gpt-4o-audio-preview-2025-06-03"
+          | :"gpt-4o-mini-audio-preview"
+          | :"gpt-4o-mini-audio-preview-2024-12-17"
+          | :"gpt-4o-search-preview"
+          | :"gpt-4o-mini-search-preview"
+          | :"gpt-4o-search-preview-2025-03-11"
+          | :"gpt-4o-mini-search-preview-2025-03-11"
+          | :"chatgpt-4o-latest"
+          | :"codex-mini-latest"
+          | :"gpt-4o-mini"
+          | :"gpt-4o-mini-2024-07-18"
+          | :"gpt-4-turbo"
+          | :"gpt-4-turbo-2024-04-09"
+          | :"gpt-4-0125-preview"
+          | :"gpt-4-turbo-preview"
+          | :"gpt-4-1106-preview"
+          | :"gpt-4-vision-preview"
+          | :"gpt-4"
+          | :"gpt-4-0314"
+          | :"gpt-4-0613"
+          | :"gpt-4-32k"
+          | :"gpt-4-32k-0314"
+          | :"gpt-4-32k-0613"
+          | :"gpt-3.5-turbo"
+          | :"gpt-3.5-turbo-16k"
+          | :"gpt-3.5-turbo-0301"
+          | :"gpt-3.5-turbo-0613"
+          | :"gpt-3.5-turbo-1106"
+          | :"gpt-3.5-turbo-0125"
+          | :"gpt-3.5-turbo-16k-0613"
+          | :"o1-pro"
+          | :"o1-pro-2025-03-19"
+          | :"o3-pro"
+          | :"o3-pro-2025-06-10"
+          | :"o3-deep-research"
+          | :"o3-deep-research-2025-06-26"
+          | :"o4-mini-deep-research"
+          | :"o4-mini-deep-research-2025-06-26"
+          | :"computer-use-preview"
+          | :"computer-use-preview-2025-03-11"
+          | :"gpt-5-codex"
+          | :"gpt-5-pro"
+          | :"gpt-5-pro-2025-10-06"
+          | :"gpt-5.1-codex-max"
+          | String
+
+        module Model
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponse::model]
+
+          GPT_5_6_SOL: :"gpt-5.6-sol"
+          GPT_5_6_TERRA: :"gpt-5.6-terra"
+          GPT_5_6_LUNA: :"gpt-5.6-luna"
+          GPT_5_4: :"gpt-5.4"
+          GPT_5_4_MINI: :"gpt-5.4-mini"
+          GPT_5_4_NANO: :"gpt-5.4-nano"
+          GPT_5_4_MINI_2026_03_17: :"gpt-5.4-mini-2026-03-17"
+          GPT_5_4_NANO_2026_03_17: :"gpt-5.4-nano-2026-03-17"
+          GPT_5_3_CHAT_LATEST: :"gpt-5.3-chat-latest"
+          GPT_5_2: :"gpt-5.2"
+          GPT_5_2_2025_12_11: :"gpt-5.2-2025-12-11"
+          GPT_5_2_CHAT_LATEST: :"gpt-5.2-chat-latest"
+          GPT_5_2_PRO: :"gpt-5.2-pro"
+          GPT_5_2_PRO_2025_12_11: :"gpt-5.2-pro-2025-12-11"
+          GPT_5_1: :"gpt-5.1"
+          GPT_5_1_2025_11_13: :"gpt-5.1-2025-11-13"
+          GPT_5_1_CODEX: :"gpt-5.1-codex"
+          GPT_5_1_MINI: :"gpt-5.1-mini"
+          GPT_5_1_CHAT_LATEST: :"gpt-5.1-chat-latest"
+          GPT_5: :"gpt-5"
+          GPT_5_MINI: :"gpt-5-mini"
+          GPT_5_NANO: :"gpt-5-nano"
+          GPT_5_2025_08_07: :"gpt-5-2025-08-07"
+          GPT_5_MINI_2025_08_07: :"gpt-5-mini-2025-08-07"
+          GPT_5_NANO_2025_08_07: :"gpt-5-nano-2025-08-07"
+          GPT_5_CHAT_LATEST: :"gpt-5-chat-latest"
+          GPT_4_1: :"gpt-4.1"
+          GPT_4_1_MINI: :"gpt-4.1-mini"
+          GPT_4_1_NANO: :"gpt-4.1-nano"
+          GPT_4_1_2025_04_14: :"gpt-4.1-2025-04-14"
+          GPT_4_1_MINI_2025_04_14: :"gpt-4.1-mini-2025-04-14"
+          GPT_4_1_NANO_2025_04_14: :"gpt-4.1-nano-2025-04-14"
+          O4_MINI: :"o4-mini"
+          O4_MINI_2025_04_16: :"o4-mini-2025-04-16"
+          O3: :o3
+          O3_2025_04_16: :"o3-2025-04-16"
+          O3_MINI: :"o3-mini"
+          O3_MINI_2025_01_31: :"o3-mini-2025-01-31"
+          O1: :o1
+          O1_2024_12_17: :"o1-2024-12-17"
+          O1_PREVIEW: :"o1-preview"
+          O1_PREVIEW_2024_09_12: :"o1-preview-2024-09-12"
+          O1_MINI: :"o1-mini"
+          O1_MINI_2024_09_12: :"o1-mini-2024-09-12"
+          GPT_4O: :"gpt-4o"
+          GPT_4O_2024_11_20: :"gpt-4o-2024-11-20"
+          GPT_4O_2024_08_06: :"gpt-4o-2024-08-06"
+          GPT_4O_2024_05_13: :"gpt-4o-2024-05-13"
+          GPT_4O_AUDIO_PREVIEW: :"gpt-4o-audio-preview"
+          GPT_4O_AUDIO_PREVIEW_2024_10_01: :"gpt-4o-audio-preview-2024-10-01"
+          GPT_4O_AUDIO_PREVIEW_2024_12_17: :"gpt-4o-audio-preview-2024-12-17"
+          GPT_4O_AUDIO_PREVIEW_2025_06_03: :"gpt-4o-audio-preview-2025-06-03"
+          GPT_4O_MINI_AUDIO_PREVIEW: :"gpt-4o-mini-audio-preview"
+          GPT_4O_MINI_AUDIO_PREVIEW_2024_12_17: :"gpt-4o-mini-audio-preview-2024-12-17"
+          GPT_4O_SEARCH_PREVIEW: :"gpt-4o-search-preview"
+          GPT_4O_MINI_SEARCH_PREVIEW: :"gpt-4o-mini-search-preview"
+          GPT_4O_SEARCH_PREVIEW_2025_03_11: :"gpt-4o-search-preview-2025-03-11"
+          GPT_4O_MINI_SEARCH_PREVIEW_2025_03_11: :"gpt-4o-mini-search-preview-2025-03-11"
+          CHATGPT_4O_LATEST: :"chatgpt-4o-latest"
+          CODEX_MINI_LATEST: :"codex-mini-latest"
+          GPT_4O_MINI: :"gpt-4o-mini"
+          GPT_4O_MINI_2024_07_18: :"gpt-4o-mini-2024-07-18"
+          GPT_4_TURBO: :"gpt-4-turbo"
+          GPT_4_TURBO_2024_04_09: :"gpt-4-turbo-2024-04-09"
+          GPT_4_0125_PREVIEW: :"gpt-4-0125-preview"
+          GPT_4_TURBO_PREVIEW: :"gpt-4-turbo-preview"
+          GPT_4_1106_PREVIEW: :"gpt-4-1106-preview"
+          GPT_4_VISION_PREVIEW: :"gpt-4-vision-preview"
+          GPT_4: :"gpt-4"
+          GPT_4_0314: :"gpt-4-0314"
+          GPT_4_0613: :"gpt-4-0613"
+          GPT_4_32K: :"gpt-4-32k"
+          GPT_4_32K_0314: :"gpt-4-32k-0314"
+          GPT_4_32K_0613: :"gpt-4-32k-0613"
+          GPT_3_5_TURBO: :"gpt-3.5-turbo"
+          GPT_3_5_TURBO_16K: :"gpt-3.5-turbo-16k"
+          GPT_3_5_TURBO_0301: :"gpt-3.5-turbo-0301"
+          GPT_3_5_TURBO_0613: :"gpt-3.5-turbo-0613"
+          GPT_3_5_TURBO_1106: :"gpt-3.5-turbo-1106"
+          GPT_3_5_TURBO_0125: :"gpt-3.5-turbo-0125"
+          GPT_3_5_TURBO_16K_0613: :"gpt-3.5-turbo-16k-0613"
+          O1_PRO: :"o1-pro"
+          O1_PRO_2025_03_19: :"o1-pro-2025-03-19"
+          O3_PRO: :"o3-pro"
+          O3_PRO_2025_06_10: :"o3-pro-2025-06-10"
+          O3_DEEP_RESEARCH: :"o3-deep-research"
+          O3_DEEP_RESEARCH_2025_06_26: :"o3-deep-research-2025-06-26"
+          O4_MINI_DEEP_RESEARCH: :"o4-mini-deep-research"
+          O4_MINI_DEEP_RESEARCH_2025_06_26: :"o4-mini-deep-research-2025-06-26"
+          COMPUTER_USE_PREVIEW: :"computer-use-preview"
+          COMPUTER_USE_PREVIEW_2025_03_11: :"computer-use-preview-2025-03-11"
+          GPT_5_CODEX: :"gpt-5-codex"
+          GPT_5_PRO: :"gpt-5-pro"
+          GPT_5_PRO_2025_10_06: :"gpt-5-pro-2025-10-06"
+          GPT_5_1_CODEX_MAX: :"gpt-5.1-codex-max"
+        end
+
+        type tool_choice =
+          OpenAI::Models::Beta::beta_tool_choice_options
+          | OpenAI::Beta::BetaToolChoiceAllowed
+          | OpenAI::Beta::BetaToolChoiceTypes
+          | OpenAI::Beta::BetaToolChoiceFunction
+          | OpenAI::Beta::BetaToolChoiceMcp
+          | OpenAI::Beta::BetaToolChoiceCustom
+          | OpenAI::Beta::BetaResponse::ToolChoice::BetaSpecificProgrammaticToolCallingParam
+          | OpenAI::Beta::BetaToolChoiceApplyPatch
+          | OpenAI::Beta::BetaToolChoiceShell
+
+        module ToolChoice
+          extend OpenAI::Internal::Type::Union
+
+          type beta_specific_programmatic_tool_calling_param =
+            { type: :programmatic_tool_calling }
+
+          class BetaSpecificProgrammaticToolCallingParam < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :programmatic_tool_calling
+
+            def initialize: (?type: :programmatic_tool_calling) -> void
+
+            def to_hash: -> { type: :programmatic_tool_calling }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponse::tool_choice]
+        end
+
+        type conversation = { id: String }
+
+        class Conversation < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          def initialize: (id: String) -> void
+
+          def to_hash: -> { id: String }
+        end
+
+        type moderation =
+          {
+            input: OpenAI::Models::Beta::BetaResponse::Moderation::input,
+            output: OpenAI::Models::Beta::BetaResponse::Moderation::output
+          }
+
+        class Moderation < OpenAI::Internal::Type::BaseModel
+          attr_accessor input: OpenAI::Models::Beta::BetaResponse::Moderation::input
+
+          attr_accessor output: OpenAI::Models::Beta::BetaResponse::Moderation::output
+
+          def initialize: (
+            input: OpenAI::Models::Beta::BetaResponse::Moderation::input,
+            output: OpenAI::Models::Beta::BetaResponse::Moderation::output
+          ) -> void
+
+          def to_hash: -> {
+            input: OpenAI::Models::Beta::BetaResponse::Moderation::input,
+            output: OpenAI::Models::Beta::BetaResponse::Moderation::output
+          }
+
+          type input =
+            OpenAI::Beta::BetaResponse::Moderation::Input::ModerationResult
+            | OpenAI::Beta::BetaResponse::Moderation::Input::Error
+
+          module Input
+            extend OpenAI::Internal::Type::Union
+
+            type moderation_result =
+              {
+                categories: ::Hash[Symbol, bool],
+                category_applied_input_types: ::Hash[Symbol, ::Array[OpenAI::Models::Beta::BetaResponse::Moderation::Input::ModerationResult::category_applied_input_type]],
+                category_scores: ::Hash[Symbol, Float],
+                flagged: bool,
+                model: String,
+                type: :moderation_result
+              }
+
+            class ModerationResult < OpenAI::Internal::Type::BaseModel
+              attr_accessor categories: ::Hash[Symbol, bool]
+
+              attr_accessor category_applied_input_types: ::Hash[Symbol, ::Array[OpenAI::Models::Beta::BetaResponse::Moderation::Input::ModerationResult::category_applied_input_type]]
+
+              attr_accessor category_scores: ::Hash[Symbol, Float]
+
+              attr_accessor flagged: bool
+
+              attr_accessor model: String
+
+              attr_accessor type: :moderation_result
+
+              def initialize: (
+                categories: ::Hash[Symbol, bool],
+                category_applied_input_types: ::Hash[Symbol, ::Array[OpenAI::Models::Beta::BetaResponse::Moderation::Input::ModerationResult::category_applied_input_type]],
+                category_scores: ::Hash[Symbol, Float],
+                flagged: bool,
+                model: String,
+                ?type: :moderation_result
+              ) -> void
+
+              def to_hash: -> {
+                categories: ::Hash[Symbol, bool],
+                category_applied_input_types: ::Hash[Symbol, ::Array[OpenAI::Models::Beta::BetaResponse::Moderation::Input::ModerationResult::category_applied_input_type]],
+                category_scores: ::Hash[Symbol, Float],
+                flagged: bool,
+                model: String,
+                type: :moderation_result
+              }
+
+              type category_applied_input_type = :text | :image
+
+              module CategoryAppliedInputType
+                extend OpenAI::Internal::Type::Enum
+
+                TEXT: :text
+                IMAGE: :image
+
+                def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponse::Moderation::Input::ModerationResult::category_applied_input_type]
+              end
+            end
+
+            type error = { code: String, message: String, type: :error }
+
+            class Error < OpenAI::Internal::Type::BaseModel
+              attr_accessor code: String
+
+              attr_accessor message: String
+
+              attr_accessor type: :error
+
+              def initialize: (
+                code: String,
+                message: String,
+                ?type: :error
+              ) -> void
+
+              def to_hash: -> { code: String, message: String, type: :error }
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponse::Moderation::input]
+          end
+
+          type output =
+            OpenAI::Beta::BetaResponse::Moderation::Output::ModerationResult
+            | OpenAI::Beta::BetaResponse::Moderation::Output::Error
+
+          module Output
+            extend OpenAI::Internal::Type::Union
+
+            type moderation_result =
+              {
+                categories: ::Hash[Symbol, bool],
+                category_applied_input_types: ::Hash[Symbol, ::Array[OpenAI::Models::Beta::BetaResponse::Moderation::Output::ModerationResult::category_applied_input_type]],
+                category_scores: ::Hash[Symbol, Float],
+                flagged: bool,
+                model: String,
+                type: :moderation_result
+              }
+
+            class ModerationResult < OpenAI::Internal::Type::BaseModel
+              attr_accessor categories: ::Hash[Symbol, bool]
+
+              attr_accessor category_applied_input_types: ::Hash[Symbol, ::Array[OpenAI::Models::Beta::BetaResponse::Moderation::Output::ModerationResult::category_applied_input_type]]
+
+              attr_accessor category_scores: ::Hash[Symbol, Float]
+
+              attr_accessor flagged: bool
+
+              attr_accessor model: String
+
+              attr_accessor type: :moderation_result
+
+              def initialize: (
+                categories: ::Hash[Symbol, bool],
+                category_applied_input_types: ::Hash[Symbol, ::Array[OpenAI::Models::Beta::BetaResponse::Moderation::Output::ModerationResult::category_applied_input_type]],
+                category_scores: ::Hash[Symbol, Float],
+                flagged: bool,
+                model: String,
+                ?type: :moderation_result
+              ) -> void
+
+              def to_hash: -> {
+                categories: ::Hash[Symbol, bool],
+                category_applied_input_types: ::Hash[Symbol, ::Array[OpenAI::Models::Beta::BetaResponse::Moderation::Output::ModerationResult::category_applied_input_type]],
+                category_scores: ::Hash[Symbol, Float],
+                flagged: bool,
+                model: String,
+                type: :moderation_result
+              }
+
+              type category_applied_input_type = :text | :image
+
+              module CategoryAppliedInputType
+                extend OpenAI::Internal::Type::Enum
+
+                TEXT: :text
+                IMAGE: :image
+
+                def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponse::Moderation::Output::ModerationResult::category_applied_input_type]
+              end
+            end
+
+            type error = { code: String, message: String, type: :error }
+
+            class Error < OpenAI::Internal::Type::BaseModel
+              attr_accessor code: String
+
+              attr_accessor message: String
+
+              attr_accessor type: :error
+
+              def initialize: (
+                code: String,
+                message: String,
+                ?type: :error
+              ) -> void
+
+              def to_hash: -> { code: String, message: String, type: :error }
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponse::Moderation::output]
+          end
+        end
+
+        type prompt_cache_options =
+          {
+            mode: OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::mode,
+            ttl: OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::ttl
+          }
+
+        class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
+          attr_accessor mode: OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::mode
+
+          attr_accessor ttl: OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::ttl
+
+          def initialize: (
+            mode: OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::mode,
+            ttl: OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::ttl
+          ) -> void
+
+          def to_hash: -> {
+            mode: OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::mode,
+            ttl: OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::ttl
+          }
+
+          type mode = :implicit | :explicit
+
+          module Mode
+            extend OpenAI::Internal::Type::Enum
+
+            IMPLICIT: :implicit
+            EXPLICIT: :explicit
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::mode]
+          end
+
+          type ttl = :"30m"
+
+          module Ttl
+            extend OpenAI::Internal::Type::Enum
+
+            TTL_30M: :"30m"
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::ttl]
+          end
+        end
+
+        type prompt_cache_retention = :in_memory | :"24h"
+
+        module PromptCacheRetention
+          extend OpenAI::Internal::Type::Enum
+
+          IN_MEMORY: :in_memory
+          PROMPT_CACHE_RETENTION_24H: :"24h"
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponse::prompt_cache_retention]
+        end
+
+        type reasoning =
+          {
+            context: OpenAI::Models::Beta::BetaResponse::Reasoning::context?,
+            effort: OpenAI::Models::Beta::BetaResponse::Reasoning::effort?,
+            generate_summary: OpenAI::Models::Beta::BetaResponse::Reasoning::generate_summary?,
+            mode: OpenAI::Models::Beta::BetaResponse::Reasoning::mode,
+            summary: OpenAI::Models::Beta::BetaResponse::Reasoning::summary?
+          }
+
+        class Reasoning < OpenAI::Internal::Type::BaseModel
+          attr_accessor context: OpenAI::Models::Beta::BetaResponse::Reasoning::context?
+
+          attr_accessor effort: OpenAI::Models::Beta::BetaResponse::Reasoning::effort?
+
+          attr_accessor generate_summary: OpenAI::Models::Beta::BetaResponse::Reasoning::generate_summary?
+
+          attr_reader mode: OpenAI::Models::Beta::BetaResponse::Reasoning::mode?
+
+          def mode=: (
+            OpenAI::Models::Beta::BetaResponse::Reasoning::mode
+          ) -> OpenAI::Models::Beta::BetaResponse::Reasoning::mode
+
+          attr_accessor summary: OpenAI::Models::Beta::BetaResponse::Reasoning::summary?
+
+          def initialize: (
+            ?context: OpenAI::Models::Beta::BetaResponse::Reasoning::context?,
+            ?effort: OpenAI::Models::Beta::BetaResponse::Reasoning::effort?,
+            ?generate_summary: OpenAI::Models::Beta::BetaResponse::Reasoning::generate_summary?,
+            ?mode: OpenAI::Models::Beta::BetaResponse::Reasoning::mode,
+            ?summary: OpenAI::Models::Beta::BetaResponse::Reasoning::summary?
+          ) -> void
+
+          def to_hash: -> {
+            context: OpenAI::Models::Beta::BetaResponse::Reasoning::context?,
+            effort: OpenAI::Models::Beta::BetaResponse::Reasoning::effort?,
+            generate_summary: OpenAI::Models::Beta::BetaResponse::Reasoning::generate_summary?,
+            mode: OpenAI::Models::Beta::BetaResponse::Reasoning::mode,
+            summary: OpenAI::Models::Beta::BetaResponse::Reasoning::summary?
+          }
+
+          type context = :auto | :current_turn | :all_turns
+
+          module Context
+            extend OpenAI::Internal::Type::Enum
+
+            AUTO: :auto
+            CURRENT_TURN: :current_turn
+            ALL_TURNS: :all_turns
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponse::Reasoning::context]
+          end
+
+          type effort =
+            :none | :minimal | :low | :medium | :high | :xhigh | :max
+
+          module Effort
+            extend OpenAI::Internal::Type::Enum
+
+            NONE: :none
+            MINIMAL: :minimal
+            LOW: :low
+            MEDIUM: :medium
+            HIGH: :high
+            XHIGH: :xhigh
+            MAX: :max
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponse::Reasoning::effort]
+          end
+
+          type generate_summary = :auto | :concise | :detailed
+
+          module GenerateSummary
+            extend OpenAI::Internal::Type::Enum
+
+            AUTO: :auto
+            CONCISE: :concise
+            DETAILED: :detailed
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponse::Reasoning::generate_summary]
+          end
+
+          type mode = String | :standard | :pro
+
+          module Mode
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponse::Reasoning::mode]
+
+            STANDARD: :standard
+            PRO: :pro
+          end
+
+          type summary = :auto | :concise | :detailed
+
+          module Summary
+            extend OpenAI::Internal::Type::Enum
+
+            AUTO: :auto
+            CONCISE: :concise
+            DETAILED: :detailed
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponse::Reasoning::summary]
+          end
+        end
+
+        type service_tier = :auto | :default | :flex | :scale | :priority
+
+        module ServiceTier
+          extend OpenAI::Internal::Type::Enum
+
+          AUTO: :auto
+          DEFAULT: :default
+          FLEX: :flex
+          SCALE: :scale
+          PRIORITY: :priority
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponse::service_tier]
+        end
+
+        type truncation = :auto | :disabled
+
+        module Truncation
+          extend OpenAI::Internal::Type::Enum
+
+          AUTO: :auto
+          DISABLED: :disabled
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponse::truncation]
+        end
+      end
+    end
+  end
+end

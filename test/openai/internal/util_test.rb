@@ -228,10 +228,11 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
       {"content-type" => "multipart/form-data"},
       Pathname(__FILE__)
     )
-    assert_pattern do
-      headers.fetch("content-type") => /boundary=(.+)$/
-    end
-    field, = Regexp.last_match.captures
+    boundary_prefix = "multipart/form-data; boundary="
+    content_type = headers.fetch("content-type")
+    assert(content_type.start_with?(boundary_prefix))
+    field = content_type.delete_prefix(boundary_prefix)
+    refute_empty(field)
     assert(field.length < 70 - 6)
   end
 
@@ -245,7 +246,7 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
       fileinput => %w[upload abc],
       OpenAI::FilePart.new(StringIO.new("abc")) => ["", "abc"],
       file => [file.basename.to_path, /^class OpenAI/],
-      OpenAI::FilePart.new(file, filename: "d o g") => ["d%20o%20g", /^class OpenAI/]
+      OpenAI::FilePart.new(file, filename: "d o g") => ["d o g", /^class OpenAI/]
     }
     cases.each do |body, testcase|
       filename, val = testcase
@@ -257,6 +258,30 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
         io.read => ^val
       end
     end
+  end
+
+  def test_multipart_filename_quoting
+    file = OpenAI::FilePart.new(StringIO.new("x"), filename: "a \"b\"\r\nEvil: 1.md")
+    _headers, stream = OpenAI::Internal::Util.encode_content(
+      {"content-type" => "multipart/form-data"},
+      {"f" => [file]}
+    )
+    body = stream.respond_to?(:read) ? stream.read : stream.to_a.join
+
+    assert_includes(body, %q(filename="a \"b\"Evil: 1.md"))
+    refute_includes(body, "\r\nEvil:")
+  end
+
+  def test_multipart_filename_encoding_with_binary_content
+    file = OpenAI::FilePart.new(StringIO.new("\xFF".b), filename: "\u00E9.png")
+    _headers, stream = OpenAI::Internal::Util.encode_content(
+      {"content-type" => "multipart/form-data"},
+      {"f" => [file]}
+    )
+    body = stream.respond_to?(:read) ? stream.read : stream.to_a.join
+
+    assert_equal(Encoding::ASCII_8BIT, body.encoding)
+    assert_includes(body, "filename=\"\u00E9.png\"".b)
   end
 
   def test_hash_encode

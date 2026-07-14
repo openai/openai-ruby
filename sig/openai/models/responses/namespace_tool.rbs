@@ -43,8 +43,10 @@ module OpenAI
             {
               name: String,
               type: :function,
+              allowed_callers: ::Array[OpenAI::Models::Responses::NamespaceTool::Tool::Function::allowed_caller]?,
               defer_loading: bool,
               description: String?,
+              output_schema: ::Hash[Symbol, top]?,
               parameters: top?,
               strict: bool?
             }
@@ -54,11 +56,15 @@ module OpenAI
 
             attr_accessor type: :function
 
+            attr_accessor allowed_callers: ::Array[OpenAI::Models::Responses::NamespaceTool::Tool::Function::allowed_caller]?
+
             attr_reader defer_loading: bool?
 
             def defer_loading=: (bool) -> bool
 
             attr_accessor description: String?
+
+            attr_accessor output_schema: ::Hash[Symbol, top]?
 
             attr_accessor parameters: top?
 
@@ -66,8 +72,10 @@ module OpenAI
 
             def initialize: (
               name: String,
+              ?allowed_callers: ::Array[OpenAI::Models::Responses::NamespaceTool::Tool::Function::allowed_caller]?,
               ?defer_loading: bool,
               ?description: String?,
+              ?output_schema: ::Hash[Symbol, top]?,
               ?parameters: top?,
               ?strict: bool?,
               ?type: :function
@@ -76,11 +84,24 @@ module OpenAI
             def to_hash: -> {
               name: String,
               type: :function,
+              allowed_callers: ::Array[OpenAI::Models::Responses::NamespaceTool::Tool::Function::allowed_caller]?,
               defer_loading: bool,
               description: String?,
+              output_schema: ::Hash[Symbol, top]?,
               parameters: top?,
               strict: bool?
             }
+
+            type allowed_caller = :direct | :programmatic
+
+            module AllowedCaller
+              extend OpenAI::Internal::Type::Enum
+
+              DIRECT: :direct
+              PROGRAMMATIC: :programmatic
+
+              def self?.values: -> ::Array[OpenAI::Models::Responses::NamespaceTool::Tool::Function::allowed_caller]
+            end
           end
 
           def self?.variants: -> ::Array[OpenAI::Models::Responses::NamespaceTool::tool]

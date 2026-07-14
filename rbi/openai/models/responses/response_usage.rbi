@@ -97,21 +97,35 @@ module OpenAI
               )
             end
 
+          # The number of input tokens that were written to the cache.
+          sig { returns(Integer) }
+          attr_accessor :cache_write_tokens
+
           # The number of tokens that were retrieved from the cache.
           # [More on prompt caching](https://platform.openai.com/docs/guides/prompt-caching).
           sig { returns(Integer) }
           attr_accessor :cached_tokens
 
           # A detailed breakdown of the input tokens.
-          sig { params(cached_tokens: Integer).returns(T.attached_class) }
+          sig do
+            params(cache_write_tokens: Integer, cached_tokens: Integer).returns(
+              T.attached_class
+            )
+          end
           def self.new(
+            # The number of input tokens that were written to the cache.
+            cache_write_tokens:,
             # The number of tokens that were retrieved from the cache.
             # [More on prompt caching](https://platform.openai.com/docs/guides/prompt-caching).
             cached_tokens:
           )
           end
 
-          sig { override.returns({ cached_tokens: Integer }) }
+          sig do
+            override.returns(
+              { cache_write_tokens: Integer, cached_tokens: Integer }
+            )
+          end
           def to_hash
           end
         end

@@ -36,6 +36,28 @@ module OpenAI
         sig { returns(T.nilable(String)) }
         attr_accessor :image_url
 
+        # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+        # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+        # token block.
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::Responses::ResponseInputImageContent::PromptCacheBreakpoint
+            )
+          )
+        end
+        attr_reader :prompt_cache_breakpoint
+
+        sig do
+          params(
+            prompt_cache_breakpoint:
+              T.nilable(
+                OpenAI::Responses::ResponseInputImageContent::PromptCacheBreakpoint::OrHash
+              )
+          ).void
+        end
+        attr_writer :prompt_cache_breakpoint
+
         # An image input to the model. Learn about
         # [image inputs](https://platform.openai.com/docs/guides/vision)
         sig do
@@ -46,6 +68,10 @@ module OpenAI
               ),
             file_id: T.nilable(String),
             image_url: T.nilable(String),
+            prompt_cache_breakpoint:
+              T.nilable(
+                OpenAI::Responses::ResponseInputImageContent::PromptCacheBreakpoint::OrHash
+              ),
             type: Symbol
           ).returns(T.attached_class)
         end
@@ -58,6 +84,10 @@ module OpenAI
           # The URL of the image to be sent to the model. A fully qualified URL or base64
           # encoded image in a data URL.
           image_url: nil,
+          # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+          # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+          # token block.
+          prompt_cache_breakpoint: nil,
           # The type of the input item. Always `input_image`.
           type: :input_image
         )
@@ -72,7 +102,11 @@ module OpenAI
                   OpenAI::Responses::ResponseInputImageContent::Detail::OrSymbol
                 ),
               file_id: T.nilable(String),
-              image_url: T.nilable(String)
+              image_url: T.nilable(String),
+              prompt_cache_breakpoint:
+                T.nilable(
+                  OpenAI::Responses::ResponseInputImageContent::PromptCacheBreakpoint
+                )
             }
           )
         end
@@ -122,6 +156,34 @@ module OpenAI
             )
           end
           def self.values
+          end
+        end
+
+        class PromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseInputImageContent::PromptCacheBreakpoint,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The breakpoint mode. Always `explicit`.
+          sig { returns(Symbol) }
+          attr_accessor :mode
+
+          # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+          # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+          # token block.
+          sig { params(mode: Symbol).returns(T.attached_class) }
+          def self.new(
+            # The breakpoint mode. Always `explicit`.
+            mode: :explicit
+          )
+          end
+
+          sig { override.returns({ mode: Symbol }) }
+          def to_hash
           end
         end
       end

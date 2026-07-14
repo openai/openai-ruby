@@ -1,0 +1,44 @@
+module OpenAI
+  module Models
+    class BetaCompactedResponse = Beta::BetaCompactedResponse
+
+    module Beta
+      type beta_compacted_response =
+        {
+          id: String,
+          created_at: Integer,
+          object: :"response.compaction",
+          output: ::Array[OpenAI::Models::Beta::beta_response_output_item],
+          usage: OpenAI::Beta::BetaResponseUsage
+        }
+
+      class BetaCompactedResponse < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor created_at: Integer
+
+        attr_accessor object: :"response.compaction"
+
+        attr_accessor output: ::Array[OpenAI::Models::Beta::beta_response_output_item]
+
+        attr_accessor usage: OpenAI::Beta::BetaResponseUsage
+
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          output: ::Array[OpenAI::Models::Beta::beta_response_output_item],
+          usage: OpenAI::Beta::BetaResponseUsage,
+          ?object: :"response.compaction"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          created_at: Integer,
+          object: :"response.compaction",
+          output: ::Array[OpenAI::Models::Beta::beta_response_output_item],
+          usage: OpenAI::Beta::BetaResponseUsage
+        }
+      end
+    end
+  end
+end

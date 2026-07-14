@@ -1,0 +1,19 @@
+module OpenAI
+  module Models
+    class BetaToolChoiceCustom = Beta::BetaToolChoiceCustom
+
+    module Beta
+      type beta_tool_choice_custom = { name: String, type: :custom }
+
+      class BetaToolChoiceCustom < OpenAI::Internal::Type::BaseModel
+        attr_accessor name: String
+
+        attr_accessor type: :custom
+
+        def initialize: (name: String, ?type: :custom) -> void
+
+        def to_hash: -> { name: String, type: :custom }
+      end
+    end
+  end
+end

@@ -36,6 +36,9 @@ TEST_PATHS=(
 	test/openai/resources/vector_stores/file_batches_test.rb
 	test/openai/resources/webhooks_test.rb
 	test/openai/resources/beta_test.rb
+	test/openai/resources/beta/responses_test.rb
+	test/openai/resources/beta/responses/input_items_test.rb
+	test/openai/resources/beta/responses/input_tokens_test.rb
 	test/openai/resources/beta/chatkit_test.rb
 	test/openai/resources/beta/chatkit/sessions_test.rb
 	test/openai/resources/beta/chatkit/threads_test.rb

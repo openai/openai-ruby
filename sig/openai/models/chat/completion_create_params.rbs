@@ -21,6 +21,7 @@ module OpenAI
           prediction: OpenAI::Chat::ChatCompletionPredictionContent?,
           presence_penalty: Float?,
           prompt_cache_key: String,
+          prompt_cache_options: OpenAI::Chat::CompletionCreateParams::PromptCacheOptions,
           prompt_cache_retention: OpenAI::Models::Chat::CompletionCreateParams::prompt_cache_retention?,
           reasoning_effort: OpenAI::Models::reasoning_effort?,
           response_format: OpenAI::Models::Chat::CompletionCreateParams::response_format,
@@ -92,6 +93,12 @@ module OpenAI
         attr_reader prompt_cache_key: String?
 
         def prompt_cache_key=: (String) -> String
+
+        attr_reader prompt_cache_options: OpenAI::Chat::CompletionCreateParams::PromptCacheOptions?
+
+        def prompt_cache_options=: (
+          OpenAI::Chat::CompletionCreateParams::PromptCacheOptions
+        ) -> OpenAI::Chat::CompletionCreateParams::PromptCacheOptions
 
         attr_accessor prompt_cache_retention: OpenAI::Models::Chat::CompletionCreateParams::prompt_cache_retention?
 
@@ -166,6 +173,7 @@ module OpenAI
           ?prediction: OpenAI::Chat::ChatCompletionPredictionContent?,
           ?presence_penalty: Float?,
           ?prompt_cache_key: String,
+          ?prompt_cache_options: OpenAI::Chat::CompletionCreateParams::PromptCacheOptions,
           ?prompt_cache_retention: OpenAI::Models::Chat::CompletionCreateParams::prompt_cache_retention?,
           ?reasoning_effort: OpenAI::Models::reasoning_effort?,
           ?response_format: OpenAI::Models::Chat::CompletionCreateParams::response_format,
@@ -205,6 +213,7 @@ module OpenAI
           prediction: OpenAI::Chat::ChatCompletionPredictionContent?,
           presence_penalty: Float?,
           prompt_cache_key: String,
+          prompt_cache_options: OpenAI::Chat::CompletionCreateParams::PromptCacheOptions,
           prompt_cache_retention: OpenAI::Models::Chat::CompletionCreateParams::prompt_cache_retention?,
           reasoning_effort: OpenAI::Models::reasoning_effort?,
           response_format: OpenAI::Models::Chat::CompletionCreateParams::response_format,
@@ -298,14 +307,155 @@ module OpenAI
           def self?.values: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::modality]
         end
 
-        type moderation = { model: String }
+        type moderation =
+          {
+            model: String,
+            policy: OpenAI::Chat::CompletionCreateParams::Moderation::Policy?
+          }
 
         class Moderation < OpenAI::Internal::Type::BaseModel
           attr_accessor model: String
 
-          def initialize: (model: String) -> void
+          attr_accessor policy: OpenAI::Chat::CompletionCreateParams::Moderation::Policy?
 
-          def to_hash: -> { model: String }
+          def initialize: (
+            model: String,
+            ?policy: OpenAI::Chat::CompletionCreateParams::Moderation::Policy?
+          ) -> void
+
+          def to_hash: -> {
+            model: String,
+            policy: OpenAI::Chat::CompletionCreateParams::Moderation::Policy?
+          }
+
+          type policy =
+            {
+              input: OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Input?,
+              output: OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Output?
+            }
+
+          class Policy < OpenAI::Internal::Type::BaseModel
+            attr_accessor input: OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Input?
+
+            attr_accessor output: OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Output?
+
+            def initialize: (
+              ?input: OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Input?,
+              ?output: OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Output?
+            ) -> void
+
+            def to_hash: -> {
+              input: OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Input?,
+              output: OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Output?
+            }
+
+            type input =
+              {
+                mode: OpenAI::Models::Chat::CompletionCreateParams::Moderation::Policy::Input::mode
+              }
+
+            class Input < OpenAI::Internal::Type::BaseModel
+              attr_accessor mode: OpenAI::Models::Chat::CompletionCreateParams::Moderation::Policy::Input::mode
+
+              def initialize: (
+                mode: OpenAI::Models::Chat::CompletionCreateParams::Moderation::Policy::Input::mode
+              ) -> void
+
+              def to_hash: -> {
+                mode: OpenAI::Models::Chat::CompletionCreateParams::Moderation::Policy::Input::mode
+              }
+
+              type mode = :score | :block
+
+              module Mode
+                extend OpenAI::Internal::Type::Enum
+
+                SCORE: :score
+                BLOCK: :block
+
+                def self?.values: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::Moderation::Policy::Input::mode]
+              end
+            end
+
+            type output =
+              {
+                mode: OpenAI::Models::Chat::CompletionCreateParams::Moderation::Policy::Output::mode
+              }
+
+            class Output < OpenAI::Internal::Type::BaseModel
+              attr_accessor mode: OpenAI::Models::Chat::CompletionCreateParams::Moderation::Policy::Output::mode
+
+              def initialize: (
+                mode: OpenAI::Models::Chat::CompletionCreateParams::Moderation::Policy::Output::mode
+              ) -> void
+
+              def to_hash: -> {
+                mode: OpenAI::Models::Chat::CompletionCreateParams::Moderation::Policy::Output::mode
+              }
+
+              type mode = :score | :block
+
+              module Mode
+                extend OpenAI::Internal::Type::Enum
+
+                SCORE: :score
+                BLOCK: :block
+
+                def self?.values: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::Moderation::Policy::Output::mode]
+              end
+            end
+          end
+        end
+
+        type prompt_cache_options =
+          {
+            mode: OpenAI::Models::Chat::CompletionCreateParams::PromptCacheOptions::mode,
+            ttl: OpenAI::Models::Chat::CompletionCreateParams::PromptCacheOptions::ttl
+          }
+
+        class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
+          attr_reader mode: OpenAI::Models::Chat::CompletionCreateParams::PromptCacheOptions::mode?
+
+          def mode=: (
+            OpenAI::Models::Chat::CompletionCreateParams::PromptCacheOptions::mode
+          ) -> OpenAI::Models::Chat::CompletionCreateParams::PromptCacheOptions::mode
+
+          attr_reader ttl: OpenAI::Models::Chat::CompletionCreateParams::PromptCacheOptions::ttl?
+
+          def ttl=: (
+            OpenAI::Models::Chat::CompletionCreateParams::PromptCacheOptions::ttl
+          ) -> OpenAI::Models::Chat::CompletionCreateParams::PromptCacheOptions::ttl
+
+          def initialize: (
+            ?mode: OpenAI::Models::Chat::CompletionCreateParams::PromptCacheOptions::mode,
+            ?ttl: OpenAI::Models::Chat::CompletionCreateParams::PromptCacheOptions::ttl
+          ) -> void
+
+          def to_hash: -> {
+            mode: OpenAI::Models::Chat::CompletionCreateParams::PromptCacheOptions::mode,
+            ttl: OpenAI::Models::Chat::CompletionCreateParams::PromptCacheOptions::ttl
+          }
+
+          type mode = :implicit | :explicit
+
+          module Mode
+            extend OpenAI::Internal::Type::Enum
+
+            IMPLICIT: :implicit
+            EXPLICIT: :explicit
+
+            def self?.values: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::PromptCacheOptions::mode]
+          end
+
+          type ttl = :"30m"
+
+          module Ttl
+            extend OpenAI::Internal::Type::Enum
+
+            TTL_30M: :"30m"
+
+            def self?.values: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::PromptCacheOptions::ttl]
+          end
         end
 
         type prompt_cache_retention = :in_memory | :"24h"

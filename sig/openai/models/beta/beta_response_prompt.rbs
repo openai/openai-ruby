@@ -1,0 +1,46 @@
+module OpenAI
+  module Models
+    class BetaResponsePrompt = Beta::BetaResponsePrompt
+
+    module Beta
+      type beta_response_prompt =
+        {
+          id: String,
+          variables: ::Hash[Symbol, OpenAI::Models::Beta::BetaResponsePrompt::variable]?,
+          version: String?
+        }
+
+      class BetaResponsePrompt < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor variables: ::Hash[Symbol, OpenAI::Models::Beta::BetaResponsePrompt::variable]?
+
+        attr_accessor version: String?
+
+        def initialize: (
+          id: String,
+          ?variables: ::Hash[Symbol, OpenAI::Models::Beta::BetaResponsePrompt::variable]?,
+          ?version: String?
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          variables: ::Hash[Symbol, OpenAI::Models::Beta::BetaResponsePrompt::variable]?,
+          version: String?
+        }
+
+        type variable =
+          String
+          | OpenAI::Beta::BetaResponseInputText
+          | OpenAI::Beta::BetaResponseInputImage
+          | OpenAI::Beta::BetaResponseInputFile
+
+        module Variable
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponsePrompt::variable]
+        end
+      end
+    end
+  end
+end

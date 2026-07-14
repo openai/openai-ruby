@@ -5,6 +5,7 @@ module OpenAI
         {
           name: String,
           type: :custom,
+          allowed_callers: ::Array[OpenAI::Models::Responses::CustomTool::allowed_caller]?,
           defer_loading: bool,
           description: String,
           format_: OpenAI::Models::custom_tool_input_format
@@ -14,6 +15,8 @@ module OpenAI
         attr_accessor name: String
 
         attr_accessor type: :custom
+
+        attr_accessor allowed_callers: ::Array[OpenAI::Models::Responses::CustomTool::allowed_caller]?
 
         attr_reader defer_loading: bool?
 
@@ -31,6 +34,7 @@ module OpenAI
 
         def initialize: (
           name: String,
+          ?allowed_callers: ::Array[OpenAI::Models::Responses::CustomTool::allowed_caller]?,
           ?defer_loading: bool,
           ?description: String,
           ?format_: OpenAI::Models::custom_tool_input_format,
@@ -40,10 +44,22 @@ module OpenAI
         def to_hash: -> {
           name: String,
           type: :custom,
+          allowed_callers: ::Array[OpenAI::Models::Responses::CustomTool::allowed_caller]?,
           defer_loading: bool,
           description: String,
           format_: OpenAI::Models::custom_tool_input_format
         }
+
+        type allowed_caller = :direct | :programmatic
+
+        module AllowedCaller
+          extend OpenAI::Internal::Type::Enum
+
+          DIRECT: :direct
+          PROGRAMMATIC: :programmatic
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::CustomTool::allowed_caller]
+        end
       end
     end
   end

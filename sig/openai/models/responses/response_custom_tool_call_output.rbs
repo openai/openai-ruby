@@ -6,7 +6,8 @@ module OpenAI
           call_id: String,
           output: OpenAI::Models::Responses::ResponseCustomToolCallOutput::output,
           type: :custom_tool_call_output,
-          id: String
+          id: String,
+          caller_: OpenAI::Models::Responses::ResponseCustomToolCallOutput::caller_?
         }
 
       class ResponseCustomToolCallOutput < OpenAI::Internal::Type::BaseModel
@@ -20,10 +21,13 @@ module OpenAI
 
         def id=: (String) -> String
 
+        attr_accessor caller_: OpenAI::Models::Responses::ResponseCustomToolCallOutput::caller_?
+
         def initialize: (
           call_id: String,
           output: OpenAI::Models::Responses::ResponseCustomToolCallOutput::output,
           ?id: String,
+          ?caller_: OpenAI::Models::Responses::ResponseCustomToolCallOutput::caller_?,
           ?type: :custom_tool_call_output
         ) -> void
 
@@ -31,7 +35,8 @@ module OpenAI
           call_id: String,
           output: OpenAI::Models::Responses::ResponseCustomToolCallOutput::output,
           type: :custom_tool_call_output,
-          id: String
+          id: String,
+          caller_: OpenAI::Models::Responses::ResponseCustomToolCallOutput::caller_?
         }
 
         type output =
@@ -55,6 +60,38 @@ module OpenAI
           def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseCustomToolCallOutput::output]
 
           OutputContentListArray: OpenAI::Internal::Type::Converter
+        end
+
+        type caller_ =
+          OpenAI::Responses::ResponseCustomToolCallOutput::Caller::Direct
+          | OpenAI::Responses::ResponseCustomToolCallOutput::Caller::Program
+
+        module Caller
+          extend OpenAI::Internal::Type::Union
+
+          type direct = { type: :direct }
+
+          class Direct < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :direct
+
+            def initialize: (?type: :direct) -> void
+
+            def to_hash: -> { type: :direct }
+          end
+
+          type program = { caller_id: String, type: :program }
+
+          class Program < OpenAI::Internal::Type::BaseModel
+            attr_accessor caller_id: String
+
+            attr_accessor type: :program
+
+            def initialize: (caller_id: String, ?type: :program) -> void
+
+            def to_hash: -> { caller_id: String, type: :program }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseCustomToolCallOutput::caller_]
         end
       end
     end

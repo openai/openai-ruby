@@ -16,6 +16,8 @@ module OpenAI
         | OpenAI::Responses::ResponseToolSearchOutputItem
         | OpenAI::Conversations::ConversationItem::AdditionalTools
         | OpenAI::Responses::ResponseReasoningItem
+        | OpenAI::Conversations::ConversationItem::Program
+        | OpenAI::Conversations::ConversationItem::ProgramOutput
         | OpenAI::Responses::ResponseCompactionItem
         | OpenAI::Responses::ResponseCodeInterpreterToolCall
         | OpenAI::Conversations::ConversationItem::LocalShellCall
@@ -133,6 +135,91 @@ module OpenAI
             TOOL: :tool
 
             def self?.values: -> ::Array[OpenAI::Models::Conversations::ConversationItem::AdditionalTools::role]
+          end
+        end
+
+        type program =
+          {
+            id: String,
+            call_id: String,
+            code: String,
+            fingerprint: String,
+            type: :program
+          }
+
+        class Program < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor call_id: String
+
+          attr_accessor code: String
+
+          attr_accessor fingerprint: String
+
+          attr_accessor type: :program
+
+          def initialize: (
+            id: String,
+            call_id: String,
+            code: String,
+            fingerprint: String,
+            ?type: :program
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            call_id: String,
+            code: String,
+            fingerprint: String,
+            type: :program
+          }
+        end
+
+        type program_output =
+          {
+            id: String,
+            call_id: String,
+            result: String,
+            status: OpenAI::Models::Conversations::ConversationItem::ProgramOutput::status,
+            type: :program_output
+          }
+
+        class ProgramOutput < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor call_id: String
+
+          attr_accessor result: String
+
+          attr_accessor status: OpenAI::Models::Conversations::ConversationItem::ProgramOutput::status
+
+          attr_accessor type: :program_output
+
+          def initialize: (
+            id: String,
+            call_id: String,
+            result: String,
+            status: OpenAI::Models::Conversations::ConversationItem::ProgramOutput::status,
+            ?type: :program_output
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            call_id: String,
+            result: String,
+            status: OpenAI::Models::Conversations::ConversationItem::ProgramOutput::status,
+            type: :program_output
+          }
+
+          type status = :completed | :incomplete
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            COMPLETED: :completed
+            INCOMPLETE: :incomplete
+
+            def self?.values: -> ::Array[OpenAI::Models::Conversations::ConversationItem::ProgramOutput::status]
           end
         end
 

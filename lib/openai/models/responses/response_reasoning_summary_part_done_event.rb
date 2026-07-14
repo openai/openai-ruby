@@ -40,7 +40,14 @@ module OpenAI
         #   @return [Symbol, :"response.reasoning_summary_part.done"]
         required :type, const: :"response.reasoning_summary_part.done"
 
-        # @!method initialize(item_id:, output_index:, part:, sequence_number:, summary_index:, type: :"response.reasoning_summary_part.done")
+        # @!attribute status
+        #   The completion status of the summary part. Omitted when the part completed
+        #   normally and set to `incomplete` when generation was interrupted.
+        #
+        #   @return [Symbol, OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent::Status, nil]
+        optional :status, enum: -> { OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status }
+
+        # @!method initialize(item_id:, output_index:, part:, sequence_number:, summary_index:, status: nil, type: :"response.reasoning_summary_part.done")
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent} for more
         #   details.
@@ -56,6 +63,8 @@ module OpenAI
         #   @param sequence_number [Integer] The sequence number of this event.
         #
         #   @param summary_index [Integer] The index of the summary part within the reasoning summary.
+        #
+        #   @param status [Symbol, OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent::Status] The completion status of the summary part. Omitted when the part completed
         #
         #   @param type [Symbol, :"response.reasoning_summary_part.done"] The type of the event. Always `response.reasoning_summary_part.done`.
 
@@ -79,6 +88,19 @@ module OpenAI
           #   @param text [String] The text of the summary part.
           #
           #   @param type [Symbol, :summary_text] The type of the summary part. Always `summary_text`.
+        end
+
+        # The completion status of the summary part. Omitted when the part completed
+        # normally and set to `incomplete` when generation was interrupted.
+        #
+        # @see OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent#status
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          INCOMPLETE = :incomplete
+
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
       end
     end

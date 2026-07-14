@@ -1,0 +1,118 @@
+module OpenAI
+  module Models
+    class BetaResponseApplyPatchToolCallOutput = Beta::BetaResponseApplyPatchToolCallOutput
+
+    module Beta
+      type beta_response_apply_patch_tool_call_output =
+        {
+          id: String,
+          call_id: String,
+          status: OpenAI::Models::Beta::BetaResponseApplyPatchToolCallOutput::status,
+          type: :apply_patch_call_output,
+          agent: OpenAI::Beta::BetaResponseApplyPatchToolCallOutput::Agent,
+          caller_: OpenAI::Models::Beta::BetaResponseApplyPatchToolCallOutput::caller_?,
+          created_by: String,
+          output: String?
+        }
+
+      class BetaResponseApplyPatchToolCallOutput < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor call_id: String
+
+        attr_accessor status: OpenAI::Models::Beta::BetaResponseApplyPatchToolCallOutput::status
+
+        attr_accessor type: :apply_patch_call_output
+
+        attr_reader agent: OpenAI::Beta::BetaResponseApplyPatchToolCallOutput::Agent?
+
+        def agent=: (
+          OpenAI::Beta::BetaResponseApplyPatchToolCallOutput::Agent
+        ) -> OpenAI::Beta::BetaResponseApplyPatchToolCallOutput::Agent
+
+        attr_accessor caller_: OpenAI::Models::Beta::BetaResponseApplyPatchToolCallOutput::caller_?
+
+        attr_reader created_by: String?
+
+        def created_by=: (String) -> String
+
+        attr_accessor output: String?
+
+        def initialize: (
+          id: String,
+          call_id: String,
+          status: OpenAI::Models::Beta::BetaResponseApplyPatchToolCallOutput::status,
+          ?agent: OpenAI::Beta::BetaResponseApplyPatchToolCallOutput::Agent,
+          ?caller_: OpenAI::Models::Beta::BetaResponseApplyPatchToolCallOutput::caller_?,
+          ?created_by: String,
+          ?output: String?,
+          ?type: :apply_patch_call_output
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          call_id: String,
+          status: OpenAI::Models::Beta::BetaResponseApplyPatchToolCallOutput::status,
+          type: :apply_patch_call_output,
+          agent: OpenAI::Beta::BetaResponseApplyPatchToolCallOutput::Agent,
+          caller_: OpenAI::Models::Beta::BetaResponseApplyPatchToolCallOutput::caller_?,
+          created_by: String,
+          output: String?
+        }
+
+        type status = :completed | :failed
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          COMPLETED: :completed
+          FAILED: :failed
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseApplyPatchToolCallOutput::status]
+        end
+
+        type agent = { agent_name: String }
+
+        class Agent < OpenAI::Internal::Type::BaseModel
+          attr_accessor agent_name: String
+
+          def initialize: (agent_name: String) -> void
+
+          def to_hash: -> { agent_name: String }
+        end
+
+        type caller_ =
+          OpenAI::Beta::BetaResponseApplyPatchToolCallOutput::Caller::Direct
+          | OpenAI::Beta::BetaResponseApplyPatchToolCallOutput::Caller::Program
+
+        module Caller
+          extend OpenAI::Internal::Type::Union
+
+          type direct = { type: :direct }
+
+          class Direct < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :direct
+
+            def initialize: (?type: :direct) -> void
+
+            def to_hash: -> { type: :direct }
+          end
+
+          type program = { caller_id: String, type: :program }
+
+          class Program < OpenAI::Internal::Type::BaseModel
+            attr_accessor caller_id: String
+
+            attr_accessor type: :program
+
+            def initialize: (caller_id: String, ?type: :program) -> void
+
+            def to_hash: -> { caller_id: String, type: :program }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseApplyPatchToolCallOutput::caller_]
+        end
+      end
+    end
+  end
+end

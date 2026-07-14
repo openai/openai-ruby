@@ -16,6 +16,18 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
+        # The tool invocation context(s).
+        sig do
+          returns(
+            T.nilable(
+              T::Array[
+                OpenAI::Responses::FunctionShellTool::AllowedCaller::OrSymbol
+              ]
+            )
+          )
+        end
+        attr_accessor :allowed_callers
+
         sig do
           returns(
             T.nilable(
@@ -32,6 +44,12 @@ module OpenAI
         # A tool that allows the model to execute shell commands.
         sig do
           params(
+            allowed_callers:
+              T.nilable(
+                T::Array[
+                  OpenAI::Responses::FunctionShellTool::AllowedCaller::OrSymbol
+                ]
+              ),
             environment:
               T.nilable(
                 T.any(
@@ -44,6 +62,8 @@ module OpenAI
           ).returns(T.attached_class)
         end
         def self.new(
+          # The tool invocation context(s).
+          allowed_callers: nil,
           environment: nil,
           # The type of the shell tool. Always `shell`.
           type: :shell
@@ -54,6 +74,12 @@ module OpenAI
           override.returns(
             {
               type: Symbol,
+              allowed_callers:
+                T.nilable(
+                  T::Array[
+                    OpenAI::Responses::FunctionShellTool::AllowedCaller::OrSymbol
+                  ]
+                ),
               environment:
                 T.nilable(
                   T.any(
@@ -66,6 +92,37 @@ module OpenAI
           )
         end
         def to_hash
+        end
+
+        module AllowedCaller
+          extend OpenAI::Internal::Type::Enum
+
+          TaggedSymbol =
+            T.type_alias do
+              T.all(Symbol, OpenAI::Responses::FunctionShellTool::AllowedCaller)
+            end
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+          DIRECT =
+            T.let(
+              :direct,
+              OpenAI::Responses::FunctionShellTool::AllowedCaller::TaggedSymbol
+            )
+          PROGRAMMATIC =
+            T.let(
+              :programmatic,
+              OpenAI::Responses::FunctionShellTool::AllowedCaller::TaggedSymbol
+            )
+
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Responses::FunctionShellTool::AllowedCaller::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
         end
 
         module Environment

@@ -51,6 +51,14 @@ module OpenAI
             end
             attr_writer :owner
 
+            # Whether the API key's owner currently has effective access to the project.
+            sig do
+              returns(
+                OpenAI::Admin::Organization::Projects::ProjectAPIKey::OwnerProjectAccess::TaggedSymbol
+              )
+            end
+            attr_accessor :owner_project_access
+
             # The redacted value of the API key
             sig { returns(String) }
             attr_accessor :redacted_value
@@ -64,6 +72,8 @@ module OpenAI
                 name: String,
                 owner:
                   OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::OrHash,
+                owner_project_access:
+                  OpenAI::Admin::Organization::Projects::ProjectAPIKey::OwnerProjectAccess::OrSymbol,
                 redacted_value: String,
                 object: Symbol
               ).returns(T.attached_class)
@@ -78,6 +88,8 @@ module OpenAI
               # The name of the API key
               name:,
               owner:,
+              # Whether the API key's owner currently has effective access to the project.
+              owner_project_access:,
               # The redacted value of the API key
               redacted_value:,
               # The object type, which is always `organization.project.api_key`
@@ -95,6 +107,8 @@ module OpenAI
                   object: Symbol,
                   owner:
                     OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner,
+                  owner_project_access:
+                    OpenAI::Admin::Organization::Projects::ProjectAPIKey::OwnerProjectAccess::TaggedSymbol,
                   redacted_value: String
                 }
               )
@@ -361,6 +375,41 @@ module OpenAI
                 end
                 def to_hash
                 end
+              end
+            end
+
+            # Whether the API key's owner currently has effective access to the project.
+            module OwnerProjectAccess
+              extend OpenAI::Internal::Type::Enum
+
+              TaggedSymbol =
+                T.type_alias do
+                  T.all(
+                    Symbol,
+                    OpenAI::Admin::Organization::Projects::ProjectAPIKey::OwnerProjectAccess
+                  )
+                end
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+              ACTIVE =
+                T.let(
+                  :active,
+                  OpenAI::Admin::Organization::Projects::ProjectAPIKey::OwnerProjectAccess::TaggedSymbol
+                )
+              INACTIVE =
+                T.let(
+                  :inactive,
+                  OpenAI::Admin::Organization::Projects::ProjectAPIKey::OwnerProjectAccess::TaggedSymbol
+                )
+
+              sig do
+                override.returns(
+                  T::Array[
+                    OpenAI::Admin::Organization::Projects::ProjectAPIKey::OwnerProjectAccess::TaggedSymbol
+                  ]
+                )
+              end
+              def self.values
               end
             end
           end
