@@ -35,12 +35,18 @@ module OpenAI
             required :object, const: :"organization.project.service_account"
 
             # @!attribute role
-            #   Service accounts can only have one role of type `member`
+            #   Service accounts created with default project membership have role `member`.
+            #   Accounts created with `create_service_account_only` have role `none`.
             #
-            #   @return [Symbol, :member]
-            required :role, const: :member
+            #   @return [Symbol, OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role]
+            required :role,
+                     enum: -> { OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role }
 
-            # @!method initialize(id:, api_key:, created_at:, name:, object: :"organization.project.service_account", role: :member)
+            # @!method initialize(id:, api_key:, created_at:, name:, role:, object: :"organization.project.service_account")
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse}
+            #   for more details.
+            #
             #   @param id [String]
             #
             #   @param api_key [OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey, nil]
@@ -49,9 +55,9 @@ module OpenAI
             #
             #   @param name [String]
             #
-            #   @param object [Symbol, :"organization.project.service_account"]
+            #   @param role [Symbol, OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role] Service accounts created with default project membership have role `member`. Acc
             #
-            #   @param role [Symbol, :member] Service accounts can only have one role of type `member`
+            #   @param object [Symbol, :"organization.project.service_account"]
 
             # @see OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse#api_key
             class APIKey < OpenAI::Internal::Type::BaseModel
@@ -91,6 +97,20 @@ module OpenAI
               #   @param value [String]
               #
               #   @param object [Symbol, :"organization.project.service_account.api_key"] The object type, which is always `organization.project.service_account.api_key`
+            end
+
+            # Service accounts created with default project membership have role `member`.
+            # Accounts created with `create_service_account_only` have role `none`.
+            #
+            # @see OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse#role
+            module Role
+              extend OpenAI::Internal::Type::Enum
+
+              MEMBER = :member
+              NONE = :none
+
+              # @!method self.values
+              #   @return [Array<Symbol>]
             end
           end
         end

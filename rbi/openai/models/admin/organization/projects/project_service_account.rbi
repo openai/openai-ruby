@@ -32,7 +32,7 @@ module OpenAI
             sig { returns(Symbol) }
             attr_accessor :object
 
-            # `owner` or `member`
+            # `owner`, `member`, or `none`
             sig do
               returns(
                 OpenAI::Admin::Organization::Projects::ProjectServiceAccount::Role::TaggedSymbol
@@ -58,7 +58,7 @@ module OpenAI
               created_at:,
               # The name of the service account
               name:,
-              # `owner` or `member`
+              # `owner`, `member`, or `none`
               role:,
               # The object type, which is always `organization.project.service_account`
               object: :"organization.project.service_account"
@@ -80,7 +80,7 @@ module OpenAI
             def to_hash
             end
 
-            # `owner` or `member`
+            # `owner`, `member`, or `none`
             module Role
               extend OpenAI::Internal::Type::Enum
 
@@ -101,6 +101,11 @@ module OpenAI
               MEMBER =
                 T.let(
                   :member,
+                  OpenAI::Admin::Organization::Projects::ProjectServiceAccount::Role::TaggedSymbol
+                )
+              NONE =
+                T.let(
+                  :none,
                   OpenAI::Admin::Organization::Projects::ProjectServiceAccount::Role::TaggedSymbol
                 )
 

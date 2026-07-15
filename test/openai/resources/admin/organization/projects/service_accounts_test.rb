@@ -17,7 +17,7 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::ServiceAccountsTes
         created_at: Integer,
         name: String,
         object: Symbol,
-        role: Symbol
+        role: OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role
       }
     end
   end

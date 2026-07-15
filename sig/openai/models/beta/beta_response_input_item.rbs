@@ -552,7 +552,7 @@ module OpenAI
             {
               text: String,
               type: :output_text,
-              annotations: OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::annotations
+              annotations: ::Array[OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::annotation]
             }
 
           class Output < OpenAI::Internal::Type::BaseModel
@@ -560,33 +560,33 @@ module OpenAI
 
             attr_accessor type: :output_text
 
-            attr_reader annotations: OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::annotations?
+            attr_reader annotations: ::Array[OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::annotation]?
 
             def annotations=: (
-              OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::annotations
-            ) -> OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::annotations
+              ::Array[OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::annotation]
+            ) -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::annotation]
 
             def initialize: (
               text: String,
-              ?annotations: OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::annotations,
+              ?annotations: ::Array[OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::annotation],
               ?type: :output_text
             ) -> void
 
             def to_hash: -> {
               text: String,
               type: :output_text,
-              annotations: OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::annotations
+              annotations: ::Array[OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::annotation]
             }
 
-            type annotations =
-              ::Array[OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember0]
-              | ::Array[OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember1]
-              | ::Array[OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember2]
+            type annotation =
+              OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::FileCitation
+              | OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::URLCitation
+              | OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::ContainerFileCitation
 
-            module Annotations
+            module Annotation
               extend OpenAI::Internal::Type::Union
 
-              type union_member0 =
+              type file_citation =
                 {
                   file_id: String,
                   filename: String,
@@ -594,7 +594,7 @@ module OpenAI
                   type: :file_citation
                 }
 
-              class UnionMember0 < OpenAI::Internal::Type::BaseModel
+              class FileCitation < OpenAI::Internal::Type::BaseModel
                 attr_accessor file_id: String
 
                 attr_accessor filename: String
@@ -618,7 +618,7 @@ module OpenAI
                 }
               end
 
-              type union_member1 =
+              type url_citation =
                 {
                   end_index: Integer,
                   start_index: Integer,
@@ -627,7 +627,7 @@ module OpenAI
                   url: String
                 }
 
-              class UnionMember1 < OpenAI::Internal::Type::BaseModel
+              class URLCitation < OpenAI::Internal::Type::BaseModel
                 attr_accessor end_index: Integer
 
                 attr_accessor start_index: Integer
@@ -655,7 +655,7 @@ module OpenAI
                 }
               end
 
-              type union_member2 =
+              type container_file_citation =
                 {
                   container_id: String,
                   end_index: Integer,
@@ -665,7 +665,7 @@ module OpenAI
                   type: :container_file_citation
                 }
 
-              class UnionMember2 < OpenAI::Internal::Type::BaseModel
+              class ContainerFileCitation < OpenAI::Internal::Type::BaseModel
                 attr_accessor container_id: String
 
                 attr_accessor end_index: Integer
@@ -697,13 +697,7 @@ module OpenAI
                 }
               end
 
-              def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::annotations]
-
-              UnionMember0Array: OpenAI::Internal::Type::Converter
-
-              UnionMember1Array: OpenAI::Internal::Type::Converter
-
-              UnionMember2Array: OpenAI::Internal::Type::Converter
+              def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::annotation]
             end
           end
 

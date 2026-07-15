@@ -1525,7 +1525,13 @@ module OpenAI
             sig do
               returns(
                 T.nilable(
-                  OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::Variants
+                  T::Array[
+                    T.any(
+                      OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::FileCitation,
+                      OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::URLCitation,
+                      OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::ContainerFileCitation
+                    )
+                  ]
                 )
               )
             end
@@ -1534,7 +1540,13 @@ module OpenAI
             sig do
               params(
                 annotations:
-                  OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::Variants
+                  T::Array[
+                    T.any(
+                      OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::FileCitation::OrHash,
+                      OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::URLCitation::OrHash,
+                      OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::ContainerFileCitation::OrHash
+                    )
+                  ]
               ).void
             end
             attr_writer :annotations
@@ -1543,7 +1555,13 @@ module OpenAI
               params(
                 text: String,
                 annotations:
-                  OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::Variants,
+                  T::Array[
+                    T.any(
+                      OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::FileCitation::OrHash,
+                      OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::URLCitation::OrHash,
+                      OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::ContainerFileCitation::OrHash
+                    )
+                  ],
                 type: Symbol
               ).returns(T.attached_class)
             end
@@ -1563,37 +1581,36 @@ module OpenAI
                   text: String,
                   type: Symbol,
                   annotations:
-                    OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::Variants
+                    T::Array[
+                      T.any(
+                        OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::FileCitation,
+                        OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::URLCitation,
+                        OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::ContainerFileCitation
+                      )
+                    ]
                 }
               )
             end
             def to_hash
             end
 
-            # Citations associated with the text content.
-            module Annotations
+            module Annotation
               extend OpenAI::Internal::Type::Union
 
               Variants =
                 T.type_alias do
                   T.any(
-                    T::Array[
-                      OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember0
-                    ],
-                    T::Array[
-                      OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember1
-                    ],
-                    T::Array[
-                      OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember2
-                    ]
+                    OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::FileCitation,
+                    OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::URLCitation,
+                    OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::ContainerFileCitation
                   )
                 end
 
-              class UnionMember0 < OpenAI::Internal::Type::BaseModel
+              class FileCitation < OpenAI::Internal::Type::BaseModel
                 OrHash =
                   T.type_alias do
                     T.any(
-                      OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember0,
+                      OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::FileCitation,
                       OpenAI::Internal::AnyHash
                     )
                   end
@@ -1648,11 +1665,11 @@ module OpenAI
                 end
               end
 
-              class UnionMember1 < OpenAI::Internal::Type::BaseModel
+              class URLCitation < OpenAI::Internal::Type::BaseModel
                 OrHash =
                   T.type_alias do
                     T.any(
-                      OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember1,
+                      OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::URLCitation,
                       OpenAI::Internal::AnyHash
                     )
                   end
@@ -1715,11 +1732,11 @@ module OpenAI
                 end
               end
 
-              class UnionMember2 < OpenAI::Internal::Type::BaseModel
+              class ContainerFileCitation < OpenAI::Internal::Type::BaseModel
                 OrHash =
                   T.type_alias do
                     T.any(
-                      OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember2,
+                      OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::ContainerFileCitation,
                       OpenAI::Internal::AnyHash
                     )
                   end
@@ -1793,36 +1810,12 @@ module OpenAI
               sig do
                 override.returns(
                   T::Array[
-                    OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::Variants
+                    OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::Variants
                   ]
                 )
               end
               def self.variants
               end
-
-              UnionMember0Array =
-                T.let(
-                  OpenAI::Internal::Type::ArrayOf[
-                    OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember0
-                  ],
-                  OpenAI::Internal::Type::Converter
-                )
-
-              UnionMember1Array =
-                T.let(
-                  OpenAI::Internal::Type::ArrayOf[
-                    OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember1
-                  ],
-                  OpenAI::Internal::Type::Converter
-                )
-
-              UnionMember2Array =
-                T.let(
-                  OpenAI::Internal::Type::ArrayOf[
-                    OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember2
-                  ],
-                  OpenAI::Internal::Type::Converter
-                )
             end
           end
 
