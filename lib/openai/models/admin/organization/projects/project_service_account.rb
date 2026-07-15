@@ -32,7 +32,7 @@ module OpenAI
             required :object, const: :"organization.project.service_account"
 
             # @!attribute role
-            #   `owner` or `member`
+            #   `owner`, `member`, or `none`
             #
             #   @return [Symbol, OpenAI::Models::Admin::Organization::Projects::ProjectServiceAccount::Role]
             required :role, enum: -> { OpenAI::Admin::Organization::Projects::ProjectServiceAccount::Role }
@@ -46,11 +46,11 @@ module OpenAI
             #
             #   @param name [String] The name of the service account
             #
-            #   @param role [Symbol, OpenAI::Models::Admin::Organization::Projects::ProjectServiceAccount::Role] `owner` or `member`
+            #   @param role [Symbol, OpenAI::Models::Admin::Organization::Projects::ProjectServiceAccount::Role] `owner`, `member`, or `none`
             #
             #   @param object [Symbol, :"organization.project.service_account"] The object type, which is always `organization.project.service_account`
 
-            # `owner` or `member`
+            # `owner`, `member`, or `none`
             #
             # @see OpenAI::Models::Admin::Organization::Projects::ProjectServiceAccount#role
             module Role
@@ -58,6 +58,7 @@ module OpenAI
 
               OWNER = :owner
               MEMBER = :member
+              NONE = :none
 
               # @!method self.values
               #   @return [Array<Symbol>]

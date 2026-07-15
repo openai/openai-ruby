@@ -21,10 +21,18 @@ module OpenAI
             #   @return [String]
             required :name, String
 
-            # @!method initialize(project_id:, name:, request_options: {})
+            # @!attribute create_service_account_only
+            #   Create the service account without default roles or an API key.
+            #
+            #   @return [Boolean, nil]
+            optional :create_service_account_only, OpenAI::Internal::Type::Boolean, nil?: true
+
+            # @!method initialize(project_id:, name:, create_service_account_only: nil, request_options: {})
             #   @param project_id [String]
             #
             #   @param name [String] The name of the service account being created.
+            #
+            #   @param create_service_account_only [Boolean, nil] Create the service account without default roles or an API key.
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
           end

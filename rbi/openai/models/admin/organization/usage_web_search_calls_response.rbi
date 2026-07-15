@@ -160,8 +160,9 @@ module OpenAI
                     )
                   end
 
-                # The aggregated number of text input tokens used, including cached tokens. For
-                # customers subscribe to scale tier, this includes scale tier tokens.
+                # The aggregated number of input tokens used, including cached and cache-write
+                # tokens. This includes text, audio, and image tokens. For customers subscribed to
+                # Scale Tier, this includes Scale Tier tokens.
                 sig { returns(Integer) }
                 attr_accessor :input_tokens
 
@@ -172,8 +173,9 @@ module OpenAI
                 sig { returns(Symbol) }
                 attr_accessor :object
 
-                # The aggregated number of text output tokens used. For customers subscribe to
-                # scale tier, this includes scale tier tokens.
+                # The aggregated number of output tokens used across text, audio, and image
+                # outputs. For customers subscribed to Scale Tier, this includes Scale Tier
+                # tokens.
                 sig { returns(Integer) }
                 attr_accessor :output_tokens
 
@@ -187,21 +189,71 @@ module OpenAI
                 sig { returns(T.nilable(T::Boolean)) }
                 attr_accessor :batch
 
-                # The aggregated number of audio input tokens used, including cached tokens.
+                # The aggregated number of uncached audio input tokens used.
                 sig { returns(T.nilable(Integer)) }
                 attr_reader :input_audio_tokens
 
                 sig { params(input_audio_tokens: Integer).void }
                 attr_writer :input_audio_tokens
 
-                # The aggregated number of text input tokens that has been cached from previous
-                # requests. For customers subscribe to scale tier, this includes scale tier
-                # tokens.
+                # The aggregated number of input tokens written to the cache.
+                sig { returns(T.nilable(Integer)) }
+                attr_reader :input_cache_write_tokens
+
+                sig { params(input_cache_write_tokens: Integer).void }
+                attr_writer :input_cache_write_tokens
+
+                # The aggregated number of cached audio input tokens used.
+                sig { returns(T.nilable(Integer)) }
+                attr_reader :input_cached_audio_tokens
+
+                sig { params(input_cached_audio_tokens: Integer).void }
+                attr_writer :input_cached_audio_tokens
+
+                # The aggregated number of cached image input tokens used.
+                sig { returns(T.nilable(Integer)) }
+                attr_reader :input_cached_image_tokens
+
+                sig { params(input_cached_image_tokens: Integer).void }
+                attr_writer :input_cached_image_tokens
+
+                # The aggregated number of cached text input tokens used.
+                sig { returns(T.nilable(Integer)) }
+                attr_reader :input_cached_text_tokens
+
+                sig { params(input_cached_text_tokens: Integer).void }
+                attr_writer :input_cached_text_tokens
+
+                # The aggregated number of cached input tokens used across text, audio, and image
+                # inputs. For customers subscribed to Scale Tier, this includes Scale Tier tokens.
                 sig { returns(T.nilable(Integer)) }
                 attr_reader :input_cached_tokens
 
                 sig { params(input_cached_tokens: Integer).void }
                 attr_writer :input_cached_tokens
+
+                # The aggregated number of uncached image input tokens used.
+                sig { returns(T.nilable(Integer)) }
+                attr_reader :input_image_tokens
+
+                sig { params(input_image_tokens: Integer).void }
+                attr_writer :input_image_tokens
+
+                # The aggregated number of uncached text input tokens used, excluding cache-write
+                # tokens.
+                sig { returns(T.nilable(Integer)) }
+                attr_reader :input_text_tokens
+
+                sig { params(input_text_tokens: Integer).void }
+                attr_writer :input_text_tokens
+
+                # The aggregated number of uncached input tokens used across text, audio, and
+                # image inputs, excluding cache-write tokens.
+                sig { returns(T.nilable(Integer)) }
+                attr_reader :input_uncached_tokens
+
+                sig { params(input_uncached_tokens: Integer).void }
+                attr_writer :input_uncached_tokens
 
                 # When `group_by=model`, this field provides the model name of the grouped usage
                 # result.
@@ -214,6 +266,20 @@ module OpenAI
 
                 sig { params(output_audio_tokens: Integer).void }
                 attr_writer :output_audio_tokens
+
+                # The aggregated number of image output tokens used.
+                sig { returns(T.nilable(Integer)) }
+                attr_reader :output_image_tokens
+
+                sig { params(output_image_tokens: Integer).void }
+                attr_writer :output_image_tokens
+
+                # The aggregated number of text output tokens used.
+                sig { returns(T.nilable(Integer)) }
+                attr_reader :output_text_tokens
+
+                sig { params(output_text_tokens: Integer).void }
+                attr_writer :output_text_tokens
 
                 # When `group_by=project_id`, this field provides the project ID of the grouped
                 # usage result.
@@ -239,9 +305,18 @@ module OpenAI
                     api_key_id: T.nilable(String),
                     batch: T.nilable(T::Boolean),
                     input_audio_tokens: Integer,
+                    input_cache_write_tokens: Integer,
+                    input_cached_audio_tokens: Integer,
+                    input_cached_image_tokens: Integer,
+                    input_cached_text_tokens: Integer,
                     input_cached_tokens: Integer,
+                    input_image_tokens: Integer,
+                    input_text_tokens: Integer,
+                    input_uncached_tokens: Integer,
                     model: T.nilable(String),
                     output_audio_tokens: Integer,
+                    output_image_tokens: Integer,
+                    output_text_tokens: Integer,
                     project_id: T.nilable(String),
                     service_tier: T.nilable(String),
                     user_id: T.nilable(String),
@@ -249,13 +324,15 @@ module OpenAI
                   ).returns(T.attached_class)
                 end
                 def self.new(
-                  # The aggregated number of text input tokens used, including cached tokens. For
-                  # customers subscribe to scale tier, this includes scale tier tokens.
+                  # The aggregated number of input tokens used, including cached and cache-write
+                  # tokens. This includes text, audio, and image tokens. For customers subscribed to
+                  # Scale Tier, this includes Scale Tier tokens.
                   input_tokens:,
                   # The count of requests made to the model.
                   num_model_requests:,
-                  # The aggregated number of text output tokens used. For customers subscribe to
-                  # scale tier, this includes scale tier tokens.
+                  # The aggregated number of output tokens used across text, audio, and image
+                  # outputs. For customers subscribed to Scale Tier, this includes Scale Tier
+                  # tokens.
                   output_tokens:,
                   # When `group_by=api_key_id`, this field provides the API key ID of the grouped
                   # usage result.
@@ -263,17 +340,36 @@ module OpenAI
                   # When `group_by=batch`, this field tells whether the grouped usage result is
                   # batch or not.
                   batch: nil,
-                  # The aggregated number of audio input tokens used, including cached tokens.
+                  # The aggregated number of uncached audio input tokens used.
                   input_audio_tokens: nil,
-                  # The aggregated number of text input tokens that has been cached from previous
-                  # requests. For customers subscribe to scale tier, this includes scale tier
-                  # tokens.
+                  # The aggregated number of input tokens written to the cache.
+                  input_cache_write_tokens: nil,
+                  # The aggregated number of cached audio input tokens used.
+                  input_cached_audio_tokens: nil,
+                  # The aggregated number of cached image input tokens used.
+                  input_cached_image_tokens: nil,
+                  # The aggregated number of cached text input tokens used.
+                  input_cached_text_tokens: nil,
+                  # The aggregated number of cached input tokens used across text, audio, and image
+                  # inputs. For customers subscribed to Scale Tier, this includes Scale Tier tokens.
                   input_cached_tokens: nil,
+                  # The aggregated number of uncached image input tokens used.
+                  input_image_tokens: nil,
+                  # The aggregated number of uncached text input tokens used, excluding cache-write
+                  # tokens.
+                  input_text_tokens: nil,
+                  # The aggregated number of uncached input tokens used across text, audio, and
+                  # image inputs, excluding cache-write tokens.
+                  input_uncached_tokens: nil,
                   # When `group_by=model`, this field provides the model name of the grouped usage
                   # result.
                   model: nil,
                   # The aggregated number of audio output tokens used.
                   output_audio_tokens: nil,
+                  # The aggregated number of image output tokens used.
+                  output_image_tokens: nil,
+                  # The aggregated number of text output tokens used.
+                  output_text_tokens: nil,
                   # When `group_by=project_id`, this field provides the project ID of the grouped
                   # usage result.
                   project_id: nil,
@@ -297,9 +393,18 @@ module OpenAI
                       api_key_id: T.nilable(String),
                       batch: T.nilable(T::Boolean),
                       input_audio_tokens: Integer,
+                      input_cache_write_tokens: Integer,
+                      input_cached_audio_tokens: Integer,
+                      input_cached_image_tokens: Integer,
+                      input_cached_text_tokens: Integer,
                       input_cached_tokens: Integer,
+                      input_image_tokens: Integer,
+                      input_text_tokens: Integer,
+                      input_uncached_tokens: Integer,
                       model: T.nilable(String),
                       output_audio_tokens: Integer,
+                      output_image_tokens: Integer,
+                      output_text_tokens: Integer,
                       project_id: T.nilable(String),
                       service_tier: T.nilable(String),
                       user_id: T.nilable(String)

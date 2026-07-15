@@ -45,8 +45,13 @@ module OpenAI
             sig { returns(Symbol) }
             attr_accessor :object
 
-            # Service accounts can only have one role of type `member`
-            sig { returns(Symbol) }
+            # Service accounts created with default project membership have role `member`.
+            # Accounts created with `create_service_account_only` have role `none`.
+            sig do
+              returns(
+                OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role::TaggedSymbol
+              )
+            end
             attr_accessor :role
 
             sig do
@@ -58,8 +63,9 @@ module OpenAI
                   ),
                 created_at: Integer,
                 name: String,
-                object: Symbol,
-                role: Symbol
+                role:
+                  OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role::OrSymbol,
+                object: Symbol
               ).returns(T.attached_class)
             end
             def self.new(
@@ -67,9 +73,10 @@ module OpenAI
               api_key:,
               created_at:,
               name:,
-              object: :"organization.project.service_account",
-              # Service accounts can only have one role of type `member`
-              role: :member
+              # Service accounts created with default project membership have role `member`.
+              # Accounts created with `create_service_account_only` have role `none`.
+              role:,
+              object: :"organization.project.service_account"
             )
             end
 
@@ -84,7 +91,8 @@ module OpenAI
                   created_at: Integer,
                   name: String,
                   object: Symbol,
-                  role: Symbol
+                  role:
+                    OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role::TaggedSymbol
                 }
               )
             end
@@ -147,6 +155,42 @@ module OpenAI
                 )
               end
               def to_hash
+              end
+            end
+
+            # Service accounts created with default project membership have role `member`.
+            # Accounts created with `create_service_account_only` have role `none`.
+            module Role
+              extend OpenAI::Internal::Type::Enum
+
+              TaggedSymbol =
+                T.type_alias do
+                  T.all(
+                    Symbol,
+                    OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role
+                  )
+                end
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+              MEMBER =
+                T.let(
+                  :member,
+                  OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role::TaggedSymbol
+                )
+              NONE =
+                T.let(
+                  :none,
+                  OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role::TaggedSymbol
+                )
+
+              sig do
+                override.returns(
+                  T::Array[
+                    OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role::TaggedSymbol
+                  ]
+                )
+              end
+              def self.values
               end
             end
           end
