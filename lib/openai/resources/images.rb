@@ -87,6 +87,7 @@ module OpenAI
       # @see OpenAI::Models::ImageEditParams
       def edit(params)
         parsed, options = OpenAI::ImageEditParams.dump_request(params)
+        parsed = prepare_edit_body(parsed)
         if parsed[:stream]
           message = "Please use `#edit_stream_raw` for the streaming use case."
           raise ArgumentError.new(message)
@@ -148,6 +149,7 @@ module OpenAI
       # @see OpenAI::Models::ImageEditParams
       def edit_stream_raw(params)
         parsed, options = OpenAI::ImageEditParams.dump_request(params)
+        parsed = prepare_edit_body(parsed)
         unless parsed.fetch(:stream, true)
           message = "Please use `#edit` for the non-streaming use case."
           raise ArgumentError.new(message)
@@ -284,6 +286,18 @@ module OpenAI
           security: {bearer_auth: true},
           options: options
         )
+      end
+
+      # @api private
+      #
+      # @param parsed [Hash{Symbol=>Object}]
+      #
+      # @return [Hash{Symbol=>Object}]
+      private def prepare_edit_body(parsed)
+        # The Images API uses a bracketed multipart field name for multiple image uploads.
+        return parsed unless parsed[:image].is_a?(Array)
+
+        parsed.transform_keys { _1 == :image ? :"image[]" : _1 }
       end
 
       # @api private
