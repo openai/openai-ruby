@@ -6,13 +6,6 @@ module OpenAI
       class Organization
         class Projects
           class ServiceAccounts
-            sig do
-              returns(
-                OpenAI::Resources::Admin::Organization::Projects::ServiceAccounts::APIKeys
-              )
-            end
-            attr_reader :api_keys
-
             # Creates a new service account in the project. By default, this also returns an
             # unredacted API key for the service account.
             sig do
@@ -127,6 +120,31 @@ module OpenAI
               service_account_id,
               # The ID of the project.
               project_id:,
+              request_options: {}
+            )
+            end
+
+            # Creates an API key for a service account in the project.
+            sig do
+              params(
+                service_account_id: String,
+                project_id: String,
+                name: String,
+                scopes: T::Array[String],
+                request_options: OpenAI::RequestOptions::OrHash
+              ).returns(
+                OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateAPIKeyResponse
+              )
+            end
+            def create_api_key(
+              # Path param: The ID of the service account.
+              service_account_id,
+              # Path param: The ID of the project.
+              project_id:,
+              # Body param: API key name.
+              name: nil,
+              # Body param: API key scopes.
+              scopes: nil,
               request_options: {}
             )
             end

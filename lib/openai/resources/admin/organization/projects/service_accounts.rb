@@ -6,9 +6,6 @@ module OpenAI
       class Organization
         class Projects
           class ServiceAccounts
-            # @return [OpenAI::Resources::Admin::Organization::Projects::ServiceAccounts::APIKeys]
-            attr_reader :api_keys
-
             # Creates a new service account in the project. By default, this also returns an
             # unredacted API key for the service account.
             #
@@ -163,13 +160,49 @@ module OpenAI
               )
             end
 
+            # Creates an API key for a service account in the project.
+            #
+            # @overload create_api_key(service_account_id, project_id:, name: nil, scopes: nil, request_options: {})
+            #
+            # @param service_account_id [String] Path param: The ID of the service account.
+            #
+            # @param project_id [String] Path param: The ID of the project.
+            #
+            # @param name [String] Body param: API key name.
+            #
+            # @param scopes [Array<String>] Body param: API key scopes.
+            #
+            # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+            #
+            # @return [OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateAPIKeyResponse]
+            #
+            # @see OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateAPIKeyParams
+            def create_api_key(service_account_id, params)
+              parsed, options =
+                OpenAI::Admin::Organization::Projects::ServiceAccountCreateAPIKeyParams.dump_request(params)
+              project_id =
+                parsed.delete(:project_id) do
+                  raise ArgumentError.new("missing required path argument #{_1}")
+                end
+              @client.request(
+                method: :post,
+                path: [
+                  "organization/projects/%1$s/service_accounts/%2$s/api_keys",
+                  project_id,
+                  service_account_id
+                ],
+                body: parsed,
+                model: OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateAPIKeyResponse,
+                security: {admin_api_key_auth: true},
+                options: options
+              )
+            end
+
             # @api private
             #
             # @param client [OpenAI::Client]
             def initialize(client:)
               @client = client
-              @api_keys =
-                OpenAI::Resources::Admin::Organization::Projects::ServiceAccounts::APIKeys.new(client: client)
             end
           end
         end

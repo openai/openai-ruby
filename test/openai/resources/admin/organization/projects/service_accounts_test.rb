@@ -110,4 +110,26 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::ServiceAccountsTes
       }
     end
   end
+
+  def test_create_api_key_required_params
+    response =
+      @openai.admin.organization.projects.service_accounts.create_api_key(
+        "service_account_id",
+        project_id: "project_id"
+      )
+
+    assert_pattern do
+      response => OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateAPIKeyResponse
+    end
+
+    assert_pattern do
+      response => {
+        id: String,
+        created_at: Integer,
+        name: String,
+        object: Symbol,
+        value: String
+      }
+    end
+  end
 end
