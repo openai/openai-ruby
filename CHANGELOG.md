@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.71.0 (2026-07-17)
+
+Full Changelog: [v0.70.0...v0.71.0](https://github.com/openai/openai-ruby/compare/v0.70.0...v0.71.0)
+
+### Features
+
+* **api:** /organization/projects/{project_id}/service_accounts/{service_account_id}/api_keys" endpoint ([fc60012](https://github.com/openai/openai-ruby/commit/fc6001297f385326c0b9d9c9cbf7f7bd66620c11))
+* **api:** manual updates ([4e499e5](https://github.com/openai/openai-ruby/commit/4e499e5e0ecee6306bde22b2b77cad619395a6cb))
+* **api:** manual updates ([2be1795](https://github.com/openai/openai-ruby/commit/2be179523d2d2838982ce8d6831c49fd324ccf35))
+
 ## 0.70.0 (2026-07-14)
 
 Full Changelog: [v0.69.0...v0.70.0](https://github.com/openai/openai-ruby/compare/v0.69.0...v0.70.0)

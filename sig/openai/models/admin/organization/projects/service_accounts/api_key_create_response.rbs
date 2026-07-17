@@ -1,0 +1,48 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        module Projects
+          module ServiceAccounts
+            type api_key_create_response =
+              {
+                id: String,
+                created_at: Integer,
+                name: String,
+                object: :"organization.project.service_account.api_key",
+                value: String
+              }
+
+            class APIKeyCreateResponse < OpenAI::Internal::Type::BaseModel
+              attr_accessor id: String
+
+              attr_accessor created_at: Integer
+
+              attr_accessor name: String
+
+              attr_accessor object: :"organization.project.service_account.api_key"
+
+              attr_accessor value: String
+
+              def initialize: (
+                id: String,
+                created_at: Integer,
+                name: String,
+                value: String,
+                ?object: :"organization.project.service_account.api_key"
+              ) -> void
+
+              def to_hash: -> {
+                id: String,
+                created_at: Integer,
+                name: String,
+                object: :"organization.project.service_account.api_key",
+                value: String
+              }
+            end
+          end
+        end
+      end
+    end
+  end
+end

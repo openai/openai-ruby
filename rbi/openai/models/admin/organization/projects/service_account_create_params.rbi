@@ -24,10 +24,15 @@ module OpenAI
             sig { returns(String) }
             attr_accessor :name
 
+            # Create the service account without default roles or an API key.
+            sig { returns(T.nilable(T::Boolean)) }
+            attr_accessor :create_service_account_only
+
             sig do
               params(
                 project_id: String,
                 name: String,
+                create_service_account_only: T.nilable(T::Boolean),
                 request_options: OpenAI::RequestOptions::OrHash
               ).returns(T.attached_class)
             end
@@ -35,6 +40,8 @@ module OpenAI
               project_id:,
               # The name of the service account being created.
               name:,
+              # Create the service account without default roles or an API key.
+              create_service_account_only: nil,
               request_options: {}
             )
             end
@@ -44,6 +51,7 @@ module OpenAI
                 {
                   project_id: String,
                   name: String,
+                  create_service_account_only: T.nilable(T::Boolean),
                   request_options: OpenAI::RequestOptions
                 }
               )

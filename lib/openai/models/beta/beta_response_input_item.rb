@@ -805,30 +805,32 @@ module OpenAI
             # @!attribute annotations
             #   Citations associated with the text content.
             #
-            #   @return [Array<OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember0>, Array<OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember1>, Array<OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember2>, nil]
+            #   @return [Array<OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::FileCitation, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::URLCitation, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::ContainerFileCitation>, nil]
             optional :annotations,
-                     union: -> { OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations }
+                     -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation] }
 
             # @!method initialize(text:, annotations: nil, type: :output_text)
             #   @param text [String] The text content.
             #
-            #   @param annotations [Array<OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember0>, Array<OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember1>, Array<OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember2>] Citations associated with the text content.
+            #   @param annotations [Array<OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::FileCitation, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::URLCitation, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::ContainerFileCitation>] Citations associated with the text content.
             #
             #   @param type [Symbol, :output_text] The content type. Always `output_text`.
 
-            # Citations associated with the text content.
-            #
-            # @see OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output#annotations
-            module Annotations
+            module Annotation
               extend OpenAI::Internal::Type::Union
 
-              variant -> { OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember0Array }
+              discriminator :type
 
-              variant -> { OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember1Array }
+              variant :file_citation,
+                      -> { OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::FileCitation }
 
-              variant -> { OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember2Array }
+              variant :url_citation,
+                      -> { OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::URLCitation }
 
-              class UnionMember0 < OpenAI::Internal::Type::BaseModel
+              variant :container_file_citation,
+                      -> { OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::ContainerFileCitation }
+
+              class FileCitation < OpenAI::Internal::Type::BaseModel
                 # @!attribute file_id
                 #   The ID of the file.
                 #
@@ -863,7 +865,7 @@ module OpenAI
                 #   @param type [Symbol, :file_citation] The citation type. Always `file_citation`.
               end
 
-              class UnionMember1 < OpenAI::Internal::Type::BaseModel
+              class URLCitation < OpenAI::Internal::Type::BaseModel
                 # @!attribute end_index
                 #   The index of the last character of the citation in the message.
                 #
@@ -906,7 +908,7 @@ module OpenAI
                 #   @param type [Symbol, :url_citation] The citation type. Always `url_citation`.
               end
 
-              class UnionMember2 < OpenAI::Internal::Type::BaseModel
+              class ContainerFileCitation < OpenAI::Internal::Type::BaseModel
                 # @!attribute container_id
                 #   The ID of the container.
                 #
@@ -958,25 +960,7 @@ module OpenAI
               end
 
               # @!method self.variants
-              #   @return [Array(Array<OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember0>, Array<OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember1>, Array<OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember2>)]
-
-              # @type [OpenAI::Internal::Type::Converter]
-              UnionMember0Array =
-                OpenAI::Internal::Type::ArrayOf[-> {
-                  OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember0
-                }]
-
-              # @type [OpenAI::Internal::Type::Converter]
-              UnionMember1Array =
-                OpenAI::Internal::Type::ArrayOf[-> {
-                  OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember1
-                }]
-
-              # @type [OpenAI::Internal::Type::Converter]
-              UnionMember2Array =
-                OpenAI::Internal::Type::ArrayOf[-> {
-                  OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotations::UnionMember2
-                }]
+              #   @return [Array(OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::FileCitation, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::URLCitation, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::ContainerFileCitation)]
             end
           end
 

@@ -89,9 +89,18 @@ module OpenAI
                   api_key_id: String?,
                   batch: bool?,
                   input_audio_tokens: Integer,
+                  input_cache_write_tokens: Integer,
+                  input_cached_audio_tokens: Integer,
+                  input_cached_image_tokens: Integer,
+                  input_cached_text_tokens: Integer,
                   input_cached_tokens: Integer,
+                  input_image_tokens: Integer,
+                  input_text_tokens: Integer,
+                  input_uncached_tokens: Integer,
                   model: String?,
                   output_audio_tokens: Integer,
+                  output_image_tokens: Integer,
+                  output_text_tokens: Integer,
                   project_id: String?,
                   service_tier: String?,
                   user_id: String?
@@ -114,15 +123,51 @@ module OpenAI
 
                 def input_audio_tokens=: (Integer) -> Integer
 
+                attr_reader input_cache_write_tokens: Integer?
+
+                def input_cache_write_tokens=: (Integer) -> Integer
+
+                attr_reader input_cached_audio_tokens: Integer?
+
+                def input_cached_audio_tokens=: (Integer) -> Integer
+
+                attr_reader input_cached_image_tokens: Integer?
+
+                def input_cached_image_tokens=: (Integer) -> Integer
+
+                attr_reader input_cached_text_tokens: Integer?
+
+                def input_cached_text_tokens=: (Integer) -> Integer
+
                 attr_reader input_cached_tokens: Integer?
 
                 def input_cached_tokens=: (Integer) -> Integer
+
+                attr_reader input_image_tokens: Integer?
+
+                def input_image_tokens=: (Integer) -> Integer
+
+                attr_reader input_text_tokens: Integer?
+
+                def input_text_tokens=: (Integer) -> Integer
+
+                attr_reader input_uncached_tokens: Integer?
+
+                def input_uncached_tokens=: (Integer) -> Integer
 
                 attr_accessor model: String?
 
                 attr_reader output_audio_tokens: Integer?
 
                 def output_audio_tokens=: (Integer) -> Integer
+
+                attr_reader output_image_tokens: Integer?
+
+                def output_image_tokens=: (Integer) -> Integer
+
+                attr_reader output_text_tokens: Integer?
+
+                def output_text_tokens=: (Integer) -> Integer
 
                 attr_accessor project_id: String?
 
@@ -137,9 +182,18 @@ module OpenAI
                   ?api_key_id: String?,
                   ?batch: bool?,
                   ?input_audio_tokens: Integer,
+                  ?input_cache_write_tokens: Integer,
+                  ?input_cached_audio_tokens: Integer,
+                  ?input_cached_image_tokens: Integer,
+                  ?input_cached_text_tokens: Integer,
                   ?input_cached_tokens: Integer,
+                  ?input_image_tokens: Integer,
+                  ?input_text_tokens: Integer,
+                  ?input_uncached_tokens: Integer,
                   ?model: String?,
                   ?output_audio_tokens: Integer,
+                  ?output_image_tokens: Integer,
+                  ?output_text_tokens: Integer,
                   ?project_id: String?,
                   ?service_tier: String?,
                   ?user_id: String?,
@@ -154,9 +208,18 @@ module OpenAI
                   api_key_id: String?,
                   batch: bool?,
                   input_audio_tokens: Integer,
+                  input_cache_write_tokens: Integer,
+                  input_cached_audio_tokens: Integer,
+                  input_cached_image_tokens: Integer,
+                  input_cached_text_tokens: Integer,
                   input_cached_tokens: Integer,
+                  input_image_tokens: Integer,
+                  input_text_tokens: Integer,
+                  input_uncached_tokens: Integer,
                   model: String?,
                   output_audio_tokens: Integer,
+                  output_image_tokens: Integer,
+                  output_text_tokens: Integer,
                   project_id: String?,
                   service_tier: String?,
                   user_id: String?
