@@ -12,6 +12,9 @@ module OpenAI
             module Groups
             end
 
+            module ServiceAccounts
+            end
+
             module Users
             end
           end
@@ -98,6 +101,9 @@ module OpenAI
           module Groups
           end
 
+          module ServiceAccounts
+          end
+
           module Users
           end
         end
@@ -108,6 +114,9 @@ module OpenAI
 
       module Projects
         module Groups
+        end
+
+        module ServiceAccounts
         end
 
         module Users
@@ -121,6 +130,9 @@ module OpenAI
       end
 
       module Runs
+      end
+
+      module ServiceAccounts
       end
 
       module Skills
