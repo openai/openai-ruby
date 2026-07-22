@@ -60,7 +60,7 @@ module OpenAI
             parallel_tool_calls: T.nilable(T::Boolean),
             previous_response_id: T.nilable(String),
             prompt: T.nilable(OpenAI::Beta::BetaResponsePrompt::OrHash),
-            prompt_cache_key: String,
+            prompt_cache_key: T.nilable(String),
             prompt_cache_options:
               OpenAI::Beta::ResponseCreateParams::PromptCacheOptions::OrHash,
             prompt_cache_retention:
@@ -69,7 +69,7 @@ module OpenAI
               ),
             reasoning:
               T.nilable(OpenAI::Beta::ResponseCreateParams::Reasoning::OrHash),
-            safety_identifier: String,
+            safety_identifier: T.nilable(String),
             service_tier:
               T.nilable(
                 OpenAI::Beta::ResponseCreateParams::ServiceTier::OrSymbol
@@ -399,7 +399,7 @@ module OpenAI
             parallel_tool_calls: T.nilable(T::Boolean),
             previous_response_id: T.nilable(String),
             prompt: T.nilable(OpenAI::Beta::BetaResponsePrompt::OrHash),
-            prompt_cache_key: String,
+            prompt_cache_key: T.nilable(String),
             prompt_cache_options:
               OpenAI::Beta::ResponseCreateParams::PromptCacheOptions::OrHash,
             prompt_cache_retention:
@@ -408,7 +408,7 @@ module OpenAI
               ),
             reasoning:
               T.nilable(OpenAI::Beta::ResponseCreateParams::Reasoning::OrHash),
-            safety_identifier: String,
+            safety_identifier: T.nilable(String),
             service_tier:
               T.nilable(
                 OpenAI::Beta::ResponseCreateParams::ServiceTier::OrSymbol

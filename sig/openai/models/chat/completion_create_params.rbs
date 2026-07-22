@@ -20,12 +20,12 @@ module OpenAI
           parallel_tool_calls: bool,
           prediction: OpenAI::Chat::ChatCompletionPredictionContent?,
           presence_penalty: Float?,
-          prompt_cache_key: String,
+          prompt_cache_key: String?,
           prompt_cache_options: OpenAI::Chat::CompletionCreateParams::PromptCacheOptions,
           prompt_cache_retention: OpenAI::Models::Chat::CompletionCreateParams::prompt_cache_retention?,
           reasoning_effort: OpenAI::Models::reasoning_effort?,
           response_format: OpenAI::Models::Chat::CompletionCreateParams::response_format,
-          safety_identifier: String,
+          safety_identifier: String?,
           seed: Integer?,
           service_tier: OpenAI::Models::Chat::CompletionCreateParams::service_tier?,
           stop: OpenAI::Models::Chat::CompletionCreateParams::stop?,
@@ -90,9 +90,7 @@ module OpenAI
 
         attr_accessor presence_penalty: Float?
 
-        attr_reader prompt_cache_key: String?
-
-        def prompt_cache_key=: (String) -> String
+        attr_accessor prompt_cache_key: String?
 
         attr_reader prompt_cache_options: OpenAI::Chat::CompletionCreateParams::PromptCacheOptions?
 
@@ -110,9 +108,7 @@ module OpenAI
           OpenAI::Models::Chat::CompletionCreateParams::response_format
         ) -> OpenAI::Models::Chat::CompletionCreateParams::response_format
 
-        attr_reader safety_identifier: String?
-
-        def safety_identifier=: (String) -> String
+        attr_accessor safety_identifier: String?
 
         attr_accessor seed: Integer?
 
@@ -172,12 +168,12 @@ module OpenAI
           ?parallel_tool_calls: bool,
           ?prediction: OpenAI::Chat::ChatCompletionPredictionContent?,
           ?presence_penalty: Float?,
-          ?prompt_cache_key: String,
+          ?prompt_cache_key: String?,
           ?prompt_cache_options: OpenAI::Chat::CompletionCreateParams::PromptCacheOptions,
           ?prompt_cache_retention: OpenAI::Models::Chat::CompletionCreateParams::prompt_cache_retention?,
           ?reasoning_effort: OpenAI::Models::reasoning_effort?,
           ?response_format: OpenAI::Models::Chat::CompletionCreateParams::response_format,
-          ?safety_identifier: String,
+          ?safety_identifier: String?,
           ?seed: Integer?,
           ?service_tier: OpenAI::Models::Chat::CompletionCreateParams::service_tier?,
           ?stop: OpenAI::Models::Chat::CompletionCreateParams::stop?,
@@ -212,12 +208,12 @@ module OpenAI
           parallel_tool_calls: bool,
           prediction: OpenAI::Chat::ChatCompletionPredictionContent?,
           presence_penalty: Float?,
-          prompt_cache_key: String,
+          prompt_cache_key: String?,
           prompt_cache_options: OpenAI::Chat::CompletionCreateParams::PromptCacheOptions,
           prompt_cache_retention: OpenAI::Models::Chat::CompletionCreateParams::prompt_cache_retention?,
           reasoning_effort: OpenAI::Models::reasoning_effort?,
           response_format: OpenAI::Models::Chat::CompletionCreateParams::response_format,
-          safety_identifier: String,
+          safety_identifier: String?,
           seed: Integer?,
           service_tier: OpenAI::Models::Chat::CompletionCreateParams::service_tier?,
           stop: OpenAI::Models::Chat::CompletionCreateParams::stop?,

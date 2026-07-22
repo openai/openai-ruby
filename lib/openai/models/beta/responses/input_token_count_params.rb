@@ -214,7 +214,10 @@ module OpenAI
 
           class Reasoning < OpenAI::Internal::Type::BaseModel
             # @!attribute context
-            #   Controls which reasoning items are rendered back to the model on later turns.
+            #   Controls which reasoning items are rendered back to the model on later turns. If
+            #   omitted or set to `auto`, the model determines the context mode. The `gpt-5.6`
+            #   model family defaults to `all_turns`; earlier models default to `current_turn`.
+            #
             #   When returned on a response, this is the effective reasoning context mode used
             #   for the response.
             #
@@ -289,7 +292,10 @@ module OpenAI
             #
             #   @param summary [Symbol, OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::Summary, nil] A summary of the reasoning performed by the model. This can be
 
-            # Controls which reasoning items are rendered back to the model on later turns.
+            # Controls which reasoning items are rendered back to the model on later turns. If
+            # omitted or set to `auto`, the model determines the context mode. The `gpt-5.6`
+            # model family defaults to `all_turns`; earlier models default to `current_turn`.
+            #
             # When returned on a response, this is the effective reasoning context mode used
             # for the response.
             #
@@ -419,7 +425,8 @@ module OpenAI
             # @!attribute verbosity
             #   Constrains the verbosity of the model's response. Lower values will result in
             #   more concise responses, while higher values will result in more verbose
-            #   responses. Currently supported values are `low`, `medium`, and `high`.
+            #   responses. Currently supported values are `low`, `medium`, and `high`. The
+            #   default is `medium`.
             #
             #   @return [Symbol, OpenAI::Models::Beta::Responses::InputTokenCountParams::Text::Verbosity, nil]
             optional :verbosity,
@@ -442,7 +449,8 @@ module OpenAI
 
             # Constrains the verbosity of the model's response. Lower values will result in
             # more concise responses, while higher values will result in more verbose
-            # responses. Currently supported values are `low`, `medium`, and `high`.
+            # responses. Currently supported values are `low`, `medium`, and `high`. The
+            # default is `medium`.
             #
             # @see OpenAI::Models::Beta::Responses::InputTokenCountParams::Text#verbosity
             module Verbosity

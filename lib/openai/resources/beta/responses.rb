@@ -59,7 +59,7 @@ module OpenAI
         #
         # @param prompt [OpenAI::Models::Beta::BetaResponsePrompt, nil] Body param: Reference to a prompt template and its variables.
         #
-        # @param prompt_cache_key [String] Body param: Used by OpenAI to cache responses for similar requests to optimize y
+        # @param prompt_cache_key [String, nil] Body param: Used by OpenAI to cache responses for similar requests to optimize y
         #
         # @param prompt_cache_options [OpenAI::Models::Beta::ResponseCreateParams::PromptCacheOptions] Body param: Options for prompt caching. Supported for `gpt-5.6` and later models
         #
@@ -67,7 +67,7 @@ module OpenAI
         #
         # @param reasoning [OpenAI::Models::Beta::ResponseCreateParams::Reasoning, nil] Body param: **gpt-5 and o-series models only**
         #
-        # @param safety_identifier [String] Body param: A stable identifier used to help detect users of your application th
+        # @param safety_identifier [String, nil] Body param: A stable identifier used to help detect users of your application th
         #
         # @param service_tier [Symbol, OpenAI::Models::Beta::ResponseCreateParams::ServiceTier, nil] Body param: Specifies the processing type used for serving the request.
         #
@@ -165,7 +165,7 @@ module OpenAI
         #
         # @param prompt [OpenAI::Models::Beta::BetaResponsePrompt, nil] Body param: Reference to a prompt template and its variables.
         #
-        # @param prompt_cache_key [String] Body param: Used by OpenAI to cache responses for similar requests to optimize y
+        # @param prompt_cache_key [String, nil] Body param: Used by OpenAI to cache responses for similar requests to optimize y
         #
         # @param prompt_cache_options [OpenAI::Models::Beta::ResponseCreateParams::PromptCacheOptions] Body param: Options for prompt caching. Supported for `gpt-5.6` and later models
         #
@@ -173,7 +173,7 @@ module OpenAI
         #
         # @param reasoning [OpenAI::Models::Beta::ResponseCreateParams::Reasoning, nil] Body param: **gpt-5 and o-series models only**
         #
-        # @param safety_identifier [String] Body param: A stable identifier used to help detect users of your application th
+        # @param safety_identifier [String, nil] Body param: A stable identifier used to help detect users of your application th
         #
         # @param service_tier [Symbol, OpenAI::Models::Beta::ResponseCreateParams::ServiceTier, nil] Body param: Specifies the processing type used for serving the request.
         #

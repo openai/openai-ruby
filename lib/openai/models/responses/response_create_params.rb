@@ -161,7 +161,7 @@ module OpenAI
         #   [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
         #
         #   @return [String, nil]
-        optional :prompt_cache_key, String
+        optional :prompt_cache_key, String, nil?: true
 
         # @!attribute prompt_cache_options
         #   Options for prompt caching. Supported for `gpt-5.6` and later models. By
@@ -221,7 +221,7 @@ module OpenAI
         #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
         #
         #   @return [String, nil]
-        optional :safety_identifier, String
+        optional :safety_identifier, String, nil?: true
 
         # @!attribute service_tier
         #   Specifies the processing type used for serving the request.
@@ -389,7 +389,7 @@ module OpenAI
         #
         #   @param prompt [OpenAI::Models::Responses::ResponsePrompt, nil] Reference to a prompt template and its variables.
         #
-        #   @param prompt_cache_key [String] Used by OpenAI to cache responses for similar requests to optimize your cache hi
+        #   @param prompt_cache_key [String, nil] Used by OpenAI to cache responses for similar requests to optimize your cache hi
         #
         #   @param prompt_cache_options [OpenAI::Models::Responses::ResponseCreateParams::PromptCacheOptions] Options for prompt caching. Supported for `gpt-5.6` and later models. By default
         #
@@ -397,7 +397,7 @@ module OpenAI
         #
         #   @param reasoning [OpenAI::Models::Reasoning, nil] **gpt-5 and o-series models only**
         #
-        #   @param safety_identifier [String] A stable identifier used to help detect users of your application that may be vi
+        #   @param safety_identifier [String, nil] A stable identifier used to help detect users of your application that may be vi
         #
         #   @param service_tier [Symbol, OpenAI::Models::Responses::ResponseCreateParams::ServiceTier, nil] Specifies the processing type used for serving the request.
         #

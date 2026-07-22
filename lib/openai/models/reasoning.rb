@@ -4,7 +4,10 @@ module OpenAI
   module Models
     class Reasoning < OpenAI::Internal::Type::BaseModel
       # @!attribute context
-      #   Controls which reasoning items are rendered back to the model on later turns.
+      #   Controls which reasoning items are rendered back to the model on later turns. If
+      #   omitted or set to `auto`, the model determines the context mode. The `gpt-5.6`
+      #   model family defaults to `all_turns`; earlier models default to `current_turn`.
+      #
       #   When returned on a response, this is the effective reasoning context mode used
       #   for the response.
       #
@@ -72,7 +75,10 @@ module OpenAI
       #
       #   @param summary [Symbol, OpenAI::Models::Reasoning::Summary, nil] A summary of the reasoning performed by the model. This can be
 
-      # Controls which reasoning items are rendered back to the model on later turns.
+      # Controls which reasoning items are rendered back to the model on later turns. If
+      # omitted or set to `auto`, the model determines the context mode. The `gpt-5.6`
+      # model family defaults to `all_turns`; earlier models default to `current_turn`.
+      #
       # When returned on a response, this is the effective reasoning context mode used
       # for the response.
       #

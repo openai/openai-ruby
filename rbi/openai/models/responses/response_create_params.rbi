@@ -198,10 +198,7 @@ module OpenAI
         # hit rates. Replaces the `user` field.
         # [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
         sig { returns(T.nilable(String)) }
-        attr_reader :prompt_cache_key
-
-        sig { params(prompt_cache_key: String).void }
-        attr_writer :prompt_cache_key
+        attr_accessor :prompt_cache_key
 
         # Options for prompt caching. Supported for `gpt-5.6` and later models. By
         # default, OpenAI automatically chooses one implicit cache breakpoint. You can add
@@ -272,10 +269,7 @@ module OpenAI
         # identifying information.
         # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
         sig { returns(T.nilable(String)) }
-        attr_reader :safety_identifier
-
-        sig { params(safety_identifier: String).void }
-        attr_writer :safety_identifier
+        attr_accessor :safety_identifier
 
         # Specifies the processing type used for serving the request.
         #
@@ -543,7 +537,7 @@ module OpenAI
             parallel_tool_calls: T.nilable(T::Boolean),
             previous_response_id: T.nilable(String),
             prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
-            prompt_cache_key: String,
+            prompt_cache_key: T.nilable(String),
             prompt_cache_options:
               OpenAI::Responses::ResponseCreateParams::PromptCacheOptions::OrHash,
             prompt_cache_retention:
@@ -551,7 +545,7 @@ module OpenAI
                 OpenAI::Responses::ResponseCreateParams::PromptCacheRetention::OrSymbol
               ),
             reasoning: T.nilable(OpenAI::Reasoning::OrHash),
-            safety_identifier: String,
+            safety_identifier: T.nilable(String),
             service_tier:
               T.nilable(
                 OpenAI::Responses::ResponseCreateParams::ServiceTier::OrSymbol
@@ -848,7 +842,7 @@ module OpenAI
               parallel_tool_calls: T.nilable(T::Boolean),
               previous_response_id: T.nilable(String),
               prompt: T.nilable(OpenAI::Responses::ResponsePrompt),
-              prompt_cache_key: String,
+              prompt_cache_key: T.nilable(String),
               prompt_cache_options:
                 OpenAI::Responses::ResponseCreateParams::PromptCacheOptions,
               prompt_cache_retention:
@@ -856,7 +850,7 @@ module OpenAI
                   OpenAI::Responses::ResponseCreateParams::PromptCacheRetention::OrSymbol
                 ),
               reasoning: T.nilable(OpenAI::Reasoning),
-              safety_identifier: String,
+              safety_identifier: T.nilable(String),
               service_tier:
                 T.nilable(
                   OpenAI::Responses::ResponseCreateParams::ServiceTier::OrSymbol

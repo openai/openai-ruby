@@ -194,7 +194,7 @@ module OpenAI
         #   [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
         #
         #   @return [String, nil]
-        optional :prompt_cache_key, String
+        optional :prompt_cache_key, String, nil?: true
 
         # @!attribute prompt_cache_options
         #   Options for prompt caching. Supported for `gpt-5.6` and later models. By
@@ -271,7 +271,7 @@ module OpenAI
         #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
         #
         #   @return [String, nil]
-        optional :safety_identifier, String
+        optional :safety_identifier, String, nil?: true
 
         # @!attribute seed
         #   @deprecated
@@ -401,7 +401,8 @@ module OpenAI
         # @!attribute verbosity
         #   Constrains the verbosity of the model's response. Lower values will result in
         #   more concise responses, while higher values will result in more verbose
-        #   responses. Currently supported values are `low`, `medium`, and `high`.
+        #   responses. Currently supported values are `low`, `medium`, and `high`. The
+        #   default is `medium`.
         #
         #   @return [Symbol, OpenAI::Models::Chat::CompletionCreateParams::Verbosity, nil]
         optional :verbosity, enum: -> { OpenAI::Chat::CompletionCreateParams::Verbosity }, nil?: true
@@ -452,7 +453,7 @@ module OpenAI
         #
         #   @param presence_penalty [Float, nil] Number between -2.0 and 2.0. Positive values penalize new tokens based on
         #
-        #   @param prompt_cache_key [String] Used by OpenAI to cache responses for similar requests to optimize your cache hi
+        #   @param prompt_cache_key [String, nil] Used by OpenAI to cache responses for similar requests to optimize your cache hi
         #
         #   @param prompt_cache_options [OpenAI::Models::Chat::CompletionCreateParams::PromptCacheOptions] Options for prompt caching. Supported for `gpt-5.6` and later models. By default
         #
@@ -462,7 +463,7 @@ module OpenAI
         #
         #   @param response_format [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::StructuredOutput::JsonSchemaConverter, OpenAI::Models::ResponseFormatJSONObject] An object specifying the format that the model must output.
         #
-        #   @param safety_identifier [String] A stable identifier used to help detect users of your application that may be vi
+        #   @param safety_identifier [String, nil] A stable identifier used to help detect users of your application that may be vi
         #
         #   @param seed [Integer, nil] This feature is in Beta.
         #
@@ -894,7 +895,8 @@ module OpenAI
 
         # Constrains the verbosity of the model's response. Lower values will result in
         # more concise responses, while higher values will result in more verbose
-        # responses. Currently supported values are `low`, `medium`, and `high`.
+        # responses. Currently supported values are `low`, `medium`, and `high`. The
+        # default is `medium`.
         module Verbosity
           extend OpenAI::Internal::Type::Enum
 

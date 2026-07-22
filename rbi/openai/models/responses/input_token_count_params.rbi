@@ -523,7 +523,8 @@ module OpenAI
 
           # Constrains the verbosity of the model's response. Lower values will result in
           # more concise responses, while higher values will result in more verbose
-          # responses. Currently supported values are `low`, `medium`, and `high`.
+          # responses. Currently supported values are `low`, `medium`, and `high`. The
+          # default is `medium`.
           sig do
             returns(
               T.nilable(
@@ -569,7 +570,8 @@ module OpenAI
             format_: nil,
             # Constrains the verbosity of the model's response. Lower values will result in
             # more concise responses, while higher values will result in more verbose
-            # responses. Currently supported values are `low`, `medium`, and `high`.
+            # responses. Currently supported values are `low`, `medium`, and `high`. The
+            # default is `medium`.
             verbosity: nil
           )
           end
@@ -595,7 +597,8 @@ module OpenAI
 
           # Constrains the verbosity of the model's response. Lower values will result in
           # more concise responses, while higher values will result in more verbose
-          # responses. Currently supported values are `low`, `medium`, and `high`.
+          # responses. Currently supported values are `low`, `medium`, and `high`. The
+          # default is `medium`.
           module Verbosity
             extend OpenAI::Internal::Type::Enum
 
