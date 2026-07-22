@@ -25,11 +25,11 @@ module OpenAI
           moderation: OpenAI::Responses::Response::Moderation?,
           previous_response_id: String?,
           prompt: OpenAI::Responses::ResponsePrompt?,
-          prompt_cache_key: String,
+          prompt_cache_key: String?,
           prompt_cache_options: OpenAI::Responses::Response::PromptCacheOptions,
           prompt_cache_retention: OpenAI::Models::Responses::Response::prompt_cache_retention?,
           reasoning: OpenAI::Reasoning?,
-          safety_identifier: String,
+          safety_identifier: String?,
           service_tier: OpenAI::Models::Responses::Response::service_tier?,
           status: OpenAI::Models::Responses::response_status,
           text: OpenAI::Responses::ResponseTextConfig,
@@ -84,9 +84,7 @@ module OpenAI
 
         attr_accessor prompt: OpenAI::Responses::ResponsePrompt?
 
-        attr_reader prompt_cache_key: String?
-
-        def prompt_cache_key=: (String) -> String
+        attr_accessor prompt_cache_key: String?
 
         attr_reader prompt_cache_options: OpenAI::Responses::Response::PromptCacheOptions?
 
@@ -98,9 +96,7 @@ module OpenAI
 
         attr_accessor reasoning: OpenAI::Reasoning?
 
-        attr_reader safety_identifier: String?
-
-        def safety_identifier=: (String) -> String
+        attr_accessor safety_identifier: String?
 
         attr_accessor service_tier: OpenAI::Models::Responses::Response::service_tier?
 
@@ -152,11 +148,11 @@ module OpenAI
           ?moderation: OpenAI::Responses::Response::Moderation?,
           ?previous_response_id: String?,
           ?prompt: OpenAI::Responses::ResponsePrompt?,
-          ?prompt_cache_key: String,
+          ?prompt_cache_key: String?,
           ?prompt_cache_options: OpenAI::Responses::Response::PromptCacheOptions,
           ?prompt_cache_retention: OpenAI::Models::Responses::Response::prompt_cache_retention?,
           ?reasoning: OpenAI::Reasoning?,
-          ?safety_identifier: String,
+          ?safety_identifier: String?,
           ?service_tier: OpenAI::Models::Responses::Response::service_tier?,
           ?status: OpenAI::Models::Responses::response_status,
           ?text: OpenAI::Responses::ResponseTextConfig,
@@ -190,11 +186,11 @@ module OpenAI
           moderation: OpenAI::Responses::Response::Moderation?,
           previous_response_id: String?,
           prompt: OpenAI::Responses::ResponsePrompt?,
-          prompt_cache_key: String,
+          prompt_cache_key: String?,
           prompt_cache_options: OpenAI::Responses::Response::PromptCacheOptions,
           prompt_cache_retention: OpenAI::Models::Responses::Response::prompt_cache_retention?,
           reasoning: OpenAI::Reasoning?,
-          safety_identifier: String,
+          safety_identifier: String?,
           service_tier: OpenAI::Models::Responses::Response::service_tier?,
           status: OpenAI::Models::Responses::response_status,
           text: OpenAI::Responses::ResponseTextConfig,

@@ -6,7 +6,10 @@ module OpenAI
       OrHash =
         T.type_alias { T.any(OpenAI::Reasoning, OpenAI::Internal::AnyHash) }
 
-      # Controls which reasoning items are rendered back to the model on later turns.
+      # Controls which reasoning items are rendered back to the model on later turns. If
+      # omitted or set to `auto`, the model determines the context mode. The `gpt-5.6`
+      # model family defaults to `all_turns`; earlier models default to `current_turn`.
+      #
       # When returned on a response, this is the effective reasoning context mode used
       # for the response.
       sig { returns(T.nilable(OpenAI::Reasoning::Context::OrSymbol)) }
@@ -66,7 +69,10 @@ module OpenAI
         ).returns(T.attached_class)
       end
       def self.new(
-        # Controls which reasoning items are rendered back to the model on later turns.
+        # Controls which reasoning items are rendered back to the model on later turns. If
+        # omitted or set to `auto`, the model determines the context mode. The `gpt-5.6`
+        # model family defaults to `all_turns`; earlier models default to `current_turn`.
+        #
         # When returned on a response, this is the effective reasoning context mode used
         # for the response.
         context: nil,
@@ -112,7 +118,10 @@ module OpenAI
       def to_hash
       end
 
-      # Controls which reasoning items are rendered back to the model on later turns.
+      # Controls which reasoning items are rendered back to the model on later turns. If
+      # omitted or set to `auto`, the model determines the context mode. The `gpt-5.6`
+      # model family defaults to `all_turns`; earlier models default to `current_turn`.
+      #
       # When returned on a response, this is the effective reasoning context mode used
       # for the response.
       module Context
