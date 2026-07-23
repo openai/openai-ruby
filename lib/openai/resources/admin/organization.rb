@@ -29,6 +29,9 @@ module OpenAI
         # @return [OpenAI::Resources::Admin::Organization::DataRetention]
         attr_reader :data_retention
 
+        # @return [OpenAI::Resources::Admin::Organization::SpendLimit]
+        attr_reader :spend_limit
+
         # @return [OpenAI::Resources::Admin::Organization::SpendAlerts]
         attr_reader :spend_alerts
 
@@ -51,6 +54,7 @@ module OpenAI
           @groups = OpenAI::Resources::Admin::Organization::Groups.new(client: client)
           @roles = OpenAI::Resources::Admin::Organization::Roles.new(client: client)
           @data_retention = OpenAI::Resources::Admin::Organization::DataRetention.new(client: client)
+          @spend_limit = OpenAI::Resources::Admin::Organization::SpendLimit.new(client: client)
           @spend_alerts = OpenAI::Resources::Admin::Organization::SpendAlerts.new(client: client)
           @certificates = OpenAI::Resources::Admin::Organization::Certificates.new(client: client)
           @projects = OpenAI::Resources::Admin::Organization::Projects.new(client: client)

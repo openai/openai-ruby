@@ -63,6 +63,7 @@ TEST_PATHS=(
 	test/openai/resources/admin/organization/groups/roles_test.rb
 	test/openai/resources/admin/organization/roles_test.rb
 	test/openai/resources/admin/organization/data_retention_test.rb
+	test/openai/resources/admin/organization/spend_limit_test.rb
 	test/openai/resources/admin/organization/spend_alerts_test.rb
 	test/openai/resources/admin/organization/certificates_test.rb
 	test/openai/resources/admin/organization/projects_test.rb
@@ -78,6 +79,7 @@ TEST_PATHS=(
 	test/openai/resources/admin/organization/projects/groups/roles_test.rb
 	test/openai/resources/admin/organization/projects/roles_test.rb
 	test/openai/resources/admin/organization/projects/data_retention_test.rb
+	test/openai/resources/admin/organization/projects/spend_limit_test.rb
 	test/openai/resources/admin/organization/projects/spend_alerts_test.rb
 	test/openai/resources/admin/organization/projects/certificates_test.rb
 	test/openai/resources/responses_test.rb
