@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.72.0 (2026-07-23)
+
+Full Changelog: [v0.71.0...v0.72.0](https://github.com/openai/openai-ruby/compare/v0.71.0...v0.72.0)
+
+### Features
+
+* **api:** accept `None` for prompt_cache_key/safety_identifier ([dcff6be](https://github.com/openai/openai-ruby/commit/dcff6bee4daca61b24dd03096f4772c3d276c93d))
+* **api:** add support for `spend_limit` admin apis ([06dff48](https://github.com/openai/openai-ruby/commit/06dff483232e08e59be550cf4432d319a36ede11))
+* **stlc:** configurable CI runner and private-production-repo support in workflow templates ([da769b4](https://github.com/openai/openai-ruby/commit/da769b419c0d1d51af2ad471ac63fdf18705be5b))
+
 ## 0.71.0 (2026-07-17)
 
 Full Changelog: [v0.70.0...v0.71.0](https://github.com/openai/openai-ruby/compare/v0.70.0...v0.71.0)
