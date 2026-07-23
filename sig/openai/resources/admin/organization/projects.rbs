@@ -21,6 +21,8 @@ module OpenAI
 
           attr_reader data_retention: OpenAI::Resources::Admin::Organization::Projects::DataRetention
 
+          attr_reader spend_limit: OpenAI::Resources::Admin::Organization::Projects::SpendLimit
+
           attr_reader spend_alerts: OpenAI::Resources::Admin::Organization::Projects::SpendAlerts
 
           attr_reader certificates: OpenAI::Resources::Admin::Organization::Projects::Certificates
