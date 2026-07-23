@@ -68,6 +68,11 @@ module OpenAI
               :invalid_prompt,
               OpenAI::Responses::ResponseError::Code::TaggedSymbol
             )
+          DATA_RESIDENCY_MISMATCH =
+            T.let(
+              :data_residency_mismatch,
+              OpenAI::Responses::ResponseError::Code::TaggedSymbol
+            )
           BIO_POLICY =
             T.let(
               :bio_policy,

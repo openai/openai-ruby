@@ -76,7 +76,7 @@ module OpenAI
             prediction:
               T.nilable(OpenAI::Chat::ChatCompletionPredictionContent::OrHash),
             presence_penalty: T.nilable(Float),
-            prompt_cache_key: String,
+            prompt_cache_key: T.nilable(String),
             prompt_cache_options:
               OpenAI::Chat::CompletionCreateParams::PromptCacheOptions::OrHash,
             prompt_cache_retention:
@@ -91,7 +91,7 @@ module OpenAI
                 OpenAI::StructuredOutput::JsonSchemaConverter,
                 OpenAI::ResponseFormatJSONObject::OrHash
               ),
-            safety_identifier: String,
+            safety_identifier: T.nilable(String),
             seed: T.nilable(Integer),
             service_tier:
               T.nilable(
@@ -363,7 +363,8 @@ module OpenAI
           user: nil,
           # Constrains the verbosity of the model's response. Lower values will result in
           # more concise responses, while higher values will result in more verbose
-          # responses. Currently supported values are `low`, `medium`, and `high`.
+          # responses. Currently supported values are `low`, `medium`, and `high`. The
+          # default is `medium`.
           verbosity: nil,
           # This tool searches the web for relevant results to use in a response. Learn more
           # about the
@@ -441,7 +442,7 @@ module OpenAI
             prediction:
               T.nilable(OpenAI::Chat::ChatCompletionPredictionContent::OrHash),
             presence_penalty: T.nilable(Float),
-            prompt_cache_key: String,
+            prompt_cache_key: T.nilable(String),
             prompt_cache_options:
               OpenAI::Chat::CompletionCreateParams::PromptCacheOptions::OrHash,
             prompt_cache_retention:
@@ -455,7 +456,7 @@ module OpenAI
                 OpenAI::ResponseFormatJSONSchema::OrHash,
                 OpenAI::ResponseFormatJSONObject::OrHash
               ),
-            safety_identifier: String,
+            safety_identifier: T.nilable(String),
             seed: T.nilable(Integer),
             service_tier:
               T.nilable(
@@ -726,7 +727,8 @@ module OpenAI
           user: nil,
           # Constrains the verbosity of the model's response. Lower values will result in
           # more concise responses, while higher values will result in more verbose
-          # responses. Currently supported values are `low`, `medium`, and `high`.
+          # responses. Currently supported values are `low`, `medium`, and `high`. The
+          # default is `medium`.
           verbosity: nil,
           # This tool searches the web for relevant results to use in a response. Learn more
           # about the

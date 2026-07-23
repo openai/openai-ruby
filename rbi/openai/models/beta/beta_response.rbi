@@ -204,10 +204,7 @@ module OpenAI
         # hit rates. Replaces the `user` field.
         # [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
         sig { returns(T.nilable(String)) }
-        attr_reader :prompt_cache_key
-
-        sig { params(prompt_cache_key: String).void }
-        attr_writer :prompt_cache_key
+        attr_accessor :prompt_cache_key
 
         # The prompt-caching options that were applied to the response. Supported for
         # `gpt-5.6` and later models.
@@ -271,10 +268,7 @@ module OpenAI
         # identifying information.
         # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
         sig { returns(T.nilable(String)) }
-        attr_reader :safety_identifier
-
-        sig { params(safety_identifier: String).void }
-        attr_writer :safety_identifier
+        attr_accessor :safety_identifier
 
         # Specifies the processing type used for serving the request.
         #
@@ -452,7 +446,7 @@ module OpenAI
               T.nilable(OpenAI::Beta::BetaResponse::Moderation::OrHash),
             previous_response_id: T.nilable(String),
             prompt: T.nilable(OpenAI::Beta::BetaResponsePrompt::OrHash),
-            prompt_cache_key: String,
+            prompt_cache_key: T.nilable(String),
             prompt_cache_options:
               OpenAI::Beta::BetaResponse::PromptCacheOptions::OrHash,
             prompt_cache_retention:
@@ -460,7 +454,7 @@ module OpenAI
                 OpenAI::Beta::BetaResponse::PromptCacheRetention::OrSymbol
               ),
             reasoning: T.nilable(OpenAI::Beta::BetaResponse::Reasoning::OrHash),
-            safety_identifier: String,
+            safety_identifier: T.nilable(String),
             service_tier:
               T.nilable(OpenAI::Beta::BetaResponse::ServiceTier::OrSymbol),
             status: OpenAI::Beta::BetaResponseStatus::OrSymbol,
@@ -691,7 +685,7 @@ module OpenAI
               moderation: T.nilable(OpenAI::Beta::BetaResponse::Moderation),
               previous_response_id: T.nilable(String),
               prompt: T.nilable(OpenAI::Beta::BetaResponsePrompt),
-              prompt_cache_key: String,
+              prompt_cache_key: T.nilable(String),
               prompt_cache_options:
                 OpenAI::Beta::BetaResponse::PromptCacheOptions,
               prompt_cache_retention:
@@ -699,7 +693,7 @@ module OpenAI
                   OpenAI::Beta::BetaResponse::PromptCacheRetention::TaggedSymbol
                 ),
               reasoning: T.nilable(OpenAI::Beta::BetaResponse::Reasoning),
-              safety_identifier: String,
+              safety_identifier: T.nilable(String),
               service_tier:
                 T.nilable(
                   OpenAI::Beta::BetaResponse::ServiceTier::TaggedSymbol
@@ -2014,7 +2008,10 @@ module OpenAI
               )
             end
 
-          # Controls which reasoning items are rendered back to the model on later turns.
+          # Controls which reasoning items are rendered back to the model on later turns. If
+          # omitted or set to `auto`, the model determines the context mode. The `gpt-5.6`
+          # model family defaults to `all_turns`; earlier models default to `current_turn`.
+          #
           # When returned on a response, this is the effective reasoning context mode used
           # for the response.
           sig do
@@ -2121,7 +2118,10 @@ module OpenAI
             ).returns(T.attached_class)
           end
           def self.new(
-            # Controls which reasoning items are rendered back to the model on later turns.
+            # Controls which reasoning items are rendered back to the model on later turns. If
+            # omitted or set to `auto`, the model determines the context mode. The `gpt-5.6`
+            # model family defaults to `all_turns`; earlier models default to `current_turn`.
+            #
             # When returned on a response, this is the effective reasoning context mode used
             # for the response.
             context: nil,
@@ -2178,7 +2178,10 @@ module OpenAI
           def to_hash
           end
 
-          # Controls which reasoning items are rendered back to the model on later turns.
+          # Controls which reasoning items are rendered back to the model on later turns. If
+          # omitted or set to `auto`, the model determines the context mode. The `gpt-5.6`
+          # model family defaults to `all_turns`; earlier models default to `current_turn`.
+          #
           # When returned on a response, this is the effective reasoning context mode used
           # for the response.
           module Context

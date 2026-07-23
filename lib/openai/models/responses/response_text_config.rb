@@ -25,7 +25,8 @@ module OpenAI
         # @!attribute verbosity
         #   Constrains the verbosity of the model's response. Lower values will result in
         #   more concise responses, while higher values will result in more verbose
-        #   responses. Currently supported values are `low`, `medium`, and `high`.
+        #   responses. Currently supported values are `low`, `medium`, and `high`. The
+        #   default is `medium`.
         #
         #   @return [Symbol, OpenAI::Models::Responses::ResponseTextConfig::Verbosity, nil]
         optional :verbosity, enum: -> { OpenAI::Responses::ResponseTextConfig::Verbosity }, nil?: true
@@ -46,7 +47,8 @@ module OpenAI
 
         # Constrains the verbosity of the model's response. Lower values will result in
         # more concise responses, while higher values will result in more verbose
-        # responses. Currently supported values are `low`, `medium`, and `high`.
+        # responses. Currently supported values are `low`, `medium`, and `high`. The
+        # default is `medium`.
         #
         # @see OpenAI::Models::Responses::ResponseTextConfig#verbosity
         module Verbosity

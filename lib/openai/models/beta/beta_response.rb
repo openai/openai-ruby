@@ -204,7 +204,7 @@ module OpenAI
         #   [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
         #
         #   @return [String, nil]
-        optional :prompt_cache_key, String
+        optional :prompt_cache_key, String, nil?: true
 
         # @!attribute prompt_cache_options
         #   The prompt-caching options that were applied to the response. Supported for
@@ -257,7 +257,7 @@ module OpenAI
         #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
         #
         #   @return [String, nil]
-        optional :safety_identifier, String
+        optional :safety_identifier, String, nil?: true
 
         # @!attribute service_tier
         #   Specifies the processing type used for serving the request.
@@ -382,7 +382,7 @@ module OpenAI
         #
         #   @param prompt [OpenAI::Models::Beta::BetaResponsePrompt, nil] Reference to a prompt template and its variables.
         #
-        #   @param prompt_cache_key [String] Used by OpenAI to cache responses for similar requests to optimize your cache hi
+        #   @param prompt_cache_key [String, nil] Used by OpenAI to cache responses for similar requests to optimize your cache hi
         #
         #   @param prompt_cache_options [OpenAI::Models::Beta::BetaResponse::PromptCacheOptions] The prompt-caching options that were applied to the response. Supported for `gpt
         #
@@ -390,7 +390,7 @@ module OpenAI
         #
         #   @param reasoning [OpenAI::Models::Beta::BetaResponse::Reasoning, nil] **gpt-5 and o-series models only**
         #
-        #   @param safety_identifier [String] A stable identifier used to help detect users of your application that may be vi
+        #   @param safety_identifier [String, nil] A stable identifier used to help detect users of your application that may be vi
         #
         #   @param service_tier [Symbol, OpenAI::Models::Beta::BetaResponse::ServiceTier, nil] Specifies the processing type used for serving the request.
         #
@@ -1190,7 +1190,10 @@ module OpenAI
         # @see OpenAI::Models::Beta::BetaResponse#reasoning
         class Reasoning < OpenAI::Internal::Type::BaseModel
           # @!attribute context
-          #   Controls which reasoning items are rendered back to the model on later turns.
+          #   Controls which reasoning items are rendered back to the model on later turns. If
+          #   omitted or set to `auto`, the model determines the context mode. The `gpt-5.6`
+          #   model family defaults to `all_turns`; earlier models default to `current_turn`.
+          #
           #   When returned on a response, this is the effective reasoning context mode used
           #   for the response.
           #
@@ -1260,7 +1263,10 @@ module OpenAI
           #
           #   @param summary [Symbol, OpenAI::Models::Beta::BetaResponse::Reasoning::Summary, nil] A summary of the reasoning performed by the model. This can be
 
-          # Controls which reasoning items are rendered back to the model on later turns.
+          # Controls which reasoning items are rendered back to the model on later turns. If
+          # omitted or set to `auto`, the model determines the context mode. The `gpt-5.6`
+          # model family defaults to `all_turns`; earlier models default to `current_turn`.
+          #
           # When returned on a response, this is the effective reasoning context mode used
           # for the response.
           #

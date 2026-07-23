@@ -62,6 +62,13 @@ module OpenAI
 
           sig do
             returns(
+              OpenAI::Resources::Admin::Organization::Projects::SpendLimit
+            )
+          end
+          attr_reader :spend_limit
+
+          sig do
+            returns(
               OpenAI::Resources::Admin::Organization::Projects::SpendAlerts
             )
           end

@@ -29,6 +29,9 @@ module OpenAI
         sig { returns(OpenAI::Resources::Admin::Organization::DataRetention) }
         attr_reader :data_retention
 
+        sig { returns(OpenAI::Resources::Admin::Organization::SpendLimit) }
+        attr_reader :spend_limit
+
         sig { returns(OpenAI::Resources::Admin::Organization::SpendAlerts) }
         attr_reader :spend_alerts
 

@@ -73,7 +73,7 @@ module OpenAI
         #
         # @param presence_penalty [Float, nil] Number between -2.0 and 2.0. Positive values penalize new tokens based on
         #
-        # @param prompt_cache_key [String] Used by OpenAI to cache responses for similar requests to optimize your cache hi
+        # @param prompt_cache_key [String, nil] Used by OpenAI to cache responses for similar requests to optimize your cache hi
         #
         # @param prompt_cache_options [OpenAI::Models::Chat::CompletionCreateParams::PromptCacheOptions] Options for prompt caching. Supported for `gpt-5.6` and later models. By default
         #
@@ -83,7 +83,7 @@ module OpenAI
         #
         # @param response_format [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject] An object specifying the format that the model must output.
         #
-        # @param safety_identifier [String] A stable identifier used to help detect users of your application that may be vi
+        # @param safety_identifier [String, nil] A stable identifier used to help detect users of your application that may be vi
         #
         # @param seed [Integer, nil] This feature is in Beta.
         #
@@ -329,7 +329,7 @@ module OpenAI
         #
         # @param presence_penalty [Float, nil] Number between -2.0 and 2.0. Positive values penalize new tokens based on
         #
-        # @param prompt_cache_key [String] Used by OpenAI to cache responses for similar requests to optimize your cache hi
+        # @param prompt_cache_key [String, nil] Used by OpenAI to cache responses for similar requests to optimize your cache hi
         #
         # @param prompt_cache_options [OpenAI::Models::Chat::CompletionCreateParams::PromptCacheOptions] Options for prompt caching. Supported for `gpt-5.6` and later models. By default
         #
@@ -339,7 +339,7 @@ module OpenAI
         #
         # @param response_format [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject] An object specifying the format that the model must output.
         #
-        # @param safety_identifier [String] A stable identifier used to help detect users of your application that may be vi
+        # @param safety_identifier [String, nil] A stable identifier used to help detect users of your application that may be vi
         #
         # @param seed [Integer, nil] This feature is in Beta.
         #

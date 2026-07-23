@@ -236,10 +236,7 @@ module OpenAI
         # hit rates. Replaces the `user` field.
         # [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
         sig { returns(T.nilable(String)) }
-        attr_reader :prompt_cache_key
-
-        sig { params(prompt_cache_key: String).void }
-        attr_writer :prompt_cache_key
+        attr_accessor :prompt_cache_key
 
         # Options for prompt caching. Supported for `gpt-5.6` and later models. By
         # default, OpenAI automatically chooses one implicit cache breakpoint. You can add
@@ -344,10 +341,7 @@ module OpenAI
         # identifying information.
         # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
         sig { returns(T.nilable(String)) }
-        attr_reader :safety_identifier
-
-        sig { params(safety_identifier: String).void }
-        attr_writer :safety_identifier
+        attr_accessor :safety_identifier
 
         # This feature is in Beta. If specified, our system will make a best effort to
         # sample deterministically, such that repeated requests with the same `seed` and
@@ -515,7 +509,8 @@ module OpenAI
 
         # Constrains the verbosity of the model's response. Lower values will result in
         # more concise responses, while higher values will result in more verbose
-        # responses. Currently supported values are `low`, `medium`, and `high`.
+        # responses. Currently supported values are `low`, `medium`, and `high`. The
+        # default is `medium`.
         sig do
           returns(
             T.nilable(OpenAI::Chat::CompletionCreateParams::Verbosity::OrSymbol)
@@ -584,7 +579,7 @@ module OpenAI
             prediction:
               T.nilable(OpenAI::Chat::ChatCompletionPredictionContent::OrHash),
             presence_penalty: T.nilable(Float),
-            prompt_cache_key: String,
+            prompt_cache_key: T.nilable(String),
             prompt_cache_options:
               OpenAI::Chat::CompletionCreateParams::PromptCacheOptions::OrHash,
             prompt_cache_retention:
@@ -599,7 +594,7 @@ module OpenAI
                 OpenAI::StructuredOutput::JsonSchemaConverter,
                 OpenAI::ResponseFormatJSONObject::OrHash
               ),
-            safety_identifier: String,
+            safety_identifier: T.nilable(String),
             seed: T.nilable(Integer),
             service_tier:
               T.nilable(
@@ -870,7 +865,8 @@ module OpenAI
           user: nil,
           # Constrains the verbosity of the model's response. Lower values will result in
           # more concise responses, while higher values will result in more verbose
-          # responses. Currently supported values are `low`, `medium`, and `high`.
+          # responses. Currently supported values are `low`, `medium`, and `high`. The
+          # default is `medium`.
           verbosity: nil,
           # This tool searches the web for relevant results to use in a response. Learn more
           # about the
@@ -922,7 +918,7 @@ module OpenAI
               prediction:
                 T.nilable(OpenAI::Chat::ChatCompletionPredictionContent),
               presence_penalty: T.nilable(Float),
-              prompt_cache_key: String,
+              prompt_cache_key: T.nilable(String),
               prompt_cache_options:
                 OpenAI::Chat::CompletionCreateParams::PromptCacheOptions,
               prompt_cache_retention:
@@ -936,7 +932,7 @@ module OpenAI
                   OpenAI::ResponseFormatJSONSchema,
                   OpenAI::ResponseFormatJSONObject
                 ),
-              safety_identifier: String,
+              safety_identifier: T.nilable(String),
               seed: T.nilable(Integer),
               service_tier:
                 T.nilable(
@@ -1819,7 +1815,8 @@ module OpenAI
 
         # Constrains the verbosity of the model's response. Lower values will result in
         # more concise responses, while higher values will result in more verbose
-        # responses. Currently supported values are `low`, `medium`, and `high`.
+        # responses. Currently supported values are `low`, `medium`, and `high`. The
+        # default is `medium`.
         module Verbosity
           extend OpenAI::Internal::Type::Enum
 
