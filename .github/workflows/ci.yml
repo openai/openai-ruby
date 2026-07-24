@@ -1,69 +1,30 @@
 name: CI
+
+# Pull requests are validated by the pull_request run. Limiting push runs to
+# long-lived branches avoids duplicate checks for same-repository PR branches.
 on:
   push:
     branches:
-      - '**'
-      - '!integrated/**'
-      - '!stl-preview-head/**'
-      - '!stl-preview-base/**'
-      - '!generated'
-      - '!codegen/**'
-      - 'codegen/stl/**'
+      - main
+      - next
   pull_request:
-    branches-ignore:
-      - 'stl-preview-head/**'
-      - 'stl-preview-base/**'
+    branches:
+      - main
+      - next
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 permissions: {}
 
 jobs:
-  build:
-    timeout-minutes: 10
-    name: build
-    permissions:
-      contents: read
-      id-token: write
-    runs-on: ${{ startsWith(github.repository, 'stainless-sdks/') && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
-    if: |-
-      github.repository == 'stainless-sdks/openai-ruby' &&
-      (github.event_name == 'push' || github.event.pull_request.head.repo.fork) && (github.event_name != 'push' || github.event.head_commit.message != 'codegen metadata')
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-        with:
-          persist-credentials: false
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@c515ec17f69368147deb311832da000dd229d338 # v1
-        with:
-          bundler-cache: false
-      - run: |-
-          bundle install
-
-      - name: Get GitHub OIDC Token
-        if: |-
-          github.repository == 'stainless-sdks/openai-ruby' &&
-          !startsWith(github.ref, 'refs/heads/stl/')
-        id: github-oidc
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
-        with:
-          script: core.setOutput('github_token', await core.getIDToken());
-
-      - name: Build and upload gem artifacts
-        if: |-
-          github.repository == 'stainless-sdks/openai-ruby' &&
-          !startsWith(github.ref, 'refs/heads/stl/')
-        env:
-          URL: https://pkg.stainless.com/s
-          AUTH: ${{ steps.github-oidc.outputs.github_token }}
-          SHA: ${{ github.sha }}
-          PACKAGE_NAME: openai
-        run: ./scripts/utils/upload-artifact.sh
   lint:
     timeout-minutes: 10
     name: lint
     permissions:
       contents: read
-    runs-on: ${{ startsWith(github.repository, 'stainless-sdks/') && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
@@ -78,13 +39,33 @@ jobs:
 
       - name: Run lints
         run: ./scripts/lint
+
+  package:
+    timeout-minutes: 10
+    name: package
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@c515ec17f69368147deb311832da000dd229d338 # v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: false
+      - run: bundle install
+      - name: Build gem
+        run: bundle exec rake build:gem
+
   test-ruby:
     timeout-minutes: 10
     name: test (ruby ${{ matrix.ruby-version }})
     permissions:
       contents: read
-    runs-on: ${{ startsWith(github.repository, 'stainless-sdks/') && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -103,12 +84,25 @@ jobs:
 
       - name: Run tests
         run: ./scripts/test
-  test:
-    name: test
-    needs: test-ruby
-    if: ${{ always() && needs.test-ruby.result != 'skipped' }}
+
+  required:
+    timeout-minutes: 5
+    name: ci-required
+    # Keep branch protection on one stable context as the job matrix evolves.
+    needs:
+      - lint
+      - package
+      - test-ruby
+    if: ${{ always() }}
     permissions: {}
-    runs-on: ${{ github.repository == 'stainless-sdks/openai-ruby' && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     steps:
-      - if: ${{ needs.test-ruby.result == 'failure' || needs.test-ruby.result == 'cancelled' }}
-        run: exit 1
+      - name: Check required job results
+        env:
+          LINT_RESULT: ${{ needs.lint.result }}
+          PACKAGE_RESULT: ${{ needs.package.result }}
+          TEST_RESULT: ${{ needs.test-ruby.result }}
+        run: |
+          test "$LINT_RESULT" = "success"
+          test "$PACKAGE_RESULT" = "success"
+          test "$TEST_RESULT" = "success"
