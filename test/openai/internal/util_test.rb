@@ -330,6 +330,58 @@ class OpenAI::Test::UtilIOAdapterTest < Minitest::Test
     end
   end
 
+  def test_read_respects_max_len_for_enumerator
+    input =
+      Enumerator.new do |y|
+        y << "ab"
+        y << "cd"
+        y << "ef"
+      end
+
+    # rubocop:disable Lint/EmptyBlock
+    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(input) {}
+    # rubocop:enable Lint/EmptyBlock
+
+    assert_equal("abc", adapter.read(3))
+    assert_equal("def", adapter.read(3))
+    assert_nil(adapter.read(3))
+  end
+
+  def test_read_clears_out_string_at_eof_for_enumerator
+    input =
+      Enumerator.new do |y|
+        y << "ab"
+        y << "cd"
+        y << "ef"
+      end
+
+    # rubocop:disable Lint/EmptyBlock
+    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(input) {}
+    # rubocop:enable Lint/EmptyBlock
+    out = +"seed"
+
+    assert_same(out, adapter.read(3, out))
+    assert_equal("abc", out)
+    assert_same(out, adapter.read(3, out))
+    assert_equal("def", out)
+    assert_nil(adapter.read(3, out))
+    assert_equal("", out)
+  end
+
+  def test_copy_read_for_enumerator_exactly_on_copy_stream_boundary
+    body = "a" * 16_384
+    input = Enumerator.new { _1 << body }
+    io = StringIO.new
+
+    # rubocop:disable Lint/EmptyBlock
+    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(input) {}
+    # rubocop:enable Lint/EmptyBlock
+
+    IO.copy_stream(adapter, io)
+
+    assert_equal(body, io.string)
+  end
+
   def test_copy_write
     cases = {
       StringIO.new => "",
