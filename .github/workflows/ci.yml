@@ -45,5 +45,6 @@ jobs:
         ${{
           github.repository == 'stainless-sdks/openai-ruby' &&
           (github.event_name == 'push' || github.event.pull_request.head.repo.fork) &&
-          (github.event_name != 'push' || github.event.head_commit.message != 'codegen metadata')
+          (github.event_name != 'push' || github.event.head_commit.message != 'codegen metadata') &&
+          !startsWith(github.ref, 'refs/heads/stl/')
         }}

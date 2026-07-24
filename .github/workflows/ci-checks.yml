@@ -34,14 +34,12 @@ jobs:
       - run: bundle install
 
       - name: Get GitHub OIDC token
-        if: ${{ !startsWith(github.ref, 'refs/heads/stl/') }}
         id: github-oidc
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
           script: core.setOutput('github_token', await core.getIDToken());
 
       - name: Build and upload gem artifacts
-        if: ${{ !startsWith(github.ref, 'refs/heads/stl/') }}
         env:
           URL: https://pkg.stainless.com/s
           AUTH: ${{ steps.github-oidc.outputs.github_token }}
