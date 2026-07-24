@@ -1,16 +1,23 @@
 name: CI
 
-# Pull requests are validated by the pull_request run. Limiting push runs to
-# long-lived branches avoids duplicate checks for same-repository PR branches.
+# This workflow is shared by the Stainless staging repository and the OpenAI
+# production repository. Stainless feature branches use push runs so they can
+# publish installable artifacts; production feature branches use PR runs so a
+# commit is validated only once.
 on:
   push:
     branches:
-      - main
-      - next
+      - '**'
+      - '!integrated/**'
+      - '!stl-preview-head/**'
+      - '!stl-preview-base/**'
+      - '!generated'
+      - '!codegen/**'
+      - 'codegen/stl/**'
   pull_request:
-    branches:
-      - main
-      - next
+    branches-ignore:
+      - 'stl-preview-head/**'
+      - 'stl-preview-base/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -19,90 +26,24 @@ concurrency:
 permissions: {}
 
 jobs:
-  lint:
-    timeout-minutes: 10
-    name: lint
+  checks:
+    name: ci
+    if: >-
+      (startsWith(github.repository, 'stainless-sdks/') &&
+        (github.event_name == 'push' || github.event.pull_request.head.repo.fork)) ||
+      (!startsWith(github.repository, 'stainless-sdks/') &&
+        (github.event_name == 'pull_request' ||
+          github.ref == 'refs/heads/main' ||
+          github.ref == 'refs/heads/next'))
     permissions:
       contents: read
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-        with:
-          persist-credentials: false
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@c515ec17f69368147deb311832da000dd229d338 # v1
-        with:
-          bundler-cache: false
-      - run: |-
-          bundle install
-
-      - name: Run lints
-        run: ./scripts/lint
-
-  package:
-    timeout-minutes: 10
-    name: package
-    permissions:
-      contents: read
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-        with:
-          persist-credentials: false
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@c515ec17f69368147deb311832da000dd229d338 # v1
-        with:
-          ruby-version: '3.2'
-          bundler-cache: false
-      - run: bundle install
-      - name: Build gem
-        run: bundle exec rake build:gem
-
-  test-ruby:
-    timeout-minutes: 10
-    name: test (ruby ${{ matrix.ruby-version }})
-    permissions:
-      contents: read
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        ruby-version: ['3.2', '3.3', '3.4', '4.0']
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-        with:
-          persist-credentials: false
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@c515ec17f69368147deb311832da000dd229d338 # v1
-        with:
-          ruby-version: ${{ matrix.ruby-version }}
-          bundler-cache: false
-      - run: |-
-          bundle install
-
-      - name: Run tests
-        run: ./scripts/test
-
-  required:
-    timeout-minutes: 5
-    name: ci-required
-    # Keep branch protection on one stable context as the job matrix evolves.
-    needs:
-      - lint
-      - package
-      - test-ruby
-    if: ${{ always() }}
-    permissions: {}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check required job results
-        env:
-          LINT_RESULT: ${{ needs.lint.result }}
-          PACKAGE_RESULT: ${{ needs.package.result }}
-          TEST_RESULT: ${{ needs.test-ruby.result }}
-        run: |
-          test "$LINT_RESULT" = "success"
-          test "$PACKAGE_RESULT" = "success"
-          test "$TEST_RESULT" = "success"
+      id-token: write # Allow the called artifact job to mint its Stainless upload token.
+    uses: ./.github/workflows/ci-checks.yml
+    with:
+      runner: ${{ startsWith(github.repository, 'stainless-sdks/') && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
+      publish-stainless-artifact: >-
+        ${{
+          github.repository == 'stainless-sdks/openai-ruby' &&
+          (github.event_name == 'push' || github.event.pull_request.head.repo.fork) &&
+          (github.event_name != 'push' || github.event.head_commit.message != 'codegen metadata')
+        }}

@@ -1,0 +1,136 @@
+name: CI checks
+
+on:
+  workflow_call:
+    inputs:
+      runner:
+        description: Runner label for CI jobs
+        required: true
+        type: string
+      publish-stainless-artifact:
+        description: Build and upload an installable Stainless artifact
+        required: true
+        type: boolean
+
+permissions: {}
+
+jobs:
+  stainless-artifact:
+    timeout-minutes: 10
+    name: stainless artifact
+    if: inputs.publish-stainless-artifact
+    permissions:
+      contents: read
+      id-token: write # Authenticate the artifact upload to pkg.stainless.com.
+    runs-on: ${{ inputs.runner }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@c515ec17f69368147deb311832da000dd229d338 # v1
+        with:
+          bundler-cache: false
+      - run: bundle install
+
+      - name: Get GitHub OIDC token
+        if: ${{ !startsWith(github.ref, 'refs/heads/stl/') }}
+        id: github-oidc
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        with:
+          script: core.setOutput('github_token', await core.getIDToken());
+
+      - name: Build and upload gem artifacts
+        if: ${{ !startsWith(github.ref, 'refs/heads/stl/') }}
+        env:
+          URL: https://pkg.stainless.com/s
+          AUTH: ${{ steps.github-oidc.outputs.github_token }}
+          SHA: ${{ github.sha }}
+          PACKAGE_NAME: openai
+        run: ./scripts/utils/upload-artifact.sh
+
+  lint:
+    timeout-minutes: 10
+    name: lint
+    permissions:
+      contents: read
+    runs-on: ${{ inputs.runner }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@c515ec17f69368147deb311832da000dd229d338 # v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: false
+      - run: bundle install
+      - name: Run lints
+        run: ./scripts/lint
+
+  package:
+    timeout-minutes: 10
+    name: package
+    permissions:
+      contents: read
+    runs-on: ${{ inputs.runner }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@c515ec17f69368147deb311832da000dd229d338 # v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: false
+      - run: bundle install
+      - name: Build gem
+        run: bundle exec rake build:gem
+
+  test-ruby:
+    timeout-minutes: 10
+    name: test (ruby ${{ matrix.ruby-version }})
+    permissions:
+      contents: read
+    runs-on: ${{ inputs.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby-version: ['3.2', '3.3', '3.4', '4.0']
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@c515ec17f69368147deb311832da000dd229d338 # v1
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: false
+      - run: bundle install
+      - name: Run tests
+        run: ./scripts/test
+
+  required:
+    timeout-minutes: 5
+    name: ci-required
+    # Keep branch protection on one stable context as the job matrix evolves.
+    needs:
+      - stainless-artifact
+      - lint
+      - package
+      - test-ruby
+    if: ${{ always() }}
+    permissions: {}
+    runs-on: ${{ inputs.runner }}
+    steps:
+      - name: Check required job results
+        env:
+          ARTIFACT_RESULT: ${{ needs.stainless-artifact.result }}
+          LINT_RESULT: ${{ needs.lint.result }}
+          PACKAGE_RESULT: ${{ needs.package.result }}
+          TEST_RESULT: ${{ needs.test-ruby.result }}
+        run: |
+          test "$ARTIFACT_RESULT" = "success" || test "$ARTIFACT_RESULT" = "skipped"
+          test "$LINT_RESULT" = "success"
+          test "$PACKAGE_RESULT" = "success"
+          test "$TEST_RESULT" = "success"
