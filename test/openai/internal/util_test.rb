@@ -189,8 +189,15 @@ class OpenAI::Test::RegexMatchTest < Minitest::Test
       "application/x-ldjson" => true,
       "application/jsonl" => true,
       "application/x-jsonl" => true,
+      "application/jsonl; charset=utf-8" => true,
+      "APPLICATION/JSONL" => true,
+      "application/jsonl " => true,
       "application/json" => false,
-      "application/vnd.api+json" => false
+      "application/vnd.api+json" => false,
+      "application/jsonlines" => false,
+      "text/plain; name=jsonl" => false,
+      "foojsonlbar" => false,
+      "application/notjsonlbutjsonl" => false
     }
     cases.each do |header, verdict|
       assert_pattern do
