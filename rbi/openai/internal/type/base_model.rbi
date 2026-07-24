@@ -219,6 +219,10 @@ module OpenAI
         def [](key)
         end
 
+        sig { returns(T.nilable(T::Hash[String, String])) }
+        attr_reader :response_headers
+        end
+
         # Returns a Hash of the data underlying this object. O(1)
         #
         # Keys are Symbols and values are the raw values from the response. The return
@@ -276,6 +280,10 @@ module OpenAI
           ).returns(T.attached_class)
         end
         def self.new(data = {})
+        end
+
+        sig { params(headers: T::Hash[String, String]).returns(T.self_type) }
+        def __set_response_headers(headers)
         end
 
         class << self

@@ -110,6 +110,30 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
     assert_equal(12, completion.usage.total_tokens) if completion.usage
   end
 
+  def test_stream_exposes_openai_response_metadata
+    stub_request(:post, "http://localhost/chat/completions")
+      .with(
+        body: hash_including(
+          messages: [{content: "Hello", role: "user"}],
+          model: "gpt-4o-mini",
+          stream: true
+        )
+      )
+      .to_return(
+        status: 200,
+        headers: {
+          "Content-Type" => "text/event-stream",
+          "x-request-id" => "req_chat_stream",
+          "openai-processing-ms" => "34"
+        },
+        body: completion_with_usage_sse_response
+      )
+
+    stream = @client.chat.completions.stream(**basic_params)
+    assert_equal("req_chat_stream", stream.response_headers["x-request-id"])
+    assert_equal("34", stream.response_headers["openai-processing-ms"])
+  end
+
   def test_get_output_text
     stub_streaming_response(basic_text_sse_response)
 

@@ -9,6 +9,11 @@ module OpenAI
       #
       # This module provides a base implementation for paginated responses in the SDK.
       module BasePage
+        # @api public
+        #
+        # @return [Hash{String=>String}, nil]
+        attr_reader :response_headers
+
         # rubocop:disable Lint/UnusedMethodArgument
 
         # @api public
@@ -45,7 +50,17 @@ module OpenAI
           @client = client
           @req = req
           @model = req.fetch(:model)
+          @response_headers = headers
           super()
+        end
+
+        # @api private
+        #
+        # @param headers [Hash{String=>String}]
+        # @return [self]
+        def __set_response_headers(headers)
+          @response_headers = headers
+          self
         end
 
         # rubocop:enable Lint/UnusedMethodArgument
