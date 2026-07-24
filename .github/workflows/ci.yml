@@ -1,4 +1,9 @@
 name: CI
+
+# This workflow is shared by the Stainless staging repository and the OpenAI
+# production repository. Stainless feature branches use push runs so they can
+# publish installable artifacts; production feature branches use PR runs so a
+# commit is validated only once.
 on:
   push:
     branches:
@@ -14,101 +19,32 @@ on:
       - 'stl-preview-head/**'
       - 'stl-preview-base/**'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 permissions: {}
 
 jobs:
-  build:
-    timeout-minutes: 10
-    name: build
+  checks:
+    name: ci
+    if: >-
+      (startsWith(github.repository, 'stainless-sdks/') &&
+        (github.event_name == 'push' || github.event.pull_request.head.repo.fork)) ||
+      (!startsWith(github.repository, 'stainless-sdks/') &&
+        (github.event_name == 'pull_request' ||
+          github.ref == 'refs/heads/main' ||
+          github.ref == 'refs/heads/next'))
     permissions:
       contents: read
-      id-token: write
-    runs-on: ${{ startsWith(github.repository, 'stainless-sdks/') && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
-    if: |-
-      github.repository == 'stainless-sdks/openai-ruby' &&
-      (github.event_name == 'push' || github.event.pull_request.head.repo.fork) && (github.event_name != 'push' || github.event.head_commit.message != 'codegen metadata')
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-        with:
-          persist-credentials: false
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@c515ec17f69368147deb311832da000dd229d338 # v1
-        with:
-          bundler-cache: false
-      - run: |-
-          bundle install
-
-      - name: Get GitHub OIDC Token
-        if: |-
+      id-token: write # Allow the called artifact job to mint its Stainless upload token.
+    uses: ./.github/workflows/ci-checks.yml
+    with:
+      runner: ${{ startsWith(github.repository, 'stainless-sdks/') && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
+      publish-stainless-artifact: >-
+        ${{
           github.repository == 'stainless-sdks/openai-ruby' &&
+          (github.event_name == 'push' || github.event.pull_request.head.repo.fork) &&
+          (github.event_name != 'push' || github.event.head_commit.message != 'codegen metadata') &&
           !startsWith(github.ref, 'refs/heads/stl/')
-        id: github-oidc
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
-        with:
-          script: core.setOutput('github_token', await core.getIDToken());
-
-      - name: Build and upload gem artifacts
-        if: |-
-          github.repository == 'stainless-sdks/openai-ruby' &&
-          !startsWith(github.ref, 'refs/heads/stl/')
-        env:
-          URL: https://pkg.stainless.com/s
-          AUTH: ${{ steps.github-oidc.outputs.github_token }}
-          SHA: ${{ github.sha }}
-          PACKAGE_NAME: openai
-        run: ./scripts/utils/upload-artifact.sh
-  lint:
-    timeout-minutes: 10
-    name: lint
-    permissions:
-      contents: read
-    runs-on: ${{ startsWith(github.repository, 'stainless-sdks/') && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
-
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-        with:
-          persist-credentials: false
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@c515ec17f69368147deb311832da000dd229d338 # v1
-        with:
-          bundler-cache: false
-      - run: |-
-          bundle install
-
-      - name: Run lints
-        run: ./scripts/lint
-  test-ruby:
-    timeout-minutes: 10
-    name: test (ruby ${{ matrix.ruby-version }})
-    permissions:
-      contents: read
-    runs-on: ${{ startsWith(github.repository, 'stainless-sdks/') && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
-    strategy:
-      fail-fast: false
-      matrix:
-        ruby-version: ['3.2', '3.3', '3.4', '4.0']
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-        with:
-          persist-credentials: false
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@c515ec17f69368147deb311832da000dd229d338 # v1
-        with:
-          ruby-version: ${{ matrix.ruby-version }}
-          bundler-cache: false
-      - run: |-
-          bundle install
-
-      - name: Run tests
-        run: ./scripts/test
-  test:
-    name: test
-    needs: test-ruby
-    if: ${{ always() && needs.test-ruby.result != 'skipped' }}
-    permissions: {}
-    runs-on: ${{ github.repository == 'stainless-sdks/openai-ruby' && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
-    steps:
-      - if: ${{ needs.test-ruby.result == 'failure' || needs.test-ruby.result == 'cancelled' }}
-        run: exit 1
+        }}
