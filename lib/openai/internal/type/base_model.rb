@@ -83,12 +83,15 @@ module OpenAI
               target = type_fn.call
               state = OpenAI::Internal::Type::Converter.new_coerce_state(translate_names: false)
               coerced = OpenAI::Internal::Type::Converter.coerce(target, value, state: state)
-              error = @coerced.store(name_sym, state.fetch(:error) || true)
+              status = state.fetch(:error) || true
+              @coerced.store(name_sym, status)
               stored =
-                case [target, error]
-                in [OpenAI::Internal::Type::Converter | Symbol, nil]
+                case [target, status, value]
+                in [OpenAI::Internal::Type::Converter | Symbol, true, ^target]
+                  value
+                in [OpenAI::Internal::Type::Converter | Symbol, true, _]
                   coerced
-                else
+                else # rubocop:disable Lint/DuplicateBranch
                   value
                 end
               @data.store(name_sym, stored)
