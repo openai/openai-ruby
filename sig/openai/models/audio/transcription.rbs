@@ -4,12 +4,19 @@ module OpenAI
       type transcription =
         {
           text: String,
+          languages: ::Array[OpenAI::Audio::TranscriptionLanguage],
           logprobs: ::Array[OpenAI::Audio::Transcription::Logprob],
           usage: OpenAI::Models::Audio::Transcription::usage
         }
 
       class Transcription < OpenAI::Internal::Type::BaseModel
         attr_accessor text: String
+
+        attr_reader languages: ::Array[OpenAI::Audio::TranscriptionLanguage]?
+
+        def languages=: (
+          ::Array[OpenAI::Audio::TranscriptionLanguage]
+        ) -> ::Array[OpenAI::Audio::TranscriptionLanguage]
 
         attr_reader logprobs: ::Array[OpenAI::Audio::Transcription::Logprob]?
 
@@ -25,12 +32,14 @@ module OpenAI
 
         def initialize: (
           text: String,
+          ?languages: ::Array[OpenAI::Audio::TranscriptionLanguage],
           ?logprobs: ::Array[OpenAI::Audio::Transcription::Logprob],
           ?usage: OpenAI::Models::Audio::Transcription::usage
         ) -> void
 
         def to_hash: -> {
           text: String,
+          languages: ::Array[OpenAI::Audio::TranscriptionLanguage],
           logprobs: ::Array[OpenAI::Audio::Transcription::Logprob],
           usage: OpenAI::Models::Audio::Transcription::usage
         }

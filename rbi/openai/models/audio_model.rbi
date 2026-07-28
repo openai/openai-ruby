@@ -9,6 +9,8 @@ module OpenAI
       OrSymbol = T.type_alias { T.any(Symbol, String) }
 
       WHISPER_1 = T.let(:"whisper-1", OpenAI::AudioModel::TaggedSymbol)
+      GPT_TRANSCRIBE =
+        T.let(:"gpt-transcribe", OpenAI::AudioModel::TaggedSymbol)
       GPT_4O_TRANSCRIBE =
         T.let(:"gpt-4o-transcribe", OpenAI::AudioModel::TaggedSymbol)
       GPT_4O_MINI_TRANSCRIBE =

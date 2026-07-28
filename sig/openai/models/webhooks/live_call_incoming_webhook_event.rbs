@@ -1,0 +1,90 @@
+module OpenAI
+  module Models
+    module Webhooks
+      type live_call_incoming_webhook_event =
+        {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::LiveCallIncomingWebhookEvent::Data,
+          type: :"live.call.incoming",
+          object: OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::object
+        }
+
+      class LiveCallIncomingWebhookEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor created_at: Integer
+
+        attr_accessor data: OpenAI::Webhooks::LiveCallIncomingWebhookEvent::Data
+
+        attr_accessor type: :"live.call.incoming"
+
+        attr_reader object: OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::object?
+
+        def object=: (
+          OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::object
+        ) -> OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::object
+
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::LiveCallIncomingWebhookEvent::Data,
+          ?object: OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::object,
+          ?type: :"live.call.incoming"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::LiveCallIncomingWebhookEvent::Data,
+          type: :"live.call.incoming",
+          object: OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::object
+        }
+
+        type data =
+          {
+            session_id: String,
+            sip_headers: ::Array[OpenAI::Webhooks::LiveCallIncomingWebhookEvent::Data::SipHeader]
+          }
+
+        class Data < OpenAI::Internal::Type::BaseModel
+          attr_accessor session_id: String
+
+          attr_accessor sip_headers: ::Array[OpenAI::Webhooks::LiveCallIncomingWebhookEvent::Data::SipHeader]
+
+          def initialize: (
+            session_id: String,
+            sip_headers: ::Array[OpenAI::Webhooks::LiveCallIncomingWebhookEvent::Data::SipHeader]
+          ) -> void
+
+          def to_hash: -> {
+            session_id: String,
+            sip_headers: ::Array[OpenAI::Webhooks::LiveCallIncomingWebhookEvent::Data::SipHeader]
+          }
+
+          type sip_header = { name: String, value: String }
+
+          class SipHeader < OpenAI::Internal::Type::BaseModel
+            attr_accessor name: String
+
+            attr_accessor value: String
+
+            def initialize: (name: String, value: String) -> void
+
+            def to_hash: -> { name: String, value: String }
+          end
+        end
+
+        type object = :event
+
+        module Object
+          extend OpenAI::Internal::Type::Enum
+
+          EVENT: :event
+
+          def self?.values: -> ::Array[OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::object]
+        end
+      end
+    end
+  end
+end

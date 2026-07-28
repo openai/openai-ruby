@@ -7,9 +7,11 @@ module OpenAI
           model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
           chunking_strategy: OpenAI::Models::Audio::TranscriptionCreateParams::chunking_strategy?,
           include: ::Array[OpenAI::Models::Audio::transcription_include],
+          keywords: ::Array[String],
           known_speaker_names: ::Array[String],
           known_speaker_references: ::Array[String],
           language: String,
+          languages: ::Array[String],
           prompt: String,
           response_format: OpenAI::Models::audio_response_format,
           temperature: Float,
@@ -33,6 +35,10 @@ module OpenAI
           ::Array[OpenAI::Models::Audio::transcription_include]
         ) -> ::Array[OpenAI::Models::Audio::transcription_include]
 
+        attr_reader keywords: ::Array[String]?
+
+        def keywords=: (::Array[String]) -> ::Array[String]
+
         attr_reader known_speaker_names: ::Array[String]?
 
         def known_speaker_names=: (::Array[String]) -> ::Array[String]
@@ -44,6 +50,10 @@ module OpenAI
         attr_reader language: String?
 
         def language=: (String) -> String
+
+        attr_reader languages: ::Array[String]?
+
+        def languages=: (::Array[String]) -> ::Array[String]
 
         attr_reader prompt: String?
 
@@ -70,9 +80,11 @@ module OpenAI
           model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
           ?chunking_strategy: OpenAI::Models::Audio::TranscriptionCreateParams::chunking_strategy?,
           ?include: ::Array[OpenAI::Models::Audio::transcription_include],
+          ?keywords: ::Array[String],
           ?known_speaker_names: ::Array[String],
           ?known_speaker_references: ::Array[String],
           ?language: String,
+          ?languages: ::Array[String],
           ?prompt: String,
           ?response_format: OpenAI::Models::audio_response_format,
           ?temperature: Float,
@@ -85,9 +97,11 @@ module OpenAI
           model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
           chunking_strategy: OpenAI::Models::Audio::TranscriptionCreateParams::chunking_strategy?,
           include: ::Array[OpenAI::Models::Audio::transcription_include],
+          keywords: ::Array[String],
           known_speaker_names: ::Array[String],
           known_speaker_references: ::Array[String],
           language: String,
+          languages: ::Array[String],
           prompt: String,
           response_format: OpenAI::Models::audio_response_format,
           temperature: Float,

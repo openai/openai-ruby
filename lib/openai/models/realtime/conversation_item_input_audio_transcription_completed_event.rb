@@ -42,6 +42,13 @@ module OpenAI
         required :usage,
                  union: -> { OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage }
 
+        # @!attribute languages
+        #   The languages detected in the audio. Returned by `gpt-transcribe`. An empty
+        #   array indicates that no language could be reliably detected.
+        #
+        #   @return [Array<OpenAI::Models::Audio::TranscriptionLanguage>, nil]
+        optional :languages, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Audio::TranscriptionLanguage] }
+
         # @!attribute logprobs
         #   The log probabilities of the transcription.
         #
@@ -50,7 +57,7 @@ module OpenAI
                  -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Realtime::LogProbProperties] },
                  nil?: true
 
-        # @!method initialize(content_index:, event_id:, item_id:, transcript:, usage:, logprobs: nil, type: :"conversation.item.input_audio_transcription.completed")
+        # @!method initialize(content_index:, event_id:, item_id:, transcript:, usage:, languages: nil, logprobs: nil, type: :"conversation.item.input_audio_transcription.completed")
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent}
         #   for more details.
@@ -75,6 +82,8 @@ module OpenAI
         #   @param transcript [String] The transcribed text.
         #
         #   @param usage [OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens, OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageDuration] Usage statistics for the transcription, this is billed according to the ASR mode
+        #
+        #   @param languages [Array<OpenAI::Models::Audio::TranscriptionLanguage>] The languages detected in the audio. Returned by `gpt-transcribe`. An empty arra
         #
         #   @param logprobs [Array<OpenAI::Models::Realtime::LogProbProperties>, nil] The log probabilities of the transcription.
         #

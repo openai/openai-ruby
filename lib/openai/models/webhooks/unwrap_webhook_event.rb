@@ -39,7 +39,14 @@ module OpenAI
         # Sent when a fine-tuning job has succeeded.
         variant :"fine_tuning.job.succeeded", -> { OpenAI::Webhooks::FineTuningJobSucceededWebhookEvent }
 
-        # Sent when Realtime API Receives a incoming SIP call.
+        # Sent when an incoming API SIP session is available for Live acceptance. The
+        # same pending session can also emit `realtime.call.incoming`; the first
+        # successful Realtime or Live accept endpoint selects the runtime surface.
+        variant :"live.call.incoming", -> { OpenAI::Webhooks::LiveCallIncomingWebhookEvent }
+
+        # Sent when an incoming API SIP session is available for Realtime acceptance.
+        # The same pending session can also emit `live.call.incoming`; the first
+        # successful Realtime or Live accept endpoint selects the runtime surface.
         variant :"realtime.call.incoming", -> { OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent }
 
         # Sent when a background response has been cancelled.
@@ -55,7 +62,7 @@ module OpenAI
         variant :"response.incomplete", -> { OpenAI::Webhooks::ResponseIncompleteWebhookEvent }
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Webhooks::BatchCancelledWebhookEvent, OpenAI::Models::Webhooks::BatchCompletedWebhookEvent, OpenAI::Models::Webhooks::BatchExpiredWebhookEvent, OpenAI::Models::Webhooks::BatchFailedWebhookEvent, OpenAI::Models::Webhooks::EvalRunCanceledWebhookEvent, OpenAI::Models::Webhooks::EvalRunFailedWebhookEvent, OpenAI::Models::Webhooks::EvalRunSucceededWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobFailedWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobSucceededWebhookEvent, OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent, OpenAI::Models::Webhooks::ResponseCancelledWebhookEvent, OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent, OpenAI::Models::Webhooks::ResponseFailedWebhookEvent, OpenAI::Models::Webhooks::ResponseIncompleteWebhookEvent)]
+        #   @return [Array(OpenAI::Models::Webhooks::BatchCancelledWebhookEvent, OpenAI::Models::Webhooks::BatchCompletedWebhookEvent, OpenAI::Models::Webhooks::BatchExpiredWebhookEvent, OpenAI::Models::Webhooks::BatchFailedWebhookEvent, OpenAI::Models::Webhooks::EvalRunCanceledWebhookEvent, OpenAI::Models::Webhooks::EvalRunFailedWebhookEvent, OpenAI::Models::Webhooks::EvalRunSucceededWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobFailedWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobSucceededWebhookEvent, OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent, OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent, OpenAI::Models::Webhooks::ResponseCancelledWebhookEvent, OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent, OpenAI::Models::Webhooks::ResponseFailedWebhookEvent, OpenAI::Models::Webhooks::ResponseIncompleteWebhookEvent)]
       end
     end
   end

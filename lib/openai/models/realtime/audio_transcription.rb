@@ -12,6 +12,13 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Realtime::AudioTranscription::Delay, nil]
         optional :delay, enum: -> { OpenAI::Realtime::AudioTranscription::Delay }
 
+        # @!attribute keywords
+        #   Words or phrases to guide transcription of the input audio. Supported by
+        #   `gpt-transcribe` and `gpt-live-transcribe`.
+        #
+        #   @return [Array<String>, nil]
+        optional :keywords, OpenAI::Internal::Type::ArrayOf[String]
+
         # @!attribute language
         #   The language of the input audio. Supplying the input language in
         #   [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`)
@@ -20,11 +27,20 @@ module OpenAI
         #   @return [String, nil]
         optional :language, String
 
+        # @!attribute languages
+        #   Possible languages of the input audio, in
+        #   [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) format.
+        #   Supported by `gpt-transcribe` and `gpt-live-transcribe`.
+        #
+        #   @return [Array<String>, nil]
+        optional :languages, OpenAI::Internal::Type::ArrayOf[String]
+
         # @!attribute model
         #   The model to use for transcription. Current options are `whisper-1`,
-        #   `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`,
-        #   `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`.
-        #   Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.
+        #   `gpt-transcribe`, `gpt-live-transcribe`, `gpt-4o-mini-transcribe`,
+        #   `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`,
+        #   `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`. Use
+        #   `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.
         #
         #   @return [String, Symbol, OpenAI::Models::Realtime::AudioTranscription::Model, nil]
         optional :model, union: -> { OpenAI::Realtime::AudioTranscription::Model }
@@ -40,15 +56,19 @@ module OpenAI
         #   @return [String, nil]
         optional :prompt, String
 
-        # @!method initialize(delay: nil, language: nil, model: nil, prompt: nil)
+        # @!method initialize(delay: nil, keywords: nil, language: nil, languages: nil, model: nil, prompt: nil)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Realtime::AudioTranscription} for more details.
         #
         #   @param delay [Symbol, OpenAI::Models::Realtime::AudioTranscription::Delay] Controls how long the model waits before emitting transcription text.
         #
+        #   @param keywords [Array<String>] Words or phrases to guide transcription of the input audio. Supported by `gpt-tr
+        #
         #   @param language [String] The language of the input audio. Supplying the input language in
         #
-        #   @param model [String, Symbol, OpenAI::Models::Realtime::AudioTranscription::Model] The model to use for transcription. Current options are `whisper-1`, `gpt-4o-min
+        #   @param languages [Array<String>] Possible languages of the input audio, in [ISO-639-1](https://en.wikipedia.org/w
+        #
+        #   @param model [String, Symbol, OpenAI::Models::Realtime::AudioTranscription::Model] The model to use for transcription. Current options are `whisper-1`, `gpt-transc
         #
         #   @param prompt [String] An optional text to guide the model's style or continue a previous audio
 
@@ -71,9 +91,10 @@ module OpenAI
         end
 
         # The model to use for transcription. Current options are `whisper-1`,
-        # `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`,
-        # `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`.
-        # Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.
+        # `gpt-transcribe`, `gpt-live-transcribe`, `gpt-4o-mini-transcribe`,
+        # `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`,
+        # `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`. Use
+        # `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.
         #
         # @see OpenAI::Models::Realtime::AudioTranscription#model
         module Model
@@ -82,6 +103,10 @@ module OpenAI
           variant String
 
           variant const: -> { OpenAI::Models::Realtime::AudioTranscription::Model::WHISPER_1 }
+
+          variant const: -> { OpenAI::Models::Realtime::AudioTranscription::Model::GPT_TRANSCRIBE }
+
+          variant const: -> { OpenAI::Models::Realtime::AudioTranscription::Model::GPT_LIVE_TRANSCRIBE }
 
           variant const: -> { OpenAI::Models::Realtime::AudioTranscription::Model::GPT_4O_MINI_TRANSCRIBE }
 
@@ -103,6 +128,8 @@ module OpenAI
           # @!group
 
           WHISPER_1 = :"whisper-1"
+          GPT_TRANSCRIBE = :"gpt-transcribe"
+          GPT_LIVE_TRANSCRIBE = :"gpt-live-transcribe"
           GPT_4O_MINI_TRANSCRIBE = :"gpt-4o-mini-transcribe"
           GPT_4O_MINI_TRANSCRIBE_2025_12_15 = :"gpt-4o-mini-transcribe-2025-12-15"
           GPT_4O_TRANSCRIBE = :"gpt-4o-transcribe"

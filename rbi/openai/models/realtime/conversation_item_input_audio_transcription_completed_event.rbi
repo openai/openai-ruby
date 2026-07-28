@@ -44,6 +44,20 @@ module OpenAI
         end
         attr_accessor :usage
 
+        # The languages detected in the audio. Returned by `gpt-transcribe`. An empty
+        # array indicates that no language could be reliably detected.
+        sig do
+          returns(T.nilable(T::Array[OpenAI::Audio::TranscriptionLanguage]))
+        end
+        attr_reader :languages
+
+        sig do
+          params(
+            languages: T::Array[OpenAI::Audio::TranscriptionLanguage::OrHash]
+          ).void
+        end
+        attr_writer :languages
+
         # The log probabilities of the transcription.
         sig do
           returns(T.nilable(T::Array[OpenAI::Realtime::LogProbProperties]))
@@ -71,6 +85,7 @@ module OpenAI
                 OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::OrHash,
                 OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageDuration::OrHash
               ),
+            languages: T::Array[OpenAI::Audio::TranscriptionLanguage::OrHash],
             logprobs:
               T.nilable(T::Array[OpenAI::Realtime::LogProbProperties::OrHash]),
             type: Symbol
@@ -88,6 +103,9 @@ module OpenAI
           # Usage statistics for the transcription, this is billed according to the ASR
           # model's pricing rather than the realtime model's pricing.
           usage:,
+          # The languages detected in the audio. Returned by `gpt-transcribe`. An empty
+          # array indicates that no language could be reliably detected.
+          languages: nil,
           # The log probabilities of the transcription.
           logprobs: nil,
           # The event type, must be `conversation.item.input_audio_transcription.completed`.
@@ -108,6 +126,7 @@ module OpenAI
                   OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens,
                   OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageDuration
                 ),
+              languages: T::Array[OpenAI::Audio::TranscriptionLanguage],
               logprobs: T.nilable(T::Array[OpenAI::Realtime::LogProbProperties])
             }
           )
