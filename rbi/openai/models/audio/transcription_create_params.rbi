@@ -20,7 +20,7 @@ module OpenAI
         sig { returns(OpenAI::Internal::FileInput) }
         attr_accessor :file
 
-        # ID of the model to use. The options are `gpt-4o-transcribe`,
+        # ID of the model to use. The options are `gpt-transcribe`, `gpt-4o-transcribe`,
         # `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `whisper-1`
         # (which is powered by our open source Whisper V2 model), and
         # `gpt-4o-transcribe-diarize`.
@@ -65,6 +65,14 @@ module OpenAI
         end
         attr_writer :include
 
+        # Words or phrases to guide transcription of the input audio. Supported by
+        # `gpt-transcribe`.
+        sig { returns(T.nilable(T::Array[String])) }
+        attr_reader :keywords
+
+        sig { params(keywords: T::Array[String]).void }
+        attr_writer :keywords
+
         # Optional list of speaker names that correspond to the audio samples provided in
         # `known_speaker_references[]`. Each entry should be a short identifier (for
         # example `customer` or `agent`). Up to 4 speakers are supported.
@@ -93,6 +101,15 @@ module OpenAI
 
         sig { params(language: String).void }
         attr_writer :language
+
+        # Possible languages of the input audio, in
+        # [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) format.
+        # Supported by `gpt-transcribe`.
+        sig { returns(T.nilable(T::Array[String])) }
+        attr_reader :languages
+
+        sig { params(languages: T::Array[String]).void }
+        attr_writer :languages
 
         # An optional text to guide the model's style or continue a previous audio
         # segment. The
@@ -168,9 +185,11 @@ module OpenAI
                 )
               ),
             include: T::Array[OpenAI::Audio::TranscriptionInclude::OrSymbol],
+            keywords: T::Array[String],
             known_speaker_names: T::Array[String],
             known_speaker_references: T::Array[String],
             language: String,
+            languages: T::Array[String],
             prompt: String,
             response_format: OpenAI::AudioResponseFormat::OrSymbol,
             temperature: Float,
@@ -185,7 +204,7 @@ module OpenAI
           # The audio file object (not file name) to transcribe, in one of these formats:
           # flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.
           file:,
-          # ID of the model to use. The options are `gpt-4o-transcribe`,
+          # ID of the model to use. The options are `gpt-transcribe`, `gpt-4o-transcribe`,
           # `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `whisper-1`
           # (which is powered by our open source Whisper V2 model), and
           # `gpt-4o-transcribe-diarize`.
@@ -204,6 +223,9 @@ module OpenAI
           # `gpt-4o-mini-transcribe`, and `gpt-4o-mini-transcribe-2025-12-15`. This field is
           # not supported when using `gpt-4o-transcribe-diarize`.
           include: nil,
+          # Words or phrases to guide transcription of the input audio. Supported by
+          # `gpt-transcribe`.
+          keywords: nil,
           # Optional list of speaker names that correspond to the audio samples provided in
           # `known_speaker_references[]`. Each entry should be a short identifier (for
           # example `customer` or `agent`). Up to 4 speakers are supported.
@@ -218,6 +240,10 @@ module OpenAI
           # [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`)
           # format will improve accuracy and latency.
           language: nil,
+          # Possible languages of the input audio, in
+          # [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) format.
+          # Supported by `gpt-transcribe`.
+          languages: nil,
           # An optional text to guide the model's style or continue a previous audio
           # segment. The
           # [prompt](https://platform.openai.com/docs/guides/speech-to-text#prompting)
@@ -260,9 +286,11 @@ module OpenAI
                   )
                 ),
               include: T::Array[OpenAI::Audio::TranscriptionInclude::OrSymbol],
+              keywords: T::Array[String],
               known_speaker_names: T::Array[String],
               known_speaker_references: T::Array[String],
               language: String,
+              languages: T::Array[String],
               prompt: String,
               response_format: OpenAI::AudioResponseFormat::OrSymbol,
               temperature: Float,
@@ -277,7 +305,7 @@ module OpenAI
         def to_hash
         end
 
-        # ID of the model to use. The options are `gpt-4o-transcribe`,
+        # ID of the model to use. The options are `gpt-transcribe`, `gpt-4o-transcribe`,
         # `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `whisper-1`
         # (which is powered by our open source Whisper V2 model), and
         # `gpt-4o-transcribe-diarize`.

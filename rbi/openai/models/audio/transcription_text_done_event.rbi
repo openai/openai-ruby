@@ -20,6 +20,20 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
+        # The languages detected in the audio. Returned by `gpt-transcribe`. An empty
+        # array indicates that no language could be reliably detected.
+        sig do
+          returns(T.nilable(T::Array[OpenAI::Audio::TranscriptionLanguage]))
+        end
+        attr_reader :languages
+
+        sig do
+          params(
+            languages: T::Array[OpenAI::Audio::TranscriptionLanguage::OrHash]
+          ).void
+        end
+        attr_writer :languages
+
         # The log probabilities of the individual tokens in the transcription. Only
         # included if you
         # [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
@@ -63,6 +77,7 @@ module OpenAI
         sig do
           params(
             text: String,
+            languages: T::Array[OpenAI::Audio::TranscriptionLanguage::OrHash],
             logprobs:
               T::Array[
                 OpenAI::Audio::TranscriptionTextDoneEvent::Logprob::OrHash
@@ -74,6 +89,9 @@ module OpenAI
         def self.new(
           # The text that was transcribed.
           text:,
+          # The languages detected in the audio. Returned by `gpt-transcribe`. An empty
+          # array indicates that no language could be reliably detected.
+          languages: nil,
           # The log probabilities of the individual tokens in the transcription. Only
           # included if you
           # [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
@@ -91,6 +109,7 @@ module OpenAI
             {
               text: String,
               type: Symbol,
+              languages: T::Array[OpenAI::Audio::TranscriptionLanguage],
               logprobs:
                 T::Array[OpenAI::Audio::TranscriptionTextDoneEvent::Logprob],
               usage: OpenAI::Audio::TranscriptionTextDoneEvent::Usage

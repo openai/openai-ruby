@@ -5,6 +5,7 @@ module OpenAI
         {
           text: String,
           type: :"transcript.text.done",
+          languages: ::Array[OpenAI::Audio::TranscriptionLanguage],
           logprobs: ::Array[OpenAI::Audio::TranscriptionTextDoneEvent::Logprob],
           usage: OpenAI::Audio::TranscriptionTextDoneEvent::Usage
         }
@@ -13,6 +14,12 @@ module OpenAI
         attr_accessor text: String
 
         attr_accessor type: :"transcript.text.done"
+
+        attr_reader languages: ::Array[OpenAI::Audio::TranscriptionLanguage]?
+
+        def languages=: (
+          ::Array[OpenAI::Audio::TranscriptionLanguage]
+        ) -> ::Array[OpenAI::Audio::TranscriptionLanguage]
 
         attr_reader logprobs: ::Array[OpenAI::Audio::TranscriptionTextDoneEvent::Logprob]?
 
@@ -28,6 +35,7 @@ module OpenAI
 
         def initialize: (
           text: String,
+          ?languages: ::Array[OpenAI::Audio::TranscriptionLanguage],
           ?logprobs: ::Array[OpenAI::Audio::TranscriptionTextDoneEvent::Logprob],
           ?usage: OpenAI::Audio::TranscriptionTextDoneEvent::Usage,
           ?type: :"transcript.text.done"
@@ -36,6 +44,7 @@ module OpenAI
         def to_hash: -> {
           text: String,
           type: :"transcript.text.done",
+          languages: ::Array[OpenAI::Audio::TranscriptionLanguage],
           logprobs: ::Array[OpenAI::Audio::TranscriptionTextDoneEvent::Logprob],
           usage: OpenAI::Audio::TranscriptionTextDoneEvent::Usage
         }

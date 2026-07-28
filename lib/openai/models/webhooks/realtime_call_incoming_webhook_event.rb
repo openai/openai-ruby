@@ -38,7 +38,9 @@ module OpenAI
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent} for more details.
         #
-        #   Sent when Realtime API Receives a incoming SIP call.
+        #   Sent when an incoming API SIP session is available for Realtime acceptance. The
+        #   same pending session can also emit `live.call.incoming`; the first successful
+        #   Realtime or Live accept endpoint selects the runtime surface.
         #
         #   @param id [String] The unique ID of the event.
         #
@@ -53,7 +55,8 @@ module OpenAI
         # @see OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent#data
         class Data < OpenAI::Internal::Type::BaseModel
           # @!attribute call_id
-          #   The unique ID of this call.
+          #   The Transceiver `rtc_...` ID of the pending SIP session. The same value appears
+          #   as `session_id` in `live.call.incoming`.
           #
           #   @return [String]
           required :call_id, String
@@ -72,7 +75,7 @@ module OpenAI
           #
           #   Event data payload.
           #
-          #   @param call_id [String] The unique ID of this call.
+          #   @param call_id [String] The Transceiver `rtc_...` ID of the pending SIP session. The same
           #
           #   @param sip_headers [Array<OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipHeader>] Headers from the SIP Invite.
 

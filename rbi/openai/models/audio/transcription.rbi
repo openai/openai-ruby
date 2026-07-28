@@ -13,6 +13,20 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :text
 
+        # The languages detected in the audio. Returned by `gpt-transcribe`. An empty
+        # array indicates that no language could be reliably detected.
+        sig do
+          returns(T.nilable(T::Array[OpenAI::Audio::TranscriptionLanguage]))
+        end
+        attr_reader :languages
+
+        sig do
+          params(
+            languages: T::Array[OpenAI::Audio::TranscriptionLanguage::OrHash]
+          ).void
+        end
+        attr_writer :languages
+
         # The log probabilities of the tokens in the transcription. Only returned with the
         # models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe` if `logprobs` is added
         # to the `include` array.
@@ -50,6 +64,7 @@ module OpenAI
         sig do
           params(
             text: String,
+            languages: T::Array[OpenAI::Audio::TranscriptionLanguage::OrHash],
             logprobs: T::Array[OpenAI::Audio::Transcription::Logprob::OrHash],
             usage:
               T.any(
@@ -61,6 +76,9 @@ module OpenAI
         def self.new(
           # The transcribed text.
           text:,
+          # The languages detected in the audio. Returned by `gpt-transcribe`. An empty
+          # array indicates that no language could be reliably detected.
+          languages: nil,
           # The log probabilities of the tokens in the transcription. Only returned with the
           # models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe` if `logprobs` is added
           # to the `include` array.
@@ -74,6 +92,7 @@ module OpenAI
           override.returns(
             {
               text: String,
+              languages: T::Array[OpenAI::Audio::TranscriptionLanguage],
               logprobs: T::Array[OpenAI::Audio::Transcription::Logprob],
               usage: OpenAI::Audio::Transcription::Usage::Variants
             }

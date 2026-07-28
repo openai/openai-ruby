@@ -4,7 +4,9 @@ module OpenAI
       type audio_transcription =
         {
           delay: OpenAI::Models::Realtime::AudioTranscription::delay,
+          keywords: ::Array[String],
           language: String,
+          languages: ::Array[String],
           model: OpenAI::Models::Realtime::AudioTranscription::model,
           prompt: String
         }
@@ -16,9 +18,17 @@ module OpenAI
           OpenAI::Models::Realtime::AudioTranscription::delay
         ) -> OpenAI::Models::Realtime::AudioTranscription::delay
 
+        attr_reader keywords: ::Array[String]?
+
+        def keywords=: (::Array[String]) -> ::Array[String]
+
         attr_reader language: String?
 
         def language=: (String) -> String
+
+        attr_reader languages: ::Array[String]?
+
+        def languages=: (::Array[String]) -> ::Array[String]
 
         attr_reader model: OpenAI::Models::Realtime::AudioTranscription::model?
 
@@ -32,14 +42,18 @@ module OpenAI
 
         def initialize: (
           ?delay: OpenAI::Models::Realtime::AudioTranscription::delay,
+          ?keywords: ::Array[String],
           ?language: String,
+          ?languages: ::Array[String],
           ?model: OpenAI::Models::Realtime::AudioTranscription::model,
           ?prompt: String
         ) -> void
 
         def to_hash: -> {
           delay: OpenAI::Models::Realtime::AudioTranscription::delay,
+          keywords: ::Array[String],
           language: String,
+          languages: ::Array[String],
           model: OpenAI::Models::Realtime::AudioTranscription::model,
           prompt: String
         }
@@ -61,6 +75,8 @@ module OpenAI
         type model =
           String
           | :"whisper-1"
+          | :"gpt-transcribe"
+          | :"gpt-live-transcribe"
           | :"gpt-4o-mini-transcribe"
           | :"gpt-4o-mini-transcribe-2025-12-15"
           | :"gpt-4o-transcribe"
@@ -73,6 +89,8 @@ module OpenAI
           def self?.variants: -> ::Array[OpenAI::Models::Realtime::AudioTranscription::model]
 
           WHISPER_1: :"whisper-1"
+          GPT_TRANSCRIBE: :"gpt-transcribe"
+          GPT_LIVE_TRANSCRIBE: :"gpt-live-transcribe"
           GPT_4O_MINI_TRANSCRIBE: :"gpt-4o-mini-transcribe"
           GPT_4O_MINI_TRANSCRIBE_2025_12_15: :"gpt-4o-mini-transcribe-2025-12-15"
           GPT_4O_TRANSCRIBE: :"gpt-4o-transcribe"
