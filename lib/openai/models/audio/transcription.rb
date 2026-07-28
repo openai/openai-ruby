@@ -10,6 +10,13 @@ module OpenAI
         #   @return [String]
         required :text, String
 
+        # @!attribute languages
+        #   The languages detected in the audio. Returned by `gpt-transcribe`. An empty
+        #   array indicates that no language could be reliably detected.
+        #
+        #   @return [Array<OpenAI::Models::Audio::TranscriptionLanguage>, nil]
+        optional :languages, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Audio::TranscriptionLanguage] }
+
         # @!attribute logprobs
         #   The log probabilities of the tokens in the transcription. Only returned with the
         #   models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe` if `logprobs` is added
@@ -24,7 +31,7 @@ module OpenAI
         #   @return [OpenAI::Models::Audio::Transcription::Usage::Tokens, OpenAI::Models::Audio::Transcription::Usage::Duration, nil]
         optional :usage, union: -> { OpenAI::Audio::Transcription::Usage }
 
-        # @!method initialize(text:, logprobs: nil, usage: nil)
+        # @!method initialize(text:, languages: nil, logprobs: nil, usage: nil)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Audio::Transcription} for more details.
         #
@@ -32,6 +39,8 @@ module OpenAI
         #   input.
         #
         #   @param text [String] The transcribed text.
+        #
+        #   @param languages [Array<OpenAI::Models::Audio::TranscriptionLanguage>] The languages detected in the audio. Returned by `gpt-transcribe`. An empty arra
         #
         #   @param logprobs [Array<OpenAI::Models::Audio::Transcription::Logprob>] The log probabilities of the tokens in the transcription. Only returned with the
         #

@@ -16,21 +16,25 @@ module OpenAI
         # Returns a transcription object in `json`, `diarized_json`, or `verbose_json`
         # format, or a stream of transcript events.
         #
-        # @overload create(file:, model:, chunking_strategy: nil, include: nil, known_speaker_names: nil, known_speaker_references: nil, language: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
+        # @overload create(file:, model:, chunking_strategy: nil, include: nil, keywords: nil, known_speaker_names: nil, known_speaker_references: nil, language: nil, languages: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
         #
         # @param file [Pathname, StringIO, IO, String, OpenAI::FilePart] The audio file object (not file name) to transcribe, in one of these formats: fl
         #
-        # @param model [String, Symbol, OpenAI::Models::AudioModel] ID of the model to use. The options are `gpt-4o-transcribe`, `gpt-4o-mini-transc
+        # @param model [String, Symbol, OpenAI::Models::AudioModel] ID of the model to use. The options are `gpt-transcribe`, `gpt-4o-transcribe`, `
         #
         # @param chunking_strategy [Symbol, :auto, OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig, nil] Controls how the audio is cut into chunks. When set to `"auto"`, the server firs
         #
         # @param include [Array<Symbol, OpenAI::Models::Audio::TranscriptionInclude>] Additional information to include in the transcription response.
+        #
+        # @param keywords [Array<String>] Words or phrases to guide transcription of the input audio. Supported by `gpt-tr
         #
         # @param known_speaker_names [Array<String>] Optional list of speaker names that correspond to the audio samples provided in
         #
         # @param known_speaker_references [Array<String>] Optional list of audio samples (as [data URLs](https://developer.mozilla.org/en-
         #
         # @param language [String] The language of the input audio. Supplying the input language in [ISO-639-1](htt
+        #
+        # @param languages [Array<String>] Possible languages of the input audio, in [ISO-639-1](https://en.wikipedia.org/w
         #
         # @param prompt [String] An optional text to guide the model's style or continue a previous audio segment
         #
@@ -73,21 +77,25 @@ module OpenAI
         # Returns a transcription object in `json`, `diarized_json`, or `verbose_json`
         # format, or a stream of transcript events.
         #
-        # @overload create_streaming(file:, model:, chunking_strategy: nil, include: nil, known_speaker_names: nil, known_speaker_references: nil, language: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
+        # @overload create_streaming(file:, model:, chunking_strategy: nil, include: nil, keywords: nil, known_speaker_names: nil, known_speaker_references: nil, language: nil, languages: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
         #
         # @param file [Pathname, StringIO, IO, String, OpenAI::FilePart] The audio file object (not file name) to transcribe, in one of these formats: fl
         #
-        # @param model [String, Symbol, OpenAI::Models::AudioModel] ID of the model to use. The options are `gpt-4o-transcribe`, `gpt-4o-mini-transc
+        # @param model [String, Symbol, OpenAI::Models::AudioModel] ID of the model to use. The options are `gpt-transcribe`, `gpt-4o-transcribe`, `
         #
         # @param chunking_strategy [Symbol, :auto, OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig, nil] Controls how the audio is cut into chunks. When set to `"auto"`, the server firs
         #
         # @param include [Array<Symbol, OpenAI::Models::Audio::TranscriptionInclude>] Additional information to include in the transcription response.
+        #
+        # @param keywords [Array<String>] Words or phrases to guide transcription of the input audio. Supported by `gpt-tr
         #
         # @param known_speaker_names [Array<String>] Optional list of speaker names that correspond to the audio samples provided in
         #
         # @param known_speaker_references [Array<String>] Optional list of audio samples (as [data URLs](https://developer.mozilla.org/en-
         #
         # @param language [String] The language of the input audio. Supplying the input language in [ISO-639-1](htt
+        #
+        # @param languages [Array<String>] Possible languages of the input audio, in [ISO-639-1](https://en.wikipedia.org/w
         #
         # @param prompt [String] An optional text to guide the model's style or continue a previous audio segment
         #

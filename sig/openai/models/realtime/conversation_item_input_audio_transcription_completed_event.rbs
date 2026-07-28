@@ -9,6 +9,7 @@ module OpenAI
           transcript: String,
           type: :"conversation.item.input_audio_transcription.completed",
           usage: OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::usage,
+          languages: ::Array[OpenAI::Audio::TranscriptionLanguage],
           logprobs: ::Array[OpenAI::Realtime::LogProbProperties]?
         }
 
@@ -25,6 +26,12 @@ module OpenAI
 
         attr_accessor usage: OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::usage
 
+        attr_reader languages: ::Array[OpenAI::Audio::TranscriptionLanguage]?
+
+        def languages=: (
+          ::Array[OpenAI::Audio::TranscriptionLanguage]
+        ) -> ::Array[OpenAI::Audio::TranscriptionLanguage]
+
         attr_accessor logprobs: ::Array[OpenAI::Realtime::LogProbProperties]?
 
         def initialize: (
@@ -33,6 +40,7 @@ module OpenAI
           item_id: String,
           transcript: String,
           usage: OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::usage,
+          ?languages: ::Array[OpenAI::Audio::TranscriptionLanguage],
           ?logprobs: ::Array[OpenAI::Realtime::LogProbProperties]?,
           ?type: :"conversation.item.input_audio_transcription.completed"
         ) -> void
@@ -44,6 +52,7 @@ module OpenAI
           transcript: String,
           type: :"conversation.item.input_audio_transcription.completed",
           usage: OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::usage,
+          languages: ::Array[OpenAI::Audio::TranscriptionLanguage],
           logprobs: ::Array[OpenAI::Realtime::LogProbProperties]?
         }
 

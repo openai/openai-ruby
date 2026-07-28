@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.73.0 (2026-07-28)
+
+Full Changelog: [v0.72.0...v0.73.0](https://github.com/openai/openai-ruby/compare/v0.72.0...v0.73.0)
+
+### Features
+
+* **api:** transcription model updates ([e1a95ab](https://github.com/openai/openai-ruby/commit/e1a95ab63070edb96000a334d5231994d7ca1f65))
+
 ## 0.72.0 (2026-07-23)
 
 Full Changelog: [v0.71.0...v0.72.0](https://github.com/openai/openai-ruby/compare/v0.71.0...v0.72.0)
