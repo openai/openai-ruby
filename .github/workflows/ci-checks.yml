@@ -60,7 +60,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@c515ec17f69368147deb311832da000dd229d338 # v1
         with:
-          ruby-version: '3.2'
+          ruby-version: '4.0'
           bundler-cache: false
       - run: bundle install
       - name: Run lints
@@ -79,7 +79,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@c515ec17f69368147deb311832da000dd229d338 # v1
         with:
-          ruby-version: '3.2'
+          ruby-version: '4.0'
           bundler-cache: false
       - run: bundle install
       - name: Build gem
