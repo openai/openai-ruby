@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.74.0 (2026-07-30)
+
+Full Changelog: [v0.73.0...v0.74.0](https://github.com/openai/openai-ruby/compare/v0.73.0...v0.74.0)
+
+### Features
+
+* **api:** fast tier ([4165ec8](https://github.com/openai/openai-ruby/commit/4165ec8e6bc100f932e3787d6c5412e89496c0e9))
+
 ## 0.73.0 (2026-07-28)
 
 Full Changelog: [v0.72.0...v0.73.0](https://github.com/openai/openai-ruby/compare/v0.72.0...v0.73.0)
