@@ -720,7 +720,8 @@ module OpenAI
           end
         end
 
-        type service_tier = :auto | :default | :flex | :scale | :priority
+        type service_tier =
+          :auto | :default | :flex | :scale | :priority | :fast
 
         module ServiceTier
           extend OpenAI::Internal::Type::Enum
@@ -730,6 +731,7 @@ module OpenAI
           FLEX: :flex
           SCALE: :scale
           PRIORITY: :priority
+          FAST: :fast
 
           def self?.values: -> ::Array[OpenAI::Models::Beta::ResponseCreateParams::service_tier]
         end
