@@ -47,6 +47,9 @@ module OpenAI
     sig { returns(OpenAI::Resources::Images) }
     attr_reader :images
 
+    sig { returns(OpenAI::Resources::ContentProvenanceChecks) }
+    attr_reader :content_provenance_checks
+
     sig { returns(OpenAI::Resources::Audio) }
     attr_reader :audio
 

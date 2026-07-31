@@ -363,7 +363,7 @@ module OpenAI
       #
       # @param prompt_cache_retention [Symbol, OpenAI::Models::Responses::ResponseCompactParams::PromptCacheRetention, nil] How long to retain a prompt cache entry created by this request.
       #
-      # @param service_tier [Symbol, OpenAI::Models::Responses::ResponseCompactParams::ServiceTier, nil] The service tier to use for this request.
+      # @param service_tier [Symbol, OpenAI::Models::Responses::ResponseCompactParams::ServiceTier, nil] Specifies the processing type used for serving the request. - If set to 'auto'
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #

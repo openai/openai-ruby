@@ -403,7 +403,7 @@ module OpenAI
         #
         # @param prompt_cache_retention [Symbol, OpenAI::Models::Beta::ResponseCompactParams::PromptCacheRetention, nil] Body param: How long to retain a prompt cache entry created by this request.
         #
-        # @param service_tier [Symbol, OpenAI::Models::Beta::ResponseCompactParams::ServiceTier, nil] Body param: The service tier to use for this request.
+        # @param service_tier [Symbol, OpenAI::Models::Beta::ResponseCompactParams::ServiceTier, nil] Body param: Specifies the processing type used for serving the request. - If s
         #
         # @param betas [Array<Symbol, OpenAI::Models::Beta::ResponseCompactParams::Beta>] Header param: Optional beta features to enable for this request.
         #
