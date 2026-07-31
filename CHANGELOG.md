@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.76.0 (2026-07-31)
+
+Full Changelog: [v0.75.0...v0.76.0](https://github.com/openai/openai-ruby/compare/v0.75.0...v0.76.0)
+
+### Features
+
+* require Ruby 3.3 or newer ([#322](https://github.com/openai/openai-ruby/issues/322)) ([f40aef1](https://github.com/openai/openai-ruby/commit/f40aef1892a4ebafaf4c254522dbf12f3c04ba78))
+
+
+### Bug Fixes
+
+* preserve generic Linux ffi lock entry ([#323](https://github.com/openai/openai-ruby/issues/323)) ([491eacb](https://github.com/openai/openai-ruby/commit/491eacbe59aa77586731a7929f487a4dcd6f7113))
+
 ## 0.75.0 (2026-07-31)
 
 Full Changelog: [v0.74.0...v0.75.0](https://github.com/openai/openai-ruby/compare/v0.74.0...v0.75.0)
