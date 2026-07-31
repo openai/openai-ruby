@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.75.0 (2026-07-31)
+
+Full Changelog: [v0.74.0...v0.75.0](https://github.com/openai/openai-ruby/compare/v0.74.0...v0.75.0)
+
+### Features
+
+* **api:** content provenance checks ([62229f3](https://github.com/openai/openai-ruby/commit/62229f3057975721ebe6d904c05da905b57e7255))
+
 ## 0.74.0 (2026-07-30)
 
 Full Changelog: [v0.73.0...v0.74.0](https://github.com/openai/openai-ruby/compare/v0.73.0...v0.74.0)
