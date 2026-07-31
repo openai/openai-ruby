@@ -1,6 +1,6 @@
 # OpenAI Ruby API library
 
-The OpenAI Ruby library provides convenient access to the OpenAI REST API from any Ruby 3.2.0+ application. It ships with comprehensive types & docstrings in Yard, RBS, and RBI – [see below](https://github.com/openai/openai-ruby#Sorbet) for usage with Sorbet. The standard library's `net/http` is used as the HTTP transport, with connection pooling via the `connection_pool` gem.
+The OpenAI Ruby library provides convenient access to the OpenAI REST API from any Ruby 3.3.0+ application. It ships with comprehensive types & docstrings in Yard, RBS, and RBI – [see below](https://github.com/openai/openai-ruby#Sorbet) for usage with Sorbet. The standard library's `net/http` is used as the HTTP transport, with connection pooling via the `connection_pool` gem.
 
 ## Documentation
 
@@ -80,7 +80,7 @@ end
 
 ### File uploads
 
-Request parameters that correspond to file uploads can be passed as raw contents, a [`Pathname`](https://rubyapi.org/3.2/o/pathname) instance, [`StringIO`](https://rubyapi.org/3.2/o/stringio), or more.
+Request parameters that correspond to file uploads can be passed as raw contents, a [`Pathname`](https://rubyapi.org/3.3/o/pathname) instance, [`StringIO`](https://rubyapi.org/3.3/o/stringio), or more.
 
 ```ruby
 require "pathname"
@@ -633,13 +633,14 @@ openai.chat.completions.create(
 
 ## Versioning
 
-This package follows [SemVer](https://semver.org/spec/v2.0.0.html) conventions. As the library is in initial development and has a major version of `0`, APIs may change at any time.
-
-This package considers improvements to the (non-runtime) `*.rbi` and `*.rbs` type definitions to be non-breaking changes.
+This package follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html). See the [versioning policy](VERSIONING.md) for how releases, breaking changes, Ruby support, dependencies, and type definitions are managed.
 
 ## Requirements
 
-Ruby 3.2.0 or higher.
+Ruby 3.3.0 or higher.
+
+Ruby 3.2 users can continue using v0.75.x, the final compatible release line.
+This line will not receive separate maintenance.
 
 ## Contributing
 

@@ -9,7 +9,7 @@ module OpenAI
       #
       # This module provides a base implementation for streaming responses in the SDK.
       #
-      # @see https://rubyapi.org/3.2/o/enumerable
+      # @see https://rubyapi.org/3.3/o/enumerable
       module BaseStream
         include Enumerable
 

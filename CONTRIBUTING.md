@@ -1,5 +1,8 @@
 ## Setting up the environment
 
+See the [versioning policy](VERSIONING.md) before changing the public API,
+minimum Ruby version, dependencies, or release behavior.
+
 This repository contains a `.ruby-version` file, which should work with either [rbenv](https://github.com/rbenv/rbenv) or [asdf](https://github.com/asdf-vm/asdf) with the [ruby plugin](https://github.com/asdf-vm/asdf-ruby).
 
 Please follow the instructions for your preferred version manager to install the Ruby version specified in the `.ruby-version` file.
