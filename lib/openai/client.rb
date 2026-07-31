@@ -58,6 +58,9 @@ module OpenAI
     # @return [OpenAI::Resources::Images]
     attr_reader :images
 
+    # @return [OpenAI::Resources::ContentProvenanceChecks]
+    attr_reader :content_provenance_checks
+
     # @return [OpenAI::Resources::Audio]
     attr_reader :audio
 
@@ -349,6 +352,7 @@ module OpenAI
       @embeddings = OpenAI::Resources::Embeddings.new(client: self)
       @files = OpenAI::Resources::Files.new(client: self)
       @images = OpenAI::Resources::Images.new(client: self)
+      @content_provenance_checks = OpenAI::Resources::ContentProvenanceChecks.new(client: self)
       @audio = OpenAI::Resources::Audio.new(client: self)
       @moderations = OpenAI::Resources::Moderations.new(client: self)
       @models = OpenAI::Resources::Models.new(client: self)
