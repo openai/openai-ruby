@@ -15,6 +15,7 @@ TEST_PATHS=(
 	test/openai/resources/embeddings_test.rb
 	test/openai/resources/files_test.rb
 	test/openai/resources/images_test.rb
+	test/openai/resources/content_provenance_checks_test.rb
 	test/openai/resources/audio_test.rb
 	test/openai/resources/audio/transcriptions_test.rb
 	test/openai/resources/audio/translations_test.rb

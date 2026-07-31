@@ -30,6 +30,8 @@ module OpenAI
 
     attr_reader images: OpenAI::Resources::Images
 
+    attr_reader content_provenance_checks: OpenAI::Resources::ContentProvenanceChecks
+
     attr_reader audio: OpenAI::Resources::Audio
 
     attr_reader moderations: OpenAI::Resources::Moderations

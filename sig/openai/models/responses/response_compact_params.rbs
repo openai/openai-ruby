@@ -331,13 +331,14 @@ module OpenAI
           def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseCompactParams::prompt_cache_retention]
         end
 
-        type service_tier = :auto | :default | :flex | :priority
+        type service_tier = :auto | :default | :fast | :flex | :priority
 
         module ServiceTier
           extend OpenAI::Internal::Type::Enum
 
           AUTO: :auto
           DEFAULT: :default
+          FAST: :fast
           FLEX: :flex
           PRIORITY: :priority
 

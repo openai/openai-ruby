@@ -55,6 +55,10 @@ module OpenAI
 
   module Containers = OpenAI::Models::Containers
 
+  class ContentProvenanceCheck = OpenAI::Models::ContentProvenanceCheck
+
+  class ContentProvenanceCheckCreateParams = OpenAI::Models::ContentProvenanceCheckCreateParams
+
   module Conversations = OpenAI::Models::Conversations
 
   class CreateEmbeddingResponse = OpenAI::Models::CreateEmbeddingResponse
