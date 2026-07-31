@@ -9,7 +9,7 @@ AllCops:
     - "bin/*"
   NewCops: enable
   SuggestExtensions: false
-  TargetRubyVersion: 3.2
+  TargetRubyVersion: 3.3
 
 # Whether MFA is required or not should be left to the token configuration.
 Gemspec/RequireMFA:

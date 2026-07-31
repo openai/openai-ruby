@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.metadata["homepage_uri"] = s.homepage
   s.metadata["source_code_uri"] = "https://github.com/openai/openai-ruby"
   s.metadata["rubygems_mfa_required"] = "true"
-  s.required_ruby_version = ">= 3.2.0"
+  s.required_ruby_version = ">= 3.3.0"
   s.license = "Apache-2.0"
 
   s.files = Dir[
@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
     "CHANGELOG.md",
     ".ignore"
   ]
-  s.extra_rdoc_files = ["README.md"]
+  s.extra_rdoc_files = ["README.md", "VERSIONING.md"]
   s.add_dependency "base64"
   s.add_dependency "cgi"
   s.add_dependency "connection_pool"
