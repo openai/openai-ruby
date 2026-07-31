@@ -28,7 +28,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up Ruby
-        uses: ruby/setup-ruby@c515ec17f69368147deb311832da000dd229d338 # v1
+        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1
         with:
           bundler-cache: false
       - run: bundle install
@@ -58,9 +58,9 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up Ruby
-        uses: ruby/setup-ruby@c515ec17f69368147deb311832da000dd229d338 # v1
+        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1
         with:
-          ruby-version: '3.2'
+          ruby-version: '4.0'
           bundler-cache: false
       - run: bundle install
       - name: Run lints
@@ -77,9 +77,9 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up Ruby
-        uses: ruby/setup-ruby@c515ec17f69368147deb311832da000dd229d338 # v1
+        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1
         with:
-          ruby-version: '3.2'
+          ruby-version: '4.0'
           bundler-cache: false
       - run: bundle install
       - name: Build gem
@@ -100,7 +100,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up Ruby
-        uses: ruby/setup-ruby@c515ec17f69368147deb311832da000dd229d338 # v1
+        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1
         with:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: false
