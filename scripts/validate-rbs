@@ -63,7 +63,9 @@ module OpenAI
       contents = path.binread
       # RBS 3.9 treats NUL as EOF. In a combined buffer, that would hide every
       # declaration from later files even though the originals parse separately.
-      contents.include?("\0") || contents.each_line.any? { _1.match?(FILE_SCOPED_DIRECTIVE) }
+      # Match the complete file because RBS's magic-comment grammar permits its
+      # whitespace matcher to span lines (for example, "#\nresolve-type-names:").
+      contents.include?("\0") || contents.match?(FILE_SCOPED_DIRECTIVE)
     end
     private_class_method :requires_reference_check?
 

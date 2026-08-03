@@ -124,6 +124,19 @@ class ValidateRBSScriptTest < Minitest::Test
     assert_equal([%w[check --no-type-check]], calls)
   end
 
+  def test_checks_original_files_when_type_name_resolution_directive_is_multiline
+    stdout, _stderr, status = run_validation(
+      {
+        "a.rbs" => "#\nresolve-type-names: false\nmodule Good\nend\n",
+        "b.rbs" => "class Broken\n  def call: () -> Missing\nend\n"
+      }
+    )
+
+    refute_predicate(status, :success?)
+    assert_includes(stdout, "RBS::UnknownTypeName")
+    assert_includes(stdout, "b.rbs")
+  end
+
   def test_reports_steep_semantic_errors
     stdout, _stderr, status = run_validation(
       {
