@@ -9,23 +9,12 @@ module OpenAI
         end
 
       # Structured Outputs configuration options, including a JSON Schema.
-      sig do
-        returns(
-          T.any(
-            OpenAI::ResponseFormatJSONSchema::JSONSchema::OrHash,
-            OpenAI::StructuredOutput::JsonSchemaConverter
-          )
-        )
-      end
+      sig { returns(OpenAI::ResponseFormatJSONSchema::JSONSchema) }
       attr_reader :json_schema
 
       sig do
         params(
-          json_schema:
-            T.any(
-              OpenAI::ResponseFormatJSONSchema::JSONSchema::OrHash,
-              OpenAI::StructuredOutput::JsonSchemaConverter
-            )
+          json_schema: OpenAI::ResponseFormatJSONSchema::JSONSchema::OrHash
         ).void
       end
       attr_writer :json_schema
@@ -39,11 +28,7 @@ module OpenAI
       # [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
       sig do
         params(
-          json_schema:
-            T.any(
-              OpenAI::ResponseFormatJSONSchema::JSONSchema::OrHash,
-              OpenAI::StructuredOutput::JsonSchemaConverter
-            ),
+          json_schema: OpenAI::ResponseFormatJSONSchema::JSONSchema::OrHash,
           type: Symbol
         ).returns(T.attached_class)
       end

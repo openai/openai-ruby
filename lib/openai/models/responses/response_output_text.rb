@@ -17,14 +17,6 @@ module OpenAI
         #   @return [String]
         required :text, String
 
-        response_only do
-          # @!attribute parsed
-          #   The parsed contents of the output, if JSON schema is specified.
-          #
-          #   @return [Object, nil]
-          optional :parsed, OpenAI::StructuredOutput::ParsedJson
-        end
-
         # @!attribute type
         #   The type of the output text. Always `output_text`.
         #

@@ -1,3 +1,0 @@
-module OpenAI
-  VERSION: String
-end

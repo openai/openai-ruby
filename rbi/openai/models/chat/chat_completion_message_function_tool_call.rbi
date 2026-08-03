@@ -85,10 +85,6 @@ module OpenAI
           sig { returns(String) }
           attr_accessor :arguments
 
-          # The parsed contents of the arguments.
-          sig { returns(T.anything) }
-          attr_accessor :parsed
-
           # The name of the function to call.
           sig { returns(String) }
           attr_accessor :name

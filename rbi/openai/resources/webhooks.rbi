@@ -5,11 +5,7 @@ module OpenAI
     class Webhooks
       # Validates that the given payload was sent by OpenAI and parses the payload.
       sig do
-        params(
-          payload: String,
-          headers: T.nilable(T::Hash[T.any(String, Symbol), String]),
-          webhook_secret: T.nilable(String)
-        ).returns(
+        params(payload: String).returns(
           T.any(
             OpenAI::Webhooks::BatchCancelledWebhookEvent,
             OpenAI::Webhooks::BatchCompletedWebhookEvent,
@@ -32,32 +28,7 @@ module OpenAI
       end
       def unwrap(
         # The raw webhook payload as a string
-        payload,
-        # The webhook headers
-        headers = {},
-        # The webhook secret (optional, will use ENV["OPENAI_WEBHOOK_SECRET"] if not provided)
-        webhook_secret = nil
-      )
-      end
-
-      # Validates whether or not the webhook payload was sent by OpenAI.
-      sig do
-        params(
-          payload: String,
-          headers: T::Hash[T.any(String, Symbol), String],
-          webhook_secret: T.nilable(String),
-          tolerance: Integer
-        ).void
-      end
-      def verify_signature(
-        # The webhook payload as a string
-        payload,
-        # The webhook headers
-        headers,
-        # The webhook secret (optional, will use ENV["OPENAI_WEBHOOK_SECRET"] if not provided)
-        webhook_secret = nil,
-        # Maximum age of the webhook in seconds (default: 300 = 5 minutes)
-        tolerance = 300
+        payload
       )
       end
 

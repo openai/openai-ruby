@@ -35,7 +35,7 @@ module OpenAI
         type action =
           OpenAI::Responses::ResponseFunctionWebSearch::Action::Search
           | OpenAI::Responses::ResponseFunctionWebSearch::Action::OpenPage
-          | OpenAI::Responses::ResponseFunctionWebSearch::Action::Find
+          | OpenAI::Responses::ResponseFunctionWebSearch::Action::FindInPage
 
         module Action
           extend OpenAI::Internal::Type::Union
@@ -107,7 +107,7 @@ module OpenAI
           type find_in_page =
             { pattern: String, type: :find_in_page, url: String }
 
-          class Find < OpenAI::Internal::Type::BaseModel
+          class FindInPage < OpenAI::Internal::Type::BaseModel
             attr_accessor pattern: String
 
             attr_accessor type: :find_in_page

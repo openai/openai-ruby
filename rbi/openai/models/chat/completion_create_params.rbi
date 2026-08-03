@@ -313,7 +313,6 @@ module OpenAI
               T.any(
                 OpenAI::ResponseFormatText,
                 OpenAI::ResponseFormatJSONSchema,
-                OpenAI::StructuredOutput::JsonSchemaConverter,
                 OpenAI::ResponseFormatJSONObject
               )
             )
@@ -327,7 +326,6 @@ module OpenAI
               T.any(
                 OpenAI::ResponseFormatText::OrHash,
                 OpenAI::ResponseFormatJSONSchema::OrHash,
-                OpenAI::StructuredOutput::JsonSchemaConverter,
                 OpenAI::ResponseFormatJSONObject::OrHash
               )
           ).void
@@ -476,7 +474,6 @@ module OpenAI
             tools:
               T::Array[
                 T.any(
-                  OpenAI::StructuredOutput::JsonSchemaConverter,
                   OpenAI::Chat::ChatCompletionFunctionTool::OrHash,
                   OpenAI::Chat::ChatCompletionCustomTool::OrHash
                 )
@@ -595,7 +592,6 @@ module OpenAI
               T.any(
                 OpenAI::ResponseFormatText::OrHash,
                 OpenAI::ResponseFormatJSONSchema::OrHash,
-                OpenAI::StructuredOutput::JsonSchemaConverter,
                 OpenAI::ResponseFormatJSONObject::OrHash
               ),
             safety_identifier: T.nilable(String),
@@ -620,7 +616,6 @@ module OpenAI
             tools:
               T::Array[
                 T.any(
-                  OpenAI::StructuredOutput::JsonSchemaConverter,
                   OpenAI::Chat::ChatCompletionFunctionTool::OrHash,
                   OpenAI::Chat::ChatCompletionCustomTool::OrHash
                 )
@@ -962,7 +957,6 @@ module OpenAI
               tools:
                 T::Array[
                   T.any(
-                    OpenAI::StructuredOutput::JsonSchemaConverter,
                     OpenAI::Chat::ChatCompletionFunctionTool,
                     OpenAI::Chat::ChatCompletionCustomTool
                   )
@@ -1719,7 +1713,6 @@ module OpenAI
               T.any(
                 OpenAI::ResponseFormatText,
                 OpenAI::ResponseFormatJSONSchema,
-                OpenAI::StructuredOutput::JsonSchemaConverter,
                 OpenAI::ResponseFormatJSONObject
               )
             end

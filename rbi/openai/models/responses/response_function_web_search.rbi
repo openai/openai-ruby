@@ -23,7 +23,7 @@ module OpenAI
             T.any(
               OpenAI::Responses::ResponseFunctionWebSearch::Action::Search,
               OpenAI::Responses::ResponseFunctionWebSearch::Action::OpenPage,
-              OpenAI::Responses::ResponseFunctionWebSearch::Action::Find
+              OpenAI::Responses::ResponseFunctionWebSearch::Action::FindInPage
             )
           )
         end
@@ -51,7 +51,7 @@ module OpenAI
               T.any(
                 OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::OrHash,
                 OpenAI::Responses::ResponseFunctionWebSearch::Action::OpenPage::OrHash,
-                OpenAI::Responses::ResponseFunctionWebSearch::Action::Find::OrHash
+                OpenAI::Responses::ResponseFunctionWebSearch::Action::FindInPage::OrHash
               ),
             status:
               OpenAI::Responses::ResponseFunctionWebSearch::Status::OrSymbol,
@@ -79,7 +79,7 @@ module OpenAI
                 T.any(
                   OpenAI::Responses::ResponseFunctionWebSearch::Action::Search,
                   OpenAI::Responses::ResponseFunctionWebSearch::Action::OpenPage,
-                  OpenAI::Responses::ResponseFunctionWebSearch::Action::Find
+                  OpenAI::Responses::ResponseFunctionWebSearch::Action::FindInPage
                 ),
               status:
                 OpenAI::Responses::ResponseFunctionWebSearch::Status::OrSymbol,
@@ -100,7 +100,7 @@ module OpenAI
               T.any(
                 OpenAI::Responses::ResponseFunctionWebSearch::Action::Search,
                 OpenAI::Responses::ResponseFunctionWebSearch::Action::OpenPage,
-                OpenAI::Responses::ResponseFunctionWebSearch::Action::Find
+                OpenAI::Responses::ResponseFunctionWebSearch::Action::FindInPage
               )
             end
 
@@ -264,11 +264,11 @@ module OpenAI
             end
           end
 
-          class Find < OpenAI::Internal::Type::BaseModel
+          class FindInPage < OpenAI::Internal::Type::BaseModel
             OrHash =
               T.type_alias do
                 T.any(
-                  OpenAI::Responses::ResponseFunctionWebSearch::Action::Find,
+                  OpenAI::Responses::ResponseFunctionWebSearch::Action::FindInPage,
                   OpenAI::Internal::AnyHash
                 )
               end

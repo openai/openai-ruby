@@ -14,7 +14,7 @@ module OpenAI
         #   An object describing the specific action taken in this web search call. Includes
         #   details on how the model used the web (search, open_page, find_in_page).
         #
-        #   @return [OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Search, OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::OpenPage, OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Find]
+        #   @return [OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Search, OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::OpenPage, OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::FindInPage]
         required :action, union: -> { OpenAI::Responses::ResponseFunctionWebSearch::Action }
 
         # @!attribute status
@@ -39,7 +39,7 @@ module OpenAI
         #
         #   @param id [String] The unique ID of the web search tool call.
         #
-        #   @param action [OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Search, OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::OpenPage, OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Find] An object describing the specific action taken in this web search call.
+        #   @param action [OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Search, OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::OpenPage, OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::FindInPage] An object describing the specific action taken in this web search call.
         #
         #   @param status [Symbol, OpenAI::Models::Responses::ResponseFunctionWebSearch::Status] The status of the web search tool call.
         #
@@ -61,7 +61,7 @@ module OpenAI
           variant :open_page, -> { OpenAI::Responses::ResponseFunctionWebSearch::Action::OpenPage }
 
           # Action type "find_in_page": Searches for a pattern within a loaded page.
-          variant :find_in_page, -> { OpenAI::Responses::ResponseFunctionWebSearch::Action::Find }
+          variant :find_in_page, -> { OpenAI::Responses::ResponseFunctionWebSearch::Action::FindInPage }
 
           class Search < OpenAI::Internal::Type::BaseModel
             # @!attribute type
@@ -157,7 +157,7 @@ module OpenAI
             #   @param type [Symbol, :open_page] The action type.
           end
 
-          class Find < OpenAI::Internal::Type::BaseModel
+          class FindInPage < OpenAI::Internal::Type::BaseModel
             # @!attribute pattern
             #   The pattern or text to search for within the page.
             #
@@ -178,7 +178,7 @@ module OpenAI
 
             # @!method initialize(pattern:, url:, type: :find_in_page)
             #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Find} for
+            #   {OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::FindInPage} for
             #   more details.
             #
             #   Action type "find_in_page": Searches for a pattern within a loaded page.
@@ -191,7 +191,7 @@ module OpenAI
           end
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Search, OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::OpenPage, OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Find)]
+          #   @return [Array(OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Search, OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::OpenPage, OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::FindInPage)]
         end
 
         # The status of the web search tool call.

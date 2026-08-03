@@ -2,9 +2,7 @@ module OpenAI
   module Resources
     class Webhooks
       def unwrap: (
-        String payload,
-        ?Hash[String | Symbol, String] headers,
-        ?String? webhook_secret
+        String payload
       ) -> (OpenAI::Webhooks::BatchCancelledWebhookEvent
       | OpenAI::Webhooks::BatchCompletedWebhookEvent
       | OpenAI::Webhooks::BatchExpiredWebhookEvent
@@ -21,13 +19,6 @@ module OpenAI
       | OpenAI::Webhooks::ResponseCompletedWebhookEvent
       | OpenAI::Webhooks::ResponseFailedWebhookEvent
       | OpenAI::Webhooks::ResponseIncompleteWebhookEvent)
-
-      def verify_signature: (
-        String payload,
-        Hash[String | Symbol, String] headers,
-        ?String? webhook_secret,
-        ?Integer tolerance
-      ) -> void
 
       def initialize: (client: OpenAI::Client) -> void
     end

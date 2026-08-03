@@ -187,10 +187,6 @@ module OpenAI
           )
         end
 
-        def stream
-          raise NotImplementedError.new("higher level helpers are coming soon!")
-        end
-
         # @deprecated The Assistants API is deprecated in favor of the Responses API
         #
         # See {OpenAI::Resources::Beta::Threads#create_and_run} for non-streaming

@@ -88,7 +88,6 @@ module OpenAI
               T.any(
                 OpenAI::ResponseFormatText::OrHash,
                 OpenAI::ResponseFormatJSONSchema::OrHash,
-                OpenAI::StructuredOutput::JsonSchemaConverter,
                 OpenAI::ResponseFormatJSONObject::OrHash
               ),
             safety_identifier: T.nilable(String),
@@ -113,7 +112,6 @@ module OpenAI
             tools:
               T::Array[
                 T.any(
-                  OpenAI::StructuredOutput::JsonSchemaConverter,
                   OpenAI::Chat::ChatCompletionFunctionTool::OrHash,
                   OpenAI::Chat::ChatCompletionCustomTool::OrHash
                 )

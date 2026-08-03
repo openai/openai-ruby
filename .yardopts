@@ -1,6 +1,0 @@
---type-name-tag generic:Generic
---default-return void
---markup markdown
---markup-provider redcarpet
---exclude /rbi
---exclude /sig
