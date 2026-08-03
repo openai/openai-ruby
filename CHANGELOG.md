@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.77.0](https://github.com/openai/openai-ruby/compare/v0.76.0...v0.77.0) (2026-08-03)
+
+
+### Features
+
+* **api:** promote Ruby SDK changes ([#326](https://github.com/openai/openai-ruby/issues/326)) ([d46c2e3](https://github.com/openai/openai-ruby/commit/d46c2e336f3c839cdd491c36d2b823ad47b49c88))
+
 ## 0.76.0 (2026-07-31)
 
 Full Changelog: [v0.75.0...v0.76.0](https://github.com/openai/openai-ruby/compare/v0.75.0...v0.76.0)
