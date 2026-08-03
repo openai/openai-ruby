@@ -8,6 +8,7 @@ on:
   push:
     branches:
       - '**'
+      - '!gh-readonly-queue/**'
       - '!integrated/**'
       - '!stl-preview-head/**'
       - '!stl-preview-base/**'
