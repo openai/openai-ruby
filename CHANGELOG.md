@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.76.1 (2026-08-03)
+
+Full Changelog: [v0.76.0...v0.76.1](https://github.com/openai/openai-ruby/compare/v0.76.0...v0.76.1)
+
 ## 0.76.0 (2026-07-31)
 
 Full Changelog: [v0.75.0...v0.76.0](https://github.com/openai/openai-ruby/compare/v0.75.0...v0.76.0)
