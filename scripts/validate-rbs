@@ -22,7 +22,7 @@ module OpenAI
       raise "No RBS files found under #{root.join('sig')}" if signatures.empty?
 
       status =
-        if signatures.any? { contains_file_scoped_directive?(_1) }
+        if signatures.any? { requires_reference_check?(_1) }
           run_reference_check(root, stdout: stdout, stderr: stderr, env: env)
         else
           fast_status = run_parse_check(root, env: env)
@@ -59,10 +59,13 @@ module OpenAI
     end
     private_class_method :signature_paths
 
-    def contains_file_scoped_directive?(path)
-      File.foreach(path).any? { _1.match?(FILE_SCOPED_DIRECTIVE) }
+    def requires_reference_check?(path)
+      contents = path.binread
+      # RBS 3.9 treats NUL as EOF. In a combined buffer, that would hide every
+      # declaration from later files even though the originals parse separately.
+      contents.include?("\0") || contents.each_line.any? { _1.match?(FILE_SCOPED_DIRECTIVE) }
     end
-    private_class_method :contains_file_scoped_directive?
+    private_class_method :requires_reference_check?
 
     def run_parse_check(root, env:)
       _stdout, _stderr, status = Open3.capture3(env, "rbs", "parse", "sig", chdir: root.to_s)

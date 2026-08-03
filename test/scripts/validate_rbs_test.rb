@@ -47,6 +47,19 @@ class ValidateRBSScriptTest < Minitest::Test
     assert_match(/[ab]\.rbs/, stdout)
   end
 
+  def test_rechecks_original_files_when_a_signature_contains_nul
+    stdout, _stderr, status = run_validation(
+      {
+        "a.rbs" => "module Good\nend\n\x00",
+        "b.rbs" => "module Invalid\n  type bad = MissingType\nend\n"
+      }
+    )
+
+    refute_predicate(status, :success?)
+    assert_includes(stdout, "RBS::UnknownTypeName")
+    assert_includes(stdout, "b.rbs")
+  end
+
   def test_uses_one_consolidated_steep_check_on_success
     stdout, stderr, status, calls = run_validation(
       {"valid.rbs" => "module Example\nend\n"},
