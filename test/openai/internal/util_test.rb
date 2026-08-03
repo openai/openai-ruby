@@ -330,6 +330,37 @@ class OpenAI::Test::UtilIOAdapterTest < Minitest::Test
     end
   end
 
+  def test_read_mixed_encoding_chunks
+    chunks = ["caf\u00E9", "\xFF\xFE".b]
+    expected = chunks.map(&:b).join
+
+    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(chunks.to_enum) do |chunk|
+      chunk
+    end
+    actual = String.new.b
+    loop do
+      chunk = adapter.read(2)
+      break unless chunk
+
+      actual << chunk
+    end
+
+    assert_equal(expected, actual)
+    assert_equal(Encoding::ASCII_8BIT, actual.encoding)
+  end
+
+  def test_read_all_mixed_encoding_chunks
+    chunks = ["caf\u00E9", "\xFF\xFE".b]
+    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(chunks.to_enum) do |chunk|
+      chunk
+    end
+
+    result = adapter.read
+
+    assert_equal(chunks.map(&:b).join, result)
+    assert_equal(Encoding::ASCII_8BIT, result.encoding)
+  end
+
   def test_copy_write
     cases = {
       StringIO.new => "",

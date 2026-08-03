@@ -425,9 +425,9 @@ module OpenAI
         private def read_enum(max_len)
           case max_len
           in nil
-            @stream.to_a.join
+            @stream.to_a.map(&:b).join
           in Integer
-            @buf << @stream.next while @buf.length < max_len
+            @buf << @stream.next.b while @buf.length < max_len
             @buf.slice!(..max_len)
           end
         rescue StopIteration
@@ -476,7 +476,7 @@ module OpenAI
             else
               src
             end
-          @buf = String.new
+          @buf = String.new.b
           @blk = blk
         end
       end
