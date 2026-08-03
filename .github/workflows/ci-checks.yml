@@ -30,8 +30,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1
         with:
-          bundler-cache: false
-      - run: bundle install
+          bundler-cache: true
 
       - name: Get GitHub OIDC token
         id: github-oidc
@@ -49,10 +48,12 @@ jobs:
 
   lint:
     timeout-minutes: 10
-    name: lint
+    name: lint (rubocop)
     permissions:
       contents: read
     runs-on: ${{ inputs.runner }}
+    env:
+      RUBOCOP_CACHE_ROOT: ${{ github.workspace }}/.cache/rubocop
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
@@ -61,10 +62,43 @@ jobs:
         uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1
         with:
           ruby-version: '4.0'
-          bundler-cache: false
-      - run: bundle install
-      - name: Run lints
-        run: ./scripts/lint
+          bundler-cache: true
+      - name: Restore RuboCop cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ env.RUBOCOP_CACHE_ROOT }}
+          key: >-
+            rubocop-${{ runner.os }}-ruby-4.0-${{ hashFiles('Gemfile.lock', '.rubocop.yml') }}-${{ github.sha }}
+          restore-keys: |
+            rubocop-${{ runner.os }}-ruby-4.0-${{ hashFiles('Gemfile.lock', '.rubocop.yml') }}-
+      - name: Run RuboCop
+        run: bundle exec rake lint:rubocop
+
+  typecheck:
+    timeout-minutes: 10
+    name: typecheck (${{ matrix.format }})
+    permissions:
+      contents: read
+    runs-on: ${{ inputs.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - format: rbi
+            task: typecheck:sorbet
+          - format: rbs
+            task: typecheck:steep
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1
+        with:
+          ruby-version: '4.0'
+          bundler-cache: true
+      - name: Typecheck ${{ matrix.format }} files
+        run: bundle exec rake ${{ matrix.task }}
 
   package:
     timeout-minutes: 10
@@ -80,8 +114,7 @@ jobs:
         uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1
         with:
           ruby-version: '4.0'
-          bundler-cache: false
-      - run: bundle install
+          bundler-cache: true
       - name: Build gem
         run: bundle exec rake build:gem
 
@@ -103,8 +136,7 @@ jobs:
         uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1
         with:
           ruby-version: ${{ matrix.ruby-version }}
-          bundler-cache: false
-      - run: bundle install
+          bundler-cache: true
       - name: Run tests
         run: ./scripts/test
 
@@ -115,6 +147,7 @@ jobs:
     needs:
       - stainless-artifact
       - lint
+      - typecheck
       - package
       - test-ruby
     if: ${{ always() }}
@@ -125,10 +158,12 @@ jobs:
         env:
           ARTIFACT_RESULT: ${{ needs.stainless-artifact.result }}
           LINT_RESULT: ${{ needs.lint.result }}
+          TYPECHECK_RESULT: ${{ needs.typecheck.result }}
           PACKAGE_RESULT: ${{ needs.package.result }}
           TEST_RESULT: ${{ needs.test-ruby.result }}
         run: |
           test "$ARTIFACT_RESULT" = "success" || test "$ARTIFACT_RESULT" = "skipped"
           test "$LINT_RESULT" = "success"
+          test "$TYPECHECK_RESULT" = "success"
           test "$PACKAGE_RESULT" = "success"
           test "$TEST_RESULT" = "success"
