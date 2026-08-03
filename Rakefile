@@ -59,6 +59,7 @@ RuboCop::RakeTask.new(:"lint:rubocop") do |task|
   task.patterns = FileList[
     "./{lib,test,rbi,examples}/**/*.rb",
     "./{lib,test,rbi,examples}/**/*.rbi",
+    "./scripts/validate-rbs"
   ]
   task.formatters = %w[github] if ENV.key?("CI")
 
@@ -129,12 +130,9 @@ end
 desc("Format everything")
 multitask(format: [:"format:rb", :"format:rbi", :"format:rbs"])
 
-desc("Typecheck `*.rbs`")
-multitask(:"typecheck:steep") do
-  steep = %w[steep check]
-  steep += ["--jobs", ENV.fetch("STEEP_JOBS")] if ENV.key?("STEEP_JOBS")
-  steep += %w[--format=github] if ENV.key?("CI")
-  sh(*steep)
+desc("Validate `*.rbs`")
+multitask(:"validate:rbs") do
+  ruby(*%w[scripts/validate-rbs])
 end
 
 directory(examples)
@@ -149,8 +147,8 @@ directory(tapioca) do
   sh(*%w[tapioca init])
 end
 
-desc("Typecheck everything")
-multitask(typecheck: [:"typecheck:steep", :"typecheck:sorbet"])
+desc("Typecheck and validate everything")
+multitask(typecheck: [:"typecheck:sorbet", :"validate:rbs"])
 
 desc("Lint and typecheck")
 multitask(lint: [:"lint:rubocop", :typecheck])

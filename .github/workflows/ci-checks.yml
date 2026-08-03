@@ -76,21 +76,10 @@ jobs:
 
   typecheck:
     timeout-minutes: 10
-    name: typecheck (${{ matrix.format }})
+    name: typecheck (rbi)
     permissions:
       contents: read
     runs-on: ${{ inputs.runner }}
-    env:
-      # Steep defaults to two workers in CI; eight is the measured balance for this runner.
-      STEEP_JOBS: 8
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - format: rbi
-            task: typecheck:sorbet
-          - format: rbs
-            task: typecheck:steep
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
@@ -100,8 +89,26 @@ jobs:
         with:
           ruby-version: '4.0'
           bundler-cache: true
-      - name: Typecheck ${{ matrix.format }} files
-        run: bundle exec rake ${{ matrix.task }}
+      - name: Typecheck rbi files
+        run: bundle exec rake typecheck:sorbet
+
+  validate-rbs:
+    timeout-minutes: 10
+    name: validate (rbs)
+    permissions:
+      contents: read
+    runs-on: ${{ inputs.runner }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1
+        with:
+          ruby-version: '4.0'
+          bundler-cache: true
+      - name: Validate rbs files
+        run: bundle exec rake validate:rbs
 
   package:
     timeout-minutes: 10
@@ -151,6 +158,7 @@ jobs:
       - stainless-artifact
       - lint
       - typecheck
+      - validate-rbs
       - package
       - test-ruby
     if: ${{ always() }}
@@ -162,11 +170,13 @@ jobs:
           ARTIFACT_RESULT: ${{ needs.stainless-artifact.result }}
           LINT_RESULT: ${{ needs.lint.result }}
           TYPECHECK_RESULT: ${{ needs.typecheck.result }}
+          RBS_VALIDATION_RESULT: ${{ needs.validate-rbs.result }}
           PACKAGE_RESULT: ${{ needs.package.result }}
           TEST_RESULT: ${{ needs.test-ruby.result }}
         run: |
           test "$ARTIFACT_RESULT" = "success" || test "$ARTIFACT_RESULT" = "skipped"
           test "$LINT_RESULT" = "success"
           test "$TYPECHECK_RESULT" = "success"
+          test "$RBS_VALIDATION_RESULT" = "success"
           test "$PACKAGE_RESULT" = "success"
           test "$TEST_RESULT" = "success"

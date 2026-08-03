@@ -1,0 +1,111 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "fileutils"
+require "open3"
+require "pathname"
+require "tmpdir"
+
+module OpenAI
+  module RBSValidation
+    # These directives change name resolution on a per-file basis, so signatures
+    # containing them cannot be safely combined and must take the reference path.
+    FILE_SCOPED_DIRECTIVE = /^\s*(?:use(?:\s|$)|#\s*resolve-type-names\s*:)/
+
+    module_function
+
+    def run(root: Pathname.pwd, stdout: $stdout, stderr: $stderr, env: ENV.to_h)
+      steepfile = root.join("Steepfile")
+      raise Errno::ENOENT, steepfile unless steepfile.file?
+
+      signatures = signature_paths(root)
+      raise "No RBS files found under #{root.join('sig')}" if signatures.empty?
+
+      status =
+        if signatures.any? { contains_file_scoped_directive?(_1) }
+          run_reference_check(root, stdout: stdout, stderr: stderr, env: env)
+        else
+          consolidated_status = run_consolidated_check(root, steepfile, signatures, env: env)
+          unless consolidated_status.success?
+            stdout.puts(
+              "Consolidated RBS validation failed; checking original signature files for exact diagnostics."
+            )
+            consolidated_status = run_reference_check(root, stdout: stdout, stderr: stderr, env: env)
+          end
+          consolidated_status
+        end
+
+      if status.success?
+        noun = signatures.one? ? "file" : "files"
+        stdout.puts("Validated #{signatures.size} RBS #{noun} with no errors.")
+        0
+      else
+        1
+      end
+    rescue StandardError => e
+      message =
+        if e.respond_to?(:detailed_message)
+          e.detailed_message(highlight: false)
+        else
+          "#{e.class}: #{e.message}"
+        end
+      stderr.puts(message)
+      1
+    end
+
+    def signature_paths(root)
+      Dir.glob(root.join("sig/**/*.rbs")).map { Pathname(_1) }
+    end
+    private_class_method :signature_paths
+
+    def contains_file_scoped_directive?(path)
+      File.foreach(path).any? { _1.match?(FILE_SCOPED_DIRECTIVE) }
+    end
+    private_class_method :contains_file_scoped_directive?
+
+    def run_consolidated_check(root, steepfile, signatures, env:)
+      Dir.mktmpdir("openai-rbs-validation") do |directory|
+        temporary_root = Pathname(directory)
+        temporary_sig = temporary_root.join("sig")
+        temporary_sig.mkpath
+        temporary_steepfile = temporary_root.join("Steepfile")
+        FileUtils.cp(steepfile, temporary_steepfile)
+        # Steep validates reopened namespaces once per input file. Combining the
+        # generated declarations avoids that repeated work; Steep still performs
+        # all parsing and semantic validation through its public CLI.
+        concatenate(signatures, temporary_sig.join("all.rbs"))
+
+        command = [env.fetch("STEEP_COMMAND", "steep"), "check", "--no-type-check", "--jobs=1"]
+        command << "--steepfile=#{temporary_steepfile}"
+        _stdout, _stderr, status = Open3.capture3(env, *command, chdir: root.to_s)
+        status
+      end
+    end
+    private_class_method :run_consolidated_check
+
+    def concatenate(signatures, destination)
+      destination.open("wb") do |combined|
+        signatures.each do |path|
+          contents = path.binread
+          combined.write(contents)
+          combined.write("\n") unless contents.end_with?("\n")
+          combined.write("\n")
+        end
+      end
+    end
+    private_class_method :concatenate
+
+    def run_reference_check(root, stdout:, stderr:, env:)
+      command = [env.fetch("STEEP_COMMAND", "steep"), "check", "--no-type-check"]
+      command << "--jobs=#{env.fetch('STEEP_JOBS')}" if env.key?("STEEP_JOBS")
+      command << "--format=github" if env.key?("CI")
+      output, errors, status = Open3.capture3(env, *command, chdir: root.to_s)
+      stdout.print(output)
+      stderr.print(errors)
+      status
+    end
+    private_class_method :run_reference_check
+  end
+end
+
+exit(OpenAI::RBSValidation.run) if $PROGRAM_NAME == __FILE__
