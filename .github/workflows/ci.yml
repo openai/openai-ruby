@@ -18,6 +18,9 @@ on:
     branches-ignore:
       - 'stl-preview-head/**'
       - 'stl-preview-base/**'
+  merge_group:
+    types:
+      - checks_requested
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -33,6 +36,7 @@ jobs:
         (github.event_name == 'push' || github.event.pull_request.head.repo.fork)) ||
       (!startsWith(github.repository, 'stainless-sdks/') &&
         (github.event_name == 'pull_request' ||
+          github.event_name == 'merge_group' ||
           github.ref == 'refs/heads/main' ||
           github.ref == 'refs/heads/next'))
     permissions:
