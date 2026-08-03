@@ -25,14 +25,15 @@ module OpenAI
         if signatures.any? { contains_file_scoped_directive?(_1) }
           run_reference_check(root, stdout: stdout, stderr: stderr, env: env)
         else
-          consolidated_status = run_consolidated_check(root, steepfile, signatures, env: env)
-          unless consolidated_status.success?
+          fast_status = run_parse_check(root, env: env)
+          fast_status = run_consolidated_check(root, steepfile, signatures, env: env) if fast_status.success?
+          unless fast_status.success?
             stdout.puts(
-              "Consolidated RBS validation failed; checking original signature files for exact diagnostics."
+              "Fast RBS validation failed; checking original signature files for exact diagnostics."
             )
-            consolidated_status = run_reference_check(root, stdout: stdout, stderr: stderr, env: env)
+            fast_status = run_reference_check(root, stdout: stdout, stderr: stderr, env: env)
           end
-          consolidated_status
+          fast_status
         end
 
       if status.success?
@@ -62,6 +63,12 @@ module OpenAI
       File.foreach(path).any? { _1.match?(FILE_SCOPED_DIRECTIVE) }
     end
     private_class_method :contains_file_scoped_directive?
+
+    def run_parse_check(root, env:)
+      _stdout, _stderr, status = Open3.capture3(env, "rbs", "parse", "sig", chdir: root.to_s)
+      status
+    end
+    private_class_method :run_parse_check
 
     def run_consolidated_check(root, steepfile, signatures, env:)
       Dir.mktmpdir("openai-rbs-validation") do |directory|

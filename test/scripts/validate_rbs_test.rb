@@ -34,6 +34,19 @@ class ValidateRBSScriptTest < Minitest::Test
     assert_includes(stdout, "Validated 2 RBS files with no errors.")
   end
 
+  def test_does_not_allow_invalid_files_to_repair_each_other
+    stdout, _stderr, status = run_validation(
+      {
+        "a.rbs" => "class Example\n",
+        "b.rbs" => "end\n"
+      }
+    )
+
+    refute_predicate(status, :success?)
+    assert_includes(stdout, "RBS::SyntaxError")
+    assert_match(/[ab]\.rbs/, stdout)
+  end
+
   def test_uses_one_consolidated_steep_check_on_success
     stdout, stderr, status, calls = run_validation(
       {"valid.rbs" => "module Example\nend\n"},
