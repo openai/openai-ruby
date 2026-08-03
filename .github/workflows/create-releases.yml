@@ -16,38 +16,55 @@ permissions: {}
 jobs:
   release:
     name: release
-    if: github.ref == 'refs/heads/main' && github.repository == 'openai/openai-ruby'
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      github.repository == 'openai/openai-ruby' &&
+      github.event.inputs.retry_publish != 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Create/update the release branch, tags, and GitHub releases.
+      pull-requests: write # Create/update release PRs and their lifecycle labels.
+    outputs:
+      releases_created: ${{ steps.release.outputs.releases_created }}
+
+    steps:
+      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+        id: release
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+          target-branch: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  publish:
+    name: publish
+    needs: release
+    if: >-
+      !cancelled() &&
+      github.ref == 'refs/heads/main' &&
+      github.repository == 'openai/openai-ruby' &&
+      (needs.release.outputs.releases_created == 'true' ||
+        github.event.inputs.retry_publish == 'true')
     runs-on: ubuntu-latest
     environment: publish
     permissions:
-      contents: read
-      id-token: write
+      contents: read # Check out the release and fetch tags.
+      id-token: write # Exchange GitHub OIDC credentials with RubyGems.org.
 
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           # Avoid persisting the default GITHUB_TOKEN; the RubyGems release action
-          # configures the credentials it needs only when a release is published.
+          # configures the credentials it needs only when publishing.
           persist-credentials: false
 
-      - uses: stainless-api/trigger-release-please@bb6677c5a04578eec1ccfd9e1913b5b78ed64c61 # v1.4.0
-        if: ${{ github.event.inputs.retry_publish != 'true' }}
-        id: release
-        with:
-          repo: ${{ github.event.repository.full_name }}
-          stainless-api-key: ${{ secrets.STAINLESS_API_KEY }}
-
       - name: Set up Ruby
-        if: ${{ steps.release.outputs.releases_created == 'true' || github.event.inputs.retry_publish == 'true' }}
         uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1
         with:
           bundler-cache: false
           ruby-version: '4.0'
 
-      - if: ${{ steps.release.outputs.releases_created == 'true' || github.event.inputs.retry_publish == 'true' }}
-        run: |
-          bundle install
+      - run: bundle install
 
       - name: Publish to RubyGems.org
-        if: ${{ steps.release.outputs.releases_created == 'true' || github.event.inputs.retry_publish == 'true' }}
         uses: rubygems/release-gem@6317d8d1f7e28c24d28f6eff169ea854948bd9f7 # v1.2.0
