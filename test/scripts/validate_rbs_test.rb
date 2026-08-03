@@ -51,7 +51,7 @@ class ValidateRBSScriptTest < Minitest::Test
   def test_rechecks_original_files_when_consolidated_check_fails
     stdout, stderr, status, calls = run_validation(
       {"valid.rbs" => "module Example\nend\n"},
-      env: {"CI" => "1"},
+      env: {"CI" => "1", "STEEP_JOBS" => "8"},
       fake_steep_results: [1, 0]
     )
 
@@ -60,7 +60,7 @@ class ValidateRBSScriptTest < Minitest::Test
     assert_includes(stdout, "checking original signature files")
     assert_equal(2, calls.size)
     assert(calls.first.last.start_with?("--steepfile="), calls.first.inspect)
-    assert_equal(%w[check --no-type-check --format=github], calls.last)
+    assert_equal(%w[check --no-type-check --jobs=8 --format=github], calls.last)
   end
 
   def test_checks_original_files_directly_when_a_signature_has_use_directives
