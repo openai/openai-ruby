@@ -55,17 +55,15 @@ filtered = ->(ext, dirs) do
 end
 
 desc("Lint `*.rb(i)`")
-multitask(:"lint:rubocop") do
-  find = %w[find ./lib ./test ./rbi ./examples -type f -and ( -name *.rb -or -name *.rbi ) -print0]
-
-  rubocop = %w[rubocop]
-  rubocop += %w[--format github] if ENV.key?("CI")
+RuboCop::RakeTask.new(:"lint:rubocop") do |task|
+  task.patterns = FileList[
+    "./{lib,test,rbi,examples}/**/*.rb",
+    "./{lib,test,rbi,examples}/**/*.rbi",
+  ]
+  task.formatters = %w[github] if ENV.key?("CI")
 
   # some lines cannot be shortened
-  rubocop += %w[--except Lint/RedundantCopDisableDirective,Layout/LineLength]
-
-  lint = xargs + rubocop
-  sh("#{find.shelljoin} | #{lint.shelljoin}")
+  task.options = %w[--parallel --except Lint/RedundantCopDisableDirective,Layout/LineLength]
 end
 
 norm_lines = %w[tr -- \n \0].shelljoin
@@ -133,7 +131,10 @@ multitask(format: [:"format:rb", :"format:rbi", :"format:rbs"])
 
 desc("Typecheck `*.rbs`")
 multitask(:"typecheck:steep") do
-  sh(*%w[steep check])
+  steep = %w[steep check]
+  steep += ["--jobs", ENV.fetch("STEEP_JOBS")] if ENV.key?("STEEP_JOBS")
+  steep += %w[--format=github] if ENV.key?("CI")
+  sh(*steep)
 end
 
 directory(examples)
