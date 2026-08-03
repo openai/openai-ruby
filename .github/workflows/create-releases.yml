@@ -22,9 +22,8 @@ jobs:
       github.event.inputs.retry_publish != 'true'
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      issues: write
-      pull-requests: write
+      contents: write # Create/update the release branch, tags, and GitHub releases.
+      pull-requests: write # Create/update release PRs and their lifecycle labels.
     outputs:
       releases_created: ${{ steps.release.outputs.releases_created }}
 
@@ -49,8 +48,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: publish
     permissions:
-      contents: read
-      id-token: write
+      contents: read # Check out the release and fetch tags.
+      id-token: write # Exchange GitHub OIDC credentials with RubyGems.org.
 
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
