@@ -51,7 +51,19 @@ module OpenAI
         #   @return [String, nil]
         optional :created_by, String
 
-        # @!method initialize(id:, call_id:, output:, status:, caller_: nil, created_by: nil, type: :function_call_output)
+        # @!attribute name
+        #   The name of the tool that produced the output.
+        #
+        #   @return [String, nil]
+        optional :name, String
+
+        # @!attribute namespace
+        #   The namespace of the tool that produced the output.
+        #
+        #   @return [String, nil]
+        optional :namespace, String
+
+        # @!method initialize(id:, call_id:, output:, status:, caller_: nil, created_by: nil, name: nil, namespace: nil, type: :function_call_output)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem} for more
         #   details.
@@ -67,6 +79,10 @@ module OpenAI
         #   @param caller_ [OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::Caller::Direct, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::Caller::Program, nil] The execution context that produced this tool call.
         #
         #   @param created_by [String] The identifier of the actor that created the item.
+        #
+        #   @param name [String] The name of the tool that produced the output.
+        #
+        #   @param namespace [String] The namespace of the tool that produced the output.
         #
         #   @param type [Symbol, :function_call_output] The type of the function tool call output. Always `function_call_output`.
 

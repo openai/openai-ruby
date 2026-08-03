@@ -192,6 +192,8 @@ module OpenAI
             type: :function_call_output,
             id: String?,
             caller_: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::caller_?,
+            name: String?,
+            namespace: String?,
             status: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status?
           }
 
@@ -206,6 +208,10 @@ module OpenAI
 
           attr_accessor caller_: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::caller_?
 
+          attr_accessor name: String?
+
+          attr_accessor namespace: String?
+
           attr_accessor status: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status?
 
           def initialize: (
@@ -213,6 +219,8 @@ module OpenAI
             output: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::output,
             ?id: String?,
             ?caller_: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::caller_?,
+            ?name: String?,
+            ?namespace: String?,
             ?status: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status?,
             ?type: :function_call_output
           ) -> void
@@ -223,6 +231,8 @@ module OpenAI
             type: :function_call_output,
             id: String?,
             caller_: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::caller_?,
+            name: String?,
+            namespace: String?,
             status: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status?
           }
 

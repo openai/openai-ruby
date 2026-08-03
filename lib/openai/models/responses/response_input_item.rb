@@ -346,6 +346,18 @@ module OpenAI
                    api_name: :caller,
                    nil?: true
 
+          # @!attribute name
+          #   The name of the tool that produced the output.
+          #
+          #   @return [String, nil]
+          optional :name, String, nil?: true
+
+          # @!attribute namespace
+          #   The namespace of the tool that produced the output.
+          #
+          #   @return [String, nil]
+          optional :namespace, String, nil?: true
+
           # @!attribute status
           #   The status of the item. One of `in_progress`, `completed`, or `incomplete`.
           #   Populated when items are returned via API.
@@ -355,7 +367,7 @@ module OpenAI
                    enum: -> { OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Status },
                    nil?: true
 
-          # @!method initialize(call_id:, output:, id: nil, caller_: nil, status: nil, type: :function_call_output)
+          # @!method initialize(call_id:, output:, id: nil, caller_: nil, name: nil, namespace: nil, status: nil, type: :function_call_output)
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput} for more
           #   details.
@@ -369,6 +381,10 @@ module OpenAI
           #   @param id [String, nil] The unique ID of the function tool call output. Populated when this item is retu
           #
           #   @param caller_ [OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Caller::Direct, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Caller::Program, nil] The execution context that produced this tool call.
+          #
+          #   @param name [String, nil] The name of the tool that produced the output.
+          #
+          #   @param namespace [String, nil] The namespace of the tool that produced the output.
           #
           #   @param status [Symbol, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status, nil] The status of the item. One of `in_progress`, `completed`, or `incomplete`. Popu
           #
