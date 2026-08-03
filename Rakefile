@@ -134,7 +134,8 @@ multitask(format: [:"format:rb", :"format:rbi", :"format:rbs"])
 desc("Typecheck `*.rbs`")
 multitask(:"typecheck:steep") do
   steep = %w[steep check]
-  steep += ["--jobs=#{Etc.nprocessors}", "--format=github"] if ENV.key?("CI")
+  # Steep defaults to two workers in CI; eight is the tested balance for this project's runner.
+  steep += %w[--jobs=8 --format=github] if ENV.key?("CI")
   sh(*steep)
 end
 
