@@ -100,6 +100,19 @@ class ValidateRBSScriptTest < Minitest::Test
     assert_equal([%w[check --no-type-check]], calls)
   end
 
+  def test_checks_original_files_when_a_use_directive_has_no_whitespace
+    stdout, _stderr, status = run_validation(
+      {
+        "a.rbs" => "use::Example::Foo\nmodule Example\n  class Foo\n  end\nend\n",
+        "b.rbs" => "module Invalid\n  type bad = Foo\nend\n"
+      }
+    )
+
+    refute_predicate(status, :success?)
+    assert_includes(stdout, "RBS::UnknownTypeName")
+    assert_includes(stdout, "b.rbs")
+  end
+
   def test_checks_original_files_directly_when_type_name_resolution_is_file_scoped
     _stdout, stderr, status, calls = run_validation(
       {"unresolved.rbs" => "# resolve-type-names: false\nmodule Example\nend\n"},

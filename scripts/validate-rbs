@@ -10,7 +10,7 @@ module OpenAI
   module RBSValidation
     # These directives change name resolution on a per-file basis, so signatures
     # containing them cannot be safely combined and must take the reference path.
-    FILE_SCOPED_DIRECTIVE = /^\s*(?:use(?:\s|$)|#\s*resolve-type-names\s*:)/
+    FILE_SCOPED_DIRECTIVE = /^\s*(?:use\b|#\s*resolve-type-names\s*:)/
 
     module_function
 
