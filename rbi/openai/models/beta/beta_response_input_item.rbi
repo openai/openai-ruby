@@ -679,6 +679,14 @@ module OpenAI
           end
           attr_accessor :caller_
 
+          # The name of the tool that produced the output.
+          sig { returns(T.nilable(String)) }
+          attr_accessor :name
+
+          # The namespace of the tool that produced the output.
+          sig { returns(T.nilable(String)) }
+          attr_accessor :namespace
+
           # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
           # Populated when items are returned via API.
           sig do
@@ -708,6 +716,8 @@ module OpenAI
                     OpenAI::Beta::BetaResponseInputItem::FunctionCallOutput::Caller::Program::OrHash
                   )
                 ),
+              name: T.nilable(String),
+              namespace: T.nilable(String),
               status:
                 T.nilable(
                   OpenAI::Beta::BetaResponseInputItem::FunctionCallOutput::Status::OrSymbol
@@ -727,6 +737,10 @@ module OpenAI
             agent: nil,
             # The execution context that produced this tool call.
             caller_: nil,
+            # The name of the tool that produced the output.
+            name: nil,
+            # The namespace of the tool that produced the output.
+            namespace: nil,
             # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
             # Populated when items are returned via API.
             status: nil,
@@ -754,6 +768,8 @@ module OpenAI
                       OpenAI::Beta::BetaResponseInputItem::FunctionCallOutput::Caller::Program
                     )
                   ),
+                name: T.nilable(String),
+                namespace: T.nilable(String),
                 status:
                   T.nilable(
                     OpenAI::Beta::BetaResponseInputItem::FunctionCallOutput::Status::OrSymbol

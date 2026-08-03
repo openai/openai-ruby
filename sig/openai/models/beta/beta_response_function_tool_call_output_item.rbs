@@ -12,7 +12,9 @@ module OpenAI
           type: :function_call_output,
           agent: OpenAI::Beta::BetaResponseFunctionToolCallOutputItem::Agent?,
           caller_: OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::caller_?,
-          created_by: String
+          created_by: String,
+          name: String,
+          namespace: String
         }
 
       class BetaResponseFunctionToolCallOutputItem < OpenAI::Internal::Type::BaseModel
@@ -34,6 +36,14 @@ module OpenAI
 
         def created_by=: (String) -> String
 
+        attr_reader name: String?
+
+        def name=: (String) -> String
+
+        attr_reader namespace: String?
+
+        def namespace=: (String) -> String
+
         def initialize: (
           id: String,
           call_id: String,
@@ -42,6 +52,8 @@ module OpenAI
           ?agent: OpenAI::Beta::BetaResponseFunctionToolCallOutputItem::Agent?,
           ?caller_: OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::caller_?,
           ?created_by: String,
+          ?name: String,
+          ?namespace: String,
           ?type: :function_call_output
         ) -> void
 
@@ -53,7 +65,9 @@ module OpenAI
           type: :function_call_output,
           agent: OpenAI::Beta::BetaResponseFunctionToolCallOutputItem::Agent?,
           caller_: OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::caller_?,
-          created_by: String
+          created_by: String,
+          name: String,
+          namespace: String
         }
 
         type output =

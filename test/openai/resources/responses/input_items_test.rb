@@ -106,7 +106,9 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
         output: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Output,
         status: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Status,
         caller_: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Caller | nil,
-        created_by: String | nil
+        created_by: String | nil,
+        name: String | nil,
+        namespace: String | nil
       }
       in {
         type: :tool_search_call,

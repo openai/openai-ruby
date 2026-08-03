@@ -228,6 +228,8 @@ module OpenAI
             id: String?,
             agent: OpenAI::Beta::BetaResponseInputItem::FunctionCallOutput::Agent?,
             caller_: OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput::caller_?,
+            name: String?,
+            namespace: String?,
             status: OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput::status?
           }
 
@@ -244,6 +246,10 @@ module OpenAI
 
           attr_accessor caller_: OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput::caller_?
 
+          attr_accessor name: String?
+
+          attr_accessor namespace: String?
+
           attr_accessor status: OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput::status?
 
           def initialize: (
@@ -252,6 +258,8 @@ module OpenAI
             ?id: String?,
             ?agent: OpenAI::Beta::BetaResponseInputItem::FunctionCallOutput::Agent?,
             ?caller_: OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput::caller_?,
+            ?name: String?,
+            ?namespace: String?,
             ?status: OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput::status?,
             ?type: :function_call_output
           ) -> void
@@ -263,6 +271,8 @@ module OpenAI
             id: String?,
             agent: OpenAI::Beta::BetaResponseInputItem::FunctionCallOutput::Agent?,
             caller_: OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput::caller_?,
+            name: String?,
+            namespace: String?,
             status: OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput::status?
           }
 
