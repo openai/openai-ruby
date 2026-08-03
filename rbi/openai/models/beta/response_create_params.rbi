@@ -1063,6 +1063,11 @@ module OpenAI
               :"gpt-5.6-luna",
               OpenAI::Beta::ResponseCreateParams::Model::TaggedSymbol
             )
+          GPT_5_5 =
+            T.let(
+              :"gpt-5.5",
+              OpenAI::Beta::ResponseCreateParams::Model::TaggedSymbol
+            )
           GPT_5_4 =
             T.let(
               :"gpt-5.4",

@@ -116,7 +116,9 @@ class OpenAI::Test::Resources::Beta::Responses::InputItemsTest < OpenAI::Test::R
         status: OpenAI::Beta::BetaResponseFunctionToolCallOutputItem::Status,
         agent: OpenAI::Beta::BetaResponseFunctionToolCallOutputItem::Agent | nil,
         caller_: OpenAI::Beta::BetaResponseFunctionToolCallOutputItem::Caller | nil,
-        created_by: String | nil
+        created_by: String | nil,
+        name: String | nil,
+        namespace: String | nil
       }
       in {
         type: :agent_message,

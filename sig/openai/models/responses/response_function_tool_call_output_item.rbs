@@ -9,7 +9,9 @@ module OpenAI
           status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status,
           type: :function_call_output,
           caller_: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::caller_?,
-          created_by: String
+          created_by: String,
+          name: String,
+          namespace: String
         }
 
       class ResponseFunctionToolCallOutputItem < OpenAI::Internal::Type::BaseModel
@@ -29,6 +31,14 @@ module OpenAI
 
         def created_by=: (String) -> String
 
+        attr_reader name: String?
+
+        def name=: (String) -> String
+
+        attr_reader namespace: String?
+
+        def namespace=: (String) -> String
+
         def initialize: (
           id: String,
           call_id: String,
@@ -36,6 +46,8 @@ module OpenAI
           status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status,
           ?caller_: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::caller_?,
           ?created_by: String,
+          ?name: String,
+          ?namespace: String,
           ?type: :function_call_output
         ) -> void
 
@@ -46,7 +58,9 @@ module OpenAI
           status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status,
           type: :function_call_output,
           caller_: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::caller_?,
-          created_by: String
+          created_by: String,
+          name: String,
+          namespace: String
         }
 
         type output =

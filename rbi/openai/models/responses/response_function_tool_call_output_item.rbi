@@ -59,6 +59,20 @@ module OpenAI
         sig { params(created_by: String).void }
         attr_writer :created_by
 
+        # The name of the tool that produced the output.
+        sig { returns(T.nilable(String)) }
+        attr_reader :name
+
+        sig { params(name: String).void }
+        attr_writer :name
+
+        # The namespace of the tool that produced the output.
+        sig { returns(T.nilable(String)) }
+        attr_reader :namespace
+
+        sig { params(namespace: String).void }
+        attr_writer :namespace
+
         sig do
           params(
             id: String,
@@ -75,6 +89,8 @@ module OpenAI
                 )
               ),
             created_by: String,
+            name: String,
+            namespace: String,
             type: Symbol
           ).returns(T.attached_class)
         end
@@ -93,6 +109,10 @@ module OpenAI
           caller_: nil,
           # The identifier of the actor that created the item.
           created_by: nil,
+          # The name of the tool that produced the output.
+          name: nil,
+          # The namespace of the tool that produced the output.
+          namespace: nil,
           # The type of the function tool call output. Always `function_call_output`.
           type: :function_call_output
         )
@@ -112,7 +132,9 @@ module OpenAI
                 T.nilable(
                   OpenAI::Responses::ResponseFunctionToolCallOutputItem::Caller::Variants
                 ),
-              created_by: String
+              created_by: String,
+              name: String,
+              namespace: String
             }
           )
         end

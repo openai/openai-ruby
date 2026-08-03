@@ -82,7 +82,9 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         output: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Output,
         status: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Status,
         caller_: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Caller | nil,
-        created_by: String | nil
+        created_by: String | nil,
+        name: String | nil,
+        namespace: String | nil
       }
       in {
         type: :file_search_call,
@@ -331,7 +333,9 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         output: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Output,
         status: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Status,
         caller_: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Caller | nil,
-        created_by: String | nil
+        created_by: String | nil,
+        name: String | nil,
+        namespace: String | nil
       }
       in {
         type: :file_search_call,
