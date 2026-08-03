@@ -80,6 +80,9 @@ jobs:
     permissions:
       contents: read
     runs-on: ${{ inputs.runner }}
+    env:
+      # Steep defaults to two workers in CI; eight is the measured balance for this runner.
+      STEEP_JOBS: 8
     strategy:
       fail-fast: false
       matrix:

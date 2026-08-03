@@ -57,10 +57,8 @@ end
 desc("Lint `*.rb(i)`")
 RuboCop::RakeTask.new(:"lint:rubocop") do |task|
   task.patterns = FileList[
-    "./lib/**/*.rb",
-    "./test/**/*.rb",
-    "./rbi/**/*.rbi",
-    "./examples/**/*.rb",
+    "./{lib,test,rbi,examples}/**/*.rb",
+    "./{lib,test,rbi,examples}/**/*.rbi",
   ]
   task.formatters = %w[github] if ENV.key?("CI")
 
@@ -134,8 +132,8 @@ multitask(format: [:"format:rb", :"format:rbi", :"format:rbs"])
 desc("Typecheck `*.rbs`")
 multitask(:"typecheck:steep") do
   steep = %w[steep check]
-  # Steep defaults to two workers in CI; eight is the tested balance for this project's runner.
-  steep += %w[--jobs=8 --format=github] if ENV.key?("CI")
+  steep += ["--jobs", ENV.fetch("STEEP_JOBS")] if ENV.key?("STEEP_JOBS")
+  steep += %w[--format=github] if ENV.key?("CI")
   sh(*steep)
 end
 
