@@ -21,20 +21,29 @@ jobs:
       github.repository == 'openai/openai-ruby' &&
       github.event.inputs.retry_publish != 'true'
     runs-on: ubuntu-latest
-    permissions:
-      contents: write # Create/update the release branch, tags, and GitHub releases.
-      pull-requests: write # Create/update release PRs and their lifecycle labels.
+    environment: release
+    permissions: {}
     outputs:
       releases_created: ${{ steps.release.outputs.releases_created }}
 
     steps:
+      - name: Create release app token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ vars.OPENAI_SDKS_APP_CLIENT_ID }}
+          private-key: ${{ secrets.OPENAI_SDKS_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-issues: write
+          permission-pull-requests: write
+
       - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
         id: release
         with:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
           target-branch: main
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ steps.app-token.outputs.token }}
 
   publish:
     name: publish
