@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.77.1](https://github.com/openai/openai-ruby/compare/v0.77.0...v0.77.1) (2026-08-04)
+
+
+### Bug Fixes
+
+* correct README grammar ([#337](https://github.com/openai/openai-ruby/issues/337)) ([a1cf585](https://github.com/openai/openai-ruby/commit/a1cf585164298c3b8037297fde985037762ae071))
+
 ## [0.77.0](https://github.com/openai/openai-ruby/compare/v0.76.0...v0.77.0) (2026-08-03)
 
 
