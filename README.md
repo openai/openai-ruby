@@ -531,7 +531,7 @@ All parameter and response objects inherit from `OpenAI::Internal::Type::BaseMod
 
 You can send undocumented parameters to any endpoint, and read undocumented response properties, like so:
 
-Note: the `extra_` parameters of the same name overrides the documented parameters.
+Note: the `extra_` parameters of the same name override the documented parameters.
 
 ```ruby
 chat_completion =
