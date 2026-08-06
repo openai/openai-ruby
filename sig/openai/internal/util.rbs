@@ -135,6 +135,14 @@ module OpenAI
         closing: ::Array[^-> void]
       ) -> void
 
+      def self?.write_multipart_value: (
+        Enumerator::Yielder y,
+        boundary: String,
+        key: Symbol | String,
+        val: top,
+        closing: ::Array[^-> void]
+      ) -> void
+
       def self?.encode_multipart_streaming: (
         top body
       ) -> [String, Enumerable[String]]

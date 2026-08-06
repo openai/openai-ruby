@@ -616,6 +616,32 @@ module OpenAI
 
         # @api private
         #
+        # Flattens nested hashes into `deepObject` style bracket notation
+        # (`expires_after[anchor]`), matching how the OpenAI API expects nested
+        # multipart fields to be encoded.
+        #
+        # @param y [Enumerator::Yielder]
+        # @param boundary [String]
+        # @param key [Symbol, String]
+        # @param val [Object]
+        # @param closing [Array<Proc>]
+        private def write_multipart_value(y, boundary:, key:, val:, closing:)
+          case val
+          in Hash
+            val.each do |k, v|
+              write_multipart_value(y, boundary: boundary, key: "#{key}[#{k}]", val: v, closing: closing)
+            end
+          in Array
+            val.each do |v|
+              write_multipart_value(y, boundary: boundary, key: "#{key}[]", val: v, closing: closing)
+            end
+          else
+            write_multipart_chunk(y, boundary: boundary, key: key, val: val, closing: closing)
+          end
+        end
+
+        # @api private
+        #
         # https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.1.md#special-considerations-for-multipart-content
         #
         # @param body [Object]
@@ -637,7 +663,7 @@ module OpenAI
                     write_multipart_chunk(y, boundary: boundary, key: key, val: v, closing: closing)
                   end
                 else
-                  write_multipart_chunk(y, boundary: boundary, key: key, val: val, closing: closing)
+                  write_multipart_value(y, boundary: boundary, key: key, val: val, closing: closing)
                 end
               end
             else

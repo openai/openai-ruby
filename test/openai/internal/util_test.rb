@@ -312,6 +312,34 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
       end
     end
   end
+
+  def test_nested_hash_encode
+    headers = {"content-type" => "multipart/form-data"}
+    cases = {
+      {expires_after: {anchor: :created_at, seconds: 3600}} => {
+        "expires_after[anchor]" => "created_at",
+        "expires_after[seconds]" => "3600"
+      },
+      {a: {b: {c: 1}}} => {"a[b][c]" => "1"},
+      {a: {b: [1, 2]}} => {"a[b][]" => "1"}
+    }
+    cases.each do |body, testcase|
+      encoded = OpenAI::Internal::Util.encode_content(headers, body)
+      cgi = FakeCGI.new(*encoded)
+      testcase.each do |key, val|
+        assert_pattern do
+          parsed =
+            case (p = cgi[key])
+            in StringIO
+              p.read
+            else
+              p
+            end
+          parsed => ^val
+        end
+      end
+    end
+  end
 end
 
 class OpenAI::Test::UtilIOAdapterTest < Minitest::Test

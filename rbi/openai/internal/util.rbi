@@ -361,6 +361,23 @@ module OpenAI
 
         # @api private
         #
+        # Flattens nested hashes into `deepObject` style bracket notation
+        # (`expires_after[anchor]`), matching how the OpenAI API expects nested
+        # multipart fields to be encoded.
+        sig do
+          params(
+            y: Enumerator::Yielder,
+            boundary: String,
+            key: T.any(Symbol, String),
+            val: T.anything,
+            closing: T::Array[T.proc.void]
+          ).void
+        end
+        private def write_multipart_value(y, boundary:, key:, val:, closing:)
+        end
+
+        # @api private
+        #
         # https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.1.md#special-considerations-for-multipart-content
         sig do
           params(body: T.anything).returns([String, T::Enumerable[String]])
