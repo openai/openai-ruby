@@ -81,6 +81,28 @@ module OpenAI
 
           # @api private
           #
+          # @param body [Object]
+          #
+          # @return [Boolean]
+          def request_body_replayable?(body)
+            case body
+            in nil | String | StringIO | Pathname
+              true
+            in OpenAI::FilePart
+              request_body_replayable?(body.content)
+            in Hash
+              body.each_value.all? { request_body_replayable?(_1) }
+            in Array
+              body.all? { request_body_replayable?(_1) }
+            in IO | Enumerable
+              false
+            else
+              !body.respond_to?(:read)
+            end
+          end
+
+          # @api private
+          #
           # @param request [Hash{Symbol=>Object}] .
           #
           #   @option request [Symbol] :method
@@ -145,6 +167,15 @@ module OpenAI
             if OpenAI::Internal::Util.uri_origin(url) != OpenAI::Internal::Util.uri_origin(location)
               drop = %w[authorization cookie host proxy-authorization]
               request = {**request, headers: request.fetch(:headers).except(*drop)}
+            end
+
+            unless request_body_replayable?(request[:body])
+              message = "Cannot follow a body-preserving redirect with a non-replayable request body."
+              raise OpenAI::Errors::APIConnectionError.new(
+                url: location,
+                response: response_headers,
+                message: message
+              )
             end
 
             request
@@ -349,7 +380,7 @@ module OpenAI
             {**req, path: path, query: query}
           )
           max_retries = opts.fetch(:max_retries, @max_retries)
-          max_retries = 0 unless request_body_replayable?(body)
+          max_retries = 0 unless self.class.request_body_replayable?(body)
           {
             method: method,
             url: url,
@@ -361,26 +392,8 @@ module OpenAI
         end
 
         # @api private
-        private def request_body_replayable?(body)
-          case body
-          in nil | String | StringIO | Pathname
-            true
-          in OpenAI::FilePart
-            request_body_replayable?(body.content)
-          in Hash
-            body.each_value.all? { request_body_replayable?(_1) }
-          in Array
-            body.all? { request_body_replayable?(_1) }
-          in IO | Enumerator
-            false
-          else
-            !body.respond_to?(:read)
-          end
-        end
-
-        # @api private
         private def request_replayable?(request)
-          request_body_replayable?(request[:body])
+          self.class.request_body_replayable?(request[:body])
         end
 
         # @api private

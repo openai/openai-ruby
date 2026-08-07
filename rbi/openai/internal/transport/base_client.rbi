@@ -104,6 +104,11 @@ module OpenAI
           end
 
           # @api private
+          sig { params(body: T.untyped).returns(T::Boolean) }
+          def request_body_replayable?(body)
+          end
+
+          # @api private
           sig do
             params(
               request: OpenAI::Internal::Transport::BaseClient::RequestInput,
@@ -223,11 +228,6 @@ module OpenAI
             .returns(OpenAI::Internal::Transport::BaseClient::RequestInput)
         end
         private def build_request(req, opts)
-        end
-
-        # @api private
-        sig { params(body: T.untyped).returns(T::Boolean) }
-        private def request_body_replayable?(body)
         end
 
         # @api private
