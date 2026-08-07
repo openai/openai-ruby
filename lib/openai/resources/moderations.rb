@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# File generated from our OpenAPI spec by Castiron. See CONTRIBUTING.md for details.
 module OpenAI
   module Resources
     # Given text and/or image inputs, classifies if those inputs are potentially

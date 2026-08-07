@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# File generated from our OpenAPI spec by Castiron. See CONTRIBUTING.md for details.
 module OpenAI
   module Models
     # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
