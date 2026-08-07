@@ -107,6 +107,104 @@ puts(edited.data.first)
 
 Note that you can also pass a raw `IO` descriptor, but this disables retries, as the library can't be sure if the descriptor is a file or pipe (which cannot be rewound).
 
+### Custom HTTP clients
+
+`OpenAI::Client` accepts an `http_client` for advanced transport requirements.
+Provide an object that implements `execute(request)` and returns an
+`OpenAI::HTTPClient::Response`; subclassing `OpenAI::HTTPClient` is the easiest
+way to make that contract explicit. The request exposes the SDK-prepared HTTP
+method, URL, headers, encoded body, and timeout. Response bodies are enumerable
+byte-string chunks (or a single buffered string), so large and streaming
+responses do not need to be buffered.
+
+The OpenAI client owns API authentication, redirects, and API-level retries.
+The custom HTTP client owns connection pooling and lifecycle, must enforce
+`request.timeout`, and should raise `OpenAI::Errors::APIConnectionError` or
+`OpenAI::Errors::APITimeoutError` for retryable transport failures. Other
+exceptions propagate without an SDK retry. The SDK does not close an injected
+HTTP client.
+
+The default `OpenAI::NetHTTPClient` implements this contract with pooled
+`Net::HTTP` connections. It accepts an optional block for native connection
+configuration, as shown below. Call `close` to retire its current pools; the
+HTTP client remains reusable and creates fresh connections on its next request.
+
+### Mutual TLS with a custom HTTP client
+
+To opt in and activate mTLS for an organization or project, follow the
+[OpenAI Mutual TLS Beta Program
+guide](https://help.openai.com/en/articles/10876024-openai-mutual-tls-beta-program).
+If you use an intermediate chain, confirm that certificate-chain support is
+enabled for your organization.
+
+For API-key requests that also require mutual TLS (mTLS), set the mTLS endpoint
+explicitly and pass a configured `OpenAI::NetHTTPClient` as `http_client`.
+`OpenAI::Client` accepts an HTTP client object so advanced transport behavior
+does not require a separate SDK option for every use case. The default
+`OpenAI::NetHTTPClient` accepts a block that configures each native
+`Net::HTTP` connection before it is pooled and started.
+
+Ruby's native TLS properties configure the client identity. The certificate
+file must contain the leaf certificate first, followed by any intermediate
+certificates needed when certificate-chain support is enabled for your
+organization:
+
+```ruby
+require "openai"
+
+mtls_endpoint = URI("https://mtls.api.openai.com/v1")
+certificates = OpenSSL::X509::Certificate.load(
+  File.binread(ENV.fetch("OPENAI_CLIENT_CERTIFICATE_CHAIN"))
+)
+raise "Expected a client certificate" if certificates.empty?
+
+leaf_certificate, *intermediates = certificates
+private_key = OpenSSL::PKey.read(
+  File.binread(ENV.fetch("OPENAI_CLIENT_KEY")),
+  ENV["OPENAI_CLIENT_KEY_PASSPHRASE"]
+)
+raise "Certificate and key do not match" unless leaf_certificate.check_private_key(private_key)
+
+now = Time.now
+raise "Certificate is not yet valid" if now < leaf_certificate.not_before
+raise "Certificate has expired" if now > leaf_certificate.not_after
+
+mtls_destination = [mtls_endpoint.host, mtls_endpoint.port]
+http_client = OpenAI::NetHTTPClient.new do |http|
+  unless http.use_ssl? && mtls_destination == [http.address, http.port]
+    raise "Refusing to present the client certificate to an unexpected origin"
+  end
+
+  http.cert = leaf_certificate
+  http.extra_chain_cert = intermediates
+  http.key = private_key
+end
+
+client = OpenAI::Client.new(
+  api_key: ENV.fetch("OPENAI_API_KEY"),
+  base_url: mtls_endpoint.to_s,
+  http_client: http_client
+)
+```
+
+The SDK cannot infer whether custom HTTP configuration uses mTLS, so it does not
+automatically change `base_url`. An explicit `base_url`, including an EU or
+custom endpoint, is always preserved. Scope client certificates to the expected
+origin, as above, so they cannot be presented elsewhere. Use the
+`OpenAI::NetHTTPClient` block for TLS and other connection-level configuration.
+Server trust remains separate from the client identity and can be customized
+with `Net::HTTP` properties such as `cert_store` or `ca_file`.
+
+Each `OpenAI::NetHTTPClient` owns its connection pool, so separate HTTP client
+instances do not share connections or credentials.
+
+After a process forks, create new OpenAI and HTTP clients in the child. Keep the
+certificate configuration captured by an HTTP client immutable. For certificate
+rotation, build and atomically swap in new `OpenAI::NetHTTPClient` and
+`OpenAI::Client` instances, then call `close` on the retired HTTP client after
+in-flight work finishes. See the complete [custom HTTP client mTLS
+example](examples/mtls_custom_http_client.rb).
+
 ## Amazon Bedrock
 
 Use the standard client with the Bedrock provider to call OpenAI models through Amazon Bedrock's OpenAI-compatible API. Add `aws-sdk-core` to your application for AWS credential discovery and SigV4 signing:
@@ -568,9 +666,9 @@ response = client.request(
 
 ### Concurrency & connection pooling
 
-The `OpenAI::Client` instances are threadsafe, but are only fork-safe when there are no in-flight HTTP requests.
+`OpenAI::Client` instances using the default `OpenAI::NetHTTPClient` are threadsafe, but are only fork-safe when there are no in-flight HTTP requests. Injected HTTP clients are responsible for documenting and enforcing their own concurrency guarantees.
 
-Each instance of `OpenAI::Client` has its own HTTP connection pool with a default size of 99. As such, we recommend instantiating the client once per application in most settings.
+By default, each `OpenAI::Client` creates its own HTTP connection pool with a size of at least 99 connections. As such, we recommend instantiating the client once per application in most settings. An injected HTTP client may instead share its pool across multiple SDK clients; the caller owns that HTTP client's lifecycle.
 
 When all available connections from the pool are checked out, requests wait for a new connection to become available, with queue time counting towards the request timeout.
 

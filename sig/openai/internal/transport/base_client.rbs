@@ -74,7 +74,7 @@ module OpenAI
         attr_reader idempotency_header: String?
 
         # @api private
-        attr_reader requester: OpenAI::Internal::Transport::PooledNetRequester
+        attr_reader requester: OpenAI::_HTTPClient
 
         def initialize: (
           base_url: String,
@@ -85,7 +85,8 @@ module OpenAI
           ?headers: ::Hash[String, (String
           | Integer
           | ::Array[(String | Integer)?])?],
-          ?idempotency_header: String?
+          ?idempotency_header: String?,
+          ?http_client: OpenAI::_HTTPClient?
         ) -> void
 
         private def auth_headers: -> ::Hash[String, String]
@@ -105,6 +106,12 @@ module OpenAI
           OpenAI::request_options opts
         ) -> OpenAI::Internal::Transport::BaseClient::request_input
 
+        private def request_body_replayable?: (top body) -> bool
+
+        private def request_replayable?: (
+          OpenAI::Internal::Transport::BaseClient::request_input request
+        ) -> bool
+
         private def retry_delay: (
           ::Hash[String, String] headers,
           retry_count: Integer
@@ -123,7 +130,7 @@ module OpenAI
           redirect_count: Integer,
           retry_count: Integer,
           send_retry_header: bool
-        ) -> [Integer, top, Enumerable[String]]
+        ) -> OpenAI::HTTPClient::Response
 
         def request: (
           Symbol method,

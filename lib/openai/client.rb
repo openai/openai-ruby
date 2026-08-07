@@ -164,14 +164,6 @@ module OpenAI
     #
 
     # @api private
-    private def request_replayable?(request)
-      body = request[:body]
-      return true if body.nil? || body.is_a?(String)
-      return false if body.respond_to?(:read)
-      true
-    end
-
-    # @api private
     private def prepare_request(request, redirect_count:, retry_count:)
       preparer = @provider_runtime&.prepare_request
       return super unless preparer
@@ -244,6 +236,9 @@ module OpenAI
     # @param initial_retry_delay [Float]
     #
     # @param max_retry_delay [Float]
+    #
+    # @param http_client [#execute, nil] The HTTP client used to
+    #   execute SDK requests. Defaults to {OpenAI::NetHTTPClient}.
     def initialize(
       api_key: OpenAI::Internal::OMIT,
       admin_api_key: OpenAI::Internal::OMIT,
@@ -256,7 +251,8 @@ module OpenAI
       max_retries: self.class::DEFAULT_MAX_RETRIES,
       timeout: self.class::DEFAULT_TIMEOUT_IN_SECONDS,
       initial_retry_delay: self.class::DEFAULT_INITIAL_RETRY_DELAY,
-      max_retry_delay: self.class::DEFAULT_MAX_RETRY_DELAY
+      max_retry_delay: self.class::DEFAULT_MAX_RETRY_DELAY,
+      http_client: nil
     )
       provider_runtime = nil
       unless provider.nil?
@@ -344,7 +340,8 @@ module OpenAI
         max_retries: max_retries,
         initial_retry_delay: initial_retry_delay,
         max_retry_delay: max_retry_delay,
-        headers: headers
+        headers: headers,
+        http_client: http_client
       )
 
       @completions = OpenAI::Resources::Completions.new(client: self)

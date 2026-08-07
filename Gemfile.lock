@@ -14,7 +14,7 @@ PATH
     openai (0.77.1)
       base64
       cgi
-      connection_pool
+      connection_pool (>= 2.2.3)
 
 GEM
   remote: https://rubygems.org/
