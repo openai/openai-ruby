@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# File generated from our OpenAPI spec by Castiron. See CONTRIBUTING.md for details.
 module OpenAI
   class Client < OpenAI::Internal::Transport::BaseClient
     # Default max number of retries to attempt after a failed retryable request.

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# File generated from our OpenAPI spec by Castiron. See CONTRIBUTING.md for details.
 module OpenAI
   module Resources
     # Given a prompt, the model will return one or more predicted completions, and can

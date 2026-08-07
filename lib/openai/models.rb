@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# File generated from our OpenAPI spec by Castiron. See CONTRIBUTING.md for details.
 module OpenAI
   [OpenAI::Internal::Type::BaseModel, *OpenAI::Internal::Type::BaseModel.subclasses].each do |cls|
     cls.define_sorbet_constant!(:OrHash) { T.type_alias { T.any(cls, OpenAI::Internal::AnyHash) } }
