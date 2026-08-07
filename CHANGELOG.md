@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.78.0](https://github.com/openai/openai-ruby/compare/v0.77.1...v0.78.0) (2026-08-07)
+
+
+### Features
+
+* support custom HTTP transports ([174aca9](https://github.com/openai/openai-ruby/commit/174aca90eba958f34c903e05f749051f8d8686f9))
+* support custom HTTP transports ([#342](https://github.com/openai/openai-ruby/issues/342)) ([174aca9](https://github.com/openai/openai-ruby/commit/174aca90eba958f34c903e05f749051f8d8686f9))
+
+
+### Bug Fixes
+
+* harden custom HTTP transports ([#345](https://github.com/openai/openai-ruby/issues/345)) ([2b12ac8](https://github.com/openai/openai-ruby/commit/2b12ac85771b32bdc5947b613fef0e605e061d9a))
+
+
+### Chores
+
+* **deps-dev:** bump json from 2.21.1 to 2.21.2 ([#344](https://github.com/openai/openai-ruby/issues/344)) ([5043e3b](https://github.com/openai/openai-ruby/commit/5043e3b3415ccabca872db74c5673640502a513a))
+
 ## [0.77.1](https://github.com/openai/openai-ruby/compare/v0.77.0...v0.77.1) (2026-08-04)
 
 
