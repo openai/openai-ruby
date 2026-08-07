@@ -23,7 +23,7 @@ module OpenAI
           url: URI::Generic,
           status: Integer,
           headers: ::Hash[String, String],
-          response: top,
+          response: OpenAI::HTTPClient::Response,
           unwrap: Symbol
           | Integer
           | ::Array[Symbol | Integer]

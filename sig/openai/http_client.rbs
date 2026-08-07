@@ -1,0 +1,41 @@
+module OpenAI
+  interface _HTTPClient
+    def execute: (
+      OpenAI::HTTPClient::Request request
+    ) -> OpenAI::HTTPClient::Response
+  end
+
+  class HTTPClient
+    class Request
+      attr_reader method: Symbol
+      attr_reader url: URI::Generic
+      attr_reader headers: ::Hash[String, String]
+      attr_reader body: top
+      attr_reader timeout: Float
+
+      def initialize: (
+        method: Symbol,
+        url: URI::Generic,
+        headers: ::Hash[String, String],
+        body: top,
+        timeout: Float
+      ) -> void
+    end
+
+    class Response
+      attr_reader status: Integer
+      attr_reader headers: ::Hash[String, String]
+      attr_reader body: Enumerable[String]
+
+      def initialize: (
+        status: Integer,
+        headers: ::Hash[String, String],
+        body: String | Enumerable[String]
+      ) -> void
+    end
+
+    def execute: (
+      OpenAI::HTTPClient::Request request
+    ) -> OpenAI::HTTPClient::Response
+  end
+end

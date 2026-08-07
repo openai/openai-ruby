@@ -4,6 +4,11 @@ module OpenAI
   module Internal
     # @api private
     module Util
+      # Marks enumerators whose overridden rewind safely closes the iterator.
+      module FusedEnumerator
+      end
+      private_constant :FusedEnumerator
+
       # @api private
       #
       # @return [Float]
@@ -768,6 +773,7 @@ module OpenAI
             close&.call
             close = nil
           end
+          iter.extend(FusedEnumerator)
 
           iter.define_singleton_method(:rewind) do
             fused = true
@@ -780,7 +786,7 @@ module OpenAI
         #
         # @param enum [Enumerable<Object>, nil]
         def close_fused!(enum)
-          return unless enum.is_a?(Enumerator)
+          return unless enum.is_a?(FusedEnumerator)
 
           # rubocop:disable Lint/UnreachableLoop
           enum.rewind.each { break }
