@@ -87,22 +87,6 @@ module OpenAI
         | ::Array[(String | Integer)?])?] headers
       ) -> ::Hash[String, String]
 
-      class ReadIOAdapter
-        def close?: -> bool?
-
-        def close: -> void
-
-        private def read_enum: (Integer? max_len) -> String
-
-        def read: (?Integer? max_len, ?String? out_string) -> String?
-
-        def initialize: (
-          String | Pathname | StringIO | Enumerable[String] src
-        ) {
-          (String arg0) -> void
-        } -> void
-      end
-
       def self?.writable_enum: {
         (Enumerator::Yielder y) -> void
       } -> Enumerable[String]

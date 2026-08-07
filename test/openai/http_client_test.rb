@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "socket"
+require "open3"
+require "rbconfig"
 
 require_relative "test_helper"
 
@@ -65,6 +67,18 @@ class HTTPClientTest < Minitest::Test
     def each
       @each_count += 1
       @chunks.each { yield(_1) }
+    end
+  end
+
+  class OneShotBody
+    include Enumerable
+
+    def initialize(*items)
+      @items = items.each
+    end
+
+    def each(&blk)
+      @items.each(&blk)
     end
   end
 
@@ -325,6 +339,38 @@ class HTTPClientTest < Minitest::Test
     assert_equal(1, attempts)
   end
 
+  def test_sdk_does_not_retry_one_shot_jsonl_enumerables
+    attempts = 0
+    request_body = OneShotBody.new({value: "payload"})
+    http_client = StubHTTPClient.new do |request|
+      attempts += 1
+      request.body.to_a
+      OpenAI::HTTPClient::Response.new(
+        status: 500,
+        headers: {"content-type" => "application/json"},
+        body: '{"error":"do not retry"}'
+      )
+    end
+    client = OpenAI::Client.new(
+      api_key: "test-key",
+      http_client: http_client,
+      max_retries: 1,
+      initial_retry_delay: 0,
+      max_retry_delay: 0
+    )
+
+    assert_raises(OpenAI::Errors::InternalServerError) do
+      client.request(
+        method: :post,
+        path: "probe",
+        headers: {"content-type" => "application/jsonl"},
+        body: request_body
+      )
+    end
+
+    assert_equal(1, attempts)
+  end
+
   def test_sdk_closes_a_custom_response_body_before_retrying
     attempts = 0
     retry_body = CloseableBody.new('{"error":"retry"}')
@@ -406,6 +452,104 @@ class HTTPClientTest < Minitest::Test
       ["https://example.com/v1/probe", "https://example.com/v1/redirected"],
       requests.map { _1.url.to_s }
     )
+  end
+
+  def test_sdk_rejects_307_redirects_for_one_shot_bodies
+    assert_one_shot_body_redirect_rejected(307)
+  end
+
+  def test_sdk_rejects_308_redirects_for_one_shot_bodies
+    assert_one_shot_body_redirect_rejected(308)
+  end
+
+  def test_sdk_follows_body_dropping_redirects_for_one_shot_bodies
+    requests = []
+    http_client = StubHTTPClient.new do |request|
+      requests << request
+      request.body.to_a if request.body
+      OpenAI::HTTPClient::Response.new(
+        status: requests.one? ? 303 : 200,
+        headers:
+          if requests.one?
+            {"location" => "https://example.com/v1/redirected"}
+          else
+            {"content-type" => "application/json"}
+          end,
+        body: requests.one? ? "" : '{"ok":true}'
+      )
+    end
+    client = OpenAI::Client.new(
+      api_key: "test-key",
+      base_url: "https://example.com/v1",
+      http_client: http_client
+    )
+
+    response = client.request(
+      method: :post,
+      path: "probe",
+      headers: {"content-type" => "application/jsonl"},
+      body: Enumerator.new { _1 << {value: "payload"} }
+    )
+
+    assert_equal(true, response[:ok])
+    assert_equal(2, requests.length)
+    assert_equal(:get, requests.last.method)
+    assert_nil(requests.last.body)
+    refute_includes(requests.last.headers, "content-type")
+  end
+
+  def test_sdk_loads_without_optional_zlib
+    root = File.expand_path("../..", __dir__)
+    script = <<~RUBY
+      abort "zlib loaded before test setup" if defined?(Zlib)
+
+      module Kernel
+        alias_method :require_with_zlib, :require
+
+        def require(feature)
+          raise LoadError, "cannot load such file -- zlib" if feature == "zlib"
+
+          require_with_zlib(feature)
+        end
+      end
+
+      require "openai"
+    RUBY
+    _, stderr, status = Open3.capture3(
+      {"RUBYOPT" => nil},
+      RbConfig.ruby,
+      "-I#{File.join(root, 'lib')}",
+      "-e",
+      script,
+      chdir: root
+    )
+
+    assert_predicate(status, :success?, stderr)
+  end
+
+  def test_net_http_client_loads_its_sdk_owned_body_adapter
+    root = File.expand_path("../..", __dir__)
+    script = <<~RUBY
+      require "etc"
+      require "net/http"
+      require "openssl"
+      require "connection_pool"
+      require "openai/internal/util"
+      require "openai/http_client"
+      require "openai/net_http_client"
+
+      abort "body adapter was not loaded" unless defined?(OpenAI::Internal::Util::ReadIOAdapter)
+    RUBY
+    _, stderr, status = Open3.capture3(
+      {"RUBYOPT" => nil},
+      RbConfig.ruby,
+      "-I#{File.join(root, 'lib')}",
+      "-e",
+      script,
+      chdir: root
+    )
+
+    assert_predicate(status, :success?, stderr)
   end
 
   def test_http_client_must_leave_the_connection_unstarted
@@ -691,6 +835,40 @@ class HTTPClientTest < Minitest::Test
       connection.start
       connection
     end
+  end
+
+  private def assert_one_shot_body_redirect_rejected(status)
+    requests = []
+    http_client = StubHTTPClient.new do |request|
+      requests << request
+      request.body.to_a
+      OpenAI::HTTPClient::Response.new(
+        status: status,
+        headers: {"location" => "https://example.com/v1/redirected"},
+        body: ""
+      )
+    end
+    client = OpenAI::Client.new(
+      api_key: "test-key",
+      base_url: "https://example.com/v1",
+      http_client: http_client
+    )
+
+    error = assert_raises(OpenAI::Errors::APIConnectionError) do
+      client.request(
+        method: :post,
+        path: "probe",
+        headers: {"content-type" => "application/jsonl"},
+        body: Enumerator.new { _1 << {value: "payload"} }
+      )
+    end
+
+    assert_equal(1, requests.length)
+    assert_equal("https://example.com/v1/redirected", error.url.to_s)
+    assert_equal(
+      "Cannot follow a body-preserving redirect with a non-replayable request body.",
+      error.message
+    )
   end
 
   private def issue_certificate(

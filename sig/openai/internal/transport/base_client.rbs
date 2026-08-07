@@ -48,6 +48,8 @@ module OpenAI
           headers: ::Hash[String, String]
         ) -> bool
 
+        def self.request_body_replayable?: (top body) -> bool
+
         def self.follow_redirect: (
           OpenAI::Internal::Transport::BaseClient::request_input request,
           status: Integer,
@@ -105,8 +107,6 @@ module OpenAI
           OpenAI::Internal::Transport::BaseClient::request_components req,
           OpenAI::request_options opts
         ) -> OpenAI::Internal::Transport::BaseClient::request_input
-
-        private def request_body_replayable?: (top body) -> bool
 
         private def request_replayable?: (
           OpenAI::Internal::Transport::BaseClient::request_input request

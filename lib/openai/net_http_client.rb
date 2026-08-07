@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "internal/read_io_adapter"
+
 module OpenAI
   # The SDK's pooled Net::HTTP implementation.
   #
@@ -21,9 +23,9 @@ module OpenAI
       Net::HTTPBadResponse,
       Net::HTTPHeaderSyntaxError,
       Net::ProtocolError,
-      Zlib::Error,
+      (defined?(Zlib::Error) ? Zlib::Error : nil),
       ConnectionPool::PoolShuttingDownError
-    ].freeze
+    ].compact.freeze
     private_constant :NETWORK_ERRORS
 
     class ConnectionConfigurationError < StandardError

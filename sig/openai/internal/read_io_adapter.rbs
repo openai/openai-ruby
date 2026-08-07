@@ -1,0 +1,21 @@
+module OpenAI
+  module Internal
+    module Util
+      class ReadIOAdapter
+        def close?: -> bool?
+
+        def close: -> void
+
+        private def read_enum: (Integer? max_len) -> String
+
+        def read: (?Integer? max_len, ?String? out_string) -> String?
+
+        def initialize: (
+          String | Pathname | StringIO | Enumerable[String] src
+        ) {
+          (String arg0) -> void
+        } -> void
+      end
+    end
+  end
+end
