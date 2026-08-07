@@ -187,7 +187,7 @@ module OpenAI
         attr_reader :idempotency_header
 
         # @api private
-        # @return [OpenAI::Internal::Transport::PooledNetRequester]
+        # @return [#execute]
         attr_reader :requester
 
         # @api private
@@ -199,6 +199,7 @@ module OpenAI
         # @param max_retry_delay [Float]
         # @param headers [Hash{String=>String, Integer, Array<String, Integer, nil>, nil}]
         # @param idempotency_header [String, nil]
+        # @param http_client [#execute, nil]
         def initialize(
           base_url:,
           timeout: 0.0,
@@ -206,9 +207,14 @@ module OpenAI
           initial_retry_delay: 0.0,
           max_retry_delay: 0.0,
           headers: {},
-          idempotency_header: nil
+          idempotency_header: nil,
+          http_client: nil
         )
-          @requester = OpenAI::Internal::Transport::PooledNetRequester.new
+          unless http_client.nil? || http_client.respond_to?(:execute)
+            raise ArgumentError, "`http_client` must respond to `execute`"
+          end
+
+          @requester = http_client || OpenAI::NetHTTPClient.new
           @headers = OpenAI::Internal::Util.normalized_headers(
             self.class::PLATFORM_HEADERS,
             {
@@ -342,15 +348,39 @@ module OpenAI
             @base_url_components,
             {**req, path: path, query: query}
           )
-          headers, encoded = OpenAI::Internal::Util.encode_content(headers, body)
+          max_retries = opts.fetch(:max_retries, @max_retries)
+          max_retries = 0 unless request_body_replayable?(body)
           {
             method: method,
             url: url,
             headers: headers,
-            body: encoded,
-            max_retries: opts.fetch(:max_retries, @max_retries),
+            body: body,
+            max_retries: max_retries,
             timeout: timeout
           }
+        end
+
+        # @api private
+        private def request_body_replayable?(body)
+          case body
+          in nil | String | StringIO | Pathname
+            true
+          in OpenAI::FilePart
+            request_body_replayable?(body.content)
+          in Hash
+            body.each_value.all? { request_body_replayable?(_1) }
+          in Array
+            body.all? { request_body_replayable?(_1) }
+          in IO | Enumerator
+            false
+          else
+            !body.respond_to?(:read)
+          end
+        end
+
+        # @api private
+        private def request_replayable?(request)
+          request_body_replayable?(request[:body])
         end
 
         # @api private
@@ -420,7 +450,7 @@ module OpenAI
         # @param send_retry_header [Boolean]
         #
         # @raise [OpenAI::Errors::APIError]
-        # @return [Array(Integer, Net::HTTPResponse, Enumerable<String>)]
+        # @return [OpenAI::HTTPClient::Response]
         def send_request(request, redirect_count:, retry_count:, send_retry_header:)
           if send_retry_header
             request = request.merge(
@@ -428,23 +458,39 @@ module OpenAI
             )
           end
 
+          encoded_headers, encoded_body = OpenAI::Internal::Util.encode_content(
+            request.fetch(:headers),
+            request[:body]
+          )
+          attempt_request = request.merge(headers: encoded_headers, body: encoded_body)
           prepared_request = prepare_request(
-            request,
+            attempt_request,
             redirect_count: redirect_count,
             retry_count: retry_count
           )
           url, max_retries, timeout = prepared_request.fetch_values(:url, :max_retries, :timeout)
-          input = {
-            **prepared_request.except(:timeout, :follow_redirects, :provider_auth),
-            deadline: OpenAI::Internal::Util.monotonic_secs + timeout
-          }
+          input = OpenAI::HTTPClient::Request.new(
+            method: prepared_request.fetch(:method),
+            url: url,
+            headers: prepared_request.fetch(:headers),
+            body: prepared_request[:body],
+            timeout: timeout
+          )
 
           begin
-            status, response, stream = @requester.execute(input)
+            http_response = @requester.execute(input)
+            unless http_response.is_a?(OpenAI::HTTPClient::Response)
+              raise TypeError, "`http_client#execute` must return an OpenAI::HTTPClient::Response"
+            end
+
+            status = http_response.status
+            stream = http_response.body
+            headers = http_response.headers
           rescue OpenAI::Errors::APIConnectionError => e
             status = e
+            stream = nil
+            headers = {}
           end
-          headers = OpenAI::Internal::Util.normalized_headers(response&.each_header&.to_h)
 
           terminal_status =
             case status
@@ -460,24 +506,25 @@ module OpenAI
               url: url,
               status: status,
               headers: headers,
-              response: response,
+              response: http_response,
               stream: stream
             )
           end
 
           case status
           in ..299
-            [status, response, stream]
+            http_response
           in 300..399 if redirect_count >= self.class::MAX_REDIRECTS
             self.class.reap_connection!(status, stream: stream)
 
             message = "Failed to complete the request within #{self.class::MAX_REDIRECTS} redirects."
-            raise OpenAI::Errors::APIConnectionError.new(url: url, response: response, message: message)
+            raise OpenAI::Errors::APIConnectionError.new(url: url, response: http_response, message: message)
           in 300..399
             self.class.reap_connection!(status, stream: stream)
 
+            redirect_source = request.merge(url: prepared_request.fetch(:url))
             redirected_request = self.class.follow_redirect(
-              prepared_request,
+              redirect_source,
               status: status,
               response_headers: headers
             )
@@ -492,7 +539,7 @@ module OpenAI
           in (400..) | OpenAI::Errors::APIConnectionError
             self.class.reap_connection!(status, stream: stream)
 
-            delay = retry_delay(response || {}, retry_count: retry_count)
+            delay = retry_delay(headers, retry_count: retry_count)
             sleep(delay)
 
             send_request(
@@ -556,28 +603,27 @@ module OpenAI
 
           # Don't send the current retry count in the headers if the caller modified the header defaults.
           send_retry_header = request.fetch(:headers)["x-stainless-retry-count"] == "0"
-          status, response, stream = send_request(
+          response = send_request(
             request,
             redirect_count: 0,
             retry_count: 0,
             send_retry_header: send_retry_header
           )
 
-          headers = OpenAI::Internal::Util.normalized_headers(response.each_header.to_h)
-          decoded = OpenAI::Internal::Util.decode_content(headers, stream: stream)
+          decoded = OpenAI::Internal::Util.decode_content(response.headers, stream: response.body)
           case req
           in {stream: Class => st}
             st.new(
               model: model,
               url: url,
-              status: status,
-              headers: headers,
+              status: response.status,
+              headers: response.headers,
               response: response,
               unwrap: unwrap,
               stream: decoded
             )
           in {page: Class => page}
-            page.new(client: self, req: req, headers: headers, page_data: decoded)
+            page.new(client: self, req: req, headers: response.headers, page_data: decoded)
           else
             unwrapped = OpenAI::Internal::Util.dig(decoded, unwrap)
             OpenAI::Internal::Type::Converter.coerce(model, unwrapped)

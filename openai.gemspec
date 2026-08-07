@@ -27,5 +27,5 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = ["README.md", "VERSIONING.md"]
   s.add_dependency "base64"
   s.add_dependency "cgi"
-  s.add_dependency "connection_pool"
+  s.add_dependency "connection_pool", ">= 2.2.3"
 end

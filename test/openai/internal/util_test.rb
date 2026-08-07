@@ -342,6 +342,44 @@ class OpenAI::Test::UtilIOAdapterTest < Minitest::Test
       assert_equal(expected, enum.to_a.join)
     end
   end
+
+  def test_close_interrupts_an_enumerator_without_draining_it
+    closed = false
+    advanced = false
+    input = Enumerator.new do |yielder|
+      yielder << "first"
+      advanced = true
+      raise "request enumerator was drained"
+    ensure
+      closed = true
+    end
+    # rubocop:disable Lint/EmptyBlock
+    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(input) {}
+    # rubocop:enable Lint/EmptyBlock
+
+    assert_equal("first", adapter.read(5))
+    refute(closed)
+
+    adapter.close
+
+    assert(closed)
+    refute(advanced)
+  end
+
+  def test_close_does_not_start_an_unread_enumerator
+    started = false
+    input = Enumerator.new do |yielder|
+      started = true
+      yielder << "first"
+    end
+    # rubocop:disable Lint/EmptyBlock
+    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(input) {}
+    # rubocop:enable Lint/EmptyBlock
+
+    adapter.close
+
+    refute(started)
+  end
 end
 
 class OpenAI::Test::UtilFusedEnumTest < Minitest::Test

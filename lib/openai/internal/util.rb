@@ -4,6 +4,11 @@ module OpenAI
   module Internal
     # @api private
     module Util
+      # Marks enumerators whose overridden rewind safely closes the iterator.
+      module FusedEnumerator
+      end
+      private_constant :FusedEnumerator
+
       # @api private
       #
       # @return [Float]
@@ -401,6 +406,49 @@ module OpenAI
       #
       # An adapter that satisfies the IO interface required by `::IO.copy_stream`
       class ReadIOAdapter
+        class InterruptibleEnumerator
+          # Cancellation must bypass application rescues so a suspended source cannot
+          # swallow it and keep the request teardown blocked.
+          class Interrupt < Exception # rubocop:disable Lint/InheritException
+          end
+          private_constant :Interrupt
+
+          def initialize(source)
+            @started = false
+            @fiber = Fiber.new do
+              source.each { Fiber.yield(_1) }
+            rescue Interrupt
+              nil
+            end
+          end
+
+          def next
+            raise StopIteration unless @fiber&.alive?
+
+            @started = true
+            value = @fiber.resume
+            raise StopIteration unless @fiber.alive?
+
+            value
+          end
+
+          def to_a
+            values = []
+            loop { values << self.next }
+          rescue StopIteration
+            values
+          end
+
+          def close
+            @fiber&.raise(Interrupt) if @started && @fiber&.alive?
+          rescue Interrupt
+            nil
+          ensure
+            @fiber = nil
+          end
+        end
+        private_constant :InterruptibleEnumerator
+
         # @api private
         #
         # @return [Boolean, nil]
@@ -411,7 +459,7 @@ module OpenAI
           case @stream
           in Enumerator
             OpenAI::Internal::Util.close_fused!(@stream)
-          in IO if close?
+          in InterruptibleEnumerator | IO if close?
             @stream.close
           else
           end
@@ -447,7 +495,7 @@ module OpenAI
             nil
           in IO | StringIO
             @stream.read(max_len, out_string)
-          in Enumerator
+          in Enumerator | InterruptibleEnumerator
             read = read_enum(max_len)
             case out_string
             in String
@@ -473,6 +521,9 @@ module OpenAI
             in Pathname
               @closing = true
               src.open(binmode: true)
+            in Enumerator
+              @closing = true
+              InterruptibleEnumerator.new(src)
             else
               src
             end
@@ -768,6 +819,7 @@ module OpenAI
             close&.call
             close = nil
           end
+          iter.extend(FusedEnumerator)
 
           iter.define_singleton_method(:rewind) do
             fused = true
@@ -780,7 +832,7 @@ module OpenAI
         #
         # @param enum [Enumerable<Object>, nil]
         def close_fused!(enum)
-          return unless enum.is_a?(Enumerator)
+          return unless enum.is_a?(FusedEnumerator)
 
           # rubocop:disable Lint/UnreachableLoop
           enum.rewind.each { break }

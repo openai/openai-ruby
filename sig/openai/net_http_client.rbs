@@ -1,0 +1,34 @@
+module OpenAI
+  class NetHTTPClient < OpenAI::HTTPClient
+    KEEP_ALIVE_TIMEOUT: 30
+
+    DEFAULT_MAX_CONNECTIONS: Integer
+
+    private def connect: (url: URI::Generic) -> top
+
+    private def calibrate_socket_timeout: (top conn, Float deadline) -> void
+
+    private def build_request: (
+      OpenAI::HTTPClient::Request request
+    ) {
+      (String arg0) -> void
+    } -> [top, (^-> void)]
+
+    private def with_pool: (
+      URI::Generic url,
+      deadline: Float
+    ) {
+      (top arg0) -> void
+    } -> void
+
+    private def configured_connection: (URI::Generic url) -> top
+
+    def close: -> void
+
+    def execute: (
+      OpenAI::HTTPClient::Request request
+    ) -> OpenAI::HTTPClient::Response
+
+    def initialize: (?size: Integer) ?{ (Net::HTTP) -> void } -> void
+  end
+end

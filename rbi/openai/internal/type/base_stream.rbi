@@ -43,7 +43,7 @@ module OpenAI
             url: URI::Generic,
             status: Integer,
             headers: T::Hash[String, String],
-            response: Net::HTTPResponse,
+            response: OpenAI::HTTPClient::Response,
             unwrap:
               T.any(
                 Symbol,

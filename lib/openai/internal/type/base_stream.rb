@@ -55,7 +55,7 @@ module OpenAI
         # @param url [URI::Generic]
         # @param status [Integer]
         # @param headers [Hash{String=>String}]
-        # @param response [Net::HTTPResponse]
+        # @param response [OpenAI::HTTPClient::Response]
         # @param unwrap [Symbol, Integer, Array<Symbol, Integer>, Proc]
         # @param stream [Enumerable<Object>]
         def initialize(model:, url:, status:, headers:, response:, unwrap:, stream:)

@@ -162,7 +162,8 @@ module OpenAI
         max_retries: Integer,
         timeout: Float,
         initial_retry_delay: Float,
-        max_retry_delay: Float
+        max_retry_delay: Float,
+        http_client: T.untyped
       ).returns(T.attached_class)
     end
     def self.new(
@@ -185,7 +186,8 @@ module OpenAI
       max_retries: OpenAI::Client::DEFAULT_MAX_RETRIES,
       timeout: OpenAI::Client::DEFAULT_TIMEOUT_IN_SECONDS,
       initial_retry_delay: OpenAI::Client::DEFAULT_INITIAL_RETRY_DELAY,
-      max_retry_delay: OpenAI::Client::DEFAULT_MAX_RETRY_DELAY
+      max_retry_delay: OpenAI::Client::DEFAULT_MAX_RETRY_DELAY,
+      http_client: nil
     )
     end
   end

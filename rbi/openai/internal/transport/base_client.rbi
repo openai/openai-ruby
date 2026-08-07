@@ -147,7 +147,7 @@ module OpenAI
         attr_reader :idempotency_header
 
         # @api private
-        sig { returns(OpenAI::Internal::Transport::PooledNetRequester) }
+        sig { returns(T.untyped) }
         attr_reader :requester
 
         # @api private
@@ -169,7 +169,8 @@ module OpenAI
                   )
                 )
               ],
-            idempotency_header: T.nilable(String)
+            idempotency_header: T.nilable(String),
+            http_client: T.untyped
           ).returns(T.attached_class)
         end
         def self.new(
@@ -179,7 +180,8 @@ module OpenAI
           initial_retry_delay: 0.0,
           max_retry_delay: 0.0,
           headers: {},
-          idempotency_header: nil
+          idempotency_header: nil,
+          http_client: nil
         )
         end
 
@@ -224,6 +226,20 @@ module OpenAI
         end
 
         # @api private
+        sig { params(body: T.untyped).returns(T::Boolean) }
+        private def request_body_replayable?(body)
+        end
+
+        # @api private
+        sig do
+          params(
+            request: OpenAI::Internal::Transport::BaseClient::RequestInput
+          ).returns(T::Boolean)
+        end
+        private def request_replayable?(request)
+        end
+
+        # @api private
         sig do
           params(
             headers: T::Hash[String, String],
@@ -239,7 +255,7 @@ module OpenAI
             url: URI::Generic,
             status: Integer,
             headers: T::Hash[String, String],
-            response: Net::HTTPResponse,
+            response: OpenAI::HTTPClient::Response,
             stream: T::Enumerable[String]
           ).returns(T.noreturn)
         end
@@ -259,7 +275,7 @@ module OpenAI
             redirect_count: Integer,
             retry_count: Integer,
             send_retry_header: T::Boolean
-          ).returns([Integer, Net::HTTPResponse, T::Enumerable[String]])
+          ).returns(OpenAI::HTTPClient::Response)
         end
         def send_request(
           request,
