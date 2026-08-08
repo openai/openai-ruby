@@ -21,6 +21,8 @@ class OpenAI::Test::LoadOrderTest < Minitest::Test
       end
 
       require "openai"
+
+      raise "missing OrHash" unless OpenAI::Models::Batch.sorbet_constant_defined?(:OrHash)
     RUBY
 
     _, stderr, status =
