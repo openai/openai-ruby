@@ -1,7 +1,15 @@
 # frozen_string_literal: true
 
 module OpenAI
-  [OpenAI::Internal::Type::BaseModel, *OpenAI::Internal::Type::BaseModel.subclasses].each do |cls|
+  # ActiveSupport 6 implements Class#subclasses using ==, which invokes BaseModel's
+  # structural equality before all model aliases are loaded.
+  base_model = OpenAI::Internal::Type::BaseModel
+  subclasses =
+    ObjectSpace.each_object(base_model.singleton_class).select do |candidate|
+      !candidate.singleton_class? && candidate.superclass.equal?(base_model)
+    end
+
+  [base_model, *subclasses].each do |cls|
     cls.define_sorbet_constant!(:OrHash) { T.type_alias { T.any(cls, OpenAI::Internal::AnyHash) } }
   end
 

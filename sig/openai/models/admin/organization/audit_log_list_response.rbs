@@ -55,6 +55,7 @@ module OpenAI
             service_account_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated,
             service_account_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountDeleted,
             service_account_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated,
+            source: OpenAI::Models::Admin::Organization::AuditLogListResponse::source,
             user_added: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded,
             user_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserDeleted,
             user_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated,
@@ -353,6 +354,12 @@ module OpenAI
             OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated
 
+          attr_reader source: OpenAI::Models::Admin::Organization::AuditLogListResponse::source?
+
+          def source=: (
+            OpenAI::Models::Admin::Organization::AuditLogListResponse::source
+          ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::source
+
           attr_reader user_added: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded?
 
           def user_added=: (
@@ -459,6 +466,7 @@ module OpenAI
             ?service_account_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated,
             ?service_account_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountDeleted,
             ?service_account_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated,
+            ?source: OpenAI::Models::Admin::Organization::AuditLogListResponse::source,
             ?user_added: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded,
             ?user_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserDeleted,
             ?user_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated,
@@ -522,6 +530,7 @@ module OpenAI
             service_account_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated,
             service_account_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountDeleted,
             service_account_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated,
+            source: OpenAI::Models::Admin::Organization::AuditLogListResponse::source,
             user_added: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded,
             user_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserDeleted,
             user_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated,
@@ -2537,6 +2546,31 @@ module OpenAI
 
               def to_hash: -> { role: String }
             end
+          end
+
+          type source =
+            :cloud_console
+            | :adminapi
+            | :retool
+            | :glass
+            | :managementapi
+            | :tenantapi
+            | :scim
+            | :backfill
+
+          module Source
+            extend OpenAI::Internal::Type::Enum
+
+            CLOUD_CONSOLE: :cloud_console
+            ADMINAPI: :adminapi
+            RETOOL: :retool
+            GLASS: :glass
+            MANAGEMENTAPI: :managementapi
+            TENANTAPI: :tenantapi
+            SCIM: :scim
+            BACKFILL: :backfill
+
+            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::source]
           end
 
           type user_added =

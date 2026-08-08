@@ -165,6 +165,9 @@ module OpenAI
     # @param initial_retry_delay [Float]
     #
     # @param max_retry_delay [Float]
+    #
+    # @param http_client [#execute, nil] The HTTP client used to
+    #   execute SDK requests. Defaults to {OpenAI::NetHTTPClient}.
     def initialize(
       api_key: ENV["OPENAI_API_KEY"],
       admin_api_key: ENV["OPENAI_ADMIN_KEY"],
@@ -175,7 +178,8 @@ module OpenAI
       max_retries: self.class::DEFAULT_MAX_RETRIES,
       timeout: self.class::DEFAULT_TIMEOUT_IN_SECONDS,
       initial_retry_delay: self.class::DEFAULT_INITIAL_RETRY_DELAY,
-      max_retry_delay: self.class::DEFAULT_MAX_RETRY_DELAY
+      max_retry_delay: self.class::DEFAULT_MAX_RETRY_DELAY,
+      http_client: nil
     )
       base_url ||= "https://api.openai.com/v1"
 
@@ -205,7 +209,8 @@ module OpenAI
         max_retries: max_retries,
         initial_retry_delay: initial_retry_delay,
         max_retry_delay: max_retry_delay,
-        headers: headers
+        headers: headers,
+        http_client: http_client
       )
 
       @completions = OpenAI::Resources::Completions.new(client: self)
