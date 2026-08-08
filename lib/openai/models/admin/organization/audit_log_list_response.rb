@@ -403,6 +403,15 @@ module OpenAI
                    -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated },
                    api_name: :"service_account.updated"
 
+          # @!attribute source
+          #   The server-derived administrative authorization context recorded for the action,
+          #   when available. API-key paths identify the authenticated API surface;
+          #   biscuit-authorized paths identify the permission namespace used for
+          #   authorization. This does not necessarily identify the literal client software.
+          #
+          #   @return [Symbol, OpenAI::Models::Admin::Organization::AuditLogListResponse::Source, nil]
+          optional :source, enum: -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::Source }
+
           # @!attribute user_added
           #   The details for events with this `type`.
           #
@@ -475,7 +484,7 @@ module OpenAI
                    -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated },
                    api_name: :"workload_identity_provider.updated"
 
-          # @!method initialize(id:, effective_at:, type:, actor: nil, api_key_created: nil, api_key_deleted: nil, api_key_updated: nil, certificate_created: nil, certificate_deleted: nil, certificate_updated: nil, certificates_activated: nil, certificates_deactivated: nil, checkpoint_permission_created: nil, checkpoint_permission_deleted: nil, external_key_registered: nil, external_key_removed: nil, group_created: nil, group_deleted: nil, group_updated: nil, invite_accepted: nil, invite_deleted: nil, invite_sent: nil, ip_allowlist_config_activated: nil, ip_allowlist_config_deactivated: nil, ip_allowlist_created: nil, ip_allowlist_deleted: nil, ip_allowlist_updated: nil, login_failed: nil, login_succeeded: nil, logout_failed: nil, logout_succeeded: nil, organization_updated: nil, project: nil, project_archived: nil, project_created: nil, project_deleted: nil, project_updated: nil, rate_limit_deleted: nil, rate_limit_updated: nil, role_assignment_created: nil, role_assignment_deleted: nil, role_bound_to_resource: nil, role_created: nil, role_deleted: nil, role_unbound_from_resource: nil, role_updated: nil, scim_disabled: nil, scim_enabled: nil, service_account_created: nil, service_account_deleted: nil, service_account_updated: nil, user_added: nil, user_deleted: nil, user_updated: nil, workload_identity_provider_mapping_created: nil, workload_identity_provider_mapping_deleted: nil, workload_identity_provider_mapping_updated: nil, workload_identity_provider_created: nil, workload_identity_provider_deleted: nil, workload_identity_provider_updated: nil)
+          # @!method initialize(id:, effective_at:, type:, actor: nil, api_key_created: nil, api_key_deleted: nil, api_key_updated: nil, certificate_created: nil, certificate_deleted: nil, certificate_updated: nil, certificates_activated: nil, certificates_deactivated: nil, checkpoint_permission_created: nil, checkpoint_permission_deleted: nil, external_key_registered: nil, external_key_removed: nil, group_created: nil, group_deleted: nil, group_updated: nil, invite_accepted: nil, invite_deleted: nil, invite_sent: nil, ip_allowlist_config_activated: nil, ip_allowlist_config_deactivated: nil, ip_allowlist_created: nil, ip_allowlist_deleted: nil, ip_allowlist_updated: nil, login_failed: nil, login_succeeded: nil, logout_failed: nil, logout_succeeded: nil, organization_updated: nil, project: nil, project_archived: nil, project_created: nil, project_deleted: nil, project_updated: nil, rate_limit_deleted: nil, rate_limit_updated: nil, role_assignment_created: nil, role_assignment_deleted: nil, role_bound_to_resource: nil, role_created: nil, role_deleted: nil, role_unbound_from_resource: nil, role_updated: nil, scim_disabled: nil, scim_enabled: nil, service_account_created: nil, service_account_deleted: nil, service_account_updated: nil, source: nil, user_added: nil, user_deleted: nil, user_updated: nil, workload_identity_provider_mapping_created: nil, workload_identity_provider_mapping_deleted: nil, workload_identity_provider_mapping_updated: nil, workload_identity_provider_created: nil, workload_identity_provider_deleted: nil, workload_identity_provider_updated: nil)
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Admin::Organization::AuditLogListResponse} for more details.
           #
@@ -582,6 +591,8 @@ module OpenAI
           #   @param service_account_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountDeleted] The details for events with this `type`.
           #
           #   @param service_account_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated] The details for events with this `type`.
+          #
+          #   @param source [Symbol, OpenAI::Models::Admin::Organization::AuditLogListResponse::Source] The server-derived administrative authorization context recorded for the action,
           #
           #   @param user_added [OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded] The details for events with this `type`.
           #
@@ -2494,6 +2505,28 @@ module OpenAI
               #
               #   @param role [String] The role of the service account. Is either `owner` or `member`.
             end
+          end
+
+          # The server-derived administrative authorization context recorded for the action,
+          # when available. API-key paths identify the authenticated API surface;
+          # biscuit-authorized paths identify the permission namespace used for
+          # authorization. This does not necessarily identify the literal client software.
+          #
+          # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#source
+          module Source
+            extend OpenAI::Internal::Type::Enum
+
+            CLOUD_CONSOLE = :cloud_console
+            ADMINAPI = :adminapi
+            RETOOL = :retool
+            GLASS = :glass
+            MANAGEMENTAPI = :managementapi
+            TENANTAPI = :tenantapi
+            SCIM = :scim
+            BACKFILL = :backfill
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#user_added

@@ -876,6 +876,27 @@ module OpenAI
           end
           attr_writer :service_account_updated
 
+          # The server-derived administrative authorization context recorded for the action,
+          # when available. API-key paths identify the authenticated API surface;
+          # biscuit-authorized paths identify the permission namespace used for
+          # authorization. This does not necessarily identify the literal client software.
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Source::TaggedSymbol
+              )
+            )
+          end
+          attr_reader :source
+
+          sig do
+            params(
+              source:
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Source::OrSymbol
+            ).void
+          end
+          attr_writer :source
+
           # The details for events with this `type`.
           sig do
             returns(
@@ -1141,6 +1162,8 @@ module OpenAI
                 OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountDeleted::OrHash,
               service_account_updated:
                 OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated::OrHash,
+              source:
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Source::OrSymbol,
               user_added:
                 OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded::OrHash,
               user_deleted:
@@ -1267,6 +1290,11 @@ module OpenAI
             service_account_deleted: nil,
             # The details for events with this `type`.
             service_account_updated: nil,
+            # The server-derived administrative authorization context recorded for the action,
+            # when available. API-key paths identify the authenticated API surface;
+            # biscuit-authorized paths identify the permission namespace used for
+            # authorization. This does not necessarily identify the literal client software.
+            source: nil,
             # The details for events with this `type`.
             user_added: nil,
             # The details for events with this `type`.
@@ -1391,6 +1419,8 @@ module OpenAI
                   OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountDeleted,
                 service_account_updated:
                   OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated,
+                source:
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::Source::TaggedSymbol,
                 user_added:
                   OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded,
                 user_deleted:
@@ -5942,6 +5972,74 @@ module OpenAI
               sig { override.returns({ role: String }) }
               def to_hash
               end
+            end
+          end
+
+          # The server-derived administrative authorization context recorded for the action,
+          # when available. API-key paths identify the authenticated API surface;
+          # biscuit-authorized paths identify the permission namespace used for
+          # authorization. This does not necessarily identify the literal client software.
+          module Source
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol =
+              T.type_alias do
+                T.all(
+                  Symbol,
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::Source
+                )
+              end
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            CLOUD_CONSOLE =
+              T.let(
+                :cloud_console,
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Source::TaggedSymbol
+              )
+            ADMINAPI =
+              T.let(
+                :adminapi,
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Source::TaggedSymbol
+              )
+            RETOOL =
+              T.let(
+                :retool,
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Source::TaggedSymbol
+              )
+            GLASS =
+              T.let(
+                :glass,
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Source::TaggedSymbol
+              )
+            MANAGEMENTAPI =
+              T.let(
+                :managementapi,
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Source::TaggedSymbol
+              )
+            TENANTAPI =
+              T.let(
+                :tenantapi,
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Source::TaggedSymbol
+              )
+            SCIM =
+              T.let(
+                :scim,
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Source::TaggedSymbol
+              )
+            BACKFILL =
+              T.let(
+                :backfill,
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Source::TaggedSymbol
+              )
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::Source::TaggedSymbol
+                ]
+              )
+            end
+            def self.values
             end
           end
 
