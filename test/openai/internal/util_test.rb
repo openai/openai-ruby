@@ -284,12 +284,116 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
     assert_includes(body, "filename=\"\u00E9.png\"".b)
   end
 
+  def test_multipart_field_name_quoting
+    _headers, stream = OpenAI::Internal::Util.encode_content(
+      {"content-type" => "multipart/form-data"},
+      {"a \"b\"\\c\r\nEvil: 1" => "x"}
+    )
+    body = stream.respond_to?(:read) ? stream.read : stream.to_a.join
+
+    assert_includes(body, %q(name="a \"b\"\\\\cEvil: 1"))
+    refute_includes(body, "\r\nEvil:")
+  end
+
+  def test_primitive_arrays_use_bracketed_field_names
+    body, = OpenAI::Audio::TranscriptionCreateParams.dump_request(
+      file: OpenAI::FilePart.new("audio", filename: "audio.wav"),
+      model: :"whisper-1",
+      timestamp_granularities: [:word, :segment]
+    )
+    encoded = OpenAI::Internal::Util.encode_content(
+      {"content-type" => "multipart/form-data"},
+      body
+    )
+    cgi = FakeCGI.new(*encoded)
+
+    assert_equal(%w[word segment], cgi.params.fetch("timestamp_granularities[]"))
+    refute_includes(cgi.params, "timestamp_granularities")
+  end
+
+  def test_file_arrays_use_bracketed_field_names
+    files = [
+      OpenAI::FilePart.new(StringIO.new("a"), filename: "a.png"),
+      OpenAI::FilePart.new(StringIO.new("b"), filename: "b.png")
+    ]
+    body, = OpenAI::ImageEditParams.dump_request(image: files, prompt: "Edit both images")
+    encoded = OpenAI::Internal::Util.encode_content(
+      {"content-type" => "multipart/form-data"},
+      body
+    )
+    parts = FakeCGI.new(*encoded).params
+
+    assert_equal(["image[]"], parts.keys.grep(/^image/))
+    assert_equal(%w[a.png b.png], parts.fetch("image[]").map(&:original_filename))
+    assert_equal(%w[a b], parts.fetch("image[]").map(&:read))
+  end
+
+  def test_scalar_files_keep_unbracketed_field_names
+    body, = OpenAI::ImageEditParams.dump_request(
+      image: OpenAI::FilePart.new(StringIO.new("image"), filename: "image.png"),
+      prompt: "Edit one image"
+    )
+    encoded = OpenAI::Internal::Util.encode_content({"content-type" => "multipart/form-data"}, body)
+    parts = FakeCGI.new(*encoded).params
+
+    assert_equal(["image"], parts.keys.grep(/^image/))
+    assert_equal(["image.png"], parts.fetch("image").map(&:original_filename))
+    assert_equal(["image"], parts.fetch("image").map(&:read))
+  end
+
+  def test_generated_nested_values_use_bracket_notation
+    body, = OpenAI::FileCreateParams.dump_request(
+      file: OpenAI::FilePart.new("{}", filename: "batch.jsonl"),
+      purpose: :batch,
+      expires_after: {anchor: :created_at, seconds: 3600}
+    )
+    encoded = OpenAI::Internal::Util.encode_content({"content-type" => "multipart/form-data"}, body)
+    parts = FakeCGI.new(*encoded).params
+
+    assert_equal(["created_at"], parts.fetch("expires_after[anchor]"))
+    assert_equal(["3600"], parts.fetch("expires_after[seconds]"))
+    refute_includes(parts, "expires_after")
+  end
+
+  def test_nested_values_use_bracket_notation
+    encoded = OpenAI::Internal::Util.encode_content(
+      {"content-type" => "multipart/form-data"},
+      {
+        expires_after: {anchor: :created_at, seconds: 3600},
+        items: [
+          {name: "first", tags: %w[a b]},
+          {name: "second", tags: %w[c]}
+        ]
+      }
+    )
+    cgi = FakeCGI.new(*encoded)
+
+    assert_equal(
+      {
+        "expires_after[anchor]" => ["created_at"],
+        "expires_after[seconds]" => ["3600"],
+        "items[][name]" => %w[first second],
+        "items[][tags][]" => %w[a b c]
+      },
+      cgi.params
+    )
+  end
+
+  def test_empty_collections_are_omitted
+    encoded = OpenAI::Internal::Util.encode_content(
+      {"content-type" => "multipart/form-data"},
+      {empty_array: [], empty_hash: {}, nested: {empty: []}, present: 1}
+    )
+    cgi = FakeCGI.new(*encoded)
+
+    assert_equal({"present" => ["1"]}, cgi.params)
+  end
+
   def test_hash_encode
     headers = {"content-type" => "multipart/form-data"}
     cases = {
       {a: 2, b: 3} => {"a" => "2", "b" => "3"},
       {a: 2, b: nil} => {"a" => "2", "b" => "null"},
-      {a: 2, b: [1, 2, 3]} => {"a" => "2", "b" => "1"},
       {strio: StringIO.new("a")} => {"strio" => "a"},
       {strio: OpenAI::FilePart.new("a")} => {"strio" => "a"},
       {pathname: Pathname(__FILE__)} => {"pathname" => -> { _1.read in /^class OpenAI/ }},

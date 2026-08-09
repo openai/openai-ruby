@@ -111,7 +111,19 @@ module OpenAI
         ?content_type: String?
       ) -> void
 
+      def self?.escape_multipart_header_param: (
+        Pathname | String | Symbol value
+      ) -> String
+
       def self?.write_multipart_chunk: (
+        Enumerator::Yielder y,
+        boundary: String,
+        key: Symbol | String,
+        val: top,
+        closing: ::Array[^-> void]
+      ) -> void
+
+      def self?.write_multipart_value: (
         Enumerator::Yielder y,
         boundary: String,
         key: Symbol | String,

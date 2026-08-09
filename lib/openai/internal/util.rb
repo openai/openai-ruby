@@ -496,14 +496,14 @@ module OpenAI
 
         # @api private
         #
-        # Multipart filenames are quoted-strings, not URI path segments. Escape header
-        # delimiters and remove CR/LF without encoding ordinary filename characters.
+        # Multipart disposition parameters are quoted-strings, not URI path segments.
+        # Escape header delimiters and remove CR/LF without encoding ordinary characters.
         #
-        # @param filename [Pathname, String]
+        # @param value [Pathname, String, Symbol]
         #
         # @return [String]
-        private def escape_multipart_filename(filename)
-          filename.to_s.gsub(/["\\]/) { "\\#{_1}" }.delete("\r\n").b
+        private def escape_multipart_header_param(value)
+          value.to_s.gsub(/["\\]/) { "\\#{_1}" }.delete("\r\n").b
         end
 
         # @api private
@@ -518,15 +518,16 @@ module OpenAI
           y << "Content-Disposition: form-data"
 
           unless key.nil?
-            y << "; name=\"#{key}\""
+            name = escape_multipart_header_param(key)
+            y << "; name=\"#{name}\""
           end
 
           case val
           in OpenAI::FilePart unless val.filename.nil?
-            filename = escape_multipart_filename(val.filename)
+            filename = escape_multipart_header_param(val.filename)
             y << "; filename=\"#{filename}\""
           in Pathname | IO
-            filename = escape_multipart_filename(::File.basename(val.to_path))
+            filename = escape_multipart_header_param(::File.basename(val.to_path))
             y << "; filename=\"#{filename}\""
           else
           end
@@ -537,13 +538,34 @@ module OpenAI
 
         # @api private
         #
+        # @param y [Enumerator::Yielder]
+        # @param boundary [String]
+        # @param key [Symbol, String]
+        # @param val [Object]
+        # @param closing [Array<Proc>]
+        private def write_multipart_value(y, boundary:, key:, val:, closing:)
+          case val
+          in Hash
+            val.each do |name, value|
+              write_multipart_value(y, boundary: boundary, key: "#{key}[#{name}]", val: value, closing: closing)
+            end
+          in Array
+            val.each do |value|
+              write_multipart_value(y, boundary: boundary, key: "#{key}[]", val: value, closing: closing)
+            end
+          else
+            write_multipart_chunk(y, boundary: boundary, key: key, val: val, closing: closing)
+          end
+        end
+
+        # @api private
+        #
         # https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.1.md#special-considerations-for-multipart-content
         #
         # @param body [Object]
         #
         # @return [Array(String, Enumerable<String>)]
         private def encode_multipart_streaming(body)
-          # rubocop:disable Style/CaseEquality
           # RFC 1521 Section 7.2.1 says we should have 70 char maximum for boundary length
           boundary = SecureRandom.urlsafe_base64(46)
 
@@ -552,14 +574,7 @@ module OpenAI
             case body
             in Hash
               body.each do |key, val|
-                case val
-                in Array if val.all? { primitive?(_1) || OpenAI::Internal::Type::FileInput === _1 }
-                  val.each do |v|
-                    write_multipart_chunk(y, boundary: boundary, key: key, val: v, closing: closing)
-                  end
-                else
-                  write_multipart_chunk(y, boundary: boundary, key: key, val: val, closing: closing)
-                end
+                write_multipart_value(y, boundary: boundary, key: key, val: val, closing: closing)
               end
             else
               write_multipart_chunk(y, boundary: boundary, key: nil, val: body, closing: closing)
@@ -569,7 +584,6 @@ module OpenAI
 
           fused_io = fused_enum(strio) { closing.each(&:call) }
           [boundary, fused_io]
-          # rubocop:enable Style/CaseEquality
         end
 
         # @api private
