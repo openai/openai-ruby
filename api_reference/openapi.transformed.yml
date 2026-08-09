@@ -27401,6 +27401,18 @@ components:
           anyOf:
           - $ref: '#/components/schemas/AuditLogActor'
           - type: 'null'
+        source:
+          type: string
+          description: The server-derived administrative authorization context recorded for the action, when available. API-key paths identify the authenticated API surface; biscuit-authorized paths identify the permission namespace used for authorization. This does not necessarily identify the literal client software.
+          enum:
+          - cloud_console
+          - adminapi
+          - retool
+          - glass
+          - managementapi
+          - tenantapi
+          - scim
+          - backfill
         api_key.created:
           type: object
           description: The details for events with this `type`.
@@ -61674,7 +61686,6 @@ components:
           description: The namespace name used in tool calls (for example, `crm`).
         description:
           type: string
-          minLength: 1
           description: A description of the namespace shown to the model.
         tools:
           items:
@@ -62651,8 +62662,8 @@ components:
           - type: 'null'
       type: object
       required:
-      - call_id
       - type
+      - call_id
       - output
       title: Function tool call output
       description: The output of a function tool call.
@@ -66541,7 +66552,6 @@ components:
           description: The namespace name used in tool calls (for example, `crm`).
         description:
           type: string
-          minLength: 1
           description: A description of the namespace shown to the model.
         tools:
           items:
@@ -69679,8 +69689,8 @@ components:
           - type: 'null'
       type: object
       required:
-      - call_id
       - type
+      - call_id
       - output
       title: Function tool call output
       description: The output of a function tool call.
