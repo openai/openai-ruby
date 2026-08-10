@@ -63,7 +63,7 @@ module OpenAI
         # by the client.
         def _request_id: -> String?
 
-        private def _set_request_id: (String? request_id) -> self
+        def _set_request_id: (String? request_id) -> self
 
         def self.coerce: (
           OpenAI::Internal::Type::BaseModel | ::Hash[top, top] | top value,

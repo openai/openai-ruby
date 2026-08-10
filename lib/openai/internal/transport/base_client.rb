@@ -641,7 +641,7 @@ module OpenAI
             unwrapped = OpenAI::Internal::Util.dig(decoded, unwrap)
             OpenAI::Internal::Type::Converter.coerce(model, unwrapped).tap do |result|
               if result.is_a?(OpenAI::Internal::Type::BaseModel)
-                result.__send__(:_set_request_id, response.headers["x-request-id"])
+                result._set_request_id(response.headers["x-request-id"])
               end
             end
           end

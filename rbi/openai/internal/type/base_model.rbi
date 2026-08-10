@@ -170,7 +170,7 @@ module OpenAI
 
         # @api private
         sig { params(request_id: T.nilable(String)).returns(T.self_type) }
-        private def _set_request_id(request_id)
+        def _set_request_id(request_id)
         end
 
         class << self

@@ -239,7 +239,7 @@ module OpenAI
         #
         # @param request_id [String, nil]
         # @return [self]
-        private def _set_request_id(request_id)
+        def _set_request_id(request_id)
           @_request_id = request_id
           self
         end
