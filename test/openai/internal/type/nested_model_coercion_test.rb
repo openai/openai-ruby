@@ -32,6 +32,11 @@ class OpenAI::Test::NestedModelCoercionTest < Minitest::Test
     optional :reversed_choice, ReversedItemOrInteger
   end
 
+  class NullableContainer < OpenAI::Internal::Type::BaseModel
+    optional :optional_item, Item
+    required :nullable_item, Item, nil?: true
+  end
+
   def test_constructor_and_assignment_store_coerced_nested_models
     model = Container.new(item: {a: "1", b: "2"}, items: [{a: "3", b: "4"}])
 
@@ -103,6 +108,23 @@ class OpenAI::Test::NestedModelCoercionTest < Minitest::Test
 
     assert_same(items, model.nullable_items)
     assert_same(map, model.nullable_map)
+  end
+
+  def test_constructor_and_assignment_accept_nil_for_optional_and_nilable_models
+    model = NullableContainer.new(optional_item: nil, nullable_item: nil)
+
+    assert_nil(model.optional_item)
+    assert_nil(model.nullable_item)
+    assert_equal({optional_item: nil, nullable_item: nil}, model.to_h)
+
+    model.optional_item = Item.new(a: 1, b: 2)
+    model.nullable_item = Item.new(a: 3, b: 4)
+    model.optional_item = nil
+    model.nullable_item = nil
+
+    assert_nil(model.optional_item)
+    assert_nil(model.nullable_item)
+    assert_equal({optional_item: nil, nullable_item: nil}, model.to_h)
   end
 
   def test_coerce_preserves_already_coerced_model_identity
