@@ -82,6 +82,8 @@ end
 
 Request parameters that correspond to file uploads can be passed as raw contents, a [`Pathname`](https://rubyapi.org/3.3/o/pathname) instance, [`StringIO`](https://rubyapi.org/3.3/o/stringio), or more.
 
+Raw `String` and `StringIO` values, and `IO` objects without a path, do not carry format-identifying metadata. The SDK sends them using the fallback filename `upload`; raw `String` values default to `text/plain`, while `StringIO` and pathless `IO` values default to `application/octet-stream`. For format-sensitive endpoints, such as audio transcriptions, wrap each value in `OpenAI::FilePart` and provide an extension-bearing filename and content type.
+
 ```ruby
 require "pathname"
 
@@ -93,12 +95,25 @@ file_object = openai.files.create(file: File.read("input.jsonl"), purpose: "fine
 
 puts(file_object.id)
 
-# Or, to control the filename and/or content type:
-image = OpenAI::FilePart.new(Pathname('dog.jpg'), content_type: 'image/jpeg')
+# For format-sensitive uploads, provide the filename and content type:
+audio_data = StringIO.new(File.binread("audio.wav"))
+audio = OpenAI::FilePart.new(
+  audio_data,
+  filename: "audio.wav",
+  content_type: "audio/wav"
+)
+transcription = openai.audio.transcriptions.create(
+  model: "gpt-4o-transcribe",
+  file: audio
+)
+puts(transcription.text)
+
+# FilePart also accepts a Pathname:
+image = OpenAI::FilePart.new(Pathname("dog.jpg"), content_type: "image/jpeg")
 edited = openai.images.edit(
   prompt: "make this image look like a painting",
   model: "gpt-image-1",
-  size: '1024x1024',
+  size: "1024x1024",
   image: image
 )
 

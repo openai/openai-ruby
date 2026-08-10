@@ -16,6 +16,10 @@ module OpenAI
         # Returns a transcription object in `json`, `diarized_json`, or `verbose_json`
         # format, or a stream of transcript events.
         #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
+        #
         # @overload create(file:, model:, chunking_strategy: nil, include: nil, keywords: nil, known_speaker_names: nil, known_speaker_references: nil, language: nil, languages: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
         #
         # @param file [Pathname, StringIO, IO, String, OpenAI::FilePart] The audio file object (not file name) to transcribe, in one of these formats: fl
@@ -76,6 +80,10 @@ module OpenAI
         #
         # Returns a transcription object in `json`, `diarized_json`, or `verbose_json`
         # format, or a stream of transcript events.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
         #
         # @overload create_streaming(file:, model:, chunking_strategy: nil, include: nil, keywords: nil, known_speaker_names: nil, known_speaker_references: nil, language: nil, languages: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
         #
