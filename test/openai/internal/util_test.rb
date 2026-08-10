@@ -442,6 +442,89 @@ class OpenAI::Test::UtilIOAdapterTest < Minitest::Test
     assert_equal("hello world", adapter.read)
   end
 
+  def test_io_read_preserves_native_length_conversion
+    length = Object.new
+    def length.to_int = 2
+    # rubocop:disable Lint/EmptyBlock
+    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(StringIO.new("abc")) {}
+    # rubocop:enable Lint/EmptyBlock
+
+    assert_equal("ab", adapter.read(length))
+  end
+
+  def test_enum_read_respects_max_len
+    # rubocop:disable Lint/EmptyBlock
+    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(%w[abc def].to_enum) {}
+    # rubocop:enable Lint/EmptyBlock
+
+    assert_equal("", adapter.read(0))
+    assert_equal("a", adapter.read(1))
+    assert_equal("bcd", adapter.read(3))
+    assert_equal("ef", adapter.read(99))
+    assert_nil(adapter.read(1))
+  end
+
+  def test_enum_read_preserves_mixed_encoding_chunks_by_byte_length
+    chunks = ["caf\u00E9", "\xFF\xFE".b]
+    # rubocop:disable Lint/EmptyBlock
+    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(chunks.to_enum) {}
+    # rubocop:enable Lint/EmptyBlock
+    actual = String.new.b
+
+    while (chunk = adapter.read(2))
+      assert_operator(chunk.bytesize, :<=, 2)
+      actual << chunk
+    end
+
+    assert_equal(chunks.map(&:b).join, actual)
+    assert_equal(Encoding::ASCII_8BIT, actual.encoding)
+  end
+
+  def test_enum_read_all_preserves_mixed_encoding_chunks
+    chunks = ["caf\u00E9", "\xFF\xFE".b]
+    # rubocop:disable Lint/EmptyBlock
+    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(chunks.to_enum) {}
+    # rubocop:enable Lint/EmptyBlock
+
+    result = adapter.read
+
+    assert_equal(chunks.map(&:b).join, result)
+    assert_equal(Encoding::ASCII_8BIT, result.encoding)
+  end
+
+  def test_enum_read_all_includes_buffered_bytes
+    # rubocop:disable Lint/EmptyBlock
+    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(%w[abc def].to_enum) {}
+    # rubocop:enable Lint/EmptyBlock
+
+    assert_equal("ab", adapter.read(2))
+    assert_equal("cdef", adapter.read)
+    assert_equal("", adapter.read)
+  end
+
+  def test_enum_read_clears_out_string_at_eof
+    out = +"stale"
+    # rubocop:disable Lint/EmptyBlock
+    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(["abc"].to_enum) {}
+    # rubocop:enable Lint/EmptyBlock
+
+    assert_equal("abc", adapter.read(99, out))
+    assert_same(out, adapter.read(0, out))
+    assert_equal("", out)
+    assert_nil(adapter.read(1, out))
+    assert_equal("", out)
+  end
+
+  def test_enum_read_rejects_negative_lengths
+    # rubocop:disable Lint/EmptyBlock
+    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(["abc"].to_enum) {}
+    # rubocop:enable Lint/EmptyBlock
+
+    assert_raises(ArgumentError) { adapter.read(-1) }
+    assert_equal("abc", adapter.read(99))
+    assert_raises(ArgumentError) { adapter.read(-1) }
+  end
+
   def test_copy_write
     cases = {
       StringIO.new => "",
