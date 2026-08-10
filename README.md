@@ -711,6 +711,38 @@ response = client.request(
 
 `OpenAI::Client` instances using the default `OpenAI::NetHTTPClient` are threadsafe, but are only fork-safe when there are no in-flight HTTP requests. Injected HTTP clients are responsible for documenting and enforcing their own concurrency guarantees.
 
+#### Asynchronous requests with a fiber scheduler
+
+The default HTTP client also cooperates with Ruby's fiber scheduler interface
+(`Fiber.scheduler`). When a request runs inside a non-blocking fiber managed by
+an active scheduler, network operations, streaming reads, retry delays, and
+waits for a pooled connection yield to other fibers instead of blocking the
+thread. Resource methods keep their normal return types; schedule each complete
+request or stream operation as a task using the scheduler implementation your
+application already uses.
+
+For example, with the [`async`](https://github.com/socketry/async) gem:
+
+```ruby
+require "async"
+
+prompts = ["Summarize the incident report.", "Draft the follow-up actions."]
+
+responses = Async do |task|
+  prompts.map do |prompt|
+    task.async do
+      openai.responses.create(model: "gpt-5.2", input: prompt)
+    end
+  end.map(&:wait)
+end.wait
+```
+
+Outside a non-blocking fiber managed by an active scheduler, calls block the
+current thread as usual. The SDK does not install a scheduler or depend on a
+particular scheduler gem.
+
+#### Connection pooling
+
 By default, each `OpenAI::Client` creates its own HTTP connection pool with a size of at least 99 connections. As such, we recommend instantiating the client once per application in most settings. An injected HTTP client may instead share its pool across multiple SDK clients; the caller owns that HTTP client's lifecycle.
 
 When all available connections from the pool are checked out, requests wait for a new connection to become available, with queue time counting towards the request timeout.
