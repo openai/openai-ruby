@@ -205,6 +205,49 @@ rotation, build and atomically swap in new `OpenAI::NetHTTPClient` and
 in-flight work finishes. See the complete [custom HTTP client mTLS
 example](examples/mtls_custom_http_client.rb).
 
+## Microsoft Azure OpenAI
+
+Use the standard client with the Azure provider to call model deployments through
+the Azure OpenAI v1 API. The provider accepts an Azure resource endpoint and
+adds `/openai/v1` when needed:
+
+```ruby
+require "openai"
+
+client = OpenAI::Client.new(
+  provider: OpenAI::Providers.azure(
+    endpoint: ENV.fetch("AZURE_OPENAI_ENDPOINT"),
+    api_key: ENV.fetch("AZURE_OPENAI_API_KEY")
+  )
+)
+
+response = client.responses.create(
+  model: ENV.fetch("AZURE_OPENAI_DEPLOYMENT"),
+  input: "Say hello!"
+)
+
+puts(response.output_text)
+```
+
+Omit `endpoint` and `api_key` to use `AZURE_OPENAI_ENDPOINT` and
+`AZURE_OPENAI_API_KEY`. For Microsoft Entra authentication, pass a callable
+that returns a current bearer token. The provider invokes it before every
+request attempt, including retries:
+
+```ruby
+client = OpenAI::Client.new(
+  provider: OpenAI::Providers.azure(
+    endpoint: ENV.fetch("AZURE_OPENAI_ENDPOINT"),
+    token_provider: -> { fetch_azure_openai_token }
+  )
+)
+```
+
+This integration targets the Azure OpenAI v1 API. It does not add dated
+`api-version` query parameters or rewrite requests to legacy
+`/deployments/{deployment}` paths. See [azure.md](azure.md) for configuration,
+authentication precedence, and endpoint security details.
+
 ## Amazon Bedrock
 
 Use the standard client with the Bedrock provider to call OpenAI models through Amazon Bedrock's OpenAI-compatible API. Add `aws-sdk-core` to your application for AWS credential discovery and SigV4 signing:

@@ -5,6 +5,15 @@ module OpenAI
     class << self
       sig do
         params(
+          endpoint: T.nilable(String),
+          api_key: T.nilable(String),
+          token_provider: T.nilable(T.proc.returns(String))
+        ).returns(OpenAI::Provider)
+      end
+      def azure(endpoint: nil, api_key: nil, token_provider: nil); end
+
+      sig do
+        params(
           region: T.nilable(String),
           base_url: T.nilable(String),
           api_key: T.nilable(String),
