@@ -1,3 +1,24 @@
+# Polling Helpers
+
+Video generation is asynchronous. Use `create_and_poll` to create a video and wait for it to reach
+either the `completed` or `failed` state:
+
+```ruby
+video = client.videos.create_and_poll(
+  prompt: "A calico cat playing a piano on stage",
+  poll_interval: 1
+)
+```
+
+To wait for a video that has already been created, use `poll`:
+
+```ruby
+video = client.videos.poll("video_123", poll_interval: 1)
+```
+
+`poll_interval` is measured in seconds and defaults to one second. Request failures are raised
+normally; a video that reaches the `failed` state is returned so its error details can be inspected.
+
 # Streaming Helpers
 
 ## Responses API
