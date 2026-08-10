@@ -307,6 +307,11 @@ module OpenAI
         end
 
         # @api private
+        sig { params(value: T.any(Pathname, String, Symbol)).returns(String) }
+        private def escape_multipart_header_param(value)
+        end
+
+        # @api private
         sig do
           params(
             y: Enumerator::Yielder,
@@ -317,6 +322,19 @@ module OpenAI
           ).void
         end
         private def write_multipart_chunk(y, boundary:, key:, val:, closing:)
+        end
+
+        # @api private
+        sig do
+          params(
+            y: Enumerator::Yielder,
+            boundary: String,
+            key: T.any(Symbol, String),
+            val: T.anything,
+            closing: T::Array[T.proc.void]
+          ).void
+        end
+        private def write_multipart_value(y, boundary:, key:, val:, closing:)
         end
 
         # @api private
