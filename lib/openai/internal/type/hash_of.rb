@@ -46,6 +46,8 @@ module OpenAI
               case [key, val]
               in [Symbol | String, ^type]
                 true
+              in [Symbol | String, nil]
+                nilable?
               else
                 false
               end

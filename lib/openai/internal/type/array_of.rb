@@ -38,7 +38,19 @@ module OpenAI
         # @param other [Object]
         #
         # @return [Boolean]
-        def ===(other) = other.is_a?(Array) && other.all?(item_type)
+        def ===(other)
+          type = item_type
+          other.is_a?(Array) && other.all? do |item|
+            case item
+            in ^type
+              true
+            in nil
+              nilable?
+            else
+              false
+            end
+          end
+        end
 
         # @api public
         #

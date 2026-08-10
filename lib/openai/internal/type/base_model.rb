@@ -82,13 +82,12 @@ module OpenAI
             define_method(setter) do |value|
               target = type_fn.call
               state = OpenAI::Internal::Type::Converter.new_coerce_state(translate_names: false)
-              coerced, error =
-                OpenAI::Internal::Type::Converter.coerce_with_error(target, value, state: state)
-              status = error || true
-              @coerced.store(name_sym, status)
+              coerced = OpenAI::Internal::Type::Converter.coerce(target, value, state: state)
+              error = state.fetch(:error)
+              @coerced.store(name_sym, error || true)
               stored =
-                case [target, status]
-                in [OpenAI::Internal::Type::Converter | Symbol, true]
+                case [target, error]
+                in [OpenAI::Internal::Type::Converter | Symbol, nil]
                   if value in ^target
                     value
                   else

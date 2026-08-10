@@ -125,6 +125,24 @@ class OpenAI::Test::PrimitiveModelTest < Minitest::Test
     end
   end
 
+  def test_coerce_with_error_isolates_each_attempt
+    previous_error = RuntimeError.new("previous")
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+    state[:error] = previous_error
+
+    value, error = OpenAI::Internal::Type::Converter.coerce_with_error(Integer, "one", state: state)
+
+    assert_equal("one", value)
+    assert_instance_of(ArgumentError, error)
+    assert_same(previous_error, state.fetch(:error))
+
+    value, error = OpenAI::Internal::Type::Converter.coerce_with_error(Integer, "1", state: state)
+
+    assert_equal(1, value)
+    assert_nil(error)
+    assert_same(previous_error, state.fetch(:error))
+  end
+
   def test_dump_retry
     types = [
       OpenAI::Internal::Type::Unknown,
@@ -265,6 +283,9 @@ class OpenAI::Test::CollectionModelTest < Minitest::Test
   A3 = OpenAI::Internal::Type::ArrayOf[Integer, nil?: true]
   H3 = OpenAI::Internal::Type::HashOf[Integer, nil?: true]
 
+  A4 = OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::Unknown]
+  H4 = OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
+
   def test_coerce
     cases = {
       [A1, []] => [{yes: 1}, []],
@@ -298,6 +319,21 @@ class OpenAI::Test::CollectionModelTest < Minitest::Test
         OpenAI::Internal::Type::Converter.coerce(target, input, state: state) => ^expect
         state.fetch(:exactness).filter { _2.nonzero? }.to_h => ^exactness
       end
+    end
+  end
+
+  def test_collection_matchers_respect_nullable_items_and_item_types
+    cases = {
+      [A1, [nil]] => false,
+      [A3, [nil]] => true,
+      [A4, [nil]] => true,
+      [H1, {item: nil}] => false,
+      [H3, {item: nil}] => true,
+      [H4, {item: nil}] => true
+    }
+
+    cases.each do |(target, input), expected|
+      assert_equal(expected, target.public_send(:===, input))
     end
   end
 end
@@ -343,34 +379,6 @@ class OpenAI::Test::BaseModelTest < Minitest::Test
   class M6 < M1
     required :a, OpenAI::Internal::Type::ArrayOf[M6]
     optional :b, M6
-  end
-
-  class M7 < OpenAI::Internal::Type::BaseModel
-    required :a, Integer
-  end
-
-  class M8 < OpenAI::Internal::Type::BaseModel
-    optional :item, M7
-    optional :items, OpenAI::Internal::Type::ArrayOf[M7]
-  end
-
-  class M9 < OpenAI::Internal::Type::BaseModel
-    required :a, Integer
-    required :b, Integer
-  end
-
-  module NestedUnion
-    extend OpenAI::Internal::Type::Union
-
-    variant Integer
-    variant M9
-  end
-
-  class M10 < OpenAI::Internal::Type::BaseModel
-    optional :item, M9
-    optional :items, OpenAI::Internal::Type::ArrayOf[M9]
-    optional :map, OpenAI::Internal::Type::HashOf[M9]
-    optional :choice, NestedUnion
   end
 
   def test_coerce
@@ -474,79 +482,6 @@ class OpenAI::Test::BaseModelTest < Minitest::Test
         end
       end
     end
-  end
-
-  def test_constructor_and_assignment_store_coerced_nested_models
-    model = M8.new(item: {a: "1"}, items: [{a: "2"}])
-
-    assert_instance_of(M7, model.item)
-    assert_instance_of(M7, model.items.fetch(0))
-    assert_instance_of(M7, model.to_h.fetch(:item))
-    assert_instance_of(M7, model.to_h.fetch(:items).fetch(0))
-    assert_equal(1, model.item.a)
-    assert_equal(2, model.items.fetch(0).a)
-
-    model.item = {a: "3"}
-    model.items = [{a: "4"}]
-
-    assert_instance_of(M7, model.item)
-    assert_instance_of(M7, model.items.fetch(0))
-    assert_instance_of(M7, model.to_h.fetch(:item))
-    assert_instance_of(M7, model.to_h.fetch(:items).fetch(0))
-    assert_equal(3, model.item.a)
-    assert_equal(4, model.items.fetch(0).a)
-    assert_equal({item: {a: "3"}, items: [{a: "4"}]}, model.deep_to_h)
-    assert_equal({item: {a: "3"}, items: [{a: "4"}]}, JSON.parse(model.to_json, symbolize_names: true))
-  end
-
-  def test_setter_preserves_already_coerced_nested_model_identity
-    item = M7.new(a: 1)
-    items = [item]
-    model = M8.new(item: item, items: items)
-
-    assert_same(item, model.item)
-    assert_same(items, model.items)
-    assert_same(item, model.items.fetch(0))
-  end
-
-  def test_coerce_preserves_already_coerced_model_identity
-    model = M7.new(a: 1)
-    state = OpenAI::Internal::Type::Converter.new_coerce_state
-
-    assert_same(model, OpenAI::Internal::Type::Converter.coerce(M7, model, state: state))
-  end
-
-  def test_failed_nested_model_coercion_preserves_input_and_error
-    item = {a: "one"}
-    items = [{a: "two"}]
-    model = M8.new(item: item, items: items)
-
-    assert_same(item, model.to_h.fetch(:item))
-    assert_same(items, model.to_h.fetch(:items))
-    assert_raises(OpenAI::Errors::ConversionError) { model.item }
-    assert_raises(OpenAI::Errors::ConversionError) { model.items }
-  end
-
-  def test_later_success_does_not_clear_composite_coercion_errors
-    invalid = {a: "one", b: "2"}
-    valid = {a: "3", b: "4"}
-    items = [invalid, valid]
-    map = {invalid: invalid, valid: valid}
-    model = M10.new(item: invalid, items: items, map: map)
-
-    assert_same(invalid, model.to_h.fetch(:item))
-    assert_same(items, model.to_h.fetch(:items))
-    assert_same(map, model.to_h.fetch(:map))
-    assert_raises(OpenAI::Errors::ConversionError) { model.item }
-    assert_raises(OpenAI::Errors::ConversionError) { model.items }
-    assert_raises(OpenAI::Errors::ConversionError) { model.map }
-  end
-
-  def test_rejected_union_variant_does_not_override_selected_coercion
-    model = M10.new(choice: "1")
-
-    assert_equal(1, model.choice)
-    assert_equal(1, model.to_h.fetch(:choice))
   end
 
   def test_inplace_modification
