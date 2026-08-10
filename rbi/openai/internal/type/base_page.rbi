@@ -9,6 +9,13 @@ module OpenAI
       module BasePage
         Elem = type_member(:out)
 
+        # The ID of the API request, returned via the `x-request-id` response
+        # header. This is only populated on top-level response objects returned
+        # by the client.
+        sig { returns(T.nilable(String)) }
+        def _request_id
+        end
+
         sig { overridable.returns(T::Boolean) }
         def next_page?
         end

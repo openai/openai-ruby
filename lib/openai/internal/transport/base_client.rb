@@ -639,7 +639,11 @@ module OpenAI
             page.new(client: self, req: req, headers: response.headers, page_data: decoded)
           else
             unwrapped = OpenAI::Internal::Util.dig(decoded, unwrap)
-            OpenAI::Internal::Type::Converter.coerce(model, unwrapped)
+            OpenAI::Internal::Type::Converter.coerce(model, unwrapped).tap do |result|
+              if result.is_a?(OpenAI::Internal::Type::BaseModel)
+                result._set_request_id(response.headers["x-request-id"])
+              end
+            end
           end
         end
 

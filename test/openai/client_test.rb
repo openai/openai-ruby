@@ -150,6 +150,80 @@ class OpenAITest < Minitest::Test
     assert_requested(:get, "http://localhost/responses/resp_123?stream=true", times: 1)
   end
 
+  def test_request_id_on_successful_response
+    stub_request(:post, "http://localhost/chat/completions").to_return_json(
+      status: 200,
+      headers: {"x-request-id" => "req_success"},
+      body: {
+        id: "chatcmpl_123",
+        choices: [],
+        created: 1_700_000_000,
+        model: "gpt-5.4",
+        object: "chat.completion"
+      }
+    )
+
+    openai =
+      OpenAI::Client.new(
+        base_url: "http://localhost",
+        api_key: "My API Key",
+        admin_api_key: "My Admin API Key"
+      )
+
+    response = openai.chat.completions.create(
+      messages: [{content: "string", role: :developer}],
+      model: :"gpt-5.4"
+    )
+
+    assert_equal("req_success", response._request_id)
+    refute_includes(response.to_h, :_request_id)
+    refute_includes(response.to_json, "_request_id")
+    refute_includes(response.to_yaml, "_request_id")
+  end
+
+  def test_request_id_on_paginated_response
+    stub_request(:get, "http://localhost/models").to_return_json(
+      status: 200,
+      headers: {"x-request-id" => "req_page"},
+      body: {data: [], object: "list"}
+    )
+
+    openai =
+      OpenAI::Client.new(
+        base_url: "http://localhost",
+        api_key: "My API Key",
+        admin_api_key: "My Admin API Key"
+      )
+
+    response = openai.models.list
+
+    assert_equal("req_page", response._request_id)
+  end
+
+  def test_request_id_on_error_response
+    stub_request(:post, "http://localhost/chat/completions").to_return_json(
+      status: 400,
+      headers: {"x-request-id" => "req_error"},
+      body: {error: {message: "Invalid request"}}
+    )
+
+    openai =
+      OpenAI::Client.new(
+        base_url: "http://localhost",
+        api_key: "My API Key",
+        admin_api_key: "My Admin API Key"
+      )
+
+    error = assert_raises(OpenAI::Errors::BadRequestError) do
+      openai.chat.completions.create(
+        messages: [{content: "string", role: :developer}],
+        model: :"gpt-5.4"
+      )
+    end
+
+    assert_equal("req_error", error.request_id)
+  end
+
   def test_client_default_request_default_retry_attempts
     stub_request(:post, "http://localhost/chat/completions").to_return_json(status: 500, body: {})
 

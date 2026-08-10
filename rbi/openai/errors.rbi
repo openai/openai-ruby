@@ -48,6 +48,13 @@ module OpenAI
       sig { returns(T.nilable(String)) }
       attr_accessor :type
 
+      # The ID of the API request, returned via the `x-request-id` response
+      # header. This is nil when no HTTP response was received or the response
+      # did not include the header.
+      sig { returns(T.nilable(String)) }
+      def request_id
+      end
+
       # @api private
       sig do
         params(

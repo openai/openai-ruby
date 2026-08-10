@@ -161,6 +161,18 @@ module OpenAI
         def hash
         end
 
+        # The ID of the API request, returned via the `x-request-id` response
+        # header. This is only populated on top-level response objects returned
+        # by the client.
+        sig { returns(T.nilable(String)) }
+        def _request_id
+        end
+
+        # @api private
+        sig { params(request_id: T.nilable(String)).returns(T.self_type) }
+        def _set_request_id(request_id)
+        end
+
         class << self
           # @api private
           sig do

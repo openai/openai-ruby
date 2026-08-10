@@ -2,6 +2,11 @@ module OpenAI
   module Internal
     module Type
       module BasePage[Elem]
+        # The ID of the API request, returned via the `x-request-id` response
+        # header. This is only populated on top-level response objects returned
+        # by the client.
+        def _request_id: -> String?
+
         def next_page?: -> bool
 
         def next_page: -> instance

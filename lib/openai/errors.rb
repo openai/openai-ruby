@@ -58,6 +58,13 @@ module OpenAI
       # @return [String, nil]
       attr_accessor :type
 
+      # The ID of the API request, returned via the `x-request-id` response
+      # header. This is nil when no HTTP response was received or the response
+      # did not include the header.
+      #
+      # @return [String, nil]
+      def request_id = headers&.[]("x-request-id")
+
       # @api private
       #
       # @param url [URI::Generic]
