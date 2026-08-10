@@ -671,11 +671,12 @@ response = client.request(
 #### Asynchronous requests with a fiber scheduler
 
 The default HTTP client also cooperates with Ruby's fiber scheduler interface
-(`Fiber.scheduler`). When a scheduler is active, network operations, streaming
-reads, retry delays, and waits for a pooled connection yield to other fibers
-instead of blocking the thread. Resource methods keep their normal return types;
-schedule each complete request or stream operation as a task using the scheduler
-implementation your application already uses.
+(`Fiber.scheduler`). When a request runs inside a non-blocking fiber managed by
+an active scheduler, network operations, streaming reads, retry delays, and
+waits for a pooled connection yield to other fibers instead of blocking the
+thread. Resource methods keep their normal return types; schedule each complete
+request or stream operation as a task using the scheduler implementation your
+application already uses.
 
 For example, with the [`async`](https://github.com/socketry/async) gem:
 
@@ -693,8 +694,9 @@ responses = Async do |task|
 end.wait
 ```
 
-Without an active fiber scheduler, calls block the current thread as usual. The
-SDK does not install a scheduler or depend on a particular scheduler gem.
+Outside a non-blocking fiber managed by an active scheduler, calls block the
+current thread as usual. The SDK does not install a scheduler or depend on a
+particular scheduler gem.
 
 #### Connection pooling
 

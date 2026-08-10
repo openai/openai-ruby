@@ -5,8 +5,9 @@ require_relative "internal/read_io_adapter"
 module OpenAI
   # The SDK's pooled Net::HTTP implementation.
   #
-  # Network operations cooperate with an active Ruby Fiber scheduler, allowing
-  # concurrent requests and streams without occupying one thread per request.
+  # Network operations from a non-blocking fiber cooperate with its active Ruby
+  # Fiber scheduler, allowing concurrent requests and streams without occupying
+  # one thread per request.
   #
   # Pass a block to configure each SDK-created connection before it is pooled
   # and started.
