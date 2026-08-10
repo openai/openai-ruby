@@ -283,6 +283,13 @@ module OpenAI
         def to_yaml(*a)
         end
 
+        # Keep transport metadata outside Psych's object serialization path.
+        #
+        # @api private
+        sig { params(coder: T.untyped).void }
+        def encode_with(coder)
+        end
+
         # Create a new instance of a model.
         sig do
           params(

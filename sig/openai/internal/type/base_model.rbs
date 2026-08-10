@@ -100,6 +100,8 @@ module OpenAI
 
         def to_yaml: (*top a) -> String
 
+        def encode_with: (top coder) -> void
+
         def initialize: (?::Hash[Symbol, top] | instance data) -> void
 
         def self.inspect: (?depth: Integer) -> String

@@ -497,6 +497,17 @@ module OpenAI
         # @return [String]
         def to_yaml(*a) = OpenAI::Internal::Type::Converter.dump(self.class, self).to_yaml(*a)
 
+        # Keep transport metadata outside Psych's object serialization path.
+        #
+        # @api private
+        #
+        # @param coder [Psych::Coder]
+        # @return [void]
+        def encode_with(coder)
+          coder["data"] = @data
+          coder["coerced"] = @coerced
+        end
+
         # Create a new instance of a model.
         #
         # @param data [Hash{Symbol=>Object}, self]

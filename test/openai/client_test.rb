@@ -185,6 +185,9 @@ class OpenAITest < Minitest::Test
     refute_includes(response.to_json, "response_headers")
     refute_includes(response.to_yaml, "_request_id")
     refute_includes(response.to_yaml, "response_headers")
+    dumped_yaml = YAML.dump(response)
+    refute_includes(dumped_yaml, "_request_id")
+    refute_includes(dumped_yaml, "response_headers")
   end
 
   def test_request_id_on_paginated_response
