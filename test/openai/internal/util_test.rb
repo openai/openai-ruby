@@ -330,6 +330,14 @@ class OpenAI::Test::UtilIOAdapterTest < Minitest::Test
     end
   end
 
+  def test_read_all_from_enumerator
+    # rubocop:disable Lint/EmptyBlock
+    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(["hello ", "world"].each) {}
+    # rubocop:enable Lint/EmptyBlock
+
+    assert_equal("hello world", adapter.read)
+  end
+
   def test_copy_write
     cases = {
       StringIO.new => "",

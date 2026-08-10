@@ -36,7 +36,6 @@ module OpenAI
           def to_a
             values = []
             loop { values << self.next }
-          rescue StopIteration
             values
           end
 
