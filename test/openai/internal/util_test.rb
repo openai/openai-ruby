@@ -445,17 +445,15 @@ class OpenAI::Test::UtilIOAdapterTest < Minitest::Test
   def test_io_read_preserves_native_length_conversion
     length = Object.new
     def length.to_int = 2
-    # rubocop:disable Lint/EmptyBlock
-    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(StringIO.new("abc")) {}
-    # rubocop:enable Lint/EmptyBlock
+    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(
+      StringIO.new("abc")
+    ) { |_chunk| nil }
 
     assert_equal("ab", adapter.read(length))
   end
 
   def test_enum_read_respects_max_len
-    # rubocop:disable Lint/EmptyBlock
-    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(%w[abc def].to_enum) {}
-    # rubocop:enable Lint/EmptyBlock
+    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(%w[abc def].to_enum) { |_chunk| nil }
 
     assert_equal("", adapter.read(0))
     assert_equal("a", adapter.read(1))
@@ -466,9 +464,7 @@ class OpenAI::Test::UtilIOAdapterTest < Minitest::Test
 
   def test_enum_read_preserves_mixed_encoding_chunks_by_byte_length
     chunks = ["caf\u00E9", "\xFF\xFE".b]
-    # rubocop:disable Lint/EmptyBlock
-    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(chunks.to_enum) {}
-    # rubocop:enable Lint/EmptyBlock
+    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(chunks.to_enum) { |_chunk| nil }
     actual = String.new.b
 
     while (chunk = adapter.read(2))
@@ -482,9 +478,7 @@ class OpenAI::Test::UtilIOAdapterTest < Minitest::Test
 
   def test_enum_read_all_preserves_mixed_encoding_chunks
     chunks = ["caf\u00E9", "\xFF\xFE".b]
-    # rubocop:disable Lint/EmptyBlock
-    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(chunks.to_enum) {}
-    # rubocop:enable Lint/EmptyBlock
+    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(chunks.to_enum) { |_chunk| nil }
 
     result = adapter.read
 
@@ -493,9 +487,7 @@ class OpenAI::Test::UtilIOAdapterTest < Minitest::Test
   end
 
   def test_enum_read_all_includes_buffered_bytes
-    # rubocop:disable Lint/EmptyBlock
-    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(%w[abc def].to_enum) {}
-    # rubocop:enable Lint/EmptyBlock
+    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(%w[abc def].to_enum) { |_chunk| nil }
 
     assert_equal("ab", adapter.read(2))
     assert_equal("cdef", adapter.read)
@@ -504,9 +496,7 @@ class OpenAI::Test::UtilIOAdapterTest < Minitest::Test
 
   def test_enum_read_clears_out_string_at_eof
     out = +"stale"
-    # rubocop:disable Lint/EmptyBlock
-    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(["abc"].to_enum) {}
-    # rubocop:enable Lint/EmptyBlock
+    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(["abc"].to_enum) { |_chunk| nil }
 
     assert_equal("abc", adapter.read(99, out))
     assert_same(out, adapter.read(0, out))
@@ -516,9 +506,7 @@ class OpenAI::Test::UtilIOAdapterTest < Minitest::Test
   end
 
   def test_enum_read_rejects_negative_lengths
-    # rubocop:disable Lint/EmptyBlock
-    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(["abc"].to_enum) {}
-    # rubocop:enable Lint/EmptyBlock
+    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(["abc"].to_enum) { |_chunk| nil }
 
     assert_raises(ArgumentError) { adapter.read(-1) }
     assert_equal("abc", adapter.read(99))
