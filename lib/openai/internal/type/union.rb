@@ -159,11 +159,11 @@ module OpenAI
         #
         # @return [Object]
         def coerce(value, state:)
+          strictness = state.fetch(:strictness)
           if (target = resolve_variant(value))
             return OpenAI::Internal::Type::Converter.coerce(target, value, state: state)
           end
 
-          strictness = state.fetch(:strictness)
           exactness = state.fetch(:exactness)
 
           alternatives = []
@@ -172,14 +172,16 @@ module OpenAI
             exact = state[:exactness] = {yes: 0, no: 0, maybe: 0}
             state[:branched] += 1
 
-            coerced = OpenAI::Internal::Type::Converter.coerce(target, value, state: state)
+            coerced, error =
+              OpenAI::Internal::Type::Converter.coerce_with_error(target, value, state: state)
             yes, no, maybe = exact.values
             if (no + maybe).zero? || (!strictness && yes.positive?)
               exact.each { exactness[_1] += _2 }
               state[:exactness] = exactness
+              state[:error] = error
               return coerced
             elsif maybe.positive?
-              alternatives << [[-yes, -maybe, no], exact, coerced]
+              alternatives << [[-yes, -maybe, no], exact, coerced, error]
             end
           end
 
@@ -188,8 +190,9 @@ module OpenAI
             exactness[:no] += 1
             state[:error] = ArgumentError.new("no matching variant for #{value.inspect}")
             value
-          in [[_, exact, coerced], *]
+          in [[_, exact, coerced, error], *]
             exact.each { exactness[_1] += _2 }
+            state[:error] = error
             coerced
           end
             .tap { state[:exactness] = exactness }
