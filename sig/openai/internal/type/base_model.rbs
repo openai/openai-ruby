@@ -58,6 +58,13 @@ module OpenAI
 
         def hash: -> Integer
 
+        # The ID of the API request, returned via the `x-request-id` response
+        # header. This is only populated on top-level response objects returned
+        # by the client.
+        def _request_id: -> String?
+
+        private def _set_request_id: (String? request_id) -> self
+
         def self.coerce: (
           OpenAI::Internal::Type::BaseModel | ::Hash[top, top] | top value,
           state: OpenAI::Internal::Type::Converter::coerce_state

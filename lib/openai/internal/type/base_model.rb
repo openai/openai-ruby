@@ -226,6 +226,24 @@ module OpenAI
         # @return [Integer]
         def hash = [self.class, @data].hash
 
+        # The ID of the API request, returned via the `x-request-id` response
+        # header. This is only populated on top-level response objects returned
+        # by the client.
+        #
+        # @api public
+        #
+        # @return [String, nil]
+        attr_reader :_request_id
+
+        # @api private
+        #
+        # @param request_id [String, nil]
+        # @return [self]
+        private def _set_request_id(request_id)
+          @_request_id = request_id
+          self
+        end
+
         class << self
           # @api private
           #

@@ -565,6 +565,36 @@ Error codes are as follows:
 | Timeout          | `APITimeoutError`          |
 | Network error    | `APIConnectionError`       |
 
+### Request IDs
+
+OpenAI recommends logging request IDs in production so requests can be traced
+during troubleshooting. Successful typed responses expose `_request_id`, which
+is populated from the `x-request-id` response header:
+
+```ruby
+response = openai.responses.create(model: "gpt-5.2", input: "Say 'this is a test'.")
+puts(response._request_id) # req_123
+```
+
+The `_request_id` property is only populated on the top-level response object
+and is not included in `to_h`, JSON, or YAML output. Unlike other properties
+that begin with an underscore, `_request_id` is public.
+
+For failed HTTP requests, catch `OpenAI::Errors::APIStatusError` and use
+`request_id`:
+
+```ruby
+begin
+  openai.responses.create(model: "gpt-5.2", input: "Say 'this is a test'.")
+rescue OpenAI::Errors::APIStatusError => e
+  puts(e.request_id) # req_123
+  raise
+end
+```
+
+See the [official OpenAI request debugging documentation](https://developers.openai.com/api/reference/overview#debugging-requests)
+for more information.
+
 ### Retries
 
 Certain errors will be automatically retried 2 times by default, with a short exponential backoff.

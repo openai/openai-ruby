@@ -11,6 +11,15 @@ module OpenAI
       module BasePage
         # rubocop:disable Lint/UnusedMethodArgument
 
+        # The ID of the API request, returned via the `x-request-id` response
+        # header. This is only populated on top-level response objects returned
+        # by the client.
+        #
+        # @api public
+        #
+        # @return [String, nil]
+        attr_reader :_request_id
+
         # @api public
         #
         # @return [Boolean]
@@ -45,6 +54,7 @@ module OpenAI
           @client = client
           @req = req
           @model = req.fetch(:model)
+          @_request_id = headers["x-request-id"]
           super()
         end
 
