@@ -420,9 +420,9 @@ module OpenAI
       end
 
       # @type [Regexp]
-      JSON_CONTENT = %r{^application/(?:[a-zA-Z0-9.-]+\+)?json(?!l)}
+      JSON_CONTENT = %r{\Aapplication/(?:[a-z0-9.-]+\+)?json[ \t]*(?:;|\z)}i
       # @type [Regexp]
-      JSONL_CONTENT = %r{^application/(:?x-(?:n|l)djson)|(:?(?:x-)?jsonl)}
+      JSONL_CONTENT = %r{\Aapplication/(?:x-[nl]djson|(?:x-)?jsonl)[ \t]*(?:;|\z)}i
 
       class << self
         # @api private
@@ -667,7 +667,7 @@ module OpenAI
                 y << JSON.parse(_1, symbolize_names: true)
               end
             end
-          in %r{^text/event-stream}
+          in %r{\Atext/event-stream[ \t]*(?:;|\z)}i
             lines = decode_lines(stream)
             decode_sse(lines)
           else
