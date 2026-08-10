@@ -264,10 +264,13 @@ module OpenAI
       end
 
       JSON_CONTENT =
-        T.let(%r{^application/(?:[a-zA-Z0-9.-]+\+)?json(?!l)}, Regexp)
+        T.let(
+          %r{\Aapplication/(?:[a-z0-9.-]+\+)?json[ \t]*(?:;|\z)}i,
+          Regexp
+        )
       JSONL_CONTENT =
         T.let(
-          %r{\Aapplication/(?:x-(?:n|l)djson|(?:x-)?jsonl)[ \t]*(?:;|\z)}i,
+          %r{\Aapplication/(?:x-[nl]djson|(?:x-)?jsonl)[ \t]*(?:;|\z)}i,
           Regexp
         )
 

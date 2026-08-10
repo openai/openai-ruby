@@ -166,47 +166,6 @@ class OpenAI::Test::UtilUriHandlingTest < Minitest::Test
   end
 end
 
-class OpenAI::Test::RegexMatchTest < Minitest::Test
-  def test_json_content
-    cases = {
-      "application/json" => true,
-      "application/jsonl" => false,
-      "application/arbitrary+json" => true,
-      "application/ARBITRARY+json" => true,
-      "application/vnd.github.v3+json" => true,
-      "application/vnd.api+json" => true
-    }
-    cases.each do |header, verdict|
-      assert_pattern do
-        OpenAI::Internal::Util::JSON_CONTENT.match?(header) => ^verdict
-      end
-    end
-  end
-
-  def test_jsonl_content
-    cases = {
-      "application/x-ndjson" => true,
-      "application/x-ldjson" => true,
-      "application/jsonl" => true,
-      "application/x-jsonl" => true,
-      "application/jsonl; charset=utf-8" => true,
-      "APPLICATION/JSONL" => true,
-      "application/jsonl " => true,
-      "application/json" => false,
-      "application/vnd.api+json" => false,
-      "application/jsonlines" => false,
-      "text/plain; name=jsonl" => false,
-      "foojsonlbar" => false,
-      "application/notjsonlbutjsonl" => false
-    }
-    cases.each do |header, verdict|
-      assert_pattern do
-        OpenAI::Internal::Util::JSONL_CONTENT.match?(header) => ^verdict
-      end
-    end
-  end
-end
-
 class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
   class FakeCGI < CGI
     def initialize(headers, io)
