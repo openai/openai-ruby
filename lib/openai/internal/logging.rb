@@ -21,7 +21,8 @@ module OpenAI
       OPAQUE_STRING_BYTES = 1_024
       SENSITIVE_BODY_KEY = /(?:api[-_]?key|authorization|credential|password|secret|signature|token)/i
       SENSITIVE_QUERY_KEY =
-        /(?:\A|[-_])(?:api[-_]?key|authorization|credential|key|password|secret|signature|token)\z/i
+        /(?:\A|[-_])(?:api[-_]?key|authorization|credential|key|password|secret|sig|signature|token)\z/i
+      URL_HEADER_KEY = /(?:\A|[-_])(?:location|url|uri)\z|\A(?:link|refresh)\z/i
 
       class Context
         def initialize(logger:, log_level:, method:, url:)
@@ -91,6 +92,12 @@ module OpenAI
               "status=#{response.status} request_id=#{safe_field(response.headers['x-request-id'])} " \
               "attempts=#{@attempts} duration_ms=#{duration_ms}"
           end
+        end
+
+        def observe_stream(stream, response:)
+          return stream unless enabled?(:error)
+
+          ObservedStream.new(stream: stream, context: self, response: response)
         end
 
         def request_failed(error)
@@ -205,6 +212,39 @@ module OpenAI
         end
       end
 
+      class ObservedStream
+        include OpenAI::Internal::Type::BaseStream
+
+        def initialize(stream:, context:, response:)
+          @stream = stream
+          @context = context
+          @response = response
+          @status = stream.status
+          @headers = stream.headers
+          @iterator = iterator
+        end
+
+        private def iterator
+          source = @stream.to_enum
+          observed = Enumerator.new do |yielder|
+            loop do
+              event =
+                begin
+                  source.next
+                rescue StopIteration
+                  @context.completed(@response)
+                  break
+                rescue StandardError => e
+                  @context.request_failed(e)
+                  raise
+                end
+              yielder << event
+            end
+          end
+          OpenAI::Internal::Util.fused_enum(observed) { @stream.close }
+        end
+      end
+
       class << self
         def normalize_level(value)
           level = value.to_s.downcase.to_sym if value.is_a?(String) || value.is_a?(Symbol)
@@ -249,7 +289,14 @@ module OpenAI
               sensitive =
                 REDACTED_HEADERS.include?(normalized_name) ||
                 SENSITIVE_QUERY_KEY.match?(normalized_name)
-              rendered = sensitive ? "[REDACTED]" : value
+              rendered =
+                if sensitive
+                  "[REDACTED]"
+                elsif URL_HEADER_KEY.match?(normalized_name)
+                  sanitized_header_url(value)
+                else
+                  value
+                end
               [name, rendered]
             end
           JSON.generate(redacted)
@@ -299,6 +346,12 @@ module OpenAI
           uri.tap { _1.query = nil }
         end
 
+        private def sanitized_header_url(value)
+          safe_url(URI(value.to_s))
+        rescue URI::InvalidURIError
+          "[URL OMITTED]"
+        end
+
         private def textual_content_type?(content_type)
           content_type.empty? ||
             content_type.match?(%r{\Atext/}i) ||
@@ -342,7 +395,11 @@ module OpenAI
         end
 
         private def opaque_string?(value)
-          value.bytesize >= OPAQUE_STRING_BYTES && value.match?(%r{\A[A-Za-z0-9+/=\s]+\z})
+          return false if value.bytesize < OPAQUE_STRING_BYTES
+
+          encoded = value.sub(/\Adata:[^,]*;base64,/i, "")
+          encoded.match?(%r{\A[A-Za-z0-9+/_=\s-]+\z}) ||
+            encoded.match?(/\A[A-Za-z0-9_-]+(?:\.[A-Za-z0-9_-]+){1,4}\z/)
         end
       end
     end

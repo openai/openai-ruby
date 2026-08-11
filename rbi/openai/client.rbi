@@ -160,7 +160,7 @@ module OpenAI
         provider: T.nilable(OpenAI::Provider),
         base_url: T.nilable(String),
         max_retries: Integer,
-        timeout: Float,
+        timeout: T.nilable(Float),
         initial_retry_delay: Float,
         max_retry_delay: Float,
         http_client: T.untyped,

@@ -233,7 +233,7 @@ module OpenAI
     #
     # @param max_retries [Integer] Max number of retries to attempt after a failed retryable request.
     #
-    # @param timeout [Float]
+    # @param timeout [Float, nil]
     #
     # @param initial_retry_delay [Float]
     #

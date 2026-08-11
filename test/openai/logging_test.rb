@@ -283,6 +283,22 @@ class LoggingTest < Minitest::Test
     assert_equal("req_good\\nforged", OpenAI::Internal::Logging.safe_field("req_good\nforged"))
   end
 
+  def test_uri_valued_headers_are_sanitized_or_omitted
+    headers = OpenAI::Internal::Logging.format_headers(
+      "Location" => "https://user:password@example.com/file?sig=azure-secret&safe=visible",
+      "X-Callback-URL" => "https://example.com/callback?token=callback-secret",
+      "Link" => "<https://example.com/next?X-Amz-Signature=aws-secret>; rel=next"
+    )
+
+    assert_includes(headers, "safe=visible")
+    assert_includes(headers, "%5BREDACTED%5D")
+    assert_includes(headers, "[URL OMITTED]")
+    refute_includes(headers, "azure-secret")
+    refute_includes(headers, "callback-secret")
+    refute_includes(headers, "aws-secret")
+    refute_includes(headers, "user:password@")
+  end
+
   def test_debug_logging_omits_large_opaque_and_oversized_json_values
     opaque = "a" * (OpenAI::Internal::Logging::OPAQUE_STRING_BYTES + 1)
     formatted = OpenAI::Internal::Logging.format_body(
@@ -304,6 +320,22 @@ class LoggingTest < Minitest::Test
     refute_includes(formatted, opaque)
     assert_includes(oversized, "[JSON BODY OMITTED]")
     assert_equal("[BODY CLOSED EARLY] bytes=7", incomplete)
+  end
+
+  def test_debug_logging_omits_base64url_data_uris_and_jwts
+    encoded_bytes = OpenAI::Internal::Logging::OPAQUE_STRING_BYTES + 1
+    base64url = "-_" * ((encoded_bytes / 2) + 1)
+    data_uri = "data:image/png;base64,#{'a' * encoded_bytes}"
+    jwt = ["e" * encoded_bytes, "payload", "signature"].join(".")
+    formatted = OpenAI::Internal::Logging.format_body(
+      JSON.generate(base64url: base64url, image: data_uri, assertion: jwt),
+      headers: {"content-type" => "application/json"}
+    )
+
+    assert_equal(3, formatted.scan("[OPAQUE DATA OMITTED").length)
+    refute_includes(formatted, base64url)
+    refute_includes(formatted, data_uri)
+    refute_includes(formatted, jwt)
   end
 
   def test_retry_logs_include_reason_delay_and_attempt_count
@@ -400,6 +432,92 @@ class LoggingTest < Minitest::Test
     debug_log = logger.events.filter_map { _2 if _1 == :debug }.join("\n")
     assert_includes(debug_log, "[STREAM BODY OMITTED]")
     refute_includes(debug_log, "stream-secret")
+  end
+
+  def test_stream_completion_is_logged_only_after_consumption
+    logger = CapturingLogger.new
+    http_client = StubHTTPClient.new do |_request|
+      OpenAI::HTTPClient::Response.new(
+        status: 200,
+        headers: {"content-type" => "text/event-stream", "x-request-id" => "req_stream"},
+        body: "data: {\"message\":\"done\"}\n\n"
+      )
+    end
+    client = OpenAI::Client.new(
+      api_key: "test-key",
+      http_client: http_client,
+      logger: logger,
+      log_level: :info
+    )
+
+    stream = client.request(
+      method: :get,
+      path: "stream",
+      stream: OpenAI::Internal::Stream
+    )
+
+    assert_empty(logger.events)
+    assert_equal([{message: "done"}], stream.to_a)
+    assert_equal([:info], logger.events.map(&:first))
+    assert_includes(logger.events.fetch(0).fetch(1), "request complete")
+  end
+
+  def test_stream_failures_log_an_error_without_a_success_event
+    logger = CapturingLogger.new
+    http_client = StubHTTPClient.new do |_request|
+      OpenAI::HTTPClient::Response.new(
+        status: 200,
+        headers: {"content-type" => "text/event-stream", "x-request-id" => "req_stream"},
+        body: "data: {\"error\":{\"message\":\"stream failed\"}}\n\n"
+      )
+    end
+    client = OpenAI::Client.new(
+      api_key: "test-key",
+      http_client: http_client,
+      logger: logger,
+      log_level: :info
+    )
+    stream = client.request(
+      method: :get,
+      path: "stream",
+      stream: OpenAI::Internal::Stream
+    )
+
+    assert_empty(logger.events)
+    assert_raises(OpenAI::Errors::APIStatusError) { stream.to_a }
+    assert_equal([:error], logger.events.map(&:first))
+    assert_includes(logger.events.fetch(0).fetch(1), "request failed")
+    refute_includes(logger.events.fetch(0).fetch(1), "request complete")
+  end
+
+  def test_consumer_exceptions_are_not_logged_as_request_failures
+    logger = CapturingLogger.new
+    http_client = StubHTTPClient.new do |_request|
+      OpenAI::HTTPClient::Response.new(
+        status: 200,
+        headers: {"content-type" => "text/event-stream"},
+        body: "data: {\"message\":\"first\"}\n\n"
+      )
+    end
+    client = OpenAI::Client.new(
+      api_key: "test-key",
+      http_client: http_client,
+      logger: logger,
+      log_level: :info
+    )
+    stream = client.request(
+      method: :get,
+      path: "stream",
+      stream: OpenAI::Internal::Stream
+    )
+
+    error = assert_raises(RuntimeError) do
+      callback = ->(_event) { raise "consumer failed" }
+      stream.each(&callback)
+    end
+
+    assert_equal("consumer failed", error.message)
+    assert_empty(logger.events)
   end
 
   def test_debug_logging_omits_multipart_file_contents

@@ -8,7 +8,8 @@ module OpenAI
           {
             method: Symbol,
             path: String | ::Array[String],
-            ?query: ::Hash[String, (::Array[String] | String)?]?,
+            ?query: ::Hash[String, (::Array[String]
+            | String)?]?,
             ?headers: ::Hash[String, (String
             | Integer
             | ::Array[(String | Integer)?])?]?,
@@ -20,7 +21,10 @@ module OpenAI
             ?page: Class?,
             ?stream: Class?,
             ?model: OpenAI::Internal::Type::Converter::input?,
-            ?security: { :bearer_auth? => bool, :admin_api_key_auth? => bool }?,
+            ?security: {
+              :bearer_auth? => bool,
+              :admin_api_key_auth? => bool
+            }?,
             ?options: OpenAI::request_opts?
           }
         type request_input =

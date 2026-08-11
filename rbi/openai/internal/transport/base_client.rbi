@@ -246,9 +246,11 @@ module OpenAI
         # methods call into.
         #
         sig do
-          override.params(
-            req: OpenAI::Internal::Transport::BaseClient::RequestComponents
-          ).returns(T.anything)
+          override
+            .params(
+              req: OpenAI::Internal::Transport::BaseClient::RequestComponents
+            )
+            .returns(T.anything)
         end
         def request(req)
         end
