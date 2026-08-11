@@ -8,6 +8,7 @@ module OpenAI
       OPAQUE_STRING_BYTES: Integer
       SENSITIVE_BODY_KEY: Regexp
       SENSITIVE_QUERY_KEY: Regexp
+      URL_HEADER_KEY: Regexp
 
       class Context
         def initialize: (
@@ -29,6 +30,10 @@ module OpenAI
           delay: Float
         ) -> void
         def completed: (OpenAI::HTTPClient::Response response) -> void
+        def observe_stream: [Elem] (
+          OpenAI::Internal::Type::BaseStream[top, Elem] stream,
+          response: OpenAI::HTTPClient::Response
+        ) -> OpenAI::Internal::Type::BaseStream[top, Elem]
         def request_failed: (StandardError error) -> void
         def response_body: (
           String body,
@@ -51,6 +56,18 @@ module OpenAI
 
         def each: { (String) -> void } -> void
         def close: -> void
+      end
+
+      class ObservedStream[Elem]
+        include OpenAI::Internal::Type::BaseStream[top, Elem]
+
+        def initialize: (
+          stream: OpenAI::Internal::Type::BaseStream[top, Elem],
+          context: OpenAI::Internal::Logging::Context,
+          response: OpenAI::HTTPClient::Response
+        ) -> void
+
+        private def iterator: -> Enumerable[Elem]
       end
 
       def self.normalize_level: (Symbol | String value) -> Symbol

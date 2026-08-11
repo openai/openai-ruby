@@ -99,7 +99,12 @@ multitask(:"format:rbs") do
   sed = xargs + [sed_bin, "-E", *inplace, "-e"]
   # annotate unprocessable aliases with a unique comment
   pre = sed + ["s/(class|module) ([^ ]+) = (.+$)/# \\1 #{uuid}\\n\\2: \\3/", "--"]
-  fmt = xargs + %w[stree write --plugin=rbs --]
+  fmt = xargs + %w[
+    stree write --plugin=rbs
+    --ignore-files=sig/openai/internal/transport/base_client.rbs
+    --ignore-files=./sig/openai/internal/transport/base_client.rbs
+    --
+  ]
   # remove the unique comment and unprocessable aliases to type aliases
   subst = <<~SED
     s/# (class|module) #{uuid}/\\1/

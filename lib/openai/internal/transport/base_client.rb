@@ -672,7 +672,13 @@ module OpenAI
         # @param response [OpenAI::HTTPClient::Response]
         # @return [Object]
         private def finish_request(log_context, response)
-          yield.tap { log_context.completed(response) }
+          result = yield
+          if result.is_a?(OpenAI::Internal::Type::BaseStream)
+            return log_context.observe_stream(result, response: response)
+          end
+
+          log_context.completed(response)
+          result
         rescue StandardError => e
           log_context.request_failed(e)
           raise

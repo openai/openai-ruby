@@ -10,6 +10,7 @@ module OpenAI
       OPAQUE_STRING_BYTES = T.let(T.unsafe(nil), Integer)
       SENSITIVE_BODY_KEY = T.let(T.unsafe(nil), Regexp)
       SENSITIVE_QUERY_KEY = T.let(T.unsafe(nil), Regexp)
+      URL_HEADER_KEY = T.let(T.unsafe(nil), Regexp)
 
       class Context
         sig do
@@ -57,6 +58,15 @@ module OpenAI
         def completed(response)
         end
 
+        sig do
+          params(
+            stream: T.untyped,
+            response: OpenAI::HTTPClient::Response
+          ).returns(T.untyped)
+        end
+        def observe_stream(stream, response:)
+        end
+
         sig { params(error: StandardError).void }
         def request_failed(error)
         end
@@ -96,6 +106,27 @@ module OpenAI
 
         sig { void }
         def close
+        end
+      end
+
+      class ObservedStream
+        Message = type_member(:in) { { fixed: T.anything } }
+        Elem = type_member(:out)
+
+        include OpenAI::Internal::Type::BaseStream
+
+        sig do
+          params(
+            stream: T.untyped,
+            context: OpenAI::Internal::Logging::Context,
+            response: OpenAI::HTTPClient::Response
+          ).void
+        end
+        def initialize(stream:, context:, response:)
+        end
+
+        sig { override.returns(T::Enumerable[Elem]) }
+        private def iterator
         end
       end
 
