@@ -190,9 +190,7 @@ module OpenAI
               OpenAI::UnionOf
               OpenAI::BaseModel
             ]
-            # rubocop:disable Layout/LineLength
             message = "#{type} does not implement the #{OpenAI::Helpers::StructuredOutput::JsonSchemaConverter} interface. Please use one of the supported types: #{models}"
-            # rubocop:enable Layout/LineLength
             raise ArgumentError.new(message)
           end
         end

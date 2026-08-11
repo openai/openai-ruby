@@ -59,9 +59,7 @@ module OpenAI
 
         class << self
           def optional(...)
-            # rubocop:disable Layout/LineLength
             message = "`optional` is not supported for structured output APIs, use `#required` with `nil?: true` instead"
-            # rubocop:enable Layout/LineLength
             raise RuntimeError.new(message)
           end
         end

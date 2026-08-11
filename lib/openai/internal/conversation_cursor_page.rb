@@ -81,11 +81,9 @@ module OpenAI
       #
       # @return [String]
       def inspect
-        # rubocop:disable Layout/LineLength
         model = OpenAI::Internal::Type::Converter.inspect(@model, depth: 1)
 
         "#<#{self.class}[#{model}]:0x#{object_id.to_s(16)} has_more=#{has_more.inspect} last_id=#{last_id.inspect}>"
-        # rubocop:enable Layout/LineLength
       end
     end
   end

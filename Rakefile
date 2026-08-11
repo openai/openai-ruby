@@ -67,7 +67,7 @@ RuboCop::RakeTask.new(:"lint:rubocop") do |task|
   task.formatters = %w[github] if ENV.key?("CI")
 
   # some lines cannot be shortened
-  task.options = %w[--parallel --except Lint/RedundantCopDisableDirective,Layout/LineLength]
+  task.options = %w[--parallel --except Layout/LineLength]
 end
 
 norm_lines = %w[tr -- \n \0].shelljoin
