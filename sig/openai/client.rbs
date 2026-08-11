@@ -82,7 +82,7 @@ module OpenAI
       ?webhook_secret: String?,
       ?base_url: String?,
       ?max_retries: Integer,
-      ?timeout: Float,
+      ?timeout: Float?,
       ?initial_retry_delay: Float,
       ?max_retry_delay: Float,
       ?http_client: OpenAI::_HTTPClient?
