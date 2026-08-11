@@ -6,6 +6,10 @@ module OpenAI
       class Organization
         class Users
           class Roles
+            sig { returns(Roles::WithRawResponse) }
+            def with_raw_response
+            end
+
             # Assigns an organization role to a user within the organization.
             sig do
               params(
@@ -93,8 +97,60 @@ module OpenAI
             end
 
             # @api private
-            sig { params(client: OpenAI::Client).returns(T.attached_class) }
+            sig { params(client: OpenAI::Internal::Transport::RequestClient).returns(T.attached_class) }
             def self.new(client:)
+            end
+
+            class WithRawResponse
+              sig { params(user_id: String, role_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Models::Admin::Organization::Users::RoleCreateResponse]) }
+              def create(
+                # The ID of the user that should receive the organization role.
+                user_id,
+                # Identifier of the role to assign.
+                role_id:,
+                request_options: {}
+              )
+              end
+
+              sig { params(role_id: String, user_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Models::Admin::Organization::Users::RoleRetrieveResponse]) }
+              def retrieve(
+                # The ID of the organization role to retrieve for the user.
+                role_id,
+                # The ID of the user to inspect.
+                user_id:,
+                request_options: {}
+              )
+              end
+
+              sig { params(user_id: String, after: String, limit: Integer, order: OpenAI::Admin::Organization::Users::RoleListParams::Order::OrSymbol, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Internal::NextCursorPage[OpenAI::Models::Admin::Organization::Users::RoleListResponse]]) }
+              def list(
+                # The ID of the user to inspect.
+                user_id,
+                # Cursor for pagination. Provide the value from the previous response's `next`
+                # field to continue listing organization roles.
+                after: nil,
+                # A limit on the number of organization role assignments to return.
+                limit: nil,
+                # Sort order for the returned organization roles.
+                order: nil,
+                request_options: {}
+              )
+              end
+
+              sig { params(role_id: String, user_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Models::Admin::Organization::Users::RoleDeleteResponse]) }
+              def delete(
+                # The ID of the organization role to remove from the user.
+                role_id,
+                # The ID of the user to modify.
+                user_id:,
+                request_options: {}
+              )
+              end
+
+              # @api private
+              sig { params(resource: Roles).returns(T.attached_class) }
+              def self.new(resource:)
+              end
             end
           end
         end

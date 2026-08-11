@@ -2,6 +2,7 @@ module OpenAI
   module Resources
     class Chat
       class Completions
+        def with_raw_response: -> Completions::WithRawResponse
         attr_reader messages: OpenAI::Resources::Chat::Completions::Messages
 
         def create: (
@@ -109,7 +110,118 @@ module OpenAI
           ?request_options: OpenAI::request_opts
         ) -> OpenAI::Chat::ChatCompletionDeleted
 
-        def initialize: (client: OpenAI::Client) -> void
+        def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+        class WithRawResponse
+          attr_reader messages: OpenAI::Resources::Chat::Completions::Messages::WithRawResponse
+
+          def create: (
+          messages: ::Array[OpenAI::Models::Chat::chat_completion_message_param],
+          model: OpenAI::Models::Chat::CompletionCreateParams::model,
+          ?audio: OpenAI::Chat::ChatCompletionAudioParam?,
+          ?frequency_penalty: Float?,
+          ?function_call: OpenAI::Models::Chat::CompletionCreateParams::function_call,
+          ?functions: ::Array[OpenAI::Chat::CompletionCreateParams::Function],
+          ?logit_bias: ::Hash[Symbol, Integer]?,
+          ?logprobs: bool?,
+          ?max_completion_tokens: Integer?,
+          ?max_tokens: Integer?,
+          ?metadata: OpenAI::Models::metadata?,
+          ?modalities: ::Array[OpenAI::Models::Chat::CompletionCreateParams::modality]?,
+          ?moderation: OpenAI::Chat::CompletionCreateParams::Moderation?,
+          ?n: Integer?,
+          ?parallel_tool_calls: bool,
+          ?prediction: OpenAI::Chat::ChatCompletionPredictionContent?,
+          ?presence_penalty: Float?,
+          ?prompt_cache_key: String?,
+          ?prompt_cache_options: OpenAI::Chat::CompletionCreateParams::PromptCacheOptions,
+          ?prompt_cache_retention: OpenAI::Models::Chat::CompletionCreateParams::prompt_cache_retention?,
+          ?reasoning_effort: OpenAI::Models::reasoning_effort?,
+          ?response_format: OpenAI::Models::Chat::CompletionCreateParams::response_format,
+          ?safety_identifier: String?,
+          ?seed: Integer?,
+          ?service_tier: OpenAI::Models::Chat::CompletionCreateParams::service_tier?,
+          ?stop: OpenAI::Models::Chat::CompletionCreateParams::stop?,
+          ?store: bool?,
+          ?stream_options: OpenAI::Chat::ChatCompletionStreamOptions?,
+          ?temperature: Float?,
+          ?tool_choice: OpenAI::Models::Chat::chat_completion_tool_choice_option,
+          ?tools: ::Array[OpenAI::Models::Chat::chat_completion_tool],
+          ?top_logprobs: Integer?,
+          ?top_p: Float?,
+          ?user: String,
+          ?verbosity: OpenAI::Models::Chat::CompletionCreateParams::verbosity?,
+          ?web_search_options: OpenAI::Chat::CompletionCreateParams::WebSearchOptions,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::RawResponse[OpenAI::Chat::ChatCompletion]
+
+          def stream_raw: (
+          messages: ::Array[OpenAI::Models::Chat::chat_completion_message_param],
+          model: OpenAI::Models::Chat::CompletionCreateParams::model,
+          ?audio: OpenAI::Chat::ChatCompletionAudioParam?,
+          ?frequency_penalty: Float?,
+          ?function_call: OpenAI::Models::Chat::CompletionCreateParams::function_call,
+          ?functions: ::Array[OpenAI::Chat::CompletionCreateParams::Function],
+          ?logit_bias: ::Hash[Symbol, Integer]?,
+          ?logprobs: bool?,
+          ?max_completion_tokens: Integer?,
+          ?max_tokens: Integer?,
+          ?metadata: OpenAI::Models::metadata?,
+          ?modalities: ::Array[OpenAI::Models::Chat::CompletionCreateParams::modality]?,
+          ?moderation: OpenAI::Chat::CompletionCreateParams::Moderation?,
+          ?n: Integer?,
+          ?parallel_tool_calls: bool,
+          ?prediction: OpenAI::Chat::ChatCompletionPredictionContent?,
+          ?presence_penalty: Float?,
+          ?prompt_cache_key: String?,
+          ?prompt_cache_options: OpenAI::Chat::CompletionCreateParams::PromptCacheOptions,
+          ?prompt_cache_retention: OpenAI::Models::Chat::CompletionCreateParams::prompt_cache_retention?,
+          ?reasoning_effort: OpenAI::Models::reasoning_effort?,
+          ?response_format: OpenAI::Models::Chat::CompletionCreateParams::response_format,
+          ?safety_identifier: String?,
+          ?seed: Integer?,
+          ?service_tier: OpenAI::Models::Chat::CompletionCreateParams::service_tier?,
+          ?stop: OpenAI::Models::Chat::CompletionCreateParams::stop?,
+          ?store: bool?,
+          ?stream_options: OpenAI::Chat::ChatCompletionStreamOptions?,
+          ?temperature: Float?,
+          ?tool_choice: OpenAI::Models::Chat::chat_completion_tool_choice_option,
+          ?tools: ::Array[OpenAI::Models::Chat::chat_completion_tool],
+          ?top_logprobs: Integer?,
+          ?top_p: Float?,
+          ?user: String,
+          ?verbosity: OpenAI::Models::Chat::CompletionCreateParams::verbosity?,
+          ?web_search_options: OpenAI::Chat::CompletionCreateParams::WebSearchOptions,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::RawResponse[OpenAI::Internal::Stream[OpenAI::Chat::ChatCompletionChunk]]
+
+          def retrieve: (
+          String completion_id,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::RawResponse[OpenAI::Chat::ChatCompletion]
+
+          def update: (
+          String completion_id,
+          metadata: OpenAI::Models::metadata?,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::RawResponse[OpenAI::Chat::ChatCompletion]
+
+          def list: (
+          ?after: String,
+          ?limit: Integer,
+          ?metadata: OpenAI::Models::metadata?,
+          ?model: String,
+          ?order: OpenAI::Models::Chat::CompletionListParams::order,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::RawResponse[OpenAI::Internal::CursorPage[OpenAI::Chat::ChatCompletion]]
+
+          def delete: (
+          String completion_id,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::RawResponse[OpenAI::Chat::ChatCompletionDeleted]
+
+          def initialize: (resource: Completions) -> void
+        end
       end
     end
   end

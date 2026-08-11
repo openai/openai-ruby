@@ -6,6 +6,17 @@ module OpenAI
       class Checkpoints
         # Manage fine-tuning jobs to tailor a model to your specific training data.
         class Permissions
+          # Returns a wrapper that exposes the raw HTTP response for each request.
+          #
+          # @return [Permissions::WithRawResponse]
+          def with_raw_response
+            WithRawResponse.new(
+              resource: Permissions.new(
+                client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+              )
+            )
+          end
+
           # Some parameter documentations has been truncated, see
           # {OpenAI::Models::FineTuning::Checkpoints::PermissionCreateParams} for more
           # details.
@@ -161,9 +172,34 @@ module OpenAI
 
           # @api private
           #
-          # @param client [OpenAI::Client]
+          # @param client [OpenAI::Internal::Transport::RequestClient]
           def initialize(client:)
             @client = client
+          end
+
+          class WithRawResponse
+            def create(fine_tuned_model_checkpoint, params)
+              @resource.create(fine_tuned_model_checkpoint, params)
+            end
+
+            def retrieve(fine_tuned_model_checkpoint, params = {})
+              @resource.retrieve(fine_tuned_model_checkpoint, params)
+            end
+
+            def list(fine_tuned_model_checkpoint, params = {})
+              @resource.list(fine_tuned_model_checkpoint, params)
+            end
+
+            def delete(permission_id, params)
+              @resource.delete(permission_id, params)
+            end
+
+            # @api private
+            #
+            # @param resource [Permissions]
+            def initialize(resource:)
+              @resource = resource
+            end
           end
         end
       end

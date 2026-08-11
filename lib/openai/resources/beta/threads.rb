@@ -7,6 +7,17 @@ module OpenAI
       #
       # Build Assistants that can call models and use tools.
       class Threads
+        # Returns a wrapper that exposes the raw HTTP response for each request.
+        #
+        # @return [Threads::WithRawResponse]
+        def with_raw_response
+          WithRawResponse.new(
+            resource: Threads.new(
+              client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+            )
+          )
+        end
+
         # Build Assistants that can call models and use tools.
         # @return [OpenAI::Resources::Beta::Threads::Runs]
         attr_reader :runs
@@ -259,11 +270,62 @@ module OpenAI
 
         # @api private
         #
-        # @param client [OpenAI::Client]
+        # @param client [OpenAI::Internal::Transport::RequestClient]
         def initialize(client:)
           @client = client
           @runs = OpenAI::Resources::Beta::Threads::Runs.new(client: client)
           @messages = OpenAI::Resources::Beta::Threads::Messages.new(client: client)
+        end
+
+        class WithRawResponse
+          # Build Assistants that can call models and use tools.
+          # @return [OpenAI::Resources::Beta::Threads::Runs::WithRawResponse]
+          attr_reader :runs
+
+          # Build Assistants that can call models and use tools.
+          # @return [OpenAI::Resources::Beta::Threads::Messages::WithRawResponse]
+          attr_reader :messages
+
+          def create(params = {})
+            @resource.create(params)
+          end
+
+          def retrieve(thread_id, params = {})
+            @resource.retrieve(thread_id, params)
+          end
+
+          def update(thread_id, params = {})
+            @resource.update(thread_id, params)
+          end
+
+          def delete(thread_id, params = {})
+            @resource.delete(thread_id, params)
+          end
+
+          def create_and_run(params)
+            @resource.create_and_run(params)
+          end
+
+          def stream_raw(params)
+            @resource.stream_raw(params)
+          end
+
+          # @api private
+          #
+          # @param resource [Threads]
+          def initialize(resource:)
+            @resource = resource
+
+            @runs =
+              OpenAI::Resources::Beta::Threads::Runs::WithRawResponse.new(
+                resource: @resource.runs
+              )
+
+            @messages =
+              OpenAI::Resources::Beta::Threads::Messages::WithRawResponse.new(
+                resource: @resource.messages
+              )
+          end
         end
       end
     end

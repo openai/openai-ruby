@@ -1,6 +1,7 @@
 module OpenAI
   module Resources
     class Embeddings
+      def with_raw_response: -> Embeddings::WithRawResponse
       def create: (
         input: OpenAI::Models::EmbeddingCreateParams::input,
         model: OpenAI::Models::EmbeddingCreateParams::model,
@@ -10,7 +11,20 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::CreateEmbeddingResponse
 
-      def initialize: (client: OpenAI::Client) -> void
+      def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+      class WithRawResponse
+        def create: (
+        input: OpenAI::Models::EmbeddingCreateParams::input,
+        model: OpenAI::Models::EmbeddingCreateParams::model,
+        ?dimensions: Integer,
+        ?encoding_format: OpenAI::Models::EmbeddingCreateParams::encoding_format,
+        ?user: String,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::CreateEmbeddingResponse]
+
+        def initialize: (resource: Embeddings) -> void
+      end
     end
   end
 end

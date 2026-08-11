@@ -4,6 +4,17 @@ module OpenAI
   module Resources
     # Use Uploads to upload large files in multiple parts.
     class Uploads
+      # Returns a wrapper that exposes the raw HTTP response for each request.
+      #
+      # @return [Uploads::WithRawResponse]
+      def with_raw_response
+        WithRawResponse.new(
+          resource: Uploads.new(
+            client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+          )
+        )
+      end
+
       # Use Uploads to upload large files in multiple parts.
       # @return [OpenAI::Resources::Uploads::Parts]
       attr_reader :parts
@@ -134,10 +145,40 @@ module OpenAI
 
       # @api private
       #
-      # @param client [OpenAI::Client]
+      # @param client [OpenAI::Internal::Transport::RequestClient]
       def initialize(client:)
         @client = client
         @parts = OpenAI::Resources::Uploads::Parts.new(client: client)
+      end
+
+      class WithRawResponse
+        # Use Uploads to upload large files in multiple parts.
+        # @return [OpenAI::Resources::Uploads::Parts::WithRawResponse]
+        attr_reader :parts
+
+        def create(params)
+          @resource.create(params)
+        end
+
+        def cancel(upload_id, params = {})
+          @resource.cancel(upload_id, params)
+        end
+
+        def complete(upload_id, params)
+          @resource.complete(upload_id, params)
+        end
+
+        # @api private
+        #
+        # @param resource [Uploads]
+        def initialize(resource:)
+          @resource = resource
+
+          @parts =
+            OpenAI::Resources::Uploads::Parts::WithRawResponse.new(
+              resource: @resource.parts
+            )
+        end
       end
     end
   end

@@ -3,6 +3,10 @@
 module OpenAI
   module Resources
     class ContentProvenanceChecks
+      sig { returns(ContentProvenanceChecks::WithRawResponse) }
+      def with_raw_response
+      end
+
       # Check whether an image or audio file contains known OpenAI provenance signals.
       # [Learn more about content provenance](/api/docs/guides/content-provenance).
       #
@@ -26,8 +30,23 @@ module OpenAI
       end
 
       # @api private
-      sig { params(client: OpenAI::Client).returns(T.attached_class) }
+      sig { params(client: OpenAI::Internal::Transport::RequestClient).returns(T.attached_class) }
       def self.new(client:)
+      end
+
+      class WithRawResponse
+        sig { params(file: OpenAI::Internal::FileInput, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::ContentProvenanceCheck]) }
+        def create(
+          # The image or audio file to check for supported OpenAI provenance signals.
+          file:,
+          request_options: {}
+        )
+        end
+
+        # @api private
+        sig { params(resource: ContentProvenanceChecks).returns(T.attached_class) }
+        def self.new(resource:)
+        end
       end
     end
   end

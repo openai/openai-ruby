@@ -7,6 +7,17 @@ module OpenAI
         class Projects
           class ServiceAccounts
             class APIKeys
+              # Returns a wrapper that exposes the raw HTTP response for each request.
+              #
+              # @return [APIKeys::WithRawResponse]
+              def with_raw_response
+                WithRawResponse.new(
+                  resource: APIKeys.new(
+                    client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+                  )
+                )
+              end
+
               # Creates an API key for a service account in the project.
               #
               # @overload create(service_account_id, project_id:, name: nil, scopes: nil, request_options: {})
@@ -47,9 +58,22 @@ module OpenAI
 
               # @api private
               #
-              # @param client [OpenAI::Client]
+              # @param client [OpenAI::Internal::Transport::RequestClient]
               def initialize(client:)
                 @client = client
+              end
+
+              class WithRawResponse
+                def create(service_account_id, params)
+                  @resource.create(service_account_id, params)
+                end
+
+                # @api private
+                #
+                # @param resource [APIKeys]
+                def initialize(resource:)
+                  @resource = resource
+                end
               end
             end
           end

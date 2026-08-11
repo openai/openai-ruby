@@ -6,6 +6,17 @@ module OpenAI
       class Runs
         # Manage and run evals in the OpenAI platform.
         class OutputItems
+          # Returns a wrapper that exposes the raw HTTP response for each request.
+          #
+          # @return [OutputItems::WithRawResponse]
+          def with_raw_response
+            WithRawResponse.new(
+              resource: OutputItems.new(
+                client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+              )
+            )
+          end
+
           # Get an evaluation run output item by ID.
           #
           # @overload retrieve(output_item_id, eval_id:, run_id:, request_options: {})
@@ -84,9 +95,26 @@ module OpenAI
 
           # @api private
           #
-          # @param client [OpenAI::Client]
+          # @param client [OpenAI::Internal::Transport::RequestClient]
           def initialize(client:)
             @client = client
+          end
+
+          class WithRawResponse
+            def retrieve(output_item_id, params)
+              @resource.retrieve(output_item_id, params)
+            end
+
+            def list(run_id, params)
+              @resource.list(run_id, params)
+            end
+
+            # @api private
+            #
+            # @param resource [OutputItems]
+            def initialize(resource:)
+              @resource = resource
+            end
           end
         end
       end

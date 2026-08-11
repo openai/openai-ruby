@@ -5,6 +5,17 @@ module OpenAI
     # Get a vector representation of a given input that can be easily consumed by
     # machine learning models and algorithms.
     class Embeddings
+      # Returns a wrapper that exposes the raw HTTP response for each request.
+      #
+      # @return [Embeddings::WithRawResponse]
+      def with_raw_response
+        WithRawResponse.new(
+          resource: Embeddings.new(
+            client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+          )
+        )
+      end
+
       # Some parameter documentations has been truncated, see
       # {OpenAI::Models::EmbeddingCreateParams} for more details.
       #
@@ -41,9 +52,22 @@ module OpenAI
 
       # @api private
       #
-      # @param client [OpenAI::Client]
+      # @param client [OpenAI::Internal::Transport::RequestClient]
       def initialize(client:)
         @client = client
+      end
+
+      class WithRawResponse
+        def create(params)
+          @resource.create(params)
+        end
+
+        # @api private
+        #
+        # @param resource [Embeddings]
+        def initialize(resource:)
+          @resource = resource
+        end
       end
     end
   end

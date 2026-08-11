@@ -1,6 +1,7 @@
 module OpenAI
   module Resources
     class VectorStores
+      def with_raw_response: -> VectorStores::WithRawResponse
       attr_reader files: OpenAI::Resources::VectorStores::Files
 
       attr_reader file_batches: OpenAI::Resources::VectorStores::FileBatches
@@ -51,7 +52,61 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Internal::Page[OpenAI::Models::VectorStoreSearchResponse]
 
-      def initialize: (client: OpenAI::Client) -> void
+      def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+      class WithRawResponse
+        attr_reader files: OpenAI::Resources::VectorStores::Files::WithRawResponse
+
+        attr_reader file_batches: OpenAI::Resources::VectorStores::FileBatches::WithRawResponse
+
+        def create: (
+        ?chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
+        ?description: String,
+        ?expires_after: OpenAI::VectorStoreCreateParams::ExpiresAfter,
+        ?file_ids: ::Array[String],
+        ?metadata: OpenAI::Models::metadata?,
+        ?name: String,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::VectorStore]
+
+        def retrieve: (
+        String vector_store_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::VectorStore]
+
+        def update: (
+        String vector_store_id,
+        ?expires_after: OpenAI::VectorStoreUpdateParams::ExpiresAfter?,
+        ?metadata: OpenAI::Models::metadata?,
+        ?name: String?,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::VectorStore]
+
+        def list: (
+        ?after: String,
+        ?before: String,
+        ?limit: Integer,
+        ?order: OpenAI::Models::VectorStoreListParams::order,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::Internal::CursorPage[OpenAI::VectorStore]]
+
+        def delete: (
+        String vector_store_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::VectorStoreDeleted]
+
+        def search: (
+        String vector_store_id,
+        query: OpenAI::Models::VectorStoreSearchParams::query,
+        ?filters: OpenAI::Models::VectorStoreSearchParams::filters,
+        ?max_num_results: Integer,
+        ?ranking_options: OpenAI::VectorStoreSearchParams::RankingOptions,
+        ?rewrite_query: bool,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::Internal::Page[OpenAI::Models::VectorStoreSearchResponse]]
+
+        def initialize: (resource: VectorStores) -> void
+      end
     end
   end
 end

@@ -6,6 +6,17 @@ module OpenAI
       class Organization
         class Projects
           class Groups
+            # Returns a wrapper that exposes the raw HTTP response for each request.
+            #
+            # @return [Groups::WithRawResponse]
+            def with_raw_response
+              WithRawResponse.new(
+                resource: Groups.new(
+                  client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+                )
+              )
+            end
+
             # @return [OpenAI::Resources::Admin::Organization::Projects::Groups::Roles]
             attr_reader :roles
 
@@ -133,10 +144,43 @@ module OpenAI
 
             # @api private
             #
-            # @param client [OpenAI::Client]
+            # @param client [OpenAI::Internal::Transport::RequestClient]
             def initialize(client:)
               @client = client
               @roles = OpenAI::Resources::Admin::Organization::Projects::Groups::Roles.new(client: client)
+            end
+
+            class WithRawResponse
+              # @return [OpenAI::Resources::Admin::Organization::Projects::Groups::Roles::WithRawResponse]
+              attr_reader :roles
+
+              def create(project_id, params)
+                @resource.create(project_id, params)
+              end
+
+              def retrieve(group_id, params)
+                @resource.retrieve(group_id, params)
+              end
+
+              def list(project_id, params = {})
+                @resource.list(project_id, params)
+              end
+
+              def delete(group_id, params)
+                @resource.delete(group_id, params)
+              end
+
+              # @api private
+              #
+              # @param resource [Groups]
+              def initialize(resource:)
+                @resource = resource
+
+                @roles =
+                  OpenAI::Resources::Admin::Organization::Projects::Groups::Roles::WithRawResponse.new(
+                    resource: @resource.roles
+                  )
+              end
             end
           end
         end

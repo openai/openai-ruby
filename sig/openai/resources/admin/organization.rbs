@@ -2,6 +2,7 @@ module OpenAI
   module Resources
     class Admin
       class Organization
+        def with_raw_response: -> Organization::WithRawResponse
         attr_reader audit_logs: OpenAI::Resources::Admin::Organization::AuditLogs
 
         attr_reader admin_api_keys: OpenAI::Resources::Admin::Organization::AdminAPIKeys
@@ -26,7 +27,35 @@ module OpenAI
 
         attr_reader projects: OpenAI::Resources::Admin::Organization::Projects
 
-        def initialize: (client: OpenAI::Client) -> void
+        def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+        class WithRawResponse
+          attr_reader audit_logs: OpenAI::Resources::Admin::Organization::AuditLogs::WithRawResponse
+
+          attr_reader admin_api_keys: OpenAI::Resources::Admin::Organization::AdminAPIKeys::WithRawResponse
+
+          attr_reader usage: OpenAI::Resources::Admin::Organization::Usage::WithRawResponse
+
+          attr_reader invites: OpenAI::Resources::Admin::Organization::Invites::WithRawResponse
+
+          attr_reader users: OpenAI::Resources::Admin::Organization::Users::WithRawResponse
+
+          attr_reader groups: OpenAI::Resources::Admin::Organization::Groups::WithRawResponse
+
+          attr_reader roles: OpenAI::Resources::Admin::Organization::Roles::WithRawResponse
+
+          attr_reader data_retention: OpenAI::Resources::Admin::Organization::DataRetention::WithRawResponse
+
+          attr_reader spend_limit: OpenAI::Resources::Admin::Organization::SpendLimit::WithRawResponse
+
+          attr_reader spend_alerts: OpenAI::Resources::Admin::Organization::SpendAlerts::WithRawResponse
+
+          attr_reader certificates: OpenAI::Resources::Admin::Organization::Certificates::WithRawResponse
+
+          attr_reader projects: OpenAI::Resources::Admin::Organization::Projects::WithRawResponse
+
+          def initialize: (resource: Organization) -> void
+        end
       end
     end
   end

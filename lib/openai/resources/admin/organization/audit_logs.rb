@@ -6,6 +6,17 @@ module OpenAI
       class Organization
         # List user actions and configuration changes within this organization.
         class AuditLogs
+          # Returns a wrapper that exposes the raw HTTP response for each request.
+          #
+          # @return [AuditLogs::WithRawResponse]
+          def with_raw_response
+            WithRawResponse.new(
+              resource: AuditLogs.new(
+                client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+              )
+            )
+          end
+
           # Some parameter documentations has been truncated, see
           # {OpenAI::Models::Admin::Organization::AuditLogListParams} for more details.
           #
@@ -54,9 +65,22 @@ module OpenAI
 
           # @api private
           #
-          # @param client [OpenAI::Client]
+          # @param client [OpenAI::Internal::Transport::RequestClient]
           def initialize(client:)
             @client = client
+          end
+
+          class WithRawResponse
+            def list(params = {})
+              @resource.list(params)
+            end
+
+            # @api private
+            #
+            # @param resource [AuditLogs]
+            def initialize(resource:)
+              @resource = resource
+            end
           end
         end
       end

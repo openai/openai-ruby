@@ -6,6 +6,10 @@ module OpenAI
       class Organization
         class Projects
           class ModelPermissions
+            sig { returns(ModelPermissions::WithRawResponse) }
+            def with_raw_response
+            end
+
             # Returns model permissions for a project.
             sig do
               params(
@@ -62,8 +66,43 @@ module OpenAI
             end
 
             # @api private
-            sig { params(client: OpenAI::Client).returns(T.attached_class) }
+            sig { params(client: OpenAI::Internal::Transport::RequestClient).returns(T.attached_class) }
             def self.new(client:)
+            end
+
+            class WithRawResponse
+              sig { params(project_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectModelPermissions]) }
+              def retrieve(
+                # The ID of the project.
+                project_id,
+                request_options: {}
+              )
+              end
+
+              sig { params(project_id: String, mode: OpenAI::Admin::Organization::Projects::ModelPermissionUpdateParams::Mode::OrSymbol, model_ids: T::Array[String], request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectModelPermissions]) }
+              def update(
+                # The ID of the project.
+                project_id,
+                # The model permissions mode to apply.
+                mode:,
+                # The model IDs included in this permissions policy.
+                model_ids:,
+                request_options: {}
+              )
+              end
+
+              sig { params(project_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectModelPermissionsDeleted]) }
+              def delete(
+                # The ID of the project.
+                project_id,
+                request_options: {}
+              )
+              end
+
+              # @api private
+              sig { params(resource: ModelPermissions).returns(T.attached_class) }
+              def self.new(resource:)
+              end
             end
           end
         end

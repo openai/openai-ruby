@@ -172,22 +172,14 @@ class OpenAITest < Minitest::Test
 
     response = openai.chat.completions.create(
       messages: [{content: "string", role: :developer}],
-      model: :"gpt-5.4",
-      request_options: {extra_headers: {"X-Request-ID" => "req_outgoing"}}
+      model: :"gpt-5.4"
     )
 
     assert_equal("req_success", response._request_id)
-    assert_equal("req_success", response.response_headers["x-request-id"])
-    assert_equal("45.6", response.response_headers["openai-processing-ms"])
+    refute_respond_to(response, :response_headers)
     refute_includes(response.to_h, :_request_id)
-    refute_includes(response.to_h, :response_headers)
     refute_includes(response.to_json, "_request_id")
-    refute_includes(response.to_json, "response_headers")
     refute_includes(response.to_yaml, "_request_id")
-    refute_includes(response.to_yaml, "response_headers")
-    dumped_yaml = YAML.dump(response)
-    refute_includes(dumped_yaml, "_request_id")
-    refute_includes(dumped_yaml, "response_headers")
   end
 
   def test_request_id_on_paginated_response
@@ -207,8 +199,7 @@ class OpenAITest < Minitest::Test
     response = openai.models.list
 
     assert_equal("req_page", response._request_id)
-    assert_equal("req_page", response.response_headers["x-request-id"])
-    assert_equal("12", response.response_headers["openai-processing-ms"])
+    refute_respond_to(response, :response_headers)
   end
 
   def test_request_id_on_error_response

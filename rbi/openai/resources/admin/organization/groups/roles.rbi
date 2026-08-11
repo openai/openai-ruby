@@ -6,6 +6,10 @@ module OpenAI
       class Organization
         class Groups
           class Roles
+            sig { returns(Roles::WithRawResponse) }
+            def with_raw_response
+            end
+
             # Assigns an organization role to a group within the organization.
             sig do
               params(
@@ -93,8 +97,60 @@ module OpenAI
             end
 
             # @api private
-            sig { params(client: OpenAI::Client).returns(T.attached_class) }
+            sig { params(client: OpenAI::Internal::Transport::RequestClient).returns(T.attached_class) }
             def self.new(client:)
+            end
+
+            class WithRawResponse
+              sig { params(group_id: String, role_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Models::Admin::Organization::Groups::RoleCreateResponse]) }
+              def create(
+                # The ID of the group that should receive the organization role.
+                group_id,
+                # Identifier of the role to assign.
+                role_id:,
+                request_options: {}
+              )
+              end
+
+              sig { params(role_id: String, group_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Models::Admin::Organization::Groups::RoleRetrieveResponse]) }
+              def retrieve(
+                # The ID of the organization role to retrieve for the group.
+                role_id,
+                # The ID of the group to inspect.
+                group_id:,
+                request_options: {}
+              )
+              end
+
+              sig { params(group_id: String, after: String, limit: Integer, order: OpenAI::Admin::Organization::Groups::RoleListParams::Order::OrSymbol, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Internal::NextCursorPage[OpenAI::Models::Admin::Organization::Groups::RoleListResponse]]) }
+              def list(
+                # The ID of the group whose organization role assignments you want to list.
+                group_id,
+                # Cursor for pagination. Provide the value from the previous response's `next`
+                # field to continue listing organization roles.
+                after: nil,
+                # A limit on the number of organization role assignments to return.
+                limit: nil,
+                # Sort order for the returned organization roles.
+                order: nil,
+                request_options: {}
+              )
+              end
+
+              sig { params(role_id: String, group_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Models::Admin::Organization::Groups::RoleDeleteResponse]) }
+              def delete(
+                # The ID of the organization role to remove from the group.
+                role_id,
+                # The ID of the group to modify.
+                group_id:,
+                request_options: {}
+              )
+              end
+
+              # @api private
+              sig { params(resource: Roles).returns(T.attached_class) }
+              def self.new(resource:)
+              end
             end
           end
         end

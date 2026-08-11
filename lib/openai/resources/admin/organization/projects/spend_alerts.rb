@@ -6,6 +6,17 @@ module OpenAI
       class Organization
         class Projects
           class SpendAlerts
+            # Returns a wrapper that exposes the raw HTTP response for each request.
+            #
+            # @return [SpendAlerts::WithRawResponse]
+            def with_raw_response
+              WithRawResponse.new(
+                resource: SpendAlerts.new(
+                  client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+                )
+              )
+            end
+
             # Creates a project spend alert.
             #
             # @overload create(project_id, currency:, interval:, notification_channel:, threshold_amount:, request_options: {})
@@ -169,9 +180,38 @@ module OpenAI
 
             # @api private
             #
-            # @param client [OpenAI::Client]
+            # @param client [OpenAI::Internal::Transport::RequestClient]
             def initialize(client:)
               @client = client
+            end
+
+            class WithRawResponse
+              def create(project_id, params)
+                @resource.create(project_id, params)
+              end
+
+              def retrieve(alert_id, params)
+                @resource.retrieve(alert_id, params)
+              end
+
+              def update(alert_id, params)
+                @resource.update(alert_id, params)
+              end
+
+              def list(project_id, params = {})
+                @resource.list(project_id, params)
+              end
+
+              def delete(alert_id, params)
+                @resource.delete(alert_id, params)
+              end
+
+              # @api private
+              #
+              # @param resource [SpendAlerts]
+              def initialize(resource:)
+                @resource = resource
+              end
             end
           end
         end

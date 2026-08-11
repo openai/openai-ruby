@@ -38,7 +38,7 @@ module OpenAI
           until_done
           response = @state.completed_response
           raise RuntimeError.new("Didn't receive a 'response.completed' event") unless response
-          attach_response_metadata(response)
+          response
         end
 
         def get_output_text

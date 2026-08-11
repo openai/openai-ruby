@@ -3,6 +3,17 @@
 module OpenAI
   module Resources
     class Videos
+      # Returns a wrapper that exposes the raw HTTP response for each request.
+      #
+      # @return [Videos::WithRawResponse]
+      def with_raw_response
+        WithRawResponse.new(
+          resource: Videos.new(
+            client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+          )
+        )
+      end
+
       # Some parameter documentations has been truncated, see
       # {OpenAI::Models::VideoCreateParams} for more details.
       #
@@ -274,9 +285,58 @@ module OpenAI
 
       # @api private
       #
-      # @param client [OpenAI::Client]
+      # @param client [OpenAI::Internal::Transport::RequestClient]
       def initialize(client:)
         @client = client
+      end
+
+      class WithRawResponse
+        def create(params)
+          @resource.create(params)
+        end
+
+        def retrieve(video_id, params = {})
+          @resource.retrieve(video_id, params)
+        end
+
+        def list(params = {})
+          @resource.list(params)
+        end
+
+        def delete(video_id, params = {})
+          @resource.delete(video_id, params)
+        end
+
+        def create_character(params)
+          @resource.create_character(params)
+        end
+
+        def download_content(video_id, params = {})
+          @resource.download_content(video_id, params)
+        end
+
+        def edit(params)
+          @resource.edit(params)
+        end
+
+        def extend_(params)
+          @resource.extend_(params)
+        end
+
+        def get_character(character_id, params = {})
+          @resource.get_character(character_id, params)
+        end
+
+        def remix(video_id, params)
+          @resource.remix(video_id, params)
+        end
+
+        # @api private
+        #
+        # @param resource [Videos]
+        def initialize(resource:)
+          @resource = resource
+        end
       end
     end
   end

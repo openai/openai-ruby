@@ -3,6 +3,7 @@ module OpenAI
     class Beta
       class Responses
         class InputTokens
+          def with_raw_response: -> InputTokens::WithRawResponse
           def count: (
             ?conversation: OpenAI::Models::Beta::Responses::InputTokenCountParams::conversation?,
             ?input: OpenAI::Models::Beta::Responses::InputTokenCountParams::input?,
@@ -20,7 +21,28 @@ module OpenAI
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::Beta::Responses::InputTokenCountResponse
 
-          def initialize: (client: OpenAI::Client) -> void
+          def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+          class WithRawResponse
+            def count: (
+              ?conversation: OpenAI::Models::Beta::Responses::InputTokenCountParams::conversation?,
+              ?input: OpenAI::Models::Beta::Responses::InputTokenCountParams::input?,
+              ?instructions: String?,
+              ?model: String?,
+              ?parallel_tool_calls: bool?,
+              ?personality: OpenAI::Models::Beta::Responses::InputTokenCountParams::personality,
+              ?previous_response_id: String?,
+              ?reasoning: OpenAI::Beta::Responses::InputTokenCountParams::Reasoning?,
+              ?text: OpenAI::Beta::Responses::InputTokenCountParams::Text?,
+              ?tool_choice: OpenAI::Models::Beta::Responses::InputTokenCountParams::tool_choice?,
+              ?tools: ::Array[OpenAI::Models::Beta::beta_tool]?,
+              ?truncation: OpenAI::Models::Beta::Responses::InputTokenCountParams::truncation,
+              ?betas: ::Array[OpenAI::Models::Beta::Responses::InputTokenCountParams::beta],
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::RawResponse[OpenAI::Models::Beta::Responses::InputTokenCountResponse]
+
+            def initialize: (resource: InputTokens) -> void
+          end
         end
       end
     end

@@ -5,6 +5,7 @@ module OpenAI
         class Projects
           class Groups
             class Roles
+              def with_raw_response: -> Roles::WithRawResponse
               def create: (
                 String group_id,
                 project_id: String,
@@ -35,7 +36,41 @@ module OpenAI
                 ?request_options: OpenAI::request_opts
               ) -> OpenAI::Models::Admin::Organization::Projects::Groups::RoleDeleteResponse
 
-              def initialize: (client: OpenAI::Client) -> void
+              def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+              class WithRawResponse
+                def create: (
+                String group_id,
+                project_id: String,
+                role_id: String,
+                ?request_options: OpenAI::request_opts
+              ) -> OpenAI::RawResponse[OpenAI::Models::Admin::Organization::Projects::Groups::RoleCreateResponse]
+
+                def retrieve: (
+                String role_id,
+                project_id: String,
+                group_id: String,
+                ?request_options: OpenAI::request_opts
+              ) -> OpenAI::RawResponse[OpenAI::Models::Admin::Organization::Projects::Groups::RoleRetrieveResponse]
+
+                def list: (
+                String group_id,
+                project_id: String,
+                ?after: String,
+                ?limit: Integer,
+                ?order: OpenAI::Models::Admin::Organization::Projects::Groups::RoleListParams::order,
+                ?request_options: OpenAI::request_opts
+              ) -> OpenAI::RawResponse[OpenAI::Internal::NextCursorPage[OpenAI::Models::Admin::Organization::Projects::Groups::RoleListResponse]]
+
+                def delete: (
+                String role_id,
+                project_id: String,
+                group_id: String,
+                ?request_options: OpenAI::request_opts
+              ) -> OpenAI::RawResponse[OpenAI::Models::Admin::Organization::Projects::Groups::RoleDeleteResponse]
+
+                def initialize: (resource: Roles) -> void
+              end
             end
           end
         end

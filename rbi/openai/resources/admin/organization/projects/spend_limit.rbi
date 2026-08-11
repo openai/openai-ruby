@@ -6,6 +6,10 @@ module OpenAI
       class Organization
         class Projects
           class SpendLimit
+            sig { returns(SpendLimit::WithRawResponse) }
+            def with_raw_response
+            end
+
             # Get a project's hard spend limit.
             sig do
               params(
@@ -67,8 +71,46 @@ module OpenAI
             end
 
             # @api private
-            sig { params(client: OpenAI::Client).returns(T.attached_class) }
+            sig { params(client: OpenAI::Internal::Transport::RequestClient).returns(T.attached_class) }
             def self.new(client:)
+            end
+
+            class WithRawResponse
+              sig { params(project_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectSpendLimit]) }
+              def retrieve(
+                # The ID of the project whose hard spend limit is being managed.
+                project_id,
+                request_options: {}
+              )
+              end
+
+              sig { params(project_id: String, currency: OpenAI::Admin::Organization::Projects::SpendLimitUpdateParams::Currency::OrSymbol, interval: OpenAI::Admin::Organization::Projects::SpendLimitUpdateParams::Interval::OrSymbol, threshold_amount: Integer, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectSpendLimit]) }
+              def update(
+                # The ID of the project whose hard spend limit is being managed.
+                project_id,
+                # The currency for the threshold amount. Currently, only `USD` is supported.
+                currency:,
+                # The time interval for evaluating spend against the threshold. Currently, only
+                # `month` is supported.
+                interval:,
+                # The hard spend limit amount, in cents.
+                threshold_amount:,
+                request_options: {}
+              )
+              end
+
+              sig { params(project_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectSpendLimitDeleted]) }
+              def delete(
+                # The ID of the project whose hard spend limit is being managed.
+                project_id,
+                request_options: {}
+              )
+              end
+
+              # @api private
+              sig { params(resource: SpendLimit).returns(T.attached_class) }
+              def self.new(resource:)
+              end
             end
           end
         end

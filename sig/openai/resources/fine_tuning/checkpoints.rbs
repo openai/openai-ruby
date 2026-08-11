@@ -2,9 +2,16 @@ module OpenAI
   module Resources
     class FineTuning
       class Checkpoints
+        def with_raw_response: -> Checkpoints::WithRawResponse
         attr_reader permissions: OpenAI::Resources::FineTuning::Checkpoints::Permissions
 
-        def initialize: (client: OpenAI::Client) -> void
+        def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+        class WithRawResponse
+          attr_reader permissions: OpenAI::Resources::FineTuning::Checkpoints::Permissions::WithRawResponse
+
+          def initialize: (resource: Checkpoints) -> void
+        end
       end
     end
   end

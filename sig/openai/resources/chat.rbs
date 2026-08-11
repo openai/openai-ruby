@@ -1,9 +1,16 @@
 module OpenAI
   module Resources
     class Chat
+      def with_raw_response: -> Chat::WithRawResponse
       attr_reader completions: OpenAI::Resources::Chat::Completions
 
-      def initialize: (client: OpenAI::Client) -> void
+      def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+      class WithRawResponse
+        attr_reader completions: OpenAI::Resources::Chat::Completions::WithRawResponse
+
+        def initialize: (resource: Chat) -> void
+      end
     end
   end
 end

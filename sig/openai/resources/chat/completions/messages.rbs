@@ -3,6 +3,7 @@ module OpenAI
     class Chat
       class Completions
         class Messages
+          def with_raw_response: -> Messages::WithRawResponse
           def list: (
             String completion_id,
             ?after: String,
@@ -11,7 +12,19 @@ module OpenAI
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Internal::CursorPage[OpenAI::Chat::ChatCompletionStoreMessage]
 
-          def initialize: (client: OpenAI::Client) -> void
+          def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+          class WithRawResponse
+            def list: (
+            String completion_id,
+            ?after: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Chat::Completions::MessageListParams::order,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Internal::CursorPage[OpenAI::Chat::ChatCompletionStoreMessage]]
+
+            def initialize: (resource: Messages) -> void
+          end
         end
       end
     end

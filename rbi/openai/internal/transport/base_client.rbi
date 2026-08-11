@@ -5,67 +5,12 @@ module OpenAI
     module Transport
       # @api private
       class BaseClient
+        include OpenAI::Internal::Transport::RequestClient
         extend OpenAI::Internal::Util::SorbetRuntimeSupport
 
         abstract!
 
-        RequestComponents =
-          T.type_alias do
-            {
-              method: Symbol,
-              path: T.any(String, T::Array[String]),
-              query:
-                T.nilable(
-                  T::Hash[String, T.nilable(T.any(T::Array[String], String))]
-                ),
-              headers:
-                T.nilable(
-                  T::Hash[
-                    String,
-                    T.nilable(
-                      T.any(
-                        String,
-                        Integer,
-                        T::Array[T.nilable(T.any(String, Integer))]
-                      )
-                    )
-                  ]
-                ),
-              body: T.nilable(T.anything),
-              unwrap:
-                T.nilable(
-                  T.any(
-                    Symbol,
-                    Integer,
-                    T::Array[T.any(Symbol, Integer)],
-                    T.proc.params(arg0: T.anything).returns(T.anything)
-                  )
-                ),
-              page:
-                T.nilable(
-                  T::Class[
-                    OpenAI::Internal::Type::BasePage[
-                      OpenAI::Internal::Type::BaseModel
-                    ]
-                  ]
-                ),
-              stream:
-                T.nilable(
-                  T::Class[
-                    OpenAI::Internal::Type::BaseStream[
-                      T.anything,
-                      OpenAI::Internal::Type::BaseModel
-                    ]
-                  ]
-                ),
-              model: T.nilable(OpenAI::Internal::Type::Converter::Input),
-              security:
-                T.nilable(
-                  { bearer_auth?: T::Boolean, admin_api_key_auth?: T::Boolean }
-                ),
-              options: T.nilable(OpenAI::RequestOptions::OrHash)
-            }
-          end
+        RequestComponents = T.type_alias { T::Hash[Symbol, T.anything] }
 
         RequestInput =
           T.type_alias do
@@ -288,76 +233,41 @@ module OpenAI
         # Execute the request specified by `req`. This is the method that all resource
         # methods call into.
         #
-        # @overload request(method, path, query: {}, headers: {}, body: nil, unwrap: nil, page: nil, stream: nil, model: OpenAI::Internal::Type::Unknown, security: {bearer_auth: true, admin_api_key_auth: true}, options: {})
         sig do
-          params(
-            method: Symbol,
-            path: T.any(String, T::Array[String]),
-            query:
-              T.nilable(
-                T::Hash[String, T.nilable(T.any(T::Array[String], String))]
-              ),
-            headers:
-              T.nilable(
-                T::Hash[
-                  String,
-                  T.nilable(
-                    T.any(
-                      String,
-                      Integer,
-                      T::Array[T.nilable(T.any(String, Integer))]
-                    )
-                  )
-                ]
-              ),
-            body: T.nilable(T.anything),
-            unwrap:
-              T.nilable(
-                T.any(
-                  Symbol,
-                  Integer,
-                  T::Array[T.any(Symbol, Integer)],
-                  T.proc.params(arg0: T.anything).returns(T.anything)
-                )
-              ),
-            page:
-              T.nilable(
-                T::Class[
-                  OpenAI::Internal::Type::BasePage[
-                    OpenAI::Internal::Type::BaseModel
-                  ]
-                ]
-              ),
-            stream:
-              T.nilable(
-                T::Class[
-                  OpenAI::Internal::Type::BaseStream[
-                    T.anything,
-                    OpenAI::Internal::Type::BaseModel
-                  ]
-                ]
-              ),
-            model: T.nilable(OpenAI::Internal::Type::Converter::Input),
-            security:
-              T.nilable(
-                { bearer_auth?: T::Boolean, admin_api_key_auth?: T::Boolean }
-              ),
-            options: T.nilable(OpenAI::RequestOptions::OrHash)
+          override.params(
+            req: OpenAI::Internal::Transport::BaseClient::RequestComponents
           ).returns(T.anything)
         end
-        def request(
-          method,
-          path,
-          query: {},
-          headers: {},
-          body: nil,
-          unwrap: nil,
-          page: nil,
-          stream: nil,
-          model: OpenAI::Internal::Type::Unknown,
-          security: { bearer_auth: true, admin_api_key_auth: true },
-          options: {}
-        )
+        def request(req)
+        end
+
+        # @api private
+        sig do
+          params(
+            req: OpenAI::Internal::Transport::BaseClient::RequestComponents
+          ).returns(OpenAI::RawResponse[T.anything])
+        end
+        def raw_request(req)
+        end
+
+        # @api private
+        sig do
+          params(
+            req: OpenAI::Internal::Transport::BaseClient::RequestComponents
+          ).returns([URI::Generic, OpenAI::HTTPClient::Response])
+        end
+        private def perform_request(req)
+        end
+
+        # @api private
+        sig do
+          params(
+            req: OpenAI::Internal::Transport::BaseClient::RequestComponents,
+            url: URI::Generic,
+            response: OpenAI::HTTPClient::Response
+          ).returns(T.anything)
+        end
+        private def parse_response(req, url:, response:)
         end
 
         # @api private

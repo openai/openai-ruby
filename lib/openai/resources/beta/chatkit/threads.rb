@@ -5,6 +5,17 @@ module OpenAI
     class Beta
       class ChatKit
         class Threads
+          # Returns a wrapper that exposes the raw HTTP response for each request.
+          #
+          # @return [Threads::WithRawResponse]
+          def with_raw_response
+            WithRawResponse.new(
+              resource: Threads.new(
+                client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+              )
+            )
+          end
+
           # Retrieve a ChatKit thread by its identifier.
           #
           # @overload retrieve(thread_id, request_options: {})
@@ -121,9 +132,34 @@ module OpenAI
 
           # @api private
           #
-          # @param client [OpenAI::Client]
+          # @param client [OpenAI::Internal::Transport::RequestClient]
           def initialize(client:)
             @client = client
+          end
+
+          class WithRawResponse
+            def retrieve(thread_id, params = {})
+              @resource.retrieve(thread_id, params)
+            end
+
+            def list(params = {})
+              @resource.list(params)
+            end
+
+            def delete(thread_id, params = {})
+              @resource.delete(thread_id, params)
+            end
+
+            def list_items(thread_id, params = {})
+              @resource.list_items(thread_id, params)
+            end
+
+            # @api private
+            #
+            # @param resource [Threads]
+            def initialize(resource:)
+              @resource = resource
+            end
           end
         end
       end

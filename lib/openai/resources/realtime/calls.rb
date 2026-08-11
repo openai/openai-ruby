@@ -4,6 +4,17 @@ module OpenAI
   module Resources
     class Realtime
       class Calls
+        # Returns a wrapper that exposes the raw HTTP response for each request.
+        #
+        # @return [Calls::WithRawResponse]
+        def with_raw_response
+          WithRawResponse.new(
+            resource: Calls.new(
+              client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+            )
+          )
+        end
+
         # Some parameter documentations has been truncated, see
         # {OpenAI::Models::Realtime::CallAcceptParams} for more details.
         #
@@ -141,9 +152,34 @@ module OpenAI
 
         # @api private
         #
-        # @param client [OpenAI::Client]
+        # @param client [OpenAI::Internal::Transport::RequestClient]
         def initialize(client:)
           @client = client
+        end
+
+        class WithRawResponse
+          def accept(call_id, params)
+            @resource.accept(call_id, params)
+          end
+
+          def hangup(call_id, params = {})
+            @resource.hangup(call_id, params)
+          end
+
+          def refer(call_id, params)
+            @resource.refer(call_id, params)
+          end
+
+          def reject(call_id, params = {})
+            @resource.reject(call_id, params)
+          end
+
+          # @api private
+          #
+          # @param resource [Calls]
+          def initialize(resource:)
+            @resource = resource
+          end
         end
       end
     end

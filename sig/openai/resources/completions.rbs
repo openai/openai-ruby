@@ -1,6 +1,7 @@
 module OpenAI
   module Resources
     class Completions
+      def with_raw_response: -> Completions::WithRawResponse
       def create: (
         model: OpenAI::Models::CompletionCreateParams::model,
         prompt: OpenAI::Models::CompletionCreateParams::prompt?,
@@ -43,7 +44,53 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Internal::Stream[OpenAI::Completion]
 
-      def initialize: (client: OpenAI::Client) -> void
+      def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+      class WithRawResponse
+        def create: (
+        model: OpenAI::Models::CompletionCreateParams::model,
+        prompt: OpenAI::Models::CompletionCreateParams::prompt?,
+        ?best_of: Integer?,
+        ?echo: bool?,
+        ?frequency_penalty: Float?,
+        ?logit_bias: ::Hash[Symbol, Integer]?,
+        ?logprobs: Integer?,
+        ?max_tokens: Integer?,
+        ?n: Integer?,
+        ?presence_penalty: Float?,
+        ?seed: Integer?,
+        ?stop: OpenAI::Models::CompletionCreateParams::stop?,
+        ?stream_options: OpenAI::Chat::ChatCompletionStreamOptions?,
+        ?suffix: String?,
+        ?temperature: Float?,
+        ?top_p: Float?,
+        ?user: String,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::Completion]
+
+        def create_streaming: (
+        model: OpenAI::Models::CompletionCreateParams::model,
+        prompt: OpenAI::Models::CompletionCreateParams::prompt?,
+        ?best_of: Integer?,
+        ?echo: bool?,
+        ?frequency_penalty: Float?,
+        ?logit_bias: ::Hash[Symbol, Integer]?,
+        ?logprobs: Integer?,
+        ?max_tokens: Integer?,
+        ?n: Integer?,
+        ?presence_penalty: Float?,
+        ?seed: Integer?,
+        ?stop: OpenAI::Models::CompletionCreateParams::stop?,
+        ?stream_options: OpenAI::Chat::ChatCompletionStreamOptions?,
+        ?suffix: String?,
+        ?temperature: Float?,
+        ?top_p: Float?,
+        ?user: String,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::Internal::Stream[OpenAI::Completion]]
+
+        def initialize: (resource: Completions) -> void
+      end
     end
   end
 end

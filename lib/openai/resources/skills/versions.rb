@@ -4,6 +4,17 @@ module OpenAI
   module Resources
     class Skills
       class Versions
+        # Returns a wrapper that exposes the raw HTTP response for each request.
+        #
+        # @return [Versions::WithRawResponse]
+        def with_raw_response
+          WithRawResponse.new(
+            resource: Versions.new(
+              client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+            )
+          )
+        end
+
         # @return [OpenAI::Resources::Skills::Versions::Content]
         attr_reader :content
 
@@ -124,10 +135,43 @@ module OpenAI
 
         # @api private
         #
-        # @param client [OpenAI::Client]
+        # @param client [OpenAI::Internal::Transport::RequestClient]
         def initialize(client:)
           @client = client
           @content = OpenAI::Resources::Skills::Versions::Content.new(client: client)
+        end
+
+        class WithRawResponse
+          # @return [OpenAI::Resources::Skills::Versions::Content::WithRawResponse]
+          attr_reader :content
+
+          def create(skill_id, params = {})
+            @resource.create(skill_id, params)
+          end
+
+          def retrieve(version, params)
+            @resource.retrieve(version, params)
+          end
+
+          def list(skill_id, params = {})
+            @resource.list(skill_id, params)
+          end
+
+          def delete(version, params)
+            @resource.delete(version, params)
+          end
+
+          # @api private
+          #
+          # @param resource [Versions]
+          def initialize(resource:)
+            @resource = resource
+
+            @content =
+              OpenAI::Resources::Skills::Versions::Content::WithRawResponse.new(
+                resource: @resource.content
+              )
+          end
         end
       end
     end

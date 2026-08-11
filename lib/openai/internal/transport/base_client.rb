@@ -7,6 +7,7 @@ module OpenAI
       #
       # @abstract
       class BaseClient
+        include OpenAI::Internal::Transport::RequestClient
         extend OpenAI::Internal::Util::SorbetRuntimeSupport
 
         # from whatwg fetch spec
@@ -606,10 +607,53 @@ module OpenAI
         # @raise [OpenAI::Errors::APIError]
         # @return [Object]
         def request(req)
+          url, response = perform_request(req)
+          parse_response(req, url: url, response: response)
+        end
+
+        # Execute the request specified by `req` and return its undecoded HTTP
+        # response. Resource raw-response wrappers call this method so they use
+        # the same authentication, encoding, redirect, retry, error, and parsing
+        # behavior as ordinary resource calls.
+        #
+        # @api private
+        #
+        # @param req [Hash{Symbol=>Object}]
+        # @raise [OpenAI::Errors::APIError]
+        # @return [OpenAI::RawResponse]
+        def raw_request(req)
+          url, response = perform_request(req)
+          status = response.status
+          headers = response.headers.to_h do |name, value|
+            [name.dup.freeze, value.dup.freeze]
+          end.freeze
+          body = response.body.each_with_object(+"") do |chunk, buffer|
+            buffer << chunk
+          end.freeze
+          parser_req = req[:page] ? req : req.slice(:model, :stream, :unwrap)
+
+          OpenAI::RawResponse.new(
+            status: status,
+            headers: headers,
+            body: body,
+            parser: -> do
+              replay = OpenAI::HTTPClient::Response.new(
+                status: status,
+                headers: headers,
+                body: body
+              )
+              parse_response(parser_req, url: url, response: replay)
+            end
+          )
+        end
+
+        # @api private
+        #
+        # @param req [Hash{Symbol=>Object}]
+        # @return [Array(URI::Generic, OpenAI::HTTPClient::Response)]
+        private def perform_request(req)
           self.class.validate!(req)
-          model = req.fetch(:model) { OpenAI::Internal::Type::Unknown }
           opts = req[:options].to_h
-          unwrap = req[:unwrap]
           OpenAI::RequestOptions.validate!(opts)
           request = build_request(req.except(:options), opts)
           url = request.fetch(:url)
@@ -622,6 +666,18 @@ module OpenAI
             retry_count: 0,
             send_retry_header: send_retry_header
           )
+          [url, response]
+        end
+
+        # @api private
+        #
+        # @param req [Hash{Symbol=>Object}]
+        # @param url [URI::Generic]
+        # @param response [OpenAI::HTTPClient::Response]
+        # @return [Object]
+        private def parse_response(req, url:, response:)
+          model = req.fetch(:model) { OpenAI::Internal::Type::Unknown }
+          unwrap = req[:unwrap]
 
           decoded = OpenAI::Internal::Util.decode_content(response.headers, stream: response.body)
           case req
@@ -641,7 +697,7 @@ module OpenAI
             unwrapped = OpenAI::Internal::Util.dig(decoded, unwrap)
             OpenAI::Internal::Type::Converter.coerce(model, unwrapped).tap do |result|
               if result.is_a?(OpenAI::Internal::Type::BaseModel)
-                result._set_response_metadata(response.headers)
+                result._set_request_id(response.headers["x-request-id"])
               end
             end
           end
@@ -657,37 +713,7 @@ module OpenAI
         end
 
         define_sorbet_constant!(:RequestComponents) do
-          T.type_alias do
-            {
-              method: Symbol,
-              path: T.any(String, T::Array[String]),
-              query: T.nilable(T::Hash[String, T.nilable(T.any(T::Array[String], String))]),
-              headers: T.nilable(
-                T::Hash[String,
-                        T.nilable(
-                          T.any(
-                            String,
-                            Integer,
-                            T::Array[T.nilable(T.any(String, Integer))]
-                          )
-                        )]
-              ),
-              body: T.nilable(T.anything),
-              unwrap: T.nilable(
-                T.any(
-                  Symbol,
-                  Integer,
-                  T::Array[T.any(Symbol, Integer)],
-                  T.proc.params(arg0: T.anything).returns(T.anything)
-                )
-              ),
-              page: T.nilable(T::Class[OpenAI::Internal::Type::BasePage[OpenAI::Internal::Type::BaseModel]]),
-              stream: T.nilable(T::Class[OpenAI::Internal::Type::BaseStream[T.anything, OpenAI::Internal::Type::BaseModel]]),
-              model: T.nilable(OpenAI::Internal::Type::Converter::Input),
-              security: T.nilable({bearer_auth?: T::Boolean, admin_api_key_auth?: T::Boolean}),
-              options: T.nilable(OpenAI::RequestOptions::OrHash)
-            }
-          end
+          T.type_alias { T::Hash[Symbol, T.anything] }
         end
         define_sorbet_constant!(:RequestInput) do
           T.type_alias do

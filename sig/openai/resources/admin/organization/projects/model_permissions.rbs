@@ -4,6 +4,7 @@ module OpenAI
       class Organization
         class Projects
           class ModelPermissions
+            def with_raw_response: -> ModelPermissions::WithRawResponse
             def retrieve: (
               String project_id,
               ?request_options: OpenAI::request_opts
@@ -21,7 +22,28 @@ module OpenAI
               ?request_options: OpenAI::request_opts
             ) -> OpenAI::Admin::Organization::Projects::ProjectModelPermissionsDeleted
 
-            def initialize: (client: OpenAI::Client) -> void
+            def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+            class WithRawResponse
+              def retrieve: (
+              String project_id,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectModelPermissions]
+
+              def update: (
+              String project_id,
+              mode: OpenAI::Models::Admin::Organization::Projects::ModelPermissionUpdateParams::mode,
+              model_ids: ::Array[String],
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectModelPermissions]
+
+              def delete: (
+              String project_id,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectModelPermissionsDeleted]
+
+              def initialize: (resource: ModelPermissions) -> void
+            end
           end
         end
       end

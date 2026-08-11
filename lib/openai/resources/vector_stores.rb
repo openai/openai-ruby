@@ -3,6 +3,17 @@
 module OpenAI
   module Resources
     class VectorStores
+      # Returns a wrapper that exposes the raw HTTP response for each request.
+      #
+      # @return [VectorStores::WithRawResponse]
+      def with_raw_response
+        WithRawResponse.new(
+          resource: VectorStores.new(
+            client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+          )
+        )
+      end
+
       # @return [OpenAI::Resources::VectorStores::Files]
       attr_reader :files
 
@@ -193,11 +204,60 @@ module OpenAI
 
       # @api private
       #
-      # @param client [OpenAI::Client]
+      # @param client [OpenAI::Internal::Transport::RequestClient]
       def initialize(client:)
         @client = client
         @files = OpenAI::Resources::VectorStores::Files.new(client: client)
         @file_batches = OpenAI::Resources::VectorStores::FileBatches.new(client: client)
+      end
+
+      class WithRawResponse
+        # @return [OpenAI::Resources::VectorStores::Files::WithRawResponse]
+        attr_reader :files
+
+        # @return [OpenAI::Resources::VectorStores::FileBatches::WithRawResponse]
+        attr_reader :file_batches
+
+        def create(params = {})
+          @resource.create(params)
+        end
+
+        def retrieve(vector_store_id, params = {})
+          @resource.retrieve(vector_store_id, params)
+        end
+
+        def update(vector_store_id, params = {})
+          @resource.update(vector_store_id, params)
+        end
+
+        def list(params = {})
+          @resource.list(params)
+        end
+
+        def delete(vector_store_id, params = {})
+          @resource.delete(vector_store_id, params)
+        end
+
+        def search(vector_store_id, params)
+          @resource.search(vector_store_id, params)
+        end
+
+        # @api private
+        #
+        # @param resource [VectorStores]
+        def initialize(resource:)
+          @resource = resource
+
+          @files =
+            OpenAI::Resources::VectorStores::Files::WithRawResponse.new(
+              resource: @resource.files
+            )
+
+          @file_batches =
+            OpenAI::Resources::VectorStores::FileBatches::WithRawResponse.new(
+              resource: @resource.file_batches
+            )
+        end
       end
     end
   end

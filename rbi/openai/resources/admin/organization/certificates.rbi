@@ -5,6 +5,10 @@ module OpenAI
     class Admin
       class Organization
         class Certificates
+          sig { returns(Certificates::WithRawResponse) }
+          def with_raw_response
+          end
+
           # Upload a certificate to the organization. This does **not** automatically
           # activate the certificate.
           #
@@ -146,8 +150,79 @@ module OpenAI
           end
 
           # @api private
-          sig { params(client: OpenAI::Client).returns(T.attached_class) }
+          sig { params(client: OpenAI::Internal::Transport::RequestClient).returns(T.attached_class) }
           def self.new(client:)
+          end
+
+          class WithRawResponse
+            sig { params(certificate: String, name: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Admin::Organization::Certificate]) }
+            def create(
+              # The certificate content in PEM format
+              certificate:,
+              # An optional name for the certificate
+              name: nil,
+              request_options: {}
+            )
+            end
+
+            sig { params(certificate_id: String, include: T::Array[OpenAI::Admin::Organization::CertificateRetrieveParams::Include::OrSymbol], request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Admin::Organization::Certificate]) }
+            def retrieve(
+              # Unique ID of the certificate to retrieve.
+              certificate_id,
+              # A list of additional fields to include in the response. Currently the only
+              # supported value is `content` to fetch the PEM content of the certificate.
+              include: nil,
+              request_options: {}
+            )
+            end
+
+            sig { params(certificate_id: String, name: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Admin::Organization::Certificate]) }
+            def update(
+              # Unique ID of the certificate to modify.
+              certificate_id,
+              # The updated name for the certificate
+              name: nil,
+              request_options: {}
+            )
+            end
+
+            sig { params(after: String, limit: Integer, order: OpenAI::Admin::Organization::CertificateListParams::Order::OrSymbol, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Internal::ConversationCursorPage[OpenAI::Models::Admin::Organization::CertificateListResponse]]) }
+            def list(
+              # A cursor for use in pagination. `after` is an object ID that defines your place
+              # in the list. For instance, if you make a list request and receive 100 objects,
+              # ending with obj_foo, your subsequent call can include after=obj_foo in order to
+              # fetch the next page of the list.
+              after: nil,
+              # A limit on the number of objects to be returned. Limit can range between 1 and
+              # 100, and the default is 20.
+              limit: nil,
+              # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
+              # order and `desc` for descending order.
+              order: nil,
+              request_options: {}
+            )
+            end
+
+            sig { params(certificate_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Models::Admin::Organization::CertificateDeleteResponse]) }
+            def delete(
+              # Unique ID of the certificate to delete.
+              certificate_id,
+              request_options: {}
+            )
+            end
+
+            sig { params(certificate_ids: T::Array[String], request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Internal::Page[OpenAI::Models::Admin::Organization::CertificateActivateResponse]]) }
+            def activate(certificate_ids:, request_options: {})
+            end
+
+            sig { params(certificate_ids: T::Array[String], request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Internal::Page[OpenAI::Models::Admin::Organization::CertificateDeactivateResponse]]) }
+            def deactivate(certificate_ids:, request_options: {})
+            end
+
+            # @api private
+            sig { params(resource: Certificates).returns(T.attached_class) }
+            def self.new(resource:)
+            end
           end
         end
       end

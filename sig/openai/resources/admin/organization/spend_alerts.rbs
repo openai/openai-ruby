@@ -3,6 +3,7 @@ module OpenAI
     class Admin
       class Organization
         class SpendAlerts
+          def with_raw_response: -> SpendAlerts::WithRawResponse
           def create: (
             currency: OpenAI::Models::Admin::Organization::SpendAlertCreateParams::currency,
             interval: OpenAI::Models::Admin::Organization::SpendAlertCreateParams::interval,
@@ -38,7 +39,46 @@ module OpenAI
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Admin::Organization::OrganizationSpendAlertDeleted
 
-          def initialize: (client: OpenAI::Client) -> void
+          def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+          class WithRawResponse
+            def create: (
+            currency: OpenAI::Models::Admin::Organization::SpendAlertCreateParams::currency,
+            interval: OpenAI::Models::Admin::Organization::SpendAlertCreateParams::interval,
+            notification_channel: OpenAI::Admin::Organization::SpendAlertCreateParams::NotificationChannel,
+            threshold_amount: Integer,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Admin::Organization::OrganizationSpendAlert]
+
+            def retrieve: (
+            String alert_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Admin::Organization::OrganizationSpendAlert]
+
+            def update: (
+            String alert_id,
+            currency: OpenAI::Models::Admin::Organization::SpendAlertUpdateParams::currency,
+            interval: OpenAI::Models::Admin::Organization::SpendAlertUpdateParams::interval,
+            notification_channel: OpenAI::Admin::Organization::SpendAlertUpdateParams::NotificationChannel,
+            threshold_amount: Integer,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Admin::Organization::OrganizationSpendAlert]
+
+            def list: (
+            ?after: String,
+            ?before: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Admin::Organization::SpendAlertListParams::order,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Internal::ConversationCursorPage[OpenAI::Admin::Organization::OrganizationSpendAlert]]
+
+            def delete: (
+            String alert_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Admin::Organization::OrganizationSpendAlertDeleted]
+
+            def initialize: (resource: SpendAlerts) -> void
+          end
         end
       end
     end

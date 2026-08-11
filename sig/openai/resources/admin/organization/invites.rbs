@@ -3,6 +3,7 @@ module OpenAI
     class Admin
       class Organization
         class Invites
+          def with_raw_response: -> Invites::WithRawResponse
           def create: (
             email: String,
             role: OpenAI::Models::Admin::Organization::InviteCreateParams::role,
@@ -26,7 +27,34 @@ module OpenAI
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::Admin::Organization::InviteDeleteResponse
 
-          def initialize: (client: OpenAI::Client) -> void
+          def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+          class WithRawResponse
+            def create: (
+            email: String,
+            role: OpenAI::Models::Admin::Organization::InviteCreateParams::role,
+            ?projects: ::Array[OpenAI::Admin::Organization::InviteCreateParams::Project],
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Admin::Organization::Invite]
+
+            def retrieve: (
+            String invite_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Admin::Organization::Invite]
+
+            def list: (
+            ?after: String,
+            ?limit: Integer,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Internal::ConversationCursorPage[OpenAI::Admin::Organization::Invite]]
+
+            def delete: (
+            String invite_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Models::Admin::Organization::InviteDeleteResponse]
+
+            def initialize: (resource: Invites) -> void
+          end
         end
       end
     end

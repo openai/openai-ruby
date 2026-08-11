@@ -5,6 +5,10 @@ module OpenAI
     class Admin
       class Organization
         class Users
+          sig { returns(Users::WithRawResponse) }
+          def with_raw_response
+          end
+
           sig { returns(OpenAI::Resources::Admin::Organization::Users::Roles) }
           attr_reader :roles
 
@@ -91,8 +95,66 @@ module OpenAI
           end
 
           # @api private
-          sig { params(client: OpenAI::Client).returns(T.attached_class) }
+          sig { params(client: OpenAI::Internal::Transport::RequestClient).returns(T.attached_class) }
           def self.new(client:)
+          end
+
+          class WithRawResponse
+            sig { returns(OpenAI::Resources::Admin::Organization::Users::Roles::WithRawResponse) }
+            attr_reader :roles
+
+            sig { params(user_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Admin::Organization::OrganizationUser]) }
+            def retrieve(
+              # The ID of the user.
+              user_id,
+              request_options: {}
+            )
+            end
+
+            sig { params(user_id: String, developer_persona: T.nilable(String), role: T.nilable(String), role_id: T.nilable(String), technical_level: T.nilable(String), request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Admin::Organization::OrganizationUser]) }
+            def update(
+              # The ID of the user.
+              user_id,
+              # Developer persona metadata.
+              developer_persona: nil,
+              # `owner` or `reader`
+              role: nil,
+              # Role ID to assign to the user.
+              role_id: nil,
+              # Technical level metadata.
+              technical_level: nil,
+              request_options: {}
+            )
+            end
+
+            sig { params(after: String, emails: T::Array[String], limit: Integer, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Internal::ConversationCursorPage[OpenAI::Admin::Organization::OrganizationUser]]) }
+            def list(
+              # A cursor for use in pagination. `after` is an object ID that defines your place
+              # in the list. For instance, if you make a list request and receive 100 objects,
+              # ending with obj_foo, your subsequent call can include after=obj_foo in order to
+              # fetch the next page of the list.
+              after: nil,
+              # Filter by the email address of users.
+              emails: nil,
+              # A limit on the number of objects to be returned. Limit can range between 1 and
+              # 100, and the default is 20.
+              limit: nil,
+              request_options: {}
+            )
+            end
+
+            sig { params(user_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Models::Admin::Organization::UserDeleteResponse]) }
+            def delete(
+              # The ID of the user.
+              user_id,
+              request_options: {}
+            )
+            end
+
+            # @api private
+            sig { params(resource: Users).returns(T.attached_class) }
+            def self.new(resource:)
+            end
           end
         end
       end

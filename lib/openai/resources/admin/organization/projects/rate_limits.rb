@@ -6,6 +6,17 @@ module OpenAI
       class Organization
         class Projects
           class RateLimits
+            # Returns a wrapper that exposes the raw HTTP response for each request.
+            #
+            # @return [RateLimits::WithRawResponse]
+            def with_raw_response
+              WithRawResponse.new(
+                resource: RateLimits.new(
+                  client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+                )
+              )
+            end
+
             # Some parameter documentations has been truncated, see
             # {OpenAI::Models::Admin::Organization::Projects::RateLimitListRateLimitsParams}
             # for more details.
@@ -90,9 +101,26 @@ module OpenAI
 
             # @api private
             #
-            # @param client [OpenAI::Client]
+            # @param client [OpenAI::Internal::Transport::RequestClient]
             def initialize(client:)
               @client = client
+            end
+
+            class WithRawResponse
+              def list_rate_limits(project_id, params = {})
+                @resource.list_rate_limits(project_id, params)
+              end
+
+              def update_rate_limit(rate_limit_id, params)
+                @resource.update_rate_limit(rate_limit_id, params)
+              end
+
+              # @api private
+              #
+              # @param resource [RateLimits]
+              def initialize(resource:)
+                @resource = resource
+              end
             end
           end
         end

@@ -4,6 +4,7 @@ module OpenAI
       class Organization
         class Projects
           class SpendLimit
+            def with_raw_response: -> SpendLimit::WithRawResponse
             def retrieve: (
               String project_id,
               ?request_options: OpenAI::request_opts
@@ -22,7 +23,29 @@ module OpenAI
               ?request_options: OpenAI::request_opts
             ) -> OpenAI::Admin::Organization::Projects::ProjectSpendLimitDeleted
 
-            def initialize: (client: OpenAI::Client) -> void
+            def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+            class WithRawResponse
+              def retrieve: (
+              String project_id,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectSpendLimit]
+
+              def update: (
+              String project_id,
+              currency: OpenAI::Models::Admin::Organization::Projects::SpendLimitUpdateParams::currency,
+              interval: OpenAI::Models::Admin::Organization::Projects::SpendLimitUpdateParams::interval,
+              threshold_amount: Integer,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectSpendLimit]
+
+              def delete: (
+              String project_id,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectSpendLimitDeleted]
+
+              def initialize: (resource: SpendLimit) -> void
+            end
           end
         end
       end

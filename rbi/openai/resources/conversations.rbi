@@ -4,6 +4,10 @@ module OpenAI
   module Resources
     # Manage conversations and conversation items.
     class Conversations
+      sig { returns(Conversations::WithRawResponse) }
+      def with_raw_response
+      end
+
       # Manage conversations and conversation items.
       sig { returns(OpenAI::Resources::Conversations::Items) }
       attr_reader :items
@@ -120,8 +124,65 @@ module OpenAI
       end
 
       # @api private
-      sig { params(client: OpenAI::Client).returns(T.attached_class) }
+      sig { params(client: OpenAI::Internal::Transport::RequestClient).returns(T.attached_class) }
       def self.new(client:)
+      end
+
+      class WithRawResponse
+        sig { returns(OpenAI::Resources::Conversations::Items::WithRawResponse) }
+        attr_reader :items
+
+        sig { params(items: T.nilable(T::Array[T.any(OpenAI::Responses::EasyInputMessage::OrHash, OpenAI::Responses::ResponseInputItem::Message::OrHash, OpenAI::Responses::ResponseOutputMessage::OrHash, OpenAI::Responses::ResponseFileSearchToolCall::OrHash, OpenAI::Responses::ResponseComputerToolCall::OrHash, OpenAI::Responses::ResponseInputItem::ComputerCallOutput::OrHash, OpenAI::Responses::ResponseFunctionWebSearch::OrHash, OpenAI::Responses::ResponseFunctionToolCall::OrHash, OpenAI::Responses::ResponseInputItem::FunctionCallOutput::OrHash, OpenAI::Responses::ResponseInputItem::ToolSearchCall::OrHash, OpenAI::Responses::ResponseToolSearchOutputItemParam::OrHash, OpenAI::Responses::ResponseInputItem::AdditionalTools::OrHash, OpenAI::Responses::ResponseReasoningItem::OrHash, OpenAI::Responses::ResponseCompactionItemParam::OrHash, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::OrHash, OpenAI::Responses::ResponseCodeInterpreterToolCall::OrHash, OpenAI::Responses::ResponseInputItem::LocalShellCall::OrHash, OpenAI::Responses::ResponseInputItem::LocalShellCallOutput::OrHash, OpenAI::Responses::ResponseInputItem::ShellCall::OrHash, OpenAI::Responses::ResponseInputItem::ShellCallOutput::OrHash, OpenAI::Responses::ResponseInputItem::ApplyPatchCall::OrHash, OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::OrHash, OpenAI::Responses::ResponseInputItem::McpListTools::OrHash, OpenAI::Responses::ResponseInputItem::McpApprovalRequest::OrHash, OpenAI::Responses::ResponseInputItem::McpApprovalResponse::OrHash, OpenAI::Responses::ResponseInputItem::McpCall::OrHash, OpenAI::Responses::ResponseCustomToolCallOutput::OrHash, OpenAI::Responses::ResponseCustomToolCall::OrHash, OpenAI::Responses::ResponseInputItem::CompactionTrigger::OrHash, OpenAI::Responses::ResponseInputItem::ItemReference::OrHash, OpenAI::Responses::ResponseInputItem::Program::OrHash, OpenAI::Responses::ResponseInputItem::ProgramOutput::OrHash)]), metadata: T.nilable(T::Hash[Symbol, String]), request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Conversations::Conversation]) }
+        def create(
+          # Initial items to include in the conversation context. You may add up to 20 items
+          # at a time.
+          items: nil,
+          # Set of 16 key-value pairs that can be attached to an object. This can be useful
+          # for storing additional information about the object in a structured format, and
+          # querying for objects via API or the dashboard.
+          #
+          # Keys are strings with a maximum length of 64 characters. Values are strings with
+          # a maximum length of 512 characters.
+          metadata: nil,
+          request_options: {}
+        )
+        end
+
+        sig { params(conversation_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Conversations::Conversation]) }
+        def retrieve(
+          # The ID of the conversation to retrieve.
+          conversation_id,
+          request_options: {}
+        )
+        end
+
+        sig { params(conversation_id: String, metadata: T.nilable(T::Hash[Symbol, String]), request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Conversations::Conversation]) }
+        def update(
+          # The ID of the conversation to update.
+          conversation_id,
+          # Set of 16 key-value pairs that can be attached to an object. This can be useful
+          # for storing additional information about the object in a structured format, and
+          # querying for objects via API or the dashboard.
+          #
+          # Keys are strings with a maximum length of 64 characters. Values are strings with
+          # a maximum length of 512 characters.
+          metadata:,
+          request_options: {}
+        )
+        end
+
+        sig { params(conversation_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Conversations::ConversationDeletedResource]) }
+        def delete(
+          # The ID of the conversation to delete.
+          conversation_id,
+          request_options: {}
+        )
+        end
+
+        # @api private
+        sig { params(resource: Conversations).returns(T.attached_class) }
+        def self.new(resource:)
+        end
       end
     end
   end

@@ -5,6 +5,17 @@ module OpenAI
     class Audio
       # Turn audio into text or text into audio.
       class Speech
+        # Returns a wrapper that exposes the raw HTTP response for each request.
+        #
+        # @return [Speech::WithRawResponse]
+        def with_raw_response
+          WithRawResponse.new(
+            resource: Speech.new(
+              client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+            )
+          )
+        end
+
         # Some parameter documentations has been truncated, see
         # {OpenAI::Models::Audio::SpeechCreateParams} for more details.
         #
@@ -48,9 +59,22 @@ module OpenAI
 
         # @api private
         #
-        # @param client [OpenAI::Client]
+        # @param client [OpenAI::Internal::Transport::RequestClient]
         def initialize(client:)
           @client = client
+        end
+
+        class WithRawResponse
+          def create(params)
+            @resource.create(params)
+          end
+
+          # @api private
+          #
+          # @param resource [Speech]
+          def initialize(resource:)
+            @resource = resource
+          end
         end
       end
     end

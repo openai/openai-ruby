@@ -1,6 +1,7 @@
 module OpenAI
   module Resources
     class Batches
+      def with_raw_response: -> Batches::WithRawResponse
       def create: (
         completion_window: OpenAI::Models::BatchCreateParams::completion_window,
         endpoint: OpenAI::Models::BatchCreateParams::endpoint,
@@ -26,7 +27,36 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Batch
 
-      def initialize: (client: OpenAI::Client) -> void
+      def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+      class WithRawResponse
+        def create: (
+        completion_window: OpenAI::Models::BatchCreateParams::completion_window,
+        endpoint: OpenAI::Models::BatchCreateParams::endpoint,
+        input_file_id: String,
+        ?metadata: OpenAI::Models::metadata?,
+        ?output_expires_after: OpenAI::BatchCreateParams::OutputExpiresAfter,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::Batch]
+
+        def retrieve: (
+        String batch_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::Batch]
+
+        def list: (
+        ?after: String,
+        ?limit: Integer,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::Internal::CursorPage[OpenAI::Batch]]
+
+        def cancel: (
+        String batch_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::Batch]
+
+        def initialize: (resource: Batches) -> void
+      end
     end
   end
 end

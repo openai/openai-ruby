@@ -4,6 +4,17 @@ module OpenAI
   module Resources
     # List and describe the various models available in the API.
     class Models
+      # Returns a wrapper that exposes the raw HTTP response for each request.
+      #
+      # @return [Models::WithRawResponse]
+      def with_raw_response
+        WithRawResponse.new(
+          resource: Models.new(
+            client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+          )
+        )
+      end
+
       # Retrieves a model instance, providing basic information about the model such as
       # the owner and permissioning.
       #
@@ -71,9 +82,30 @@ module OpenAI
 
       # @api private
       #
-      # @param client [OpenAI::Client]
+      # @param client [OpenAI::Internal::Transport::RequestClient]
       def initialize(client:)
         @client = client
+      end
+
+      class WithRawResponse
+        def retrieve(model, params = {})
+          @resource.retrieve(model, params)
+        end
+
+        def list(params = {})
+          @resource.list(params)
+        end
+
+        def delete(model, params = {})
+          @resource.delete(model, params)
+        end
+
+        # @api private
+        #
+        # @param resource [Models]
+        def initialize(resource:)
+          @resource = resource
+        end
       end
     end
   end

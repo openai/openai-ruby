@@ -2,11 +2,20 @@ module OpenAI
   module Resources
     class Beta
       class ChatKit
+        def with_raw_response: -> ChatKit::WithRawResponse
         attr_reader sessions: OpenAI::Resources::Beta::ChatKit::Sessions
 
         attr_reader threads: OpenAI::Resources::Beta::ChatKit::Threads
 
-        def initialize: (client: OpenAI::Client) -> void
+        def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+        class WithRawResponse
+          attr_reader sessions: OpenAI::Resources::Beta::ChatKit::Sessions::WithRawResponse
+
+          attr_reader threads: OpenAI::Resources::Beta::ChatKit::Threads::WithRawResponse
+
+          def initialize: (resource: ChatKit) -> void
+        end
       end
     end
   end

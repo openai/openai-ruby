@@ -1,6 +1,7 @@
 module OpenAI
   module Resources
     class FineTuning
+      def with_raw_response: -> FineTuning::WithRawResponse
       attr_reader methods_: OpenAI::Resources::FineTuning::Methods
 
       attr_reader jobs: OpenAI::Resources::FineTuning::Jobs
@@ -9,7 +10,17 @@ module OpenAI
 
       attr_reader alpha: OpenAI::Resources::FineTuning::Alpha
 
-      def initialize: (client: OpenAI::Client) -> void
+      def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+      class WithRawResponse
+        attr_reader jobs: OpenAI::Resources::FineTuning::Jobs::WithRawResponse
+
+        attr_reader checkpoints: OpenAI::Resources::FineTuning::Checkpoints::WithRawResponse
+
+        attr_reader alpha: OpenAI::Resources::FineTuning::Alpha::WithRawResponse
+
+        def initialize: (resource: FineTuning) -> void
+      end
     end
   end
 end

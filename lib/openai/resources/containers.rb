@@ -3,6 +3,17 @@
 module OpenAI
   module Resources
     class Containers
+      # Returns a wrapper that exposes the raw HTTP response for each request.
+      #
+      # @return [Containers::WithRawResponse]
+      def with_raw_response
+        WithRawResponse.new(
+          resource: Containers.new(
+            client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+          )
+        )
+      end
+
       # @return [OpenAI::Resources::Containers::Files]
       attr_reader :files
 
@@ -116,10 +127,43 @@ module OpenAI
 
       # @api private
       #
-      # @param client [OpenAI::Client]
+      # @param client [OpenAI::Internal::Transport::RequestClient]
       def initialize(client:)
         @client = client
         @files = OpenAI::Resources::Containers::Files.new(client: client)
+      end
+
+      class WithRawResponse
+        # @return [OpenAI::Resources::Containers::Files::WithRawResponse]
+        attr_reader :files
+
+        def create(params)
+          @resource.create(params)
+        end
+
+        def retrieve(container_id, params = {})
+          @resource.retrieve(container_id, params)
+        end
+
+        def list(params = {})
+          @resource.list(params)
+        end
+
+        def delete(container_id, params = {})
+          @resource.delete(container_id, params)
+        end
+
+        # @api private
+        #
+        # @param resource [Containers]
+        def initialize(resource:)
+          @resource = resource
+
+          @files =
+            OpenAI::Resources::Containers::Files::WithRawResponse.new(
+              resource: @resource.files
+            )
+        end
       end
     end
   end

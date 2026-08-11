@@ -4,6 +4,7 @@ module OpenAI
       class Organization
         class Projects
           class Groups
+            def with_raw_response: -> Groups::WithRawResponse
             attr_reader roles: OpenAI::Resources::Admin::Organization::Projects::Groups::Roles
 
             def create: (
@@ -34,7 +35,41 @@ module OpenAI
               ?request_options: OpenAI::request_opts
             ) -> OpenAI::Models::Admin::Organization::Projects::GroupDeleteResponse
 
-            def initialize: (client: OpenAI::Client) -> void
+            def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+            class WithRawResponse
+              attr_reader roles: OpenAI::Resources::Admin::Organization::Projects::Groups::Roles::WithRawResponse
+
+              def create: (
+              String project_id,
+              group_id: String,
+              role: String,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectGroup]
+
+              def retrieve: (
+              String group_id,
+              project_id: String,
+              ?group_type: OpenAI::Models::Admin::Organization::Projects::GroupRetrieveParams::group_type,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectGroup]
+
+              def list: (
+              String project_id,
+              ?after: String,
+              ?limit: Integer,
+              ?order: OpenAI::Models::Admin::Organization::Projects::GroupListParams::order,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::RawResponse[OpenAI::Internal::NextCursorPage[OpenAI::Admin::Organization::Projects::ProjectGroup]]
+
+              def delete: (
+              String group_id,
+              project_id: String,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::RawResponse[OpenAI::Models::Admin::Organization::Projects::GroupDeleteResponse]
+
+              def initialize: (resource: Groups) -> void
+            end
           end
         end
       end

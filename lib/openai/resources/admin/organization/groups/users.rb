@@ -6,6 +6,17 @@ module OpenAI
       class Organization
         class Groups
           class Users
+            # Returns a wrapper that exposes the raw HTTP response for each request.
+            #
+            # @return [Users::WithRawResponse]
+            def with_raw_response
+              WithRawResponse.new(
+                resource: Users.new(
+                  client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+                )
+              )
+            end
+
             # Adds a user to a group.
             #
             # @overload create(group_id, user_id:, request_options: {})
@@ -123,9 +134,34 @@ module OpenAI
 
             # @api private
             #
-            # @param client [OpenAI::Client]
+            # @param client [OpenAI::Internal::Transport::RequestClient]
             def initialize(client:)
               @client = client
+            end
+
+            class WithRawResponse
+              def create(group_id, params)
+                @resource.create(group_id, params)
+              end
+
+              def retrieve(user_id, params)
+                @resource.retrieve(user_id, params)
+              end
+
+              def list(group_id, params = {})
+                @resource.list(group_id, params)
+              end
+
+              def delete(user_id, params)
+                @resource.delete(user_id, params)
+              end
+
+              # @api private
+              #
+              # @param resource [Users]
+              def initialize(resource:)
+                @resource = resource
+              end
             end
           end
         end

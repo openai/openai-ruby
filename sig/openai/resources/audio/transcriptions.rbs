@@ -2,6 +2,7 @@ module OpenAI
   module Resources
     class Audio
       class Transcriptions
+        def with_raw_response: -> Transcriptions::WithRawResponse
         def create: (
           file: OpenAI::Internal::file_input,
           model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
@@ -36,7 +37,45 @@ module OpenAI
           ?request_options: OpenAI::request_opts
         ) -> OpenAI::Internal::Stream[OpenAI::Models::Audio::transcription_stream_event]
 
-        def initialize: (client: OpenAI::Client) -> void
+        def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+        class WithRawResponse
+          def create: (
+          file: OpenAI::Internal::file_input,
+          model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
+          ?chunking_strategy: OpenAI::Models::Audio::TranscriptionCreateParams::chunking_strategy?,
+          ?include: ::Array[OpenAI::Models::Audio::transcription_include],
+          ?keywords: ::Array[String],
+          ?known_speaker_names: ::Array[String],
+          ?known_speaker_references: ::Array[String],
+          ?language: String,
+          ?languages: ::Array[String],
+          ?prompt: String,
+          ?response_format: OpenAI::Models::audio_response_format,
+          ?temperature: Float,
+          ?timestamp_granularities: ::Array[OpenAI::Models::Audio::TranscriptionCreateParams::timestamp_granularity],
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::RawResponse[OpenAI::Models::Audio::transcription_create_response]
+
+          def create_streaming: (
+          file: OpenAI::Internal::file_input,
+          model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
+          ?chunking_strategy: OpenAI::Models::Audio::TranscriptionCreateParams::chunking_strategy?,
+          ?include: ::Array[OpenAI::Models::Audio::transcription_include],
+          ?keywords: ::Array[String],
+          ?known_speaker_names: ::Array[String],
+          ?known_speaker_references: ::Array[String],
+          ?language: String,
+          ?languages: ::Array[String],
+          ?prompt: String,
+          ?response_format: OpenAI::Models::audio_response_format,
+          ?temperature: Float,
+          ?timestamp_granularities: ::Array[OpenAI::Models::Audio::TranscriptionCreateParams::timestamp_granularity],
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::RawResponse[OpenAI::Internal::Stream[OpenAI::Models::Audio::transcription_stream_event]]
+
+          def initialize: (resource: Transcriptions) -> void
+        end
       end
     end
   end

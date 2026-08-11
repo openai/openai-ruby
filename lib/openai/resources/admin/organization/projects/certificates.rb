@@ -6,6 +6,17 @@ module OpenAI
       class Organization
         class Projects
           class Certificates
+            # Returns a wrapper that exposes the raw HTTP response for each request.
+            #
+            # @return [Certificates::WithRawResponse]
+            def with_raw_response
+              WithRawResponse.new(
+                resource: Certificates.new(
+                  client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+                )
+              )
+            end
+
             # Some parameter documentations has been truncated, see
             # {OpenAI::Models::Admin::Organization::Projects::CertificateListParams} for more
             # details.
@@ -98,9 +109,30 @@ module OpenAI
 
             # @api private
             #
-            # @param client [OpenAI::Client]
+            # @param client [OpenAI::Internal::Transport::RequestClient]
             def initialize(client:)
               @client = client
+            end
+
+            class WithRawResponse
+              def list(project_id, params = {})
+                @resource.list(project_id, params)
+              end
+
+              def activate(project_id, params)
+                @resource.activate(project_id, params)
+              end
+
+              def deactivate(project_id, params)
+                @resource.deactivate(project_id, params)
+              end
+
+              # @api private
+              #
+              # @param resource [Certificates]
+              def initialize(resource:)
+                @resource = resource
+              end
             end
           end
         end

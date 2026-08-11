@@ -2,6 +2,7 @@ module OpenAI
   module Resources
     class Realtime
       class Calls
+        def with_raw_response: -> Calls::WithRawResponse
         def accept: (
           String call_id,
           ?audio: OpenAI::Realtime::RealtimeAudioConfig,
@@ -38,7 +39,47 @@ module OpenAI
           ?request_options: OpenAI::request_opts
         ) -> nil
 
-        def initialize: (client: OpenAI::Client) -> void
+        def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+        class WithRawResponse
+          def accept: (
+          String call_id,
+          ?audio: OpenAI::Realtime::RealtimeAudioConfig,
+          ?include: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateRequest::include_],
+          ?instructions: String,
+          ?max_output_tokens: OpenAI::Models::Realtime::RealtimeSessionCreateRequest::max_output_tokens,
+          ?model: OpenAI::Models::Realtime::RealtimeSessionCreateRequest::model,
+          ?output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateRequest::output_modality],
+          ?parallel_tool_calls: bool,
+          ?prompt: OpenAI::Responses::ResponsePrompt?,
+          ?reasoning: OpenAI::Realtime::RealtimeReasoning,
+          ?tool_choice: OpenAI::Models::Realtime::realtime_tool_choice_config,
+          ?tools: OpenAI::Models::Realtime::realtime_tools_config,
+          ?tracing: OpenAI::Models::Realtime::realtime_tracing_config?,
+          ?truncation: OpenAI::Models::Realtime::realtime_truncation,
+          ?type: :realtime,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::RawResponse[nil]
+
+          def hangup: (
+          String call_id,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::RawResponse[nil]
+
+          def refer: (
+          String call_id,
+          target_uri: String,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::RawResponse[nil]
+
+          def reject: (
+          String call_id,
+          ?status_code: Integer,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::RawResponse[nil]
+
+          def initialize: (resource: Calls) -> void
+        end
       end
     end
   end

@@ -1,11 +1,20 @@
 module OpenAI
   module Resources
     class Realtime
+      def with_raw_response: -> Realtime::WithRawResponse
       attr_reader client_secrets: OpenAI::Resources::Realtime::ClientSecrets
 
       attr_reader calls: OpenAI::Resources::Realtime::Calls
 
-      def initialize: (client: OpenAI::Client) -> void
+      def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+      class WithRawResponse
+        attr_reader client_secrets: OpenAI::Resources::Realtime::ClientSecrets::WithRawResponse
+
+        attr_reader calls: OpenAI::Resources::Realtime::Calls::WithRawResponse
+
+        def initialize: (resource: Realtime) -> void
+      end
     end
   end
 end

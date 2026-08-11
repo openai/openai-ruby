@@ -3,6 +3,7 @@ module OpenAI
     class Admin
       class Organization
         class Projects
+          def with_raw_response: -> Projects::WithRawResponse
           attr_reader users: OpenAI::Resources::Admin::Organization::Projects::Users
 
           attr_reader service_accounts: OpenAI::Resources::Admin::Organization::Projects::ServiceAccounts
@@ -59,7 +60,67 @@ module OpenAI
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Admin::Organization::Project
 
-          def initialize: (client: OpenAI::Client) -> void
+          def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+          class WithRawResponse
+            attr_reader users: OpenAI::Resources::Admin::Organization::Projects::Users::WithRawResponse
+
+            attr_reader service_accounts: OpenAI::Resources::Admin::Organization::Projects::ServiceAccounts::WithRawResponse
+
+            attr_reader api_keys: OpenAI::Resources::Admin::Organization::Projects::APIKeys::WithRawResponse
+
+            attr_reader rate_limits: OpenAI::Resources::Admin::Organization::Projects::RateLimits::WithRawResponse
+
+            attr_reader model_permissions: OpenAI::Resources::Admin::Organization::Projects::ModelPermissions::WithRawResponse
+
+            attr_reader hosted_tool_permissions: OpenAI::Resources::Admin::Organization::Projects::HostedToolPermissions::WithRawResponse
+
+            attr_reader groups: OpenAI::Resources::Admin::Organization::Projects::Groups::WithRawResponse
+
+            attr_reader roles: OpenAI::Resources::Admin::Organization::Projects::Roles::WithRawResponse
+
+            attr_reader data_retention: OpenAI::Resources::Admin::Organization::Projects::DataRetention::WithRawResponse
+
+            attr_reader spend_limit: OpenAI::Resources::Admin::Organization::Projects::SpendLimit::WithRawResponse
+
+            attr_reader spend_alerts: OpenAI::Resources::Admin::Organization::Projects::SpendAlerts::WithRawResponse
+
+            attr_reader certificates: OpenAI::Resources::Admin::Organization::Projects::Certificates::WithRawResponse
+
+            def create: (
+            name: String,
+            ?external_key_id: String?,
+            ?geography: String?,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Admin::Organization::Project]
+
+            def retrieve: (
+            String project_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Admin::Organization::Project]
+
+            def update: (
+            String project_id,
+            ?external_key_id: String?,
+            ?geography: String?,
+            ?name: String?,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Admin::Organization::Project]
+
+            def list: (
+            ?after: String,
+            ?include_archived: bool,
+            ?limit: Integer,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Internal::ConversationCursorPage[OpenAI::Admin::Organization::Project]]
+
+            def archive: (
+            String project_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Admin::Organization::Project]
+
+            def initialize: (resource: Projects) -> void
+          end
         end
       end
     end

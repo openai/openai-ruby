@@ -3,6 +3,7 @@ module OpenAI
     class Admin
       class Organization
         class Groups
+          def with_raw_response: -> Groups::WithRawResponse
           attr_reader users: OpenAI::Resources::Admin::Organization::Groups::Users
 
           attr_reader roles: OpenAI::Resources::Admin::Organization::Groups::Roles
@@ -35,7 +36,43 @@ module OpenAI
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::Admin::Organization::GroupDeleteResponse
 
-          def initialize: (client: OpenAI::Client) -> void
+          def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+          class WithRawResponse
+            attr_reader users: OpenAI::Resources::Admin::Organization::Groups::Users::WithRawResponse
+
+            attr_reader roles: OpenAI::Resources::Admin::Organization::Groups::Roles::WithRawResponse
+
+            def create: (
+            name: String,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Admin::Organization::Group]
+
+            def retrieve: (
+            String group_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Admin::Organization::Group]
+
+            def update: (
+            String group_id,
+            name: String,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Models::Admin::Organization::GroupUpdateResponse]
+
+            def list: (
+            ?after: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Admin::Organization::GroupListParams::order,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Internal::NextCursorPage[OpenAI::Admin::Organization::Group]]
+
+            def delete: (
+            String group_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Models::Admin::Organization::GroupDeleteResponse]
+
+            def initialize: (resource: Groups) -> void
+          end
         end
       end
     end

@@ -3,7 +3,7 @@ module OpenAI
     class Graders
       attr_reader grader_models: OpenAI::Resources::Graders::GraderModels
 
-      def initialize: (client: OpenAI::Client) -> void
+      def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
     end
   end
 end

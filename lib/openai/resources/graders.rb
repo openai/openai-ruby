@@ -8,7 +8,7 @@ module OpenAI
 
       # @api private
       #
-      # @param client [OpenAI::Client]
+      # @param client [OpenAI::Internal::Transport::RequestClient]
       def initialize(client:)
         @client = client
         @grader_models = OpenAI::Resources::Graders::GraderModels.new(client: client)

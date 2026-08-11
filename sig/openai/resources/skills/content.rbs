@@ -2,12 +2,22 @@ module OpenAI
   module Resources
     class Skills
       class Content
+        def with_raw_response: -> Content::WithRawResponse
         def retrieve: (
           String skill_id,
           ?request_options: OpenAI::request_opts
         ) -> StringIO
 
-        def initialize: (client: OpenAI::Client) -> void
+        def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+        class WithRawResponse
+          def retrieve: (
+          String skill_id,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::RawResponse[StringIO]
+
+          def initialize: (resource: Content) -> void
+        end
       end
     end
   end

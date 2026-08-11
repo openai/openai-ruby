@@ -6,6 +6,10 @@ module OpenAI
       class Organization
         class Projects
           class DataRetention
+            sig { returns(DataRetention::WithRawResponse) }
+            def with_raw_response
+            end
+
             # Retrieves project data retention controls.
             sig do
               params(
@@ -43,8 +47,33 @@ module OpenAI
             end
 
             # @api private
-            sig { params(client: OpenAI::Client).returns(T.attached_class) }
+            sig { params(client: OpenAI::Internal::Transport::RequestClient).returns(T.attached_class) }
             def self.new(client:)
+            end
+
+            class WithRawResponse
+              sig { params(project_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectDataRetention]) }
+              def retrieve(
+                # The ID of the project to inspect.
+                project_id,
+                request_options: {}
+              )
+              end
+
+              sig { params(project_id: String, retention_type: OpenAI::Admin::Organization::Projects::DataRetentionUpdateParams::RetentionType::OrSymbol, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectDataRetention]) }
+              def update(
+                # The ID of the project to update.
+                project_id,
+                # The desired project data retention type.
+                retention_type:,
+                request_options: {}
+              )
+              end
+
+              # @api private
+              sig { params(resource: DataRetention).returns(T.attached_class) }
+              def self.new(resource:)
+              end
             end
           end
         end

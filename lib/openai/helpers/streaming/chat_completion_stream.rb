@@ -19,7 +19,7 @@ module OpenAI
 
         def get_final_completion
           until_done
-          attach_response_metadata(@state.get_final_completion)
+          @state.get_final_completion
         end
 
         def get_output_text
@@ -40,8 +40,7 @@ module OpenAI
         end
 
         def current_completion_snapshot
-          snapshot = @state.current_completion_snapshot
-          snapshot && attach_response_metadata(snapshot)
+          @state.current_completion_snapshot
         end
 
         def text

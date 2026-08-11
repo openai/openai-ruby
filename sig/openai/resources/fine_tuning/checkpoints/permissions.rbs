@@ -3,6 +3,7 @@ module OpenAI
     class FineTuning
       class Checkpoints
         class Permissions
+          def with_raw_response: -> Permissions::WithRawResponse
           def create: (
             String fine_tuned_model_checkpoint,
             project_ids: ::Array[String],
@@ -33,7 +34,41 @@ module OpenAI
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::FineTuning::Checkpoints::PermissionDeleteResponse
 
-          def initialize: (client: OpenAI::Client) -> void
+          def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+          class WithRawResponse
+            def create: (
+            String fine_tuned_model_checkpoint,
+            project_ids: ::Array[String],
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Internal::Page[OpenAI::Models::FineTuning::Checkpoints::PermissionCreateResponse]]
+
+            def retrieve: (
+            String fine_tuned_model_checkpoint,
+            ?after: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::order,
+            ?project_id: String,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse]
+
+            def list: (
+            String fine_tuned_model_checkpoint,
+            ?after: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::FineTuning::Checkpoints::PermissionListParams::order,
+            ?project_id: String,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Internal::ConversationCursorPage[OpenAI::Models::FineTuning::Checkpoints::PermissionListResponse]]
+
+            def delete: (
+            String permission_id,
+            fine_tuned_model_checkpoint: String,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Models::FineTuning::Checkpoints::PermissionDeleteResponse]
+
+            def initialize: (resource: Permissions) -> void
+          end
         end
       end
     end

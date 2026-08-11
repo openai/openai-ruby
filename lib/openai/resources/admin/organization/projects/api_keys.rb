@@ -6,6 +6,17 @@ module OpenAI
       class Organization
         class Projects
           class APIKeys
+            # Returns a wrapper that exposes the raw HTTP response for each request.
+            #
+            # @return [APIKeys::WithRawResponse]
+            def with_raw_response
+              WithRawResponse.new(
+                resource: APIKeys.new(
+                  client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+                )
+              )
+            end
+
             # Retrieves an API key in the project.
             #
             # @overload retrieve(api_key_id, project_id:, request_options: {})
@@ -102,9 +113,30 @@ module OpenAI
 
             # @api private
             #
-            # @param client [OpenAI::Client]
+            # @param client [OpenAI::Internal::Transport::RequestClient]
             def initialize(client:)
               @client = client
+            end
+
+            class WithRawResponse
+              def retrieve(api_key_id, params)
+                @resource.retrieve(api_key_id, params)
+              end
+
+              def list(project_id, params = {})
+                @resource.list(project_id, params)
+              end
+
+              def delete(api_key_id, params)
+                @resource.delete(api_key_id, params)
+              end
+
+              # @api private
+              #
+              # @param resource [APIKeys]
+              def initialize(resource:)
+                @resource = resource
+              end
             end
           end
         end

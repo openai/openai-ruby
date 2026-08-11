@@ -5,6 +5,10 @@ module OpenAI
     class Admin
       class Organization
         class Roles
+          sig { returns(Roles::WithRawResponse) }
+          def with_raw_response
+          end
+
           # Creates a custom role for the organization.
           sig do
             params(
@@ -103,8 +107,70 @@ module OpenAI
           end
 
           # @api private
-          sig { params(client: OpenAI::Client).returns(T.attached_class) }
+          sig { params(client: OpenAI::Internal::Transport::RequestClient).returns(T.attached_class) }
           def self.new(client:)
+          end
+
+          class WithRawResponse
+            sig { params(permissions: T::Array[String], role_name: String, description: T.nilable(String), request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Admin::Organization::Role]) }
+            def create(
+              # Permissions to grant to the role.
+              permissions:,
+              # Unique name for the role.
+              role_name:,
+              # Optional description of the role.
+              description: nil,
+              request_options: {}
+            )
+            end
+
+            sig { params(role_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Admin::Organization::Role]) }
+            def retrieve(
+              # The ID of the role to retrieve.
+              role_id,
+              request_options: {}
+            )
+            end
+
+            sig { params(role_id: String, description: T.nilable(String), permissions: T.nilable(T::Array[String]), role_name: T.nilable(String), request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Admin::Organization::Role]) }
+            def update(
+              # The ID of the role to update.
+              role_id,
+              # New description for the role.
+              description: nil,
+              # Updated set of permissions for the role.
+              permissions: nil,
+              # New name for the role.
+              role_name: nil,
+              request_options: {}
+            )
+            end
+
+            sig { params(after: String, limit: Integer, order: OpenAI::Admin::Organization::RoleListParams::Order::OrSymbol, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Internal::NextCursorPage[OpenAI::Admin::Organization::Role]]) }
+            def list(
+              # Cursor for pagination. Provide the value from the previous response's `next`
+              # field to continue listing roles.
+              after: nil,
+              # A limit on the number of roles to return. Defaults to 1000.
+              limit: nil,
+              # Sort order for the returned roles.
+              order: nil,
+              request_options: {}
+            )
+            end
+
+            sig { params(role_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Models::Admin::Organization::RoleDeleteResponse]) }
+            def delete(
+              # The ID of the role to delete.
+              role_id,
+              request_options: {}
+            )
+            end
+
+            # @api private
+            sig { params(resource: Roles).returns(T.attached_class) }
+            def self.new(resource:)
+            end
           end
         end
       end

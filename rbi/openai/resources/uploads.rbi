@@ -4,6 +4,10 @@ module OpenAI
   module Resources
     # Use Uploads to upload large files in multiple parts.
     class Uploads
+      sig { returns(Uploads::WithRawResponse) }
+      def with_raw_response
+      end
+
       # Use Uploads to upload large files in multiple parts.
       sig { returns(OpenAI::Resources::Uploads::Parts) }
       attr_reader :parts
@@ -113,8 +117,62 @@ module OpenAI
       end
 
       # @api private
-      sig { params(client: OpenAI::Client).returns(T.attached_class) }
+      sig { params(client: OpenAI::Internal::Transport::RequestClient).returns(T.attached_class) }
       def self.new(client:)
+      end
+
+      class WithRawResponse
+        sig { returns(OpenAI::Resources::Uploads::Parts::WithRawResponse) }
+        attr_reader :parts
+
+        sig { params(bytes: Integer, filename: String, mime_type: String, purpose: OpenAI::FilePurpose::OrSymbol, expires_after: OpenAI::UploadCreateParams::ExpiresAfter::OrHash, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Upload]) }
+        def create(
+          # The number of bytes in the file you are uploading.
+          bytes:,
+          # The name of the file to upload.
+          filename:,
+          # The MIME type of the file.
+          #
+          # This must fall within the supported MIME types for your file purpose. See the
+          # supported MIME types for assistants and vision.
+          mime_type:,
+          # The intended purpose of the uploaded file.
+          #
+          # See the
+          # [documentation on File purposes](https://platform.openai.com/docs/api-reference/files/create#files-create-purpose).
+          purpose:,
+          # The expiration policy for a file. By default, files with `purpose=batch` expire
+          # after 30 days and all other files are persisted until they are manually deleted.
+          expires_after: nil,
+          request_options: {}
+        )
+        end
+
+        sig { params(upload_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Upload]) }
+        def cancel(
+          # The ID of the Upload.
+          upload_id,
+          request_options: {}
+        )
+        end
+
+        sig { params(upload_id: String, part_ids: T::Array[String], md5: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Upload]) }
+        def complete(
+          # The ID of the Upload.
+          upload_id,
+          # The ordered list of Part IDs.
+          part_ids:,
+          # The optional md5 checksum for the file contents to verify if the bytes uploaded
+          # matches what you expect.
+          md5: nil,
+          request_options: {}
+        )
+        end
+
+        # @api private
+        sig { params(resource: Uploads).returns(T.attached_class) }
+        def self.new(resource:)
+        end
       end
     end
   end

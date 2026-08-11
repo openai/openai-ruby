@@ -21,19 +21,6 @@ module OpenAI
 
         # @api public
         #
-        # @return [Hash{String=>String}]
-        def response_headers = @headers
-
-        # @api private
-        #
-        # @param response [OpenAI::Internal::Type::BaseModel]
-        # @return [OpenAI::Internal::Type::BaseModel]
-        private def attach_response_metadata(response)
-          response._set_response_metadata(@headers)
-        end
-
-        # @api public
-        #
         # @return [void]
         def close = OpenAI::Internal::Util.close_fused!(@iterator)
 

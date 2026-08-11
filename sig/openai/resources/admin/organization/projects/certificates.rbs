@@ -4,6 +4,7 @@ module OpenAI
       class Organization
         class Projects
           class Certificates
+            def with_raw_response: -> Certificates::WithRawResponse
             def list: (
               String project_id,
               ?after: String,
@@ -24,7 +25,31 @@ module OpenAI
               ?request_options: OpenAI::request_opts
             ) -> OpenAI::Internal::Page[OpenAI::Models::Admin::Organization::Projects::CertificateDeactivateResponse]
 
-            def initialize: (client: OpenAI::Client) -> void
+            def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+            class WithRawResponse
+              def list: (
+              String project_id,
+              ?after: String,
+              ?limit: Integer,
+              ?order: OpenAI::Models::Admin::Organization::Projects::CertificateListParams::order,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::RawResponse[OpenAI::Internal::ConversationCursorPage[OpenAI::Models::Admin::Organization::Projects::CertificateListResponse]]
+
+              def activate: (
+              String project_id,
+              certificate_ids: ::Array[String],
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::RawResponse[OpenAI::Internal::Page[OpenAI::Models::Admin::Organization::Projects::CertificateActivateResponse]]
+
+              def deactivate: (
+              String project_id,
+              certificate_ids: ::Array[String],
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::RawResponse[OpenAI::Internal::Page[OpenAI::Models::Admin::Organization::Projects::CertificateDeactivateResponse]]
+
+              def initialize: (resource: Certificates) -> void
+            end
           end
         end
       end

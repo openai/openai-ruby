@@ -8,6 +8,17 @@ module OpenAI
         #
         # Build Assistants that can call models and use tools.
         class Runs
+          # Returns a wrapper that exposes the raw HTTP response for each request.
+          #
+          # @return [Runs::WithRawResponse]
+          def with_raw_response
+            WithRawResponse.new(
+              resource: Runs.new(
+                client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+              )
+            )
+          end
+
           # Build Assistants that can call models and use tools.
           # @return [OpenAI::Resources::Beta::Threads::Runs::Steps]
           attr_reader :steps
@@ -393,10 +404,60 @@ module OpenAI
 
           # @api private
           #
-          # @param client [OpenAI::Client]
+          # @param client [OpenAI::Internal::Transport::RequestClient]
           def initialize(client:)
             @client = client
             @steps = OpenAI::Resources::Beta::Threads::Runs::Steps.new(client: client)
+          end
+
+          class WithRawResponse
+            # Build Assistants that can call models and use tools.
+            # @return [OpenAI::Resources::Beta::Threads::Runs::Steps::WithRawResponse]
+            attr_reader :steps
+
+            def create(thread_id, params)
+              @resource.create(thread_id, params)
+            end
+
+            def create_stream_raw(thread_id, params)
+              @resource.create_stream_raw(thread_id, params)
+            end
+
+            def retrieve(run_id, params)
+              @resource.retrieve(run_id, params)
+            end
+
+            def update(run_id, params)
+              @resource.update(run_id, params)
+            end
+
+            def list(thread_id, params = {})
+              @resource.list(thread_id, params)
+            end
+
+            def cancel(run_id, params)
+              @resource.cancel(run_id, params)
+            end
+
+            def submit_tool_outputs(run_id, params)
+              @resource.submit_tool_outputs(run_id, params)
+            end
+
+            def submit_tool_outputs_stream_raw(run_id, params)
+              @resource.submit_tool_outputs_stream_raw(run_id, params)
+            end
+
+            # @api private
+            #
+            # @param resource [Runs]
+            def initialize(resource:)
+              @resource = resource
+
+              @steps =
+                OpenAI::Resources::Beta::Threads::Runs::Steps::WithRawResponse.new(
+                  resource: @resource.steps
+                )
+            end
           end
         end
       end

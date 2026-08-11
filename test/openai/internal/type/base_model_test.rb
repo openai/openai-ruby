@@ -696,7 +696,7 @@ class OpenAI::Test::BaseModelQoLTest < Minitest::Test
     model = M1.new(a: 1)
 
     assert_nil(model._request_id)
-    assert_nil(model.response_headers)
+    refute_respond_to(model, :response_headers)
   end
 end
 

@@ -105,8 +105,9 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
 
     stream = @client.chat.completions.stream(**basic_params)
     assert_equal(200, stream.status)
-    assert_equal("req_final_completion", stream.response_headers["x-request-id"])
-    assert_equal("34", stream.response_headers["openai-processing-ms"])
+    assert_equal("req_final_completion", stream.headers["x-request-id"])
+    assert_equal("34", stream.headers["openai-processing-ms"])
+    refute_respond_to(stream, :response_headers)
 
     completion = stream.get_final_completion
 
@@ -115,13 +116,12 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
     assert_equal("Test response", completion.choices.first.message.content)
     assert_equal(:stop, completion.choices.first.finish_reason)
     assert_equal(12, completion.usage.total_tokens) if completion.usage
-    assert_equal("req_final_completion", completion._request_id)
-    assert_equal("req_final_completion", completion.response_headers["x-request-id"])
-    assert_equal("34", completion.response_headers["openai-processing-ms"])
+    assert_nil(completion._request_id)
+    refute_respond_to(completion, :response_headers)
 
     snapshot = stream.current_completion_snapshot
-    assert_equal("req_final_completion", snapshot._request_id)
-    assert_equal("req_final_completion", snapshot.response_headers["x-request-id"])
+    assert_nil(snapshot._request_id)
+    refute_respond_to(snapshot, :response_headers)
   end
 
   def test_get_output_text

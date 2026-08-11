@@ -6,6 +6,17 @@ module OpenAI
       class Jobs
         # Manage fine-tuning jobs to tailor a model to your specific training data.
         class Checkpoints
+          # Returns a wrapper that exposes the raw HTTP response for each request.
+          #
+          # @return [Checkpoints::WithRawResponse]
+          def with_raw_response
+            WithRawResponse.new(
+              resource: Checkpoints.new(
+                client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+              )
+            )
+          end
+
           # Some parameter documentations has been truncated, see
           # {OpenAI::Models::FineTuning::Jobs::CheckpointListParams} for more details.
           #
@@ -40,9 +51,22 @@ module OpenAI
 
           # @api private
           #
-          # @param client [OpenAI::Client]
+          # @param client [OpenAI::Internal::Transport::RequestClient]
           def initialize(client:)
             @client = client
+          end
+
+          class WithRawResponse
+            def list(fine_tuning_job_id, params = {})
+              @resource.list(fine_tuning_job_id, params)
+            end
+
+            # @api private
+            #
+            # @param resource [Checkpoints]
+            def initialize(resource:)
+              @resource = resource
+            end
           end
         end
       end

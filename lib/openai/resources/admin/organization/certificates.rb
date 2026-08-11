@@ -5,6 +5,17 @@ module OpenAI
     class Admin
       class Organization
         class Certificates
+          # Returns a wrapper that exposes the raw HTTP response for each request.
+          #
+          # @return [Certificates::WithRawResponse]
+          def with_raw_response
+            WithRawResponse.new(
+              resource: Certificates.new(
+                client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+              )
+            )
+          end
+
           # Upload a certificate to the organization. This does **not** automatically
           # activate the certificate.
           #
@@ -197,9 +208,46 @@ module OpenAI
 
           # @api private
           #
-          # @param client [OpenAI::Client]
+          # @param client [OpenAI::Internal::Transport::RequestClient]
           def initialize(client:)
             @client = client
+          end
+
+          class WithRawResponse
+            def create(params)
+              @resource.create(params)
+            end
+
+            def retrieve(certificate_id, params = {})
+              @resource.retrieve(certificate_id, params)
+            end
+
+            def update(certificate_id, params = {})
+              @resource.update(certificate_id, params)
+            end
+
+            def list(params = {})
+              @resource.list(params)
+            end
+
+            def delete(certificate_id, params = {})
+              @resource.delete(certificate_id, params)
+            end
+
+            def activate(params)
+              @resource.activate(params)
+            end
+
+            def deactivate(params)
+              @resource.deactivate(params)
+            end
+
+            # @api private
+            #
+            # @param resource [Certificates]
+            def initialize(resource:)
+              @resource = resource
+            end
           end
         end
       end

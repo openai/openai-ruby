@@ -1,9 +1,16 @@
 module OpenAI
   module Resources
     class Admin
+      def with_raw_response: -> Admin::WithRawResponse
       attr_reader organization: OpenAI::Resources::Admin::Organization
 
-      def initialize: (client: OpenAI::Client) -> void
+      def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+      class WithRawResponse
+        attr_reader organization: OpenAI::Resources::Admin::Organization::WithRawResponse
+
+        def initialize: (resource: Admin) -> void
+      end
     end
   end
 end

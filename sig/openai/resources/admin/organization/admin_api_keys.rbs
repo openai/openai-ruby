@@ -3,6 +3,7 @@ module OpenAI
     class Admin
       class Organization
         class AdminAPIKeys
+          def with_raw_response: -> AdminAPIKeys::WithRawResponse
           def create: (
             name: String,
             ?expires_in_seconds: Integer,
@@ -26,7 +27,34 @@ module OpenAI
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::Admin::Organization::AdminAPIKeyDeleteResponse
 
-          def initialize: (client: OpenAI::Client) -> void
+          def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+          class WithRawResponse
+            def create: (
+            name: String,
+            ?expires_in_seconds: Integer,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Models::Admin::Organization::AdminAPIKeyCreateResponse]
+
+            def retrieve: (
+            String key_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Admin::Organization::AdminAPIKey]
+
+            def list: (
+            ?after: String?,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Admin::Organization::AdminAPIKeyListParams::order,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Internal::CursorPage[OpenAI::Admin::Organization::AdminAPIKey]]
+
+            def delete: (
+            String key_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Models::Admin::Organization::AdminAPIKeyDeleteResponse]
+
+            def initialize: (resource: AdminAPIKeys) -> void
+          end
         end
       end
     end

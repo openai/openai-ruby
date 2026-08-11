@@ -7,6 +7,17 @@ module OpenAI
         # Given a list of messages comprising a conversation, the model will return a
         # response.
         class Messages
+          # Returns a wrapper that exposes the raw HTTP response for each request.
+          #
+          # @return [Messages::WithRawResponse]
+          def with_raw_response
+            WithRawResponse.new(
+              resource: Messages.new(
+                client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+              )
+            )
+          end
+
           # Some parameter documentations has been truncated, see
           # {OpenAI::Models::Chat::Completions::MessageListParams} for more details.
           #
@@ -44,9 +55,22 @@ module OpenAI
 
           # @api private
           #
-          # @param client [OpenAI::Client]
+          # @param client [OpenAI::Internal::Transport::RequestClient]
           def initialize(client:)
             @client = client
+          end
+
+          class WithRawResponse
+            def list(completion_id, params = {})
+              @resource.list(completion_id, params)
+            end
+
+            # @api private
+            #
+            # @param resource [Messages]
+            def initialize(resource:)
+              @resource = resource
+            end
           end
         end
       end

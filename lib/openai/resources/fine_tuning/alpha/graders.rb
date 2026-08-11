@@ -6,6 +6,17 @@ module OpenAI
       class Alpha
         # Manage fine-tuning jobs to tailor a model to your specific training data.
         class Graders
+          # Returns a wrapper that exposes the raw HTTP response for each request.
+          #
+          # @return [Graders::WithRawResponse]
+          def with_raw_response
+            WithRawResponse.new(
+              resource: Graders.new(
+                client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+              )
+            )
+          end
+
           # Some parameter documentations has been truncated, see
           # {OpenAI::Models::FineTuning::Alpha::GraderRunParams} for more details.
           #
@@ -61,9 +72,26 @@ module OpenAI
 
           # @api private
           #
-          # @param client [OpenAI::Client]
+          # @param client [OpenAI::Internal::Transport::RequestClient]
           def initialize(client:)
             @client = client
+          end
+
+          class WithRawResponse
+            def run(params)
+              @resource.run(params)
+            end
+
+            def validate(params)
+              @resource.validate(params)
+            end
+
+            # @api private
+            #
+            # @param resource [Graders]
+            def initialize(resource:)
+              @resource = resource
+            end
           end
         end
       end

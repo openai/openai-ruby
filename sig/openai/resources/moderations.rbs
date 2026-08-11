@@ -1,13 +1,24 @@
 module OpenAI
   module Resources
     class Moderations
+      def with_raw_response: -> Moderations::WithRawResponse
       def create: (
         input: OpenAI::Models::ModerationCreateParams::input,
         ?model: OpenAI::Models::ModerationCreateParams::model,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Models::ModerationCreateResponse
 
-      def initialize: (client: OpenAI::Client) -> void
+      def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+      class WithRawResponse
+        def create: (
+        input: OpenAI::Models::ModerationCreateParams::input,
+        ?model: OpenAI::Models::ModerationCreateParams::model,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::Models::ModerationCreateResponse]
+
+        def initialize: (resource: Moderations) -> void
+      end
     end
   end
 end

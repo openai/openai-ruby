@@ -611,17 +611,21 @@ Error codes are as follows:
 ### Request IDs
 
 OpenAI recommends logging request IDs in production so requests can be traced
-during troubleshooting. Successful typed responses expose `_request_id`, which
-is populated from the `x-request-id` response header:
+during troubleshooting. Models and pages returned directly by a successful HTTP
+request expose `_request_id`, which is populated from the `x-request-id`
+response header:
 
 ```ruby
 response = openai.responses.create(model: "gpt-5.2", input: "Say 'this is a test'.")
 puts(response._request_id) # req_123
 ```
 
-The `_request_id` property is only populated on the top-level response object
-and is not included in `to_h`, JSON, or YAML output. Unlike other properties
-that begin with an underscore, `_request_id` is public.
+The `_request_id` property is public, but is only populated on the top-level
+model or page parsed from an HTTP response. Nested models, models constructed in
+user code, and final snapshots assembled by streaming helpers have a `nil`
+`_request_id`. It is not included in `to_h`, JSON, or YAML output. Responses
+that parse to primitives, binary data, or `nil` do not have this property; use
+[`with_raw_response`](#raw-responses) to inspect their request IDs.
 
 For failed HTTP requests, catch `OpenAI::Errors::APIStatusError` and use
 `request_id`:
@@ -638,24 +642,37 @@ end
 See the [official OpenAI request debugging documentation](https://developers.openai.com/api/reference/overview#debugging-requests)
 for more information.
 
-### Response headers
+### Raw responses
 
-Successful top-level typed responses and pages expose normalized HTTP response
-headers through `response_headers`:
+Call a generated HTTP operation through its resource's `with_raw_response`
+modifier to inspect the status, normalized headers, or undecoded body without
+changing the operation's arguments:
 
 ```ruby
-model = openai.models.retrieve("gpt-5.2")
-puts(model.response_headers["openai-processing-ms"])
+raw = openai.models.with_raw_response.retrieve("gpt-5.2")
+
+puts(raw.status)
+puts(raw.headers["openai-processing-ms"])
+puts(raw.request_id)
+puts(raw.read)
+
+model = raw.parse
+puts(model._request_id == raw.request_id) # true
 ```
 
-Header names are lowercase and values are strings. Streaming response objects
-also expose `response_headers`; the existing `headers` reader remains available.
-Final response models returned by the Responses and Chat Completions streaming
-helpers carry the same metadata.
+Raw responses use the SDK's normal authentication, request encoding, redirects,
+retries, error handling, and response conversion. Their bodies are buffered so
+`read` and `parse` can both be used; the parsed result is cached. Header names
+are lowercase, header values are strings, and the headers hash is immutable.
+The wrapper exposes generated resource navigation and HTTP operations, but not
+SDK-only helpers. Its RBI and RBS signatures preserve each operation's
+arguments and parsed return type.
 
-Response headers are transport metadata, so they are not included in `to_h`,
-JSON, or YAML output. Manually constructed and nested models have
-`response_headers` set to `nil`.
+Higher-level `stream` helpers expose `status` and `headers` directly on their
+stream objects, so use those helpers without `with_raw_response`. Transport
+metadata is not copied onto nested models or final streaming snapshots. When a
+raw response parses to a top-level model or page, its `_request_id` is the same
+value as `raw.request_id`.
 
 ### Retries
 

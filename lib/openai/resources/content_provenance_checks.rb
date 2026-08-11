@@ -3,6 +3,17 @@
 module OpenAI
   module Resources
     class ContentProvenanceChecks
+      # Returns a wrapper that exposes the raw HTTP response for each request.
+      #
+      # @return [ContentProvenanceChecks::WithRawResponse]
+      def with_raw_response
+        WithRawResponse.new(
+          resource: ContentProvenanceChecks.new(
+            client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+          )
+        )
+      end
+
       # Check whether an image or audio file contains known OpenAI provenance signals.
       # [Learn more about content provenance](/api/docs/guides/content-provenance).
       #
@@ -37,9 +48,22 @@ module OpenAI
 
       # @api private
       #
-      # @param client [OpenAI::Client]
+      # @param client [OpenAI::Internal::Transport::RequestClient]
       def initialize(client:)
         @client = client
+      end
+
+      class WithRawResponse
+        def create(params)
+          @resource.create(params)
+        end
+
+        # @api private
+        #
+        # @param resource [ContentProvenanceChecks]
+        def initialize(resource:)
+          @resource = resource
+        end
       end
     end
   end

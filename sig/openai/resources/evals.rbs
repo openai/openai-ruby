@@ -1,6 +1,7 @@
 module OpenAI
   module Resources
     class Evals
+      def with_raw_response: -> Evals::WithRawResponse
       attr_reader runs: OpenAI::Resources::Evals::Runs
 
       def create: (
@@ -36,7 +37,46 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Models::EvalDeleteResponse
 
-      def initialize: (client: OpenAI::Client) -> void
+      def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+      class WithRawResponse
+        attr_reader runs: OpenAI::Resources::Evals::Runs::WithRawResponse
+
+        def create: (
+        data_source_config: OpenAI::Models::EvalCreateParams::data_source_config,
+        testing_criteria: ::Array[OpenAI::Models::EvalCreateParams::testing_criterion],
+        ?metadata: OpenAI::Models::metadata?,
+        ?name: String,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::Models::EvalCreateResponse]
+
+        def retrieve: (
+        String eval_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::Models::EvalRetrieveResponse]
+
+        def update: (
+        String eval_id,
+        ?metadata: OpenAI::Models::metadata?,
+        ?name: String,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::Models::EvalUpdateResponse]
+
+        def list: (
+        ?after: String,
+        ?limit: Integer,
+        ?order: OpenAI::Models::EvalListParams::order,
+        ?order_by: OpenAI::Models::EvalListParams::order_by,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::Internal::CursorPage[OpenAI::Models::EvalListResponse]]
+
+        def delete: (
+        String eval_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::Models::EvalDeleteResponse]
+
+        def initialize: (resource: Evals) -> void
+      end
     end
   end
 end

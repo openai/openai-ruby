@@ -3,6 +3,7 @@ module OpenAI
     class Beta
       class Threads
         class Messages
+          def with_raw_response: -> Messages::WithRawResponse
           def create: (
             String thread_id,
             content: OpenAI::Models::Beta::Threads::MessageCreateParams::content,
@@ -41,7 +42,49 @@ module OpenAI
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Beta::Threads::MessageDeleted
 
-          def initialize: (client: OpenAI::Client) -> void
+          def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+          class WithRawResponse
+            def create: (
+            String thread_id,
+            content: OpenAI::Models::Beta::Threads::MessageCreateParams::content,
+            role: OpenAI::Models::Beta::Threads::MessageCreateParams::role,
+            ?attachments: ::Array[OpenAI::Beta::Threads::MessageCreateParams::Attachment]?,
+            ?metadata: OpenAI::Models::metadata?,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Beta::Threads::Message]
+
+            def retrieve: (
+            String message_id,
+            thread_id: String,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Beta::Threads::Message]
+
+            def update: (
+            String message_id,
+            thread_id: String,
+            ?metadata: OpenAI::Models::metadata?,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Beta::Threads::Message]
+
+            def list: (
+            String thread_id,
+            ?after: String,
+            ?before: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Beta::Threads::MessageListParams::order,
+            ?run_id: String,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Internal::CursorPage[OpenAI::Beta::Threads::Message]]
+
+            def delete: (
+            String message_id,
+            thread_id: String,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Beta::Threads::MessageDeleted]
+
+            def initialize: (resource: Messages) -> void
+          end
         end
       end
     end

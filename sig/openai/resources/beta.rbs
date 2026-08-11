@@ -1,6 +1,7 @@
 module OpenAI
   module Resources
     class Beta
+      def with_raw_response: -> Beta::WithRawResponse
       attr_reader responses: OpenAI::Resources::Beta::Responses
 
       attr_reader chatkit: OpenAI::Resources::Beta::ChatKit
@@ -9,7 +10,19 @@ module OpenAI
 
       attr_reader threads: OpenAI::Resources::Beta::Threads
 
-      def initialize: (client: OpenAI::Client) -> void
+      def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+      class WithRawResponse
+        attr_reader responses: OpenAI::Resources::Beta::Responses::WithRawResponse
+
+        attr_reader chatkit: OpenAI::Resources::Beta::ChatKit::WithRawResponse
+
+        attr_reader assistants: OpenAI::Resources::Beta::Assistants::WithRawResponse
+
+        attr_reader threads: OpenAI::Resources::Beta::Threads::WithRawResponse
+
+        def initialize: (resource: Beta) -> void
+      end
     end
   end
 end

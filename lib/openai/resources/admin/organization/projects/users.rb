@@ -6,6 +6,17 @@ module OpenAI
       class Organization
         class Projects
           class Users
+            # Returns a wrapper that exposes the raw HTTP response for each request.
+            #
+            # @return [Users::WithRawResponse]
+            def with_raw_response
+              WithRawResponse.new(
+                resource: Users.new(
+                  client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+                )
+              )
+            end
+
             # @return [OpenAI::Resources::Admin::Organization::Projects::Users::Roles]
             attr_reader :roles
 
@@ -164,10 +175,47 @@ module OpenAI
 
             # @api private
             #
-            # @param client [OpenAI::Client]
+            # @param client [OpenAI::Internal::Transport::RequestClient]
             def initialize(client:)
               @client = client
               @roles = OpenAI::Resources::Admin::Organization::Projects::Users::Roles.new(client: client)
+            end
+
+            class WithRawResponse
+              # @return [OpenAI::Resources::Admin::Organization::Projects::Users::Roles::WithRawResponse]
+              attr_reader :roles
+
+              def create(project_id, params)
+                @resource.create(project_id, params)
+              end
+
+              def retrieve(user_id, params)
+                @resource.retrieve(user_id, params)
+              end
+
+              def update(user_id, params)
+                @resource.update(user_id, params)
+              end
+
+              def list(project_id, params = {})
+                @resource.list(project_id, params)
+              end
+
+              def delete(user_id, params)
+                @resource.delete(user_id, params)
+              end
+
+              # @api private
+              #
+              # @param resource [Users]
+              def initialize(resource:)
+                @resource = resource
+
+                @roles =
+                  OpenAI::Resources::Admin::Organization::Projects::Users::Roles::WithRawResponse.new(
+                    resource: @resource.roles
+                  )
+              end
             end
           end
         end

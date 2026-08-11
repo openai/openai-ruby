@@ -18,19 +18,6 @@ module OpenAI
         sig { returns(T::Hash[String, String]) }
         attr_reader :headers
 
-        sig { returns(T::Hash[String, String]) }
-        def response_headers
-        end
-
-        # @api private
-        sig do
-          params(
-            response: OpenAI::Internal::Type::BaseModel
-          ).returns(OpenAI::Internal::Type::BaseModel)
-        end
-        private def attach_response_metadata(response)
-        end
-
         sig { void }
         def close
         end

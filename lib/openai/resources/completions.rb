@@ -5,6 +5,17 @@ module OpenAI
     # Given a prompt, the model will return one or more predicted completions, and can
     # also return the probabilities of alternative tokens at each position.
     class Completions
+      # Returns a wrapper that exposes the raw HTTP response for each request.
+      #
+      # @return [Completions::WithRawResponse]
+      def with_raw_response
+        WithRawResponse.new(
+          resource: Completions.new(
+            client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+          )
+        )
+      end
+
       # See {OpenAI::Resources::Completions#create_streaming} for streaming counterpart.
       #
       # Some parameter documentations has been truncated, see
@@ -144,9 +155,26 @@ module OpenAI
 
       # @api private
       #
-      # @param client [OpenAI::Client]
+      # @param client [OpenAI::Internal::Transport::RequestClient]
       def initialize(client:)
         @client = client
+      end
+
+      class WithRawResponse
+        def create(params)
+          @resource.create(params)
+        end
+
+        def create_streaming(params)
+          @resource.create_streaming(params)
+        end
+
+        # @api private
+        #
+        # @param resource [Completions]
+        def initialize(resource:)
+          @resource = resource
+        end
       end
     end
   end

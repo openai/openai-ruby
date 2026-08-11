@@ -1,6 +1,7 @@
 module OpenAI
   module Resources
     class Models
+      def with_raw_response: -> Models::WithRawResponse
       def retrieve: (
         String model,
         ?request_options: OpenAI::request_opts
@@ -15,7 +16,23 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::ModelDeleted
 
-      def initialize: (client: OpenAI::Client) -> void
+      def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+      class WithRawResponse
+        def retrieve: (
+        String model,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::Model]
+
+        def list: (?request_options: OpenAI::request_opts) -> OpenAI::RawResponse[OpenAI::Internal::Page[OpenAI::Model]]
+
+        def delete: (
+        String model,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::ModelDeleted]
+
+        def initialize: (resource: Models) -> void
+      end
     end
   end
 end

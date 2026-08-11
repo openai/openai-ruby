@@ -6,6 +6,17 @@ module OpenAI
       class Organization
         class Projects
           class SpendLimit
+            # Returns a wrapper that exposes the raw HTTP response for each request.
+            #
+            # @return [SpendLimit::WithRawResponse]
+            def with_raw_response
+              WithRawResponse.new(
+                resource: SpendLimit.new(
+                  client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+                )
+              )
+            end
+
             # Get a project's hard spend limit.
             #
             # @overload retrieve(project_id, request_options: {})
@@ -83,9 +94,30 @@ module OpenAI
 
             # @api private
             #
-            # @param client [OpenAI::Client]
+            # @param client [OpenAI::Internal::Transport::RequestClient]
             def initialize(client:)
               @client = client
+            end
+
+            class WithRawResponse
+              def retrieve(project_id, params = {})
+                @resource.retrieve(project_id, params)
+              end
+
+              def update(project_id, params)
+                @resource.update(project_id, params)
+              end
+
+              def delete(project_id, params = {})
+                @resource.delete(project_id, params)
+              end
+
+              # @api private
+              #
+              # @param resource [SpendLimit]
+              def initialize(resource:)
+                @resource = resource
+              end
             end
           end
         end

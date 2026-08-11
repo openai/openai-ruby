@@ -6,6 +6,10 @@ module OpenAI
       class Organization
         class Projects
           class ServiceAccounts
+            sig { returns(ServiceAccounts::WithRawResponse) }
+            def with_raw_response
+            end
+
             sig do
               returns(
                 OpenAI::Resources::Admin::Organization::Projects::ServiceAccounts::APIKeys
@@ -132,8 +136,80 @@ module OpenAI
             end
 
             # @api private
-            sig { params(client: OpenAI::Client).returns(T.attached_class) }
+            sig { params(client: OpenAI::Internal::Transport::RequestClient).returns(T.attached_class) }
             def self.new(client:)
+            end
+
+            class WithRawResponse
+              sig { returns(OpenAI::Resources::Admin::Organization::Projects::ServiceAccounts::APIKeys::WithRawResponse) }
+              attr_reader :api_keys
+
+              sig { params(project_id: String, name: String, create_service_account_only: T.nilable(T::Boolean), request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse]) }
+              def create(
+                # The ID of the project.
+                project_id,
+                # The name of the service account being created.
+                name:,
+                # Create the service account without default roles or an API key.
+                create_service_account_only: nil,
+                request_options: {}
+              )
+              end
+
+              sig { params(service_account_id: String, project_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectServiceAccount]) }
+              def retrieve(
+                # The ID of the service account.
+                service_account_id,
+                # The ID of the project.
+                project_id:,
+                request_options: {}
+              )
+              end
+
+              sig { params(service_account_id: String, project_id: String, name: String, role: OpenAI::Admin::Organization::Projects::ServiceAccountUpdateParams::Role::OrSymbol, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectServiceAccount]) }
+              def update(
+                # Path param: The ID of the service account.
+                service_account_id,
+                # Path param: The ID of the project.
+                project_id:,
+                # Body param: The updated service account name.
+                name: nil,
+                # Body param: The updated service account role.
+                role: nil,
+                request_options: {}
+              )
+              end
+
+              sig { params(project_id: String, after: String, limit: Integer, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Internal::ConversationCursorPage[OpenAI::Admin::Organization::Projects::ProjectServiceAccount]]) }
+              def list(
+                # The ID of the project.
+                project_id,
+                # A cursor for use in pagination. `after` is an object ID that defines your place
+                # in the list. For instance, if you make a list request and receive 100 objects,
+                # ending with obj_foo, your subsequent call can include after=obj_foo in order to
+                # fetch the next page of the list.
+                after: nil,
+                # A limit on the number of objects to be returned. Limit can range between 1 and
+                # 100, and the default is 20.
+                limit: nil,
+                request_options: {}
+              )
+              end
+
+              sig { params(service_account_id: String, project_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Models::Admin::Organization::Projects::ServiceAccountDeleteResponse]) }
+              def delete(
+                # The ID of the service account.
+                service_account_id,
+                # The ID of the project.
+                project_id:,
+                request_options: {}
+              )
+              end
+
+              # @api private
+              sig { params(resource: ServiceAccounts).returns(T.attached_class) }
+              def self.new(resource:)
+              end
             end
           end
         end

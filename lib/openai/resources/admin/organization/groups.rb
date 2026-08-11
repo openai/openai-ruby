@@ -5,6 +5,17 @@ module OpenAI
     class Admin
       class Organization
         class Groups
+          # Returns a wrapper that exposes the raw HTTP response for each request.
+          #
+          # @return [Groups::WithRawResponse]
+          def with_raw_response
+            WithRawResponse.new(
+              resource: Groups.new(
+                client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+              )
+            )
+          end
+
           # @return [OpenAI::Resources::Admin::Organization::Groups::Users]
           attr_reader :users
 
@@ -135,11 +146,56 @@ module OpenAI
 
           # @api private
           #
-          # @param client [OpenAI::Client]
+          # @param client [OpenAI::Internal::Transport::RequestClient]
           def initialize(client:)
             @client = client
             @users = OpenAI::Resources::Admin::Organization::Groups::Users.new(client: client)
             @roles = OpenAI::Resources::Admin::Organization::Groups::Roles.new(client: client)
+          end
+
+          class WithRawResponse
+            # @return [OpenAI::Resources::Admin::Organization::Groups::Users::WithRawResponse]
+            attr_reader :users
+
+            # @return [OpenAI::Resources::Admin::Organization::Groups::Roles::WithRawResponse]
+            attr_reader :roles
+
+            def create(params)
+              @resource.create(params)
+            end
+
+            def retrieve(group_id, params = {})
+              @resource.retrieve(group_id, params)
+            end
+
+            def update(group_id, params)
+              @resource.update(group_id, params)
+            end
+
+            def list(params = {})
+              @resource.list(params)
+            end
+
+            def delete(group_id, params = {})
+              @resource.delete(group_id, params)
+            end
+
+            # @api private
+            #
+            # @param resource [Groups]
+            def initialize(resource:)
+              @resource = resource
+
+              @users =
+                OpenAI::Resources::Admin::Organization::Groups::Users::WithRawResponse.new(
+                  resource: @resource.users
+                )
+
+              @roles =
+                OpenAI::Resources::Admin::Organization::Groups::Roles::WithRawResponse.new(
+                  resource: @resource.roles
+                )
+            end
           end
         end
       end

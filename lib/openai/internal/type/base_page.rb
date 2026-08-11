@@ -20,13 +20,6 @@ module OpenAI
         # @return [String, nil]
         attr_reader :_request_id
 
-        # The normalized HTTP response headers for this page.
-        #
-        # @api public
-        #
-        # @return [Hash{String=>String}]
-        attr_reader :response_headers
-
         # @api public
         #
         # @return [Boolean]
@@ -62,7 +55,6 @@ module OpenAI
           @req = req
           @model = req.fetch(:model)
           @_request_id = headers["x-request-id"]
-          @response_headers = headers
           super()
         end
 

@@ -5,6 +5,17 @@ module OpenAI
     class FineTuning
       # Manage fine-tuning jobs to tailor a model to your specific training data.
       class Jobs
+        # Returns a wrapper that exposes the raw HTTP response for each request.
+        #
+        # @return [Jobs::WithRawResponse]
+        def with_raw_response
+          WithRawResponse.new(
+            resource: Jobs.new(
+              client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+            )
+          )
+        end
+
         # Manage fine-tuning jobs to tailor a model to your specific training data.
         # @return [OpenAI::Resources::FineTuning::Jobs::Checkpoints]
         attr_reader :checkpoints
@@ -221,10 +232,56 @@ module OpenAI
 
         # @api private
         #
-        # @param client [OpenAI::Client]
+        # @param client [OpenAI::Internal::Transport::RequestClient]
         def initialize(client:)
           @client = client
           @checkpoints = OpenAI::Resources::FineTuning::Jobs::Checkpoints.new(client: client)
+        end
+
+        class WithRawResponse
+          # Manage fine-tuning jobs to tailor a model to your specific training data.
+          # @return [OpenAI::Resources::FineTuning::Jobs::Checkpoints::WithRawResponse]
+          attr_reader :checkpoints
+
+          def create(params)
+            @resource.create(params)
+          end
+
+          def retrieve(fine_tuning_job_id, params = {})
+            @resource.retrieve(fine_tuning_job_id, params)
+          end
+
+          def list(params = {})
+            @resource.list(params)
+          end
+
+          def cancel(fine_tuning_job_id, params = {})
+            @resource.cancel(fine_tuning_job_id, params)
+          end
+
+          def list_events(fine_tuning_job_id, params = {})
+            @resource.list_events(fine_tuning_job_id, params)
+          end
+
+          def pause(fine_tuning_job_id, params = {})
+            @resource.pause(fine_tuning_job_id, params)
+          end
+
+          def resume(fine_tuning_job_id, params = {})
+            @resource.resume(fine_tuning_job_id, params)
+          end
+
+          # @api private
+          #
+          # @param resource [Jobs]
+          def initialize(resource:)
+            @resource = resource
+
+            @checkpoints =
+              OpenAI::Resources::FineTuning::Jobs::Checkpoints::WithRawResponse.new(
+                resource: @resource.checkpoints
+              )
+          end
         end
       end
     end

@@ -4,6 +4,17 @@ module OpenAI
   module Resources
     class Realtime
       class ClientSecrets
+        # Returns a wrapper that exposes the raw HTTP response for each request.
+        #
+        # @return [ClientSecrets::WithRawResponse]
+        def with_raw_response
+          WithRawResponse.new(
+            resource: ClientSecrets.new(
+              client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+            )
+          )
+        end
+
         # Some parameter documentations has been truncated, see
         # {OpenAI::Models::Realtime::ClientSecretCreateParams} for more details.
         #
@@ -48,9 +59,22 @@ module OpenAI
 
         # @api private
         #
-        # @param client [OpenAI::Client]
+        # @param client [OpenAI::Internal::Transport::RequestClient]
         def initialize(client:)
           @client = client
+        end
+
+        class WithRawResponse
+          def create(params = {})
+            @resource.create(params)
+          end
+
+          # @api private
+          #
+          # @param resource [ClientSecrets]
+          def initialize(resource:)
+            @resource = resource
+          end
         end
       end
     end

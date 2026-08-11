@@ -4,6 +4,17 @@ module OpenAI
   module Resources
     class Beta
       class Responses
+        # Returns a wrapper that exposes the raw HTTP response for each request.
+        #
+        # @return [Responses::WithRawResponse]
+        def with_raw_response
+          WithRawResponse.new(
+            resource: Responses.new(
+              client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+            )
+          )
+        end
+
         # @return [OpenAI::Resources::Beta::Responses::InputItems]
         attr_reader :input_items
 
@@ -428,11 +439,64 @@ module OpenAI
 
         # @api private
         #
-        # @param client [OpenAI::Client]
+        # @param client [OpenAI::Internal::Transport::RequestClient]
         def initialize(client:)
           @client = client
           @input_items = OpenAI::Resources::Beta::Responses::InputItems.new(client: client)
           @input_tokens = OpenAI::Resources::Beta::Responses::InputTokens.new(client: client)
+        end
+
+        class WithRawResponse
+          # @return [OpenAI::Resources::Beta::Responses::InputItems::WithRawResponse]
+          attr_reader :input_items
+
+          # @return [OpenAI::Resources::Beta::Responses::InputTokens::WithRawResponse]
+          attr_reader :input_tokens
+
+          def create(params = {})
+            @resource.create(params)
+          end
+
+          def stream_raw(params = {})
+            @resource.stream_raw(params)
+          end
+
+          def retrieve(response_id, params = {})
+            @resource.retrieve(response_id, params)
+          end
+
+          def retrieve_streaming(response_id, params = {})
+            @resource.retrieve_streaming(response_id, params)
+          end
+
+          def delete(response_id, params = {})
+            @resource.delete(response_id, params)
+          end
+
+          def cancel(response_id, params = {})
+            @resource.cancel(response_id, params)
+          end
+
+          def compact(params)
+            @resource.compact(params)
+          end
+
+          # @api private
+          #
+          # @param resource [Responses]
+          def initialize(resource:)
+            @resource = resource
+
+            @input_items =
+              OpenAI::Resources::Beta::Responses::InputItems::WithRawResponse.new(
+                resource: @resource.input_items
+              )
+
+            @input_tokens =
+              OpenAI::Resources::Beta::Responses::InputTokens::WithRawResponse.new(
+                resource: @resource.input_tokens
+              )
+          end
         end
       end
     end

@@ -6,6 +6,17 @@ module OpenAI
       # Given a list of messages comprising a conversation, the model will return a
       # response.
       class Completions
+        # Returns a wrapper that exposes the raw HTTP response for each request.
+        #
+        # @return [Completions::WithRawResponse]
+        def with_raw_response
+          WithRawResponse.new(
+            resource: Completions.new(
+              client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+            )
+          )
+        end
+
         # Given a list of messages comprising a conversation, the model will return a
         # response.
         # @return [OpenAI::Resources::Chat::Completions::Messages]
@@ -504,10 +515,53 @@ module OpenAI
 
         # @api private
         #
-        # @param client [OpenAI::Client]
+        # @param client [OpenAI::Internal::Transport::RequestClient]
         def initialize(client:)
           @client = client
           @messages = OpenAI::Resources::Chat::Completions::Messages.new(client: client)
+        end
+
+        class WithRawResponse
+          # Given a list of messages comprising a conversation, the model will return a
+          # response.
+          # @return [OpenAI::Resources::Chat::Completions::Messages::WithRawResponse]
+          attr_reader :messages
+
+          def create(params)
+            @resource.create(params)
+          end
+
+          def stream_raw(params)
+            @resource.stream_raw(params)
+          end
+
+          def retrieve(completion_id, params = {})
+            @resource.retrieve(completion_id, params)
+          end
+
+          def update(completion_id, params)
+            @resource.update(completion_id, params)
+          end
+
+          def list(params = {})
+            @resource.list(params)
+          end
+
+          def delete(completion_id, params = {})
+            @resource.delete(completion_id, params)
+          end
+
+          # @api private
+          #
+          # @param resource [Completions]
+          def initialize(resource:)
+            @resource = resource
+
+            @messages =
+              OpenAI::Resources::Chat::Completions::Messages::WithRawResponse.new(
+                resource: @resource.messages
+              )
+          end
         end
       end
     end

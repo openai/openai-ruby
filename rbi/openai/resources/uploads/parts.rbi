@@ -5,6 +5,10 @@ module OpenAI
     class Uploads
       # Use Uploads to upload large files in multiple parts.
       class Parts
+        sig { returns(Parts::WithRawResponse) }
+        def with_raw_response
+        end
+
         # Adds a
         # [Part](https://platform.openai.com/docs/api-reference/uploads/part-object) to an
         # [Upload](https://platform.openai.com/docs/api-reference/uploads/object) object.
@@ -33,8 +37,25 @@ module OpenAI
         end
 
         # @api private
-        sig { params(client: OpenAI::Client).returns(T.attached_class) }
+        sig { params(client: OpenAI::Internal::Transport::RequestClient).returns(T.attached_class) }
         def self.new(client:)
+        end
+
+        class WithRawResponse
+          sig { params(upload_id: String, data: OpenAI::Internal::FileInput, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Uploads::UploadPart]) }
+          def create(
+            # The ID of the Upload.
+            upload_id,
+            # The chunk of bytes for this Part.
+            data:,
+            request_options: {}
+          )
+          end
+
+          # @api private
+          sig { params(resource: Parts).returns(T.attached_class) }
+          def self.new(resource:)
+          end
         end
       end
     end

@@ -5,6 +5,17 @@ module OpenAI
     class Beta
       class ChatKit
         class Sessions
+          # Returns a wrapper that exposes the raw HTTP response for each request.
+          #
+          # @return [Sessions::WithRawResponse]
+          def with_raw_response
+            WithRawResponse.new(
+              resource: Sessions.new(
+                client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+              )
+            )
+          end
+
           # Some parameter documentations has been truncated, see
           # {OpenAI::Models::Beta::ChatKit::SessionCreateParams} for more details.
           #
@@ -64,9 +75,26 @@ module OpenAI
 
           # @api private
           #
-          # @param client [OpenAI::Client]
+          # @param client [OpenAI::Internal::Transport::RequestClient]
           def initialize(client:)
             @client = client
+          end
+
+          class WithRawResponse
+            def create(params)
+              @resource.create(params)
+            end
+
+            def cancel(session_id, params = {})
+              @resource.cancel(session_id, params)
+            end
+
+            # @api private
+            #
+            # @param resource [Sessions]
+            def initialize(resource:)
+              @resource = resource
+            end
           end
         end
       end

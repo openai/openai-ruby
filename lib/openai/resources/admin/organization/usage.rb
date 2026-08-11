@@ -5,6 +5,17 @@ module OpenAI
     class Admin
       class Organization
         class Usage
+          # Returns a wrapper that exposes the raw HTTP response for each request.
+          #
+          # @return [Usage::WithRawResponse]
+          def with_raw_response
+            WithRawResponse.new(
+              resource: Usage.new(
+                client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+              )
+            )
+          end
+
           # Some parameter documentations has been truncated, see
           # {OpenAI::Models::Admin::Organization::UsageAudioSpeechesParams} for more
           # details.
@@ -499,9 +510,62 @@ module OpenAI
 
           # @api private
           #
-          # @param client [OpenAI::Client]
+          # @param client [OpenAI::Internal::Transport::RequestClient]
           def initialize(client:)
             @client = client
+          end
+
+          class WithRawResponse
+            def audio_speeches(params)
+              @resource.audio_speeches(params)
+            end
+
+            def audio_transcriptions(params)
+              @resource.audio_transcriptions(params)
+            end
+
+            def code_interpreter_sessions(params)
+              @resource.code_interpreter_sessions(params)
+            end
+
+            def completions(params)
+              @resource.completions(params)
+            end
+
+            def costs(params)
+              @resource.costs(params)
+            end
+
+            def embeddings(params)
+              @resource.embeddings(params)
+            end
+
+            def file_search_calls(params)
+              @resource.file_search_calls(params)
+            end
+
+            def images(params)
+              @resource.images(params)
+            end
+
+            def moderations(params)
+              @resource.moderations(params)
+            end
+
+            def vector_stores(params)
+              @resource.vector_stores(params)
+            end
+
+            def web_search_calls(params)
+              @resource.web_search_calls(params)
+            end
+
+            # @api private
+            #
+            # @param resource [Usage]
+            def initialize(resource:)
+              @resource = resource
+            end
           end
         end
       end

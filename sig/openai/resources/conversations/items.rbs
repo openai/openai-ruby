@@ -2,6 +2,7 @@ module OpenAI
   module Resources
     class Conversations
       class Items
+        def with_raw_response: -> Items::WithRawResponse
         def create: (
           String conversation_id,
           items: ::Array[OpenAI::Models::Responses::response_input_item],
@@ -31,7 +32,40 @@ module OpenAI
           ?request_options: OpenAI::request_opts
         ) -> OpenAI::Conversations::Conversation
 
-        def initialize: (client: OpenAI::Client) -> void
+        def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+        class WithRawResponse
+          def create: (
+          String conversation_id,
+          items: ::Array[OpenAI::Models::Responses::response_input_item],
+          ?include: ::Array[OpenAI::Models::Responses::response_includable],
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::RawResponse[OpenAI::Conversations::ConversationItemList]
+
+          def retrieve: (
+          String item_id,
+          conversation_id: String,
+          ?include: ::Array[OpenAI::Models::Responses::response_includable],
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::RawResponse[OpenAI::Models::Conversations::conversation_item]
+
+          def list: (
+          String conversation_id,
+          ?after: String,
+          ?include: ::Array[OpenAI::Models::Responses::response_includable],
+          ?limit: Integer,
+          ?order: OpenAI::Models::Conversations::ItemListParams::order,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::RawResponse[OpenAI::Internal::ConversationCursorPage[OpenAI::Models::Conversations::conversation_item]]
+
+          def delete: (
+          String item_id,
+          conversation_id: String,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::RawResponse[OpenAI::Conversations::Conversation]
+
+          def initialize: (resource: Items) -> void
+        end
       end
     end
   end

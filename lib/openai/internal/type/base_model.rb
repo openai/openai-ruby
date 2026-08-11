@@ -235,21 +235,12 @@ module OpenAI
         # @return [String, nil]
         attr_reader :_request_id
 
-        # The normalized HTTP response headers. This is only populated on
-        # top-level response objects returned by the client.
-        #
-        # @api public
-        #
-        # @return [Hash{String=>String}, nil]
-        attr_reader :response_headers
-
         # @api private
         #
-        # @param headers [Hash{String=>String}]
+        # @param request_id [String, nil]
         # @return [self]
-        def _set_response_metadata(headers)
-          @_request_id = headers["x-request-id"]
-          @response_headers = headers
+        def _set_request_id(request_id)
+          @_request_id = request_id
           self
         end
 
@@ -496,17 +487,6 @@ module OpenAI
         #
         # @return [String]
         def to_yaml(*a) = OpenAI::Internal::Type::Converter.dump(self.class, self).to_yaml(*a)
-
-        # Keep transport metadata outside Psych's object serialization path.
-        #
-        # @api private
-        #
-        # @param coder [Psych::Coder]
-        # @return [void]
-        def encode_with(coder)
-          coder["data"] = @data
-          coder["coerced"] = @coerced
-        end
 
         # Create a new instance of a model.
         #

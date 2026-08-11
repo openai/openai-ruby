@@ -5,6 +5,10 @@ module OpenAI
     class Admin
       class Organization
         class Projects
+          sig { returns(Projects::WithRawResponse) }
+          def with_raw_response
+          end
+
           sig do
             returns(OpenAI::Resources::Admin::Organization::Projects::Users)
           end
@@ -187,8 +191,113 @@ module OpenAI
           end
 
           # @api private
-          sig { params(client: OpenAI::Client).returns(T.attached_class) }
+          sig { params(client: OpenAI::Internal::Transport::RequestClient).returns(T.attached_class) }
           def self.new(client:)
+          end
+
+          class WithRawResponse
+            sig { returns(OpenAI::Resources::Admin::Organization::Projects::Users::WithRawResponse) }
+            attr_reader :users
+
+            sig { returns(OpenAI::Resources::Admin::Organization::Projects::ServiceAccounts::WithRawResponse) }
+            attr_reader :service_accounts
+
+            sig { returns(OpenAI::Resources::Admin::Organization::Projects::APIKeys::WithRawResponse) }
+            attr_reader :api_keys
+
+            sig { returns(OpenAI::Resources::Admin::Organization::Projects::RateLimits::WithRawResponse) }
+            attr_reader :rate_limits
+
+            sig { returns(OpenAI::Resources::Admin::Organization::Projects::ModelPermissions::WithRawResponse) }
+            attr_reader :model_permissions
+
+            sig { returns(OpenAI::Resources::Admin::Organization::Projects::HostedToolPermissions::WithRawResponse) }
+            attr_reader :hosted_tool_permissions
+
+            sig { returns(OpenAI::Resources::Admin::Organization::Projects::Groups::WithRawResponse) }
+            attr_reader :groups
+
+            sig { returns(OpenAI::Resources::Admin::Organization::Projects::Roles::WithRawResponse) }
+            attr_reader :roles
+
+            sig { returns(OpenAI::Resources::Admin::Organization::Projects::DataRetention::WithRawResponse) }
+            attr_reader :data_retention
+
+            sig { returns(OpenAI::Resources::Admin::Organization::Projects::SpendLimit::WithRawResponse) }
+            attr_reader :spend_limit
+
+            sig { returns(OpenAI::Resources::Admin::Organization::Projects::SpendAlerts::WithRawResponse) }
+            attr_reader :spend_alerts
+
+            sig { returns(OpenAI::Resources::Admin::Organization::Projects::Certificates::WithRawResponse) }
+            attr_reader :certificates
+
+            sig { params(name: String, external_key_id: T.nilable(String), geography: T.nilable(String), request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Admin::Organization::Project]) }
+            def create(
+              # The friendly name of the project, this name appears in reports.
+              name:,
+              # External key ID to associate with the project.
+              external_key_id: nil,
+              # Create the project with the specified data residency region. Your organization
+              # must have access to Data residency functionality in order to use. See
+              # [data residency controls](https://platform.openai.com/docs/guides/your-data#data-residency-controls)
+              # to review the functionality and limitations of setting this field.
+              geography: nil,
+              request_options: {}
+            )
+            end
+
+            sig { params(project_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Admin::Organization::Project]) }
+            def retrieve(
+              # The ID of the project.
+              project_id,
+              request_options: {}
+            )
+            end
+
+            sig { params(project_id: String, external_key_id: T.nilable(String), geography: T.nilable(String), name: T.nilable(String), request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Admin::Organization::Project]) }
+            def update(
+              # The ID of the project.
+              project_id,
+              # External key ID to associate with the project.
+              external_key_id: nil,
+              # Geography for the project.
+              geography: nil,
+              # The updated name of the project, this name appears in reports.
+              name: nil,
+              request_options: {}
+            )
+            end
+
+            sig { params(after: String, include_archived: T::Boolean, limit: Integer, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Internal::ConversationCursorPage[OpenAI::Admin::Organization::Project]]) }
+            def list(
+              # A cursor for use in pagination. `after` is an object ID that defines your place
+              # in the list. For instance, if you make a list request and receive 100 objects,
+              # ending with obj_foo, your subsequent call can include after=obj_foo in order to
+              # fetch the next page of the list.
+              after: nil,
+              # If `true` returns all projects including those that have been `archived`.
+              # Archived projects are not included by default.
+              include_archived: nil,
+              # A limit on the number of objects to be returned. Limit can range between 1 and
+              # 100, and the default is 20.
+              limit: nil,
+              request_options: {}
+            )
+            end
+
+            sig { params(project_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Admin::Organization::Project]) }
+            def archive(
+              # The ID of the project.
+              project_id,
+              request_options: {}
+            )
+            end
+
+            # @api private
+            sig { params(resource: Projects).returns(T.attached_class) }
+            def self.new(resource:)
+            end
           end
         end
       end

@@ -2,6 +2,7 @@ module OpenAI
   module Resources
     class Responses
       class InputItems
+        def with_raw_response: -> InputItems::WithRawResponse
         def list: (
           String response_id,
           ?after: String,
@@ -11,7 +12,20 @@ module OpenAI
           ?request_options: OpenAI::request_opts
         ) -> OpenAI::Internal::CursorPage[OpenAI::Models::Responses::response_item]
 
-        def initialize: (client: OpenAI::Client) -> void
+        def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+        class WithRawResponse
+          def list: (
+          String response_id,
+          ?after: String,
+          ?include: ::Array[OpenAI::Models::Responses::response_includable],
+          ?limit: Integer,
+          ?order: OpenAI::Models::Responses::InputItemListParams::order,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::RawResponse[OpenAI::Internal::CursorPage[OpenAI::Models::Responses::response_item]]
+
+          def initialize: (resource: InputItems) -> void
+        end
       end
     end
   end

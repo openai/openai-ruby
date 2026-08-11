@@ -3,6 +3,7 @@ module OpenAI
     class FineTuning
       class Jobs
         class Checkpoints
+          def with_raw_response: -> Checkpoints::WithRawResponse
           def list: (
             String fine_tuning_job_id,
             ?after: String,
@@ -10,7 +11,18 @@ module OpenAI
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Internal::CursorPage[OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint]
 
-          def initialize: (client: OpenAI::Client) -> void
+          def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+          class WithRawResponse
+            def list: (
+            String fine_tuning_job_id,
+            ?after: String,
+            ?limit: Integer,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Internal::CursorPage[OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint]]
+
+            def initialize: (resource: Checkpoints) -> void
+          end
         end
       end
     end

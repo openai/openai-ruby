@@ -6,6 +6,10 @@ module OpenAI
       class Organization
         class Projects
           class Users
+            sig { returns(Users::WithRawResponse) }
+            def with_raw_response
+            end
+
             sig do
               returns(
                 OpenAI::Resources::Admin::Organization::Projects::Users::Roles
@@ -125,8 +129,80 @@ module OpenAI
             end
 
             # @api private
-            sig { params(client: OpenAI::Client).returns(T.attached_class) }
+            sig { params(client: OpenAI::Internal::Transport::RequestClient).returns(T.attached_class) }
             def self.new(client:)
+            end
+
+            class WithRawResponse
+              sig { returns(OpenAI::Resources::Admin::Organization::Projects::Users::Roles::WithRawResponse) }
+              attr_reader :roles
+
+              sig { params(project_id: String, role: String, email: T.nilable(String), user_id: T.nilable(String), request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectUser]) }
+              def create(
+                # The ID of the project.
+                project_id,
+                # `owner` or `member`
+                role:,
+                # Email of the user to add.
+                email: nil,
+                # The ID of the user.
+                user_id: nil,
+                request_options: {}
+              )
+              end
+
+              sig { params(user_id: String, project_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectUser]) }
+              def retrieve(
+                # The ID of the user.
+                user_id,
+                # The ID of the project.
+                project_id:,
+                request_options: {}
+              )
+              end
+
+              sig { params(user_id: String, project_id: String, role: T.nilable(String), request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectUser]) }
+              def update(
+                # Path param: The ID of the user.
+                user_id,
+                # Path param: The ID of the project.
+                project_id:,
+                # Body param: `owner` or `member`
+                role: nil,
+                request_options: {}
+              )
+              end
+
+              sig { params(project_id: String, after: String, limit: Integer, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Internal::ConversationCursorPage[OpenAI::Admin::Organization::Projects::ProjectUser]]) }
+              def list(
+                # The ID of the project.
+                project_id,
+                # A cursor for use in pagination. `after` is an object ID that defines your place
+                # in the list. For instance, if you make a list request and receive 100 objects,
+                # ending with obj_foo, your subsequent call can include after=obj_foo in order to
+                # fetch the next page of the list.
+                after: nil,
+                # A limit on the number of objects to be returned. Limit can range between 1 and
+                # 100, and the default is 20.
+                limit: nil,
+                request_options: {}
+              )
+              end
+
+              sig { params(user_id: String, project_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Models::Admin::Organization::Projects::UserDeleteResponse]) }
+              def delete(
+                # The ID of the user.
+                user_id,
+                # The ID of the project.
+                project_id:,
+                request_options: {}
+              )
+              end
+
+              # @api private
+              sig { params(resource: Users).returns(T.attached_class) }
+              def self.new(resource:)
+              end
             end
           end
         end

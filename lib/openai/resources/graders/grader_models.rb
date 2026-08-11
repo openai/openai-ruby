@@ -6,7 +6,7 @@ module OpenAI
       class GraderModels
         # @api private
         #
-        # @param client [OpenAI::Client]
+        # @param client [OpenAI::Internal::Transport::RequestClient]
         def initialize(client:)
           @client = client
         end

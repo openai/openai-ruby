@@ -2,6 +2,7 @@ module OpenAI
   module Resources
     class Responses
       class InputTokens
+        def with_raw_response: -> InputTokens::WithRawResponse
         def count: (
           ?conversation: OpenAI::Models::Responses::InputTokenCountParams::conversation?,
           ?input: OpenAI::Models::Responses::InputTokenCountParams::input?,
@@ -18,7 +19,27 @@ module OpenAI
           ?request_options: OpenAI::request_opts
         ) -> OpenAI::Models::Responses::InputTokenCountResponse
 
-        def initialize: (client: OpenAI::Client) -> void
+        def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+        class WithRawResponse
+          def count: (
+          ?conversation: OpenAI::Models::Responses::InputTokenCountParams::conversation?,
+          ?input: OpenAI::Models::Responses::InputTokenCountParams::input?,
+          ?instructions: String?,
+          ?model: String?,
+          ?parallel_tool_calls: bool?,
+          ?personality: OpenAI::Models::Responses::InputTokenCountParams::personality,
+          ?previous_response_id: String?,
+          ?reasoning: OpenAI::Reasoning?,
+          ?text: OpenAI::Responses::InputTokenCountParams::Text?,
+          ?tool_choice: OpenAI::Models::Responses::InputTokenCountParams::tool_choice?,
+          ?tools: ::Array[OpenAI::Models::Responses::tool]?,
+          ?truncation: OpenAI::Models::Responses::InputTokenCountParams::truncation,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::RawResponse[OpenAI::Models::Responses::InputTokenCountResponse]
+
+          def initialize: (resource: InputTokens) -> void
+        end
       end
     end
   end

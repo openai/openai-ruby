@@ -4,6 +4,17 @@ module OpenAI
   module Resources
     class VectorStores
       class FileBatches
+        # Returns a wrapper that exposes the raw HTTP response for each request.
+        #
+        # @return [FileBatches::WithRawResponse]
+        def with_raw_response
+          WithRawResponse.new(
+            resource: FileBatches.new(
+              client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+            )
+          )
+        end
+
         # Some parameter documentations has been truncated, see
         # {OpenAI::Models::VectorStores::FileBatchCreateParams} for more details.
         #
@@ -141,9 +152,34 @@ module OpenAI
 
         # @api private
         #
-        # @param client [OpenAI::Client]
+        # @param client [OpenAI::Internal::Transport::RequestClient]
         def initialize(client:)
           @client = client
+        end
+
+        class WithRawResponse
+          def create(vector_store_id, params = {})
+            @resource.create(vector_store_id, params)
+          end
+
+          def retrieve(batch_id, params)
+            @resource.retrieve(batch_id, params)
+          end
+
+          def cancel(batch_id, params)
+            @resource.cancel(batch_id, params)
+          end
+
+          def list_files(batch_id, params)
+            @resource.list_files(batch_id, params)
+          end
+
+          # @api private
+          #
+          # @param resource [FileBatches]
+          def initialize(resource:)
+            @resource = resource
+          end
         end
       end
     end

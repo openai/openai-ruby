@@ -168,15 +168,9 @@ module OpenAI
         def _request_id
         end
 
-        # The normalized HTTP response headers. This is only populated on
-        # top-level response objects returned by the client.
-        sig { returns(T.nilable(T::Hash[String, String])) }
-        def response_headers
-        end
-
         # @api private
-        sig { params(headers: T::Hash[String, String]).returns(T.self_type) }
-        def _set_response_metadata(headers)
+        sig { params(request_id: T.nilable(String)).returns(T.self_type) }
+        def _set_request_id(request_id)
         end
 
         class << self
@@ -281,13 +275,6 @@ module OpenAI
 
         sig { params(a: T.anything).returns(String) }
         def to_yaml(*a)
-        end
-
-        # Keep transport metadata outside Psych's object serialization path.
-        #
-        # @api private
-        sig { params(coder: T.untyped).void }
-        def encode_with(coder)
         end
 
         # Create a new instance of a model.

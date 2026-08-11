@@ -2,13 +2,24 @@ module OpenAI
   module Resources
     class Uploads
       class Parts
+        def with_raw_response: -> Parts::WithRawResponse
         def create: (
           String upload_id,
           data: OpenAI::Internal::file_input,
           ?request_options: OpenAI::request_opts
         ) -> OpenAI::Uploads::UploadPart
 
-        def initialize: (client: OpenAI::Client) -> void
+        def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+        class WithRawResponse
+          def create: (
+          String upload_id,
+          data: OpenAI::Internal::file_input,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::RawResponse[OpenAI::Uploads::UploadPart]
+
+          def initialize: (resource: Parts) -> void
+        end
       end
     end
   end

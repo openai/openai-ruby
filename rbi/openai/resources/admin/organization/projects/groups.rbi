@@ -6,6 +6,10 @@ module OpenAI
       class Organization
         class Projects
           class Groups
+            sig { returns(Groups::WithRawResponse) }
+            def with_raw_response
+            end
+
             sig do
               returns(
                 OpenAI::Resources::Admin::Organization::Projects::Groups::Roles
@@ -103,8 +107,67 @@ module OpenAI
             end
 
             # @api private
-            sig { params(client: OpenAI::Client).returns(T.attached_class) }
+            sig { params(client: OpenAI::Internal::Transport::RequestClient).returns(T.attached_class) }
             def self.new(client:)
+            end
+
+            class WithRawResponse
+              sig { returns(OpenAI::Resources::Admin::Organization::Projects::Groups::Roles::WithRawResponse) }
+              attr_reader :roles
+
+              sig { params(project_id: String, group_id: String, role: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectGroup]) }
+              def create(
+                # The ID of the project to update.
+                project_id,
+                # Identifier of the group to add to the project.
+                group_id:,
+                # Identifier of the project role to grant to the group.
+                role:,
+                request_options: {}
+              )
+              end
+
+              sig { params(group_id: String, project_id: String, group_type: OpenAI::Admin::Organization::Projects::GroupRetrieveParams::GroupType::OrSymbol, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectGroup]) }
+              def retrieve(
+                # Path param: The ID of the group to retrieve.
+                group_id,
+                # Path param: The ID of the project to inspect.
+                project_id:,
+                # Query param: The type of group to retrieve.
+                group_type: nil,
+                request_options: {}
+              )
+              end
+
+              sig { params(project_id: String, after: String, limit: Integer, order: OpenAI::Admin::Organization::Projects::GroupListParams::Order::OrSymbol, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Internal::NextCursorPage[OpenAI::Admin::Organization::Projects::ProjectGroup]]) }
+              def list(
+                # The ID of the project to inspect.
+                project_id,
+                # Cursor for pagination. Provide the ID of the last group from the previous
+                # response to fetch the next page.
+                after: nil,
+                # A limit on the number of project groups to return. Defaults to 20.
+                limit: nil,
+                # Sort order for the returned groups.
+                order: nil,
+                request_options: {}
+              )
+              end
+
+              sig { params(group_id: String, project_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::RawResponse[OpenAI::Models::Admin::Organization::Projects::GroupDeleteResponse]) }
+              def delete(
+                # The ID of the group to remove from the project.
+                group_id,
+                # The ID of the project to update.
+                project_id:,
+                request_options: {}
+              )
+              end
+
+              # @api private
+              sig { params(resource: Groups).returns(T.attached_class) }
+              def self.new(resource:)
+              end
             end
           end
         end

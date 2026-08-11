@@ -3,6 +3,7 @@ module OpenAI
     class Admin
       class Organization
         class DataRetention
+          def with_raw_response: -> DataRetention::WithRawResponse
           def retrieve: (
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Admin::Organization::OrganizationDataRetention
@@ -12,7 +13,18 @@ module OpenAI
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Admin::Organization::OrganizationDataRetention
 
-          def initialize: (client: OpenAI::Client) -> void
+          def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+          class WithRawResponse
+            def retrieve: (?request_options: OpenAI::request_opts) -> OpenAI::RawResponse[OpenAI::Admin::Organization::OrganizationDataRetention]
+
+            def update: (
+            retention_type: OpenAI::Models::Admin::Organization::DataRetentionUpdateParams::retention_type,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::RawResponse[OpenAI::Admin::Organization::OrganizationDataRetention]
+
+            def initialize: (resource: DataRetention) -> void
+          end
         end
       end
     end

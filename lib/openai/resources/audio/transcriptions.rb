@@ -5,6 +5,17 @@ module OpenAI
     class Audio
       # Turn audio into text or text into audio.
       class Transcriptions
+        # Returns a wrapper that exposes the raw HTTP response for each request.
+        #
+        # @return [Transcriptions::WithRawResponse]
+        def with_raw_response
+          WithRawResponse.new(
+            resource: Transcriptions.new(
+              client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+            )
+          )
+        end
+
         # See {OpenAI::Resources::Audio::Transcriptions#create_streaming} for streaming
         # counterpart.
         #
@@ -135,9 +146,26 @@ module OpenAI
 
         # @api private
         #
-        # @param client [OpenAI::Client]
+        # @param client [OpenAI::Internal::Transport::RequestClient]
         def initialize(client:)
           @client = client
+        end
+
+        class WithRawResponse
+          def create(params)
+            @resource.create(params)
+          end
+
+          def create_streaming(params)
+            @resource.create_streaming(params)
+          end
+
+          # @api private
+          #
+          # @param resource [Transcriptions]
+          def initialize(resource:)
+            @resource = resource
+          end
         end
       end
     end

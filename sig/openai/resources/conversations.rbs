@@ -1,6 +1,7 @@
 module OpenAI
   module Resources
     class Conversations
+      def with_raw_response: -> Conversations::WithRawResponse
       attr_reader items: OpenAI::Resources::Conversations::Items
 
       def create: (
@@ -25,7 +26,35 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Conversations::ConversationDeletedResource
 
-      def initialize: (client: OpenAI::Client) -> void
+      def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+      class WithRawResponse
+        attr_reader items: OpenAI::Resources::Conversations::Items::WithRawResponse
+
+        def create: (
+        ?items: ::Array[OpenAI::Models::Responses::response_input_item]?,
+        ?metadata: OpenAI::Models::metadata?,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::Conversations::Conversation]
+
+        def retrieve: (
+        String conversation_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::Conversations::Conversation]
+
+        def update: (
+        String conversation_id,
+        metadata: OpenAI::Models::metadata?,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::Conversations::Conversation]
+
+        def delete: (
+        String conversation_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::Conversations::ConversationDeletedResource]
+
+        def initialize: (resource: Conversations) -> void
+      end
     end
   end
 end

@@ -6,6 +6,17 @@ module OpenAI
       class Organization
         class Projects
           class HostedToolPermissions
+            # Returns a wrapper that exposes the raw HTTP response for each request.
+            #
+            # @return [HostedToolPermissions::WithRawResponse]
+            def with_raw_response
+              WithRawResponse.new(
+                resource: HostedToolPermissions.new(
+                  client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+                )
+              )
+            end
+
             # Returns hosted tool permissions for a project.
             #
             # @overload retrieve(project_id, request_options: {})
@@ -63,9 +74,26 @@ module OpenAI
 
             # @api private
             #
-            # @param client [OpenAI::Client]
+            # @param client [OpenAI::Internal::Transport::RequestClient]
             def initialize(client:)
               @client = client
+            end
+
+            class WithRawResponse
+              def retrieve(project_id, params = {})
+                @resource.retrieve(project_id, params)
+              end
+
+              def update(project_id, params = {})
+                @resource.update(project_id, params)
+              end
+
+              # @api private
+              #
+              # @param resource [HostedToolPermissions]
+              def initialize(resource:)
+                @resource = resource
+              end
             end
           end
         end

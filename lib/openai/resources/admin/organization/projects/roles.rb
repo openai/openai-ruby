@@ -6,6 +6,17 @@ module OpenAI
       class Organization
         class Projects
           class Roles
+            # Returns a wrapper that exposes the raw HTTP response for each request.
+            #
+            # @return [Roles::WithRawResponse]
+            def with_raw_response
+              WithRawResponse.new(
+                resource: Roles.new(
+                  client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+                )
+              )
+            end
+
             # Creates a custom role for a project.
             #
             # @overload create(project_id, permissions:, role_name:, description: nil, request_options: {})
@@ -163,9 +174,38 @@ module OpenAI
 
             # @api private
             #
-            # @param client [OpenAI::Client]
+            # @param client [OpenAI::Internal::Transport::RequestClient]
             def initialize(client:)
               @client = client
+            end
+
+            class WithRawResponse
+              def create(project_id, params)
+                @resource.create(project_id, params)
+              end
+
+              def retrieve(role_id, params)
+                @resource.retrieve(role_id, params)
+              end
+
+              def update(role_id, params)
+                @resource.update(role_id, params)
+              end
+
+              def list(project_id, params = {})
+                @resource.list(project_id, params)
+              end
+
+              def delete(role_id, params)
+                @resource.delete(role_id, params)
+              end
+
+              # @api private
+              #
+              # @param resource [Roles]
+              def initialize(resource:)
+                @resource = resource
+              end
             end
           end
         end

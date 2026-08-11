@@ -9,6 +9,17 @@ module OpenAI
           #
           # Build Assistants that can call models and use tools.
           class Steps
+            # Returns a wrapper that exposes the raw HTTP response for each request.
+            #
+            # @return [Steps::WithRawResponse]
+            def with_raw_response
+              WithRawResponse.new(
+                resource: Steps.new(
+                  client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+                )
+              )
+            end
+
             # @deprecated The Assistants API is deprecated in favor of the Responses API
             #
             # Some parameter documentations has been truncated, see
@@ -100,9 +111,26 @@ module OpenAI
 
             # @api private
             #
-            # @param client [OpenAI::Client]
+            # @param client [OpenAI::Internal::Transport::RequestClient]
             def initialize(client:)
               @client = client
+            end
+
+            class WithRawResponse
+              def retrieve(step_id, params)
+                @resource.retrieve(step_id, params)
+              end
+
+              def list(run_id, params)
+                @resource.list(run_id, params)
+              end
+
+              # @api private
+              #
+              # @param resource [Steps]
+              def initialize(resource:)
+                @resource = resource
+              end
             end
           end
         end

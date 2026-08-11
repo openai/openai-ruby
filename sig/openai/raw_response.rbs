@@ -1,0 +1,24 @@
+module OpenAI
+  class RawResponse[out Elem]
+    attr_reader status: Integer
+
+    attr_reader headers: ::Hash[String, String]
+
+    attr_reader body: String
+
+    def request_id: -> String?
+
+    def read: -> String
+
+    def parse: -> Elem
+
+    def inspect: -> String
+
+    def initialize: (
+      status: Integer,
+      headers: ::Hash[String, String],
+      body: String,
+      parser: ^() -> Elem
+    ) -> void
+  end
+end

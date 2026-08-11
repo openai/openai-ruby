@@ -5,6 +5,17 @@ module OpenAI
     # Given text and/or image inputs, classifies if those inputs are potentially
     # harmful.
     class Moderations
+      # Returns a wrapper that exposes the raw HTTP response for each request.
+      #
+      # @return [Moderations::WithRawResponse]
+      def with_raw_response
+        WithRawResponse.new(
+          resource: Moderations.new(
+            client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+          )
+        )
+      end
+
       # Some parameter documentations has been truncated, see
       # {OpenAI::Models::ModerationCreateParams} for more details.
       #
@@ -36,9 +47,22 @@ module OpenAI
 
       # @api private
       #
-      # @param client [OpenAI::Client]
+      # @param client [OpenAI::Internal::Transport::RequestClient]
       def initialize(client:)
         @client = client
+      end
+
+      class WithRawResponse
+        def create(params)
+          @resource.create(params)
+        end
+
+        # @api private
+        #
+        # @param resource [Moderations]
+        def initialize(resource:)
+          @resource = resource
+        end
       end
     end
   end

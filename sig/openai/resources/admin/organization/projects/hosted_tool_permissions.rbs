@@ -4,6 +4,7 @@ module OpenAI
       class Organization
         class Projects
           class HostedToolPermissions
+            def with_raw_response: -> HostedToolPermissions::WithRawResponse
             def retrieve: (
               String project_id,
               ?request_options: OpenAI::request_opts
@@ -19,7 +20,26 @@ module OpenAI
               ?request_options: OpenAI::request_opts
             ) -> OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions
 
-            def initialize: (client: OpenAI::Client) -> void
+            def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+            class WithRawResponse
+              def retrieve: (
+              String project_id,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions]
+
+              def update: (
+              String project_id,
+              ?code_interpreter: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::CodeInterpreter?,
+              ?file_search: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::FileSearch?,
+              ?image_generation: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::ImageGeneration?,
+              ?mcp: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::Mcp?,
+              ?web_search: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::WebSearch?,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions]
+
+              def initialize: (resource: HostedToolPermissions) -> void
+            end
           end
         end
       end

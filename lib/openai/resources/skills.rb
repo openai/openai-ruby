@@ -3,6 +3,17 @@
 module OpenAI
   module Resources
     class Skills
+      # Returns a wrapper that exposes the raw HTTP response for each request.
+      #
+      # @return [Skills::WithRawResponse]
+      def with_raw_response
+        WithRawResponse.new(
+          resource: Skills.new(
+            client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+          )
+        )
+      end
+
       # @return [OpenAI::Resources::Skills::Content]
       attr_reader :content
 
@@ -134,11 +145,56 @@ module OpenAI
 
       # @api private
       #
-      # @param client [OpenAI::Client]
+      # @param client [OpenAI::Internal::Transport::RequestClient]
       def initialize(client:)
         @client = client
         @content = OpenAI::Resources::Skills::Content.new(client: client)
         @versions = OpenAI::Resources::Skills::Versions.new(client: client)
+      end
+
+      class WithRawResponse
+        # @return [OpenAI::Resources::Skills::Content::WithRawResponse]
+        attr_reader :content
+
+        # @return [OpenAI::Resources::Skills::Versions::WithRawResponse]
+        attr_reader :versions
+
+        def create(params = {})
+          @resource.create(params)
+        end
+
+        def retrieve(skill_id, params = {})
+          @resource.retrieve(skill_id, params)
+        end
+
+        def update(skill_id, params)
+          @resource.update(skill_id, params)
+        end
+
+        def list(params = {})
+          @resource.list(params)
+        end
+
+        def delete(skill_id, params = {})
+          @resource.delete(skill_id, params)
+        end
+
+        # @api private
+        #
+        # @param resource [Skills]
+        def initialize(resource:)
+          @resource = resource
+
+          @content =
+            OpenAI::Resources::Skills::Content::WithRawResponse.new(
+              resource: @resource.content
+            )
+
+          @versions =
+            OpenAI::Resources::Skills::Versions::WithRawResponse.new(
+              resource: @resource.versions
+            )
+        end
       end
     end
   end

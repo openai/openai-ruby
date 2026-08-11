@@ -1,0 +1,14 @@
+module OpenAI
+  module Internal
+    module Transport
+      # @api private
+      class RawResponseClient
+        def initialize: (OpenAI::Internal::Transport::BaseClient client) -> void
+
+        def request: (
+          OpenAI::Internal::Transport::BaseClient::request_components req
+        ) -> OpenAI::RawResponse[top]
+      end
+    end
+  end
+end

@@ -4,6 +4,7 @@ module OpenAI
       class Organization
         class Projects
           class Users
+            def with_raw_response: -> Users::WithRawResponse
             attr_reader roles: OpenAI::Resources::Admin::Organization::Projects::Users::Roles
 
             def create: (
@@ -40,7 +41,47 @@ module OpenAI
               ?request_options: OpenAI::request_opts
             ) -> OpenAI::Models::Admin::Organization::Projects::UserDeleteResponse
 
-            def initialize: (client: OpenAI::Client) -> void
+            def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+            class WithRawResponse
+              attr_reader roles: OpenAI::Resources::Admin::Organization::Projects::Users::Roles::WithRawResponse
+
+              def create: (
+              String project_id,
+              role: String,
+              ?email: String?,
+              ?user_id: String?,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectUser]
+
+              def retrieve: (
+              String user_id,
+              project_id: String,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectUser]
+
+              def update: (
+              String user_id,
+              project_id: String,
+              ?role: String?,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectUser]
+
+              def list: (
+              String project_id,
+              ?after: String,
+              ?limit: Integer,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::RawResponse[OpenAI::Internal::ConversationCursorPage[OpenAI::Admin::Organization::Projects::ProjectUser]]
+
+              def delete: (
+              String user_id,
+              project_id: String,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::RawResponse[OpenAI::Models::Admin::Organization::Projects::UserDeleteResponse]
+
+              def initialize: (resource: Users) -> void
+            end
           end
         end
       end

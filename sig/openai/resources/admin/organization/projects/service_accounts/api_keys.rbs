@@ -5,6 +5,7 @@ module OpenAI
         class Projects
           class ServiceAccounts
             class APIKeys
+              def with_raw_response: -> APIKeys::WithRawResponse
               def create: (
                 String service_account_id,
                 project_id: String,
@@ -13,7 +14,19 @@ module OpenAI
                 ?request_options: OpenAI::request_opts
               ) -> OpenAI::Models::Admin::Organization::Projects::ServiceAccounts::APIKeyCreateResponse
 
-              def initialize: (client: OpenAI::Client) -> void
+              def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+              class WithRawResponse
+                def create: (
+                String service_account_id,
+                project_id: String,
+                ?name: String,
+                ?scopes: ::Array[String],
+                ?request_options: OpenAI::request_opts
+              ) -> OpenAI::RawResponse[OpenAI::Models::Admin::Organization::Projects::ServiceAccounts::APIKeyCreateResponse]
+
+                def initialize: (resource: APIKeys) -> void
+              end
             end
           end
         end

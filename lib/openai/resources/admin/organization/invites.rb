@@ -5,6 +5,17 @@ module OpenAI
     class Admin
       class Organization
         class Invites
+          # Returns a wrapper that exposes the raw HTTP response for each request.
+          #
+          # @return [Invites::WithRawResponse]
+          def with_raw_response
+            WithRawResponse.new(
+              resource: Invites.new(
+                client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+              )
+            )
+          end
+
           # Some parameter documentations has been truncated, see
           # {OpenAI::Models::Admin::Organization::InviteCreateParams} for more details.
           #
@@ -110,9 +121,34 @@ module OpenAI
 
           # @api private
           #
-          # @param client [OpenAI::Client]
+          # @param client [OpenAI::Internal::Transport::RequestClient]
           def initialize(client:)
             @client = client
+          end
+
+          class WithRawResponse
+            def create(params)
+              @resource.create(params)
+            end
+
+            def retrieve(invite_id, params = {})
+              @resource.retrieve(invite_id, params)
+            end
+
+            def list(params = {})
+              @resource.list(params)
+            end
+
+            def delete(invite_id, params = {})
+              @resource.delete(invite_id, params)
+            end
+
+            # @api private
+            #
+            # @param resource [Invites]
+            def initialize(resource:)
+              @resource = resource
+            end
           end
         end
       end

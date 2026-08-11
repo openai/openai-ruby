@@ -2,7 +2,7 @@ module OpenAI
   module Resources
     class FineTuning
       class Methods
-        def initialize: (client: OpenAI::Client) -> void
+        def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
       end
     end
   end

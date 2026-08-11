@@ -2,6 +2,7 @@ module OpenAI
   module Resources
     class Skills
       class Versions
+        def with_raw_response: -> Versions::WithRawResponse
         attr_reader content: OpenAI::Resources::Skills::Versions::Content
 
         def create: (
@@ -31,7 +32,40 @@ module OpenAI
           ?request_options: OpenAI::request_opts
         ) -> OpenAI::Skills::DeletedSkillVersion
 
-        def initialize: (client: OpenAI::Client) -> void
+        def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+        class WithRawResponse
+          attr_reader content: OpenAI::Resources::Skills::Versions::Content::WithRawResponse
+
+          def create: (
+          String skill_id,
+          ?default: bool,
+          ?files: OpenAI::Models::Skills::VersionCreateParams::files,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::RawResponse[OpenAI::Skills::SkillVersion]
+
+          def retrieve: (
+          String version,
+          skill_id: String,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::RawResponse[OpenAI::Skills::SkillVersion]
+
+          def list: (
+          String skill_id,
+          ?after: String,
+          ?limit: Integer,
+          ?order: OpenAI::Models::Skills::VersionListParams::order,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::RawResponse[OpenAI::Internal::CursorPage[OpenAI::Skills::SkillVersion]]
+
+          def delete: (
+          String version,
+          skill_id: String,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::RawResponse[OpenAI::Skills::DeletedSkillVersion]
+
+          def initialize: (resource: Versions) -> void
+        end
       end
     end
   end

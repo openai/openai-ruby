@@ -89,8 +89,9 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
 
     stream = @client.responses.stream(**basic_params)
     assert_equal(200, stream.status)
-    assert_equal("req_final_response", stream.response_headers["x-request-id"])
-    assert_equal("78.9", stream.response_headers["openai-processing-ms"])
+    assert_equal("req_final_response", stream.headers["x-request-id"])
+    assert_equal("78.9", stream.headers["openai-processing-ms"])
+    refute_respond_to(stream, :response_headers)
 
     response = stream.get_final_response
 
@@ -105,9 +106,8 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
         ]
       ]
     end
-    assert_equal("req_final_response", response._request_id)
-    assert_equal("req_final_response", response.response_headers["x-request-id"])
-    assert_equal("78.9", response.response_headers["openai-processing-ms"])
+    assert_nil(response._request_id)
+    refute_respond_to(response, :response_headers)
   end
 
   def test_get_output_text

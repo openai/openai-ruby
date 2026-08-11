@@ -4,6 +4,17 @@ module OpenAI
   module Resources
     # Manage conversations and conversation items.
     class Conversations
+      # Returns a wrapper that exposes the raw HTTP response for each request.
+      #
+      # @return [Conversations::WithRawResponse]
+      def with_raw_response
+        WithRawResponse.new(
+          resource: Conversations.new(
+            client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+          )
+        )
+      end
+
       # Manage conversations and conversation items.
       # @return [OpenAI::Resources::Conversations::Items]
       attr_reader :items
@@ -108,10 +119,44 @@ module OpenAI
 
       # @api private
       #
-      # @param client [OpenAI::Client]
+      # @param client [OpenAI::Internal::Transport::RequestClient]
       def initialize(client:)
         @client = client
         @items = OpenAI::Resources::Conversations::Items.new(client: client)
+      end
+
+      class WithRawResponse
+        # Manage conversations and conversation items.
+        # @return [OpenAI::Resources::Conversations::Items::WithRawResponse]
+        attr_reader :items
+
+        def create(params = {})
+          @resource.create(params)
+        end
+
+        def retrieve(conversation_id, params = {})
+          @resource.retrieve(conversation_id, params)
+        end
+
+        def update(conversation_id, params)
+          @resource.update(conversation_id, params)
+        end
+
+        def delete(conversation_id, params = {})
+          @resource.delete(conversation_id, params)
+        end
+
+        # @api private
+        #
+        # @param resource [Conversations]
+        def initialize(resource:)
+          @resource = resource
+
+          @items =
+            OpenAI::Resources::Conversations::Items::WithRawResponse.new(
+              resource: @resource.items
+            )
+        end
       end
     end
   end

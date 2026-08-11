@@ -1,13 +1,24 @@
 module OpenAI
   module Resources
     class Audio
+      def with_raw_response: -> Audio::WithRawResponse
       attr_reader transcriptions: OpenAI::Resources::Audio::Transcriptions
 
       attr_reader translations: OpenAI::Resources::Audio::Translations
 
       attr_reader speech: OpenAI::Resources::Audio::Speech
 
-      def initialize: (client: OpenAI::Client) -> void
+      def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+      class WithRawResponse
+        attr_reader transcriptions: OpenAI::Resources::Audio::Transcriptions::WithRawResponse
+
+        attr_reader translations: OpenAI::Resources::Audio::Translations::WithRawResponse
+
+        attr_reader speech: OpenAI::Resources::Audio::Speech::WithRawResponse
+
+        def initialize: (resource: Audio) -> void
+      end
     end
   end
 end

@@ -5,6 +5,17 @@ module OpenAI
     class Evals
       # Manage and run evals in the OpenAI platform.
       class Runs
+        # Returns a wrapper that exposes the raw HTTP response for each request.
+        #
+        # @return [Runs::WithRawResponse]
+        def with_raw_response
+          WithRawResponse.new(
+            resource: Runs.new(
+              client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+            )
+          )
+        end
+
         # Manage and run evals in the OpenAI platform.
         # @return [OpenAI::Resources::Evals::Runs::OutputItems]
         attr_reader :output_items
@@ -165,10 +176,48 @@ module OpenAI
 
         # @api private
         #
-        # @param client [OpenAI::Client]
+        # @param client [OpenAI::Internal::Transport::RequestClient]
         def initialize(client:)
           @client = client
           @output_items = OpenAI::Resources::Evals::Runs::OutputItems.new(client: client)
+        end
+
+        class WithRawResponse
+          # Manage and run evals in the OpenAI platform.
+          # @return [OpenAI::Resources::Evals::Runs::OutputItems::WithRawResponse]
+          attr_reader :output_items
+
+          def create(eval_id, params)
+            @resource.create(eval_id, params)
+          end
+
+          def retrieve(run_id, params)
+            @resource.retrieve(run_id, params)
+          end
+
+          def list(eval_id, params = {})
+            @resource.list(eval_id, params)
+          end
+
+          def delete(run_id, params)
+            @resource.delete(run_id, params)
+          end
+
+          def cancel(run_id, params)
+            @resource.cancel(run_id, params)
+          end
+
+          # @api private
+          #
+          # @param resource [Runs]
+          def initialize(resource:)
+            @resource = resource
+
+            @output_items =
+              OpenAI::Resources::Evals::Runs::OutputItems::WithRawResponse.new(
+                resource: @resource.output_items
+              )
+          end
         end
       end
     end

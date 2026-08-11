@@ -5,6 +5,17 @@ module OpenAI
     class Beta
       # Build Assistants that can call models and use tools.
       class Assistants
+        # Returns a wrapper that exposes the raw HTTP response for each request.
+        #
+        # @return [Assistants::WithRawResponse]
+        def with_raw_response
+          WithRawResponse.new(
+            resource: Assistants.new(
+              client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+            )
+          )
+        end
+
         # @deprecated
         #
         # Some parameter documentations has been truncated, see
@@ -187,9 +198,38 @@ module OpenAI
 
         # @api private
         #
-        # @param client [OpenAI::Client]
+        # @param client [OpenAI::Internal::Transport::RequestClient]
         def initialize(client:)
           @client = client
+        end
+
+        class WithRawResponse
+          def create(params)
+            @resource.create(params)
+          end
+
+          def retrieve(assistant_id, params = {})
+            @resource.retrieve(assistant_id, params)
+          end
+
+          def update(assistant_id, params = {})
+            @resource.update(assistant_id, params)
+          end
+
+          def list(params = {})
+            @resource.list(params)
+          end
+
+          def delete(assistant_id, params = {})
+            @resource.delete(assistant_id, params)
+          end
+
+          # @api private
+          #
+          # @param resource [Assistants]
+          def initialize(resource:)
+            @resource = resource
+          end
         end
       end
     end

@@ -4,6 +4,7 @@ module OpenAI
       class Organization
         class Projects
           class APIKeys
+            def with_raw_response: -> APIKeys::WithRawResponse
             def retrieve: (
               String api_key_id,
               project_id: String,
@@ -24,7 +25,31 @@ module OpenAI
               ?request_options: OpenAI::request_opts
             ) -> OpenAI::Models::Admin::Organization::Projects::APIKeyDeleteResponse
 
-            def initialize: (client: OpenAI::Client) -> void
+            def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+            class WithRawResponse
+              def retrieve: (
+              String api_key_id,
+              project_id: String,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::RawResponse[OpenAI::Admin::Organization::Projects::ProjectAPIKey]
+
+              def list: (
+              String project_id,
+              ?after: String,
+              ?limit: Integer,
+              ?owner_project_access: OpenAI::Models::Admin::Organization::Projects::APIKeyListParams::owner_project_access,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::RawResponse[OpenAI::Internal::ConversationCursorPage[OpenAI::Admin::Organization::Projects::ProjectAPIKey]]
+
+              def delete: (
+              String api_key_id,
+              project_id: String,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::RawResponse[OpenAI::Models::Admin::Organization::Projects::APIKeyDeleteResponse]
+
+              def initialize: (resource: APIKeys) -> void
+            end
           end
         end
       end

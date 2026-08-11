@@ -5,6 +5,17 @@ module OpenAI
     class Beta
       class Responses
         class InputTokens
+          # Returns a wrapper that exposes the raw HTTP response for each request.
+          #
+          # @return [InputTokens::WithRawResponse]
+          def with_raw_response
+            WithRawResponse.new(
+              resource: InputTokens.new(
+                client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+              )
+            )
+          end
+
           # Some parameter documentations has been truncated, see
           # {OpenAI::Models::Beta::Responses::InputTokenCountParams} for more details.
           #
@@ -62,9 +73,22 @@ module OpenAI
 
           # @api private
           #
-          # @param client [OpenAI::Client]
+          # @param client [OpenAI::Internal::Transport::RequestClient]
           def initialize(client:)
             @client = client
+          end
+
+          class WithRawResponse
+            def count(params = {})
+              @resource.count(params)
+            end
+
+            # @api private
+            #
+            # @param resource [InputTokens]
+            def initialize(resource:)
+              @resource = resource
+            end
           end
         end
       end

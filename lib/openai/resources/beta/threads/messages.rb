@@ -8,6 +8,17 @@ module OpenAI
         #
         # Build Assistants that can call models and use tools.
         class Messages
+          # Returns a wrapper that exposes the raw HTTP response for each request.
+          #
+          # @return [Messages::WithRawResponse]
+          def with_raw_response
+            WithRawResponse.new(
+              resource: Messages.new(
+                client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+              )
+            )
+          end
+
           # @deprecated The Assistants API is deprecated in favor of the Responses API
           #
           # Some parameter documentations has been truncated, see
@@ -185,9 +196,38 @@ module OpenAI
 
           # @api private
           #
-          # @param client [OpenAI::Client]
+          # @param client [OpenAI::Internal::Transport::RequestClient]
           def initialize(client:)
             @client = client
+          end
+
+          class WithRawResponse
+            def create(thread_id, params)
+              @resource.create(thread_id, params)
+            end
+
+            def retrieve(message_id, params)
+              @resource.retrieve(message_id, params)
+            end
+
+            def update(message_id, params)
+              @resource.update(message_id, params)
+            end
+
+            def list(thread_id, params = {})
+              @resource.list(thread_id, params)
+            end
+
+            def delete(message_id, params)
+              @resource.delete(message_id, params)
+            end
+
+            # @api private
+            #
+            # @param resource [Messages]
+            def initialize(resource:)
+              @resource = resource
+            end
           end
         end
       end

@@ -1,0 +1,12 @@
+module OpenAI
+  module Internal
+    module Transport
+      # @api private
+      interface _RequestClient
+        def request: (
+          OpenAI::Internal::Transport::BaseClient::request_components req
+        ) -> top
+      end
+    end
+  end
+end

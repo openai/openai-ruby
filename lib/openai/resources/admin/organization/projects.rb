@@ -5,6 +5,17 @@ module OpenAI
     class Admin
       class Organization
         class Projects
+          # Returns a wrapper that exposes the raw HTTP response for each request.
+          #
+          # @return [Projects::WithRawResponse]
+          def with_raw_response
+            WithRawResponse.new(
+              resource: Projects.new(
+                client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+              )
+            )
+          end
+
           # @return [OpenAI::Resources::Admin::Organization::Projects::Users]
           attr_reader :users
 
@@ -178,7 +189,7 @@ module OpenAI
 
           # @api private
           #
-          # @param client [OpenAI::Client]
+          # @param client [OpenAI::Internal::Transport::RequestClient]
           def initialize(client:)
             @client = client
             @users = OpenAI::Resources::Admin::Organization::Projects::Users.new(client: client)
@@ -195,6 +206,131 @@ module OpenAI
             @spend_limit = OpenAI::Resources::Admin::Organization::Projects::SpendLimit.new(client: client)
             @spend_alerts = OpenAI::Resources::Admin::Organization::Projects::SpendAlerts.new(client: client)
             @certificates = OpenAI::Resources::Admin::Organization::Projects::Certificates.new(client: client)
+          end
+
+          class WithRawResponse
+            # @return [OpenAI::Resources::Admin::Organization::Projects::Users::WithRawResponse]
+            attr_reader :users
+
+            # @return [OpenAI::Resources::Admin::Organization::Projects::ServiceAccounts::WithRawResponse]
+            attr_reader :service_accounts
+
+            # @return [OpenAI::Resources::Admin::Organization::Projects::APIKeys::WithRawResponse]
+            attr_reader :api_keys
+
+            # @return [OpenAI::Resources::Admin::Organization::Projects::RateLimits::WithRawResponse]
+            attr_reader :rate_limits
+
+            # @return [OpenAI::Resources::Admin::Organization::Projects::ModelPermissions::WithRawResponse]
+            attr_reader :model_permissions
+
+            # @return [OpenAI::Resources::Admin::Organization::Projects::HostedToolPermissions::WithRawResponse]
+            attr_reader :hosted_tool_permissions
+
+            # @return [OpenAI::Resources::Admin::Organization::Projects::Groups::WithRawResponse]
+            attr_reader :groups
+
+            # @return [OpenAI::Resources::Admin::Organization::Projects::Roles::WithRawResponse]
+            attr_reader :roles
+
+            # @return [OpenAI::Resources::Admin::Organization::Projects::DataRetention::WithRawResponse]
+            attr_reader :data_retention
+
+            # @return [OpenAI::Resources::Admin::Organization::Projects::SpendLimit::WithRawResponse]
+            attr_reader :spend_limit
+
+            # @return [OpenAI::Resources::Admin::Organization::Projects::SpendAlerts::WithRawResponse]
+            attr_reader :spend_alerts
+
+            # @return [OpenAI::Resources::Admin::Organization::Projects::Certificates::WithRawResponse]
+            attr_reader :certificates
+
+            def create(params)
+              @resource.create(params)
+            end
+
+            def retrieve(project_id, params = {})
+              @resource.retrieve(project_id, params)
+            end
+
+            def update(project_id, params = {})
+              @resource.update(project_id, params)
+            end
+
+            def list(params = {})
+              @resource.list(params)
+            end
+
+            def archive(project_id, params = {})
+              @resource.archive(project_id, params)
+            end
+
+            # @api private
+            #
+            # @param resource [Projects]
+            def initialize(resource:)
+              @resource = resource
+
+              @users =
+                OpenAI::Resources::Admin::Organization::Projects::Users::WithRawResponse.new(
+                  resource: @resource.users
+                )
+
+              @service_accounts =
+                OpenAI::Resources::Admin::Organization::Projects::ServiceAccounts::WithRawResponse.new(
+                  resource: @resource.service_accounts
+                )
+
+              @api_keys =
+                OpenAI::Resources::Admin::Organization::Projects::APIKeys::WithRawResponse.new(
+                  resource: @resource.api_keys
+                )
+
+              @rate_limits =
+                OpenAI::Resources::Admin::Organization::Projects::RateLimits::WithRawResponse.new(
+                  resource: @resource.rate_limits
+                )
+
+              @model_permissions =
+                OpenAI::Resources::Admin::Organization::Projects::ModelPermissions::WithRawResponse.new(
+                  resource: @resource.model_permissions
+                )
+
+              @hosted_tool_permissions =
+                OpenAI::Resources::Admin::Organization::Projects::HostedToolPermissions::WithRawResponse.new(
+                  resource: @resource.hosted_tool_permissions
+                )
+
+              @groups =
+                OpenAI::Resources::Admin::Organization::Projects::Groups::WithRawResponse.new(
+                  resource: @resource.groups
+                )
+
+              @roles =
+                OpenAI::Resources::Admin::Organization::Projects::Roles::WithRawResponse.new(
+                  resource: @resource.roles
+                )
+
+              @data_retention =
+                OpenAI::Resources::Admin::Organization::Projects::DataRetention::WithRawResponse.new(
+                  resource: @resource.data_retention
+                )
+
+              @spend_limit =
+                OpenAI::Resources::Admin::Organization::Projects::SpendLimit::WithRawResponse.new(
+                  resource: @resource.spend_limit
+                )
+
+              @spend_alerts =
+                OpenAI::Resources::Admin::Organization::Projects::SpendAlerts::WithRawResponse.new(
+                  resource: @resource.spend_alerts
+                )
+
+              @certificates =
+                OpenAI::Resources::Admin::Organization::Projects::Certificates::WithRawResponse.new(
+                  resource: @resource.certificates
+                )
+            end
           end
         end
       end

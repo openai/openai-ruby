@@ -4,6 +4,17 @@ module OpenAI
   module Resources
     # Manage and run evals in the OpenAI platform.
     class Evals
+      # Returns a wrapper that exposes the raw HTTP response for each request.
+      #
+      # @return [Evals::WithRawResponse]
+      def with_raw_response
+        WithRawResponse.new(
+          resource: Evals.new(
+            client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+          )
+        )
+      end
+
       # Manage and run evals in the OpenAI platform.
       # @return [OpenAI::Resources::Evals::Runs]
       attr_reader :runs
@@ -153,10 +164,48 @@ module OpenAI
 
       # @api private
       #
-      # @param client [OpenAI::Client]
+      # @param client [OpenAI::Internal::Transport::RequestClient]
       def initialize(client:)
         @client = client
         @runs = OpenAI::Resources::Evals::Runs.new(client: client)
+      end
+
+      class WithRawResponse
+        # Manage and run evals in the OpenAI platform.
+        # @return [OpenAI::Resources::Evals::Runs::WithRawResponse]
+        attr_reader :runs
+
+        def create(params)
+          @resource.create(params)
+        end
+
+        def retrieve(eval_id, params = {})
+          @resource.retrieve(eval_id, params)
+        end
+
+        def update(eval_id, params = {})
+          @resource.update(eval_id, params)
+        end
+
+        def list(params = {})
+          @resource.list(params)
+        end
+
+        def delete(eval_id, params = {})
+          @resource.delete(eval_id, params)
+        end
+
+        # @api private
+        #
+        # @param resource [Evals]
+        def initialize(resource:)
+          @resource = resource
+
+          @runs =
+            OpenAI::Resources::Evals::Runs::WithRawResponse.new(
+              resource: @resource.runs
+            )
+        end
       end
     end
   end

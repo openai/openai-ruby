@@ -1,6 +1,7 @@
 module OpenAI
   module Resources
     class Containers
+      def with_raw_response: -> Containers::WithRawResponse
       attr_reader files: OpenAI::Resources::Containers::Files
 
       def create: (
@@ -31,7 +32,41 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> nil
 
-      def initialize: (client: OpenAI::Client) -> void
+      def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+      class WithRawResponse
+        attr_reader files: OpenAI::Resources::Containers::Files::WithRawResponse
+
+        def create: (
+        name: String,
+        ?expires_after: OpenAI::ContainerCreateParams::ExpiresAfter,
+        ?file_ids: ::Array[String],
+        ?memory_limit: OpenAI::Models::ContainerCreateParams::memory_limit,
+        ?network_policy: OpenAI::Models::ContainerCreateParams::network_policy,
+        ?skills: ::Array[OpenAI::Models::ContainerCreateParams::skill],
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::Models::ContainerCreateResponse]
+
+        def retrieve: (
+        String container_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::Models::ContainerRetrieveResponse]
+
+        def list: (
+        ?after: String,
+        ?limit: Integer,
+        ?name: String,
+        ?order: OpenAI::Models::ContainerListParams::order,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::Internal::CursorPage[OpenAI::Models::ContainerListResponse]]
+
+        def delete: (
+        String container_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[nil]
+
+        def initialize: (resource: Containers) -> void
+      end
     end
   end
 end

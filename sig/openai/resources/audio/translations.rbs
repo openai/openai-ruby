@@ -2,6 +2,7 @@ module OpenAI
   module Resources
     class Audio
       class Translations
+        def with_raw_response: -> Translations::WithRawResponse
         def create: (
           file: OpenAI::Internal::file_input,
           model: OpenAI::Models::Audio::TranslationCreateParams::model,
@@ -11,7 +12,20 @@ module OpenAI
           ?request_options: OpenAI::request_opts
         ) -> OpenAI::Models::Audio::translation_create_response
 
-        def initialize: (client: OpenAI::Client) -> void
+        def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+        class WithRawResponse
+          def create: (
+          file: OpenAI::Internal::file_input,
+          model: OpenAI::Models::Audio::TranslationCreateParams::model,
+          ?prompt: String,
+          ?response_format: OpenAI::Models::Audio::TranslationCreateParams::response_format,
+          ?temperature: Float,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::RawResponse[OpenAI::Models::Audio::translation_create_response]
+
+          def initialize: (resource: Translations) -> void
+        end
       end
     end
   end

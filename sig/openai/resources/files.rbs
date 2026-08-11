@@ -1,6 +1,7 @@
 module OpenAI
   module Resources
     class Files
+      def with_raw_response: -> Files::WithRawResponse
       def create: (
         file: OpenAI::Internal::file_input,
         purpose: OpenAI::Models::file_purpose,
@@ -31,7 +32,41 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> StringIO
 
-      def initialize: (client: OpenAI::Client) -> void
+      def initialize: (client: OpenAI::Internal::Transport::_RequestClient) -> void
+
+      class WithRawResponse
+        def create: (
+        file: OpenAI::Internal::file_input,
+        purpose: OpenAI::Models::file_purpose,
+        ?expires_after: OpenAI::FileCreateParams::ExpiresAfter,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::FileObject]
+
+        def retrieve: (
+        String file_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::FileObject]
+
+        def list: (
+        ?after: String,
+        ?limit: Integer,
+        ?order: OpenAI::Models::FileListParams::order,
+        ?purpose: String,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::Internal::CursorPage[OpenAI::FileObject]]
+
+        def delete: (
+        String file_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[OpenAI::FileDeleted]
+
+        def content: (
+        String file_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::RawResponse[StringIO]
+
+        def initialize: (resource: Files) -> void
+      end
     end
   end
 end

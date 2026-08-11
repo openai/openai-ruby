@@ -4,6 +4,17 @@ module OpenAI
   module Resources
     # Given a prompt and/or an input image, the model will generate a new image.
     class Images
+      # Returns a wrapper that exposes the raw HTTP response for each request.
+      #
+      # @return [Images::WithRawResponse]
+      def with_raw_response
+        WithRawResponse.new(
+          resource: Images.new(
+            client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+          )
+        )
+      end
+
       # Some parameter documentations has been truncated, see
       # {OpenAI::Models::ImageCreateVariationParams} for more details.
       #
@@ -288,9 +299,38 @@ module OpenAI
 
       # @api private
       #
-      # @param client [OpenAI::Client]
+      # @param client [OpenAI::Internal::Transport::RequestClient]
       def initialize(client:)
         @client = client
+      end
+
+      class WithRawResponse
+        def create_variation(params)
+          @resource.create_variation(params)
+        end
+
+        def edit(params)
+          @resource.edit(params)
+        end
+
+        def edit_stream_raw(params)
+          @resource.edit_stream_raw(params)
+        end
+
+        def generate(params)
+          @resource.generate(params)
+        end
+
+        def generate_stream_raw(params)
+          @resource.generate_stream_raw(params)
+        end
+
+        # @api private
+        #
+        # @param resource [Images]
+        def initialize(resource:)
+          @resource = resource
+        end
       end
     end
   end

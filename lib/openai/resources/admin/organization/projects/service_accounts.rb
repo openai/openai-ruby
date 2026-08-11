@@ -6,6 +6,17 @@ module OpenAI
       class Organization
         class Projects
           class ServiceAccounts
+            # Returns a wrapper that exposes the raw HTTP response for each request.
+            #
+            # @return [ServiceAccounts::WithRawResponse]
+            def with_raw_response
+              WithRawResponse.new(
+                resource: ServiceAccounts.new(
+                  client: OpenAI::Internal::Transport::RawResponseClient.new(@client)
+                )
+              )
+            end
+
             # @return [OpenAI::Resources::Admin::Organization::Projects::ServiceAccounts::APIKeys]
             attr_reader :api_keys
 
@@ -165,11 +176,48 @@ module OpenAI
 
             # @api private
             #
-            # @param client [OpenAI::Client]
+            # @param client [OpenAI::Internal::Transport::RequestClient]
             def initialize(client:)
               @client = client
               @api_keys =
                 OpenAI::Resources::Admin::Organization::Projects::ServiceAccounts::APIKeys.new(client: client)
+            end
+
+            class WithRawResponse
+              # @return [OpenAI::Resources::Admin::Organization::Projects::ServiceAccounts::APIKeys::WithRawResponse]
+              attr_reader :api_keys
+
+              def create(project_id, params)
+                @resource.create(project_id, params)
+              end
+
+              def retrieve(service_account_id, params)
+                @resource.retrieve(service_account_id, params)
+              end
+
+              def update(service_account_id, params)
+                @resource.update(service_account_id, params)
+              end
+
+              def list(project_id, params = {})
+                @resource.list(project_id, params)
+              end
+
+              def delete(service_account_id, params)
+                @resource.delete(service_account_id, params)
+              end
+
+              # @api private
+              #
+              # @param resource [ServiceAccounts]
+              def initialize(resource:)
+                @resource = resource
+
+                @api_keys =
+                  OpenAI::Resources::Admin::Organization::Projects::ServiceAccounts::APIKeys::WithRawResponse.new(
+                    resource: @resource.api_keys
+                  )
+              end
             end
           end
         end
