@@ -82,12 +82,22 @@ module OpenAI
             define_method(setter) do |value|
               target = type_fn.call
               state = OpenAI::Internal::Type::Converter.new_coerce_state(translate_names: false)
-              coerced = OpenAI::Internal::Type::Converter.coerce(target, value, state: state)
-              error = @coerced.store(name_sym, state.fetch(:error) || true)
+              coerced =
+                if value.nil? && (nilable || !required)
+                  nil
+                else
+                  OpenAI::Internal::Type::Converter.coerce(target, value, state: state)
+                end
+              error = state.fetch(:error)
+              @coerced.store(name_sym, error || true)
               stored =
                 case [target, error]
                 in [OpenAI::Internal::Type::Converter | Symbol, nil]
-                  coerced
+                  if value in ^target
+                    value
+                  else
+                    coerced
+                  end
                 else
                   value
                 end
@@ -265,7 +275,7 @@ module OpenAI
           def coerce(value, state:)
             exactness = state.fetch(:exactness)
 
-            if value.is_a?(self.class)
+            if value.is_a?(self)
               exactness[:yes] += 1
               return value
             end
@@ -283,6 +293,7 @@ module OpenAI
             viability = instance.instance_variable_get(:@coerced)
 
             # rubocop:disable Metrics/BlockLength
+            error = state.fetch(:error)
             fields.each do |name, field|
               mode, required, target = field.fetch_values(:mode, :required, :type)
               api_name, nilable, const = field.fetch_values(:api_name, :nilable, :const)
@@ -300,13 +311,14 @@ module OpenAI
               item = val.fetch(src_name)
               keys.delete(src_name)
 
-              state[:error] = nil
+              field_error = nil
               converted =
                 if item.nil? && (nilable || !required)
                   exactness[nilable ? :yes : :maybe] += 1
                   nil
                 else
-                  coerced = OpenAI::Internal::Type::Converter.coerce(target, item, state: state)
+                  coerced, field_error =
+                    OpenAI::Internal::Type::Converter.coerce_with_error(target, item, state: state)
                   case target
                   in OpenAI::Internal::Type::Converter | Symbol
                     coerced
@@ -315,11 +327,13 @@ module OpenAI
                   end
                 end
 
-              viability.store(name, state.fetch(:error) || true)
+              error ||= field_error
+              viability.store(name, field_error || true)
               data.store(name, converted)
             end
             # rubocop:enable Metrics/BlockLength
 
+            state[:error] = error
             keys.each { data.store(_1, val.fetch(_1)) }
             instance
           end

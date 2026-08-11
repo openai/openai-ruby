@@ -38,7 +38,19 @@ module OpenAI
         # @param other [Object]
         #
         # @return [Boolean]
-        def ===(other) = other.is_a?(Array) && other.all?(item_type)
+        def ===(other)
+          type = item_type
+          other.is_a?(Array) && other.all? do |item|
+            case item
+            in ^type
+              true
+            in nil
+              nilable?
+            else
+              false
+            end
+          end
+        end
 
         # @api public
         #
@@ -84,16 +96,21 @@ module OpenAI
 
           target = item_type
           exactness[:yes] += 1
-          value
-            .map do |item|
-              case [nilable?, item]
-              in [true, nil]
-                exactness[:yes] += 1
-                nil
-              else
-                OpenAI::Internal::Type::Converter.coerce(target, item, state: state)
-              end
+          error = state.fetch(:error)
+          converted = value.map do |item|
+            case [nilable?, item]
+            in [true, nil]
+              exactness[:yes] += 1
+              nil
+            else
+              coerced, item_error =
+                OpenAI::Internal::Type::Converter.coerce_with_error(target, item, state: state)
+              error ||= item_error
+              coerced
             end
+          end
+          state[:error] = error
+          converted
         end
 
         # @api private
