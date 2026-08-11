@@ -70,7 +70,6 @@ class OpenAI::Test::Resources::Admin::Organization::AuditLogsTest < OpenAI::Test
         service_account_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated | nil,
         service_account_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountDeleted | nil,
         service_account_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated | nil,
-        source: OpenAI::Models::Admin::Organization::AuditLogListResponse::Source | nil,
         user_added: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded | nil,
         user_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserDeleted | nil,
         user_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated | nil,
