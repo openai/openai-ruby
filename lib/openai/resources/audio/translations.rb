@@ -10,6 +10,10 @@ module OpenAI
         #
         # Translates audio into English.
         #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
+        #
         # @overload create(file:, model:, prompt: nil, response_format: nil, temperature: nil, request_options: {})
         #
         # @param file [Pathname, StringIO, IO, String, OpenAI::FilePart] The audio file object (not file name) translate, in one of these formats: flac,
