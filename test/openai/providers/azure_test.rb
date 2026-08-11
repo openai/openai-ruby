@@ -162,6 +162,24 @@ class OpenAI::Test::AzureProviderTest < Minitest::Test
     end
   end
 
+  def test_provider_sends_explicit_default_headers
+    url = "https://example-resource.openai.azure.com/openai/v1/models"
+    stub_request(:get, url).to_return_json(status: 200, body: {})
+
+    client = OpenAI::Client.new(
+      provider: OpenAI::Providers.azure(
+        endpoint: "https://example-resource.openai.azure.com",
+        api_key: "azure-key"
+      ),
+      default_headers: {"x-cost-center" => "finance"}
+    )
+    client.request({method: :get, path: "models"})
+
+    assert_requested(:get, url) do |request|
+      assert_equal("finance", request.headers.transform_keys(&:downcase)["x-cost-center"])
+    end
+  end
+
   def test_endpoint_normalization
     cases = {
       "https://example.openai.azure.com" => "https://example.openai.azure.com/openai/v1",
