@@ -22,6 +22,10 @@ module OpenAI
         def create(
           container_id,
           # The File object (not file name) to be uploaded.
+          #
+          # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+          # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+          # content type.
           file: nil,
           # Name of the file to create.
           file_id: nil,

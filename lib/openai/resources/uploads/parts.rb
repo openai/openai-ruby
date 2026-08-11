@@ -20,6 +20,10 @@ module OpenAI
         # order of the Parts when you
         # [complete the Upload](https://platform.openai.com/docs/api-reference/uploads/complete).
         #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
+        #
         # @overload create(upload_id, data:, request_options: {})
         #
         # @param upload_id [String] The ID of the Upload.

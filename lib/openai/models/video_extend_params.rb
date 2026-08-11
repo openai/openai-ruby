@@ -23,6 +23,10 @@ module OpenAI
       # @!attribute video
       #   Reference to the completed video to extend.
       #
+      #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #   content type.
+      #
       #   @return [Pathname, StringIO, IO, String, OpenAI::FilePart, OpenAI::Models::VideoExtendParams::Video::VideoReferenceInputParam]
       required :video, union: -> { OpenAI::VideoExtendParams::Video }
 

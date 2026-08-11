@@ -16,6 +16,10 @@ module OpenAI
         # @!attribute data
         #   The chunk of bytes for this Part.
         #
+        #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        #   content type.
+        #
         #   @return [Pathname, StringIO, IO, String, OpenAI::FilePart]
         required :data, OpenAI::Internal::Type::FileInput
 

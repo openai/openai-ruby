@@ -36,6 +36,10 @@ module OpenAI
       # Please [contact us](https://help.openai.com/) if you need to increase these
       # storage limits.
       #
+      # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      # content type.
+      #
       # @overload create(file:, purpose:, expires_after: nil, request_options: {})
       #
       # @param file [Pathname, StringIO, IO, String, OpenAI::FilePart] The File object (not file name) to be uploaded.

@@ -16,6 +16,10 @@ module OpenAI
       # @!attribute input_reference
       #   Optional reference asset upload or reference object that guides generation.
       #
+      #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #   content type.
+      #
       #   @return [Pathname, StringIO, IO, String, OpenAI::FilePart, OpenAI::Models::ImageInputReferenceParam, nil]
       optional :input_reference, union: -> { OpenAI::VideoCreateParams::InputReference }
 

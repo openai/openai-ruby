@@ -16,6 +16,10 @@ module OpenAI
         attr_accessor :upload_id
 
         # The chunk of bytes for this Part.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
         sig { returns(OpenAI::Internal::FileInput) }
         attr_accessor :data
 
@@ -29,6 +33,10 @@ module OpenAI
         def self.new(
           upload_id:,
           # The chunk of bytes for this Part.
+          #
+          # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+          # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+          # content type.
           data:,
           request_options: {}
         )

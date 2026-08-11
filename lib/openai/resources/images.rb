@@ -9,6 +9,10 @@ module OpenAI
       #
       # Creates a variation of a given image. This endpoint only supports `dall-e-2`.
       #
+      # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      # content type.
+      #
       # @overload create_variation(image:, model: nil, n: nil, response_format: nil, size: nil, user: nil, request_options: {})
       #
       # @param image [Pathname, StringIO, IO, String, OpenAI::FilePart] The image to use as the basis for the variation(s). Must be a valid PNG file, le
@@ -49,6 +53,10 @@ module OpenAI
       # Creates an edited or extended image given one or more source images and a
       # prompt. This endpoint supports GPT Image models (`gpt-image-1.5`, `gpt-image-1`,
       # `gpt-image-1-mini`, and `chatgpt-image-latest`) and `dall-e-2`.
+      #
+      # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      # content type.
       #
       # @overload edit(image:, prompt:, background: nil, input_fidelity: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, size: nil, user: nil, request_options: {})
       #
@@ -110,6 +118,10 @@ module OpenAI
       # Creates an edited or extended image given one or more source images and a
       # prompt. This endpoint supports GPT Image models (`gpt-image-1.5`, `gpt-image-1`,
       # `gpt-image-1-mini`, and `chatgpt-image-latest`) and `dall-e-2`.
+      #
+      # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      # content type.
       #
       # @overload edit_stream_raw(image:, prompt:, background: nil, input_fidelity: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, size: nil, user: nil, request_options: {})
       #

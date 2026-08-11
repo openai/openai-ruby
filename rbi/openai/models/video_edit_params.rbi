@@ -16,6 +16,10 @@ module OpenAI
       attr_accessor :prompt
 
       # Reference to the completed video to edit.
+      #
+      # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      # content type.
       sig do
         returns(
           T.any(
@@ -41,6 +45,10 @@ module OpenAI
         # Text prompt that describes how to edit the source video.
         prompt:,
         # Reference to the completed video to edit.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
         video:,
         request_options: {}
       )

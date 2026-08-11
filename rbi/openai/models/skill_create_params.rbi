@@ -12,6 +12,10 @@ module OpenAI
         end
 
       # Skill files to upload (directory upload) or a single zip file.
+      #
+      # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      # content type.
       sig { returns(T.nilable(OpenAI::SkillCreateParams::Files::Variants)) }
       attr_reader :files
 
@@ -26,6 +30,10 @@ module OpenAI
       end
       def self.new(
         # Skill files to upload (directory upload) or a single zip file.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
         files: nil,
         request_options: {}
       )

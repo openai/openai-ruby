@@ -26,6 +26,10 @@ module OpenAI
         attr_writer :default
 
         # Skill files to upload (directory upload) or a single zip file.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
         sig do
           returns(
             T.nilable(OpenAI::Skills::VersionCreateParams::Files::Variants)
@@ -53,6 +57,10 @@ module OpenAI
           # Whether to set this version as the default.
           default: nil,
           # Skill files to upload (directory upload) or a single zip file.
+          #
+          # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+          # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+          # content type.
           files: nil,
           request_options: {}
         )

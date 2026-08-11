@@ -16,6 +16,10 @@ module OpenAI
       # @!attribute video
       #   Video file used to create a character.
       #
+      #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #   content type.
+      #
       #   @return [Pathname, StringIO, IO, String, OpenAI::FilePart]
       required :video, OpenAI::Internal::Type::FileInput
 

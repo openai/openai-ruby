@@ -22,6 +22,10 @@ module OpenAI
         # Text prompt that describes the video to generate.
         prompt:,
         # Optional reference asset upload or reference object that guides generation.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
         input_reference: nil,
         # The video generation model to use (allowed values: sora-2, sora-2-pro). Defaults
         # to `sora-2`.
@@ -96,6 +100,10 @@ module OpenAI
         # Display name for this API character.
         name:,
         # Video file used to create a character.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
         video:,
         request_options: {}
       )
@@ -137,6 +145,10 @@ module OpenAI
         # Text prompt that describes how to edit the source video.
         prompt:,
         # Reference to the completed video to edit.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
         video:,
         request_options: {}
       )
@@ -162,6 +174,10 @@ module OpenAI
         # 8, 12, 16, 20).
         seconds:,
         # Reference to the completed video to extend.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
         video:,
         request_options: {}
       )
