@@ -137,7 +137,9 @@ module OpenAI
         #
         # @return [Object]
         def to_sorbet_type
-          T::Array[OpenAI::Internal::Util::SorbetRuntimeSupport.to_sorbet_type(item_type)]
+          type = OpenAI::Internal::Util::SorbetRuntimeSupport.to_sorbet_type(item_type)
+          type = T.nilable(type) if nilable?
+          T::Array[type]
         end
 
         # @api private

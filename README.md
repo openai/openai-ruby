@@ -821,6 +821,26 @@ params = OpenAI::Chat::CompletionCreateParams.new(
 openai.chat.completions.create(**params)
 ```
 
+### Structured output models
+
+The SDK includes a Tapioca DSL compiler for application-defined subclasses of
+`OpenAI::BaseModel`. When Tapioca loads your application, running
+`bundle exec tapioca dsl` generates typed readers for fields declared with
+`required`, including nested models, arrays, enums, unions, and fields declared
+with `nil?: true`.
+
+Response `parsed` fields can contain different application-defined models, so
+their generated SDK type remains broad. Cast a parsed value to the structured
+output model supplied with the request before accessing its generated readers:
+
+```ruby
+event = T.cast(content.parsed, CalendarEvent)
+puts(event.name)
+```
+
+The compiler is only loaded by Tapioca; using the SDK normally still does not
+require `sorbet-runtime`.
+
 ### Enums
 
 Since this library does not depend on `sorbet-runtime`, it cannot provide [`T::Enum`](https://sorbet.org/docs/tenum) instances. Instead, we provide "tagged symbols" instead, which is always a primitive at runtime:
