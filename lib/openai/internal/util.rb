@@ -594,7 +594,6 @@ module OpenAI
         # @return [Object]
         def encode_content(headers, body)
           # rubocop:disable Style/CaseEquality
-          # rubocop:disable Layout/LineLength
           content_type = headers["content-type"]
           case [content_type, body]
           in [OpenAI::Internal::Util::JSON_CONTENT, Hash | Array | -> { primitive?(_1) }]
@@ -614,7 +613,6 @@ module OpenAI
           else
             [headers, body]
           end
-          # rubocop:enable Layout/LineLength
           # rubocop:enable Style/CaseEquality
         end
 
