@@ -59,7 +59,10 @@ RuboCop::RakeTask.new(:"lint:rubocop") do |task|
   task.patterns = FileList[
     "./{lib,test,rbi,examples}/**/*.rb",
     "./{lib,test,rbi,examples}/**/*.rbi",
-    "./scripts/validate-rbs"
+    "./scripts/validate-rbs",
+    "./Gemfile",
+    "./Rakefile",
+    "./openai.gemspec"
   ]
   task.formatters = %w[github] if ENV.key?("CI")
 
@@ -159,7 +162,7 @@ multitask(:"build:docs") do
 end
 
 desc("Build ruby gem")
-multitask(:"build:gem" => pkg) do
+multitask("build:gem": pkg) do
   # optimizing for grepping through the gem bundle: many tools honour `.ignore` files, including VSCode
   #
   # both `rbi` and `sig` directories are navigable by their respective tool chains and therefore can be ignored by tools such as `rg`
