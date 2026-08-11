@@ -6,6 +6,32 @@ require "rbconfig"
 require_relative "test_helper"
 
 class OpenAI::Test::LoadOrderTest < Minitest::Test
+  def test_skips_auto_require_during_tapioca_gem
+    script = <<~RUBY
+      module Tapioca
+      end
+
+      $PROGRAM_NAME = "tapioca"
+      ARGV.replace(["gem"])
+
+      require "openai"
+
+      raise "OpenAI::Client was autorequired" if defined?(OpenAI::Client)
+    RUBY
+
+    _, stderr, status =
+      Open3.capture3(
+        {"RUBYOPT" => nil},
+        RbConfig.ruby,
+        "-I",
+        File.expand_path("../../lib", __dir__),
+        "-e",
+        script
+      )
+
+    assert_predicate(status, :success?, stderr)
+  end
+
   def test_bundler_autorequires_openai_during_tapioca_dsl
     script = <<~RUBY
       module Tapioca
