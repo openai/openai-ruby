@@ -21,6 +21,10 @@ module OpenAI
       attr_accessor :seconds
 
       # Reference to the completed video to extend.
+      #
+      # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      # content type.
       sig do
         returns(
           T.any(
@@ -50,6 +54,10 @@ module OpenAI
         # 8, 12, 16, 20).
         seconds:,
         # Reference to the completed video to extend.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
         video:,
         request_options: {}
       )

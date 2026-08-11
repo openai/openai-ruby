@@ -8,6 +8,10 @@ module OpenAI
       #
       # Create a new video generation job from a prompt and optional reference assets.
       #
+      # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      # content type.
+      #
       # @overload create(prompt:, input_reference: nil, model: nil, seconds: nil, size: nil, request_options: {})
       #
       # @param prompt [String] Text prompt that describes the video to generate.
@@ -114,6 +118,10 @@ module OpenAI
 
       # Create a character from an uploaded video.
       #
+      # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      # content type.
+      #
       # @overload create_character(name:, video:, request_options: {})
       #
       # @param name [String] Display name for this API character.
@@ -170,6 +178,10 @@ module OpenAI
       # Create a new video generation job by editing a source video or existing
       # generated video.
       #
+      # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      # content type.
+      #
       # @overload edit(prompt:, video:, request_options: {})
       #
       # @param prompt [String] Text prompt that describes how to edit the source video.
@@ -198,6 +210,10 @@ module OpenAI
       # {OpenAI::Models::VideoExtendParams} for more details.
       #
       # Create an extension of a completed video.
+      #
+      # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      # content type.
       #
       # @overload extend_(prompt:, seconds:, video:, request_options: {})
       #

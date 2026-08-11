@@ -27,6 +27,10 @@ module OpenAI
           # The ID of the Upload.
           upload_id,
           # The chunk of bytes for this Part.
+          #
+          # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+          # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+          # content type.
           data:,
           request_options: {}
         )

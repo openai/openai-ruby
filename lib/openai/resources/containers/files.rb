@@ -15,6 +15,10 @@ module OpenAI
         # You can send either a multipart/form-data request with the raw file content, or
         # a JSON request with a file ID.
         #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
+        #
         # @overload create(container_id, file: nil, file_id: nil, request_options: {})
         #
         # @param container_id [String]

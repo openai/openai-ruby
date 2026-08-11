@@ -20,6 +20,10 @@ module OpenAI
       #
       # For `dall-e-2`, you can only provide one image, and it should be a square `png`
       # file less than 4MB.
+      #
+      # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      # content type.
       sig { returns(OpenAI::ImageEditParams::Image::Variants) }
       attr_accessor :image
 
@@ -56,6 +60,10 @@ module OpenAI
       # indicate where `image` should be edited. If there are multiple images provided,
       # the mask will be applied on the first image. Must be a valid PNG file, less than
       # 4MB, and have the same dimensions as `image`.
+      #
+      # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      # content type.
       sig { returns(T.nilable(OpenAI::Internal::FileInput)) }
       attr_reader :mask
 
@@ -170,6 +178,10 @@ module OpenAI
         #
         # For `dall-e-2`, you can only provide one image, and it should be a square `png`
         # file less than 4MB.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
         image:,
         # A text description of the desired image(s). The maximum length is 1000
         # characters for `dall-e-2`, and 32000 characters for the GPT image models.
@@ -196,6 +208,10 @@ module OpenAI
         # indicate where `image` should be edited. If there are multiple images provided,
         # the mask will be applied on the first image. Must be a valid PNG file, less than
         # 4MB, and have the same dimensions as `image`.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
         mask: nil,
         # The model to use for image generation. One of `dall-e-2` or a GPT image model
         # (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
