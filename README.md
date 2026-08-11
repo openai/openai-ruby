@@ -626,16 +626,13 @@ Error codes are as follows:
 ### Request logging
 
 Request logging is disabled by default. Enable it with a standard Ruby logger
-by configuring the HTTP client:
+when creating the client:
 
 ```ruby
-http_client = OpenAI::NetHTTPClient.new(
-  logger: Rails.logger,
-  log_level: :info
-)
 client = OpenAI::Client.new(
   api_key: ENV.fetch("OPENAI_API_KEY"),
-  http_client: http_client
+  logger: Rails.logger,
+  log_level: :info
 )
 ```
 
@@ -645,9 +642,8 @@ logging by default. When logging is enabled without a custom logger, the SDK
 uses a standard-library `Logger` that writes to stderr. Use `log_level: :off`
 when you only need retry notifications.
 
-For the default HTTP client, you can instead set `OPENAI_LOG=info` or
-`OPENAI_LOG=debug`. An explicitly configured HTTP client owns its configuration
-and is not overridden by the environment variable.
+You can instead set `OPENAI_LOG=info` or `OPENAI_LOG=debug`. An explicit
+`log_level:` takes precedence over the environment variable.
 
 For example, to use the stderr logger for one process:
 
@@ -751,12 +747,12 @@ openai.chat.completions.create(
 )
 ```
 
-To observe retries as they happen, supply an `on_retry` callback. The callback
-runs immediately before the retry delay and receives an immutable
-`OpenAI::RetryEvent`:
+To observe retries as they happen, supply an `on_retry` callback when creating
+the client. The callback runs immediately before the retry delay and receives
+an immutable `OpenAI::RetryEvent`:
 
 ```ruby
-http_client = OpenAI::NetHTTPClient.new(
+openai = OpenAI::Client.new(
   log_level: :off,
   on_retry: lambda do |event|
     Rails.logger.warn(
@@ -765,7 +761,6 @@ http_client = OpenAI::NetHTTPClient.new(
     )
   end
 )
-openai = OpenAI::Client.new(http_client: http_client)
 ```
 
 For response-triggered retries, `event.response` contains the same immutable

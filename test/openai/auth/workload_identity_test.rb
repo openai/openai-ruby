@@ -350,7 +350,6 @@ class WorkloadIdentityTest < Minitest::Test
       provider: provider
     )
     log_output = StringIO.new
-    http_client = OpenAI::NetHTTPClient.new(logger: Logger.new(log_output))
 
     client = OpenAI::Client.new(
       base_url: "http://localhost",
@@ -358,7 +357,7 @@ class WorkloadIdentityTest < Minitest::Test
       workload_identity: config,
       organization: "org-123",
       project: "proj-456",
-      http_client: http_client
+      logger: Logger.new(log_output)
     )
 
     response = client.chat.completions.create(

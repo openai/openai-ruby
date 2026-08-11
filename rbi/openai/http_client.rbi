@@ -59,25 +59,6 @@ module OpenAI
   end
 
   class HTTPClient
-    sig { returns(T.untyped) }
-    attr_reader :logger
-
-    sig { returns(Symbol) }
-    attr_reader :log_level
-
-    sig { returns(T.nilable(T.proc.params(event: OpenAI::RetryEvent).void)) }
-    attr_reader :on_retry
-
-    sig do
-      params(
-        logger: T.untyped,
-        log_level: T.any(Symbol, String),
-        on_retry: T.nilable(T.proc.params(event: OpenAI::RetryEvent).void)
-      ).returns(T.attached_class)
-    end
-    def self.new(logger: nil, log_level: :off, on_retry: nil)
-    end
-
     class Request
       sig { returns(Symbol) }
       attr_reader :method

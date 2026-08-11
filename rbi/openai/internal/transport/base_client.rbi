@@ -151,6 +151,15 @@ module OpenAI
         sig { returns(T.nilable(String)) }
         attr_reader :idempotency_header
 
+        sig { returns(T.untyped) }
+        attr_reader :logger
+
+        sig { returns(Symbol) }
+        attr_reader :log_level
+
+        sig { returns(T.nilable(T.proc.params(event: OpenAI::RetryEvent).void)) }
+        attr_reader :on_retry
+
         # @api private
         sig { returns(T.untyped) }
         attr_reader :requester
@@ -175,7 +184,10 @@ module OpenAI
                 )
               ],
             idempotency_header: T.nilable(String),
-            http_client: T.untyped
+            http_client: T.untyped,
+            logger: T.untyped,
+            log_level: T.nilable(T.any(Symbol, String)),
+            on_retry: T.nilable(T.proc.params(event: OpenAI::RetryEvent).void)
           ).returns(T.attached_class)
         end
         def self.new(
@@ -186,7 +198,10 @@ module OpenAI
           max_retry_delay: 0.0,
           headers: {},
           idempotency_header: nil,
-          http_client: nil
+          http_client: nil,
+          logger: nil,
+          log_level: nil,
+          on_retry: nil
         )
         end
 

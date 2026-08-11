@@ -283,9 +283,15 @@ module OpenAI
           uri = sanitized_uri(url)
           path = uri.path.to_s.empty? ? "/" : uri.path
           uri.query.nil? ? path : "#{path}?#{uri.query}"
+        rescue ArgumentError, URI::Error
+          "[URL OMITTED]"
         end
 
-        def safe_url(url) = sanitized_uri(url).to_s
+        def safe_url(url)
+          sanitized_uri(url).to_s
+        rescue ArgumentError, URI::Error
+          "[URL OMITTED]"
+        end
 
         def safe_field(value)
           return "none" if value.nil?
@@ -348,13 +354,17 @@ module OpenAI
           uri.password = nil
           return uri if uri.query.nil?
 
-          query = URI.decode_www_form(uri.query).map do |name, value|
+          uri.query = sanitized_query(uri.query)
+          uri
+        end
+
+        private def sanitized_query(query)
+          pairs = URI.decode_www_form(query).map do |name, value|
             [name, SENSITIVE_QUERY_KEY.match?(name) ? "[REDACTED]" : value]
           end
-          uri.query = URI.encode_www_form(query)
-          uri
+          URI.encode_www_form(pairs)
         rescue ArgumentError
-          uri.tap { _1.query = nil }
+          nil
         end
 
         private def sanitized_header_url(value)

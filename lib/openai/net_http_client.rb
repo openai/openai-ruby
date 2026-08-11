@@ -281,19 +281,10 @@ module OpenAI
     end
 
     # @param size [Integer]
-    # @param logger [#debug, #info, #warn, #error, nil]
-    # @param log_level [Symbol, String]
-    # @param on_retry [Proc, nil]
     # @param connection_configurator [#call, nil] A block that configures every
     #   SDK-created Net::HTTP connection before it is pooled and started.
-    def initialize(
-      size: self.class::DEFAULT_MAX_CONNECTIONS,
-      logger: nil,
-      log_level: logger.nil? ? :off : :info,
-      on_retry: nil,
-      &connection_configurator
-    )
-      super(logger: logger, log_level: log_level, on_retry: on_retry)
+    def initialize(size: self.class::DEFAULT_MAX_CONNECTIONS, &connection_configurator)
+      super()
       @mutex = Mutex.new
       @size = size
       @cert_store = OpenSSL::X509::Store.new.tap(&:set_default_paths)

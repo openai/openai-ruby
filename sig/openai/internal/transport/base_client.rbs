@@ -75,6 +75,12 @@ module OpenAI
 
         attr_reader idempotency_header: String?
 
+        attr_reader logger: OpenAI::_Logger?
+
+        attr_reader log_level: Symbol
+
+        attr_reader on_retry: (^(OpenAI::RetryEvent) -> void)?
+
         # @api private
         attr_reader requester: OpenAI::_HTTPClient
 
@@ -88,7 +94,10 @@ module OpenAI
           | Integer
           | ::Array[(String | Integer)?])?],
           ?idempotency_header: String?,
-          ?http_client: OpenAI::_HTTPClient?
+          ?http_client: OpenAI::_HTTPClient?,
+          ?logger: OpenAI::_Logger?,
+          ?log_level: (Symbol | String)?,
+          ?on_retry: (^(OpenAI::RetryEvent) -> void)?
         ) -> void
 
         private def auth_headers: -> ::Hash[String, String]

@@ -26,8 +26,8 @@ class LoggingTest < Minitest::Test
   end
 
   class StubHTTPClient < OpenAI::HTTPClient
-    def initialize(logger: nil, log_level: logger.nil? ? :off : :info, on_retry: nil, &execute)
-      super(logger: logger, log_level: log_level, on_retry: on_retry)
+    def initialize(&execute)
+      super()
       @execute = execute
     end
 
@@ -70,16 +70,19 @@ class LoggingTest < Minitest::Test
   def diagnostic_client(
     http_client: StubHTTPClient.new { raise "unexpected HTTP request" },
     logger: nil,
-    log_level: :info,
+    log_level: nil,
     on_retry: nil,
     **options
   )
-    transport = StubHTTPClient.new(
+    transport = StubHTTPClient.new { |request| http_client.execute(request) }
+    client_options = {
+      api_key: "test-key",
+      **options,
+      http_client: transport,
       logger: logger,
       log_level: log_level,
       on_retry: on_retry
-    ) { |request| http_client.execute(request) }
-    client_options = {api_key: "test-key", **options, http_client: transport}
+    }
     OpenAI::Client.new(**client_options)
   end
 
@@ -87,24 +90,24 @@ class LoggingTest < Minitest::Test
     client = OpenAI::Client.new(api_key: "test-key")
 
     assert_instance_of(OpenAI::NetHTTPClient, client.requester)
-    assert_equal(:off, client.requester.log_level)
-    assert_nil(client.requester.logger)
+    assert_equal(:off, client.log_level)
+    assert_nil(client.logger)
   end
 
-  def test_http_client_accepts_a_structural_logger_and_log_level
+  def test_client_accepts_a_structural_logger_and_log_level
     logger = CapturingLogger.new
     client = diagnostic_client(api_key: "test-key", logger: logger, log_level: "info")
 
-    assert_same(logger, client.requester.logger)
-    assert_equal(:info, client.requester.log_level)
+    assert_same(logger, client.logger)
+    assert_equal(:info, client.log_level)
   end
 
-  def test_http_client_enables_info_logging_by_default
+  def test_client_enables_info_logging_by_default
     logger = CapturingLogger.new
     client = diagnostic_client(api_key: "test-key", logger: logger)
 
-    assert_same(logger, client.requester.logger)
-    assert_equal(:info, client.requester.log_level)
+    assert_same(logger, client.logger)
+    assert_equal(:info, client.log_level)
   end
 
   def test_openai_log_enables_the_default_logger
@@ -113,8 +116,18 @@ class LoggingTest < Minitest::Test
     client = OpenAI::Client.new(api_key: "test-key")
 
     assert_instance_of(OpenAI::NetHTTPClient, client.requester)
-    assert_instance_of(Logger, client.requester.logger)
-    assert_equal(:debug, client.requester.log_level)
+    assert_instance_of(Logger, client.logger)
+    assert_equal(:debug, client.log_level)
+  end
+
+  def test_openai_log_applies_with_a_custom_transport
+    ENV["OPENAI_LOG"] = "debug"
+
+    client = diagnostic_client
+
+    assert_instance_of(StubHTTPClient, client.requester)
+    assert_instance_of(Logger, client.logger)
+    assert_equal(:debug, client.log_level)
   end
 
   def test_explicit_log_level_wins_over_openai_log
@@ -122,8 +135,8 @@ class LoggingTest < Minitest::Test
 
     client = diagnostic_client(api_key: "test-key", log_level: :off)
 
-    assert_nil(client.requester.logger)
-    assert_equal(:off, client.requester.log_level)
+    assert_nil(client.logger)
+    assert_equal(:off, client.log_level)
   end
 
   def test_standard_logger_can_apply_a_stricter_severity_filter
@@ -155,9 +168,9 @@ class LoggingTest < Minitest::Test
     refute_includes(output.string, "request complete")
   end
 
-  def test_http_client_rejects_an_invalid_log_level
+  def test_client_rejects_an_invalid_log_level
     error = assert_raises(ArgumentError) do
-      StubHTTPClient.new(log_level: :verbose) { nil }
+      OpenAI::Client.new(api_key: "test-key", log_level: :verbose)
     end
 
     assert_equal(
@@ -166,17 +179,17 @@ class LoggingTest < Minitest::Test
     )
   end
 
-  def test_http_client_rejects_an_invalid_logger
+  def test_client_rejects_an_invalid_logger
     error = assert_raises(ArgumentError) do
-      StubHTTPClient.new(logger: Object.new, log_level: :info) { nil }
+      OpenAI::Client.new(api_key: "test-key", logger: Object.new, log_level: :info)
     end
 
     assert_equal("`logger` must respond to `debug`, `info`, `warn`, and `error`", error.message)
   end
 
-  def test_http_client_rejects_an_invalid_retry_callback
+  def test_client_rejects_an_invalid_retry_callback
     error = assert_raises(ArgumentError) do
-      StubHTTPClient.new(on_retry: Object.new) { nil }
+      OpenAI::Client.new(api_key: "test-key", on_retry: Object.new)
     end
 
     assert_equal("`on_retry` must respond to `call`", error.message)
@@ -323,6 +336,16 @@ class LoggingTest < Minitest::Test
     refute_includes(headers, "callback-secret")
     refute_includes(headers, "aws-secret")
     refute_includes(headers, "user:password@")
+  end
+
+  def test_url_sanitization_omits_a_uri_that_cannot_be_copied
+    uri = URI("https://user:password@example.com/probe?token=query-secret")
+    uri.define_singleton_method(:dup) { raise ArgumentError, "cannot duplicate" }
+
+    assert_equal("[URL OMITTED]", OpenAI::Internal::Logging.safe_url(uri))
+    assert_equal("[URL OMITTED]", OpenAI::Internal::Logging.safe_path(uri))
+    assert_includes(uri.to_s, "user:password@")
+    assert_includes(uri.to_s, "query-secret")
   end
 
   def test_debug_logging_omits_large_opaque_and_oversized_json_values

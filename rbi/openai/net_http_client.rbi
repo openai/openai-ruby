@@ -52,17 +52,11 @@ module OpenAI
     sig do
       params(
         size: Integer,
-        logger: T.untyped,
-        log_level: T.any(Symbol, String),
-        on_retry: T.nilable(T.proc.params(event: OpenAI::RetryEvent).void),
         connection_configurator: T.nilable(T.proc.params(http: Net::HTTP).void)
       ).returns(T.attached_class)
     end
     def self.new(
       size: OpenAI::NetHTTPClient::DEFAULT_MAX_CONNECTIONS,
-      logger: nil,
-      log_level: :off,
-      on_retry: nil,
       &connection_configurator
     )
     end

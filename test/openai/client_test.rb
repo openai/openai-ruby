@@ -194,8 +194,13 @@ class OpenAITest < Minitest::Test
     refute_includes(response.to_json, "last_response")
     refute_includes(response.to_yaml, "_request_id")
     refute_includes(response.to_yaml, "last_response")
-    refute_includes(YAML.dump(response), "@_request_id")
-    refute_includes(YAML.dump(response), "@last_response")
+    serialized = YAML.dump(response)
+    refute_includes(serialized, "@_request_id")
+    refute_includes(serialized, "@last_response")
+
+    yaml_copy = YAML.unsafe_load(serialized)
+    assert_equal(response, yaml_copy)
+    assert_nil(yaml_copy.last_response)
 
     [response.dup, response.clone].each do |copy|
       assert_equal(response, copy)

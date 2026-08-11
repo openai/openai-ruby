@@ -94,33 +94,8 @@ module OpenAI
   #
   # Implement {#execute} to replace the SDK's HTTP transport. Subclassing this
   # class is optional; any object that implements the same method is accepted.
-  # Subclass this class to use its diagnostics configuration. Most applications
-  # should use {OpenAI::NetHTTPClient}.
+  # Most applications should use {OpenAI::NetHTTPClient}.
   class HTTPClient
-    # @return [#debug, #info, #warn, #error, nil]
-    attr_reader :logger
-
-    # @return [Symbol]
-    attr_reader :log_level
-
-    # @return [Proc, nil]
-    attr_reader :on_retry
-
-    # @param logger [#debug, #info, #warn, #error, nil]
-    # @param log_level [Symbol, String]
-    # @param on_retry [Proc, nil]
-    def initialize(logger: nil, log_level: logger.nil? ? :off : :info, on_retry: nil)
-      unless on_retry.nil? || on_retry.respond_to?(:call)
-        raise ArgumentError, "`on_retry` must respond to `call`"
-      end
-
-      @log_level = OpenAI::Internal::Logging.normalize_level(log_level)
-      OpenAI::Internal::Logging.validate_logger!(logger)
-      @logger = logger
-      @logger ||= OpenAI::Internal::Logging.default_logger unless @log_level == :off
-      @on_retry = on_retry
-    end
-
     # An HTTP request prepared by the SDK.
     class Request
       # @return [Symbol]

@@ -40,16 +40,6 @@ module OpenAI
   end
 
   class HTTPClient
-    attr_reader logger: OpenAI::_Logger?
-    attr_reader log_level: Symbol
-    attr_reader on_retry: (^(OpenAI::RetryEvent) -> void)?
-
-    def initialize: (
-      ?logger: OpenAI::_Logger?,
-      ?log_level: Symbol | String,
-      ?on_retry: (^(OpenAI::RetryEvent) -> void)?
-    ) -> void
-
     class Request
       attr_reader method: Symbol
       attr_reader url: URI::Generic

@@ -219,6 +219,15 @@ module OpenAI
         # @return [String, nil]
         attr_reader :idempotency_header
 
+        # @return [#debug, #info, #warn, #error, nil]
+        attr_reader :logger
+
+        # @return [Symbol]
+        attr_reader :log_level
+
+        # @return [Proc, nil]
+        attr_reader :on_retry
+
         # @api private
         # @return [#execute]
         attr_reader :requester
@@ -233,6 +242,9 @@ module OpenAI
         # @param headers [Hash{String=>String, Integer, Array<String, Integer, nil>, nil}]
         # @param idempotency_header [String, nil]
         # @param http_client [#execute, nil]
+        # @param logger [#debug, #info, #warn, #error, nil]
+        # @param log_level [Symbol, String, nil]
+        # @param on_retry [Proc, nil]
         def initialize(
           base_url:,
           timeout: 0.0,
@@ -241,18 +253,27 @@ module OpenAI
           max_retry_delay: 0.0,
           headers: {},
           idempotency_header: nil,
-          http_client: nil
+          http_client: nil,
+          logger: nil,
+          log_level: nil,
+          on_retry: nil
         )
           unless http_client.nil? || http_client.respond_to?(:execute)
             raise ArgumentError, "`http_client` must respond to `execute`"
           end
+          unless on_retry.nil? || on_retry.respond_to?(:call)
+            raise ArgumentError, "`on_retry` must respond to `call`"
+          end
 
-          default_log_level = ENV.fetch("OPENAI_LOG", :off)
-          @requester = http_client || OpenAI::NetHTTPClient.new(log_level: default_log_level)
-          instrumentation = @requester if @requester.is_a?(OpenAI::HTTPClient)
-          @logger = instrumentation&.logger
-          @log_level = instrumentation&.log_level || :off
-          @on_retry = instrumentation&.on_retry
+          if log_level.nil?
+            log_level = ENV.fetch("OPENAI_LOG", logger.nil? ? :off : :info)
+          end
+          @log_level = OpenAI::Internal::Logging.normalize_level(log_level)
+          OpenAI::Internal::Logging.validate_logger!(logger)
+          @logger = logger
+          @logger ||= OpenAI::Internal::Logging.default_logger unless @log_level == :off
+          @on_retry = on_retry
+          @requester = http_client || OpenAI::NetHTTPClient.new
           @headers = OpenAI::Internal::Util.normalized_headers(
             self.class::PLATFORM_HEADERS,
             {
