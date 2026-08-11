@@ -143,10 +143,15 @@ module OpenAI
 
       return pool.with(timeout: remaining_timeout(deadline), &blk) if deadline
 
+      checked_out = false
       begin
-        pool.with(&blk)
+        pool.with do |connection|
+          checked_out = true
+          blk.call(connection)
+        end
       rescue ConnectionPool::TimeoutError
-        retry
+        retry unless checked_out
+        raise
       end
     end
 
