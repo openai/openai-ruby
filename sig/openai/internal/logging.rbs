@@ -1,0 +1,77 @@
+module OpenAI
+  module Internal
+    module Logging
+      LOG_LEVELS: ::Hash[Symbol, Integer]
+      REDACTED_HEADERS: ::Array[String]
+      MAX_BODY_BYTES: Integer
+      MAX_ARRAY_ITEMS: Integer
+      OPAQUE_STRING_BYTES: Integer
+      SENSITIVE_BODY_KEY: Regexp
+      SENSITIVE_QUERY_KEY: Regexp
+
+      class Context
+        def initialize: (
+          logger: OpenAI::_Logger?,
+          log_level: Symbol,
+          method: Symbol,
+          url: URI::Generic
+        ) -> void
+        def request_started: (
+          OpenAI::HTTPClient::Request request,
+          redirect_count: Integer
+        ) -> void
+        def response_received: (
+          OpenAI::HTTPClient::Response response
+        ) -> OpenAI::HTTPClient::Response
+        def attempt_failed: (OpenAI::Errors::APIConnectionError error) -> void
+        def retry_scheduled: (
+          Integer | OpenAI::Errors::APIConnectionError cause,
+          delay: Float
+        ) -> void
+        def completed: (OpenAI::HTTPClient::Response response) -> void
+        def request_failed: (StandardError error) -> void
+        def response_body: (
+          String body,
+          headers: ::Hash[String, String],
+          complete: bool,
+          total_bytes: Integer,
+          attempt: Integer
+        ) -> void
+      end
+
+      class ObservedBody
+        include Enumerable[String]
+
+        def initialize: (
+          body: Enumerable[String],
+          headers: ::Hash[String, String],
+          context: OpenAI::Internal::Logging::Context,
+          attempt: Integer
+        ) -> void
+
+        def each: { (String) -> void } -> void
+        def close: -> void
+      end
+
+      def self.normalize_level: (Symbol | String value) -> Symbol
+      def self.validate_logger!: (OpenAI::_Logger? logger) -> void
+      def self.default_logger: -> OpenAI::_Logger
+      def self.enabled?: (Symbol configured_level, Symbol event_level) -> bool
+      def self.safe_path: (URI::Generic url) -> String
+      def self.safe_url: (URI::Generic url) -> String
+      def self.safe_field: (top? value) -> String
+      def self.format_headers: (::Hash[String, String] headers) -> String
+      def self.format_body: (
+        top body,
+        headers: ::Hash[String, String]
+      ) -> String
+      def self.capture_response_body?: (::Hash[String, String] headers) -> bool
+      def self.format_observed_body: (
+        String body,
+        headers: ::Hash[String, String],
+        complete: bool,
+        total_bytes: Integer
+      ) -> String
+    end
+  end
+end

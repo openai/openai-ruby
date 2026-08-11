@@ -155,6 +155,12 @@ module OpenAI
         sig { returns(T.untyped) }
         attr_reader :requester
 
+        sig { returns(T.untyped) }
+        attr_reader :logger
+
+        sig { returns(Symbol) }
+        attr_reader :log_level
+
         # @api private
         sig do
           params(
@@ -175,7 +181,9 @@ module OpenAI
                 )
               ],
             idempotency_header: T.nilable(String),
-            http_client: T.untyped
+            http_client: T.untyped,
+            logger: T.untyped,
+            log_level: T.any(Symbol, String)
           ).returns(T.attached_class)
         end
         def self.new(
@@ -186,7 +194,9 @@ module OpenAI
           max_retry_delay: 0.0,
           headers: {},
           idempotency_header: nil,
-          http_client: nil
+          http_client: nil,
+          logger: nil,
+          log_level: :off
         )
         end
 
@@ -274,14 +284,16 @@ module OpenAI
             request: OpenAI::Internal::Transport::BaseClient::RequestInput,
             redirect_count: Integer,
             retry_count: Integer,
-            send_retry_header: T::Boolean
+            send_retry_header: T::Boolean,
+            log_context: OpenAI::Internal::Logging::Context
           ).returns(OpenAI::HTTPClient::Response)
         end
         def send_request(
           request,
           redirect_count:,
           retry_count:,
-          send_retry_header:
+          send_retry_header:,
+          log_context:
         )
         end
 
@@ -358,6 +370,43 @@ module OpenAI
           security: { bearer_auth: true, admin_api_key_auth: true },
           options: {}
         )
+        end
+
+        # @api private
+        sig do
+          params(
+            req: OpenAI::Internal::Transport::BaseClient::RequestComponents
+          ).returns(
+            [
+              URI::Generic,
+              OpenAI::HTTPClient::Response,
+              OpenAI::Internal::Logging::Context
+            ]
+          )
+        end
+        private def perform_request(req)
+        end
+
+        # @api private
+        sig do
+          params(
+            log_context: OpenAI::Internal::Logging::Context,
+            response: OpenAI::HTTPClient::Response,
+            blk: T.proc.returns(T.anything)
+          ).returns(T.anything)
+        end
+        private def finish_request(log_context, response, &blk)
+        end
+
+        # @api private
+        sig do
+          params(
+            req: OpenAI::Internal::Transport::BaseClient::RequestComponents,
+            url: URI::Generic,
+            response: OpenAI::HTTPClient::Response
+          ).returns(T.anything)
+        end
+        private def parse_response(req, url:, response:)
         end
 
         # @api private

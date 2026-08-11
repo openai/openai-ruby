@@ -1,0 +1,8 @@
+module OpenAI
+  interface _Logger
+    def debug: (String message) -> untyped
+    def info: (String message) -> untyped
+    def warn: (String message) -> untyped
+    def error: (String message) -> untyped
+  end
+end

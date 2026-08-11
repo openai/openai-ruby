@@ -221,6 +221,12 @@ module OpenAI
         # @return [#execute]
         attr_reader :requester
 
+        # @return [#debug, #info, #warn, #error, nil]
+        attr_reader :logger
+
+        # @return [Symbol]
+        attr_reader :log_level
+
         # @api private
         #
         # @param base_url [String]
@@ -231,6 +237,8 @@ module OpenAI
         # @param headers [Hash{String=>String, Integer, Array<String, Integer, nil>, nil}]
         # @param idempotency_header [String, nil]
         # @param http_client [#execute, nil]
+        # @param logger [#debug, #info, #warn, #error, nil]
+        # @param log_level [Symbol, String]
         def initialize(
           base_url:,
           timeout: 0.0,
@@ -239,13 +247,19 @@ module OpenAI
           max_retry_delay: 0.0,
           headers: {},
           idempotency_header: nil,
-          http_client: nil
+          http_client: nil,
+          logger: nil,
+          log_level: :off
         )
           unless http_client.nil? || http_client.respond_to?(:execute)
             raise ArgumentError, "`http_client` must respond to `execute`"
           end
 
           @requester = http_client || OpenAI::NetHTTPClient.new
+          @log_level = OpenAI::Internal::Logging.normalize_level(log_level)
+          OpenAI::Internal::Logging.validate_logger!(logger)
+          @logger = logger
+          @logger ||= OpenAI::Internal::Logging.default_logger unless @log_level == :off
           @headers = OpenAI::Internal::Util.normalized_headers(
             self.class::PLATFORM_HEADERS,
             {
@@ -462,10 +476,11 @@ module OpenAI
         # @param retry_count [Integer]
         #
         # @param send_retry_header [Boolean]
+        # @param log_context [OpenAI::Internal::Logging::Context]
         #
         # @raise [OpenAI::Errors::APIError]
         # @return [OpenAI::HTTPClient::Response]
-        def send_request(request, redirect_count:, retry_count:, send_retry_header:)
+        def send_request(request, redirect_count:, retry_count:, send_retry_header:, log_context:)
           if send_retry_header
             request = request.merge(
               headers: request.fetch(:headers).merge("x-stainless-retry-count" => retry_count.to_s)
@@ -490,6 +505,7 @@ module OpenAI
             body: prepared_request[:body],
             timeout: timeout
           )
+          log_context.request_started(input, redirect_count: redirect_count)
 
           begin
             http_response = @requester.execute(input)
@@ -498,12 +514,14 @@ module OpenAI
             end
 
             status = http_response.status
-            stream = http_response.body
             headers = http_response.headers
+            http_response = log_context.response_received(http_response)
+            stream = http_response.body
           rescue OpenAI::Errors::APIConnectionError => e
             status = e
             stream = nil
             headers = {}
+            log_context.attempt_failed(e)
           end
 
           terminal_status =
@@ -546,7 +564,8 @@ module OpenAI
               redirected_request,
               redirect_count: redirect_count + 1,
               retry_count: retry_count,
-              send_retry_header: send_retry_header
+              send_retry_header: send_retry_header,
+              log_context: log_context
             )
           in OpenAI::Errors::APIConnectionError if retry_count >= max_retries
             raise status
@@ -554,13 +573,15 @@ module OpenAI
             self.class.reap_connection!(status, stream: stream)
 
             delay = retry_delay(headers, retry_count: retry_count)
+            log_context.retry_scheduled(status, delay: delay)
             sleep(delay)
 
             send_request(
               request,
               redirect_count: redirect_count,
               retry_count: retry_count + 1,
-              send_retry_header: send_retry_header
+              send_retry_header: send_retry_header,
+              log_context: log_context
             )
           end
         end
@@ -607,13 +628,28 @@ module OpenAI
         # @raise [OpenAI::Errors::APIError]
         # @return [Object]
         def request(req)
+          url, response, log_context = perform_request(req)
+          finish_request(log_context, response) do
+            parse_response(req, url: url, response: response)
+          end
+        end
+
+        # @api private
+        #
+        # @param req [Hash{Symbol=>Object}]
+        # @return [Array(URI::Generic, OpenAI::HTTPClient::Response, OpenAI::Internal::Logging::Context)]
+        private def perform_request(req)
           self.class.validate!(req)
-          model = req.fetch(:model) { OpenAI::Internal::Type::Unknown }
           opts = req[:options].to_h
-          unwrap = req[:unwrap]
           OpenAI::RequestOptions.validate!(opts)
           request = build_request(req.except(:options), opts)
           url = request.fetch(:url)
+          log_context = OpenAI::Internal::Logging::Context.new(
+            logger: @logger,
+            log_level: @log_level,
+            method: request.fetch(:method),
+            url: url
+          )
 
           # Don't send the current retry count in the headers if the caller modified the header defaults.
           send_retry_header = request.fetch(:headers)["x-stainless-retry-count"] == "0"
@@ -621,8 +657,36 @@ module OpenAI
             request,
             redirect_count: 0,
             retry_count: 0,
-            send_retry_header: send_retry_header
+            send_retry_header: send_retry_header,
+            log_context: log_context
           )
+          [url, response, log_context]
+        rescue StandardError => e
+          log_context&.request_failed(e)
+          raise
+        end
+
+        # @api private
+        #
+        # @param log_context [OpenAI::Internal::Logging::Context]
+        # @param response [OpenAI::HTTPClient::Response]
+        # @return [Object]
+        private def finish_request(log_context, response)
+          yield.tap { log_context.completed(response) }
+        rescue StandardError => e
+          log_context.request_failed(e)
+          raise
+        end
+
+        # @api private
+        #
+        # @param req [Hash{Symbol=>Object}]
+        # @param url [URI::Generic]
+        # @param response [OpenAI::HTTPClient::Response]
+        # @return [Object]
+        private def parse_response(req, url:, response:)
+          model = req.fetch(:model) { OpenAI::Internal::Type::Unknown }
+          unwrap = req[:unwrap]
           response_metadata = response.metadata
 
           decoded = OpenAI::Internal::Util.decode_content(response.headers, stream: response.body)
