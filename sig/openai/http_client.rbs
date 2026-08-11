@@ -11,14 +11,14 @@ module OpenAI
       attr_reader url: URI::Generic
       attr_reader headers: ::Hash[String, String]
       attr_reader body: top
-      attr_reader timeout: Float
+      attr_reader timeout: Float?
 
       def initialize: (
         method: Symbol,
         url: URI::Generic,
         headers: ::Hash[String, String],
         body: top,
-        timeout: Float
+        timeout: Float?
       ) -> void
     end
 

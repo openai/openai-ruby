@@ -70,15 +70,15 @@ module OpenAI
     # @api private
     #
     # @param conn [Net::HTTP]
-    # @param deadline [Float]
+    # @param deadline [Float, nil]
     private def calibrate_socket_timeout(conn, deadline)
-      timeout = remaining_timeout(deadline)
+      timeout = deadline&.then { remaining_timeout(_1) }
       conn.open_timeout = conn.read_timeout = conn.write_timeout = conn.continue_timeout = timeout
     end
 
     # @api private
     #
-    # @param deadline [Float]
+    # @param deadline [Float, nil]
     # @return [Float]
     # @raise [Timeout::Error]
     private def remaining_timeout(deadline)
@@ -134,7 +134,6 @@ module OpenAI
     # @yieldparam [Net::HTTP]
     private def with_pool(url, deadline:, &blk)
       origin = OpenAI::Internal::Util.uri_origin(url)
-      timeout = remaining_timeout(deadline)
       pool =
         @mutex.synchronize do
           @pools[origin] ||= ConnectionPool.new(size: @size) do
@@ -142,7 +141,13 @@ module OpenAI
           end
         end
 
-      pool.with(timeout: timeout, &blk)
+      return pool.with(timeout: remaining_timeout(deadline), &blk) if deadline
+
+      begin
+        pool.with(&blk)
+      rescue ConnectionPool::TimeoutError
+        retry
+      end
     end
 
     # @api private
@@ -204,7 +209,7 @@ module OpenAI
     # @return [OpenAI::HTTPClient::Response]
     def execute(request)
       url = request.url
-      deadline = OpenAI::Internal::Util.monotonic_secs + request.timeout
+      deadline = request.timeout&.then { OpenAI::Internal::Util.monotonic_secs + _1 }
 
       req = nil
       finished = false

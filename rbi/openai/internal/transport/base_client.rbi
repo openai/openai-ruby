@@ -75,7 +75,7 @@ module OpenAI
               headers: T::Hash[String, String],
               body: T.anything,
               max_retries: Integer,
-              timeout: Float
+              timeout: T.nilable(Float)
             }
           end
 
@@ -133,7 +133,7 @@ module OpenAI
         sig { returns(URI::Generic) }
         attr_reader :base_url
 
-        sig { returns(Float) }
+        sig { returns(T.nilable(Float)) }
         attr_reader :timeout
 
         sig { returns(Integer) }
@@ -159,7 +159,7 @@ module OpenAI
         sig do
           params(
             base_url: String,
-            timeout: Float,
+            timeout: T.nilable(Float),
             max_retries: Integer,
             initial_retry_delay: Float,
             max_retry_delay: Float,

@@ -165,6 +165,31 @@ class HTTPClientTest < Minitest::Test
     assert_equal(OpenAI::Client::DEFAULT_TIMEOUT_IN_SECONDS, request.timeout)
   end
 
+  def test_client_preserves_nil_timeout_for_custom_http_client
+    requests = []
+    http_client = StubHTTPClient.new do |request|
+      requests << request
+      OpenAI::HTTPClient::Response.new(
+        status: 200,
+        headers: {"content-type" => "application/json"},
+        body: ['{"ok":true}']
+      )
+    end
+    client = OpenAI::Client.new(
+      api_key: "test-key",
+      base_url: "https://example.com/v1",
+      timeout: nil,
+      http_client: http_client
+    )
+
+    response = client.request(method: :get, path: "probe", security: {bearer_auth: true})
+
+    assert_equal(true, response[:ok])
+    assert_nil(client.timeout)
+    assert_nil(requests.fetch(0).timeout)
+    refute_includes(requests.fetch(0).headers, "x-stainless-timeout")
+  end
+
   def test_net_http_client_configures_pooled_connections
     calls = []
     http_client = OpenAI::NetHTTPClient.new do |http|
@@ -686,6 +711,37 @@ class HTTPClientTest < Minitest::Test
     end
 
     assert_instance_of(Timeout::Error, error.cause)
+  end
+
+  def test_net_http_client_disables_transport_deadlines_for_nil_timeout
+    connection = StubNetHTTP.new(use_ssl: true, request_error: IOError.new("connection closed"))
+    connection.open_timeout = 1
+    connection.read_timeout = 1
+    connection.write_timeout = 1
+    connection.continue_timeout = 1
+    client_class =
+      Class.new(OpenAI::NetHTTPClient) do
+        define_method(:connect) { |**| connection }
+        private :connect
+      end
+    request = OpenAI::HTTPClient::Request.new(
+      method: :get,
+      url: URI("https://example.com/v1/probe"),
+      headers: {},
+      body: nil,
+      timeout: nil
+    )
+
+    error = assert_raises(OpenAI::Errors::APIConnectionError) do
+      client_class.new.execute(request)
+    end
+
+    assert_instance_of(OpenAI::Errors::APIConnectionError, error)
+    assert_instance_of(IOError, error.cause)
+    assert_nil(connection.open_timeout)
+    assert_nil(connection.read_timeout)
+    assert_nil(connection.write_timeout)
+    assert_nil(connection.continue_timeout)
   end
 
   def test_net_http_client_close_retires_connections_and_remains_reusable
