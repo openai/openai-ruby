@@ -1,0 +1,11 @@
+module OpenAI
+  module Models
+    module Realtime
+      class SidebandConnection < OpenAI::Realtime::Connection
+        attr_reader output_audio_buffer: OpenAI::Realtime::ConnectionResources::OutputAudioBuffer
+
+        def initialize: (socket: untyped, url: URI::Generic) -> void
+      end
+    end
+  end
+end

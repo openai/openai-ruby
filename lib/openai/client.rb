@@ -32,6 +32,11 @@ module OpenAI
     # @return [String, nil]
     attr_reader :webhook_secret
 
+    # Optional base URL used for WebSocket connections.
+    #
+    # @return [URI::Generic, nil]
+    attr_reader :websocket_base_url
+
     # @return [OpenAI::Auth::WorkloadIdentityAuth, nil]
     # @api private
     attr_reader :workload_identity_auth
@@ -157,6 +162,80 @@ module OpenAI
       {"authorization" => "Bearer #{@admin_api_key}"}
     end
 
+    # Build a fully authenticated Realtime WebSocket handshake request. Realtime
+    # transports use this boundary so provider authentication and request options stay
+    # consistent with ordinary SDK requests.
+    #
+    # @api private
+    #
+    # @param path [String]
+    # @param query [Hash{String=>String}]
+    # @param options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+    #
+    # @return [Hash{Symbol=>Object}]
+    def realtime_connection_request(path:, query:, options: nil)
+      if @provider_runtime && @provider_runtime.name != "azure"
+        raise OpenAI::Errors::Error,
+              "Realtime WebSocket connections are not supported by the #{@provider_runtime.name} provider."
+      end
+
+      opts = options.to_h
+      OpenAI::RequestOptions.validate!(opts)
+      request = build_request(
+        {
+          method: :get,
+          path: path,
+          query: query,
+          security: {bearer_auth: true}
+        },
+        opts
+      )
+
+      workload_identity_header = "Bearer #{WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER}"
+      if @workload_identity_auth && request.fetch(:headers)["authorization"] == workload_identity_header
+        token = @workload_identity_auth.get_token
+        request = request.merge(
+          headers: request.fetch(:headers).merge("authorization" => "Bearer #{token}")
+        )
+      end
+
+      request = prepare_request(request, redirect_count: 0, retry_count: 0)
+      if @websocket_base_url
+        url = OpenAI::Internal::Util.join_parsed_uri(
+          OpenAI::Internal::Util.parse_uri(@websocket_base_url.to_s),
+          {path: OpenAI::Internal::Util.interpolate_path(path)}
+        )
+        url.query = request.fetch(:url).query
+        request = request.merge(url: url)
+      end
+
+      url = request.fetch(:url).dup
+      url.scheme = {"http" => "ws", "https" => "wss"}.fetch(url.scheme, url.scheme)
+      headers = request.fetch(:headers).except("accept", "content-type")
+      request.merge(url: url, headers: headers)
+    end
+
+    # @api private
+    #
+    # @param value [String, nil]
+    # @return [URI::Generic, nil]
+    private def parse_websocket_base_url(value)
+      return if value.nil?
+
+      uri = URI(value)
+      valid_scheme = %w[http https ws wss].include?(uri.scheme)
+      ambiguous_component = uri.userinfo || uri.query || uri.fragment
+      unless uri.absolute? && uri.host && valid_scheme && !ambiguous_component
+        message =
+          "`websocket_base_url` must be an absolute HTTP or WebSocket URL " \
+          "without credentials, query, or fragment"
+        raise ArgumentError, message
+      end
+      uri
+    rescue URI::Error => e
+      raise ArgumentError, "`websocket_base_url` is not a valid URL", cause: e
+    end
+
     # Creates and returns a new client for interacting with the API.
     #
     # @param api_key [String, nil] Defaults to `ENV["OPENAI_API_KEY"]`.
@@ -271,6 +350,9 @@ module OpenAI
     # @param default_headers [Hash{String=>String, nil}, nil] Extra headers to send
     #   with every request. Explicit values override `ENV["OPENAI_CUSTOM_HEADERS"]`.
     #
+    # @param websocket_base_url [String, nil] Override the base URL for WebSocket
+    #   connections. The HTTP base URL is used when omitted.
+    #
     # @param max_retries [Integer] Max number of retries to attempt after a failed retryable request.
     #
     # @param timeout [Float, nil]
@@ -298,6 +380,7 @@ module OpenAI
       provider: nil,
       base_url: OpenAI::Internal::OMIT,
       default_headers: nil,
+      websocket_base_url: nil,
       max_retries: self.class::DEFAULT_MAX_RETRIES,
       timeout: self.class::DEFAULT_TIMEOUT_IN_SECONDS,
       initial_retry_delay: self.class::DEFAULT_INITIAL_RETRY_DELAY,
@@ -314,7 +397,8 @@ module OpenAI
           api_key: api_key,
           admin_api_key: admin_api_key,
           workload_identity: workload_identity,
-          base_url: base_url
+          base_url: base_url,
+          websocket_base_url: websocket_base_url
         }.filter_map do |name, value|
           name unless value.equal?(OpenAI::Internal::OMIT) || value.nil?
         end
@@ -391,6 +475,7 @@ module OpenAI
       @admin_api_key = admin_api_key&.to_s
       @webhook_secret = webhook_secret&.to_s
       @provider_runtime = provider_runtime
+      @websocket_base_url = parse_websocket_base_url(websocket_base_url)
 
       super(
         base_url: base_url,

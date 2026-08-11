@@ -4,6 +4,17 @@ module OpenAI
   module Resources
     class Realtime
       class Calls
+        sig do
+          params(
+            sdp: String,
+            session:
+              T.nilable(OpenAI::Realtime::RealtimeSessionCreateRequest::OrHash),
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(OpenAI::Realtime::CallCreateResponse)
+        end
+        def create(sdp:, session: nil, request_options: {})
+        end
+
         # Accept an incoming SIP call and configure the realtime session that will handle
         # it.
         sig do

@@ -1,0 +1,57 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative "../../lib/openai"
+require "timeout"
+
+module OpenAI
+  module Examples
+    module Realtime
+      module SIP
+        module_function
+
+        def stream(connection, output: $stdout, stop_after: nil)
+          connection.each do |event|
+            case event
+            when OpenAI::Realtime::ResponseAudioTranscriptDeltaEvent
+              output.print(event.delta)
+              output.flush
+            when OpenAI::Realtime::RealtimeErrorEvent
+              raise event.error.message
+            end
+            break if stop_after == event.type.to_s
+          end
+        end
+
+        def run(client:, call_id:, model:, output: $stdout, stop_after: nil)
+          client.realtime.calls.accept(
+            call_id,
+            type: :realtime,
+            model: model,
+            instructions: "You are answering a phone call. Be warm and concise."
+          )
+
+          client.realtime.connect(call_id: call_id) do |connection|
+            stream(connection, output: output, stop_after: stop_after)
+          end
+        end
+      end
+    end
+  end
+end
+
+if $PROGRAM_NAME == __FILE__
+  # Obtain the call ID from a verified realtime.call.incoming webhook via
+  # client.webhooks.unwrap(payload, headers).
+  run = lambda do
+    OpenAI::Examples::Realtime::SIP.run(
+      client: OpenAI::Client.new,
+      call_id: ENV.fetch("OPENAI_REALTIME_CALL_ID"),
+      model: ENV.fetch("OPENAI_REALTIME_MODEL", "gpt-realtime-2.1"),
+      stop_after: ENV["OPENAI_REALTIME_STOP_AFTER"]
+    )
+  end
+
+  timeout = ENV["OPENAI_REALTIME_TIMEOUT"]
+  timeout ? Timeout.timeout(Integer(timeout)) { run.call } : run.call
+end

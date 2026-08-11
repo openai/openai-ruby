@@ -1,0 +1,21 @@
+module OpenAI
+  module Models
+    module Realtime
+      class ConnectionManager
+        def initialize: (
+          client: OpenAI::Client,
+          path: String,
+          query: ::Hash[String, String],
+          connection_class: Class,
+          transport: untyped,
+          request_options: OpenAI::request_opts?,
+          transport_options: ::Hash[Symbol, untyped]
+        ) -> void
+
+        def open: {
+          (OpenAI::Realtime::BaseConnection connection) -> top
+        } -> top
+      end
+    end
+  end
+end

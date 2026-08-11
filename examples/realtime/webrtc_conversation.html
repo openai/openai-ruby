@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ruby Realtime conversation</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family: ui-sans-serif, system-ui, sans-serif;
+        background: #111827;
+        color: #f9fafb;
+      }
+      body {
+        min-height: 100vh;
+        margin: 0;
+        display: grid;
+        place-items: center;
+        background: radial-gradient(circle at top, #24324a, #111827 55%);
+      }
+      main {
+        width: min(42rem, calc(100vw - 2rem));
+        padding: 2rem;
+        box-sizing: border-box;
+        border: 1px solid #374151;
+        border-radius: 1.25rem;
+        background: rgb(17 24 39 / 88%);
+        box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 35%);
+      }
+      h1 { margin: 0 0 0.5rem; font-size: 1.75rem; }
+      p { color: #cbd5e1; line-height: 1.55; }
+      .controls { display: flex; gap: 0.75rem; margin: 1.5rem 0; }
+      button {
+        border: 0;
+        border-radius: 999px;
+        padding: 0.75rem 1.1rem;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      #start { background: #22c55e; color: #052e16; }
+      #stop { background: #e5e7eb; color: #111827; }
+      button:disabled { cursor: wait; opacity: 0.5; }
+      #status {
+        min-height: 1.5rem;
+        color: #93c5fd;
+        font-weight: 650;
+      }
+      #media {
+        color: #94a3b8;
+        font-size: 0.875rem;
+      }
+      #transcript {
+        min-height: 9rem;
+        max-height: 20rem;
+        overflow-y: auto;
+        margin-top: 1.5rem;
+        padding: 1rem;
+        border-radius: 0.75rem;
+        background: #030712;
+        white-space: pre-wrap;
+        line-height: 1.5;
+      }
+      .assistant { margin-bottom: 0.75rem; }
+      .assistant::before { content: "Assistant: "; color: #86efac; font-weight: 700; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Realtime conversation</h1>
+      <p>
+        Talk naturally and speak over the model whenever you want to interrupt.
+        The browser handles the microphone, playback, and acoustic echo cancellation.
+      </p>
+      <div class="controls">
+        <button id="start" type="button">Start conversation</button>
+        <button id="stop" type="button" disabled>Stop</button>
+      </div>
+      <div id="status" role="status" aria-live="polite">Ready</div>
+      <div id="media"></div>
+      <div id="transcript" aria-live="polite" aria-label="Assistant transcript"></div>
+      <audio id="remote-audio" autoplay></audio>
+    </main>
+
+    <script>
+      const startButton = document.querySelector("#start");
+      const stopButton = document.querySelector("#stop");
+      const statusElement = document.querySelector("#status");
+      const mediaElement = document.querySelector("#media");
+      const transcriptElement = document.querySelector("#transcript");
+      const remoteAudio = document.querySelector("#remote-audio");
+
+      let peerConnection;
+      let dataChannel;
+      let microphoneStream;
+      let callID;
+      let transcriptLine;
+
+      function setStatus(message) {
+        statusElement.textContent = message;
+      }
+
+      function appendTranscript(delta) {
+        if (!transcriptLine) {
+          transcriptLine = document.createElement("div");
+          transcriptLine.className = "assistant";
+          transcriptElement.append(transcriptLine);
+        }
+        transcriptLine.append(document.createTextNode(delta));
+        transcriptElement.scrollTop = transcriptElement.scrollHeight;
+      }
+
+      function handleEvent(message) {
+        try {
+          const event = JSON.parse(message.data);
+          switch (event.type) {
+            case "input_audio_buffer.speech_started":
+              setStatus("Listening — interrupting the model…");
+              break;
+            case "input_audio_buffer.speech_stopped":
+              setStatus("Thinking…");
+              break;
+            case "response.output_audio_transcript.delta":
+              appendTranscript(event.delta);
+              break;
+            case "response.output_audio_transcript.done":
+              transcriptLine = undefined;
+              setStatus("Listening…");
+              break;
+            case "error":
+              setStatus(event.error?.message || "Realtime API error");
+          }
+        } catch (error) {
+          setStatus(`Invalid Realtime event: ${error.message}`);
+        }
+      }
+
+      async function startConversation() {
+        startButton.disabled = true;
+        transcriptElement.replaceChildren();
+        setStatus("Requesting microphone access…");
+
+        try {
+          peerConnection = new RTCPeerConnection();
+          peerConnection.addEventListener("track", (event) => {
+            remoteAudio.srcObject = event.streams[0];
+            remoteAudio.play().catch(() => setStatus("Click the page to enable audio playback."));
+          });
+          peerConnection.addEventListener("connectionstatechange", () => {
+            if (peerConnection.connectionState === "connected") setStatus("Listening…");
+            if (["failed", "disconnected"].includes(peerConnection.connectionState)) {
+              setStatus(`Connection ${peerConnection.connectionState}`);
+            }
+          });
+
+          microphoneStream = await navigator.mediaDevices.getUserMedia({
+            audio: {
+              echoCancellation: true,
+              noiseSuppression: true,
+              autoGainControl: true
+            }
+          });
+          const microphone = microphoneStream.getAudioTracks()[0];
+          const settings = microphone.getSettings();
+          mediaElement.textContent = [
+            `Microphone: ${microphone.label || "active"}`,
+            `echo cancellation ${settings.echoCancellation === false ? "unavailable" : "requested"}`,
+            `noise suppression ${settings.noiseSuppression === false ? "unavailable" : "requested"}`
+          ].join(" · ");
+          peerConnection.addTrack(microphone, microphoneStream);
+
+          dataChannel = peerConnection.createDataChannel("oai-events");
+          dataChannel.addEventListener("message", handleEvent);
+          dataChannel.addEventListener("open", () => setStatus("Listening…"));
+
+          await peerConnection.setLocalDescription(await peerConnection.createOffer());
+          const response = await fetch("/session", {
+            method: "POST",
+            headers: {"Content-Type": "application/sdp"},
+            body: peerConnection.localDescription.sdp
+          });
+          if (!response.ok) throw new Error(await response.text());
+
+          callID = response.headers.get("X-OpenAI-Call-ID");
+          await peerConnection.setRemoteDescription({type: "answer", sdp: await response.text()});
+          stopButton.disabled = false;
+        } catch (error) {
+          await stopConversation();
+          setStatus(error.message.trim() || "Unable to start the conversation");
+        }
+      }
+
+      async function stopConversation({hangup = true} = {}) {
+        const activeCallID = callID;
+        callID = undefined;
+        dataChannel?.close();
+        peerConnection?.close();
+        microphoneStream?.getTracks().forEach((track) => track.stop());
+        remoteAudio.srcObject = null;
+        dataChannel = undefined;
+        peerConnection = undefined;
+        microphoneStream = undefined;
+        transcriptLine = undefined;
+        startButton.disabled = false;
+        stopButton.disabled = true;
+        mediaElement.textContent = "";
+        setStatus("Stopped");
+
+        if (hangup && activeCallID) {
+          await fetch("/hangup", {method: "POST", body: activeCallID}).catch(() => undefined);
+        }
+      }
+
+      startButton.addEventListener("click", startConversation);
+      stopButton.addEventListener("click", () => stopConversation());
+      window.addEventListener("pagehide", () => {
+        if (callID) navigator.sendBeacon("/hangup", callID);
+        microphoneStream?.getTracks().forEach((track) => track.stop());
+        peerConnection?.close();
+      });
+    </script>
+  </body>
+</html>

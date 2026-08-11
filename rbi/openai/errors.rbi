@@ -3,7 +3,7 @@
 module OpenAI
   module Errors
     class Error < StandardError
-      sig { returns(T.nilable(StandardError)) }
+      sig { returns(T.nilable(Exception)) }
       attr_accessor :cause
     end
 
@@ -48,6 +48,44 @@ module OpenAI
         ).returns(T.attached_class)
       end
       def self.new(on:, method:, target:, value:, cause: nil)
+      end
+    end
+
+    class RealtimeConnectionError < OpenAI::Errors::Error
+      sig { returns(URI::Generic) }
+      attr_reader :url
+
+      sig { returns(T.nilable(Exception)) }
+      def cause
+      end
+
+      sig do
+        params(
+          url: URI::Generic,
+          message: T.nilable(String),
+          cause: T.nilable(Exception)
+        ).returns(T.attached_class)
+      end
+      def self.new(url:, message: nil, cause: nil)
+      end
+    end
+
+    class RealtimeProtocolError < OpenAI::Errors::Error
+      sig { returns(String) }
+      attr_reader :data
+
+      sig { returns(T.nilable(StandardError)) }
+      def cause
+      end
+
+      sig do
+        params(
+          data: String,
+          message: T.nilable(String),
+          cause: T.nilable(StandardError)
+        ).returns(T.attached_class)
+      end
+      def self.new(data:, message: nil, cause: nil)
       end
     end
 

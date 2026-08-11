@@ -1,7 +1,7 @@
 module OpenAI
   module Errors
     class Error < StandardError
-      attr_accessor cause: StandardError?
+      attr_accessor cause: Exception?
     end
 
     class PollingError < OpenAI::Errors::Error
@@ -27,6 +27,28 @@ module OpenAI
         method: Symbol,
         target: top,
         value: top,
+        ?cause: StandardError?
+      ) -> void
+    end
+
+    class RealtimeConnectionError < OpenAI::Errors::Error
+      attr_reader url: URI::Generic
+      def cause: -> Exception?
+
+      def initialize: (
+        url: URI::Generic,
+        ?message: String?,
+        ?cause: Exception?
+      ) -> void
+    end
+
+    class RealtimeProtocolError < OpenAI::Errors::Error
+      attr_reader data: String
+      def cause: -> StandardError?
+
+      def initialize: (
+        data: String,
+        ?message: String?,
         ?cause: StandardError?
       ) -> void
     end

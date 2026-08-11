@@ -613,6 +613,19 @@ module OpenAI
           end
         end
 
+        # Execute the request specified by `req` without decoding its response. This is
+        # used by resources whose successful response is not modeled JSON.
+        #
+        # @api private
+        #
+        # @param req [Hash{Symbol=>Object}]
+        #
+        # @return [OpenAI::HTTPClient::Response]
+        def request_raw(req)
+          _, response, log_context = perform_request(req)
+          finish_request(log_context, response) { response }
+        end
+
         # Execute the request specified by `req`. This is the method that all resource
         # methods call into.
         #

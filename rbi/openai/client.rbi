@@ -25,6 +25,9 @@ module OpenAI
     sig { returns(T.nilable(String)) }
     attr_reader :webhook_secret
 
+    sig { returns(T.nilable(URI::Generic)) }
+    attr_reader :websocket_base_url
+
     # Given a prompt, the model will return one or more predicted completions, and can
     # also return the probabilities of alternative tokens at each position.
     sig { returns(OpenAI::Resources::Completions) }
@@ -137,6 +140,17 @@ module OpenAI
 
     # @api private
     sig do
+      params(
+        path: String,
+        query: T::Hash[String, String],
+        options: T.nilable(OpenAI::RequestOptions::OrHash)
+      ).returns(OpenAI::Internal::Transport::BaseClient::RequestInput)
+    end
+    def realtime_connection_request(path:, query:, options: nil)
+    end
+
+    # @api private
+    sig do
       override
         .params(
           request: OpenAI::Internal::Transport::BaseClient::RequestInput,
@@ -203,6 +217,7 @@ module OpenAI
         provider: T.nilable(OpenAI::Provider),
         base_url: T.nilable(String),
         default_headers: T.nilable(T::Hash[String, T.nilable(String)]),
+        websocket_base_url: T.nilable(String),
         max_retries: Integer,
         timeout: T.nilable(Float),
         initial_retry_delay: Float,
@@ -232,6 +247,7 @@ module OpenAI
       # Extra headers to send with every request. Explicit values override
       # `ENV["OPENAI_CUSTOM_HEADERS"]`.
       default_headers: nil,
+      websocket_base_url: nil,
       # Max number of retries to attempt after a failed retryable request.
       max_retries: OpenAI::Client::DEFAULT_MAX_RETRIES,
       timeout: OpenAI::Client::DEFAULT_TIMEOUT_IN_SECONDS,

@@ -4,6 +4,52 @@ module OpenAI
   module Resources
     class Realtime
       class Calls
+        # Create a WebRTC call from an SDP offer. When `session` is supplied, the SDK
+        # sends the offer and session configuration as typed multipart form parts.
+        #
+        # @overload create(sdp:, session: nil, request_options: {})
+        #
+        # @param sdp [String] The WebRTC Session Description Protocol offer.
+        # @param session [OpenAI::Models::Realtime::RealtimeSessionCreateRequest] Optional session configuration.
+        # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+        #
+        # @return [OpenAI::Models::Realtime::CallCreateResponse]
+        #
+        # @see OpenAI::Models::Realtime::CallCreateParams
+        def create(params)
+          parsed, options = OpenAI::Realtime::CallCreateParams.dump_request(params)
+          sdp = parsed.fetch(:sdp)
+          session = parsed[:session]
+          headers, body =
+            if session.nil?
+              [{"accept" => "application/sdp", "content-type" => "application/sdp"}, sdp]
+            else
+              [
+                {"accept" => "application/sdp", "content-type" => "multipart/form-data"},
+                {
+                  sdp: OpenAI::FilePart.new(sdp, content_type: "application/sdp"),
+                  session: OpenAI::FilePart.new(JSON.generate(session), content_type: "application/json")
+                }
+              ]
+            end
+
+          response = @client.request_raw(
+            method: :post,
+            path: "realtime/calls",
+            headers: headers,
+            body: body,
+            security: {bearer_auth: true},
+            options: options
+          )
+          location = response.headers["location"]
+          call_id = location&.then { URI.parse(_1).path.split("/").last }
+          OpenAI::Realtime::CallCreateResponse.new(
+            sdp: response.body.to_a.join,
+            call_id: call_id,
+            headers: response.headers
+          )
+        end
+
         # Some parameter documentations has been truncated, see
         # {OpenAI::Models::Realtime::CallAcceptParams} for more details.
         #

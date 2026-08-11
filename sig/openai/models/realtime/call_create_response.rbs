@@ -1,0 +1,26 @@
+module OpenAI
+  module Models
+    module Realtime
+      type call_create_response =
+        { sdp: String, call_id: String?, headers: ::Hash[String, String] }
+
+      class CallCreateResponse < OpenAI::Internal::Type::BaseModel
+        attr_accessor sdp: String
+        attr_accessor call_id: String?
+        attr_accessor headers: ::Hash[String, String]
+
+        def initialize: (
+          sdp: String,
+          headers: ::Hash[String, String],
+          ?call_id: String?
+        ) -> void
+
+        def to_hash: -> {
+          sdp: String,
+          call_id: String?,
+          headers: ::Hash[String, String]
+        }
+      end
+    end
+  end
+end

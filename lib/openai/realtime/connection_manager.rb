@@ -1,0 +1,66 @@
+# frozen_string_literal: true
+
+module OpenAI
+  module Realtime
+    # Internal block-scoped lifecycle manager for Realtime WebSocket connections.
+    #
+    # @api private
+    class ConnectionManager
+      # @api private
+      def initialize(
+        client:,
+        path:,
+        query:,
+        connection_class:,
+        transport:,
+        request_options:,
+        transport_options:
+      )
+        @client = client
+        @path = path
+        @query = query
+        @connection_class = connection_class
+        @transport = transport
+        @request_options = request_options
+        @transport_options = transport_options
+      end
+
+      # Open the WebSocket and yield a typed connection for the lifetime of the block.
+      #
+      # @yieldparam connection [OpenAI::Realtime::Connection]
+      # @return [Object]
+      def open
+        raise ArgumentError, "A block is required to open a Realtime WebSocket." unless block_given?
+
+        request = @client.realtime_connection_request(
+          path: @path,
+          query: @query,
+          options: @request_options
+        )
+        transport = @transport || OpenAI::Realtime::Transports::AsyncWebSocket.new
+        unless transport.respond_to?(:open)
+          raise ArgumentError, "`transport` must respond to `open`"
+        end
+
+        transport.open(
+          url: request.fetch(:url),
+          headers: request.fetch(:headers),
+          timeout: request.fetch(:timeout),
+          **@transport_options
+        ) do |socket|
+          connection = @connection_class.new(socket: socket, url: request.fetch(:url))
+          begin
+            yield(connection)
+          ensure
+            pending_error = $ERROR_INFO
+            begin
+              connection.close unless connection.closed?
+            rescue StandardError
+              raise if pending_error.nil?
+            end
+          end
+        end
+      end
+    end
+  end
+end

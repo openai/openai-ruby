@@ -5,6 +5,46 @@ module OpenAI
 
       attr_reader calls: OpenAI::Resources::Realtime::Calls
 
+      attr_reader translations: OpenAI::Resources::Realtime::Translations
+
+      def connect:
+        (
+          model: String,
+          ?call_id: nil,
+          ?intent: nil,
+          ?request_options: OpenAI::request_opts?,
+          ?transport: untyped?,
+          ?transport_options: ::Hash[Symbol, untyped]
+        ) {
+          (OpenAI::Realtime::Connection connection) -> top
+        } -> top
+        | (
+          call_id: String,
+          ?model: nil,
+          ?intent: nil,
+          ?request_options: OpenAI::request_opts?,
+          ?transport: untyped?,
+          ?transport_options: ::Hash[Symbol, untyped]
+        ) {
+          (OpenAI::Realtime::SidebandConnection connection) -> top
+        } -> top
+        | (
+          intent: :transcription,
+          ?model: nil,
+          ?call_id: nil,
+          ?request_options: OpenAI::request_opts?,
+          ?transport: untyped?,
+          ?transport_options: ::Hash[Symbol, untyped]
+        ) {
+          (OpenAI::Realtime::TranscriptionConnection connection) -> top
+        } -> top
+
+      def connection_target: (
+        model: String?,
+        call_id: String?,
+        intent: (:transcription)?
+      ) -> [::Hash[String, String], untyped]
+
       def initialize: (client: OpenAI::Client) -> void
     end
   end

@@ -1,0 +1,20 @@
+module OpenAI
+  module Models
+    module Realtime
+      class BaseConnection
+        attr_reader url: URI::Generic
+
+        def initialize: (
+          socket: untyped,
+          url: URI::Generic,
+          server_event_type: untyped,
+          client_event_type: untyped
+        ) -> void
+        def receive_raw: -> String?
+        def send_raw: (String data) -> nil
+        def close: (?code: Integer, ?reason: String) -> nil
+        def closed?: -> bool
+      end
+    end
+  end
+end
