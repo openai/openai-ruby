@@ -735,6 +735,13 @@ class OpenAI::Test::BaseModelQoLTest < Minitest::Test
       end
     end
   end
+
+  def test_response_metadata_is_unset_on_constructed_model
+    model = M1.new(a: 1)
+
+    assert_nil(model._request_id)
+    assert_nil(model.last_response)
+  end
 end
 
 class OpenAI::Test::MetaInfoTest < Minitest::Test

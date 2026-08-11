@@ -623,20 +623,31 @@ Error codes are as follows:
 | Timeout          | `APITimeoutError`          |
 | Network error    | `APIConnectionError`       |
 
-### Request IDs
+### Response metadata and request IDs
 
 OpenAI recommends logging request IDs in production so requests can be traced
-during troubleshooting. Successful typed responses expose `_request_id`, which
-is populated from the `x-request-id` response header:
+during troubleshooting. Top-level models and pages returned by the client expose
+immutable HTTP response metadata through `last_response`:
 
 ```ruby
 response = openai.responses.create(model: "gpt-5.2", input: "Say 'this is a test'.")
-puts(response._request_id) # req_123
+puts(response.last_response.status)                 # 200
+puts(response.last_response.headers["x-request-id"]) # req_123
+puts(response.last_response.request_id)             # req_123
+puts(response._request_id)                           # req_123
 ```
 
-The `_request_id` property is only populated on the top-level response object
-and is not included in `to_h`, JSON, or YAML output. Unlike other properties
-that begin with an underscore, `_request_id` is public.
+Header names and values are normalized to strings, header names are lowercase,
+and the metadata and header map are frozen. Streams expose the metadata for the
+HTTP response that opened the stream. Higher-level streaming helpers expose the
+same metadata as their underlying stream; models assembled from stream events
+do not.
+
+`last_response` and `_request_id` are only populated on top-level typed models
+and pages returned by the client. They are `nil` on constructed or nested models
+and are not included in `to_h`, JSON, or YAML output. Endpoints returning raw
+primitives, binary data, or `nil` do not expose this metadata. Unlike other
+properties that begin with an underscore, `_request_id` is public.
 
 For failed HTTP requests, catch `OpenAI::Errors::APIStatusError` and use
 `request_id`:

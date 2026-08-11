@@ -142,6 +142,18 @@ module OpenAI
       end
 
       class ChatCompletionStream
+        sig { returns(Integer) }
+        def status
+        end
+
+        sig { returns(T::Hash[String, String]) }
+        def headers
+        end
+
+        sig { returns(OpenAI::ResponseMetadata) }
+        def last_response
+        end
+
         sig { returns(T.untyped) }
         def each
         end

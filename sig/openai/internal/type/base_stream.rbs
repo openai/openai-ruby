@@ -8,6 +8,8 @@ module OpenAI
 
         attr_reader headers: ::Hash[String, String]
 
+        attr_reader last_response: OpenAI::ResponseMetadata
+
         def close: -> void
 
         private def iterator: -> Enumerable[Elem]
@@ -21,8 +23,7 @@ module OpenAI
         def initialize: (
           model: Class | OpenAI::Internal::Type::Converter,
           url: URI::Generic,
-          status: Integer,
-          headers: ::Hash[String, String],
+          response_metadata: OpenAI::ResponseMetadata,
           response: OpenAI::HTTPClient::Response,
           unwrap: Symbol
           | Integer

@@ -1,4 +1,15 @@
 module OpenAI
+  class ResponseMetadata
+    attr_reader status: Integer
+    attr_reader headers: ::Hash[String, String]
+    attr_reader request_id: String?
+
+    def initialize: (
+      status: Integer,
+      headers: ::Hash[String, String]
+    ) -> void
+  end
+
   interface _HTTPClient
     def execute: (
       OpenAI::HTTPClient::Request request
@@ -26,6 +37,7 @@ module OpenAI
       attr_reader status: Integer
       attr_reader headers: ::Hash[String, String]
       attr_reader body: Enumerable[String]
+      attr_reader metadata: OpenAI::ResponseMetadata
 
       def initialize: (
         status: Integer,

@@ -18,6 +18,9 @@ module OpenAI
         sig { returns(T::Hash[String, String]) }
         attr_reader :headers
 
+        sig { returns(OpenAI::ResponseMetadata) }
+        attr_reader :last_response
+
         sig { void }
         def close
         end
@@ -41,8 +44,7 @@ module OpenAI
             model:
               T.any(T::Class[T.anything], OpenAI::Internal::Type::Converter),
             url: URI::Generic,
-            status: Integer,
-            headers: T::Hash[String, String],
+            response_metadata: OpenAI::ResponseMetadata,
             response: OpenAI::HTTPClient::Response,
             unwrap:
               T.any(
@@ -57,8 +59,7 @@ module OpenAI
         def initialize(
           model:,
           url:,
-          status:,
-          headers:,
+          response_metadata:,
           response:,
           unwrap:,
           stream:

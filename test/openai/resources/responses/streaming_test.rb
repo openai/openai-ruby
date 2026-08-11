@@ -38,7 +38,7 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
       )
       .to_return(
         status: 200,
-        headers: {"Content-Type" => "text/event-stream"},
+        headers: {"Content-Type" => "text/event-stream", "X-Request-ID" => "req_stream"},
         body: response_body
       )
   end
@@ -87,6 +87,11 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     stream = @client.responses.stream(**basic_params)
     response = stream.get_final_response
 
+    assert_equal(200, stream.status)
+    assert_same(stream.last_response.headers, stream.headers)
+    assert_equal("req_stream", stream.last_response.request_id)
+    assert_nil(response.last_response)
+
     assert_pattern do
       response => OpenAI::Models::Responses::Response[
         id: "msg_001",
@@ -98,6 +103,20 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
         ]
       ]
     end
+  end
+
+  def test_raw_stream_exposes_response_metadata
+    stub_streaming_response(basic_text_sse_response)
+
+    stream = @client.responses.stream_raw(**basic_params)
+
+    assert_equal(200, stream.last_response.status)
+    assert_equal("req_stream", stream.last_response.request_id)
+    assert_equal("text/event-stream", stream.last_response.headers["content-type"])
+    assert_same(stream.last_response.headers, stream.headers)
+    assert_nil(stream.first.last_response)
+  ensure
+    stream&.close
   end
 
   def test_get_output_text
@@ -248,7 +267,7 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
 
     stream = @client.responses.stream(**basic_params)
     error = assert_raises(OpenAI::Errors::APIStatusError) do
-      stream.each {} # Consume the stream to trigger the error.
+      stream.each { |_event| next } # Consume the stream to trigger the error.
     end
 
     assert_equal(200, error.status)

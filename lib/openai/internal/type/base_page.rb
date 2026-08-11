@@ -18,7 +18,14 @@ module OpenAI
         # @api public
         #
         # @return [String, nil]
-        attr_reader :_request_id
+        def _request_id = last_response.request_id
+
+        # Metadata from the HTTP response that produced this page.
+        #
+        # @api public
+        #
+        # @return [OpenAI::ResponseMetadata]
+        attr_reader :last_response
 
         # @api public
         #
@@ -48,13 +55,13 @@ module OpenAI
         #
         # @param client [OpenAI::Internal::Transport::BaseClient]
         # @param req [Hash{Symbol=>Object}]
-        # @param headers [Hash{String=>String}]
+        # @param response_metadata [OpenAI::ResponseMetadata]
         # @param page_data [Object]
-        def initialize(client:, req:, headers:, page_data:)
+        def initialize(client:, req:, response_metadata:, page_data:)
           @client = client
           @req = req
           @model = req.fetch(:model)
-          @_request_id = headers["x-request-id"]
+          @last_response = response_metadata
           super()
         end
 

@@ -623,6 +623,7 @@ module OpenAI
             retry_count: 0,
             send_retry_header: send_retry_header
           )
+          response_metadata = response.metadata
 
           decoded = OpenAI::Internal::Util.decode_content(response.headers, stream: response.body)
           case req
@@ -630,19 +631,18 @@ module OpenAI
             st.new(
               model: model,
               url: url,
-              status: response.status,
-              headers: response.headers,
+              response_metadata: response_metadata,
               response: response,
               unwrap: unwrap,
               stream: decoded
             )
           in {page: Class => page}
-            page.new(client: self, req: req, headers: response.headers, page_data: decoded)
+            page.new(client: self, req: req, response_metadata: response_metadata, page_data: decoded)
           else
             unwrapped = OpenAI::Internal::Util.dig(decoded, unwrap)
             OpenAI::Internal::Type::Converter.coerce(model, unwrapped).tap do |result|
               if result.is_a?(OpenAI::Internal::Type::BaseModel)
-                result._set_request_id(response.headers["x-request-id"])
+                result._set_last_response(response_metadata)
               end
             end
           end

@@ -1,6 +1,27 @@
 # typed: strong
 
 module OpenAI
+  class ResponseMetadata
+    sig { returns(Integer) }
+    attr_reader :status
+
+    sig { returns(T::Hash[String, String]) }
+    attr_reader :headers
+
+    sig { returns(T.nilable(String)) }
+    attr_reader :request_id
+
+    # @api private
+    sig do
+      params(
+        status: Integer,
+        headers: T::Hash[String, String]
+      ).returns(T.attached_class)
+    end
+    def self.new(status:, headers:)
+    end
+  end
+
   class HTTPClient
     class Request
       sig { returns(Symbol) }
@@ -40,6 +61,9 @@ module OpenAI
 
       sig { returns(T::Enumerable[String]) }
       attr_reader :body
+
+      sig { returns(OpenAI::ResponseMetadata) }
+      attr_reader :metadata
 
       sig do
         params(

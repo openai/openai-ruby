@@ -14,10 +14,17 @@ module OpenAI
         include Enumerable
 
         # @return [Integer]
-        attr_reader :status
+        def status = last_response.status
 
         # @return [Hash{String=>String}]
-        attr_reader :headers
+        def headers = last_response.headers
+
+        # Metadata from the HTTP response that opened this stream.
+        #
+        # @api public
+        #
+        # @return [OpenAI::ResponseMetadata]
+        attr_reader :last_response
 
         # @api public
         #
@@ -53,16 +60,14 @@ module OpenAI
         #
         # @param model [Class, OpenAI::Internal::Type::Converter]
         # @param url [URI::Generic]
-        # @param status [Integer]
-        # @param headers [Hash{String=>String}]
+        # @param response_metadata [OpenAI::ResponseMetadata]
         # @param response [OpenAI::HTTPClient::Response]
         # @param unwrap [Symbol, Integer, Array<Symbol, Integer>, Proc]
         # @param stream [Enumerable<Object>]
-        def initialize(model:, url:, status:, headers:, response:, unwrap:, stream:)
+        def initialize(model:, url:, response_metadata:, response:, unwrap:, stream:)
           @model = model
           @url = url
-          @status = status
-          @headers = headers
+          @last_response = response_metadata
           @response = response
           @unwrap = unwrap
           @stream = stream

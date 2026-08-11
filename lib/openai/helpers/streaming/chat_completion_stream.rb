@@ -8,6 +8,7 @@ module OpenAI
 
         def initialize(raw_stream:, response_format: nil, input_tools: nil)
           @raw_stream = raw_stream
+          @last_response = raw_stream.last_response
           @state = ChatCompletionStreamState.new(
             response_format: response_format,
             input_tools: input_tools
@@ -33,7 +34,7 @@ module OpenAI
         end
 
         def until_done
-          each {} # rubocop:disable Lint/EmptyBlock
+          each { |_event| next }
           self
         end
 

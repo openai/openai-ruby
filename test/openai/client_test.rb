@@ -156,7 +156,14 @@ class OpenAITest < Minitest::Test
       headers: {"x-request-id" => "req_success"},
       body: {
         id: "chatcmpl_123",
-        choices: [],
+        choices: [
+          {
+            finish_reason: "stop",
+            index: 0,
+            logprobs: nil,
+            message: {content: "Hello", refusal: nil, role: "assistant"}
+          }
+        ],
         created: 1_700_000_000,
         model: "gpt-5.4",
         object: "chat.completion"
@@ -176,9 +183,25 @@ class OpenAITest < Minitest::Test
     )
 
     assert_equal("req_success", response._request_id)
+    assert_instance_of(OpenAI::ResponseMetadata, response.last_response)
+    assert_equal(200, response.last_response.status)
+    assert_equal("req_success", response.last_response.request_id)
+    assert_equal("req_success", response.last_response.headers["x-request-id"])
+    assert_nil(response.choices.first.last_response)
     refute_includes(response.to_h, :_request_id)
+    refute_includes(response.to_h, :last_response)
     refute_includes(response.to_json, "_request_id")
+    refute_includes(response.to_json, "last_response")
     refute_includes(response.to_yaml, "_request_id")
+    refute_includes(response.to_yaml, "last_response")
+    refute_includes(YAML.dump(response), "@_request_id")
+    refute_includes(YAML.dump(response), "@last_response")
+
+    [response.dup, response.clone].each do |copy|
+      assert_equal(response, copy)
+      assert_equal("req_success", copy._request_id)
+      assert_same(response.last_response, copy.last_response)
+    end
   end
 
   def test_request_id_on_paginated_response
@@ -198,6 +221,41 @@ class OpenAITest < Minitest::Test
     response = openai.models.list
 
     assert_equal("req_page", response._request_id)
+    assert_equal(200, response.last_response.status)
+    assert_equal("req_page", response.last_response.request_id)
+  end
+
+  def test_each_paginated_response_has_its_own_metadata
+    first_page_body = {
+      data: [
+        {
+          id: "chatcmpl_123",
+          choices: [],
+          created: 1_700_000_000,
+          model: "gpt-5.4",
+          object: "chat.completion"
+        }
+      ],
+      has_more: true,
+      object: "list"
+    }
+    stub_request(:get, "http://localhost/chat/completions")
+      .to_return_json(status: 200, headers: {"X-Request-ID" => "req_page_1"}, body: first_page_body)
+    stub_request(:get, "http://localhost/chat/completions?after=chatcmpl_123")
+      .to_return_json(
+        status: 200,
+        headers: {"X-Request-ID" => "req_page_2"},
+        body: {data: [], has_more: false, object: "list"}
+      )
+
+    openai = OpenAI::Client.new(base_url: "http://localhost", api_key: "My API Key")
+    first_page = openai.chat.completions.list
+    second_page = first_page.next_page
+
+    assert_equal("req_page_1", first_page.last_response.request_id)
+    assert_nil(first_page.data.first.last_response)
+    assert_equal("req_page_2", second_page.last_response.request_id)
+    refute_same(first_page.last_response, second_page.last_response)
   end
 
   def test_request_id_on_error_response
@@ -222,6 +280,27 @@ class OpenAITest < Minitest::Test
     end
 
     assert_equal("req_error", error.request_id)
+  end
+
+  def test_non_model_results_are_not_wrapped_in_response_metadata
+    stub_request(:get, "http://localhost/files/file_123/content")
+      .to_return(
+        status: 200,
+        headers: {"X-Request-ID" => "req_binary"},
+        body: "file contents"
+      )
+    stub_request(:delete, "http://localhost/responses/resp_123")
+      .to_return(status: 204, headers: {"X-Request-ID" => "req_nil"}, body: "")
+
+    openai = OpenAI::Client.new(base_url: "http://localhost", api_key: "My API Key")
+
+    content = openai.files.content("file_123")
+    result = openai.responses.delete("resp_123")
+
+    assert_instance_of(StringIO, content)
+    assert_equal("file contents", content.read)
+    refute_respond_to(content, :last_response)
+    assert_nil(result)
   end
 
   def test_client_default_request_default_retry_attempts
