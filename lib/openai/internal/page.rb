@@ -54,9 +54,9 @@ module OpenAI
       #
       # @param client [OpenAI::Internal::Transport::BaseClient]
       # @param req [Hash{Symbol=>Object}]
-      # @param headers [Hash{String=>String}]
+      # @param response_metadata [OpenAI::ResponseMetadata]
       # @param page_data [Array<Object>]
-      def initialize(client:, req:, headers:, page_data:)
+      def initialize(client:, req:, response_metadata:, page_data:)
         super
 
         case page_data

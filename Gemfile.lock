@@ -15,6 +15,7 @@ PATH
       base64
       cgi
       connection_pool (>= 2.2.3)
+      logger
 
 GEM
   remote: https://rubygems.org/

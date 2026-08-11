@@ -10,6 +10,7 @@ module OpenAI
           @text_format = text_format
           @starting_after = starting_after
           @raw_stream = raw_stream
+          @last_response = raw_stream.last_response
           @iterator = iterator
           @state = ResponseStreamState.new(
             text_format: text_format
@@ -17,7 +18,7 @@ module OpenAI
         end
 
         def until_done
-          each {} # rubocop:disable Lint/EmptyBlock
+          each { |_event| next }
           self
         end
 

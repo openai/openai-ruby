@@ -40,8 +40,8 @@ module OpenAI
                   end
                 err = OpenAI::Errors::APIStatusError.for(
                   url: @url,
-                  status: @status,
-                  headers: @headers,
+                  status: status,
+                  headers: headers,
                   body: data,
                   request: nil,
                   response: @response,

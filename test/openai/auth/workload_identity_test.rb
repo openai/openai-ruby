@@ -349,13 +349,15 @@ class WorkloadIdentityTest < Minitest::Test
       service_account_id: "sa-456",
       provider: provider
     )
+    log_output = StringIO.new
 
     client = OpenAI::Client.new(
       base_url: "http://localhost",
       api_key: nil,
       workload_identity: config,
       organization: "org-123",
-      project: "proj-456"
+      project: "proj-456",
+      logger: Logger.new(log_output)
     )
 
     response = client.chat.completions.create(
@@ -364,6 +366,8 @@ class WorkloadIdentityTest < Minitest::Test
     )
 
     assert_equal("chatcmpl-123", response.id)
+    assert_includes(log_output.string, "attempts=2")
+    refute_includes(log_output.string, "request failed")
     assert_requested(:post, "https://auth.openai.com/oauth/token", times: 2)
     assert_requested(:post, "http://localhost/chat/completions", times: 2)
   end

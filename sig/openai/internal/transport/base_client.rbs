@@ -75,6 +75,12 @@ module OpenAI
 
         attr_reader idempotency_header: String?
 
+        attr_reader logger: OpenAI::_Logger?
+
+        attr_reader log_level: Symbol
+
+        attr_reader on_retry: (^(OpenAI::RetryEvent) -> void)?
+
         # @api private
         attr_reader requester: OpenAI::_HTTPClient
 
@@ -88,7 +94,10 @@ module OpenAI
           | Integer
           | ::Array[(String | Integer)?])?],
           ?idempotency_header: String?,
-          ?http_client: OpenAI::_HTTPClient?
+          ?http_client: OpenAI::_HTTPClient?,
+          ?logger: OpenAI::_Logger?,
+          ?log_level: (Symbol | String)?,
+          ?on_retry: (^(OpenAI::RetryEvent) -> void)?
         ) -> void
 
         private def auth_headers: -> ::Hash[String, String]
@@ -130,7 +139,9 @@ module OpenAI
           redirect_count: Integer,
           retry_count: Integer,
           send_retry_header: bool
-        ) -> OpenAI::HTTPClient::Response
+        ) {
+          -> OpenAI::Internal::Logging::Context
+        } -> OpenAI::HTTPClient::Response
 
         def request: (
           Symbol method,
@@ -149,6 +160,23 @@ module OpenAI
           ?model: OpenAI::Internal::Type::Converter::input?,
           ?security: { :bearer_auth? => bool, :admin_api_key_auth? => bool }?,
           ?options: OpenAI::request_opts?
+        ) -> top
+
+        private def perform_request: (
+          OpenAI::Internal::Transport::BaseClient::request_components req
+        ) -> [URI::Generic, OpenAI::HTTPClient::Response, OpenAI::Internal::Logging::Context]
+
+        private def finish_request: (
+          OpenAI::Internal::Logging::Context log_context,
+          OpenAI::HTTPClient::Response response
+        ) {
+          -> top
+        } -> top
+
+        private def parse_response: (
+          OpenAI::Internal::Transport::BaseClient::request_components req,
+          url: URI::Generic,
+          response: OpenAI::HTTPClient::Response
         ) -> top
 
         def inspect: -> String

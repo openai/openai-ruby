@@ -168,9 +168,15 @@ module OpenAI
         def _request_id
         end
 
+        # Metadata from the HTTP response that produced this model. This is
+        # only populated on top-level response objects returned by the client.
+        sig { returns(T.nilable(OpenAI::ResponseMetadata)) }
+        def last_response
+        end
+
         # @api private
-        sig { params(request_id: T.nilable(String)).returns(T.self_type) }
-        def _set_request_id(request_id)
+        sig { params(response: OpenAI::ResponseMetadata).returns(T.self_type) }
+        def _set_last_response(response)
         end
 
         class << self
@@ -275,6 +281,11 @@ module OpenAI
 
         sig { params(a: T.anything).returns(String) }
         def to_yaml(*a)
+        end
+
+        # @api private
+        sig { params(coder: T.untyped).void }
+        def encode_with(coder)
         end
 
         # Create a new instance of a model.

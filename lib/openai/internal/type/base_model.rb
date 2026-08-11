@@ -243,14 +243,22 @@ module OpenAI
         # @api public
         #
         # @return [String, nil]
-        attr_reader :_request_id
+        def _request_id = @last_response&.request_id
+
+        # Metadata from the HTTP response that produced this model. This is
+        # only populated on top-level response objects returned by the client.
+        #
+        # @api public
+        #
+        # @return [OpenAI::ResponseMetadata, nil]
+        attr_reader :last_response
 
         # @api private
         #
-        # @param request_id [String, nil]
+        # @param response [OpenAI::ResponseMetadata]
         # @return [self]
-        def _set_request_id(request_id)
-          @_request_id = request_id
+        def _set_last_response(response)
+          @last_response = response
           self
         end
 
@@ -502,12 +510,24 @@ module OpenAI
         # @return [String]
         def to_yaml(*a) = OpenAI::Internal::Type::Converter.dump(self.class, self).to_yaml(*a)
 
+        # Keep transport metadata outside Psych's object serialization path.
+        #
+        # @api private
+        #
+        # @param coder [Psych::Coder]
+        # @return [void]
+        def encode_with(coder)
+          coder["data"] = @data
+          coder["coerced"] = @coerced
+        end
+
         # Create a new instance of a model.
         #
         # @param data [Hash{Symbol=>Object}, self]
         def initialize(data = {})
           @data = {}
           @coerced = {}
+          @last_response = nil
           OpenAI::Internal::Util.coerce_hash!(data).each do
             if self.class.known_fields.key?(_1)
               public_send(:"#{_1}=", _2)

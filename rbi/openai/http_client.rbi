@@ -1,6 +1,63 @@
 # typed: strong
 
 module OpenAI
+  class ResponseMetadata
+    sig { returns(Integer) }
+    attr_reader :status
+
+    sig { returns(T::Hash[String, String]) }
+    attr_reader :headers
+
+    sig { returns(T.nilable(String)) }
+    attr_reader :request_id
+
+    # @api private
+    sig do
+      params(status: Integer, headers: T::Hash[String, String]).returns(
+        T.attached_class
+      )
+    end
+    def self.new(status:, headers:)
+    end
+  end
+
+  class RetryEvent
+    sig { returns(Integer) }
+    attr_reader :attempt
+
+    sig { returns(Integer) }
+    attr_reader :max_attempts
+
+    sig { returns(Float) }
+    attr_reader :delay
+
+    sig { returns(T.nilable(OpenAI::ResponseMetadata)) }
+    attr_reader :response
+
+    sig { returns(T.nilable(OpenAI::Errors::APIConnectionError)) }
+    attr_reader :error
+
+    sig do
+      params(
+        attempt: Integer,
+        max_attempts: Integer,
+        delay: Float,
+        response: T.nilable(OpenAI::ResponseMetadata),
+        error: T.nilable(OpenAI::Errors::APIConnectionError)
+      ).returns(T.attached_class)
+    end
+    def self.new(attempt:, max_attempts:, delay:, response:, error:)
+    end
+
+    sig { returns(T.nilable(Integer)) }
+    def status
+    end
+
+    sig { returns(T.nilable(String)) }
+    def request_id
+    end
+  end
+
   class HTTPClient
     class Request
       sig { returns(Symbol) }
@@ -40,6 +97,9 @@ module OpenAI
 
       sig { returns(T::Enumerable[String]) }
       attr_reader :body
+
+      sig { returns(OpenAI::ResponseMetadata) }
+      attr_reader :metadata
 
       sig do
         params(

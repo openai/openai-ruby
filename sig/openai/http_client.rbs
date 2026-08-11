@@ -1,4 +1,38 @@
 module OpenAI
+  interface _Logger
+    def debug: (String message) -> untyped
+    def info: (String message) -> untyped
+    def warn: (String message) -> untyped
+    def error: (String message) -> untyped
+  end
+
+  class ResponseMetadata
+    attr_reader status: Integer
+    attr_reader headers: ::Hash[String, String]
+    attr_reader request_id: String?
+
+    def initialize: (status: Integer, headers: ::Hash[String, String]) -> void
+  end
+
+  class RetryEvent
+    attr_reader attempt: Integer
+    attr_reader max_attempts: Integer
+    attr_reader delay: Float
+    attr_reader response: OpenAI::ResponseMetadata?
+    attr_reader error: OpenAI::Errors::APIConnectionError?
+
+    def initialize: (
+      attempt: Integer,
+      max_attempts: Integer,
+      delay: Float,
+      response: OpenAI::ResponseMetadata?,
+      error: OpenAI::Errors::APIConnectionError?
+    ) -> void
+
+    def status: -> Integer?
+    def request_id: -> String?
+  end
+
   interface _HTTPClient
     def execute: (
       OpenAI::HTTPClient::Request request
@@ -26,6 +60,7 @@ module OpenAI
       attr_reader status: Integer
       attr_reader headers: ::Hash[String, String]
       attr_reader body: Enumerable[String]
+      attr_reader metadata: OpenAI::ResponseMetadata
 
       def initialize: (
         status: Integer,
