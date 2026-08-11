@@ -667,6 +667,12 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_5_1_CODEX_MAX }
 
+          variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_DAYBREAK_BLUE_LATEST }
+
+          variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_DAYBREAK_RED_LATEST }
+
+          variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_5_6_CYBER }
+
           variant String
 
           # @!method self.variants
@@ -774,6 +780,9 @@ module OpenAI
           GPT_5_PRO = :"gpt-5-pro"
           GPT_5_PRO_2025_10_06 = :"gpt-5-pro-2025-10-06"
           GPT_5_1_CODEX_MAX = :"gpt-5.1-codex-max"
+          GPT_DAYBREAK_BLUE_LATEST = :"gpt-daybreak-blue-latest"
+          GPT_DAYBREAK_RED_LATEST = :"gpt-daybreak-red-latest"
+          GPT_5_6_CYBER = :"gpt-5.6-cyber"
 
           # @!endgroup
         end

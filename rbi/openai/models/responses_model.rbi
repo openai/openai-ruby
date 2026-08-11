@@ -93,6 +93,21 @@ module OpenAI
             :"gpt-5.1-codex-max",
             OpenAI::ResponsesModel::ResponsesOnlyModel::TaggedSymbol
           )
+        GPT_DAYBREAK_BLUE_LATEST =
+          T.let(
+            :"gpt-daybreak-blue-latest",
+            OpenAI::ResponsesModel::ResponsesOnlyModel::TaggedSymbol
+          )
+        GPT_DAYBREAK_RED_LATEST =
+          T.let(
+            :"gpt-daybreak-red-latest",
+            OpenAI::ResponsesModel::ResponsesOnlyModel::TaggedSymbol
+          )
+        GPT_5_6_CYBER =
+          T.let(
+            :"gpt-5.6-cyber",
+            OpenAI::ResponsesModel::ResponsesOnlyModel::TaggedSymbol
+          )
 
         sig do
           override.returns(
