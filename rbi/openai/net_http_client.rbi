@@ -10,7 +10,7 @@ module OpenAI
     private def connect(url:)
     end
 
-    sig { params(conn: Net::HTTP, deadline: Float).void }
+    sig { params(conn: Net::HTTP, deadline: T.nilable(Float)).void }
     private def calibrate_socket_timeout(conn, deadline)
     end
 
@@ -26,7 +26,7 @@ module OpenAI
     sig do
       params(
         url: URI::Generic,
-        deadline: Float,
+        deadline: T.nilable(Float),
         blk: T.proc.params(arg0: Net::HTTP).void
       ).void
     end

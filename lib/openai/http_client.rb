@@ -21,14 +21,14 @@ module OpenAI
       # @return [Object, nil]
       attr_reader :body
 
-      # @return [Float]
+      # @return [Float, nil]
       attr_reader :timeout
 
       # @param method [Symbol]
       # @param url [URI::Generic]
       # @param headers [Hash{String=>String}]
       # @param body [Object, nil]
-      # @param timeout [Float]
+      # @param timeout [Float, nil]
       def initialize(method:, url:, headers:, body:, timeout:)
         @method = method
         @url = url

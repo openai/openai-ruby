@@ -165,6 +165,31 @@ class HTTPClientTest < Minitest::Test
     assert_equal(OpenAI::Client::DEFAULT_TIMEOUT_IN_SECONDS, request.timeout)
   end
 
+  def test_client_preserves_nil_timeout_for_custom_http_client
+    requests = []
+    http_client = StubHTTPClient.new do |request|
+      requests << request
+      OpenAI::HTTPClient::Response.new(
+        status: 200,
+        headers: {"content-type" => "application/json"},
+        body: ['{"ok":true}']
+      )
+    end
+    client = OpenAI::Client.new(
+      api_key: "test-key",
+      base_url: "https://example.com/v1",
+      timeout: nil,
+      http_client: http_client
+    )
+
+    response = client.request(method: :get, path: "probe", security: {bearer_auth: true})
+
+    assert_equal(true, response[:ok])
+    assert_nil(client.timeout)
+    assert_nil(requests.fetch(0).timeout)
+    refute_includes(requests.fetch(0).headers, "x-stainless-timeout")
+  end
+
   def test_net_http_client_configures_pooled_connections
     calls = []
     http_client = OpenAI::NetHTTPClient.new do |http|

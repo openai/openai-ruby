@@ -6,7 +6,7 @@ module OpenAI
 
     private def connect: (url: URI::Generic) -> top
 
-    private def calibrate_socket_timeout: (top conn, Float deadline) -> void
+    private def calibrate_socket_timeout: (top conn, Float? deadline) -> void
 
     private def build_request: (
       OpenAI::HTTPClient::Request request
@@ -16,7 +16,7 @@ module OpenAI
 
     private def with_pool: (
       URI::Generic url,
-      deadline: Float
+      deadline: Float?
     ) {
       (top arg0) -> void
     } -> void

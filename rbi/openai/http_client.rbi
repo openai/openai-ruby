@@ -15,7 +15,7 @@ module OpenAI
       sig { returns(T.anything) }
       attr_reader :body
 
-      sig { returns(Float) }
+      sig { returns(T.nilable(Float)) }
       attr_reader :timeout
 
       sig do
@@ -24,7 +24,7 @@ module OpenAI
           url: URI::Generic,
           headers: T::Hash[String, String],
           body: T.anything,
-          timeout: Float
+          timeout: T.nilable(Float)
         ).returns(T.attached_class)
       end
       def self.new(method:, url:, headers:, body:, timeout:)

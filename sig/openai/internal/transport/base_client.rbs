@@ -30,7 +30,7 @@ module OpenAI
             headers: ::Hash[String, String],
             body: top,
             max_retries: Integer,
-            timeout: Float,
+            timeout: Float?,
             :follow_redirects? => bool,
             :provider_auth? => Symbol
           }
@@ -63,7 +63,7 @@ module OpenAI
 
         attr_reader base_url: URI::Generic
 
-        attr_reader timeout: Float
+        attr_reader timeout: Float?
 
         attr_reader max_retries: Integer
 
@@ -80,7 +80,7 @@ module OpenAI
 
         def initialize: (
           base_url: String,
-          ?timeout: Float,
+          ?timeout: Float?,
           ?max_retries: Integer,
           ?initial_retry_delay: Float,
           ?max_retry_delay: Float,
