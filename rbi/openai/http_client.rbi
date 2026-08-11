@@ -13,16 +13,71 @@ module OpenAI
 
     # @api private
     sig do
-      params(
-        status: Integer,
-        headers: T::Hash[String, String]
-      ).returns(T.attached_class)
+      params(status: Integer, headers: T::Hash[String, String]).returns(
+        T.attached_class
+      )
     end
     def self.new(status:, headers:)
     end
   end
 
+  class RetryEvent
+    sig { returns(Integer) }
+    attr_reader :attempt
+
+    sig { returns(Integer) }
+    attr_reader :max_attempts
+
+    sig { returns(Float) }
+    attr_reader :delay
+
+    sig { returns(T.nilable(OpenAI::ResponseMetadata)) }
+    attr_reader :response
+
+    sig { returns(T.nilable(OpenAI::Errors::APIConnectionError)) }
+    attr_reader :error
+
+    sig do
+      params(
+        attempt: Integer,
+        max_attempts: Integer,
+        delay: Float,
+        response: T.nilable(OpenAI::ResponseMetadata),
+        error: T.nilable(OpenAI::Errors::APIConnectionError)
+      ).returns(T.attached_class)
+    end
+    def self.new(attempt:, max_attempts:, delay:, response:, error:)
+    end
+
+    sig { returns(T.nilable(Integer)) }
+    def status
+    end
+
+    sig { returns(T.nilable(String)) }
+    def request_id
+    end
+  end
+
   class HTTPClient
+    sig { returns(T.untyped) }
+    attr_reader :logger
+
+    sig { returns(Symbol) }
+    attr_reader :log_level
+
+    sig { returns(T.nilable(T.proc.params(event: OpenAI::RetryEvent).void)) }
+    attr_reader :on_retry
+
+    sig do
+      params(
+        logger: T.untyped,
+        log_level: T.any(Symbol, String),
+        on_retry: T.nilable(T.proc.params(event: OpenAI::RetryEvent).void)
+      ).returns(T.attached_class)
+    end
+    def self.new(logger: nil, log_level: :off, on_retry: nil)
+    end
+
     class Request
       sig { returns(Symbol) }
       attr_reader :method

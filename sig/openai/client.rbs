@@ -95,9 +95,7 @@ module OpenAI
       ?timeout: Float?,
       ?initial_retry_delay: Float,
       ?max_retry_delay: Float,
-      ?http_client: OpenAI::_HTTPClient?,
-      ?logger: OpenAI::_Logger?,
-      ?log_level: Symbol | String
+      ?http_client: OpenAI::_HTTPClient?
     ) -> void
   end
 end

@@ -78,10 +78,6 @@ module OpenAI
         # @api private
         attr_reader requester: OpenAI::_HTTPClient
 
-        attr_reader logger: OpenAI::_Logger?
-
-        attr_reader log_level: Symbol
-
         def initialize: (
           base_url: String,
           ?timeout: Float?,
@@ -92,9 +88,7 @@ module OpenAI
           | Integer
           | ::Array[(String | Integer)?])?],
           ?idempotency_header: String?,
-          ?http_client: OpenAI::_HTTPClient?,
-          ?logger: OpenAI::_Logger?,
-          ?log_level: Symbol | String
+          ?http_client: OpenAI::_HTTPClient?
         ) -> void
 
         private def auth_headers: -> ::Hash[String, String]
@@ -135,9 +129,10 @@ module OpenAI
           OpenAI::Internal::Transport::BaseClient::request_input request,
           redirect_count: Integer,
           retry_count: Integer,
-          send_retry_header: bool,
-          log_context: OpenAI::Internal::Logging::Context
-        ) -> OpenAI::HTTPClient::Response
+          send_retry_header: bool
+        ) {
+          -> OpenAI::Internal::Logging::Context
+        } -> OpenAI::HTTPClient::Response
 
         def request: (
           Symbol method,

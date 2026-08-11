@@ -29,6 +29,13 @@ module OpenAI
       OpenAI::HTTPClient::Request request
     ) -> OpenAI::HTTPClient::Response
 
-    def initialize: (?size: Integer) ?{ (Net::HTTP) -> void } -> void
+    def initialize: (
+      ?size: Integer,
+      ?logger: OpenAI::_Logger?,
+      ?log_level: Symbol | String,
+      ?on_retry: (^(OpenAI::RetryEvent) -> void)?
+    ) ?{
+      (Net::HTTP) -> void
+    } -> void
   end
 end

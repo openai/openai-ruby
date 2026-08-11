@@ -1,13 +1,36 @@
 module OpenAI
+  interface _Logger
+    def debug: (String message) -> untyped
+    def info: (String message) -> untyped
+    def warn: (String message) -> untyped
+    def error: (String message) -> untyped
+  end
+
   class ResponseMetadata
     attr_reader status: Integer
     attr_reader headers: ::Hash[String, String]
     attr_reader request_id: String?
 
+    def initialize: (status: Integer, headers: ::Hash[String, String]) -> void
+  end
+
+  class RetryEvent
+    attr_reader attempt: Integer
+    attr_reader max_attempts: Integer
+    attr_reader delay: Float
+    attr_reader response: OpenAI::ResponseMetadata?
+    attr_reader error: OpenAI::Errors::APIConnectionError?
+
     def initialize: (
-      status: Integer,
-      headers: ::Hash[String, String]
+      attempt: Integer,
+      max_attempts: Integer,
+      delay: Float,
+      response: OpenAI::ResponseMetadata?,
+      error: OpenAI::Errors::APIConnectionError?
     ) -> void
+
+    def status: -> Integer?
+    def request_id: -> String?
   end
 
   interface _HTTPClient
@@ -17,6 +40,16 @@ module OpenAI
   end
 
   class HTTPClient
+    attr_reader logger: OpenAI::_Logger?
+    attr_reader log_level: Symbol
+    attr_reader on_retry: (^(OpenAI::RetryEvent) -> void)?
+
+    def initialize: (
+      ?logger: OpenAI::_Logger?,
+      ?log_level: Symbol | String,
+      ?on_retry: (^(OpenAI::RetryEvent) -> void)?
+    ) -> void
+
     class Request
       attr_reader method: Symbol
       attr_reader url: URI::Generic

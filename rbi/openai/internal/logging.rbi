@@ -17,11 +17,12 @@ module OpenAI
           params(
             logger: T.untyped,
             log_level: Symbol,
+            on_retry: T.nilable(T.proc.params(event: OpenAI::RetryEvent).void),
             method: Symbol,
             url: URI::Generic
           ).returns(T.attached_class)
         end
-        def self.new(logger:, log_level:, method:, url:)
+        def self.new(logger:, log_level:, on_retry:, method:, url:)
         end
 
         sig do
@@ -48,10 +49,19 @@ module OpenAI
         sig do
           params(
             cause: T.any(Integer, OpenAI::Errors::APIConnectionError),
-            delay: Float
+            delay: Float,
+            response: T.nilable(OpenAI::ResponseMetadata),
+            retry_count: Integer,
+            max_retries: Integer
           ).void
         end
-        def retry_scheduled(cause, delay:)
+        def retry_scheduled(
+          cause,
+          delay:,
+          response:,
+          retry_count:,
+          max_retries:
+        )
         end
 
         sig { params(response: OpenAI::HTTPClient::Response).void }

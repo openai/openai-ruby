@@ -25,9 +25,10 @@ module OpenAI
       URL_HEADER_KEY = /(?:\A|[-_])(?:location|url|uri)\z|\A(?:link|refresh)\z/i
 
       class Context
-        def initialize(logger:, log_level:, method:, url:)
+        def initialize(logger:, log_level:, on_retry:, method:, url:)
           @logger = logger
           @log_level = log_level
+          @on_retry = on_retry
           @id = nil
           @method = method.to_s.upcase
           @url = url
@@ -77,12 +78,23 @@ module OpenAI
           end
         end
 
-        def retry_scheduled(cause, delay:)
+        def retry_scheduled(cause, delay:, response:, retry_count:, max_retries:)
           reason = cause.is_a?(Integer) ? "status=#{cause}" : "error=#{cause.class}"
           log(:warn) do
             "[openai] request retry log_id=#{id} attempt=#{@attempts} " \
               "#{reason} delay_seconds=#{delay}"
           end
+
+          event = OpenAI::RetryEvent.new(
+            attempt: retry_count + 2,
+            max_attempts: max_retries + 1,
+            delay: delay,
+            response: response,
+            error: cause.is_a?(OpenAI::Errors::APIConnectionError) ? cause : nil
+          )
+          @on_retry&.call(event)
+        rescue StandardError
+          nil
         end
 
         def completed(response)
@@ -219,8 +231,7 @@ module OpenAI
           @stream = stream
           @context = context
           @response = response
-          @status = stream.status
-          @headers = stream.headers
+          @last_response = stream.last_response
           @iterator = iterator
         end
 

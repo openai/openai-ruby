@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "logger"
+
 module OpenAI
   # Metadata from the HTTP response backing a top-level SDK value.
   class ResponseMetadata
@@ -33,12 +35,92 @@ module OpenAI
     end
   end
 
+  # Details about an API request retry that is about to run.
+  class RetryEvent
+    # The one-based number of the attempt that will run after the delay.
+    #
+    # @return [Integer]
+    attr_reader :attempt
+
+    # The maximum number of attempts, including the initial request.
+    #
+    # @return [Integer]
+    attr_reader :max_attempts
+
+    # The number of seconds the SDK will wait before the next attempt.
+    #
+    # @return [Float]
+    attr_reader :delay
+
+    # Metadata from the retryable HTTP response, if one was received.
+    #
+    # @return [OpenAI::ResponseMetadata, nil]
+    attr_reader :response
+
+    # The connection error that caused the retry, if the request failed before
+    # an HTTP response was received.
+    #
+    # @return [OpenAI::Errors::APIConnectionError, nil]
+    attr_reader :error
+
+    # @api private
+    #
+    # @param attempt [Integer]
+    # @param max_attempts [Integer]
+    # @param delay [Float]
+    # @param response [OpenAI::ResponseMetadata, nil]
+    # @param error [OpenAI::Errors::APIConnectionError, nil]
+    def initialize(attempt:, max_attempts:, delay:, response:, error:)
+      @attempt = Integer(attempt)
+      @max_attempts = Integer(max_attempts)
+      @delay = Float(delay)
+      @response = response
+      @error = error
+      freeze
+    end
+
+    # The status of the retryable response, if one was received.
+    #
+    # @return [Integer, nil]
+    def status = @response&.status
+
+    # The request ID of the retryable response, if one was received.
+    #
+    # @return [String, nil]
+    def request_id = @response&.request_id
+  end
+
   # The transport boundary used by {OpenAI::Client}.
   #
   # Implement {#execute} to replace the SDK's HTTP transport. Subclassing this
   # class is optional; any object that implements the same method is accepted.
-  # Most applications should use {OpenAI::NetHTTPClient}.
+  # Subclass this class to use its diagnostics configuration. Most applications
+  # should use {OpenAI::NetHTTPClient}.
   class HTTPClient
+    # @return [#debug, #info, #warn, #error, nil]
+    attr_reader :logger
+
+    # @return [Symbol]
+    attr_reader :log_level
+
+    # @return [Proc, nil]
+    attr_reader :on_retry
+
+    # @param logger [#debug, #info, #warn, #error, nil]
+    # @param log_level [Symbol, String]
+    # @param on_retry [Proc, nil]
+    def initialize(logger: nil, log_level: logger.nil? ? :off : :info, on_retry: nil)
+      unless on_retry.nil? || on_retry.respond_to?(:call)
+        raise ArgumentError, "`on_retry` must respond to `call`"
+      end
+
+      @log_level = OpenAI::Internal::Logging.normalize_level(log_level)
+      OpenAI::Internal::Logging.validate_logger!(logger)
+      @logger = logger
+      @logger ||= OpenAI::Internal::Logging.default_logger unless @log_level == :off
+      @on_retry = on_retry
+    end
+
     # An HTTP request prepared by the SDK.
     class Request
       # @return [Symbol]

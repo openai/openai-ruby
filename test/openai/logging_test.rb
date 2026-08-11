@@ -26,8 +26,8 @@ class LoggingTest < Minitest::Test
   end
 
   class StubHTTPClient < OpenAI::HTTPClient
-    def initialize(&execute)
-      super()
+    def initialize(logger: nil, log_level: logger.nil? ? :off : :info, on_retry: nil, &execute)
+      super(logger: logger, log_level: log_level, on_retry: on_retry)
       @execute = execute
     end
 
@@ -67,27 +67,44 @@ class LoggingTest < Minitest::Test
     super
   end
 
+  def diagnostic_client(
+    http_client: StubHTTPClient.new { raise "unexpected HTTP request" },
+    logger: nil,
+    log_level: :info,
+    on_retry: nil,
+    **options
+  )
+    transport = StubHTTPClient.new(
+      logger: logger,
+      log_level: log_level,
+      on_retry: on_retry
+    ) { |request| http_client.execute(request) }
+    client_options = {api_key: "test-key", **options, http_client: transport}
+    OpenAI::Client.new(**client_options)
+  end
+
   def test_logging_is_off_by_default
     client = OpenAI::Client.new(api_key: "test-key")
 
-    assert_equal(:off, client.log_level)
-    assert_nil(client.logger)
+    assert_instance_of(OpenAI::NetHTTPClient, client.requester)
+    assert_equal(:off, client.requester.log_level)
+    assert_nil(client.requester.logger)
   end
 
-  def test_client_accepts_a_structural_logger_and_log_level
+  def test_http_client_accepts_a_structural_logger_and_log_level
     logger = CapturingLogger.new
-    client = OpenAI::Client.new(api_key: "test-key", logger: logger, log_level: "info")
+    client = diagnostic_client(api_key: "test-key", logger: logger, log_level: "info")
 
-    assert_same(logger, client.logger)
-    assert_equal(:info, client.log_level)
+    assert_same(logger, client.requester.logger)
+    assert_equal(:info, client.requester.log_level)
   end
 
-  def test_supplying_a_logger_does_not_enable_logging_without_a_level
+  def test_http_client_enables_info_logging_by_default
     logger = CapturingLogger.new
-    client = OpenAI::Client.new(api_key: "test-key", logger: logger)
+    client = diagnostic_client(api_key: "test-key", logger: logger)
 
-    assert_same(logger, client.logger)
-    assert_equal(:off, client.log_level)
+    assert_same(logger, client.requester.logger)
+    assert_equal(:info, client.requester.log_level)
   end
 
   def test_openai_log_enables_the_default_logger
@@ -95,17 +112,18 @@ class LoggingTest < Minitest::Test
 
     client = OpenAI::Client.new(api_key: "test-key")
 
-    assert_instance_of(Logger, client.logger)
-    assert_equal(:debug, client.log_level)
+    assert_instance_of(OpenAI::NetHTTPClient, client.requester)
+    assert_instance_of(Logger, client.requester.logger)
+    assert_equal(:debug, client.requester.log_level)
   end
 
   def test_explicit_log_level_wins_over_openai_log
     ENV["OPENAI_LOG"] = "debug"
 
-    client = OpenAI::Client.new(api_key: "test-key", log_level: :off)
+    client = diagnostic_client(api_key: "test-key", log_level: :off)
 
-    assert_nil(client.logger)
-    assert_equal(:off, client.log_level)
+    assert_nil(client.requester.logger)
+    assert_equal(:off, client.requester.log_level)
   end
 
   def test_standard_logger_can_apply_a_stricter_severity_filter
@@ -121,7 +139,7 @@ class LoggingTest < Minitest::Test
         body: attempts == 1 ? '{"error":"retry"}' : '{"ok":true}'
       )
     end
-    client = OpenAI::Client.new(
+    client = diagnostic_client(
       api_key: "test-key",
       http_client: http_client,
       max_retries: 1,
@@ -137,9 +155,9 @@ class LoggingTest < Minitest::Test
     refute_includes(output.string, "request complete")
   end
 
-  def test_client_rejects_an_invalid_log_level
+  def test_http_client_rejects_an_invalid_log_level
     error = assert_raises(ArgumentError) do
-      OpenAI::Client.new(api_key: "test-key", log_level: :verbose)
+      StubHTTPClient.new(log_level: :verbose) { nil }
     end
 
     assert_equal(
@@ -148,12 +166,20 @@ class LoggingTest < Minitest::Test
     )
   end
 
-  def test_client_rejects_an_invalid_logger
+  def test_http_client_rejects_an_invalid_logger
     error = assert_raises(ArgumentError) do
-      OpenAI::Client.new(api_key: "test-key", logger: Object.new, log_level: :info)
+      StubHTTPClient.new(logger: Object.new, log_level: :info) { nil }
     end
 
     assert_equal("`logger` must respond to `debug`, `info`, `warn`, and `error`", error.message)
+  end
+
+  def test_http_client_rejects_an_invalid_retry_callback
+    error = assert_raises(ArgumentError) do
+      StubHTTPClient.new(on_retry: Object.new) { nil }
+    end
+
+    assert_equal("`on_retry` must respond to `call`", error.message)
   end
 
   def test_info_logs_a_safe_logical_request_summary
@@ -169,7 +195,7 @@ class LoggingTest < Minitest::Test
         body: '{"answer":"sensitive response"}'
       )
     end
-    client = OpenAI::Client.new(
+    client = diagnostic_client(
       api_key: "secret-key",
       base_url: "https://example.com/v1",
       http_client: http_client,
@@ -216,7 +242,7 @@ class LoggingTest < Minitest::Test
         body: JSON.generate(response_body)
       )
     end
-    client = OpenAI::Client.new(
+    client = diagnostic_client(
       api_key: "secret-key",
       base_url: "https://example.com/v1",
       http_client: http_client,
@@ -349,7 +375,7 @@ class LoggingTest < Minitest::Test
         body: attempts == 1 ? '{"error":"retry"}' : '{"ok":true}'
       )
     end
-    client = OpenAI::Client.new(
+    client = diagnostic_client(
       api_key: "test-key",
       http_client: http_client,
       max_retries: 1,
@@ -376,6 +402,81 @@ class LoggingTest < Minitest::Test
     assert_includes(completion, "attempts=2")
   end
 
+  def test_retry_callback_receives_an_immutable_structured_event_before_the_next_attempt
+    attempts = 0
+    events = []
+    http_client = StubHTTPClient.new do |_request|
+      attempts += 1
+      OpenAI::HTTPClient::Response.new(
+        status: attempts == 1 ? 429 : 200,
+        headers: {
+          "content-type" => "application/json",
+          "retry-after" => "0",
+          "x-request-id" => "req_#{attempts}"
+        },
+        body: attempts == 1 ? '{"error":"retry"}' : '{"ok":true}'
+      )
+    end
+    on_retry = lambda do |event|
+      events << [event, attempts]
+    end
+    client = diagnostic_client(
+      http_client: http_client,
+      max_retries: 3,
+      log_level: :off,
+      on_retry: on_retry
+    )
+
+    assert_equal(true, client.request(method: :get, path: "probe")[:ok])
+    assert_equal(1, events.length)
+    event, attempts_when_called = events.fetch(0)
+    assert_equal(1, attempts_when_called)
+    assert_equal(2, event.attempt)
+    assert_equal(4, event.max_attempts)
+    assert_equal(0.0, event.delay)
+    assert_equal(429, event.status)
+    assert_equal("req_1", event.request_id)
+    assert_equal({"content-type" => "application/json", "retry-after" => "0", "x-request-id" => "req_1"}, event.response.headers)
+    assert_nil(event.error)
+    assert_predicate(event, :frozen?)
+  end
+
+  def test_retry_callback_receives_connection_errors_and_cannot_break_requests
+    attempts = 0
+    events = []
+    http_client = StubHTTPClient.new do |request|
+      attempts += 1
+      if attempts == 1
+        raise OpenAI::Errors::APIConnectionError.new(url: request.url)
+      end
+
+      OpenAI::HTTPClient::Response.new(
+        status: 200,
+        headers: {"content-type" => "application/json"},
+        body: '{"ok":true}'
+      )
+    end
+    on_retry = lambda do |event|
+      events << event
+      raise "observer failed"
+    end
+    client = diagnostic_client(
+      http_client: http_client,
+      max_retries: 1,
+      initial_retry_delay: 0,
+      max_retry_delay: 0,
+      log_level: :off,
+      on_retry: on_retry
+    )
+
+    assert_equal(true, client.request(method: :get, path: "probe")[:ok])
+    assert_equal(1, events.length)
+    assert_instance_of(OpenAI::Errors::APIConnectionError, events.fetch(0).error)
+    assert_nil(events.fetch(0).response)
+    assert_nil(events.fetch(0).status)
+    assert_nil(events.fetch(0).request_id)
+  end
+
   def test_terminal_errors_emit_one_safe_error_event
     logger = CapturingLogger.new
     http_client = StubHTTPClient.new do |_request|
@@ -385,7 +486,7 @@ class LoggingTest < Minitest::Test
         body: '{"error":{"message":"sensitive failure"}}'
       )
     end
-    client = OpenAI::Client.new(
+    client = diagnostic_client(
       api_key: "test-key",
       http_client: http_client,
       logger: logger,
@@ -415,7 +516,7 @@ class LoggingTest < Minitest::Test
         body: source
       )
     end
-    client = OpenAI::Client.new(
+    client = diagnostic_client(
       api_key: "test-key",
       http_client: http_client,
       logger: logger,
@@ -443,7 +544,7 @@ class LoggingTest < Minitest::Test
         body: "data: {\"message\":\"done\"}\n\n"
       )
     end
-    client = OpenAI::Client.new(
+    client = diagnostic_client(
       api_key: "test-key",
       http_client: http_client,
       logger: logger,
@@ -471,7 +572,7 @@ class LoggingTest < Minitest::Test
         body: "data: {\"error\":{\"message\":\"stream failed\"}}\n\n"
       )
     end
-    client = OpenAI::Client.new(
+    client = diagnostic_client(
       api_key: "test-key",
       http_client: http_client,
       logger: logger,
@@ -499,7 +600,7 @@ class LoggingTest < Minitest::Test
         body: "data: {\"message\":\"first\"}\n\n"
       )
     end
-    client = OpenAI::Client.new(
+    client = diagnostic_client(
       api_key: "test-key",
       http_client: http_client,
       logger: logger,
@@ -530,7 +631,7 @@ class LoggingTest < Minitest::Test
         body: '{"ok":true}'
       )
     end
-    client = OpenAI::Client.new(
+    client = diagnostic_client(
       api_key: "test-key",
       http_client: http_client,
       logger: logger,
@@ -562,7 +663,7 @@ class LoggingTest < Minitest::Test
         body: "binary-secret"
       )
     end
-    client = OpenAI::Client.new(
+    client = diagnostic_client(
       api_key: "test-key",
       http_client: http_client,
       logger: logger,
@@ -588,7 +689,7 @@ class LoggingTest < Minitest::Test
         body: '{"ok":true}'
       )
     end
-    client = OpenAI::Client.new(
+    client = diagnostic_client(
       api_key: "test-key",
       http_client: http_client,
       logger: logger,
@@ -611,26 +712,30 @@ class LoggingTest < Minitest::Test
     refute_includes(debug_log, "binary-request-secret")
   end
 
-  def test_raw_responses_use_the_same_logging_pipeline
+  def test_logged_stream_preserves_response_metadata
     logger = CapturingLogger.new
     http_client = StubHTTPClient.new do |_request|
       OpenAI::HTTPClient::Response.new(
         status: 200,
-        headers: {"content-type" => "application/json", "x-request-id" => "req_raw"},
-        body: '{"ok":true}'
+        headers: {"content-type" => "text/event-stream", "x-request-id" => "req_raw"},
+        body: "data: {\"message\":\"done\"}\n\n"
       )
     end
-    client = OpenAI::Client.new(
+    client = diagnostic_client(
       api_key: "test-key",
       http_client: http_client,
       logger: logger,
       log_level: :debug
     )
 
-    response = client.raw_request(method: :get, path: "probe")
+    stream = client.request(
+      method: :get,
+      path: "probe",
+      stream: OpenAI::Internal::Stream
+    )
 
-    assert_equal('{"ok":true}', response.read)
-    assert_equal({ok: true}, response.parse)
+    assert_equal("req_raw", stream.last_response.request_id)
+    assert_equal([{message: "done"}], stream.to_a)
     completions = logger.events.count do |level, message|
       level == :info && message.include?("request complete")
     end
@@ -648,7 +753,7 @@ class LoggingTest < Minitest::Test
         body: '{"ok":true}'
       )
     end
-    successful_client = OpenAI::Client.new(
+    successful_client = diagnostic_client(
       api_key: "test-key",
       http_client: successful_http_client,
       logger: RaisingLogger.new,
@@ -664,7 +769,7 @@ class LoggingTest < Minitest::Test
         body: '{"error":{"message":"bad request"}}'
       )
     end
-    failing_client = OpenAI::Client.new(
+    failing_client = diagnostic_client(
       api_key: "test-key",
       http_client: failing_http_client,
       logger: RaisingLogger.new,
@@ -686,7 +791,7 @@ class LoggingTest < Minitest::Test
         body: '{"ok":true}'
       )
     end
-    client = OpenAI::Client.new(
+    client = diagnostic_client(
       api_key: "test-key",
       http_client: http_client,
       logger: logger,

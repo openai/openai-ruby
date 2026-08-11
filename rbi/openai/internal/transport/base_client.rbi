@@ -155,12 +155,6 @@ module OpenAI
         sig { returns(T.untyped) }
         attr_reader :requester
 
-        sig { returns(T.untyped) }
-        attr_reader :logger
-
-        sig { returns(Symbol) }
-        attr_reader :log_level
-
         # @api private
         sig do
           params(
@@ -181,9 +175,7 @@ module OpenAI
                 )
               ],
             idempotency_header: T.nilable(String),
-            http_client: T.untyped,
-            logger: T.untyped,
-            log_level: T.any(Symbol, String)
+            http_client: T.untyped
           ).returns(T.attached_class)
         end
         def self.new(
@@ -194,9 +186,7 @@ module OpenAI
           max_retry_delay: 0.0,
           headers: {},
           idempotency_header: nil,
-          http_client: nil,
-          logger: nil,
-          log_level: :off
+          http_client: nil
         )
         end
 
@@ -285,7 +275,7 @@ module OpenAI
             redirect_count: Integer,
             retry_count: Integer,
             send_retry_header: T::Boolean,
-            log_context: OpenAI::Internal::Logging::Context
+            context_provider: T.proc.returns(OpenAI::Internal::Logging::Context)
           ).returns(OpenAI::HTTPClient::Response)
         end
         def send_request(
@@ -293,7 +283,7 @@ module OpenAI
           redirect_count:,
           retry_count:,
           send_retry_header:,
-          log_context:
+          &context_provider
         )
         end
 

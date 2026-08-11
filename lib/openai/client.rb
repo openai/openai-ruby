@@ -171,7 +171,7 @@ module OpenAI
     end
 
     # @api private
-    def send_request(request, redirect_count:, retry_count:, send_retry_header:, log_context:)
+    private def send_request(request, redirect_count:, retry_count:, send_retry_header:)
       return super unless @workload_identity_auth
 
       workload_identity_auth_header = "Bearer #{WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER}"
@@ -186,8 +186,7 @@ module OpenAI
           updated_request,
           redirect_count: redirect_count,
           retry_count: retry_count,
-          send_retry_header: send_retry_header,
-          log_context: log_context
+          send_retry_header: send_retry_header
         )
       rescue OpenAI::Errors::AuthenticationError
         raise unless retry_count.zero? && request_replayable?(request)
@@ -201,8 +200,7 @@ module OpenAI
           refreshed_request,
           redirect_count: redirect_count,
           retry_count: retry_count + 1,
-          send_retry_header: send_retry_header,
-          log_context: log_context
+          send_retry_header: send_retry_header
         )
       end
     end
@@ -241,13 +239,6 @@ module OpenAI
     #
     # @param http_client [#execute, nil] The HTTP client used to
     #   execute SDK requests. Defaults to {OpenAI::NetHTTPClient}.
-    #
-    # @param logger [#debug, #info, #warn, #error, nil] Logger used for SDK
-    #   request diagnostics. Logging is disabled unless `log_level` or
-    #   `OPENAI_LOG` enables it.
-    #
-    # @param log_level [Symbol, String] One of `:off`, `:error`, `:warn`,
-    #   `:info`, or `:debug`. Defaults to `ENV["OPENAI_LOG"]`, then `:off`.
     def initialize(
       api_key: OpenAI::Internal::OMIT,
       admin_api_key: OpenAI::Internal::OMIT,
@@ -261,9 +252,7 @@ module OpenAI
       timeout: self.class::DEFAULT_TIMEOUT_IN_SECONDS,
       initial_retry_delay: self.class::DEFAULT_INITIAL_RETRY_DELAY,
       max_retry_delay: self.class::DEFAULT_MAX_RETRY_DELAY,
-      http_client: nil,
-      logger: nil,
-      log_level: OpenAI::Internal::OMIT
+      http_client: nil
     )
       provider_runtime = nil
       unless provider.nil?
@@ -296,7 +285,6 @@ module OpenAI
       project = ENV["OPENAI_PROJECT_ID"] if project.equal?(OpenAI::Internal::OMIT) && provider_runtime.nil?
       webhook_secret = ENV["OPENAI_WEBHOOK_SECRET"] if webhook_secret.equal?(OpenAI::Internal::OMIT)
       base_url = ENV["OPENAI_BASE_URL"] if base_url.equal?(OpenAI::Internal::OMIT) && provider_runtime.nil?
-      log_level = ENV.fetch("OPENAI_LOG", :off) if log_level.equal?(OpenAI::Internal::OMIT)
 
       api_key = nil if api_key.equal?(OpenAI::Internal::OMIT)
       admin_api_key = nil if admin_api_key.equal?(OpenAI::Internal::OMIT)
@@ -353,9 +341,7 @@ module OpenAI
         initial_retry_delay: initial_retry_delay,
         max_retry_delay: max_retry_delay,
         headers: headers,
-        http_client: http_client,
-        logger: logger,
-        log_level: log_level
+        http_client: http_client
       )
 
       @completions = OpenAI::Resources::Completions.new(client: self)

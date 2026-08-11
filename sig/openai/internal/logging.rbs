@@ -14,6 +14,7 @@ module OpenAI
         def initialize: (
           logger: OpenAI::_Logger?,
           log_level: Symbol,
+          on_retry: (^(OpenAI::RetryEvent) -> void)?,
           method: Symbol,
           url: URI::Generic
         ) -> void
@@ -27,7 +28,10 @@ module OpenAI
         def attempt_failed: (OpenAI::Errors::APIConnectionError error) -> void
         def retry_scheduled: (
           Integer | OpenAI::Errors::APIConnectionError cause,
-          delay: Float
+          delay: Float,
+          response: OpenAI::ResponseMetadata?,
+          retry_count: Integer,
+          max_retries: Integer
         ) -> void
         def completed: (OpenAI::HTTPClient::Response response) -> void
         def observe_stream: [Elem] (

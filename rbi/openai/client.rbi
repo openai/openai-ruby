@@ -163,9 +163,7 @@ module OpenAI
         timeout: T.nilable(Float),
         initial_retry_delay: Float,
         max_retry_delay: Float,
-        http_client: T.untyped,
-        logger: T.untyped,
-        log_level: T.any(Symbol, String)
+        http_client: T.untyped
       ).returns(T.attached_class)
     end
     def self.new(
@@ -189,9 +187,7 @@ module OpenAI
       timeout: OpenAI::Client::DEFAULT_TIMEOUT_IN_SECONDS,
       initial_retry_delay: OpenAI::Client::DEFAULT_INITIAL_RETRY_DELAY,
       max_retry_delay: OpenAI::Client::DEFAULT_MAX_RETRY_DELAY,
-      http_client: nil,
-      logger: nil,
-      log_level: ENV.fetch("OPENAI_LOG", :off)
+      http_client: nil
     )
     end
   end

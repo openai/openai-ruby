@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../logging"
+
 module OpenAI
   module Internal
     module Transport
@@ -221,12 +223,6 @@ module OpenAI
         # @return [#execute]
         attr_reader :requester
 
-        # @return [#debug, #info, #warn, #error, nil]
-        attr_reader :logger
-
-        # @return [Symbol]
-        attr_reader :log_level
-
         # @api private
         #
         # @param base_url [String]
@@ -237,8 +233,6 @@ module OpenAI
         # @param headers [Hash{String=>String, Integer, Array<String, Integer, nil>, nil}]
         # @param idempotency_header [String, nil]
         # @param http_client [#execute, nil]
-        # @param logger [#debug, #info, #warn, #error, nil]
-        # @param log_level [Symbol, String]
         def initialize(
           base_url:,
           timeout: 0.0,
@@ -247,19 +241,18 @@ module OpenAI
           max_retry_delay: 0.0,
           headers: {},
           idempotency_header: nil,
-          http_client: nil,
-          logger: nil,
-          log_level: :off
+          http_client: nil
         )
           unless http_client.nil? || http_client.respond_to?(:execute)
             raise ArgumentError, "`http_client` must respond to `execute`"
           end
 
-          @requester = http_client || OpenAI::NetHTTPClient.new
-          @log_level = OpenAI::Internal::Logging.normalize_level(log_level)
-          OpenAI::Internal::Logging.validate_logger!(logger)
-          @logger = logger
-          @logger ||= OpenAI::Internal::Logging.default_logger unless @log_level == :off
+          default_log_level = ENV.fetch("OPENAI_LOG", :off)
+          @requester = http_client || OpenAI::NetHTTPClient.new(log_level: default_log_level)
+          instrumentation = @requester if @requester.is_a?(OpenAI::HTTPClient)
+          @logger = instrumentation&.logger
+          @log_level = instrumentation&.log_level || :off
+          @on_retry = instrumentation&.on_retry
           @headers = OpenAI::Internal::Util.normalized_headers(
             self.class::PLATFORM_HEADERS,
             {
@@ -476,11 +469,16 @@ module OpenAI
         # @param retry_count [Integer]
         #
         # @param send_retry_header [Boolean]
-        # @param log_context [OpenAI::Internal::Logging::Context]
+        #
+        # @yieldreturn [OpenAI::Internal::Logging::Context]
         #
         # @raise [OpenAI::Errors::APIError]
         # @return [OpenAI::HTTPClient::Response]
-        def send_request(request, redirect_count:, retry_count:, send_retry_header:, log_context:)
+        def send_request(request, redirect_count:, retry_count:, send_retry_header:, &context_provider)
+          # Generated clients override this hook. A block keeps observability
+          # state out of their stable keyword signature and is forwarded by
+          # their existing `super` calls.
+          log_context = context_provider.call
           if send_retry_header
             request = request.merge(
               headers: request.fetch(:headers).merge("x-stainless-retry-count" => retry_count.to_s)
@@ -565,7 +563,7 @@ module OpenAI
               redirect_count: redirect_count + 1,
               retry_count: retry_count,
               send_retry_header: send_retry_header,
-              log_context: log_context
+              &context_provider
             )
           in OpenAI::Errors::APIConnectionError if retry_count >= max_retries
             raise status
@@ -573,7 +571,13 @@ module OpenAI
             self.class.reap_connection!(status, stream: stream)
 
             delay = retry_delay(headers, retry_count: retry_count)
-            log_context.retry_scheduled(status, delay: delay)
+            log_context.retry_scheduled(
+              status,
+              delay: delay,
+              response: http_response&.metadata,
+              retry_count: retry_count,
+              max_retries: max_retries
+            )
             sleep(delay)
 
             send_request(
@@ -581,7 +585,7 @@ module OpenAI
               redirect_count: redirect_count,
               retry_count: retry_count + 1,
               send_retry_header: send_retry_header,
-              log_context: log_context
+              &context_provider
             )
           end
         end
@@ -647,6 +651,7 @@ module OpenAI
           log_context = OpenAI::Internal::Logging::Context.new(
             logger: @logger,
             log_level: @log_level,
+            on_retry: @on_retry,
             method: request.fetch(:method),
             url: url
           )
@@ -657,9 +662,8 @@ module OpenAI
             request,
             redirect_count: 0,
             retry_count: 0,
-            send_retry_header: send_retry_header,
-            log_context: log_context
-          )
+            send_retry_header: send_retry_header
+          ) { log_context }
           [url, response, log_context]
         rescue StandardError => e
           log_context&.request_failed(e)

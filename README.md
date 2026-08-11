@@ -623,27 +623,31 @@ Error codes are as follows:
 | Timeout          | `APITimeoutError`          |
 | Network error    | `APIConnectionError`       |
 
-### Response metadata and request IDs
-### Request logging
 ### Request logging
 
 Request logging is disabled by default. Enable it with a standard Ruby logger
-and an explicit log level:
+by configuring the HTTP client:
 
 ```ruby
-client = OpenAI::Client.new(
-  api_key: ENV.fetch("OPENAI_API_KEY"),
+http_client = OpenAI::NetHTTPClient.new(
   logger: Rails.logger,
   log_level: :info
+)
+client = OpenAI::Client.new(
+  api_key: ENV.fetch("OPENAI_API_KEY"),
+  http_client: http_client
 )
 ```
 
 The logger can be any object that responds to `debug`, `info`, `warn`, and
-`error`; the SDK does not depend on Rails. Supplying a logger does not enable
-logging by itself. You can also set `OPENAI_LOG=info` or `OPENAI_LOG=debug`.
-An explicit `log_level` takes precedence over the environment variable. When
-logging is enabled without a custom logger, the SDK uses a standard-library
-`Logger` that writes to stderr.
+`error`; the SDK does not depend on Rails. Supplying a logger enables `:info`
+logging by default. When logging is enabled without a custom logger, the SDK
+uses a standard-library `Logger` that writes to stderr. Use `log_level: :off`
+when you only need retry notifications.
+
+For the default HTTP client, you can instead set `OPENAI_LOG=info` or
+`OPENAI_LOG=debug`. An explicitly configured HTTP client owns its configuration
+and is not overridden by the environment variable.
 
 For example, to use the stderr logger for one process:
 
@@ -746,6 +750,28 @@ openai.chat.completions.create(
   request_options: {max_retries: 5}
 )
 ```
+
+To observe retries as they happen, supply an `on_retry` callback. The callback
+runs immediately before the retry delay and receives an immutable
+`OpenAI::RetryEvent`:
+
+```ruby
+http_client = OpenAI::NetHTTPClient.new(
+  log_level: :off,
+  on_retry: lambda do |event|
+    Rails.logger.warn(
+      "OpenAI retry #{event.attempt}/#{event.max_attempts} " \
+      "status=#{event.status.inspect} request_id=#{event.request_id.inspect}"
+    )
+  end
+)
+openai = OpenAI::Client.new(http_client: http_client)
+```
+
+For response-triggered retries, `event.response` contains the same immutable
+status, headers, and request ID shape as `last_response`. For connection errors,
+`event.error` is populated instead. Exceptions raised by the callback are
+isolated and do not replace the API result or error.
 
 ### Timeouts
 
