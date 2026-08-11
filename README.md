@@ -608,6 +608,65 @@ Error codes are as follows:
 | Timeout          | `APITimeoutError`          |
 | Network error    | `APIConnectionError`       |
 
+### Request logging
+
+Request logging is disabled by default. Enable it with a standard Ruby logger
+and an explicit log level:
+
+```ruby
+client = OpenAI::Client.new(
+  api_key: ENV.fetch("OPENAI_API_KEY"),
+  logger: Rails.logger,
+  log_level: :info
+)
+```
+
+The logger can be any object that responds to `debug`, `info`, `warn`, and
+`error`; the SDK does not depend on Rails. Supplying a logger does not enable
+logging by itself. You can also set `OPENAI_LOG=info` or `OPENAI_LOG=debug`.
+An explicit `log_level` takes precedence over the environment variable. When
+logging is enabled without a custom logger, the SDK uses a standard-library
+`Logger` that writes to stderr.
+
+For example, to use the stderr logger for one process:
+
+```sh
+OPENAI_LOG=info bundle exec ruby app.rb
+```
+
+A completion message includes the logical request and retry context:
+
+```text
+[openai] request complete log_id=log_a1b2c3d4e5f6 method=POST path=/v1/responses status=200 request_id=req_123 attempts=1 duration_ms=42.7
+```
+
+| Level | Behavior |
+| --- | --- |
+| `:off` | No SDK request logs (default) |
+| `:error` | Terminal request failures after retries are exhausted |
+| `:warn` | Error events plus retry reason and delay |
+| `:info` | Safe request completion summaries |
+| `:debug` | Per-attempt headers and bounded body diagnostics |
+
+Info, warning, and error logs include operational fields such as the HTTP
+method, sanitized path, status, request ID, duration, and attempt count. They
+never include headers or bodies. Debug logs redact credential-bearing headers
+and query parameters, including authorization, API-key, cookie, token,
+credential, and signature values.
+
+Debug logging can still disclose sensitive prompts, model responses, and tool
+arguments. Do not enable it in production unless your log destination and data
+retention policy are appropriate. The built-in logger omits uploaded file
+contents, multipart bodies, binary bodies, large opaque/base64-like values, and
+server-sent event contents. Text bodies are truncated to a fixed bound;
+oversized JSON and incomplete bodies are marked as omitted. Response bodies are
+observed only as the application consumes them and are never read eagerly for
+logging.
+
+SDK log messages are intended for human diagnostics. Their text format is not
+a stable structured-event API and may change between releases. Exceptions from
+a supplied logger are isolated and never replace an API result or API error.
+
 ### Request IDs
 
 OpenAI recommends logging request IDs in production so requests can be traced
