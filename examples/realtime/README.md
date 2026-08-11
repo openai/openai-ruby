@@ -40,7 +40,9 @@ bundle exec ruby examples/realtime/realtime_conversation.rb
 Start speaking after `Connected` appears. Speak again whenever you want to
 interrupt: the service cancels the response and the example immediately clears
 local playback, drops already-queued audio deltas, and truncates the unheard
-audio from conversation history. Press Control-C to end the session.
+audio from conversation history. A bounded single-writer queue serializes the
+microphone and truncation events sent over the socket. Press Control-C to end
+the session.
 
 On macOS, the default microphone is AVFoundation audio device `0`. List devices
 and select a different index if necessary:
@@ -75,7 +77,8 @@ bundle exec ruby examples/realtime/websocket_text.rb
 ```
 
 A successful run prints `session.created`, `session.updated`, streamed assistant
-text, and `response.done status=completed`.
+text, and `response.done status=completed`. An EOF before the completed
+`response.done` is reported as a failed smoke test.
 
 ## WebSocket audio
 
@@ -186,7 +189,9 @@ bundle exec ruby examples/realtime/sip.rb
 
 The script accepts the call, attaches a sideband WebSocket, and prints the audio
 transcript. `OPENAI_REALTIME_STOP_AFTER` and `OPENAI_REALTIME_TIMEOUT` provide
-bounded smoke-test controls. Without a carrier-originated incoming call, the
+bounded smoke-test controls. Once accepted, the call is hung up during cleanup,
+including after a timeout or sideband failure; an already-ended call is treated
+as successfully cleaned up. Without a carrier-originated incoming call, the
 same accept-then-attach orchestration is covered by the local example and HTTP
 resource tests, but that is not a substitute for the final telephony smoke test.
 

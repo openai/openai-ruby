@@ -95,6 +95,8 @@ at a time, so the caller naturally applies backpressure instead of filling an
 unbounded SDK queue. A connection supports one reader fiber and one writer
 fiber at the same time, which is useful for continuous audio. Do not run
 multiple readers or multiple writers against the same connection.
+The hands-free WebSocket example uses a bounded outbound queue so microphone
+audio and interruption-driven truncation events share exactly one writer fiber.
 
 The yielded class reflects the protocol's capabilities:
 
@@ -262,7 +264,9 @@ Call `session.close` after the last audio chunk and continue reading until the
 server sends `session.closed`; closing the socket immediately can discard output
 that is still draining. For browser WebRTC translation, mint an ephemeral secret
 with `translations.client_secrets.create`, then post the browser offer with
-`translations.calls.create`.
+`translations.calls.create`. That convenience method delegates to the shared
+`/v1/realtime/calls` endpoint; translation is selected by the ephemeral secret,
+not by a separate calls route.
 
 ## Function calls and MCP approvals
 

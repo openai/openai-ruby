@@ -49,6 +49,8 @@ module OpenAI
             **options
           )
           block_error = nil
+          # Client.connect owns the Sync boundary: it starts a reactor for ordinary
+          # synchronous callers and reuses the current task when one already exists.
           ::Async::WebSocket::Client.connect(endpoint, headers: headers) do |connection|
             yield(Socket.new(connection, url: url))
           rescue StandardError => e

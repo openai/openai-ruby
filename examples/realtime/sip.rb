@@ -24,16 +24,28 @@ module OpenAI
         end
 
         def run(client:, call_id:, model:, output: $stdout, stop_after: nil)
+          accepted = false
           client.realtime.calls.accept(
             call_id,
             type: :realtime,
             model: model,
             instructions: "You are answering a phone call. Be warm and concise."
           )
+          accepted = true
 
           client.realtime.connect(call_id: call_id) do |connection|
             stream(connection, output: output, stop_after: stop_after)
           end
+        ensure
+          hangup(client, call_id, active_error: $ERROR_INFO) if accepted
+        end
+
+        def hangup(client, call_id, active_error:)
+          client.realtime.calls.hangup(call_id)
+        rescue OpenAI::Errors::NotFoundError
+          nil
+        rescue StandardError
+          raise unless active_error
         end
       end
     end

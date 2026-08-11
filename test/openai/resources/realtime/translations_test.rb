@@ -106,7 +106,8 @@ class OpenAI::Test::Resources::Realtime::TranslationsTest < Minitest::Test
         status: 201,
         headers: {
           "content-type" => "application/sdp",
-          "location" => "/v1/realtime/translations/calls/rtc_translation"
+          "location" => "/v1/realtime/calls/rtc_translation",
+          "x-request-id" => "req_translation_call"
         },
         body: "answer-sdp"
       )
@@ -117,8 +118,10 @@ class OpenAI::Test::Resources::Realtime::TranslationsTest < Minitest::Test
 
     assert_equal("answer-sdp", response.sdp)
     assert_equal("rtc_translation", response.call_id)
+    assert_equal("req_translation_call", response._request_id)
+    assert_equal(201, response.last_response.status)
     request = http_client.requests.fetch(0)
-    assert_equal("/v1/realtime/translations/calls", request.url.path)
+    assert_equal("/v1/realtime/calls", request.url.path)
     assert_equal("application/sdp", request.headers.fetch("content-type"))
     assert_equal("offer-sdp", request.body)
   end

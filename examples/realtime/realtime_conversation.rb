@@ -194,6 +194,40 @@ module OpenAI
           end
         end
 
+        # Serializes every client event through one writer fiber. The one-item queue
+        # preserves microphone backpressure while allowing the reader to enqueue an
+        # interruption without writing to the socket itself.
+        class OutboundWriter
+          def initialize(connection)
+            @connection = connection
+            @queue = Thread::SizedQueue.new(1)
+          end
+
+          def append_audio(bytes)
+            @queue.push([:append_audio, bytes])
+          end
+
+          def truncate(**params)
+            @queue.push([:truncate, params])
+          end
+
+          def run
+            while (message = @queue.pop)
+              operation, payload = message
+              case operation
+              when :append_audio
+                @connection.input_audio_buffer.append_bytes(payload)
+              when :truncate
+                @connection.conversation.items.truncate(**payload)
+              end
+            end
+          end
+
+          def close
+            @queue.close unless @queue.closed?
+          end
+        end
+
         class AudioPlayback
           def initialize(speaker, clock: nil)
             @speaker = speaker
@@ -211,7 +245,8 @@ module OpenAI
             @received_bytes += bytes.bytesize
           end
 
-          def interrupt(connection)
+          def interrupt(outbound)
+            expire_finished_playback
             unless @item_id
               @speaker.interrupt
               return
@@ -223,7 +258,7 @@ module OpenAI
             content_index = @content_index
 
             @speaker.interrupt
-            connection.conversation.items.truncate(
+            outbound.truncate(
               item_id: item_id,
               content_index: content_index,
               audio_end_ms: audio_end_ms
@@ -236,7 +271,12 @@ module OpenAI
           def interrupted?(response_id) = response_id == @interrupted_response_id
 
           def finish(response_id)
-            @interrupted_response_id = nil if interrupted?(response_id)
+            if interrupted?(response_id)
+              @interrupted_response_id = nil
+            elsif response_id == @response_id
+              @finished_response_id = response_id
+              expire_finished_playback
+            end
           end
 
           def close = @speaker.close
@@ -261,12 +301,24 @@ module OpenAI
             [elapsed_ms, received_ms].min.clamp(0, received_ms)
           end
 
+          private def expire_finished_playback
+            return unless @finished_response_id == @response_id
+            return unless elapsed_audio_bytes >= @received_bytes
+
+            reset_current
+          end
+
+          private def elapsed_audio_bytes
+            ((@clock.call - @started_at) * AUDIO_BYTES_PER_SECOND).floor
+          end
+
           private def reset_current
             @response_id = nil
             @item_id = nil
             @content_index = nil
             @received_bytes = 0
             @started_at = nil
+            @finished_response_id = nil
           end
         end
 
@@ -298,13 +350,13 @@ module OpenAI
           )
         end
 
-        def forward_microphone(connection, microphone)
+        def forward_microphone(outbound, microphone)
           microphone.each_chunk do |chunk|
-            connection.input_audio_buffer.append_bytes(chunk)
+            outbound.append_audio(chunk)
           end
         end
 
-        def handle_event(event, connection:, playback:, output:)
+        def handle_event(event, outbound:, playback:, output:)
           case event
           when OpenAI::Realtime::ResponseAudioDeltaEvent
             playback.write(event)
@@ -318,7 +370,7 @@ module OpenAI
 
             output.puts
           when OpenAI::Realtime::InputAudioBufferSpeechStartedEvent
-            output.puts if playback.interrupt(connection)
+            output.puts if playback.interrupt(outbound)
           when OpenAI::Realtime::RealtimeErrorEvent
             raise event.error.message
           when OpenAI::Realtime::ResponseDoneEvent
@@ -337,9 +389,9 @@ module OpenAI
           raise "Realtime connection closed before session.updated"
         end
 
-        def stream_events(connection, microphone:, playback:, output:, stop_after: nil)
+        def stream_events(connection, microphone:, outbound:, playback:, output:, stop_after: nil)
           connection.each do |event|
-            handle_event(event, connection: connection, playback: playback, output: output)
+            handle_event(event, outbound: outbound, playback: playback, output: output)
             break if stop_after == event.type.to_s
           end
         ensure
@@ -362,24 +414,31 @@ module OpenAI
             "Press Ctrl-C to exit. Use headphones to prevent echo."
           )
           playback = AudioPlayback.new(speaker)
+          outbound = OutboundWriter.new(connection)
 
+          writer = Async { outbound.run }
           receiver = Async do
             stream_events(
               connection,
               microphone: microphone,
+              outbound: outbound,
               playback: playback,
               output: output,
               stop_after: stop_after
             )
           end
-          sender = Async { forward_microphone(connection, microphone) }
+          sender = Async { forward_microphone(outbound, microphone) }
           sender.wait
+          outbound.close
+          writer.wait
           receiver.wait
         ensure
           microphone.stop
+          outbound&.close
           playback&.close || speaker.close
           sender&.stop
           receiver&.stop
+          writer&.stop
         end
 
         def run(

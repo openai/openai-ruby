@@ -7,6 +7,7 @@ require_relative "../../../examples/realtime/realtime_conversation"
 require_relative "../../../examples/realtime/sideband"
 require_relative "../../../examples/realtime/sip"
 require_relative "../../../examples/realtime/webrtc_conversation"
+require_relative "../../../examples/realtime/websocket_text"
 
 class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
   Event = Data.define(:type, :data) do
@@ -28,9 +29,10 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
   class RecordingResource
     attr_reader :calls, :truncations
 
-    def initialize
+    def initialize(writer_fibers = nil)
       @calls = []
       @truncations = []
+      @writer_fibers = writer_fibers
     end
 
     def create(**params)
@@ -38,6 +40,7 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
     end
 
     def truncate(**params)
+      @writer_fibers&.push(Fiber.current)
       @truncations << params
     end
   end
@@ -45,31 +48,46 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
   class RecordingConversation
     attr_reader :items
 
-    def initialize
-      @items = RecordingResource.new
+    def initialize(writer_fibers = nil)
+      @items = RecordingResource.new(writer_fibers)
     end
   end
 
   class RecordingAudioBuffer
     attr_reader :chunks
 
-    def initialize
+    def initialize(writer_fibers = nil)
       @chunks = []
+      @writer_fibers = writer_fibers
     end
 
     def append_bytes(bytes)
+      @writer_fibers&.push(Fiber.current)
       @chunks << bytes
     end
   end
 
+  class RecordingOutbound
+    attr_reader :chunks, :truncations
+
+    def initialize
+      @chunks = []
+      @truncations = []
+    end
+
+    def append_audio(bytes) = @chunks << bytes
+    def truncate(**params) = @truncations << params
+  end
+
   class RecordingConnection
-    attr_reader :conversation, :input_audio_buffer, :response, :session
+    attr_reader :conversation, :input_audio_buffer, :response, :session, :writer_fibers
 
     def initialize(events = [])
       @events = events
+      @writer_fibers = []
       @session = RecordingSession.new
-      @conversation = RecordingConversation.new
-      @input_audio_buffer = RecordingAudioBuffer.new
+      @conversation = RecordingConversation.new(@writer_fibers)
+      @input_audio_buffer = RecordingAudioBuffer.new(@writer_fibers)
       @response = RecordingResource.new
     end
 
@@ -78,15 +96,28 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
     end
   end
 
+  class ExplodingConnection < RecordingConnection
+    def each
+      raise "sideband failed"
+    end
+  end
+
   class RecordingCalls
-    attr_reader :accepts
+    attr_accessor :hangup_error
+    attr_reader :accepts, :hangups
 
     def initialize
       @accepts = []
+      @hangups = []
     end
 
     def accept(call_id, **params)
       @accepts << [call_id, params]
+    end
+
+    def hangup(call_id)
+      @hangups << call_id
+      raise @hangup_error if @hangup_error
     end
   end
 
@@ -215,24 +246,44 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
   end
 
   def test_realtime_conversation_streams_microphone_chunks_without_committing
-    connection = RecordingConnection.new
+    outbound = RecordingOutbound.new
     microphone = RecordingMicrophone.new(["first".b, "second".b])
 
-    OpenAI::Examples::Realtime::Conversation.forward_microphone(connection, microphone)
+    OpenAI::Examples::Realtime::Conversation.forward_microphone(outbound, microphone)
+
+    assert_equal(["first".b, "second".b], outbound.chunks)
+  end
+
+  def test_realtime_conversation_serializes_audio_and_interruptions_through_one_writer
+    connection = RecordingConnection.new
+    outbound = OpenAI::Examples::Realtime::Conversation::OutboundWriter.new(connection)
+
+    Sync do |task|
+      writer = task.async { outbound.run }
+      outbound.append_audio("first".b)
+      outbound.truncate(item_id: "item_1", content_index: 0, audio_end_ms: 100)
+      outbound.append_audio("second".b)
+      outbound.close
+      writer.wait
+    end
 
     assert_equal(["first".b, "second".b], connection.input_audio_buffer.chunks)
-    assert_empty(connection.response.calls)
+    assert_equal(
+      [{item_id: "item_1", content_index: 0, audio_end_ms: 100}],
+      connection.conversation.items.truncations
+    )
+    assert_equal(1, connection.writer_fibers.uniq.size)
   end
 
   def test_realtime_conversation_streams_audio_and_interrupts_local_playback
     speaker = RecordingSpeaker.new
-    connection = RecordingConnection.new
     times = [0.0, 0.1].each
     playback = OpenAI::Examples::Realtime::Conversation::AudioPlayback.new(
       speaker,
       clock: -> { times.next }
     )
     output = StringIO.new
+    outbound = RecordingOutbound.new
     audio = "\x00\x01".b * 2_400
     event_fields = {
       event_id: "event_1",
@@ -244,13 +295,13 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
 
     OpenAI::Examples::Realtime::Conversation.handle_event(
       OpenAI::Realtime::ResponseAudioDeltaEvent.new(**event_fields, delta: Base64.strict_encode64(audio)),
-      connection: connection,
+      outbound: outbound,
       playback: playback,
       output: output
     )
     OpenAI::Examples::Realtime::Conversation.handle_event(
       OpenAI::Realtime::ResponseAudioTranscriptDeltaEvent.new(**event_fields, delta: "Hello"),
-      connection: connection,
+      outbound: outbound,
       playback: playback,
       output: output
     )
@@ -260,7 +311,7 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
         item_id: "item_2",
         audio_start_ms: 100
       ),
-      connection: connection,
+      outbound: outbound,
       playback: playback,
       output: output
     )
@@ -270,19 +321,19 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
     assert_equal(1, speaker.interruptions)
     assert_equal(
       [{item_id: "item_1", content_index: 0, audio_end_ms: 100}],
-      connection.conversation.items.truncations
+      outbound.truncations
     )
   end
 
   def test_realtime_conversation_drops_queued_audio_after_interruption
     speaker = RecordingSpeaker.new
-    connection = RecordingConnection.new
     times = [0.0, 0.05].each
     playback = OpenAI::Examples::Realtime::Conversation::AudioPlayback.new(
       speaker,
       clock: -> { times.next }
     )
     output = StringIO.new
+    outbound = RecordingOutbound.new
     event_fields = {
       event_id: "event_1",
       response_id: "response_1",
@@ -305,7 +356,7 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
         item_id: "item_2",
         audio_start_ms: 50
       ),
-      connection: connection,
+      outbound: outbound,
       playback: playback,
       output: output
     )
@@ -321,13 +372,43 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
         event_id: "event_4",
         response: OpenAI::Realtime::RealtimeResponse.new(id: "response_1", status: :cancelled)
       ),
-      connection: connection,
+      outbound: outbound,
       playback: playback,
       output: output
     )
 
     assert_equal(first_audio, speaker.audio)
     assert_equal("\n", output.string)
+    assert_equal(1, speaker.interruptions)
+  end
+
+  def test_realtime_conversation_does_not_truncate_fully_played_completed_audio
+    speaker = RecordingSpeaker.new
+    outbound = RecordingOutbound.new
+    times = [0.0, 0.05, 0.2].each
+    playback = OpenAI::Examples::Realtime::Conversation::AudioPlayback.new(
+      speaker,
+      clock: -> { times.next }
+    )
+    fields = {
+      event_id: "event_1",
+      response_id: "response_1",
+      item_id: "item_1",
+      output_index: 0,
+      content_index: 0
+    }
+    audio = "\x00\x01".b * 2_400
+
+    playback.write(
+      OpenAI::Realtime::ResponseAudioDeltaEvent.new(
+        **fields,
+        delta: Base64.strict_encode64(audio)
+      )
+    )
+    playback.finish("response_1")
+    playback.interrupt(outbound)
+
+    assert_empty(outbound.truncations)
     assert_equal(1, speaker.interruptions)
   end
 
@@ -652,5 +733,91 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
       ],
       realtime.calls.accepts.fetch(0)
     )
+    assert_equal(["rtc_123"], realtime.calls.hangups)
+  end
+
+  def test_sip_example_hangs_up_without_masking_a_sideband_error
+    realtime = RecordingRealtime.new(ExplodingConnection.new)
+    realtime.calls.hangup_error = RuntimeError.new("hangup failed")
+
+    error = assert_raises(RuntimeError) do
+      OpenAI::Examples::Realtime::SIP.run(
+        client: RecordingClient.new(realtime: realtime),
+        call_id: "rtc_123",
+        model: "gpt-realtime-2.1",
+        output: StringIO.new
+      )
+    end
+
+    assert_equal("sideband failed", error.message)
+    assert_equal(["rtc_123"], realtime.calls.hangups)
+  end
+
+  def test_sip_example_tolerates_an_already_ended_call_during_cleanup
+    realtime = RecordingRealtime.new(RecordingConnection.new)
+    realtime.calls.hangup_error = OpenAI::Errors::NotFoundError.new(
+      url: URI("https://api.openai.com/v1/realtime/calls/rtc_123/hangup"),
+      status: 404,
+      headers: {},
+      body: {},
+      request: nil,
+      response: nil
+    )
+
+    OpenAI::Examples::Realtime::SIP.run(
+      client: RecordingClient.new(realtime: realtime),
+      call_id: "rtc_123",
+      model: "gpt-realtime-2.1",
+      output: StringIO.new
+    )
+
+    assert_equal(["rtc_123"], realtime.calls.hangups)
+  end
+
+  def test_sip_example_reports_a_cleanup_failure_after_a_clean_session
+    realtime = RecordingRealtime.new(RecordingConnection.new)
+    realtime.calls.hangup_error = RuntimeError.new("hangup failed")
+
+    error = assert_raises(RuntimeError) do
+      OpenAI::Examples::Realtime::SIP.run(
+        client: RecordingClient.new(realtime: realtime),
+        call_id: "rtc_123",
+        model: "gpt-realtime-2.1",
+        output: StringIO.new
+      )
+    end
+
+    assert_equal("hangup failed", error.message)
+    assert_equal(["rtc_123"], realtime.calls.hangups)
+  end
+
+  def test_websocket_text_rejects_a_connection_that_closes_before_response_done
+    error = assert_raises(RuntimeError) do
+      OpenAI::Examples::Realtime::WebSocketText.stream_response(
+        RecordingConnection.new,
+        output: StringIO.new
+      )
+    end
+
+    assert_equal("Realtime connection closed before response.done", error.message)
+  end
+
+  def test_websocket_text_accepts_only_a_completed_response
+    connection = RecordingConnection.new(
+      [
+        OpenAI::Realtime::ResponseDoneEvent.new(
+          event_id: "event_1",
+          response: OpenAI::Realtime::RealtimeResponse.new(
+            id: "response_1",
+            status: :completed
+          )
+        )
+      ]
+    )
+    output = StringIO.new
+
+    OpenAI::Examples::Realtime::WebSocketText.stream_response(connection, output: output)
+
+    assert_includes(output.string, "response.done status=completed")
   end
 end

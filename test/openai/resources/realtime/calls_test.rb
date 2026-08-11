@@ -43,6 +43,8 @@ class OpenAI::Test::Resources::Realtime::CallsTest < OpenAI::Test::ResourceTest
 
     assert_equal("answer-sdp", response.sdp)
     assert_equal("rtc_123", response.call_id)
+    assert_equal("req_realtime_call", response._request_id)
+    assert_equal(201, response.last_response.status)
     assert_equal("/v1/realtime/calls/rtc_123", response.headers.fetch("location"))
     assert_equal(:post, http_client.request.method)
     assert_equal("https://example.com/v1/realtime/calls", http_client.request.url.to_s)

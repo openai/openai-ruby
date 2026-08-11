@@ -53,71 +53,18 @@ end
 ### Realtime
 
 The SDK supports server-side Realtime WebSockets, WebRTC session negotiation,
-sideband connections for WebRTC and SIP calls, and continuous translation. Add
-the WebSocket adapter alongside the SDK:
+sideband control, SIP, transcription, and translation. WebSocket connections use
+the optional `async-websocket` adapter.
 
-```ruby
-gem "openai"
-gem "async-websocket"
-```
-
-Then open a block-scoped connection. Events are decoded into the existing typed
-Realtime models, and the socket is closed when the block exits:
-
-```ruby
-client.realtime.connect(model: "gpt-realtime-2.1") do |connection|
-  connection.session.update(
-    type: :realtime,
-    output_modalities: [:text]
-  )
-  connection.conversation.items.create(
-    type: :message,
-    role: :user,
-    content: [{type: :input_text, text: "Hello from Ruby"}]
-  )
-  connection.response.create
-
-  connection.each do |event|
-    case event
-    when OpenAI::Realtime::ResponseTextDeltaEvent
-      print(event.delta)
-    when OpenAI::Realtime::ResponseDoneEvent
-      raise "Response ended with #{event.response.status}" unless event.response.status == :completed
-      break
-    when OpenAI::Realtime::RealtimeErrorEvent
-      raise event.error.message
-    end
-  end
-end
-```
-
-Run the live text smoke test with `OPENAI_API_KEY` set:
+Run a typed text smoke test, or start the natural hands-free browser voice demo:
 
 ```console
 $ bundle exec ruby examples/realtime/websocket_text.rb
-```
-
-For live speech-to-text, provide raw mono 24 kHz PCM16 input. The example opens
-the dedicated `intent: :transcription` connection:
-
-```console
-$ REALTIME_INPUT_PCM=input.pcm bundle exec ruby examples/realtime/websocket_transcription.rb
-```
-
-For a natural hands-free voice conversation, run the Ruby WebRTC negotiation
-endpoint and open the printed localhost URL in a browser:
-
-```console
 $ bundle exec ruby examples/realtime/webrtc_conversation.rb
 ```
 
-The API key and session configuration stay in Ruby. The browser owns the
-microphone, remote audio, acoustic echo cancellation, and WebRTC peer.
-
-See [realtime.md](realtime.md) for WebRTC, audio, transcription, translation,
-SIP, sideband, MCP, lifecycle, and custom transport guidance. The
-[Realtime example runbook](examples/realtime/README.md) lists every executable
-example, its prerequisites, and its observable success criteria.
+See [the Realtime guide](realtime.md) for the typed API and architecture, and
+[the example runbook](examples/realtime/README.md) for every runnable workflow.
 
 ### Pagination
 

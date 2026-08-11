@@ -3,6 +3,7 @@
 require "async/http/server"
 require "async/queue"
 require "async/websocket/adapters/http"
+require "async/websocket/client"
 require "async/websocket/server"
 require "socket"
 
@@ -10,6 +11,59 @@ require_relative "../test_helper"
 
 class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
   extend Minitest::Serial
+
+  class SynchronousConnection
+    attr_reader :scheduler
+
+    def initialize
+      @closed = false
+      @scheduler = nil
+    end
+
+    def connect!
+      @scheduler = Fiber.scheduler
+      self
+    end
+
+    def read = "message"
+    def write(_message) = nil
+    def flush = nil
+    def closed? = @closed
+    def close(*) = (@closed = true)
+  end
+
+  class SynchronousClient
+    attr_reader :closed
+
+    def initialize(connection)
+      @connection = connection
+      @closed = false
+    end
+
+    def connect(*) = @connection.connect!
+    def close = (@closed = true)
+  end
+
+  def test_default_transport_enters_a_reactor_for_synchronous_callers
+    assert_nil(Fiber.scheduler)
+    connection = SynchronousConnection.new
+    client = SynchronousClient.new(connection)
+    transport = OpenAI::Realtime::Transports::AsyncWebSocket.new
+    url = URI("wss://example.com/v1/realtime?model=gpt-realtime-2.1")
+
+    result = Async::WebSocket::Client.stub(:open, client) do
+      transport.open(url: url, headers: {}, timeout: 1) do |socket|
+        [socket.read, Fiber.scheduler]
+      end
+    end
+
+    assert_equal("message", result.fetch(0))
+    assert_same(connection.scheduler, result.fetch(1))
+    refute_nil(connection.scheduler)
+    assert_predicate(connection, :closed?)
+    assert_predicate(client, :closed)
+    assert_nil(Fiber.scheduler)
+  end
 
   def test_default_transport_exchanges_events_with_a_local_websocket_server
     port = available_port

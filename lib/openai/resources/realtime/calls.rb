@@ -47,7 +47,7 @@ module OpenAI
             sdp: response.body.to_a.join,
             call_id: call_id,
             headers: response.headers
-          )
+          )._set_last_response(response.metadata)
         end
 
         # Some parameter documentations has been truncated, see
