@@ -20,6 +20,10 @@ module OpenAI
       #   For `dall-e-2`, you can only provide one image, and it should be a square `png`
       #   file less than 4MB.
       #
+      #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #   content type.
+      #
       #   @return [Pathname, StringIO, IO, String, OpenAI::FilePart, Array<Pathname, StringIO, IO, String, OpenAI::FilePart>]
       required :image, union: -> { OpenAI::ImageEditParams::Image }
 
@@ -61,6 +65,10 @@ module OpenAI
       #   indicate where `image` should be edited. If there are multiple images provided,
       #   the mask will be applied on the first image. Must be a valid PNG file, less than
       #   4MB, and have the same dimensions as `image`.
+      #
+      #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #   content type.
       #
       #   @return [Pathname, StringIO, IO, String, OpenAI::FilePart, nil]
       optional :mask, OpenAI::Internal::Type::FileInput

@@ -16,6 +16,10 @@ module OpenAI
       attr_accessor :name
 
       # Video file used to create a character.
+      #
+      # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      # content type.
       sig { returns(OpenAI::Internal::FileInput) }
       attr_accessor :video
 
@@ -30,6 +34,10 @@ module OpenAI
         # Display name for this API character.
         name:,
         # Video file used to create a character.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
         video:,
         request_options: {}
       )

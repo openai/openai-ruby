@@ -9,6 +9,10 @@ module OpenAI
 
         # Create a new immutable skill version.
         #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
+        #
         # @overload create(skill_id, default: nil, files: nil, request_options: {})
         #
         # @param skill_id [String] The identifier of the skill to version.

@@ -16,6 +16,10 @@ module OpenAI
       attr_accessor :prompt
 
       # Optional reference asset upload or reference object that guides generation.
+      #
+      # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      # content type.
       sig do
         returns(
           T.nilable(
@@ -77,6 +81,10 @@ module OpenAI
         # Text prompt that describes the video to generate.
         prompt:,
         # Optional reference asset upload or reference object that guides generation.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
         input_reference: nil,
         # The video generation model to use (allowed values: sora-2, sora-2-pro). Defaults
         # to `sora-2`.

@@ -11,6 +11,10 @@ module OpenAI
 
       # Create a new skill.
       #
+      # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      # content type.
+      #
       # @overload create(files: nil, request_options: {})
       #
       # @param files [Array<Pathname, StringIO, IO, String, OpenAI::FilePart>, Pathname, StringIO, IO, String, OpenAI::FilePart] Skill files to upload (directory upload) or a single zip file.

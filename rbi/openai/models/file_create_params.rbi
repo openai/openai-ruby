@@ -12,6 +12,10 @@ module OpenAI
         end
 
       # The File object (not file name) to be uploaded.
+      #
+      # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      # content type.
       sig { returns(OpenAI::Internal::FileInput) }
       attr_accessor :file
 
@@ -48,6 +52,10 @@ module OpenAI
       end
       def self.new(
         # The File object (not file name) to be uploaded.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
         file:,
         # The intended purpose of the uploaded file. One of:
         #

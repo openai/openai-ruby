@@ -13,6 +13,10 @@ module OpenAI
 
       # The image to use as the basis for the variation(s). Must be a valid PNG file,
       # less than 4MB, and square.
+      #
+      # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      # content type.
       sig { returns(OpenAI::Internal::FileInput) }
       attr_accessor :image
 
@@ -70,6 +74,10 @@ module OpenAI
       def self.new(
         # The image to use as the basis for the variation(s). Must be a valid PNG file,
         # less than 4MB, and square.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
         image:,
         # The model to use for image generation. Only `dall-e-2` is supported at this
         # time.

@@ -20,6 +20,10 @@ module OpenAI
       end
       def create(
         # The image or audio file to check for supported OpenAI provenance signals.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
         file:,
         request_options: {}
       )
