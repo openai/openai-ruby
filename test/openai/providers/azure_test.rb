@@ -162,7 +162,7 @@ class OpenAI::Test::AzureProviderTest < Minitest::Test
     end
   end
 
-  def test_provider_sends_explicit_default_headers
+  def test_provider_authentication_overrides_explicit_default_headers
     url = "https://example-resource.openai.azure.com/openai/v1/models"
     stub_request(:get, url).to_return_json(status: 200, body: {})
 
@@ -171,12 +171,19 @@ class OpenAI::Test::AzureProviderTest < Minitest::Test
         endpoint: "https://example-resource.openai.azure.com",
         api_key: "azure-key"
       ),
-      default_headers: {"x-cost-center" => "finance"}
+      default_headers: {
+        "Authorization" => "Bearer custom",
+        "Api-Key" => "custom-key",
+        "X-Cost-Center" => "finance"
+      }
     )
     client.request({method: :get, path: "models"})
 
     assert_requested(:get, url) do |request|
-      assert_equal("finance", request.headers.transform_keys(&:downcase)["x-cost-center"])
+      headers = request.headers.transform_keys(&:downcase)
+      assert_equal("azure-key", headers["api-key"])
+      refute_includes(headers, "authorization")
+      assert_equal("finance", headers["x-cost-center"])
     end
   end
 

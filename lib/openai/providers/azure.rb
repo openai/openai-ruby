@@ -33,7 +33,8 @@ module OpenAI
           OpenAI::Internal::Provider::Runtime.new(
             name: name,
             base_url: @base_url,
-            prepare_request: auth.method(:prepare_request)
+            prepare_request: auth.method(:prepare_request),
+            authentication_headers: AUTH_HEADERS
           )
         end
       end

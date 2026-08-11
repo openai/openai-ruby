@@ -333,7 +333,11 @@ module OpenAI
         end
         headers = parsed.merge(headers)
       end
-      headers = headers.merge(default_headers.to_h)
+      client_headers = OpenAI::Internal::Util.normalized_headers(default_headers.to_h)
+      unless provider_runtime.nil?
+        provider_runtime.authentication_headers.each { client_headers.delete(_1) }
+      end
+      headers = headers.merge(client_headers)
 
       if workload_identity.nil?
         @api_key = api_key&.to_s

@@ -7,7 +7,13 @@ module OpenAI
     # Provider factories return opaque OpenAI::Provider instances whose public
     # representation does not expose their definition.
     module Provider
-      Runtime = Struct.new(:name, :base_url, :prepare_request, keyword_init: true)
+      Runtime = Struct.new(
+        :name,
+        :base_url,
+        :prepare_request,
+        :authentication_headers,
+        keyword_init: true
+      )
 
       class << self
         # @api private
