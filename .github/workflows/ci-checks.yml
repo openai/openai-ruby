@@ -7,45 +7,10 @@ on:
         description: Runner label for CI jobs
         required: true
         type: string
-      publish-stainless-artifact:
-        description: Build and upload an installable Stainless artifact
-        required: true
-        type: boolean
 
 permissions: {}
 
 jobs:
-  stainless-artifact:
-    timeout-minutes: 10
-    name: stainless artifact
-    if: inputs.publish-stainless-artifact
-    permissions:
-      contents: read
-      id-token: write # Authenticate the artifact upload to pkg.stainless.com.
-    runs-on: ${{ inputs.runner }}
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-        with:
-          persist-credentials: false
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1
-        with:
-          bundler-cache: true
-
-      - name: Get GitHub OIDC token
-        id: github-oidc
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
-        with:
-          script: core.setOutput('github_token', await core.getIDToken());
-
-      - name: Build and upload gem artifacts
-        env:
-          URL: https://pkg.stainless.com/s
-          AUTH: ${{ steps.github-oidc.outputs.github_token }}
-          SHA: ${{ github.sha }}
-          PACKAGE_NAME: openai
-        run: ./scripts/utils/upload-artifact.sh
-
   lint:
     timeout-minutes: 10
     name: lint (rubocop)
@@ -159,7 +124,6 @@ jobs:
     name: ci-required
     # Keep branch protection on one stable context as the job matrix evolves.
     needs:
-      - stainless-artifact
       - lint
       - typecheck
       - validate-rbs
@@ -171,14 +135,12 @@ jobs:
     steps:
       - name: Check required job results
         env:
-          ARTIFACT_RESULT: ${{ needs.stainless-artifact.result }}
           LINT_RESULT: ${{ needs.lint.result }}
           TYPECHECK_RESULT: ${{ needs.typecheck.result }}
           RBS_VALIDATION_RESULT: ${{ needs.validate-rbs.result }}
           PACKAGE_RESULT: ${{ needs.package.result }}
           TEST_RESULT: ${{ needs.test-ruby.result }}
         run: |
-          test "$ARTIFACT_RESULT" = "success" || test "$ARTIFACT_RESULT" = "skipped"
           test "$LINT_RESULT" = "success"
           test "$TYPECHECK_RESULT" = "success"
           test "$RBS_VALIDATION_RESULT" = "success"
