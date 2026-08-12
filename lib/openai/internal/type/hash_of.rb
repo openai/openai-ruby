@@ -46,8 +46,6 @@ module OpenAI
               case [key, val]
               in [Symbol | String, ^type]
                 true
-              in [Symbol | String, nil]
-                nilable?
               else
                 false
               end
@@ -99,26 +97,21 @@ module OpenAI
 
           target = item_type
           exactness[:yes] += 1
-          error = state.fetch(:error)
-          converted = value.to_h do |key, val|
-            k = key.is_a?(String) ? key.to_sym : key
-            v =
-              case [nilable?, val]
-              in [true, nil]
-                exactness[:yes] += 1
-                nil
-              else
-                coerced, value_error =
-                  OpenAI::Internal::Type::Converter.coerce_with_error(target, val, state: state)
-                error ||= value_error
-                coerced
-              end
+          value
+            .to_h do |key, val|
+              k = key.is_a?(String) ? key.to_sym : key
+              v =
+                case [nilable?, val]
+                in [true, nil]
+                  exactness[:yes] += 1
+                  nil
+                else
+                  OpenAI::Internal::Type::Converter.coerce(target, val, state: state)
+                end
 
-            exactness[:no] += 1 unless k.is_a?(Symbol)
-            [k, v]
-          end
-          state[:error] = error
-          converted
+              exactness[:no] += 1 unless k.is_a?(Symbol)
+              [k, v]
+            end
         end
 
         # @api private
