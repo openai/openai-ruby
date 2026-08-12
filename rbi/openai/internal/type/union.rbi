@@ -71,8 +71,13 @@ module OpenAI
         end
 
         # @api private
+        sig { params(value: T.anything).returns(T.anything) }
+        private def discriminator_value(value)
+        end
+
+        # @api private
         sig do
-          params(value: T.anything).returns(
+          params(discriminator: T.anything).returns(
             T::Array[
               [
                 T.nilable(Symbol),
@@ -82,7 +87,7 @@ module OpenAI
             ]
           )
         end
-        private def fallback_variants(value)
+        private def fallback_variants(discriminator)
         end
 
         sig { params(other: T.anything).returns(T::Boolean) }
