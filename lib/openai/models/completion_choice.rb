@@ -9,8 +9,8 @@ module OpenAI
       #   number of tokens specified in the request was reached, or `content_filter` if
       #   content was omitted due to a flag from our content filters.
       #
-      #   @return [Symbol, OpenAI::Models::CompletionChoice::FinishReason]
-      required :finish_reason, enum: -> { OpenAI::CompletionChoice::FinishReason }
+      #   @return [Symbol, OpenAI::Models::CompletionChoice::FinishReason, nil]
+      required :finish_reason, enum: -> { OpenAI::CompletionChoice::FinishReason }, nil?: true
 
       # @!attribute index
       #
@@ -31,7 +31,7 @@ module OpenAI
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::CompletionChoice} for more details.
       #
-      #   @param finish_reason [Symbol, OpenAI::Models::CompletionChoice::FinishReason] The reason the model stopped generating tokens. This will be `stop` if the model
+      #   @param finish_reason [Symbol, OpenAI::Models::CompletionChoice::FinishReason, nil] The reason the model stopped generating tokens. This will be `stop` if the model
       #
       #   @param index [Integer]
       #

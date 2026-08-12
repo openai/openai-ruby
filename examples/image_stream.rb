@@ -10,7 +10,7 @@ client = OpenAI::Client.new
 puts "Starting image streaming example..."
 
 stream = client.images.generate_stream_raw(
-  model: "gpt-image-1",
+  model: "gpt-image-2",
   prompt: "A cute baby sea otter",
   n: 1,
   size: "1024x1024",

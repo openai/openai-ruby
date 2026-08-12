@@ -52,7 +52,7 @@ begin
   puts "Resuming stream from sequence #{events.last.sequence_number}..."
 
   resumed_stream = client.responses.stream(
-    previous_response_id: response_id,
+    response_id: response_id,
     starting_after: events.last.sequence_number
   )
 
@@ -124,7 +124,7 @@ begin
   puts "Resuming stream from sequence #{events.last.sequence_number}..."
 
   resumed_stream = client.responses.stream(
-    previous_response_id: response_id,
+    response_id: response_id,
     starting_after: events.last.sequence_number,
     # NOTE: You must pass the structured output format when resuming to access parsed
     # outputs in the resumed stream.

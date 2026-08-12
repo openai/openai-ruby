@@ -10,7 +10,7 @@ client = OpenAI::Client.new
 prompt = "An astronaut lounging in a tropical resort in space, pixel art"
 
 # Generate an image based on the prompt
-response = client.images.generate(prompt: prompt)
+response = client.images.generate(model: "gpt-image-2", prompt: prompt)
 
-# Prints response containing a URL link to image
+# Prints the generated image response.
 pp(response)

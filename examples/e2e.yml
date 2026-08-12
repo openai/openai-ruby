@@ -1,0 +1,78 @@
+version: 1
+
+examples:
+  examples/advanced_streaming.rb:
+    status: covered
+    expected_output: streams can be lazy
+  examples/azure_openai.rb:
+    status: excluded
+    reason: Requires Azure endpoint, deployment, and API-key credentials.
+  examples/bedrock.rb:
+    status: excluded
+    reason: Requires AWS credentials, region configuration, and a Bedrock model.
+  examples/chat/streaming_basic.rb:
+    status: covered
+    minimum_output_bytes: 1
+  examples/chat/streaming_follow_up.rb:
+    status: covered
+    expected_output: Done. The second stream is a new completion that used the prior turns as context.
+  examples/chat/streaming_logprobs.rb:
+    status: covered
+    expected_output: logprobs collection finished
+  examples/chat/streaming_multi_choice.rb:
+    status: covered
+    expected_output: final choices
+  examples/chat/streaming_structured_outputs.rb:
+    status: covered
+    expected_output: parsed outputs from final response
+  examples/chat/streaming_text.rb:
+    status: covered
+    minimum_output_bytes: 1
+  examples/chat/streaming_tools.rb:
+    status: covered
+    expected_output: Tool call finalized
+  examples/demo.rb:
+    status: covered
+    expected_output: streaming request
+  examples/demo_sorbet.rb:
+    status: covered
+    expected_output: using params class correctly in sorbet
+  examples/image_stream.rb:
+    status: covered
+    expected_output: Image streaming completed!
+  examples/mtls_custom_http_client.rb:
+    status: excluded
+    reason: Requires an enrolled mTLS certificate, private key, endpoint, and model.
+  examples/picture.rb:
+    status: covered
+    minimum_output_bytes: 1
+  examples/responses/streaming_basic.rb:
+    status: covered
+    expected_output: Response completed!
+  examples/responses/streaming_previous_response.rb:
+    status: covered
+    expected_output: Final response parsed outputs
+  examples/responses/streaming_structured_outputs.rb:
+    status: covered
+    expected_output: parsed outputs from final response
+  examples/responses/streaming_text.rb:
+    status: covered
+    expected_output: "Character count:"
+  examples/responses/streaming_tools.rb:
+    status: covered
+    expected_output: parsed outputs from final response
+  examples/streaming.rb:
+    status: covered
+    expected_output: manual closing of stream
+  examples/structured_outputs_chat_completions.rb:
+    status: covered
+    expected_output: CalendarEvent
+  examples/structured_outputs_chat_completions_function_calling.rb:
+    status: covered
+    expected_output: GetWeather
+  examples/structured_outputs_responses.rb:
+    status: covered
+    expected_output: CalendarEvent
+  examples/structured_outputs_responses_function_calling.rb:
+    status: covered
+    expected_output: GetWeather

@@ -148,6 +148,18 @@ end
 desc("Typecheck and validate everything")
 multitask(typecheck: [:"typecheck:sorbet", :"validate:rbs"])
 
+desc("Validate the Ruby example E2E inventory without making live requests")
+task("test:examples:inventory") do
+  ruby(*%w[scripts/examples-e2e.rb --inventory-only])
+end
+
+desc("Run covered Ruby examples end-to-end against the live API")
+task("test:examples:e2e") do
+  examples_passed = system(RbConfig.ruby, "scripts/examples-e2e.rb")
+  coverage_passed = system(RbConfig.ruby, "scripts/collate-examples-e2e-coverage.rb")
+  fail unless examples_passed && coverage_passed
+end
+
 desc("Lint and typecheck")
 multitask(lint: [:"lint:rubocop", :"lint:rubocop_directives", :typecheck])
 
