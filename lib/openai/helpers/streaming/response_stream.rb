@@ -63,7 +63,7 @@ module OpenAI
             @raw_stream.each do |raw_event|
               events_to_yield = @state.handle_event(raw_event)
               events_to_yield.each do |event|
-                if @starting_after.nil? || event.sequence_number > @starting_after
+                if @starting_after.nil? || event[:sequence_number] > @starting_after
                   y << event
                 end
               end

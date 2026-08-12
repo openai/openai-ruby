@@ -392,7 +392,7 @@ class OpenAI::Test::BaseModelTest < Minitest::Test
       [M2, {a: "1990-09-19"}] => [{yes: 3, maybe: 1}, {a: "1990-09-19"}],
       [M2, {a: "1990-09-19", c: nil}] => [{yes: 2, maybe: 2}, {a: "1990-09-19", c: nil}],
 
-      [M3, {c: "c", d: "d"}] => [{yes: 3}, {c: :c, d: :d}],
+      [M3, {c: "c", d: "d"}] => [{yes: 3}, {c: "c", d: "d"}],
       [M3, {c: "d", d: "c"}] => [{yes: 1, maybe: 2}, {c: "d", d: "c"}],
 
       [M4, {c: 2}] => [{yes: 5}, {c: 2}],
@@ -400,11 +400,11 @@ class OpenAI::Test::BaseModelTest < Minitest::Test
       [M4, {b: nil, c: 2}] => [{yes: 4, maybe: 1}, {b: nil, c: 2}],
 
       [M5, {}] => [{yes: 3}, {}],
-      [M5, {c: "c"}] => [{yes: 3}, {c: :c}],
-      [M5, {d: "d"}] => [{yes: 3}, {d: :d}],
+      [M5, {c: "c"}] => [{yes: 3}, {c: "c"}],
+      [M5, {d: "d"}] => [{yes: 3}, {d: "d"}],
       [M5, {d: nil}] => [{yes: 2, no: 1}, {d: nil}],
 
-      [M6, {a: [{a: []}]}] => [{yes: 6}, -> { _1 in {a: [M6]} }]
+      [M6, {a: [{a: []}]}] => [{yes: 6}, {a: [{a: []}]}]
     }
 
     cases.each do |lhs, rhs|
@@ -583,6 +583,25 @@ class OpenAI::Test::UnionTest < Minitest::Test
     variant -> { M5 }
   end
 
+  class M7 < OpenAI::Internal::Type::BaseModel
+    required :type, const: :duplicate
+    required :left, Integer
+  end
+
+  class M8 < OpenAI::Internal::Type::BaseModel
+    required :type, const: :duplicate
+    required :right, String
+  end
+
+  module U7
+    extend OpenAI::Internal::Type::Union
+
+    discriminator :type
+
+    variant :duplicate, M7
+    variant :duplicate, M8
+  end
+
   def test_accessors
     model = M3.new(recur: [])
     tap do
@@ -601,6 +620,137 @@ class OpenAI::Test::UnionTest < Minitest::Test
     assert_equal(true, state.fetch(:strictness))
   end
 
+  def test_duplicate_discriminator_uses_structural_matching
+    input = {type: "duplicate", right: "value"}
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+
+    output = OpenAI::Internal::Type::Converter.coerce(U7, input, state: state)
+
+    assert_instance_of(M8, output)
+    assert_equal(input, output.to_h)
+    assert_nil(state.fetch(:error))
+    assert_equal(2, state.fetch(:branched))
+  end
+
+  def test_generated_duplicate_discriminators_select_the_structural_match
+    cases = [
+      [
+        OpenAI::Responses::ResponseItem,
+        {
+          id: "msg_123",
+          content: [],
+          role: "assistant",
+          status: "completed",
+          type: "message"
+        },
+        OpenAI::Responses::ResponseOutputMessage
+      ],
+      [
+        OpenAI::Realtime::ConversationItem,
+        {content: [], role: "user", type: "message"},
+        OpenAI::Realtime::RealtimeConversationItemUserMessage
+      ]
+    ]
+
+    cases.each do |union, input, expected_class|
+      state = OpenAI::Internal::Type::Converter.new_coerce_state
+
+      output = OpenAI::Internal::Type::Converter.coerce(union, input, state: state)
+
+      assert_instance_of(expected_class, output)
+      assert_nil(state.fetch(:error))
+    end
+  end
+
+  def test_generated_unions_infer_variants_for_missing_or_nil_discriminators
+    cases = [
+      [
+        OpenAI::Responses::ResponseInputItem,
+        {role: "user", content: "hello"},
+        OpenAI::Responses::EasyInputMessage
+      ],
+      [
+        OpenAI::Responses::ResponseInputItem,
+        {id: "item_123", type: nil},
+        OpenAI::Responses::ResponseInputItem::ItemReference
+      ],
+      [
+        OpenAI::Realtime::RealtimeAudioFormats,
+        {rate: 24_000},
+        OpenAI::Realtime::RealtimeAudioFormats::AudioPCM
+      ],
+      [
+        OpenAI::Realtime::RealtimeToolsConfigUnion,
+        {name: "weather"},
+        OpenAI::Realtime::RealtimeFunctionTool
+      ]
+    ]
+
+    cases.each do |union, input, expected_class|
+      state = OpenAI::Internal::Type::Converter.new_coerce_state
+
+      output = OpenAI::Internal::Type::Converter.coerce(union, input, state: state)
+
+      assert_instance_of(expected_class, output)
+      assert_nil(state.fetch(:error))
+    end
+  end
+
+  def test_unknown_discriminator_is_a_successful_raw_passthrough
+    input = {sequence_number: 3, type: "keepalive"}
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+
+    output = OpenAI::Internal::Type::Converter.coerce(
+      OpenAI::Responses::ResponseStreamEvent,
+      input,
+      state: state
+    )
+
+    assert_same(input, output)
+    assert_nil(state.fetch(:error))
+  end
+
+  def test_generated_unkeyed_variants_outrank_unknown_passthrough
+    cases = [
+      [OpenAI::Responses::Tool, :web_search, OpenAI::Responses::WebSearchTool],
+      [OpenAI::Responses::Tool, :web_search_preview, OpenAI::Responses::WebSearchPreviewTool],
+      [OpenAI::Beta::BetaTool, :web_search, OpenAI::Beta::BetaWebSearchTool],
+      [OpenAI::Beta::BetaTool, :web_search_preview, OpenAI::Beta::BetaWebSearchPreviewTool]
+    ]
+
+    cases.each do |union, type, expected_class|
+      input = {type: type.to_s, search_context_size: "future_size"}
+      state = OpenAI::Internal::Type::Converter.new_coerce_state
+
+      output = OpenAI::Internal::Type::Converter.coerce(union, input, state: state)
+
+      assert_instance_of(expected_class, output)
+      assert_equal(type, output.type)
+      assert_equal("future_size", output.search_context_size)
+      assert_nil(state.fetch(:error))
+    end
+  end
+
+  def test_generated_unkeyed_variants_do_not_claim_unknown_discriminators
+    [OpenAI::Responses::Tool, OpenAI::Beta::BetaTool].each do |union|
+      input = {type: "future_tool", search_context_size: "future_size"}
+      state = OpenAI::Internal::Type::Converter.new_coerce_state
+
+      output = OpenAI::Internal::Type::Converter.coerce(union, input, state: state)
+
+      assert_same(input, output)
+      assert_nil(state.fetch(:error))
+    end
+  end
+
+  def test_model_accessor_preserves_nested_unknown_discriminator
+    input = {id: "item_future", type: "future_item"}
+    response = OpenAI::Responses::Response.new(output: [input])
+
+    assert_same(input, response.output.fetch(0))
+    assert_same(input, response.to_h.fetch(:output).fetch(0))
+  end
+
   def test_coerce
     cases = {
       [U0, :""] => [{no: 1}, 0, :""],
@@ -615,7 +765,7 @@ class OpenAI::Test::UnionTest < Minitest::Test
       [U1, :b] => [{maybe: 1}, 2, :b],
 
       [U2, {type: :a}] => [{yes: 3}, 0, {t: :a}],
-      [U2, {type: "b"}] => [{yes: 3}, 0, {type: :b}],
+      [U2, {type: "b"}] => [{yes: 3}, 0, {type: "b"}],
 
       [U3, "one"] => [{yes: 1}, 2, "one"],
       [U4, "one"] => [{yes: 1}, 1, "one"],
@@ -623,8 +773,8 @@ class OpenAI::Test::UnionTest < Minitest::Test
       [U5, {a: []}] => [{yes: 3}, 2, {a: []}],
       [U6, {b: []}] => [{yes: 3}, 2, {b: []}],
 
-      [U5, {a: [{a: []}]}] => [{yes: 6}, 4, {a: [M4.new(a: [])]}],
-      [U5, {a: [{a: [{a: []}]}]}] => [{yes: 9}, 6, {a: [M4.new(a: [M4.new(a: [])])]}]
+      [U5, {a: [{a: []}]}] => [{yes: 6}, 4, {a: [{a: []}]}],
+      [U5, {a: [{a: [{a: []}]}]}] => [{yes: 9}, 6, {a: [{a: [{a: []}]}]}]
     }
 
     cases.each do |lhs, rhs|

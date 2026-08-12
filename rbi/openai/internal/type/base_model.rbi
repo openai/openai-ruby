@@ -284,6 +284,19 @@ module OpenAI
         end
 
         # @api private
+        sig do
+          params(
+            name: Symbol,
+            value: T.anything,
+            converted: T.anything,
+            cache: T::Boolean,
+            error: T.nilable(StandardError)
+          ).returns(T.anything)
+        end
+        def _store_field(name, value, converted:, cache:, error:)
+        end
+
+        # @api private
         sig { params(coder: T.untyped).void }
         def encode_with(coder)
         end

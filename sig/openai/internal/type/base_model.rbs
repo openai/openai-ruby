@@ -100,6 +100,14 @@ module OpenAI
 
         def to_yaml: (*top a) -> String
 
+        def _store_field: (
+          Symbol name,
+          top value,
+          converted: top,
+          cache: bool,
+          error: StandardError?
+        ) -> top
+
         def encode_with: (top coder) -> void
 
         def initialize: (?::Hash[Symbol, top] | instance data) -> void

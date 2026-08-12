@@ -90,26 +90,83 @@ module OpenAI
         #
         # @return [OpenAI::Internal::Type::Converter, Class, nil]
         private def resolve_variant(value)
-          case [@discriminator, value]
-          in [_, OpenAI::Internal::Type::BaseModel]
+          case value
+          in OpenAI::Internal::Type::BaseModel
             value.class
+          else
+            key = discriminator_value(value)
+            return nil if key == OpenAI::Internal::OMIT || key.nil?
+
+            keyed_matches = known_variants.select { |known_key,| known_key == key }
+            return keyed_matches.fetch(0).fetch(1).call if keyed_matches.one?
+            return nil if keyed_matches.any?
+
+            unkeyed_matches = known_variants.select do |known_key, variant_fn|
+              known_key.nil? && variant_discriminator_matches?(variant_fn.call, key)
+            end
+            unkeyed_matches.fetch(0).fetch(1).call if unkeyed_matches.one?
+          end
+        end
+
+        # @api private
+        #
+        # @param value [Object]
+        #
+        # @return [Object]
+        private def discriminator_value(value)
+          case [@discriminator, value]
           in [Symbol, Hash]
             key = value.fetch(@discriminator) do
               value.fetch(@discriminator.to_s, OpenAI::Internal::OMIT)
             end
-
-            return nil if key == OpenAI::Internal::OMIT
-
-            key = key.to_sym if key.is_a?(String)
-            _, found = known_variants.find { |k,| k == key }
-            found&.call
+            key.is_a?(String) ? key.to_sym : key
           else
-            nil
+            OpenAI::Internal::OMIT
           end
+        end
+
+        # @api private
+        #
+        # Missing and nil discriminators retain structural inference for generated
+        # variants whose discriminator field is optional or nullable. Duplicate keyed
+        # variants are compared structurally. A present but unknown discriminator tries
+        # explicit unkeyed variants before preserving the original value.
+        #
+        # @param discriminator [Object]
+        #
+        # @return [Array<Array(Symbol, Proc, Hash{Symbol=>Object})>]
+        private def fallback_variants(discriminator)
+          return known_variants if discriminator == OpenAI::Internal::OMIT || discriminator.nil?
+
+          keyed_variants = known_variants.select { |known_key,| known_key == discriminator }
+          return keyed_variants unless keyed_variants.empty?
+
+          unknown = [nil, -> { OpenAI::Internal::Type::Unknown }, {}]
+          known_variants.select { |known_key,| known_key.nil? }.append(unknown)
         end
 
         # rubocop:disable Style/HashEachMethods
         # rubocop:disable Style/CaseEquality
+
+        # @api private
+        #
+        # Some generated variants are unkeyed because one model accepts discriminator
+        # values through an enum. Resolve recognized values without structurally matching
+        # those models against genuinely unknown discriminator values.
+        #
+        # @param target [Object]
+        #
+        # @param discriminator [Object]
+        #
+        # @return [Boolean]
+        private def variant_discriminator_matches?(target, discriminator)
+          return false unless target.is_a?(Class) && target <= OpenAI::Internal::Type::BaseModel
+
+          field = target.known_fields.values.find { _1.fetch(:api_name) == @discriminator }
+          return false unless field
+
+          field.fetch(:type_fn).call === discriminator
+        end
 
         # @api public
         #
@@ -165,9 +222,10 @@ module OpenAI
           end
 
           exactness = state.fetch(:exactness)
+          discriminator = discriminator_value(value)
 
           alternatives = []
-          known_variants.each do |_, variant_fn|
+          fallback_variants(discriminator).each do |_, variant_fn|
             target = variant_fn.call
             exact = state[:exactness] = {yes: 0, no: 0, maybe: 0}
             state[:branched] += 1

@@ -70,6 +70,31 @@ module OpenAI
         private def resolve_variant(value)
         end
 
+        # @api private
+        sig { params(value: T.anything).returns(T.anything) }
+        private def discriminator_value(value)
+        end
+
+        # @api private
+        sig do
+          params(discriminator: T.anything).returns(
+            T::Array[
+              [
+                T.nilable(Symbol),
+                T.proc.returns(OpenAI::Internal::Type::Converter::Input),
+                OpenAI::Internal::AnyHash
+              ]
+            ]
+          )
+        end
+        private def fallback_variants(discriminator)
+        end
+
+        # @api private
+        sig { params(target: T.anything, discriminator: T.anything).returns(T::Boolean) }
+        private def variant_discriminator_matches?(target, discriminator)
+        end
+
         sig { params(other: T.anything).returns(T::Boolean) }
         def ===(other)
         end

@@ -89,19 +89,19 @@ module OpenAI
                   OpenAI::Internal::Type::Converter.coerce(target, value, state: state)
                 end
               error = state.fetch(:error)
-              @coerced.store(name_sym, error || true)
-              stored =
-                case [target, error]
-                in [OpenAI::Internal::Type::Converter | Symbol, nil]
-                  if value in ^target
-                    value
-                  else
-                    coerced
-                  end
-                else
+              converted =
+                if value in ^target
                   value
+                else
+                  coerced
                 end
-              @data.store(name_sym, stored)
+              _store_field(
+                name_sym,
+                value,
+                converted: converted,
+                cache: error.nil? && target.is_a?(OpenAI::Internal::Type::Converter),
+                error: error
+              )
             end
 
             # rubocop:disable Style/CaseEquality
@@ -111,7 +111,7 @@ module OpenAI
 
               case @coerced[name_sym]
               in true | false if OpenAI::Internal::Type::Converter === target
-                @data.fetch(name_sym)
+                @converted.fetch(name_sym)
               in ::StandardError => e
                 raise OpenAI::Errors::ConversionError.new(
                   on: self.class,
@@ -298,7 +298,6 @@ module OpenAI
             keys = val.keys.to_set
             instance = new
             data = instance.to_h
-            viability = instance.instance_variable_get(:@coerced)
 
             # rubocop:disable Metrics/BlockLength
             error = state.fetch(:error)
@@ -336,8 +335,13 @@ module OpenAI
                 end
 
               error ||= field_error
-              viability.store(name, field_error || true)
-              data.store(name, converted)
+              instance._store_field(
+                name,
+                item,
+                converted: converted,
+                cache: field_error.nil? && target.is_a?(OpenAI::Internal::Type::Converter),
+                error: field_error
+              )
             end
             # rubocop:enable Metrics/BlockLength
 
@@ -519,6 +523,24 @@ module OpenAI
         def encode_with(coder)
           coder["data"] = @data
           coder["coerced"] = @coerced
+          coder["converted"] = @converted
+        end
+
+        # @api private
+        #
+        # Stores the raw field value separately from its converted accessor value.
+        #
+        # @param name [Symbol]
+        # @param value [Object]
+        # @param converted [Object]
+        # @param cache [Boolean]
+        # @param error [StandardError, nil]
+        #
+        # @return [Object]
+        def _store_field(name, value, converted:, cache:, error:)
+          @coerced.store(name, error || true)
+          cache ? @converted.store(name, converted) : @converted.delete(name)
+          @data.store(name, value)
         end
 
         # Create a new instance of a model.
@@ -527,6 +549,7 @@ module OpenAI
         def initialize(data = {})
           @data = {}
           @coerced = {}
+          @converted = {}
           @last_response = nil
           OpenAI::Internal::Util.coerce_hash!(data).each do
             if self.class.known_fields.key?(_1)
