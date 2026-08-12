@@ -646,6 +646,11 @@ module OpenAI
                 :"tenant.workload_identity.principal.provisioned",
                 OpenAI::Admin::Organization::AuditLogListParams::EventType::TaggedSymbol
               )
+            TENANT_WORKLOAD_IDENTITY_ACCESS_TOKEN_ISSUED =
+              T.let(
+                :"tenant.workload_identity.access_token.issued",
+                OpenAI::Admin::Organization::AuditLogListParams::EventType::TaggedSymbol
+              )
             TENANT_ADMIN_API_KEY_CREATED =
               T.let(
                 :"tenant.admin_api_key.created",
