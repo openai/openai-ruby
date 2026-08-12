@@ -108,6 +108,21 @@ module OpenAI
           end
         end
 
+        # @api private
+        #
+        # After direct discriminator resolution fails, excludes keyed variants from
+        # hashes belonging to a discriminated union. An unkeyed variant may still
+        # intentionally provide a fallback.
+        #
+        # @param value [Object]
+        #
+        # @return [Array<Array(Symbol, Proc, Hash{Symbol=>Object})>]
+        private def fallback_variants(value)
+          return known_variants unless @discriminator.is_a?(Symbol) && value.is_a?(Hash)
+
+          known_variants.select { |known_key,| known_key.nil? }
+        end
+
         # rubocop:disable Style/HashEachMethods
         # rubocop:disable Style/CaseEquality
 
@@ -167,7 +182,7 @@ module OpenAI
           exactness = state.fetch(:exactness)
 
           alternatives = []
-          known_variants.each do |_, variant_fn|
+          fallback_variants(value).each do |_, variant_fn|
             target = variant_fn.call
             exact = state[:exactness] = {yes: 0, no: 0, maybe: 0}
             state[:branched] += 1

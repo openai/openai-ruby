@@ -583,6 +583,15 @@ class OpenAI::Test::UnionTest < Minitest::Test
     variant -> { M5 }
   end
 
+  module U7
+    extend OpenAI::Internal::Type::Union
+
+    discriminator :type
+
+    variant :a, M1
+    variant OpenAI::Internal::Type::Unknown
+  end
+
   def test_accessors
     model = M3.new(recur: [])
     tap do
@@ -599,6 +608,62 @@ class OpenAI::Test::UnionTest < Minitest::Test
     OpenAI::Internal::Type::Converter.coerce(U2, {type: :a}, state: state)
 
     assert_equal(true, state.fetch(:strictness))
+  end
+
+  def test_known_discriminator_value_selects_keyed_variant
+    {
+      {type: :a} => M1,
+      {type: "a"} => M1,
+      {"type" => :a} => M1,
+      {"type" => "a"} => M1,
+      {type: :b} => M2,
+      {type: "b"} => M2,
+      {"type" => :b} => M2,
+      {"type" => "b"} => M2
+    }.each do |input, expected_class|
+      state = OpenAI::Internal::Type::Converter.new_coerce_state
+
+      output = OpenAI::Internal::Type::Converter.coerce(U2, input, state: state)
+
+      assert_instance_of(expected_class, output)
+      assert_nil(state.fetch(:error))
+      assert_equal(0, state.fetch(:branched))
+    end
+  end
+
+  def test_unknown_discriminator_value_is_not_coerced_to_a_keyed_variant
+    [{type: :unknown}, {type: "unknown"}, {"type" => :unknown}, {"type" => "unknown"}].each do |input|
+      state = OpenAI::Internal::Type::Converter.new_coerce_state
+
+      output = OpenAI::Internal::Type::Converter.coerce(U2, input, state: state)
+
+      assert_same(input, output)
+      assert_instance_of(ArgumentError, state.fetch(:error))
+      assert_equal(0, state.fetch(:branched))
+    end
+  end
+
+  def test_missing_discriminator_value_is_not_coerced_to_a_keyed_variant
+    input = {c: "value"}
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+
+    output = OpenAI::Internal::Type::Converter.coerce(U2, input, state: state)
+
+    assert_same(input, output)
+    assert_instance_of(ArgumentError, state.fetch(:error))
+    assert_equal(0, state.fetch(:branched))
+  end
+
+  def test_discriminated_union_uses_unkeyed_fallback
+    [{type: :unknown}, {c: "value"}].each do |input|
+      state = OpenAI::Internal::Type::Converter.new_coerce_state
+
+      output = OpenAI::Internal::Type::Converter.coerce(U7, input, state: state)
+
+      assert_same(input, output)
+      assert_nil(state.fetch(:error))
+      assert_equal(1, state.fetch(:branched))
+    end
   end
 
   def test_coerce

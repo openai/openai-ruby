@@ -27,6 +27,10 @@ module OpenAI
           top value
         ) -> OpenAI::Internal::Type::Converter::input?
 
+        private def self.fallback_variants: (
+          top value
+        ) -> ::Array[[Symbol?, (^-> OpenAI::Internal::Type::Converter::input), ::Hash[Symbol, top]]]
+
         def ===: (top other) -> bool
 
         def ==: (top other) -> bool

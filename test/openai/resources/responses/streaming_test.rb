@@ -81,6 +81,21 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     end
   end
 
+  def test_unknown_event_type_is_not_coerced_to_a_known_event
+    created_event, remaining_events = basic_text_sse_response.split("\n\n", 2)
+    keepalive_event = <<~SSE
+      event: keepalive
+      data: {"sequence_number":3,"type":"keepalive"}
+    SSE
+    stub_streaming_response([created_event, keepalive_event, remaining_events].join("\n\n"))
+
+    events = @client.responses.stream(**basic_params).to_a
+    keepalive = events.find { |event| event.is_a?(Hash) && event[:type] == "keepalive" }
+
+    assert_equal({sequence_number: 3, type: "keepalive"}, keepalive)
+    refute(events.any? { |event| event.is_a?(OpenAI::Models::Responses::ResponseErrorEvent) })
+  end
+
   def test_get_final_response
     stub_streaming_response(basic_text_sse_response)
 

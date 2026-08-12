@@ -70,6 +70,21 @@ module OpenAI
         private def resolve_variant(value)
         end
 
+        # @api private
+        sig do
+          params(value: T.anything).returns(
+            T::Array[
+              [
+                T.nilable(Symbol),
+                T.proc.returns(OpenAI::Internal::Type::Converter::Input),
+                OpenAI::Internal::AnyHash
+              ]
+            ]
+          )
+        end
+        private def fallback_variants(value)
+        end
+
         sig { params(other: T.anything).returns(T::Boolean) }
         def ===(other)
         end
