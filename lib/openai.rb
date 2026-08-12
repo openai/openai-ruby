@@ -22,9 +22,12 @@ require "uri"
 
 # We already ship the preferred sorbet manifests in the package itself.
 # `tapioca` currently does not offer us a way to opt out of unnecessary compilation.
+# Thor removes the selected subcommand from `ARGV` before loading an application,
+# so the DSL loader is the reliable fallback for detecting `tapioca dsl`.
+tapioca_dsl = ARGV.any?(/dsl/) || caller.any?(%r{tapioca[\\/]loaders[\\/]dsl})
 if Object.const_defined?(:Tapioca) &&
    caller.chain([$PROGRAM_NAME]).chain(ARGV).any?(/tapioca/) &&
-   ARGV.none?(/dsl/)
+   !tapioca_dsl
   return
 end
 

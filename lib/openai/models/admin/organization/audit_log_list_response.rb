@@ -677,6 +677,7 @@ module OpenAI
             TENANT_WORKLOAD_IDENTITY_MAPPING_ARCHIVED = :"tenant.workload_identity.mapping.archived"
             TENANT_WORKLOAD_IDENTITY_BINDING_CREATED = :"tenant.workload_identity.binding.created"
             TENANT_WORKLOAD_IDENTITY_PRINCIPAL_PROVISIONED = :"tenant.workload_identity.principal.provisioned"
+            TENANT_WORKLOAD_IDENTITY_ACCESS_TOKEN_ISSUED = :"tenant.workload_identity.access_token.issued"
             TENANT_ADMIN_API_KEY_CREATED = :"tenant.admin_api_key.created"
             TENANT_ADMIN_API_KEY_UPDATED = :"tenant.admin_api_key.updated"
             TENANT_ADMIN_API_KEY_DELETED = :"tenant.admin_api_key.deleted"

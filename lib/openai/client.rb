@@ -168,6 +168,13 @@ module OpenAI
     #
     # @param http_client [#execute, nil] The HTTP client used to
     #   execute SDK requests. Defaults to {OpenAI::NetHTTPClient}.
+    #
+    # @param logger [#debug, #info, #warn, #error, nil] Logger for SDK request diagnostics.
+    #
+    # @param log_level [Symbol, String, nil] SDK request log level. Defaults to
+    #   `ENV["OPENAI_LOG"]`, `:info` when `logger` is provided, and `:off` otherwise.
+    #
+    # @param on_retry [Proc, nil] Callback invoked immediately before an API retry delay.
     def initialize(
       api_key: ENV["OPENAI_API_KEY"],
       admin_api_key: ENV["OPENAI_ADMIN_KEY"],
@@ -179,7 +186,10 @@ module OpenAI
       timeout: self.class::DEFAULT_TIMEOUT_IN_SECONDS,
       initial_retry_delay: self.class::DEFAULT_INITIAL_RETRY_DELAY,
       max_retry_delay: self.class::DEFAULT_MAX_RETRY_DELAY,
-      http_client: nil
+      http_client: nil,
+      logger: nil,
+      log_level: nil,
+      on_retry: nil
     )
       base_url ||= "https://api.openai.com/v1"
 
@@ -210,7 +220,10 @@ module OpenAI
         initial_retry_delay: initial_retry_delay,
         max_retry_delay: max_retry_delay,
         headers: headers,
-        http_client: http_client
+        http_client: http_client,
+        logger: logger,
+        log_level: log_level,
+        on_retry: on_retry
       )
 
       @completions = OpenAI::Resources::Completions.new(client: self)
