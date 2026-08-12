@@ -17,6 +17,15 @@ module OpenAI
 
           raise(closed_message || "Realtime connection closed before #{stop_after}")
         end
+
+        def wait_for(connection, event_class, closed_message:)
+          while (event = connection.receive)
+            raise event.error.message if event.is_a?(OpenAI::Realtime::RealtimeErrorEvent)
+            return event if event.is_a?(event_class)
+          end
+
+          raise closed_message
+        end
       end
     end
   end

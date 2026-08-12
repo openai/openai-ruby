@@ -13,6 +13,7 @@ module OpenAI
 
         def stream_response(connection, output: $stdout)
           started_response = false
+          received_text = false
           EventStream.each_until(connection, stop_after: "response.done") do |event|
             case event
             when OpenAI::Realtime::SessionCreatedEvent
@@ -22,12 +23,14 @@ module OpenAI
             when OpenAI::Realtime::ResponseTextDeltaEvent
               output.print("[assistant] ") unless started_response
               started_response = true
+              received_text = true unless event.delta.empty?
               output.print(event.delta)
               output.flush
             when OpenAI::Realtime::ResponseDoneEvent
               output.puts if started_response
               status = event.response.status
               raise "Realtime response ended with status #{status.inspect}" unless status == :completed
+              raise "Realtime response completed without text output" unless received_text
 
               output.puts("[realtime] response.done status=completed")
             when OpenAI::Realtime::RealtimeErrorEvent

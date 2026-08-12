@@ -82,7 +82,8 @@ bundle exec ruby examples/realtime/websocket_text.rb
 
 A successful run prints `session.created`, `session.updated`, streamed assistant
 text, and `response.done status=completed`. An EOF before the completed
-`response.done` is reported as a failed smoke test.
+`response.done`, or a completed response without a non-empty text delta, is
+reported as a failed smoke test.
 
 ## WebSocket audio
 
@@ -105,7 +106,9 @@ ffplay -f s16le -ar 24000 -ch_layout mono response.pcm
 
 A successful run exits with status 0 only after writing audio bytes and seeing a
 completed `response.done`. EOF before completion, or completion without an
-audio delta, is reported as a failed smoke test.
+audio delta, is reported as a failed smoke test. The example disables automatic
+turn detection and waits for `session.updated` before uploading, so its explicit
+buffer commit and `response.create` cannot race server VAD.
 
 ## Realtime transcription
 
@@ -143,6 +146,8 @@ A successful run prints the translated transcript, exits after
 incomplete instead of silently succeeding. If upload and graceful close both
 fail, the upload error remains the primary failure so the interrupted input
 operation is not hidden by cleanup.
+If the reader fails while input is still being uploaded, the example cancels
+the uploader immediately instead of draining the rest of the file.
 
 ## MCP approval
 

@@ -42,12 +42,21 @@ module OpenAI
             options: options
           )
           location = response.headers["location"]
-          call_id = location&.then { URI.parse(_1).path.split("/").last }
+          call_id = call_id_from_location(location)
           OpenAI::Realtime::CallCreateResponse.new(
             sdp: response.body.to_a.join,
             call_id: call_id,
             headers: response.headers
           )._set_last_response(response.metadata)
+        end
+
+        # A Location header is helpful metadata, but the SDP answer remains usable
+        # when an intermediary supplies a malformed value.
+        private def call_id_from_location(location)
+          path = location&.then { URI.parse(_1).path }
+          path&.split("/")&.last
+        rescue URI::InvalidURIError
+          nil
         end
 
         # Some parameter documentations has been truncated, see

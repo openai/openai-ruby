@@ -37,19 +37,13 @@ module OpenAI
         end
 
         def write_input(connection, input_path)
-          upload_error = nil
-          begin
-            File.open(input_path, "rb") do |input|
-              while (chunk = input.read(9_600))
-                connection.input_audio_buffer.append_bytes(chunk)
-              end
+          File.open(input_path, "rb") do |input|
+            while (chunk = input.read(9_600))
+              connection.input_audio_buffer.append_bytes(chunk)
             end
-          rescue StandardError => e
-            upload_error = e
-            raise
-          ensure
-            close_session(connection, preserve_error: !upload_error.nil?)
           end
+        ensure
+          close_session(connection, preserve_error: !$ERROR_INFO.nil?)
         end
 
         def close_session(connection, preserve_error:)
@@ -58,19 +52,39 @@ module OpenAI
           raise unless preserve_error
         end
 
+        def exchange(connection, input_path:, audio_output:, transcript_output:)
+          uploader = nil
+          reader = Async do
+            stream(
+              connection,
+              audio_output: audio_output,
+              transcript_output: transcript_output
+            )
+            nil
+          rescue StandardError => e
+            uploader&.stop
+            e
+          end
+          uploader = Async { write_input(connection, input_path) }
+          uploader.stop if reader.finished?
+          uploader.wait
+          reader_error = reader.wait
+          raise reader_error if reader_error
+        ensure
+          uploader&.stop
+          reader&.stop
+        end
+
         def run(client:, model:, input_path:, output_path:, target_language:, transcript_output: $stdout)
           File.open(output_path, "wb") do |audio_output|
             client.realtime.translations.connect(model: model) do |connection|
               connection.session.update(audio: {output: {language: target_language}})
-              reader = Async do
-                stream(
-                  connection,
-                  audio_output: audio_output,
-                  transcript_output: transcript_output
-                )
-              end
-              write_input(connection, input_path)
-              reader.wait
+              exchange(
+                connection,
+                input_path: input_path,
+                audio_output: audio_output,
+                transcript_output: transcript_output
+              )
             end
           end
         end

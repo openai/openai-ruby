@@ -31,6 +31,20 @@ class OpenAI::Test::Resources::Realtime::CallsTest < OpenAI::Test::ResourceTest
     end
   end
 
+  class MalformedLocationHTTPClient < OpenAI::HTTPClient
+    def execute(_request)
+      OpenAI::HTTPClient::Response.new(
+        status: 201,
+        headers: {
+          "Content-Type" => "application/sdp",
+          "Location" => "http://[malformed",
+          "X-Request-ID" => "req_malformed_location"
+        },
+        body: "usable-answer-sdp"
+      )
+    end
+  end
+
   def test_create_with_an_sdp_offer
     http_client = StubHTTPClient.new
     client = OpenAI::Client.new(
@@ -92,6 +106,20 @@ class OpenAI::Test::Resources::Realtime::CallsTest < OpenAI::Test::ResourceTest
     assert_includes(log, "request complete")
     assert_includes(log, "request_id=req_realtime_call")
     assert_includes(log, "response body")
+  end
+
+  def test_create_ignores_a_malformed_optional_location_header
+    client = OpenAI::Client.new(
+      api_key: "test-key",
+      base_url: "https://example.com/v1",
+      http_client: MalformedLocationHTTPClient.new
+    )
+
+    response = client.realtime.calls.create(sdp: "offer-sdp")
+
+    assert_equal("usable-answer-sdp", response.sdp)
+    assert_nil(response.call_id)
+    assert_equal("req_malformed_location", response._request_id)
   end
 
   def test_accept_required_params

@@ -185,8 +185,9 @@ render plain: call.sdp, content_type: "application/sdp"
 ```
 
 The result preserves `sdp`, normalized response `headers`, and `call_id` parsed
-from the `Location` header. Keep the call ID if the application will open a
-server-side sideband connection:
+from the optional `Location` header. A missing or malformed `Location` leaves
+`call_id` as `nil` without discarding an otherwise valid SDP answer. Keep the
+call ID if the application will open a server-side sideband connection:
 
 ```ruby
 client.realtime.connect_to_call(call_id: call.call_id) do |connection|
@@ -320,10 +321,13 @@ active upload or processing error when a graceful close fails, while surfacing
 the close failure after an otherwise successful operation.
 
 Terminal status alone is insufficient when a workflow promises an artifact:
-the raw-audio and translation smokes also require at least one decoded audio
-byte before their terminal events. Microphone shutdown is latched before capture
-starts, so an immediately closed connection cannot start an orphaned ffmpeg
-process after cleanup has begun.
+the text smoke requires a non-empty text delta, while the raw-audio and
+translation smokes require at least one decoded audio byte before their terminal
+events. The file-audio smoke disables VAD and waits for the acknowledged session
+update before its manual commit. Translation reader failures cancel an in-flight
+upload rather than waiting for the input file to drain. Microphone shutdown is
+latched before capture starts, so an immediately closed connection cannot start
+an orphaned ffmpeg process after cleanup has begun.
 
 The three standard Realtime connection modes use distinct method names rather
 than a keyword-discriminated overload: `connect(model:)`, `connect_to_call`, and

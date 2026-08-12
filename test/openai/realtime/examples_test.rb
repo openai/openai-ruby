@@ -7,7 +7,7 @@ require_relative "../../../examples/realtime/realtime_conversation"
 require_relative "../../../examples/realtime/sideband"
 require_relative "../../../examples/realtime/sip"
 require_relative "../../../examples/realtime/webrtc_conversation"
-require_relative "../../../examples/realtime/websocket_text"
+require_relative "../../../examples/realtime/websocket_audio"
 
 class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
   Event = Data.define(:type, :data) do
@@ -55,10 +55,11 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
 
   class RecordingAudioBuffer
     attr_accessor :append_error
-    attr_reader :chunks
+    attr_reader :chunks, :commits
 
     def initialize(writer_fibers = nil)
       @chunks = []
+      @commits = 0
       @writer_fibers = writer_fibers
     end
 
@@ -68,6 +69,8 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
 
       @chunks << bytes
     end
+
+    def commit = @commits += 1
   end
 
   class RecordingOutbound
@@ -83,10 +86,11 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
   end
 
   class RecordingConnection
-    attr_reader :conversation, :input_audio_buffer, :response, :session, :writer_fibers
+    attr_reader :conversation, :input_audio_buffer, :received, :response, :session, :writer_fibers
 
     def initialize(events = [])
       @events = events
+      @received = []
       @writer_fibers = []
       @session = RecordingSession.new
       @conversation = RecordingConversation.new(@writer_fibers)
@@ -99,7 +103,7 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
     end
 
     def receive
-      @events.shift
+      @events.shift.tap { |event| @received << event&.type }
     end
   end
 
@@ -139,6 +143,11 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
 
     def connect_to_call(call_id:)
       @connections << call_id
+      yield(@connection)
+    end
+
+    def connect(model:)
+      @connections << model
       yield(@connection)
     end
   end
@@ -920,34 +929,53 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
     assert_equal(["rtc_123"], realtime.calls.hangups)
   end
 
-  def test_websocket_text_rejects_a_connection_that_closes_before_response_done
-    error = assert_raises(RuntimeError) do
-      OpenAI::Examples::Realtime::WebSocketText.stream_response(
-        RecordingConnection.new,
-        output: StringIO.new
-      )
-    end
-
-    assert_equal("Realtime connection closed before response.done", error.message)
-  end
-
-  def test_websocket_text_accepts_only_a_completed_response
+  def test_websocket_audio_disables_vad_and_waits_for_session_updated
+    audio = "assistant pcm".b
     connection = RecordingConnection.new(
       [
-        OpenAI::Realtime::ResponseDoneEvent.new(
-          event_id: "event_1",
-          response: OpenAI::Realtime::RealtimeResponse.new(
-            id: "response_1",
-            status: :completed
-          )
-        )
+        OpenAI::Realtime::SessionUpdatedEvent.new(event_id: "event_1", session: {}),
+        OpenAI::Realtime::ResponseAudioDeltaEvent.new(
+          event_id: "event_2",
+          response_id: "response_1",
+          item_id: "item_1",
+          output_index: 0,
+          content_index: 0,
+          delta: Base64.strict_encode64(audio)
+        ),
+        completed_response_event
       ]
     )
-    output = StringIO.new
+    realtime = RecordingRealtime.new(connection)
 
-    OpenAI::Examples::Realtime::WebSocketText.stream_response(connection, output: output)
+    Tempfile.create("realtime-input") do |input|
+      input.write("input pcm")
+      input.flush
+      Tempfile.create("realtime-output") do |output|
+        _stdout, _stderr = capture_io do
+          OpenAI::Examples::Realtime::WebSocketAudio.run(
+            client: RecordingClient.new(realtime: realtime),
+            model: "gpt-realtime-2.1",
+            input_path: input.path,
+            output_path: output.path
+          )
+        end
 
-    assert_includes(output.string, "response.done status=completed")
+        assert_equal(audio, File.binread(output.path))
+      end
+    end
+
+    assert_equal(
+      {
+        type: :realtime,
+        output_modalities: [:audio],
+        audio: {input: {turn_detection: nil}}
+      },
+      connection.session.updates.fetch(0)
+    )
+    assert_equal(["input pcm"], connection.input_audio_buffer.chunks)
+    assert_equal(1, connection.input_audio_buffer.commits)
+    assert_equal([{}], connection.response.calls)
+    assert_equal([:"session.updated"], connection.received)
   end
 
   private def completed_response_event

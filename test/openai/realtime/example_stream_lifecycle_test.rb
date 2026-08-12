@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 require_relative "../test_helper"
+require "async/notification"
 require_relative "../../../examples/realtime/mcp_approval"
 require_relative "../../../examples/realtime/sideband"
 require_relative "../../../examples/realtime/sip"
 require_relative "../../../examples/realtime/translation"
 require_relative "../../../examples/realtime/websocket_audio"
+require_relative "../../../examples/realtime/websocket_text"
 require_relative "../../../examples/realtime/websocket_transcription"
 
 class OpenAI::Test::RealtimeExampleStreamLifecycleTest < Minitest::Test
@@ -17,6 +19,8 @@ class OpenAI::Test::RealtimeExampleStreamLifecycleTest < Minitest::Test
     def each(&block)
       @events.each(&block)
     end
+
+    def receive = @events.shift
   end
 
   class RaisingEndpoint
@@ -38,10 +42,72 @@ class OpenAI::Test::RealtimeExampleStreamLifecycleTest < Minitest::Test
     end
   end
 
+  class ClosingSession
+    attr_reader :closed
+
+    def close = @closed = true
+  end
+
+  class BlockingAudioBuffer
+    attr_reader :chunks
+
+    def initialize(upload_started)
+      @upload_started = upload_started
+      @chunks = []
+    end
+
+    def append_bytes(bytes)
+      @chunks << bytes
+      @upload_started.signal
+      Kernel.sleep(3_600)
+    end
+  end
+
+  class ReaderFailureConnection
+    attr_reader :input_audio_buffer, :session
+
+    def initialize(event)
+      upload_started = Async::Notification.new
+      @event = event
+      @input_audio_buffer = BlockingAudioBuffer.new(upload_started)
+      @session = ClosingSession.new
+      @upload_started = upload_started
+    end
+
+    def each
+      @upload_started.wait
+      yield(@event)
+    end
+  end
+
   TranslationConnection = Data.define(:input_audio_buffer, :session)
 
   Event = Data.define(:type, :data) do
     def to_h = data
+  end
+
+  def test_wait_for_rejects_eof_before_the_target_event
+    error = assert_raises(RuntimeError) do
+      OpenAI::Examples::Realtime::EventStream.wait_for(
+        RecordingConnection.new,
+        OpenAI::Realtime::SessionUpdatedEvent,
+        closed_message: "Realtime connection closed before session.updated"
+      )
+    end
+
+    assert_equal("Realtime connection closed before session.updated", error.message)
+  end
+
+  def test_wait_for_surfaces_an_api_error_before_the_target_event
+    error = assert_raises(RuntimeError) do
+      OpenAI::Examples::Realtime::EventStream.wait_for(
+        RecordingConnection.new([realtime_error_event("session update failed")]),
+        OpenAI::Realtime::SessionUpdatedEvent,
+        closed_message: "Realtime connection closed before session.updated"
+      )
+    end
+
+    assert_equal("session update failed", error.message)
   end
 
   def test_sideband_rejects_eof_before_the_requested_event
@@ -132,6 +198,51 @@ class OpenAI::Test::RealtimeExampleStreamLifecycleTest < Minitest::Test
     end
 
     assert_equal("Response completed without audio output", error.message)
+  end
+
+  def test_websocket_text_rejects_a_connection_that_closes_before_response_done
+    error = assert_raises(RuntimeError) do
+      OpenAI::Examples::Realtime::WebSocketText.stream_response(
+        RecordingConnection.new,
+        output: StringIO.new
+      )
+    end
+
+    assert_equal("Realtime connection closed before response.done", error.message)
+  end
+
+  def test_websocket_text_rejects_a_completed_response_without_text
+    connection = RecordingConnection.new([completed_response_event])
+    output = StringIO.new
+
+    error = assert_raises(RuntimeError) do
+      OpenAI::Examples::Realtime::WebSocketText.stream_response(connection, output: output)
+    end
+
+    assert_equal("Realtime response completed without text output", error.message)
+    refute_includes(output.string, "response.done status=completed")
+  end
+
+  def test_websocket_text_accepts_non_empty_text_and_a_completed_response
+    connection = RecordingConnection.new(
+      [
+        OpenAI::Realtime::ResponseTextDeltaEvent.new(
+          content_index: 0,
+          delta: "Hello from Ruby.",
+          event_id: "event_1",
+          item_id: "item_1",
+          output_index: 0,
+          response_id: "response_1"
+        ),
+        completed_response_event
+      ]
+    )
+    output = StringIO.new
+
+    OpenAI::Examples::Realtime::WebSocketText.stream_response(connection, output: output)
+
+    assert_includes(output.string, "Hello from Ruby.")
+    assert_includes(output.string, "response.done status=completed")
   end
 
   def test_translation_rejects_a_connection_that_closes_before_session_closed
@@ -248,5 +359,48 @@ class OpenAI::Test::RealtimeExampleStreamLifecycleTest < Minitest::Test
     end
     assert_equal([[:append_bytes, "audio"]], input_audio_buffer.calls)
     assert_equal([[:close]], session.calls)
+  end
+
+  def test_translation_stops_uploading_when_the_reader_fails
+    connection = ReaderFailureConnection.new(realtime_error_event("translation failed"))
+
+    Tempfile.create("translation-input") do |input|
+      input.write("audio")
+      input.flush
+
+      error = Timeout.timeout(1) do
+        Sync do
+          assert_raises(RuntimeError) do
+            OpenAI::Examples::Realtime::Translation.exchange(
+              connection,
+              input_path: input.path,
+              audio_output: StringIO.new,
+              transcript_output: StringIO.new
+            )
+          end
+        end
+      end
+
+      assert_equal("translation failed", error.message)
+    end
+    assert_equal(["audio"], connection.input_audio_buffer.chunks)
+    assert(connection.session.closed)
+  end
+
+  private def completed_response_event
+    OpenAI::Realtime::ResponseDoneEvent.new(
+      event_id: "event_done",
+      response: OpenAI::Realtime::RealtimeResponse.new(
+        id: "response_done",
+        status: :completed
+      )
+    )
+  end
+
+  private def realtime_error_event(message)
+    OpenAI::Realtime::RealtimeErrorEvent.new(
+      event_id: "event_error",
+      error: OpenAI::Realtime::RealtimeError.new(type: "server_error", message: message)
+    )
   end
 end

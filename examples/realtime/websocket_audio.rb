@@ -10,6 +10,14 @@ module OpenAI
       module WebSocketAudio
         module_function
 
+        def configure(connection)
+          connection.session.update(
+            type: :realtime,
+            output_modalities: [:audio],
+            audio: {input: {turn_detection: nil}}
+          )
+        end
+
         def stream_response(connection, output:)
           audio_bytes = 0
           EventStream.each_until(connection, stop_after: "response.done") do |event|
@@ -31,6 +39,12 @@ module OpenAI
         def run(client:, model:, input_path:, output_path:)
           File.open(output_path, "wb") do |output|
             client.realtime.connect(model: model) do |connection|
+              configure(connection)
+              EventStream.wait_for(
+                connection,
+                OpenAI::Realtime::SessionUpdatedEvent,
+                closed_message: "Realtime connection closed before session.updated"
+              )
               File.open(input_path, "rb") do |input|
                 while (chunk = input.read(4_800))
                   connection.input_audio_buffer.append_bytes(chunk)

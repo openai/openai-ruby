@@ -23,16 +23,6 @@ module OpenAI
           )
         end
 
-        def wait_until_ready(connection)
-          loop do
-            event = connection.receive
-            raise "Realtime connection closed before session.updated" if event.nil?
-            raise event.error.message if event.is_a?(OpenAI::Realtime::RealtimeErrorEvent)
-
-            return if event.is_a?(OpenAI::Realtime::SessionUpdatedEvent)
-          end
-        end
-
         def upload(connection, input_path:)
           File.open(input_path, "rb") do |input|
             while (chunk = input.read(4_800))
@@ -63,7 +53,11 @@ module OpenAI
         def run(client:, input_path:, transcription_model:, output: $stdout)
           client.realtime.connect_transcription do |connection|
             configure(connection, transcription_model: transcription_model)
-            wait_until_ready(connection)
+            EventStream.wait_for(
+              connection,
+              OpenAI::Realtime::SessionUpdatedEvent,
+              closed_message: "Realtime connection closed before session.updated"
+            )
             upload(connection, input_path: input_path)
             print_transcript(connection, output: output)
           end

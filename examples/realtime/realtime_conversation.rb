@@ -398,14 +398,6 @@ module OpenAI
           end
         end
 
-        def wait_until_ready(connection)
-          while (event = connection.receive)
-            return if event.is_a?(OpenAI::Realtime::SessionUpdatedEvent)
-            raise event.error.message if event.is_a?(OpenAI::Realtime::RealtimeErrorEvent)
-          end
-          raise "Realtime connection closed before session.updated"
-        end
-
         def stream_events(connection, microphone:, outbound:, playback:, output:, stop_after: nil)
           EventStream.each_until(connection, stop_after: stop_after) do |event|
             handle_event(event, outbound: outbound, playback: playback, output: output)
@@ -424,7 +416,11 @@ module OpenAI
           stop_after: nil
         )
           configure(connection, voice: voice, instructions: instructions)
-          wait_until_ready(connection)
+          EventStream.wait_for(
+            connection,
+            OpenAI::Realtime::SessionUpdatedEvent,
+            closed_message: "Realtime connection closed before session.updated"
+          )
           output.puts(
             "Connected. Talk naturally; speak over the model to interrupt. " \
             "Press Ctrl-C to exit. Use headphones to prevent echo."
