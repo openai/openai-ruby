@@ -14,7 +14,7 @@ module OpenAI
           def open: (
             url: URI::Generic,
             headers: ::Hash[String, String],
-            timeout: Float,
+            timeout: Float?,
             **untyped endpoint_options
           ) {
             (Socket socket) -> top

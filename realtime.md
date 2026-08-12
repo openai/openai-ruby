@@ -318,6 +318,11 @@ audio, and MCP; transcription completion for transcription; and
 processing error when a graceful close fails, while surfacing the close failure
 after an otherwise successful operation.
 
+Terminal status alone is insufficient when a workflow promises an artifact:
+the raw-audio smoke also requires at least one decoded audio byte before its
+completed `response.done`. Bounded conversation playback similarly requires the
+explicit event requested by `stop_after`; EOF before it is a failed run.
+
 Raw WebRTC SDP responses remain lazily consumed. Request observability follows
 that body lifecycle: completion is recorded only after the SDP body is fully
 drained, and a body read failure records `request failed` without a contradictory
@@ -365,6 +370,9 @@ transport.open(url:, headers:, timeout:, **transport_options) do |socket|
   # socket.closed?
 end
 ```
+
+`timeout` is `Float?` at the transport boundary because `Client.new(timeout:
+nil)` and per-request `timeout: nil` deliberately disable the handshake timeout.
 
 The SDK owns URL construction, authentication, typed JSON encoding/decoding, and
 block cleanup. The transport owns the WebSocket handshake, frame I/O, TLS,

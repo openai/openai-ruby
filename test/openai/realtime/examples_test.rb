@@ -350,6 +350,29 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
     assert_predicate(microphone, :stopped)
   end
 
+  def test_realtime_conversation_rejects_eof_before_the_requested_stop_event
+    microphone = RecordingMicrophone.new([])
+    playback = OpenAI::Examples::Realtime::Conversation::AudioPlayback.new(
+      RecordingSpeaker.new
+    )
+
+    error = assert_raises(RuntimeError) do
+      OpenAI::Examples::Realtime::Conversation.stream_events(
+        RecordingConnection.new,
+        microphone: microphone,
+        outbound: RecordingOutbound.new,
+        playback: playback,
+        output: StringIO.new,
+        stop_after: "response.done"
+      )
+    end
+
+    assert_equal("Realtime connection closed before response.done", error.message)
+    assert_predicate(microphone, :stopped)
+  ensure
+    playback&.close
+  end
+
   def test_realtime_conversation_streams_audio_and_interrupts_local_playback
     speaker = RecordingSpeaker.new
     times = [0.0, 0.1].each

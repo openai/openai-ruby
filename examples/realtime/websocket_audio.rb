@@ -11,13 +11,17 @@ module OpenAI
 
         def stream_response(connection, output:)
           completed_response = false
+          audio_bytes = 0
           connection.each do |event|
             case event
             when OpenAI::Realtime::ResponseAudioDeltaEvent
-              output.write(Base64.strict_decode64(event.delta))
+              audio = Base64.strict_decode64(event.delta)
+              output.write(audio)
+              audio_bytes += audio.bytesize
             when OpenAI::Realtime::ResponseDoneEvent
               status = event.response.status
               raise "Response ended with #{status}" unless status == :completed
+              raise "Response completed without audio output" if audio_bytes.zero?
 
               completed_response = true
               break

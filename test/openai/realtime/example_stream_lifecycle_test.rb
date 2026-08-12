@@ -49,7 +49,39 @@ class OpenAI::Test::RealtimeExampleStreamLifecycleTest < Minitest::Test
     assert_equal("Realtime connection closed before response.done", error.message)
   end
 
-  def test_websocket_audio_accepts_only_a_completed_response
+  def test_websocket_audio_accepts_audio_followed_by_a_completed_response
+    audio = "pcm".b
+    output = StringIO.new
+    connection = RecordingConnection.new(
+      [
+        OpenAI::Realtime::ResponseAudioDeltaEvent.new(
+          event_id: "event_1",
+          response_id: "response_1",
+          item_id: "item_1",
+          output_index: 0,
+          content_index: 0,
+          delta: Base64.strict_encode64(audio)
+        ),
+        OpenAI::Realtime::ResponseDoneEvent.new(
+          event_id: "event_2",
+          response: OpenAI::Realtime::RealtimeResponse.new(
+            id: "response_1",
+            status: :completed
+          )
+        )
+      ]
+    )
+
+    result = OpenAI::Examples::Realtime::WebSocketAudio.stream_response(
+      connection,
+      output: output
+    )
+
+    assert_nil(result)
+    assert_equal(audio, output.string)
+  end
+
+  def test_websocket_audio_rejects_a_completed_response_without_audio
     connection = RecordingConnection.new(
       [
         OpenAI::Realtime::ResponseDoneEvent.new(
@@ -62,12 +94,14 @@ class OpenAI::Test::RealtimeExampleStreamLifecycleTest < Minitest::Test
       ]
     )
 
-    result = OpenAI::Examples::Realtime::WebSocketAudio.stream_response(
-      connection,
-      output: StringIO.new
-    )
+    error = assert_raises(RuntimeError) do
+      OpenAI::Examples::Realtime::WebSocketAudio.stream_response(
+        connection,
+        output: StringIO.new
+      )
+    end
 
-    assert_nil(result)
+    assert_equal("Response completed without audio output", error.message)
   end
 
   def test_translation_rejects_a_connection_that_closes_before_session_closed

@@ -71,6 +71,9 @@ OPENAI_REALTIME_TIMEOUT=30 \
 bundle exec ruby examples/realtime/realtime_conversation.rb
 ```
 
+This bounded mode exits successfully only after the requested `response.done`;
+a clean EOF before that event fails the smoke test.
+
 ## WebSocket text
 
 ```sh
@@ -100,8 +103,9 @@ bundle exec ruby examples/realtime/websocket_audio.rb
 ffplay -f s16le -ar 24000 -ch_layout mono response.pcm
 ```
 
-A successful run exits with status 0 and writes a non-empty output file. An EOF
-before a completed `response.done` is reported as a failed smoke test.
+A successful run exits with status 0 only after writing audio bytes and seeing a
+completed `response.done`. EOF before completion, or completion without an
+audio delta, is reported as a failed smoke test.
 
 ## Realtime transcription
 

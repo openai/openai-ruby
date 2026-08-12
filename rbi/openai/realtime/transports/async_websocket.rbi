@@ -36,7 +36,7 @@ module OpenAI
             params(
               url: URI::Generic,
               headers: T::Hash[String, String],
-              timeout: Float,
+              timeout: T.nilable(Float),
               endpoint_options: T.untyped,
               block: T.proc.params(socket: Socket).returns(T.untyped)
             ).returns(T.untyped)

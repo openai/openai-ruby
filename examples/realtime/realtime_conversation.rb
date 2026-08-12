@@ -405,10 +405,17 @@ module OpenAI
         end
 
         def stream_events(connection, microphone:, outbound:, playback:, output:, stop_after: nil)
+          stop_event_seen = stop_after.nil?
           connection.each do |event|
             handle_event(event, outbound: outbound, playback: playback, output: output)
-            break if stop_after == event.type.to_s
+            if stop_after == event.type.to_s
+              stop_event_seen = true
+              break
+            end
           end
+          return if stop_event_seen
+
+          raise "Realtime connection closed before #{stop_after}"
         ensure
           microphone.stop
         end

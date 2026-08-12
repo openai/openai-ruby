@@ -52,7 +52,7 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     url = URI("wss://example.com/v1/realtime?model=gpt-realtime-2.1")
 
     result = Async::WebSocket::Client.stub(:open, client) do
-      transport.open(url: url, headers: {}, timeout: 1) do |socket|
+      transport.open(url: url, headers: {}, timeout: nil) do |socket|
         [socket.read, Fiber.scheduler]
       end
     end
