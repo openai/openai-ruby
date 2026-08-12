@@ -96,6 +96,23 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     refute(events.any? { |event| event.is_a?(OpenAI::Models::Responses::ResponseErrorEvent) })
   end
 
+  def test_unknown_event_type_can_be_filtered_by_starting_after
+    created_event, remaining_events = basic_text_sse_response.split("\n\n", 2)
+    keepalive_event = <<~SSE
+      event: keepalive
+      data: {"sequence_number":3,"type":"keepalive"}
+    SSE
+    body = [created_event, keepalive_event, remaining_events].join("\n\n")
+    stub_request(:get, "http://localhost/responses/msg_001?stream=true")
+      .to_return(status: 200, headers: {"Content-Type" => "text/event-stream"}, body: body)
+
+    events = @client.responses.stream(response_id: "msg_001", starting_after: 2).to_a
+    keepalive = events.find { |event| event.is_a?(Hash) && event[:type] == "keepalive" }
+
+    assert_equal({sequence_number: 3, type: "keepalive"}, keepalive)
+    assert(events.all? { |event| event[:sequence_number] > 2 })
+  end
+
   def test_get_final_response
     stub_streaming_response(basic_text_sse_response)
 

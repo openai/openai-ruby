@@ -35,6 +35,8 @@ module OpenAI
 
         private def self.variant_discriminator_matches?: (top target, top discriminator) -> bool
 
+        private def self.matched_field_count: (top target, top value) -> Integer
+
         def ===: (top other) -> bool
 
         def ==: (top other) -> bool

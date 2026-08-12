@@ -168,6 +168,23 @@ module OpenAI
           field.fetch(:type_fn).call === discriminator
         end
 
+        # @api private
+        #
+        # @param target [Object]
+        #
+        # @param value [Object]
+        #
+        # @return [Integer]
+        private def matched_field_count(target, value)
+          return 0 unless target.is_a?(Class) && target <= OpenAI::Internal::Type::BaseModel
+          return 0 unless value.is_a?(Hash)
+
+          target.known_fields.count do |name, field|
+            api_name = field.fetch(:api_name)
+            value.key?(name) || value.key?(name.to_s) || value.key?(api_name) || value.key?(api_name.to_s)
+          end
+        end
+
         # @api public
         #
         # @param other [Object]
@@ -223,9 +240,15 @@ module OpenAI
 
           exactness = state.fetch(:exactness)
           discriminator = discriminator_value(value)
+          candidates = fallback_variants(discriminator)
+          duplicate_keyed_candidates =
+            candidates.length > 1 &&
+            discriminator != OpenAI::Internal::OMIT &&
+            !discriminator.nil? &&
+            candidates.all? { |known_key,| known_key == discriminator }
 
           alternatives = []
-          fallback_variants(discriminator).each do |_, variant_fn|
+          candidates.each do |_, variant_fn|
             target = variant_fn.call
             exact = state[:exactness] = {yes: 0, no: 0, maybe: 0}
             state[:branched] += 1
@@ -233,13 +256,16 @@ module OpenAI
             coerced, error =
               OpenAI::Internal::Type::Converter.coerce_with_error(target, value, state: state)
             yes, no, maybe = exact.values
-            if (no + maybe).zero? || (!strictness && yes.positive?)
+            viable = (no + maybe).zero? || (!strictness && yes.positive?)
+            if viable && !duplicate_keyed_candidates
               exact.each { exactness[_1] += _2 }
               state[:exactness] = exactness
               state[:error] = error
               return coerced
-            elsif maybe.positive?
-              alternatives << [[-yes, -maybe, no], exact, coerced, error]
+            elsif viable || maybe.positive?
+              invalid = duplicate_keyed_candidates && no.positive? ? 1 : 0
+              matched = duplicate_keyed_candidates ? matched_field_count(target, value) : 0
+              alternatives << [[invalid, -matched, -yes, -maybe, no], exact, coerced, error]
             end
           end
 

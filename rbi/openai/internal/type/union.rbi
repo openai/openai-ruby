@@ -95,6 +95,11 @@ module OpenAI
         private def variant_discriminator_matches?(target, discriminator)
         end
 
+        # @api private
+        sig { params(target: T.anything, value: T.anything).returns(Integer) }
+        private def matched_field_count(target, value)
+        end
+
         sig { params(other: T.anything).returns(T::Boolean) }
         def ===(other)
         end

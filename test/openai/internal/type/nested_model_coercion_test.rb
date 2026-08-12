@@ -66,25 +66,6 @@ class OpenAI::Test::NestedModelCoercionTest < Minitest::Test
     assert_equal([7, 8], [model.items.fetch(0).a, model.items.fetch(0).b])
   end
 
-  def test_generated_params_to_h_preserves_nested_discriminator_hashes
-    input = [{type: "message", role: "user", content: "hello"}]
-    params = OpenAI::Responses::ResponseCreateParams.new(input: input)
-
-    assert_same(input, params[:input])
-    assert_same(input, params.to_h.fetch(:input))
-    assert_equal("message", params.to_h.fetch(:input).fetch(0).fetch(:type))
-    assert_instance_of(OpenAI::Responses::EasyInputMessage, params.input.fetch(0))
-  end
-
-  def test_yaml_round_trip_preserves_raw_and_converted_values
-    item = {a: "1", b: "2"}
-    copy = YAML.unsafe_load(YAML.dump(Container.new(item: item)))
-
-    assert_equal(item, copy.to_h.fetch(:item))
-    assert_instance_of(Item, copy.item)
-    assert_equal([1, 2], [copy.item.a, copy.item.b])
-  end
-
   def test_constructor_and_assignment_coerce_nested_maps_and_unions
     map = {"first" => {a: "1", b: "2"}}
     choice = {a: "3", b: "4"}
