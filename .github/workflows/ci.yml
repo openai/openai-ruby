@@ -1,24 +1,12 @@
 name: CI
 
-# This workflow is shared by the Stainless staging repository and the OpenAI
-# production repository. Stainless feature branches use push runs so they can
-# publish installable artifacts; production feature branches use PR runs so a
-# commit is validated only once.
 on:
   push:
     branches:
       - '**'
       - '!gh-readonly-queue/**'
       - '!integrated/**'
-      - '!stl-preview-head/**'
-      - '!stl-preview-base/**'
-      - '!generated'
-      - '!codegen/**'
-      - 'codegen/stl/**'
   pull_request:
-    branches-ignore:
-      - 'stl-preview-head/**'
-      - 'stl-preview-base/**'
   merge_group:
     types:
       - checks_requested
@@ -33,23 +21,12 @@ jobs:
   checks:
     name: ci
     if: >-
-      (startsWith(github.repository, 'stainless-sdks/') &&
-        (github.event_name == 'push' || github.event.pull_request.head.repo.fork)) ||
-      (!startsWith(github.repository, 'stainless-sdks/') &&
-        (github.event_name == 'pull_request' ||
-          github.event_name == 'merge_group' ||
-          github.ref == 'refs/heads/main' ||
-          github.ref == 'refs/heads/next'))
+      github.event_name == 'pull_request' ||
+      github.event_name == 'merge_group' ||
+      github.ref == 'refs/heads/main' ||
+      github.ref == 'refs/heads/next'
     permissions:
       contents: read
-      id-token: write # Allow the called artifact job to mint its Stainless upload token.
     uses: ./.github/workflows/ci-checks.yml
     with:
-      runner: ${{ startsWith(github.repository, 'stainless-sdks/') && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
-      publish-stainless-artifact: >-
-        ${{
-          github.repository == 'stainless-sdks/openai-ruby' &&
-          (github.event_name == 'push' || github.event.pull_request.head.repo.fork) &&
-          (github.event_name != 'push' || github.event.head_commit.message != 'codegen metadata') &&
-          !startsWith(github.ref, 'refs/heads/stl/')
-        }}
+      runner: ubuntu-latest
