@@ -602,6 +602,15 @@ class OpenAI::Test::UnionTest < Minitest::Test
     variant :duplicate, M8
   end
 
+  module U8
+    extend OpenAI::Internal::Type::Union
+
+    discriminator :type
+
+    variant :a, M1
+    variant OpenAI::Internal::Type::Unknown
+  end
+
   def test_accessors
     model = M3.new(recur: [])
     tap do
@@ -630,6 +639,61 @@ class OpenAI::Test::UnionTest < Minitest::Test
     assert_equal(input, output.to_h)
     assert_nil(state.fetch(:error))
     assert_equal(2, state.fetch(:branched))
+  end
+
+  def test_known_discriminator_value_selects_keyed_variant
+    {
+      {type: :a} => M1,
+      {type: "a"} => M1,
+      {"type" => :a} => M1,
+      {"type" => "a"} => M1,
+      {type: :b} => M2,
+      {type: "b"} => M2,
+      {"type" => :b} => M2,
+      {"type" => "b"} => M2
+    }.each do |input, expected_class|
+      state = OpenAI::Internal::Type::Converter.new_coerce_state
+
+      output = OpenAI::Internal::Type::Converter.coerce(U2, input, state: state)
+
+      assert_instance_of(expected_class, output)
+      assert_nil(state.fetch(:error))
+      assert_equal(0, state.fetch(:branched))
+    end
+  end
+
+  def test_unknown_discriminator_value_is_preserved
+    [{type: :unknown}, {type: "unknown"}, {"type" => :unknown}, {"type" => "unknown"}].each do |input|
+      state = OpenAI::Internal::Type::Converter.new_coerce_state
+
+      output = OpenAI::Internal::Type::Converter.coerce(U2, input, state: state)
+
+      assert_same(input, output)
+      assert_nil(state.fetch(:error))
+      assert_equal(1, state.fetch(:branched))
+    end
+  end
+
+  def test_missing_discriminator_value_uses_structural_fallback
+    input = {c: "value"}
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+
+    output = OpenAI::Internal::Type::Converter.coerce(U2, input, state: state)
+
+    assert_instance_of(M1, output)
+    assert_nil(state.fetch(:error))
+    assert_equal(1, state.fetch(:branched))
+  end
+
+  def test_discriminated_union_uses_unkeyed_fallback
+    input = {type: :unknown}
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+
+    output = OpenAI::Internal::Type::Converter.coerce(U8, input, state: state)
+
+    assert_same(input, output)
+    assert_nil(state.fetch(:error))
+    assert_equal(1, state.fetch(:branched))
   end
 
   def test_generated_duplicate_discriminators_select_the_structural_match
@@ -677,6 +741,11 @@ class OpenAI::Test::UnionTest < Minitest::Test
       [
         OpenAI::Realtime::RealtimeAudioFormats,
         {rate: 24_000},
+        OpenAI::Realtime::RealtimeAudioFormats::AudioPCM
+      ],
+      [
+        OpenAI::Realtime::RealtimeAudioFormats,
+        {},
         OpenAI::Realtime::RealtimeAudioFormats::AudioPCM
       ],
       [
@@ -743,7 +812,17 @@ class OpenAI::Test::UnionTest < Minitest::Test
     end
   end
 
-  def test_model_accessor_preserves_nested_unknown_discriminator
+  def test_generated_model_accessor_infers_variant_without_discriminator
+    params = OpenAI::Responses::ResponseCreateParams.new(
+      input: [{role: "user", content: "hello"}]
+    )
+
+    assert_pattern do
+      params.input => [OpenAI::Responses::EasyInputMessage]
+    end
+  end
+
+  def test_generated_model_accessor_preserves_nested_unknown_variant
     input = {id: "item_future", type: "future_item"}
     response = OpenAI::Responses::Response.new(output: [input])
 
