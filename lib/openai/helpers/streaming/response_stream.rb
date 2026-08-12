@@ -41,19 +41,7 @@ module OpenAI
         end
 
         def get_output_text
-          response = get_final_response
-          text_parts = []
-
-          response.output.each do |output|
-            next unless output.type == :message
-
-            output.content.each do |content|
-              next unless content.type == :output_text
-              text_parts << content.text
-            end
-          end
-
-          text_parts.join
+          get_final_response.output_text
         end
 
         private

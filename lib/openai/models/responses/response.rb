@@ -349,9 +349,9 @@ module OpenAI
           texts = []
 
           output.each do |item|
-            next unless item.type == :message
+            next unless item.is_a?(OpenAI::Responses::ResponseOutputMessage)
             item.content.each do |content|
-              if content.type == :output_text
+              if content.is_a?(OpenAI::Responses::ResponseOutputText)
                 texts << content.text
               end
             end

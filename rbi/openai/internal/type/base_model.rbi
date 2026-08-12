@@ -301,6 +301,16 @@ module OpenAI
         def encode_with(coder)
         end
 
+        # @api private
+        sig { params(coder: T.untyped).void }
+        def init_with(coder)
+        end
+
+        # @api private
+        sig { params(name: Symbol).returns(T.anything) }
+        def _value_for_dump(name)
+        end
+
         # Create a new instance of a model.
         sig do
           params(

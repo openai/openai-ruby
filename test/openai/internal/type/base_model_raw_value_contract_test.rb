@@ -186,4 +186,65 @@ class OpenAI::Test::BaseModelRawValueContractTest < Minitest::Test
     assert_equal(1, copy.item.count)
     assert_equal(:item, copy.item.type)
   end
+
+  def test_yaml_from_before_the_converted_cache_remains_readable_and_assignable
+    legacy_yaml = <<~YAML
+      --- !ruby/object:OpenAI::Test::BaseModelRawValueContractTest::Container
+      data:
+        :item: !ruby/object:OpenAI::Test::BaseModelRawValueContractTest::Item
+          data:
+            :count: 1
+            :type: :item
+          coerced:
+            :count: true
+            :type: true
+      coerced:
+        :item: true
+    YAML
+
+    container = YAML.unsafe_load(legacy_yaml)
+
+    assert_instance_of(Item, container.item)
+    assert_equal(1, container.item.count)
+
+    replacement = {count: "2", type: "item"}
+    container.item = replacement
+
+    assert_same(replacement, container.to_h.fetch(:item))
+    assert_instance_of(Item, container.item)
+    assert_equal(2, container.item.count)
+  end
+
+  def test_request_dump_uses_typed_nested_value_without_changing_raw_params
+    grader = {
+      input: [{content: "hello", role: "user"}],
+      model: "gpt-4o",
+      name: "score"
+    }
+    params = OpenAI::FineTuning::Alpha::GraderValidateParams.new(grader: grader)
+
+    dumped, = OpenAI::FineTuning::Alpha::GraderValidateParams.dump_request(params)
+
+    assert_same(grader, params.to_h.fetch(:grader))
+    assert_instance_of(OpenAI::Graders::ScoreModelGrader, params.grader)
+    assert_equal(:score_model, dumped.dig(:grader, :type))
+    assert_equal("user", params.to_h.dig(:grader, :input, 0, :role))
+    assert_equal(:user, dumped.dig(:grader, :input, 0, :role))
+  end
+
+  def test_request_dump_translates_nested_api_names_without_changing_raw_params
+    text = {format_: {type: "text"}}
+    params = OpenAI::Responses::ResponseCreateParams.new(
+      input: "hello",
+      model: "gpt-4o",
+      text: text
+    )
+
+    dumped, = OpenAI::Responses::ResponseCreateParams.dump_request(params)
+
+    assert_same(text, params.to_h.fetch(:text))
+    assert_equal("text", params.to_h.dig(:text, :format_, :type))
+    assert_equal("text", dumped.dig(:text, :format, :type))
+    refute(dumped.fetch(:text).key?(:format_))
+  end
 end

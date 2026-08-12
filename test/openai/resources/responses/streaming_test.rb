@@ -178,6 +178,22 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     assert_equal("", text)
   end
 
+  def test_get_output_text_skips_unknown_output_and_content_variants
+    completed_event = <<~SSE
+      event: response.created
+      data: {"type":"response.created","sequence_number":1,"response":{"id":"msg_future","object":"realtime.response","status":"in_progress","status_details":null,"output":[],"usage":null,"metadata":null}}
+
+      event: response.completed
+      data: {"type":"response.completed","sequence_number":2,"response":{"id":"msg_future","object":"realtime.response","status":"completed","status_details":null,"output":[{"id":"future_item","type":"future_item"},{"id":"item_known","type":"message","status":"completed","role":"assistant","content":[{"type":"future_content","payload":"ignored"},{"type":"output_text","text":"Known text","annotations":[]}]}],"usage":null,"metadata":null}}
+
+    SSE
+    stub_streaming_response(completed_event)
+
+    stream = @client.responses.stream(**basic_params)
+
+    assert_equal("Known text", stream.get_output_text)
+  end
+
   class WeatherModel < OpenAI::BaseModel
     required :location, String
     required :temperature, Integer

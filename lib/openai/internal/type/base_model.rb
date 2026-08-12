@@ -364,6 +364,7 @@ module OpenAI
               return super
             end
 
+            model = value if value.is_a?(OpenAI::Internal::Type::BaseModel)
             acc = {}
 
             coerced.each do |key, val|
@@ -378,7 +379,8 @@ module OpenAI
                   next
                 else
                   target = type_fn.call
-                  acc.store(api_name, OpenAI::Internal::Type::Converter.dump(target, val, state: state))
+                  item = model ? model._value_for_dump(name) : val
+                  acc.store(api_name, OpenAI::Internal::Type::Converter.dump(target, item, state: state))
                 end
               end
             end
@@ -525,6 +527,29 @@ module OpenAI
           coder["coerced"] = @coerced
           coder["converted"] = @converted
         end
+
+        # Restores the converted cache while remaining compatible with YAML written by
+        # versions that stored converted values directly in data.
+        #
+        # @api private
+        #
+        # @param coder [Psych::Coder]
+        # @return [void]
+        def init_with(coder)
+          @data = coder["data"] || {}
+          @coerced = coder["coerced"] || {}
+          @converted = coder["converted"] || @data.dup
+          @last_response = nil
+        end
+
+        # @api private
+        #
+        # Returns the converted value used for request serialization without changing
+        # the raw value exposed by #[] and #to_h.
+        #
+        # @param name [Symbol]
+        # @return [Object]
+        def _value_for_dump(name) = @converted.fetch(name) { @data.fetch(name) }
 
         # @api private
         #

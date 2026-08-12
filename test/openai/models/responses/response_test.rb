@@ -95,6 +95,26 @@ class OpenAI::Models::Responses::ResponseTest < Minitest::Test
     assert_equal("Non-empty", response.output_text)
   end
 
+  def test_output_text_skips_unknown_output_and_content_variants
+    response = build_response(
+      output: [
+        {id: "future_item", type: "future_item"},
+        {
+          id: "msg_known",
+          status: "completed",
+          role: "assistant",
+          type: "message",
+          content: [
+            {type: "future_content", payload: "ignored"},
+            {type: "output_text", text: "Known text", annotations: []}
+          ]
+        }
+      ]
+    )
+
+    assert_equal("Known text", response.output_text)
+  end
+
   private
 
   def build_response(output:)
