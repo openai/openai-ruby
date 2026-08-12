@@ -37,23 +37,31 @@ class OpenAI::Test::NestedModelCoercionTest < Minitest::Test
     required :nullable_item, Item, nil?: true
   end
 
-  def test_constructor_and_assignment_store_coerced_nested_models
-    model = Container.new(item: {a: "1", b: "2"}, items: [{a: "3", b: "4"}])
+  def test_constructor_and_assignment_cache_coerced_models_separately_from_raw_values
+    item = {a: "1", b: "2"}
+    items = [{a: "3", b: "4"}]
+    model = Container.new(item: item, items: items)
 
     assert_instance_of(Item, model.item)
     assert_instance_of(Item, model.items.fetch(0))
-    assert_instance_of(Item, model.to_h.fetch(:item))
-    assert_instance_of(Item, model.to_h.fetch(:items).fetch(0))
+    assert_same(item, model[:item])
+    assert_same(items, model[:items])
+    assert_same(item, model.to_h.fetch(:item))
+    assert_same(items, model.to_h.fetch(:items))
     assert_equal([1, 2], [model.item.a, model.item.b])
     assert_equal([3, 4], [model.items.fetch(0).a, model.items.fetch(0).b])
 
-    model.item = {a: "5", b: "6"}
-    model.items = [{a: "7", b: "8"}]
+    item = {a: "5", b: "6"}
+    items = [{a: "7", b: "8"}]
+    model.item = item
+    model.items = items
 
     assert_instance_of(Item, model.item)
     assert_instance_of(Item, model.items.fetch(0))
-    assert_instance_of(Item, model.to_h.fetch(:item))
-    assert_instance_of(Item, model.to_h.fetch(:items).fetch(0))
+    assert_same(item, model[:item])
+    assert_same(items, model[:items])
+    assert_same(item, model.to_h.fetch(:item))
+    assert_same(items, model.to_h.fetch(:items))
     assert_equal([5, 6], [model.item.a, model.item.b])
     assert_equal([7, 8], [model.items.fetch(0).a, model.items.fetch(0).b])
   end
@@ -78,13 +86,13 @@ class OpenAI::Test::NestedModelCoercionTest < Minitest::Test
     assert_instance_of(Item, model.reversed_choice)
     assert_equal(
       {
-        map: {second: {a: "5", b: "6"}},
+        map: {"second" => {a: "5", b: "6"}},
         choice: {a: "7", b: "8"},
         reversed_choice: {a: "9", b: "10"}
       },
       model.deep_to_h
     )
-    assert_equal(model.deep_to_h, JSON.parse(model.to_json, symbolize_names: true))
+    assert_equal("5", JSON.parse(model.to_json).dig("map", "second", "a"))
   end
 
   def test_setter_preserves_already_coerced_nested_model_identity
@@ -151,14 +159,19 @@ class OpenAI::Test::NestedModelCoercionTest < Minitest::Test
     assert_equal(1, model.items.size)
     assert_equal(5, model.map.fetch(:item).a)
     refute(model.map.key?(:later))
+    assert_equal("changed", model.to_h.fetch(:item).fetch(:a))
+    assert_equal(2, model.to_h.fetch(:items).size)
+    assert(model.to_h.fetch(:map).key?(:later))
   end
 
-  def test_nested_model_equality_and_hash_use_stored_coerced_values
+  def test_nested_model_equality_and_hash_use_stored_raw_values
     left = Container.new(item: {a: "1", b: "2"}, items: [{a: "3", b: "4"}])
     right = Container.new(item: {a: "1", b: "2"}, items: [{a: "3", b: "4"}])
 
     assert_equal(left, right)
     assert_equal(left.hash, right.hash)
+
+    refute_equal(left, Container.new(item: {a: 1, b: 2}, items: [{a: 3, b: 4}]))
   end
 
   def test_failed_nested_model_coercion_preserves_input_and_error
@@ -235,9 +248,9 @@ class OpenAI::Test::NestedModelCoercionTest < Minitest::Test
     model = Container.new(choice: "1", reversed_choice: "2")
 
     assert_equal(1, model.choice)
-    assert_equal(1, model.to_h.fetch(:choice))
+    assert_equal("1", model.to_h.fetch(:choice))
     assert_equal(2, model.reversed_choice)
-    assert_equal(2, model.to_h.fetch(:reversed_choice))
+    assert_equal("2", model.to_h.fetch(:reversed_choice))
   end
 
   def test_selected_union_variant_preserves_its_conversion_error

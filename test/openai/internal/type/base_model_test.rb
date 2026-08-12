@@ -392,7 +392,7 @@ class OpenAI::Test::BaseModelTest < Minitest::Test
       [M2, {a: "1990-09-19"}] => [{yes: 3, maybe: 1}, {a: "1990-09-19"}],
       [M2, {a: "1990-09-19", c: nil}] => [{yes: 2, maybe: 2}, {a: "1990-09-19", c: nil}],
 
-      [M3, {c: "c", d: "d"}] => [{yes: 3}, {c: :c, d: :d}],
+      [M3, {c: "c", d: "d"}] => [{yes: 3}, {c: "c", d: "d"}],
       [M3, {c: "d", d: "c"}] => [{yes: 1, maybe: 2}, {c: "d", d: "c"}],
 
       [M4, {c: 2}] => [{yes: 5}, {c: 2}],
@@ -400,11 +400,11 @@ class OpenAI::Test::BaseModelTest < Minitest::Test
       [M4, {b: nil, c: 2}] => [{yes: 4, maybe: 1}, {b: nil, c: 2}],
 
       [M5, {}] => [{yes: 3}, {}],
-      [M5, {c: "c"}] => [{yes: 3}, {c: :c}],
-      [M5, {d: "d"}] => [{yes: 3}, {d: :d}],
+      [M5, {c: "c"}] => [{yes: 3}, {c: "c"}],
+      [M5, {d: "d"}] => [{yes: 3}, {d: "d"}],
       [M5, {d: nil}] => [{yes: 2, no: 1}, {d: nil}],
 
-      [M6, {a: [{a: []}]}] => [{yes: 6}, -> { _1 in {a: [M6]} }]
+      [M6, {a: [{a: []}]}] => [{yes: 6}, {a: [{a: []}]}]
     }
 
     cases.each do |lhs, rhs|
@@ -615,7 +615,7 @@ class OpenAI::Test::UnionTest < Minitest::Test
       [U1, :b] => [{maybe: 1}, 2, :b],
 
       [U2, {type: :a}] => [{yes: 3}, 0, {t: :a}],
-      [U2, {type: "b"}] => [{yes: 3}, 0, {type: :b}],
+      [U2, {type: "b"}] => [{yes: 3}, 0, {type: "b"}],
 
       [U3, "one"] => [{yes: 1}, 2, "one"],
       [U4, "one"] => [{yes: 1}, 1, "one"],
@@ -623,8 +623,8 @@ class OpenAI::Test::UnionTest < Minitest::Test
       [U5, {a: []}] => [{yes: 3}, 2, {a: []}],
       [U6, {b: []}] => [{yes: 3}, 2, {b: []}],
 
-      [U5, {a: [{a: []}]}] => [{yes: 6}, 4, {a: [M4.new(a: [])]}],
-      [U5, {a: [{a: [{a: []}]}]}] => [{yes: 9}, 6, {a: [M4.new(a: [M4.new(a: [])])]}]
+      [U5, {a: [{a: []}]}] => [{yes: 6}, 4, {a: [{a: []}]}],
+      [U5, {a: [{a: [{a: []}]}]}] => [{yes: 9}, 6, {a: [{a: [{a: []}]}]}]
     }
 
     cases.each do |lhs, rhs|

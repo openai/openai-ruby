@@ -532,7 +532,7 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     final_response = stream.get_final_response
 
     text_output = final_response.output.find { |o| o.is_a?(OpenAI::Models::Responses::ResponseOutputMessage) }
-    text_content = text_output.content.find { |c| c[:type] == :output_text }
+    text_content = text_output.content.find { |c| c[:type] == "output_text" }
     assert_pattern do
       text_content[:parsed] => CalendarEvent[
         name: "Conference",
