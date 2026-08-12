@@ -48,6 +48,14 @@ class OpenAI::Test::RealtimeExampleStreamLifecycleTest < Minitest::Test
     def close = @closed = true
   end
 
+  class RecordingEndpoint
+    attr_reader :calls
+
+    def initialize = @calls = []
+    def append_bytes(bytes) = @calls << [:append_bytes, bytes]
+    def close = @calls << [:close]
+  end
+
   class BlockingAudioBuffer
     attr_reader :chunks
 
@@ -78,6 +86,18 @@ class OpenAI::Test::RealtimeExampleStreamLifecycleTest < Minitest::Test
       @upload_started.wait
       yield(@event)
     end
+  end
+
+  class BufferedReaderFailureConnection
+    attr_reader :input_audio_buffer, :session
+
+    def initialize(event)
+      @event = event
+      @input_audio_buffer = RecordingEndpoint.new
+      @session = RecordingEndpoint.new
+    end
+
+    def each = yield(@event)
   end
 
   TranslationConnection = Data.define(:input_audio_buffer, :session)
@@ -385,6 +405,32 @@ class OpenAI::Test::RealtimeExampleStreamLifecycleTest < Minitest::Test
     end
     assert_equal(["audio"], connection.input_audio_buffer.chunks)
     assert(connection.session.closed)
+  end
+
+  def test_translation_does_not_start_upload_after_a_buffered_reader_failure
+    connection = BufferedReaderFailureConnection.new(
+      realtime_error_event("translation failed before upload")
+    )
+
+    Tempfile.create("translation-input") do |input|
+      input.write("audio")
+      input.flush
+
+      error = Sync do
+        assert_raises(RuntimeError) do
+          OpenAI::Examples::Realtime::Translation.exchange(
+            connection,
+            input_path: input.path,
+            audio_output: StringIO.new,
+            transcript_output: StringIO.new
+          )
+        end
+      end
+
+      assert_equal("translation failed before upload", error.message)
+    end
+    assert_empty(connection.input_audio_buffer.calls)
+    assert_empty(connection.session.calls)
   end
 
   private def completed_response_event

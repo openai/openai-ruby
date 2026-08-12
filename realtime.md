@@ -325,9 +325,10 @@ the text smoke requires a non-empty text delta, while the raw-audio and
 translation smokes require at least one decoded audio byte before their terminal
 events. The file-audio smoke disables VAD and waits for the acknowledged session
 update before its manual commit. Translation reader failures cancel an in-flight
-upload rather than waiting for the input file to drain. Microphone shutdown is
-latched before capture starts, so an immediately closed connection cannot start
-an orphaned ffmpeg process after cleanup has begun.
+upload rather than waiting for the input file to drain; an already-buffered
+reader failure prevents the uploader from starting at all. Microphone shutdown
+is latched before capture starts, so an immediately closed connection cannot
+start an orphaned ffmpeg process after cleanup has begun.
 
 The three standard Realtime connection modes use distinct method names rather
 than a keyword-discriminated overload: `connect(model:)`, `connect_to_call`, and

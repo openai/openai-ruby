@@ -147,7 +147,8 @@ incomplete instead of silently succeeding. If upload and graceful close both
 fail, the upload error remains the primary failure so the interrupted input
 operation is not hidden by cleanup.
 If the reader fails while input is still being uploaded, the example cancels
-the uploader immediately instead of draining the rest of the file.
+the uploader immediately instead of draining the rest of the file. If the
+reader has already failed on buffered input or EOF, upload never starts.
 
 ## MCP approval
 

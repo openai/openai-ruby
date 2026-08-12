@@ -65,8 +65,14 @@ module OpenAI
             uploader&.stop
             e
           end
+          if reader.finished?
+            reader_error = reader.wait
+            raise reader_error if reader_error
+
+            return
+          end
+
           uploader = Async { write_input(connection, input_path) }
-          uploader.stop if reader.finished?
           uploader.wait
           reader_error = reader.wait
           raise reader_error if reader_error
