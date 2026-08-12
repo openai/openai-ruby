@@ -137,7 +137,10 @@ class OpenAI::Test::ExamplesE2ETest < Minitest::Test
 
       module ExampleFeature
         def self.covered = :covered
-        def self.uncovered = :uncovered
+
+        def self.uncovered
+          :uncovered
+        end
       end
     RUBY
     write_example("covered.rb", <<~RUBY)
