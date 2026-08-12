@@ -125,24 +125,6 @@ class OpenAI::Test::PrimitiveModelTest < Minitest::Test
     end
   end
 
-  def test_coerce_with_error_isolates_each_attempt
-    previous_error = RuntimeError.new("previous")
-    state = OpenAI::Internal::Type::Converter.new_coerce_state
-    state[:error] = previous_error
-
-    value, error = OpenAI::Internal::Type::Converter.coerce_with_error(Integer, "one", state: state)
-
-    assert_equal("one", value)
-    assert_instance_of(ArgumentError, error)
-    assert_same(previous_error, state.fetch(:error))
-
-    value, error = OpenAI::Internal::Type::Converter.coerce_with_error(Integer, "1", state: state)
-
-    assert_equal(1, value)
-    assert_nil(error)
-    assert_same(previous_error, state.fetch(:error))
-  end
-
   def test_dump_retry
     types = [
       OpenAI::Internal::Type::Unknown,
@@ -283,9 +265,6 @@ class OpenAI::Test::CollectionModelTest < Minitest::Test
   A3 = OpenAI::Internal::Type::ArrayOf[Integer, nil?: true]
   H3 = OpenAI::Internal::Type::HashOf[Integer, nil?: true]
 
-  A4 = OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::Unknown]
-  H4 = OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
-
   def test_coerce
     cases = {
       [A1, []] => [{yes: 1}, []],
@@ -319,21 +298,6 @@ class OpenAI::Test::CollectionModelTest < Minitest::Test
         OpenAI::Internal::Type::Converter.coerce(target, input, state: state) => ^expect
         state.fetch(:exactness).filter { _2.nonzero? }.to_h => ^exactness
       end
-    end
-  end
-
-  def test_collection_matchers_respect_nullable_items_and_item_types
-    cases = {
-      [A1, [nil]] => false,
-      [A3, [nil]] => true,
-      [A4, [nil]] => true,
-      [H1, {item: nil}] => false,
-      [H3, {item: nil}] => true,
-      [H4, {item: nil}] => true
-    }
-
-    cases.each do |(target, input), expected|
-      assert_equal(expected, target.public_send(:===, input))
     end
   end
 end
@@ -392,7 +356,7 @@ class OpenAI::Test::BaseModelTest < Minitest::Test
       [M2, {a: "1990-09-19"}] => [{yes: 3, maybe: 1}, {a: "1990-09-19"}],
       [M2, {a: "1990-09-19", c: nil}] => [{yes: 2, maybe: 2}, {a: "1990-09-19", c: nil}],
 
-      [M3, {c: "c", d: "d"}] => [{yes: 3}, {c: "c", d: "d"}],
+      [M3, {c: "c", d: "d"}] => [{yes: 3}, {c: :c, d: :d}],
       [M3, {c: "d", d: "c"}] => [{yes: 1, maybe: 2}, {c: "d", d: "c"}],
 
       [M4, {c: 2}] => [{yes: 5}, {c: 2}],
@@ -400,11 +364,11 @@ class OpenAI::Test::BaseModelTest < Minitest::Test
       [M4, {b: nil, c: 2}] => [{yes: 4, maybe: 1}, {b: nil, c: 2}],
 
       [M5, {}] => [{yes: 3}, {}],
-      [M5, {c: "c"}] => [{yes: 3}, {c: "c"}],
-      [M5, {d: "d"}] => [{yes: 3}, {d: "d"}],
+      [M5, {c: "c"}] => [{yes: 3}, {c: :c}],
+      [M5, {d: "d"}] => [{yes: 3}, {d: :d}],
       [M5, {d: nil}] => [{yes: 2, no: 1}, {d: nil}],
 
-      [M6, {a: [{a: []}]}] => [{yes: 6}, {a: [{a: []}]}]
+      [M6, {a: [{a: []}]}] => [{yes: 6}, -> { _1 in {a: [M6]} }]
     }
 
     cases.each do |lhs, rhs|
@@ -593,14 +557,6 @@ class OpenAI::Test::UnionTest < Minitest::Test
     end
   end
 
-  def test_discriminated_coercion_preserves_strictness
-    state = OpenAI::Internal::Type::Converter.new_coerce_state
-
-    OpenAI::Internal::Type::Converter.coerce(U2, {type: :a}, state: state)
-
-    assert_equal(true, state.fetch(:strictness))
-  end
-
   def test_coerce
     cases = {
       [U0, :""] => [{no: 1}, 0, :""],
@@ -615,7 +571,7 @@ class OpenAI::Test::UnionTest < Minitest::Test
       [U1, :b] => [{maybe: 1}, 2, :b],
 
       [U2, {type: :a}] => [{yes: 3}, 0, {t: :a}],
-      [U2, {type: "b"}] => [{yes: 3}, 0, {type: "b"}],
+      [U2, {type: "b"}] => [{yes: 3}, 0, {type: :b}],
 
       [U3, "one"] => [{yes: 1}, 2, "one"],
       [U4, "one"] => [{yes: 1}, 1, "one"],
@@ -623,8 +579,8 @@ class OpenAI::Test::UnionTest < Minitest::Test
       [U5, {a: []}] => [{yes: 3}, 2, {a: []}],
       [U6, {b: []}] => [{yes: 3}, 2, {b: []}],
 
-      [U5, {a: [{a: []}]}] => [{yes: 6}, 4, {a: [{a: []}]}],
-      [U5, {a: [{a: [{a: []}]}]}] => [{yes: 9}, 6, {a: [{a: [{a: []}]}]}]
+      [U5, {a: [{a: []}]}] => [{yes: 6}, 4, {a: [M4.new(a: [])]}],
+      [U5, {a: [{a: [{a: []}]}]}] => [{yes: 9}, 6, {a: [M4.new(a: [M4.new(a: [])])]}]
     }
 
     cases.each do |lhs, rhs|

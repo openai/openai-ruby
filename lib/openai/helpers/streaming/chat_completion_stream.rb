@@ -384,9 +384,7 @@ module OpenAI
 
         def model_dump(obj)
           if obj.is_a?(OpenAI::Internal::Type::BaseModel)
-            # Streaming mutates typed nested accessors without replacing their raw values.
-            # Accumulate from those accessors so a later delta does not discard mutations.
-            OpenAI::Internal::Type::BaseModel.recursively_to_h(obj, convert: true)
+            obj.deep_to_h
           elsif obj.respond_to?(:to_h)
             obj.to_h
           else

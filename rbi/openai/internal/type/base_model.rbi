@@ -284,31 +284,8 @@ module OpenAI
         end
 
         # @api private
-        sig do
-          params(
-            name: Symbol,
-            value: T.anything,
-            converted: T.anything,
-            cache: T::Boolean,
-            error: T.nilable(StandardError)
-          ).returns(T.anything)
-        end
-        def _store_field(name, value, converted:, cache:, error:)
-        end
-
-        # @api private
         sig { params(coder: T.untyped).void }
         def encode_with(coder)
-        end
-
-        # @api private
-        sig { params(coder: T.untyped).void }
-        def init_with(coder)
-        end
-
-        # @api private
-        sig { params(name: Symbol).returns(T.anything) }
-        def _value_for_dump(name)
         end
 
         # Create a new instance of a model.

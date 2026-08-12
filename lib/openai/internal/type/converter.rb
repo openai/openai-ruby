@@ -270,26 +270,6 @@ module OpenAI
 
           # @api private
           #
-          # Coerces a value while isolating its error from sibling coercions.
-          #
-          # @param target [OpenAI::Internal::Type::Converter, Class]
-          #
-          # @param value [Object]
-          #
-          # @param state [Hash{Symbol=>Object}]
-          #
-          # @return [Array(Object, StandardError, nil)]
-          def coerce_with_error(target, value, state:)
-            previous_error = state.fetch(:error)
-            state[:error] = nil
-            coerced = coerce(target, value, state: state)
-            [coerced, state.fetch(:error)]
-          ensure
-            state[:error] = previous_error
-          end
-
-          # @api private
-          #
           # @param target [OpenAI::Internal::Type::Converter, Class]
           #
           # @param value [Object]
