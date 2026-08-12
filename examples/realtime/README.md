@@ -42,7 +42,8 @@ interrupt: the service cancels the response and the example immediately clears
 local playback, drops already-queued audio deltas, and truncates the unheard
 audio from conversation history. A bounded single-writer queue serializes the
 microphone and truncation events sent over the socket. Press Control-C to end
-the session.
+the session. If that writer fails, the example stops microphone capture,
+unblocks any queued producer, and reports the original connection error.
 
 On macOS, the default microphone is AVFoundation audio device `0`. List devices
 and select a different index if necessary:
@@ -99,7 +100,8 @@ bundle exec ruby examples/realtime/websocket_audio.rb
 ffplay -f s16le -ar 24000 -ch_layout mono response.pcm
 ```
 
-A successful run exits with status 0 and writes a non-empty output file.
+A successful run exits with status 0 and writes a non-empty output file. An EOF
+before a completed `response.done` is reported as a failed smoke test.
 
 ## Realtime transcription
 
@@ -130,7 +132,8 @@ bundle exec ruby examples/realtime/translation.rb
 ```
 
 A successful run prints the translated transcript, exits after
-`session.closed`, and writes non-empty translated PCM audio.
+`session.closed`, and writes non-empty translated PCM audio. An EOF before
+`session.closed` is reported as incomplete instead of silently succeeding.
 
 ## MCP approval
 

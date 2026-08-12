@@ -201,14 +201,15 @@ module OpenAI
           def initialize(connection)
             @connection = connection
             @queue = Thread::SizedQueue.new(1)
+            @failure = nil
           end
 
           def append_audio(bytes)
-            @queue.push([:append_audio, bytes])
+            enqueue([:append_audio, bytes])
           end
 
           def truncate(**params)
-            @queue.push([:truncate, params])
+            enqueue([:truncate, params])
           end
 
           def run
@@ -221,10 +222,23 @@ module OpenAI
                 @connection.conversation.items.truncate(**payload)
               end
             end
+          rescue StandardError => e
+            @failure = e
+            raise
+          ensure
+            close
           end
 
           def close
             @queue.close unless @queue.closed?
+          end
+
+          private def enqueue(message)
+            @queue.push(message)
+          rescue ClosedQueueError
+            raise @failure if @failure
+
+            raise
           end
         end
 
@@ -302,6 +316,7 @@ module OpenAI
           end
 
           private def expire_finished_playback
+            return unless @finished_response_id
             return unless @finished_response_id == @response_id
             return unless elapsed_audio_bytes >= @received_bytes
 
@@ -416,7 +431,14 @@ module OpenAI
           playback = AudioPlayback.new(speaker)
           outbound = OutboundWriter.new(connection)
 
-          writer = Async { outbound.run }
+          writer = Async do
+            outbound.run
+            nil
+          rescue StandardError => e
+            e
+          ensure
+            microphone.stop
+          end
           receiver = Async do
             stream_events(
               connection,
@@ -430,7 +452,9 @@ module OpenAI
           sender = Async { forward_microphone(outbound, microphone) }
           sender.wait
           outbound.close
-          writer.wait
+          writer_error = writer.wait
+          raise writer_error if writer_error
+
           receiver.wait
         ensure
           microphone.stop

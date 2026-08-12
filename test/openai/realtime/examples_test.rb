@@ -54,6 +54,7 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
   end
 
   class RecordingAudioBuffer
+    attr_accessor :append_error
     attr_reader :chunks
 
     def initialize(writer_fibers = nil)
@@ -63,6 +64,8 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
 
     def append_bytes(bytes)
       @writer_fibers&.push(Fiber.current)
+      raise @append_error if @append_error
+
       @chunks << bytes
     end
   end
@@ -93,6 +96,10 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
 
     def each(&block)
       @events.each(&block)
+    end
+
+    def receive
+      @events.shift
     end
   end
 
@@ -180,13 +187,18 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
   end
 
   class RecordingMicrophone
+    attr_reader :stopped
+
     def initialize(chunks)
       @chunks = chunks
+      @stopped = false
     end
 
     def each_chunk(&block)
       @chunks.each(&block)
     end
+
+    def stop = @stopped = true
   end
 
   class RecordingSpeaker
@@ -273,6 +285,69 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
       connection.conversation.items.truncations
     )
     assert_equal(1, connection.writer_fibers.uniq.size)
+  end
+
+  def test_realtime_conversation_unblocks_a_producer_when_the_writer_fails
+    connection = RecordingConnection.new
+    connection.input_audio_buffer.append_error = RuntimeError.new("write failed")
+    outbound = OpenAI::Examples::Realtime::Conversation::OutboundWriter.new(connection)
+
+    error = Sync do |task|
+      writer = task.async do
+        outbound.run
+        nil
+      rescue StandardError => e
+        e
+      end
+      outbound.append_audio("first".b)
+      producer_error = assert_raises(RuntimeError) do
+        outbound.append_audio("second".b)
+      end
+      writer_error = writer.wait
+
+      assert_same(writer_error, producer_error)
+      producer_error
+    end
+
+    assert_equal("write failed", error.message)
+  end
+
+  def test_realtime_conversation_handles_initial_speech_before_assistant_audio
+    speaker = RecordingSpeaker.new
+    outbound = RecordingOutbound.new
+    playback = OpenAI::Examples::Realtime::Conversation::AudioPlayback.new(
+      speaker,
+      clock: -> { raise "clock must not be read without playback" }
+    )
+
+    playback.interrupt(outbound)
+
+    assert_empty(outbound.truncations)
+    assert_equal(1, speaker.interruptions)
+  end
+
+  def test_realtime_conversation_propagates_writer_failure_without_deadlock
+    connection = RecordingConnection.new(
+      [OpenAI::Realtime::SessionUpdatedEvent.new(event_id: "event_1", session: {})]
+    )
+    connection.input_audio_buffer.append_error = RuntimeError.new("write failed")
+    microphone = RecordingMicrophone.new(["first".b, "second".b])
+
+    error = Sync do
+      assert_raises(RuntimeError) do
+        OpenAI::Examples::Realtime::Conversation.run_session(
+          connection,
+          microphone: microphone,
+          speaker: RecordingSpeaker.new,
+          voice: :marin,
+          instructions: "Speak naturally.",
+          output: StringIO.new
+        )
+      end
+    end
+
+    assert_equal("write failed", error.message)
+    assert_predicate(microphone, :stopped)
   end
 
   def test_realtime_conversation_streams_audio_and_interrupts_local_playback
