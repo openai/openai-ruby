@@ -117,7 +117,8 @@ A successful run streams transcript deltas, then prints the completed
 transcript with its `item_id`. Completion events for different input turns may
 arrive out of order, so applications should correlate them by `item_id`.
 The example opens a dedicated `intent: :transcription` connection. Configure
-its transcription model with `OPENAI_REALTIME_TRANSCRIPTION_MODEL`.
+its transcription model with `OPENAI_REALTIME_TRANSCRIPTION_MODEL`. An EOF
+before the completed transcription event is reported as a failed smoke test.
 
 ## Realtime translation
 
@@ -133,7 +134,9 @@ bundle exec ruby examples/realtime/translation.rb
 
 A successful run prints the translated transcript, exits after
 `session.closed`, and writes non-empty translated PCM audio. An EOF before
-`session.closed` is reported as incomplete instead of silently succeeding.
+`session.closed` is reported as incomplete instead of silently succeeding. If
+upload and graceful close both fail, the upload error remains the primary
+failure so the interrupted input operation is not hidden by cleanup.
 
 ## MCP approval
 
@@ -149,7 +152,9 @@ bundle exec ruby examples/realtime/mcp_approval.rb
 The example waits for tool import, selects an advertised tool, waits for the
 tool-choice update to be acknowledged, approves the request, waits for the tool
 to finish, and asks the model for the final answer. A successful run prints all
-five checkpoints. Set `OPENAI_REALTIME_DEBUG=1` to print every event type.
+five checkpoints and reaches the final completed `response.done`; EOF before
+that event is a failed smoke test. Set `OPENAI_REALTIME_DEBUG=1` to print every
+event type.
 
 ## WebRTC call creation
 

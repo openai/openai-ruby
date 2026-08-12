@@ -42,6 +42,7 @@ module OpenAI
         end
 
         def print_transcript(connection, output: $stdout)
+          completed = false
           connection.each do |event|
             case event
             when OpenAI::Realtime::ConversationItemInputAudioTranscriptionDeltaEvent
@@ -49,11 +50,15 @@ module OpenAI
               output.flush
             when OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent
               output.puts("\n[#{event.item_id}] #{event.transcript}")
+              completed = true
               break
             when OpenAI::Realtime::RealtimeErrorEvent
               raise event.error.message
             end
           end
+          return if completed
+
+          raise "Realtime connection closed before transcription completed"
         end
 
         def run(client:, input_path:, transcription_model:, output: $stdout)

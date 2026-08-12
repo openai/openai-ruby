@@ -52,19 +52,9 @@ end
 
 ### Realtime
 
-The SDK supports server-side Realtime WebSockets, WebRTC session negotiation,
-sideband control, SIP, transcription, and translation. WebSocket connections use
-the optional `async-websocket` adapter.
-
-Run a typed text smoke test, or start the natural hands-free browser voice demo:
-
-```console
-$ bundle exec ruby examples/realtime/websocket_text.rb
-$ bundle exec ruby examples/realtime/webrtc_conversation.rb
-```
-
-See [the Realtime guide](realtime.md) for the typed API and architecture, and
-[the example runbook](examples/realtime/README.md) for every runnable workflow.
+Server-side WebSockets, WebRTC negotiation, sideband, SIP, transcription, and
+translation are covered in the [Realtime guide](realtime.md) and runnable
+[example runbook](examples/realtime/README.md).
 
 ### Pagination
 

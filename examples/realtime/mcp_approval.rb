@@ -51,6 +51,7 @@ module OpenAI
         end
 
         def run_session(connection, prompt:, output: $stdout, debug: false)
+          completed = false
           state = {
             completed_item_ids: {},
             tool_lists: {},
@@ -61,10 +62,16 @@ module OpenAI
 
           connection.each do |event|
             output.puts("[mcp event] #{event.type}") if debug
-            break if handle_event(connection, event, prompt: prompt, output: output, state: state) == :done
+            if handle_event(connection, event, prompt: prompt, output: output, state: state) == :done
+              completed = true
+              break
+            end
 
             select_discovered_tool(connection, output: output, state: state)
           end
+          return if completed
+
+          raise "Realtime connection closed before the final response.done"
         end
 
         def handle_event(connection, event, prompt:, output:, state:)

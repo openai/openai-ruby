@@ -695,7 +695,8 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
         OpenAI::Realtime::SessionUpdatedEvent.new(
           event_id: "event_3",
           session: {}
-        )
+        ),
+        completed_response_event
       ]
     )
 
@@ -734,12 +735,15 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
       ]
     )
 
-    OpenAI::Examples::Realtime::MCPApproval.run_session(
-      connection,
-      prompt: "Search the docs",
-      output: StringIO.new
-    )
+    error = assert_raises(RuntimeError) do
+      OpenAI::Examples::Realtime::MCPApproval.run_session(
+        connection,
+        prompt: "Search the docs",
+        output: StringIO.new
+      )
+    end
 
+    assert_equal("Realtime connection closed before the final response.done", error.message)
     assert_empty(connection.response.calls)
     assert_empty(connection.conversation.items.calls)
   end
@@ -751,7 +755,8 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
           event_id: "event_1",
           item_id: "mcp_call_1",
           output_index: 0
-        )
+        ),
+        completed_response_event
       ]
     )
 
@@ -894,5 +899,15 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
     OpenAI::Examples::Realtime::WebSocketText.stream_response(connection, output: output)
 
     assert_includes(output.string, "response.done status=completed")
+  end
+
+  private def completed_response_event
+    OpenAI::Realtime::ResponseDoneEvent.new(
+      event_id: "event_done",
+      response: OpenAI::Realtime::RealtimeResponse.new(
+        id: "response_done",
+        status: :completed
+      )
+    )
   end
 end

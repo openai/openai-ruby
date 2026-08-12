@@ -623,7 +623,7 @@ module OpenAI
         # @return [OpenAI::HTTPClient::Response]
         def request_raw(req)
           _, response, log_context = perform_request(req)
-          finish_request(log_context, response) { response }
+          log_context.observe_raw_response(response)
         end
 
         # Execute the request specified by `req`. This is the method that all resource

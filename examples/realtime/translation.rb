@@ -33,13 +33,25 @@ module OpenAI
         end
 
         def write_input(connection, input_path)
-          File.open(input_path, "rb") do |input|
-            while (chunk = input.read(9_600))
-              connection.input_audio_buffer.append_bytes(chunk)
+          upload_error = nil
+          begin
+            File.open(input_path, "rb") do |input|
+              while (chunk = input.read(9_600))
+                connection.input_audio_buffer.append_bytes(chunk)
+              end
             end
+          rescue StandardError => e
+            upload_error = e
+            raise
+          ensure
+            close_session(connection, preserve_error: !upload_error.nil?)
           end
-        ensure
+        end
+
+        def close_session(connection, preserve_error:)
           connection.session.close
+        rescue StandardError
+          raise unless preserve_error
         end
 
         def run(client:, model:, input_path:, output_path:, target_language:, transcript_output: $stdout)

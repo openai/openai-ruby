@@ -38,6 +38,9 @@ module OpenAI
           OpenAI::Internal::Type::BaseStream[top, Elem] stream,
           response: OpenAI::HTTPClient::Response
         ) -> OpenAI::Internal::Type::BaseStream[top, Elem]
+        def observe_raw_response: (
+          OpenAI::HTTPClient::Response response
+        ) -> OpenAI::HTTPClient::Response
         def request_failed: (StandardError error) -> void
         def response_body: (
           String body,
@@ -62,6 +65,20 @@ module OpenAI
         def close: -> void
       end
 
+      class ObservedEnumerable[Elem]
+        include Enumerable[Elem]
+
+        def initialize: (
+          enumerable: Enumerable[Elem],
+          context: OpenAI::Internal::Logging::Context,
+          response: OpenAI::HTTPClient::Response,
+          close: ^() -> void
+        ) -> void
+
+        def each: { (Elem) -> void } -> void
+        def close: -> void
+        private def iterator: -> Enumerable[Elem]
+      end
       def self.normalize_level: (Symbol | String value) -> Symbol
       def self.validate_logger!: (OpenAI::_Logger? logger) -> void
       def self.default_logger: -> OpenAI::_Logger

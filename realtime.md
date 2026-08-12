@@ -298,8 +298,10 @@ The first completed `ResponseDoneEvent` can finish the MCP argument-generation
 phase while approval and tool execution are still pending. Keep reading, answer
 the `RealtimeMcpApprovalRequest`, wait for `ResponseMcpCallCompleted`, and create
 a follow-up response (usually with `tool_choice: :none`) to turn the tool output
-into a final assistant answer. The approval helper generates item IDs within the
-service's 32-character limit.
+into a final assistant answer. Treat only that follow-up response's completed
+`ResponseDoneEvent` as success; clean EOF during discovery, approval, or tool
+execution is still an incomplete workflow. The approval helper generates item
+IDs within the service's 32-character limit.
 
 ## Lifecycle and failures
 
@@ -308,6 +310,18 @@ stateful, and replaying audio, item creation, tool output, or approval decisions
 can duplicate side effects. Treat an unexpected close as an application-level
 decision: terminate, or reconnect and deliberately rebuild the state that is
 safe for that use case.
+
+Runnable smoke tests require their protocol-specific terminal event rather than
+treating a clean WebSocket EOF as success: completed `response.done` for text,
+audio, and MCP; transcription completion for transcription; and
+`session.closed` for translation. Cleanup must also preserve an active upload or
+processing error when a graceful close fails, while surfacing the close failure
+after an otherwise successful operation.
+
+Raw WebRTC SDP responses remain lazily consumed. Request observability follows
+that body lifecycle: completion is recorded only after the SDP body is fully
+drained, and a body read failure records `request failed` without a contradictory
+completion event.
 
 - Invalid JSON or a payload that cannot match the selected event union raises
   `OpenAI::Errors::RealtimeProtocolError`, with `data` and `cause`.
