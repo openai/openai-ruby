@@ -82,9 +82,16 @@ module OpenAI
             define_method(setter) do |value|
               target = type_fn.call
               state = OpenAI::Internal::Type::Converter.new_coerce_state(translate_names: false)
-              OpenAI::Internal::Type::Converter.coerce(target, value, state: state)
-              @coerced.store(name_sym, state.fetch(:error) || true)
-              @data.store(name_sym, value)
+              coerced = OpenAI::Internal::Type::Converter.coerce(target, value, state: state)
+              error = @coerced.store(name_sym, state.fetch(:error) || true)
+              stored =
+                case [target, error]
+                in [OpenAI::Internal::Type::Converter | Symbol, nil]
+                  coerced
+                else
+                  value
+                end
+              @data.store(name_sym, stored)
             end
 
             # rubocop:disable Style/CaseEquality
