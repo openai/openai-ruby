@@ -3,6 +3,7 @@
 
 require "timeout"
 require_relative "../../lib/openai"
+require_relative "event_stream"
 
 module OpenAI
   module Examples
@@ -12,8 +13,7 @@ module OpenAI
 
         def stream_response(connection, output: $stdout)
           started_response = false
-          completed_response = false
-          connection.each do |event|
+          EventStream.each_until(connection, stop_after: "response.done") do |event|
             case event
             when OpenAI::Realtime::SessionCreatedEvent
               output.puts("[realtime] session.created")
@@ -30,15 +30,10 @@ module OpenAI
               raise "Realtime response ended with status #{status.inspect}" unless status == :completed
 
               output.puts("[realtime] response.done status=completed")
-              completed_response = true
-              break
             when OpenAI::Realtime::RealtimeErrorEvent
               raise "Realtime API error: #{event.error.message}"
             end
           end
-          return if completed_response
-
-          raise "Realtime connection closed before response.done"
         end
 
         def run(client:, model:, prompt:, output: $stdout)

@@ -7,43 +7,25 @@ module OpenAI
 
       attr_reader translations: OpenAI::Resources::Realtime::Translations
 
-      def connect:
-        (
-          model: String,
-          ?call_id: nil,
-          ?intent: nil,
-          ?request_options: OpenAI::request_opts?,
-          ?transport: untyped?,
-          ?transport_options: ::Hash[Symbol, untyped]
-        ) {
-          (OpenAI::Realtime::Connection connection) -> top
-        } -> top
-        | (
-          call_id: String,
-          ?model: nil,
-          ?intent: nil,
-          ?request_options: OpenAI::request_opts?,
-          ?transport: untyped?,
-          ?transport_options: ::Hash[Symbol, untyped]
-        ) {
-          (OpenAI::Realtime::SidebandConnection connection) -> top
-        } -> top
-        | (
-          intent: :transcription,
-          ?model: nil,
-          ?call_id: nil,
-          ?request_options: OpenAI::request_opts?,
-          ?transport: untyped?,
-          ?transport_options: ::Hash[Symbol, untyped]
-        ) {
-          (OpenAI::Realtime::TranscriptionConnection connection) -> top
-        } -> top
+      def connect: (
+        model: String,
+        ?request_options: OpenAI::request_opts?,
+        ?transport: untyped?,
+        ?transport_options: ::Hash[Symbol, untyped]
+      ) { (OpenAI::Realtime::Connection connection) -> top } -> top
 
-      def connection_target: (
-        model: String?,
-        call_id: String?,
-        intent: (:transcription)?
-      ) -> [::Hash[String, String], untyped]
+      def connect_to_call: (
+        call_id: String,
+        ?request_options: OpenAI::request_opts?,
+        ?transport: untyped?,
+        ?transport_options: ::Hash[Symbol, untyped]
+      ) { (OpenAI::Realtime::SidebandConnection connection) -> top } -> top
+
+      def connect_transcription: (
+        ?request_options: OpenAI::request_opts?,
+        ?transport: untyped?,
+        ?transport_options: ::Hash[Symbol, untyped]
+      ) { (OpenAI::Realtime::TranscriptionConnection connection) -> top } -> top
 
       def initialize: (client: OpenAI::Client) -> void
     end

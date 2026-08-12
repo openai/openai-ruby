@@ -531,7 +531,7 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
   end
 
   private def exercise_transcription(client, audio:)
-    client.realtime.connect(intent: :transcription) do |connection|
+    client.realtime.connect_transcription do |connection|
       assert_instance_of(OpenAI::Realtime::SessionCreatedEvent, connection.receive)
       configure_transcription(connection)
       assert_instance_of(OpenAI::Realtime::SessionUpdatedEvent, connection.receive)

@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require_relative "../../lib/openai"
+require_relative "event_stream"
 require "timeout"
 
 module OpenAI
@@ -11,15 +12,14 @@ module OpenAI
         module_function
 
         def stream(connection, output: $stdout, stop_after: nil)
-          connection.each do |event|
+          EventStream.each_until(connection, stop_after: stop_after) do |event|
             output.puts("#{event.type}: #{event.to_h}")
             output.flush
-            break if stop_after == event.type.to_s
           end
         end
 
         def run(client:, call_id:, stop_after: nil, output: $stdout)
-          client.realtime.connect(call_id: call_id) do |connection|
+          client.realtime.connect_to_call(call_id: call_id) do |connection|
             connection.session.update(
               type: :realtime,
               instructions: "Use server-side business rules and keep answers short."

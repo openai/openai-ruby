@@ -4,6 +4,7 @@
 require "async"
 require "timeout"
 require_relative "../../lib/openai"
+require_relative "event_stream"
 
 module OpenAI
   module Examples
@@ -22,6 +23,7 @@ module OpenAI
 
           def each_chunk
             return enum_for(__method__) unless block_given?
+            return if @stopping
 
             reader, writer = IO.pipe
             @pid = Process.spawn(*command, out: writer, err: $stderr)
@@ -39,9 +41,9 @@ module OpenAI
           end
 
           def stop
+            @stopping = true
             return unless @pid
 
-            @stopping = true
             Process.kill("INT", @pid)
           rescue Errno::ESRCH
             nil
@@ -405,17 +407,9 @@ module OpenAI
         end
 
         def stream_events(connection, microphone:, outbound:, playback:, output:, stop_after: nil)
-          stop_event_seen = stop_after.nil?
-          connection.each do |event|
+          EventStream.each_until(connection, stop_after: stop_after) do |event|
             handle_event(event, outbound: outbound, playback: playback, output: output)
-            if stop_after == event.type.to_s
-              stop_event_seen = true
-              break
-            end
           end
-          return if stop_event_seen
-
-          raise "Realtime connection closed before #{stop_after}"
         ensure
           microphone.stop
         end

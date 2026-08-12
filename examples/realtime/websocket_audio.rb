@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require_relative "../../lib/openai"
+require_relative "event_stream"
 
 module OpenAI
   module Examples
@@ -10,9 +11,8 @@ module OpenAI
         module_function
 
         def stream_response(connection, output:)
-          completed_response = false
           audio_bytes = 0
-          connection.each do |event|
+          EventStream.each_until(connection, stop_after: "response.done") do |event|
             case event
             when OpenAI::Realtime::ResponseAudioDeltaEvent
               audio = Base64.strict_decode64(event.delta)
@@ -22,16 +22,10 @@ module OpenAI
               status = event.response.status
               raise "Response ended with #{status}" unless status == :completed
               raise "Response completed without audio output" if audio_bytes.zero?
-
-              completed_response = true
-              break
             when OpenAI::Realtime::RealtimeErrorEvent
               raise event.error.message
             end
           end
-          return if completed_response
-
-          raise "Realtime connection closed before response.done"
         end
 
         def run(client:, model:, input_path:, output_path:)

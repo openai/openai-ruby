@@ -14,46 +14,37 @@ module OpenAI
 
       sig do
         params(
-          model: T.nilable(String),
-          call_id: T.nilable(String),
-          intent: T.nilable(Symbol),
+          model: String,
           request_options: T.nilable(OpenAI::RequestOptions::OrHash),
           transport: T.untyped,
           transport_options: T::Hash[Symbol, T.untyped],
-          block:
-            T
-              .proc
-              .params(
-                connection:
-                  T.any(
-                    OpenAI::Realtime::Connection,
-                    OpenAI::Realtime::SidebandConnection,
-                    OpenAI::Realtime::TranscriptionConnection
-                  )
-              )
-              .returns(T.untyped)
+          block: T.proc.params(connection: OpenAI::Realtime::Connection).returns(T.untyped)
         ).returns(T.untyped)
       end
-      def connect(
-        model: nil,
-        call_id: nil,
-        intent: nil,
-        request_options: nil,
-        transport: nil,
-        transport_options: {},
-        &block
-      )
+      def connect(model:, request_options: nil, transport: nil, transport_options: {}, &block)
       end
 
-      # @api private
       sig do
         params(
-          model: T.nilable(String),
-          call_id: T.nilable(String),
-          intent: T.nilable(Symbol)
-        ).returns(T::Array[T.untyped])
+          call_id: String,
+          request_options: T.nilable(OpenAI::RequestOptions::OrHash),
+          transport: T.untyped,
+          transport_options: T::Hash[Symbol, T.untyped],
+          block: T.proc.params(connection: OpenAI::Realtime::SidebandConnection).returns(T.untyped)
+        ).returns(T.untyped)
       end
-      def connection_target(model:, call_id:, intent:)
+      def connect_to_call(call_id:, request_options: nil, transport: nil, transport_options: {}, &block)
+      end
+
+      sig do
+        params(
+          request_options: T.nilable(OpenAI::RequestOptions::OrHash),
+          transport: T.untyped,
+          transport_options: T::Hash[Symbol, T.untyped],
+          block: T.proc.params(connection: OpenAI::Realtime::TranscriptionConnection).returns(T.untyped)
+        ).returns(T.untyped)
+      end
+      def connect_transcription(request_options: nil, transport: nil, transport_options: {}, &block)
       end
 
       # @api private

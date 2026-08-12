@@ -3,6 +3,7 @@
 
 require "timeout"
 require_relative "../../lib/openai"
+require_relative "event_stream"
 
 module OpenAI
   module Examples
@@ -42,27 +43,25 @@ module OpenAI
         end
 
         def print_transcript(connection, output: $stdout)
-          completed = false
-          connection.each do |event|
+          EventStream.each_until(
+            connection,
+            stop_after: "conversation.item.input_audio_transcription.completed",
+            closed_message: "Realtime connection closed before transcription completed"
+          ) do |event|
             case event
             when OpenAI::Realtime::ConversationItemInputAudioTranscriptionDeltaEvent
               output.print(event.delta)
               output.flush
             when OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent
               output.puts("\n[#{event.item_id}] #{event.transcript}")
-              completed = true
-              break
             when OpenAI::Realtime::RealtimeErrorEvent
               raise event.error.message
             end
           end
-          return if completed
-
-          raise "Realtime connection closed before transcription completed"
         end
 
         def run(client:, input_path:, transcription_model:, output: $stdout)
-          client.realtime.connect(intent: :transcription) do |connection|
+          client.realtime.connect_transcription do |connection|
             configure(connection, transcription_model: transcription_model)
             wait_until_ready(connection)
             upload(connection, input_path: input_path)

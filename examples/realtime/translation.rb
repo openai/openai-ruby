@@ -3,6 +3,7 @@
 
 require "async"
 require_relative "../../lib/openai"
+require_relative "event_stream"
 
 module OpenAI
   module Examples
@@ -11,25 +12,28 @@ module OpenAI
         module_function
 
         def stream(connection, audio_output:, transcript_output: $stdout)
-          session_closed = false
-          connection.each do |event|
+          audio_bytes = 0
+          EventStream.each_until(
+            connection,
+            stop_after: "session.closed",
+            closed_message: "Realtime translation connection closed before session.closed"
+          ) do |event|
             case event
             when OpenAI::Realtime::RealtimeTranslationOutputTranscriptDeltaEvent
               transcript_output.print(event.delta)
               transcript_output.flush
             when OpenAI::Realtime::RealtimeTranslationOutputAudioDeltaEvent
-              audio_output.write(Base64.strict_decode64(event.delta))
+              audio = Base64.strict_decode64(event.delta)
+              audio_output.write(audio)
+              audio_bytes += audio.bytesize
             when OpenAI::Realtime::RealtimeTranslationSessionClosedEvent
+              raise "Translation session closed without audio output" if audio_bytes.zero?
+
               transcript_output.puts
-              session_closed = true
-              break
             when OpenAI::Realtime::RealtimeErrorEvent
               raise event.error.message
             end
           end
-          return if session_closed
-
-          raise "Realtime translation connection closed before session.closed"
         end
 
         def write_input(connection, input_path)

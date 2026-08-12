@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require_relative "../../lib/openai"
+require_relative "event_stream"
 require "timeout"
 
 module OpenAI
@@ -11,7 +12,7 @@ module OpenAI
         module_function
 
         def stream(connection, output: $stdout, stop_after: nil)
-          connection.each do |event|
+          EventStream.each_until(connection, stop_after: stop_after) do |event|
             case event
             when OpenAI::Realtime::ResponseAudioTranscriptDeltaEvent
               output.print(event.delta)
@@ -19,7 +20,6 @@ module OpenAI
             when OpenAI::Realtime::RealtimeErrorEvent
               raise event.error.message
             end
-            break if stop_after == event.type.to_s
           end
         end
 
@@ -33,7 +33,7 @@ module OpenAI
           )
           accepted = true
 
-          client.realtime.connect(call_id: call_id) do |connection|
+          client.realtime.connect_to_call(call_id: call_id) do |connection|
             stream(connection, output: output, stop_after: stop_after)
           end
         ensure

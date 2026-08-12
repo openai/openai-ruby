@@ -12,40 +12,90 @@ module OpenAI
       # @return [OpenAI::Resources::Realtime::Translations]
       attr_reader :translations
 
-      # Open a server-side Realtime WebSocket. Pass exactly one of `model` to start a
-      # conversation session, `intent: :transcription` to start transcription, or
-      # `call_id` to attach a sideband connection to a WebRTC or SIP call. A block is
-      # required and the socket is closed on every exit path.
+      # Open a server-side Realtime conversation WebSocket. A block is required and
+      # the socket is closed on every exit path.
       #
-      # @param model [String, nil]
-      # @param call_id [String, nil]
-      # @param intent [Symbol, nil]
+      # @param model [String]
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       # @param transport [#open, nil] An alternate WebSocket transport.
       # @param transport_options [Hash{Symbol=>Object}]
       # @yieldparam connection [OpenAI::Realtime::Connection]
       # @return [Object]
       def connect(
-        model: nil,
-        call_id: nil,
-        intent: nil,
+        model:,
         request_options: nil,
         transport: nil,
         transport_options: {},
         &block
       )
+        open_connection(
+          query: {"model" => model},
+          connection_class: OpenAI::Realtime::Connection,
+          request_options: request_options,
+          transport: transport,
+          transport_options: transport_options,
+          &block
+        )
+      end
+
+      # Attach a sideband WebSocket to an existing WebRTC or SIP call.
+      #
+      # @param call_id [String]
+      # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+      # @param transport [#open, nil] An alternate WebSocket transport.
+      # @param transport_options [Hash{Symbol=>Object}]
+      # @yieldparam connection [OpenAI::Realtime::SidebandConnection]
+      # @return [Object]
+      def connect_to_call(
+        call_id:,
+        request_options: nil,
+        transport: nil,
+        transport_options: {},
+        &block
+      )
+        open_connection(
+          query: {"call_id" => call_id},
+          connection_class: OpenAI::Realtime::SidebandConnection,
+          request_options: request_options,
+          transport: transport,
+          transport_options: transport_options,
+          &block
+        )
+      end
+
+      # Open a dedicated Realtime transcription WebSocket.
+      #
+      # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+      # @param transport [#open, nil] An alternate WebSocket transport.
+      # @param transport_options [Hash{Symbol=>Object}]
+      # @yieldparam connection [OpenAI::Realtime::TranscriptionConnection]
+      # @return [Object]
+      def connect_transcription(
+        request_options: nil,
+        transport: nil,
+        transport_options: {},
+        &block
+      )
+        open_connection(
+          query: {"intent" => "transcription"},
+          connection_class: OpenAI::Realtime::TranscriptionConnection,
+          request_options: request_options,
+          transport: transport,
+          transport_options: transport_options,
+          &block
+        )
+      end
+
+      private def open_connection(
+        query:,
+        connection_class:,
+        request_options:,
+        transport:,
+        transport_options:,
+        &block
+      )
         raise ArgumentError, "A block is required to open a Realtime WebSocket." unless block
 
-        targets = [model, call_id, intent].compact
-        unless targets.one?
-          message = "Pass exactly one of `model`, `call_id`, or `intent` when opening a Realtime WebSocket."
-          raise ArgumentError, message
-        end
-        unless intent.nil? || intent == :transcription
-          raise ArgumentError, "The only supported Realtime connection intent is `transcription`."
-        end
-
-        query, connection_class = connection_target(model: model, call_id: call_id, intent: intent)
         manager = OpenAI::Realtime::ConnectionManager.new(
           client: @client,
           path: "realtime",
@@ -56,17 +106,6 @@ module OpenAI
           transport_options: transport_options
         )
         manager.open(&block)
-      end
-
-      # @api private
-      def connection_target(model:, call_id:, intent:)
-        if model
-          [{"model" => model}, OpenAI::Realtime::Connection]
-        elsif call_id
-          [{"call_id" => call_id}, OpenAI::Realtime::SidebandConnection]
-        else
-          [{"intent" => intent.to_s}, OpenAI::Realtime::TranscriptionConnection]
-        end
       end
 
       # @api private

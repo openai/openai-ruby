@@ -120,9 +120,10 @@ bundle exec ruby examples/realtime/websocket_transcription.rb
 A successful run streams transcript deltas, then prints the completed
 transcript with its `item_id`. Completion events for different input turns may
 arrive out of order, so applications should correlate them by `item_id`.
-The example opens a dedicated `intent: :transcription` connection. Configure
-its transcription model with `OPENAI_REALTIME_TRANSCRIPTION_MODEL`. An EOF
-before the completed transcription event is reported as a failed smoke test.
+The example opens a dedicated connection with `connect_transcription`.
+Configure its transcription model with `OPENAI_REALTIME_TRANSCRIPTION_MODEL`.
+An EOF before the completed transcription event is reported as a failed smoke
+test.
 
 ## Realtime translation
 
@@ -138,9 +139,10 @@ bundle exec ruby examples/realtime/translation.rb
 
 A successful run prints the translated transcript, exits after
 `session.closed`, and writes non-empty translated PCM audio. An EOF before
-`session.closed` is reported as incomplete instead of silently succeeding. If
-upload and graceful close both fail, the upload error remains the primary
-failure so the interrupted input operation is not hidden by cleanup.
+`session.closed`, or a closed session with no translated audio, is reported as
+incomplete instead of silently succeeding. If upload and graceful close both
+fail, the upload error remains the primary failure so the interrupted input
+operation is not hidden by cleanup.
 
 ## MCP approval
 
@@ -186,7 +188,8 @@ bundle exec ruby examples/realtime/sideband.rb
 
 For a bounded smoke test, set `OPENAI_REALTIME_STOP_AFTER=session.updated` and
 `OPENAI_REALTIME_TIMEOUT=30`. A real paired test keeps the browser or SIP peer
-connected while this process attaches to the same call.
+connected while this process attaches to the same call. EOF before the selected
+event fails the bounded smoke test.
 
 ## SIP
 
@@ -203,9 +206,10 @@ The script accepts the call, attaches a sideband WebSocket, and prints the audio
 transcript. `OPENAI_REALTIME_STOP_AFTER` and `OPENAI_REALTIME_TIMEOUT` provide
 bounded smoke-test controls. Once accepted, the call is hung up during cleanup,
 including after a timeout or sideband failure; an already-ended call is treated
-as successfully cleaned up. Without a carrier-originated incoming call, the
-same accept-then-attach orchestration is covered by the local example and HTTP
-resource tests, but that is not a substitute for the final telephony smoke test.
+as successfully cleaned up. EOF before the selected event fails a bounded run.
+Without a carrier-originated incoming call, the same accept-then-attach
+orchestration is covered by the local example and HTTP resource tests, but that
+is not a substitute for the final telephony smoke test.
 
 ## Local protocol coverage
 

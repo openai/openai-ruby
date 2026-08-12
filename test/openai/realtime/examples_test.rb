@@ -137,7 +137,7 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
       @connections = []
     end
 
-    def connect(call_id:)
+    def connect_to_call(call_id:)
       @connections << call_id
       yield(@connection)
     end
@@ -348,6 +348,32 @@ class OpenAI::Test::RealtimeExamplesTest < Minitest::Test
 
     assert_equal("write failed", error.message)
     assert_predicate(microphone, :stopped)
+  end
+
+  def test_realtime_conversation_latches_stop_before_ffmpeg_capture_starts
+    connection = RecordingConnection.new(
+      [OpenAI::Realtime::SessionUpdatedEvent.new(event_id: "event_1", session: {})]
+    )
+    microphone = OpenAI::Examples::Realtime::Conversation::FFmpegMicrophone.new(
+      input_format: "test",
+      device: "test"
+    )
+    spawn = ->(*) { raise "microphone spawned after stop" }
+
+    result = Process.stub(:spawn, spawn) do
+      Sync do
+        OpenAI::Examples::Realtime::Conversation.run_session(
+          connection,
+          microphone: microphone,
+          speaker: RecordingSpeaker.new,
+          voice: :marin,
+          instructions: "Speak naturally.",
+          output: StringIO.new
+        )
+      end
+    end
+
+    assert_nil(result)
   end
 
   def test_realtime_conversation_rejects_eof_before_the_requested_stop_event

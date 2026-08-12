@@ -91,36 +91,11 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
     assert(socket.closed?)
   end
 
-  def test_connect_requires_exactly_one_connection_target
-    error = assert_raises(ArgumentError) do
-      client.realtime.connect(transport: FakeTransport.new(FakeSocket.new)) { |_connection| nil }
-    end
-    assert_includes(error.message, "exactly one")
-
-    error = assert_raises(ArgumentError) do
-      client.realtime.connect(
-        model: "gpt-realtime",
-        call_id: "rtc_123",
-        transport: FakeTransport.new(FakeSocket.new)
-      ) { |_connection| nil }
-    end
-    assert_includes(error.message, "exactly one")
-
-    error = assert_raises(ArgumentError) do
-      client.realtime.connect(
-        model: "gpt-realtime",
-        intent: :transcription,
-        transport: FakeTransport.new(FakeSocket.new)
-      ) { |_connection| nil }
-    end
-    assert_includes(error.message, "exactly one")
-  end
-
   def test_connect_to_a_dedicated_transcription_session
     socket = FakeSocket.new
     transport = FakeTransport.new(socket)
 
-    client.realtime.connect(intent: :transcription, transport: transport) do |connection|
+    client.realtime.connect_transcription(transport: transport) do |connection|
       assert_instance_of(OpenAI::Realtime::TranscriptionConnection, connection)
       assert_instance_of(OpenAI::Realtime::ConnectionResources::TranscriptionSession, connection.session)
       assert_respond_to(connection.input_audio_buffer, :commit)
@@ -141,21 +116,10 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
     refute(update.fetch(:session).key?(:event_id))
   end
 
-  def test_connect_rejects_an_unknown_intent
-    error = assert_raises(ArgumentError) do
-      client.realtime.connect(
-        intent: :future,
-        transport: FakeTransport.new(FakeSocket.new)
-      ) { |_connection| nil }
-    end
-
-    assert_includes(error.message, "transcription")
-  end
-
   def test_connect_to_an_existing_webrtc_or_sip_call
     transport = FakeTransport.new(FakeSocket.new)
 
-    client.realtime.connect(call_id: "rtc_123", transport: transport) do |connection|
+    client.realtime.connect_to_call(call_id: "rtc_123", transport: transport) do |connection|
       assert_instance_of(OpenAI::Realtime::SidebandConnection, connection)
       assert_respond_to(connection, :output_audio_buffer)
     end
@@ -317,7 +281,7 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
     socket = FakeSocket.new
     transport = FakeTransport.new(socket)
 
-    client.realtime.connect(call_id: "rtc_123", transport: transport) do |connection|
+    client.realtime.connect_to_call(call_id: "rtc_123", transport: transport) do |connection|
       connection.output_audio_buffer.clear(event_id: "clear_1")
     end
 
@@ -331,7 +295,7 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
     socket = FakeSocket.new
     transport = FakeTransport.new(socket)
 
-    client.realtime.connect(call_id: "rtc_123", transport: transport) do |connection|
+    client.realtime.connect_to_call(call_id: "rtc_123", transport: transport) do |connection|
       connection.response.cancel
       connection.conversation.items.truncate(item_id: "item_1", content_index: 0, audio_end_ms: 640)
       connection.output_audio_buffer.clear

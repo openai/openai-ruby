@@ -2,6 +2,8 @@
 
 require_relative "../test_helper"
 require_relative "../../../examples/realtime/mcp_approval"
+require_relative "../../../examples/realtime/sideband"
+require_relative "../../../examples/realtime/sip"
 require_relative "../../../examples/realtime/translation"
 require_relative "../../../examples/realtime/websocket_audio"
 require_relative "../../../examples/realtime/websocket_transcription"
@@ -37,6 +39,34 @@ class OpenAI::Test::RealtimeExampleStreamLifecycleTest < Minitest::Test
   end
 
   TranslationConnection = Data.define(:input_audio_buffer, :session)
+
+  Event = Data.define(:type, :data) do
+    def to_h = data
+  end
+
+  def test_sideband_rejects_eof_before_the_requested_event
+    error = assert_raises(RuntimeError) do
+      OpenAI::Examples::Realtime::Sideband.stream(
+        RecordingConnection.new,
+        output: StringIO.new,
+        stop_after: "session.updated"
+      )
+    end
+
+    assert_equal("Realtime connection closed before session.updated", error.message)
+  end
+
+  def test_sip_rejects_eof_before_the_requested_event
+    error = assert_raises(RuntimeError) do
+      OpenAI::Examples::Realtime::SIP.stream(
+        RecordingConnection.new,
+        output: StringIO.new,
+        stop_after: "response.done"
+      )
+    end
+
+    assert_equal("Realtime connection closed before response.done", error.message)
+  end
 
   def test_websocket_audio_rejects_a_connection_that_closes_before_response_done
     error = assert_raises(RuntimeError) do
@@ -119,7 +149,7 @@ class OpenAI::Test::RealtimeExampleStreamLifecycleTest < Minitest::Test
     )
   end
 
-  def test_translation_accepts_only_a_session_closed_event
+  def test_translation_rejects_session_closed_without_audio
     connection = RecordingConnection.new(
       [
         OpenAI::Realtime::RealtimeTranslationSessionClosedEvent.new(
@@ -128,14 +158,41 @@ class OpenAI::Test::RealtimeExampleStreamLifecycleTest < Minitest::Test
       ]
     )
 
+    error = assert_raises(RuntimeError) do
+      OpenAI::Examples::Realtime::Translation.stream(
+        connection,
+        audio_output: StringIO.new,
+        transcript_output: StringIO.new
+      )
+    end
+
+    assert_equal("Translation session closed without audio output", error.message)
+  end
+
+  def test_translation_accepts_audio_followed_by_session_closed
+    audio = "translated pcm".b
+    connection = RecordingConnection.new(
+      [
+        OpenAI::Realtime::RealtimeTranslationOutputAudioDeltaEvent.new(
+          event_id: "event_1",
+          delta: Base64.strict_encode64(audio)
+        ),
+        OpenAI::Realtime::RealtimeTranslationSessionClosedEvent.new(
+          event_id: "event_2"
+        )
+      ]
+    )
+    audio_output = StringIO.new
     transcript_output = StringIO.new
+
     result = OpenAI::Examples::Realtime::Translation.stream(
       connection,
-      audio_output: StringIO.new,
+      audio_output: audio_output,
       transcript_output: transcript_output
     )
 
     assert_nil(result)
+    assert_equal(audio, audio_output.string)
     assert_equal("\n", transcript_output.string)
   end
 

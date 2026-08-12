@@ -101,10 +101,10 @@ audio and interruption-driven truncation events share exactly one writer fiber.
 The yielded class reflects the protocol's capabilities:
 
 - `connect(model:)` yields `OpenAI::Realtime::Connection` for ordinary sessions;
-- `connect(intent: :transcription)` yields
+- `connect_transcription` yields
   `OpenAI::Realtime::TranscriptionConnection`, exposing only session and input
   audio buffer operations;
-- `connect(call_id:)` yields `OpenAI::Realtime::SidebandConnection`, adding
+- `connect_to_call(call_id:)` yields `OpenAI::Realtime::SidebandConnection`, adding
   `output_audio_buffer`; and
 - `translations.connect` yields `OpenAI::Realtime::TranslationConnection`,
   which intentionally has no conversation or response lifecycle.
@@ -121,7 +121,7 @@ Realtime transcription is a distinct session mode. Configure a transcription
 model, append raw mono 24 kHz PCM16 input, and commit the buffer:
 
 ```ruby
-client.realtime.connect(intent: :transcription) do |connection|
+client.realtime.connect_transcription do |connection|
   connection.session.update(
     audio: {
       input: {
@@ -189,7 +189,7 @@ from the `Location` header. Keep the call ID if the application will open a
 server-side sideband connection:
 
 ```ruby
-client.realtime.connect(call_id: call.call_id) do |connection|
+client.realtime.connect_to_call(call_id: call.call_id) do |connection|
   connection.session.update(
     type: :realtime,
     instructions: "Apply private server policy."
@@ -221,7 +221,7 @@ client.realtime.calls.accept(
   instructions: "You are answering a phone call."
 )
 
-client.realtime.connect(call_id: call_id) do |connection|
+client.realtime.connect_to_call(call_id: call_id) do |connection|
   connection.each { |realtime_event| handle(realtime_event) }
 end
 ```
@@ -313,15 +313,23 @@ safe for that use case.
 
 Runnable smoke tests require their protocol-specific terminal event rather than
 treating a clean WebSocket EOF as success: completed `response.done` for text,
-audio, and MCP; transcription completion for transcription; and
-`session.closed` for translation. Cleanup must also preserve an active upload or
-processing error when a graceful close fails, while surfacing the close failure
-after an otherwise successful operation.
+audio, and MCP; transcription completion for transcription; `session.closed`
+for translation; and the requested `OPENAI_REALTIME_STOP_AFTER` checkpoint for
+bounded sideband, SIP, and conversation runs. Cleanup must also preserve an
+active upload or processing error when a graceful close fails, while surfacing
+the close failure after an otherwise successful operation.
 
 Terminal status alone is insufficient when a workflow promises an artifact:
-the raw-audio smoke also requires at least one decoded audio byte before its
-completed `response.done`. Bounded conversation playback similarly requires the
-explicit event requested by `stop_after`; EOF before it is a failed run.
+the raw-audio and translation smokes also require at least one decoded audio
+byte before their terminal events. Microphone shutdown is latched before capture
+starts, so an immediately closed connection cannot start an orphaned ffmpeg
+process after cleanup has begun.
+
+The three standard Realtime connection modes use distinct method names rather
+than a keyword-discriminated overload: `connect(model:)`, `connect_to_call`, and
+`connect_transcription`. This keeps block parameter types precise in both RBS
+and RBI; Sorbet does not support overloads that discriminate on keyword
+arguments.
 
 Raw WebRTC SDP responses remain lazily consumed. Request observability follows
 that body lifecycle: completion is recorded only after the SDP body is fully
@@ -393,7 +401,7 @@ simplest successful path before protocol details:
 | --- | --- |
 | Realtime overview | Minimal text WebSocket with typed deltas and block cleanup |
 | WebSocket | Text, PCM16 input/output, manual `receive`, Enumerable iteration, error handling |
-| Transcription | `intent: :transcription`, PCM16 streaming, delta/completed events, and `item_id` correlation |
+| Transcription | `connect_transcription`, PCM16 streaming, delta/completed events, and `item_id` correlation |
 | WebRTC | Complete browser peer plus Ruby endpoint; Rails and Sinatra variants using `calls.create` |
 | Server controls | Preserve `call.call_id`, open sideband, update session, hang up |
 | SIP | Verify webhook, accept/reject, sideband, refer, hang up, idempotent webhook handling |
