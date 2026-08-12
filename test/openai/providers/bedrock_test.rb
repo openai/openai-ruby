@@ -103,6 +103,26 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
     end
   end
 
+  def test_provider_authentication_overrides_explicit_default_headers
+    url = "https://bedrock-mantle.us-east-1.api.aws/v1/models"
+    stub_request(:get, url).to_return_json(status: 200, body: {})
+
+    client = OpenAI::Client.new(
+      provider: OpenAI::Providers.bedrock(region: "us-east-1", api_key: "bedrock-token"),
+      default_headers: {
+        "Authorization" => "Bearer custom",
+        "X-Cost-Center" => "finance"
+      }
+    )
+    client.request({method: :get, path: "models"})
+
+    assert_requested(:get, url) do |request|
+      headers = request.headers.transform_keys(&:downcase)
+      assert_equal("Bearer bedrock-token", headers["authorization"])
+      assert_equal("finance", headers["x-cost-center"])
+    end
+  end
+
   def test_provider_rejects_top_level_authentication_and_routing
     provider = OpenAI::Providers.bedrock(region: "us-east-1", api_key: "bedrock-token")
 

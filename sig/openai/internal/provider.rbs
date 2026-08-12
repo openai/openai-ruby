@@ -7,13 +7,15 @@ module OpenAI
         attr_accessor prepare_request: (^(
           OpenAI::Internal::Transport::BaseClient::request_input
         ) -> OpenAI::Internal::Transport::BaseClient::request_input)?
+        attr_accessor authentication_headers: Array[String]
 
         def initialize: (
           name: String,
           base_url: String,
           prepare_request: (^(
             OpenAI::Internal::Transport::BaseClient::request_input
-          ) -> OpenAI::Internal::Transport::BaseClient::request_input)?
+          ) -> OpenAI::Internal::Transport::BaseClient::request_input)?,
+          authentication_headers: Array[String]
         ) -> void
       end
 

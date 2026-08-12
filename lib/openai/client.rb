@@ -229,6 +229,9 @@ module OpenAI
     # @param base_url [String, nil] Override the default base URL for the API, e.g.,
     # `"https://api.example.com/v2/"`. Defaults to `ENV["OPENAI_BASE_URL"]`
     #
+    # @param default_headers [Hash{String=>String, nil}, nil] Extra headers to send
+    #   with every request. Explicit values override `ENV["OPENAI_CUSTOM_HEADERS"]`.
+    #
     # @param max_retries [Integer] Max number of retries to attempt after a failed retryable request.
     #
     # @param timeout [Float, nil]
@@ -255,6 +258,7 @@ module OpenAI
       webhook_secret: OpenAI::Internal::OMIT,
       provider: nil,
       base_url: OpenAI::Internal::OMIT,
+      default_headers: nil,
       max_retries: self.class::DEFAULT_MAX_RETRIES,
       timeout: self.class::DEFAULT_TIMEOUT_IN_SECONDS,
       initial_retry_delay: self.class::DEFAULT_INITIAL_RETRY_DELAY,
@@ -329,6 +333,11 @@ module OpenAI
         end
         headers = parsed.merge(headers)
       end
+      client_headers = OpenAI::Internal::Util.normalized_headers(default_headers.to_h)
+      unless provider_runtime.nil?
+        provider_runtime.authentication_headers.each { client_headers.delete(_1) }
+      end
+      headers = headers.merge(client_headers)
 
       if workload_identity.nil?
         @api_key = api_key&.to_s

@@ -91,6 +91,7 @@ module OpenAI
       ?webhook_secret: String?,
       ?provider: OpenAI::Provider?,
       ?base_url: String?,
+      ?default_headers: ::Hash[String, String?]?,
       ?max_retries: Integer,
       ?timeout: Float?,
       ?initial_retry_delay: Float,

@@ -13,11 +13,18 @@ class OpenAITest < Minitest::Test
 
   def setup
     super
+    @openai_custom_headers = ENV["OPENAI_CUSTOM_HEADERS"]
+    ENV.delete("OPENAI_CUSTOM_HEADERS")
     Thread.current.thread_variable_set(:mock_sleep, [])
   end
 
   def teardown
     Thread.current.thread_variable_set(:mock_sleep, nil)
+    if @openai_custom_headers.nil?
+      ENV.delete("OPENAI_CUSTOM_HEADERS")
+    else
+      ENV["OPENAI_CUSTOM_HEADERS"] = @openai_custom_headers
+    end
     WebMock.reset!
     super
   end
@@ -91,6 +98,141 @@ class OpenAITest < Minitest::Test
     end
 
     assert_match(/Missing credentials/, error.message)
+  end
+
+  def test_client_default_headers_are_sent_with_requests
+    stub_request(:get, "http://localhost/models").to_return_json(status: 200, body: {})
+
+    openai = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      default_headers: {"x-cost-center" => "finance"}
+    )
+    openai.request({method: :get, path: "models"})
+
+    assert_requested(:get, "http://localhost/models") do |request|
+      assert_equal("finance", request.headers.transform_keys(&:downcase)["x-cost-center"])
+    end
+  end
+
+  def test_client_default_headers_are_sent_with_streaming_requests
+    stub_request(:post, "http://localhost/chat/completions")
+      .with(headers: {"x-cost-center" => "finance"})
+      .to_return(status: 200, body: "data: [DONE]\n\n", headers: {"Content-Type" => "text/event-stream"})
+
+    openai = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      default_headers: {"x-cost-center" => "finance"}
+    )
+    openai.chat.completions.stream(
+      messages: [{content: "string", role: :developer}],
+      model: :"gpt-5.4"
+    )
+
+    assert_requested(:post, "http://localhost/chat/completions", times: 1) do |request|
+      assert_equal("finance", request.headers.transform_keys(&:downcase)["x-cost-center"])
+    end
+  end
+
+  def test_client_default_headers_are_isolated_between_clients
+    cost_centers = []
+    stub_request(:get, "http://localhost/models").to_return do |request|
+      cost_centers << request.headers.transform_keys(&:downcase).fetch("x-cost-center")
+      {status: 200, body: "{}"}
+    end
+
+    finance = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      default_headers: {"x-cost-center" => "finance"}
+    )
+    research = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      default_headers: {"x-cost-center" => "research"}
+    )
+    finance.request({method: :get, path: "models"})
+    research.request({method: :get, path: "models"})
+
+    assert_equal(%w[finance research], cost_centers)
+  end
+
+  def test_explicit_default_headers_override_or_remove_environment_headers
+    ENV["OPENAI_CUSTOM_HEADERS"] = <<~HEADERS
+      X-Cost-Center: environment
+      X-Remove-Me: environment
+      X-Ambient: retained
+    HEADERS
+    stub_request(:get, "http://localhost/models").to_return_json(status: 200, body: {})
+
+    openai = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      default_headers: {"x-cost-center" => "explicit", "x-remove-me" => nil}
+    )
+    openai.request({method: :get, path: "models"})
+
+    assert_requested(:get, "http://localhost/models") do |request|
+      headers = request.headers.transform_keys(&:downcase)
+      assert_equal("explicit", headers["x-cost-center"])
+      assert_equal("retained", headers["x-ambient"])
+      refute_includes(headers, "x-remove-me")
+    end
+  end
+
+  def test_request_headers_override_or_remove_client_default_headers
+    requests = []
+    stub_request(:get, "http://localhost/models").to_return do |request|
+      requests << request.headers.transform_keys(&:downcase)
+      {status: 200, body: "{}"}
+    end
+    openai = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      default_headers: {"x-cost-center" => "finance"}
+    )
+
+    openai.request(
+      {
+        method: :get,
+        path: "models",
+        options: {extra_headers: {"X-Cost-Center" => "research"}}
+      }
+    )
+    openai.request(
+      {
+        method: :get,
+        path: "models",
+        options: {extra_headers: {"x-cost-center" => nil}}
+      }
+    )
+
+    assert_equal("research", requests.fetch(0).fetch("x-cost-center"))
+    refute_includes(requests.fetch(1), "x-cost-center")
+  end
+
+  def test_client_default_headers_do_not_override_authentication_or_request_headers
+    stub_request(:get, "http://localhost/models").to_return_json(status: 200, body: {})
+    openai = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      default_headers: {"authorization" => "Bearer custom", "x-endpoint" => "client"}
+    )
+
+    openai.request(
+      {
+        method: :get,
+        path: "models",
+        headers: {"X-Endpoint" => "generated"},
+        security: {bearer_auth: true}
+      }
+    )
+
+    assert_requested(:get, "http://localhost/models") do |request|
+      assert_equal("Bearer My API Key", request.headers["Authorization"])
+      assert_equal("generated", request.headers["X-Endpoint"])
+    end
   end
 
   def test_chat_completion_stream_uses_bearer_auth

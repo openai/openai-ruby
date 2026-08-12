@@ -23,6 +23,9 @@ module OpenAI
           )
         end
         attr_accessor :prepare_request
+
+        sig { returns(T::Array[String]) }
+        attr_accessor :authentication_headers
       end
 
       class << self

@@ -6,6 +6,7 @@ module OpenAI
     module Bedrock
       SERVICE = "bedrock-mantle"
       CANONICAL_HOST = /\Abedrock-mantle\.([a-z0-9-]+)\.api\.aws\z/i
+      AUTH_HEADERS = %w[authorization].freeze
       SIGNING_HEADERS = %w[authorization x-amz-content-sha256 x-amz-date x-amz-security-token].freeze
       BEARER_AUTH_MARKER = :openai_bedrock_bearer
       SIGV4_AUTH_MARKER = :openai_bedrock_sigv4
@@ -91,7 +92,8 @@ module OpenAI
           OpenAI::Internal::Provider::Runtime.new(
             name: name,
             base_url: base_url,
-            prepare_request: auth.method(:prepare_request)
+            prepare_request: auth.method(:prepare_request),
+            authentication_headers: AUTH_HEADERS
           )
         end
       end

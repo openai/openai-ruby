@@ -159,6 +159,7 @@ module OpenAI
         webhook_secret: T.nilable(String),
         provider: T.nilable(OpenAI::Provider),
         base_url: T.nilable(String),
+        default_headers: T.nilable(T::Hash[String, T.nilable(String)]),
         max_retries: Integer,
         timeout: T.nilable(Float),
         initial_retry_delay: Float,
@@ -185,6 +186,9 @@ module OpenAI
       # Override the default base URL for the API, e.g.,
       # `"https://api.example.com/v2/"`. Defaults to `ENV["OPENAI_BASE_URL"]`
       base_url: ENV["OPENAI_BASE_URL"],
+      # Extra headers to send with every request. Explicit values override
+      # `ENV["OPENAI_CUSTOM_HEADERS"]`.
+      default_headers: nil,
       # Max number of retries to attempt after a failed retryable request.
       max_retries: OpenAI::Client::DEFAULT_MAX_RETRIES,
       timeout: OpenAI::Client::DEFAULT_TIMEOUT_IN_SECONDS,

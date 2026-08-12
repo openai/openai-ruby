@@ -792,6 +792,20 @@ Note that requests that time out are retried by default.
 
 ## Advanced concepts
 
+### Default request headers
+
+Use `default_headers` to send the same custom headers with every request made by a client:
+
+```ruby
+finance = OpenAI::Client.new(
+  default_headers: {"x-cost-center" => "finance"}
+)
+```
+
+Explicit `default_headers` override values from `OPENAI_CUSTOM_HEADERS`. For a single request,
+`request_options[:extra_headers]` can override a client default or remove it by assigning `nil`.
+Authentication and endpoint-specific headers also take precedence over client defaults.
+
 ### BaseModel
 
 All parameter and response objects inherit from `OpenAI::Internal::Type::BaseModel`, which provides several conveniences, including:
