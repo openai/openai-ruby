@@ -33,6 +33,8 @@ module OpenAI
           top discriminator
         ) -> ::Array[[Symbol?, (^-> OpenAI::Internal::Type::Converter::input), ::Hash[Symbol, top]]]
 
+        private def self.variant_discriminator_matches?: (top target, top discriminator) -> bool
+
         def ===: (top other) -> bool
 
         def ==: (top other) -> bool

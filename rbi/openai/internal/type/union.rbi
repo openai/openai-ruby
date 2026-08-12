@@ -90,6 +90,11 @@ module OpenAI
         private def fallback_variants(discriminator)
         end
 
+        # @api private
+        sig { params(target: T.anything, discriminator: T.anything).returns(T::Boolean) }
+        private def variant_discriminator_matches?(target, discriminator)
+        end
+
         sig { params(other: T.anything).returns(T::Boolean) }
         def ===(other)
         end

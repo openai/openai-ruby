@@ -98,7 +98,16 @@ module OpenAI
             return nil if key == OpenAI::Internal::OMIT || key.nil?
 
             _, found = known_variants.find { |k,| k == key }
-            found&.call
+            return found.call if found
+
+            known_variants.each do |known_key, variant_fn|
+              next unless known_key.nil?
+
+              target = variant_fn.call
+              return target if variant_discriminator_matches?(target, key)
+            end
+
+            nil
           end
         end
 
@@ -139,6 +148,26 @@ module OpenAI
 
         # rubocop:disable Style/HashEachMethods
         # rubocop:disable Style/CaseEquality
+
+        # @api private
+        #
+        # Some generated variants are unkeyed because one model accepts multiple
+        # discriminator values through an enum. Resolve those values directly without
+        # enabling structural matching for unrelated keyed variants.
+        #
+        # @param target [Object]
+        #
+        # @param discriminator [Object]
+        #
+        # @return [Boolean]
+        private def variant_discriminator_matches?(target, discriminator)
+          return false unless target.is_a?(Class) && target <= OpenAI::Internal::Type::BaseModel
+
+          field = target.known_fields.values.find { _1.fetch(:api_name) == @discriminator }
+          return false unless field
+
+          field.fetch(:type_fn).call === discriminator
+        end
 
         # @api public
         #

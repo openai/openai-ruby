@@ -704,6 +704,39 @@ class OpenAI::Test::UnionTest < Minitest::Test
     end
   end
 
+  def test_generated_unkeyed_variants_outrank_unknown_passthrough
+    cases = [
+      [OpenAI::Responses::Tool, :web_search, OpenAI::Responses::WebSearchTool],
+      [OpenAI::Responses::Tool, :web_search_preview, OpenAI::Responses::WebSearchPreviewTool],
+      [OpenAI::Beta::BetaTool, :web_search, OpenAI::Beta::BetaWebSearchTool],
+      [OpenAI::Beta::BetaTool, :web_search_preview, OpenAI::Beta::BetaWebSearchPreviewTool]
+    ]
+
+    cases.each do |union, type, expected_class|
+      input = {type: type.to_s, search_context_size: "future_size"}
+      state = OpenAI::Internal::Type::Converter.new_coerce_state
+
+      output = OpenAI::Internal::Type::Converter.coerce(union, input, state: state)
+
+      assert_instance_of(expected_class, output)
+      assert_equal(type, output.type)
+      assert_equal("future_size", output.search_context_size)
+      assert_nil(state.fetch(:error))
+    end
+  end
+
+  def test_generated_unkeyed_variants_do_not_claim_unknown_discriminators
+    [OpenAI::Responses::Tool, OpenAI::Beta::BetaTool].each do |union|
+      input = {type: "future_tool", search_context_size: "future_size"}
+      state = OpenAI::Internal::Type::Converter.new_coerce_state
+
+      output = OpenAI::Internal::Type::Converter.coerce(union, input, state: state)
+
+      assert_same(input, output)
+      assert_nil(state.fetch(:error))
+    end
+  end
+
   def test_generated_model_accessor_infers_variant_without_discriminator
     params = OpenAI::Responses::ResponseCreateParams.new(
       input: [{role: "user", content: "hello"}]
