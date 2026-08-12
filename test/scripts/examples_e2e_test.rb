@@ -96,6 +96,24 @@ class OpenAI::Test::ExamplesE2ETest < Minitest::Test
     assert_includes(report.results.first.stderr, "API failed")
   end
 
+  def test_markdown_report_escapes_table_control_characters
+    result = OpenAIExamplesE2E::Result.new(
+      path: "examples/failing.rb",
+      success: false,
+      duration_seconds: 0.1,
+      stdout: "",
+      stderr: "",
+      error: "one\\two|three\nfour"
+    )
+    report = OpenAIExamplesE2E::Report.new(
+      inventory: OpenAIExamplesE2E::InventorySummary.new(1, 0, 1, 100.0),
+      results: [result],
+      excluded_examples: []
+    )
+
+    assert_includes(report.to_markdown, "failed: one\\\\two\\|three four")
+  end
+
   def test_inventory_only_cli_writes_json_and_markdown_reports_without_an_api_key
     write_example("covered.rb", "puts(\"covered\")")
     write_manifest(

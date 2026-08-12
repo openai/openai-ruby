@@ -94,7 +94,7 @@ module OpenAIExamplesE2E
     private
 
     def escape_markdown(value)
-      value.to_s.gsub("|", "\\|").gsub("\n", " ")
+      value.to_s.gsub(/[\\|]/) { "\\#{_1}" }.gsub("\n", " ")
     end
   end
 
