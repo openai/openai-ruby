@@ -25,8 +25,18 @@ class OpenAI::Test::Resources::Evals::RunsTest < OpenAI::Test::ResourceTest
         model: String,
         name: String,
         object: Symbol,
-        per_model_usage: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Evals::RunCreateResponse::PerModelUsage]),
-        per_testing_criteria_results: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Evals::RunCreateResponse::PerTestingCriteriaResult]),
+        per_model_usage:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Models::Evals::RunCreateResponse::PerModelUsage
+            ]
+          ),
+        per_testing_criteria_results:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Models::Evals::RunCreateResponse::PerTestingCriteriaResult
+            ]
+          ),
         report_url: String,
         result_counts: OpenAI::Models::Evals::RunCreateResponse::ResultCounts,
         status: String
@@ -52,8 +62,18 @@ class OpenAI::Test::Resources::Evals::RunsTest < OpenAI::Test::ResourceTest
         model: String,
         name: String,
         object: Symbol,
-        per_model_usage: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Evals::RunRetrieveResponse::PerModelUsage]),
-        per_testing_criteria_results: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Evals::RunRetrieveResponse::PerTestingCriteriaResult]),
+        per_model_usage:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Models::Evals::RunRetrieveResponse::PerModelUsage
+            ]
+          ),
+        per_testing_criteria_results:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Models::Evals::RunRetrieveResponse::PerTestingCriteriaResult
+            ]
+          ),
         report_url: String,
         result_counts: OpenAI::Models::Evals::RunRetrieveResponse::ResultCounts,
         status: String
@@ -86,8 +106,18 @@ class OpenAI::Test::Resources::Evals::RunsTest < OpenAI::Test::ResourceTest
         model: String,
         name: String,
         object: Symbol,
-        per_model_usage: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Evals::RunListResponse::PerModelUsage]),
-        per_testing_criteria_results: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Evals::RunListResponse::PerTestingCriteriaResult]),
+        per_model_usage:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Models::Evals::RunListResponse::PerModelUsage
+            ]
+          ),
+        per_testing_criteria_results:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Models::Evals::RunListResponse::PerTestingCriteriaResult
+            ]
+          ),
         report_url: String,
         result_counts: OpenAI::Models::Evals::RunListResponse::ResultCounts,
         status: String
@@ -129,8 +159,18 @@ class OpenAI::Test::Resources::Evals::RunsTest < OpenAI::Test::ResourceTest
         model: String,
         name: String,
         object: Symbol,
-        per_model_usage: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Evals::RunCancelResponse::PerModelUsage]),
-        per_testing_criteria_results: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Evals::RunCancelResponse::PerTestingCriteriaResult]),
+        per_model_usage:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Models::Evals::RunCancelResponse::PerModelUsage
+            ]
+          ),
+        per_testing_criteria_results:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Models::Evals::RunCancelResponse::PerTestingCriteriaResult
+            ]
+          ),
         report_url: String,
         result_counts: OpenAI::Models::Evals::RunCancelResponse::ResultCounts,
         status: String

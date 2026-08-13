@@ -79,13 +79,23 @@ class OpenAI::Test::Resources::Beta::Responses::InputItemsTest < OpenAI::Test::R
         queries: ^(OpenAI::Internal::Type::ArrayOf[String]),
         status: OpenAI::Beta::BetaResponseFileSearchToolCall::Status,
         agent: OpenAI::Beta::BetaResponseFileSearchToolCall::Agent | nil,
-        results: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponseFileSearchToolCall::Result]) | nil
+        results:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Beta::BetaResponseFileSearchToolCall::Result
+            ]
+          ) | nil
       }
       in {
         type: :computer_call,
         id: String,
         call_id: String,
-        pending_safety_checks: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponseComputerToolCall::PendingSafetyCheck]),
+        pending_safety_checks:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Beta::BetaResponseComputerToolCall::PendingSafetyCheck
+            ]
+          ),
         status: OpenAI::Beta::BetaResponseComputerToolCall::Status,
         action: OpenAI::Beta::BetaComputerAction | nil,
         actions: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::BetaComputerAction]) | nil,
@@ -97,7 +107,12 @@ class OpenAI::Test::Resources::Beta::Responses::InputItemsTest < OpenAI::Test::R
         call_id: String,
         output: OpenAI::Beta::BetaResponseComputerToolCallOutputScreenshot,
         status: OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Status,
-        acknowledged_safety_checks: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck]) | nil,
+        acknowledged_safety_checks:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Beta::BetaResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck
+            ]
+          ) | nil,
         agent: OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Agent | nil,
         created_by: String | nil
       }
@@ -124,7 +139,12 @@ class OpenAI::Test::Resources::Beta::Responses::InputItemsTest < OpenAI::Test::R
         type: :agent_message,
         id: String,
         author: String,
-        content: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::BetaResponseItem::AgentMessage::Content]),
+        content:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              union: OpenAI::Beta::BetaResponseItem::AgentMessage::Content
+            ]
+          ),
         recipient: String,
         agent: OpenAI::Beta::BetaResponseItem::AgentMessage::Agent | nil
       }
@@ -215,7 +235,12 @@ class OpenAI::Test::Resources::Beta::Responses::InputItemsTest < OpenAI::Test::R
         id: String,
         code: String | nil,
         container_id: String,
-        outputs: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::BetaResponseCodeInterpreterToolCall::Output]) | nil,
+        outputs:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              union: OpenAI::Beta::BetaResponseCodeInterpreterToolCall::Output
+            ]
+          ) | nil,
         status: OpenAI::Beta::BetaResponseCodeInterpreterToolCall::Status,
         agent: OpenAI::Beta::BetaResponseCodeInterpreterToolCall::Agent | nil
       }
@@ -250,7 +275,12 @@ class OpenAI::Test::Resources::Beta::Responses::InputItemsTest < OpenAI::Test::R
         id: String,
         call_id: String,
         max_output_length: Integer | nil,
-        output: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponseFunctionShellToolCallOutput::Output]),
+        output:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Beta::BetaResponseFunctionShellToolCallOutput::Output
+            ]
+          ),
         status: OpenAI::Beta::BetaResponseFunctionShellToolCallOutput::Status,
         agent: OpenAI::Beta::BetaResponseFunctionShellToolCallOutput::Agent | nil,
         caller_: OpenAI::Beta::BetaResponseFunctionShellToolCallOutput::Caller | nil,

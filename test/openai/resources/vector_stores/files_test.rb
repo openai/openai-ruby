@@ -19,7 +19,12 @@ class OpenAI::Test::Resources::VectorStores::FilesTest < OpenAI::Test::ResourceT
         status: OpenAI::VectorStores::VectorStoreFile::Status,
         usage_bytes: Integer,
         vector_store_id: String,
-        attributes: ^(OpenAI::Internal::Type::HashOf[union: OpenAI::VectorStores::VectorStoreFile::Attribute]) | nil,
+        attributes:
+          ^(
+            OpenAI::Internal::Type::HashOf[
+              union: OpenAI::VectorStores::VectorStoreFile::Attribute
+            ]
+          ) | nil,
         chunking_strategy: OpenAI::FileChunkingStrategy | nil
       }
     end
@@ -41,7 +46,12 @@ class OpenAI::Test::Resources::VectorStores::FilesTest < OpenAI::Test::ResourceT
         status: OpenAI::VectorStores::VectorStoreFile::Status,
         usage_bytes: Integer,
         vector_store_id: String,
-        attributes: ^(OpenAI::Internal::Type::HashOf[union: OpenAI::VectorStores::VectorStoreFile::Attribute]) | nil,
+        attributes:
+          ^(
+            OpenAI::Internal::Type::HashOf[
+              union: OpenAI::VectorStores::VectorStoreFile::Attribute
+            ]
+          ) | nil,
         chunking_strategy: OpenAI::FileChunkingStrategy | nil
       }
     end
@@ -68,7 +78,12 @@ class OpenAI::Test::Resources::VectorStores::FilesTest < OpenAI::Test::ResourceT
         status: OpenAI::VectorStores::VectorStoreFile::Status,
         usage_bytes: Integer,
         vector_store_id: String,
-        attributes: ^(OpenAI::Internal::Type::HashOf[union: OpenAI::VectorStores::VectorStoreFile::Attribute]) | nil,
+        attributes:
+          ^(
+            OpenAI::Internal::Type::HashOf[
+              union: OpenAI::VectorStores::VectorStoreFile::Attribute
+            ]
+          ) | nil,
         chunking_strategy: OpenAI::FileChunkingStrategy | nil
       }
     end
@@ -97,7 +112,12 @@ class OpenAI::Test::Resources::VectorStores::FilesTest < OpenAI::Test::ResourceT
         status: OpenAI::VectorStores::VectorStoreFile::Status,
         usage_bytes: Integer,
         vector_store_id: String,
-        attributes: ^(OpenAI::Internal::Type::HashOf[union: OpenAI::VectorStores::VectorStoreFile::Attribute]) | nil,
+        attributes:
+          ^(
+            OpenAI::Internal::Type::HashOf[
+              union: OpenAI::VectorStores::VectorStoreFile::Attribute
+            ]
+          ) | nil,
         chunking_strategy: OpenAI::FileChunkingStrategy | nil
       }
     end

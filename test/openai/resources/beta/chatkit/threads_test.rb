@@ -95,7 +95,12 @@ class OpenAI::Test::Resources::Beta::ChatKit::ThreadsTest < OpenAI::Test::Resour
         type: :"chatkit.user_message",
         id: String,
         attachments: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::ChatKit::ChatKitAttachment]),
-        content: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::Content]),
+        content:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              union: OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::Content
+            ]
+          ),
         created_at: Integer,
         inference_options: OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions | nil,
         object: Symbol,
@@ -109,7 +114,14 @@ class OpenAI::Test::Resources::Beta::ChatKit::ThreadsTest < OpenAI::Test::Resour
         object: Symbol,
         thread_id: String
       }
-      in {type: :"chatkit.widget", id: String, created_at: Integer, object: Symbol, thread_id: String, widget: String}
+      in {
+        type: :"chatkit.widget",
+        id: String,
+        created_at: Integer,
+        object: Symbol,
+        thread_id: String,
+        widget: String
+      }
       in {
         type: :"chatkit.client_tool_call",
         id: String,
@@ -137,7 +149,12 @@ class OpenAI::Test::Resources::Beta::ChatKit::ThreadsTest < OpenAI::Test::Resour
         id: String,
         created_at: Integer,
         object: Symbol,
-        tasks: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task]),
+        tasks:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task
+            ]
+          ),
         thread_id: String
       }
       end

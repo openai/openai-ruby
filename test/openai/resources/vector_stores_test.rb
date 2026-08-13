@@ -138,7 +138,12 @@ class OpenAI::Test::Resources::VectorStoresTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       row => {
-        attributes: ^(OpenAI::Internal::Type::HashOf[union: OpenAI::Models::VectorStoreSearchResponse::Attribute]) | nil,
+        attributes:
+          ^(
+            OpenAI::Internal::Type::HashOf[
+              union: OpenAI::Models::VectorStoreSearchResponse::Attribute
+            ]
+          ) | nil,
         content: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::VectorStoreSearchResponse::Content]),
         file_id: String,
         filename: String,

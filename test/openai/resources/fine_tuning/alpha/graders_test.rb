@@ -17,7 +17,12 @@ class OpenAI::Test::Resources::FineTuning::Alpha::GradersTest < OpenAI::Test::Re
     assert_pattern do
       response => {
         metadata: OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata,
-        model_grader_token_usage_per_model: ^(OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]),
+        model_grader_token_usage_per_model:
+          ^(
+            OpenAI::Internal::Type::HashOf[
+              OpenAI::Internal::Type::Unknown
+            ]
+          ),
         reward: Float,
         sub_rewards: ^(OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown])
       }
