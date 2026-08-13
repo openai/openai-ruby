@@ -2,7 +2,11 @@
 
 module OpenAI
   module Resources
+    # @deprecated The Sora API is scheduled to permanently shut down on September
+    # 24, 2026.
     class Videos
+      # @deprecated The Sora API is scheduled to permanently shut down on September 24, 2026.
+      #
       # Some parameter documentations has been truncated, see
       # {OpenAI::Models::VideoCreateParams} for more details.
       #
@@ -42,6 +46,8 @@ module OpenAI
         )
       end
 
+      # @deprecated The Sora API is scheduled to permanently shut down on September 24, 2026.
+      #
       # Fetch the latest metadata for a generated video.
       #
       # @overload retrieve(video_id, request_options: {})
@@ -63,6 +69,8 @@ module OpenAI
         )
       end
 
+      # @deprecated The Sora API is scheduled to permanently shut down on September 24, 2026.
+      #
       # Some parameter documentations has been truncated, see
       # {OpenAI::Models::VideoListParams} for more details.
       #
@@ -95,6 +103,8 @@ module OpenAI
         )
       end
 
+      # @deprecated The Sora API is scheduled to permanently shut down on September 24, 2026.
+      #
       # Permanently delete a completed or failed video and its stored assets.
       #
       # @overload delete(video_id, request_options: {})
@@ -116,6 +126,8 @@ module OpenAI
         )
       end
 
+      # @deprecated The Sora API is scheduled to permanently shut down on September 24, 2026.
+      #
       # Create a character from an uploaded video.
       #
       # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
@@ -146,6 +158,8 @@ module OpenAI
         )
       end
 
+      # @deprecated The Sora API is scheduled to permanently shut down on September 24, 2026.
+      #
       # Download the generated video bytes or a derived preview asset.
       #
       # Streams the rendered video content for the specified video job.
@@ -175,6 +189,8 @@ module OpenAI
         )
       end
 
+      # @deprecated The Sora API is scheduled to permanently shut down on September 24, 2026.
+      #
       # Create a new video generation job by editing a source video or existing
       # generated video.
       #
@@ -206,6 +222,8 @@ module OpenAI
         )
       end
 
+      # @deprecated The Sora API is scheduled to permanently shut down on September 24, 2026.
+      #
       # Some parameter documentations has been truncated, see
       # {OpenAI::Models::VideoExtendParams} for more details.
       #
@@ -241,6 +259,8 @@ module OpenAI
         )
       end
 
+      # @deprecated The Sora API is scheduled to permanently shut down on September 24, 2026.
+      #
       # Fetch a character.
       #
       # @overload get_character(character_id, request_options: {})
@@ -262,6 +282,8 @@ module OpenAI
         )
       end
 
+      # @deprecated The Sora API is scheduled to permanently shut down on September 24, 2026.
+      #
       # Create a remix of a completed video using a refreshed prompt.
       #
       # @overload remix(video_id, prompt:, request_options: {})
