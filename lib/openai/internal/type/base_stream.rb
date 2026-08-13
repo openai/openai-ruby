@@ -31,6 +31,33 @@ module OpenAI
         # @return [void]
         def close = OpenAI::Internal::Util.close_fused!(@iterator)
 
+        # Attach request lifecycle logging without changing the stream's identity.
+        #
+        # @api private
+        #
+        # @param context [OpenAI::Internal::Logging::Context]
+        # @param response [OpenAI::HTTPClient::Response]
+        # @return [self]
+        def observe(context:, response:)
+          source = @iterator
+          @iterator = OpenAI::Internal::Util.chain_fused(source) do |yielder|
+            loop do
+              event =
+                begin
+                  source.next
+                rescue StopIteration
+                  context.completed(response)
+                  break
+                rescue StandardError => e
+                  context.request_failed(e)
+                  raise
+                end
+              yielder << event
+            end
+          end
+          self
+        end
+
         # @api private
         #
         # @return [Enumerable<generic<Elem>>]

@@ -37,10 +37,11 @@ class LoggingTest < Minitest::Test
   class CloseableBody
     include Enumerable
 
-    attr_reader :close_count, :each_count
+    attr_reader :chunk_count, :close_count, :each_count
 
     def initialize(*chunks)
       @chunks = chunks
+      @chunk_count = 0
       @close_count = 0
       @each_count = 0
     end
@@ -49,7 +50,10 @@ class LoggingTest < Minitest::Test
 
     def each
       @each_count += 1
-      @chunks.each { yield(_1) }
+      @chunks.each do |chunk|
+        @chunk_count += 1
+        yield(chunk)
+      end
     end
   end
 
@@ -530,32 +534,31 @@ class LoggingTest < Minitest::Test
   end
 
   def test_debug_logging_does_not_consume_or_disclose_streamed_responses
-    logger = CapturingLogger.new
-    source = CloseableBody.new(UnbufferableChunk.new("data: {\"message\":\"stream-secret\"}\n\n"))
-    http_client = StubHTTPClient.new do |_request|
-      OpenAI::HTTPClient::Response.new(
-        status: 200,
-        headers: {"content-type" => "text/event-stream", "x-request-id" => "req_stream"},
-        body: source
-      )
+    [nil, OpenAI::Internal::Stream].each do |stream_class|
+      logger = CapturingLogger.new
+      source = CloseableBody.new(UnbufferableChunk.new("data: {\"message\":\"stream-secret\"}\n\n"))
+      http_client = StubHTTPClient.new do |_request|
+        OpenAI::HTTPClient::Response.new(
+          status: 200,
+          headers: {"content-type" => "text/event-stream", "x-request-id" => "req_stream"},
+          body: source
+        )
+      end
+      client = diagnostic_client(http_client: http_client, logger: logger, log_level: :debug)
+
+      events = client.request(method: :get, path: "stream", stream: stream_class)
+
+      assert_instance_of(stream_class, events) if stream_class
+      assert_equal(0, source.each_count)
+      event = events.to_a.fetch(0)
+      data = stream_class ? event : JSON.parse(event.fetch(:data), symbolize_names: true)
+      assert_equal("stream-secret", data.fetch(:message))
+      assert_equal(1, source.each_count)
+      assert_equal(1, source.close_count)
+      debug_log = logger.events.filter_map { _2 if _1 == :debug }.join("\n")
+      assert_includes(debug_log, "[STREAM BODY OMITTED]")
+      refute_includes(debug_log, "stream-secret")
     end
-    client = diagnostic_client(
-      api_key: "test-key",
-      http_client: http_client,
-      logger: logger,
-      log_level: :debug
-    )
-
-    events = client.request(method: :get, path: "stream")
-
-    assert_equal(0, source.each_count)
-    data = JSON.parse(events.to_a.fetch(0).fetch(:data), symbolize_names: true)
-    assert_equal("stream-secret", data.fetch(:message))
-    assert_equal(1, source.each_count)
-    assert_equal(1, source.close_count)
-    debug_log = logger.events.filter_map { _2 if _1 == :debug }.join("\n")
-    assert_includes(debug_log, "[STREAM BODY OMITTED]")
-    refute_includes(debug_log, "stream-secret")
   end
 
   def test_stream_completion_is_logged_only_after_consumption
@@ -586,32 +589,146 @@ class LoggingTest < Minitest::Test
     assert_includes(logger.events.fetch(0).fetch(1), "request complete")
   end
 
-  def test_stream_failures_log_an_error_without_a_success_event
+  def test_enabled_logging_preserves_stream_identity_metadata_and_lazy_consumption
+    [:error, :warn, :info, :debug].each do |level|
+      logger = CapturingLogger.new
+      source = CloseableBody.new("data: {\"message\":\"done\"}\n\n")
+      http_client = StubHTTPClient.new do |_request|
+        OpenAI::HTTPClient::Response.new(
+          status: 200,
+          headers: {"content-type" => "text/event-stream", "x-request-id" => "req_stream"},
+          body: source
+        )
+      end
+      client = diagnostic_client(http_client: http_client, logger: logger, log_level: level)
+
+      stream = client.request(method: :get, path: "stream", stream: OpenAI::Internal::Stream)
+
+      assert_instance_of(OpenAI::Internal::Stream, stream)
+      assert_kind_of(OpenAI::Internal::Stream, stream)
+      assert_match(/\A#<OpenAI::Internal::Stream\[/, stream.inspect)
+      assert_includes(stream.inspect, "Unknown")
+      assert_equal(200, stream.status)
+      assert_equal("req_stream", stream.last_response.request_id)
+      assert_same(stream.last_response.headers, stream.headers)
+      assert_equal(0, source.each_count)
+
+      assert_equal([{message: "done"}], stream.to_a)
+      assert_equal(1, source.each_count)
+      assert_equal(1, source.close_count)
+
+      completions = logger.events.select { |_severity, message| message.include?("request complete") }
+      assert_equal([:info, :debug].include?(level) ? 1 : 0, completions.length)
+    end
+  end
+
+  def test_closing_an_observed_stream_preserves_identity_and_does_not_log_completion
+    [:error, :warn, :info, :debug].each do |level|
+      logger = CapturingLogger.new
+      source = CloseableBody.new("data: {\"message\":\"not consumed\"}\n\n")
+      http_client = StubHTTPClient.new do |_request|
+        OpenAI::HTTPClient::Response.new(
+          status: 200,
+          headers: {"content-type" => "text/event-stream"},
+          body: source
+        )
+      end
+      client = diagnostic_client(http_client: http_client, logger: logger, log_level: level)
+
+      stream = client.request(method: :get, path: "stream", stream: OpenAI::Internal::Stream)
+      stream.close
+      stream.close
+
+      assert_instance_of(OpenAI::Internal::Stream, stream)
+      assert_equal(0, source.each_count)
+      assert_equal(1, source.close_count)
+      assert_empty(logger.events.select { |_severity, message| message.include?("request complete") })
+      assert_empty(stream.to_a)
+    end
+  end
+
+  def test_closing_a_partially_consumed_stream_never_drains_or_double_logs_the_body
     logger = CapturingLogger.new
+    source = CloseableBody.new(
+      "data: {\"message\":\"first\"}\n\n",
+      "data: {\"message\":\"must not be consumed\"}\n\n"
+    )
     http_client = StubHTTPClient.new do |_request|
       OpenAI::HTTPClient::Response.new(
         status: 200,
-        headers: {"content-type" => "text/event-stream", "x-request-id" => "req_stream"},
-        body: "data: {\"error\":{\"message\":\"stream failed\"}}\n\n"
+        headers: {"content-type" => "text/event-stream"},
+        body: source
       )
     end
-    client = diagnostic_client(
-      api_key: "test-key",
-      http_client: http_client,
-      logger: logger,
-      log_level: :info
-    )
-    stream = client.request(
-      method: :get,
-      path: "stream",
-      stream: OpenAI::Internal::Stream
-    )
+    client = diagnostic_client(http_client: http_client, logger: logger, log_level: :debug)
+    stream = client.request(method: :get, path: "stream", stream: OpenAI::Internal::Stream)
 
-    assert_empty(logger.events)
-    assert_raises(OpenAI::Errors::APIStatusError) { stream.to_a }
-    assert_equal([:error], logger.events.map(&:first))
-    assert_includes(logger.events.fetch(0).fetch(1), "request failed")
-    refute_includes(logger.events.fetch(0).fetch(1), "request complete")
+    assert_equal({message: "first"}, stream.to_enum.next)
+    stream.close
+    stream.close
+
+    assert_equal(1, source.chunk_count)
+    assert_equal(1, source.close_count)
+    assert_equal(0, logger.events.count { |severity, _message| severity == :error })
+    assert_empty(logger.events.select { |_severity, message| message.include?("request complete") })
+    assert_equal(1, logger.events.count { |_severity, message| message.include?("response body") })
+    assert_empty(stream.to_a)
+  end
+
+  def test_stream_failures_log_an_error_without_a_success_event
+    [:error, :warn, :info, :debug].each do |level|
+      logger = CapturingLogger.new
+      http_client = StubHTTPClient.new do |_request|
+        OpenAI::HTTPClient::Response.new(
+          status: 200,
+          headers: {"content-type" => "text/event-stream", "x-request-id" => "req_stream"},
+          body: "data: {\"error\":{\"message\":\"stream failed\"}}\n\n"
+        )
+      end
+      client = diagnostic_client(
+        api_key: "test-key",
+        http_client: http_client,
+        logger: logger,
+        log_level: level
+      )
+      stream = client.request(
+        method: :get,
+        path: "stream",
+        stream: OpenAI::Internal::Stream
+      )
+
+      assert_raises(OpenAI::Errors::APIStatusError) { stream.to_a }
+      failures = logger.events.filter_map { |severity, message| message if severity == :error }
+      assert_equal(1, failures.length)
+      assert_includes(failures.fetch(0), "request failed")
+      assert_empty(logger.events.select { |_severity, message| message.include?("request complete") })
+    end
+  end
+
+  def test_midstream_failures_preserve_delivered_events_and_close_the_body_once
+    logger = CapturingLogger.new
+    source = CloseableBody.new(
+      "data: {\"message\":\"first\"}\n\n",
+      "data: {\"error\":{\"message\":\"stream failed\"}}\n\n"
+    )
+    http_client = StubHTTPClient.new do |_request|
+      OpenAI::HTTPClient::Response.new(
+        status: 200,
+        headers: {"content-type" => "text/event-stream"},
+        body: source
+      )
+    end
+    client = diagnostic_client(http_client: http_client, logger: logger, log_level: :debug)
+    stream = client.request(method: :get, path: "stream", stream: OpenAI::Internal::Stream)
+    iterator = stream.to_enum
+
+    assert_equal({message: "first"}, iterator.next)
+    assert_raises(OpenAI::Errors::APIStatusError) { iterator.next }
+    assert_equal(2, source.chunk_count)
+    assert_equal(1, source.close_count)
+    assert_equal(1, logger.events.count { |severity, _message| severity == :error })
+    assert_empty(logger.events.select { |_severity, message| message.include?("request complete") })
+    assert_equal(1, logger.events.count { |_severity, message| message.include?("response body") })
   end
 
   def test_consumer_exceptions_are_not_logged_as_request_failures

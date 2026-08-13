@@ -12,6 +12,11 @@ module OpenAI
 
         def close: -> void
 
+        def observe: (
+          context: OpenAI::Internal::Logging::Context,
+          response: OpenAI::HTTPClient::Response
+        ) -> self
+
         private def iterator: -> Enumerable[Elem]
 
         def each: { (Elem arg0) -> void } -> void
