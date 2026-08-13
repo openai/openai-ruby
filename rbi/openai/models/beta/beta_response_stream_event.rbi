@@ -5,7 +5,7 @@ module OpenAI
     BetaResponseStreamEvent = Beta::BetaResponseStreamEvent
 
     module Beta
-      # Emitted when there is a partial audio response.
+      # Event emitted while a response is streamed.
       module BetaResponseStreamEvent
         extend OpenAI::Internal::Type::Union
 
