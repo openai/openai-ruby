@@ -165,12 +165,18 @@ class OpenAITest < Minitest::Test
       x-remove-me: stale
       X-Remove-Me: environment
       X-Ambient: retained
+      openai-organization: stale
+      OpenAI-Organization: injected-organization
+      openai-project: stale
+      OpenAI-Project: injected-project
     HEADERS
     stub_request(:get, "http://localhost/models").to_return_json(status: 200, body: {})
 
     openai = OpenAI::Client.new(
       base_url: "http://localhost",
       api_key: "My API Key",
+      organization: "explicit-organization",
+      project: "explicit-project",
       default_headers: {"x-cost-center" => "explicit", "x-remove-me" => nil}
     )
     openai.request({method: :get, path: "models"})
@@ -179,6 +185,8 @@ class OpenAITest < Minitest::Test
       headers = request.headers.transform_keys(&:downcase)
       assert_equal("explicit", headers["x-cost-center"])
       assert_equal("retained", headers["x-ambient"])
+      assert_equal("explicit-organization", headers["openai-organization"])
+      assert_equal("explicit-project", headers["openai-project"])
       refute_includes(headers, "x-remove-me")
     end
   end
