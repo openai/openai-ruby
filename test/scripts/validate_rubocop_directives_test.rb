@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "minitest/autorun"
+require "fileutils"
+require "tmpdir"
 
 require_relative "../../scripts/rubocop_directive_guard"
 
@@ -38,6 +40,11 @@ class ValidateRuboCopDirectivesTest < Minitest::Test
     assert_includes(violations("disable Lint").first, "department-wide")
   end
 
+  def test_allows_broad_enable_directives
+    assert_empty(violations("enable all"))
+    assert_empty(violations("enable Metrics"))
+  end
+
   def test_ignores_directive_text_inside_strings
     source = %(message = "# rubocop:disable all"\n)
 
@@ -72,21 +79,18 @@ class ValidateRuboCopDirectivesTest < Minitest::Test
     end
   end
 
-  def test_recognizes_root_and_extensionless_ruby_entry_points
-    assert(RuboCopDirectiveGuard.ruby_source_path?("Rakefile", ""))
-    assert(RuboCopDirectiveGuard.ruby_source_path?("Steepfile", ""))
-    assert(RuboCopDirectiveGuard.ruby_source_path?("openai.gemspec", ""))
-    assert(
-      RuboCopDirectiveGuard.ruby_source_path?(
-        "scripts/check",
-        "#!/usr/bin/env ruby\nputs(:ok)\n"
-      )
-    )
-  end
+  def test_uses_rubocop_source_discovery
+    Dir.mktmpdir do |directory|
+      paths = %w[config.ru nested/Rakefile nested/Gemfile nested/example.gemfile]
+      paths.each do |path|
+        full_path = File.join(directory, path)
+        FileUtils.mkdir_p(File.dirname(full_path))
+        File.write(full_path, "puts(:ok)\n")
+      end
 
-  def test_ignores_dependency_and_generated_tapioca_sources
-    refute(RuboCopDirectiveGuard.ruby_source_path?("vendor/example.rb", ""))
-    refute(RuboCopDirectiveGuard.ruby_source_path?("sorbet/rbi/gems/example.rbi", ""))
+      targets = RuboCopDirectiveGuard.rubocop_target_paths(directory)
+      paths.each { assert_includes(targets, File.join(directory, _1)) }
+    end
   end
 
   def test_skips_tracked_sources_missing_from_the_worktree

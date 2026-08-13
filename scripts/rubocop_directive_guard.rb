@@ -2,18 +2,10 @@
 
 require "open3"
 require "ripper"
-require "rubocop/directive_comment"
+require "rubocop"
 
 module RuboCopDirectiveGuard
   DirectiveText = Data.define(:text)
-  EXCLUDED_PREFIXES = %w[
-    sorbet/rbi/annotations/
-    sorbet/rbi/gems/
-    sorbet/tapioca/
-    vendor/
-  ].freeze
-  ROOT_RUBY_FILES = %w[Gemfile Rakefile Steepfile].freeze
-  RUBY_EXTENSIONS = %w[.gemspec .rake .rb .rbi].freeze
   TODO_OWNER = /(?:\A|;)\s*owner:\s*[^;\s]+/
   TODO_REMOVAL = %r{
     (?:\A|;)\s*
@@ -22,14 +14,6 @@ module RuboCopDirectiveGuard
   }x
 
   module_function
-
-  def ruby_source_path?(path, source = "")
-    return false if EXCLUDED_PREFIXES.any? { path.start_with?(_1) }
-    return true if ROOT_RUBY_FILES.include?(path)
-    return true if RUBY_EXTENSIONS.include?(File.extname(path))
-
-    path.start_with?("scripts/") && source.start_with?("#!/usr/bin/env ruby")
-  end
 
   def violations_for(path, source)
     violations = []
@@ -42,6 +26,8 @@ module RuboCopDirectiveGuard
       action = directive.mode
       cops = directive.raw_cop_names
       metadata = comment.partition("--").then { |_, marker, text| text if marker == "--" }
+      next if action == "enable"
+
       if cops.any? { _1.casecmp("all").zero? }
         violations << "#{path}:#{line_number}: rubocop:#{action} all is forbidden"
       end
@@ -66,15 +52,21 @@ module RuboCopDirectiveGuard
     paths, status = Open3.capture2("git", "ls-files", "-z")
     raise "git ls-files failed" unless status.success?
 
-    paths.split("\0").filter_map do |path|
-      next unless ROOT_RUBY_FILES.include?(path) ||
-                  RUBY_EXTENSIONS.include?(File.extname(path)) ||
-                  path.start_with?("scripts/")
-      next unless File.file?(path)
+    tracked_paths = paths.split("\0").to_h { [_1, true] }
+    root = File.expand_path(".")
+    root_prefix = "#{root}/"
+    rubocop_target_paths.filter_map do |target|
+      path = File.expand_path(target).delete_prefix(root_prefix)
+      next unless tracked_paths.key?(path)
 
-      source = File.read(path)
-      [path, source] if ruby_source_path?(path, source)
+      [path, File.read(target)]
     end
+  end
+
+  def rubocop_target_paths(root = ".")
+    RuboCop::TargetFinder
+      .new(RuboCop::ConfigStore.new)
+      .find([root], :only_recognized_file_types)
   end
 
   def validate
