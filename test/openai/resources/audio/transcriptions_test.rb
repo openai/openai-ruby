@@ -13,9 +13,12 @@ class OpenAI::Test::Resources::Audio::TranscriptionsTest < OpenAI::Test::Resourc
 
     assert_pattern do
       case response
-      in OpenAI::Audio::Transcription
-      in OpenAI::Audio::TranscriptionDiarized
-      in OpenAI::Audio::TranscriptionVerbose
+      in (
+        OpenAI::Audio::Transcription |
+        OpenAI::Audio::TranscriptionDiarized |
+        OpenAI::Audio::TranscriptionVerbose
+      )
+        nil
       end
     end
   end

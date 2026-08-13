@@ -74,11 +74,6 @@ Layout/SpaceInsideHashLiteralBraces:
   Exclude:
     - "**/*.rbi"
 
-# Fairly useful in tests for pattern assertions.
-Lint/EmptyInPattern:
-  Exclude:
-    - "test/**/*"
-
 # Disabled for safety reasons, this option changes code semantics.
 Lint/UnusedMethodArgument:
   AutoCorrect: false
