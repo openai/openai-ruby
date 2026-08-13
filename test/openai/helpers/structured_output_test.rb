@@ -62,6 +62,18 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
     required :participant, NestedParticipant, nil?: true
   end
 
+  class NullableReaderContractEvent < OpenAI::BaseModel
+    required :name, String, nil?: true
+    required :kind, Symbol, nil?: true
+    required :count, Integer, nil?: true
+    required :amount, Float, nil?: true
+    required :active, OpenAI::Boolean, nil?: true
+    required :participant, NestedParticipant, nil?: true
+    required :participants, OpenAI::ArrayOf[NestedParticipant], nil?: true
+    required :status, OpenAI::EnumOf[:confirmed], nil?: true
+    required :choice, OpenAI::UnionOf[String, NestedParticipant], nil?: true
+  end
+
   class EmptyUnionMember < OpenAI::BaseModel
   end
 
@@ -299,6 +311,44 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
     assert_nil(event.active)
     assert_nil(event.participant)
     assert_nil(event[:active])
+  end
+
+  def test_nullable_readers_accept_explicit_nil_for_every_supported_shape
+    readers = {
+      name: lambda(&:name),
+      kind: lambda(&:kind),
+      count: lambda(&:count),
+      amount: lambda(&:amount),
+      active: lambda(&:active),
+      participant: lambda(&:participant),
+      participants: lambda(&:participants),
+      status: lambda(&:status),
+      choice: lambda(&:choice)
+    }
+    payload = readers.keys.to_h { [_1, nil] }
+    constructed = NullableReaderContractEvent.new(payload)
+    readers.each_value { assert_nil(_1.call(constructed)) }
+
+    assigned = NullableReaderContractEvent.new
+    assigned.name = nil
+    assigned.kind = nil
+    assigned.count = nil
+    assigned.amount = nil
+    assigned.active = nil
+    assigned.participant = nil
+    assigned.participants = nil
+    assigned.status = nil
+    assigned.choice = nil
+    readers.each { |name, reader| assert_nil(reader.call(assigned), name.to_s) }
+
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+    parsed = OpenAI::Internal::Type::Converter.coerce(NullableReaderContractEvent, payload, state: state)
+
+    assert_nil(state.fetch(:error))
+    readers.each_value { assert_nil(_1.call(parsed)) }
+    assert_equal(payload, constructed.to_h)
+    assert_equal(payload, assigned.to_h)
+    assert_equal(payload, parsed.to_h)
   end
 
   def test_union_readers_ignore_errors_from_rejected_alternatives

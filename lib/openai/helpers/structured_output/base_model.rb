@@ -68,12 +68,12 @@ module OpenAI
             # Preserve the original reader's validation without replacing raw field storage.
             readers = @structured_output_readers ||= Module.new.tap { prepend(_1) }
             readers.define_method(name_sym) do
+              return nil if nilable && self[name_sym].nil?
+
               value = super()
               target = type.call
 
               case value
-              when nil
-                return nil if nilable
               when target
                 return value
               end

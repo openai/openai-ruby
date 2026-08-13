@@ -95,6 +95,8 @@ class OpenAI::Test::BaseModelCompilerTest < Minitest::Test
       payload.slice(:kind, :kinds, :symbol_choice, :participant, :participants, :aliases, :status, :detail),
       source: "constructor"
     )
+    nullable = OpenAIBaseModelCompilerFixtures::Event.new(description: nil)
+    abort("nullable constructor reader rejected nil") unless nullable.description.nil?
 
     replacement = {name: "Katherine", nickname: nil, role: "speaker"}
     replacement_participants = [{name: "Joan", nickname: nil, role: "organizer"}]
@@ -124,6 +126,9 @@ class OpenAI::Test::BaseModelCompilerTest < Minitest::Test
       },
       source: "assignment"
     )
+    assigned.description = nil
+    abort("nullable assignment reader rejected nil") unless assigned.description.nil?
+    assigned.description = "updated"
 
     assigned.detail = "speaker"
     OpenAIBaseModelCompilerFixtures.assert_reader_contract(
