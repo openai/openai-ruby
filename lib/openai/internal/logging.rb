@@ -273,6 +273,12 @@ module OpenAI
           REDACTED_HEADERS.include?(normalized_name) || SENSITIVE_QUERY_KEY.match?(normalized_name)
         end
 
+        # @api private
+        def credential_header?(name)
+          normalized_name = name.to_s.downcase
+          normalized_name != "idempotency-key" && sensitive_header?(normalized_name)
+        end
+
         def format_headers(headers)
           redacted =
             headers.sort.to_h do |name, value|

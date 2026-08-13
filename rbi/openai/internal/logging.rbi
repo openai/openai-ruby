@@ -156,6 +156,10 @@ module OpenAI
         def sensitive_header?(name)
         end
 
+        sig { params(name: T.any(String, Symbol)).returns(T::Boolean) }
+        def credential_header?(name)
+        end
+
         sig { params(headers: T::Hash[String, String]).returns(String) }
         def format_headers(headers)
         end

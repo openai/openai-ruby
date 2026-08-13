@@ -168,7 +168,7 @@ module OpenAI
             # from undici
             if OpenAI::Internal::Util.uri_origin(url) != OpenAI::Internal::Util.uri_origin(location)
               headers = request.fetch(:headers).reject do |name, _|
-                name == "host" || OpenAI::Internal::Logging.sensitive_header?(name)
+                name == "host" || OpenAI::Internal::Logging.credential_header?(name)
               end
               request = {**request, headers: headers}
             end

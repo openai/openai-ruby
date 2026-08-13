@@ -895,6 +895,7 @@ class OpenAITest < Minitest::Test
         "Proxy-Authorization": "Basic proxy-secret",
         "Set-Cookie" => "session=private-response",
         Host: "trusted.example",
+        "Idempotency-Key" => "retry-safe-id",
         "X-Trace-Id" => "safe-trace"
       }
     )
@@ -932,6 +933,7 @@ class OpenAITest < Minitest::Test
     sensitive_headers.each do |header|
       refute_includes(redirected_headers, header)
     end
+    assert_equal("retry-safe-id", redirected_headers.fetch("idempotency-key"))
     assert_equal("safe-trace", redirected_headers.fetch("x-trace-id"))
   end
 
