@@ -172,9 +172,11 @@ class OpenAI::Test::AzureProviderTest < Minitest::Test
         api_key: "azure-key"
       ),
       default_headers: {
-        "Authorization" => "Bearer custom",
-        "Api-Key" => "custom-key",
-        "X-Cost-Center" => "finance"
+        "Authorization" => "Bearer string-custom",
+        Authorization: "Bearer symbol-custom",
+        "Api-Key" => "string-custom-key",
+        :"Api-Key" => "symbol-custom-key",
+        :"X-Cost-Center" => "finance"
       }
     )
     client.request({method: :get, path: "models"})
@@ -275,6 +277,23 @@ class OpenAI::Test::AzureProviderTest < Minitest::Test
       error = assert_raises(OpenAI::Errors::Error) do
         runtime.prepare_request.call(azure_request.merge(headers: headers))
       end
+      assert_match(/cannot be combined with a custom/, error.message)
+    end
+  end
+
+  def test_provider_rejects_symbol_request_authentication_headers
+    client = OpenAI::Client.new(
+      provider: OpenAI::Providers.azure(
+        endpoint: "https://example-resource.openai.azure.com",
+        api_key: "azure-key"
+      )
+    )
+
+    [{Authorization: "Bearer custom"}, {"Api-Key": "custom-key"}].each do |headers|
+      error = assert_raises(OpenAI::Errors::Error) do
+        client.request({method: :get, path: "models", options: {extra_headers: headers}})
+      end
+
       assert_match(/cannot be combined with a custom/, error.message)
     end
   end

@@ -94,6 +94,42 @@ class OpenAI::Test::UtilDataHandlingTest < Minitest::Test
   end
 end
 
+class OpenAI::Test::UtilHeaderHandlingTest < Minitest::Test
+  def test_normalized_headers_canonicalizes_symbol_names
+    headers = OpenAI::Internal::Util.normalized_headers(
+      Authorization: " Bearer secret ",
+      "X-Request-Ids": ["first", nil, " second "]
+    )
+
+    assert_equal(
+      {"authorization" => "Bearer secret", "x-request-ids" => "first, second"},
+      headers
+    )
+  end
+
+  def test_normalized_headers_preserves_mixed_key_precedence
+    headers = OpenAI::Internal::Util.normalized_headers(
+      {"X-Request-Id" => "first", :"x-request-id" => "second"},
+      {"X-Request-Id" => "third"}
+    )
+
+    assert_equal({"x-request-id" => "third"}, headers)
+  end
+
+  def test_normalized_headers_preserves_precedence_for_every_key_spelling
+    keys = ["X-Request-Id", "x-request-id", :"X-Request-Id", :"x-request-id"]
+
+    keys.repeated_permutation(3).each do |first, second, third|
+      headers = OpenAI::Internal::Util.normalized_headers(
+        {first => "first", second => "second"},
+        {third => "third"}
+      )
+
+      assert_equal({"x-request-id" => "third"}, headers)
+    end
+  end
+end
+
 class OpenAI::Test::UtilUriHandlingTest < Minitest::Test
   def test_parsing
     %w[

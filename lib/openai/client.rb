@@ -322,22 +322,21 @@ module OpenAI
         "openai-organization" => (@organization = organization&.to_s),
         "openai-project" => (@project = project&.to_s)
       }
+      parsed = {}
       custom_headers_env = ENV["OPENAI_CUSTOM_HEADERS"] unless provider_runtime
       unless custom_headers_env.nil?
-        parsed = {}
         custom_headers_env.split("\n").each do |line|
           colon = line.index(":")
           unless colon.nil?
             parsed[line[0...colon].strip] = line[(colon + 1)..].strip
           end
         end
-        headers = parsed.merge(headers)
       end
       client_headers = OpenAI::Internal::Util.normalized_headers(default_headers.to_h)
       unless provider_runtime.nil?
         provider_runtime.authentication_headers.each { client_headers.delete(_1) }
       end
-      headers = headers.merge(client_headers)
+      headers = OpenAI::Internal::Util.normalized_headers(parsed, headers, client_headers)
 
       if workload_identity.nil?
         @api_key = api_key&.to_s
