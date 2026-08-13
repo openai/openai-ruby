@@ -167,7 +167,7 @@ module OpenAI
 
             # from undici
             if OpenAI::Internal::Util.uri_origin(url) != OpenAI::Internal::Util.uri_origin(location)
-              drop = %w[authorization cookie host proxy-authorization]
+              drop = [*OpenAI::Internal::Logging::REDACTED_HEADERS, "host"]
               request = {**request, headers: request.fetch(:headers).except(*drop)}
             end
 
