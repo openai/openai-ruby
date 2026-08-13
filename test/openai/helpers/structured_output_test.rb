@@ -81,6 +81,11 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
     required :choices, OpenAI::ArrayOf[OpenAI::UnionOf[Integer, Symbol]]
   end
 
+  class NestedSymbolContractEvent < OpenAI::BaseModel
+    required :participants, OpenAI::ArrayOf[SymbolContractEvent]
+    required :choice, OpenAI::UnionOf[Integer, SymbolContractEvent]
+  end
+
   class InheritedNestedEvent < NestedEvent
     required :name, String
   end
@@ -404,6 +409,40 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
     assert_same(parsed[:kinds], parsed.kinds)
     assert_same(parsed[:nullable_kinds], parsed.nullable_kinds)
     assert_same(parsed[:choices], parsed.choices)
+  end
+
+  def test_symbol_readers_materialize_models_nested_in_arrays_and_unions
+    participants = [{kind: "ready"}]
+    choice = {kind: "selected"}
+    event = NestedSymbolContractEvent.new(participants: participants, choice: choice)
+
+    assert_equal(:ready, event.participants.first.kind)
+    assert_equal(:selected, event.choice.kind)
+    assert_same(participants, event[:participants])
+    assert_same(choice, event[:choice])
+
+    assigned_participants = [{kind: "assigned"}]
+    assigned_choice = {kind: "assigned"}
+    event.participants = assigned_participants
+    event.choice = assigned_choice
+
+    assert_equal(:assigned, event.participants.first.kind)
+    assert_equal(:assigned, event.choice.kind)
+    assert_same(assigned_participants, event.to_h.fetch(:participants))
+    assert_same(assigned_choice, event.to_h.fetch(:choice))
+
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+    parsed = OpenAI::Internal::Type::Converter.coerce(
+      NestedSymbolContractEvent,
+      {participants: [{kind: "parsed"}], choice: {kind: "parsed"}},
+      state: state
+    )
+
+    assert_nil(state.fetch(:error))
+    assert_equal(:parsed, parsed.participants.first.kind)
+    assert_equal(:parsed, parsed.choice.kind)
+    assert_same(parsed[:participants], parsed.participants)
+    assert_same(parsed[:choice], parsed.choice)
   end
 
   def test_typed_readers_reject_nonviable_scalar_assignment_values

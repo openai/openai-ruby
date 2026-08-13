@@ -15,6 +15,7 @@ class OpenAI::Test::BaseModelCompilerTest < Minitest::Test
       class Participant < OpenAI::BaseModel
         required :name, String
         required :nickname, String, nil?: true
+        required :role, Symbol
       end
 
       class Event < OpenAI::BaseModel
@@ -37,11 +38,12 @@ class OpenAI::Test::BaseModelCompilerTest < Minitest::Test
           kind: event.kind.is_a?(Symbol),
           kinds: event.kinds.all?(Symbol),
           symbol_choice: event.symbol_choice.is_a?(Symbol),
-          participant: event.participant.is_a?(Participant),
-          participants: event.participants.all?(Participant),
+          participant: event.participant.is_a?(Participant) && event.participant.role.is_a?(Symbol),
+          participants: event.participants.all? { _1.is_a?(Participant) && _1.role.is_a?(Symbol) },
           aliases: event.aliases.all? { _1.nil? || _1.is_a?(String) },
           status: event.status.is_a?(Symbol),
-          detail: event.detail.is_a?(detail_type)
+          detail: event.detail.is_a?(detail_type) &&
+            (detail_type == String || event.detail.role.is_a?(Symbol))
         }
 
         checks.each do |field, matches|
@@ -69,11 +71,11 @@ class OpenAI::Test::BaseModelCompilerTest < Minitest::Test
     rbi = context.rbi_for("OpenAIBaseModelCompilerFixtures::Event")
     participant_rbi = context.rbi_for("OpenAIBaseModelCompilerFixtures::Participant")
 
-    participant = {name: "Ada", nickname: nil}
-    participants = [{name: "Grace", nickname: nil}]
+    participant = {name: "Ada", nickname: nil, role: "speaker"}
+    participants = [{name: "Grace", nickname: nil, role: "organizer"}]
     aliases = [:lead, nil]
     status = "confirmed"
-    detail = {name: "Margaret", nickname: nil}
+    detail = {name: "Margaret", nickname: nil, role: "moderator"}
     payload = {
       active: true,
       description: "scheduled",
@@ -94,11 +96,11 @@ class OpenAI::Test::BaseModelCompilerTest < Minitest::Test
       source: "constructor"
     )
 
-    replacement = {name: "Katherine", nickname: nil}
-    replacement_participants = [{name: "Joan", nickname: nil}]
+    replacement = {name: "Katherine", nickname: nil, role: "speaker"}
+    replacement_participants = [{name: "Joan", nickname: nil, role: "organizer"}]
     replacement_aliases = [:reviewer, nil]
     replacement_status = "tentative"
-    replacement_detail = {name: "Dorothy", nickname: nil}
+    replacement_detail = {name: "Dorothy", nickname: nil, role: "moderator"}
     assigned = OpenAIBaseModelCompilerFixtures::Event.new
     assigned.active = false
     assigned.description = "updated"
@@ -167,6 +169,7 @@ class OpenAI::Test::BaseModelCompilerTest < Minitest::Test
         T.let(event.kinds, T::Array[Symbol])
         T.let(event.symbol_choice, T.any(Integer, Symbol))
         T.let(event.participant, OpenAIBaseModelCompilerFixtures::Participant)
+        T.let(event.participant.role, Symbol)
         T.let(
           event.participants,
           T::Array[OpenAIBaseModelCompilerFixtures::Participant]
