@@ -30,7 +30,7 @@ multitask(:"docs:preview") do
 end
 
 desc("Run test suites; use `TEST=path/to/test.rb` to run a specific test file")
-multitask(:test) do
+multitask(test: [:"test:examples:inventory"]) do
   rb =
     FileList[ENV.fetch("TEST", "./test/**/*_test.rb")]
     .map { "require_relative(#{_1.dump});" }
