@@ -110,10 +110,12 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
     client = OpenAI::Client.new(
       provider: OpenAI::Providers.bedrock(region: "us-east-1", api_key: "bedrock-token"),
       default_headers: {
-        "Authorization" => "Bearer custom",
-        "X-Cost-Center" => "finance"
+        "Authorization" => "Bearer string-custom",
+        Authorization: "Bearer symbol-custom",
+        :"X-Cost-Center" => "finance"
       }
     )
+    refute_includes(client.headers, :authorization)
     client.request({method: :get, path: "models"})
 
     assert_requested(:get, url) do |request|

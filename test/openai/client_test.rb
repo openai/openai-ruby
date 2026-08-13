@@ -106,7 +106,7 @@ class OpenAITest < Minitest::Test
     openai = OpenAI::Client.new(
       base_url: "http://localhost",
       api_key: "My API Key",
-      default_headers: {"x-cost-center" => "finance"}
+      default_headers: {"X-Cost-Center" => "ignored", :"x-cost-center" => "finance"}
     )
     openai.request({method: :get, path: "models"})
 
@@ -160,7 +160,9 @@ class OpenAITest < Minitest::Test
 
   def test_explicit_default_headers_override_or_remove_environment_headers
     ENV["OPENAI_CUSTOM_HEADERS"] = <<~HEADERS
+      x-cost-center: stale
       X-Cost-Center: environment
+      x-remove-me: stale
       X-Remove-Me: environment
       X-Ambient: retained
     HEADERS
@@ -197,14 +199,14 @@ class OpenAITest < Minitest::Test
       {
         method: :get,
         path: "models",
-        options: {extra_headers: {"X-Cost-Center" => "research"}}
+        options: {extra_headers: {"X-Cost-Center": "research"}}
       }
     )
     openai.request(
       {
         method: :get,
         path: "models",
-        options: {extra_headers: {"x-cost-center" => nil}}
+        options: {extra_headers: {"x-cost-center": nil}}
       }
     )
 
@@ -802,6 +804,39 @@ class OpenAITest < Minitest::Test
     assert_requested(:any, "https://example.com/redirected", times: OpenAI::Client::MAX_REDIRECTS) do
       headers = _1.headers.keys.map(&:downcase)
       refute_includes(headers, "authorization")
+    end
+  end
+
+  def test_client_redirect_strips_symbol_sensitive_headers_cross_origin
+    source = "http://localhost/models"
+    destination = "https://example.com/redirected"
+    stub_request(:get, source).to_return(status: 307, headers: {"location" => destination})
+    stub_request(:get, destination).to_return_json(status: 200, body: {})
+
+    openai = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      default_headers: {
+        Authorization: "Bearer leaked-secret",
+        Cookie: "session=private",
+        "Proxy-Authorization": "Basic leaked-proxy",
+        Host: "spoofed.example"
+      }
+    )
+    openai.request({method: :get, path: "models"})
+
+    assert_requested(:get, source) do |request|
+      headers = request.headers.transform_keys(&:downcase)
+      assert_equal("Bearer My API Key", headers["authorization"])
+      assert_equal("session=private", headers["cookie"])
+      assert_equal("Basic leaked-proxy", headers["proxy-authorization"])
+      assert_equal("spoofed.example", headers["host"])
+    end
+
+    assert_requested(:get, destination) do |request|
+      headers = request.headers.transform_keys(&:downcase)
+      %w[authorization cookie proxy-authorization].each { refute_includes(headers, _1) }
+      assert_equal("example.com", headers["host"])
     end
   end
 

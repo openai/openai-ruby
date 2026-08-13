@@ -389,7 +389,7 @@ module OpenAI
         #
         # @return [Hash{String=>String}]
         def normalized_headers(*headers)
-          {}.merge(*headers.compact).to_h do |key, val|
+          headers.compact.flat_map(&:to_a).to_h do |key, val|
             value =
               case val
               in Array
@@ -397,7 +397,7 @@ module OpenAI
               else
                 val&.to_s&.strip
               end
-            [key.downcase, value]
+            [key.to_s.downcase, value]
           end
         end
       end

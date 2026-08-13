@@ -337,7 +337,7 @@ module OpenAI
       unless provider_runtime.nil?
         provider_runtime.authentication_headers.each { client_headers.delete(_1) }
       end
-      headers = headers.merge(client_headers)
+      headers = OpenAI::Internal::Util.normalized_headers(headers, client_headers)
 
       if workload_identity.nil?
         @api_key = api_key&.to_s

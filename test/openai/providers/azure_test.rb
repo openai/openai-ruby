@@ -172,9 +172,11 @@ class OpenAI::Test::AzureProviderTest < Minitest::Test
         api_key: "azure-key"
       ),
       default_headers: {
-        "Authorization" => "Bearer custom",
-        "Api-Key" => "custom-key",
-        "X-Cost-Center" => "finance"
+        "Authorization" => "Bearer string-custom",
+        Authorization: "Bearer symbol-custom",
+        "Api-Key" => "string-custom-key",
+        :"Api-Key" => "symbol-custom-key",
+        :"X-Cost-Center" => "finance"
       }
     )
     client.request({method: :get, path: "models"})
