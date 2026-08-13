@@ -10,4 +10,3 @@ Brewfile.lock.json
 doc/
 sorbet/tapioca/*
 tmp/
-coverage/

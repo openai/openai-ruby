@@ -26,7 +26,7 @@ jobs:
           EXAMPLES_E2E_REPORT_DIR: ${{ runner.temp }}/examples-e2e
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: bundle exec rake test:examples:e2e
-      - name: Upload SimpleCov and example result reports
+      - name: Upload example result reports
         if: ${{ always() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:

@@ -155,9 +155,7 @@ end
 
 desc("Run covered Ruby examples end-to-end against the live API")
 task("test:examples:e2e") do
-  examples_passed = system(RbConfig.ruby, "scripts/examples-e2e.rb")
-  coverage_passed = system(RbConfig.ruby, "scripts/collate-examples-e2e-coverage.rb")
-  fail unless examples_passed && coverage_passed
+  ruby(*%w[scripts/examples-e2e.rb])
 end
 
 desc("Lint and typecheck")

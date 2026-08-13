@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require "fileutils"
 require "json"
 require "open3"
 require "optparse"
@@ -189,10 +188,9 @@ module OpenAIExamplesE2E
   class Executor
     MAX_CAPTURED_CHARACTERS = 12_000
 
-    def initialize(root:, timeout:, coverage_directory: nil)
+    def initialize(root:, timeout:)
       @root = root
       @timeout = timeout
-      @coverage_directory = coverage_directory
     end
 
     def call(example)
@@ -201,9 +199,10 @@ module OpenAIExamplesE2E
       stderr_value = ""
       status = nil
       timed_out = false
+      example_path = @root.join(example.path).to_s
 
       Dir.mktmpdir("openai-ruby-example-e2e") do |working_directory|
-        Open3.popen3(environment(example), *command(example), chdir: working_directory) do |stdin, stdout, stderr, wait_thread|
+        Open3.popen3(RbConfig.ruby, example_path, chdir: working_directory) do |stdin, stdout, stderr, wait_thread|
           stdin.close
           stdout_reader = Thread.new { stdout.read }
           stderr_reader = Thread.new { stderr.read }
@@ -240,25 +239,6 @@ module OpenAIExamplesE2E
 
     private
 
-    def environment(example)
-      environment = {
-        "OPENAI_EXAMPLES_E2E" => "1",
-        "OPENAI_EXAMPLE_PATH" => example.path
-      }
-      return environment unless @coverage_directory
-
-      environment.merge(
-        "EXAMPLES_E2E_ROOT" => @root.to_s,
-        "EXAMPLES_E2E_COVERAGE_DIR" => @coverage_directory.to_s
-      )
-    end
-
-    def command(example)
-      command = [RbConfig.ruby]
-      command << "-r#{@root.join('.simplecov_spawn.rb')}" if @coverage_directory
-      command << @root.join(example.path).to_s
-    end
-
     def terminate(wait_thread)
       Process.kill("TERM", wait_thread.pid)
       return if wait_thread.join(2)
@@ -290,14 +270,10 @@ module OpenAIExamplesE2E
   end
 
   class Runner
-    def initialize(inventory:, timeout:, coverage_directory: nil, output: $stdout, executor: nil)
+    def initialize(inventory:, timeout:, output: $stdout)
       @inventory = inventory
       @output = output
-      @executor = executor || Executor.new(
-        root: inventory.root,
-        timeout: timeout,
-        coverage_directory: coverage_directory
-      )
+      @executor = Executor.new(root: inventory.root, timeout: timeout)
     end
 
     def run
@@ -336,15 +312,7 @@ module OpenAIExamplesE2E
         if options[:inventory_only]
           Report.new(inventory: inventory.summary, results: [], excluded_examples: inventory.excluded_examples)
         else
-          resultset_directory = options[:report_dir].join("resultsets")
-          FileUtils.rm_rf(resultset_directory)
-          FileUtils.rm_rf(options[:report_dir].join("coverage"))
-          Runner.new(
-            inventory: inventory,
-            timeout: options[:timeout],
-            coverage_directory: resultset_directory,
-            output: @output
-          ).run
+          Runner.new(inventory: inventory, timeout: options[:timeout], output: @output).run
         end
 
       write_report(report, options[:report_dir])

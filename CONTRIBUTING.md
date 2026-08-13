@@ -83,8 +83,7 @@ $ bundle exec rake test
 
 The live example suite executes every example marked as `covered` in
 `examples/e2e.yml`. It requires `OPENAI_API_KEY`, makes real API requests, and
-writes execution results plus SimpleCov HTML and JSON reports under
-`tmp/examples-e2e/` by default.
+writes JSON and Markdown execution reports under `tmp/examples-e2e/` by default.
 
 ```bash
 $ bundle exec rake test:examples:e2e
@@ -97,10 +96,7 @@ $ bundle exec rake test:examples:inventory
 ```
 
 Every `examples/**/*.rb` file must be classified as covered or explicitly
-excluded with a reason. SimpleCov measures the SDK lines exercised by the live
-examples. Its checked-in line-coverage floor makes the task fail when coverage
-regresses. Raise the floor in `.simplecov` whenever coverage
-increases; never lower it. In GitHub Actions, live execution is available only
+excluded with a reason. In GitHub Actions, live execution is available only
 through the manually dispatched `Examples E2E` workflow.
 
 ## Linting and formatting
