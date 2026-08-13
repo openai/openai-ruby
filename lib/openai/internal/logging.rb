@@ -21,7 +21,7 @@ module OpenAI
       OPAQUE_STRING_BYTES = 1_024
       SENSITIVE_BODY_KEY = /(?:api[-_]?key|authorization|credential|password|secret|signature|token)/i
       SENSITIVE_QUERY_KEY =
-        /(?:(?:\A|[-_\[])(?:key|sig)|api[-_]?key|authorization|credential|password|secret|signature|token)(?:\[|\]|\z)/i
+        /(?:(?:\A|[-_\[])(?:key|sig)|(?-i:K)ey|api[-_]?key|authorization|credentials?|password|secret|signature|token)(?:\[|\]|\z)/i
       URL_HEADER_KEY = /(?:\A|[-_])(?:location|url|uri)\z|\A(?:link|refresh)\z/i
 
       class Context
