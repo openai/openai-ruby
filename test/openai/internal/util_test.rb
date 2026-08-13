@@ -115,6 +115,19 @@ class OpenAI::Test::UtilHeaderHandlingTest < Minitest::Test
 
     assert_equal({"x-request-id" => "third"}, headers)
   end
+
+  def test_normalized_headers_preserves_precedence_for_every_key_spelling
+    keys = ["X-Request-Id", "x-request-id", :"X-Request-Id", :"x-request-id"]
+
+    keys.repeated_permutation(3).each do |first, second, third|
+      headers = OpenAI::Internal::Util.normalized_headers(
+        {first => "first", second => "second"},
+        {third => "third"}
+      )
+
+      assert_equal({"x-request-id" => "third"}, headers)
+    end
+  end
 end
 
 class OpenAI::Test::UtilUriHandlingTest < Minitest::Test

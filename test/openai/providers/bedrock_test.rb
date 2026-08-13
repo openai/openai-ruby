@@ -356,7 +356,12 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
         region: "us-east-1",
         access_key_id: "access-key",
         secret_access_key: "secret-key"
-      )
+      ),
+      default_headers: {
+        "X-Amz-Content-Sha256": "injected-hash",
+        "X-Amz-Date": "injected-date",
+        "X-Amz-Security-Token": "injected-token"
+      }
     )
 
     client.request(
@@ -369,6 +374,8 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
 
     request = requests.fetch(0)
     assert_equal(Digest::SHA256.hexdigest(request.body), request.headers["X-Amz-Content-Sha256"])
+    refute_equal("injected-date", request.headers["X-Amz-Date"])
+    refute_includes(request.headers, "X-Amz-Security-Token")
     assert_includes(request.headers.fetch("Authorization"), "bedrock-mantle/aws4_request")
   end
 
@@ -536,6 +543,20 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
     streaming_body = custom_auth.merge(headers: {}, method: :post, body: StringIO.new("body"))
     error = assert_raises(OpenAI::Errors::Error) { sigv4_runtime.prepare_request.call(streaming_body) }
     assert_match(/replayable request body/, error.message)
+  end
+
+  def test_provider_rejects_symbol_request_authorization_header
+    client = OpenAI::Client.new(
+      provider: OpenAI::Providers.bedrock(region: "us-east-1", api_key: "bedrock-token")
+    )
+
+    error = assert_raises(OpenAI::Errors::Error) do
+      client.request(
+        {method: :get, path: "models", options: {extra_headers: {Authorization: "Bearer custom"}}}
+      )
+    end
+
+    assert_match(/custom `Authorization` header/, error.message)
   end
 
   def test_sigv4_rejects_redirects_and_mismatched_canonical_regions

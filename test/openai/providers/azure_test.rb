@@ -281,6 +281,23 @@ class OpenAI::Test::AzureProviderTest < Minitest::Test
     end
   end
 
+  def test_provider_rejects_symbol_request_authentication_headers
+    client = OpenAI::Client.new(
+      provider: OpenAI::Providers.azure(
+        endpoint: "https://example-resource.openai.azure.com",
+        api_key: "azure-key"
+      )
+    )
+
+    [{Authorization: "Bearer custom"}, {"Api-Key": "custom-key"}].each do |headers|
+      error = assert_raises(OpenAI::Errors::Error) do
+        client.request({method: :get, path: "models", options: {extra_headers: headers}})
+      end
+
+      assert_match(/cannot be combined with a custom/, error.message)
+    end
+  end
+
   def test_configuration_values_are_validated
     cases = [
       [{api_key: "azure-key"}, /requires an endpoint/],
