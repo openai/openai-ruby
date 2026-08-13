@@ -75,11 +75,13 @@ class ValidateRuboCopDirectivesTest < Minitest::Test
   end
 
   def test_allows_owned_and_tracked_todos
-    assert_empty(
-      violations(
-        "todo Lint/EmptyBlock -- temporary exception; owner: @sdk; remove-by: 2026-09-01"
+    Date.stub(:today, Date.new(2026, 8, 13)) do
+      assert_empty(
+        violations(
+          "todo Lint/EmptyBlock -- temporary exception; owner: @sdk; remove-by: 2026-09-01"
+        )
       )
-    )
+    end
   end
 
   def test_rejects_malformed_tracking_values
@@ -91,14 +93,27 @@ class ValidateRuboCopDirectivesTest < Minitest::Test
   end
 
   def test_validates_remove_by_calendar_dates
-    %w[2026-99-99 2026-02-30].each do |date|
-      errors = violations("todo Lint/EmptyBlock -- owner: @sdk; remove-by: #{date}")
-      assert(errors.any? { _1.include?("requires `issue: #123`") }, date)
-    end
+    Date.stub(:today, Date.new(2026, 1, 1)) do
+      %w[2026-99-99 2026-02-30].each do |date|
+        errors = violations("todo Lint/EmptyBlock -- owner: @sdk; remove-by: #{date}")
+        assert(errors.any? { _1.include?("requires `issue: #123`") }, date)
+      end
 
-    assert_empty(
-      violations("todo Lint/EmptyBlock -- owner: @sdk; remove-by: 2028-02-29")
-    )
+      assert_empty(
+        violations("todo Lint/EmptyBlock -- owner: @sdk; remove-by: 2028-02-29")
+      )
+    end
+  end
+
+  def test_rejects_expired_remove_by_dates
+    Date.stub(:today, Date.new(2026, 8, 13)) do
+      errors = violations("todo Lint/EmptyBlock -- owner: @sdk; remove-by: 2026-08-12")
+      assert(errors.any? { _1.include?("requires `issue: #123`") })
+
+      assert_empty(
+        violations("todo Lint/EmptyBlock -- owner: @sdk; remove-by: 2026-08-13")
+      )
+    end
   end
 
   def test_uses_rubocop_source_discovery

@@ -57,8 +57,7 @@ module RuboCopDirectiveGuard
   end
 
   def valid_iso_date?(value)
-    Date.iso8601(value)
-    true
+    Date.iso8601(value) >= Date.today
   rescue Date::Error
     false
   end
