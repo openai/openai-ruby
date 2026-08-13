@@ -83,10 +83,6 @@ Lint/MissingSuper:
   Exclude:
     - "**/*.rbi"
 
-Lint/SymbolConversion:
-  Exclude:
-    - "**/*.rbi"
-
 # Disabled for safety reasons, this option changes code semantics.
 Lint/UnusedMethodArgument:
   AutoCorrect: false
