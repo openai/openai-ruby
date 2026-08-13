@@ -1,5 +1,10 @@
 # yaml-language-server: $schema=https://www.rubyschema.org/rubocop.json
 ---
+# Keep RuboCop's dependency and build-output exclusions alongside ours.
+inherit_mode:
+  merge:
+    - Exclude
+
 # Explicitly disable pending cops for now. This is the default behaviour but
 # this avoids a large warning every time we run it.
 # Stop RuboCop nagging about rubocop-rake.
