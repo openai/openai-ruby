@@ -261,9 +261,13 @@ module OpenAI
         #
         # @param path [String, Integer]
         #
+        # @raise [ArgumentError]
         # @return [String]
         def encode_path(path)
-          path.to_s.gsub(OpenAI::Internal::Util::RFC_3986_NOT_PCHARS) { ERB::Util.url_encode(_1) }
+          path = path.to_s
+          raise ArgumentError, "path segment cannot be '.' or '..'" if path == "." || path == ".."
+
+          path.gsub(OpenAI::Internal::Util::RFC_3986_NOT_PCHARS) { ERB::Util.url_encode(_1) }
         end
 
         # @api private
