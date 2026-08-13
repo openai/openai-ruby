@@ -1,8 +1,9 @@
 # yaml-language-server: $schema=https://www.rubyschema.org/rubocop.json
 ---
-# Keep RuboCop's dependency and build-output exclusions alongside ours.
+# Keep RuboCop's standard file types and dependency exclusions alongside ours.
 inherit_mode:
   merge:
+    - Include
     - Exclude
 
 # Explicitly disable pending cops for now. This is the default behaviour but
@@ -10,6 +11,8 @@ inherit_mode:
 # Stop RuboCop nagging about rubocop-rake.
 # Ensure that RuboCop validates according to the lowest version of Ruby that we support.
 AllCops:
+  Include:
+    - "**/*.rbi"
   Exclude:
     - "bin/*"
     - "sorbet/rbi/annotations/**/*"
