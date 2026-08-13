@@ -56,18 +56,11 @@ end
 
 desc("Lint `*.rb(i)`")
 RuboCop::RakeTask.new(:"lint:rubocop") do |task|
-  task.patterns = FileList[
-    "./{lib,test,rbi,examples}/**/*.rb",
-    "./{lib,test,rbi,examples}/**/*.rbi",
-    "./scripts/validate-rbs",
-    "./Gemfile",
-    "./Rakefile",
-    "./openai.gemspec"
-  ]
+  task.patterns = %w[. ./**/*.rbi]
   task.formatters = %w[github] if ENV.key?("CI")
 
   # some lines cannot be shortened
-  task.options = %w[--parallel --except Layout/LineLength]
+  task.options = %w[--parallel --force-exclusion --except Layout/LineLength]
 end
 
 norm_lines = %w[tr -- \n \0].shelljoin
