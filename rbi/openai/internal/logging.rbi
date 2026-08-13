@@ -152,6 +152,10 @@ module OpenAI
         def safe_field(value)
         end
 
+        sig { params(name: T.any(String, Symbol)).returns(T::Boolean) }
+        def sensitive_header?(name)
+        end
+
         sig { params(headers: T::Hash[String, String]).returns(String) }
         def format_headers(headers)
         end

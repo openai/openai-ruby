@@ -886,6 +886,11 @@ class OpenAITest < Minitest::Test
         "Api-Key" => "custom-api-key",
         :"X-API-Key" => "custom-x-api-key",
         "X-Amz-Security-Token" => "custom-session-token",
+        :"X-Auth-Token" => "custom-auth-token",
+        "X-Goog-API-Key" => "custom-google-key",
+        :"X-Client-Secret" => "custom-client-secret",
+        api_key: "custom-underscore-key",
+        "X-Password" => "custom-password",
         Cookie: "session=private",
         "Proxy-Authorization": "Basic proxy-secret",
         "Set-Cookie" => "session=private-response",
@@ -902,10 +907,27 @@ class OpenAITest < Minitest::Test
     assert_equal("custom-api-key", first_headers.fetch("api-key"))
     assert_equal("custom-x-api-key", first_headers.fetch("x-api-key"))
     assert_equal("custom-session-token", first_headers.fetch("x-amz-security-token"))
+    assert_equal("custom-auth-token", first_headers.fetch("x-auth-token"))
+    assert_equal("custom-google-key", first_headers.fetch("x-goog-api-key"))
+    assert_equal("custom-client-secret", first_headers.fetch("x-client-secret"))
+    assert_equal("custom-underscore-key", first_headers.fetch("api_key"))
+    assert_equal("custom-password", first_headers.fetch("x-password"))
 
     redirected_headers = requests.fetch(1).headers
     sensitive_headers = %w[
-      api-key authorization cookie host proxy-authorization set-cookie x-amz-security-token x-api-key
+      api-key
+      api_key
+      authorization
+      cookie
+      host
+      proxy-authorization
+      set-cookie
+      x-amz-security-token
+      x-api-key
+      x-auth-token
+      x-client-secret
+      x-goog-api-key
+      x-password
     ]
     sensitive_headers.each do |header|
       refute_includes(redirected_headers, header)
