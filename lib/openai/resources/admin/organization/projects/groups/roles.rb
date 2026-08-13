@@ -97,11 +97,11 @@ module OpenAI
               # @see OpenAI::Models::Admin::Organization::Projects::Groups::RoleListParams
               def list(group_id, params)
                 parsed, options = OpenAI::Admin::Organization::Projects::Groups::RoleListParams.dump_request(params)
-                query = OpenAI::Internal::Util.encode_query_params(parsed)
                 project_id =
                   parsed.delete(:project_id) do
                     raise ArgumentError.new("missing required path argument #{_1}")
                   end
+                query = OpenAI::Internal::Util.encode_query_params(parsed)
                 @client.request(
                   method: :get,
                   path: ["projects/%1$s/groups/%2$s/roles", project_id, group_id],

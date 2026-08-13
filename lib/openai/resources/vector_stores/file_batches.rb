@@ -123,11 +123,11 @@ module OpenAI
         # @see OpenAI::Models::VectorStores::FileBatchListFilesParams
         def list_files(batch_id, params)
           parsed, options = OpenAI::VectorStores::FileBatchListFilesParams.dump_request(params)
-          query = OpenAI::Internal::Util.encode_query_params(parsed)
           vector_store_id =
             parsed.delete(:vector_store_id) do
               raise ArgumentError.new("missing required path argument #{_1}")
             end
+          query = OpenAI::Internal::Util.encode_query_params(parsed)
           @client.request(
             method: :get,
             path: ["vector_stores/%1$s/file_batches/%2$s/files", vector_store_id, batch_id],
