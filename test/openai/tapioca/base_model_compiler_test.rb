@@ -26,6 +26,30 @@ class OpenAI::Test::BaseModelCompilerTest < Minitest::Test
         required :status, OpenAI::EnumOf[:confirmed, :tentative]
         required :detail, OpenAI::UnionOf[String, Participant]
       end
+
+      def self.assert_reader_contract(event, source:, detail_type: Participant)
+        checks = {
+          active: [true, false].include?(event.active),
+          description: event.description.nil? || event.description.is_a?(String),
+          participant: event.participant.is_a?(Participant),
+          participants: event.participants.all?(Participant),
+          aliases: event.aliases.all? { _1.nil? || _1.is_a?(String) },
+          status: event.status.is_a?(Symbol),
+          detail: event.detail.is_a?(detail_type)
+        }
+
+        checks.each do |field, matches|
+          abort([source, field, "reader disagrees with its generated RBI"].join(": ")) unless matches
+        end
+      end
+
+      def self.assert_raw_values(event, values, source:)
+        values.each do |field, raw|
+          next if event[field].equal?(raw) && event.to_h.fetch(field).equal?(raw)
+
+          abort([source, field, "raw caller-owned value was replaced"].join(": "))
+        end
+      end
     end
 
     require "tapioca/helpers/test/dsl_compiler"
@@ -41,41 +65,76 @@ class OpenAI::Test::BaseModelCompilerTest < Minitest::Test
 
     participant = {name: "Ada", nickname: nil}
     participants = [{name: "Grace", nickname: nil}]
+    aliases = [:lead, nil]
+    status = "confirmed"
+    detail = {name: "Margaret", nickname: nil}
     payload = {
       active: true,
-      description: nil,
+      description: "scheduled",
       participant: participant,
       participants: participants,
-      aliases: [],
-      status: "confirmed",
-      detail: participant
+      aliases: aliases,
+      status: status,
+      detail: detail
     }
     constructed = OpenAIBaseModelCompilerFixtures::Event.new(payload)
-    abort("constructed reader does not match its RBI") unless constructed.participant.is_a?(
-      OpenAIBaseModelCompilerFixtures::Participant
+    OpenAIBaseModelCompilerFixtures.assert_reader_contract(constructed, source: "constructor")
+    OpenAIBaseModelCompilerFixtures.assert_raw_values(
+      constructed,
+      payload.slice(:participant, :participants, :aliases, :status, :detail),
+      source: "constructor"
     )
-    abort("constructed array reader does not match its RBI") unless constructed.participants.all?(
-      OpenAIBaseModelCompilerFixtures::Participant
-    )
-    abort("constructed raw value was replaced") unless constructed[:participant].equal?(participant)
 
     replacement = {name: "Katherine", nickname: nil}
-    constructed.participant = replacement
-    abort("assigned reader does not match its RBI") unless constructed.participant.is_a?(
-      OpenAIBaseModelCompilerFixtures::Participant
+    replacement_participants = [{name: "Joan", nickname: nil}]
+    replacement_aliases = [:reviewer, nil]
+    replacement_status = "tentative"
+    replacement_detail = {name: "Dorothy", nickname: nil}
+    assigned = OpenAIBaseModelCompilerFixtures::Event.new
+    assigned.active = false
+    assigned.description = "updated"
+    assigned.participant = replacement
+    assigned.participants = replacement_participants
+    assigned.aliases = replacement_aliases
+    assigned.status = replacement_status
+    assigned.detail = replacement_detail
+    OpenAIBaseModelCompilerFixtures.assert_reader_contract(assigned, source: "assignment")
+    OpenAIBaseModelCompilerFixtures.assert_raw_values(
+      assigned,
+      {
+        participant: replacement,
+        participants: replacement_participants,
+        aliases: replacement_aliases,
+        status: replacement_status,
+        detail: replacement_detail
+      },
+      source: "assignment"
     )
-    abort("assigned raw value was replaced") unless constructed[:participant].equal?(replacement)
+
+    assigned.detail = "speaker"
+    OpenAIBaseModelCompilerFixtures.assert_reader_contract(
+      assigned,
+      source: "scalar union assignment",
+      detail_type: String
+    )
 
     state = OpenAI::Internal::Type::Converter.new_coerce_state
     parsed = OpenAI::Internal::Type::Converter.coerce(
       OpenAIBaseModelCompilerFixtures::Event,
-      payload,
+      payload.merge(description: nil),
       state: state
     )
-    abort("parsed reader does not match its RBI") unless parsed.participant.is_a?(
-      OpenAIBaseModelCompilerFixtures::Participant
-    )
-    abort("parsed model identity changed") unless parsed.participant.equal?(parsed[:participant])
+    abort("parsed response reported a conversion error") unless state.fetch(:error).nil?
+    OpenAIBaseModelCompilerFixtures.assert_reader_contract(parsed, source: "parsed response")
+    {
+      participant: parsed.participant,
+      participants: parsed.participants,
+      detail: parsed.detail
+    }.each do |field, materialized|
+      abort(["parsed response", field, "materialized value was replaced"].join(": ")) unless (
+        parsed[field].equal?(materialized)
+      )
+    end
 
     require "tmpdir"
     Dir.mktmpdir("openai-base-model-compiler-test") do |dir|
@@ -102,6 +161,13 @@ class OpenAI::Test::BaseModelCompilerTest < Minitest::Test
         T.let(
           event.detail,
           T.any(OpenAIBaseModelCompilerFixtures::Participant, String)
+        )
+
+        constructed = OpenAIBaseModelCompilerFixtures::Event.new
+        T.let(constructed.participant, OpenAIBaseModelCompilerFixtures::Participant)
+        T.let(
+          constructed.participants,
+          T::Array[OpenAIBaseModelCompilerFixtures::Participant]
         )
       USAGE
 

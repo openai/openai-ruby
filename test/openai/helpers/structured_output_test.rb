@@ -47,6 +47,14 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
     required :status, OpenAI::EnumOf[:confirmed, :tentative]
   end
 
+  class NullableNestedEvent < OpenAI::BaseModel
+    required :participants, OpenAI::ArrayOf[NestedParticipant, nil?: true]
+  end
+
+  class InheritedNestedEvent < NestedEvent
+    required :name, String
+  end
+
   U1 = OpenAI::Helpers::StructuredOutput::UnionOf[Integer, A1]
   U2 = OpenAI::Helpers::StructuredOutput::UnionOf[M2, M3]
   U3 = OpenAI::Helpers::StructuredOutput::UnionOf[A1, A1]
@@ -143,6 +151,77 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
     assert_same(event[:participant], event.participant)
     assert_same(event[:participants], event.participants)
     assert_same(event[:choice], event.choice)
+  end
+
+  def test_nested_readers_preserve_nilable_array_elements
+    participants = [{name: "Ada"}, nil]
+    event = NullableNestedEvent.new(participants: participants)
+
+    assert_instance_of(NestedParticipant, event.participants.fetch(0))
+    assert_nil(event.participants.fetch(1))
+    assert_same(participants, event[:participants])
+    assert_same(participants, event.to_h.fetch(:participants))
+
+    replacement = [nil, {name: "Grace"}]
+    event.participants = replacement
+
+    assert_nil(event.participants.fetch(0))
+    assert_instance_of(NestedParticipant, event.participants.fetch(1))
+    assert_same(replacement, event[:participants])
+
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+    parsed = OpenAI::Internal::Type::Converter.coerce(
+      NullableNestedEvent,
+      {participants: participants},
+      state: state
+    )
+
+    assert_nil(state.fetch(:error))
+    assert_instance_of(NestedParticipant, parsed.participants.fetch(0))
+    assert_nil(parsed.participants.fetch(1))
+  end
+
+  def test_nested_readers_are_preserved_by_subclass_inheritance
+    participant = {name: "Ada"}
+    participants = [{name: "Grace"}]
+    event = InheritedNestedEvent.new(
+      name: "conference",
+      participant: participant,
+      participants: participants,
+      choice: "speaker",
+      status: "confirmed"
+    )
+
+    assert_equal("conference", event.name)
+    assert_instance_of(NestedParticipant, event.participant)
+    assert_instance_of(NestedParticipant, event.participants.fetch(0))
+    assert_equal("speaker", event.choice)
+    assert_equal(:confirmed, event.status)
+    assert_same(participant, event[:participant])
+    assert_same(participants, event.to_h.fetch(:participants))
+  end
+
+  def test_nested_readers_observe_mutations_to_caller_owned_values
+    participant = {name: "Ada"}
+    participants = [{name: "Grace"}]
+    event = NestedEvent.new(participant: participant, participants: participants)
+
+    participant[:name] = "Katherine"
+    participants << {name: "Dorothy"}
+
+    assert_equal("Katherine", event.participant.name)
+    assert_equal(%w[Grace Dorothy], event.participants.map(&:name))
+    assert_same(participant, event[:participant])
+    assert_same(participants, event.to_h.fetch(:participants))
+  end
+
+  def test_nested_readers_preserve_existing_conversion_errors
+    participant = Object.new
+    event = NestedEvent.new(participant: participant)
+
+    assert_raises(OpenAI::Errors::ConversionError) { event.participant }
+    assert_same(participant, event[:participant])
+    assert_same(participant, event.to_h.fetch(:participant))
   end
 
   def test_to_schema
