@@ -35,17 +35,17 @@ module OpenAI
 
       sig do
         params(
-          identity_provider_id: T.any(String, Symbol),
-          service_account_id: T.any(String, Symbol),
           provider: SubjectTokenProvider,
+          identity_provider_id: T.nilable(T.any(String, Symbol)),
+          service_account_id: T.nilable(T.any(String, Symbol)),
           client_id: T.nilable(T.any(String, Symbol)),
           refresh_buffer_seconds: Integer
         ).void
       end
       def initialize(
-        identity_provider_id:,
-        service_account_id:,
         provider:,
+        identity_provider_id: ENV["IDENTITY_PROVIDER_ID"],
+        service_account_id: ENV["SERVICE_ACCOUNT_ID"],
         client_id: nil,
         refresh_buffer_seconds: 1200
       )

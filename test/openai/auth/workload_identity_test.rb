@@ -14,17 +14,112 @@ class WorkloadIdentityTest < Minitest::Test
   def setup
     super
     @token_path = File.join(Dir.tmpdir, "test_k8s_token_#{SecureRandom.hex}")
+    @environment = %w[IDENTITY_PROVIDER_ID SERVICE_ACCOUNT_ID].to_h { [_1, ENV[_1]] }
+    @environment.each_key { ENV.delete(_1) }
   end
 
   def teardown
     FileUtils.rm_f(@token_path)
     WebMock.reset!
+    @environment.each { |name, value| value.nil? ? ENV.delete(name) : ENV[name] = value }
     super
   end
 
   def after_all
     WebMock.disable!
     super
+  end
+
+  def test_workload_identity_defaults_to_environment_variables
+    ENV["IDENTITY_PROVIDER_ID"] = "environment-provider"
+    ENV["SERVICE_ACCOUNT_ID"] = "environment-account"
+    provider = OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new
+
+    config = OpenAI::Auth::WorkloadIdentity.new(
+      provider: provider,
+      client_id: :oauth_client,
+      refresh_buffer_seconds: 60
+    )
+
+    assert_equal("environment-provider", config.identity_provider_id)
+    assert_equal("environment-account", config.service_account_id)
+    assert_same(provider, config.provider)
+    assert_equal("oauth_client", config.client_id)
+    assert_equal(60, config.refresh_buffer_seconds)
+  end
+
+  def test_workload_identity_explicit_identifiers_override_environment_variables
+    ENV["IDENTITY_PROVIDER_ID"] = "environment-provider"
+    ENV["SERVICE_ACCOUNT_ID"] = "environment-account"
+
+    config = OpenAI::Auth::WorkloadIdentity.new(
+      identity_provider_id: :explicit_provider,
+      service_account_id: :explicit_account,
+      provider: OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new
+    )
+
+    assert_equal("explicit_provider", config.identity_provider_id)
+    assert_equal("explicit_account", config.service_account_id)
+  end
+
+  def test_workload_identity_rejects_missing_identity_provider_id
+    ENV["SERVICE_ACCOUNT_ID"] = "environment-account"
+
+    error = assert_raises(ArgumentError) do
+      OpenAI::Auth::WorkloadIdentity.new(
+        provider: OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new
+      )
+    end
+
+    assert_match(/identity_provider_id/, error.message)
+    assert_match(/IDENTITY_PROVIDER_ID/, error.message)
+  end
+
+  def test_workload_identity_rejects_missing_service_account_id
+    ENV["IDENTITY_PROVIDER_ID"] = "environment-provider"
+
+    error = assert_raises(ArgumentError) do
+      OpenAI::Auth::WorkloadIdentity.new(
+        provider: OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new
+      )
+    end
+
+    assert_match(/service_account_id/, error.message)
+    assert_match(/SERVICE_ACCOUNT_ID/, error.message)
+  end
+
+  def test_workload_identity_rejects_blank_identity_provider_id
+    ENV["IDENTITY_PROVIDER_ID"] = "environment-provider"
+
+    [nil, "", " \t"].each do |identity_provider_id|
+      error = assert_raises(ArgumentError) do
+        OpenAI::Auth::WorkloadIdentity.new(
+          identity_provider_id: identity_provider_id,
+          service_account_id: "service-account",
+          provider: OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new
+        )
+      end
+
+      assert_match(/identity_provider_id/, error.message)
+      assert_match(/IDENTITY_PROVIDER_ID/, error.message)
+    end
+  end
+
+  def test_workload_identity_rejects_blank_service_account_id
+    ENV["SERVICE_ACCOUNT_ID"] = "environment-account"
+
+    [nil, "", " \t"].each do |service_account_id|
+      error = assert_raises(ArgumentError) do
+        OpenAI::Auth::WorkloadIdentity.new(
+          identity_provider_id: "identity-provider",
+          service_account_id: service_account_id,
+          provider: OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new
+        )
+      end
+
+      assert_match(/service_account_id/, error.message)
+      assert_match(/SERVICE_ACCOUNT_ID/, error.message)
+    end
   end
 
   def test_kubernetes_provider_success
