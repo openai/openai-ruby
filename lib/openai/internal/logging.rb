@@ -276,7 +276,11 @@ module OpenAI
         # @api private
         def credential_header?(name)
           normalized_name = name.to_s.downcase
-          normalized_name != "idempotency-key" && sensitive_header?(normalized_name)
+          idempotency = normalized_name.match(/(?:\A|[-_])idempotency[-_]key\z/)
+          return sensitive_header?(normalized_name) unless idempotency
+
+          prefix = normalized_name[...idempotency.begin(0)]
+          prefix.split(/[-_]/).any? { sensitive_header?(_1) }
         end
 
         def format_headers(headers)
