@@ -128,6 +128,30 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
     stream&.close
   end
 
+  def test_enabled_logging_preserves_raw_and_helper_stream_types
+    stub_streaming_response(basic_text_sse_response)
+
+    [:error, :warn, :info, :debug].each do |level|
+      client = OpenAI::Client.new(
+        base_url: "http://localhost",
+        api_key: "test-key",
+        logger: Logger.new(StringIO.new),
+        log_level: level
+      )
+
+      raw_stream = client.chat.completions.stream_raw(**basic_params)
+      assert_instance_of(OpenAI::Internal::Stream, raw_stream)
+      assert_includes(raw_stream.inspect, "ChatCompletionChunk")
+      assert_equal("req_stream", raw_stream.last_response.request_id)
+      raw_stream.close
+
+      helper_stream = client.chat.completions.stream(**basic_params)
+      assert_instance_of(OpenAI::Helpers::Streaming::ChatCompletionStream, helper_stream)
+      assert_equal("req_stream", helper_stream.last_response.request_id)
+      assert_equal("Hello there! How can I help?", helper_stream.get_output_text)
+    end
+  end
+
   def test_get_output_text
     stub_streaming_response(basic_text_sse_response)
 

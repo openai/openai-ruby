@@ -62,18 +62,6 @@ module OpenAI
         def close: -> void
       end
 
-      class ObservedStream[Elem]
-        include OpenAI::Internal::Type::BaseStream[top, Elem]
-
-        def initialize: (
-          stream: OpenAI::Internal::Type::BaseStream[top, Elem],
-          context: OpenAI::Internal::Logging::Context,
-          response: OpenAI::HTTPClient::Response
-        ) -> void
-
-        private def iterator: -> Enumerable[Elem]
-      end
-
       def self.normalize_level: (Symbol | String value) -> Symbol
       def self.validate_logger!: (OpenAI::_Logger? logger) -> void
       def self.default_logger: -> OpenAI::_Logger

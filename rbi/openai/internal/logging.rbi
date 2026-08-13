@@ -119,27 +119,6 @@ module OpenAI
         end
       end
 
-      class ObservedStream
-        Message = type_member(:in) { { fixed: T.anything } }
-        Elem = type_member(:out)
-
-        include OpenAI::Internal::Type::BaseStream
-
-        sig do
-          params(
-            stream: T.untyped,
-            context: OpenAI::Internal::Logging::Context,
-            response: OpenAI::HTTPClient::Response
-          ).void
-        end
-        def initialize(stream:, context:, response:)
-        end
-
-        sig { override.returns(T::Enumerable[Elem]) }
-        private def iterator
-        end
-      end
-
       class << self
         sig { params(value: T.any(Symbol, String)).returns(Symbol) }
         def normalize_level(value)

@@ -109,7 +109,7 @@ module OpenAI
         def observe_stream(stream, response:)
           return stream unless enabled?(:error)
 
-          ObservedStream.new(stream: stream, context: self, response: response)
+          stream.observe(context: self, response: response)
         end
 
         def request_failed(error)
@@ -221,38 +221,6 @@ module OpenAI
 
           remaining = OpenAI::Internal::Logging::MAX_BODY_BYTES - @captured.bytesize
           @captured << chunk.byteslice(0, remaining) if remaining.positive?
-        end
-      end
-
-      class ObservedStream
-        include OpenAI::Internal::Type::BaseStream
-
-        def initialize(stream:, context:, response:)
-          @stream = stream
-          @context = context
-          @response = response
-          @last_response = stream.last_response
-          @iterator = iterator
-        end
-
-        private def iterator
-          source = @stream.to_enum
-          observed = Enumerator.new do |yielder|
-            loop do
-              event =
-                begin
-                  source.next
-                rescue StopIteration
-                  @context.completed(@response)
-                  break
-                rescue StandardError => e
-                  @context.request_failed(e)
-                  raise
-                end
-              yielder << event
-            end
-          end
-          OpenAI::Internal::Util.fused_enum(observed) { @stream.close }
         end
       end
 

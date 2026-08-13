@@ -26,6 +26,16 @@ module OpenAI
         end
 
         # @api private
+        sig do
+          params(
+            context: OpenAI::Internal::Logging::Context,
+            response: OpenAI::HTTPClient::Response
+          ).returns(T.self_type)
+        end
+        def observe(context:, response:)
+        end
+
+        # @api private
         sig { overridable.returns(T::Enumerable[Elem]) }
         private def iterator
         end
