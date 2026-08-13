@@ -85,10 +85,6 @@ Lint/EmptyInPattern:
   Exclude:
     - "test/**/*"
 
-Lint/MissingCopEnableDirective:
-  Exclude:
-    - "examples/**/*.rb"
-
 Lint/MissingSuper:
   Exclude:
     - "**/*.rbi"
