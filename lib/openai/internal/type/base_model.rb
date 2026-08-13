@@ -273,7 +273,7 @@ module OpenAI
           def coerce(value, state:)
             exactness = state.fetch(:exactness)
 
-            if value.is_a?(self.class)
+            if value.is_a?(self)
               exactness[:yes] += 1
               return value
             end

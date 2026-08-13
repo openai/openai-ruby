@@ -388,6 +388,54 @@ class OpenAI::Test::BaseModelTest < Minitest::Test
     end
   end
 
+  def test_coerce_preserves_model_identity_and_response_metadata
+    response = OpenAI::ResponseMetadata.new(status: 200, headers: {"x-request-id" => "req_123"})
+    model = M1.new(a: 1)._set_last_response(response)
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+
+    coerced = OpenAI::Internal::Type::Converter.coerce(M1, model, state: state)
+
+    assert_same(model, coerced)
+    assert_same(response, coerced.last_response)
+    assert_equal("req_123", coerced._request_id)
+    assert_equal({yes: 1, no: 0, maybe: 0}, state.fetch(:exactness))
+    assert_nil(state.fetch(:error))
+  end
+
+  def test_coerce_preserves_subclass_instances
+    model = M2.new(a: Time.new(1990, 9, 19), b: 1)
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+
+    coerced = OpenAI::Internal::Type::Converter.coerce(M1, model, state: state)
+
+    assert_same(model, coerced)
+    assert_instance_of(M2, coerced)
+    assert_equal({yes: 1, no: 0, maybe: 0}, state.fetch(:exactness))
+    assert_nil(state.fetch(:error))
+  end
+
+  def test_coerce_rejects_class_objects
+    [String, Class, M1].each do |value|
+      state = OpenAI::Internal::Type::Converter.new_coerce_state
+
+      assert_same(value, OpenAI::Internal::Type::Converter.coerce(M1, value, state: state))
+      assert_instance_of(TypeError, state.fetch(:error))
+      assert_equal({yes: 0, no: 1, maybe: 0}, state.fetch(:exactness))
+    end
+  end
+
+  def test_coerce_preserves_nested_model_instances
+    model = M6.new(a: [])
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+
+    coerced = OpenAI::Internal::Type::Converter.coerce(M6, {a: [model], b: model}, state: state)
+
+    assert_same(model, coerced.a.fetch(0))
+    assert_same(model, coerced.b)
+    assert_equal({yes: 4, no: 0, maybe: 0}, state.fetch(:exactness))
+    assert_nil(state.fetch(:error))
+  end
+
   def test_dump
     cases = {
       [M3, M3.new] => {d: :d},
@@ -599,6 +647,17 @@ class OpenAI::Test::UnionTest < Minitest::Test
         state => {branched: ^branched}
       end
     end
+  end
+
+  def test_coerce_preserves_existing_union_model_variants
+    model = M1.new(t: :a)
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+
+    coerced = OpenAI::Internal::Type::Converter.coerce(U2, model, state: state)
+
+    assert_same(model, coerced)
+    assert_equal({yes: 1, no: 0, maybe: 0}, state.fetch(:exactness))
+    assert_nil(state.fetch(:error))
   end
 end
 
