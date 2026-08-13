@@ -2,9 +2,10 @@
 
 require "open3"
 require "ripper"
+require "rubocop/directive_comment"
 
 module RuboCopDirectiveGuard
-  DIRECTIVE = /#\s*rubocop:(disable|todo)\s+(.+?)(?:\s+--\s+(.+))?\s*$/
+  DirectiveText = Data.define(:text)
   EXCLUDED_PREFIXES = %w[
     sorbet/rbi/annotations/
     sorbet/rbi/gems/
@@ -35,11 +36,12 @@ module RuboCopDirectiveGuard
     Ripper.lex(source).each do |(line_number, _column), token, comment, _state|
       next unless token == :on_comment
 
-      match = DIRECTIVE.match(comment)
-      next if match.nil?
+      directive = RuboCop::DirectiveComment.new(DirectiveText.new(comment), nil)
+      next if directive.mode.nil? || directive.malformed?
 
-      action, cop_text, metadata = match.captures
-      cops = cop_text.split(",").map(&:strip)
+      action = directive.mode
+      cops = directive.raw_cop_names
+      metadata = comment.partition("--").then { |_, marker, text| text if marker == "--" }
       if cops.any? { _1.casecmp("all").zero? }
         violations << "#{path}:#{line_number}: rubocop:#{action} all is forbidden"
       end
@@ -68,6 +70,7 @@ module RuboCopDirectiveGuard
       next unless ROOT_RUBY_FILES.include?(path) ||
                   RUBY_EXTENSIONS.include?(File.extname(path)) ||
                   path.start_with?("scripts/")
+      next unless File.file?(path)
 
       source = File.read(path)
       [path, source] if ruby_source_path?(path, source)

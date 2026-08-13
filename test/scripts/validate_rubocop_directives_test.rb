@@ -13,6 +13,27 @@ class ValidateRuboCopDirectivesTest < Minitest::Test
     assert_includes(violations("disable all").first, "disable all is forbidden")
   end
 
+  def test_matches_rubocop_directive_marker_whitespace
+    [
+      "# rubocop : disable all",
+      "# rubocop: disable all"
+    ].each do |directive|
+      assert_includes(violations_in(directive).first, "disable all is forbidden")
+    end
+
+    errors = violations_in("# rubocop : todo Lint/EmptyBlock")
+    assert(errors.any? { _1.include?("requires `owner: ...`") })
+    assert(errors.any? { _1.include?("requires `issue: #123`") })
+  end
+
+  def test_rejects_broad_disable_with_unspaced_trailing_explanation
+    errors = violations_in(
+      "# rubocop:disable all --https://github.com/openai/openai-ruby/issues/123"
+    )
+
+    assert_includes(errors.first, "disable all is forbidden")
+  end
+
   def test_rejects_department_wide_disables
     assert_includes(violations("disable Lint").first, "department-wide")
   end
@@ -68,10 +89,24 @@ class ValidateRuboCopDirectivesTest < Minitest::Test
     refute(RuboCopDirectiveGuard.ruby_source_path?("sorbet/rbi/gems/example.rbi", ""))
   end
 
+  def test_skips_tracked_sources_missing_from_the_worktree
+    status = Minitest::Mock.new
+    status.expect(:success?, true)
+
+    Open3.stub(:capture2, ["missing.rb\0", status]) do
+      assert_empty(RuboCopDirectiveGuard.tracked_ruby_sources)
+    end
+    status.verify
+  end
+
   private
 
   def violations(body)
     directive = "# rubocop:#{body}\n"
     RuboCopDirectiveGuard.violations_for("example.rb", directive)
+  end
+
+  def violations_in(directive)
+    RuboCopDirectiveGuard.violations_for("example.rb", "#{directive}\n")
   end
 end
