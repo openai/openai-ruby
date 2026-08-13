@@ -303,7 +303,7 @@ module OpenAI
                 if sensitive_header?(normalized_name)
                   "[REDACTED]"
                 elsif URL_HEADER_KEY.match?(normalized_name)
-                  sanitized_header_url(value)
+                  sanitized_url_value(value)
                 else
                   value
                 end
@@ -360,7 +360,7 @@ module OpenAI
           nil
         end
 
-        private def sanitized_header_url(value)
+        private def sanitized_url_value(value)
           safe_url(URI(value.to_s))
         rescue URI::InvalidURIError
           "[URL OMITTED]"
@@ -405,6 +405,8 @@ module OpenAI
             value.map { scrub_value(_1) }
           in String if opaque_string?(value)
             "[OPAQUE DATA OMITTED bytes=#{value.bytesize}]"
+          in String if value.match?(%r{\Ahttps?://}i)
+            sanitized_url_value(value)
           else
             value
           end

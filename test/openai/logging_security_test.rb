@@ -163,6 +163,136 @@ class LoggingSecurityTest < Minitest::Test
     end
   end
 
+  def test_debug_logs_redact_signed_urls_in_nested_json_request_and_response_bodies
+    body = JSON.generate(
+      input: [
+        {
+          content: [
+            {image_url: "https://azure.example.test/image.png?sv=2025-01-01&sig=azure-signature-secret"},
+            {
+              file_url: "https://aws.example.test/file.pdf?" \
+                        "X-Amz-Credential=aws-credential-secret&" \
+                        "X-Amz-Signature=aws-signature-secret&safe=visible"
+            },
+            {
+              url: "https://google.example.test/image.png?" \
+                   "X-Goog-Credential=google-credential-secret&X-Goog-Signature=google-signature-secret"
+            },
+            [
+              "HTTP://user:password@storage.example.test/nested?" \
+              "s%69g=nested-signature-secret&sig=repeated-signature-secret&monkey=harmless"
+            ]
+          ]
+        }
+      ]
+    )
+    headers = {"content-type" => "application/json"}
+    formatted_bodies = [
+      OpenAI::Internal::Logging.format_body(body, headers: headers),
+      OpenAI::Internal::Logging.format_observed_body(
+        body,
+        headers: headers,
+        complete: true,
+        total_bytes: body.bytesize
+      )
+    ]
+
+    formatted_bodies.each do |formatted|
+      assert_includes(formatted, "azure.example.test/image.png?sv=2025-01-01")
+      assert_includes(formatted, "aws.example.test/file.pdf")
+      assert_includes(formatted, "google.example.test/image.png")
+      assert_includes(formatted, "safe=visible")
+      assert_includes(formatted, "monkey=harmless")
+      assert_includes(formatted, "%5BREDACTED%5D")
+      refute_includes(formatted, "user:password@")
+
+      %w[
+        azure-signature-secret
+        aws-credential-secret
+        aws-signature-secret
+        google-credential-secret
+        google-signature-secret
+        nested-signature-secret
+        repeated-signature-secret
+      ].each { |secret| refute_includes(formatted, secret) }
+    end
+
+    assert_includes(body, "azure-signature-secret")
+    assert_includes(body, "aws-credential-secret")
+    assert_includes(body, "google-signature-secret")
+  end
+
+  def test_debug_logs_preserve_harmless_urls_and_omit_malformed_signed_urls
+    harmless = "https://storage.example.test/public/image.png?version=1&format=png"
+    without_query = "https://storage.example.test/public/image.png"
+    data_url = "data:image/png;base64,YWJj"
+    malformed = "https://storage.example.test/private image.png?sig=malformed-signature-secret"
+    malformed_percent = "https://storage.example.test/%ZZ?sig=malformed-percent-secret"
+    formatted = OpenAI::Internal::Logging.format_body(
+      JSON.generate(
+        url: harmless,
+        image_url: malformed,
+        file_url: malformed_percent,
+        preview_url: data_url,
+        public_url: without_query,
+        description: "ordinary text"
+      ),
+      headers: {"content-type" => "application/json"}
+    )
+
+    assert_equal(
+      {
+        "url" => harmless,
+        "image_url" => "[URL OMITTED]",
+        "file_url" => "[URL OMITTED]",
+        "preview_url" => data_url,
+        "public_url" => without_query,
+        "description" => "ordinary text"
+      },
+      JSON.parse(formatted)
+    )
+    refute_includes(formatted, "malformed-signature-secret")
+    refute_includes(formatted, "malformed-percent-secret")
+  end
+
+  def test_responses_create_redacts_signed_urls_without_changing_request_or_response
+    image_url = "https://storage.example.test/private/image.png?sv=2025-01-01&sig=request-signature-secret"
+    response_url = "https://storage.example.test/private/output.png?sig=response-signature-secret"
+    output = StringIO.new
+    response = OpenAI::HTTPClient::Response.new(
+      status: 200,
+      headers: {"content-type" => "application/json", "x-request-id" => "req_signed_url"},
+      body: JSON.generate(id: "resp_signed_url", output: [], metadata: {download_url: response_url})
+    )
+    request = nil
+    transport = Minitest::Mock.new(Object.new)
+    transport.expect(:execute, response) do |value|
+      request = value
+      value.is_a?(OpenAI::HTTPClient::Request)
+    end
+    client = OpenAI::Client.new(
+      api_key: "test-key",
+      base_url: "https://example.com/v1",
+      http_client: transport,
+      logger: Logger.new(output),
+      log_level: :debug
+    )
+
+    result = client.responses.create(
+      model: "gpt-4.1",
+      input: [{role: "user", content: [{type: "input_image", image_url: image_url}]}]
+    )
+
+    assert_mock(transport)
+    assert_equal(image_url, JSON.parse(request.body).dig("input", 0, "content", 0, "image_url"))
+    assert_equal(response_url, result.metadata[:download_url])
+    assert_includes(output.string, "storage.example.test/private/image.png?sv=2025-01-01")
+    assert_includes(output.string, "storage.example.test/private/output.png")
+    assert_includes(output.string, "%5BREDACTED%5D")
+    refute_includes(output.string, "request-signature-secret")
+    refute_includes(output.string, "response-signature-secret")
+  end
+
   private def logged_request(log_level:, query: nil, headers: nil, body: nil)
     output = StringIO.new
     logger = Logger.new(output)
