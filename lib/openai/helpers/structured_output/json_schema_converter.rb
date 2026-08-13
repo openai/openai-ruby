@@ -98,7 +98,9 @@ module OpenAI
               }
               defs.store(type, stored)
               schema = blk.call
-              escaped_name = path.join("/").gsub("~", "~0").gsub("/", "~1")
+              definition_name = path.map { _1.gsub("~", "~0").gsub("/", "~1") }.join("/")
+              pointer_token = definition_name.gsub("~", "~0").gsub("/", "~1")
+              escaped_name = URI::RFC2396_PARSER.escape(pointer_token, /[^A-Za-z0-9._~-]/)
               ref_path.replace("#/$defs/#{escaped_name}")
               stored.update(schema)
               ref
@@ -142,7 +144,8 @@ module OpenAI
             end
 
             xformed = reused_defs.transform_keys do
-              _1.delete_prefix("#/$defs/").gsub("~1", "/").gsub("~0", "~")
+              pointer_token = URI::RFC2396_PARSER.unescape(_1.delete_prefix("#/$defs/"))
+              pointer_token.gsub("~1", "/").gsub("~0", "~")
             end
             xformed.empty? ? schema : {"$defs": xformed}.update(schema)
           end

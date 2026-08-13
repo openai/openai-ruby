@@ -35,6 +35,26 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
     required :nested_profiles, AliasedEnvelope, api_name: :"nested/profiles~value"
   end
 
+  class FragmentAliasEnvelope < OpenAI::BaseModel
+    required :primary_profile, AliasedProfile, api_name: :"primary#name ?%é"
+    required :backup_profile, AliasedProfile, api_name: :backupProfile
+  end
+
+  class NestedCollisionProfile < OpenAI::BaseModel
+    required :employee_id, Integer, api_name: :employeeId
+  end
+
+  class NestedCollisionContainer < OpenAI::BaseModel
+    required :profile, NestedCollisionProfile, api_name: :b
+    required :backup_profile, NestedCollisionProfile, api_name: :backup
+  end
+
+  class DefinitionPathCollisionEnvelope < OpenAI::BaseModel
+    required :direct_profile, AliasedProfile, api_name: :"a/.b"
+    required :backup_profile, AliasedProfile, api_name: :directBackup
+    required :nested_profiles, NestedCollisionContainer, api_name: :a
+  end
+
   def before_all
     super
     WebMock.enable!
@@ -101,9 +121,9 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
 
   def test_api_names_are_escaped_as_json_pointer_tokens
     schema = EscapedAliasEnvelope.to_json_schema
-    expected_ref = "#/$defs/.primary~1name~0value"
+    expected_ref = "#/$defs/.primary~01name~00value"
 
-    assert_equal([".primary/name~value"], schema.fetch(:$defs).keys)
+    assert_equal([".primary~1name~0value"], schema.fetch(:$defs).keys)
     assert_equal(expected_ref, schema.dig(:properties, :"primary/name~value", :$ref))
     assert_equal(expected_ref, schema.dig(:properties, :"backup~name/value", :$ref))
     assert_equal(["primary/name~value", "backup~name/value"], schema.fetch(:required))
@@ -111,13 +131,36 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
 
   def test_nested_definition_paths_are_single_json_pointer_tokens
     schema = DeepAliasedEnvelope.to_json_schema
-    expected_name = ".nested/profiles~value/.primaryProfile"
-    expected_ref = "#/$defs/.nested~1profiles~0value~1.primaryProfile"
+    expected_name = ".nested~1profiles~0value/.primaryProfile"
+    expected_ref = "#/$defs/.nested~01profiles~00value~1.primaryProfile"
     nested = schema.dig(:properties, :"nested/profiles~value")
 
     assert_equal([expected_name], schema.fetch(:$defs).keys)
     assert_equal(expected_ref, nested.dig(:properties, :primaryProfile, :$ref))
     assert_equal(expected_ref, nested.dig(:properties, :backupProfile, :$ref))
+  end
+
+  def test_definition_references_percent_encode_uri_fragments
+    schema = FragmentAliasEnvelope.to_json_schema
+    expected_ref = "#/$defs/.primary%23name%20%3F%25%C3%A9"
+
+    assert_equal([".primary#name ?%é"], schema.fetch(:$defs).keys)
+    assert_equal(expected_ref, schema.dig(:properties, :"primary#name ?%é", :$ref))
+    assert_equal(expected_ref, schema.dig(:properties, :backupProfile, :$ref))
+  end
+
+  def test_alias_delimiters_cannot_collide_with_nested_definition_paths
+    schema = DefinitionPathCollisionEnvelope.to_json_schema
+    definitions = schema.fetch(:$defs)
+    nested = schema.dig(:properties, :a)
+
+    assert_equal([".a/.b", ".a~1.b"], definitions.keys.sort)
+    assert_equal(AliasedProfile.to_json_schema, definitions.fetch(".a~1.b"))
+    assert_equal(NestedCollisionProfile.to_json_schema, definitions.fetch(".a/.b"))
+    assert_equal("#/$defs/.a~01.b", schema.dig(:properties, :"a/.b", :$ref))
+    assert_equal("#/$defs/.a~01.b", schema.dig(:properties, :directBackup, :$ref))
+    assert_equal("#/$defs/.a~1.b", nested.dig(:properties, :b, :$ref))
+    assert_equal("#/$defs/.a~1.b", nested.dig(:properties, :backup, :$ref))
   end
 
   def test_converter_round_trips_ruby_and_api_names
