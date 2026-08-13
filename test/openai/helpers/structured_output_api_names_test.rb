@@ -16,6 +16,11 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
     required :backup_profile, AliasedProfile, api_name: :backupProfile
   end
 
+  class AliasedProfileCollection < OpenAI::BaseModel
+    required :primary_profile, AliasedProfile, api_name: :primaryProfile
+    required :profiles, OpenAI::ArrayOf[AliasedProfile]
+  end
+
   class AliasedNameCollision < OpenAI::BaseModel
     required :display_name, String, api_name: :displayName
     required :displayName, String, api_name: :legacyDisplayName
@@ -253,5 +258,53 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
     assert_instance_of(AliasedProfile, parsed)
     assert_equal("Ada", parsed.display_name)
     assert_nil(parsed.middle_name)
+  end
+
+  def test_public_structured_output_endpoints_materialize_nested_models
+    profile = {displayName: "Ada", middleName: nil}
+    content = {primaryProfile: profile, profiles: [profile]}.to_json
+
+    stub_request(:post, "http://localhost/chat/completions").to_return_json(
+      status: 200,
+      body: {
+        id: "chatcmpl_nested",
+        choices: [{finish_reason: "stop", index: 0, message: {content: content, role: "assistant"}}],
+        created: 1_700_000_000,
+        model: "gpt-4o-mini",
+        object: "chat.completion"
+      }
+    )
+    stub_request(:post, "http://localhost/responses").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_nested",
+        output: [
+          {
+            id: "msg_nested",
+            content: [{annotations: [], text: content, type: "output_text"}],
+            role: "assistant",
+            status: "completed",
+            type: "message"
+          }
+        ]
+      }
+    )
+
+    chat = @client.chat.completions.create(
+      messages: [{content: "Generate profiles", role: :user}],
+      model: "gpt-4o-mini",
+      response_format: AliasedProfileCollection
+    )
+    response = @client.responses.create(
+      model: "gpt-4o-mini", input: "Generate profiles", text: AliasedProfileCollection
+    )
+
+    [chat.choices.first.message.parsed, response.output.first.content.first.parsed].each do |parsed|
+      assert_instance_of(AliasedProfileCollection, parsed)
+      assert_instance_of(AliasedProfile, parsed.primary_profile)
+      assert_instance_of(AliasedProfile, parsed.profiles.fetch(0))
+      assert_equal("Ada", parsed.primary_profile.display_name)
+      assert_equal("Ada", parsed.profiles.fetch(0).display_name)
+    end
   end
 end
