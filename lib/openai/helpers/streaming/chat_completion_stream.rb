@@ -508,8 +508,7 @@ module OpenAI
 
                 index = delta_entry[:index] || delta_entry["index"]
                 if index.nil?
-                  raise RuntimeError,
-                        "Expected list delta entry to have an `index` key; #{delta_entry}"
+                  raise "Expected list delta entry to have an `index` key; #{delta_entry}"
                 end
                 unless index.is_a?(Integer)
                   raise TypeError,
