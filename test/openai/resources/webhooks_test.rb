@@ -3,6 +3,7 @@
 require_relative "../test_helper"
 require "base64"
 require "openssl"
+require "stringio"
 
 class OpenAI::Test::Resources::WebhooksTest < OpenAI::Test::ResourceTest
   def setup
@@ -77,6 +78,85 @@ class OpenAI::Test::Resources::WebhooksTest < OpenAI::Test::ResourceTest
     assert_kind_of(OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent, event)
     assert_equal("evt_685c059ae3a481909bdc86819b066fb6", event.id)
     assert_equal("resp_123", event.data.id)
+  end
+
+  def test_unwrap_with_rack_request_environment
+    request_environment = {
+      "REQUEST_METHOD" => "POST",
+      "PATH_INFO" => "/webhook",
+      "CONTENT_TYPE" => "application/json",
+      "rack.input" => StringIO.new(@test_payload),
+      "HTTP_WEBHOOK_SIGNATURE" => @webhook_signature,
+      "HTTP_WEBHOOK_TIMESTAMP" => @fixed_timestamp,
+      "HTTP_WEBHOOK_ID" => @webhook_id
+    }
+
+    assert_nil(@webhook_service.verify_signature(@test_payload, request_environment))
+
+    event = @webhook_service.unwrap(request_environment.fetch("rack.input").read, request_environment)
+
+    assert_kind_of(OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent, event)
+    assert_equal("evt_685c059ae3a481909bdc86819b066fb6", event.id)
+  end
+
+  def test_verify_signature_with_title_case_headers
+    headers = {
+      "Webhook-Signature" => @webhook_signature,
+      "Webhook-Timestamp" => @fixed_timestamp,
+      "Webhook-Id" => @webhook_id
+    }
+
+    assert_nil(@webhook_service.verify_signature(@test_payload, headers))
+  end
+
+  def test_verify_signature_with_snake_case_symbol_headers
+    headers = {
+      webhook_signature: @webhook_signature,
+      webhook_timestamp: @fixed_timestamp,
+      webhook_id: @webhook_id
+    }
+
+    assert_nil(@webhook_service.verify_signature(@test_payload, headers))
+  end
+
+  def test_verify_signature_rejects_conflicting_header_aliases
+    headers = {
+      "webhook-signature" => @webhook_signature,
+      "HTTP_WEBHOOK_SIGNATURE" => "v1,attacker-controlled-signature",
+      "webhook-timestamp" => @fixed_timestamp,
+      "webhook-id" => @webhook_id
+    }
+
+    error = assert_raises(ArgumentError) do
+      @webhook_service.verify_signature(@test_payload, headers)
+    end
+
+    assert_match(/conflicting.*webhook-signature/i, error.message)
+  end
+
+  def test_verify_signature_accepts_matching_header_aliases
+    headers = {
+      "webhook-signature" => @webhook_signature,
+      "HTTP_WEBHOOK_SIGNATURE" => @webhook_signature,
+      "webhook-timestamp" => @fixed_timestamp,
+      "webhook-id" => @webhook_id
+    }
+
+    assert_nil(@webhook_service.verify_signature(@test_payload, headers))
+  end
+
+  def test_readme_webhook_examples_configure_required_api_credentials
+    readme = File.read(File.expand_path("../../../README.md", __dir__))
+    webhook_section = readme.split("## Webhook Verification\n", 2).fetch(1)
+    webhook_section = webhook_section.split("\n### [Structured outputs]", 2).first
+    examples = webhook_section.scan(/```ruby\n(.*?)\n```/m).flatten
+
+    assert_equal(2, examples.length)
+    examples.each do |example|
+      assert_match(/api_key:\s*ENV\.fetch\(['"]OPENAI_API_KEY['"]\)/, example)
+      assert_match(/webhook_secret:\s*ENV\.fetch\(['"]OPENAI_WEBHOOK_SECRET['"]\)/, example)
+      assert_includes(example, "request.env")
+    end
   end
 
   def test_verify_signature_with_custom_tolerance

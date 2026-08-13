@@ -423,8 +423,11 @@ Note that the `body` parameter must be the raw JSON string sent from the server 
 require 'sinatra'
 require 'openai'
 
-# Set up the client with webhook secret from environment variable
-client = OpenAI::Client.new(webhook_secret: ENV['OPENAI_WEBHOOK_SECRET'])
+# Set up the client with API credentials and the webhook secret
+client = OpenAI::Client.new(
+  api_key: ENV.fetch('OPENAI_API_KEY'),
+  webhook_secret: ENV.fetch('OPENAI_WEBHOOK_SECRET')
+)
 
 post '/webhook' do
   request_body = request.body.read
@@ -462,8 +465,11 @@ require 'sinatra'
 require 'json'
 require 'openai'
 
-# Set up the client with webhook secret from environment variable
-client = OpenAI::Client.new(webhook_secret: ENV['OPENAI_WEBHOOK_SECRET'])
+# Set up the client with API credentials and the webhook secret
+client = OpenAI::Client.new(
+  api_key: ENV.fetch('OPENAI_API_KEY'),
+  webhook_secret: ENV.fetch('OPENAI_WEBHOOK_SECRET')
+)
 
 post '/webhook' do
   request_body = request.body.read
