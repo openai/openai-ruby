@@ -934,7 +934,9 @@ The SDK includes a Tapioca DSL compiler for application-defined subclasses of
 `OpenAI::BaseModel`. When Tapioca loads your application, running
 `bundle exec tapioca dsl` generates typed readers for fields declared with
 `required`, including nested models, arrays, enums, unions, and fields declared
-with `nil?: true`.
+with `nil?: true`. Structured-output model readers materialize these values
+even when a model is constructed or assigned with hashes. Accessing a field
+with `[]` or `to_h` still returns the original caller-provided value.
 
 Response `parsed` fields can contain different application-defined models, so
 their generated SDK type remains broad. Cast a parsed value to the structured
@@ -943,6 +945,7 @@ output model supplied with the request before accessing its generated readers:
 ```ruby
 event = T.cast(content.parsed, CalendarEvent)
 puts(event.name)
+puts(event.participants.fetch(0).first_name)
 ```
 
 The compiler is only loaded by Tapioca; using the SDK normally still does not

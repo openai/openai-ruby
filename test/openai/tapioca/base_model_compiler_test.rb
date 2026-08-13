@@ -39,6 +39,44 @@ class OpenAI::Test::BaseModelCompilerTest < Minitest::Test
     rbi = context.rbi_for("OpenAIBaseModelCompilerFixtures::Event")
     participant_rbi = context.rbi_for("OpenAIBaseModelCompilerFixtures::Participant")
 
+    participant = {name: "Ada", nickname: nil}
+    participants = [{name: "Grace", nickname: nil}]
+    payload = {
+      active: true,
+      description: nil,
+      participant: participant,
+      participants: participants,
+      aliases: [],
+      status: "confirmed",
+      detail: participant
+    }
+    constructed = OpenAIBaseModelCompilerFixtures::Event.new(payload)
+    abort("constructed reader does not match its RBI") unless constructed.participant.is_a?(
+      OpenAIBaseModelCompilerFixtures::Participant
+    )
+    abort("constructed array reader does not match its RBI") unless constructed.participants.all?(
+      OpenAIBaseModelCompilerFixtures::Participant
+    )
+    abort("constructed raw value was replaced") unless constructed[:participant].equal?(participant)
+
+    replacement = {name: "Katherine", nickname: nil}
+    constructed.participant = replacement
+    abort("assigned reader does not match its RBI") unless constructed.participant.is_a?(
+      OpenAIBaseModelCompilerFixtures::Participant
+    )
+    abort("assigned raw value was replaced") unless constructed[:participant].equal?(replacement)
+
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+    parsed = OpenAI::Internal::Type::Converter.coerce(
+      OpenAIBaseModelCompilerFixtures::Event,
+      payload,
+      state: state
+    )
+    abort("parsed reader does not match its RBI") unless parsed.participant.is_a?(
+      OpenAIBaseModelCompilerFixtures::Participant
+    )
+    abort("parsed model identity changed") unless parsed.participant.equal?(parsed[:participant])
+
     require "tmpdir"
     Dir.mktmpdir("openai-base-model-compiler-test") do |dir|
       rbi_path = File.join(dir, "event.rbi")

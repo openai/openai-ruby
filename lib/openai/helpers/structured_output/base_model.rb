@@ -58,6 +58,29 @@ module OpenAI
         end
 
         class << self
+          def required(name_sym, type_info, spec = {})
+            super
+
+            type = known_fields.fetch(name_sym).fetch(:type_fn)
+            # Preserve the original reader's validation without replacing raw field storage.
+            readers = @structured_output_readers ||= Module.new.tap { prepend(_1) }
+            readers.define_method(name_sym) do
+              value = super()
+              target = type.call
+
+              case value
+              when nil, target
+                value
+              else
+                OpenAI::Internal::Type::Converter.coerce(
+                  target,
+                  value,
+                  state: OpenAI::Internal::Type::Converter.new_coerce_state(translate_names: false)
+                )
+              end
+            end
+          end
+
           def optional(...)
             message = "`optional` is not supported for structured output APIs, use `#required` with `nil?: true` instead"
             raise RuntimeError.new(message)

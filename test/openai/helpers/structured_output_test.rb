@@ -36,6 +36,17 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
     required :type, const: :m3, doc: "Model M3"
   end
 
+  class NestedParticipant < OpenAI::BaseModel
+    required :name, String
+  end
+
+  class NestedEvent < OpenAI::BaseModel
+    required :participant, NestedParticipant
+    required :participants, OpenAI::ArrayOf[NestedParticipant]
+    required :choice, OpenAI::UnionOf[String, NestedParticipant]
+    required :status, OpenAI::EnumOf[:confirmed, :tentative]
+  end
+
   U1 = OpenAI::Helpers::StructuredOutput::UnionOf[Integer, A1]
   U2 = OpenAI::Helpers::StructuredOutput::UnionOf[M2, M3]
   U3 = OpenAI::Helpers::StructuredOutput::UnionOf[A1, A1]
@@ -68,6 +79,70 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
         optional :name, String
       end
     end
+  end
+
+  def test_nested_readers_materialize_constructor_values_without_changing_raw_storage
+    participant = {name: "Ada"}
+    participants = [{name: "Grace"}]
+    choice = {name: "Katherine"}
+    event = NestedEvent.new(
+      participant: participant,
+      participants: participants,
+      choice: choice,
+      status: "confirmed"
+    )
+
+    assert_instance_of(NestedParticipant, event.participant)
+    assert_equal("Ada", event.participant.name)
+    assert_instance_of(NestedParticipant, event.participants.fetch(0))
+    assert_instance_of(NestedParticipant, event.choice)
+    assert_equal(:confirmed, event.status)
+    assert_same(participant, event[:participant])
+    assert_same(participants, event.to_h.fetch(:participants))
+    assert_same(choice, event[:choice])
+  end
+
+  def test_nested_readers_materialize_assigned_values_without_changing_raw_storage
+    event = NestedEvent.new
+    participant = {name: "Ada"}
+    participants = [{name: "Grace"}]
+    choice = {name: "Katherine"}
+
+    event.participant = participant
+    event.participants = participants
+    event.choice = choice
+    event.status = "tentative"
+
+    assert_instance_of(NestedParticipant, event.participant)
+    assert_instance_of(NestedParticipant, event.participants.fetch(0))
+    assert_instance_of(NestedParticipant, event.choice)
+    assert_equal(:tentative, event.status)
+    assert_same(participant, event.to_h.fetch(:participant))
+    assert_same(participants, event[:participants])
+    assert_same(choice, event.to_h.fetch(:choice))
+  end
+
+  def test_nested_readers_preserve_materialized_response_values
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+    event = OpenAI::Internal::Type::Converter.coerce(
+      NestedEvent,
+      {
+        participant: {name: "Ada"},
+        participants: [{name: "Grace"}],
+        choice: {name: "Katherine"},
+        status: "confirmed"
+      },
+      state: state
+    )
+
+    assert_nil(state.fetch(:error))
+    assert_instance_of(NestedParticipant, event.participant)
+    assert_instance_of(NestedParticipant, event.participants.fetch(0))
+    assert_instance_of(NestedParticipant, event.choice)
+    assert_equal(:confirmed, event.status)
+    assert_same(event[:participant], event.participant)
+    assert_same(event[:participants], event.participants)
+    assert_same(event[:choice], event.choice)
   end
 
   def test_to_schema
