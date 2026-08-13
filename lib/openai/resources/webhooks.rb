@@ -43,10 +43,20 @@ module OpenAI
                 "or passed to this function"
         end
 
-        # Extract required headers
-        signature_header = headers["webhook-signature"] || headers[:webhook_signature]
-        timestamp_header = headers["webhook-timestamp"] || headers[:webhook_timestamp]
-        webhook_id = headers["webhook-id"] || headers[:webhook_id]
+        header_names = %w[webhook-signature webhook-timestamp webhook-id]
+        normalized_headers = {}
+        headers.each do |name, value|
+          name = name.to_s.downcase.delete_prefix("http_").tr("_", "-")
+          next unless header_names.include?(name)
+
+          if normalized_headers.key?(name) && normalized_headers[name] != value
+            raise ArgumentError, "Conflicting values for #{name} header"
+          end
+
+          normalized_headers[name] = value
+        end
+
+        signature_header, timestamp_header, webhook_id = normalized_headers.values_at(*header_names)
 
         if signature_header.nil?
           raise ArgumentError, "Missing required webhook-signature header"
