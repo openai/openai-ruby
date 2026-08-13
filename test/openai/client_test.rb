@@ -893,6 +893,12 @@ class OpenAITest < Minitest::Test
         "X-Password" => "custom-password",
         "X-Idempotency-Api-Key" => "custom-idempotency-api-key",
         "X-Idempotency-Token" => "custom-idempotency-token",
+        "X-Api-Key-Idempotency-Key" => "custom-prefixed-api-key",
+        "X-Auth-Token-Idempotency-Key" => "custom-prefixed-token",
+        "X-Api-Key-Other-Idempotency-Key" => "custom-embedded-api-key",
+        Vendor_Token_Idempotency_Key: "custom-underscore-prefixed-token",
+        "Vendor_Idempotency_Token" => "custom-underscore-suffixed-token",
+        "Authorization-Idempotency-Key" => "custom-prefixed-authorization",
         Cookie: "session=private",
         "Proxy-Authorization": "Basic proxy-secret",
         "Set-Cookie" => "session=private-response",
@@ -919,19 +925,31 @@ class OpenAITest < Minitest::Test
     assert_equal("custom-password", first_headers.fetch("x-password"))
     assert_equal("custom-idempotency-api-key", first_headers.fetch("x-idempotency-api-key"))
     assert_equal("custom-idempotency-token", first_headers.fetch("x-idempotency-token"))
+    assert_equal("custom-prefixed-api-key", first_headers.fetch("x-api-key-idempotency-key"))
+    assert_equal("custom-prefixed-token", first_headers.fetch("x-auth-token-idempotency-key"))
+    assert_equal("custom-embedded-api-key", first_headers.fetch("x-api-key-other-idempotency-key"))
+    assert_equal("custom-underscore-prefixed-token", first_headers.fetch("vendor_token_idempotency_key"))
+    assert_equal("custom-underscore-suffixed-token", first_headers.fetch("vendor_idempotency_token"))
+    assert_equal("custom-prefixed-authorization", first_headers.fetch("authorization-idempotency-key"))
 
     redirected_headers = requests.fetch(1).headers
     sensitive_headers = %w[
       api-key
       api_key
       authorization
+      authorization-idempotency-key
       cookie
       host
       proxy-authorization
       set-cookie
+      vendor_idempotency_token
+      vendor_token_idempotency_key
       x-amz-security-token
       x-api-key
+      x-api-key-idempotency-key
+      x-api-key-other-idempotency-key
       x-auth-token
+      x-auth-token-idempotency-key
       x-client-secret
       x-goog-api-key
       x-idempotency-api-key
