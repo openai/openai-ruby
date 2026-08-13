@@ -21,7 +21,7 @@ module OpenAI
       OPAQUE_STRING_BYTES = 1_024
       SENSITIVE_BODY_KEY = /(?:api[-_]?key|authorization|credential|password|secret|signature|token)/i
       SENSITIVE_QUERY_KEY =
-        /(?:\A|[-_])(?:api[-_]?key|authorization|credential|key|password|secret|sig|signature|token)\z/i
+        /(?:(?:\A|[-_\[])(?:key|sig)|api[-_]?key|authorization|credential|password|secret|signature|token)(?:\]|\z)/i
       URL_HEADER_KEY = /(?:\A|[-_])(?:location|url|uri)\z|\A(?:link|refresh)\z/i
 
       class Context
@@ -357,11 +357,13 @@ module OpenAI
             return JSON.generate(scrub_value(parsed))
           end
 
-          text = body.byteslice(0, MAX_BODY_BYTES).to_s
-          text = text.encode(Encoding::UTF_8, invalid: :replace, undef: :replace)
-          return text.inspect if total_bytes <= MAX_BODY_BYTES
+          unless content_type.match?(%r{\Aapplication/x-www-form-urlencoded(?:;|\z)}i)
+            return "[TEXT BODY OMITTED] bytes=#{total_bytes}"
+          end
+          return "[FORM BODY OMITTED] bytes=#{total_bytes} reason=too_large" if total_bytes > MAX_BODY_BYTES
 
-          "#{text.inspect} [TRUNCATED bytes=#{total_bytes}]"
+          sanitized = sanitized_query(body)
+          sanitized.nil? ? "[INVALID FORM BODY OMITTED] bytes=#{total_bytes}" : sanitized.inspect
         rescue JSON::ParserError
           "[INVALID JSON BODY OMITTED] bytes=#{total_bytes}"
         end
