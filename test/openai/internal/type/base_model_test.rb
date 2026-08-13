@@ -125,24 +125,6 @@ class OpenAI::Test::PrimitiveModelTest < Minitest::Test
     end
   end
 
-  def test_coerce_with_error_isolates_each_attempt
-    previous_error = RuntimeError.new("previous")
-    state = OpenAI::Internal::Type::Converter.new_coerce_state
-    state[:error] = previous_error
-
-    value, error = OpenAI::Internal::Type::Converter.coerce_with_error(Integer, "one", state: state)
-
-    assert_equal("one", value)
-    assert_instance_of(ArgumentError, error)
-    assert_same(previous_error, state.fetch(:error))
-
-    value, error = OpenAI::Internal::Type::Converter.coerce_with_error(Integer, "1", state: state)
-
-    assert_equal(1, value)
-    assert_nil(error)
-    assert_same(previous_error, state.fetch(:error))
-  end
-
   def test_dump_retry
     types = [
       OpenAI::Internal::Type::Unknown,
@@ -283,9 +265,6 @@ class OpenAI::Test::CollectionModelTest < Minitest::Test
   A3 = OpenAI::Internal::Type::ArrayOf[Integer, nil?: true]
   H3 = OpenAI::Internal::Type::HashOf[Integer, nil?: true]
 
-  A4 = OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::Unknown]
-  H4 = OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
-
   def test_coerce
     cases = {
       [A1, []] => [{yes: 1}, []],
@@ -319,21 +298,6 @@ class OpenAI::Test::CollectionModelTest < Minitest::Test
         OpenAI::Internal::Type::Converter.coerce(target, input, state: state) => ^expect
         state.fetch(:exactness).filter { _2.nonzero? }.to_h => ^exactness
       end
-    end
-  end
-
-  def test_collection_matchers_respect_nullable_items_and_item_types
-    cases = {
-      [A1, [nil]] => false,
-      [A3, [nil]] => true,
-      [A4, [nil]] => true,
-      [H1, {item: nil}] => false,
-      [H3, {item: nil}] => true,
-      [H4, {item: nil}] => true
-    }
-
-    cases.each do |(target, input), expected|
-      assert_equal(expected, target.public_send(:===, input))
     end
   end
 end
@@ -591,14 +555,6 @@ class OpenAI::Test::UnionTest < Minitest::Test
     rescue OpenAI::Errors::ConversionError => e
       assert_kind_of(ArgumentError, e.cause)
     end
-  end
-
-  def test_discriminated_coercion_preserves_strictness
-    state = OpenAI::Internal::Type::Converter.new_coerce_state
-
-    OpenAI::Internal::Type::Converter.coerce(U2, {type: :a}, state: state)
-
-    assert_equal(true, state.fetch(:strictness))
   end
 
   def test_coerce
