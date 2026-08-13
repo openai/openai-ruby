@@ -82,10 +82,6 @@ Lint/EmptyInPattern:
   Exclude:
     - "test/**/*"
 
-Lint/MissingSuper:
-  Exclude:
-    - "**/*.rbi"
-
 # Disabled for safety reasons, this option changes code semantics.
 Lint/UnusedMethodArgument:
   AutoCorrect: false
