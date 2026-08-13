@@ -10,8 +10,11 @@ class LoggingSecurityTest < Minitest::Test
       "clientSecret" => "camel-client-secret",
       "sessionToken" => "camel-session-secret",
       "bearerToken" => "camel-bearer-secret",
+      "access_token[]" => "array-access-secret",
+      "clientSecret[]" => "array-client-secret",
       "credentials[accessToken]" => "nested-access-secret",
-      "credentials[client_secret]" => "nested-client-secret"
+      "credentials[client_secret]" => "nested-client-secret",
+      "credentials[access_token][]" => "nested-array-secret"
     }
 
     [:info, :debug].each do |level|
@@ -39,6 +42,7 @@ class LoggingSecurityTest < Minitest::Test
       "https://user:password@example.com/probe?" \
       "access%54oken=encoded-access-secret&" \
       "credentials%5Bclient%53ecret%5D=encoded-client-secret&" \
+      "access_token%5B%5D=encoded-array-secret&" \
       "safe=visible"
     )
 
@@ -47,6 +51,7 @@ class LoggingSecurityTest < Minitest::Test
       assert_includes(formatted, "%5BREDACTED%5D")
       refute_includes(formatted, "encoded-access-secret")
       refute_includes(formatted, "encoded-client-secret")
+      refute_includes(formatted, "encoded-array-secret")
       refute_includes(formatted, "user:password@")
     end
   end
@@ -54,6 +59,7 @@ class LoggingSecurityTest < Minitest::Test
   def test_debug_logs_structurally_redact_form_urlencoded_request_bodies
     body =
       "client_secret=client-form-secret&access_token=access-form-secret&" \
+      "access_token%5B%5D=array-form-secret&" \
       "credentials%5BsessionToken%5D=nested-form-secret&" \
       "safe=hello+world&repeat=one&repeat=two"
     output, request = logged_request(
@@ -66,16 +72,20 @@ class LoggingSecurityTest < Minitest::Test
     assert_includes(output, "request started")
     assert_includes(output, "client_secret=%5BREDACTED%5D")
     assert_includes(output, "access_token=%5BREDACTED%5D")
+    assert_includes(output, "access_token%5B%5D=%5BREDACTED%5D")
     assert_includes(output, "credentials%5BsessionToken%5D=%5BREDACTED%5D")
     assert_includes(output, "safe=hello+world")
     assert_includes(output, "repeat=one&repeat=two")
     refute_includes(output, "client-form-secret")
     refute_includes(output, "access-form-secret")
+    refute_includes(output, "array-form-secret")
     refute_includes(output, "nested-form-secret")
   end
 
   def test_debug_logs_structurally_redact_form_urlencoded_response_bodies
-    body = "accessToken=response-access-secret&credentials%5Bclient_secret%5D=response-client-secret&safe=visible"
+    body =
+      "accessToken=response-access-secret&access_token%5B%5D=response-array-secret&" \
+      "credentials%5Bclient_secret%5D=response-client-secret&safe=visible"
     formatted = OpenAI::Internal::Logging.format_observed_body(
       body,
       headers: {"content-type" => "application/x-www-form-urlencoded"},
@@ -84,9 +94,11 @@ class LoggingSecurityTest < Minitest::Test
     )
 
     assert_includes(formatted, "accessToken=%5BREDACTED%5D")
+    assert_includes(formatted, "access_token%5B%5D=%5BREDACTED%5D")
     assert_includes(formatted, "credentials%5Bclient_secret%5D=%5BREDACTED%5D")
     assert_includes(formatted, "safe=visible")
     refute_includes(formatted, "response-access-secret")
+    refute_includes(formatted, "response-array-secret")
     refute_includes(formatted, "response-client-secret")
   end
 
