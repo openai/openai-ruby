@@ -167,8 +167,10 @@ module OpenAI
 
             # from undici
             if OpenAI::Internal::Util.uri_origin(url) != OpenAI::Internal::Util.uri_origin(location)
-              drop = %w[authorization cookie host proxy-authorization]
-              request = {**request, headers: request.fetch(:headers).except(*drop)}
+              headers = request.fetch(:headers).reject do |name, _|
+                name == "host" || OpenAI::Internal::Logging.credential_header?(name)
+              end
+              request = {**request, headers: headers}
             end
 
             unless request_body_replayable?(request[:body])

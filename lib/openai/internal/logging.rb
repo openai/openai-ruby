@@ -267,15 +267,24 @@ module OpenAI
           value.to_s.dump.delete_prefix('"').delete_suffix('"')
         end
 
+        # @api private
+        def sensitive_header?(name)
+          normalized_name = name.to_s.downcase
+          REDACTED_HEADERS.include?(normalized_name) || SENSITIVE_QUERY_KEY.match?(normalized_name)
+        end
+
+        # @api private
+        def credential_header?(name)
+          normalized_name = name.to_s.downcase
+          normalized_name != "idempotency-key" && sensitive_header?(normalized_name)
+        end
+
         def format_headers(headers)
           redacted =
             headers.sort.to_h do |name, value|
               normalized_name = name.to_s.downcase
-              sensitive =
-                REDACTED_HEADERS.include?(normalized_name) ||
-                SENSITIVE_QUERY_KEY.match?(normalized_name)
               rendered =
-                if sensitive
+                if sensitive_header?(normalized_name)
                   "[REDACTED]"
                 elsif URL_HEADER_KEY.match?(normalized_name)
                   sanitized_header_url(value)

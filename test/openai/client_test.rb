@@ -762,7 +762,12 @@ class OpenAITest < Minitest::Test
       OpenAI::Client.new(
         base_url: "http://localhost",
         api_key: "My API Key",
-        admin_api_key: "My Admin API Key"
+        admin_api_key: "My Admin API Key",
+        default_headers: {
+          "api-key" => "custom-api-key",
+          :"X-API-Key" => "custom-x-api-key",
+          "X-Amz-Security-Token" => "custom-session-token"
+        }
       )
 
     assert_raises(OpenAI::Errors::APIConnectionError) do
@@ -778,8 +783,11 @@ class OpenAITest < Minitest::Test
 
     assert_equal("Bearer xyz", auth_header)
     assert_requested(:any, "http://localhost/redirected", times: OpenAI::Client::MAX_REDIRECTS) do
-      auth_header = _1.headers.transform_keys(&:downcase).fetch("authorization")
-      assert_equal("Bearer xyz", auth_header)
+      headers = _1.headers.transform_keys(&:downcase)
+      assert_equal("Bearer xyz", headers.fetch("authorization"))
+      assert_equal("custom-api-key", headers.fetch("api-key"))
+      assert_equal("custom-x-api-key", headers.fetch("x-api-key"))
+      assert_equal("custom-session-token", headers.fetch("x-amz-security-token"))
     end
   end
 
@@ -846,6 +854,87 @@ class OpenAITest < Minitest::Test
       %w[authorization cookie proxy-authorization].each { refute_includes(headers, _1) }
       assert_equal("example.com", headers["host"])
     end
+  end
+
+  def test_client_redirect_strips_credential_default_headers_with_custom_transport
+    source = "https://trusted.example/v1/models"
+    destination = "https://attacker.example/redirected"
+    requests = []
+    http_client = Minitest::Mock.new(OpenAI::HTTPClient.new)
+    redirect = OpenAI::HTTPClient::Response.new(
+      status: 302,
+      headers: {"location" => destination},
+      body: ""
+    )
+    success = OpenAI::HTTPClient::Response.new(
+      status: 200,
+      headers: {"content-type" => "application/json"},
+      body: "{}"
+    )
+    [redirect, success].each do |response|
+      http_client.expect(:execute, response) do |request|
+        requests << request
+        true
+      end
+    end
+
+    client = OpenAI::Client.new(
+      api_key: "standard-client-key",
+      base_url: "https://trusted.example/v1",
+      http_client: http_client,
+      default_headers: {
+        "Api-Key" => "custom-api-key",
+        :"X-API-Key" => "custom-x-api-key",
+        "X-Amz-Security-Token" => "custom-session-token",
+        :"X-Auth-Token" => "custom-auth-token",
+        "X-Goog-API-Key" => "custom-google-key",
+        :"X-Client-Secret" => "custom-client-secret",
+        api_key: "custom-underscore-key",
+        "X-Password" => "custom-password",
+        Cookie: "session=private",
+        "Proxy-Authorization": "Basic proxy-secret",
+        "Set-Cookie" => "session=private-response",
+        Host: "trusted.example",
+        "Idempotency-Key" => "retry-safe-id",
+        "X-Trace-Id" => "safe-trace"
+      }
+    )
+    client.request(method: :get, path: "models", security: {bearer_auth: true})
+
+    http_client.verify
+    assert_equal([source, destination], requests.map { _1.url.to_s })
+    first_headers = requests.fetch(0).headers
+    assert_equal("Bearer standard-client-key", first_headers.fetch("authorization"))
+    assert_equal("custom-api-key", first_headers.fetch("api-key"))
+    assert_equal("custom-x-api-key", first_headers.fetch("x-api-key"))
+    assert_equal("custom-session-token", first_headers.fetch("x-amz-security-token"))
+    assert_equal("custom-auth-token", first_headers.fetch("x-auth-token"))
+    assert_equal("custom-google-key", first_headers.fetch("x-goog-api-key"))
+    assert_equal("custom-client-secret", first_headers.fetch("x-client-secret"))
+    assert_equal("custom-underscore-key", first_headers.fetch("api_key"))
+    assert_equal("custom-password", first_headers.fetch("x-password"))
+
+    redirected_headers = requests.fetch(1).headers
+    sensitive_headers = %w[
+      api-key
+      api_key
+      authorization
+      cookie
+      host
+      proxy-authorization
+      set-cookie
+      x-amz-security-token
+      x-api-key
+      x-auth-token
+      x-client-secret
+      x-goog-api-key
+      x-password
+    ]
+    sensitive_headers.each do |header|
+      refute_includes(redirected_headers, header)
+    end
+    assert_equal("retry-safe-id", redirected_headers.fetch("idempotency-key"))
+    assert_equal("safe-trace", redirected_headers.fetch("x-trace-id"))
   end
 
   def test_default_headers
