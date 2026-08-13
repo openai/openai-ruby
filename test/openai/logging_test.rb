@@ -302,6 +302,8 @@ class LoggingTest < Minitest::Test
       "X-Amz-Security-Token" => "aws-secret",
       "X-Client-Secret" => "client-header-secret",
       "Idempotency-Key" => "private-idempotency-key",
+      "X-Idempotency-Key" => "private-prefixed-idempotency-key",
+      "Vendor_Idempotency_Key" => "private-underscore-idempotency-key",
       "Safe-Header" => "visible"
     )
     url = OpenAI::Internal::Logging.safe_url(
@@ -318,6 +320,8 @@ class LoggingTest < Minitest::Test
     refute_includes(headers, "aws-secret")
     refute_includes(headers, "client-header-secret")
     refute_includes(headers, "private-idempotency-key")
+    refute_includes(headers, "private-prefixed-idempotency-key")
+    refute_includes(headers, "private-underscore-idempotency-key")
     assert_includes(url, "safe=visible")
     assert_includes(url, "%5BREDACTED%5D")
     refute_includes(url, "query-secret")

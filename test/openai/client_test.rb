@@ -891,11 +891,15 @@ class OpenAITest < Minitest::Test
         :"X-Client-Secret" => "custom-client-secret",
         api_key: "custom-underscore-key",
         "X-Password" => "custom-password",
+        "X-Idempotency-Api-Key" => "custom-idempotency-api-key",
+        "X-Idempotency-Token" => "custom-idempotency-token",
         Cookie: "session=private",
         "Proxy-Authorization": "Basic proxy-secret",
         "Set-Cookie" => "session=private-response",
         Host: "trusted.example",
         "Idempotency-Key" => "retry-safe-id",
+        :"X-Idempotency-Key" => "retry-safe-prefixed-id",
+        "Vendor_Idempotency_Key" => "retry-safe-underscore-id",
         "X-Trace-Id" => "safe-trace"
       }
     )
@@ -913,6 +917,8 @@ class OpenAITest < Minitest::Test
     assert_equal("custom-client-secret", first_headers.fetch("x-client-secret"))
     assert_equal("custom-underscore-key", first_headers.fetch("api_key"))
     assert_equal("custom-password", first_headers.fetch("x-password"))
+    assert_equal("custom-idempotency-api-key", first_headers.fetch("x-idempotency-api-key"))
+    assert_equal("custom-idempotency-token", first_headers.fetch("x-idempotency-token"))
 
     redirected_headers = requests.fetch(1).headers
     sensitive_headers = %w[
@@ -928,12 +934,16 @@ class OpenAITest < Minitest::Test
       x-auth-token
       x-client-secret
       x-goog-api-key
+      x-idempotency-api-key
+      x-idempotency-token
       x-password
     ]
     sensitive_headers.each do |header|
       refute_includes(redirected_headers, header)
     end
     assert_equal("retry-safe-id", redirected_headers.fetch("idempotency-key"))
+    assert_equal("retry-safe-prefixed-id", redirected_headers.fetch("x-idempotency-key"))
+    assert_equal("retry-safe-underscore-id", redirected_headers.fetch("vendor_idempotency_key"))
     assert_equal("safe-trace", redirected_headers.fetch("x-trace-id"))
   end
 
