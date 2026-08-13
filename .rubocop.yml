@@ -74,11 +74,6 @@ Layout/SpaceInsideHashLiteralBraces:
 Lint/BooleanSymbol:
   Enabled: false
 
-# This option occasionally mangles identifier names
-Lint/DeprecatedConstants:
-  Exclude:
-    - "**/*.rbi"
-
 # We use pattern assertion in tests to ensure correctness.
 Lint/DuplicateMatchPattern:
   Exclude:
