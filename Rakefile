@@ -66,6 +66,7 @@ desc("Validate RuboCop suppression directives")
 multitask(:"lint:rubocop_directives") do
   ruby(*%w[scripts/validate-rubocop-directives])
 end
+Rake::Task[:"lint:rubocop"].enhance([:"lint:rubocop_directives"])
 
 norm_lines = %w[tr -- \n \0].shelljoin
 

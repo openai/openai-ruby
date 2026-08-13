@@ -11,10 +11,14 @@ module RuboCopDirectiveGuard
     sorbet/tapioca/
     vendor/
   ].freeze
-  ROOT_RUBY_FILES = %w[Gemfile Rakefile].freeze
+  ROOT_RUBY_FILES = %w[Gemfile Rakefile Steepfile].freeze
   RUBY_EXTENSIONS = %w[.gemspec .rake .rb .rbi].freeze
   TODO_OWNER = /(?:\A|;)\s*owner:\s*[^;\s]+/
-  TODO_REMOVAL = %r{(?:\A|;)\s*(?:issue:\s*(?:#\d+|https?://[^;\s]+)|remove-by:\s*\d{4}-\d{2}-\d{2})}
+  TODO_REMOVAL = %r{
+    (?:\A|;)\s*
+    (?:issue:\s*(?:\#\d+|https?://[^;\s]+)|remove-by:\s*\d{4}-\d{2}-\d{2})
+    (?=\s*(?:;|\z))
+  }x
 
   module_function
 

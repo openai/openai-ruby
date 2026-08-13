@@ -43,8 +43,17 @@ class ValidateRuboCopDirectivesTest < Minitest::Test
     )
   end
 
+  def test_rejects_malformed_tracking_values
+    ["issue: #123abc", "remove-by: 2026-09-011"].each do |tracking|
+      errors = violations("todo Lint/EmptyBlock -- owner: @sdk; #{tracking}")
+
+      assert(errors.any? { _1.include?("requires `issue: #123`") }, tracking)
+    end
+  end
+
   def test_recognizes_root_and_extensionless_ruby_entry_points
     assert(RuboCopDirectiveGuard.ruby_source_path?("Rakefile", ""))
+    assert(RuboCopDirectiveGuard.ruby_source_path?("Steepfile", ""))
     assert(RuboCopDirectiveGuard.ruby_source_path?("openai.gemspec", ""))
     assert(
       RuboCopDirectiveGuard.ruby_source_path?(
