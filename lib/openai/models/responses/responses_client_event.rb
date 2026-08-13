@@ -265,6 +265,16 @@ module OpenAI
         #   @return [Boolean, nil]
         optional :stream, OpenAI::Internal::Type::Boolean, nil?: true
 
+        # @!attribute stream_id
+        #   The WebSocket lane for this response. Requests with the same `stream_id` are
+        #   processed FIFO, and events for the response echo the same `stream_id`.
+        #
+        #   `stream_id` controls routing; `previous_response_id` controls conversation
+        #   lineage, so a new lane can fork from a response created on another lane.
+        #
+        #   @return [String, nil]
+        optional :stream_id, String
+
         # @!attribute stream_options
         #   Options for streaming responses. Only set this when you set `stream: true`.
         #
@@ -366,7 +376,7 @@ module OpenAI
         #   @return [String, nil]
         optional :user, String
 
-        # @!method initialize(background: nil, context_management: nil, conversation: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, moderation: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, type: :"response.create")
+        # @!method initialize(background: nil, context_management: nil, conversation: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, moderation: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream: nil, stream_id: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, type: :"response.create")
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponsesClientEvent} for more details.
         #
@@ -413,6 +423,8 @@ module OpenAI
         #   @param store [Boolean, nil] Whether to store the generated model response for later retrieval via
         #
         #   @param stream [Boolean, nil] If set to true, the model response data will be streamed to the client
+        #
+        #   @param stream_id [String] The WebSocket lane for this response. Requests with the same
         #
         #   @param stream_options [OpenAI::Models::Responses::ResponsesClientEvent::StreamOptions, nil] Options for streaming responses. Only set this when you set `stream: true`.
         #

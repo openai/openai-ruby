@@ -4,64 +4,717 @@ module OpenAI
 
     module Beta
       type beta_responses_server_event =
-        OpenAI::Beta::BetaResponseAudioDeltaEvent
-        | OpenAI::Beta::BetaResponseAudioDoneEvent
-        | OpenAI::Beta::BetaResponseAudioTranscriptDeltaEvent
-        | OpenAI::Beta::BetaResponseAudioTranscriptDoneEvent
-        | OpenAI::Beta::BetaResponseCodeInterpreterCallCodeDeltaEvent
-        | OpenAI::Beta::BetaResponseCodeInterpreterCallCodeDoneEvent
-        | OpenAI::Beta::BetaResponseCodeInterpreterCallCompletedEvent
-        | OpenAI::Beta::BetaResponseCodeInterpreterCallInProgressEvent
-        | OpenAI::Beta::BetaResponseCodeInterpreterCallInterpretingEvent
-        | OpenAI::Beta::BetaResponseCompletedEvent
-        | OpenAI::Beta::BetaResponseContentPartAddedEvent
-        | OpenAI::Beta::BetaResponseContentPartDoneEvent
-        | OpenAI::Beta::BetaResponseCreatedEvent
-        | OpenAI::Beta::BetaResponseErrorEvent
-        | OpenAI::Beta::BetaResponseFileSearchCallCompletedEvent
-        | OpenAI::Beta::BetaResponseFileSearchCallInProgressEvent
-        | OpenAI::Beta::BetaResponseFileSearchCallSearchingEvent
-        | OpenAI::Beta::BetaResponseFunctionCallArgumentsDeltaEvent
-        | OpenAI::Beta::BetaResponseFunctionCallArgumentsDoneEvent
-        | OpenAI::Beta::BetaResponseInProgressEvent
-        | OpenAI::Beta::BetaResponseFailedEvent
-        | OpenAI::Beta::BetaResponseIncompleteEvent
-        | OpenAI::Beta::BetaResponseOutputItemAddedEvent
-        | OpenAI::Beta::BetaResponseOutputItemDoneEvent
-        | OpenAI::Beta::BetaResponseReasoningSummaryPartAddedEvent
-        | OpenAI::Beta::BetaResponseReasoningSummaryPartDoneEvent
-        | OpenAI::Beta::BetaResponseReasoningSummaryTextDeltaEvent
-        | OpenAI::Beta::BetaResponseReasoningSummaryTextDoneEvent
-        | OpenAI::Beta::BetaResponseReasoningTextDeltaEvent
-        | OpenAI::Beta::BetaResponseReasoningTextDoneEvent
-        | OpenAI::Beta::BetaResponseRefusalDeltaEvent
-        | OpenAI::Beta::BetaResponseRefusalDoneEvent
-        | OpenAI::Beta::BetaResponseTextDeltaEvent
-        | OpenAI::Beta::BetaResponseTextDoneEvent
-        | OpenAI::Beta::BetaResponseWebSearchCallCompletedEvent
-        | OpenAI::Beta::BetaResponseWebSearchCallInProgressEvent
-        | OpenAI::Beta::BetaResponseWebSearchCallSearchingEvent
-        | OpenAI::Beta::BetaResponseImageGenCallCompletedEvent
-        | OpenAI::Beta::BetaResponseImageGenCallGeneratingEvent
-        | OpenAI::Beta::BetaResponseImageGenCallInProgressEvent
-        | OpenAI::Beta::BetaResponseImageGenCallPartialImageEvent
-        | OpenAI::Beta::BetaResponseMcpCallArgumentsDeltaEvent
-        | OpenAI::Beta::BetaResponseMcpCallArgumentsDoneEvent
-        | OpenAI::Beta::BetaResponseMcpCallCompletedEvent
-        | OpenAI::Beta::BetaResponseMcpCallFailedEvent
-        | OpenAI::Beta::BetaResponseMcpCallInProgressEvent
-        | OpenAI::Beta::BetaResponseMcpListToolsCompletedEvent
-        | OpenAI::Beta::BetaResponseMcpListToolsFailedEvent
-        | OpenAI::Beta::BetaResponseMcpListToolsInProgressEvent
-        | OpenAI::Beta::BetaResponseOutputTextAnnotationAddedEvent
-        | OpenAI::Beta::BetaResponseQueuedEvent
-        | OpenAI::Beta::BetaResponseCustomToolCallInputDeltaEvent
-        | OpenAI::Beta::BetaResponseCustomToolCallInputDoneEvent
-        | OpenAI::Beta::BetaResponseInjectCreatedEvent
+        OpenAI::Beta::BetaResponseInjectCreatedEvent
         | OpenAI::Beta::BetaResponseInjectFailedEvent
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseAudioWsDelta
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseAudioWsDone
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseAudioTranscriptWsDelta
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseAudioTranscriptWsDone
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallCodeWsDelta
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallCodeWsDone
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallWsCompleted
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallInWsProgress
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallWsInterpreting
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsCompleted
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseContentPartWsAdded
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseContentPartWsDone
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsCreated
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallWsCompleted
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallInWsProgress
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallWsSearching
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseFunctionCallArgumentsWsDelta
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseFunctionCallArgumentsWsDone
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseInWsProgress
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsFailed
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsIncomplete
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseOutputItemWsAdded
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseOutputItemWsDone
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseReasoningSummaryPartWsAdded
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseReasoningSummaryPartWsDone
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseReasoningSummaryTextWsDelta
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseReasoningSummaryTextWsDone
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseReasoningTextWsDelta
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseReasoningTextWsDone
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseRefusalWsDelta
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseRefusalWsDone
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseTextWsDelta
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseTextWsDone
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWebSearchCallWsCompleted
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWebSearchCallInWsProgress
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWebSearchCallWsSearching
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseImageGenCallWsCompleted
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseImageGenCallWsGenerating
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseImageGenCallInWsProgress
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseImageGenCallPartialWsImage
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseMcpCallArgumentsWsDelta
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseMcpCallArgumentsWsDone
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseMcpCallWsCompleted
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseMcpCallWsFailed
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseMcpCallInWsProgress
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseMcpListToolsWsCompleted
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseMcpListToolsWsFailed
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseMcpListToolsInWsProgress
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseOutputTextAnnotationWsAdded
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsQueued
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCustomToolCallInputWsDelta
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCustomToolCallInputWsDone
 
       module BetaResponsesServerEvent
         extend OpenAI::Internal::Type::Union
+
+        type beta_response_audio_ws_delta = { stream_id: String }
+
+        class BetaResponseAudioWsDelta < OpenAI::Models::Beta::BetaResponseAudioDeltaEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_audio_ws_done = { stream_id: String }
+
+        class BetaResponseAudioWsDone < OpenAI::Models::Beta::BetaResponseAudioDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_audio_transcript_ws_delta = { stream_id: String }
+
+        class BetaResponseAudioTranscriptWsDelta < OpenAI::Models::Beta::BetaResponseAudioTranscriptDeltaEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_audio_transcript_ws_done = { stream_id: String }
+
+        class BetaResponseAudioTranscriptWsDone < OpenAI::Models::Beta::BetaResponseAudioTranscriptDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_code_interpreter_call_code_ws_delta =
+          { stream_id: String }
+
+        class BetaResponseCodeInterpreterCallCodeWsDelta < OpenAI::Models::Beta::BetaResponseCodeInterpreterCallCodeDeltaEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_code_interpreter_call_code_ws_done =
+          { stream_id: String }
+
+        class BetaResponseCodeInterpreterCallCodeWsDone < OpenAI::Models::Beta::BetaResponseCodeInterpreterCallCodeDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_code_interpreter_call_ws_completed =
+          { stream_id: String }
+
+        class BetaResponseCodeInterpreterCallWsCompleted < OpenAI::Models::Beta::BetaResponseCodeInterpreterCallCompletedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_code_interpreter_call_in_ws_progress =
+          { stream_id: String }
+
+        class BetaResponseCodeInterpreterCallInWsProgress < OpenAI::Models::Beta::BetaResponseCodeInterpreterCallInProgressEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_code_interpreter_call_ws_interpreting =
+          { stream_id: String }
+
+        class BetaResponseCodeInterpreterCallWsInterpreting < OpenAI::Models::Beta::BetaResponseCodeInterpreterCallInterpretingEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_ws_completed = { stream_id: String }
+
+        class BetaResponseWsCompleted < OpenAI::Models::Beta::BetaResponseCompletedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_content_part_ws_added = { stream_id: String }
+
+        class BetaResponseContentPartWsAdded < OpenAI::Models::Beta::BetaResponseContentPartAddedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_content_part_ws_done = { stream_id: String }
+
+        class BetaResponseContentPartWsDone < OpenAI::Models::Beta::BetaResponseContentPartDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_ws_created = { stream_id: String }
+
+        class BetaResponseWsCreated < OpenAI::Models::Beta::BetaResponseCreatedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_ws_error = { stream_id: String }
+
+        class BetaResponseWsError < OpenAI::Models::Beta::BetaResponseErrorEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_file_search_call_ws_completed = { stream_id: String }
+
+        class BetaResponseFileSearchCallWsCompleted < OpenAI::Models::Beta::BetaResponseFileSearchCallCompletedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_file_search_call_in_ws_progress =
+          { stream_id: String }
+
+        class BetaResponseFileSearchCallInWsProgress < OpenAI::Models::Beta::BetaResponseFileSearchCallInProgressEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_file_search_call_ws_searching = { stream_id: String }
+
+        class BetaResponseFileSearchCallWsSearching < OpenAI::Models::Beta::BetaResponseFileSearchCallSearchingEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_function_call_arguments_ws_delta =
+          { stream_id: String }
+
+        class BetaResponseFunctionCallArgumentsWsDelta < OpenAI::Models::Beta::BetaResponseFunctionCallArgumentsDeltaEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_function_call_arguments_ws_done =
+          { stream_id: String }
+
+        class BetaResponseFunctionCallArgumentsWsDone < OpenAI::Models::Beta::BetaResponseFunctionCallArgumentsDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_in_ws_progress = { stream_id: String }
+
+        class BetaResponseInWsProgress < OpenAI::Models::Beta::BetaResponseInProgressEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_ws_failed = { stream_id: String }
+
+        class BetaResponseWsFailed < OpenAI::Models::Beta::BetaResponseFailedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_ws_incomplete = { stream_id: String }
+
+        class BetaResponseWsIncomplete < OpenAI::Models::Beta::BetaResponseIncompleteEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_output_item_ws_added = { stream_id: String }
+
+        class BetaResponseOutputItemWsAdded < OpenAI::Models::Beta::BetaResponseOutputItemAddedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_output_item_ws_done = { stream_id: String }
+
+        class BetaResponseOutputItemWsDone < OpenAI::Models::Beta::BetaResponseOutputItemDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_reasoning_summary_part_ws_added =
+          { stream_id: String }
+
+        class BetaResponseReasoningSummaryPartWsAdded < OpenAI::Models::Beta::BetaResponseReasoningSummaryPartAddedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_reasoning_summary_part_ws_done =
+          { stream_id: String }
+
+        class BetaResponseReasoningSummaryPartWsDone < OpenAI::Models::Beta::BetaResponseReasoningSummaryPartDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_reasoning_summary_text_ws_delta =
+          { stream_id: String }
+
+        class BetaResponseReasoningSummaryTextWsDelta < OpenAI::Models::Beta::BetaResponseReasoningSummaryTextDeltaEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_reasoning_summary_text_ws_done =
+          { stream_id: String }
+
+        class BetaResponseReasoningSummaryTextWsDone < OpenAI::Models::Beta::BetaResponseReasoningSummaryTextDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_reasoning_text_ws_delta = { stream_id: String }
+
+        class BetaResponseReasoningTextWsDelta < OpenAI::Models::Beta::BetaResponseReasoningTextDeltaEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_reasoning_text_ws_done = { stream_id: String }
+
+        class BetaResponseReasoningTextWsDone < OpenAI::Models::Beta::BetaResponseReasoningTextDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_refusal_ws_delta = { stream_id: String }
+
+        class BetaResponseRefusalWsDelta < OpenAI::Models::Beta::BetaResponseRefusalDeltaEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_refusal_ws_done = { stream_id: String }
+
+        class BetaResponseRefusalWsDone < OpenAI::Models::Beta::BetaResponseRefusalDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_text_ws_delta = { stream_id: String }
+
+        class BetaResponseTextWsDelta < OpenAI::Models::Beta::BetaResponseTextDeltaEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_text_ws_done = { stream_id: String }
+
+        class BetaResponseTextWsDone < OpenAI::Models::Beta::BetaResponseTextDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_web_search_call_ws_completed = { stream_id: String }
+
+        class BetaResponseWebSearchCallWsCompleted < OpenAI::Models::Beta::BetaResponseWebSearchCallCompletedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_web_search_call_in_ws_progress =
+          { stream_id: String }
+
+        class BetaResponseWebSearchCallInWsProgress < OpenAI::Models::Beta::BetaResponseWebSearchCallInProgressEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_web_search_call_ws_searching = { stream_id: String }
+
+        class BetaResponseWebSearchCallWsSearching < OpenAI::Models::Beta::BetaResponseWebSearchCallSearchingEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_image_gen_call_ws_completed = { stream_id: String }
+
+        class BetaResponseImageGenCallWsCompleted < OpenAI::Models::Beta::BetaResponseImageGenCallCompletedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_image_gen_call_ws_generating = { stream_id: String }
+
+        class BetaResponseImageGenCallWsGenerating < OpenAI::Models::Beta::BetaResponseImageGenCallGeneratingEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_image_gen_call_in_ws_progress = { stream_id: String }
+
+        class BetaResponseImageGenCallInWsProgress < OpenAI::Models::Beta::BetaResponseImageGenCallInProgressEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_image_gen_call_partial_ws_image =
+          { stream_id: String }
+
+        class BetaResponseImageGenCallPartialWsImage < OpenAI::Models::Beta::BetaResponseImageGenCallPartialImageEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_mcp_call_arguments_ws_delta = { stream_id: String }
+
+        class BetaResponseMcpCallArgumentsWsDelta < OpenAI::Models::Beta::BetaResponseMcpCallArgumentsDeltaEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_mcp_call_arguments_ws_done = { stream_id: String }
+
+        class BetaResponseMcpCallArgumentsWsDone < OpenAI::Models::Beta::BetaResponseMcpCallArgumentsDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_mcp_call_ws_completed = { stream_id: String }
+
+        class BetaResponseMcpCallWsCompleted < OpenAI::Models::Beta::BetaResponseMcpCallCompletedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_mcp_call_ws_failed = { stream_id: String }
+
+        class BetaResponseMcpCallWsFailed < OpenAI::Models::Beta::BetaResponseMcpCallFailedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_mcp_call_in_ws_progress = { stream_id: String }
+
+        class BetaResponseMcpCallInWsProgress < OpenAI::Models::Beta::BetaResponseMcpCallInProgressEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_mcp_list_tools_ws_completed = { stream_id: String }
+
+        class BetaResponseMcpListToolsWsCompleted < OpenAI::Models::Beta::BetaResponseMcpListToolsCompletedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_mcp_list_tools_ws_failed = { stream_id: String }
+
+        class BetaResponseMcpListToolsWsFailed < OpenAI::Models::Beta::BetaResponseMcpListToolsFailedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_mcp_list_tools_in_ws_progress = { stream_id: String }
+
+        class BetaResponseMcpListToolsInWsProgress < OpenAI::Models::Beta::BetaResponseMcpListToolsInProgressEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_output_text_annotation_ws_added =
+          { stream_id: String }
+
+        class BetaResponseOutputTextAnnotationWsAdded < OpenAI::Models::Beta::BetaResponseOutputTextAnnotationAddedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_ws_queued = { stream_id: String }
+
+        class BetaResponseWsQueued < OpenAI::Models::Beta::BetaResponseQueuedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_custom_tool_call_input_ws_delta =
+          { stream_id: String }
+
+        class BetaResponseCustomToolCallInputWsDelta < OpenAI::Models::Beta::BetaResponseCustomToolCallInputDeltaEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
+
+        type beta_response_custom_tool_call_input_ws_done =
+          { stream_id: String }
+
+        class BetaResponseCustomToolCallInputWsDone < OpenAI::Models::Beta::BetaResponseCustomToolCallInputDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (?stream_id: String) -> void
+
+          def to_hash: -> { stream_id: String }
+        end
 
         def self?.variants: -> ::Array[OpenAI::Models::Beta::beta_responses_server_event]
       end
