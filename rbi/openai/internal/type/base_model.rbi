@@ -29,7 +29,7 @@ module OpenAI
           # Assumes superclass fields are totally defined before fields are accessed /
           # defined on subclasses.
           sig { params(child: OpenAI::Internal::Type::BaseModel).void }
-          def inherited(child)
+          def inherited(child) # rubocop:disable Lint/MissingSuper -- RBI declarations cannot contain executable bodies.
           end
 
           # @api private
