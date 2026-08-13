@@ -37,7 +37,7 @@ module OpenAI
         webhook_secret = @client.webhook_secret || ENV["OPENAI_WEBHOOK_SECRET"],
         tolerance = 300
       )
-        if webhook_secret.nil?
+        if webhook_secret.nil? || webhook_secret.strip.empty?
           raise ArgumentError,
                 "The webhook secret must either be set using the env var, OPENAI_WEBHOOK_SECRET, " \
                 "or passed to this function"
@@ -100,10 +100,12 @@ module OpenAI
 
         # Decode the secret if it starts with whsec_
         decoded_secret = if webhook_secret.start_with?("whsec_")
-          Base64.decode64(webhook_secret[6..])
+          Base64.strict_decode64(webhook_secret[6..])
         else
           webhook_secret
         end
+
+        raise ArgumentError, "The webhook secret must not be empty" if decoded_secret.empty?
 
         # Create the signed payload: {webhook_id}.{timestamp}.{payload}
         signed_payload = "#{webhook_id}.#{timestamp_header}.#{payload}"

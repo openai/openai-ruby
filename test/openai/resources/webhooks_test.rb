@@ -44,6 +44,42 @@ class OpenAI::Test::Resources::WebhooksTest < OpenAI::Test::ResourceTest
     end
   end
 
+  def test_unwrap_rejects_forged_signatures_for_invalid_secrets
+    invalid_secrets = {
+      "" => "",
+      " \t\n" => " \t\n",
+      "whsec_" => "",
+      "whsec_!!!!" => "",
+      "whsec_====" => "",
+      "whsec_Zm9v!!!!" => "foo"
+    }
+
+    invalid_secrets.each do |webhook_secret, signing_key|
+      headers = signed_headers(signing_key)
+
+      assert_raises(ArgumentError, "expected #{webhook_secret.inspect} to be rejected") do
+        @webhook_service.unwrap(@test_payload, headers, webhook_secret)
+      end
+    end
+  end
+
+  def test_unwrap_accepts_raw_webhook_secrets
+    webhook_secret = "raw webhook secret"
+
+    event = @webhook_service.unwrap(@test_payload, signed_headers(webhook_secret), webhook_secret)
+
+    assert_equal("evt_685c059ae3a481909bdc86819b066fb6", event.id)
+  end
+
+  def test_unwrap_accepts_base64_encoded_webhook_secrets
+    signing_key = "binary\x00webhook secret"
+    webhook_secret = "whsec_#{Base64.strict_encode64(signing_key)}"
+
+    event = @webhook_service.unwrap(@test_payload, signed_headers(signing_key), webhook_secret)
+
+    assert_equal("evt_685c059ae3a481909bdc86819b066fb6", event.id)
+  end
+
   def test_verify_signature_with_missing_headers
     headers = {}
 
@@ -219,5 +255,18 @@ class OpenAI::Test::Resources::WebhooksTest < OpenAI::Test::ResourceTest
     assert_raises(OpenAI::Errors::InvalidWebhookSignatureError) do
       @webhook_service.verify_signature(@test_payload, headers, @test_secret)
     end
+  end
+
+  private
+
+  def signed_headers(signing_key)
+    signed_payload = "#{@webhook_id}.#{@fixed_timestamp}.#{@test_payload}"
+    signature = Base64.strict_encode64(OpenSSL::HMAC.digest("sha256", signing_key, signed_payload))
+
+    {
+      "webhook-signature" => "v1,#{signature}",
+      "webhook-timestamp" => @fixed_timestamp,
+      "webhook-id" => @webhook_id
+    }
   end
 end
