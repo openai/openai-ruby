@@ -19,10 +19,6 @@ AllCops:
   SuggestExtensions: false
   TargetRubyVersion: 3.3
 
-# Whether MFA is required or not should be left to the token configuration.
-Gemspec/RequireMFA:
-  Enabled: false
-
 # Don't require this extra line break, it can be excessive.
 Layout/EmptyLineAfterGuardClause:
   Enabled: false
