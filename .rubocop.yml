@@ -12,6 +12,8 @@ inherit_mode:
 AllCops:
   Exclude:
     - "bin/*"
+    - "sorbet/rbi/annotations/**/*"
+    - "sorbet/rbi/gems/**/*"
   NewCops: enable
   SuggestExtensions: false
   TargetRubyVersion: 3.3
