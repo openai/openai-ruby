@@ -27,7 +27,7 @@ end
 begin
   pp("----- trying to use params class in sorbet -----")
 
-  params = OpenAI::Models::Chat::CompletionCreateParams.new(
+  _params = OpenAI::Models::Chat::CompletionCreateParams.new(
     # You can still use raw `Hash`es where sorbet expects `Class`es,
     #   but there is currently no way for the typechecker to verify the `Hash` contents
     messages: [{role: :user, content: "Say this is a test again"}],
@@ -35,11 +35,11 @@ begin
   )
 
   # if you have sorbet LSP enabled, and uncomment the two lines below
-  #   you will see a red squiggly line on `params` due to a quirk of the sorbet type system.
+  #   you will see a red squiggly line on `_params` due to a quirk of the sorbet type system.
   #
   # this file will still, in fact, run correctly as uncommented.
 
-  # completion = client.chat.completions.create(params)
+  # completion = client.chat.completions.create(_params)
   # pp(completion.choices.first&.message&.content)
 end
 
