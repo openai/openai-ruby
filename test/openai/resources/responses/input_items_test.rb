@@ -73,13 +73,23 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
         id: String,
         queries: ^(OpenAI::Internal::Type::ArrayOf[String]),
         status: OpenAI::Responses::ResponseFileSearchToolCall::Status,
-        results: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseFileSearchToolCall::Result]) | nil
+        results:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Responses::ResponseFileSearchToolCall::Result
+            ]
+          ) | nil
       }
       in {
         type: :computer_call,
         id: String,
         call_id: String,
-        pending_safety_checks: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseComputerToolCall::PendingSafetyCheck]),
+        pending_safety_checks:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Responses::ResponseComputerToolCall::PendingSafetyCheck
+            ]
+          ),
         status: OpenAI::Responses::ResponseComputerToolCall::Status,
         action: OpenAI::Responses::ResponseComputerToolCall::Action | nil,
         actions: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ComputerAction]) | nil
@@ -90,7 +100,12 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
         call_id: String,
         output: OpenAI::Responses::ResponseComputerToolCallOutputScreenshot,
         status: OpenAI::Responses::ResponseComputerToolCallOutputItem::Status,
-        acknowledged_safety_checks: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck]) | nil,
+        acknowledged_safety_checks:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck
+            ]
+          ) | nil,
         created_by: String | nil
       }
       in {
@@ -162,7 +177,12 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
         id: String,
         code: String | nil,
         container_id: String,
-        outputs: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseCodeInterpreterToolCall::Output]) | nil,
+        outputs:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              union: OpenAI::Responses::ResponseCodeInterpreterToolCall::Output
+            ]
+          ) | nil,
         status: OpenAI::Responses::ResponseCodeInterpreterToolCall::Status
       }
       in {
@@ -193,7 +213,12 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
         id: String,
         call_id: String,
         max_output_length: Integer | nil,
-        output: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output]),
+        output:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output
+            ]
+          ),
         status: OpenAI::Responses::ResponseFunctionShellToolCallOutput::Status,
         caller_: OpenAI::Responses::ResponseFunctionShellToolCallOutput::Caller | nil,
         created_by: String | nil

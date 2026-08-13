@@ -61,7 +61,9 @@ module OpenAI
         #
         # @return [Boolean]
         def ==(other)
-          other.is_a?(OpenAI::Internal::Type::HashOf) && other.nilable? == nilable? && other.item_type == item_type
+          other.is_a?(OpenAI::Internal::Type::HashOf) &&
+            other.nilable? == nilable? &&
+            other.item_type == item_type
         end
 
         # @api public

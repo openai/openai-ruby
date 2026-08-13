@@ -551,7 +551,13 @@ module OpenAI
           case val
           in Hash
             val.each do |name, value|
-              write_multipart_value(y, boundary: boundary, key: "#{key}[#{name}]", val: value, closing: closing)
+              write_multipart_value(
+                y,
+                boundary: boundary,
+                key: "#{key}[#{name}]",
+                val: value,
+                closing: closing
+              )
             end
           in Array
             val.each do |value|
@@ -602,7 +608,10 @@ module OpenAI
           case [content_type, body]
           in [OpenAI::Internal::Util::JSON_CONTENT, Hash | Array | -> { primitive?(_1) }]
             [headers, JSON.generate(body)]
-          in [OpenAI::Internal::Util::JSONL_CONTENT, Enumerable] unless OpenAI::Internal::Type::FileInput === body
+          in [
+            OpenAI::Internal::Util::JSONL_CONTENT,
+            Enumerable
+          ] unless OpenAI::Internal::Type::FileInput === body
             [headers, body.lazy.map { JSON.generate(_1) }]
           in [%r{^multipart/form-data}, Hash | OpenAI::Internal::Type::FileInput]
             boundary, strio = encode_multipart_streaming(body)

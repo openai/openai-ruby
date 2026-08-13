@@ -91,7 +91,12 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         id: String,
         queries: ^(OpenAI::Internal::Type::ArrayOf[String]),
         status: OpenAI::Responses::ResponseFileSearchToolCall::Status,
-        results: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseFileSearchToolCall::Result]) | nil
+        results:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Responses::ResponseFileSearchToolCall::Result
+            ]
+          ) | nil
       }
       in {
         type: :web_search_call,
@@ -109,7 +114,12 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         type: :computer_call,
         id: String,
         call_id: String,
-        pending_safety_checks: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseComputerToolCall::PendingSafetyCheck]),
+        pending_safety_checks:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Responses::ResponseComputerToolCall::PendingSafetyCheck
+            ]
+          ),
         status: OpenAI::Responses::ResponseComputerToolCall::Status,
         action: OpenAI::Responses::ResponseComputerToolCall::Action | nil,
         actions: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ComputerAction]) | nil
@@ -120,7 +130,12 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         call_id: String,
         output: OpenAI::Responses::ResponseComputerToolCallOutputScreenshot,
         status: OpenAI::Responses::ResponseComputerToolCallOutputItem::Status,
-        acknowledged_safety_checks: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck]) | nil,
+        acknowledged_safety_checks:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck
+            ]
+          ) | nil,
         created_by: String | nil
       }
       in {
@@ -169,7 +184,12 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         id: String,
         code: String | nil,
         container_id: String,
-        outputs: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseCodeInterpreterToolCall::Output]) | nil,
+        outputs:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              union: OpenAI::Responses::ResponseCodeInterpreterToolCall::Output
+            ]
+          ) | nil,
         status: OpenAI::Responses::ResponseCodeInterpreterToolCall::Status
       }
       in {
@@ -200,7 +220,12 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         id: String,
         call_id: String,
         max_output_length: Integer | nil,
-        output: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output]),
+        output:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output
+            ]
+          ),
         status: OpenAI::Responses::ResponseFunctionShellToolCallOutput::Status,
         caller_: OpenAI::Responses::ResponseFunctionShellToolCallOutput::Caller | nil,
         created_by: String | nil
@@ -227,7 +252,12 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         type: :mcp_list_tools,
         id: String,
         server_label: String,
-        tools: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Conversations::ConversationItem::McpListTools::Tool]),
+        tools:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Conversations::ConversationItem::McpListTools::Tool
+            ]
+          ),
         error: String | nil
       }
       in {type: :mcp_approval_request, id: String, arguments: String, name: String, server_label: String}
@@ -342,7 +372,12 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         id: String,
         queries: ^(OpenAI::Internal::Type::ArrayOf[String]),
         status: OpenAI::Responses::ResponseFileSearchToolCall::Status,
-        results: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseFileSearchToolCall::Result]) | nil
+        results:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Responses::ResponseFileSearchToolCall::Result
+            ]
+          ) | nil
       }
       in {
         type: :web_search_call,
@@ -360,7 +395,12 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         type: :computer_call,
         id: String,
         call_id: String,
-        pending_safety_checks: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseComputerToolCall::PendingSafetyCheck]),
+        pending_safety_checks:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Responses::ResponseComputerToolCall::PendingSafetyCheck
+            ]
+          ),
         status: OpenAI::Responses::ResponseComputerToolCall::Status,
         action: OpenAI::Responses::ResponseComputerToolCall::Action | nil,
         actions: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ComputerAction]) | nil
@@ -371,7 +411,12 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         call_id: String,
         output: OpenAI::Responses::ResponseComputerToolCallOutputScreenshot,
         status: OpenAI::Responses::ResponseComputerToolCallOutputItem::Status,
-        acknowledged_safety_checks: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck]) | nil,
+        acknowledged_safety_checks:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck
+            ]
+          ) | nil,
         created_by: String | nil
       }
       in {
@@ -420,7 +465,12 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         id: String,
         code: String | nil,
         container_id: String,
-        outputs: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseCodeInterpreterToolCall::Output]) | nil,
+        outputs:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              union: OpenAI::Responses::ResponseCodeInterpreterToolCall::Output
+            ]
+          ) | nil,
         status: OpenAI::Responses::ResponseCodeInterpreterToolCall::Status
       }
       in {
@@ -451,7 +501,12 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         id: String,
         call_id: String,
         max_output_length: Integer | nil,
-        output: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output]),
+        output:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output
+            ]
+          ),
         status: OpenAI::Responses::ResponseFunctionShellToolCallOutput::Status,
         caller_: OpenAI::Responses::ResponseFunctionShellToolCallOutput::Caller | nil,
         created_by: String | nil
@@ -478,7 +533,12 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
         type: :mcp_list_tools,
         id: String,
         server_label: String,
-        tools: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Conversations::ConversationItem::McpListTools::Tool]),
+        tools:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Conversations::ConversationItem::McpListTools::Tool
+            ]
+          ),
         error: String | nil
       }
       in {type: :mcp_approval_request, id: String, arguments: String, name: String, server_label: String}
