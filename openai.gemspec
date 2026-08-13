@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
     "CHANGELOG.md",
     ".ignore"
   ]
-  s.extra_rdoc_files = ["README.md", "VERSIONING.md"]
+  s.extra_rdoc_files = ["README.md", "VERSIONING.md", "azure.md"]
   s.add_dependency "base64"
   s.add_dependency "cgi"
   s.add_dependency "connection_pool", ">= 2.2.3"
