@@ -62,7 +62,9 @@ module OpenAI
           def required(name_sym, type_info, spec = {})
             super
 
-            type = known_fields.fetch(name_sym).fetch(:type_fn)
+            field = known_fields.fetch(name_sym)
+            type = field.fetch(:type_fn)
+            nilable = field.fetch(:nilable)
             # Preserve the original reader's validation without replacing raw field storage.
             readers = @structured_output_readers ||= Module.new.tap { prepend(_1) }
             readers.define_method(name_sym) do
@@ -70,25 +72,27 @@ module OpenAI
               target = type.call
 
               case value
-              when nil, target
-                value
-              else
-                state = OpenAI::Internal::Type::Converter.new_coerce_state(translate_names: false)
-                converted = OpenAI::Internal::Type::Converter.coerce(target, value, state: state)
-
-                case converted
-                when target
-                  return converted if state.fetch(:error).nil? && state.fetch(:exactness).fetch(:no).zero?
-                end
-
-                raise OpenAI::Errors::ConversionError.new(
-                  on: self.class,
-                  method: name_sym,
-                  target: target,
-                  value: value,
-                  cause: state.fetch(:error)
-                )
+              when nil
+                return nil if nilable
+              when target
+                return value
               end
+
+              state = OpenAI::Internal::Type::Converter.new_coerce_state(translate_names: false)
+              converted = OpenAI::Internal::Type::Converter.coerce(target, value, state: state)
+
+              case converted
+              when target
+                return converted if state.fetch(:error).nil? && state.fetch(:exactness).fetch(:no).zero?
+              end
+
+              raise OpenAI::Errors::ConversionError.new(
+                on: self.class,
+                method: name_sym,
+                target: target,
+                value: value,
+                cause: state.fetch(:error)
+              )
             end
           end
 

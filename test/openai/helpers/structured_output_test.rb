@@ -57,6 +57,11 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
     required :flags, OpenAI::ArrayOf[OpenAI::Boolean]
   end
 
+  class NullableScalarContractEvent < OpenAI::BaseModel
+    required :active, OpenAI::Boolean, nil?: true
+    required :participant, NestedParticipant, nil?: true
+  end
+
   class InheritedNestedEvent < NestedEvent
     required :name, String
   end
@@ -243,6 +248,33 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
     assert_raises(OpenAI::Errors::ConversionError) { event.status }
     assert_equal("yes", event[:active])
     assert_equal("unknown", event[:status])
+  end
+
+  def test_typed_readers_reject_nil_for_required_non_nilable_fields
+    event = ScalarContractEvent.new(active: nil)
+
+    assert_raises(OpenAI::Errors::ConversionError) { event.active }
+    assert_nil(event[:active])
+  end
+
+  def test_typed_readers_reject_missing_required_fields
+    scalar_event = ScalarContractEvent.new
+    nested_event = NestedEvent.new
+
+    assert_raises(OpenAI::Errors::ConversionError) { scalar_event.active }
+    assert_raises(OpenAI::Errors::ConversionError) { scalar_event.status }
+    assert_raises(OpenAI::Errors::ConversionError) { scalar_event.flags }
+    assert_raises(OpenAI::Errors::ConversionError) { nested_event.participant }
+    assert_raises(OpenAI::Errors::ConversionError) { nested_event.participants }
+    assert_raises(OpenAI::Errors::ConversionError) { nested_event.status }
+  end
+
+  def test_typed_readers_allow_nil_when_declared_nilable
+    event = NullableScalarContractEvent.new(active: nil)
+
+    assert_nil(event.active)
+    assert_nil(event.participant)
+    assert_nil(event[:active])
   end
 
   def test_typed_readers_reject_nonviable_scalar_assignment_values
