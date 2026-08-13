@@ -25,9 +25,13 @@ module OpenAI
           #
           # @return [Hash{Symbol=>Object}]
           def to_json_schema_inner(state:)
+            field_values = fields.values
+            duplicate = field_values.map { _1.fetch(:api_name) }.tally.find { _2 > 1 }
+            raise ArgumentError.new("Duplicate API field name: #{duplicate.first}") if duplicate
+
             OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.cache_def!(state, type: self) do
               path = state.fetch(:path)
-              properties = fields.each_value.to_h do |field|
+              properties = field_values.to_h do |field|
                 api_name, type, nilable, meta = field.fetch_values(:api_name, :type, :nilable, :meta)
                 new_state = {**state, path: [*path, ".#{api_name}"]}
 

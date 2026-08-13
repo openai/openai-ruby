@@ -21,6 +21,20 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
     required :displayName, String, api_name: :legacyDisplayName
   end
 
+  class DuplicateAPINames < OpenAI::BaseModel
+    required :display_name, String, api_name: :displayName
+    required :legacy_name, String, api_name: :displayName
+  end
+
+  class EscapedAliasEnvelope < OpenAI::BaseModel
+    required :primary_profile, AliasedProfile, api_name: :"primary/name~value"
+    required :backup_profile, AliasedProfile, api_name: :"backup~name/value"
+  end
+
+  class DeepAliasedEnvelope < OpenAI::BaseModel
+    required :nested_profiles, AliasedEnvelope, api_name: :"nested/profiles~value"
+  end
+
   def before_all
     super
     WebMock.enable!
@@ -77,6 +91,33 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
 
     assert_equal([:displayName, :legacyDisplayName], schema.fetch(:properties).keys)
     assert_equal(%w[displayName legacyDisplayName], schema.fetch(:required))
+  end
+
+  def test_duplicate_api_names_are_rejected
+    error = assert_raises(ArgumentError) { DuplicateAPINames.to_json_schema }
+
+    assert_match(/displayName/, error.message)
+  end
+
+  def test_api_names_are_escaped_as_json_pointer_tokens
+    schema = EscapedAliasEnvelope.to_json_schema
+    expected_ref = "#/$defs/.primary~1name~0value"
+
+    assert_equal([".primary/name~value"], schema.fetch(:$defs).keys)
+    assert_equal(expected_ref, schema.dig(:properties, :"primary/name~value", :$ref))
+    assert_equal(expected_ref, schema.dig(:properties, :"backup~name/value", :$ref))
+    assert_equal(["primary/name~value", "backup~name/value"], schema.fetch(:required))
+  end
+
+  def test_nested_definition_paths_are_single_json_pointer_tokens
+    schema = DeepAliasedEnvelope.to_json_schema
+    expected_name = ".nested/profiles~value/.primaryProfile"
+    expected_ref = "#/$defs/.nested~1profiles~0value~1.primaryProfile"
+    nested = schema.dig(:properties, :"nested/profiles~value")
+
+    assert_equal([expected_name], schema.fetch(:$defs).keys)
+    assert_equal(expected_ref, nested.dig(:properties, :primaryProfile, :$ref))
+    assert_equal(expected_ref, nested.dig(:properties, :backupProfile, :$ref))
   end
 
   def test_converter_round_trips_ruby_and_api_names

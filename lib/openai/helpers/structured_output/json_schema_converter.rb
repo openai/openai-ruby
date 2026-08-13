@@ -98,7 +98,8 @@ module OpenAI
               }
               defs.store(type, stored)
               schema = blk.call
-              ref_path.replace("#/$defs/#{path.join('/')}")
+              escaped_name = path.join("/").gsub("~", "~0").gsub("/", "~1")
+              ref_path.replace("#/$defs/#{escaped_name}")
               stored.update(schema)
               ref
             end
@@ -140,7 +141,9 @@ module OpenAI
               no_refs.each { _1.replace(_1.except(:$ref).merge(sch)) }
             end
 
-            xformed = reused_defs.transform_keys { _1.delete_prefix("#/$defs/") }
+            xformed = reused_defs.transform_keys do
+              _1.delete_prefix("#/$defs/").gsub("~1", "/").gsub("~0", "~")
+            end
             xformed.empty? ? schema : {"$defs": xformed}.update(schema)
           end
 
