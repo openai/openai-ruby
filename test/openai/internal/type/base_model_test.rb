@@ -191,6 +191,7 @@ class OpenAI::Test::EnumModelTest < Minitest::Test
   end
 
   def test_coerce
+    boolean_symbol = true.to_s.to_sym
     cases = {
       [E0.new, "one"] => [{no: 1}, "one"],
       [E0.new(:one), "one"] => [{yes: 1}, :one],
@@ -198,7 +199,7 @@ class OpenAI::Test::EnumModelTest < Minitest::Test
 
       [E1, true] => [{yes: 1}, true],
       [E1, false] => [{no: 1}, false],
-      [E1, :true] => [{no: 1}, :true],
+      [E1, boolean_symbol] => [{no: 1}, boolean_symbol],
 
       [E2, 1] => [{yes: 1}, 1],
       [E2, 1.0] => [{yes: 1}, 1],
