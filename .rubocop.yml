@@ -176,10 +176,6 @@ Style/CommentAnnotation:
 Style/Documentation:
   Enabled: false
 
-# Allow explicit empty elses, for clarity.
-Style/EmptyElse:
-  Enabled: false
-
 Style/EmptyMethod:
   Exclude:
     - "**/*.rbi"
