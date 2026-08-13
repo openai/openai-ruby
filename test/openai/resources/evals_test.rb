@@ -31,7 +31,12 @@ class OpenAI::Test::Resources::EvalsTest < OpenAI::Test::ResourceTest
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         name: String,
         object: Symbol,
-        testing_criteria: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::EvalCreateResponse::TestingCriterion])
+        testing_criteria:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              union: OpenAI::Models::EvalCreateResponse::TestingCriterion
+            ]
+          )
       }
     end
   end
@@ -51,7 +56,12 @@ class OpenAI::Test::Resources::EvalsTest < OpenAI::Test::ResourceTest
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         name: String,
         object: Symbol,
-        testing_criteria: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::EvalRetrieveResponse::TestingCriterion])
+        testing_criteria:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              union: OpenAI::Models::EvalRetrieveResponse::TestingCriterion
+            ]
+          )
       }
     end
   end
@@ -71,7 +81,12 @@ class OpenAI::Test::Resources::EvalsTest < OpenAI::Test::ResourceTest
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         name: String,
         object: Symbol,
-        testing_criteria: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::EvalUpdateResponse::TestingCriterion])
+        testing_criteria:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              union: OpenAI::Models::EvalUpdateResponse::TestingCriterion
+            ]
+          )
       }
     end
   end
@@ -98,7 +113,12 @@ class OpenAI::Test::Resources::EvalsTest < OpenAI::Test::ResourceTest
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         name: String,
         object: Symbol,
-        testing_criteria: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::EvalListResponse::TestingCriterion])
+        testing_criteria:
+          ^(
+            OpenAI::Internal::Type::ArrayOf[
+              union: OpenAI::Models::EvalListResponse::TestingCriterion
+            ]
+          )
       }
     end
   end

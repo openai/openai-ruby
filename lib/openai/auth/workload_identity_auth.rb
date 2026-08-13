@@ -87,7 +87,8 @@ module OpenAI
         token_type = @config.provider.token_type
         subject_token_type = SUBJECT_TOKEN_TYPES.fetch(token_type) do
           raise ArgumentError,
-                "Unsupported token type: #{token_type.inspect}. Supported types: #{SUBJECT_TOKEN_TYPES.keys.join(', ')}"
+                "Unsupported token type: #{token_type.inspect}. " \
+                "Supported types: #{SUBJECT_TOKEN_TYPES.keys.join(', ')}"
         end
 
         request = Net::HTTP::Post.new(@token_exchange_url)

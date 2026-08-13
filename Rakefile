@@ -59,8 +59,7 @@ RuboCop::RakeTask.new(:"lint:rubocop") do |task|
   task.patterns = ["."]
   task.formatters = %w[github] if ENV.key?("CI")
 
-  # some lines cannot be shortened
-  task.options = %w[--parallel --force-exclusion --except Layout/LineLength]
+  task.options = %w[--parallel --force-exclusion]
 end
 
 norm_lines = %w[tr -- \n \0].shelljoin
