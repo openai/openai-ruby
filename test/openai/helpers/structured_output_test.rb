@@ -36,6 +36,15 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
     required :type, const: :m3, doc: "Model M3"
   end
 
+  class NestedParticipant < OpenAI::BaseModel
+    required :name, String
+  end
+
+  class NestedEvent < OpenAI::BaseModel
+    required :participant, NestedParticipant
+    required :participants, OpenAI::ArrayOf[NestedParticipant]
+  end
+
   U1 = OpenAI::Helpers::StructuredOutput::UnionOf[Integer, A1]
   U2 = OpenAI::Helpers::StructuredOutput::UnionOf[M2, M3]
   U3 = OpenAI::Helpers::StructuredOutput::UnionOf[A1, A1]
@@ -68,6 +77,42 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
         optional :name, String
       end
     end
+  end
+
+  def test_direct_structured_output_models_preserve_nested_raw_values
+    participant = {name: "Ada"}
+    participants = [{name: "Grace"}]
+    event = NestedEvent.new(participant: participant, participants: participants)
+
+    assert_same(participant, event.participant)
+    assert_same(participants, event.participants)
+
+    replacement = {name: "Katherine"}
+    event.participant = replacement
+
+    assert_same(replacement, event.participant)
+    assert_same(replacement, event.to_h.fetch(:participant))
+
+    replacement_participants = [{name: "Dorothy"}]
+    event.participants = replacement_participants
+
+    assert_same(replacement_participants, event.participants)
+    assert_same(replacement_participants, event.to_h.fetch(:participants))
+  end
+
+  def test_response_coercion_materializes_nested_structured_output_models
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+    event = OpenAI::Internal::Type::Converter.coerce(
+      NestedEvent,
+      {participant: {name: "Ada"}, participants: [{name: "Grace"}]},
+      state: state
+    )
+
+    assert_instance_of(NestedParticipant, event.participant)
+    assert_instance_of(NestedParticipant, event.participants.fetch(0))
+    assert_equal("Ada", event.participant.name)
+    assert_equal("Grace", event.participants.fetch(0).name)
+    assert_nil(state.fetch(:error))
   end
 
   def test_to_schema
