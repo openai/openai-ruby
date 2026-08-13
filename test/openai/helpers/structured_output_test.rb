@@ -62,6 +62,17 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
     required :participant, NestedParticipant, nil?: true
   end
 
+  class EmptyUnionMember < OpenAI::BaseModel
+  end
+
+  class UnionContractEvent < OpenAI::BaseModel
+    required :choice, OpenAI::UnionOf[String, EmptyUnionMember]
+  end
+
+  class SymbolContractEvent < OpenAI::BaseModel
+    required :kind, Symbol
+  end
+
   class InheritedNestedEvent < NestedEvent
     required :name, String
   end
@@ -275,6 +286,54 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
     assert_nil(event.active)
     assert_nil(event.participant)
     assert_nil(event[:active])
+  end
+
+  def test_union_readers_ignore_errors_from_rejected_alternatives
+    choice = {}
+    event = UnionContractEvent.new(choice: choice)
+
+    assert_instance_of(EmptyUnionMember, event.choice)
+    assert_same(choice, event[:choice])
+
+    replacement = {}
+    event.choice = replacement
+
+    assert_instance_of(EmptyUnionMember, event.choice)
+    assert_same(replacement, event.to_h.fetch(:choice))
+
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+    parsed = OpenAI::Internal::Type::Converter.coerce(
+      UnionContractEvent,
+      {choice: {}},
+      state: state
+    )
+
+    assert_nil(state.fetch(:error))
+    assert_instance_of(EmptyUnionMember, parsed.choice)
+    assert_same(parsed[:choice], parsed.choice)
+  end
+
+  def test_symbol_readers_materialize_json_strings_without_replacing_raw_values
+    kind = "ready"
+    event = SymbolContractEvent.new(kind: kind)
+
+    assert_equal(:ready, event.kind)
+    assert_same(kind, event[:kind])
+
+    replacement = "updated"
+    event.kind = replacement
+
+    assert_equal(:updated, event.kind)
+    assert_same(replacement, event.to_h.fetch(:kind))
+
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+    parsed = OpenAI::Internal::Type::Converter.coerce(
+      SymbolContractEvent,
+      {kind: "parsed"},
+      state: state
+    )
+
+    assert_equal(:parsed, parsed.kind)
   end
 
   def test_typed_readers_reject_nonviable_scalar_assignment_values

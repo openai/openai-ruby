@@ -13,6 +13,22 @@ module OpenAI
 
         # @api private
         #
+        # @param value [Object]
+        # @param state [Hash{Symbol=>Object}]
+        # @return [Object]
+        def coerce(value, state:)
+          converted = super
+
+          case converted
+          when self
+            state[:error] = nil if state.fetch(:exactness).fetch(:no).zero?
+          end
+
+          converted
+        end
+
+        # @api private
+        #
         # @param state [Hash{Symbol=>Object}]
         #
         #   @option state [Hash{Object=>String}] :defs

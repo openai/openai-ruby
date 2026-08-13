@@ -76,6 +76,8 @@ module OpenAI
                 return nil if nilable
               when target
                 return value
+              when String
+                return value.to_sym if target == Symbol
               end
 
               state = OpenAI::Internal::Type::Converter.new_coerce_state(translate_names: false)

@@ -20,6 +20,7 @@ class OpenAI::Test::BaseModelCompilerTest < Minitest::Test
       class Event < OpenAI::BaseModel
         required :active, OpenAI::Boolean
         required :description, String, nil?: true
+        required :kind, Symbol
         required :participant, Participant
         required :participants, OpenAI::ArrayOf[Participant]
         required :aliases, OpenAI::ArrayOf[String, nil?: true]
@@ -31,6 +32,7 @@ class OpenAI::Test::BaseModelCompilerTest < Minitest::Test
         checks = {
           active: [true, false].include?(event.active),
           description: event.description.nil? || event.description.is_a?(String),
+          kind: event.kind.is_a?(Symbol),
           participant: event.participant.is_a?(Participant),
           participants: event.participants.all?(Participant),
           aliases: event.aliases.all? { _1.nil? || _1.is_a?(String) },
@@ -71,6 +73,7 @@ class OpenAI::Test::BaseModelCompilerTest < Minitest::Test
     payload = {
       active: true,
       description: "scheduled",
+      kind: "conference",
       participant: participant,
       participants: participants,
       aliases: aliases,
@@ -81,7 +84,7 @@ class OpenAI::Test::BaseModelCompilerTest < Minitest::Test
     OpenAIBaseModelCompilerFixtures.assert_reader_contract(constructed, source: "constructor")
     OpenAIBaseModelCompilerFixtures.assert_raw_values(
       constructed,
-      payload.slice(:participant, :participants, :aliases, :status, :detail),
+      payload.slice(:kind, :participant, :participants, :aliases, :status, :detail),
       source: "constructor"
     )
 
@@ -93,6 +96,7 @@ class OpenAI::Test::BaseModelCompilerTest < Minitest::Test
     assigned = OpenAIBaseModelCompilerFixtures::Event.new
     assigned.active = false
     assigned.description = "updated"
+    assigned.kind = "meeting"
     assigned.participant = replacement
     assigned.participants = replacement_participants
     assigned.aliases = replacement_aliases
@@ -151,6 +155,7 @@ class OpenAI::Test::BaseModelCompilerTest < Minitest::Test
 
         T.let(event.active, T::Boolean)
         T.let(event.description, T.nilable(String))
+        T.let(event.kind, Symbol)
         T.let(event.participant, OpenAIBaseModelCompilerFixtures::Participant)
         T.let(
           event.participants,
@@ -222,6 +227,7 @@ class OpenAI::Test::BaseModelCompilerTest < Minitest::Test
     assert_includes(stdout, "class OpenAIBaseModelCompilerFixtures::Event")
     assert_includes(stdout, "sig { returns(T::Boolean) }\n  def active; end")
     assert_includes(stdout, "sig { returns(T.nilable(String)) }\n  def description; end")
+    assert_includes(stdout, "sig { returns(Symbol) }\n  def kind; end")
     assert_includes(
       stdout,
       "sig { returns(OpenAIBaseModelCompilerFixtures::Participant) }\n  def participant; end"
