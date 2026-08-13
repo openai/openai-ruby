@@ -228,10 +228,6 @@ Style/NumberedParametersLimit:
 Style/RaiseArgs:
   Enabled: false
 
-# Be explicit about `RuntimeError`s.
-Style/RedundantException:
-  Enabled: false
-
 Style/RedundantInitialize:
   Exclude:
     - "**/*.rbi"

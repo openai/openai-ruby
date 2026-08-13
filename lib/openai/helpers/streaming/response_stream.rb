@@ -36,7 +36,7 @@ module OpenAI
         def get_final_response
           until_done
           response = @state.completed_response
-          raise RuntimeError.new("Didn't receive a 'response.completed' event") unless response
+          raise "Didn't receive a 'response.completed' event" unless response
           response
         end
 
@@ -219,10 +219,8 @@ module OpenAI
             parsed = JSON.parse(text, symbolize_names: true)
             OpenAI::Internal::Type::Converter.coerce(@text_format, parsed)
           rescue JSON::ParserError => e
-            raise RuntimeError.new(
-              "Failed to parse structured text as JSON for #{@text_format}: #{e.message}. " \
-              "Raw text: #{text.inspect}"
-            )
+            raise "Failed to parse structured text as JSON for #{@text_format}: #{e.message}. " \
+                  "Raw text: #{text.inspect}"
           end
         end
       end

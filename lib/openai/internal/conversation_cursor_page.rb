@@ -35,7 +35,7 @@ module OpenAI
       def next_page
         unless next_page?
           message = "No more pages available. Please check #next_page? before calling ##{__method__}"
-          raise RuntimeError.new(message)
+          raise message
         end
 
         req = OpenAI::Internal::Util.deep_merge(@req, {query: {after: last_id}})
