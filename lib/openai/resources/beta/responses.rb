@@ -301,12 +301,12 @@ module OpenAI
         def retrieve_streaming(response_id, params = {})
           query_params = [:include, :include_obfuscation, :starting_after, :stream]
           parsed, options = OpenAI::Beta::ResponseRetrieveParams.dump_request(params)
-          query = OpenAI::Internal::Util.encode_query_params(parsed.slice(*query_params))
           unless parsed.fetch(:stream, true)
             message = "Please use `#retrieve` for the non-streaming use case."
             raise ArgumentError.new(message)
           end
           parsed.store(:stream, true)
+          query = OpenAI::Internal::Util.encode_query_params(parsed.slice(*query_params))
           @client.request(
             method: :get,
             path: ["responses/%1$s?beta=true", response_id],

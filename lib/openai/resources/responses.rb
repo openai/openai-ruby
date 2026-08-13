@@ -407,12 +407,12 @@ module OpenAI
       # @see OpenAI::Models::Responses::ResponseRetrieveParams
       def retrieve_streaming(response_id, params = {})
         parsed, options = OpenAI::Responses::ResponseRetrieveParams.dump_request(params)
-        query = OpenAI::Internal::Util.encode_query_params(parsed)
         unless parsed.fetch(:stream, true)
           message = "Please use `#retrieve` for the non-streaming use case."
           raise ArgumentError.new(message)
         end
         parsed.store(:stream, true)
+        query = OpenAI::Internal::Util.encode_query_params(parsed)
         @client.request(
           method: :get,
           path: ["responses/%1$s", response_id],

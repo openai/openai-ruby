@@ -47,6 +47,73 @@ class OpenAI::Test::PathParameterQueryTest < Minitest::Test
     assert_requested(request)
   end
 
+  def test_response_retrieve_streaming_enables_stream_query_parameter
+    request = stub_response_stream(query: {"stream" => "true"})
+
+    events = @client.responses.retrieve_streaming("resp_audit").to_a
+
+    assert_equal(1, events.length)
+    assert_instance_of(OpenAI::Responses::ResponseTextDeltaEvent, events.first)
+    assert_equal("streamed text", events.first.delta)
+    assert_requested(request)
+  end
+
+  def test_response_retrieve_streaming_preserves_query_parameters
+    request = stub_response_stream(
+      query: {
+        "include" => ["file_search_call.results"],
+        "include_obfuscation" => "false",
+        "starting_after" => "7",
+        "stream" => "true"
+      }
+    )
+
+    events = @client.responses.retrieve_streaming(
+      "resp_audit",
+      include: [:"file_search_call.results"],
+      include_obfuscation: false,
+      starting_after: 7
+    ).to_a
+
+    assert_equal("streamed text", events.first.delta)
+    assert_requested(request)
+  end
+
+  def test_beta_response_retrieve_streaming_enables_stream_query_parameter
+    request = stub_response_stream(query: {"beta" => "true", "stream" => "true"})
+
+    events = @client.beta.responses.retrieve_streaming("resp_audit").to_a
+
+    assert_equal(1, events.length)
+    assert_instance_of(OpenAI::Beta::BetaResponseTextDeltaEvent, events.first)
+    assert_equal("streamed text", events.first.delta)
+    assert_requested(request)
+  end
+
+  def test_beta_response_retrieve_streaming_preserves_query_parameters_and_beta_header
+    request = stub_response_stream(
+      query: {
+        "beta" => "true",
+        "include" => ["file_search_call.results"],
+        "include_obfuscation" => "false",
+        "starting_after" => "7",
+        "stream" => "true"
+      },
+      headers: {"OpenAI-Beta" => "responses_multi_agent=v1"}
+    )
+
+    events = @client.beta.responses.retrieve_streaming(
+      "resp_audit",
+      include: [:"file_search_call.results"],
+      include_obfuscation: false,
+      starting_after: 7,
+      betas: [:"responses_multi_agent=v1"]
+    ).to_a
+
+    assert_equal("streamed text", events.first.delta)
+    assert_requested(request)
+  end
+
   def test_eval_output_items_list_excludes_eval_id
     request = stub_get(
       "/evals/eval_123/runs/run_123/output_items",
@@ -197,6 +264,29 @@ class OpenAI::Test::PathParameterQueryTest < Minitest::Test
   end
 
   private
+
+  def stub_response_stream(query:, headers: {})
+    event = {
+      type: "response.output_text.delta",
+      content_index: 0,
+      delta: "streamed text",
+      item_id: "item_123",
+      logprobs: [],
+      output_index: 0,
+      sequence_number: 8
+    }
+
+    stub_request(:get, "http://localhost/responses/resp_audit")
+      .with(
+        query: query,
+        headers: {"Accept" => "text/event-stream", "Accept-Encoding" => "identity", **headers}
+      )
+      .to_return(
+        status: 200,
+        headers: {"Content-Type" => "text/event-stream"},
+        body: "event: response.output_text.delta\ndata: #{JSON.generate(event)}\n\n"
+      )
+  end
 
   def stub_get(path, query:, body: {data: [], has_more: false})
     stub_request(:get, "http://localhost#{path}")
