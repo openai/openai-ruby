@@ -366,6 +366,17 @@ module OpenAI
           sig { returns(T.nilable(T::Boolean)) }
           attr_accessor :stream
 
+          # The WebSocket lane for this response. Requests with the same `stream_id` are
+          # processed FIFO, and events for the response echo the same `stream_id`.
+          #
+          # `stream_id` controls routing; `previous_response_id` controls conversation
+          # lineage, so a new lane can fork from a response created on another lane.
+          sig { returns(T.nilable(String)) }
+          attr_reader :stream_id
+
+          sig { params(stream_id: String).void }
+          attr_writer :stream_id
+
           # Options for streaming responses. Only set this when you set `stream: true`.
           sig do
             returns(
@@ -562,12 +573,14 @@ module OpenAI
           attr_writer :user
 
           # Client event for creating a response over a persistent WebSocket connection.
-          # This payload uses the same top-level fields as `POST /v1/responses`.
+          # This payload uses the same top-level fields as `POST /v1/responses`, plus
+          # WebSocket-only envelope metadata.
           #
           # Notes:
           #
           # - `stream` is implicit over WebSocket and should not be sent.
           # - `background` is not supported over WebSocket.
+          # - `stream_id` is WebSocket-only and is not part of `POST /v1/responses`.
           sig do
             params(
               background: T.nilable(T::Boolean),
@@ -628,6 +641,7 @@ module OpenAI
                 ),
               store: T.nilable(T::Boolean),
               stream: T.nilable(T::Boolean),
+              stream_id: String,
               stream_options:
                 T.nilable(
                   OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::StreamOptions::OrHash
@@ -833,6 +847,12 @@ module OpenAI
             # [Streaming section below](https://platform.openai.com/docs/api-reference/responses-streaming)
             # for more information.
             stream: nil,
+            # The WebSocket lane for this response. Requests with the same `stream_id` are
+            # processed FIFO, and events for the response echo the same `stream_id`.
+            #
+            # `stream_id` controls routing; `previous_response_id` controls conversation
+            # lineage, so a new lane can fork from a response created on another lane.
+            stream_id: nil,
             # Options for streaming responses. Only set this when you set `stream: true`.
             stream_options: nil,
             # What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
@@ -958,6 +978,7 @@ module OpenAI
                   ),
                 store: T.nilable(T::Boolean),
                 stream: T.nilable(T::Boolean),
+                stream_id: String,
                 stream_options:
                   T.nilable(
                     OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::StreamOptions

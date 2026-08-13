@@ -10,11 +10,13 @@ module OpenAI
         discriminator :type
 
         # Client event for creating a response over a persistent WebSocket connection.
-        # This payload uses the same top-level fields as `POST /v1/responses`.
+        # This payload uses the same top-level fields as `POST /v1/responses`, plus
+        # WebSocket-only envelope metadata.
         #
         # Notes:
         # - `stream` is implicit over WebSocket and should not be sent.
         # - `background` is not supported over WebSocket.
+        # - `stream_id` is WebSocket-only and is not part of `POST /v1/responses`.
         variant :"response.create", -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate }
 
         # Injects input items into an active response over a WebSocket connection.
@@ -299,6 +301,16 @@ module OpenAI
           #   @return [Boolean, nil]
           optional :stream, OpenAI::Internal::Type::Boolean, nil?: true
 
+          # @!attribute stream_id
+          #   The WebSocket lane for this response. Requests with the same `stream_id` are
+          #   processed FIFO, and events for the response echo the same `stream_id`.
+          #
+          #   `stream_id` controls routing; `previous_response_id` controls conversation
+          #   lineage, so a new lane can fork from a response created on another lane.
+          #
+          #   @return [String, nil]
+          optional :stream_id, String
+
           # @!attribute stream_options
           #   Options for streaming responses. Only set this when you set `stream: true`.
           #
@@ -404,18 +416,20 @@ module OpenAI
           #   @return [String, nil]
           optional :user, String
 
-          # @!method initialize(background: nil, context_management: nil, conversation: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, moderation: nil, multi_agent: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, type: :"response.create")
+          # @!method initialize(background: nil, context_management: nil, conversation: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, moderation: nil, multi_agent: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream: nil, stream_id: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, type: :"response.create")
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate} for more
           #   details.
           #
           #   Client event for creating a response over a persistent WebSocket connection.
-          #   This payload uses the same top-level fields as `POST /v1/responses`.
+          #   This payload uses the same top-level fields as `POST /v1/responses`, plus
+          #   WebSocket-only envelope metadata.
           #
           #   Notes:
           #
           #   - `stream` is implicit over WebSocket and should not be sent.
           #   - `background` is not supported over WebSocket.
+          #   - `stream_id` is WebSocket-only and is not part of `POST /v1/responses`.
           #
           #   @param background [Boolean, nil] Whether to run the model response in the background.
           #
@@ -462,6 +476,8 @@ module OpenAI
           #   @param store [Boolean, nil] Whether to store the generated model response for later retrieval via
           #
           #   @param stream [Boolean, nil] If set to true, the model response data will be streamed to the client
+          #
+          #   @param stream_id [String] The WebSocket lane for this response. Requests with the same
           #
           #   @param stream_options [OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::StreamOptions, nil] Options for streaming responses. Only set this when you set `stream: true`.
           #

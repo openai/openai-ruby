@@ -2,62 +2,1795 @@ module OpenAI
   module Models
     module Responses
       type responses_server_event =
-        OpenAI::Responses::ResponseAudioDeltaEvent
-        | OpenAI::Responses::ResponseAudioDoneEvent
-        | OpenAI::Responses::ResponseAudioTranscriptDeltaEvent
-        | OpenAI::Responses::ResponseAudioTranscriptDoneEvent
-        | OpenAI::Responses::ResponseCodeInterpreterCallCodeDeltaEvent
-        | OpenAI::Responses::ResponseCodeInterpreterCallCodeDoneEvent
-        | OpenAI::Responses::ResponseCodeInterpreterCallCompletedEvent
-        | OpenAI::Responses::ResponseCodeInterpreterCallInProgressEvent
-        | OpenAI::Responses::ResponseCodeInterpreterCallInterpretingEvent
-        | OpenAI::Responses::ResponseCompletedEvent
-        | OpenAI::Responses::ResponseContentPartAddedEvent
-        | OpenAI::Responses::ResponseContentPartDoneEvent
-        | OpenAI::Responses::ResponseCreatedEvent
-        | OpenAI::Responses::ResponseErrorEvent
-        | OpenAI::Responses::ResponseFileSearchCallCompletedEvent
-        | OpenAI::Responses::ResponseFileSearchCallInProgressEvent
-        | OpenAI::Responses::ResponseFileSearchCallSearchingEvent
-        | OpenAI::Responses::ResponseFunctionCallArgumentsDeltaEvent
-        | OpenAI::Responses::ResponseFunctionCallArgumentsDoneEvent
-        | OpenAI::Responses::ResponseInProgressEvent
-        | OpenAI::Responses::ResponseFailedEvent
-        | OpenAI::Responses::ResponseIncompleteEvent
-        | OpenAI::Responses::ResponseOutputItemAddedEvent
-        | OpenAI::Responses::ResponseOutputItemDoneEvent
-        | OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent
-        | OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent
-        | OpenAI::Responses::ResponseReasoningSummaryTextDeltaEvent
-        | OpenAI::Responses::ResponseReasoningSummaryTextDoneEvent
-        | OpenAI::Responses::ResponseReasoningTextDeltaEvent
-        | OpenAI::Responses::ResponseReasoningTextDoneEvent
-        | OpenAI::Responses::ResponseRefusalDeltaEvent
-        | OpenAI::Responses::ResponseRefusalDoneEvent
-        | OpenAI::Responses::ResponseTextDeltaEvent
-        | OpenAI::Responses::ResponseTextDoneEvent
-        | OpenAI::Responses::ResponseWebSearchCallCompletedEvent
-        | OpenAI::Responses::ResponseWebSearchCallInProgressEvent
-        | OpenAI::Responses::ResponseWebSearchCallSearchingEvent
-        | OpenAI::Responses::ResponseImageGenCallCompletedEvent
-        | OpenAI::Responses::ResponseImageGenCallGeneratingEvent
-        | OpenAI::Responses::ResponseImageGenCallInProgressEvent
-        | OpenAI::Responses::ResponseImageGenCallPartialImageEvent
-        | OpenAI::Responses::ResponseMcpCallArgumentsDeltaEvent
-        | OpenAI::Responses::ResponseMcpCallArgumentsDoneEvent
-        | OpenAI::Responses::ResponseMcpCallCompletedEvent
-        | OpenAI::Responses::ResponseMcpCallFailedEvent
-        | OpenAI::Responses::ResponseMcpCallInProgressEvent
-        | OpenAI::Responses::ResponseMcpListToolsCompletedEvent
-        | OpenAI::Responses::ResponseMcpListToolsFailedEvent
-        | OpenAI::Responses::ResponseMcpListToolsInProgressEvent
-        | OpenAI::Responses::ResponseOutputTextAnnotationAddedEvent
-        | OpenAI::Responses::ResponseQueuedEvent
-        | OpenAI::Responses::ResponseCustomToolCallInputDeltaEvent
-        | OpenAI::Responses::ResponseCustomToolCallInputDoneEvent
+        OpenAI::Responses::ResponsesServerEvent::ResponseAudioWsDelta
+        | OpenAI::Responses::ResponsesServerEvent::ResponseAudioWsDone
+        | OpenAI::Responses::ResponsesServerEvent::ResponseAudioTranscriptWsDelta
+        | OpenAI::Responses::ResponsesServerEvent::ResponseAudioTranscriptWsDone
+        | OpenAI::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallCodeWsDelta
+        | OpenAI::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallCodeWsDone
+        | OpenAI::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallWsCompleted
+        | OpenAI::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallInWsProgress
+        | OpenAI::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallWsInterpreting
+        | OpenAI::Responses::ResponsesServerEvent::ResponseWsCompleted
+        | OpenAI::Responses::ResponsesServerEvent::ResponseContentPartWsAdded
+        | OpenAI::Responses::ResponsesServerEvent::ResponseContentPartWsDone
+        | OpenAI::Responses::ResponsesServerEvent::ResponseWsCreated
+        | OpenAI::Responses::ResponsesServerEvent::ResponseWsError
+        | OpenAI::Responses::ResponsesServerEvent::ResponseFileSearchCallWsCompleted
+        | OpenAI::Responses::ResponsesServerEvent::ResponseFileSearchCallInWsProgress
+        | OpenAI::Responses::ResponsesServerEvent::ResponseFileSearchCallWsSearching
+        | OpenAI::Responses::ResponsesServerEvent::ResponseFunctionCallArgumentsWsDelta
+        | OpenAI::Responses::ResponsesServerEvent::ResponseFunctionCallArgumentsWsDone
+        | OpenAI::Responses::ResponsesServerEvent::ResponseInWsProgress
+        | OpenAI::Responses::ResponsesServerEvent::ResponseWsFailed
+        | OpenAI::Responses::ResponsesServerEvent::ResponseWsIncomplete
+        | OpenAI::Responses::ResponsesServerEvent::ResponseOutputItemWsAdded
+        | OpenAI::Responses::ResponsesServerEvent::ResponseOutputItemWsDone
+        | OpenAI::Responses::ResponsesServerEvent::ResponseReasoningSummaryPartWsAdded
+        | OpenAI::Responses::ResponsesServerEvent::ResponseReasoningSummaryPartWsDone
+        | OpenAI::Responses::ResponsesServerEvent::ResponseReasoningSummaryTextWsDelta
+        | OpenAI::Responses::ResponsesServerEvent::ResponseReasoningSummaryTextWsDone
+        | OpenAI::Responses::ResponsesServerEvent::ResponseReasoningTextWsDelta
+        | OpenAI::Responses::ResponsesServerEvent::ResponseReasoningTextWsDone
+        | OpenAI::Responses::ResponsesServerEvent::ResponseRefusalWsDelta
+        | OpenAI::Responses::ResponsesServerEvent::ResponseRefusalWsDone
+        | OpenAI::Responses::ResponsesServerEvent::ResponseTextWsDelta
+        | OpenAI::Responses::ResponsesServerEvent::ResponseTextWsDone
+        | OpenAI::Responses::ResponsesServerEvent::ResponseWebSearchCallWsCompleted
+        | OpenAI::Responses::ResponsesServerEvent::ResponseWebSearchCallInWsProgress
+        | OpenAI::Responses::ResponsesServerEvent::ResponseWebSearchCallWsSearching
+        | OpenAI::Responses::ResponsesServerEvent::ResponseImageGenCallWsCompleted
+        | OpenAI::Responses::ResponsesServerEvent::ResponseImageGenCallWsGenerating
+        | OpenAI::Responses::ResponsesServerEvent::ResponseImageGenCallInWsProgress
+        | OpenAI::Responses::ResponsesServerEvent::ResponseImageGenCallPartialWsImage
+        | OpenAI::Responses::ResponsesServerEvent::ResponseMcpCallArgumentsWsDelta
+        | OpenAI::Responses::ResponsesServerEvent::ResponseMcpCallArgumentsWsDone
+        | OpenAI::Responses::ResponsesServerEvent::ResponseMcpCallWsCompleted
+        | OpenAI::Responses::ResponsesServerEvent::ResponseMcpCallWsFailed
+        | OpenAI::Responses::ResponsesServerEvent::ResponseMcpCallInWsProgress
+        | OpenAI::Responses::ResponsesServerEvent::ResponseMcpListToolsWsCompleted
+        | OpenAI::Responses::ResponsesServerEvent::ResponseMcpListToolsWsFailed
+        | OpenAI::Responses::ResponsesServerEvent::ResponseMcpListToolsInWsProgress
+        | OpenAI::Responses::ResponsesServerEvent::ResponseOutputTextAnnotationWsAdded
+        | OpenAI::Responses::ResponsesServerEvent::ResponseWsQueued
+        | OpenAI::Responses::ResponsesServerEvent::ResponseCustomToolCallInputWsDelta
+        | OpenAI::Responses::ResponsesServerEvent::ResponseCustomToolCallInputWsDone
 
       module ResponsesServerEvent
         extend OpenAI::Internal::Type::Union
+
+        type response_audio_ws_delta =
+          {
+            delta: String,
+            sequence_number: Integer,
+            type: :"response.audio.delta",
+            stream_id: String
+          }
+
+        class ResponseAudioWsDelta < OpenAI::Models::Responses::ResponseAudioDeltaEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            delta: String,
+            sequence_number: Integer,
+            ?type: :"response.audio.delta",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            delta: String,
+            sequence_number: Integer,
+            type: :"response.audio.delta",
+            stream_id: String
+          }
+        end
+
+        type response_audio_ws_done =
+          {
+            sequence_number: Integer,
+            type: :"response.audio.done",
+            stream_id: String
+          }
+
+        class ResponseAudioWsDone < OpenAI::Models::Responses::ResponseAudioDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            sequence_number: Integer,
+            ?type: :"response.audio.done",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            sequence_number: Integer,
+            type: :"response.audio.done",
+            stream_id: String
+          }
+        end
+
+        type response_audio_transcript_ws_delta =
+          {
+            delta: String,
+            sequence_number: Integer,
+            type: :"response.audio.transcript.delta",
+            stream_id: String
+          }
+
+        class ResponseAudioTranscriptWsDelta < OpenAI::Models::Responses::ResponseAudioTranscriptDeltaEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            delta: String,
+            sequence_number: Integer,
+            ?type: :"response.audio.transcript.delta",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            delta: String,
+            sequence_number: Integer,
+            type: :"response.audio.transcript.delta",
+            stream_id: String
+          }
+        end
+
+        type response_audio_transcript_ws_done =
+          {
+            sequence_number: Integer,
+            type: :"response.audio.transcript.done",
+            stream_id: String
+          }
+
+        class ResponseAudioTranscriptWsDone < OpenAI::Models::Responses::ResponseAudioTranscriptDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            sequence_number: Integer,
+            ?type: :"response.audio.transcript.done",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            sequence_number: Integer,
+            type: :"response.audio.transcript.done",
+            stream_id: String
+          }
+        end
+
+        type response_code_interpreter_call_code_ws_delta =
+          {
+            delta: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.code_interpreter_call_code.delta",
+            stream_id: String
+          }
+
+        class ResponseCodeInterpreterCallCodeWsDelta < OpenAI::Models::Responses::ResponseCodeInterpreterCallCodeDeltaEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            delta: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.code_interpreter_call_code.delta",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            delta: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.code_interpreter_call_code.delta",
+            stream_id: String
+          }
+        end
+
+        type response_code_interpreter_call_code_ws_done =
+          {
+            code: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.code_interpreter_call_code.done",
+            stream_id: String
+          }
+
+        class ResponseCodeInterpreterCallCodeWsDone < OpenAI::Models::Responses::ResponseCodeInterpreterCallCodeDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            code: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.code_interpreter_call_code.done",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            code: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.code_interpreter_call_code.done",
+            stream_id: String
+          }
+        end
+
+        type response_code_interpreter_call_ws_completed =
+          {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.code_interpreter_call.completed",
+            stream_id: String
+          }
+
+        class ResponseCodeInterpreterCallWsCompleted < OpenAI::Models::Responses::ResponseCodeInterpreterCallCompletedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.code_interpreter_call.completed",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.code_interpreter_call.completed",
+            stream_id: String
+          }
+        end
+
+        type response_code_interpreter_call_in_ws_progress =
+          {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.code_interpreter_call.in_progress",
+            stream_id: String
+          }
+
+        class ResponseCodeInterpreterCallInWsProgress < OpenAI::Models::Responses::ResponseCodeInterpreterCallInProgressEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.code_interpreter_call.in_progress",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.code_interpreter_call.in_progress",
+            stream_id: String
+          }
+        end
+
+        type response_code_interpreter_call_ws_interpreting =
+          {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.code_interpreter_call.interpreting",
+            stream_id: String
+          }
+
+        class ResponseCodeInterpreterCallWsInterpreting < OpenAI::Models::Responses::ResponseCodeInterpreterCallInterpretingEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.code_interpreter_call.interpreting",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.code_interpreter_call.interpreting",
+            stream_id: String
+          }
+        end
+
+        type response_ws_completed =
+          {
+            response: OpenAI::Responses::Response,
+            sequence_number: Integer,
+            type: :"response.completed",
+            stream_id: String
+          }
+
+        class ResponseWsCompleted < OpenAI::Models::Responses::ResponseCompletedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            response: OpenAI::Responses::Response,
+            sequence_number: Integer,
+            ?type: :"response.completed",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            response: OpenAI::Responses::Response,
+            sequence_number: Integer,
+            type: :"response.completed",
+            stream_id: String
+          }
+        end
+
+        type response_content_part_ws_added =
+          {
+            content_index: Integer,
+            item_id: String,
+            output_index: Integer,
+            part: OpenAI::Models::Responses::ResponseContentPartAddedEvent::part,
+            sequence_number: Integer,
+            type: :"response.content_part.added",
+            stream_id: String
+          }
+
+        class ResponseContentPartWsAdded < OpenAI::Models::Responses::ResponseContentPartAddedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            content_index: Integer,
+            item_id: String,
+            output_index: Integer,
+            part: OpenAI::Models::Responses::ResponseContentPartAddedEvent::part,
+            sequence_number: Integer,
+            ?type: :"response.content_part.added",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            content_index: Integer,
+            item_id: String,
+            output_index: Integer,
+            part: OpenAI::Models::Responses::ResponseContentPartAddedEvent::part,
+            sequence_number: Integer,
+            type: :"response.content_part.added",
+            stream_id: String
+          }
+        end
+
+        type response_content_part_ws_done =
+          {
+            content_index: Integer,
+            item_id: String,
+            output_index: Integer,
+            part: OpenAI::Models::Responses::ResponseContentPartDoneEvent::part,
+            sequence_number: Integer,
+            type: :"response.content_part.done",
+            stream_id: String
+          }
+
+        class ResponseContentPartWsDone < OpenAI::Models::Responses::ResponseContentPartDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            content_index: Integer,
+            item_id: String,
+            output_index: Integer,
+            part: OpenAI::Models::Responses::ResponseContentPartDoneEvent::part,
+            sequence_number: Integer,
+            ?type: :"response.content_part.done",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            content_index: Integer,
+            item_id: String,
+            output_index: Integer,
+            part: OpenAI::Models::Responses::ResponseContentPartDoneEvent::part,
+            sequence_number: Integer,
+            type: :"response.content_part.done",
+            stream_id: String
+          }
+        end
+
+        type response_ws_created =
+          {
+            response: OpenAI::Responses::Response,
+            sequence_number: Integer,
+            type: :"response.created",
+            stream_id: String
+          }
+
+        class ResponseWsCreated < OpenAI::Models::Responses::ResponseCreatedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            response: OpenAI::Responses::Response,
+            sequence_number: Integer,
+            ?type: :"response.created",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            response: OpenAI::Responses::Response,
+            sequence_number: Integer,
+            type: :"response.created",
+            stream_id: String
+          }
+        end
+
+        type response_ws_error =
+          {
+            code: String?,
+            message: String,
+            param: String?,
+            sequence_number: Integer,
+            type: :error,
+            stream_id: String
+          }
+
+        class ResponseWsError < OpenAI::Models::Responses::ResponseErrorEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            code: String?,
+            message: String,
+            param: String?,
+            sequence_number: Integer,
+            ?type: :error,
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            code: String?,
+            message: String,
+            param: String?,
+            sequence_number: Integer,
+            type: :error,
+            stream_id: String
+          }
+        end
+
+        type response_file_search_call_ws_completed =
+          {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.file_search_call.completed",
+            stream_id: String
+          }
+
+        class ResponseFileSearchCallWsCompleted < OpenAI::Models::Responses::ResponseFileSearchCallCompletedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.file_search_call.completed",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.file_search_call.completed",
+            stream_id: String
+          }
+        end
+
+        type response_file_search_call_in_ws_progress =
+          {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.file_search_call.in_progress",
+            stream_id: String
+          }
+
+        class ResponseFileSearchCallInWsProgress < OpenAI::Models::Responses::ResponseFileSearchCallInProgressEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.file_search_call.in_progress",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.file_search_call.in_progress",
+            stream_id: String
+          }
+        end
+
+        type response_file_search_call_ws_searching =
+          {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.file_search_call.searching",
+            stream_id: String
+          }
+
+        class ResponseFileSearchCallWsSearching < OpenAI::Models::Responses::ResponseFileSearchCallSearchingEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.file_search_call.searching",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.file_search_call.searching",
+            stream_id: String
+          }
+        end
+
+        type response_function_call_arguments_ws_delta =
+          {
+            delta: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.function_call_arguments.delta",
+            stream_id: String
+          }
+
+        class ResponseFunctionCallArgumentsWsDelta < OpenAI::Models::Responses::ResponseFunctionCallArgumentsDeltaEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            delta: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.function_call_arguments.delta",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            delta: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.function_call_arguments.delta",
+            stream_id: String
+          }
+        end
+
+        type response_function_call_arguments_ws_done =
+          {
+            arguments: String,
+            item_id: String,
+            name: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.function_call_arguments.done",
+            stream_id: String
+          }
+
+        class ResponseFunctionCallArgumentsWsDone < OpenAI::Models::Responses::ResponseFunctionCallArgumentsDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            arguments: String,
+            item_id: String,
+            name: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.function_call_arguments.done",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            arguments: String,
+            item_id: String,
+            name: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.function_call_arguments.done",
+            stream_id: String
+          }
+        end
+
+        type response_in_ws_progress =
+          {
+            response: OpenAI::Responses::Response,
+            sequence_number: Integer,
+            type: :"response.in_progress",
+            stream_id: String
+          }
+
+        class ResponseInWsProgress < OpenAI::Models::Responses::ResponseInProgressEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            response: OpenAI::Responses::Response,
+            sequence_number: Integer,
+            ?type: :"response.in_progress",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            response: OpenAI::Responses::Response,
+            sequence_number: Integer,
+            type: :"response.in_progress",
+            stream_id: String
+          }
+        end
+
+        type response_ws_failed =
+          {
+            response: OpenAI::Responses::Response,
+            sequence_number: Integer,
+            type: :"response.failed",
+            stream_id: String
+          }
+
+        class ResponseWsFailed < OpenAI::Models::Responses::ResponseFailedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            response: OpenAI::Responses::Response,
+            sequence_number: Integer,
+            ?type: :"response.failed",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            response: OpenAI::Responses::Response,
+            sequence_number: Integer,
+            type: :"response.failed",
+            stream_id: String
+          }
+        end
+
+        type response_ws_incomplete =
+          {
+            response: OpenAI::Responses::Response,
+            sequence_number: Integer,
+            type: :"response.incomplete",
+            stream_id: String
+          }
+
+        class ResponseWsIncomplete < OpenAI::Models::Responses::ResponseIncompleteEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            response: OpenAI::Responses::Response,
+            sequence_number: Integer,
+            ?type: :"response.incomplete",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            response: OpenAI::Responses::Response,
+            sequence_number: Integer,
+            type: :"response.incomplete",
+            stream_id: String
+          }
+        end
+
+        type response_output_item_ws_added =
+          {
+            item: OpenAI::Models::Responses::response_output_item,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.output_item.added",
+            stream_id: String
+          }
+
+        class ResponseOutputItemWsAdded < OpenAI::Models::Responses::ResponseOutputItemAddedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            item: OpenAI::Models::Responses::response_output_item,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.output_item.added",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            item: OpenAI::Models::Responses::response_output_item,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.output_item.added",
+            stream_id: String
+          }
+        end
+
+        type response_output_item_ws_done =
+          {
+            item: OpenAI::Models::Responses::response_output_item,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.output_item.done",
+            stream_id: String
+          }
+
+        class ResponseOutputItemWsDone < OpenAI::Models::Responses::ResponseOutputItemDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            item: OpenAI::Models::Responses::response_output_item,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.output_item.done",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            item: OpenAI::Models::Responses::response_output_item,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.output_item.done",
+            stream_id: String
+          }
+        end
+
+        type response_reasoning_summary_part_ws_added =
+          {
+            item_id: String,
+            output_index: Integer,
+            part: OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent::Part,
+            sequence_number: Integer,
+            summary_index: Integer,
+            type: :"response.reasoning_summary_part.added",
+            stream_id: String
+          }
+
+        class ResponseReasoningSummaryPartWsAdded < OpenAI::Models::Responses::ResponseReasoningSummaryPartAddedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            item_id: String,
+            output_index: Integer,
+            part: OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent::Part,
+            sequence_number: Integer,
+            summary_index: Integer,
+            ?type: :"response.reasoning_summary_part.added",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            item_id: String,
+            output_index: Integer,
+            part: OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent::Part,
+            sequence_number: Integer,
+            summary_index: Integer,
+            type: :"response.reasoning_summary_part.added",
+            stream_id: String
+          }
+        end
+
+        type response_reasoning_summary_part_ws_done =
+          {
+            item_id: String,
+            output_index: Integer,
+            part: OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part,
+            sequence_number: Integer,
+            summary_index: Integer,
+            type: :"response.reasoning_summary_part.done",
+            status: OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent::status,
+            stream_id: String
+          }
+
+        class ResponseReasoningSummaryPartWsDone < OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            item_id: String,
+            output_index: Integer,
+            part: OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part,
+            sequence_number: Integer,
+            summary_index: Integer,
+            ?status: OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent::status,
+            ?type: :"response.reasoning_summary_part.done",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            item_id: String,
+            output_index: Integer,
+            part: OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part,
+            sequence_number: Integer,
+            summary_index: Integer,
+            type: :"response.reasoning_summary_part.done",
+            status: OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent::status,
+            stream_id: String
+          }
+        end
+
+        type response_reasoning_summary_text_ws_delta =
+          {
+            delta: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            summary_index: Integer,
+            type: :"response.reasoning_summary_text.delta",
+            stream_id: String
+          }
+
+        class ResponseReasoningSummaryTextWsDelta < OpenAI::Models::Responses::ResponseReasoningSummaryTextDeltaEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            delta: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            summary_index: Integer,
+            ?type: :"response.reasoning_summary_text.delta",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            delta: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            summary_index: Integer,
+            type: :"response.reasoning_summary_text.delta",
+            stream_id: String
+          }
+        end
+
+        type response_reasoning_summary_text_ws_done =
+          {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            summary_index: Integer,
+            text: String,
+            type: :"response.reasoning_summary_text.done",
+            stream_id: String
+          }
+
+        class ResponseReasoningSummaryTextWsDone < OpenAI::Models::Responses::ResponseReasoningSummaryTextDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            summary_index: Integer,
+            text: String,
+            ?type: :"response.reasoning_summary_text.done",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            summary_index: Integer,
+            text: String,
+            type: :"response.reasoning_summary_text.done",
+            stream_id: String
+          }
+        end
+
+        type response_reasoning_text_ws_delta =
+          {
+            content_index: Integer,
+            delta: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.reasoning_text.delta",
+            stream_id: String
+          }
+
+        class ResponseReasoningTextWsDelta < OpenAI::Models::Responses::ResponseReasoningTextDeltaEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            content_index: Integer,
+            delta: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.reasoning_text.delta",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            content_index: Integer,
+            delta: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.reasoning_text.delta",
+            stream_id: String
+          }
+        end
+
+        type response_reasoning_text_ws_done =
+          {
+            content_index: Integer,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            text: String,
+            type: :"response.reasoning_text.done",
+            stream_id: String
+          }
+
+        class ResponseReasoningTextWsDone < OpenAI::Models::Responses::ResponseReasoningTextDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            content_index: Integer,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            text: String,
+            ?type: :"response.reasoning_text.done",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            content_index: Integer,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            text: String,
+            type: :"response.reasoning_text.done",
+            stream_id: String
+          }
+        end
+
+        type response_refusal_ws_delta =
+          {
+            content_index: Integer,
+            delta: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.refusal.delta",
+            stream_id: String
+          }
+
+        class ResponseRefusalWsDelta < OpenAI::Models::Responses::ResponseRefusalDeltaEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            content_index: Integer,
+            delta: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.refusal.delta",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            content_index: Integer,
+            delta: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.refusal.delta",
+            stream_id: String
+          }
+        end
+
+        type response_refusal_ws_done =
+          {
+            content_index: Integer,
+            item_id: String,
+            output_index: Integer,
+            refusal: String,
+            sequence_number: Integer,
+            type: :"response.refusal.done",
+            stream_id: String
+          }
+
+        class ResponseRefusalWsDone < OpenAI::Models::Responses::ResponseRefusalDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            content_index: Integer,
+            item_id: String,
+            output_index: Integer,
+            refusal: String,
+            sequence_number: Integer,
+            ?type: :"response.refusal.done",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            content_index: Integer,
+            item_id: String,
+            output_index: Integer,
+            refusal: String,
+            sequence_number: Integer,
+            type: :"response.refusal.done",
+            stream_id: String
+          }
+        end
+
+        type response_text_ws_delta =
+          {
+            content_index: Integer,
+            delta: String,
+            item_id: String,
+            logprobs: ::Array[OpenAI::Responses::ResponseTextDeltaEvent::Logprob],
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.output_text.delta",
+            stream_id: String
+          }
+
+        class ResponseTextWsDelta < OpenAI::Models::Responses::ResponseTextDeltaEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            content_index: Integer,
+            delta: String,
+            item_id: String,
+            logprobs: ::Array[OpenAI::Responses::ResponseTextDeltaEvent::Logprob],
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.output_text.delta",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            content_index: Integer,
+            delta: String,
+            item_id: String,
+            logprobs: ::Array[OpenAI::Responses::ResponseTextDeltaEvent::Logprob],
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.output_text.delta",
+            stream_id: String
+          }
+        end
+
+        type response_text_ws_done =
+          {
+            content_index: Integer,
+            item_id: String,
+            logprobs: ::Array[OpenAI::Responses::ResponseTextDoneEvent::Logprob],
+            output_index: Integer,
+            sequence_number: Integer,
+            text: String,
+            type: :"response.output_text.done",
+            stream_id: String
+          }
+
+        class ResponseTextWsDone < OpenAI::Models::Responses::ResponseTextDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            content_index: Integer,
+            item_id: String,
+            logprobs: ::Array[OpenAI::Responses::ResponseTextDoneEvent::Logprob],
+            output_index: Integer,
+            sequence_number: Integer,
+            text: String,
+            ?type: :"response.output_text.done",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            content_index: Integer,
+            item_id: String,
+            logprobs: ::Array[OpenAI::Responses::ResponseTextDoneEvent::Logprob],
+            output_index: Integer,
+            sequence_number: Integer,
+            text: String,
+            type: :"response.output_text.done",
+            stream_id: String
+          }
+        end
+
+        type response_web_search_call_ws_completed =
+          {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.web_search_call.completed",
+            stream_id: String
+          }
+
+        class ResponseWebSearchCallWsCompleted < OpenAI::Models::Responses::ResponseWebSearchCallCompletedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.web_search_call.completed",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.web_search_call.completed",
+            stream_id: String
+          }
+        end
+
+        type response_web_search_call_in_ws_progress =
+          {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.web_search_call.in_progress",
+            stream_id: String
+          }
+
+        class ResponseWebSearchCallInWsProgress < OpenAI::Models::Responses::ResponseWebSearchCallInProgressEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.web_search_call.in_progress",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.web_search_call.in_progress",
+            stream_id: String
+          }
+        end
+
+        type response_web_search_call_ws_searching =
+          {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.web_search_call.searching",
+            stream_id: String
+          }
+
+        class ResponseWebSearchCallWsSearching < OpenAI::Models::Responses::ResponseWebSearchCallSearchingEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.web_search_call.searching",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.web_search_call.searching",
+            stream_id: String
+          }
+        end
+
+        type response_image_gen_call_ws_completed =
+          {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.image_generation_call.completed",
+            stream_id: String
+          }
+
+        class ResponseImageGenCallWsCompleted < OpenAI::Models::Responses::ResponseImageGenCallCompletedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.image_generation_call.completed",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.image_generation_call.completed",
+            stream_id: String
+          }
+        end
+
+        type response_image_gen_call_ws_generating =
+          {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.image_generation_call.generating",
+            stream_id: String
+          }
+
+        class ResponseImageGenCallWsGenerating < OpenAI::Models::Responses::ResponseImageGenCallGeneratingEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.image_generation_call.generating",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.image_generation_call.generating",
+            stream_id: String
+          }
+        end
+
+        type response_image_gen_call_in_ws_progress =
+          {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.image_generation_call.in_progress",
+            stream_id: String
+          }
+
+        class ResponseImageGenCallInWsProgress < OpenAI::Models::Responses::ResponseImageGenCallInProgressEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.image_generation_call.in_progress",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.image_generation_call.in_progress",
+            stream_id: String
+          }
+        end
+
+        type response_image_gen_call_partial_ws_image =
+          {
+            item_id: String,
+            output_index: Integer,
+            :partial_image_b64 => String,
+            partial_image_index: Integer,
+            sequence_number: Integer,
+            type: :"response.image_generation_call.partial_image",
+            stream_id: String
+          }
+
+        class ResponseImageGenCallPartialWsImage < OpenAI::Models::Responses::ResponseImageGenCallPartialImageEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            item_id: String,
+            output_index: Integer,
+            partial_image_b64: String,
+            partial_image_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.image_generation_call.partial_image",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            item_id: String,
+            output_index: Integer,
+            :partial_image_b64 => String,
+            partial_image_index: Integer,
+            sequence_number: Integer,
+            type: :"response.image_generation_call.partial_image",
+            stream_id: String
+          }
+        end
+
+        type response_mcp_call_arguments_ws_delta =
+          {
+            delta: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.mcp_call_arguments.delta",
+            stream_id: String
+          }
+
+        class ResponseMcpCallArgumentsWsDelta < OpenAI::Models::Responses::ResponseMcpCallArgumentsDeltaEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            delta: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.mcp_call_arguments.delta",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            delta: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.mcp_call_arguments.delta",
+            stream_id: String
+          }
+        end
+
+        type response_mcp_call_arguments_ws_done =
+          {
+            arguments: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.mcp_call_arguments.done",
+            stream_id: String
+          }
+
+        class ResponseMcpCallArgumentsWsDone < OpenAI::Models::Responses::ResponseMcpCallArgumentsDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            arguments: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.mcp_call_arguments.done",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            arguments: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.mcp_call_arguments.done",
+            stream_id: String
+          }
+        end
+
+        type response_mcp_call_ws_completed =
+          {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.mcp_call.completed",
+            stream_id: String
+          }
+
+        class ResponseMcpCallWsCompleted < OpenAI::Models::Responses::ResponseMcpCallCompletedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.mcp_call.completed",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.mcp_call.completed",
+            stream_id: String
+          }
+        end
+
+        type response_mcp_call_ws_failed =
+          {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.mcp_call.failed",
+            stream_id: String
+          }
+
+        class ResponseMcpCallWsFailed < OpenAI::Models::Responses::ResponseMcpCallFailedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.mcp_call.failed",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.mcp_call.failed",
+            stream_id: String
+          }
+        end
+
+        type response_mcp_call_in_ws_progress =
+          {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.mcp_call.in_progress",
+            stream_id: String
+          }
+
+        class ResponseMcpCallInWsProgress < OpenAI::Models::Responses::ResponseMcpCallInProgressEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.mcp_call.in_progress",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.mcp_call.in_progress",
+            stream_id: String
+          }
+        end
+
+        type response_mcp_list_tools_ws_completed =
+          {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.mcp_list_tools.completed",
+            stream_id: String
+          }
+
+        class ResponseMcpListToolsWsCompleted < OpenAI::Models::Responses::ResponseMcpListToolsCompletedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.mcp_list_tools.completed",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.mcp_list_tools.completed",
+            stream_id: String
+          }
+        end
+
+        type response_mcp_list_tools_ws_failed =
+          {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.mcp_list_tools.failed",
+            stream_id: String
+          }
+
+        class ResponseMcpListToolsWsFailed < OpenAI::Models::Responses::ResponseMcpListToolsFailedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.mcp_list_tools.failed",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.mcp_list_tools.failed",
+            stream_id: String
+          }
+        end
+
+        type response_mcp_list_tools_in_ws_progress =
+          {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.mcp_list_tools.in_progress",
+            stream_id: String
+          }
+
+        class ResponseMcpListToolsInWsProgress < OpenAI::Models::Responses::ResponseMcpListToolsInProgressEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.mcp_list_tools.in_progress",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.mcp_list_tools.in_progress",
+            stream_id: String
+          }
+        end
+
+        type response_output_text_annotation_ws_added =
+          {
+            annotation: top,
+            annotation_index: Integer,
+            content_index: Integer,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.output_text.annotation.added",
+            stream_id: String
+          }
+
+        class ResponseOutputTextAnnotationWsAdded < OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            annotation: top,
+            annotation_index: Integer,
+            content_index: Integer,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.output_text.annotation.added",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            annotation: top,
+            annotation_index: Integer,
+            content_index: Integer,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.output_text.annotation.added",
+            stream_id: String
+          }
+        end
+
+        type response_ws_queued =
+          {
+            response: OpenAI::Responses::Response,
+            sequence_number: Integer,
+            type: :"response.queued",
+            stream_id: String
+          }
+
+        class ResponseWsQueued < OpenAI::Models::Responses::ResponseQueuedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            response: OpenAI::Responses::Response,
+            sequence_number: Integer,
+            ?type: :"response.queued",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            response: OpenAI::Responses::Response,
+            sequence_number: Integer,
+            type: :"response.queued",
+            stream_id: String
+          }
+        end
+
+        type response_custom_tool_call_input_ws_delta =
+          {
+            delta: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.custom_tool_call_input.delta",
+            stream_id: String
+          }
+
+        class ResponseCustomToolCallInputWsDelta < OpenAI::Models::Responses::ResponseCustomToolCallInputDeltaEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            delta: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.custom_tool_call_input.delta",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            delta: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.custom_tool_call_input.delta",
+            stream_id: String
+          }
+        end
+
+        type response_custom_tool_call_input_ws_done =
+          {
+            input: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.custom_tool_call_input.done",
+            stream_id: String
+          }
+
+        class ResponseCustomToolCallInputWsDone < OpenAI::Models::Responses::ResponseCustomToolCallInputDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            input: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.custom_tool_call_input.done",
+            ?stream_id: String
+          ) -> void
+
+          def to_hash: -> {
+            input: String,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.custom_tool_call_input.done",
+            stream_id: String
+          }
+        end
 
         def self?.variants: -> ::Array[OpenAI::Models::Responses::responses_server_event]
       end

@@ -314,6 +314,17 @@ module OpenAI
         sig { returns(T.nilable(T::Boolean)) }
         attr_accessor :stream
 
+        # The WebSocket lane for this response. Requests with the same `stream_id` are
+        # processed FIFO, and events for the response echo the same `stream_id`.
+        #
+        # `stream_id` controls routing; `previous_response_id` controls conversation
+        # lineage, so a new lane can fork from a response created on another lane.
+        sig { returns(T.nilable(String)) }
+        attr_reader :stream_id
+
+        sig { params(stream_id: String).void }
+        attr_writer :stream_id
+
         # Options for streaming responses. Only set this when you set `stream: true`.
         sig do
           returns(
@@ -558,6 +569,7 @@ module OpenAI
               ),
             store: T.nilable(T::Boolean),
             stream: T.nilable(T::Boolean),
+            stream_id: String,
             stream_options:
               T.nilable(
                 OpenAI::Responses::ResponsesClientEvent::StreamOptions::OrHash
@@ -761,6 +773,12 @@ module OpenAI
           # [Streaming section below](https://platform.openai.com/docs/api-reference/responses-streaming)
           # for more information.
           stream: nil,
+          # The WebSocket lane for this response. Requests with the same `stream_id` are
+          # processed FIFO, and events for the response echo the same `stream_id`.
+          #
+          # `stream_id` controls routing; `previous_response_id` controls conversation
+          # lineage, so a new lane can fork from a response created on another lane.
+          stream_id: nil,
           # Options for streaming responses. Only set this when you set `stream: true`.
           stream_options: nil,
           # What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
@@ -877,6 +895,7 @@ module OpenAI
                 ),
               store: T.nilable(T::Boolean),
               stream: T.nilable(T::Boolean),
+              stream_id: String,
               stream_options:
                 T.nilable(
                   OpenAI::Responses::ResponsesClientEvent::StreamOptions

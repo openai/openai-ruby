@@ -26,6 +26,7 @@ module OpenAI
           service_tier: OpenAI::Models::Responses::ResponsesClientEvent::service_tier?,
           store: bool?,
           stream: bool?,
+          stream_id: String,
           stream_options: OpenAI::Responses::ResponsesClientEvent::StreamOptions?,
           temperature: Float?,
           text: OpenAI::Responses::ResponseTextConfig,
@@ -96,6 +97,10 @@ module OpenAI
 
         attr_accessor stream: bool?
 
+        attr_reader stream_id: String?
+
+        def stream_id=: (String) -> String
+
         attr_accessor stream_options: OpenAI::Responses::ResponsesClientEvent::StreamOptions?
 
         attr_accessor temperature: Float?
@@ -151,6 +156,7 @@ module OpenAI
           ?service_tier: OpenAI::Models::Responses::ResponsesClientEvent::service_tier?,
           ?store: bool?,
           ?stream: bool?,
+          ?stream_id: String,
           ?stream_options: OpenAI::Responses::ResponsesClientEvent::StreamOptions?,
           ?temperature: Float?,
           ?text: OpenAI::Responses::ResponseTextConfig,
@@ -187,6 +193,7 @@ module OpenAI
           service_tier: OpenAI::Models::Responses::ResponsesClientEvent::service_tier?,
           store: bool?,
           stream: bool?,
+          stream_id: String,
           stream_options: OpenAI::Responses::ResponsesClientEvent::StreamOptions?,
           temperature: Float?,
           text: OpenAI::Responses::ResponseTextConfig,
