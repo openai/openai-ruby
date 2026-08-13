@@ -58,6 +58,7 @@ module OpenAI
         end
 
         class << self
+          # @api private
           def required(name_sym, type_info, spec = {})
             super
 
@@ -72,10 +73,20 @@ module OpenAI
               when nil, target
                 value
               else
-                OpenAI::Internal::Type::Converter.coerce(
-                  target,
-                  value,
-                  state: OpenAI::Internal::Type::Converter.new_coerce_state(translate_names: false)
+                state = OpenAI::Internal::Type::Converter.new_coerce_state(translate_names: false)
+                converted = OpenAI::Internal::Type::Converter.coerce(target, value, state: state)
+
+                case converted
+                when target
+                  return converted if state.fetch(:error).nil? && state.fetch(:exactness).fetch(:no).zero?
+                end
+
+                raise OpenAI::Errors::ConversionError.new(
+                  on: self.class,
+                  method: name_sym,
+                  target: target,
+                  value: value,
+                  cause: state.fetch(:error)
                 )
               end
             end

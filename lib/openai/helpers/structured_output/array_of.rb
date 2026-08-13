@@ -13,6 +13,14 @@ module OpenAI
       class ArrayOf < OpenAI::Internal::Type::ArrayOf
         include OpenAI::Helpers::StructuredOutput::JsonSchemaConverter
 
+        # @api public
+        #
+        # @param other [Object]
+        # @return [Boolean]
+        def ===(other)
+          super || (nilable? && other.is_a?(Array) && other.compact.all?(item_type))
+        end
+
         # @api private
         #
         # @param state [Hash{Symbol=>Object}]

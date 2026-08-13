@@ -51,6 +51,12 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
     required :participants, OpenAI::ArrayOf[NestedParticipant, nil?: true]
   end
 
+  class ScalarContractEvent < OpenAI::BaseModel
+    required :active, OpenAI::Boolean
+    required :status, OpenAI::EnumOf[:confirmed, :tentative]
+    required :flags, OpenAI::ArrayOf[OpenAI::Boolean]
+  end
+
   class InheritedNestedEvent < NestedEvent
     required :name, String
   end
@@ -179,6 +185,12 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
     assert_nil(state.fetch(:error))
     assert_instance_of(NestedParticipant, parsed.participants.fetch(0))
     assert_nil(parsed.participants.fetch(1))
+    assert_same(parsed[:participants], parsed.participants)
+
+    parsed.participants << nil
+
+    assert_equal(3, parsed[:participants].length)
+    assert_same(parsed[:participants], parsed.participants)
   end
 
   def test_nested_readers_are_preserved_by_subclass_inheritance
@@ -222,6 +234,41 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
     assert_raises(OpenAI::Errors::ConversionError) { event.participant }
     assert_same(participant, event[:participant])
     assert_same(participant, event.to_h.fetch(:participant))
+  end
+
+  def test_typed_readers_reject_nonviable_scalar_constructor_values
+    event = ScalarContractEvent.new(active: "yes", status: "unknown")
+
+    assert_raises(OpenAI::Errors::ConversionError) { event.active }
+    assert_raises(OpenAI::Errors::ConversionError) { event.status }
+    assert_equal("yes", event[:active])
+    assert_equal("unknown", event[:status])
+  end
+
+  def test_typed_readers_reject_nonviable_scalar_assignment_values
+    event = ScalarContractEvent.new
+    event.active = "yes"
+    event.status = "unknown"
+
+    assert_raises(OpenAI::Errors::ConversionError) { event.active }
+    assert_raises(OpenAI::Errors::ConversionError) { event.status }
+    assert_equal("yes", event.to_h.fetch(:active))
+    assert_equal("unknown", event.to_h.fetch(:status))
+  end
+
+  def test_typed_readers_reject_invalid_mutations_to_caller_owned_containers
+    flags = [true]
+    participants = [{name: "Ada"}]
+    scalar_event = ScalarContractEvent.new(flags: flags)
+    nested_event = NestedEvent.new(participants: participants)
+
+    flags << "yes"
+    participants << Object.new
+
+    assert_raises(OpenAI::Errors::ConversionError) { scalar_event.flags }
+    assert_raises(OpenAI::Errors::ConversionError) { nested_event.participants }
+    assert_same(flags, scalar_event[:flags])
+    assert_same(participants, nested_event[:participants])
   end
 
   def test_to_schema
