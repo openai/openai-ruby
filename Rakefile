@@ -56,7 +56,7 @@ end
 
 desc("Lint `*.rb(i)`")
 RuboCop::RakeTask.new(:"lint:rubocop") do |task|
-  task.patterns = %w[. ./**/*.rbi]
+  task.patterns = ["."]
   task.formatters = %w[github] if ENV.key?("CI")
 
   # some lines cannot be shortened
