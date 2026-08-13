@@ -33,7 +33,6 @@ module OpenAI
             # @see OpenAI::Models::Beta::Threads::Runs::StepRetrieveParams
             def retrieve(step_id, params)
               parsed, options = OpenAI::Beta::Threads::Runs::StepRetrieveParams.dump_request(params)
-              query = OpenAI::Internal::Util.encode_query_params(parsed)
               thread_id =
                 parsed.delete(:thread_id) do
                   raise ArgumentError.new("missing required path argument #{_1}")
@@ -42,6 +41,7 @@ module OpenAI
                 parsed.delete(:run_id) do
                   raise ArgumentError.new("missing required path argument #{_1}")
                 end
+              query = OpenAI::Internal::Util.encode_query_params(parsed)
               @client.request(
                 method: :get,
                 path: ["threads/%1$s/runs/%2$s/steps/%3$s", thread_id, run_id, step_id],
@@ -82,11 +82,11 @@ module OpenAI
             # @see OpenAI::Models::Beta::Threads::Runs::StepListParams
             def list(run_id, params)
               parsed, options = OpenAI::Beta::Threads::Runs::StepListParams.dump_request(params)
-              query = OpenAI::Internal::Util.encode_query_params(parsed)
               thread_id =
                 parsed.delete(:thread_id) do
                   raise ArgumentError.new("missing required path argument #{_1}")
                 end
+              query = OpenAI::Internal::Util.encode_query_params(parsed)
               @client.request(
                 method: :get,
                 path: ["threads/%1$s/runs/%2$s/steps", thread_id, run_id],

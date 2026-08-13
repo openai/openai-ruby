@@ -58,11 +58,11 @@ module OpenAI
         # @see OpenAI::Models::Conversations::ItemRetrieveParams
         def retrieve(item_id, params)
           parsed, options = OpenAI::Conversations::ItemRetrieveParams.dump_request(params)
-          query = OpenAI::Internal::Util.encode_query_params(parsed)
           conversation_id =
             parsed.delete(:conversation_id) do
               raise ArgumentError.new("missing required path argument #{_1}")
             end
+          query = OpenAI::Internal::Util.encode_query_params(parsed)
           @client.request(
             method: :get,
             path: ["conversations/%1$s/items/%2$s", conversation_id, item_id],
