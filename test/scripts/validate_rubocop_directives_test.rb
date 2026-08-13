@@ -51,6 +51,17 @@ class ValidateRuboCopDirectivesTest < Minitest::Test
     assert_empty(RuboCopDirectiveGuard.violations_for("example.rb", source))
   end
 
+  def test_rejects_prefixed_directives_that_rubocop_applies
+    errors = violations_in("puts('bad') # rationale # rubocop:disable all")
+    assert_includes(errors.first, "disable all is forbidden")
+
+    errors = violations_in(
+      "puts('bad') # rationale # rubocop:todo Style/StringLiterals"
+    )
+    assert(errors.any? { _1.include?("requires `owner: ...`") })
+    assert(errors.any? { _1.include?("requires `issue: #123`") })
+  end
+
   def test_rejects_unowned_todos
     errors = violations("todo Lint/EmptyBlock -- temporary exception; issue: #123")
 
@@ -77,6 +88,17 @@ class ValidateRuboCopDirectivesTest < Minitest::Test
 
       assert(errors.any? { _1.include?("requires `issue: #123`") }, tracking)
     end
+  end
+
+  def test_validates_remove_by_calendar_dates
+    %w[2026-99-99 2026-02-30].each do |date|
+      errors = violations("todo Lint/EmptyBlock -- owner: @sdk; remove-by: #{date}")
+      assert(errors.any? { _1.include?("requires `issue: #123`") }, date)
+    end
+
+    assert_empty(
+      violations("todo Lint/EmptyBlock -- owner: @sdk; remove-by: 2028-02-29")
+    )
   end
 
   def test_uses_rubocop_source_discovery
