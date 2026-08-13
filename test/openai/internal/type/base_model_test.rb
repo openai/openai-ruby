@@ -54,6 +54,9 @@ class OpenAI::Test::PrimitiveModelTest < Minitest::Test
       [String, :str] => [{yes: 1}, "str"],
       [String, "str"] => [{yes: 1}, "str"],
       [String, 1] => [{maybe: 1}, "1"],
+      [Symbol, :str] => [{yes: 1}, :str],
+      [Symbol, "str"] => [{yes: 1}, :str],
+      [Symbol, 1] => [{no: 1}, 1],
       [:a, "a"] => [{yes: 1}, :a],
       [Date, "1990-09-19"] => [{yes: 1}, Date.new(1990, 9, 19)],
       [Date, Date.new(1990, 9, 19)] => [{yes: 1}, Date.new(1990, 9, 19)],
@@ -111,6 +114,7 @@ class OpenAI::Test::PrimitiveModelTest < Minitest::Test
       [Integer, "one"] => ArgumentError,
       [Float, "one"] => ArgumentError,
       [String, Time] => TypeError,
+      [Symbol, 1] => TypeError,
       [Date, "one"] => ArgumentError,
       [Time, "one"] => ArgumentError
     }

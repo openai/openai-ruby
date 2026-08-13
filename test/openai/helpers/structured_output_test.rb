@@ -445,6 +445,129 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
     assert_same(parsed[:choice], parsed.choice)
   end
 
+  def test_supported_scalars_materialize_consistently_through_nested_model_shapes
+    cases = {
+      String => [:ready, "ready"],
+      Symbol => ["ready", :ready],
+      Integer => ["42", 42],
+      Float => ["4.5", 4.5],
+      OpenAI::Boolean => [true, true],
+      OpenAI::EnumOf[:ready] => ["ready", :ready]
+    }
+    assert_readers = lambda do |event, expected|
+      assert_equal(expected, event.member.value)
+      assert_equal(expected, event.members.first.value)
+      assert_equal(expected, event.choice.value)
+    end
+
+    cases.each do |type, (input, expected)|
+      member = Class.new(OpenAI::BaseModel) { required :value, type }
+      container = Class.new(OpenAI::BaseModel) do
+        required :member, member
+        required :members, OpenAI::ArrayOf[member]
+        required :choice, OpenAI::UnionOf[String, member]
+      end
+      payload = {member: {value: input}, members: [{value: input}], choice: {value: input}}
+      event = container.new(payload)
+
+      assert_readers.call(event, expected)
+      payload.each { |name, raw| assert_same(raw, event[name]) }
+
+      event.members = payload.fetch(:members)
+      event.choice = payload.fetch(:choice)
+
+      assert_readers.call(event, expected)
+      payload.each { |name, raw| assert_same(raw, event.to_h.fetch(name)) }
+
+      state = OpenAI::Internal::Type::Converter.new_coerce_state
+      parsed = OpenAI::Internal::Type::Converter.coerce(container, payload, state: state)
+
+      assert_nil(state.fetch(:error))
+      assert_readers.call(parsed, expected)
+      assert_same(parsed[:members], parsed.members)
+      assert_same(parsed[:choice], parsed.choice)
+    end
+  end
+
+  def test_responses_api_parses_nested_structured_model_readers_end_to_end
+    content = {participants: [{kind: "ready"}], choice: {kind: "selected"}}
+    body = {
+      id: "resp_contract",
+      created_at: 1,
+      model: "gpt-4o",
+      object: "response",
+      output: [
+        {
+          id: "msg_contract",
+          type: "message",
+          role: "assistant",
+          status: "completed",
+          content: [{type: "output_text", text: JSON.generate(content), annotations: []}]
+        }
+      ],
+      parallel_tool_calls: false,
+      tool_choice: "auto",
+      tools: []
+    }
+    response = OpenAI::HTTPClient::Response.new(
+      status: 200,
+      headers: {"content-type" => "application/json"},
+      body: JSON.generate(body)
+    )
+    transport = OpenAI::HTTPClient.new
+    client = OpenAI::Client.new(api_key: "test-key", http_client: transport)
+
+    transport.stub(:execute, response) do
+      result = client.responses.create(
+        input: "Extract participants", model: "gpt-4o", text: NestedSymbolContractEvent
+      )
+      parsed = result.output.fetch(0).content.fetch(0).parsed
+
+      assert_instance_of(NestedSymbolContractEvent, parsed)
+      assert_equal(:ready, parsed.participants.fetch(0).kind)
+      assert_equal(:selected, parsed.choice.kind)
+      assert_same(parsed[:participants], parsed.participants)
+    end
+  end
+
+  def test_chat_completions_parse_nested_structured_model_readers_end_to_end
+    content = {participants: [{kind: "ready"}], choice: {kind: "selected"}}
+    body = {
+      id: "chatcmpl_contract",
+      created: 1,
+      model: "gpt-4o",
+      object: "chat.completion",
+      choices: [
+        {
+          index: 0,
+          finish_reason: "stop",
+          message: {role: "assistant", content: JSON.generate(content), refusal: nil}
+        }
+      ]
+    }
+    response = OpenAI::HTTPClient::Response.new(
+      status: 200,
+      headers: {"content-type" => "application/json"},
+      body: JSON.generate(body)
+    )
+    transport = OpenAI::HTTPClient.new
+    client = OpenAI::Client.new(api_key: "test-key", http_client: transport)
+
+    transport.stub(:execute, response) do
+      result = client.chat.completions.create(
+        messages: [{role: :user, content: "Extract participants"}],
+        model: "gpt-4o",
+        response_format: NestedSymbolContractEvent
+      )
+      parsed = result.choices.fetch(0).message.parsed
+
+      assert_instance_of(NestedSymbolContractEvent, parsed)
+      assert_equal(:ready, parsed.participants.fetch(0).kind)
+      assert_equal(:selected, parsed.choice.kind)
+      assert_same(parsed[:participants], parsed.participants)
+    end
+  end
+
   def test_typed_readers_reject_nonviable_scalar_assignment_values
     event = ScalarContractEvent.new
     event.active = "yes"

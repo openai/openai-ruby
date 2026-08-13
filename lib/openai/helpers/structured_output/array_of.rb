@@ -23,19 +23,6 @@ module OpenAI
 
         # @api private
         #
-        # @param value [Object]
-        # @param state [Hash{Symbol=>Object}]
-        # @return [Object]
-        def coerce(value, state:)
-          if item_type.equal?(Symbol) && value.is_a?(Array)
-            value = value.map { _1.is_a?(String) ? _1.to_sym : _1 }
-          end
-
-          super
-        end
-
-        # @api private
-        #
         # @param state [Hash{Symbol=>Object}]
         #
         #   @option state [Hash{Object=>String}] :defs

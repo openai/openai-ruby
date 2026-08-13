@@ -59,28 +59,6 @@ module OpenAI
 
         class << self
           # @api private
-          #
-          # @param value [Object]
-          # @param state [Hash{Symbol=>Object}]
-          # @return [Object]
-          def coerce(value, state:)
-            if value.is_a?(Hash)
-              original = value
-              known_fields.each do |name, field|
-                next unless field.fetch(:type_fn).call.equal?(Symbol)
-
-                key = state.fetch(:translate_names) ? field.fetch(:api_name) : name
-                next unless (item = value[key]).is_a?(String)
-
-                value = value.dup if value.equal?(original)
-                value[key] = item.to_sym
-              end
-            end
-
-            super
-          end
-
-          # @api private
           def required(name_sym, type_info, spec = {})
             super
 
@@ -98,8 +76,6 @@ module OpenAI
                 return nil if nilable
               when target
                 return value
-              when String
-                return value.to_sym if target == Symbol
               end
 
               state = OpenAI::Internal::Type::Converter.new_coerce_state(translate_names: false)
