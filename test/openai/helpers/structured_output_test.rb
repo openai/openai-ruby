@@ -73,6 +73,14 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
     required :kind, Symbol
   end
 
+  class RecursiveSymbolContractEvent < OpenAI::BaseModel
+    required :kinds, OpenAI::ArrayOf[Symbol]
+    required :nullable_kinds, OpenAI::ArrayOf[Symbol, nil?: true]
+    required :nested_kinds, OpenAI::ArrayOf[OpenAI::ArrayOf[Symbol]]
+    required :choice, OpenAI::UnionOf[Integer, Symbol]
+    required :choices, OpenAI::ArrayOf[OpenAI::UnionOf[Integer, Symbol]]
+  end
+
   class InheritedNestedEvent < NestedEvent
     required :name, String
   end
@@ -334,6 +342,68 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
     )
 
     assert_equal(:parsed, parsed.kind)
+  end
+
+  def test_symbol_readers_materialize_nested_array_and_union_values
+    kinds = ["ready"]
+    nullable_kinds = ["ready", nil]
+    nested_kinds = [["nested"]]
+    choice = "selected"
+    choices = ["first", 2]
+    event = RecursiveSymbolContractEvent.new(
+      kinds: kinds,
+      nullable_kinds: nullable_kinds,
+      nested_kinds: nested_kinds,
+      choice: choice,
+      choices: choices
+    )
+
+    assert_equal([:ready], event.kinds)
+    assert_equal([:ready, nil], event.nullable_kinds)
+    assert_equal([[:nested]], event.nested_kinds)
+    assert_equal(:selected, event.choice)
+    assert_equal([:first, 2], event.choices)
+    assert_same(kinds, event[:kinds])
+    assert_same(nullable_kinds, event[:nullable_kinds])
+    assert_same(nested_kinds, event[:nested_kinds])
+    assert_same(choice, event[:choice])
+    assert_same(choices, event[:choices])
+  end
+
+  def test_symbol_readers_materialize_assigned_and_parsed_container_values
+    kinds = ["assigned"]
+    choice = "assigned"
+    event = RecursiveSymbolContractEvent.new
+    event.kinds = kinds
+    event.choice = choice
+
+    assert_equal([:assigned], event.kinds)
+    assert_equal(:assigned, event.choice)
+    assert_same(kinds, event.to_h.fetch(:kinds))
+    assert_same(choice, event.to_h.fetch(:choice))
+
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+    parsed = OpenAI::Internal::Type::Converter.coerce(
+      RecursiveSymbolContractEvent,
+      {
+        kinds: ["parsed"],
+        nullable_kinds: ["parsed", nil],
+        nested_kinds: [["parsed"]],
+        choice: "parsed",
+        choices: ["parsed", 3]
+      },
+      state: state
+    )
+
+    assert_nil(state.fetch(:error))
+    assert_equal([:parsed], parsed.kinds)
+    assert_equal([:parsed, nil], parsed.nullable_kinds)
+    assert_equal([[:parsed]], parsed.nested_kinds)
+    assert_equal(:parsed, parsed.choice)
+    assert_equal([:parsed, 3], parsed.choices)
+    assert_same(parsed[:kinds], parsed.kinds)
+    assert_same(parsed[:nullable_kinds], parsed.nullable_kinds)
+    assert_same(parsed[:choices], parsed.choices)
   end
 
   def test_typed_readers_reject_nonviable_scalar_assignment_values

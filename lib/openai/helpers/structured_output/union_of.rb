@@ -17,11 +17,16 @@ module OpenAI
         # @param state [Hash{Symbol=>Object}]
         # @return [Object]
         def coerce(value, state:)
+          nonviable = state.fetch(:exactness).fetch(:no)
+          if value.is_a?(String) && variants.include?(Symbol) && !variants.include?(String)
+            value = value.to_sym
+          end
+
           converted = super
 
           case converted
           when self
-            state[:error] = nil if state.fetch(:exactness).fetch(:no).zero?
+            state[:error] = nil if state.fetch(:exactness).fetch(:no) == nonviable
           end
 
           converted
