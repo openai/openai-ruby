@@ -74,11 +74,6 @@ Layout/SpaceInsideHashLiteralBraces:
 Lint/BooleanSymbol:
   Enabled: false
 
-# We use pattern assertion in tests to ensure correctness.
-Lint/DuplicateMatchPattern:
-  Exclude:
-    - "test/**/*"
-
 # Fairly useful in tests for pattern assertions.
 Lint/EmptyInPattern:
   Exclude:
