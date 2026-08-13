@@ -587,7 +587,7 @@ class OpenAITest < Minitest::Test
     end
 
     assert_requested(:any, /./, times: 2)
-    assert_equal(10, Thread.current.thread_variable_get(:mock_sleep).last)
+    assert_equal(8.0, Thread.current.thread_variable_get(:mock_sleep).last)
   end
 
   def test_client_retry_after_ms

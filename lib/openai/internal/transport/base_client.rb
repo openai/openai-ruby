@@ -432,23 +432,22 @@ module OpenAI
         #
         # @return [Float]
         private def retry_delay(headers, retry_count:)
-          # Non-standard extension
-          span = Float(headers["retry-after-ms"], exception: false)&.then { _1 / 1000 }
-          return span if span
-
           retry_header = headers["retry-after"]
-          return span if (span = Float(retry_header, exception: false))
+          delays = [
+            Float(headers["retry-after-ms"], exception: false)&.then { _1 / 1000 },
+            Float(retry_header, exception: false),
+            retry_header&.then do
+              Time.httpdate(_1) - Time.now
+            rescue ArgumentError
+              nil
+            end
+          ]
+          server_delay = delays.find { _1&.finite? && !_1.negative? }
+          return [server_delay, @max_retry_delay].min if server_delay
 
-          span = retry_header&.then do
-            Time.httpdate(_1) - Time.now
-          rescue ArgumentError
-            nil
-          end
-          return span if span
-
-          scale = retry_count**2
+          delay = (@initial_retry_delay * (2**retry_count)).clamp(0, @max_retry_delay)
           jitter = 1 - (0.25 * rand)
-          (@initial_retry_delay * scale * jitter).clamp(0, @max_retry_delay)
+          delay * jitter
         end
 
         # @api private
