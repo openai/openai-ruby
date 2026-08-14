@@ -695,7 +695,8 @@ module OpenAI
             TENANT_POLICY_DELETED = :"tenant.policy.deleted"
             TENANT_POLICY_ATTACHED = :"tenant.policy.attached"
             TENANT_POLICY_DETACHED = :"tenant.policy.detached"
-            TENANT_PRINCIPAL_AUTHENTICATION_POLICY_RESOLVED = :"tenant.principal_authentication_policy.resolved"
+            TENANT_PRINCIPAL_AUTHENTICATION_POLICY_RESOLVED =
+              :"tenant.principal_authentication_policy.resolved"
             TENANT_SCIM_SETUP_STARTED = :"tenant.scim.setup.started"
             TENANT_SCIM_DELETION_REQUESTED = :"tenant.scim.deletion.requested"
             TENANT_SCIM_DIRECTORY_CREATED = :"tenant.scim.directory.created"
