@@ -46,7 +46,6 @@ Layout/FirstMethodParameterLineBreak:
 Layout/LineLength:
   AllowedPatterns:
     - "^\\s*#.*$"
-    - "OpenAI::Internal::Type::BaseModel$"
     - "^\\s*[A-Z0-9_]+ = :"
     - "OpenAI::(Models|Resources|Test)::"
   Max: 110
