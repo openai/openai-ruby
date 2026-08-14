@@ -68,12 +68,12 @@ begin
 
   # method calls that do not return another `enumerable` will consume the intermediary stream
   #   and perform cleanup
-  lazy_choice_received = T.let(false, T::Boolean)
+  lazy_choice_count = 0
   stream_of_choices.each do |choice|
-    lazy_choice_received = true
+    lazy_choice_count += 1
     pp(choice)
   end
-  abort("The lazy stream completed without choices") unless lazy_choice_received
+  abort("The lazy stream completed without choices") if lazy_choice_count.zero?
 
   # at this point the stream has been consumed already, so it will return an empty array
   pp(stream_of_choices.to_a)

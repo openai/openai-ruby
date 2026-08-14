@@ -11,12 +11,12 @@ stream = client.responses.stream(
   model: "gpt-4o-2024-08-06"
 )
 
-text_received = T.let(false, T::Boolean)
-completed_response_id = T.let(nil, T.nilable(String))
+streamed_text = String.new
+completed_response_id = ""
 stream.each do |event|
   case event
   when OpenAI::Streaming::ResponseTextDeltaEvent
-    text_received ||= !event.delta.strip.empty?
+    streamed_text << event.delta
     print(event.delta)
   when OpenAI::Streaming::ResponseTextDoneEvent
     puts("\n--------------------------")
@@ -25,6 +25,6 @@ stream.each do |event|
   end
 end
 
-abort("The response stream completed without text") unless text_received
-abort("The response stream ended before completion") unless completed_response_id
+abort("The response stream completed without text") if streamed_text.strip.empty?
+abort("The response stream ended before completion") if completed_response_id.empty?
 puts("Response completed! (response id: #{completed_response_id})")

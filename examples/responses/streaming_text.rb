@@ -11,12 +11,12 @@ stream = client.responses.stream(
   model: "gpt-4o-2024-08-06"
 )
 
-streamed_text_received = T.let(false, T::Boolean)
+streamed_text = String.new
 stream.text.each do |text|
-  streamed_text_received ||= !text.strip.empty?
+  streamed_text << text
   print(text)
 end
-abort("The response stream completed without yielding text") unless streamed_text_received
+abort("The response stream completed without yielding text") if streamed_text.strip.empty?
 
 puts
 

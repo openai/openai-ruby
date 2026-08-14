@@ -17,10 +17,10 @@ begin
     temperature: 0.0
   )
 
-  stream_data_received = T.let(false, T::Boolean)
+  stream_data_count = 0
   # calling `#each` will always clean up the stream, even if an error is thrown inside the `#each` block.
   stream.each do |data|
-    stream_data_received = true
+    stream_data_count += 1
     pp(data)
 
     # it is possible to exit out of the `#each` loop early, this will also clean up the stream for you.
@@ -29,7 +29,7 @@ begin
       break
     end
   end
-  abort("The stream completed without yielding data") unless stream_data_received
+  abort("The stream completed without yielding data") if stream_data_count.zero?
 
   # once the stream has been exhausted, no more chunks will be produced.
   stream.each do

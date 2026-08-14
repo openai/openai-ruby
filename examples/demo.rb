@@ -40,13 +40,13 @@ begin
     ]
   )
 
-  streamed_content_received = T.let(false, T::Boolean)
+  streamed_content = String.new
   stream.each do |chunk|
     next if chunk.choices.to_a.empty?
 
     content = chunk.choices.first&.delta&.content
-    streamed_content_received ||= !content.to_s.strip.empty?
+    streamed_content << content.to_s
     pp(content)
   end
-  abort("The streaming request completed without content") unless streamed_content_received
+  abort("The streaming request completed without content") if streamed_content.strip.empty?
 end

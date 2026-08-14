@@ -32,6 +32,10 @@ class Query < OpenAI::BaseModel
   required :order_by, OpenAI::EnumOf[:asc, :desc]
 end
 
+def parsed_query?(value)
+  value.is_a?(Query)
+end
+
 client = OpenAI::Client.new
 
 stream = client.responses.stream(
@@ -53,17 +57,18 @@ response = stream.get_final_response
 
 puts
 puts("----- parsed outputs from final response -----")
-parsed_tool_call_received = T.let(false, T::Boolean)
+parsed_tool_call_count = 0
 response
   .output
   .each do |output|
     case output
     when OpenAI::Models::Responses::ResponseFunctionToolCall
       # parsed is an instance of `Query`
-      parsed = T.cast(output.parsed, Query)
+      parsed = output.parsed
+      next unless parsed_query?(parsed)
 
-      parsed_tool_call_received = true
+      parsed_tool_call_count += 1
       pp(parsed)
     end
   end
-abort("The final response did not contain a parsed Query tool call") unless parsed_tool_call_received
+abort("The final response did not contain a parsed Query tool call") if parsed_tool_call_count.zero?
