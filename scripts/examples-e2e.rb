@@ -133,8 +133,8 @@ module OpenAIExamplesE2E
           elsif !has_expected_output && !has_minimum_output
             errors << "#{example.path}: covered examples need expected_output or minimum_output_bytes"
           end
-        elsif example.reason.to_s.empty?
-          errors << "#{example.path}: excluded examples need a reason"
+        elsif !example.reason.is_a?(String) || example.reason.empty?
+          errors << "#{example.path}: excluded examples need a non-empty string reason"
         end
       end
 

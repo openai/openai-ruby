@@ -17,6 +17,7 @@ stream = client.images.generate_stream_raw(
   partial_images: 3
 )
 
+completed = T.let(false, T::Boolean)
 stream.each do |event|
   case event
   when OpenAI::Models::ImageGenPartialImageEvent
@@ -30,6 +31,7 @@ stream.each do |event|
     puts("  Saved to: #{File.expand_path(filename)}")
 
   when OpenAI::Models::ImageGenCompletedEvent
+    completed = true
     puts("\n✅ Final image completed!")
     puts("  Size: #{event.b64_json.length} characters (base64)")
 
@@ -40,5 +42,7 @@ stream.each do |event|
     puts("  Saved to: #{File.expand_path(filename)}")
   end
 end
+
+abort("Image stream ended before the final image completed") unless completed
 
 puts "Image streaming completed!"

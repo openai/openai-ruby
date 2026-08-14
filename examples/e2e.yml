@@ -39,7 +39,7 @@ examples:
     expected_output: using params class correctly in sorbet
   examples/image_stream.rb:
     status: covered
-    expected_output: Image streaming completed!
+    expected_output: Final image completed!
   examples/mtls_custom_http_client.rb:
     status: excluded
     reason: Requires an enrolled mTLS certificate, private key, endpoint, and model.
