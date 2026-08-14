@@ -284,7 +284,7 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
           name: String,
           server_label: String,
           approval_request_id: String | nil,
-          error: String | nil,
+          error: OpenAI::Responses::McpToolCallError | nil,
           output: String | nil,
           status: OpenAI::Conversations::ConversationItem::McpCall::Status | nil
         } |
@@ -576,7 +576,7 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
           name: String,
           server_label: String,
           approval_request_id: String | nil,
-          error: String | nil,
+          error: OpenAI::Responses::McpToolCallError | nil,
           output: String | nil,
           status: OpenAI::Conversations::ConversationItem::McpCall::Status | nil
         } |

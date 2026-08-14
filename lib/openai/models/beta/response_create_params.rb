@@ -240,6 +240,10 @@ module OpenAI
         #     Responses or Chat Completions. The response will show `service_tier=priority`
         #     regardless of if you specify `service_tier=fast` or `priority` in your
         #     request.
+        #   - If set to 'ultrafast', then the request will be processed with the
+        #     access-controlled Ultrafast Processing service tier. This tier is currently
+        #     available for `gpt-5.6-sol`; a response served through it will show
+        #     `service_tier=ultrafast`.
         #   - When not set, the default behavior is 'auto'.
         #
         #   When the `service_tier` parameter is set, the response body will include the
@@ -508,6 +512,8 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Beta::ResponseCreateParams::Model::GPT_5_5 }
 
+          variant const: -> { OpenAI::Models::Beta::ResponseCreateParams::Model::GPT_5_5_2026_04_23 }
+
           variant const: -> { OpenAI::Models::Beta::ResponseCreateParams::Model::GPT_5_4 }
 
           variant const: -> { OpenAI::Models::Beta::ResponseCreateParams::Model::GPT_5_4_MINI }
@@ -684,6 +690,10 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Beta::ResponseCreateParams::Model::COMPUTER_USE_PREVIEW_2025_03_11 }
 
+          variant const: -> { OpenAI::Models::Beta::ResponseCreateParams::Model::GPT_5_5_PRO }
+
+          variant const: -> { OpenAI::Models::Beta::ResponseCreateParams::Model::GPT_5_5_PRO_2026_04_23 }
+
           variant const: -> { OpenAI::Models::Beta::ResponseCreateParams::Model::GPT_5_CODEX }
 
           variant const: -> { OpenAI::Models::Beta::ResponseCreateParams::Model::GPT_5_PRO }
@@ -713,6 +723,7 @@ module OpenAI
           GPT_5_6_TERRA = :"gpt-5.6-terra"
           GPT_5_6_LUNA = :"gpt-5.6-luna"
           GPT_5_5 = :"gpt-5.5"
+          GPT_5_5_2026_04_23 = :"gpt-5.5-2026-04-23"
           GPT_5_4 = :"gpt-5.4"
           GPT_5_4_MINI = :"gpt-5.4-mini"
           GPT_5_4_NANO = :"gpt-5.4-nano"
@@ -801,6 +812,8 @@ module OpenAI
           O4_MINI_DEEP_RESEARCH_2025_06_26 = :"o4-mini-deep-research-2025-06-26"
           COMPUTER_USE_PREVIEW = :"computer-use-preview"
           COMPUTER_USE_PREVIEW_2025_03_11 = :"computer-use-preview-2025-03-11"
+          GPT_5_5_PRO = :"gpt-5.5-pro"
+          GPT_5_5_PRO_2026_04_23 = :"gpt-5.5-pro-2026-04-23"
           GPT_5_CODEX = :"gpt-5-codex"
           GPT_5_PRO = :"gpt-5-pro"
           GPT_5_PRO_2025_10_06 = :"gpt-5-pro-2025-10-06"
@@ -1241,6 +1254,10 @@ module OpenAI
         #   Responses or Chat Completions. The response will show `service_tier=priority`
         #   regardless of if you specify `service_tier=fast` or `priority` in your
         #   request.
+        # - If set to 'ultrafast', then the request will be processed with the
+        #   access-controlled Ultrafast Processing service tier. This tier is currently
+        #   available for `gpt-5.6-sol`; a response served through it will show
+        #   `service_tier=ultrafast`.
         # - When not set, the default behavior is 'auto'.
         #
         # When the `service_tier` parameter is set, the response body will include the
@@ -1256,6 +1273,7 @@ module OpenAI
           SCALE = :scale
           PRIORITY = :priority
           FAST = :fast
+          ULTRAFAST = :ultrafast
 
           # @!method self.values
           #   @return [Array<Symbol>]

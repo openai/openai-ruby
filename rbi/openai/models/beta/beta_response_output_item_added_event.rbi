@@ -14,7 +14,10 @@ module OpenAI
             )
           end
 
-        # The output item that was added.
+        # The output item that was added. For reasoning items, `encrypted_content` may be
+        # incomplete while the item is in progress. Use the reasoning item from the
+        # corresponding `response.output_item.done` event when passing it as input to a
+        # subsequent request.
         sig { returns(OpenAI::Beta::BetaResponseOutputItem::Variants) }
         attr_accessor :item
 
@@ -95,7 +98,10 @@ module OpenAI
           ).returns(T.attached_class)
         end
         def self.new(
-          # The output item that was added.
+          # The output item that was added. For reasoning items, `encrypted_content` may be
+          # incomplete while the item is in progress. Use the reasoning item from the
+          # corresponding `response.output_item.done` event when passing it as input to a
+          # subsequent request.
           item:,
           # The index of the output item that was added.
           output_index:,

@@ -15,7 +15,8 @@ class OpenAI::Test::Resources::ModelsTest < OpenAI::Test::ResourceTest
         id: String,
         created: Integer,
         object: Symbol,
-        owned_by: String
+        owned_by: String,
+        shutdown_date: Date | nil
       }
     end
   end
@@ -39,7 +40,8 @@ class OpenAI::Test::Resources::ModelsTest < OpenAI::Test::ResourceTest
         id: String,
         created: Integer,
         object: Symbol,
-        owned_by: String
+        owned_by: String,
+        shutdown_date: Date | nil
       }
     end
   end

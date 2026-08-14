@@ -342,7 +342,7 @@ class OpenAI::Test::Resources::Beta::Responses::InputItemsTest < OpenAI::Test::R
           server_label: String,
           agent: OpenAI::Beta::BetaResponseItem::McpCall::Agent | nil,
           approval_request_id: String | nil,
-          error: String | nil,
+          error: OpenAI::Beta::BetaMcpToolCallError | nil,
           output: String | nil,
           status: OpenAI::Beta::BetaResponseItem::McpCall::Status | nil
         }

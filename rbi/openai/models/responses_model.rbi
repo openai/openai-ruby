@@ -73,6 +73,16 @@ module OpenAI
             :"computer-use-preview-2025-03-11",
             OpenAI::ResponsesModel::ResponsesOnlyModel::TaggedSymbol
           )
+        GPT_5_5_PRO =
+          T.let(
+            :"gpt-5.5-pro",
+            OpenAI::ResponsesModel::ResponsesOnlyModel::TaggedSymbol
+          )
+        GPT_5_5_PRO_2026_04_23 =
+          T.let(
+            :"gpt-5.5-pro-2026-04-23",
+            OpenAI::ResponsesModel::ResponsesOnlyModel::TaggedSymbol
+          )
         GPT_5_CODEX =
           T.let(
             :"gpt-5-codex",

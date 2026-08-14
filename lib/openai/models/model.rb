@@ -28,7 +28,13 @@ module OpenAI
       #   @return [String]
       required :owned_by, String
 
-      # @!method initialize(id:, created:, owned_by:, object: :model)
+      # @!attribute shutdown_date
+      #   The date when the model will shut down, or null if not announced.
+      #
+      #   @return [Date, nil]
+      optional :shutdown_date, Date, nil?: true
+
+      # @!method initialize(id:, created:, owned_by:, shutdown_date: nil, object: :model)
       #   Describes an OpenAI model offering that can be used with the API.
       #
       #   @param id [String] The model identifier, which can be referenced in the API endpoints.
@@ -36,6 +42,8 @@ module OpenAI
       #   @param created [Integer] The Unix timestamp (in seconds) when the model was created.
       #
       #   @param owned_by [String] The organization that owns the model.
+      #
+      #   @param shutdown_date [Date, nil] The date when the model will shut down, or null if not announced.
       #
       #   @param object [Symbol, :model] The object type, which is always "model".
     end

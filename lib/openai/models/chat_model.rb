@@ -9,6 +9,7 @@ module OpenAI
       GPT_5_6_TERRA = :"gpt-5.6-terra"
       GPT_5_6_LUNA = :"gpt-5.6-luna"
       GPT_5_5 = :"gpt-5.5"
+      GPT_5_5_2026_04_23 = :"gpt-5.5-2026-04-23"
       GPT_5_4 = :"gpt-5.4"
       GPT_5_4_MINI = :"gpt-5.4-mini"
       GPT_5_4_NANO = :"gpt-5.4-nano"

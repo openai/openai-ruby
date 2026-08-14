@@ -4,7 +4,8 @@ module OpenAI
 
     module Beta
       type beta_responses_server_event =
-        OpenAI::Beta::BetaResponseInjectCreatedEvent
+        OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError
+        | OpenAI::Beta::BetaResponseInjectCreatedEvent
         | OpenAI::Beta::BetaResponseInjectFailedEvent
         | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseAudioWsDelta
         | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseAudioWsDone
@@ -19,7 +20,6 @@ module OpenAI
         | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseContentPartWsAdded
         | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseContentPartWsDone
         | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsCreated
-        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError
         | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallWsCompleted
         | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallInWsProgress
         | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallWsSearching
@@ -495,43 +495,6 @@ module OpenAI
             sequence_number: Integer,
             type: :"response.created",
             agent: OpenAI::Beta::BetaResponseCreatedEvent::Agent?,
-            stream_id: String
-          }
-        end
-
-        type beta_response_ws_error =
-          {
-            code: String?,
-            message: String,
-            param: String?,
-            sequence_number: Integer,
-            type: :error,
-            agent: OpenAI::Beta::BetaResponseErrorEvent::Agent?,
-            stream_id: String
-          }
-
-        class BetaResponseWsError < OpenAI::Models::Beta::BetaResponseErrorEvent
-          def stream_id: -> String?
-
-          def stream_id=: (String _) -> String
-
-          def initialize: (
-            code: String?,
-            message: String,
-            param: String?,
-            sequence_number: Integer,
-            ?agent: OpenAI::Beta::BetaResponseErrorEvent::Agent?,
-            ?type: :error,
-            ?stream_id: String
-          ) -> void
-
-          def to_hash: -> {
-            code: String?,
-            message: String,
-            param: String?,
-            sequence_number: Integer,
-            type: :error,
-            agent: OpenAI::Beta::BetaResponseErrorEvent::Agent?,
             stream_id: String
           }
         end
@@ -1953,6 +1916,103 @@ module OpenAI
             agent: OpenAI::Beta::BetaResponseCustomToolCallInputDoneEvent::Agent?,
             stream_id: String
           }
+        end
+
+        type beta_response_ws_error =
+          {
+            error: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error,
+            type: :error,
+            agent: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Agent?,
+            sequence_number: Integer,
+            status: Integer,
+            stream_id: String
+          }
+
+        class BetaResponseWsError < OpenAI::Internal::Type::BaseModel
+          attr_accessor error: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error
+
+          attr_accessor type: :error
+
+          attr_accessor agent: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Agent?
+
+          attr_reader sequence_number: Integer?
+
+          def sequence_number=: (Integer) -> Integer
+
+          attr_reader status: Integer?
+
+          def status=: (Integer) -> Integer
+
+          attr_reader stream_id: String?
+
+          def stream_id=: (String) -> String
+
+          def initialize: (
+            error: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error,
+            ?agent: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Agent?,
+            ?sequence_number: Integer,
+            ?status: Integer,
+            ?stream_id: String,
+            ?type: :error
+          ) -> void
+
+          def to_hash: -> {
+            error: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error,
+            type: :error,
+            agent: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Agent?,
+            sequence_number: Integer,
+            status: Integer,
+            stream_id: String
+          }
+
+          type error =
+            {
+              code: String?,
+              message: String,
+              param: String?,
+              type: String,
+              headers: ::Hash[Symbol, String]
+            }
+
+          class Error < OpenAI::Internal::Type::BaseModel
+            attr_accessor code: String?
+
+            attr_accessor message: String
+
+            attr_accessor param: String?
+
+            attr_accessor type: String
+
+            attr_reader headers: ::Hash[Symbol, String]?
+
+            def headers=: (::Hash[Symbol, String]) -> ::Hash[Symbol, String]
+
+            def initialize: (
+              code: String?,
+              message: String,
+              param: String?,
+              type: String,
+              ?headers: ::Hash[Symbol, String]
+            ) -> void
+
+            def to_hash: -> {
+              code: String?,
+              message: String,
+              param: String?,
+              type: String,
+              headers: ::Hash[Symbol, String]
+            }
+          end
+
+          type agent = { agent_name: String }
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            attr_accessor agent_name: String
+
+            def initialize: (agent_name: String) -> void
+
+            def to_hash: -> { agent_name: String }
+          end
         end
 
         def self?.variants: -> ::Array[OpenAI::Models::Beta::beta_responses_server_event]

@@ -10,6 +10,14 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Responses::WebSearchTool::Type]
         required :type, enum: -> { OpenAI::Responses::WebSearchTool::Type }
 
+        # @!attribute external_web_access
+        #   Allow live internet access for web search. Defaults to true when omitted. When
+        #   false, the web search tool runs in offline/cache-only mode and will not fetch
+        #   new external content.
+        #
+        #   @return [Boolean, nil]
+        optional :external_web_access, OpenAI::Internal::Type::Boolean
+
         # @!attribute filters
         #   Filters for the search.
         #
@@ -29,7 +37,7 @@ module OpenAI
         #   @return [OpenAI::Models::Responses::WebSearchTool::UserLocation, nil]
         optional :user_location, -> { OpenAI::Responses::WebSearchTool::UserLocation }, nil?: true
 
-        # @!method initialize(type:, filters: nil, search_context_size: nil, user_location: nil)
+        # @!method initialize(type:, external_web_access: nil, filters: nil, search_context_size: nil, user_location: nil)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::WebSearchTool} for more details.
         #
@@ -37,6 +45,8 @@ module OpenAI
         #   [web search tool](https://platform.openai.com/docs/guides/tools-web-search).
         #
         #   @param type [Symbol, OpenAI::Models::Responses::WebSearchTool::Type] The type of the web search tool. One of `web_search` or `web_search_2025_08_26`.
+        #
+        #   @param external_web_access [Boolean] Allow live internet access for web search. Defaults to true when omitted. When f
         #
         #   @param filters [OpenAI::Models::Responses::WebSearchTool::Filters, nil] Filters for the search.
         #

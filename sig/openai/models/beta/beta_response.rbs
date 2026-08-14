@@ -250,6 +250,7 @@ module OpenAI
           | :"gpt-5.6-terra"
           | :"gpt-5.6-luna"
           | :"gpt-5.5"
+          | :"gpt-5.5-2026-04-23"
           | :"gpt-5.4"
           | :"gpt-5.4-mini"
           | :"gpt-5.4-nano"
@@ -338,6 +339,8 @@ module OpenAI
           | :"o4-mini-deep-research-2025-06-26"
           | :"computer-use-preview"
           | :"computer-use-preview-2025-03-11"
+          | :"gpt-5.5-pro"
+          | :"gpt-5.5-pro-2026-04-23"
           | :"gpt-5-codex"
           | :"gpt-5-pro"
           | :"gpt-5-pro-2025-10-06"
@@ -356,6 +359,7 @@ module OpenAI
           GPT_5_6_TERRA: :"gpt-5.6-terra"
           GPT_5_6_LUNA: :"gpt-5.6-luna"
           GPT_5_5: :"gpt-5.5"
+          GPT_5_5_2026_04_23: :"gpt-5.5-2026-04-23"
           GPT_5_4: :"gpt-5.4"
           GPT_5_4_MINI: :"gpt-5.4-mini"
           GPT_5_4_NANO: :"gpt-5.4-nano"
@@ -444,6 +448,8 @@ module OpenAI
           O4_MINI_DEEP_RESEARCH_2025_06_26: :"o4-mini-deep-research-2025-06-26"
           COMPUTER_USE_PREVIEW: :"computer-use-preview"
           COMPUTER_USE_PREVIEW_2025_03_11: :"computer-use-preview-2025-03-11"
+          GPT_5_5_PRO: :"gpt-5.5-pro"
+          GPT_5_5_PRO_2026_04_23: :"gpt-5.5-pro-2026-04-23"
           GPT_5_CODEX: :"gpt-5-codex"
           GPT_5_PRO: :"gpt-5-pro"
           GPT_5_PRO_2025_10_06: :"gpt-5-pro-2025-10-06"
@@ -835,7 +841,7 @@ module OpenAI
         end
 
         type service_tier =
-          :auto | :default | :flex | :scale | :priority | :fast
+          :auto | :default | :flex | :scale | :priority | :fast | :ultrafast
 
         module ServiceTier
           extend OpenAI::Internal::Type::Enum
@@ -846,6 +852,7 @@ module OpenAI
           SCALE: :scale
           PRIORITY: :priority
           FAST: :fast
+          ULTRAFAST: :ultrafast
 
           def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponse::service_tier]
         end

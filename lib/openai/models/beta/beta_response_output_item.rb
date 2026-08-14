@@ -1106,8 +1106,8 @@ module OpenAI
           # @!attribute error
           #   The error from the tool call, if any.
           #
-          #   @return [String, nil]
-          optional :error, String, nil?: true
+          #   @return [OpenAI::Models::Beta::BetaMcpToolCallError::McpProtocolError, OpenAI::Models::Beta::BetaMcpToolCallError::McpToolExecutionError, OpenAI::Models::Beta::BetaMcpToolCallError::HTTPError, nil]
+          optional :error, union: -> { OpenAI::Beta::BetaMcpToolCallError }, nil?: true
 
           # @!attribute output
           #   The output from the tool call.
@@ -1140,7 +1140,7 @@ module OpenAI
           #
           #   @param approval_request_id [String, nil] Unique identifier for the MCP tool call approval request.
           #
-          #   @param error [String, nil] The error from the tool call, if any.
+          #   @param error [OpenAI::Models::Beta::BetaMcpToolCallError::McpProtocolError, OpenAI::Models::Beta::BetaMcpToolCallError::McpToolExecutionError, OpenAI::Models::Beta::BetaMcpToolCallError::HTTPError, nil] The error from the tool call, if any.
           #
           #   @param output [String, nil] The output from the tool call.
           #

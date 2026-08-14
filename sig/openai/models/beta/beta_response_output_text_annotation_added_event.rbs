@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       type beta_response_output_text_annotation_added_event =
         {
-          annotation: top,
+          annotation: OpenAI::Models::Beta::BetaResponseOutputTextAnnotationAddedEvent::annotation?,
           annotation_index: Integer,
           content_index: Integer,
           item_id: String,
@@ -16,7 +16,7 @@ module OpenAI
         }
 
       class BetaResponseOutputTextAnnotationAddedEvent < OpenAI::Internal::Type::BaseModel
-        attr_accessor annotation: top
+        attr_accessor annotation: OpenAI::Models::Beta::BetaResponseOutputTextAnnotationAddedEvent::annotation?
 
         attr_accessor annotation_index: Integer
 
@@ -33,7 +33,7 @@ module OpenAI
         attr_accessor agent: OpenAI::Beta::BetaResponseOutputTextAnnotationAddedEvent::Agent?
 
         def initialize: (
-          annotation: top,
+          annotation: OpenAI::Models::Beta::BetaResponseOutputTextAnnotationAddedEvent::annotation?,
           annotation_index: Integer,
           content_index: Integer,
           item_id: String,
@@ -44,7 +44,7 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          annotation: top,
+          annotation: OpenAI::Models::Beta::BetaResponseOutputTextAnnotationAddedEvent::annotation?,
           annotation_index: Integer,
           content_index: Integer,
           item_id: String,
@@ -53,6 +53,151 @@ module OpenAI
           type: :"response.output_text.annotation.added",
           agent: OpenAI::Beta::BetaResponseOutputTextAnnotationAddedEvent::Agent?
         }
+
+        type annotation =
+          OpenAI::Beta::BetaResponseOutputTextAnnotationAddedEvent::Annotation::FileCitation
+          | OpenAI::Beta::BetaResponseOutputTextAnnotationAddedEvent::Annotation::URLCitation
+          | OpenAI::Beta::BetaResponseOutputTextAnnotationAddedEvent::Annotation::ContainerFileCitation
+          | OpenAI::Beta::BetaResponseOutputTextAnnotationAddedEvent::Annotation::FilePath
+
+        module Annotation
+          extend OpenAI::Internal::Type::Union
+
+          type file_citation =
+            {
+              file_id: String,
+              filename: String,
+              index: Integer,
+              type: :file_citation
+            }
+
+          class FileCitation < OpenAI::Internal::Type::BaseModel
+            attr_accessor file_id: String
+
+            attr_accessor filename: String
+
+            attr_accessor index: Integer
+
+            attr_accessor type: :file_citation
+
+            def initialize: (
+              file_id: String,
+              filename: String,
+              index: Integer,
+              ?type: :file_citation
+            ) -> void
+
+            def to_hash: -> {
+              file_id: String,
+              filename: String,
+              index: Integer,
+              type: :file_citation
+            }
+          end
+
+          type url_citation =
+            {
+              end_index: Integer,
+              start_index: Integer,
+              title: String,
+              type: :url_citation,
+              url: String
+            }
+
+          class URLCitation < OpenAI::Internal::Type::BaseModel
+            attr_accessor end_index: Integer
+
+            attr_accessor start_index: Integer
+
+            attr_accessor title: String
+
+            attr_accessor type: :url_citation
+
+            attr_accessor url: String
+
+            def initialize: (
+              end_index: Integer,
+              start_index: Integer,
+              title: String,
+              url: String,
+              ?type: :url_citation
+            ) -> void
+
+            def to_hash: -> {
+              end_index: Integer,
+              start_index: Integer,
+              title: String,
+              type: :url_citation,
+              url: String
+            }
+          end
+
+          type container_file_citation =
+            {
+              container_id: String,
+              end_index: Integer,
+              file_id: String,
+              filename: String,
+              start_index: Integer,
+              type: :container_file_citation
+            }
+
+          class ContainerFileCitation < OpenAI::Internal::Type::BaseModel
+            attr_accessor container_id: String
+
+            attr_accessor end_index: Integer
+
+            attr_accessor file_id: String
+
+            attr_accessor filename: String
+
+            attr_accessor start_index: Integer
+
+            attr_accessor type: :container_file_citation
+
+            def initialize: (
+              container_id: String,
+              end_index: Integer,
+              file_id: String,
+              filename: String,
+              start_index: Integer,
+              ?type: :container_file_citation
+            ) -> void
+
+            def to_hash: -> {
+              container_id: String,
+              end_index: Integer,
+              file_id: String,
+              filename: String,
+              start_index: Integer,
+              type: :container_file_citation
+            }
+          end
+
+          type file_path = { file_id: String, index: Integer, type: :file_path }
+
+          class FilePath < OpenAI::Internal::Type::BaseModel
+            attr_accessor file_id: String
+
+            attr_accessor index: Integer
+
+            attr_accessor type: :file_path
+
+            def initialize: (
+              file_id: String,
+              index: Integer,
+              ?type: :file_path
+            ) -> void
+
+            def to_hash: -> {
+              file_id: String,
+              index: Integer,
+              type: :file_path
+            }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseOutputTextAnnotationAddedEvent::annotation]
+        end
 
         type agent = { agent_name: String }
 

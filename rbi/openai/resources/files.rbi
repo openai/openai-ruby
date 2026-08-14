@@ -119,7 +119,7 @@ module OpenAI
       )
       end
 
-      # Returns the contents of the specified file.
+      # Returns a response containing the contents of the specified file.
       sig do
         params(
           file_id: String,

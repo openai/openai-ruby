@@ -518,8 +518,8 @@ module OpenAI
           # @!attribute error
           #   The error from the tool call, if any.
           #
-          #   @return [String, nil]
-          optional :error, String, nil?: true
+          #   @return [OpenAI::Models::Responses::McpToolCallError::McpProtocolError, OpenAI::Models::Responses::McpToolCallError::McpToolExecutionError, OpenAI::Models::Responses::McpToolCallError::HTTPError, nil]
+          optional :error, union: -> { OpenAI::Responses::McpToolCallError }, nil?: true
 
           # @!attribute output
           #   The output from the tool call.
@@ -550,7 +550,7 @@ module OpenAI
           #
           #   @param approval_request_id [String, nil] Unique identifier for the MCP tool call approval request.
           #
-          #   @param error [String, nil] The error from the tool call, if any.
+          #   @param error [OpenAI::Models::Responses::McpToolCallError::McpProtocolError, OpenAI::Models::Responses::McpToolCallError::McpToolExecutionError, OpenAI::Models::Responses::McpToolCallError::HTTPError, nil] The error from the tool call, if any.
           #
           #   @param output [String, nil] The output from the tool call.
           #

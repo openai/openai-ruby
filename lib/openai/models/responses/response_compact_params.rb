@@ -132,6 +132,8 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_5_5 }
 
+          variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_5_5_2026_04_23 }
+
           variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_5_4 }
 
           variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_5_4_MINI }
@@ -308,6 +310,10 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::COMPUTER_USE_PREVIEW_2025_03_11 }
 
+          variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_5_5_PRO }
+
+          variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_5_5_PRO_2026_04_23 }
+
           variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_5_CODEX }
 
           variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_5_PRO }
@@ -337,6 +343,7 @@ module OpenAI
           GPT_5_6_TERRA = :"gpt-5.6-terra"
           GPT_5_6_LUNA = :"gpt-5.6-luna"
           GPT_5_5 = :"gpt-5.5"
+          GPT_5_5_2026_04_23 = :"gpt-5.5-2026-04-23"
           GPT_5_4 = :"gpt-5.4"
           GPT_5_4_MINI = :"gpt-5.4-mini"
           GPT_5_4_NANO = :"gpt-5.4-nano"
@@ -425,6 +432,8 @@ module OpenAI
           O4_MINI_DEEP_RESEARCH_2025_06_26 = :"o4-mini-deep-research-2025-06-26"
           COMPUTER_USE_PREVIEW = :"computer-use-preview"
           COMPUTER_USE_PREVIEW_2025_03_11 = :"computer-use-preview-2025-03-11"
+          GPT_5_5_PRO = :"gpt-5.5-pro"
+          GPT_5_5_PRO_2026_04_23 = :"gpt-5.5-pro-2026-04-23"
           GPT_5_CODEX = :"gpt-5-codex"
           GPT_5_PRO = :"gpt-5-pro"
           GPT_5_PRO_2025_10_06 = :"gpt-5-pro-2025-10-06"

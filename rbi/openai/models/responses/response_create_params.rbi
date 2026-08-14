@@ -285,6 +285,10 @@ module OpenAI
         #   Responses or Chat Completions. The response will show `service_tier=priority`
         #   regardless of if you specify `service_tier=fast` or `priority` in your
         #   request.
+        # - If set to 'ultrafast', then the request will be processed with the
+        #   access-controlled Ultrafast Processing service tier. This tier is currently
+        #   available for `gpt-5.6-sol`; a response served through it will show
+        #   `service_tier=ultrafast`.
         # - When not set, the default behavior is 'auto'.
         #
         # When the `service_tier` parameter is set, the response body will include the
@@ -742,6 +746,10 @@ module OpenAI
           #   Responses or Chat Completions. The response will show `service_tier=priority`
           #   regardless of if you specify `service_tier=fast` or `priority` in your
           #   request.
+          # - If set to 'ultrafast', then the request will be processed with the
+          #   access-controlled Ultrafast Processing service tier. This tier is currently
+          #   available for `gpt-5.6-sol`; a response served through it will show
+          #   `service_tier=ultrafast`.
           # - When not set, the default behavior is 'auto'.
           #
           # When the `service_tier` parameter is set, the response body will include the
@@ -1543,6 +1551,10 @@ module OpenAI
         #   Responses or Chat Completions. The response will show `service_tier=priority`
         #   regardless of if you specify `service_tier=fast` or `priority` in your
         #   request.
+        # - If set to 'ultrafast', then the request will be processed with the
+        #   access-controlled Ultrafast Processing service tier. This tier is currently
+        #   available for `gpt-5.6-sol`; a response served through it will show
+        #   `service_tier=ultrafast`.
         # - When not set, the default behavior is 'auto'.
         #
         # When the `service_tier` parameter is set, the response body will include the
@@ -1589,6 +1601,11 @@ module OpenAI
           FAST =
             T.let(
               :fast,
+              OpenAI::Responses::ResponseCreateParams::ServiceTier::TaggedSymbol
+            )
+          ULTRAFAST =
+            T.let(
+              :ultrafast,
               OpenAI::Responses::ResponseCreateParams::ServiceTier::TaggedSymbol
             )
 

@@ -9,6 +9,9 @@ module OpenAI
 
         discriminator :type
 
+        # Emitted when an error occurs while processing a Responses WebSocket request.
+        variant :error, -> { OpenAI::Responses::ResponsesServerEvent::ResponseWsError }
+
         # Emitted when there is a partial audio response.
         variant :"response.audio.delta", -> { OpenAI::Responses::ResponsesServerEvent::ResponseAudioWsDelta }
 
@@ -56,9 +59,6 @@ module OpenAI
 
         # An event that is emitted when a response is created.
         variant :"response.created", -> { OpenAI::Responses::ResponsesServerEvent::ResponseWsCreated }
-
-        # Emitted when an error occurs.
-        variant :error, -> { OpenAI::Responses::ResponsesServerEvent::ResponseWsError }
 
         # Emitted when a file search call is completed (results found).
         variant :"response.file_search_call.completed",
@@ -438,24 +438,6 @@ module OpenAI
           #   details.
           #
           #   An event that is emitted when a response is created.
-          #
-          #   @param stream_id [String] The WebSocket lane that emitted this event. This field is present
-        end
-
-        class ResponseWsError < OpenAI::Models::Responses::ResponseErrorEvent
-          # @!attribute stream_id
-          #   The WebSocket lane that emitted this event. This field is present when the
-          #   originating `response.create` event supplied a `stream_id`.
-          #
-          #   @return [String, nil]
-          optional :stream_id, String
-
-          # @!method initialize(stream_id: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError} for more
-          #   details.
-          #
-          #   Emitted when an error occurs.
           #
           #   @param stream_id [String] The WebSocket lane that emitted this event. This field is present
         end
@@ -1166,8 +1148,104 @@ module OpenAI
           #   @param stream_id [String] The WebSocket lane that emitted this event. This field is present
         end
 
+        class ResponseWsError < OpenAI::Internal::Type::BaseModel
+          # @!attribute error
+          #   Details about the error.
+          #
+          #   @return [OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError::Error]
+          required :error, -> { OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error }
+
+          # @!attribute type
+          #   The type of the event. Always `error`.
+          #
+          #   @return [Symbol, :error]
+          required :type, const: :error
+
+          # @!attribute sequence_number
+          #   The sequence number of an error emitted by the response stream.
+          #
+          #   @return [Integer, nil]
+          optional :sequence_number, Integer
+
+          # @!attribute status
+          #   The HTTP status code associated with a WebSocket protocol error.
+          #
+          #   @return [Integer, nil]
+          optional :status, Integer
+
+          # @!attribute stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          #
+          #   @return [String, nil]
+          optional :stream_id, String
+
+          # @!method initialize(error:, sequence_number: nil, status: nil, stream_id: nil, type: :error)
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError} for more
+          #   details.
+          #
+          #   Emitted when an error occurs while processing a Responses WebSocket request.
+          #
+          #   @param error [OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError::Error] Details about the error.
+          #
+          #   @param sequence_number [Integer] The sequence number of an error emitted by the response stream.
+          #
+          #   @param status [Integer] The HTTP status code associated with a WebSocket protocol error.
+          #
+          #   @param stream_id [String] The WebSocket lane that emitted this event. This field is present when the
+          #
+          #   @param type [Symbol, :error] The type of the event. Always `error`.
+
+          # @see OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError#error
+          class Error < OpenAI::Internal::Type::BaseModel
+            # @!attribute code
+            #   The error code that was emitted, if any.
+            #
+            #   @return [String, nil]
+            required :code, String, nil?: true
+
+            # @!attribute message
+            #   The human-readable error message that was emitted.
+            #
+            #   @return [String]
+            required :message, String
+
+            # @!attribute param
+            #   The parameter name that was associated with the error, if any.
+            #
+            #   @return [String, nil]
+            required :param, String, nil?: true
+
+            # @!attribute type
+            #   The error type that was emitted.
+            #
+            #   @return [String]
+            required :type, String
+
+            # @!attribute headers
+            #   The response headers that were emitted with the error, if any.
+            #
+            #   @return [Hash{Symbol=>String}, nil]
+            optional :headers, OpenAI::Internal::Type::HashOf[String]
+
+            # @!method initialize(code:, message:, param:, type:, headers: nil)
+            #   Details about the error.
+            #
+            #   @param code [String, nil] The error code that was emitted, if any.
+            #
+            #   @param message [String] The human-readable error message that was emitted.
+            #
+            #   @param param [String, nil] The parameter name that was associated with the error, if any.
+            #
+            #   @param type [String] The error type that was emitted.
+            #
+            #   @param headers [Hash{Symbol=>String}] The response headers that were emitted with the error, if any.
+          end
+        end
+
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Responses::ResponsesServerEvent::ResponseAudioWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseAudioWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseAudioTranscriptWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseAudioTranscriptWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallCodeWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallCodeWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallWsCompleted, OpenAI::Models::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallInWsProgress, OpenAI::Models::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallWsInterpreting, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsCompleted, OpenAI::Models::Responses::ResponsesServerEvent::ResponseContentPartWsAdded, OpenAI::Models::Responses::ResponsesServerEvent::ResponseContentPartWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsCreated, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError, OpenAI::Models::Responses::ResponsesServerEvent::ResponseFileSearchCallWsCompleted, OpenAI::Models::Responses::ResponsesServerEvent::ResponseFileSearchCallInWsProgress, OpenAI::Models::Responses::ResponsesServerEvent::ResponseFileSearchCallWsSearching, OpenAI::Models::Responses::ResponsesServerEvent::ResponseFunctionCallArgumentsWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseFunctionCallArgumentsWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseInWsProgress, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsFailed, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsIncomplete, OpenAI::Models::Responses::ResponsesServerEvent::ResponseOutputItemWsAdded, OpenAI::Models::Responses::ResponsesServerEvent::ResponseOutputItemWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseReasoningSummaryPartWsAdded, OpenAI::Models::Responses::ResponsesServerEvent::ResponseReasoningSummaryPartWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseReasoningSummaryTextWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseReasoningSummaryTextWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseReasoningTextWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseReasoningTextWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseRefusalWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseRefusalWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseTextWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseTextWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWebSearchCallWsCompleted, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWebSearchCallInWsProgress, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWebSearchCallWsSearching, OpenAI::Models::Responses::ResponsesServerEvent::ResponseImageGenCallWsCompleted, OpenAI::Models::Responses::ResponsesServerEvent::ResponseImageGenCallWsGenerating, OpenAI::Models::Responses::ResponsesServerEvent::ResponseImageGenCallInWsProgress, OpenAI::Models::Responses::ResponsesServerEvent::ResponseImageGenCallPartialWsImage, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpCallArgumentsWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpCallArgumentsWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpCallWsCompleted, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpCallWsFailed, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpCallInWsProgress, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpListToolsWsCompleted, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpListToolsWsFailed, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpListToolsInWsProgress, OpenAI::Models::Responses::ResponsesServerEvent::ResponseOutputTextAnnotationWsAdded, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsQueued, OpenAI::Models::Responses::ResponsesServerEvent::ResponseCustomToolCallInputWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseCustomToolCallInputWsDone)]
+        #   @return [Array(OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError, OpenAI::Models::Responses::ResponsesServerEvent::ResponseAudioWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseAudioWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseAudioTranscriptWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseAudioTranscriptWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallCodeWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallCodeWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallWsCompleted, OpenAI::Models::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallInWsProgress, OpenAI::Models::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallWsInterpreting, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsCompleted, OpenAI::Models::Responses::ResponsesServerEvent::ResponseContentPartWsAdded, OpenAI::Models::Responses::ResponsesServerEvent::ResponseContentPartWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsCreated, OpenAI::Models::Responses::ResponsesServerEvent::ResponseFileSearchCallWsCompleted, OpenAI::Models::Responses::ResponsesServerEvent::ResponseFileSearchCallInWsProgress, OpenAI::Models::Responses::ResponsesServerEvent::ResponseFileSearchCallWsSearching, OpenAI::Models::Responses::ResponsesServerEvent::ResponseFunctionCallArgumentsWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseFunctionCallArgumentsWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseInWsProgress, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsFailed, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsIncomplete, OpenAI::Models::Responses::ResponsesServerEvent::ResponseOutputItemWsAdded, OpenAI::Models::Responses::ResponsesServerEvent::ResponseOutputItemWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseReasoningSummaryPartWsAdded, OpenAI::Models::Responses::ResponsesServerEvent::ResponseReasoningSummaryPartWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseReasoningSummaryTextWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseReasoningSummaryTextWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseReasoningTextWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseReasoningTextWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseRefusalWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseRefusalWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseTextWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseTextWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWebSearchCallWsCompleted, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWebSearchCallInWsProgress, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWebSearchCallWsSearching, OpenAI::Models::Responses::ResponsesServerEvent::ResponseImageGenCallWsCompleted, OpenAI::Models::Responses::ResponsesServerEvent::ResponseImageGenCallWsGenerating, OpenAI::Models::Responses::ResponsesServerEvent::ResponseImageGenCallInWsProgress, OpenAI::Models::Responses::ResponsesServerEvent::ResponseImageGenCallPartialWsImage, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpCallArgumentsWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpCallArgumentsWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpCallWsCompleted, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpCallWsFailed, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpCallInWsProgress, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpListToolsWsCompleted, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpListToolsWsFailed, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpListToolsInWsProgress, OpenAI::Models::Responses::ResponsesServerEvent::ResponseOutputTextAnnotationWsAdded, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsQueued, OpenAI::Models::Responses::ResponsesServerEvent::ResponseCustomToolCallInputWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseCustomToolCallInputWsDone)]
       end
     end
   end

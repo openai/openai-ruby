@@ -4,6 +4,7 @@ module OpenAI
       type web_search_tool =
         {
           type: OpenAI::Models::Responses::WebSearchTool::type_,
+          external_web_access: bool,
           filters: OpenAI::Responses::WebSearchTool::Filters?,
           search_context_size: OpenAI::Models::Responses::WebSearchTool::search_context_size,
           user_location: OpenAI::Responses::WebSearchTool::UserLocation?
@@ -11,6 +12,10 @@ module OpenAI
 
       class WebSearchTool < OpenAI::Internal::Type::BaseModel
         attr_accessor type: OpenAI::Models::Responses::WebSearchTool::type_
+
+        attr_reader external_web_access: bool?
+
+        def external_web_access=: (bool) -> bool
 
         attr_accessor filters: OpenAI::Responses::WebSearchTool::Filters?
 
@@ -24,6 +29,7 @@ module OpenAI
 
         def initialize: (
           type: OpenAI::Models::Responses::WebSearchTool::type_,
+          ?external_web_access: bool,
           ?filters: OpenAI::Responses::WebSearchTool::Filters?,
           ?search_context_size: OpenAI::Models::Responses::WebSearchTool::search_context_size,
           ?user_location: OpenAI::Responses::WebSearchTool::UserLocation?
@@ -31,6 +37,7 @@ module OpenAI
 
         def to_hash: -> {
           type: OpenAI::Models::Responses::WebSearchTool::type_,
+          external_web_access: bool,
           filters: OpenAI::Responses::WebSearchTool::Filters?,
           search_context_size: OpenAI::Models::Responses::WebSearchTool::search_context_size,
           user_location: OpenAI::Responses::WebSearchTool::UserLocation?
