@@ -1,5 +1,85 @@
 # Changelog
 
+## [0.79.0](https://github.com/openai/openai-ruby/compare/v0.78.0...v0.79.0) (2026-08-14)
+
+
+### Features
+
+* add HTTP response observability ([#365](https://github.com/openai/openai-ruby/issues/365)) ([48d36b7](https://github.com/openai/openai-ruby/commit/48d36b70883a446a8062dca50fbc2d419fbe1fb9))
+* add Tapioca typing for structured outputs ([#364](https://github.com/openai/openai-ruby/issues/364)) ([738e2b4](https://github.com/openai/openai-ruby/commit/738e2b4de4f991e594f9d319c4d17f0955cd8edd))
+* **api:** Add new model identifiers and remove audit log source ([e0a4bc5](https://github.com/openai/openai-ruby/commit/e0a4bc56d5280c45a12e44adc49b6c34e182b33f))
+* **api:** add WebSocket stream IDs ([#387](https://github.com/openai/openai-ruby/issues/387)) ([5880287](https://github.com/openai/openai-ruby/commit/588028770b493f2ad55b1b9acfe6ad3164c1cddc))
+* **api:** add workload identity access token issued event ([#372](https://github.com/openai/openai-ruby/issues/372)) ([9199779](https://github.com/openai/openai-ruby/commit/919977919667da8b0764a7134d646e9cac24e709))
+* **api:** deprecate Sora video APIs ([#386](https://github.com/openai/openai-ruby/issues/386)) ([0664456](https://github.com/openai/openai-ruby/commit/0664456735e3eccc8dd15041a45528f59df3787d))
+* **client:** add default headers ([#369](https://github.com/openai/openai-ruby/issues/369)) ([d516874](https://github.com/openai/openai-ruby/commit/d516874ebca3ac142ecbc9d829367ab97ae685f2))
+* expose request IDs ([#352](https://github.com/openai/openai-ruby/issues/352)) ([c15fb7b](https://github.com/openai/openai-ruby/commit/c15fb7b5d3f15de8ffc1404dba870752175415af))
+* support Azure OpenAI v1 ([#355](https://github.com/openai/openai-ruby/issues/355)) ([c1d223e](https://github.com/openai/openai-ruby/commit/c1d223e2253450cee2631f875b968baa7cbcdc2e))
+
+
+### Bug Fixes
+
+* **api:** Add new model identifiers and remove audit log source ([#360](https://github.com/openai/openai-ruby/issues/360)) ([e0a4bc5](https://github.com/openai/openai-ruby/commit/e0a4bc56d5280c45a12e44adc49b6c34e182b33f))
+* **api:** allow nil timeout in client signatures ([#363](https://github.com/openai/openai-ruby/issues/363)) ([e52ca61](https://github.com/openai/openai-ruby/commit/e52ca61a116f7a49e98f903c28337232608264d7))
+* **api:** document file upload metadata defaults ([#361](https://github.com/openai/openai-ruby/issues/361)) ([b4bc1ea](https://github.com/openai/openai-ruby/commit/b4bc1eaf8dd8edcc10700b3d29669816176839a3))
+* coerce nested BaseModel fields ([#295](https://github.com/openai/openai-ruby/issues/295)) ([e5152a9](https://github.com/openai/openai-ruby/commit/e5152a92962251ce76ceb3d89ec0b6b37fa4efdb))
+* enable streaming when retrieving responses ([#413](https://github.com/openai/openai-ruby/issues/413)) ([fd85182](https://github.com/openai/openai-ruby/commit/fd8518235b16089b03733040f22e51f3fb043ed4))
+* encode multipart array and nested fields ([#348](https://github.com/openai/openai-ruby/issues/348)) ([1c71a1e](https://github.com/openai/openai-ruby/commit/1c71a1eccdee36a1e8dc8ab974ad1437396bd6e6))
+* honor workload identity environment defaults ([#398](https://github.com/openai/openai-ruby/issues/398)) ([f4afea1](https://github.com/openai/openai-ruby/commit/f4afea1057ebfa5447fbbef0d89f62943473efdc))
+* keep required path parameters out of resource query strings ([#402](https://github.com/openai/openai-ruby/issues/402)) ([6768a7c](https://github.com/openai/openai-ruby/commit/6768a7c29664fc9edce4f4da261920da8bb1959d))
+* loading after ActiveSupport 6 subclass extensions ([#346](https://github.com/openai/openai-ruby/issues/346)) ([20fbb09](https://github.com/openai/openai-ruby/commit/20fbb0942991888e618e5b5a86531e58fff65626))
+* make SDK debug body logging fail closed ([#411](https://github.com/openai/openai-ruby/issues/411)) ([c4f7284](https://github.com/openai/openai-ruby/commit/c4f72846e6f2bddc280f0723f880130ad27d2b71))
+* package every README-linked guide and example ([#382](https://github.com/openai/openai-ruby/issues/382)) ([ddecd0f](https://github.com/openai/openai-ruby/commit/ddecd0f75fc2a9e33e5fb6caf3f7531f7868fb90))
+* preserve binary multipart stream reads ([#354](https://github.com/openai/openai-ruby/issues/354)) ([b3a1ba7](https://github.com/openai/openai-ruby/commit/b3a1ba7f3dc561ac28d2768e619e46da75177c3c))
+* preserve existing BaseModel instances during coercion ([#400](https://github.com/openai/openai-ruby/issues/400)) ([fbd8560](https://github.com/openai/openai-ruby/commit/fbd8560ff986774acb4c3af849eba048232a8da3))
+* preserve prefixed idempotency headers on redirects ([#404](https://github.com/openai/openai-ruby/issues/404)) ([c380e13](https://github.com/openai/openai-ruby/commit/c380e13d1f866d591add5b32cc7e414de0ac85f2))
+* preserve stream identity with HTTP logging ([#384](https://github.com/openai/openai-ruby/issues/384)) ([640a1fe](https://github.com/openai/openai-ruby/commit/640a1fed33e57194cf4241001d171b75bc3b7638))
+* prevent symbol-keyed headers from bypassing security filters ([#383](https://github.com/openai/openai-ruby/issues/383)) ([b8165af](https://github.com/openai/openai-ruby/commit/b8165afa3065ee01e1440bc7e5339a9c5a7d7123))
+* redact sensitive query and form logging ([#389](https://github.com/openai/openai-ruby/issues/389)) ([7aa54e4](https://github.com/openai/openai-ruby/commit/7aa54e43aba381c33639a8f697348d0620ced5d0))
+* reject invalid webhook signing secrets ([#403](https://github.com/openai/openai-ruby/issues/403)) ([ad12458](https://github.com/openai/openai-ruby/commit/ad1245832fd18c7830becc2375c9fa7deadca88f))
+* remove unsound structured-output Tapioca compiler ([#405](https://github.com/openai/openai-ruby/issues/405)) ([826769a](https://github.com/openai/openai-ruby/commit/826769a5169eb659042fbfcb9259ad61f04d20a5))
+* restore RuboCop coverage for RBI files ([#388](https://github.com/openai/openai-ruby/issues/388)) ([d2d4b5d](https://github.com/openai/openai-ruby/commit/d2d4b5d1308e21703724b2f2561da2d328be5c46))
+* return values from interruptible enumerator ([#350](https://github.com/openai/openai-ruby/issues/350)) ([327dad7](https://github.com/openai/openai-ruby/commit/327dad76d434b8ea56401efb1312e9b499cc8e71))
+* strip credential headers on cross-origin redirects ([#391](https://github.com/openai/openai-ruby/issues/391)) ([f50f08c](https://github.com/openai/openai-ruby/commit/f50f08c15f373e956c0013d519c6d69c2484e562))
+* tighten JSON, JSONL, and SSE content type matching ([#277](https://github.com/openai/openai-ruby/issues/277)) ([66359a0](https://github.com/openai/openai-ruby/commit/66359a09076711315bed0c8aceea8db89bc4bd42))
+* use API field names in structured output schemas ([#390](https://github.com/openai/openai-ruby/issues/390)) ([d1e3cf3](https://github.com/openai/openai-ruby/commit/d1e3cf3cd2793d18e98394cd5e66da766c686557))
+* validate and bound retry delays ([#392](https://github.com/openai/openai-ruby/issues/392)) ([fff94e7](https://github.com/openai/openai-ruby/commit/fff94e789a9d750913306fe3c52973bd3e730916))
+* **webhooks:** support Rack and case-insensitive HTTP headers ([#401](https://github.com/openai/openai-ruby/issues/401)) ([37de980](https://github.com/openai/openai-ruby/commit/37de98099af70d8e97f50f8dc02ce5166c081d38))
+
+
+### Reverts
+
+* nested BaseModel coercion ([#295](https://github.com/openai/openai-ruby/issues/295)) ([#375](https://github.com/openai/openai-ruby/issues/375)) ([65fa76e](https://github.com/openai/openai-ruby/commit/65fa76e57881804908bc4d1753ee7d60cff1f875))
+
+
+### Chores
+
+* Cover Ruby files at the SDK root ([#362](https://github.com/openai/openai-ruby/issues/362)) ([d11f25b](https://github.com/openai/openai-ruby/commit/d11f25b28044e618849cd430c63946a306ede32c))
+* enforce boolean symbol lint ([#395](https://github.com/openai/openai-ruby/issues/395)) ([fafdf2e](https://github.com/openai/openai-ruby/commit/fafdf2e86e2736b79212189dee07aa83ba912945))
+* enforce deprecated constant lint ([#379](https://github.com/openai/openai-ruby/issues/379)) ([0def912](https://github.com/openai/openai-ruby/commit/0def9124cadee946879f2f66a5018ee986972509))
+* enforce duplicate match pattern lint ([#380](https://github.com/openai/openai-ruby/issues/380)) ([7a8f2fb](https://github.com/openai/openai-ruby/commit/7a8f2fb4ac9d1176bb5e8eac88cccc9766e3fd6c))
+* enforce empty else lint ([#396](https://github.com/openai/openai-ruby/issues/396)) ([1e073c1](https://github.com/openai/openai-ruby/commit/1e073c14a657e93ea0394fba29f9a059b3bf9b09))
+* enforce line length lint ([#406](https://github.com/openai/openai-ruby/issues/406)) ([4592061](https://github.com/openai/openai-ruby/commit/459206126267209930640d25eae0fada7177bff0))
+* enforce line length on base models ([#416](https://github.com/openai/openai-ruby/issues/416)) ([aef1e33](https://github.com/openai/openai-ruby/commit/aef1e333cae9c72379b3230a35d0274917999f82))
+* enforce line length on requires ([#415](https://github.com/openai/openai-ruby/issues/415)) ([c24e045](https://github.com/openai/openai-ruby/commit/c24e045bc1a194a0935a36ed48a17841f5309718))
+* enforce missing RuboCop enable directives ([#368](https://github.com/openai/openai-ruby/issues/368)) ([50046bf](https://github.com/openai/openai-ruby/commit/50046bf02497984d46377b9e9f1f6cc1370ee776))
+* enforce missing super lint ([#393](https://github.com/openai/openai-ruby/issues/393)) ([2a42bd0](https://github.com/openai/openai-ruby/commit/2a42bd0531f0c16e2d61d55b2dee80e541111812))
+* enforce nonempty pattern branches ([#409](https://github.com/openai/openai-ruby/issues/409)) ([9d22d5c](https://github.com/openai/openai-ruby/commit/9d22d5c63a9f68f1839de6f6b20f92d767eec80b))
+* enforce redundant directive lint ([#366](https://github.com/openai/openai-ruby/issues/366)) ([8448a4c](https://github.com/openai/openai-ruby/commit/8448a4cb1551fb47a28205556e0bce320eb82c99))
+* enforce redundant exception lint ([#397](https://github.com/openai/openai-ruby/issues/397)) ([cbda8bc](https://github.com/openai/openai-ruby/commit/cbda8bc0e6e3b2b8d0b96dfe3021d4557b713400))
+* enforce symbol conversion lint ([#381](https://github.com/openai/openai-ruby/issues/381)) ([0531498](https://github.com/openai/openai-ruby/commit/0531498c5498804408381dcef3ddec1228196ecd))
+* enforce useless assignment lint ([#394](https://github.com/openai/openai-ruby/issues/394)) ([9688836](https://github.com/openai/openai-ruby/commit/96888367ae757d119c90f2d9a81f4000d21745c2))
+* guard RuboCop suppression directives ([#408](https://github.com/openai/openai-ruby/issues/408)) ([5b6e0dc](https://github.com/openai/openai-ruby/commit/5b6e0dcc325f0f5a6a0fc6df8d9aea4999c90cf5))
+* lint Ruby files repository-wide ([#377](https://github.com/openai/openai-ruby/issues/377)) ([8ca8426](https://github.com/openai/openai-ruby/commit/8ca842693f441f19b18fda7190de4d68b2f7f9d9))
+* remove Stainless attribution and infrastructure ([#371](https://github.com/openai/openai-ruby/issues/371)) ([33d2c86](https://github.com/openai/openai-ruby/commit/33d2c864e1f3c2a683f1b826838b2bfd2e380a26))
+* require MFA for gem releases ([#378](https://github.com/openai/openai-ruby/issues/378)) ([71798ec](https://github.com/openai/openai-ruby/commit/71798ecb840a3feb8574efae3dd94af577717d64))
+
+
+### Documentation
+
+* **api:** describe response stream event unions ([#412](https://github.com/openai/openai-ruby/issues/412)) ([87d18ef](https://github.com/openai/openai-ruby/commit/87d18efc19445d0080344f6ebd5bc95dc8aed5cb))
+* clarify file upload metadata ([#358](https://github.com/openai/openai-ruby/issues/358)) ([698ac65](https://github.com/openai/openai-ruby/commit/698ac65d948f07edf30255c621abaac6437f0bcf)), closes [#243](https://github.com/openai/openai-ruby/issues/243)
+* document fiber scheduler concurrency ([#357](https://github.com/openai/openai-ruby/issues/357)) ([25a7bbc](https://github.com/openai/openai-ruby/commit/25a7bbcdc93c3331dc199e4cfe1da6037ef43bb2))
+
 ## [0.78.0](https://github.com/openai/openai-ruby/compare/v0.77.1...v0.78.0) (2026-08-07)
 
 
