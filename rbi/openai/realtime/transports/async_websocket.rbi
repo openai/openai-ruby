@@ -5,6 +5,15 @@ module OpenAI
     module Realtime
       module Transports
         class AsyncWebSocket
+          sig do
+            params(
+              tls_configurator:
+                T.nilable(T.proc.params(context: OpenSSL::SSL::SSLContext).void)
+            ).void
+          end
+          def initialize(&tls_configurator)
+          end
+
           class Socket
             # @api private
             sig do

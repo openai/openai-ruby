@@ -20,9 +20,18 @@ access. Talk normally and speak over the model to interrupt it. Click **Stop**
 to close the peer and ask Ruby to hang up the call. No API key is sent to the
 browser. Override the port with `REALTIME_DEMO_PORT`.
 
+The demo binds only to `127.0.0.1` or `::1` and checks both `Host` and `Origin`
+before creating or hanging up a paid call. This keeps the local API-key-backed
+control plane out of reach of DNS rebinding and other origins; use an
+authenticated application server rather than exposing this demonstration on a
+network interface.
+
 A transient WebRTC `disconnected` state keeps the peer alive while the browser
 attempts recovery. A terminal `failed` state stops the microphone and peer
 immediately and asks the Ruby backend to hang up the call.
+If the hangup request fails, the browser retains the call ID, disables starting
+a replacement call, and changes **Stop** to **Retry hangup**. It also keeps the
+ID available to the page-exit beacon until the backend confirms cleanup.
 
 ## WebSocket microphone loop (advanced)
 
@@ -161,7 +170,9 @@ arrive out of order, so applications should correlate them by `item_id`.
 The example opens a dedicated connection with `connect_transcription`.
 Configure its transcription model with `OPENAI_REALTIME_TRANSCRIPTION_MODEL`.
 An EOF before the completed transcription event is reported as a failed smoke
-test.
+test. An item-level `conversation.item.input_audio_transcription.failed` event
+fails immediately with the service's error message instead of waiting for the
+outer timeout or accepting an unrelated completion.
 
 ## Realtime translation
 

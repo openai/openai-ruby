@@ -229,6 +229,15 @@ With a standard server API key, provide `session:` and the SDK sends multipart
 form data with correctly typed `sdp` and `session` parts. It never exposes a
 standard API key to browser code.
 
+The repository browser demo treats that Ruby endpoint as a local credentialed
+control plane: it binds only to an explicit loopback address, validates `Host`
+for every request, and requires the exact browser `Origin` for both session
+creation and hangup. Production Rails or Sinatra endpoints need their normal
+user authentication and CSRF/origin policy before calling `calls.create`.
+Browser cleanup retains the call ID after a failed hangup, prevents a new call
+from overwriting it, exposes a retry action, and leaves the page-exit beacon
+armed until the backend confirms the call ended.
+
 ## SIP calls
 
 Verify incoming webhooks before using their call ID, accept or reject the call,
@@ -291,7 +300,9 @@ that is still draining. For browser WebRTC translation, mint an ephemeral secret
 with `translations.client_secrets.create`, then post the browser offer with
 `translations.calls.create`. That convenience method delegates to the shared
 `/v1/realtime/calls` endpoint; translation is selected by the ephemeral secret,
-not by a separate calls route.
+not by a separate calls route. Client-secret request hashes accept symbol or
+string keys recursively, including nested session and expiration configuration,
+so `JSON.parse` and Rails-derived hashes follow the same validation path.
 
 ## Function calls and MCP approvals
 
@@ -414,6 +425,12 @@ bounded sideband, SIP, and conversation runs. Cleanup must also preserve an
 active upload or processing error when a graceful close fails, while surfacing
 the close failure after an otherwise successful operation.
 
+Transcription failures use their dedicated
+`ConversationItemInputAudioTranscriptionFailedEvent`, not `RealtimeErrorEvent`.
+The runnable transcription sample raises the event's error immediately; it does
+not wait for a completion that will never arrive or allow a later turn's
+completion to masquerade as success.
+
 Terminal status alone is insufficient when a workflow promises an artifact:
 the text smoke requires a non-empty text delta, while the raw-audio and
 translation smokes require at least one decoded audio byte before their terminal
@@ -490,6 +507,30 @@ nil)` and per-request `timeout: nil` deliberately disable the handshake timeout.
 handshake timeout, the destination host or port, or TLS/protocol negotiation.
 Those values remain SDK-owned so credentials cannot be redirected or sent over
 a caller-supplied downgraded connection.
+
+Advanced mTLS or private-CA WebSocket clients can configure the built-in adapter
+without supplying a new transport implementation:
+
+```ruby
+websocket_transport = OpenAI::Realtime::Transports::AsyncWebSocket.new do |tls|
+  tls.cert = leaf_certificate
+  tls.extra_chain_cert = intermediates
+  tls.key = private_key
+  tls.cert_store = private_ca_store
+end
+
+client.realtime.connect(
+  model: "gpt-realtime-2.1",
+  transport: websocket_transport
+) { |connection| run_session(connection) }
+```
+
+The block receives a fresh native `OpenSSL::SSL::SSLContext` for each
+connection. The adapter always restores peer verification, hostname
+verification, and HTTP/1.1 ALPN after the block; it rejects verification
+callbacks and refuses TLS configuration for a plaintext `ws://` endpoint. A
+raw `ssl_context` remains forbidden in `transport_options`, where it could
+silently replace those SDK-owned guarantees.
 
 The SDK owns URL construction, authentication, typed JSON encoding/decoding, and
 block cleanup. The transport owns the WebSocket handshake, frame I/O, TLS,

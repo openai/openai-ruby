@@ -14,10 +14,14 @@ module OpenAI
           def create(session:, expires_after: nil, request_options: nil)
             input = {session: session}
             input[:expires_after] = expires_after unless expires_after.nil?
+            normalized_input = OpenAI::Internal::Type::Converter.dump(
+              OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest,
+              input
+            )
             state = OpenAI::Internal::Type::Converter.new_coerce_state
             request = OpenAI::Internal::Type::Converter.coerce(
               OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest,
-              input,
+              normalized_input,
               state: state
             )
             cause = state[:error]

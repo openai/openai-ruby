@@ -380,6 +380,38 @@ class OpenAI::Test::RealtimeExampleStreamLifecycleTest < Minitest::Test
     assert_equal("\n[item_1] Hello\n", output.string)
   end
 
+  def test_transcription_surfaces_an_item_failure_before_a_later_completion
+    failure = OpenAI::Realtime::ConversationItemInputAudioTranscriptionFailedEvent.new(
+      content_index: 0,
+      error: OpenAI::Realtime::ConversationItemInputAudioTranscriptionFailedEvent::Error.new(
+        message: "Audio could not be transcribed"
+      ),
+      event_id: "event_failure",
+      item_id: "item_failed"
+    )
+    connection = RecordingConnection.new(
+      [
+        failure,
+        OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent.new(
+          content_index: 0,
+          event_id: "event_completed",
+          item_id: "item_unrelated",
+          transcript: "Unrelated",
+          usage: {type: :duration, seconds: 0.25}
+        )
+      ]
+    )
+
+    error = assert_raises(RuntimeError) do
+      OpenAI::Examples::Realtime::WebSocketTranscription.print_transcript(
+        connection,
+        output: StringIO.new
+      )
+    end
+
+    assert_equal("Audio could not be transcribed", error.message)
+  end
+
   def test_translation_preserves_an_upload_error_when_session_close_also_fails
     upload_error = RuntimeError.new("upload failed")
     input_audio_buffer = RaisingEndpoint.new(upload_error)

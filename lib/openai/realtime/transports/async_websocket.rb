@@ -5,6 +5,12 @@ module OpenAI
     module Transports
       # Default Realtime transport backed by the optional async-websocket gem.
       class AsyncWebSocket
+        # Configure the native TLS context used by secure Realtime WebSockets.
+        # Peer and hostname verification and HTTP/1.1 ALPN remain SDK-owned.
+        def initialize(&tls_configurator)
+          @tls_configurator = tls_configurator
+        end
+
         class Socket
           # @api private
           def initialize(connection, url:)
@@ -43,6 +49,7 @@ module OpenAI
             alpn_protocols: ::Async::HTTP::Protocol::HTTP11.names,
             **endpoint_options
           }
+          options[:ssl_context] = build_tls_context(url) if @tls_configurator
           endpoint = ::Async::HTTP::Endpoint.parse(
             url.to_s,
             **options
@@ -79,6 +86,23 @@ module OpenAI
           return operation.call if timeout.nil?
 
           ::Async::Task.current.with_timeout(timeout, &operation)
+        end
+
+        private def build_tls_context(url)
+          unless url.scheme == "wss"
+            raise ArgumentError, "TLS configuration requires a wss:// Realtime endpoint"
+          end
+
+          context = OpenSSL::SSL::SSLContext.new
+          @tls_configurator.call(context)
+          if context.verify_callback
+            raise ArgumentError, "Realtime WebSocket TLS configuration cannot set verify_callback"
+          end
+
+          context.set_params(verify_mode: OpenSSL::SSL::VERIFY_PEER)
+          context.verify_hostname = true
+          context.alpn_protocols = ::Async::HTTP::Protocol::HTTP11.names
+          context
         end
 
         private def close_resources(connection, client, pending_error:)

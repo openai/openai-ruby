@@ -88,6 +88,47 @@ class OpenAI::Test::Resources::Realtime::TranslationsTest < Minitest::Test
     )
   end
 
+  def test_create_client_secret_accepts_nested_string_keyed_hashes
+    http_client = StubHTTPClient.new(
+      OpenAI::HTTPClient::Response.new(
+        status: 200,
+        headers: {"content-type" => "application/json"},
+        body: JSON.generate(
+          value: "ek_test",
+          expires_at: 123,
+          session: {
+            id: "sess_123",
+            type: "translation",
+            model: "gpt-realtime-translate",
+            expires_at: 456,
+            audio: {}
+          }
+        )
+      )
+    )
+    client = OpenAI::Client.new(api_key: "test-key", http_client: http_client)
+
+    client.realtime.translations.client_secrets.create(
+      session: {
+        "model" => "gpt-realtime-translate",
+        "audio" => {"output" => {"language" => "es"}}
+      },
+      expires_after: {"anchor" => "created_at", "seconds" => 60}
+    )
+
+    request = http_client.requests.fetch(0)
+    assert_equal(
+      {
+        session: {
+          model: "gpt-realtime-translate",
+          audio: {output: {language: "es"}}
+        },
+        expires_after: {anchor: "created_at", seconds: 60}
+      },
+      JSON.parse(request.body, symbolize_names: true)
+    )
+  end
+
   def test_create_client_secret_rejects_an_invalid_session_before_http
     http_client = StubHTTPClient.new
     client = OpenAI::Client.new(api_key: "test-key", http_client: http_client)

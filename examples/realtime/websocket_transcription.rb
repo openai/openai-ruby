@@ -44,6 +44,8 @@ module OpenAI
               output.flush
             when OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent
               output.puts("\n[#{event.item_id}] #{event.transcript}")
+            when OpenAI::Realtime::ConversationItemInputAudioTranscriptionFailedEvent
+              raise(event.error.message || "Transcription failed for item #{event.item_id}")
             when OpenAI::Realtime::RealtimeErrorEvent
               raise event.error.message
             end

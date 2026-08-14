@@ -10,6 +10,9 @@ require_relative "../../../examples/realtime/webrtc_conversation"
 require_relative "../../../examples/realtime/websocket_audio"
 
 class OpenAI::Test::RealtimeExamplesTest < OpenAI::Test::RealtimeExamplesTestCase
+  WEBRTC_ORIGIN = "http://127.0.0.1:4567"
+  WEBRTC_HEADERS = {"host" => "127.0.0.1:4567", "origin" => WEBRTC_ORIGIN}.freeze
+
   def test_realtime_conversation_configures_continuous_server_vad
     connection = RecordingConnection.new
 
@@ -380,7 +383,7 @@ class OpenAI::Test::RealtimeExamplesTest < OpenAI::Test::RealtimeExamplesTestCas
         request_method: "GET",
         path: "/",
         body: "",
-        headers: {}
+        headers: WEBRTC_HEADERS
       ),
       response
     )
@@ -393,6 +396,10 @@ class OpenAI::Test::RealtimeExamplesTest < OpenAI::Test::RealtimeExamplesTestCas
     assert_includes(response.body, "autoGainControl: true")
     assert_includes(response.body, 'stopConversation({status: "Connection failed"})')
     assert_includes(response.body, "Connection interrupted; reconnecting…".b)
+    assert_includes(response.body, "if (!response.ok) throw new Error")
+    assert_includes(response.body, "callID = activeCallID;")
+    assert_includes(response.body, "Retry hangup")
+    refute_includes(response.body, "catch(() => undefined)")
     refute_includes(response.body, "OPENAI_API_KEY")
   end
 
@@ -409,7 +416,7 @@ class OpenAI::Test::RealtimeExamplesTest < OpenAI::Test::RealtimeExamplesTestCas
         request_method: "POST",
         path: "/session",
         body: "v=0\r\nt=0 0\r\n",
-        headers: {"content-type" => "application/sdp"}
+        headers: {**WEBRTC_HEADERS, "content-type" => "application/sdp"}
       ),
       response
     )
@@ -428,7 +435,7 @@ class OpenAI::Test::RealtimeExamplesTest < OpenAI::Test::RealtimeExamplesTestCas
         request_method: "POST",
         path: "/hangup",
         body: "rtc_example",
-        headers: {}
+        headers: WEBRTC_HEADERS
       ),
       hangup_response
     )
@@ -450,7 +457,7 @@ class OpenAI::Test::RealtimeExamplesTest < OpenAI::Test::RealtimeExamplesTestCas
         request_method: "POST",
         path: "/session",
         body: "not sdp",
-        headers: {"content-type" => "text/plain"}
+        headers: {**WEBRTC_HEADERS, "content-type" => "text/plain"}
       ),
       response
     )
@@ -478,7 +485,7 @@ class OpenAI::Test::RealtimeExamplesTest < OpenAI::Test::RealtimeExamplesTestCas
         request_method: "POST",
         path: "/session",
         body: "v=0\r\nt=0 0\r\n",
-        headers: {"content-type" => "application/sdp"}
+        headers: {**WEBRTC_HEADERS, "content-type" => "application/sdp"}
       ),
       HTTPResponse.new
     )
@@ -489,13 +496,112 @@ class OpenAI::Test::RealtimeExamplesTest < OpenAI::Test::RealtimeExamplesTestCas
         request_method: "POST",
         path: "/hangup",
         body: "rtc_example",
-        headers: {}
+        headers: WEBRTC_HEADERS
       ),
       response
     )
 
     assert_equal(204, response.status)
     assert_equal(["rtc_example"], calls.hangups)
+  end
+
+  def test_webrtc_conversation_rejects_untrusted_hosts_and_origins_before_creating_calls
+    calls = RecordingWebRTCCalls.new
+    app = OpenAI::Examples::Realtime::WebRTCConversation::App.new(
+      client: RecordingClient.new(Data.define(:calls).new(calls)),
+      origin: WEBRTC_ORIGIN,
+      html: "test"
+    )
+    untrusted_headers = [
+      {"host" => "attacker.example", "origin" => "http://attacker.example"},
+      {"host" => "127.0.0.1:4567", "origin" => "https://attacker.example"},
+      {"host" => "127.0.0.1:4567"}
+    ]
+
+    untrusted_headers.each do |headers|
+      response = HTTPResponse.new
+      app.handle(
+        HTTPRequest.new(
+          request_method: "POST",
+          path: "/session",
+          body: "v=0\r\nt=0 0\r\n",
+          headers: {**headers, "content-type" => "application/sdp"}
+        ),
+        response
+      )
+
+      assert_equal(403, response.status)
+      assert_equal("Forbidden\n", response.body)
+    end
+    assert_empty(calls.creates)
+  end
+
+  def test_webrtc_conversation_protects_hangup_with_the_same_origin_check
+    calls = RecordingWebRTCCalls.new
+    app = OpenAI::Examples::Realtime::WebRTCConversation::App.new(
+      client: RecordingClient.new(Data.define(:calls).new(calls)),
+      origin: WEBRTC_ORIGIN,
+      html: "test"
+    )
+    app.handle(
+      HTTPRequest.new(
+        request_method: "POST",
+        path: "/session",
+        body: "v=0\r\nt=0 0\r\n",
+        headers: {**WEBRTC_HEADERS, "content-type" => "application/sdp"}
+      ),
+      HTTPResponse.new
+    )
+    response = HTTPResponse.new
+
+    app.handle(
+      HTTPRequest.new(
+        request_method: "POST",
+        path: "/hangup",
+        body: "rtc_example",
+        headers: {"host" => "127.0.0.1:4567", "origin" => "https://attacker.example"}
+      ),
+      response
+    )
+
+    assert_equal(403, response.status)
+    assert_empty(calls.hangups)
+  end
+
+  def test_webrtc_conversation_only_binds_to_explicit_loopback_addresses
+    assert_equal(
+      "http://127.0.0.1:4567",
+      OpenAI::Examples::Realtime::WebRTCConversation.demo_origin(
+        host: "127.0.0.1",
+        port: 4567
+      )
+    )
+    assert_equal(
+      "http://[::1]:4567",
+      OpenAI::Examples::Realtime::WebRTCConversation.demo_origin(host: "::1", port: 4567)
+    )
+
+    error = assert_raises(ArgumentError) do
+      OpenAI::Examples::Realtime::WebRTCConversation.demo_origin(host: "0.0.0.0", port: 4567)
+    end
+    assert_includes(error.message, "loopback")
+
+    ipv6_app = OpenAI::Examples::Realtime::WebRTCConversation::App.new(
+      client: RecordingClient.new(Data.define(:calls).new(RecordingWebRTCCalls.new)),
+      origin: "http://[::1]:4567",
+      html: "test"
+    )
+    ipv6_response = HTTPResponse.new
+    ipv6_app.handle(
+      HTTPRequest.new(
+        request_method: "GET",
+        path: "/",
+        body: "",
+        headers: {"host" => "[::1]:4567"}
+      ),
+      ipv6_response
+    )
+    assert_equal(200, ipv6_response.status)
   end
 
   def test_mcp_console_example_requests_text_output

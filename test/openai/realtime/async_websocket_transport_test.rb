@@ -99,6 +99,119 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     assert_nil(Fiber.scheduler)
   end
 
+  def test_tls_configurator_preserves_custom_trust_and_enforces_secure_verification
+    store = OpenSSL::X509::Store.new
+    transport = OpenAI::Realtime::Transports::AsyncWebSocket.new do |context|
+      context.cert_store = store
+      context.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      context.verify_hostname = false
+    end
+    connection = SynchronousConnection.new
+    client = SynchronousClient.new(connection)
+    parsed_endpoint = nil
+    parse = Async::HTTP::Endpoint.method(:parse)
+    parser = lambda do |url, **options|
+      parsed_endpoint = parse.call(url, **options)
+    end
+    url = URI("wss://example.com/v1/realtime?model=gpt-realtime-2.1")
+
+    Async::HTTP::Endpoint.stub(:parse, parser) do
+      Async::WebSocket::Client.stub(:open, client) do
+        transport.open(url: url, headers: {}, timeout: nil) { |_socket| nil }
+      end
+    end
+
+    context = parsed_endpoint.ssl_context
+    assert_same(store, context.cert_store)
+    assert_equal(OpenSSL::SSL::VERIFY_PEER, context.verify_mode)
+    assert_predicate(context, :verify_hostname)
+    assert_equal(Async::HTTP::Protocol::HTTP11.names, context.alpn_protocols)
+  end
+
+  def test_tls_configurator_rejects_a_verification_callback
+    transport = OpenAI::Realtime::Transports::AsyncWebSocket.new do |context|
+      context.verify_callback = ->(_verified, _store_context) { true }
+    end
+    url = URI("wss://example.com/v1/realtime?model=gpt-realtime-2.1")
+
+    error = assert_raises(OpenAI::Errors::RealtimeConnectionError) do
+      transport.open(url: url, headers: {}, timeout: nil) { |_socket| nil }
+    end
+
+    assert_instance_of(ArgumentError, error.cause)
+    assert_includes(error.cause.message, "verify_callback")
+  end
+
+  def test_tls_configurator_rejects_a_plaintext_websocket
+    transport = OpenAI::Realtime::Transports::AsyncWebSocket.new { |_context| nil }
+    url = URI("ws://example.com/v1/realtime?model=gpt-realtime-2.1")
+
+    error = assert_raises(OpenAI::Errors::RealtimeConnectionError) do
+      transport.open(url: url, headers: {}, timeout: nil) { |_socket| nil }
+    end
+
+    assert_instance_of(ArgumentError, error.cause)
+    assert_includes(error.cause.message, "wss://")
+  end
+
+  def test_tls_configurator_presents_a_client_certificate_to_a_private_ca_server
+    root_key = OpenSSL::PKey::RSA.new(2048)
+    root = issue_realtime_certificate(subject: "/CN=realtime-test-root", key: root_key, ca: true)
+    server_key = OpenSSL::PKey::RSA.new(2048)
+    server_certificate = issue_realtime_certificate(
+      subject: "/CN=127.0.0.1",
+      key: server_key,
+      issuer: root,
+      issuer_key: root_key,
+      extended_key_usage: "serverAuth",
+      subject_alt_name: "IP:127.0.0.1"
+    )
+    client_key = OpenSSL::PKey::RSA.new(2048)
+    client_certificate = issue_realtime_certificate(
+      subject: "/CN=realtime-test-client",
+      key: client_key,
+      issuer: root,
+      issuer_key: root_key,
+      extended_key_usage: "clientAuth"
+    )
+    trust_store = OpenSSL::X509::Store.new
+    trust_store.add_cert(root)
+    server_context = OpenSSL::SSL::SSLContext.new
+    server_context.cert = server_certificate
+    server_context.key = server_key
+    server_context.cert_store = trust_store
+    server_context.client_ca = [root]
+    server_context.verify_mode =
+      OpenSSL::SSL::VERIFY_PEER | OpenSSL::SSL::VERIFY_FAIL_IF_NO_PEER_CERT
+    server_context.alpn_select_cb = lambda do |protocols|
+      (protocols & Async::HTTP::Protocol::HTTP11.names).fetch(0)
+    end
+    transport = OpenAI::Realtime::Transports::AsyncWebSocket.new do |context|
+      context.cert_store = trust_store
+      context.cert = client_certificate
+      context.key = client_key
+    end
+    handler = lambda do |connection|
+      write_event(
+        connection,
+        type: "response.output_text.delta",
+        event_id: "event_mtls",
+        response_id: "response_1",
+        item_id: "item_1",
+        output_index: 0,
+        content_index: 0,
+        delta: "mutual TLS connected"
+      )
+    end
+
+    with_secure_websocket_server(handler, ssl_context: server_context) do |client|
+      event = client.realtime.connect(model: "gpt-realtime-2.1", transport: transport, &:receive)
+
+      assert_instance_of(OpenAI::Realtime::ResponseTextDeltaEvent, event)
+      assert_equal("mutual TLS connected", event.delta)
+    end
+  end
+
   def test_default_transport_closes_the_client_after_a_handshake_failure
     connection = SynchronousConnection.new
     client = FailingSynchronousClient.new(connection)
@@ -729,6 +842,73 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     ensure
       server_task&.stop
     end
+  end
+
+  private def with_secure_websocket_server(handler, ssl_context:)
+    port = available_port
+    endpoint = Async::HTTP::Endpoint.parse(
+      "https://127.0.0.1:#{port}",
+      ssl_context: ssl_context,
+      protocol: Async::HTTP::Protocol::HTTP11
+    )
+    fallback = ->(_request) { Protocol::HTTP::Response[404, {}, []] }
+    websocket = Async::WebSocket::Server.new(fallback, &handler)
+    server = Async::HTTP::Server.new(websocket, endpoint)
+
+    Sync do |task|
+      server_task = task.async { server.run.wait }
+      client = OpenAI::Client.new(
+        api_key: "test-key",
+        base_url: "https://127.0.0.1:#{port}/v1",
+        timeout: 5
+      )
+      yield(client)
+    ensure
+      server_task&.stop
+    end
+  end
+
+  private def issue_realtime_certificate(
+    subject:,
+    key:,
+    issuer: nil,
+    issuer_key: nil,
+    ca: false,
+    extended_key_usage: nil,
+    subject_alt_name: nil
+  )
+    certificate = OpenSSL::X509::Certificate.new
+    certificate.version = 2
+    certificate.serial = rand(1..1_000_000)
+    certificate.subject = OpenSSL::X509::Name.parse(subject)
+    certificate.issuer = issuer ? issuer.subject : certificate.subject
+    certificate.public_key = key.public_key
+    certificate.not_before = Time.now - 60
+    certificate.not_after = Time.now + 3600
+
+    extensions = OpenSSL::X509::ExtensionFactory.new
+    extensions.subject_certificate = certificate
+    extensions.issuer_certificate = issuer || certificate
+    certificate.add_extension(
+      extensions.create_extension("basicConstraints", ca ? "CA:TRUE" : "CA:FALSE", true)
+    )
+    certificate.add_extension(
+      extensions.create_extension(
+        "keyUsage",
+        ca ? "keyCertSign,cRLSign" : "digitalSignature,keyEncipherment",
+        true
+      )
+    )
+    certificate.add_extension(extensions.create_extension("subjectKeyIdentifier", "hash"))
+    certificate.add_extension(extensions.create_extension("authorityKeyIdentifier", "keyid:always"))
+    unless extended_key_usage.nil?
+      certificate.add_extension(extensions.create_extension("extendedKeyUsage", extended_key_usage))
+    end
+    unless subject_alt_name.nil?
+      certificate.add_extension(extensions.create_extension("subjectAltName", subject_alt_name))
+    end
+    certificate.sign(issuer_key || key, OpenSSL::Digest.new("SHA256"))
+    certificate
   end
 
   private def read_event(connection)

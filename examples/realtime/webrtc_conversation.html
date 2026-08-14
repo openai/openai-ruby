@@ -185,14 +185,13 @@
           await peerConnection.setRemoteDescription({type: "answer", sdp: await response.text()});
           stopButton.disabled = false;
         } catch (error) {
-          await stopConversation();
-          setStatus(error.message.trim() || "Unable to start the conversation");
+          const stopped = await stopConversation();
+          if (stopped) setStatus(error.message.trim() || "Unable to start the conversation");
         }
       }
 
       async function stopConversation({hangup = true, status = "Stopped"} = {}) {
         const activeCallID = callID;
-        callID = undefined;
         dataChannel?.close();
         peerConnection?.close();
         microphoneStream?.getTracks().forEach((track) => track.stop());
@@ -201,14 +200,32 @@
         peerConnection = undefined;
         microphoneStream = undefined;
         transcriptLine = undefined;
-        startButton.disabled = false;
+        startButton.disabled = Boolean(hangup && activeCallID);
         stopButton.disabled = true;
+        stopButton.textContent = "Stop";
         mediaElement.textContent = "";
         setStatus(status);
 
         if (hangup && activeCallID) {
-          await fetch("/hangup", {method: "POST", body: activeCallID}).catch(() => undefined);
+          try {
+            const response = await fetch("/hangup", {method: "POST", body: activeCallID});
+            if (!response.ok) throw new Error(await response.text());
+
+            if (callID === activeCallID) callID = undefined;
+            startButton.disabled = false;
+          } catch (error) {
+            callID = activeCallID;
+            startButton.disabled = true;
+            stopButton.disabled = false;
+            stopButton.textContent = "Retry hangup";
+            setStatus(`Local media stopped; hangup failed. ${error.message.trim() || "Try again."}`);
+            return false;
+          }
+        } else {
+          callID = undefined;
+          startButton.disabled = false;
         }
+        return true;
       }
 
       startButton.addEventListener("click", startConversation);

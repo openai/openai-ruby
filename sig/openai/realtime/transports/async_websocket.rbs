@@ -3,6 +3,8 @@ module OpenAI
     module Realtime
       module Transports
         class AsyncWebSocket
+          def initialize: () ?{ (OpenSSL::SSL::SSLContext context) -> void } -> void
+
           class Socket
             def initialize: (untyped connection, url: URI::Generic) -> void
             def read: -> untyped
