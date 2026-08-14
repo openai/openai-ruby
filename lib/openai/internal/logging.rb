@@ -341,33 +341,36 @@ module OpenAI
           format_text_body(body, content_type: content_type, total_bytes: total_bytes)
         end
 
-        private def sanitized_uri(url)
+        private def sanitized_uri(url, depth: 0)
           uri = url.dup
           uri.user = nil
           uri.password = nil
           return uri if uri.query.nil?
 
-          uri.query = sanitized_query(uri.query)
+          uri.query = sanitized_query(uri.query, depth: depth)
           uri
         end
 
-        private def sanitized_query(query)
+        private def sanitized_query(query, depth: 0)
           pairs = URI.decode_www_form(query).map do |name, value|
-            [name, SENSITIVE_QUERY_KEY.match?(name) ? "[REDACTED]" : scrub_embedded_url(value)]
+            sensitive = SENSITIVE_QUERY_KEY.match?(name)
+            [name, sensitive ? "[REDACTED]" : scrub_embedded_url(value, depth: depth + 1)]
           end
           URI.encode_www_form(pairs)
         rescue ArgumentError
           nil
         end
 
-        private def sanitized_url_value(value)
-          safe_url(URI(value.to_s))
-        rescue URI::InvalidURIError
+        private def sanitized_url_value(value, depth: 0)
+          return "[URL OMITTED]" if depth >= 8
+
+          sanitized_uri(URI(value.to_s), depth: depth).to_s
+        rescue ArgumentError, URI::Error
           "[URL OMITTED]"
         end
 
-        private def scrub_embedded_url(value)
-          value.match?(%r{\Ahttps?://}i) ? sanitized_url_value(value) : value
+        private def scrub_embedded_url(value, depth: 0)
+          value.match?(%r{\A[[:space:]]*https?://}i) ? sanitized_url_value(value, depth: depth) : value
         end
 
         private def textual_content_type?(content_type)

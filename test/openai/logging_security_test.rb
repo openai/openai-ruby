@@ -276,6 +276,75 @@ class LoggingSecurityTest < Minitest::Test
     refute_includes(formatted, "malformed-proxy-secret")
   end
 
+  def test_debug_logs_bound_recursively_nested_url_values
+    deep_url = "#{'https://a/x?u=' * 500}https://storage.example.test/file?sig=deep-signature-secret"
+    body = JSON.generate(image_url: deep_url)
+    formatted = OpenAI::Internal::Logging.format_body(
+      body,
+      headers: {"content-type" => "application/json"}
+    )
+
+    assert_operator(body.bytesize, :<, OpenAI::Internal::Logging::MAX_BODY_BYTES)
+    assert_operator(formatted.bytesize, :<=, OpenAI::Internal::Logging::MAX_BODY_BYTES)
+    assert_includes(formatted, "https://a/x?u=")
+    refute_includes(formatted, "deep-signature-secret")
+    assert_includes(body, "deep-signature-secret")
+  end
+
+  def test_debug_logs_omit_signed_urls_with_leading_whitespace
+    values = {
+      image_url: " https://storage.example.test/image.png?sig=leading-space-secret",
+      file_url: "\thttp://storage.example.test/file.pdf?X-Amz-Signature=leading-tab-secret",
+      url: "\nhttps://storage.example.test/output.png?X-Goog-Signature=leading-newline-secret",
+      unicode_url: "\u00a0https://storage.example.test/unicode.png?sig=leading-unicode-secret",
+      description: " ordinary text",
+      preview_url: " data:image/png;base64,YWJj"
+    }
+    body = JSON.generate(values)
+    headers = {"content-type" => "application/json"}
+    formatted = [
+      OpenAI::Internal::Logging.format_body(body, headers: headers),
+      OpenAI::Internal::Logging.format_observed_body(
+        body,
+        headers: headers,
+        complete: true,
+        total_bytes: body.bytesize
+      )
+    ]
+
+    formatted.each do |value|
+      assert_equal(
+        {
+          "image_url" => "[URL OMITTED]",
+          "file_url" => "[URL OMITTED]",
+          "url" => "[URL OMITTED]",
+          "unicode_url" => "[URL OMITTED]",
+          "description" => " ordinary text",
+          "preview_url" => " data:image/png;base64,YWJj"
+        },
+        JSON.parse(value)
+      )
+      refute_includes(value, "leading-space-secret")
+      refute_includes(value, "leading-tab-secret")
+      refute_includes(value, "leading-newline-secret")
+      refute_includes(value, "leading-unicode-secret")
+    end
+  end
+
+  def test_debug_logs_omit_nested_signed_urls_with_leading_whitespace
+    nested_url = " https://storage.example.test/file?sig=nested-leading-space-secret"
+    proxy_url = "https://proxy.example.test/load?#{URI.encode_www_form(url: nested_url, mode: 'resize')}"
+    formatted = OpenAI::Internal::Logging.format_body(
+      JSON.generate(image_url: proxy_url),
+      headers: {"content-type" => "application/json"}
+    )
+
+    assert_includes(formatted, "proxy.example.test/load")
+    assert_includes(formatted, "mode=resize")
+    assert_includes(formatted, "url=%5BURL+OMITTED%5D")
+    refute_includes(formatted, "nested-leading-space-secret")
+  end
+
   def test_debug_logs_preserve_harmless_urls_and_omit_malformed_signed_urls
     harmless = "https://storage.example.test/public/image.png?version=1&format=png"
     without_query = "https://storage.example.test/public/image.png"
