@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      # Emitted when there is a partial audio response.
+      # Event emitted while a response is streamed.
       module ResponseStreamEvent
         extend OpenAI::Internal::Type::Union
 
