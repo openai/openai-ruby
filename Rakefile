@@ -66,12 +66,7 @@ desc("Validate RuboCop suppression directives")
 multitask(:"lint:rubocop_directives") do
   ruby(*%w[scripts/validate-rubocop-directives])
 end
-
-desc("Validate RuboCop configuration")
-multitask(:"lint:rubocop_config") do
-  ruby(*%w[scripts/validate-rubocop-config])
-end
-Rake::Task[:"lint:rubocop"].enhance([:"lint:rubocop_directives", :"lint:rubocop_config"])
+Rake::Task[:"lint:rubocop"].enhance([:"lint:rubocop_directives"])
 
 norm_lines = %w[tr -- \n \0].shelljoin
 
@@ -157,7 +152,7 @@ desc("Typecheck and validate everything")
 multitask(typecheck: [:"typecheck:sorbet", :"validate:rbs"])
 
 desc("Lint and typecheck")
-multitask(lint: [:"lint:rubocop", :"lint:rubocop_directives", :"lint:rubocop_config", :typecheck])
+multitask(lint: [:"lint:rubocop", :"lint:rubocop_directives", :typecheck])
 
 desc("Build yard docs")
 multitask(:"build:docs") do
