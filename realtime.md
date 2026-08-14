@@ -339,9 +339,10 @@ phase while approval and tool execution are still pending. Keep reading, answer
 the `RealtimeMcpApprovalRequest`, wait for `ResponseMcpCallCompleted`, and create
 a follow-up response (usually with `tool_choice: :none`) to turn the tool output
 into a final assistant answer. Treat only that follow-up response's completed
-`ResponseDoneEvent` as success; clean EOF during discovery, approval, or tool
-execution is still an incomplete workflow, and a response that completes before
-the required MCP call is a failure. The approval helper generates item IDs
+`ResponseDoneEvent` with non-empty text as success; clean EOF during discovery,
+approval, or tool execution is still an incomplete workflow, a response that
+completes before the required MCP call is a failure, and a final response with
+no text is not a successful smoke test. The approval helper generates item IDs
 within the service's 32-character limit.
 
 ## Cross-SDK design position

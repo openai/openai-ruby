@@ -198,8 +198,9 @@ request, waits for the tool to finish, and asks the model for the final answer.
 It disables parallel tool calls because the example intentionally demonstrates
 one approval lifecycle. A successful run prints all five checkpoints and
 reaches the final completed `response.done`; a response without the required
-MCP call, or EOF before the final completion, fails the smoke test. Set
-`OPENAI_REALTIME_DEBUG=1` to print every event type.
+MCP call, a final response without non-empty text, or EOF before the final
+completion fails the smoke test. Set `OPENAI_REALTIME_DEBUG=1` to print every
+event type.
 
 ## WebRTC call creation
 

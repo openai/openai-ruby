@@ -49,6 +49,7 @@ module OpenAI
             completed_item_ids: {},
             tool_lists: {},
             selected_tool: false,
+            final_text_received: false,
             mcp_phase: :idle
           }
 
@@ -89,6 +90,9 @@ module OpenAI
           when OpenAI::Realtime::RealtimeErrorEvent
             raise event.error.message
           when OpenAI::Realtime::ResponseTextDeltaEvent
+            if state[:mcp_phase] == :final_response_pending && !event.delta.empty?
+              state[:final_text_received] = true
+            end
             output.print(event.delta)
             output.flush
           when OpenAI::Realtime::ResponseDoneEvent
@@ -124,6 +128,8 @@ module OpenAI
           when :tool_completed
             request_final_response(connection, state: state)
           when :final_response_pending
+            raise "Final MCP response completed without text output" unless state[:final_text_received]
+
             output.puts("\n[mcp] response.done status=completed")
             :done
           when :idle

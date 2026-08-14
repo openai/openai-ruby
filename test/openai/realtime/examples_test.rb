@@ -549,6 +549,14 @@ class OpenAI::Test::RealtimeExamplesTest < OpenAI::Test::RealtimeExamplesTestCas
           output_index: 0
         ),
         completed_response_event,
+        OpenAI::Realtime::ResponseTextDeltaEvent.new(
+          content_index: 0,
+          delta: "Use wss://api.openai.com/v1/realtime.",
+          event_id: "event_5",
+          item_id: "item_2",
+          output_index: 0,
+          response_id: "response_2"
+        ),
         completed_response_event
       ]
     )
@@ -662,6 +670,37 @@ class OpenAI::Test::RealtimeExamplesTest < OpenAI::Test::RealtimeExamplesTestCas
     refute_nil(answer_at)
     refute_nil(done_at)
     assert_operator(answer_at, :<, done_at)
+  end
+
+  def test_mcp_console_example_rejects_a_final_response_without_text
+    connection = RecordingConnection.new(
+      [
+        OpenAI::Realtime::ResponseMcpCallArgumentsDone.new(
+          arguments: JSON.generate(query: "Realtime WebSocket URL"),
+          event_id: "event_1",
+          item_id: "mcp_call_1",
+          output_index: 0,
+          response_id: "response_1"
+        ),
+        OpenAI::Realtime::ResponseMcpCallCompleted.new(
+          event_id: "event_2",
+          item_id: "mcp_call_1",
+          output_index: 0
+        ),
+        completed_response_event,
+        completed_response_event
+      ]
+    )
+
+    error = assert_raises(RuntimeError) do
+      OpenAI::Examples::Realtime::MCPApproval.run_session(
+        connection,
+        prompt: "Search the docs",
+        output: StringIO.new
+      )
+    end
+
+    assert_equal("Final MCP response completed without text output", error.message)
   end
 
   def test_sideband_smoke_mode_stops_after_the_selected_event
