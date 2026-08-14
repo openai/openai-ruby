@@ -47,6 +47,26 @@ class ValidateRuboCopConfigTest < Minitest::Test
     assert_includes(errors.first, "AllCops must not set `DisabledByDefault: true`")
   end
 
+  def test_rejects_unapproved_all_cops_exclusions
+    errors = violations(<<~YAML)
+      AllCops:
+        Exclude:
+          - lib/**/*
+    YAML
+
+    assert_includes(errors.first, "AllCops has unapproved `Exclude` paths: lib/**/*")
+  end
+
+  def test_rejects_narrowed_all_cops_includes
+    errors = violations(<<~YAML)
+      AllCops:
+        Include:
+          - lib/**/*
+    YAML
+
+    assert_includes(errors.first, "AllCops `Include` paths must merge with RuboCop defaults")
+  end
+
   def test_rejects_narrowed_lint_includes
     errors = violations(<<~YAML)
       Lint/EmptyBlock:
@@ -152,6 +172,17 @@ class ValidateRuboCopConfigTest < Minitest::Test
       )
 
       assert_includes(RuboCopConfigGuard.validate(directory).first, "Lint/EmptyBlock")
+    end
+  end
+
+  def test_requires_new_cops_to_be_enabled_in_entrypoint_configs
+    Dir.mktmpdir do |directory|
+      File.write(File.join(directory, ".rubocop.yml"), "AllCops:\n  NewCops: disable\n")
+
+      assert_includes(
+        RuboCopConfigGuard.validate(directory).first,
+        "AllCops must set `NewCops: enable`"
+      )
     end
   end
 

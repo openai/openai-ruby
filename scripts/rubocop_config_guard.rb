@@ -6,6 +6,12 @@ require "rbconfig"
 require "yaml"
 
 module RuboCopConfigGuard
+  ALLOWED_ALL_COPS_EXCLUDES = [
+    "bin/*",
+    "sorbet/rbi/annotations/**/*",
+    "sorbet/rbi/gems/**/*",
+    "sorbet/tapioca/**/*"
+  ].freeze
   CONFIG_LOADER_MODE = "--load-config"
   DEFAULT_ROOT = File.expand_path("..", __dir__)
   IGNORED_CONFIG_PREFIXES = ["vendor/bundle/"].freeze
@@ -21,11 +27,26 @@ module RuboCopConfigGuard
     ["#{path}: invalid RuboCop YAML: #{e.message.lines.first.strip}"]
   end
 
-  def violations_for_config(path, config)
+  def violations_for_config(path, config, entrypoint: false, root: DEFAULT_ROOT)
     violations = []
     all_cops = config["AllCops"]
-    if all_cops.is_a?(Hash) && all_cops["DisabledByDefault"] == true
-      violations << "#{path}: AllCops must not set `DisabledByDefault: true`"
+    if all_cops.is_a?(Hash)
+      if all_cops["DisabledByDefault"] == true
+        violations << "#{path}: AllCops must not set `DisabledByDefault: true`"
+      end
+
+      allowed_excludes = ALLOWED_ALL_COPS_EXCLUDES + ALLOWED_ALL_COPS_EXCLUDES.map do |exclude|
+        File.join(root, exclude)
+      end
+      unapproved_excludes = Array(all_cops["Exclude"]) - allowed_excludes
+      unless unapproved_excludes.empty?
+        violations << "#{path}: AllCops has unapproved `Exclude` paths: #{unapproved_excludes.join(', ')}"
+      end
+
+      merged_parameters = Array(config.dig("inherit_mode", "merge"))
+      if all_cops.key?("Include") && !merged_parameters.include?("Include")
+        violations << "#{path}: AllCops `Include` paths must merge with RuboCop defaults"
+      end
     end
 
     config.each do |name, settings|
@@ -44,6 +65,10 @@ module RuboCopConfigGuard
       next if exclude.nil? || (exclude.respond_to?(:empty?) && exclude.empty?)
 
       violations << "#{path}: #{name} must not define `Exclude` paths"
+    end
+
+    if entrypoint && (!all_cops.is_a?(Hash) || all_cops["NewCops"] != "enable")
+      violations << "#{path}: AllCops must set `NewCops: enable`"
     end
     violations
   end
@@ -67,7 +92,12 @@ module RuboCopConfigGuard
     config_paths(root)
       .flat_map do |path|
         config = effective_config_for(File.join(root, path))
-        violations_for_config(path, config)
+        violations_for_config(
+          path,
+          config,
+          entrypoint: File.basename(path) == ".rubocop.yml",
+          root: root
+        )
       end
       .uniq
   end
