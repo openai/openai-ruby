@@ -62,6 +62,75 @@ class LoggingSecurityTest < Minitest::Test
     end
   end
 
+  def test_debug_logs_never_expose_newly_issued_credential_values
+    issuers = {
+      "organization/admin_api_keys" => "sk-admin-demo-release-audit",
+      "organization/projects/proj_123/service_accounts/acct_123/api_keys" => "service-account-credential",
+      "realtime/client_secrets" => "ek_demo-release-audit",
+      "realtime/translations/client_secrets" => "translation-client-credential",
+      "organization/admin%5fapi%5Fkeys/" => "percent-encoded-admin-credential",
+      "realtime/%63lient%5Fsecrets/" => "percent-encoded-realtime-credential"
+    }
+
+    issuers.each do |path, value|
+      response_body = {"value" => value, "details" => {"value" => "ordinary-nested-value"}}
+      output, response = logged_response(path: path, response_body: response_body)
+
+      assert_equal(value, response[:value])
+      assert_equal("ordinary-nested-value", response[:details][:value])
+      assert_includes(
+        output,
+        "[JSON BODY] bytes=#{JSON.generate(response_body).bytesize} type=object fields=2"
+      )
+      refute_includes(output, value)
+      refute_includes(output, "ordinary-nested-value")
+      refute_includes(output, "ordinary-request-value")
+    end
+  end
+
+  def test_debug_logs_never_expose_credentials_after_body_preserving_redirects
+    redirects = {
+      307 => "/v1/realtime/client%5Fsecrets",
+      308 => "/v1/organization/projects/proj_123/service_accounts/acct_123/api%5Fkeys"
+    }
+
+    redirects.each do |status, location|
+      value = "redirected-credential-#{status}"
+      output, response = logged_response(
+        path: "legacy/issue",
+        response_body: {"value" => value},
+        redirect: {status: status, location: location}
+      )
+
+      assert_equal(value, response[:value])
+      assert_includes(output, "redirect=1 method=POST url=https://example.com#{location}")
+      assert_includes(output, "type=object fields=1")
+      refute_includes(output, value)
+    end
+  end
+
+  def test_debug_logs_never_expose_nested_service_account_api_key_values
+    value = "service-account-creation-credential"
+    output, response = logged_response(
+      path: "organization/projects/proj_123/service_accounts",
+      response_body: {"id" => "acct_123", "api_key" => {"value" => value}}
+    )
+
+    assert_equal(value, response[:api_key][:value])
+    assert_includes(output, "type=object fields=2")
+    refute_includes(output, value)
+    refute_includes(output, "api_key")
+  end
+
+  def test_debug_logs_summarize_ordinary_response_values_without_changing_payloads
+    value = "ordinary-visible-value"
+    output, response = logged_response(path: "responses", response_body: {"value" => value})
+
+    assert_equal(value, response[:value])
+    assert_includes(output, "type=object fields=1")
+    refute_includes(output, value)
+  end
+
   def test_debug_logs_summarize_form_urlencoded_request_bodies_without_fields_or_values
     body =
       "client_secret=client-form-secret&access_token=access-form-secret&" \
@@ -280,6 +349,37 @@ class LoggingSecurityTest < Minitest::Test
     refute_includes(output.string, "storage.example.test")
     refute_includes(output.string, "image_url")
     refute_includes(output.string, "download_url")
+  end
+
+  private def logged_response(path:, response_body:, redirect: nil)
+    output = StringIO.new
+    response = OpenAI::HTTPClient::Response.new(
+      status: 200,
+      headers: {"content-type" => "application/json", "x-request-id" => "req_credential"},
+      body: JSON.generate(response_body)
+    )
+    transport = Minitest::Mock.new(Object.new)
+    if redirect
+      redirect_response = OpenAI::HTTPClient::Response.new(
+        status: redirect.fetch(:status),
+        headers: {"location" => redirect.fetch(:location)},
+        body: ""
+      )
+      transport.expect(:execute, redirect_response) { |request| request.is_a?(OpenAI::HTTPClient::Request) }
+    end
+    transport.expect(:execute, response) { |request| request.is_a?(OpenAI::HTTPClient::Request) }
+    client = OpenAI::Client.new(
+      api_key: "test-key",
+      base_url: "https://example.com/v1",
+      http_client: transport,
+      logger: Logger.new(output),
+      log_level: :debug
+    )
+
+    parsed = client.request(method: :post, path: path, body: {"value" => "ordinary-request-value"})
+    assert_mock(transport)
+
+    [output.string, parsed]
   end
 
   private def logged_request(log_level:, query: nil, headers: nil, body: nil)
