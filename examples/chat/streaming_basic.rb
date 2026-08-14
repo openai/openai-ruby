@@ -13,11 +13,15 @@ stream = client.chat.completions.stream(
   ]
 )
 
+content_received = false
 stream.each do |event|
   case event
   when OpenAI::Streaming::ChatContentDeltaEvent
+    content_received ||= !event.delta.strip.empty?
     print(event.delta)
   when OpenAI::Streaming::ChatContentDoneEvent
     puts
   end
 end
+
+puts("Streamed content received.") if content_received

@@ -13,7 +13,11 @@ stream = client.chat.completions.stream(
   ]
 )
 
+content_received = false
 stream.text.each do |text|
+  content_received ||= !text.strip.empty?
   print(text)
 end
 puts
+
+puts("Streamed content received.") if content_received

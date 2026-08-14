@@ -204,7 +204,11 @@ module OpenAIExamplesE2E
       example_path = @root.join(example.path).to_s
 
       Dir.mktmpdir("openai-ruby-example-e2e") do |working_directory|
-        Open3.popen3(RbConfig.ruby, example_path, chdir: working_directory) do |stdin, stdout, stderr, wait_thread|
+        Open3.popen3(
+          RbConfig.ruby,
+          example_path,
+          chdir: working_directory
+        ) do |stdin, stdout, stderr, wait_thread|
           stdin.close
           stdout_reader = Thread.new { stdout.read }
           stderr_reader = Thread.new { stderr.read }
@@ -283,7 +287,8 @@ module OpenAIExamplesE2E
       results = @inventory.covered_examples.map do |example|
         @output.puts("==> #{example.path}")
         result = @executor.call(example)
-        @output.puts(result.success ? "    passed (#{result.duration_seconds}s)" : "    FAILED: #{result.error}")
+        message = result.success ? "    passed (#{result.duration_seconds}s)" : "    FAILED: #{result.error}"
+        @output.puts(message)
         result
       end
 
@@ -312,7 +317,11 @@ module OpenAIExamplesE2E
 
       report =
         if options[:inventory_only]
-          Report.new(inventory: inventory.summary, results: [], excluded_examples: inventory.excluded_examples)
+          Report.new(
+            inventory: inventory.summary,
+            results: [],
+            excluded_examples: inventory.excluded_examples
+          )
         else
           Runner.new(inventory: inventory, timeout: options[:timeout], output: @output).run
         end
@@ -340,7 +349,11 @@ module OpenAIExamplesE2E
         parser.on("--report-dir PATH", String, "Directory for JSON and Markdown reports") do |path|
           options[:report_dir] = Pathname(path)
         end
-        parser.on("--timeout SECONDS", Integer, "Per-example timeout (default: #{DEFAULT_TIMEOUT})") do |seconds|
+        parser.on(
+          "--timeout SECONDS",
+          Integer,
+          "Per-example timeout (default: #{DEFAULT_TIMEOUT})"
+        ) do |seconds|
           options[:timeout] = seconds
         end
       end.parse!(arguments)

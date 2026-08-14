@@ -12,7 +12,7 @@ examples:
     reason: Requires AWS credentials, region configuration, and a Bedrock model.
   examples/chat/streaming_basic.rb:
     status: covered
-    minimum_output_bytes: 1
+    expected_output: Streamed content received.
   examples/chat/streaming_follow_up.rb:
     status: covered
     expected_output: Done. The second stream is a new completion that used the prior turns as context.
@@ -27,7 +27,7 @@ examples:
     expected_output: parsed outputs from final response
   examples/chat/streaming_text.rb:
     status: covered
-    minimum_output_bytes: 1
+    expected_output: Streamed content received.
   examples/chat/streaming_tools.rb:
     status: covered
     expected_output: Tool call finalized

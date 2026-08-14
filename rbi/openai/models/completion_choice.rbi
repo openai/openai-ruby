@@ -12,7 +12,7 @@ module OpenAI
       # hit a natural stop point or a provided stop sequence, `length` if the maximum
       # number of tokens specified in the request was reached, or `content_filter` if
       # content was omitted due to a flag from our content filters.
-      sig { returns(T.nilable(OpenAI::CompletionChoice::FinishReason::TaggedSymbol)) }
+      sig { returns(OpenAI::CompletionChoice::FinishReason::TaggedSymbol) }
       attr_accessor :finish_reason
 
       sig { returns(Integer) }
@@ -33,7 +33,7 @@ module OpenAI
 
       sig do
         params(
-          finish_reason: T.nilable(OpenAI::CompletionChoice::FinishReason::OrSymbol),
+          finish_reason: OpenAI::CompletionChoice::FinishReason::OrSymbol,
           index: Integer,
           logprobs: T.nilable(OpenAI::CompletionChoice::Logprobs::OrHash),
           text: String
@@ -54,7 +54,7 @@ module OpenAI
       sig do
         override.returns(
           {
-            finish_reason: T.nilable(OpenAI::CompletionChoice::FinishReason::TaggedSymbol),
+            finish_reason: OpenAI::CompletionChoice::FinishReason::TaggedSymbol,
             index: Integer,
             logprobs: T.nilable(OpenAI::CompletionChoice::Logprobs),
             text: String
