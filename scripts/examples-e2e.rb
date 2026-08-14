@@ -124,9 +124,12 @@ module OpenAIExamplesE2E
 
         if example.status == "covered"
           has_expected_output = example.expected_output.is_a?(String) && !example.expected_output.empty?
-          has_minimum_output = example.minimum_output_bytes.to_i.positive?
+          has_minimum_output =
+            example.minimum_output_bytes.is_a?(Integer) && example.minimum_output_bytes.positive?
           if !example.expected_output.nil? && !has_expected_output
             errors << "#{example.path}: expected_output must be a non-empty string"
+          elsif !example.minimum_output_bytes.nil? && !has_minimum_output
+            errors << "#{example.path}: minimum_output_bytes must be a positive integer"
           elsif !has_expected_output && !has_minimum_output
             errors << "#{example.path}: covered examples need expected_output or minimum_output_bytes"
           end
