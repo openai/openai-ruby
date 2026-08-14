@@ -15,11 +15,11 @@ module OpenAI
         ?timeout: (Integer | Float)?
       ) -> [(Float)?, (Float)?]
 
-      def request_options: (
+      def request: (
         OpenAI::request_opts? request_options,
         ?extra_headers: ::Hash[String, String?],
         ?resource: top
-      ) -> ::Hash[Symbol, top]
+      ) { (::Hash[Symbol, top] options) -> top } -> top
 
       def check_deadline!: (?top resource) -> Float?
 

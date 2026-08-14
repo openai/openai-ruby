@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "timeout"
+
 module OpenAI
   module Internal
     # Shared polling behavior for long-running API resources.
@@ -38,16 +40,37 @@ module OpenAI
         ]
       end
 
-      # Add polling headers without discarding caller-supplied request options.
+      # Run one retrieval within the remaining polling deadline. The block-level
+      # timeout covers work outside the HTTP transport, including authentication
+      # and request replays, while the postcondition catches a result that arrives
+      # as the deadline expires.
       #
       # @api private
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       # @param extra_headers [Hash{String=>String, nil}] endpoint headers to preserve
       # @param resource [Object, nil] the last resource returned by the API
-      # @return [Hash{Symbol=>Object}]
-      def request_options(request_options, extra_headers: {}, resource: nil)
+      # @yieldparam options [Hash{Symbol=>Object}]
+      # @yieldreturn [Object]
+      # @return [Object]
+      def request(request_options, extra_headers: {}, resource: nil, &block)
         remaining = check_deadline!(resource)
+        options = bounded_request_options(request_options, extra_headers: extra_headers, remaining: remaining)
+
+        result =
+          if remaining.nil?
+            block.call(options)
+          else
+            Timeout.timeout(remaining) { block.call(options) }
+          end
+        check_deadline!(result)
+        result
+      rescue Timeout::Error
+        check_deadline!(resource)
+        raise
+      end
+
+      private def bounded_request_options(request_options, extra_headers:, remaining:)
         options = request_options.to_h
         headers = OpenAI::Internal::Util.normalized_headers(
           extra_headers,

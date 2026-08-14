@@ -42,9 +42,9 @@ module OpenAI
         #
         # The returned file may have a `failed` or `cancelled` status; callers should
         # inspect the status and `last_error`. Polling intervals and the overall timeout
-        # are in seconds. Finite timeouts disable transport retries for polling
-        # retrievals so the deadline remains strict. Set `timeout` to `nil` to wait
-        # indefinitely and retain configured transport retries.
+        # are in seconds. Finite timeouts include authentication and request replay
+        # time and disable transport retries so the deadline remains strict. Set
+        # `timeout` to `nil` to wait indefinitely and retain configured transport retries.
         #
         # @overload create_and_poll(vector_store_id, file_id:, attributes: nil, chunking_strategy: nil, poll_interval: nil, timeout: 1800.0, request_options: {})
         #
@@ -259,12 +259,13 @@ module OpenAI
 
           begin
             loop do
-              options = poller.request_options(
+              file = poller.request(
                 request_options,
                 extra_headers: {"OpenAI-Beta" => "assistants=v2"},
                 resource: file
-              )
-              file = retrieve(file_id, vector_store_id: vector_store_id, request_options: options)
+              ) do |options|
+                retrieve(file_id, vector_store_id: vector_store_id, request_options: options)
+              end
               case file.status
               when OpenAI::VectorStores::VectorStoreFile::Status::IN_PROGRESS
                 poller.wait(file)

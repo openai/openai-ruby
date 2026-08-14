@@ -30,10 +30,11 @@ module OpenAI
         params(
           request_options: T.nilable(OpenAI::RequestOptions::OrHash),
           extra_headers: T::Hash[String, T.nilable(String)],
-          resource: T.anything
-        ).returns(T::Hash[Symbol, T.anything])
+          resource: T.anything,
+          blk: T.proc.params(options: T::Hash[Symbol, T.anything]).returns(T.anything)
+        ).returns(T.anything)
       end
-      def request_options(request_options, extra_headers: {}, resource: nil)
+      def request(request_options, extra_headers: {}, resource: nil, &blk)
       end
 
       sig { params(resource: T.anything).returns(T.nilable(Float)) }

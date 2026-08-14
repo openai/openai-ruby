@@ -30,6 +30,26 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     end
   end
 
+  class ScriptedWorkloadIdentityAuth
+    attr_reader :invalidations, :token_requests
+
+    def initialize(slow_token_requests:)
+      @slow_token_requests = slow_token_requests
+      @invalidations = 0
+      @token_requests = 0
+    end
+
+    def get_token
+      @token_requests += 1
+      sleep(5) if @slow_token_requests.include?(@token_requests)
+      "token-#{@token_requests}"
+    end
+
+    def invalidate_token
+      @invalidations += 1
+    end
+  end
+
   def test_files_wait_for_processing_uses_server_interval_and_preserves_options
     responses = [file_object(status: "uploaded"), file_object(status: "processed")]
     transport = scripted_transport do
@@ -133,6 +153,53 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     end
 
     assert_equal(1, transport.requests.length)
+  end
+
+  def test_polling_deadline_bounds_workload_identity_token_refresh
+    transport = scripted_transport { flunk("request should not be sent") }
+    auth = ScriptedWorkloadIdentityAuth.new(slow_token_requests: [1])
+    client = build_workload_identity_client(transport, auth)
+    started_at = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+
+    error = assert_raises(OpenAI::Errors::PollingTimeoutError) do
+      client.files.wait_for_processing("file_123", timeout: 0.02)
+    end
+
+    elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC) - started_at
+    assert_operator(elapsed, :<, 1)
+    assert_nil(error.resource)
+    assert_equal(1, auth.token_requests)
+    assert_empty(transport.requests)
+  end
+
+  def test_polling_deadline_bounds_workload_identity_401_replay
+    transport = scripted_transport do
+      [401, {}, {error: {message: "expired token", type: "authentication_error"}}]
+    end
+    auth = ScriptedWorkloadIdentityAuth.new(slow_token_requests: [2])
+    client = build_workload_identity_client(transport, auth)
+    started_at = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+
+    error = assert_raises(OpenAI::Errors::PollingTimeoutError) do
+      client.files.wait_for_processing("file_123", timeout: 0.02)
+    end
+
+    elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC) - started_at
+    assert_operator(elapsed, :<, 1)
+    assert_nil(error.resource)
+    assert_equal(2, auth.token_requests)
+    assert_equal(1, auth.invalidations)
+    assert_equal(1, transport.requests.length)
+  end
+
+  def test_poller_preserves_an_inner_timeout_before_its_deadline
+    poller = OpenAI::Internal::Poller.new(operation: "test resource", timeout: 10)
+
+    error = assert_raises(Timeout::Error) do
+      poller.request({}) { raise Timeout::Error, "inner timeout" }
+    end
+
+    assert_equal("inner timeout", error.message)
   end
 
   def test_files_wait_for_processing_raises_before_request_when_deadline_elapsed
@@ -704,6 +771,25 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
       http_client: transport,
       max_retries: max_retries
     )
+  end
+
+  private def build_workload_identity_client(transport, auth)
+    config = OpenAI::Auth::WorkloadIdentity.new(
+      identity_provider_id: "idp-123",
+      service_account_id: "sa-456",
+      provider: Object.new
+    )
+
+    OpenAI::Auth::WorkloadIdentityAuth.stub(:new, auth) do
+      OpenAI::Client.new(
+        api_key: nil,
+        workload_identity: config,
+        organization: "org-123",
+        project: "proj-456",
+        base_url: "http://example.test/v1",
+        http_client: transport
+      )
+    end
   end
 
   private def capture_sleep
