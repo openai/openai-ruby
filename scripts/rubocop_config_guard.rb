@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "yaml"
-require "rubocop"
+require "pathname"
 
 module RuboCopConfigGuard
   IGNORED_CONFIG_PREFIXES = ["vendor/bundle/"].freeze
@@ -50,9 +50,31 @@ module RuboCopConfigGuard
   end
 
   def validate(root = ".")
-    config_paths(root).flat_map do |path|
-      config = RuboCop::ConfigLoader.load_file(File.join(root, path))
-      violations_for_config(path, config)
+    root = File.expand_path(root)
+    visited = Set.new
+    config_paths(root).flat_map { validate_path(root, _1, visited) }.uniq
+  end
+
+  def validate_path(root, path, visited)
+    absolute_path = File.expand_path(path, root)
+    return [] if visited.include?(absolute_path)
+
+    visited << absolute_path
+    source = File.read(absolute_path)
+    config = YAML.safe_load(source, aliases: true) || {}
+    relative_path = Pathname(absolute_path).relative_path_from(Pathname(root)).to_s
+    return ["#{relative_path}: RuboCop config must be a mapping"] unless config.is_a?(Hash)
+
+    inherited = Array(config["inherit_from"]).flat_map do |entry|
+      next [] unless entry.is_a?(String)
+      next [] if entry.start_with?("http://", "https://")
+
+      Dir.glob(File.expand_path(entry, File.dirname(absolute_path))).select { File.file?(_1) }
     end
+
+    violations_for_config(relative_path, config) +
+      inherited.flat_map { validate_path(root, _1, visited) }
+  rescue Psych::Exception => e
+    ["#{path}: invalid RuboCop YAML: #{e.message.lines.first.strip}"]
   end
 end
