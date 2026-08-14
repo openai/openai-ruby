@@ -662,7 +662,8 @@ module OpenAI
               tool_models.store(name, params)
               tool[:function][:parameters] = params.to_json_schema
               tool
-            in {type: _, function: Hash => func} if func[:parameters].is_a?(Class) && func[:parameters] < OpenAI::Internal::Type::BaseModel
+            in {type: _, function: Hash => func} if func[:parameters].is_a?(Class) &&
+              func[:parameters] < OpenAI::Internal::Type::BaseModel
               params = func[:parameters]
               name = func[:name] || params.name.split("::").last
               tool_models.store(name, params)
