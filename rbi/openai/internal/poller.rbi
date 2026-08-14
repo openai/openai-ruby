@@ -28,10 +28,16 @@ module OpenAI
 
       sig do
         params(
-          request_options: T.nilable(OpenAI::RequestOptions::OrHash)
+          request_options: T.nilable(OpenAI::RequestOptions::OrHash),
+          extra_headers: T::Hash[String, T.nilable(String)],
+          resource: T.anything
         ).returns(T::Hash[Symbol, T.anything])
       end
-      def request_options(request_options)
+      def request_options(request_options, extra_headers: {}, resource: nil)
+      end
+
+      sig { params(resource: T.anything).returns(T.nilable(Float)) }
+      def check_deadline!(resource = nil)
       end
 
       sig { params(resource: OpenAI::Internal::Type::BaseModel).void }

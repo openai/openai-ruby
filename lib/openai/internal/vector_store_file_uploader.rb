@@ -37,7 +37,7 @@ module OpenAI
         workers = start_workers(queue, finished, lock, uploaded, state)
 
         begin
-          files.each.with_index do |file, index|
+          files.each_with_index do |file, index|
             break unless lock.synchronize { state[:error].nil? }
 
             queue << [index, file]

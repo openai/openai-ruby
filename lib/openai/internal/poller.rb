@@ -43,19 +43,44 @@ module OpenAI
       # @api private
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+      # @param extra_headers [Hash{String=>String, nil}] endpoint headers to preserve
+      # @param resource [Object, nil] the last resource returned by the API
       # @return [Hash{Symbol=>Object}]
-      def request_options(request_options)
+      def request_options(request_options, extra_headers: {}, resource: nil)
+        remaining = check_deadline!(resource)
         options = request_options.to_h
-        headers = {
-          **options[:extra_headers].to_h,
-          "X-Stainless-Poll-Helper" => "true"
-        }
+        headers = OpenAI::Internal::Util.normalized_headers(
+          extra_headers,
+          options[:extra_headers].to_h,
+          {"X-Stainless-Poll-Helper" => "true"}
+        )
         unless @poll_interval.nil?
           milliseconds = [(@poll_interval * 1000).round, 1].max
-          headers["X-Stainless-Custom-Poll-Interval"] = milliseconds.to_s
+          headers["x-stainless-custom-poll-interval"] = milliseconds.to_s
         end
 
-        {**options, extra_headers: headers}
+        bounded = {**options, extra_headers: headers}
+        unless remaining.nil?
+          request_timeout = options[:timeout]
+          request_timeout = request_timeout.to_f.clamp(0..) unless request_timeout.nil?
+          bounded[:timeout] = [request_timeout, remaining].compact.min
+        end
+        bounded
+      end
+
+      # Raise when the overall polling deadline has elapsed and otherwise return
+      # the time remaining. Resource helpers also call this after request timeouts
+      # to distinguish an exhausted polling deadline from a shorter caller timeout.
+      #
+      # @api private
+      #
+      # @param resource [Object, nil] the last resource returned by the API
+      # @return [Float, nil]
+      def check_deadline!(resource = nil)
+        remaining = @deadline - monotonic_time unless @deadline.nil?
+        raise_timeout(resource) if !remaining.nil? && remaining <= 0
+
+        remaining
       end
 
       # Sleep until the next request, respecting both the server's polling hint and
@@ -66,8 +91,7 @@ module OpenAI
       # @param resource [OpenAI::Internal::Type::BaseModel]
       # @return [void]
       def wait(resource)
-        remaining = @deadline - monotonic_time unless @deadline.nil?
-        raise_timeout(resource) if !remaining.nil? && remaining <= 0
+        remaining = check_deadline!(resource)
 
         interval = @poll_interval || server_interval(resource) || DEFAULT_INTERVAL
         if !remaining.nil? && interval >= remaining

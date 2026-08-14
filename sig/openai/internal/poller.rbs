@@ -16,8 +16,12 @@ module OpenAI
       ) -> [(Float)?, (Float)?]
 
       def request_options: (
-        OpenAI::request_opts? request_options
+        OpenAI::request_opts? request_options,
+        ?extra_headers: ::Hash[String, String?],
+        ?resource: top
       ) -> ::Hash[Symbol, top]
+
+      def check_deadline!: (?top resource) -> Float?
 
       def wait: (OpenAI::Internal::Type::BaseModel resource) -> void
     end

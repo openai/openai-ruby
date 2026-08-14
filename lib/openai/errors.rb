@@ -17,9 +17,10 @@ module OpenAI
 
     # Raised when a polling helper exceeds its overall timeout.
     class PollingTimeoutError < OpenAI::Errors::PollingError
-      # The last resource returned by the API before the timeout.
+      # The last resource returned by the API before the timeout, or `nil` when
+      # the deadline elapsed before the first response.
       #
-      # @return [Object]
+      # @return [Object, nil]
       attr_reader :resource
 
       # The configured overall polling timeout in seconds.
@@ -36,7 +37,7 @@ module OpenAI
       #
       # @param operation [String]
       # @param timeout [Float]
-      # @param resource [Object]
+      # @param resource [Object, nil]
       def initialize(operation:, timeout:, resource:)
         @operation = operation
         @timeout = timeout

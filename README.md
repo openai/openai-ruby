@@ -153,7 +153,8 @@ batch = openai.vector_stores.file_batches.upload_and_poll(
 The vector store helpers return terminal `failed` and `cancelled` resources instead
 of raising, so inspect `status`, `last_error`, or `file_counts` as appropriate. An
 overall polling timeout raises `OpenAI::Errors::PollingTimeoutError`; its `resource`
-attribute contains the last object returned by the API.
+attribute contains the last object returned by the API, or `nil` if the deadline
+elapsed before the first response.
 
 Batch uploads are concurrent but not transactional. If one upload fails, the helper
 stops scheduling work and raises that error; files uploaded successfully before the

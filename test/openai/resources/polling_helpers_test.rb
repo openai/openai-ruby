@@ -4,7 +4,7 @@ require_relative "../test_helper"
 require "timeout"
 
 class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
-  RequestRecord = Data.define(:method, :path, :headers, :body)
+  RequestRecord = Data.define(:method, :path, :headers, :body, :timeout)
 
   class ScriptedHTTPClient
     attr_reader :requests
@@ -17,7 +17,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
 
     def execute(request)
       body = request.body.is_a?(String) || request.body.nil? ? request.body : request.body.to_a.join
-      record = RequestRecord.new(request.method, request.url.path, request.headers, body)
+      record = RequestRecord.new(request.method, request.url.path, request.headers, body, request.timeout)
       @mutex.synchronize { @requests << record }
       status, headers, response_body = @handler.call(record)
       response_body = JSON.generate(response_body) unless response_body.is_a?(String)
@@ -98,8 +98,20 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     assert_equal([OpenAI::Internal::Poller::DEFAULT_INTERVAL] * resources.length, sleeps)
   end
 
-  def test_files_wait_for_processing_raises_typed_timeout_with_last_resource
-    transport = scripted_transport { [200, {}, file_object(status: "uploaded")] }
+  def test_files_wait_for_processing_allows_an_unbounded_request_without_a_deadline
+    transport = scripted_transport { [200, {}, file_object(status: "processed")] }
+
+    build_client(transport).files.wait_for_processing(
+      "file_123",
+      timeout: nil,
+      request_options: {timeout: nil}
+    )
+
+    assert_nil(transport.requests.fetch(0).timeout)
+  end
+
+  def test_files_wait_for_processing_raises_before_request_when_deadline_elapsed
+    transport = scripted_transport { flunk("request should not be sent") }
 
     error = assert_raises(OpenAI::Errors::PollingTimeoutError) do
       build_client(transport).files.wait_for_processing("file_123", timeout: 0)
@@ -107,8 +119,59 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
 
     assert_equal("file file_123", error.operation)
     assert_equal(0.0, error.timeout)
-    assert_equal(:uploaded, error.resource.status)
+    assert_nil(error.resource)
     assert_match("Timed out waiting for file file_123", error.message)
+    assert_empty(transport.requests)
+  end
+
+  def test_files_wait_for_processing_bounds_retrieval_by_polling_deadline
+    transport = scripted_transport do |request|
+      assert_operator(request.timeout, :positive?)
+      assert_operator(request.timeout, :<=, 0.02)
+      sleep(request.timeout + 0.01)
+      raise OpenAI::Errors::APITimeoutError.new(url: URI("http://example.test/v1/files/file_123"))
+    end
+
+    error = assert_raises(OpenAI::Errors::PollingTimeoutError) do
+      build_client(transport).files.wait_for_processing("file_123", timeout: 0.02)
+    end
+
+    assert_nil(error.resource)
+    assert_equal(1, transport.requests.length)
+  end
+
+  def test_polling_helpers_preserve_a_shorter_request_timeout_error
+    polls = [
+      ->(client) do
+        client.files.wait_for_processing("file_123", timeout: 10, request_options: {timeout: 0.01})
+      end,
+      ->(client) do
+        client.vector_stores.files.poll(
+          "file_123",
+          vector_store_id: "vs_123",
+          timeout: 10,
+          request_options: {timeout: 0.01}
+        )
+      end,
+      ->(client) do
+        client.vector_stores.file_batches.poll(
+          "batch_123",
+          vector_store_id: "vs_123",
+          timeout: 10,
+          request_options: {timeout: 0.01}
+        )
+      end
+    ]
+
+    polls.each do |poll|
+      transport = scripted_transport do |request|
+        assert_equal(0.01, request.timeout)
+        raise OpenAI::Errors::APITimeoutError.new(url: URI("http://example.test/v1/resource"))
+      end
+
+      assert_raises(OpenAI::Errors::APITimeoutError) { poll.call(build_client(transport)) }
+      assert_equal(1, transport.requests.length)
+    end
   end
 
   def test_polling_timeout_does_not_start_a_request_after_the_deadline
@@ -199,6 +262,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     assert_equal([0.02], sleeps)
     assert_equal("20", transport.requests.first.headers["x-stainless-custom-poll-interval"])
     assert_equal("yes", transport.requests.first.headers["x-test"])
+    assert_equal("assistants=v2", transport.requests.first.headers["openai-beta"])
   end
 
   def test_vector_store_file_poll_rejects_an_unknown_status
@@ -337,6 +401,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     assert_equal(:completed, result.status)
     assert_equal([0.03], sleeps)
     assert_equal("true", transport.requests.first.headers["x-stainless-poll-helper"])
+    assert_equal("assistants=v2", transport.requests.first.headers["openai-beta"])
   end
 
   def test_vector_store_batch_poll_rejects_an_unknown_status
@@ -474,6 +539,30 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     assert_equal(:completed, runner.value.status)
   end
 
+  def test_vector_store_batch_upload_cleans_up_after_worker_start_failure
+    transport = scripted_transport { flunk("request should not be sent") }
+    uploader = OpenAI::Internal::VectorStoreFileUploader.new(
+      client: build_client(transport),
+      max_concurrency: 2,
+      request_options: {}
+    )
+    original_thread_new = Thread.method(:new)
+    calls = 0
+    thread_factory = lambda do |*args, &block|
+      calls += 1
+      raise ThreadError, "thread limit reached" if calls == 2
+
+      original_thread_new.call(*args, &block)
+    end
+
+    error = Thread.stub(:new, thread_factory) do
+      assert_raises(ThreadError) { uploader.upload([]) }
+    end
+
+    assert_equal("thread limit reached", error.message)
+    assert_empty(transport.requests)
+  end
+
   def test_vector_store_batch_upload_and_poll_validates_inputs_before_requesting
     transport = scripted_transport { flunk("request should not be sent") }
     batches = build_client(transport).vector_stores.file_batches
@@ -498,6 +587,41 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
 
     assert_equal("enumeration failed", error.message)
     assert_empty(transport.requests)
+  end
+
+  def test_vector_store_batch_upload_accepts_each_that_requires_a_block
+    transport = scripted_transport do |request|
+      case [request.method, request.path]
+      in [:post, "/v1/files"]
+        [200, {}, file_object(id: "file_uploaded", status: "processed")]
+      in [:post, "/v1/vector_stores/vs_123/file_batches"]
+        [200, {}, vector_batch(status: "in_progress")]
+      in [:get, "/v1/vector_stores/vs_123/file_batches/batch_123"]
+        [200, {}, vector_batch(status: "completed")]
+      else
+        flunk("unexpected request: #{request.method} #{request.path}")
+      end
+    end
+    files = Class.new do
+      include Enumerable
+
+      def initialize(values)
+        @values = values
+      end
+
+      def each
+        @values.each { yield(_1) }
+      end
+    end.new([StringIO.new("file")])
+
+    result = build_client(transport).vector_stores.file_batches.upload_and_poll(
+      "vs_123",
+      files: files,
+      max_concurrency: 1
+    )
+
+    assert_equal(:completed, result.status)
+    assert_equal(3, transport.requests.length)
   end
 
   def test_vector_store_batch_upload_and_poll_does_not_create_batch_after_upload_failure

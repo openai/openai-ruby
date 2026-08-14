@@ -195,9 +195,10 @@ module OpenAI
           poll_interval: poll_interval,
           timeout: timeout
         )
-        options = poller.request_options(request_options)
+        file = nil
 
         loop do
+          options = poller.request_options(request_options, resource: file)
           file = retrieve(file_id, request_options: options)
           case file.status
           when OpenAI::FileObject::Status::UPLOADED
@@ -212,6 +213,9 @@ module OpenAI
                   "Unexpected status while waiting for file #{file_id}: #{file.status.inspect}"
           end
         end
+      rescue OpenAI::Errors::APITimeoutError
+        poller.check_deadline!(file)
+        raise
       end
 
       # @api private

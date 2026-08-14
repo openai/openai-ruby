@@ -228,9 +228,14 @@ module OpenAI
             poll_interval: poll_interval,
             timeout: timeout
           )
-          options = poller.request_options(request_options)
+          batch = nil
 
           loop do
+            options = poller.request_options(
+              request_options,
+              extra_headers: {"OpenAI-Beta" => "assistants=v2"},
+              resource: batch
+            )
             batch = retrieve(batch_id, vector_store_id: vector_store_id, request_options: options)
             case batch.status
             when OpenAI::VectorStores::VectorStoreFileBatch::Status::IN_PROGRESS
@@ -245,6 +250,9 @@ module OpenAI
                     "#{batch_id}: #{batch.status.inspect}"
             end
           end
+        rescue OpenAI::Errors::APITimeoutError
+          poller.check_deadline!(batch)
+          raise
         end
 
         # Upload files concurrently, create a vector store file batch, and wait for

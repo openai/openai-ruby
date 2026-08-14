@@ -253,9 +253,14 @@ module OpenAI
             poll_interval: poll_interval,
             timeout: timeout
           )
-          options = poller.request_options(request_options)
+          file = nil
 
           loop do
+            options = poller.request_options(
+              request_options,
+              extra_headers: {"OpenAI-Beta" => "assistants=v2"},
+              resource: file
+            )
             file = retrieve(file_id, vector_store_id: vector_store_id, request_options: options)
             case file.status
             when OpenAI::VectorStores::VectorStoreFile::Status::IN_PROGRESS
@@ -269,6 +274,9 @@ module OpenAI
                     "Unexpected status while waiting for vector store file #{file_id}: #{file.status.inspect}"
             end
           end
+        rescue OpenAI::Errors::APITimeoutError
+          poller.check_deadline!(file)
+          raise
         end
 
         # Upload a file and attach it to a vector store.
