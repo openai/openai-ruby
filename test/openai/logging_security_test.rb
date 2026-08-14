@@ -543,6 +543,104 @@ class LoggingSecurityTest < Minitest::Test
     end
   end
 
+  def test_debug_logs_redact_html_escaped_signed_query_parameters
+    values = {
+      html: '<a href="https://storage.example.test/file?download=1&amp;sig=html-signature-proof">file</a>',
+      repeated: "https://storage.example.test/file?download=1&amp;amp;sig=repeated-html-signature-proof",
+      harmless: '<a href="https://public.example.test/file?download=1&amp;format=png">file</a>'
+    }
+    body = JSON.generate(values)
+    headers = {"content-type" => "application/json"}
+    formatted = [
+      OpenAI::Internal::Logging.format_body(body, headers: headers),
+      OpenAI::Internal::Logging.format_observed_body(
+        body,
+        headers: headers,
+        complete: true,
+        total_bytes: body.bytesize
+      )
+    ]
+
+    formatted.each do |value|
+      assert_includes(value, "storage.example.test/file?download=1")
+      assert_includes(value, "public.example.test/file?download=1")
+      assert_includes(value, "format=png")
+      assert_includes(value, "%5BREDACTED%5D")
+      refute_includes(value, "html-signature-proof")
+      refute_includes(value, "repeated-html-signature-proof")
+    end
+
+    assert_includes(body, "html-signature-proof")
+    assert_includes(body, "repeated-html-signature-proof")
+  end
+
+  def test_debug_logs_scrub_signed_ipv6_literal_urls_inside_text
+    values = {
+      prose: "fetch https://[2001:db8::1]/file?sig=ipv6-prose-proof and retain the sentence",
+      markdown: "[source](https://[::1]/file?X-Amz-Signature=ipv6-markdown-proof&mode=preview)",
+      harmless: "fetch https://[2001:db8::2]/file?version=1"
+    }
+    body = JSON.generate(values)
+    headers = {"content-type" => "application/json"}
+    formatted = [
+      OpenAI::Internal::Logging.format_body(body, headers: headers),
+      OpenAI::Internal::Logging.format_observed_body(
+        body,
+        headers: headers,
+        complete: true,
+        total_bytes: body.bytesize
+      )
+    ]
+
+    formatted.each do |value|
+      parsed = JSON.parse(value)
+
+      assert_equal(
+        "fetch https://[2001:db8::1]/file?sig=%5BREDACTED%5D and retain the sentence",
+        parsed.fetch("prose")
+      )
+      assert_equal(
+        "[source](https://[::1]/file?X-Amz-Signature=%5BREDACTED%5D&mode=preview)",
+        parsed.fetch("markdown")
+      )
+      assert_equal(values.fetch(:harmless), parsed.fetch("harmless"))
+      refute_includes(value, "ipv6-prose-proof")
+      refute_includes(value, "ipv6-markdown-proof")
+    end
+  end
+
+  def test_debug_logs_omit_control_obfuscated_signed_urls_inside_text
+    values = {
+      tab: "fetch https://storage.example.test/file?si\tg=tab-prose-proof",
+      newline: "fetch https://storage.example.test/file?sig=newline\n-prose-proof",
+      carriage_return: "fetch https://storage.example.test/file?to\rken=carriage-prose-proof",
+      harmless: "ordinary\nmultiline text without a URL"
+    }
+    body = JSON.generate(values)
+    headers = {"content-type" => "application/json"}
+    formatted = [
+      OpenAI::Internal::Logging.format_body(body, headers: headers),
+      OpenAI::Internal::Logging.format_observed_body(
+        body,
+        headers: headers,
+        complete: true,
+        total_bytes: body.bytesize
+      )
+    ]
+
+    formatted.each do |value|
+      parsed = JSON.parse(value)
+
+      assert_equal("[URL OMITTED]", parsed.fetch("tab"))
+      assert_equal("[URL OMITTED]", parsed.fetch("newline"))
+      assert_equal("[URL OMITTED]", parsed.fetch("carriage_return"))
+      assert_equal(values.fetch(:harmless), parsed.fetch("harmless"))
+      refute_includes(value, "tab-prose-proof")
+      refute_includes(value, "-prose-proof")
+      refute_includes(value, "carriage-prose-proof")
+    end
+  end
+
   def test_debug_logs_sanitize_signed_urls_and_credentials_in_fragments
     nested = "https://storage.example.test/file?sig=fragment-signature-secret&safe=visible"
     values = {

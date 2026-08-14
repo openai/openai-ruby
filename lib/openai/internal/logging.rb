@@ -22,7 +22,7 @@ module OpenAI
       SENSITIVE_BODY_KEY = /(?:api[-_]?key|authorization|credential|password|secret|signature|token)/i
       SENSITIVE_QUERY_KEY = /
         (?:
-          (?:\A|[-_\[])(?:key|sig)
+          (?:\A|[-_\[;])(?:key|sig)
           | (?-i:K)ey
           | api[-_]?key
           | authorization
@@ -381,9 +381,9 @@ module OpenAI
           end
           return "[URL OMITTED]" if normalized.match?(/\A(?:[[:space:]]|[\x00-\x1f])*https?%(?:25)*3a/i)
           return value unless normalized.match?(%r{https?://}i)
-          return "[URL OMITTED]" unless value.match?(%r{https?://}i)
+          return "[URL OMITTED]" unless normalized == value
 
-          value.gsub(%r{https?://[^\s<>\[\]"']+}i) do |url|
+          value.gsub(%r{https?://(?:\[[^\s\[\]<>"']+\]|[^\s<>\[\]"'])+}i) do |url|
             trailing = url[/[),.!;:]+\z/].to_s
             "#{sanitized_url_value(url.delete_suffix(trailing), depth: depth)}#{trailing}"
           end
