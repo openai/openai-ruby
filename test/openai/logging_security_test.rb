@@ -345,6 +345,78 @@ class LoggingSecurityTest < Minitest::Test
     refute_includes(formatted, "nested-leading-space-secret")
   end
 
+  def test_debug_logs_omit_signed_urls_with_normalizable_control_characters
+    urls = (0..31).to_h do |codepoint|
+      ["control_#{codepoint}", "#{codepoint.chr}https://storage.example.test/file?sig=control-secret-#{codepoint}"]
+    end
+    urls.merge!(
+      "embedded_tab" => "ht\ttps://storage.example.test/file?sig=embedded-tab-secret",
+      "embedded_newline" => "htt\nps://storage.example.test/file?sig=embedded-newline-secret",
+      "embedded_carriage_return" => "http\rs://storage.example.test/file?sig=embedded-carriage-secret",
+      "embedded_separator_tab" => "https:\t//storage.example.test/file?sig=embedded-separator-secret"
+    )
+    values = {**urls, "plain_text" => "\u0000ordinary text", "data_url" => "\u0000data:image/png;base64,YWJj"}
+    body = JSON.generate(values)
+    headers = {"content-type" => "application/json"}
+    formatted = [
+      OpenAI::Internal::Logging.format_body(body, headers: headers),
+      OpenAI::Internal::Logging.format_observed_body(
+        body,
+        headers: headers,
+        complete: true,
+        total_bytes: body.bytesize
+      )
+    ]
+
+    formatted.each do |value|
+      parsed = JSON.parse(value)
+      urls.each_key { |key| assert_equal("[URL OMITTED]", parsed.fetch(key)) }
+      assert_equal("\u0000ordinary text", parsed.fetch("plain_text"))
+      assert_equal("\u0000data:image/png;base64,YWJj", parsed.fetch("data_url"))
+      refute_includes(value, "control-secret-")
+      refute_includes(value, "embedded-tab-secret")
+      refute_includes(value, "embedded-newline-secret")
+      refute_includes(value, "embedded-carriage-secret")
+      refute_includes(value, "embedded-separator-secret")
+    end
+  end
+
+  def test_debug_logs_omit_nested_signed_urls_with_normalizable_control_characters
+    form_headers = {"content-type" => "application/x-www-form-urlencoded"}
+    nested_urls = [
+      "\u0000https://storage.example.test/file?sig=nested-nul-secret",
+      "ht\ttps://storage.example.test/file?sig=nested-tab-secret",
+      "htt\nps://storage.example.test/file?sig=nested-newline-secret"
+    ]
+
+    nested_urls.each do |nested_url|
+      proxy_url = "https://proxy.example.test/load?#{URI.encode_www_form(url: nested_url, mode: 'resize')}"
+      body = JSON.generate(image_url: proxy_url)
+      form = URI.encode_www_form(redirect: proxy_url)
+      headers = {"content-type" => "application/json"}
+      formatted = [
+        OpenAI::Internal::Logging.safe_url(URI(proxy_url)),
+        OpenAI::Internal::Logging.safe_path(URI(proxy_url)),
+        OpenAI::Internal::Logging.format_headers("Location" => proxy_url),
+        OpenAI::Internal::Logging.format_body(body, headers: headers),
+        OpenAI::Internal::Logging.format_observed_body(
+          body,
+          headers: headers,
+          complete: true,
+          total_bytes: body.bytesize
+        ),
+        OpenAI::Internal::Logging.format_body(form, headers: form_headers)
+      ]
+
+      formatted.each do |value|
+        assert_includes(value, "resize")
+        refute_includes(value, "nested-nul-secret")
+        refute_includes(value, "nested-tab-secret")
+        refute_includes(value, "nested-newline-secret")
+      end
+    end
+  end
+
   def test_debug_logs_preserve_harmless_urls_and_omit_malformed_signed_urls
     harmless = "https://storage.example.test/public/image.png?version=1&format=png"
     without_query = "https://storage.example.test/public/image.png"

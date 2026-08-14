@@ -370,7 +370,10 @@ module OpenAI
         end
 
         private def scrub_embedded_url(value, depth: 0)
-          value.match?(%r{\A[[:space:]]*https?://}i) ? sanitized_url_value(value, depth: depth) : value
+          normalized = value.delete("\t\n\r")
+          return value unless normalized.match?(%r{\A(?:[[:space:]]|[\x00-\x1f])*https?://}i)
+
+          sanitized_url_value(value, depth: depth)
         end
 
         private def textual_content_type?(content_type)
