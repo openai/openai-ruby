@@ -1173,7 +1173,7 @@ module OpenAI
             server_label: String,
             type: :mcp_call,
             approval_request_id: String?,
-            error: String?,
+            error: OpenAI::Models::Responses::mcp_tool_call_error?,
             output: String?,
             status: OpenAI::Models::Responses::ResponseInputItem::McpCall::status
           }
@@ -1191,7 +1191,7 @@ module OpenAI
 
           attr_accessor approval_request_id: String?
 
-          attr_accessor error: String?
+          attr_accessor error: OpenAI::Models::Responses::mcp_tool_call_error?
 
           attr_accessor output: String?
 
@@ -1207,7 +1207,7 @@ module OpenAI
             name: String,
             server_label: String,
             ?approval_request_id: String?,
-            ?error: String?,
+            ?error: OpenAI::Models::Responses::mcp_tool_call_error?,
             ?output: String?,
             ?status: OpenAI::Models::Responses::ResponseInputItem::McpCall::status,
             ?type: :mcp_call
@@ -1220,7 +1220,7 @@ module OpenAI
             server_label: String,
             type: :mcp_call,
             approval_request_id: String?,
-            error: String?,
+            error: OpenAI::Models::Responses::mcp_tool_call_error?,
             output: String?,
             status: OpenAI::Models::Responses::ResponseInputItem::McpCall::status
           }

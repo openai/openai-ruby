@@ -142,7 +142,7 @@ module OpenAI
         )
       end
 
-      # Returns the contents of the specified file.
+      # Returns a response containing the contents of the specified file.
       #
       # @overload content(file_id, request_options: {})
       #

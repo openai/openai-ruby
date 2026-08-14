@@ -2,7 +2,8 @@ module OpenAI
   module Models
     module Responses
       type responses_server_event =
-        OpenAI::Responses::ResponsesServerEvent::ResponseAudioWsDelta
+        OpenAI::Responses::ResponsesServerEvent::ResponseWsError
+        | OpenAI::Responses::ResponsesServerEvent::ResponseAudioWsDelta
         | OpenAI::Responses::ResponsesServerEvent::ResponseAudioWsDone
         | OpenAI::Responses::ResponsesServerEvent::ResponseAudioTranscriptWsDelta
         | OpenAI::Responses::ResponsesServerEvent::ResponseAudioTranscriptWsDone
@@ -15,7 +16,6 @@ module OpenAI
         | OpenAI::Responses::ResponsesServerEvent::ResponseContentPartWsAdded
         | OpenAI::Responses::ResponsesServerEvent::ResponseContentPartWsDone
         | OpenAI::Responses::ResponsesServerEvent::ResponseWsCreated
-        | OpenAI::Responses::ResponsesServerEvent::ResponseWsError
         | OpenAI::Responses::ResponsesServerEvent::ResponseFileSearchCallWsCompleted
         | OpenAI::Responses::ResponsesServerEvent::ResponseFileSearchCallInWsProgress
         | OpenAI::Responses::ResponsesServerEvent::ResponseFileSearchCallWsSearching
@@ -452,40 +452,6 @@ module OpenAI
             response: OpenAI::Responses::Response,
             sequence_number: Integer,
             type: :"response.created",
-            stream_id: String
-          }
-        end
-
-        type response_ws_error =
-          {
-            code: String?,
-            message: String,
-            param: String?,
-            sequence_number: Integer,
-            type: :error,
-            stream_id: String
-          }
-
-        class ResponseWsError < OpenAI::Models::Responses::ResponseErrorEvent
-          def stream_id: -> String?
-
-          def stream_id=: (String _) -> String
-
-          def initialize: (
-            code: String?,
-            message: String,
-            param: String?,
-            sequence_number: Integer,
-            ?type: :error,
-            ?stream_id: String
-          ) -> void
-
-          def to_hash: -> {
-            code: String?,
-            message: String,
-            param: String?,
-            sequence_number: Integer,
-            type: :error,
             stream_id: String
           }
         end
@@ -1790,6 +1756,88 @@ module OpenAI
             type: :"response.custom_tool_call_input.done",
             stream_id: String
           }
+        end
+
+        type response_ws_error =
+          {
+            error: OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error,
+            type: :error,
+            sequence_number: Integer,
+            status: Integer,
+            stream_id: String
+          }
+
+        class ResponseWsError < OpenAI::Internal::Type::BaseModel
+          attr_accessor error: OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error
+
+          attr_accessor type: :error
+
+          attr_reader sequence_number: Integer?
+
+          def sequence_number=: (Integer) -> Integer
+
+          attr_reader status: Integer?
+
+          def status=: (Integer) -> Integer
+
+          attr_reader stream_id: String?
+
+          def stream_id=: (String) -> String
+
+          def initialize: (
+            error: OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error,
+            ?sequence_number: Integer,
+            ?status: Integer,
+            ?stream_id: String,
+            ?type: :error
+          ) -> void
+
+          def to_hash: -> {
+            error: OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error,
+            type: :error,
+            sequence_number: Integer,
+            status: Integer,
+            stream_id: String
+          }
+
+          type error =
+            {
+              code: String?,
+              message: String,
+              param: String?,
+              type: String,
+              headers: ::Hash[Symbol, String]
+            }
+
+          class Error < OpenAI::Internal::Type::BaseModel
+            attr_accessor code: String?
+
+            attr_accessor message: String
+
+            attr_accessor param: String?
+
+            attr_accessor type: String
+
+            attr_reader headers: ::Hash[Symbol, String]?
+
+            def headers=: (::Hash[Symbol, String]) -> ::Hash[Symbol, String]
+
+            def initialize: (
+              code: String?,
+              message: String,
+              param: String?,
+              type: String,
+              ?headers: ::Hash[Symbol, String]
+            ) -> void
+
+            def to_hash: -> {
+              code: String?,
+              message: String,
+              param: String?,
+              type: String,
+              headers: ::Hash[Symbol, String]
+            }
+          end
         end
 
         def self?.variants: -> ::Array[OpenAI::Models::Responses::responses_server_event]

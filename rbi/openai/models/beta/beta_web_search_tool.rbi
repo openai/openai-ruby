@@ -15,6 +15,15 @@ module OpenAI
         sig { returns(OpenAI::Beta::BetaWebSearchTool::Type::OrSymbol) }
         attr_accessor :type
 
+        # Allow live internet access for web search. Defaults to true when omitted. When
+        # false, the web search tool runs in offline/cache-only mode and will not fetch
+        # new external content.
+        sig { returns(T.nilable(T::Boolean)) }
+        attr_reader :external_web_access
+
+        sig { params(external_web_access: T::Boolean).void }
+        attr_writer :external_web_access
+
         # Filters for the search.
         sig { returns(T.nilable(OpenAI::Beta::BetaWebSearchTool::Filters)) }
         attr_reader :filters
@@ -64,6 +73,7 @@ module OpenAI
         sig do
           params(
             type: OpenAI::Beta::BetaWebSearchTool::Type::OrSymbol,
+            external_web_access: T::Boolean,
             filters:
               T.nilable(OpenAI::Beta::BetaWebSearchTool::Filters::OrHash),
             search_context_size:
@@ -75,6 +85,10 @@ module OpenAI
         def self.new(
           # The type of the web search tool. One of `web_search` or `web_search_2025_08_26`.
           type:,
+          # Allow live internet access for web search. Defaults to true when omitted. When
+          # false, the web search tool runs in offline/cache-only mode and will not fetch
+          # new external content.
+          external_web_access: nil,
           # Filters for the search.
           filters: nil,
           # High level guidance for the amount of context window space to use for the
@@ -89,6 +103,7 @@ module OpenAI
           override.returns(
             {
               type: OpenAI::Beta::BetaWebSearchTool::Type::OrSymbol,
+              external_web_access: T::Boolean,
               filters: T.nilable(OpenAI::Beta::BetaWebSearchTool::Filters),
               search_context_size:
                 OpenAI::Beta::BetaWebSearchTool::SearchContextSize::OrSymbol,

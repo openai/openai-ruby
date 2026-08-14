@@ -49,7 +49,8 @@ module OpenAI
           accepted_prediction_tokens: Integer,
           audio_tokens: Integer,
           reasoning_tokens: Integer,
-          rejected_prediction_tokens: Integer
+          rejected_prediction_tokens: Integer,
+          text_tokens: Integer
         }
 
       class CompletionTokensDetails < OpenAI::Internal::Type::BaseModel
@@ -69,18 +70,24 @@ module OpenAI
 
         def rejected_prediction_tokens=: (Integer) -> Integer
 
+        attr_reader text_tokens: Integer?
+
+        def text_tokens=: (Integer) -> Integer
+
         def initialize: (
           ?accepted_prediction_tokens: Integer,
           ?audio_tokens: Integer,
           ?reasoning_tokens: Integer,
-          ?rejected_prediction_tokens: Integer
+          ?rejected_prediction_tokens: Integer,
+          ?text_tokens: Integer
         ) -> void
 
         def to_hash: -> {
           accepted_prediction_tokens: Integer,
           audio_tokens: Integer,
           reasoning_tokens: Integer,
-          rejected_prediction_tokens: Integer
+          rejected_prediction_tokens: Integer,
+          text_tokens: Integer
         }
       end
 
@@ -88,7 +95,9 @@ module OpenAI
         {
           audio_tokens: Integer,
           cache_write_tokens: Integer,
-          cached_tokens: Integer
+          cached_tokens: Integer,
+          image_tokens: Integer,
+          text_tokens: Integer
         }
 
       class PromptTokensDetails < OpenAI::Internal::Type::BaseModel
@@ -104,16 +113,28 @@ module OpenAI
 
         def cached_tokens=: (Integer) -> Integer
 
+        attr_reader image_tokens: Integer?
+
+        def image_tokens=: (Integer) -> Integer
+
+        attr_reader text_tokens: Integer?
+
+        def text_tokens=: (Integer) -> Integer
+
         def initialize: (
           ?audio_tokens: Integer,
           ?cache_write_tokens: Integer,
-          ?cached_tokens: Integer
+          ?cached_tokens: Integer,
+          ?image_tokens: Integer,
+          ?text_tokens: Integer
         ) -> void
 
         def to_hash: -> {
           audio_tokens: Integer,
           cache_write_tokens: Integer,
-          cached_tokens: Integer
+          cached_tokens: Integer,
+          image_tokens: Integer,
+          text_tokens: Integer
         }
       end
     end

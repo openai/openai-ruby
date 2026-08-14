@@ -1999,7 +1999,17 @@ module OpenAI
           attr_accessor :approval_request_id
 
           # The error from the tool call, if any.
-          sig { returns(T.nilable(String)) }
+          sig do
+            returns(
+              T.nilable(
+                T.any(
+                  OpenAI::Beta::BetaMcpToolCallError::McpProtocolError,
+                  OpenAI::Beta::BetaMcpToolCallError::McpToolExecutionError,
+                  OpenAI::Beta::BetaMcpToolCallError::HTTPError
+                )
+              )
+            )
+          end
           attr_accessor :error
 
           # The output from the tool call.
@@ -2037,7 +2047,14 @@ module OpenAI
                   OpenAI::Beta::BetaResponseOutputItem::McpCall::Agent::OrHash
                 ),
               approval_request_id: T.nilable(String),
-              error: T.nilable(String),
+              error:
+                T.nilable(
+                  T.any(
+                    OpenAI::Beta::BetaMcpToolCallError::McpProtocolError::OrHash,
+                    OpenAI::Beta::BetaMcpToolCallError::McpToolExecutionError::OrHash,
+                    OpenAI::Beta::BetaMcpToolCallError::HTTPError::OrHash
+                  )
+                ),
               output: T.nilable(String),
               status:
                 OpenAI::Beta::BetaResponseOutputItem::McpCall::Status::OrSymbol,
@@ -2084,7 +2101,14 @@ module OpenAI
                     OpenAI::Beta::BetaResponseOutputItem::McpCall::Agent
                   ),
                 approval_request_id: T.nilable(String),
-                error: T.nilable(String),
+                error:
+                  T.nilable(
+                    T.any(
+                      OpenAI::Beta::BetaMcpToolCallError::McpProtocolError,
+                      OpenAI::Beta::BetaMcpToolCallError::McpToolExecutionError,
+                      OpenAI::Beta::BetaMcpToolCallError::HTTPError
+                    )
+                  ),
                 output: T.nilable(String),
                 status:
                   OpenAI::Beta::BetaResponseOutputItem::McpCall::Status::TaggedSymbol

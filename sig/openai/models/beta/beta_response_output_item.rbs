@@ -819,7 +819,7 @@ module OpenAI
             type: :mcp_call,
             agent: OpenAI::Beta::BetaResponseOutputItem::McpCall::Agent?,
             approval_request_id: String?,
-            error: String?,
+            error: OpenAI::Models::Beta::beta_mcp_tool_call_error?,
             output: String?,
             status: OpenAI::Models::Beta::BetaResponseOutputItem::McpCall::status
           }
@@ -839,7 +839,7 @@ module OpenAI
 
           attr_accessor approval_request_id: String?
 
-          attr_accessor error: String?
+          attr_accessor error: OpenAI::Models::Beta::beta_mcp_tool_call_error?
 
           attr_accessor output: String?
 
@@ -856,7 +856,7 @@ module OpenAI
             server_label: String,
             ?agent: OpenAI::Beta::BetaResponseOutputItem::McpCall::Agent?,
             ?approval_request_id: String?,
-            ?error: String?,
+            ?error: OpenAI::Models::Beta::beta_mcp_tool_call_error?,
             ?output: String?,
             ?status: OpenAI::Models::Beta::BetaResponseOutputItem::McpCall::status,
             ?type: :mcp_call
@@ -870,7 +870,7 @@ module OpenAI
             type: :mcp_call,
             agent: OpenAI::Beta::BetaResponseOutputItem::McpCall::Agent?,
             approval_request_id: String?,
-            error: String?,
+            error: OpenAI::Models::Beta::beta_mcp_tool_call_error?,
             output: String?,
             status: OpenAI::Models::Beta::BetaResponseOutputItem::McpCall::status
           }

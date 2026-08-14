@@ -272,7 +272,7 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
           name: String,
           server_label: String,
           approval_request_id: String | nil,
-          error: String | nil,
+          error: OpenAI::Responses::McpToolCallError | nil,
           output: String | nil,
           status: OpenAI::Responses::ResponseItem::McpCall::Status | nil
         }

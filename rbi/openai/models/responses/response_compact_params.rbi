@@ -292,6 +292,11 @@ module OpenAI
               :"gpt-5.5",
               OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
             )
+          GPT_5_5_2026_04_23 =
+            T.let(
+              :"gpt-5.5-2026-04-23",
+              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+            )
           GPT_5_4 =
             T.let(
               :"gpt-5.4",
@@ -730,6 +735,16 @@ module OpenAI
           COMPUTER_USE_PREVIEW_2025_03_11 =
             T.let(
               :"computer-use-preview-2025-03-11",
+              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+            )
+          GPT_5_5_PRO =
+            T.let(
+              :"gpt-5.5-pro",
+              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+            )
+          GPT_5_5_PRO_2026_04_23 =
+            T.let(
+              :"gpt-5.5-pro-2026-04-23",
               OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
             )
           GPT_5_CODEX =

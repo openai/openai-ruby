@@ -9,6 +9,9 @@ module OpenAI
 
         discriminator :type
 
+        # Emitted when an error occurs while processing a Responses WebSocket request.
+        variant :error, -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError }
+
         # Emitted when all injected input items were validated and committed to the
         # active response.
         variant :"response.inject.created", -> { OpenAI::Beta::BetaResponseInjectCreatedEvent }
@@ -65,9 +68,6 @@ module OpenAI
 
         # An event that is emitted when a response is created.
         variant :"response.created", -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsCreated }
-
-        # Emitted when an error occurs.
-        variant :error, -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError }
 
         # Emitted when a file search call is completed (results found).
         variant :"response.file_search_call.completed",
@@ -450,24 +450,6 @@ module OpenAI
           #   details.
           #
           #   An event that is emitted when a response is created.
-          #
-          #   @param stream_id [String] The WebSocket lane that emitted this event. This field is present
-        end
-
-        class BetaResponseWsError < OpenAI::Models::Beta::BetaResponseErrorEvent
-          # @!attribute stream_id
-          #   The WebSocket lane that emitted this event. This field is present when the
-          #   originating `response.create` event supplied a `stream_id`.
-          #
-          #   @return [String, nil]
-          optional :stream_id, String
-
-          # @!method initialize(stream_id: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError} for more
-          #   details.
-          #
-          #   Emitted when an error occurs.
           #
           #   @param stream_id [String] The WebSocket lane that emitted this event. This field is present
         end
@@ -1178,8 +1160,130 @@ module OpenAI
           #   @param stream_id [String] The WebSocket lane that emitted this event. This field is present
         end
 
+        class BetaResponseWsError < OpenAI::Internal::Type::BaseModel
+          # @!attribute error
+          #   Details about the error.
+          #
+          #   @return [OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error]
+          required :error, -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error }
+
+          # @!attribute type
+          #   The type of the event. Always `error`.
+          #
+          #   @return [Symbol, :error]
+          required :type, const: :error
+
+          # @!attribute agent
+          #   The agent that owns this multi-agent streaming event.
+          #
+          #   @return [OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError::Agent, nil]
+          optional :agent,
+                   -> {
+                     OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Agent
+                   },
+                   nil?: true
+
+          # @!attribute sequence_number
+          #   The sequence number of an error emitted by the response stream.
+          #
+          #   @return [Integer, nil]
+          optional :sequence_number, Integer
+
+          # @!attribute status
+          #   The HTTP status code associated with a WebSocket protocol error.
+          #
+          #   @return [Integer, nil]
+          optional :status, Integer
+
+          # @!attribute stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          #
+          #   @return [String, nil]
+          optional :stream_id, String
+
+          # @!method initialize(error:, agent: nil, sequence_number: nil, status: nil, stream_id: nil, type: :error)
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError} for more
+          #   details.
+          #
+          #   Emitted when an error occurs while processing a Responses WebSocket request.
+          #
+          #   @param error [OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error] Details about the error.
+          #
+          #   @param agent [OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError::Agent, nil] The agent that owns this multi-agent streaming event.
+          #
+          #   @param sequence_number [Integer] The sequence number of an error emitted by the response stream.
+          #
+          #   @param status [Integer] The HTTP status code associated with a WebSocket protocol error.
+          #
+          #   @param stream_id [String] The WebSocket lane that emitted this event. This field is present when the
+          #
+          #   @param type [Symbol, :error] The type of the event. Always `error`.
+
+          # @see OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError#error
+          class Error < OpenAI::Internal::Type::BaseModel
+            # @!attribute code
+            #   The error code that was emitted, if any.
+            #
+            #   @return [String, nil]
+            required :code, String, nil?: true
+
+            # @!attribute message
+            #   The human-readable error message that was emitted.
+            #
+            #   @return [String]
+            required :message, String
+
+            # @!attribute param
+            #   The parameter name that was associated with the error, if any.
+            #
+            #   @return [String, nil]
+            required :param, String, nil?: true
+
+            # @!attribute type
+            #   The error type that was emitted.
+            #
+            #   @return [String]
+            required :type, String
+
+            # @!attribute headers
+            #   The response headers that were emitted with the error, if any.
+            #
+            #   @return [Hash{Symbol=>String}, nil]
+            optional :headers, OpenAI::Internal::Type::HashOf[String]
+
+            # @!method initialize(code:, message:, param:, type:, headers: nil)
+            #   Details about the error.
+            #
+            #   @param code [String, nil] The error code that was emitted, if any.
+            #
+            #   @param message [String] The human-readable error message that was emitted.
+            #
+            #   @param param [String, nil] The parameter name that was associated with the error, if any.
+            #
+            #   @param type [String] The error type that was emitted.
+            #
+            #   @param headers [Hash{Symbol=>String}] The response headers that were emitted with the error, if any.
+          end
+
+          # @see OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError#agent
+          class Agent < OpenAI::Internal::Type::BaseModel
+            # @!attribute agent_name
+            #   The canonical name of the agent that produced this item.
+            #
+            #   @return [String]
+            required :agent_name, String
+
+            # @!method initialize(agent_name:)
+            #   The agent that owns this multi-agent streaming event.
+            #
+            #   @param agent_name [String] The canonical name of the agent that produced this item.
+          end
+        end
+
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Beta::BetaResponseInjectCreatedEvent, OpenAI::Models::Beta::BetaResponseInjectFailedEvent, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseAudioWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseAudioWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseAudioTranscriptWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseAudioTranscriptWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallCodeWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallCodeWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallWsCompleted, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallInWsProgress, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallWsInterpreting, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsCompleted, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseContentPartWsAdded, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseContentPartWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsCreated, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallWsCompleted, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallInWsProgress, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallWsSearching, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseFunctionCallArgumentsWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseFunctionCallArgumentsWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseInWsProgress, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsFailed, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsIncomplete, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseOutputItemWsAdded, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseOutputItemWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseReasoningSummaryPartWsAdded, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseReasoningSummaryPartWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseReasoningSummaryTextWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseReasoningSummaryTextWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseReasoningTextWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseReasoningTextWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseRefusalWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseRefusalWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseTextWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseTextWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWebSearchCallWsCompleted, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWebSearchCallInWsProgress, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWebSearchCallWsSearching, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseImageGenCallWsCompleted, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseImageGenCallWsGenerating, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseImageGenCallInWsProgress, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseImageGenCallPartialWsImage, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpCallArgumentsWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpCallArgumentsWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpCallWsCompleted, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpCallWsFailed, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpCallInWsProgress, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpListToolsWsCompleted, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpListToolsWsFailed, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpListToolsInWsProgress, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseOutputTextAnnotationWsAdded, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsQueued, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseCustomToolCallInputWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseCustomToolCallInputWsDone)]
+        #   @return [Array(OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError, OpenAI::Models::Beta::BetaResponseInjectCreatedEvent, OpenAI::Models::Beta::BetaResponseInjectFailedEvent, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseAudioWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseAudioWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseAudioTranscriptWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseAudioTranscriptWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallCodeWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallCodeWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallWsCompleted, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallInWsProgress, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallWsInterpreting, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsCompleted, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseContentPartWsAdded, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseContentPartWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsCreated, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallWsCompleted, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallInWsProgress, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallWsSearching, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseFunctionCallArgumentsWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseFunctionCallArgumentsWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseInWsProgress, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsFailed, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsIncomplete, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseOutputItemWsAdded, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseOutputItemWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseReasoningSummaryPartWsAdded, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseReasoningSummaryPartWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseReasoningSummaryTextWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseReasoningSummaryTextWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseReasoningTextWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseReasoningTextWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseRefusalWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseRefusalWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseTextWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseTextWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWebSearchCallWsCompleted, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWebSearchCallInWsProgress, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWebSearchCallWsSearching, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseImageGenCallWsCompleted, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseImageGenCallWsGenerating, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseImageGenCallInWsProgress, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseImageGenCallPartialWsImage, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpCallArgumentsWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpCallArgumentsWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpCallWsCompleted, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpCallWsFailed, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpCallInWsProgress, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpListToolsWsCompleted, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpListToolsWsFailed, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpListToolsInWsProgress, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseOutputTextAnnotationWsAdded, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsQueued, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseCustomToolCallInputWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseCustomToolCallInputWsDone)]
       end
     end
 

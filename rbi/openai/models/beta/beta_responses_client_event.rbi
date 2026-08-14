@@ -338,6 +338,10 @@ module OpenAI
           #   Responses or Chat Completions. The response will show `service_tier=priority`
           #   regardless of if you specify `service_tier=fast` or `priority` in your
           #   request.
+          # - If set to 'ultrafast', then the request will be processed with the
+          #   access-controlled Ultrafast Processing service tier. This tier is currently
+          #   available for `gpt-5.6-sol`; a response served through it will show
+          #   `service_tier=ultrafast`.
           # - When not set, the default behavior is 'auto'.
           #
           # When the `service_tier` parameter is set, the response body will include the
@@ -831,6 +835,10 @@ module OpenAI
             #   Responses or Chat Completions. The response will show `service_tier=priority`
             #   regardless of if you specify `service_tier=fast` or `priority` in your
             #   request.
+            # - If set to 'ultrafast', then the request will be processed with the
+            #   access-controlled Ultrafast Processing service tier. This tier is currently
+            #   available for `gpt-5.6-sol`; a response served through it will show
+            #   `service_tier=ultrafast`.
             # - When not set, the default behavior is 'auto'.
             #
             # When the `service_tier` parameter is set, the response body will include the
@@ -1178,6 +1186,11 @@ module OpenAI
             GPT_5_5 =
               T.let(
                 :"gpt-5.5",
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+              )
+            GPT_5_5_2026_04_23 =
+              T.let(
+                :"gpt-5.5-2026-04-23",
                 OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
               )
             GPT_5_4 =
@@ -1618,6 +1631,16 @@ module OpenAI
             COMPUTER_USE_PREVIEW_2025_03_11 =
               T.let(
                 :"computer-use-preview-2025-03-11",
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+              )
+            GPT_5_5_PRO =
+              T.let(
+                :"gpt-5.5-pro",
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+              )
+            GPT_5_5_PRO_2026_04_23 =
+              T.let(
+                :"gpt-5.5-pro-2026-04-23",
                 OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
               )
             GPT_5_CODEX =
@@ -2679,6 +2702,10 @@ module OpenAI
           #   Responses or Chat Completions. The response will show `service_tier=priority`
           #   regardless of if you specify `service_tier=fast` or `priority` in your
           #   request.
+          # - If set to 'ultrafast', then the request will be processed with the
+          #   access-controlled Ultrafast Processing service tier. This tier is currently
+          #   available for `gpt-5.6-sol`; a response served through it will show
+          #   `service_tier=ultrafast`.
           # - When not set, the default behavior is 'auto'.
           #
           # When the `service_tier` parameter is set, the response body will include the
@@ -2725,6 +2752,11 @@ module OpenAI
             FAST =
               T.let(
                 :fast,
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier::TaggedSymbol
+              )
+            ULTRAFAST =
+              T.let(
+                :ultrafast,
                 OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier::TaggedSymbol
               )
 

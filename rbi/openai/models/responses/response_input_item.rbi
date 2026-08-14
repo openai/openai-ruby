@@ -3052,7 +3052,17 @@ module OpenAI
           attr_accessor :approval_request_id
 
           # The error from the tool call, if any.
-          sig { returns(T.nilable(String)) }
+          sig do
+            returns(
+              T.nilable(
+                T.any(
+                  OpenAI::Responses::McpToolCallError::McpProtocolError,
+                  OpenAI::Responses::McpToolCallError::McpToolExecutionError,
+                  OpenAI::Responses::McpToolCallError::HTTPError
+                )
+              )
+            )
+          end
           attr_accessor :error
 
           # The output from the tool call.
@@ -3086,7 +3096,14 @@ module OpenAI
               name: String,
               server_label: String,
               approval_request_id: T.nilable(String),
-              error: T.nilable(String),
+              error:
+                T.nilable(
+                  T.any(
+                    OpenAI::Responses::McpToolCallError::McpProtocolError::OrHash,
+                    OpenAI::Responses::McpToolCallError::McpToolExecutionError::OrHash,
+                    OpenAI::Responses::McpToolCallError::HTTPError::OrHash
+                  )
+                ),
               output: T.nilable(String),
               status:
                 OpenAI::Responses::ResponseInputItem::McpCall::Status::OrSymbol,
@@ -3127,7 +3144,14 @@ module OpenAI
                 server_label: String,
                 type: Symbol,
                 approval_request_id: T.nilable(String),
-                error: T.nilable(String),
+                error:
+                  T.nilable(
+                    T.any(
+                      OpenAI::Responses::McpToolCallError::McpProtocolError,
+                      OpenAI::Responses::McpToolCallError::McpToolExecutionError,
+                      OpenAI::Responses::McpToolCallError::HTTPError
+                    )
+                  ),
                 output: T.nilable(String),
                 status:
                   OpenAI::Responses::ResponseInputItem::McpCall::Status::OrSymbol

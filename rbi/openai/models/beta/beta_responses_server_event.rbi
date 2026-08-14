@@ -12,6 +12,7 @@ module OpenAI
         Variants =
           T.type_alias do
             T.any(
+              OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError,
               OpenAI::Beta::BetaResponseInjectCreatedEvent,
               OpenAI::Beta::BetaResponseInjectFailedEvent,
               OpenAI::Beta::BetaResponsesServerEvent::BetaResponseAudioWsDelta,
@@ -27,7 +28,6 @@ module OpenAI
               OpenAI::Beta::BetaResponsesServerEvent::BetaResponseContentPartWsAdded,
               OpenAI::Beta::BetaResponsesServerEvent::BetaResponseContentPartWsDone,
               OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsCreated,
-              OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError,
               OpenAI::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallWsCompleted,
               OpenAI::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallInWsProgress,
               OpenAI::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallWsSearching,
@@ -932,72 +932,6 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseCreatedEvent::Agent),
-                stream_id: String
-              }
-            )
-          end
-          def to_hash
-          end
-        end
-
-        class BetaResponseWsError < OpenAI::Models::Beta::BetaResponseErrorEvent
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError,
-                OpenAI::Internal::AnyHash
-              )
-            end
-
-          # The WebSocket lane that emitted this event. This field is present when the
-          # originating `response.create` event supplied a `stream_id`.
-          sig { returns(T.nilable(String)) }
-          attr_reader :stream_id
-
-          sig { params(stream_id: String).void }
-          attr_writer :stream_id
-
-          # Emitted when an error occurs.
-          sig do
-            params(
-              code: T.nilable(String),
-              message: String,
-              param: T.nilable(String),
-              sequence_number: Integer,
-              agent:
-                T.nilable(OpenAI::Beta::BetaResponseErrorEvent::Agent::OrHash),
-              type: Symbol,
-              stream_id: String
-            ).returns(T.attached_class)
-          end
-          def self.new(
-            # The error code.
-            code:,
-            # The error message.
-            message:,
-            # The error parameter.
-            param:,
-            # The sequence number of this event.
-            sequence_number:,
-            # The agent that owns this multi-agent streaming event.
-            agent: nil,
-            # The type of the event. Always `error`.
-            type: :error,
-            # The WebSocket lane that emitted this event.
-            # This field is present when the originating response.create supplied a stream_id.
-            stream_id: nil
-          )
-          end
-
-          sig do
-            override.returns(
-              {
-                code: T.nilable(String),
-                message: String,
-                param: T.nilable(String),
-                sequence_number: Integer,
-                type: Symbol,
-                agent: T.nilable(OpenAI::Beta::BetaResponseErrorEvent::Agent),
                 stream_id: String
               }
             )
@@ -3804,6 +3738,226 @@ module OpenAI
             )
           end
           def to_hash
+          end
+        end
+
+        class BetaResponseWsError < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # Details about the error.
+          sig do
+            returns(
+              OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error
+            )
+          end
+          attr_reader :error
+
+          sig do
+            params(
+              error:
+                OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::OrHash
+            ).void
+          end
+          attr_writer :error
+
+          # The type of the event. Always `error`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # The agent that owns this multi-agent streaming event.
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Agent
+              )
+            )
+          end
+          attr_reader :agent
+
+          sig do
+            params(
+              agent:
+                T.nilable(
+                  OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Agent::OrHash
+                )
+            ).void
+          end
+          attr_writer :agent
+
+          # The sequence number of an error emitted by the response stream.
+          sig { returns(T.nilable(Integer)) }
+          attr_reader :sequence_number
+
+          sig { params(sequence_number: Integer).void }
+          attr_writer :sequence_number
+
+          # The HTTP status code associated with a WebSocket protocol error.
+          sig { returns(T.nilable(Integer)) }
+          attr_reader :status
+
+          sig { params(status: Integer).void }
+          attr_writer :status
+
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
+          sig { returns(T.nilable(String)) }
+          attr_reader :stream_id
+
+          sig { params(stream_id: String).void }
+          attr_writer :stream_id
+
+          # Emitted when an error occurs while processing a Responses WebSocket request.
+          sig do
+            params(
+              error:
+                OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::OrHash,
+              agent:
+                T.nilable(
+                  OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Agent::OrHash
+                ),
+              sequence_number: Integer,
+              status: Integer,
+              stream_id: String,
+              type: Symbol
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # Details about the error.
+            error:,
+            # The agent that owns this multi-agent streaming event.
+            agent: nil,
+            # The sequence number of an error emitted by the response stream.
+            sequence_number: nil,
+            # The HTTP status code associated with a WebSocket protocol error.
+            status: nil,
+            # The WebSocket lane that emitted this event. This field is present when the
+            # originating `response.create` event supplied a `stream_id`.
+            stream_id: nil,
+            # The type of the event. Always `error`.
+            type: :error
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                error:
+                  OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error,
+                type: Symbol,
+                agent:
+                  T.nilable(
+                    OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Agent
+                  ),
+                sequence_number: Integer,
+                status: Integer,
+                stream_id: String
+              }
+            )
+          end
+          def to_hash
+          end
+
+          class Error < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The error code that was emitted, if any.
+            sig { returns(T.nilable(String)) }
+            attr_accessor :code
+
+            # The human-readable error message that was emitted.
+            sig { returns(String) }
+            attr_accessor :message
+
+            # The parameter name that was associated with the error, if any.
+            sig { returns(T.nilable(String)) }
+            attr_accessor :param
+
+            # The error type that was emitted.
+            sig { returns(String) }
+            attr_accessor :type
+
+            # The response headers that were emitted with the error, if any.
+            sig { returns(T.nilable(T::Hash[Symbol, String])) }
+            attr_reader :headers
+
+            sig { params(headers: T::Hash[Symbol, String]).void }
+            attr_writer :headers
+
+            # Details about the error.
+            sig do
+              params(
+                code: T.nilable(String),
+                message: String,
+                param: T.nilable(String),
+                type: String,
+                headers: T::Hash[Symbol, String]
+              ).returns(T.attached_class)
+            end
+            def self.new(
+              # The error code that was emitted, if any.
+              code:,
+              # The human-readable error message that was emitted.
+              message:,
+              # The parameter name that was associated with the error, if any.
+              param:,
+              # The error type that was emitted.
+              type:,
+              # The response headers that were emitted with the error, if any.
+              headers: nil
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  code: T.nilable(String),
+                  message: String,
+                  param: T.nilable(String),
+                  type: String,
+                  headers: T::Hash[Symbol, String]
+                }
+              )
+            end
+            def to_hash
+            end
+          end
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Agent,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The canonical name of the agent that produced this item.
+            sig { returns(String) }
+            attr_accessor :agent_name
+
+            # The agent that owns this multi-agent streaming event.
+            sig { params(agent_name: String).returns(T.attached_class) }
+            def self.new(
+              # The canonical name of the agent that produced this item.
+              agent_name:
+            )
+            end
+
+            sig { override.returns({ agent_name: String }) }
+            def to_hash
+            end
           end
         end
 

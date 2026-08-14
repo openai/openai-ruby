@@ -6,6 +6,7 @@ module OpenAI
       type beta_web_search_tool =
         {
           type: OpenAI::Models::Beta::BetaWebSearchTool::type_,
+          external_web_access: bool,
           filters: OpenAI::Beta::BetaWebSearchTool::Filters?,
           search_context_size: OpenAI::Models::Beta::BetaWebSearchTool::search_context_size,
           user_location: OpenAI::Beta::BetaWebSearchTool::UserLocation?
@@ -13,6 +14,10 @@ module OpenAI
 
       class BetaWebSearchTool < OpenAI::Internal::Type::BaseModel
         attr_accessor type: OpenAI::Models::Beta::BetaWebSearchTool::type_
+
+        attr_reader external_web_access: bool?
+
+        def external_web_access=: (bool) -> bool
 
         attr_accessor filters: OpenAI::Beta::BetaWebSearchTool::Filters?
 
@@ -26,6 +31,7 @@ module OpenAI
 
         def initialize: (
           type: OpenAI::Models::Beta::BetaWebSearchTool::type_,
+          ?external_web_access: bool,
           ?filters: OpenAI::Beta::BetaWebSearchTool::Filters?,
           ?search_context_size: OpenAI::Models::Beta::BetaWebSearchTool::search_context_size,
           ?user_location: OpenAI::Beta::BetaWebSearchTool::UserLocation?
@@ -33,6 +39,7 @@ module OpenAI
 
         def to_hash: -> {
           type: OpenAI::Models::Beta::BetaWebSearchTool::type_,
+          external_web_access: bool,
           filters: OpenAI::Beta::BetaWebSearchTool::Filters?,
           search_context_size: OpenAI::Models::Beta::BetaWebSearchTool::search_context_size,
           user_location: OpenAI::Beta::BetaWebSearchTool::UserLocation?

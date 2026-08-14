@@ -21,12 +21,17 @@ module OpenAI
       sig { returns(String) }
       attr_accessor :owned_by
 
+      # The date when the model will shut down, or null if not announced.
+      sig { returns(T.nilable(Date)) }
+      attr_accessor :shutdown_date
+
       # Describes an OpenAI model offering that can be used with the API.
       sig do
         params(
           id: String,
           created: Integer,
           owned_by: String,
+          shutdown_date: T.nilable(Date),
           object: Symbol
         ).returns(T.attached_class)
       end
@@ -37,6 +42,8 @@ module OpenAI
         created:,
         # The organization that owns the model.
         owned_by:,
+        # The date when the model will shut down, or null if not announced.
+        shutdown_date: nil,
         # The object type, which is always "model".
         object: :model
       )
@@ -44,7 +51,13 @@ module OpenAI
 
       sig do
         override.returns(
-          { id: String, created: Integer, object: Symbol, owned_by: String }
+          {
+            id: String,
+            created: Integer,
+            object: Symbol,
+            owned_by: String,
+            shutdown_date: T.nilable(Date)
+          }
         )
       end
       def to_hash

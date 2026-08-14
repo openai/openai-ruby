@@ -12,6 +12,8 @@ module OpenAI
       GPT_5_6_TERRA = T.let(:"gpt-5.6-terra", OpenAI::ChatModel::TaggedSymbol)
       GPT_5_6_LUNA = T.let(:"gpt-5.6-luna", OpenAI::ChatModel::TaggedSymbol)
       GPT_5_5 = T.let(:"gpt-5.5", OpenAI::ChatModel::TaggedSymbol)
+      GPT_5_5_2026_04_23 =
+        T.let(:"gpt-5.5-2026-04-23", OpenAI::ChatModel::TaggedSymbol)
       GPT_5_4 = T.let(:"gpt-5.4", OpenAI::ChatModel::TaggedSymbol)
       GPT_5_4_MINI = T.let(:"gpt-5.4-mini", OpenAI::ChatModel::TaggedSymbol)
       GPT_5_4_NANO = T.let(:"gpt-5.4-nano", OpenAI::ChatModel::TaggedSymbol)
