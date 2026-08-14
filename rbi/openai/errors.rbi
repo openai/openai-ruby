@@ -7,6 +7,31 @@ module OpenAI
       attr_accessor :cause
     end
 
+    class PollingError < OpenAI::Errors::Error
+    end
+
+    class PollingTimeoutError < OpenAI::Errors::PollingError
+      sig { returns(T.anything) }
+      attr_reader :resource
+
+      sig { returns(Float) }
+      attr_reader :timeout
+
+      sig { returns(String) }
+      attr_reader :operation
+
+      # @api private
+      sig do
+        params(
+          operation: String,
+          timeout: Float,
+          resource: T.anything
+        ).returns(T.attached_class)
+      end
+      def self.new(operation:, timeout:, resource:)
+      end
+    end
+
     class ConversionError < OpenAI::Errors::Error
       sig { returns(T.nilable(StandardError)) }
       def cause

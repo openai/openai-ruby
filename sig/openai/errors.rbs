@@ -4,6 +4,21 @@ module OpenAI
       attr_accessor cause: StandardError?
     end
 
+    class PollingError < OpenAI::Errors::Error
+    end
+
+    class PollingTimeoutError < OpenAI::Errors::PollingError
+      attr_reader resource: top
+      attr_reader timeout: Float
+      attr_reader operation: String
+
+      def initialize: (
+        operation: String,
+        timeout: Float,
+        resource: top
+      ) -> void
+    end
+
     class ConversionError < OpenAI::Errors::Error
       def cause: -> StandardError?
 

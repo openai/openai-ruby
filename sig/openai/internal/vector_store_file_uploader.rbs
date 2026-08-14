@@ -1,0 +1,15 @@
+module OpenAI
+  module Internal
+    class VectorStoreFileUploader
+      def initialize: (
+        client: OpenAI::Client,
+        max_concurrency: Integer,
+        request_options: OpenAI::request_opts?
+      ) -> void
+
+      def upload: (
+        Enumerable[OpenAI::Internal::file_input] files
+      ) -> Array[OpenAI::Models::FileObject]
+    end
+  end
+end

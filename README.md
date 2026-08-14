@@ -122,6 +122,43 @@ puts(edited.data.first)
 
 Note that you can also pass a raw `IO` descriptor, but this disables retries, as the library can't be sure if the descriptor is a file or pipe (which cannot be rewound).
 
+#### Polling and vector store ingestion
+
+Polling helpers wait for file processing and return the final resource. Durations are
+expressed in seconds. By default, the helpers honor the API's recommended polling
+interval, fall back to 5 seconds, and stop after 30 minutes. Pass `timeout: nil` to
+wait indefinitely.
+
+```ruby
+file = openai.files.wait_for_processing(
+  file_object.id,
+  poll_interval: 2,
+  timeout: 10 * 60
+)
+
+vector_file = openai.vector_stores.files.upload_and_poll(
+  vector_store.id,
+  file: Pathname("handbook.pdf"),
+  attributes: {department: "engineering"}
+)
+
+batch = openai.vector_stores.file_batches.upload_and_poll(
+  vector_store.id,
+  files: [Pathname("one.pdf"), Pathname("two.pdf")],
+  file_ids: [file_object.id],
+  max_concurrency: 3
+)
+```
+
+The vector store helpers return terminal `failed` and `cancelled` resources instead
+of raising, so inspect `status`, `last_error`, or `file_counts` as appropriate. An
+overall polling timeout raises `OpenAI::Errors::PollingTimeoutError`; its `resource`
+attribute contains the last object returned by the API.
+
+Batch uploads are concurrent but not transactional. If one upload fails, the helper
+stops scheduling work and raises that error; files uploaded successfully before the
+failure remain available through the Files API.
+
 ### Custom HTTP clients
 
 `OpenAI::Client` accepts an `http_client` for advanced transport requirements.
@@ -627,6 +664,7 @@ Error codes are as follows:
 | HTTP >= 500      | `InternalServerError`      |
 | Other HTTP error | `APIStatusError`           |
 | Timeout          | `APITimeoutError`          |
+| Polling timeout  | `PollingTimeoutError`      |
 | Network error    | `APIConnectionError`       |
 
 ### Request logging
