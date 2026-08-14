@@ -11,6 +11,7 @@ prompt = "An astronaut lounging in a tropical resort in space, pixel art"
 
 # Generate an image based on the prompt
 response = client.images.generate(model: "gpt-image-2", prompt: prompt)
+abort("The image request completed without an image") if response.data.to_a.empty?
 
 # Prints the generated image response.
 pp(response)

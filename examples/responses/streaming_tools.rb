@@ -37,7 +37,8 @@ client = OpenAI::Client.new
 stream = client.responses.stream(
   model: "gpt-4o-2024-08-06",
   input: "look up all my orders in november of last year that were fulfilled but not delivered on time",
-  tools: [Query]
+  tools: [Query],
+  tool_choice: {type: :function, name: "Query"}
 )
 
 stream.each do |event|
@@ -52,12 +53,17 @@ response = stream.get_final_response
 
 puts
 puts("----- parsed outputs from final response -----")
+parsed_tool_call_received = T.let(false, T::Boolean)
 response
   .output
   .each do |output|
     case output
     when OpenAI::Models::Responses::ResponseFunctionToolCall
       # parsed is an instance of `Query`
-      pp(output.parsed)
+      parsed = T.cast(output.parsed, Query)
+
+      parsed_tool_call_received = true
+      pp(parsed)
     end
   end
+abort("The final response did not contain a parsed Query tool call") unless parsed_tool_call_received

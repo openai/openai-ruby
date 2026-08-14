@@ -24,4 +24,5 @@ stream.each do |event|
   end
 end
 
-puts("Streamed content received.") if content_received
+abort("The stream completed without content") unless content_received
+puts("Streamed content received.")

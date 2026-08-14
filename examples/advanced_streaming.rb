@@ -31,6 +31,7 @@ begin
     end
 
   pp(all_choices)
+  abort("The eager stream completed without choices") if all_choices.empty?
 
   # once the stream has been consumed, it will become "empty"
   pp("this will print an empty array")
@@ -67,9 +68,12 @@ begin
 
   # method calls that do not return another `enumerable` will consume the intermediary stream
   #   and perform cleanup
+  lazy_choice_received = T.let(false, T::Boolean)
   stream_of_choices.each do |choice|
+    lazy_choice_received = true
     pp(choice)
   end
+  abort("The lazy stream completed without choices") unless lazy_choice_received
 
   # at this point the stream has been consumed already, so it will return an empty array
   pp(stream_of_choices.to_a)

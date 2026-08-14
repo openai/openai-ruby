@@ -72,12 +72,15 @@ begin
   puts "Collected #{resumed_events.length} additional events"
 
   # Show that we properly resumed from where we left off.
-  if resumed_events.any?
-    first_resumed_event = resumed_events.first
-    last_initial_event = events.last
-    puts "First resumed event sequence: #{first_resumed_event.sequence_number}"
-    puts "Should be greater than last initial event: #{last_initial_event.sequence_number}"
+  abort("The resumed stream completed without events") if resumed_events.empty?
+
+  first_resumed_event = resumed_events.first
+  last_initial_event = events.last
+  unless first_resumed_event.sequence_number > last_initial_event.sequence_number
+    abort("The resumed stream repeated an event from the initial stream")
   end
+  puts "First resumed event sequence: #{first_resumed_event.sequence_number}"
+  puts "Verified it is greater than the last initial event: #{last_initial_event.sequence_number}"
 end
 
 begin
@@ -147,10 +150,16 @@ begin
 
   puts "\nFinal response parsed outputs:"
   response = resumed_stream.get_final_response
+  parsed_output_received = false
   response
     .output
     .flat_map { _1.content }
     .each do |content|
-      pp(content.parsed)
+      parsed = content.parsed
+      next unless parsed.is_a?(MathResponse)
+
+      parsed_output_received = true
+      pp(parsed)
     end
+  abort("The resumed response did not contain a parsed MathResponse") unless parsed_output_received
 end

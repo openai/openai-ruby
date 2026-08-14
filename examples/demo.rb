@@ -21,7 +21,9 @@ begin
     ]
   )
 
-  pp(completion.choices.first&.message&.content)
+  content = completion.choices.first&.message&.content
+  abort("The standard request completed without content") if content.to_s.strip.empty?
+  pp(content)
 end
 
 begin
@@ -38,9 +40,13 @@ begin
     ]
   )
 
+  streamed_content_received = T.let(false, T::Boolean)
   stream.each do |chunk|
     next if chunk.choices.to_a.empty?
 
-    pp(chunk.choices.first&.delta&.content)
+    content = chunk.choices.first&.delta&.content
+    streamed_content_received ||= !content.to_s.strip.empty?
+    pp(content)
   end
+  abort("The streaming request completed without content") unless streamed_content_received
 end

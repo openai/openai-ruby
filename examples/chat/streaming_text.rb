@@ -20,4 +20,5 @@ stream.text.each do |text|
 end
 puts
 
-puts("Streamed content received.") if content_received
+abort("The text stream completed without content") unless content_received
+puts("Streamed content received.")
