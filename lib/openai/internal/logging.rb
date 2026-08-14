@@ -421,7 +421,7 @@ module OpenAI
 
           case value
           in Hash
-            value.to_h { |name, nested| [name, scrub_value(nested, key: name)] }
+            value.to_h { |name, nested| [scrub_embedded_url(name), scrub_value(nested, key: name)] }
           in Array if value.length > MAX_ARRAY_ITEMS
             "[ARRAY OMITTED items=#{value.length}]"
           in Array

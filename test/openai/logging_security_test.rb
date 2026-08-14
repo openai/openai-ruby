@@ -222,6 +222,62 @@ class LoggingSecurityTest < Minitest::Test
     assert_includes(body, "google-signature-secret")
   end
 
+  def test_debug_logs_redact_signed_urls_in_nested_json_object_keys
+    azure_key = "https://azure.example.test/image.png?sv=2025-01-01&sig=azure-object-key-proof"
+    aws_key = "https://aws.example.test/file.pdf?X-Amz-Credential=aws-object-key-proof&safe=visible"
+    google_key = "https://google.example.test/file?X-Goog-Signature=google-object-key-proof"
+    malformed_key = "https://storage.example.test/private image.png?sig=malformed-object-key-proof"
+    harmless_key = "https://public.example.test/file?version=1"
+    body = JSON.generate(
+      "results" => [
+        {
+          azure_key => "azure-result",
+          "nested" => {aws_key => "aws-result", google_key => "google-result"},
+          malformed_key => "malformed-result",
+          harmless_key => "public-result"
+        }
+      ]
+    )
+    headers = {"content-type" => "application/json"}
+    formatted = [
+      OpenAI::Internal::Logging.format_body(body, headers: headers),
+      OpenAI::Internal::Logging.format_observed_body(
+        body,
+        headers: headers,
+        complete: true,
+        total_bytes: body.bytesize
+      )
+    ]
+
+    formatted.each do |value|
+      parsed = JSON.parse(value).fetch("results").fetch(0)
+
+      assert_equal(
+        "azure-result",
+        parsed.fetch("https://azure.example.test/image.png?sv=2025-01-01&sig=%5BREDACTED%5D")
+      )
+      assert_equal("public-result", parsed.fetch(harmless_key))
+      assert_equal("malformed-result", parsed.fetch("[URL OMITTED]"))
+      assert_includes(value, "aws.example.test/file.pdf")
+      assert_includes(value, "google.example.test/file")
+      assert_includes(value, "safe=visible")
+
+      %w[
+        azure-object-key-proof
+        aws-object-key-proof
+        google-object-key-proof
+        malformed-object-key-proof
+      ].each do |proof|
+        refute_includes(value, proof)
+      end
+    end
+
+    assert_includes(body, "azure-object-key-proof")
+    assert_includes(body, "aws-object-key-proof")
+    assert_includes(body, "google-object-key-proof")
+    assert_includes(body, "malformed-object-key-proof")
+  end
+
   def test_debug_logs_recursively_redact_signed_urls_embedded_in_query_values
     storage_url =
       "https://user:password@storage.example.test/private.png?" \
