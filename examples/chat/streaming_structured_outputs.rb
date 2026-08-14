@@ -38,15 +38,17 @@ response = stream.get_final_completion
 
 puts
 puts("----- parsed outputs from final response -----")
-parsed_output_received = false
+completed_parsed_output_received = false
 response
   .choices
   .each do |choice|
     # parsed is an instance of `MathResponse`
     parsed = choice.message.parsed
-    next unless parsed.is_a?(MathResponse)
+    next unless parsed.is_a?(MathResponse) && !choice.finish_reason.nil?
 
-    parsed_output_received = true
+    completed_parsed_output_received = true
     pp(parsed)
   end
-abort("The final completion did not contain a parsed MathResponse") unless parsed_output_received
+unless completed_parsed_output_received
+  abort("The final completion did not contain a completed parsed MathResponse")
+end
