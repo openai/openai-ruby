@@ -11,7 +11,7 @@ GIT
 PATH
   remote: .
   specs:
-    openai (0.78.0)
+    openai (0.79.0)
       base64
       cgi
       connection_pool (>= 2.2.3)
