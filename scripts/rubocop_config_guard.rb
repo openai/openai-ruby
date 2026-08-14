@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
+require "json"
+require "open3"
+require "rbconfig"
 require "yaml"
-require "rubocop"
 
 module RuboCopConfigGuard
+  CONFIG_LOADER_MODE = "--load-config"
   DEFAULT_ROOT = File.expand_path("..", __dir__)
   IGNORED_CONFIG_PREFIXES = ["vendor/bundle/"].freeze
 
@@ -63,9 +66,39 @@ module RuboCopConfigGuard
     root = File.expand_path(root)
     config_paths(root)
       .flat_map do |path|
-        config = RuboCop::ConfigLoader.load_file(File.join(root, path))
+        config = effective_config_for(File.join(root, path))
         violations_for_config(path, config)
       end
       .uniq
   end
+
+  def effective_config_for(path)
+    stdout, stderr, status = Open3.capture3(
+      RbConfig.ruby,
+      File.expand_path(__FILE__),
+      CONFIG_LOADER_MODE,
+      path,
+      chdir: DEFAULT_ROOT
+    )
+    warn(stderr) unless stderr.empty?
+    raise "Failed to load RuboCop configuration #{path}" unless status.success?
+
+    JSON.parse(stdout)
+  end
+end
+
+if $PROGRAM_NAME == __FILE__
+  abort("Usage: #{__FILE__} #{RuboCopConfigGuard::CONFIG_LOADER_MODE} PATH") unless
+    ARGV.shift == RuboCopConfigGuard::CONFIG_LOADER_MODE
+
+  require "rubocop"
+
+  output = $stdout
+  begin
+    $stdout = $stderr
+    config = RuboCop::ConfigLoader.load_file(ARGV.fetch(0))
+  ensure
+    $stdout = output
+  end
+  output.write(JSON.generate(config.to_h))
 end

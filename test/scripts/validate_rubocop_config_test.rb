@@ -2,6 +2,7 @@
 
 require "minitest/autorun"
 require "fileutils"
+require "pathname"
 require "tmpdir"
 
 require_relative "../../scripts/rubocop_config_guard"
@@ -137,21 +138,20 @@ class ValidateRuboCopConfigTest < Minitest::Test
 
   def test_follows_inherit_gem_paths
     Dir.mktmpdir do |directory|
-      gem_root = File.join(directory, "lint-policy")
-      FileUtils.mkdir_p(File.join(gem_root, "config"))
+      inherited_path = File.join(directory, "lint-policy.yml")
+      relative_path = Pathname(inherited_path).relative_path_from(
+        Pathname(RuboCopConfigGuard::DEFAULT_ROOT)
+      )
       File.write(
         File.join(directory, ".rubocop.yml"),
-        "inherit_gem:\n  openai-lint-policy: config/default.yml\n"
+        "inherit_gem:\n  openai: #{relative_path}\n"
       )
       File.write(
-        File.join(gem_root, "config", "default.yml"),
+        inherited_path,
         "Lint/EmptyBlock:\n  Exclude:\n    - lib/generated.rb\n"
       )
-      gem_spec = Struct.new(:gem_dir).new(gem_root)
 
-      Gem::Specification.stub(:find_by_name, gem_spec) do
-        assert_includes(RuboCopConfigGuard.validate(directory).first, "Lint/EmptyBlock")
-      end
+      assert_includes(RuboCopConfigGuard.validate(directory).first, "Lint/EmptyBlock")
     end
   end
 
