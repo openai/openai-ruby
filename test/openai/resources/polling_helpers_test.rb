@@ -99,15 +99,40 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
   end
 
   def test_files_wait_for_processing_allows_an_unbounded_request_without_a_deadline
-    transport = scripted_transport { [200, {}, file_object(status: "processed")] }
+    responses = [
+      [429, {"retry-after" => "0"}, {error: {message: "retry", type: "rate_limit_error"}}],
+      [200, {}, file_object(status: "processed")]
+    ]
+    transport = scripted_transport { responses.shift }
 
-    build_client(transport).files.wait_for_processing(
-      "file_123",
-      timeout: nil,
-      request_options: {timeout: nil}
-    )
+    result, sleeps = capture_sleep do
+      build_client(transport, max_retries: 1).files.wait_for_processing(
+        "file_123",
+        timeout: nil,
+        request_options: {timeout: nil}
+      )
+    end
 
+    assert_equal(:processed, result.status)
     assert_nil(transport.requests.fetch(0).timeout)
+    assert_equal(2, transport.requests.length)
+    assert_equal([0.0], sleeps)
+  end
+
+  def test_finite_polling_deadline_disables_transport_retries
+    transport = scripted_transport do
+      [429, {"retry-after" => "60"}, {error: {message: "retry", type: "rate_limit_error"}}]
+    end
+
+    assert_raises(OpenAI::Errors::RateLimitError) do
+      build_client(transport, max_retries: 2).files.wait_for_processing(
+        "file_123",
+        timeout: 10,
+        request_options: {max_retries: 2}
+      )
+    end
+
+    assert_equal(1, transport.requests.length)
   end
 
   def test_files_wait_for_processing_raises_before_request_when_deadline_elapsed
@@ -672,12 +697,12 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
 
   private def scripted_transport(&handler) = ScriptedHTTPClient.new(&handler)
 
-  private def build_client(transport)
+  private def build_client(transport, max_retries: 0)
     OpenAI::Client.new(
       api_key: "test-key",
       base_url: "http://example.test/v1",
       http_client: transport,
-      max_retries: 0
+      max_retries: max_retries
     )
   end
 

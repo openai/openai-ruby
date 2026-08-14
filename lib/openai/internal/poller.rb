@@ -64,6 +64,10 @@ module OpenAI
           request_timeout = options[:timeout]
           request_timeout = request_timeout.to_f.clamp(0..) unless request_timeout.nil?
           bounded[:timeout] = [request_timeout, remaining].compact.min
+
+          # The transport applies `timeout` to every retry attempt independently.
+          # Disable those retries so the polling deadline bounds the whole request.
+          bounded[:max_retries] = 0
         end
         bounded
       end

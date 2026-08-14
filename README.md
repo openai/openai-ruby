@@ -129,6 +129,10 @@ expressed in seconds. By default, the helpers honor the API's recommended pollin
 interval, fall back to 5 seconds, and stop after 30 minutes. Pass `timeout: nil` to
 wait indefinitely.
 
+To keep a finite overall deadline strict, polling retrievals do not perform
+transport-level retries. Pass `timeout: nil` to retain the client's configured retry
+behavior.
+
 ```ruby
 file = openai.files.wait_for_processing(
   file_object.id,

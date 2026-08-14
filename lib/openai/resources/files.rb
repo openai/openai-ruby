@@ -168,7 +168,9 @@ module OpenAI
       #
       # The returned file may have an `error` status; callers should inspect the
       # status before using it. Polling intervals and the overall timeout are in
-      # seconds. Set `timeout` to `nil` to wait indefinitely.
+      # seconds. Finite timeouts disable transport retries for polling retrievals so
+      # the deadline remains strict. Set `timeout` to `nil` to wait indefinitely and
+      # retain configured transport retries.
       #
       # @overload wait_for_processing(file_id, poll_interval: nil, timeout: 1800.0, request_options: {})
       #
