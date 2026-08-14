@@ -31,13 +31,15 @@ stream.each do |event|
     puts("  Saved to: #{File.expand_path(filename)}")
 
   when OpenAI::Models::ImageGenCompletedEvent
+    image_data = Base64.decode64(event.b64_json)
+    abort("The completed image event did not contain image data") if image_data.empty?
+
     completed_count += 1
     puts("\n✅ Final image completed!")
     puts("  Size: #{event.b64_json.length} characters (base64)")
 
     # Save final image to file
     filename = "final_image.png"
-    image_data = Base64.decode64(event.b64_json)
     File.write(filename, image_data)
     puts("  Saved to: #{File.expand_path(filename)}")
   end

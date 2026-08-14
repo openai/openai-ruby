@@ -21,4 +21,7 @@ end
 puts
 
 abort("The text stream completed without content") unless content_received
+completion = stream.get_final_completion
+finished_choice_received = completion.choices.any? { |choice| !choice.finish_reason.nil? }
+abort("The text stream ended before content completion") unless finished_choice_received
 puts("Streamed content received.")
