@@ -17,9 +17,22 @@ module OpenAI
         #
         # @see OpenAI::Models::Realtime::CallCreateParams
         def create(params)
+          create_with_path(
+            params,
+            path: "realtime/calls",
+            hangup_path: "realtime/calls/%1$s/hangup"
+          )
+        end
+
+        # Create a WebRTC call against a capability-specific endpoint while sharing
+        # request encoding, response parsing, and failure cleanup.
+        #
+        # @api private
+        def create_with_path(params, path:, hangup_path:)
           parsed, options = OpenAI::Realtime::CallCreateParams.dump_request(params)
           sdp = parsed.fetch(:sdp)
           session = parsed[:session]
+          options = {max_retries: 0, **options.to_h}
           headers, body =
             if session.nil?
               [{"accept" => "application/sdp", "content-type" => "application/sdp"}, sdp]
@@ -35,7 +48,7 @@ module OpenAI
 
           response = @client.request_raw(
             method: :post,
-            path: "realtime/calls",
+            path: path,
             headers: headers,
             body: body,
             security: {bearer_auth: true},
@@ -44,11 +57,32 @@ module OpenAI
           location = response.headers["location"]
           call_id = call_id_from_location(location)
           attributes = {
-            sdp: response.body.to_a.join,
+            sdp: read_sdp(response, call_id: call_id, hangup_path: hangup_path),
             headers: response.headers
           }
           attributes[:call_id] = call_id if call_id
           OpenAI::Realtime::CallCreateResponse.new(attributes)._set_last_response(response.metadata)
+        end
+
+        private def read_sdp(response, call_id:, hangup_path:)
+          response.body.to_a.join
+        rescue StandardError
+          cleanup_created_call(call_id, hangup_path: hangup_path)
+          raise
+        end
+
+        private def cleanup_created_call(call_id, hangup_path:)
+          return if call_id.nil?
+
+          @client.request(
+            method: :post,
+            path: [hangup_path, call_id],
+            model: NilClass,
+            security: {bearer_auth: true},
+            options: {max_retries: 0}
+          )
+        rescue StandardError
+          nil
         end
 
         # A Location header is helpful metadata, but the SDP answer remains usable

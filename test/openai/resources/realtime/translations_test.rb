@@ -147,7 +147,7 @@ class OpenAI::Test::Resources::Realtime::TranslationsTest < Minitest::Test
         status: 201,
         headers: {
           "content-type" => "application/sdp",
-          "location" => "/v1/realtime/calls/rtc_translation",
+          "location" => "/v1/realtime/translations/calls/rtc_translation",
           "x-request-id" => "req_translation_call"
         },
         body: "answer-sdp"
@@ -162,7 +162,7 @@ class OpenAI::Test::Resources::Realtime::TranslationsTest < Minitest::Test
     assert_equal("req_translation_call", response._request_id)
     assert_equal(201, response.last_response.status)
     request = http_client.requests.fetch(0)
-    assert_equal("/v1/realtime/calls", request.url.path)
+    assert_equal("/v1/realtime/translations/calls", request.url.path)
     assert_equal("application/sdp", request.headers.fetch("content-type"))
     assert_equal("offer-sdp", request.body)
   end
@@ -211,6 +211,29 @@ class OpenAI::Test::Resources::Realtime::TranslationsTest < Minitest::Test
       ],
       socket.writes.map { JSON.parse(_1).fetch("type") }
     )
+  end
+
+  def test_translation_connection_accepts_nested_string_keyed_client_events
+    socket = FakeSocket.new
+    transport = FakeTransport.new(socket)
+    client = OpenAI::Client.new(api_key: "test-key")
+    event = JSON.parse(
+      JSON.generate(
+        type: "session.update",
+        session: {audio: {output: {language: "es"}}}
+      )
+    )
+
+    client.realtime.translations.connect(
+      model: "gpt-realtime-translate",
+      transport: transport
+    ) do |connection|
+      connection.send_event(event)
+    end
+
+    sent = JSON.parse(socket.writes.fetch(0))
+    assert_equal("session.update", sent.fetch("type"))
+    assert_equal("es", sent.dig("session", "audio", "output", "language"))
   end
 
   def test_connect_requires_a_block

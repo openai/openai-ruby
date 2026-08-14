@@ -444,6 +444,26 @@ class OpenAI::Test::RealtimeExamplesTest < OpenAI::Test::RealtimeExamplesTestCas
     assert_equal(["rtc_example"], calls.hangups)
   end
 
+  def test_webrtc_conversation_hangs_up_every_tracked_call_during_shutdown
+    calls = RecordingWebRTCCalls.new
+    calls.call_ids = %w[rtc_first rtc_second]
+    app = OpenAI::Examples::Realtime::WebRTCConversation::App.new(
+      client: RecordingClient.new(Data.define(:calls).new(calls)),
+      html: "test"
+    )
+    request = HTTPRequest.new(
+      request_method: "POST",
+      path: "/session",
+      body: "v=0\r\nt=0 0\r\n",
+      headers: {**WEBRTC_HEADERS, "content-type" => "application/sdp"}
+    )
+    2.times { app.handle(request, HTTPResponse.new) }
+
+    app.shutdown
+
+    assert_equal(%w[rtc_first rtc_second], calls.hangups)
+  end
+
   def test_webrtc_conversation_rejects_non_sdp_requests
     calls = RecordingWebRTCCalls.new
     app = OpenAI::Examples::Realtime::WebRTCConversation::App.new(

@@ -32,6 +32,8 @@ immediately and asks the Ruby backend to hang up the call.
 If the hangup request fails, the browser retains the call ID, disables starting
 a replacement call, and changes **Stop** to **Retry hangup**. It also keeps the
 ID available to the page-exit beacon until the backend confirms cleanup.
+Pressing Control-C in the Ruby process also attempts to hang up every call still
+tracked by the local control plane before the example exits.
 
 ## WebSocket microphone loop (advanced)
 

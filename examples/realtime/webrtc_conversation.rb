@@ -57,6 +57,17 @@ module OpenAI
             )
           end
 
+          def shutdown
+            call_ids = @call_ids_lock.synchronize { @call_ids.keys }
+            call_ids.each do |call_id|
+              hangup_call(call_id)
+              forget(call_id)
+            rescue StandardError => e
+              warn("Realtime WebRTC shutdown could not hang up #{call_id}: #{e.class}: #{e.message}")
+            end
+            nil
+          end
+
           private def create_session(request, response)
             content_type = request["content-type"].to_s.split(";", 2).first
             unless content_type == "application/sdp"
@@ -106,13 +117,19 @@ module OpenAI
               )
             end
 
-            begin
-              @client.realtime.calls.hangup(call_id)
-            rescue OpenAI::Errors::NotFoundError
-              # Closing the browser peer can end the call before this cleanup request arrives.
-            end
-            @call_ids_lock.synchronize { @call_ids.delete(call_id) }
+            hangup_call(call_id)
+            forget(call_id)
             render(response, status: 204, content_type: "text/plain; charset=utf-8", body: "")
+          end
+
+          private def hangup_call(call_id)
+            @client.realtime.calls.hangup(call_id)
+          rescue OpenAI::Errors::NotFoundError
+            # Closing the browser peer can end the call before this cleanup request arrives.
+          end
+
+          private def forget(call_id)
+            @call_ids_lock.synchronize { @call_ids.delete(call_id) }
           end
 
           private def session_config
@@ -190,6 +207,8 @@ module OpenAI
           server.start
         rescue LoadError
           raise "webrick is required; run `bundle install` before starting this example"
+        ensure
+          app&.shutdown
         end
       end
     end

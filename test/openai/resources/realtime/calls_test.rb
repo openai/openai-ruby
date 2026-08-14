@@ -45,6 +45,38 @@ class OpenAI::Test::Resources::Realtime::CallsTest < OpenAI::Test::ResourceTest
     end
   end
 
+  class SequenceHTTPClient < OpenAI::HTTPClient
+    attr_reader :requests
+
+    def initialize(*responses)
+      super()
+      @responses = responses
+      @requests = []
+    end
+
+    def execute(request)
+      @requests << request
+      @responses.shift
+    end
+  end
+
+  class FailingBody
+    include Enumerable
+
+    attr_reader :closed
+
+    def initialize = @closed = false
+
+    def each
+      return enum_for(__method__) unless block_given?
+
+      yield("partial-answer")
+      raise IOError, "SDP read failed"
+    end
+
+    def close = @closed = true
+  end
+
   def test_create_with_an_sdp_offer
     http_client = StubHTTPClient.new
     client = OpenAI::Client.new(
@@ -120,6 +152,63 @@ class OpenAI::Test::Resources::Realtime::CallsTest < OpenAI::Test::ResourceTest
     assert_equal("usable-answer-sdp", response.sdp)
     assert_nil(response.call_id)
     assert_equal("req_malformed_location", response._request_id)
+  end
+
+  def test_create_does_not_retry_by_default
+    http_client = SequenceHTTPClient.new(
+      OpenAI::HTTPClient::Response.new(
+        status: 500,
+        headers: {"content-type" => "application/json"},
+        body: JSON.generate(error: {message: "try once", type: "server_error"})
+      ),
+      OpenAI::HTTPClient::Response.new(
+        status: 201,
+        headers: {"content-type" => "application/sdp"},
+        body: "unexpected retry"
+      )
+    )
+    client = OpenAI::Client.new(
+      api_key: "test-key",
+      base_url: "https://example.com/v1",
+      http_client: http_client
+    )
+
+    assert_raises(OpenAI::Errors::InternalServerError) do
+      client.realtime.calls.create(sdp: "offer-sdp")
+    end
+
+    assert_equal(1, http_client.requests.length)
+  end
+
+  def test_create_hangs_up_an_allocated_call_when_reading_the_sdp_fails
+    failing_body = FailingBody.new
+    http_client = SequenceHTTPClient.new(
+      OpenAI::HTTPClient::Response.new(
+        status: 201,
+        headers: {
+          "content-type" => "application/sdp",
+          "location" => "/v1/realtime/calls/rtc_orphan"
+        },
+        body: failing_body
+      ),
+      OpenAI::HTTPClient::Response.new(status: 200, headers: {}, body: "")
+    )
+    client = OpenAI::Client.new(
+      api_key: "test-key",
+      base_url: "https://example.com/v1",
+      http_client: http_client
+    )
+
+    error = assert_raises(IOError) do
+      client.realtime.calls.create(sdp: "offer-sdp")
+    end
+
+    assert_equal("SDP read failed", error.message)
+    assert_equal(
+      ["/v1/realtime/calls", "/v1/realtime/calls/rtc_orphan/hangup"],
+      http_client.requests.map { _1.url.path }
+    )
+    assert(failing_body.closed)
   end
 
   def test_accept_required_params

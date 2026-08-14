@@ -393,6 +393,48 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
     assert_includes(error.message, "future.unknown.event")
   end
 
+  def test_connection_accepts_nested_string_keyed_client_events
+    socket = FakeSocket.new
+    transport = FakeTransport.new(socket)
+    event = JSON.parse(
+      JSON.generate(
+        type: "session.update",
+        event_id: "event_1",
+        session: {
+          type: "realtime",
+          audio: {output: {voice: "marin"}}
+        }
+      )
+    )
+
+    client.realtime.connect(model: "gpt-realtime", transport: transport) do |connection|
+      connection.send_event(event)
+    end
+
+    sent = JSON.parse(socket.writes.fetch(0))
+    assert_equal("session.update", sent.fetch("type"))
+    assert_equal("marin", sent.dig("session", "audio", "output", "voice"))
+  end
+
+  def test_response_create_accepts_an_existing_item_reference
+    socket = FakeSocket.new
+    transport = FakeTransport.new(socket)
+
+    client.realtime.connect(model: "gpt-realtime", transport: transport) do |connection|
+      connection.response.create(
+        conversation: :none,
+        input: [{type: :item_reference, id: "item_12345"}]
+      )
+    end
+
+    sent = JSON.parse(socket.writes.fetch(0))
+    assert_equal("none", sent.dig("response", "conversation"))
+    assert_equal(
+      {"id" => "item_12345", "type" => "item_reference"},
+      sent.dig("response", "input", 0)
+    )
+  end
+
   def test_connection_rejects_a_client_event_missing_required_fields
     transport = FakeTransport.new(FakeSocket.new)
 

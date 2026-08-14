@@ -227,7 +227,10 @@ The SDK sends raw `application/sdp` when only an offer is provided; use that
 form with a client configured with a previously minted ephemeral session token.
 With a standard server API key, provide `session:` and the SDK sends multipart
 form data with correctly typed `sdp` and `session` parts. It never exposes a
-standard API key to browser code.
+standard API key to browser code. Call creation defaults to zero retries because
+replaying a successful request could allocate a second live call without a known
+ID. If reading the SDP answer fails after the service returns a call ID, the SDK
+makes one best-effort hangup request and preserves the original read error.
 
 The repository browser demo treats that Ruby endpoint as a local credentialed
 control plane: it binds only to an explicit loopback address, validates `Host`
@@ -236,7 +239,8 @@ creation and hangup. Production Rails or Sinatra endpoints need their normal
 user authentication and CSRF/origin policy before calling `calls.create`.
 Browser cleanup retains the call ID after a failed hangup, prevents a new call
 from overwriting it, exposes a retry action, and leaves the page-exit beacon
-armed until the backend confirms the call ended.
+armed until the backend confirms the call ended. Stopping the Ruby process also
+attempts to hang up every call still tracked by the local control plane.
 
 ## SIP calls
 
@@ -298,11 +302,12 @@ Call `session.close` after the last audio chunk and continue reading until the
 server sends `session.closed`; closing the socket immediately can discard output
 that is still draining. For browser WebRTC translation, mint an ephemeral secret
 with `translations.client_secrets.create`, then post the browser offer with
-`translations.calls.create`. That convenience method delegates to the shared
-`/v1/realtime/calls` endpoint; translation is selected by the ephemeral secret,
-not by a separate calls route. Client-secret request hashes accept symbol or
-string keys recursively, including nested session and expiration configuration,
-so `JSON.parse` and Rails-derived hashes follow the same validation path.
+`translations.calls.create`. The helper shares SDP encoding and response handling
+with ordinary call creation but posts to the dedicated
+`/v1/realtime/translations/calls` route. Client-secret and WebSocket event hashes
+accept symbol or string keys recursively, including nested session and expiration
+configuration, so `JSON.parse` and Rails-derived hashes follow the same validation
+path.
 
 ## Function calls and MCP approvals
 

@@ -2,15 +2,18 @@
 
 module OpenAI
   module Realtime
-    # The wire protocol uses both `type` and `role` to discriminate message items.
-    # Keep this generated-model exception local to Realtime instead of weakening the
-    # discriminator behavior shared by every SDK union.
+    # The wire protocol permits item references in custom response inputs and uses
+    # both `type` and `role` to discriminate message items. Keep these generated-model
+    # exceptions local to Realtime instead of weakening SDK-wide union behavior.
     module ConversationItem
       class << self
         private def resolve_variant(value)
           return super unless value.is_a?(Hash)
 
           type = value.fetch(:type) { value.fetch("type", OpenAI::Internal::OMIT) }
+          if type.to_s == "item_reference"
+            return OpenAI::Realtime::ConversationItemWithReference
+          end
           return super unless type.to_s == "message"
 
           role = value.fetch(:role) { value.fetch("role", OpenAI::Internal::OMIT) }

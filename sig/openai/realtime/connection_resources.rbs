@@ -48,7 +48,10 @@ module OpenAI
           def create: (
             ?audio: OpenAI::Models::Realtime::realtime_response_create_audio_output,
             ?conversation: String | Symbol,
-            ?input: ::Array[OpenAI::Models::Realtime::conversation_item],
+            ?input: ::Array[
+              OpenAI::Models::Realtime::conversation_item
+              | OpenAI::Models::Realtime::conversation_item_with_reference
+            ],
             ?instructions: String,
             ?max_output_tokens: Integer | Symbol,
             ?metadata: ::Hash[Symbol, String]?,

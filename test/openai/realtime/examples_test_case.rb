@@ -169,19 +169,20 @@ class OpenAI::Test::RealtimeExamplesTestCase < Minitest::Test
   end
 
   class RecordingWebRTCCalls
-    attr_accessor :hangup_error
+    attr_accessor :call_ids, :hangup_error
     attr_reader :creates, :hangups
 
     def initialize
       @creates = []
       @hangups = []
+      @call_ids = ["rtc_example"]
     end
 
     def create(**params)
       @creates << params
       OpenAI::Realtime::CallCreateResponse.new(
         sdp: "answer-sdp",
-        call_id: "rtc_example",
+        call_id: @call_ids.shift || "rtc_example",
         headers: {}
       )
     end

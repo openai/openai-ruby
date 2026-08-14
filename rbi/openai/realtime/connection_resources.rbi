@@ -128,7 +128,8 @@ module OpenAI
                     OpenAI::Realtime::RealtimeMcpApprovalResponse::OrHash,
                     OpenAI::Realtime::RealtimeMcpListTools::OrHash,
                     OpenAI::Realtime::RealtimeMcpToolCall::OrHash,
-                    OpenAI::Realtime::RealtimeMcpApprovalRequest::OrHash
+                    OpenAI::Realtime::RealtimeMcpApprovalRequest::OrHash,
+                    OpenAI::Realtime::ConversationItemWithReference::OrHash
                   )
                 ],
               instructions: String,

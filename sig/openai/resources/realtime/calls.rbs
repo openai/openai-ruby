@@ -9,6 +9,13 @@ module OpenAI
           ?request_options: OpenAI::request_opts
         ) -> OpenAI::Realtime::CallCreateResponse
 
+        # @api private
+        def create_with_path: (
+          OpenAI::Realtime::CallCreateParams | ::Hash[Symbol | String, untyped] params,
+          path: String,
+          hangup_path: String
+        ) -> OpenAI::Realtime::CallCreateResponse
+
         def accept: (
           String call_id,
           ?audio: OpenAI::Realtime::RealtimeAudioConfig,
