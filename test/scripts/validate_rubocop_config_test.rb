@@ -109,9 +109,13 @@ class ValidateRuboCopConfigTest < Minitest::Test
     Dir.mktmpdir do |directory|
       path = File.join(directory, "nested", ".rubocop_todo.yml")
       FileUtils.mkdir_p(File.dirname(path))
+      File.write(File.join(directory, ".rubocop.yml"), "AllCops:\n  NewCops: enable\n")
       File.write(path, "Lint/EmptyBlock:\n  Enabled: false\n")
 
-      assert_equal(["nested/.rubocop_todo.yml"], RuboCopConfigGuard.config_paths(directory))
+      assert_equal(
+        [".rubocop.yml", "nested/.rubocop_todo.yml"],
+        RuboCopConfigGuard.config_paths(directory)
+      )
       assert_includes(RuboCopConfigGuard.validate(directory).first, "Lint/EmptyBlock")
     end
   end
@@ -182,6 +186,15 @@ class ValidateRuboCopConfigTest < Minitest::Test
       assert_includes(
         RuboCopConfigGuard.validate(directory).first,
         "AllCops must set `NewCops: enable`"
+      )
+    end
+  end
+
+  def test_requires_root_rubocop_config
+    Dir.mktmpdir do |directory|
+      assert_includes(
+        RuboCopConfigGuard.validate(directory).first,
+        "root RuboCop config is required"
       )
     end
   end

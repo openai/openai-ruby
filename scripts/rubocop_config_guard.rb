@@ -89,6 +89,9 @@ module RuboCopConfigGuard
 
   def validate(root = DEFAULT_ROOT)
     root = File.expand_path(root)
+    return [".rubocop.yml: root RuboCop config is required"] unless
+      File.file?(File.join(root, ".rubocop.yml"))
+
     config_paths(root)
       .flat_map do |path|
         config = effective_config_for(File.join(root, path))
