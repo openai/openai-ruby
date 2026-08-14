@@ -32,7 +32,7 @@ module OpenAI
           | signature
           | token
         )
-        (?:\[|\]|\z)
+        (?:\[|\]|[-_]|\z)
       /ix
       URL_HEADER_KEY = /(?:\A|[-_])(?:location|url|uri)\z|\A(?:link|refresh)\z/i
 
@@ -345,10 +345,15 @@ module OpenAI
           uri = url.dup
           uri.user = nil
           uri.password = nil
-          return uri if uri.query.nil?
-
-          uri.query = sanitized_query(uri.query, depth: depth)
+          uri.query = sanitized_query(uri.query, depth: depth) unless uri.query.nil?
+          uri.fragment = sanitized_fragment(uri.fragment, depth: depth) unless uri.fragment.nil?
           uri
+        end
+
+        private def sanitized_fragment(fragment, depth:)
+          return sanitized_query(fragment, depth: depth) if fragment.include?("=")
+
+          scrub_embedded_url(fragment, depth: depth + 1)
         end
 
         private def sanitized_query(query, depth: 0)
@@ -371,9 +376,17 @@ module OpenAI
 
         private def scrub_embedded_url(value, depth: 0)
           normalized = value.delete("\t\n\r")
-          return value unless normalized.match?(%r{\A(?:[[:space:]]|[\x00-\x1f])*https?://}i)
+          if normalized.match?(%r{\A(?:[[:space:]]|[\x00-\x1f])*https?://}i)
+            return sanitized_url_value(value, depth: depth)
+          end
+          return "[URL OMITTED]" if normalized.match?(/\A(?:[[:space:]]|[\x00-\x1f])*https?%(?:25)*3a/i)
+          return value unless normalized.match?(%r{https?://}i)
+          return "[URL OMITTED]" unless value.match?(%r{https?://}i)
 
-          sanitized_url_value(value, depth: depth)
+          value.gsub(%r{https?://[^\s<>\[\]"']+}i) do |url|
+            trailing = url[/[),.!;:]+\z/].to_s
+            "#{sanitized_url_value(url.delete_suffix(trailing), depth: depth)}#{trailing}"
+          end
         end
 
         private def textual_content_type?(content_type)
