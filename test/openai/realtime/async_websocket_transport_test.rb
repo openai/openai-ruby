@@ -44,6 +44,10 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     def close = (@closed = true)
   end
 
+  class FailingSynchronousClient < SynchronousClient
+    def connect(*) = raise(IOError, "handshake failed")
+  end
+
   def test_default_transport_enters_a_reactor_for_synchronous_callers
     assert_nil(Fiber.scheduler)
     connection = SynchronousConnection.new
@@ -63,6 +67,22 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     assert_predicate(connection, :closed?)
     assert_predicate(client, :closed)
     assert_nil(Fiber.scheduler)
+  end
+
+  def test_default_transport_closes_the_client_after_a_handshake_failure
+    connection = SynchronousConnection.new
+    client = FailingSynchronousClient.new(connection)
+    transport = OpenAI::Realtime::Transports::AsyncWebSocket.new
+    url = URI("wss://example.com/v1/realtime?model=gpt-realtime-2.1")
+
+    error = assert_raises(OpenAI::Errors::RealtimeConnectionError) do
+      Async::WebSocket::Client.stub(:open, client) do
+        transport.open(url: url, headers: {}, timeout: nil) { |_socket| nil }
+      end
+    end
+
+    assert_instance_of(IOError, error.cause)
+    assert_predicate(client, :closed)
   end
 
   def test_default_transport_exchanges_events_with_a_local_websocket_server
@@ -270,6 +290,58 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
       assert_instance_of(OpenAI::Realtime::ResponseTextDeltaEvent, event)
       assert_equal("fragmented", event.delta)
     end
+  end
+
+  def test_request_timeout_does_not_expire_an_established_websocket
+    handler = lambda do |connection|
+      sleep(0.5)
+      write_event(
+        connection,
+        type: "response.output_text.delta",
+        event_id: "event_after_idle",
+        response_id: "response_1",
+        item_id: "item_1",
+        output_index: 0,
+        content_index: 0,
+        delta: "still connected"
+      )
+    end
+
+    with_websocket_server(handler, timeout: 0.25) do |_task, client|
+      event = client.realtime.connect(model: "gpt-realtime-2.1", &:receive)
+
+      assert_instance_of(OpenAI::Realtime::ResponseTextDeltaEvent, event)
+      assert_equal("still connected", event.delta)
+    end
+  end
+
+  def test_request_timeout_still_bounds_websocket_negotiation
+    server = TCPServer.new("127.0.0.1", 0)
+    release_server = Queue.new
+    server_thread = Thread.new do
+      socket = server.accept
+      socket.readpartial(4_096)
+      release_server.pop
+    rescue IOError, SystemCallError
+      nil
+    ensure
+      socket&.close
+    end
+    client = OpenAI::Client.new(
+      api_key: "test-key",
+      base_url: "http://127.0.0.1:#{server.local_address.ip_port}/v1",
+      timeout: 0.1
+    )
+
+    error = assert_raises(OpenAI::Errors::RealtimeConnectionError) do
+      client.realtime.connect(model: "gpt-realtime-2.1") { |_connection| nil }
+    end
+
+    assert_instance_of(Async::TimeoutError, error.cause)
+  ensure
+    release_server&.push(true)
+    server&.close
+    server_thread&.join
   end
 
   def test_default_transport_wraps_an_abnormal_remote_close
@@ -567,7 +639,7 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     assert_equal("hello from ruby", completed.transcript)
   end
 
-  private def with_websocket_server(handler)
+  private def with_websocket_server(handler, timeout: 5)
     port = available_port
     endpoint = Async::HTTP::Endpoint.parse("http://127.0.0.1:#{port}")
     fallback = ->(_request) { Protocol::HTTP::Response[404, {}, []] }
@@ -579,7 +651,7 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
       client = OpenAI::Client.new(
         api_key: "test-key",
         base_url: "http://127.0.0.1:#{port}/v1",
-        timeout: 5
+        timeout: timeout
       )
       yield(task, client)
     ensure

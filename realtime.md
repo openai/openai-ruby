@@ -389,10 +389,14 @@ The handwritten decoder reads the generated event unions at runtime, so newly
 generated event variants become typed automatically. A valid event unknown to
 an older gem remains an `UnknownServerEvent`. Regeneration review must still
 check capability-specific connection types and helper signatures when the
-generated client-event shapes change. `calls.create` remains a focused custom
-HTTP implementation because the unified WebRTC endpoint returns raw SDP and can
-accept either raw `application/sdp` or multipart SDP plus session JSON; ordinary
-JSON resource generation does not model that response cleanly.
+generated client-event shapes change. Realtime message items are the one nested
+union exception: the wire protocol uses both `type: :message` and `role` to
+select system, user, or assistant content, so a handwritten resolver adds that
+second discriminator without changing the SDK-wide generated union framework.
+`calls.create` remains a focused custom HTTP implementation because the unified
+WebRTC endpoint returns raw SDP and can accept either raw `application/sdp` or
+multipart SDP plus session JSON; ordinary JSON resource generation does not
+model that response cleanly.
 
 ## Lifecycle and failures
 
@@ -442,6 +446,10 @@ completion event.
 - Exceptions raised by the application block propagate unchanged; cleanup does
   not replace them with a close error.
 
+The request timeout applies only through WebSocket negotiation. It is not left
+on the upgraded socket: an established Realtime session may be quiet for longer
+than an ordinary HTTP request timeout without being disconnected by the SDK.
+
 Use `request_options` for handshake headers, query parameters, and timeout:
 
 ```ruby
@@ -476,6 +484,10 @@ end
 
 `timeout` is `Float?` at the transport boundary because `Client.new(timeout:
 nil)` and per-request `timeout: nil` deliberately disable the handshake timeout.
+`transport_options` cannot replace the authenticated URL or headers, the
+handshake timeout, the destination host or port, or TLS/protocol negotiation.
+Those values remain SDK-owned so credentials cannot be redirected or sent over
+a caller-supplied downgraded connection.
 
 The SDK owns URL construction, authentication, typed JSON encoding/decoding, and
 block cleanup. The transport owns the WebSocket handshake, frame I/O, TLS,

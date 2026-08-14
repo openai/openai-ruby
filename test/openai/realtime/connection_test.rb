@@ -92,18 +92,31 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
   end
 
   def test_connect_rejects_transport_options_that_override_authenticated_inputs
-    [:url, :headers, :timeout].each do |key|
+    dangerous_options = [
+      :url,
+      :headers,
+      :timeout,
+      :hostname,
+      :port,
+      :scheme,
+      :ssl_context,
+      :protocol,
+      :alpn_protocols
+    ]
+
+    dangerous_options.product([false, true]).each do |key, stringify|
+      transport_key = stringify ? key.to_s : key
       transport = FakeTransport.new(FakeSocket.new)
 
       error = assert_raises(ArgumentError) do
         client.realtime.connect(
           model: "gpt-realtime",
           transport: transport,
-          transport_options: {key => Object.new}
+          transport_options: {transport_key => Object.new}
         ) { |_connection| nil }
       end
 
-      assert_includes(error.message, key.inspect)
+      assert_includes(error.message, transport_key.inspect)
       assert_nil(transport.open_args)
     end
   end
@@ -495,6 +508,69 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
 
     assert_instance_of(OpenAI::Realtime::RealtimeErrorEvent, event)
     assert_equal("Try another value", event.error.message)
+  end
+
+  def test_conversation_item_events_decode_message_variants_by_role
+    data = JSON.generate(
+      type: "conversation.item.done",
+      event_id: "event_1",
+      item: {
+        type: "message",
+        role: "user",
+        content: [
+          {
+            type: "input_image",
+            image_url: "data:image/png;base64,aW1hZ2U="
+          }
+        ]
+      }
+    )
+    transport = FakeTransport.new(FakeSocket.new(data))
+
+    event = client.realtime.connect(model: "gpt-realtime", transport: transport, &:receive)
+
+    assert_instance_of(OpenAI::Realtime::RealtimeConversationItemUserMessage, event.item)
+    assert_equal("data:image/png;base64,aW1hZ2U=", event.item.content.fetch(0).image_url)
+  end
+
+  def test_response_output_decodes_assistant_messages_by_role
+    data = JSON.generate(
+      type: "response.done",
+      event_id: "event_1",
+      response: {
+        id: "response_1",
+        status: "completed",
+        output: [
+          {
+            type: "message",
+            role: "assistant",
+            content: [{type: "output_audio", transcript: "Hello from Ruby"}]
+          }
+        ]
+      }
+    )
+    transport = FakeTransport.new(FakeSocket.new(data))
+
+    event = client.realtime.connect(model: "gpt-realtime", transport: transport, &:receive)
+
+    item = event.response.output.fetch(0)
+    assert_instance_of(OpenAI::Realtime::RealtimeConversationItemAssistantMessage, item)
+    assert_equal("Hello from Ruby", item.content.fetch(0).transcript)
+  end
+
+  def test_message_item_with_an_unknown_role_is_a_protocol_error
+    data = JSON.generate(
+      type: "conversation.item.done",
+      event_id: "event_1",
+      item: {type: "message", role: "unknown", content: []}
+    )
+    transport = FakeTransport.new(FakeSocket.new(data))
+
+    error = assert_raises(OpenAI::Errors::RealtimeProtocolError) do
+      client.realtime.connect(model: "gpt-realtime", transport: transport, &:receive)
+    end
+
+    assert_includes(error.cause.message, "unknown role")
   end
 
   def test_unknown_server_event_remains_observable

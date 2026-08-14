@@ -147,10 +147,10 @@
             remoteAudio.play().catch(() => setStatus("Click the page to enable audio playback."));
           });
           peerConnection.addEventListener("connectionstatechange", () => {
-            if (peerConnection.connectionState === "connected") setStatus("Listening…");
-            if (["failed", "disconnected"].includes(peerConnection.connectionState)) {
-              setStatus(`Connection ${peerConnection.connectionState}`);
-            }
+            const state = peerConnection?.connectionState;
+            if (state === "connected") setStatus("Listening…");
+            if (state === "disconnected") setStatus("Connection interrupted; reconnecting…");
+            if (state === "failed") void stopConversation({status: "Connection failed"});
           });
 
           microphoneStream = await navigator.mediaDevices.getUserMedia({
@@ -190,7 +190,7 @@
         }
       }
 
-      async function stopConversation({hangup = true} = {}) {
+      async function stopConversation({hangup = true, status = "Stopped"} = {}) {
         const activeCallID = callID;
         callID = undefined;
         dataChannel?.close();
@@ -204,7 +204,7 @@
         startButton.disabled = false;
         stopButton.disabled = true;
         mediaElement.textContent = "";
-        setStatus("Stopped");
+        setStatus(status);
 
         if (hangup && activeCallID) {
           await fetch("/hangup", {method: "POST", body: activeCallID}).catch(() => undefined);

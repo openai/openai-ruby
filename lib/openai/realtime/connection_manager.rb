@@ -6,7 +6,17 @@ module OpenAI
     #
     # @api private
     class ConnectionManager
-      RESERVED_TRANSPORT_OPTIONS = [:headers, :timeout, :url].freeze
+      RESERVED_TRANSPORT_OPTIONS = [
+        :alpn_protocols,
+        :headers,
+        :hostname,
+        :port,
+        :protocol,
+        :scheme,
+        :ssl_context,
+        :timeout,
+        :url
+      ].freeze
 
       # @api private
       def initialize(
@@ -24,7 +34,9 @@ module OpenAI
         @connection_class = connection_class
         @transport = transport
         @request_options = request_options
-        reserved_options = transport_options.keys & RESERVED_TRANSPORT_OPTIONS
+        reserved_options = transport_options.keys.select do |key|
+          (key.is_a?(String) || key.is_a?(Symbol)) && RESERVED_TRANSPORT_OPTIONS.include?(key.to_sym)
+        end
         unless reserved_options.empty?
           raise ArgumentError,
                 "`transport_options` cannot include #{reserved_options.map(&:inspect).join(', ')}"

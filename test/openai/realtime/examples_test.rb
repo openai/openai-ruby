@@ -391,6 +391,8 @@ class OpenAI::Test::RealtimeExamplesTest < OpenAI::Test::RealtimeExamplesTestCas
     assert_includes(response.body, "echoCancellation: true")
     assert_includes(response.body, "noiseSuppression: true")
     assert_includes(response.body, "autoGainControl: true")
+    assert_includes(response.body, 'stopConversation({status: "Connection failed"})')
+    assert_includes(response.body, "Connection interrupted; reconnecting…".b)
     refute_includes(response.body, "OPENAI_API_KEY")
   end
 

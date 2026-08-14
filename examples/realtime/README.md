@@ -20,6 +20,10 @@ access. Talk normally and speak over the model to interrupt it. Click **Stop**
 to close the peer and ask Ruby to hang up the call. No API key is sent to the
 browser. Override the port with `REALTIME_DEMO_PORT`.
 
+A transient WebRTC `disconnected` state keeps the peer alive while the browser
+attempts recovery. A terminal `failed` state stops the microphone and peer
+immediately and asks the Ruby backend to hang up the call.
+
 ## WebSocket microphone loop (advanced)
 
 `realtime_conversation.rb` keeps one full-duplex WebSocket session open. It

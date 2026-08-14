@@ -45,17 +45,27 @@ module OpenAI
           }
           endpoint = ::Async::HTTP::Endpoint.parse(
             url.to_s,
-            timeout: timeout,
             **options
           )
           block_error = nil
-          # Client.connect owns the Sync boundary: it starts a reactor for ordinary
-          # synchronous callers and reuses the current task when one already exists.
-          ::Async::WebSocket::Client.connect(endpoint, headers: headers) do |connection|
-            yield(Socket.new(connection, url: url))
-          rescue StandardError => e
-            block_error = e
-            raise
+          # Keep the request timeout scoped to WebSocket negotiation. Endpoint timeouts
+          # remain installed on the socket and would otherwise terminate healthy idle
+          # Realtime sessions after the ordinary HTTP request timeout.
+          ::Kernel.Sync do
+            client = ::Async::WebSocket::Client.open(endpoint)
+            connection = nil
+            begin
+              connection = negotiate(client, endpoint, headers: headers, timeout: timeout)
+              begin
+                yield(Socket.new(connection, url: url))
+              rescue StandardError => e
+                block_error = e
+                raise
+              end
+            ensure
+              connection&.close
+              client&.close
+            end
           end
         rescue OpenAI::Errors::RealtimeConnectionError
           raise
@@ -63,6 +73,13 @@ module OpenAI
           raise if e.equal?(block_error)
 
           raise OpenAI::Errors::RealtimeConnectionError.new(url: url, cause: e)
+        end
+
+        private def negotiate(client, endpoint, headers:, timeout:)
+          operation = -> { client.connect(endpoint.authority, endpoint.path, headers: headers) }
+          return operation.call if timeout.nil?
+
+          ::Async::Task.current.with_timeout(timeout, &operation)
         end
 
         private def load_dependencies(url)
