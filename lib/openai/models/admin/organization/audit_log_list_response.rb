@@ -100,7 +100,9 @@ module OpenAI
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated, nil]
           optional :checkpoint_permission_created,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated },
+                   -> {
+                     OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated
+                   },
                    api_name: :"checkpoint.permission.created"
 
           # @!attribute checkpoint_permission_deleted
@@ -108,7 +110,9 @@ module OpenAI
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionDeleted, nil]
           optional :checkpoint_permission_deleted,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionDeleted },
+                   -> {
+                     OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionDeleted
+                   },
                    api_name: :"checkpoint.permission.deleted"
 
           # @!attribute external_key_registered
@@ -180,7 +184,9 @@ module OpenAI
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigActivated, nil]
           optional :ip_allowlist_config_activated,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigActivated },
+                   -> {
+                     OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigActivated
+                   },
                    api_name: :"ip_allowlist.config.activated"
 
           # @!attribute ip_allowlist_config_deactivated
@@ -188,7 +194,9 @@ module OpenAI
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigDeactivated, nil]
           optional :ip_allowlist_config_deactivated,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigDeactivated },
+                   -> {
+                     OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigDeactivated
+                   },
                    api_name: :"ip_allowlist.config.deactivated"
 
           # @!attribute ip_allowlist_created
@@ -432,7 +440,9 @@ module OpenAI
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated, nil]
           optional :workload_identity_provider_mapping_created,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated },
+                   -> {
+                     OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated
+                   },
                    api_name: :"workload_identity_provider_mapping.created"
 
           # @!attribute workload_identity_provider_mapping_deleted
@@ -440,7 +450,9 @@ module OpenAI
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted, nil]
           optional :workload_identity_provider_mapping_deleted,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted },
+                   -> {
+                     OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted
+                   },
                    api_name: :"workload_identity_provider_mapping.deleted"
 
           # @!attribute workload_identity_provider_mapping_updated
@@ -448,7 +460,9 @@ module OpenAI
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated, nil]
           optional :workload_identity_provider_mapping_updated,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated },
+                   -> {
+                     OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated
+                   },
                    api_name: :"workload_identity_provider_mapping.updated"
 
           # @!attribute workload_identity_provider_created
@@ -456,7 +470,9 @@ module OpenAI
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated, nil]
           optional :workload_identity_provider_created,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated },
+                   -> {
+                     OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated
+                   },
                    api_name: :"workload_identity_provider.created"
 
           # @!attribute workload_identity_provider_deleted
@@ -464,7 +480,9 @@ module OpenAI
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted, nil]
           optional :workload_identity_provider_deleted,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted },
+                   -> {
+                     OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted
+                   },
                    api_name: :"workload_identity_provider.deleted"
 
           # @!attribute workload_identity_provider_updated
@@ -472,7 +490,9 @@ module OpenAI
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated, nil]
           optional :workload_identity_provider_updated,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated },
+                   -> {
+                     OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated
+                   },
                    api_name: :"workload_identity_provider.updated"
 
           # @!method initialize(id:, effective_at:, type:, actor: nil, api_key_created: nil, api_key_deleted: nil, api_key_updated: nil, certificate_created: nil, certificate_deleted: nil, certificate_updated: nil, certificates_activated: nil, certificates_deactivated: nil, checkpoint_permission_created: nil, checkpoint_permission_deleted: nil, external_key_registered: nil, external_key_removed: nil, group_created: nil, group_deleted: nil, group_updated: nil, invite_accepted: nil, invite_deleted: nil, invite_sent: nil, ip_allowlist_config_activated: nil, ip_allowlist_config_deactivated: nil, ip_allowlist_created: nil, ip_allowlist_deleted: nil, ip_allowlist_updated: nil, login_failed: nil, login_succeeded: nil, logout_failed: nil, logout_succeeded: nil, organization_updated: nil, project: nil, project_archived: nil, project_created: nil, project_deleted: nil, project_updated: nil, rate_limit_deleted: nil, rate_limit_updated: nil, role_assignment_created: nil, role_assignment_deleted: nil, role_bound_to_resource: nil, role_created: nil, role_deleted: nil, role_unbound_from_resource: nil, role_updated: nil, scim_disabled: nil, scim_enabled: nil, service_account_created: nil, service_account_deleted: nil, service_account_updated: nil, user_added: nil, user_deleted: nil, user_updated: nil, workload_identity_provider_mapping_created: nil, workload_identity_provider_mapping_deleted: nil, workload_identity_provider_mapping_updated: nil, workload_identity_provider_created: nil, workload_identity_provider_deleted: nil, workload_identity_provider_updated: nil)
