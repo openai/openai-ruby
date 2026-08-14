@@ -43,11 +43,12 @@ module OpenAI
           )
           location = response.headers["location"]
           call_id = call_id_from_location(location)
-          OpenAI::Realtime::CallCreateResponse.new(
+          attributes = {
             sdp: response.body.to_a.join,
-            call_id: call_id,
             headers: response.headers
-          )._set_last_response(response.metadata)
+          }
+          attributes[:call_id] = call_id if call_id
+          OpenAI::Realtime::CallCreateResponse.new(attributes)._set_last_response(response.metadata)
         end
 
         # A Location header is helpful metadata, but the SDP answer remains usable

@@ -2,7 +2,7 @@
 
 The Ruby SDK supports the server-side parts of the Realtime API:
 
-- typed WebSocket sessions for text, audio, transcription, function calls, and remote MCP;
+- typed WebSocket sessions for text, images, audio, transcription, function calls, and remote MCP;
 - WebRTC SDP negotiation from a trusted Ruby backend;
 - sideband WebSocket control for active WebRTC and SIP calls;
 - SIP accept, reject, refer, and hangup controls; and
@@ -155,6 +155,30 @@ model belongs under `audio.input.transcription.model`. Run the complete live sam
 `REALTIME_INPUT_PCM=input.pcm bundle exec ruby
 examples/realtime/websocket_transcription.rb`.
 
+## Send an image
+
+Realtime conversation items accept PNG and JPEG images as data URIs. The Ruby
+helper keeps the message fields at the resource level and creates the protocol
+envelope internally:
+
+```ruby
+image = Base64.strict_encode64(File.binread("photo.png"))
+
+connection.conversation.items.create(
+  type: :message,
+  role: :user,
+  content: [
+    {type: :input_image, image_url: "data:image/png;base64,#{image}"},
+    {type: :input_text, text: "What is important in this image?"}
+  ]
+)
+connection.response.create(output_modalities: [:text])
+```
+
+Run the complete live sample with `REALTIME_INPUT_IMAGE=photo.png bundle exec
+ruby examples/realtime/image_input.rb`. It verifies the PNG or JPEG signature
+before sending and requires non-empty model text plus a completed response.
+
 ## Create a WebRTC call
 
 WebRTC media is intentionally not a Ruby SDK responsibility. In a browser or
@@ -288,6 +312,15 @@ connection.conversation.items.respond_to_mcp_approval(
 )
 ```
 
+The runnable local-function example covers the complete two-response lifecycle:
+it receives final JSON arguments, executes application code, sends
+`function_call_output`, disables tools for the follow-up response, and waits for
+non-empty final text:
+
+```console
+$ bundle exec ruby examples/realtime/function_calling.rb
+```
+
 Remote MCP servers are configured through the typed `tools` field in
 `session.update` or `response.create`; all MCP progress, approval, and completion
 events decode through `RealtimeServerEvent`. Before a dependent prompt, wait for
@@ -303,6 +336,55 @@ into a final assistant answer. Treat only that follow-up response's completed
 `ResponseDoneEvent` as success; clean EOF during discovery, approval, or tool
 execution is still an incomplete workflow. The approval helper generates item
 IDs within the service's 32-character limit.
+
+## Cross-SDK design position
+
+The Ruby surface aims for protocol parity with the Python and Node SDKs without
+copying APIs that fit those runtimes better:
+
+| Concern | Python | Node.js | Ruby decision |
+| --- | --- | --- | --- |
+| Event consumption | Sync/async iterators and callbacks | Typed `EventEmitter` callbacks | `Enumerable`, `receive`, and pattern matching |
+| Connection lifetime | Sync/async context managers | Socket lifecycle events | Required block with ensure-based cleanup |
+| Concurrency | Separate sync and async clients | Promise/event-loop APIs | One fiber-aware API inside or outside an Async reactor |
+| Reconnect | Opt-in callback, retry, and send queue | No core automatic reconnect | No automatic reconnect or state replay |
+| Browser media | Separate client patterns | Native WebSocket plus Agents SDK WebRTC | Ruby backend negotiates SDP; browser owns WebRTC media |
+| Transport dependency | Optional Python extra | Optional `ws` peer dependency | Optional `async-websocket` Gemfile dependency |
+
+The callback omission is deliberate: an additional dispatcher would introduce a
+second read-loop abstraction and ambiguous ownership. Ruby callers can use
+`each`, `find`, `lazy`, ordinary blocks, and class-based `case` matching without
+string event names. A sync/async split is also unnecessary because the default
+adapter uses Ruby's fiber scheduler while preserving synchronous backpressure.
+
+Automatic reconnect is intentionally not a release gap. A new socket creates a
+new stateful session; replaying audio, item creation, function output, or MCP
+approval can duplicate work or side effects. Applications that reconnect must
+choose which state to rebuild. A future resumable service contract could justify
+an SDK abstraction, but transport retries alone are not session recovery.
+
+Node's browser and Agents SDK layers remain out of scope for this gem. Public
+OpenAI guidance prefers WebRTC when a browser captures or plays audio, and Ruby
+does not have a standard media stack comparable to `RTCPeerConnection`. The
+Ruby SDK should own secrets, ephemeral credentials, SDP exchange, sideband
+policy, tools, and call lifecycle—not codecs, echo cancellation, or playback.
+
+### Generated and handwritten ownership
+
+Castiron remains responsible for Realtime HTTP resources, request/response
+models, event models, discriminated event unions, RBI, and RBS. The live
+connection, resource conveniences, transport adapter, and examples are
+handwritten because a bidirectional socket lifecycle is not an OpenAPI request.
+No generator feature is required for that boundary.
+
+The handwritten decoder reads the generated event unions at runtime, so newly
+generated event variants become typed automatically. A valid event unknown to
+an older gem remains an `UnknownServerEvent`. Regeneration review must still
+check capability-specific connection types and helper signatures when the
+generated client-event shapes change. `calls.create` remains a focused custom
+HTTP implementation because the unified WebRTC endpoint returns raw SDP and can
+accept either raw `application/sdp` or multipart SDP plus session JSON; ordinary
+JSON resource generation does not model that response cleanly.
 
 ## Lifecycle and failures
 
@@ -397,8 +479,9 @@ contract does not require subclassing or reflection.
 Repository examples live under `examples/realtime/`; their
 [runbook](examples/realtime/README.md) includes prerequisites, commands, bounded
 smoke-test controls, and observable pass criteria. They cover a hands-free
-full-duplex voice conversation, text, raw PCM audio, streaming transcription,
-WebRTC SDP exchange, sideband, SIP, MCP approvals, and translation. The
+full-duplex voice conversation, text, image input, local function calling, raw
+PCM audio, streaming transcription, WebRTC SDP exchange, sideband, SIP, MCP
+approvals, and translation. The
 developer website should expose the same progression so users encounter the
 simplest successful path before protocol details:
 
@@ -406,12 +489,13 @@ simplest successful path before protocol details:
 | --- | --- |
 | Realtime overview | Minimal text WebSocket with typed deltas and block cleanup |
 | WebSocket | Text, PCM16 input/output, manual `receive`, Enumerable iteration, error handling |
+| Image input | PNG/JPEG data URI plus text instruction and a completed response |
 | Transcription | `connect_transcription`, PCM16 streaming, delta/completed events, and `item_id` correlation |
 | WebRTC | Complete browser peer plus Ruby endpoint; Rails and Sinatra variants using `calls.create` |
 | Server controls | Preserve `call.call_id`, open sideband, update session, hang up |
 | SIP | Verify webhook, accept/reject, sideband, refer, hang up, idempotent webhook handling |
 | Conversations | Text item, audio commit, cancel/interruption, truncate played audio |
-| Function calling | Detect function call, execute locally, send typed output item |
+| Function calling | Detect final arguments, execute locally, send typed output, request final answer |
 | Remote MCP | Configure server, inspect approval request, approve/reject, observe completion |
 | Translation | Client secret, browser WebRTC call, server WebSocket PCM loop, graceful close |
 | Authentication | Standard key on server, ephemeral browser secret, safety identifier |

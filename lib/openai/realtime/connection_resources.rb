@@ -24,7 +24,7 @@ module OpenAI
       class Session < Base
         # Update the session using Ruby-style resource keywords. The helper adds the
         # protocol's nested `session` envelope.
-        def update(params)
+        def update(**params)
           session, metadata = event_payload(params, :event_id)
           @connection.send_event(
             compact_event(type: :"session.update", session: session, **metadata)
@@ -35,7 +35,7 @@ module OpenAI
       class TranscriptionSession < Base
         # A transcription connection already selects its session capability. Add the
         # required wire discriminator so callers only pass transcription fields.
-        def update(params)
+        def update(**params)
           session, metadata = event_payload(params, :event_id)
           session.delete(:type)
           session.delete("type")
@@ -56,7 +56,7 @@ module OpenAI
       class Response < Base
         # Create a response from resource fields, omitting the optional wire envelope
         # when no response-specific fields are supplied.
-        def create(params = {})
+        def create(**params)
           response, metadata = event_payload(params, :event_id)
           @connection.send_event(
             compact_event(
@@ -120,7 +120,7 @@ module OpenAI
       class ConversationItems < Base
         # Create an item from resource fields. Event metadata stays at the outer wire
         # level while the remaining fields become the nested item.
-        def create(params)
+        def create(**params)
           item, metadata = event_payload(params, :event_id, :previous_item_id)
           @connection.send_event(
             compact_event(

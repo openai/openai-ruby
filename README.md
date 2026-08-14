@@ -52,9 +52,9 @@ end
 
 ### Realtime
 
-Server-side WebSockets, WebRTC negotiation, sideband, SIP, transcription, and
-translation are covered in the [Realtime guide](realtime.md) and runnable
-[example runbook](examples/realtime/README.md).
+Server-side WebSockets, image and audio input, function calling, WebRTC
+negotiation, sideband, SIP, transcription, and translation are covered in the
+[Realtime guide](realtime.md) and runnable [example runbook](examples/realtime/README.md).
 
 ### Pagination
 

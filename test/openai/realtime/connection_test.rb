@@ -241,6 +241,7 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
         :"conversation.item.create",
         :"conversation.item.create",
         :"conversation.item.create",
+        :"conversation.item.create",
         :"conversation.item.create"
       ],
       events.map { _1.fetch(:type).to_sym }
@@ -256,10 +257,12 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
     assert_equal("root", events[4].fetch(:previous_item_id))
     assert_equal("Hello", events[4].dig(:item, :content, 0, :text))
     refute(events[4].fetch(:item).key?(:previous_item_id))
-    assert_equal(:function_call_output, events[5].fetch(:item).fetch(:type).to_sym)
-    assert_equal(:mcp_approval_response, events[6].fetch(:item).fetch(:type).to_sym)
-    assert(events[6].fetch(:item).fetch(:approve))
-    generated_id = events[7].fetch(:item).fetch(:id)
+    assert_equal(:input_image, events[5].dig(:item, :content, 0, :type).to_sym)
+    assert_match(%r{\Adata:image/png;base64,}, events[5].dig(:item, :content, 0, :image_url))
+    assert_equal(:function_call_output, events[6].fetch(:item).fetch(:type).to_sym)
+    assert_equal(:mcp_approval_response, events[7].fetch(:item).fetch(:type).to_sym)
+    assert(events[7].fetch(:item).fetch(:approve))
+    generated_id = events[8].fetch(:item).fetch(:id)
     assert_operator(generated_id.length, :<=, 32)
     assert_match(/\Amcpa_[0-9a-f]+\z/, generated_id)
   end
@@ -523,6 +526,11 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
       content: [{type: :input_text, text: "Hello"}],
       previous_item_id: "root",
       event_id: "item_create_1"
+    )
+    connection.conversation.items.create(
+      type: :message,
+      role: :user,
+      content: [{type: :input_image, image_url: "data:image/png;base64,aW1hZ2U="}]
     )
     connection.conversation.items.create_function_call_output(
       call_id: "call_1",

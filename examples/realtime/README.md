@@ -85,6 +85,37 @@ text, and `response.done status=completed`. An EOF before the completed
 `response.done`, or a completed response without a non-empty text delta, is
 reported as a failed smoke test.
 
+## Image input
+
+Send a PNG or JPEG as a Realtime conversation item and stream the model's text
+description:
+
+```sh
+REALTIME_INPUT_IMAGE=photo.png \
+OPENAI_REALTIME_PROMPT='Describe the important details in this image.' \
+bundle exec ruby examples/realtime/image_input.rb
+```
+
+The example inspects the file signature instead of trusting its extension,
+builds the required data URI, and rejects other formats before opening a
+session. A successful run requires non-empty text and a completed
+`response.done`; early EOF is a failed smoke test.
+
+## Local function calling
+
+Run a complete local tool round trip using the example's deterministic weather
+function:
+
+```sh
+OPENAI_REALTIME_PROMPT='What is the weather in Paris?' \
+bundle exec ruby examples/realtime/function_calling.rb
+```
+
+The example forces the first response to call `lookup_weather`, validates and
+executes its arguments, sends a typed `function_call_output` conversation item,
+then requests a final response with tools disabled. It succeeds only after the
+follow-up response emits non-empty text and a completed `response.done`.
+
 ## WebSocket audio
 
 The input must be raw, headerless, mono 24 kHz PCM16 little-endian audio. For
@@ -220,9 +251,9 @@ is not a substitute for the final telephony smoke test.
 ## Local protocol coverage
 
 The test suite exercises the examples' orchestration and the documented local
-WebSocket lifecycle, including text, transcription, full-duplex translation,
-MCP approval, fragmented frames, normal and abnormal closure, sideband control,
-and SIP accept-then-attach behavior:
+WebSocket lifecycle, including text, image input, local function calling,
+transcription, full-duplex translation, MCP approval, fragmented frames, normal
+and abnormal closure, sideband control, and SIP accept-then-attach behavior:
 
 ```sh
 ./scripts/test

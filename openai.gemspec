@@ -23,8 +23,15 @@ Gem::Specification.new do |s|
     "SECURITY.md",
     "CHANGELOG.md",
     ".ignore"
-  ] + ["examples/mtls_custom_http_client.rb"]
-  s.extra_rdoc_files = ["README.md", "VERSIONING.md", "azure.md", "bedrock.md", "realtime.md"]
+  ] + ["examples/mtls_custom_http_client.rb", "examples/realtime/README.md"]
+  s.extra_rdoc_files = [
+    "README.md",
+    "VERSIONING.md",
+    "azure.md",
+    "bedrock.md",
+    "realtime.md",
+    "examples/realtime/README.md"
+  ]
   s.add_dependency "base64"
   s.add_dependency "cgi"
   s.add_dependency "connection_pool", ">= 2.2.3"
