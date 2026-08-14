@@ -63,8 +63,7 @@ module OpenAI
                 raise
               end
             ensure
-              connection&.close
-              client&.close
+              close_resources(connection, client, pending_error: $ERROR_INFO)
             end
           end
         rescue OpenAI::Errors::RealtimeConnectionError
@@ -80,6 +79,17 @@ module OpenAI
           return operation.call if timeout.nil?
 
           ::Async::Task.current.with_timeout(timeout, &operation)
+        end
+
+        private def close_resources(connection, client, pending_error:)
+          cleanup_error = nil
+          [connection, client].compact.each do |resource|
+            resource.close
+          rescue StandardError => e
+            cleanup_error ||= e
+          end
+
+          raise cleanup_error if pending_error.nil? && cleanup_error
         end
 
         private def load_dependencies(url)

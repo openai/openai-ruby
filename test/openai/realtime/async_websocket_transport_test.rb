@@ -48,6 +48,36 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     def connect(*) = raise(IOError, "handshake failed")
   end
 
+  class FailingCloseSynchronousConnection < SynchronousConnection
+    attr_reader :close_count
+
+    def initialize
+      super
+      @close_count = 0
+    end
+
+    def close(*)
+      @close_count += 1
+      super
+      raise IOError, "connection close failed"
+    end
+  end
+
+  class FailingCloseSynchronousClient < SynchronousClient
+    attr_reader :close_count
+
+    def initialize(connection)
+      super
+      @close_count = 0
+    end
+
+    def close
+      @close_count += 1
+      super
+      raise IOError, "client close failed"
+    end
+  end
+
   def test_default_transport_enters_a_reactor_for_synchronous_callers
     assert_nil(Fiber.scheduler)
     connection = SynchronousConnection.new
@@ -82,6 +112,48 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     end
 
     assert_instance_of(IOError, error.cause)
+    assert_predicate(client, :closed)
+  end
+
+  def test_default_transport_preserves_block_errors_when_all_cleanup_fails
+    connection = FailingCloseSynchronousConnection.new
+    transport_client = FailingCloseSynchronousClient.new(connection)
+    sdk_client = OpenAI::Client.new(
+      api_key: "test-key",
+      base_url: "https://example.com/v1"
+    )
+
+    error = assert_raises(RuntimeError) do
+      Async::WebSocket::Client.stub(:open, transport_client) do
+        sdk_client.realtime.connect(model: "gpt-realtime-2.1") do |_realtime|
+          raise "application failed"
+        end
+      end
+    end
+
+    assert_equal("application failed", error.message)
+    assert_equal(2, connection.close_count)
+    assert_equal(1, transport_client.close_count)
+    assert_predicate(connection, :closed?)
+    assert_predicate(transport_client, :closed)
+  end
+
+  def test_default_transport_surfaces_the_first_cleanup_error_after_success
+    connection = FailingCloseSynchronousConnection.new
+    client = FailingCloseSynchronousClient.new(connection)
+    transport = OpenAI::Realtime::Transports::AsyncWebSocket.new
+    url = URI("wss://example.com/v1/realtime?model=gpt-realtime-2.1")
+
+    error = assert_raises(OpenAI::Errors::RealtimeConnectionError) do
+      Async::WebSocket::Client.stub(:open, client) do
+        transport.open(url: url, headers: {}, timeout: nil) { |_socket| :done }
+      end
+    end
+
+    assert_equal("connection close failed", error.cause.message)
+    assert_equal(1, connection.close_count)
+    assert_equal(1, client.close_count)
+    assert_predicate(connection, :closed?)
     assert_predicate(client, :closed)
   end
 

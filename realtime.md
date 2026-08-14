@@ -443,8 +443,10 @@ completion event.
   stream so applications can follow the API's recoverability guidance.
 - Valid events introduced after the installed SDK version remain observable as
   immutable `UnknownServerEvent` values instead of terminating the session.
-- Exceptions raised by the application block propagate unchanged; cleanup does
-  not replace them with a close error.
+- Exceptions raised by the application block propagate unchanged while the
+  adapter still attempts both connection and client cleanup. Cleanup does not
+  replace an active error; after a successful block, its first cleanup error is
+  surfaced.
 
 The request timeout applies only through WebSocket negotiation. It is not left
 on the upgraded socket: an established Realtime session may be quiet for longer
