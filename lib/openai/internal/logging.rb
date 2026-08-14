@@ -353,7 +353,7 @@ module OpenAI
 
         private def sanitized_query(query)
           pairs = URI.decode_www_form(query).map do |name, value|
-            [name, SENSITIVE_QUERY_KEY.match?(name) ? "[REDACTED]" : value]
+            [name, SENSITIVE_QUERY_KEY.match?(name) ? "[REDACTED]" : scrub_embedded_url(value)]
           end
           URI.encode_www_form(pairs)
         rescue ArgumentError
@@ -364,6 +364,10 @@ module OpenAI
           safe_url(URI(value.to_s))
         rescue URI::InvalidURIError
           "[URL OMITTED]"
+        end
+
+        private def scrub_embedded_url(value)
+          value.match?(%r{\Ahttps?://}i) ? sanitized_url_value(value) : value
         end
 
         private def textual_content_type?(content_type)
@@ -405,8 +409,8 @@ module OpenAI
             value.map { scrub_value(_1) }
           in String if opaque_string?(value)
             "[OPAQUE DATA OMITTED bytes=#{value.bytesize}]"
-          in String if value.match?(%r{\Ahttps?://}i)
-            sanitized_url_value(value)
+          in String
+            scrub_embedded_url(value)
           else
             value
           end

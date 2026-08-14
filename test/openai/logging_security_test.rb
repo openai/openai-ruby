@@ -222,6 +222,60 @@ class LoggingSecurityTest < Minitest::Test
     assert_includes(body, "google-signature-secret")
   end
 
+  def test_debug_logs_recursively_redact_signed_urls_embedded_in_query_values
+    storage_url =
+      "https://user:password@storage.example.test/private.png?" \
+      "sig=proxy-signature-secret&X-Amz-Credential=proxy-credential-secret&safe=inner-visible"
+    resize_url = "https://resize.example.test/image?#{URI.encode_www_form(source: storage_url, width: 640)}"
+    proxy_url = "https://proxy.example.test/load?#{URI.encode_www_form(url: resize_url, mode: 'resize')}"
+    body = JSON.generate(image_url: proxy_url)
+    headers = {"content-type" => "application/json"}
+    form = URI.encode_www_form(redirect: proxy_url, safe: "outer-visible")
+    formatted = [
+      OpenAI::Internal::Logging.safe_url(URI(proxy_url)),
+      OpenAI::Internal::Logging.safe_path(URI(proxy_url)),
+      OpenAI::Internal::Logging.format_headers("Location" => proxy_url),
+      OpenAI::Internal::Logging.format_body(body, headers: headers),
+      OpenAI::Internal::Logging.format_observed_body(
+        body,
+        headers: headers,
+        complete: true,
+        total_bytes: body.bytesize
+      ),
+      OpenAI::Internal::Logging.format_body(
+        form,
+        headers: {"content-type" => "application/x-www-form-urlencoded"}
+      )
+    ]
+
+    formatted.each do |value|
+      assert_includes(value, "resize.example.test")
+      assert_includes(value, "storage.example.test")
+      assert_includes(value, "inner-visible")
+      assert_includes(value, "640")
+      refute_includes(value, "proxy-signature-secret")
+      refute_includes(value, "proxy-credential-secret")
+      refute_includes(value, "password")
+    end
+
+    assert_includes(body, "proxy-signature-secret")
+    assert_includes(form, "proxy-credential-secret")
+  end
+
+  def test_debug_logs_omit_malformed_signed_urls_embedded_in_query_values
+    malformed = "https://storage.example.test/private image.png?sig=malformed-proxy-secret"
+    proxy_url = "https://proxy.example.test/load?#{URI.encode_www_form(url: malformed, mode: 'resize')}"
+    formatted = OpenAI::Internal::Logging.format_body(
+      JSON.generate(image_url: proxy_url),
+      headers: {"content-type" => "application/json"}
+    )
+
+    assert_includes(formatted, "proxy.example.test/load")
+    assert_includes(formatted, "mode=resize")
+    assert_includes(formatted, "url=%5BURL+OMITTED%5D")
+    refute_includes(formatted, "malformed-proxy-secret")
+  end
+
   def test_debug_logs_preserve_harmless_urls_and_omit_malformed_signed_urls
     harmless = "https://storage.example.test/public/image.png?version=1&format=png"
     without_query = "https://storage.example.test/public/image.png"
