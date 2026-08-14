@@ -67,6 +67,19 @@ class ValidateRuboCopConfigTest < Minitest::Test
     end
   end
 
+  def test_ignores_bundled_dependency_configs
+    Dir.mktmpdir do |directory|
+      repository_path = File.join(directory, ".rubocop.yml")
+      dependency_path = File.join(directory, "vendor", "bundle", "gem", ".rubocop.yml")
+      FileUtils.mkdir_p(File.dirname(dependency_path))
+      File.write(repository_path, "AllCops:\n  NewCops: enable\n")
+      File.write(dependency_path, "plugins:\n  - unavailable-plugin\n")
+
+      assert_equal([".rubocop.yml"], RuboCopConfigGuard.config_paths(directory))
+      assert_empty(RuboCopConfigGuard.validate(directory))
+    end
+  end
+
   def test_follows_local_inherit_from_paths_with_arbitrary_names
     Dir.mktmpdir do |directory|
       inherited_path = File.join(directory, "config", "lint_policy.yml")

@@ -4,6 +4,8 @@ require "yaml"
 require "rubocop"
 
 module RuboCopConfigGuard
+  IGNORED_CONFIG_PREFIXES = ["vendor/bundle/"].freeze
+
   module_function
 
   def violations_for(path, source)
@@ -41,6 +43,9 @@ module RuboCopConfigGuard
     root = File.expand_path(root)
     Dir.glob([".rubocop*.yml", "**/.rubocop*.yml"], base: root, sort: true)
        .select { File.file?(File.join(root, _1)) }
+       .reject do |path|
+         IGNORED_CONFIG_PREFIXES.any? { |prefix| path.start_with?(prefix) }
+       end
        .uniq
   end
 
