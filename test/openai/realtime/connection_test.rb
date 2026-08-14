@@ -91,6 +91,23 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
     assert(socket.closed?)
   end
 
+  def test_connect_rejects_transport_options_that_override_authenticated_inputs
+    [:url, :headers, :timeout].each do |key|
+      transport = FakeTransport.new(FakeSocket.new)
+
+      error = assert_raises(ArgumentError) do
+        client.realtime.connect(
+          model: "gpt-realtime",
+          transport: transport,
+          transport_options: {key => Object.new}
+        ) { |_connection| nil }
+      end
+
+      assert_includes(error.message, key.inspect)
+      assert_nil(transport.open_args)
+    end
+  end
+
   def test_connect_to_a_dedicated_transcription_session
     socket = FakeSocket.new
     transport = FakeTransport.new(socket)

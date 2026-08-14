@@ -30,6 +30,7 @@ module OpenAI
                 }
               }
             ],
+            parallel_tool_calls: false,
             tool_choice: {type: :function, name: TOOL_NAME}
           )
         end

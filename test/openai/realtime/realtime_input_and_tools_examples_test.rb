@@ -96,6 +96,7 @@ class OpenAI::Test::RealtimeInputAndToolsExamplesTest < OpenAI::Test::RealtimeEx
 
     update = connection.session.updates.fetch(0)
     assert_equal({type: :function, name: "lookup_weather"}, update.fetch(:tool_choice))
+    assert_equal(false, update.fetch(:parallel_tool_calls))
     assert_equal([{}], connection.response.calls.take(1))
     assert_equal({tool_choice: :none}, connection.response.calls.fetch(1))
     assert_equal(

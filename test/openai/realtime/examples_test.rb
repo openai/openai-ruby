@@ -590,22 +590,44 @@ class OpenAI::Test::RealtimeExamplesTest < OpenAI::Test::RealtimeExamplesTestCas
   def test_mcp_console_example_requests_a_final_answer_after_the_tool_completes
     connection = RecordingConnection.new(
       [
-        OpenAI::Realtime::ResponseMcpCallCompleted.new(
+        OpenAI::Realtime::ResponseMcpCallArgumentsDone.new(
+          arguments: JSON.generate(query: "Realtime WebSocket URL"),
           event_id: "event_1",
           item_id: "mcp_call_1",
+          output_index: 0,
+          response_id: "response_1"
+        ),
+        OpenAI::Realtime::ResponseMcpCallCompleted.new(
+          event_id: "event_2",
+          item_id: "mcp_call_1",
           output_index: 0
+        ),
+        completed_response_event,
+        OpenAI::Realtime::ResponseTextDeltaEvent.new(
+          content_index: 0,
+          delta: "wss://api.openai.com/v1/realtime",
+          event_id: "event_3",
+          item_id: "item_2",
+          output_index: 0,
+          response_id: "response_2"
         ),
         completed_response_event
       ]
     )
+    output = StringIO.new
 
     OpenAI::Examples::Realtime::MCPApproval.run_session(
       connection,
       prompt: "Search the docs",
-      output: StringIO.new
+      output: output
     )
 
     assert_equal({tool_choice: :none}, connection.response.calls.fetch(0))
+    answer_at = output.string.index("wss://api.openai.com/v1/realtime")
+    done_at = output.string.rindex("[mcp] response.done status=completed")
+    refute_nil(answer_at)
+    refute_nil(done_at)
+    assert_operator(answer_at, :<, done_at)
   end
 
   def test_sideband_smoke_mode_stops_after_the_selected_event

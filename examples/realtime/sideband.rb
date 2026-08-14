@@ -13,6 +13,8 @@ module OpenAI
 
         def stream(connection, output: $stdout, stop_after: nil)
           EventStream.each_until(connection, stop_after: stop_after) do |event|
+            raise event.error.message if event.is_a?(OpenAI::Realtime::RealtimeErrorEvent)
+
             output.puts("#{event.type}: #{event.to_h}")
             output.flush
           end

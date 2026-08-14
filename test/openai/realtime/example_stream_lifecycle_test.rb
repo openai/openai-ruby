@@ -142,6 +142,25 @@ class OpenAI::Test::RealtimeExampleStreamLifecycleTest < Minitest::Test
     assert_equal("Realtime connection closed before session.updated", error.message)
   end
 
+  def test_sideband_surfaces_an_api_error_before_the_requested_event
+    connection = RecordingConnection.new(
+      [
+        realtime_error_event("sideband update failed"),
+        Event.new(type: :"session.updated", data: {type: :"session.updated"})
+      ]
+    )
+
+    error = assert_raises(RuntimeError) do
+      OpenAI::Examples::Realtime::Sideband.stream(
+        connection,
+        output: StringIO.new,
+        stop_after: "session.updated"
+      )
+    end
+
+    assert_equal("sideband update failed", error.message)
+  end
+
   def test_sip_rejects_eof_before_the_requested_event
     error = assert_raises(RuntimeError) do
       OpenAI::Examples::Realtime::SIP.stream(

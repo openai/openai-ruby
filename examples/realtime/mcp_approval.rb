@@ -57,7 +57,7 @@ module OpenAI
             tool_lists: {},
             waiting_for_tool_update: false,
             selected_tool: false,
-            mcp_call_pending: false
+            mcp_phase: :idle
           }
 
           connection.each do |event|
@@ -85,7 +85,7 @@ module OpenAI
           when OpenAI::Realtime::McpListToolsFailed
             raise "MCP tool discovery failed for #{event.item_id}"
           when OpenAI::Realtime::ResponseMcpCallArgumentsDone
-            state[:mcp_call_pending] = true
+            state[:mcp_phase] = :tool_pending
             output.puts("[mcp] tool call requested")
           when OpenAI::Realtime::ResponseMcpCallCompleted
             handle_tool_completed(connection, output: output, state: state)
@@ -97,7 +97,7 @@ module OpenAI
             output.print(event.delta)
             output.flush
           when OpenAI::Realtime::ResponseDoneEvent
-            handle_response_done(event, output: output, state: state)
+            handle_response_done(connection, event, output: output, state: state)
           end
         end
 
@@ -118,20 +118,32 @@ module OpenAI
         end
 
         def handle_tool_completed(connection, output:, state:)
-          state[:mcp_call_pending] = false
           output.puts("[mcp] tool call completed")
-          connection.response.create(tool_choice: :none)
+          if state[:mcp_phase] == :response_done
+            request_final_response(connection, state: state)
+          else
+            state[:mcp_phase] = :tool_completed
+          end
         end
 
-        def handle_response_done(event, output:, state:)
+        def handle_response_done(connection, event, output:, state:)
           raise "Response ended with #{event.response.status}" unless event.response.status == :completed
 
-          if state[:mcp_call_pending]
+          case state[:mcp_phase]
+          when :tool_pending
+            state[:mcp_phase] = :response_done
             output.puts("[mcp] waiting for approval and tool execution")
-          else
+          when :tool_completed
+            request_final_response(connection, state: state)
+          when :final_response_pending, :idle
             output.puts("\n[mcp] response.done status=completed")
             :done
           end
+        end
+
+        def request_final_response(connection, state:)
+          connection.response.create(tool_choice: :none)
+          state[:mcp_phase] = :final_response_pending
         end
 
         def select_discovered_tool(connection, output:, state:)

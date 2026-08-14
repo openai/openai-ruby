@@ -6,6 +6,8 @@ module OpenAI
     #
     # @api private
     class ConnectionManager
+      RESERVED_TRANSPORT_OPTIONS = [:headers, :timeout, :url].freeze
+
       # @api private
       def initialize(
         client:,
@@ -22,6 +24,11 @@ module OpenAI
         @connection_class = connection_class
         @transport = transport
         @request_options = request_options
+        reserved_options = transport_options.keys & RESERVED_TRANSPORT_OPTIONS
+        unless reserved_options.empty?
+          raise ArgumentError,
+                "`transport_options` cannot include #{reserved_options.map(&:inspect).join(', ')}"
+        end
         @transport_options = transport_options
       end
 
