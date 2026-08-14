@@ -22,7 +22,7 @@ module OpenAI
       SENSITIVE_BODY_KEY = /(?:api[-_]?key|authorization|credential|password|secret|signature|token)/i
       SENSITIVE_QUERY_KEY = /
         (?:
-          (?:\A|[-_\[;])(?:key|sig)
+          (?:\A|[-_\[])(?:key|sig)
           | (?-i:K)ey
           | api[-_]?key
           | authorization
@@ -32,7 +32,7 @@ module OpenAI
           | signature
           | token
         )
-        (?:\[|\]|[-_]|\z)
+        (?:\[|\]|\z)
       /ix
       URL_HEADER_KEY = /(?:\A|[-_])(?:location|url|uri)\z|\A(?:link|refresh)\z/i
 
@@ -303,7 +303,7 @@ module OpenAI
                 if sensitive_header?(normalized_name)
                   "[REDACTED]"
                 elsif URL_HEADER_KEY.match?(normalized_name)
-                  sanitized_url_value(value)
+                  sanitized_header_url(value)
                 else
                   value
                 end
@@ -341,56 +341,29 @@ module OpenAI
           format_text_body(body, content_type: content_type, total_bytes: total_bytes)
         end
 
-        private def sanitized_uri(url, depth: 0)
+        private def sanitized_uri(url)
           uri = url.dup
           uri.user = nil
           uri.password = nil
-          uri.query = sanitized_query(uri.query, depth: depth) unless uri.query.nil?
-          uri.fragment = sanitized_fragment(uri.fragment, depth: depth) unless uri.fragment.nil?
+          return uri if uri.query.nil?
+
+          uri.query = sanitized_query(uri.query)
           uri
         end
 
-        private def sanitized_fragment(fragment, depth:)
-          route, separator, query = fragment.partition("?")
-          if route.start_with?("/") && !separator.empty?
-            return "#{route}?#{sanitized_query(query, depth: depth)}"
-          end
-          return sanitized_query(fragment, depth: depth) if fragment.include?("=")
-
-          scrub_embedded_url(fragment, depth: depth + 1)
-        end
-
-        private def sanitized_query(query, depth: 0)
+        private def sanitized_query(query)
           pairs = URI.decode_www_form(query).map do |name, value|
-            sensitive = SENSITIVE_QUERY_KEY.match?(name)
-            [name, sensitive ? "[REDACTED]" : scrub_embedded_url(value, depth: depth + 1)]
+            [name, SENSITIVE_QUERY_KEY.match?(name) ? "[REDACTED]" : value]
           end
           URI.encode_www_form(pairs)
         rescue ArgumentError
           nil
         end
 
-        private def sanitized_url_value(value, depth: 0)
-          return "[URL OMITTED]" if depth >= 8
-
-          sanitized_uri(URI(value.to_s), depth: depth).to_s
-        rescue ArgumentError, URI::Error
+        private def sanitized_header_url(value)
+          safe_url(URI(value.to_s))
+        rescue URI::InvalidURIError
           "[URL OMITTED]"
-        end
-
-        private def scrub_embedded_url(value, depth: 0)
-          normalized = value.delete("\t\n\r")
-          if normalized.match?(%r{\A(?:[[:space:]]|[\x00-\x1f])*https?://}i)
-            return sanitized_url_value(value, depth: depth)
-          end
-          return "[URL OMITTED]" if normalized.match?(/https?%(?:25)*3a/i)
-          return value unless normalized.match?(%r{https?://}i)
-          return "[URL OMITTED]" unless normalized == value
-
-          value.gsub(%r{https?://(?:\[[^\s\[\]<>"']*\]|[^\s<>\[\]"'])+}i) do |url|
-            trailing = url[/[),.!;:]+\z/].to_s
-            "#{sanitized_url_value(url.delete_suffix(trailing), depth: depth)}#{trailing}"
-          end
         end
 
         private def textual_content_type?(content_type)
@@ -406,7 +379,7 @@ module OpenAI
             return "[JSON BODY OMITTED] bytes=#{total_bytes} reason=too_large" if total_bytes > MAX_BODY_BYTES
 
             parsed = JSON.parse(body)
-            return JSON.generate(scrub_value(parsed))
+            return summarize_json_body(parsed, total_bytes: total_bytes)
           end
 
           unless content_type.match?(%r{\Aapplication/x-www-form-urlencoded(?:;|\z)}i)
@@ -414,37 +387,31 @@ module OpenAI
           end
           return "[FORM BODY OMITTED] bytes=#{total_bytes} reason=too_large" if total_bytes > MAX_BODY_BYTES
 
-          sanitized = sanitized_query(body)
-          sanitized.nil? ? "[INVALID FORM BODY OMITTED] bytes=#{total_bytes}" : sanitized.inspect
+          fields = URI.decode_www_form(body).length
+          "[FORM BODY] bytes=#{total_bytes} fields=#{fields}"
         rescue JSON::ParserError
           "[INVALID JSON BODY OMITTED] bytes=#{total_bytes}"
+        rescue ArgumentError
+          "[INVALID FORM BODY OMITTED] bytes=#{total_bytes}"
         end
 
-        private def scrub_value(value, key: nil)
-          return "[REDACTED]" if key && SENSITIVE_BODY_KEY.match?(key.to_s)
-
-          case value
-          in Hash
-            value.to_h { |name, nested| [scrub_embedded_url(name), scrub_value(nested, key: name)] }
-          in Array if value.length > MAX_ARRAY_ITEMS
-            "[ARRAY OMITTED items=#{value.length}]"
-          in Array
-            value.map { scrub_value(_1) }
-          in String if opaque_string?(value)
-            "[OPAQUE DATA OMITTED bytes=#{value.bytesize}]"
-          in String
-            scrub_embedded_url(value)
-          else
-            value
-          end
-        end
-
-        private def opaque_string?(value)
-          return false if value.bytesize < OPAQUE_STRING_BYTES
-
-          encoded = value.sub(/\Adata:[^,]*;base64,/i, "")
-          encoded.match?(%r{\A[A-Za-z0-9+/_=\s-]+\z}) ||
-            encoded.match?(/\A[A-Za-z0-9_-]+(?:\.[A-Za-z0-9_-]+){1,4}\z/)
+        private def summarize_json_body(value, total_bytes:)
+          shape =
+            case value
+            in Hash
+              "object fields=#{value.length}"
+            in Array
+              "array items=#{value.length}"
+            in String
+              "string"
+            in Integer | Float
+              "number"
+            in true | false
+              "boolean"
+            in nil
+              "null"
+            end
+          "[JSON BODY] bytes=#{total_bytes} type=#{shape}"
         end
       end
     end

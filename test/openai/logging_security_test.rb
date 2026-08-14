@@ -62,7 +62,7 @@ class LoggingSecurityTest < Minitest::Test
     end
   end
 
-  def test_debug_logs_structurally_redact_form_urlencoded_request_bodies
+  def test_debug_logs_summarize_form_urlencoded_request_bodies_without_fields_or_values
     body =
       "client_secret=client-form-secret&access_token=access-form-secret&" \
       "accessKey=access-key-form-secret&credentials%5Bvalue%5D=credential-form-secret&" \
@@ -77,14 +77,10 @@ class LoggingSecurityTest < Minitest::Test
 
     assert_equal(body, request.body)
     assert_includes(output, "request started")
-    assert_includes(output, "client_secret=%5BREDACTED%5D")
-    assert_includes(output, "access_token=%5BREDACTED%5D")
-    assert_includes(output, "accessKey=%5BREDACTED%5D")
-    assert_includes(output, "credentials%5Bvalue%5D=%5BREDACTED%5D")
-    assert_includes(output, "access_token%5B%5D=%5BREDACTED%5D")
-    assert_includes(output, "credentials%5BsessionToken%5D=%5BREDACTED%5D")
-    assert_includes(output, "safe=hello+world")
-    assert_includes(output, "repeat=one&repeat=two")
+    assert_includes(output, "[FORM BODY] bytes=#{body.bytesize} fields=9")
+    refute_includes(output, "client_secret")
+    refute_includes(output, "safe=hello+world")
+    refute_includes(output, "repeat=one")
     refute_includes(output, "client-form-secret")
     refute_includes(output, "access-form-secret")
     refute_includes(output, "access-key-form-secret")
@@ -93,7 +89,7 @@ class LoggingSecurityTest < Minitest::Test
     refute_includes(output, "nested-form-secret")
   end
 
-  def test_debug_logs_structurally_redact_form_urlencoded_response_bodies
+  def test_debug_logs_summarize_form_urlencoded_response_bodies_without_fields_or_values
     body =
       "accessToken=response-access-secret&access_token%5B%5D=response-array-secret&" \
       "accessKey=response-access-key-secret&credentials%5Bvalue%5D=response-credential-secret&" \
@@ -105,12 +101,7 @@ class LoggingSecurityTest < Minitest::Test
       total_bytes: body.bytesize
     )
 
-    assert_includes(formatted, "accessToken=%5BREDACTED%5D")
-    assert_includes(formatted, "accessKey=%5BREDACTED%5D")
-    assert_includes(formatted, "credentials%5Bvalue%5D=%5BREDACTED%5D")
-    assert_includes(formatted, "access_token%5B%5D=%5BREDACTED%5D")
-    assert_includes(formatted, "credentials%5Bclient_secret%5D=%5BREDACTED%5D")
-    assert_includes(formatted, "safe=visible")
+    assert_equal("[FORM BODY] bytes=#{body.bytesize} fields=6", formatted)
     refute_includes(formatted, "response-access-secret")
     refute_includes(formatted, "response-access-key-secret")
     refute_includes(formatted, "response-credential-secret")
@@ -163,659 +154,98 @@ class LoggingSecurityTest < Minitest::Test
     end
   end
 
-  def test_debug_logs_redact_signed_urls_in_nested_json_request_and_response_bodies
+  def test_debug_json_summaries_never_include_customer_controlled_strings_or_keys
+    values = [
+      "https://storage.example.test/file?sig=azure-synthetic-credential",
+      "https://storage.example.test/file?X-Amz-Credential=aws-synthetic-credential",
+      "https://storage.example.test/file?X-Goog-Signature=google-synthetic-credential",
+      "fetch https://storage.example.test/files/O'Reilly?sig=apostrophe-synthetic-credential",
+      "//storage.example.test/file?sig=relative-synthetic-credential",
+      "https&#58;//storage.example.test/file?sig=entity-synthetic-credential",
+      "https://storage.example.test/file?download=1;sig=semicolon-synthetic-credential",
+      "Download https%3A%2F%2Fstorage.example.test%2Ffile%3Fsig%3Dencoded-synthetic-credential",
+      "fetch ht\ttps://storage.example.test/file?sig=control-synthetic-credential",
+      "private customer prompt",
+      "private model response"
+    ]
+    signed_key = "https://storage.example.test/file?sig=key-synthetic-credential"
     body = JSON.generate(
-      input: [
-        {
-          content: [
-            {image_url: "https://azure.example.test/image.png?sv=2025-01-01&sig=azure-signature-secret"},
-            {
-              file_url: "https://aws.example.test/file.pdf?" \
-                        "X-Amz-Credential=aws-credential-secret&" \
-                        "X-Amz-Signature=aws-signature-secret&safe=visible"
-            },
-            {
-              url: "https://google.example.test/image.png?" \
-                   "X-Goog-Credential=google-credential-secret&X-Goog-Signature=google-signature-secret"
-            },
-            [
-              "HTTP://user:password@storage.example.test/nested?" \
-              "s%69g=nested-signature-secret&sig=repeated-signature-secret&monkey=harmless"
-            ]
-          ]
-        }
-      ]
+      signed_key => values,
+      "nested-private-key" => {"inner-private-key" => "private tool argument"}
     )
     headers = {"content-type" => "application/json"}
-    formatted_bodies = [
-      OpenAI::Internal::Logging.format_body(body, headers: headers),
-      OpenAI::Internal::Logging.format_observed_body(
-        body,
-        headers: headers,
-        complete: true,
-        total_bytes: body.bytesize
-      )
-    ]
-
-    formatted_bodies.each do |formatted|
-      assert_includes(formatted, "azure.example.test/image.png?sv=2025-01-01")
-      assert_includes(formatted, "aws.example.test/file.pdf")
-      assert_includes(formatted, "google.example.test/image.png")
-      assert_includes(formatted, "safe=visible")
-      assert_includes(formatted, "monkey=harmless")
-      assert_includes(formatted, "%5BREDACTED%5D")
-      refute_includes(formatted, "user:password@")
-
-      %w[
-        azure-signature-secret
-        aws-credential-secret
-        aws-signature-secret
-        google-credential-secret
-        google-signature-secret
-        nested-signature-secret
-        repeated-signature-secret
-      ].each { |secret| refute_includes(formatted, secret) }
-    end
-
-    assert_includes(body, "azure-signature-secret")
-    assert_includes(body, "aws-credential-secret")
-    assert_includes(body, "google-signature-secret")
-  end
-
-  def test_debug_logs_redact_signed_urls_in_nested_json_object_keys
-    azure_key = "https://azure.example.test/image.png?sv=2025-01-01&sig=azure-object-key-proof"
-    aws_key = "https://aws.example.test/file.pdf?X-Amz-Credential=aws-object-key-proof&safe=visible"
-    google_key = "https://google.example.test/file?X-Goog-Signature=google-object-key-proof"
-    malformed_key = "https://storage.example.test/private image.png?sig=malformed-object-key-proof"
-    harmless_key = "https://public.example.test/file?version=1"
-    body = JSON.generate(
-      "results" => [
-        {
-          azure_key => "azure-result",
-          "nested" => {aws_key => "aws-result", google_key => "google-result"},
-          malformed_key => "malformed-result",
-          harmless_key => "public-result"
-        }
-      ]
-    )
-    headers = {"content-type" => "application/json"}
-    formatted = [
-      OpenAI::Internal::Logging.format_body(body, headers: headers),
-      OpenAI::Internal::Logging.format_observed_body(
-        body,
-        headers: headers,
-        complete: true,
-        total_bytes: body.bytesize
-      )
-    ]
-
-    formatted.each do |value|
-      parsed = JSON.parse(value).fetch("results").fetch(0)
-
-      assert_equal(
-        "azure-result",
-        parsed.fetch("https://azure.example.test/image.png?sv=2025-01-01&sig=%5BREDACTED%5D")
-      )
-      assert_equal("public-result", parsed.fetch(harmless_key))
-      assert_equal("malformed-result", parsed.fetch("[URL OMITTED]"))
-      assert_includes(value, "aws.example.test/file.pdf")
-      assert_includes(value, "google.example.test/file")
-      assert_includes(value, "safe=visible")
-
-      %w[
-        azure-object-key-proof
-        aws-object-key-proof
-        google-object-key-proof
-        malformed-object-key-proof
-      ].each do |proof|
-        refute_includes(value, proof)
-      end
-    end
-
-    assert_includes(body, "azure-object-key-proof")
-    assert_includes(body, "aws-object-key-proof")
-    assert_includes(body, "google-object-key-proof")
-    assert_includes(body, "malformed-object-key-proof")
-  end
-
-  def test_debug_logs_recursively_redact_signed_urls_embedded_in_query_values
-    storage_url =
-      "https://user:password@storage.example.test/private.png?" \
-      "sig=proxy-signature-secret&X-Amz-Credential=proxy-credential-secret&safe=inner-visible"
-    resize_url = "https://resize.example.test/image?#{URI.encode_www_form(source: storage_url, width: 640)}"
-    proxy_url = "https://proxy.example.test/load?#{URI.encode_www_form(url: resize_url, mode: 'resize')}"
-    body = JSON.generate(image_url: proxy_url)
-    headers = {"content-type" => "application/json"}
-    form = URI.encode_www_form(redirect: proxy_url, safe: "outer-visible")
-    formatted = [
-      OpenAI::Internal::Logging.safe_url(URI(proxy_url)),
-      OpenAI::Internal::Logging.safe_path(URI(proxy_url)),
-      OpenAI::Internal::Logging.format_headers("Location" => proxy_url),
-      OpenAI::Internal::Logging.format_body(body, headers: headers),
-      OpenAI::Internal::Logging.format_observed_body(
-        body,
-        headers: headers,
-        complete: true,
-        total_bytes: body.bytesize
-      ),
-      OpenAI::Internal::Logging.format_body(
-        form,
-        headers: {"content-type" => "application/x-www-form-urlencoded"}
-      )
-    ]
-
-    formatted.each do |value|
-      assert_includes(value, "resize.example.test")
-      assert_includes(value, "storage.example.test")
-      assert_includes(value, "inner-visible")
-      assert_includes(value, "640")
-      refute_includes(value, "proxy-signature-secret")
-      refute_includes(value, "proxy-credential-secret")
-      refute_includes(value, "password")
-    end
-
-    assert_includes(body, "proxy-signature-secret")
-    assert_includes(form, "proxy-credential-secret")
-  end
-
-  def test_debug_logs_omit_malformed_signed_urls_embedded_in_query_values
-    malformed = "https://storage.example.test/private image.png?sig=malformed-proxy-secret"
-    proxy_url = "https://proxy.example.test/load?#{URI.encode_www_form(url: malformed, mode: 'resize')}"
-    formatted = OpenAI::Internal::Logging.format_body(
-      JSON.generate(image_url: proxy_url),
-      headers: {"content-type" => "application/json"}
-    )
-
-    assert_includes(formatted, "proxy.example.test/load")
-    assert_includes(formatted, "mode=resize")
-    assert_includes(formatted, "url=%5BURL+OMITTED%5D")
-    refute_includes(formatted, "malformed-proxy-secret")
-  end
-
-  def test_debug_logs_bound_recursively_nested_url_values
-    deep_url = "#{'https://a/x?u=' * 500}https://storage.example.test/file?sig=deep-signature-secret"
-    body = JSON.generate(image_url: deep_url)
-    formatted = OpenAI::Internal::Logging.format_body(
+    request = OpenAI::Internal::Logging.format_body(body, headers: headers)
+    response = OpenAI::Internal::Logging.format_observed_body(
       body,
-      headers: {"content-type" => "application/json"}
+      headers: headers,
+      complete: true,
+      total_bytes: body.bytesize
     )
 
-    assert_operator(body.bytesize, :<, OpenAI::Internal::Logging::MAX_BODY_BYTES)
-    assert_operator(formatted.bytesize, :<=, OpenAI::Internal::Logging::MAX_BODY_BYTES)
-    assert_includes(formatted, "https://a/x?u=")
-    refute_includes(formatted, "deep-signature-secret")
-    assert_includes(body, "deep-signature-secret")
+    [request, response].each do |summary|
+      assert_equal("[JSON BODY] bytes=#{body.bytesize} type=object fields=2", summary)
+      refute_includes(summary, "synthetic-credential")
+      refute_includes(summary, "private")
+      refute_includes(summary, "storage.example.test")
+    end
+
+    assert_includes(body, "azure-synthetic-credential")
+    assert_includes(body, "key-synthetic-credential")
+    assert_includes(body, "private customer prompt")
   end
 
-  def test_debug_logs_omit_signed_urls_with_leading_whitespace
-    values = {
-      image_url: " https://storage.example.test/image.png?sig=leading-space-secret",
-      file_url: "\thttp://storage.example.test/file.pdf?X-Amz-Signature=leading-tab-secret",
-      url: "\nhttps://storage.example.test/output.png?X-Goog-Signature=leading-newline-secret",
-      unicode_url: "\u00a0https://storage.example.test/unicode.png?sig=leading-unicode-secret",
-      description: " ordinary text",
-      preview_url: " data:image/png;base64,YWJj"
+  def test_debug_json_summaries_report_only_safe_top_level_shape
+    examples = {
+      {"private-key" => "private-value"} => "object fields=1",
+      ["private-value", 7, true] => "array items=3",
+      "private-value" => "string",
+      42 => "number",
+      1.25 => "number",
+      true => "boolean",
+      false => "boolean",
+      nil => "null"
     }
-    body = JSON.generate(values)
     headers = {"content-type" => "application/json"}
-    formatted = [
-      OpenAI::Internal::Logging.format_body(body, headers: headers),
-      OpenAI::Internal::Logging.format_observed_body(
+
+    examples.each do |value, shape|
+      body = JSON.generate(value)
+      expected = "[JSON BODY] bytes=#{body.bytesize} type=#{shape}"
+      request = OpenAI::Internal::Logging.format_body(body, headers: headers)
+      response = OpenAI::Internal::Logging.format_observed_body(
         body,
         headers: headers,
         complete: true,
         total_bytes: body.bytesize
       )
-    ]
 
-    formatted.each do |value|
-      assert_equal(
-        {
-          "image_url" => "[URL OMITTED]",
-          "file_url" => "[URL OMITTED]",
-          "url" => "[URL OMITTED]",
-          "unicode_url" => "[URL OMITTED]",
-          "description" => " ordinary text",
-          "preview_url" => " data:image/png;base64,YWJj"
-        },
-        JSON.parse(value)
-      )
-      refute_includes(value, "leading-space-secret")
-      refute_includes(value, "leading-tab-secret")
-      refute_includes(value, "leading-newline-secret")
-      refute_includes(value, "leading-unicode-secret")
+      assert_equal(expected, request)
+      assert_equal(expected, response)
+      refute_includes(request, "private")
     end
   end
 
-  def test_debug_logs_omit_nested_signed_urls_with_leading_whitespace
-    nested_url = " https://storage.example.test/file?sig=nested-leading-space-secret"
-    proxy_url = "https://proxy.example.test/load?#{URI.encode_www_form(url: nested_url, mode: 'resize')}"
-    formatted = OpenAI::Internal::Logging.format_body(
-      JSON.generate(image_url: proxy_url),
-      headers: {"content-type" => "application/json"}
-    )
-
-    assert_includes(formatted, "proxy.example.test/load")
-    assert_includes(formatted, "mode=resize")
-    assert_includes(formatted, "url=%5BURL+OMITTED%5D")
-    refute_includes(formatted, "nested-leading-space-secret")
-  end
-
-  def test_debug_logs_omit_signed_urls_with_normalizable_control_characters
-    urls = (0..31).to_h do |codepoint|
-      ["control_#{codepoint}", "#{codepoint.chr}https://storage.example.test/file?sig=control-secret-#{codepoint}"]
-    end
-    urls.merge!(
-      "embedded_tab" => "ht\ttps://storage.example.test/file?sig=embedded-tab-secret",
-      "embedded_newline" => "htt\nps://storage.example.test/file?sig=embedded-newline-secret",
-      "embedded_carriage_return" => "http\rs://storage.example.test/file?sig=embedded-carriage-secret",
-      "embedded_separator_tab" => "https:\t//storage.example.test/file?sig=embedded-separator-secret"
-    )
-    values = {**urls, "plain_text" => "\u0000ordinary text", "data_url" => "\u0000data:image/png;base64,YWJj"}
-    body = JSON.generate(values)
-    headers = {"content-type" => "application/json"}
-    formatted = [
-      OpenAI::Internal::Logging.format_body(body, headers: headers),
-      OpenAI::Internal::Logging.format_observed_body(
-        body,
-        headers: headers,
-        complete: true,
-        total_bytes: body.bytesize
-      )
-    ]
-
-    formatted.each do |value|
-      parsed = JSON.parse(value)
-      urls.each_key { |key| assert_equal("[URL OMITTED]", parsed.fetch(key)) }
-      assert_equal("\u0000ordinary text", parsed.fetch("plain_text"))
-      assert_equal("\u0000data:image/png;base64,YWJj", parsed.fetch("data_url"))
-      refute_includes(value, "control-secret-")
-      refute_includes(value, "embedded-tab-secret")
-      refute_includes(value, "embedded-newline-secret")
-      refute_includes(value, "embedded-carriage-secret")
-      refute_includes(value, "embedded-separator-secret")
-    end
-  end
-
-  def test_debug_logs_omit_nested_signed_urls_with_normalizable_control_characters
-    form_headers = {"content-type" => "application/x-www-form-urlencoded"}
-    nested_urls = [
-      "\u0000https://storage.example.test/file?sig=nested-nul-secret",
-      "ht\ttps://storage.example.test/file?sig=nested-tab-secret",
-      "htt\nps://storage.example.test/file?sig=nested-newline-secret"
-    ]
-
-    nested_urls.each do |nested_url|
-      proxy_url = "https://proxy.example.test/load?#{URI.encode_www_form(url: nested_url, mode: 'resize')}"
-      body = JSON.generate(image_url: proxy_url)
-      form = URI.encode_www_form(redirect: proxy_url)
-      headers = {"content-type" => "application/json"}
-      formatted = [
-        OpenAI::Internal::Logging.safe_url(URI(proxy_url)),
-        OpenAI::Internal::Logging.safe_path(URI(proxy_url)),
-        OpenAI::Internal::Logging.format_headers("Location" => proxy_url),
-        OpenAI::Internal::Logging.format_body(body, headers: headers),
-        OpenAI::Internal::Logging.format_observed_body(
-          body,
-          headers: headers,
-          complete: true,
-          total_bytes: body.bytesize
-        ),
-        OpenAI::Internal::Logging.format_body(form, headers: form_headers)
-      ]
-
-      formatted.each do |value|
-        assert_includes(value, "resize")
-        refute_includes(value, "nested-nul-secret")
-        refute_includes(value, "nested-tab-secret")
-        refute_includes(value, "nested-newline-secret")
-      end
-    end
-  end
-
-  def test_debug_logs_omit_repeatedly_encoded_signed_urls_in_query_values
-    signed_url = "https://storage.example.test/file?sig=repeated-encoding-secret&safe=visible"
-
-    [1, 2, 8].each do |encoding_layers|
-      encoded_url = encoding_layers.times.reduce(signed_url) do |value, _index|
-        URI.encode_www_form_component(value)
-      end
-      proxy_url = "https://proxy.example.test/load?#{URI.encode_www_form(url: encoded_url, mode: 'resize')}"
-      body = JSON.generate(image_url: proxy_url)
-      headers = {"content-type" => "application/json"}
-      formatted = [
-        OpenAI::Internal::Logging.safe_url(URI(proxy_url)),
-        OpenAI::Internal::Logging.format_body(body, headers: headers),
-        OpenAI::Internal::Logging.format_observed_body(
-          body,
-          headers: headers,
-          complete: true,
-          total_bytes: body.bytesize
-        )
-      ]
-
-      formatted.each do |value|
-        assert_includes(value, "mode=resize")
-        assert_includes(value, "%5BURL+OMITTED%5D")
-        refute_includes(value, "repeated-encoding-secret")
-      end
-      assert_includes(body, "repeated-encoding-secret")
-    end
-  end
-
-  def test_debug_logs_scrub_signed_urls_inside_prose_and_markdown
-    body = JSON.generate(
-      prose: "Please fetch https://storage.example.test/file?sig=prose-secret and preserve this sentence.",
-      markdown: "[source](https://storage.example.test/file?X-Amz-Signature=markdown-secret&view=full)",
-      multiple: "First https://a.example.test/?sig=first-secret, then https://b.example.test/?token=second-secret!",
-      public: "Read https://public.example.test/docs?page=1 for details."
-    )
-    headers = {"content-type" => "application/json"}
-    formatted = [
-      OpenAI::Internal::Logging.format_body(body, headers: headers),
-      OpenAI::Internal::Logging.format_observed_body(
-        body,
-        headers: headers,
-        complete: true,
-        total_bytes: body.bytesize
-      )
-    ]
-
-    formatted.each do |value|
-      parsed = JSON.parse(value)
-      assert_equal(
-        "Please fetch https://storage.example.test/file?sig=%5BREDACTED%5D and preserve this sentence.",
-        parsed.fetch("prose")
-      )
-      assert_equal(
-        "[source](https://storage.example.test/file?X-Amz-Signature=%5BREDACTED%5D&view=full)",
-        parsed.fetch("markdown")
-      )
-      assert_equal(
-        "First https://a.example.test/?sig=%5BREDACTED%5D, " \
-        "then https://b.example.test/?token=%5BREDACTED%5D!",
-        parsed.fetch("multiple")
-      )
-      assert_equal("Read https://public.example.test/docs?page=1 for details.", parsed.fetch("public"))
-      %w[prose-secret markdown-secret first-secret second-secret].each do |secret|
-        refute_includes(value, secret)
-      end
-    end
-  end
-
-  def test_debug_logs_redact_html_escaped_signed_query_parameters
-    values = {
-      html: '<a href="https://storage.example.test/file?download=1&amp;sig=html-signature-proof">file</a>',
-      repeated: "https://storage.example.test/file?download=1&amp;amp;sig=repeated-html-signature-proof",
-      harmless: '<a href="https://public.example.test/file?download=1&amp;format=png">file</a>'
-    }
-    body = JSON.generate(values)
-    headers = {"content-type" => "application/json"}
-    formatted = [
-      OpenAI::Internal::Logging.format_body(body, headers: headers),
-      OpenAI::Internal::Logging.format_observed_body(
-        body,
-        headers: headers,
-        complete: true,
-        total_bytes: body.bytesize
-      )
-    ]
-
-    formatted.each do |value|
-      assert_includes(value, "storage.example.test/file?download=1")
-      assert_includes(value, "public.example.test/file?download=1")
-      assert_includes(value, "format=png")
-      assert_includes(value, "%5BREDACTED%5D")
-      refute_includes(value, "html-signature-proof")
-      refute_includes(value, "repeated-html-signature-proof")
-    end
-
-    assert_includes(body, "html-signature-proof")
-    assert_includes(body, "repeated-html-signature-proof")
-  end
-
-  def test_debug_logs_scrub_signed_ipv6_literal_urls_inside_text
-    values = {
-      prose: "fetch https://[2001:db8::1]/file?sig=ipv6-prose-proof and retain the sentence",
-      markdown: "[source](https://[::1]/file?X-Amz-Signature=ipv6-markdown-proof&mode=preview)",
-      harmless: "fetch https://[2001:db8::2]/file?version=1"
-    }
-    body = JSON.generate(values)
-    headers = {"content-type" => "application/json"}
-    formatted = [
-      OpenAI::Internal::Logging.format_body(body, headers: headers),
-      OpenAI::Internal::Logging.format_observed_body(
-        body,
-        headers: headers,
-        complete: true,
-        total_bytes: body.bytesize
-      )
-    ]
-
-    formatted.each do |value|
-      parsed = JSON.parse(value)
-
-      assert_equal(
-        "fetch https://[2001:db8::1]/file?sig=%5BREDACTED%5D and retain the sentence",
-        parsed.fetch("prose")
-      )
-      assert_equal(
-        "[source](https://[::1]/file?X-Amz-Signature=%5BREDACTED%5D&mode=preview)",
-        parsed.fetch("markdown")
-      )
-      assert_equal(values.fetch(:harmless), parsed.fetch("harmless"))
-      refute_includes(value, "ipv6-prose-proof")
-      refute_includes(value, "ipv6-markdown-proof")
-    end
-  end
-
-  def test_debug_logs_omit_control_obfuscated_signed_urls_inside_text
-    values = {
-      tab: "fetch https://storage.example.test/file?si\tg=tab-prose-proof",
-      newline: "fetch https://storage.example.test/file?sig=newline\n-prose-proof",
-      carriage_return: "fetch https://storage.example.test/file?to\rken=carriage-prose-proof",
-      harmless: "ordinary\nmultiline text without a URL"
-    }
-    body = JSON.generate(values)
-    headers = {"content-type" => "application/json"}
-    formatted = [
-      OpenAI::Internal::Logging.format_body(body, headers: headers),
-      OpenAI::Internal::Logging.format_observed_body(
-        body,
-        headers: headers,
-        complete: true,
-        total_bytes: body.bytesize
-      )
-    ]
-
-    formatted.each do |value|
-      parsed = JSON.parse(value)
-
-      assert_equal("[URL OMITTED]", parsed.fetch("tab"))
-      assert_equal("[URL OMITTED]", parsed.fetch("newline"))
-      assert_equal("[URL OMITTED]", parsed.fetch("carriage_return"))
-      assert_equal(values.fetch(:harmless), parsed.fetch("harmless"))
-      refute_includes(value, "tab-prose-proof")
-      refute_includes(value, "-prose-proof")
-      refute_includes(value, "carriage-prose-proof")
-    end
-  end
-
-  def test_debug_logs_scrub_signed_urls_after_bracketed_query_parameters
-    values = {
-      prose: "fetch https://storage.example.test/file?items[]=x&sig=bracketed-query-proof now",
-      indexed: "see https://storage.example.test/file?items[0]=x&token=indexed-query-proof",
-      harmless: "fetch https://public.example.test/file?items[]=x&version=1"
-    }
-    body = JSON.generate(values)
+  def test_debug_logs_omit_malformed_json_without_emitting_partial_body_content
+    body = '{"private-key":"private-signed-url?sig=malformed-synthetic-credential"'
     headers = {"content-type" => "application/json"}
 
     [
       OpenAI::Internal::Logging.format_body(body, headers: headers),
       OpenAI::Internal::Logging.format_observed_body(
-        body, headers: headers, complete: true, total_bytes: body.bytesize
-      )
-    ].each do |formatted|
-      assert_includes(formatted, "storage.example.test/file")
-      assert_includes(formatted, "public.example.test/file")
-      assert_includes(formatted, "version=1")
-      assert_includes(formatted, "%5BREDACTED%5D")
-      refute_includes(formatted, "bracketed-query-proof")
-      refute_includes(formatted, "indexed-query-proof")
-    end
-  end
-
-  def test_debug_logs_redact_credentials_in_hash_routed_fragments
-    signed = "https://viewer.example.test/#/preview?sig=routed-fragment-proof&mode=preview"
-    harmless = "https://viewer.example.test/#/gallery?page=2"
-    body = JSON.generate(signed: signed, harmless: harmless)
-    headers = {"content-type" => "application/json"}
-
-    [
-      OpenAI::Internal::Logging.safe_url(URI(signed)),
-      OpenAI::Internal::Logging.format_body(body, headers: headers),
-      OpenAI::Internal::Logging.format_observed_body(
-        body, headers: headers, complete: true, total_bytes: body.bytesize
-      )
-    ].each do |formatted|
-      assert_includes(formatted, "viewer.example.test")
-      assert_includes(formatted, "preview")
-      assert_includes(formatted, "mode=preview")
-      assert_includes(formatted, "%5BREDACTED%5D")
-      refute_includes(formatted, "routed-fragment-proof")
-    end
-
-    logged = JSON.parse(OpenAI::Internal::Logging.format_body(body, headers: headers))
-    assert_equal(harmless, logged.fetch("harmless"))
-  end
-
-  def test_debug_logs_omit_percent_encoded_signed_urls_inside_text
-    encoded = "https%3A%2F%2Fstorage.example.test%2Ffile%3Fsig%3Dencoded-prose-proof"
-    repeated = "https%253A%252F%252Fstorage.example.test%252Ffile%253Fsig%253Drepeated-prose-proof"
-    body = JSON.generate(
-      first: "Download #{encoded} now", second: "Fetch #{repeated} now", harmless: "plain text"
-    )
-    headers = {"content-type" => "application/json"}
-
-    [
-      OpenAI::Internal::Logging.format_body(body, headers: headers),
-      OpenAI::Internal::Logging.format_observed_body(
-        body, headers: headers, complete: true, total_bytes: body.bytesize
-      )
-    ].each do |formatted|
-      parsed = JSON.parse(formatted)
-
-      assert_equal("[URL OMITTED]", parsed.fetch("first"))
-      assert_equal("[URL OMITTED]", parsed.fetch("second"))
-      assert_equal("plain text", parsed.fetch("harmless"))
-      refute_includes(formatted, "encoded-prose-proof")
-      refute_includes(formatted, "repeated-prose-proof")
-    end
-
-    assert_includes(body, "encoded-prose-proof")
-    assert_includes(body, "repeated-prose-proof")
-  end
-
-  def test_debug_logs_sanitize_signed_urls_and_credentials_in_fragments
-    nested = "https://storage.example.test/file?sig=fragment-signature-secret&safe=visible"
-    values = {
-      nested_url: "https://viewer.example.test/#url=#{URI.encode_www_form_component(nested)}&mode=preview",
-      raw_url: "https://viewer.example.test/#url=#{nested}&mode=preview",
-      fragment_url: "https://viewer.example.test/#__token__=fragment-token-secret&tab=details",
-      harmless: "https://viewer.example.test/#section-two"
-    }
-    body = JSON.generate(values)
-    headers = {"content-type" => "application/json"}
-    formatted = [
-      OpenAI::Internal::Logging.safe_url(URI(values.fetch(:nested_url))),
-      OpenAI::Internal::Logging.format_headers("Location" => values.fetch(:nested_url)),
-      OpenAI::Internal::Logging.format_body(body, headers: headers),
-      OpenAI::Internal::Logging.format_observed_body(
         body,
         headers: headers,
         complete: true,
         total_bytes: body.bytesize
       )
-    ]
-
-    formatted.each do |value|
-      assert_includes(value, "viewer.example.test")
-      assert_includes(value, "mode=preview")
-      refute_includes(value, "fragment-signature-secret")
-      refute_includes(value, "fragment-token-secret")
-    end
-
-    logged = JSON.parse(formatted.fetch(2))
-    assert_includes(logged.fetch("fragment_url"), "tab=details")
-    assert_equal(values.fetch(:harmless), logged.fetch("harmless"))
-  end
-
-  def test_debug_logs_redact_underscore_and_hyphen_wrapped_credential_query_keys
-    secrets = {
-      "__token__" => "wrapped-token-secret",
-      "--signature--" => "wrapped-signature-secret",
-      "_credential_" => "wrapped-credential-secret",
-      "__sig__" => "wrapped-sig-secret",
-      "--key--" => "wrapped-key-secret"
-    }
-    query = {**secrets, "monkey" => "still-visible", "tokenized" => "also-visible"}
-    url = "https://cdn.example.test/file?#{URI.encode_www_form(query)}"
-    formatted = [
-      OpenAI::Internal::Logging.safe_url(URI(url)),
-      OpenAI::Internal::Logging.format_body(
-        JSON.generate(image_url: url),
-        headers: {"content-type" => "application/json"}
-      ),
-      OpenAI::Internal::Logging.format_body(
-        URI.encode_www_form(query),
-        headers: {"content-type" => "application/x-www-form-urlencoded"}
-      )
-    ]
-
-    formatted.each do |value|
-      assert_includes(value, "monkey=still-visible")
-      assert_includes(value, "tokenized=also-visible")
-      assert_includes(value, "%5BREDACTED%5D")
-      secrets.each_value { |secret| refute_includes(value, secret) }
+    ].each do |summary|
+      assert_equal("[INVALID JSON BODY OMITTED] bytes=#{body.bytesize}", summary)
+      refute_includes(summary, "private")
+      refute_includes(summary, "synthetic-credential")
     end
   end
 
-  def test_debug_logs_preserve_harmless_urls_and_omit_malformed_signed_urls
-    harmless = "https://storage.example.test/public/image.png?version=1&format=png"
-    without_query = "https://storage.example.test/public/image.png"
-    data_url = "data:image/png;base64,YWJj"
-    malformed = "https://storage.example.test/private image.png?sig=malformed-signature-secret"
-    malformed_percent = "https://storage.example.test/%ZZ?sig=malformed-percent-secret"
-    formatted = OpenAI::Internal::Logging.format_body(
-      JSON.generate(
-        url: harmless,
-        image_url: malformed,
-        file_url: malformed_percent,
-        preview_url: data_url,
-        public_url: without_query,
-        description: "ordinary text"
-      ),
-      headers: {"content-type" => "application/json"}
-    )
-
-    assert_equal(
-      {
-        "url" => harmless,
-        "image_url" => "[URL OMITTED]",
-        "file_url" => "[URL OMITTED]",
-        "preview_url" => data_url,
-        "public_url" => without_query,
-        "description" => "ordinary text"
-      },
-      JSON.parse(formatted)
-    )
-    refute_includes(formatted, "malformed-signature-secret")
-    refute_includes(formatted, "malformed-percent-secret")
-  end
-
-  def test_responses_create_redacts_signed_urls_without_changing_request_or_response
-    image_url = "https://storage.example.test/private/image.png?sv=2025-01-01&sig=request-signature-secret"
-    response_url = "https://storage.example.test/private/output.png?sig=response-signature-secret"
+  def test_responses_create_never_logs_body_content_or_changes_payloads
+    image_url = "https://storage.example.test/private/image.png?sv=2025-01-01&sig=request-synthetic-credential"
+    response_url = "https://storage.example.test/private/output.png?sig=response-synthetic-credential"
     output = StringIO.new
     response = OpenAI::HTTPClient::Response.new(
       status: 200,
@@ -844,11 +274,12 @@ class LoggingSecurityTest < Minitest::Test
     assert_mock(transport)
     assert_equal(image_url, JSON.parse(request.body).dig("input", 0, "content", 0, "image_url"))
     assert_equal(response_url, result.metadata[:download_url])
-    assert_includes(output.string, "storage.example.test/private/image.png?sv=2025-01-01")
-    assert_includes(output.string, "storage.example.test/private/output.png")
-    assert_includes(output.string, "%5BREDACTED%5D")
-    refute_includes(output.string, "request-signature-secret")
-    refute_includes(output.string, "response-signature-secret")
+    assert_includes(output.string, "[JSON BODY]")
+    assert_includes(output.string, "type=object fields=")
+    refute_includes(output.string, "synthetic-credential")
+    refute_includes(output.string, "storage.example.test")
+    refute_includes(output.string, "image_url")
+    refute_includes(output.string, "download_url")
   end
 
   private def logged_request(log_level:, query: nil, headers: nil, body: nil)
