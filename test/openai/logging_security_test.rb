@@ -641,6 +641,81 @@ class LoggingSecurityTest < Minitest::Test
     end
   end
 
+  def test_debug_logs_scrub_signed_urls_after_bracketed_query_parameters
+    values = {
+      prose: "fetch https://storage.example.test/file?items[]=x&sig=bracketed-query-proof now",
+      indexed: "see https://storage.example.test/file?items[0]=x&token=indexed-query-proof",
+      harmless: "fetch https://public.example.test/file?items[]=x&version=1"
+    }
+    body = JSON.generate(values)
+    headers = {"content-type" => "application/json"}
+
+    [
+      OpenAI::Internal::Logging.format_body(body, headers: headers),
+      OpenAI::Internal::Logging.format_observed_body(
+        body, headers: headers, complete: true, total_bytes: body.bytesize
+      )
+    ].each do |formatted|
+      assert_includes(formatted, "storage.example.test/file")
+      assert_includes(formatted, "public.example.test/file")
+      assert_includes(formatted, "version=1")
+      assert_includes(formatted, "%5BREDACTED%5D")
+      refute_includes(formatted, "bracketed-query-proof")
+      refute_includes(formatted, "indexed-query-proof")
+    end
+  end
+
+  def test_debug_logs_redact_credentials_in_hash_routed_fragments
+    signed = "https://viewer.example.test/#/preview?sig=routed-fragment-proof&mode=preview"
+    harmless = "https://viewer.example.test/#/gallery?page=2"
+    body = JSON.generate(signed: signed, harmless: harmless)
+    headers = {"content-type" => "application/json"}
+
+    [
+      OpenAI::Internal::Logging.safe_url(URI(signed)),
+      OpenAI::Internal::Logging.format_body(body, headers: headers),
+      OpenAI::Internal::Logging.format_observed_body(
+        body, headers: headers, complete: true, total_bytes: body.bytesize
+      )
+    ].each do |formatted|
+      assert_includes(formatted, "viewer.example.test")
+      assert_includes(formatted, "preview")
+      assert_includes(formatted, "mode=preview")
+      assert_includes(formatted, "%5BREDACTED%5D")
+      refute_includes(formatted, "routed-fragment-proof")
+    end
+
+    logged = JSON.parse(OpenAI::Internal::Logging.format_body(body, headers: headers))
+    assert_equal(harmless, logged.fetch("harmless"))
+  end
+
+  def test_debug_logs_omit_percent_encoded_signed_urls_inside_text
+    encoded = "https%3A%2F%2Fstorage.example.test%2Ffile%3Fsig%3Dencoded-prose-proof"
+    repeated = "https%253A%252F%252Fstorage.example.test%252Ffile%253Fsig%253Drepeated-prose-proof"
+    body = JSON.generate(
+      first: "Download #{encoded} now", second: "Fetch #{repeated} now", harmless: "plain text"
+    )
+    headers = {"content-type" => "application/json"}
+
+    [
+      OpenAI::Internal::Logging.format_body(body, headers: headers),
+      OpenAI::Internal::Logging.format_observed_body(
+        body, headers: headers, complete: true, total_bytes: body.bytesize
+      )
+    ].each do |formatted|
+      parsed = JSON.parse(formatted)
+
+      assert_equal("[URL OMITTED]", parsed.fetch("first"))
+      assert_equal("[URL OMITTED]", parsed.fetch("second"))
+      assert_equal("plain text", parsed.fetch("harmless"))
+      refute_includes(formatted, "encoded-prose-proof")
+      refute_includes(formatted, "repeated-prose-proof")
+    end
+
+    assert_includes(body, "encoded-prose-proof")
+    assert_includes(body, "repeated-prose-proof")
+  end
+
   def test_debug_logs_sanitize_signed_urls_and_credentials_in_fragments
     nested = "https://storage.example.test/file?sig=fragment-signature-secret&safe=visible"
     values = {

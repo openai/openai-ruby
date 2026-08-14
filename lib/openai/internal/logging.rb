@@ -351,6 +351,10 @@ module OpenAI
         end
 
         private def sanitized_fragment(fragment, depth:)
+          route, separator, query = fragment.partition("?")
+          if route.start_with?("/") && !separator.empty?
+            return "#{route}?#{sanitized_query(query, depth: depth)}"
+          end
           return sanitized_query(fragment, depth: depth) if fragment.include?("=")
 
           scrub_embedded_url(fragment, depth: depth + 1)
@@ -379,11 +383,11 @@ module OpenAI
           if normalized.match?(%r{\A(?:[[:space:]]|[\x00-\x1f])*https?://}i)
             return sanitized_url_value(value, depth: depth)
           end
-          return "[URL OMITTED]" if normalized.match?(/\A(?:[[:space:]]|[\x00-\x1f])*https?%(?:25)*3a/i)
+          return "[URL OMITTED]" if normalized.match?(/https?%(?:25)*3a/i)
           return value unless normalized.match?(%r{https?://}i)
           return "[URL OMITTED]" unless normalized == value
 
-          value.gsub(%r{https?://(?:\[[^\s\[\]<>"']+\]|[^\s<>\[\]"'])+}i) do |url|
+          value.gsub(%r{https?://(?:\[[^\s\[\]<>"']*\]|[^\s<>\[\]"'])+}i) do |url|
             trailing = url[/[),.!;:]+\z/].to_s
             "#{sanitized_url_value(url.delete_suffix(trailing), depth: depth)}#{trailing}"
           end
