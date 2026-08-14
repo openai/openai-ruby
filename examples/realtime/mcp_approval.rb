@@ -21,25 +21,18 @@ module OpenAI
                 server_url: server_url,
                 require_approval: :always
               }
-            ]
+            ],
+            parallel_tool_calls: false
           )
         end
 
-        def select_tool(connection, server_label:, tool_name:)
-          connection.session.update(
-            type: :realtime,
-            tools: [{type: :mcp, server_label: server_label}],
-            tool_choice: {type: :mcp, server_label: server_label, name: tool_name}
-          )
-        end
-
-        def send_prompt(connection, prompt:)
+        def send_prompt(connection, prompt:, tool_choice:)
           connection.conversation.items.create(
             type: :message,
             role: :user,
             content: [{type: :input_text, text: prompt}]
           )
-          connection.response.create
+          connection.response.create(tool_choice: tool_choice)
         end
 
         def approve_request(connection, item)
@@ -55,31 +48,33 @@ module OpenAI
           state = {
             completed_item_ids: {},
             tool_lists: {},
-            waiting_for_tool_update: false,
             selected_tool: false,
             mcp_phase: :idle
           }
 
           connection.each do |event|
             output.puts("[mcp event] #{event.type}") if debug
-            if handle_event(connection, event, prompt: prompt, output: output, state: state) == :done
+            if handle_event(connection, event, output: output, state: state) == :done
               completed = true
               break
             end
 
-            select_discovered_tool(connection, output: output, state: state)
+            select_discovered_tool(
+              connection,
+              prompt: prompt,
+              output: output,
+              state: state
+            )
           end
           return if completed
 
           raise "Realtime connection closed before the final response.done"
         end
 
-        def handle_event(connection, event, prompt:, output:, state:)
+        def handle_event(connection, event, output:, state:)
           case event
           when OpenAI::Realtime::McpListToolsCompleted
             state[:completed_item_ids][event.item_id] = true
-          when OpenAI::Realtime::SessionUpdatedEvent
-            handle_session_updated(connection, prompt: prompt, state: state)
           when OpenAI::Realtime::ConversationItemDone
             handle_conversation_item(connection, event.item, output: output, state: state)
           when OpenAI::Realtime::McpListToolsFailed
@@ -99,13 +94,6 @@ module OpenAI
           when OpenAI::Realtime::ResponseDoneEvent
             handle_response_done(connection, event, output: output, state: state)
           end
-        end
-
-        def handle_session_updated(connection, prompt:, state:)
-          return unless state[:waiting_for_tool_update]
-
-          send_prompt(connection, prompt: prompt)
-          state[:waiting_for_tool_update] = false
         end
 
         def handle_conversation_item(connection, item, output:, state:)
@@ -135,9 +123,11 @@ module OpenAI
             output.puts("[mcp] waiting for approval and tool execution")
           when :tool_completed
             request_final_response(connection, state: state)
-          when :final_response_pending, :idle
+          when :final_response_pending
             output.puts("\n[mcp] response.done status=completed")
             :done
+          when :idle
+            raise "Response completed without an MCP tool call"
           end
         end
 
@@ -146,7 +136,7 @@ module OpenAI
           state[:mcp_phase] = :final_response_pending
         end
 
-        def select_discovered_tool(connection, output:, state:)
+        def select_discovered_tool(connection, prompt:, output:, state:)
           return if state[:selected_tool]
 
           tool_list = state[:tool_lists].values.find { |item| state[:completed_item_ids][item.id] }
@@ -155,9 +145,16 @@ module OpenAI
 
           tool_names = tool_list.tools.map(&:name)
           output.puts("[mcp] tools discovered: #{tool_names.join(', ')}")
-          select_tool(connection, server_label: tool_list.server_label, tool_name: tool_names.fetch(0))
+          send_prompt(
+            connection,
+            prompt: prompt,
+            tool_choice: {
+              type: :mcp,
+              server_label: tool_list.server_label,
+              name: tool_names.fetch(0)
+            }
+          )
           state[:selected_tool] = true
-          state[:waiting_for_tool_update] = true
         end
 
         def run(client:, model:, server_url:, prompt:, output: $stdout, debug: false)

@@ -506,6 +506,11 @@ class OpenAI::Test::RealtimeExamplesTest < OpenAI::Test::RealtimeExamplesTestCas
 
     session = connection.session.updates.fetch(0)
     assert_equal([:text], session.fetch(:output_modalities))
+    assert_equal(false, session.fetch(:parallel_tool_calls))
+    assert_equal(
+      "https://developers.openai.com/mcp",
+      session.dig(:tools, 0, :server_url)
+    )
     refute(session.key?(:tool_choice))
   end
 
@@ -531,32 +536,50 @@ class OpenAI::Test::RealtimeExamplesTest < OpenAI::Test::RealtimeExamplesTestCas
           event_id: "event_2",
           item_id: "mcp_tools_1"
         ),
-        OpenAI::Realtime::SessionUpdatedEvent.new(
+        OpenAI::Realtime::ResponseMcpCallArgumentsDone.new(
+          arguments: JSON.generate(query: "Realtime WebSocket URL"),
           event_id: "event_3",
-          session: {}
+          item_id: "mcp_call_1",
+          output_index: 0,
+          response_id: "response_1"
         ),
+        OpenAI::Realtime::ResponseMcpCallCompleted.new(
+          event_id: "event_4",
+          item_id: "mcp_call_1",
+          output_index: 0
+        ),
+        completed_response_event,
         completed_response_event
       ]
     )
 
-    OpenAI::Examples::Realtime::MCPApproval.run_session(
-      connection,
+    realtime = RecordingRealtime.new(connection)
+    OpenAI::Examples::Realtime::MCPApproval.run(
+      client: RecordingClient.new(realtime: realtime),
+      model: "gpt-realtime-2.1",
+      server_url: "https://developers.openai.com/mcp",
       prompt: "Search the docs",
       output: StringIO.new
     )
 
+    assert_equal(1, connection.session.updates.length)
+    assert_equal(
+      "https://developers.openai.com/mcp",
+      connection.session.updates.fetch(0).dig(:tools, 0, :server_url)
+    )
     assert_equal(
       {
-        type: :realtime,
-        tools: [{type: :mcp, server_label: "remote"}],
-        tool_choice: {type: :mcp, server_label: "remote", name: "search_openai_docs"}
+        tool_choice: {
+          type: :mcp,
+          server_label: "remote",
+          name: "search_openai_docs"
+        }
       },
-      connection.session.updates.fetch(0)
+      connection.response.calls.fetch(0)
     )
-    assert_equal({}, connection.response.calls.fetch(0))
   end
 
-  def test_mcp_console_example_waits_for_the_tool_choice_update
+  def test_mcp_console_example_waits_for_tool_discovery_to_complete
     tools_item = OpenAI::Realtime::RealtimeMcpListTools.new(
       id: "mcp_tools_1",
       server_label: "remote",
@@ -569,8 +592,7 @@ class OpenAI::Test::RealtimeExamplesTest < OpenAI::Test::RealtimeExamplesTestCas
     )
     connection = RecordingConnection.new(
       [
-        OpenAI::Realtime::ConversationItemDone.new(event_id: "event_1", item: tools_item),
-        OpenAI::Realtime::McpListToolsCompleted.new(event_id: "event_2", item_id: "mcp_tools_1")
+        OpenAI::Realtime::ConversationItemDone.new(event_id: "event_1", item: tools_item)
       ]
     )
 
@@ -585,6 +607,18 @@ class OpenAI::Test::RealtimeExamplesTest < OpenAI::Test::RealtimeExamplesTestCas
     assert_equal("Realtime connection closed before the final response.done", error.message)
     assert_empty(connection.response.calls)
     assert_empty(connection.conversation.items.calls)
+  end
+
+  def test_mcp_console_example_rejects_a_response_without_an_mcp_call
+    error = assert_raises(RuntimeError) do
+      OpenAI::Examples::Realtime::MCPApproval.run_session(
+        RecordingConnection.new([completed_response_event]),
+        prompt: "Search the docs",
+        output: StringIO.new
+      )
+    end
+
+    assert_equal("Response completed without an MCP tool call", error.message)
   end
 
   def test_mcp_console_example_requests_a_final_answer_after_the_tool_completes

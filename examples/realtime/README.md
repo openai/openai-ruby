@@ -192,12 +192,14 @@ OPENAI_REALTIME_PROMPT='Search the OpenAI docs for the Realtime WebSocket URL.' 
 bundle exec ruby examples/realtime/mcp_approval.rb
 ```
 
-The example waits for tool import, selects an advertised tool, waits for the
-tool-choice update to be acknowledged, approves the request, waits for the tool
-to finish, and asks the model for the final answer. A successful run prints all
-five checkpoints and reaches the final completed `response.done`; EOF before
-that event is a failed smoke test. Set `OPENAI_REALTIME_DEBUG=1` to print every
-event type.
+The example waits for tool import, selects an advertised tool on the first
+`response.create` without replacing the configured MCP server, approves the
+request, waits for the tool to finish, and asks the model for the final answer.
+It disables parallel tool calls because the example intentionally demonstrates
+one approval lifecycle. A successful run prints all five checkpoints and
+reaches the final completed `response.done`; a response without the required
+MCP call, or EOF before the final completion, fails the smoke test. Set
+`OPENAI_REALTIME_DEBUG=1` to print every event type.
 
 ## WebRTC call creation
 

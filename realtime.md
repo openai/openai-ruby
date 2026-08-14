@@ -325,8 +325,14 @@ Remote MCP servers are configured through the typed `tools` field in
 `session.update` or `response.create`; all MCP progress, approval, and completion
 events decode through `RealtimeServerEvent`. Before a dependent prompt, wait for
 both `McpListToolsCompleted` and the `ConversationItemDone` event whose
-`RealtimeMcpListTools` item contains the imported tool names. If you then update
-`tool_choice`, wait for `SessionUpdatedEvent` before creating the response.
+`RealtimeMcpListTools` item contains the imported tool names. The runnable
+example keeps the complete server descriptor on the session and forces the
+discovered tool only on the first `response.create`. This avoids replacing the
+session's `tools` array with a partial MCP descriptor. If an application changes
+`tool_choice` through `session.update` instead, it must preserve a valid MCP
+server configuration and wait for `SessionUpdatedEvent` before creating the
+response. The single-call example also sets `parallel_tool_calls: false`; an
+application that enables parallel calls must track every call independently.
 
 The first completed `ResponseDoneEvent` can finish the MCP argument-generation
 phase while approval and tool execution are still pending. Keep reading, answer
@@ -334,8 +340,9 @@ the `RealtimeMcpApprovalRequest`, wait for `ResponseMcpCallCompleted`, and creat
 a follow-up response (usually with `tool_choice: :none`) to turn the tool output
 into a final assistant answer. Treat only that follow-up response's completed
 `ResponseDoneEvent` as success; clean EOF during discovery, approval, or tool
-execution is still an incomplete workflow. The approval helper generates item
-IDs within the service's 32-character limit.
+execution is still an incomplete workflow, and a response that completes before
+the required MCP call is a failure. The approval helper generates item IDs
+within the service's 32-character limit.
 
 ## Cross-SDK design position
 
