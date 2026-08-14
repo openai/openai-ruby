@@ -669,7 +669,7 @@ A completion message includes the logical request and retry context:
 | `:error` | Terminal request failures after retries are exhausted |
 | `:warn` | Error events plus retry reason and delay |
 | `:info` | Safe request completion summaries |
-| `:debug` | Per-attempt headers and bounded body diagnostics |
+| `:debug` | Per-attempt headers and bounded structural body diagnostics |
 
 Info, warning, and error logs include operational fields such as the HTTP
 method, sanitized path, status, request ID, duration, and attempt count. They
@@ -677,14 +677,14 @@ never include headers or bodies. Debug logs redact credential-bearing headers
 and query parameters, including authorization, API-key, cookie, token,
 credential, and signature values.
 
-Debug logging can still disclose sensitive prompts, model responses, and tool
-arguments. Do not enable it in production unless your log destination and data
-retention policy are appropriate. The built-in logger omits uploaded file
-contents, multipart bodies, binary bodies, large opaque/base64-like values, and
-server-sent event contents. Text bodies are truncated to a fixed bound;
-oversized JSON and incomplete bodies are marked as omitted. Response bodies are
-observed only as the application consumes them and are never read eagerly for
-logging.
+Debug body diagnostics never include customer-controlled object keys, string
+values, prompts, model responses, tool arguments, form fields, or signed URLs.
+JSON bodies report only their byte size, top-level type, and object-field or
+array-item count; form bodies report only their byte size and field count. The
+built-in logger omits uploaded file contents, multipart bodies, binary bodies,
+server-sent event contents, unsupported text bodies, oversized bodies, and
+incomplete bodies. Response bodies are observed only as the application consumes
+them and are never read eagerly for logging.
 
 SDK log messages are intended for human diagnostics. Their text format is not
 a stable structured-event API and may change between releases. Exceptions from

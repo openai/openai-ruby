@@ -379,7 +379,7 @@ module OpenAI
             return "[JSON BODY OMITTED] bytes=#{total_bytes} reason=too_large" if total_bytes > MAX_BODY_BYTES
 
             parsed = JSON.parse(body)
-            return JSON.generate(scrub_value(parsed))
+            return summarize_json_body(parsed, total_bytes: total_bytes)
           end
 
           unless content_type.match?(%r{\Aapplication/x-www-form-urlencoded(?:;|\z)}i)
@@ -387,35 +387,31 @@ module OpenAI
           end
           return "[FORM BODY OMITTED] bytes=#{total_bytes} reason=too_large" if total_bytes > MAX_BODY_BYTES
 
-          sanitized = sanitized_query(body)
-          sanitized.nil? ? "[INVALID FORM BODY OMITTED] bytes=#{total_bytes}" : sanitized.inspect
+          fields = URI.decode_www_form(body).length
+          "[FORM BODY] bytes=#{total_bytes} fields=#{fields}"
         rescue JSON::ParserError
           "[INVALID JSON BODY OMITTED] bytes=#{total_bytes}"
+        rescue ArgumentError
+          "[INVALID FORM BODY OMITTED] bytes=#{total_bytes}"
         end
 
-        private def scrub_value(value, key: nil)
-          return "[REDACTED]" if key && SENSITIVE_BODY_KEY.match?(key.to_s)
-
-          case value
-          in Hash
-            value.to_h { |name, nested| [name, scrub_value(nested, key: name)] }
-          in Array if value.length > MAX_ARRAY_ITEMS
-            "[ARRAY OMITTED items=#{value.length}]"
-          in Array
-            value.map { scrub_value(_1) }
-          in String if opaque_string?(value)
-            "[OPAQUE DATA OMITTED bytes=#{value.bytesize}]"
-          else
-            value
-          end
-        end
-
-        private def opaque_string?(value)
-          return false if value.bytesize < OPAQUE_STRING_BYTES
-
-          encoded = value.sub(/\Adata:[^,]*;base64,/i, "")
-          encoded.match?(%r{\A[A-Za-z0-9+/_=\s-]+\z}) ||
-            encoded.match?(/\A[A-Za-z0-9_-]+(?:\.[A-Za-z0-9_-]+){1,4}\z/)
+        private def summarize_json_body(value, total_bytes:)
+          shape =
+            case value
+            in Hash
+              "object fields=#{value.length}"
+            in Array
+              "array items=#{value.length}"
+            in String
+              "string"
+            in Integer | Float
+              "number"
+            in true | false
+              "boolean"
+            in nil
+              "null"
+            end
+          "[JSON BODY] bytes=#{total_bytes} type=#{shape}"
         end
       end
     end

@@ -62,7 +62,7 @@ class LoggingSecurityTest < Minitest::Test
     end
   end
 
-  def test_debug_logs_structurally_redact_form_urlencoded_request_bodies
+  def test_debug_logs_summarize_form_urlencoded_request_bodies_without_fields_or_values
     body =
       "client_secret=client-form-secret&access_token=access-form-secret&" \
       "accessKey=access-key-form-secret&credentials%5Bvalue%5D=credential-form-secret&" \
@@ -77,14 +77,10 @@ class LoggingSecurityTest < Minitest::Test
 
     assert_equal(body, request.body)
     assert_includes(output, "request started")
-    assert_includes(output, "client_secret=%5BREDACTED%5D")
-    assert_includes(output, "access_token=%5BREDACTED%5D")
-    assert_includes(output, "accessKey=%5BREDACTED%5D")
-    assert_includes(output, "credentials%5Bvalue%5D=%5BREDACTED%5D")
-    assert_includes(output, "access_token%5B%5D=%5BREDACTED%5D")
-    assert_includes(output, "credentials%5BsessionToken%5D=%5BREDACTED%5D")
-    assert_includes(output, "safe=hello+world")
-    assert_includes(output, "repeat=one&repeat=two")
+    assert_includes(output, "[FORM BODY] bytes=#{body.bytesize} fields=9")
+    refute_includes(output, "client_secret")
+    refute_includes(output, "safe=hello+world")
+    refute_includes(output, "repeat=one")
     refute_includes(output, "client-form-secret")
     refute_includes(output, "access-form-secret")
     refute_includes(output, "access-key-form-secret")
@@ -93,7 +89,7 @@ class LoggingSecurityTest < Minitest::Test
     refute_includes(output, "nested-form-secret")
   end
 
-  def test_debug_logs_structurally_redact_form_urlencoded_response_bodies
+  def test_debug_logs_summarize_form_urlencoded_response_bodies_without_fields_or_values
     body =
       "accessToken=response-access-secret&access_token%5B%5D=response-array-secret&" \
       "accessKey=response-access-key-secret&credentials%5Bvalue%5D=response-credential-secret&" \
@@ -105,12 +101,7 @@ class LoggingSecurityTest < Minitest::Test
       total_bytes: body.bytesize
     )
 
-    assert_includes(formatted, "accessToken=%5BREDACTED%5D")
-    assert_includes(formatted, "accessKey=%5BREDACTED%5D")
-    assert_includes(formatted, "credentials%5Bvalue%5D=%5BREDACTED%5D")
-    assert_includes(formatted, "access_token%5B%5D=%5BREDACTED%5D")
-    assert_includes(formatted, "credentials%5Bclient_secret%5D=%5BREDACTED%5D")
-    assert_includes(formatted, "safe=visible")
+    assert_equal("[FORM BODY] bytes=#{body.bytesize} fields=6", formatted)
     refute_includes(formatted, "response-access-secret")
     refute_includes(formatted, "response-access-key-secret")
     refute_includes(formatted, "response-credential-secret")
@@ -161,6 +152,134 @@ class LoggingSecurityTest < Minitest::Test
         refute_includes(formatted, "unsupported-text-secret")
       end
     end
+  end
+
+  def test_debug_json_summaries_never_include_customer_controlled_strings_or_keys
+    values = [
+      "https://storage.example.test/file?sig=azure-synthetic-credential",
+      "https://storage.example.test/file?X-Amz-Credential=aws-synthetic-credential",
+      "https://storage.example.test/file?X-Goog-Signature=google-synthetic-credential",
+      "fetch https://storage.example.test/files/O'Reilly?sig=apostrophe-synthetic-credential",
+      "//storage.example.test/file?sig=relative-synthetic-credential",
+      "https&#58;//storage.example.test/file?sig=entity-synthetic-credential",
+      "https://storage.example.test/file?download=1;sig=semicolon-synthetic-credential",
+      "Download https%3A%2F%2Fstorage.example.test%2Ffile%3Fsig%3Dencoded-synthetic-credential",
+      "fetch ht\ttps://storage.example.test/file?sig=control-synthetic-credential",
+      "private customer prompt",
+      "private model response"
+    ]
+    signed_key = "https://storage.example.test/file?sig=key-synthetic-credential"
+    body = JSON.generate(
+      signed_key => values,
+      "nested-private-key" => {"inner-private-key" => "private tool argument"}
+    )
+    headers = {"content-type" => "application/json"}
+    request = OpenAI::Internal::Logging.format_body(body, headers: headers)
+    response = OpenAI::Internal::Logging.format_observed_body(
+      body,
+      headers: headers,
+      complete: true,
+      total_bytes: body.bytesize
+    )
+
+    [request, response].each do |summary|
+      assert_equal("[JSON BODY] bytes=#{body.bytesize} type=object fields=2", summary)
+      refute_includes(summary, "synthetic-credential")
+      refute_includes(summary, "private")
+      refute_includes(summary, "storage.example.test")
+    end
+
+    assert_includes(body, "azure-synthetic-credential")
+    assert_includes(body, "key-synthetic-credential")
+    assert_includes(body, "private customer prompt")
+  end
+
+  def test_debug_json_summaries_report_only_safe_top_level_shape
+    examples = {
+      {"private-key" => "private-value"} => "object fields=1",
+      ["private-value", 7, true] => "array items=3",
+      "private-value" => "string",
+      42 => "number",
+      1.25 => "number",
+      true => "boolean",
+      false => "boolean",
+      nil => "null"
+    }
+    headers = {"content-type" => "application/json"}
+
+    examples.each do |value, shape|
+      body = JSON.generate(value)
+      expected = "[JSON BODY] bytes=#{body.bytesize} type=#{shape}"
+      request = OpenAI::Internal::Logging.format_body(body, headers: headers)
+      response = OpenAI::Internal::Logging.format_observed_body(
+        body,
+        headers: headers,
+        complete: true,
+        total_bytes: body.bytesize
+      )
+
+      assert_equal(expected, request)
+      assert_equal(expected, response)
+      refute_includes(request, "private")
+    end
+  end
+
+  def test_debug_logs_omit_malformed_json_without_emitting_partial_body_content
+    body = '{"private-key":"private-signed-url?sig=malformed-synthetic-credential"'
+    headers = {"content-type" => "application/json"}
+
+    [
+      OpenAI::Internal::Logging.format_body(body, headers: headers),
+      OpenAI::Internal::Logging.format_observed_body(
+        body,
+        headers: headers,
+        complete: true,
+        total_bytes: body.bytesize
+      )
+    ].each do |summary|
+      assert_equal("[INVALID JSON BODY OMITTED] bytes=#{body.bytesize}", summary)
+      refute_includes(summary, "private")
+      refute_includes(summary, "synthetic-credential")
+    end
+  end
+
+  def test_responses_create_never_logs_body_content_or_changes_payloads
+    image_url = "https://storage.example.test/private/image.png?sv=2025-01-01&sig=request-synthetic-credential"
+    response_url = "https://storage.example.test/private/output.png?sig=response-synthetic-credential"
+    output = StringIO.new
+    response = OpenAI::HTTPClient::Response.new(
+      status: 200,
+      headers: {"content-type" => "application/json", "x-request-id" => "req_signed_url"},
+      body: JSON.generate(id: "resp_signed_url", output: [], metadata: {download_url: response_url})
+    )
+    request = nil
+    transport = Minitest::Mock.new(Object.new)
+    transport.expect(:execute, response) do |value|
+      request = value
+      value.is_a?(OpenAI::HTTPClient::Request)
+    end
+    client = OpenAI::Client.new(
+      api_key: "test-key",
+      base_url: "https://example.com/v1",
+      http_client: transport,
+      logger: Logger.new(output),
+      log_level: :debug
+    )
+
+    result = client.responses.create(
+      model: "gpt-4.1",
+      input: [{role: "user", content: [{type: "input_image", image_url: image_url}]}]
+    )
+
+    assert_mock(transport)
+    assert_equal(image_url, JSON.parse(request.body).dig("input", 0, "content", 0, "image_url"))
+    assert_equal(response_url, result.metadata[:download_url])
+    assert_includes(output.string, "[JSON BODY]")
+    assert_includes(output.string, "type=object fields=")
+    refute_includes(output.string, "synthetic-credential")
+    refute_includes(output.string, "storage.example.test")
+    refute_includes(output.string, "image_url")
+    refute_includes(output.string, "download_url")
   end
 
   private def logged_request(log_level:, query: nil, headers: nil, body: nil)

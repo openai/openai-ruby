@@ -242,7 +242,7 @@ class LoggingTest < Minitest::Test
     refute_includes(message, "sensitive response")
   end
 
-  def test_debug_logs_redacted_headers_and_bounded_json_bodies
+  def test_debug_logs_redacted_headers_and_structural_json_body_summaries
     logger = CapturingLogger.new
     response_body = {
       answer: "response content",
@@ -284,10 +284,11 @@ class LoggingTest < Minitest::Test
     assert_includes(debug_log, "request started")
     assert_includes(debug_log, "response received")
     assert_includes(debug_log, "response body")
-    assert_includes(debug_log, "request content")
-    assert_includes(debug_log, "response content")
+    assert_includes(debug_log, "type=object fields=3")
+    assert_includes(debug_log, "type=object fields=2")
     assert_includes(debug_log, "[REDACTED]")
-    assert_includes(debug_log, "[ARRAY OMITTED items=200]")
+    refute_includes(debug_log, "request content")
+    refute_includes(debug_log, "response content")
     refute_includes(debug_log, "secret-key")
     refute_includes(debug_log, "query-secret")
     refute_includes(debug_log, "header-secret")
@@ -358,7 +359,7 @@ class LoggingTest < Minitest::Test
     assert_includes(uri.to_s, "query-secret")
   end
 
-  def test_debug_logging_omits_large_opaque_and_oversized_json_values
+  def test_debug_logging_summarizes_opaque_values_and_omits_oversized_json
     opaque = "a" * (OpenAI::Internal::Logging::OPAQUE_STRING_BYTES + 1)
     formatted = OpenAI::Internal::Logging.format_body(
       JSON.generate(image: opaque),
@@ -375,13 +376,14 @@ class LoggingTest < Minitest::Test
       total_bytes: 7
     )
 
-    assert_includes(formatted, "[OPAQUE DATA OMITTED bytes=#{opaque.bytesize}]")
+    assert_includes(formatted, "[JSON BODY]")
+    assert_includes(formatted, "type=object fields=1")
     refute_includes(formatted, opaque)
     assert_includes(oversized, "[JSON BODY OMITTED]")
     assert_equal("[BODY CLOSED EARLY] bytes=7", incomplete)
   end
 
-  def test_debug_logging_omits_base64url_data_uris_and_jwts
+  def test_debug_logging_summarizes_base64url_data_uris_and_jwts
     encoded_bytes = OpenAI::Internal::Logging::OPAQUE_STRING_BYTES + 1
     base64url = "-_" * ((encoded_bytes / 2) + 1)
     data_uri = "data:image/png;base64,#{'a' * encoded_bytes}"
@@ -391,7 +393,8 @@ class LoggingTest < Minitest::Test
       headers: {"content-type" => "application/json"}
     )
 
-    assert_equal(3, formatted.scan("[OPAQUE DATA OMITTED").length)
+    assert_includes(formatted, "[JSON BODY]")
+    assert_includes(formatted, "type=object fields=3")
     refute_includes(formatted, base64url)
     refute_includes(formatted, data_uri)
     refute_includes(formatted, jwt)
