@@ -56,32 +56,34 @@ module OpenAI
 
       private def start_workers(queue, finished, lock, uploaded, state)
         workers = []
-        @max_concurrency.times do
-          workers << Thread.new do
-            loop do
-              work = queue.pop
-              break if work.equal?(finished)
-              next unless lock.synchronize { state[:error].nil? }
+        begin
+          @max_concurrency.times do
+            workers << Thread.new do
+              loop do
+                work = queue.pop
+                break if work.equal?(finished)
+                next unless lock.synchronize { state[:error].nil? }
 
-              begin
-                index, file = work
-                result = @client.files.create(
-                  file: file,
-                  purpose: :assistants,
-                  request_options: @request_options
-                )
-                lock.synchronize { uploaded[index] = result }
-              rescue StandardError => e
-                lock.synchronize { state[:error] ||= e }
+                begin
+                  index, file = work
+                  result = @client.files.create(
+                    file: file,
+                    purpose: :assistants,
+                    request_options: @request_options
+                  )
+                  lock.synchronize { uploaded[index] = result }
+                rescue StandardError => e
+                  lock.synchronize { state[:error] ||= e }
+                end
               end
-            end
-          end.tap { _1.report_on_exception = false }
+            end.tap { _1.report_on_exception = false }
+          end
+          workers
+        rescue ThreadError
+          workers.length.times { queue << finished }
+          workers.each(&:join)
+          raise
         end
-        workers
-      rescue ThreadError
-        workers.length.times { queue << finished }
-        workers.each(&:join)
-        raise
       end
     end
   end
