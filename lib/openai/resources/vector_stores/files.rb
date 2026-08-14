@@ -255,28 +255,31 @@ module OpenAI
           )
           file = nil
 
-          loop do
-            options = poller.request_options(
-              request_options,
-              extra_headers: {"OpenAI-Beta" => "assistants=v2"},
-              resource: file
-            )
-            file = retrieve(file_id, vector_store_id: vector_store_id, request_options: options)
-            case file.status
-            when OpenAI::VectorStores::VectorStoreFile::Status::IN_PROGRESS
-              poller.wait(file)
-            when OpenAI::VectorStores::VectorStoreFile::Status::COMPLETED,
-                 OpenAI::VectorStores::VectorStoreFile::Status::FAILED,
-                 OpenAI::VectorStores::VectorStoreFile::Status::CANCELLED
-              return file
-            else
-              raise OpenAI::Errors::PollingError,
-                    "Unexpected status while waiting for vector store file #{file_id}: #{file.status.inspect}"
+          begin
+            loop do
+              options = poller.request_options(
+                request_options,
+                extra_headers: {"OpenAI-Beta" => "assistants=v2"},
+                resource: file
+              )
+              file = retrieve(file_id, vector_store_id: vector_store_id, request_options: options)
+              case file.status
+              when OpenAI::VectorStores::VectorStoreFile::Status::IN_PROGRESS
+                poller.wait(file)
+              when OpenAI::VectorStores::VectorStoreFile::Status::COMPLETED,
+                   OpenAI::VectorStores::VectorStoreFile::Status::FAILED,
+                   OpenAI::VectorStores::VectorStoreFile::Status::CANCELLED
+                return file
+              else
+                raise OpenAI::Errors::PollingError,
+                      "Unexpected status while waiting for vector store file " \
+                      "#{file_id}: #{file.status.inspect}"
+              end
             end
+          rescue OpenAI::Errors::APITimeoutError
+            poller.check_deadline!(file)
+            raise
           end
-        rescue OpenAI::Errors::APITimeoutError
-          poller.check_deadline!(file)
-          raise
         end
 
         # Upload a file and attach it to a vector store.
