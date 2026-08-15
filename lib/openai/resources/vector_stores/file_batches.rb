@@ -34,7 +34,13 @@ module OpenAI
             body: parsed,
             model: OpenAI::VectorStores::VectorStoreFileBatch,
             security: {bearer_auth: true},
-            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
+            options: {
+              **options,
+              extra_headers: OpenAI::Internal::Util.normalized_headers(
+                {"OpenAI-Beta" => "assistants=v2"},
+                options[:extra_headers].to_h
+              )
+            }
           )
         end
 
@@ -265,12 +271,15 @@ module OpenAI
         #
         # Existing file IDs can be included alongside new uploads. Upload concurrency is
         # bounded and defaults to 5. Set `max_concurrency` to 1 for sequential uploads.
+        # Inputs are enumerated before requests begin so the 2,000-file API limit can be
+        # checked without orphaning uploads. IO streams must remain open until this method returns.
         #
         # @overload upload_and_poll(vector_store_id, files:, file_ids: [], max_concurrency: 5, attributes: nil, chunking_strategy: nil, poll_interval: nil, timeout: 1800.0, request_options: {})
         #
         # @param vector_store_id [String] The ID of the vector store for which to create a File Batch.
         #
-        # @param files [Enumerable<Pathname, StringIO, IO, String, OpenAI::FilePart>] Files to upload.
+        # @param files [Enumerable<Pathname, StringIO, IO, String, OpenAI::FilePart>] Files to upload. IO streams
+        #   yielded by an enumerable must remain open until this method returns.
         #
         # @param file_ids [Array<String>] IDs of files that have already been uploaded.
         #
@@ -303,11 +312,17 @@ module OpenAI
           request_options: {}
         )
           OpenAI::Internal::Poller.validate!(poll_interval: poll_interval, timeout: timeout)
+
+          max_files = OpenAI::Internal::VectorStoreFileUploader::MAX_FILES_PER_BATCH
+          if file_ids.length > max_files
+            raise ArgumentError, "`file_ids` cannot contain more than #{max_files} entries"
+          end
+
           uploaded = OpenAI::Internal::VectorStoreFileUploader.new(
             client: @client,
             max_concurrency: max_concurrency,
             request_options: request_options
-          ).upload(files)
+          ).upload(files, max_files: max_files - file_ids.length)
 
           if uploaded.empty?
             raise ArgumentError,

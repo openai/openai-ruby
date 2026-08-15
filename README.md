@@ -160,8 +160,11 @@ overall polling timeout raises `OpenAI::Errors::PollingTimeoutError`; its `resou
 attribute contains the last object returned by the API, or `nil` if the deadline
 elapsed before the first response.
 
-Batch uploads are concurrent but not transactional. If one upload fails, the helper
-stops scheduling work and raises that error; files uploaded successfully before the
+Batch inputs are enumerated before requests begin so the 2,000-file API limit can be
+checked without orphaning uploads. IO streams yielded by an enumerable must remain
+open until the helper returns; use paths for block-scoped lazy enumeration. Batch
+uploads are concurrent but not transactional. If one upload fails, the helper stops
+starting queued uploads and raises that error; files uploaded successfully before the
 failure remain available through the Files API.
 
 ### Custom HTTP clients

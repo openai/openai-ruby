@@ -1,6 +1,8 @@
 module OpenAI
   module Internal
     class VectorStoreFileUploader
+      MAX_FILES_PER_BATCH: Integer
+
       def initialize: (
         client: OpenAI::Client,
         max_concurrency: Integer,
@@ -8,7 +10,8 @@ module OpenAI
       ) -> void
 
       def upload: (
-        Enumerable[OpenAI::Internal::file_input] files
+        Enumerable[OpenAI::Internal::file_input] files,
+        ?max_files: Integer
       ) -> Array[OpenAI::Models::FileObject]
     end
   end

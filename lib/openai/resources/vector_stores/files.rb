@@ -34,7 +34,13 @@ module OpenAI
             body: parsed,
             model: OpenAI::VectorStores::VectorStoreFile,
             security: {bearer_auth: true},
-            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
+            options: {
+              **options,
+              extra_headers: OpenAI::Internal::Util.normalized_headers(
+                {"OpenAI-Beta" => "assistants=v2"},
+                options[:extra_headers].to_h
+              )
+            }
           )
         end
 

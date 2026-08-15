@@ -9,6 +9,11 @@ module OpenAI
     #
     # @api private
     class VectorStoreFileUploader
+      # The API limit for files attached in one vector store batch.
+      #
+      # @api private
+      MAX_FILES_PER_BATCH = 2_000
+
       # @api private
       #
       # @param client [OpenAI::Client]
@@ -27,42 +32,68 @@ module OpenAI
       # @api private
       #
       # @param files [Enumerable<Pathname, StringIO, IO, String, OpenAI::FilePart>]
+      # @param max_files [Integer] Maximum number of inputs that may be uploaded.
       # @return [Array<OpenAI::Models::FileObject>]
-      def upload(files)
-        queue = SizedQueue.new(@max_concurrency)
-        finished = Object.new
+      def upload(files, max_files: MAX_FILES_PER_BATCH)
+        staged = stage(files, max_files: max_files)
+        return [] if staged.empty?
+
+        queue = Queue.new
+        staged.each_with_index { |file, index| queue << [index, file] }
+        queue.close
+
         lock = Mutex.new
         uploaded = []
-        state = {error: nil}
-        workers = start_workers(queue, finished, lock, uploaded, state)
+        state = {error: nil, stopping: false}
+        workers = []
 
-        begin
-          files.each_with_index do |file, index|
-            break unless lock.synchronize { state[:error].nil? }
+        Thread.handle_interrupt(Exception => :never) do
+          workers = start_workers(queue, [@max_concurrency, staged.length].min, lock, uploaded, state)
 
-            queue << [index, file]
+          begin
+            Thread.handle_interrupt(Exception => :immediate) { workers.each(&:join) }
+          ensure
+            stop_workers(workers, lock, state)
           end
-        rescue StandardError => e
-          lock.synchronize { state[:error] ||= e }
-        ensure
-          workers.length.times { queue << finished }
         end
 
-        workers.each(&:join)
-        raise state[:error] unless state[:error].nil?
+        error = lock.synchronize { state[:error] }
+        raise error unless error.nil?
 
         uploaded
       end
 
-      private def start_workers(queue, finished, lock, uploaded, state)
+      private def stage(files, max_files:)
+        unless max_files.is_a?(Integer) && max_files >= 0
+          raise ArgumentError, "`max_files` must be a non-negative integer"
+        end
+
+        staged = files.each_with_object([]) do |file, result|
+          if result.length >= max_files
+            raise ArgumentError, "`files` exceeds the remaining vector store batch capacity of #{max_files}"
+          end
+
+          result << file
+        end
+
+        staged.each { validate_open!(_1) }
+        staged
+      end
+
+      private def validate_open!(file)
+        content = file.is_a?(OpenAI::FilePart) ? file.content : file
+        return unless (content.is_a?(IO) || content.is_a?(StringIO)) && content.closed?
+
+        raise ArgumentError, "IO inputs yielded by `files` must remain open until `upload_and_poll` returns"
+      end
+
+      private def start_workers(queue, worker_count, lock, uploaded, state)
         workers = []
         begin
-          @max_concurrency.times do
+          worker_count.times do
             workers << Thread.new do
-              loop do
-                work = queue.pop
-                break if work.equal?(finished)
-                next unless lock.synchronize { state[:error].nil? }
+              while (work = queue.pop)
+                next if lock.synchronize { state[:stopping] || !state[:error].nil? }
 
                 begin
                   index, file = work
@@ -80,10 +111,14 @@ module OpenAI
           end
           workers
         rescue ThreadError
-          workers.length.times { queue << finished }
-          workers.each(&:join)
+          stop_workers(workers, lock, state)
           raise
         end
+      end
+
+      private def stop_workers(workers, lock, state)
+        lock.synchronize { state[:stopping] = true }
+        workers.each(&:join)
       end
     end
   end

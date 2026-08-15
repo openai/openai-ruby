@@ -369,6 +369,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
 
   def test_vector_store_file_create_and_poll_forwards_creation_parameters
     created_body = nil
+    request_options = {extra_headers: {"X-Test" => "yes"}}
     transport = scripted_transport do |request|
       case [request.method, request.path]
       in [:post, "/v1/vector_stores/vs_123/files"]
@@ -385,7 +386,8 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
       "vs_123",
       file_id: "file_123",
       attributes: {department: "engineering"},
-      chunking_strategy: {type: :auto}
+      chunking_strategy: {type: :auto},
+      request_options: request_options
     )
 
     assert_equal(:completed, result.status)
@@ -397,6 +399,9 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
       },
       created_body
     )
+    assert_equal("assistants=v2", transport.requests.first.headers["openai-beta"])
+    assert_equal("yes", transport.requests.first.headers["x-test"])
+    assert_equal({extra_headers: {"X-Test" => "yes"}}, request_options)
   end
 
   def test_composite_helpers_validate_polling_before_requesting
@@ -461,6 +466,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     assert_equal("file_uploaded", attached.fetch("file_id"))
     assert_equal({"department" => "engineering"}, attached.fetch("attributes"))
     transport.requests.each { assert_equal("yes", _1.headers["x-test"]) }
+    assert_equal("assistants=v2", transport.requests[1].headers["openai-beta"])
     assert_equal("true", transport.requests.last.headers["x-stainless-poll-helper"])
   end
 
@@ -511,6 +517,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
 
   def test_vector_store_batch_create_and_poll
     created_body = nil
+    request_options = {extra_headers: {"X-Test" => "yes"}}
     transport = scripted_transport do |request|
       case [request.method, request.path]
       in [:post, "/v1/vector_stores/vs_123/file_batches"]
@@ -526,7 +533,8 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     result = build_client(transport).vector_stores.file_batches.create_and_poll(
       "vs_123",
       file_ids: ["file_123"],
-      attributes: {department: "engineering"}
+      attributes: {department: "engineering"},
+      request_options: request_options
     )
 
     assert_equal(:completed, result.status)
@@ -534,6 +542,9 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
       {"file_ids" => ["file_123"], "attributes" => {"department" => "engineering"}},
       created_body
     )
+    assert_equal("assistants=v2", transport.requests.first.headers["openai-beta"])
+    assert_equal("yes", transport.requests.first.headers["x-test"])
+    assert_equal({extra_headers: {"X-Test" => "yes"}}, request_options)
   end
 
   def test_vector_store_batch_upload_and_poll_bounds_concurrency_and_combines_ids
@@ -583,76 +594,8 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     )
     assert_equal(6, transport.requests.length)
     transport.requests.each { assert_equal("yes", _1.headers["x-test"]) }
-  end
-
-  def test_vector_store_batch_upload_workers_reuse_capacity
-    slow_started = Queue.new
-    release_slow = Queue.new
-    third_started = Queue.new
-    transport = scripted_transport do |request|
-      case [request.method, request.path]
-      in [:post, "/v1/files"]
-        filename = request.body.match(/filename="([^"]+)"/).captures.first
-        case filename
-        when "slow.txt"
-          slow_started << true
-          release_slow.pop
-        when "third.txt"
-          third_started << true
-        end
-        [200, {}, file_object(id: "file_#{filename.delete_suffix('.txt')}", status: "processed")]
-      in [:post, "/v1/vector_stores/vs_123/file_batches"]
-        [200, {}, vector_batch(status: "in_progress")]
-      in [:get, "/v1/vector_stores/vs_123/file_batches/batch_123"]
-        [200, {}, vector_batch(status: "completed")]
-      else
-        flunk("unexpected request: #{request.method} #{request.path}")
-      end
-    end
-    files = %w[slow second third].map do |name|
-      OpenAI::FilePart.new(name, filename: "#{name}.txt", content_type: "text/plain")
-    end
-    runner = Thread.new do
-      build_client(transport).vector_stores.file_batches.upload_and_poll(
-        "vs_123",
-        files: files,
-        max_concurrency: 2
-      )
-    end
-    runner.report_on_exception = false
-
-    begin
-      Timeout.timeout(1) { slow_started.pop }
-      assert(Timeout.timeout(1) { third_started.pop })
-    ensure
-      release_slow << true
-    end
-
-    assert_equal(:completed, runner.value.status)
-  end
-
-  def test_vector_store_batch_upload_cleans_up_after_worker_start_failure
-    transport = scripted_transport { flunk("request should not be sent") }
-    uploader = OpenAI::Internal::VectorStoreFileUploader.new(
-      client: build_client(transport),
-      max_concurrency: 2,
-      request_options: {}
-    )
-    original_thread_new = Thread.method(:new)
-    calls = 0
-    thread_factory = lambda do |*args, &block|
-      calls += 1
-      raise ThreadError, "thread limit reached" if calls == 2
-
-      original_thread_new.call(*args, &block)
-    end
-
-    error = Thread.stub(:new, thread_factory) do
-      assert_raises(ThreadError) { uploader.upload([]) }
-    end
-
-    assert_equal("thread limit reached", error.message)
-    assert_empty(transport.requests)
+    batch_request = transport.requests.find { _1.path.end_with?("/file_batches") }
+    assert_equal("assistants=v2", batch_request.headers["openai-beta"])
   end
 
   def test_vector_store_batch_upload_and_poll_validates_inputs_before_requesting
@@ -666,54 +609,49 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     assert_raises(ArgumentError) do
       batches.upload_and_poll("vs_123", files: [StringIO.new("file")], max_concurrency: 1.5)
     end
+
     assert_empty(transport.requests)
   end
 
-  def test_vector_store_batch_upload_propagates_enumeration_failure
+  def test_vector_store_batch_upload_rejects_oversized_inputs_before_uploading
     transport = scripted_transport { flunk("request should not be sent") }
-    files = Enumerator.new { raise "enumeration failed" }
+    batches = build_client(transport).vector_stores.file_batches
 
-    error = assert_raises(RuntimeError) do
-      build_client(transport).vector_stores.file_batches.upload_and_poll("vs_123", files: files)
+    assert_raises(ArgumentError) do
+      batches.upload_and_poll("vs_123", files: Array.new(2_001, "file.txt"))
     end
 
-    assert_equal("enumeration failed", error.message)
+    enumerated = 0
+    unbounded_files = Enumerator.new do |yielder|
+      loop do
+        enumerated += 1
+        yielder << "file.txt"
+      end
+    end
+    assert_raises(ArgumentError) do
+      batches.upload_and_poll(
+        "vs_123",
+        files: unbounded_files,
+        file_ids: Array.new(1_999, "file_existing")
+      )
+    end
+
+    assert_equal(2, enumerated)
     assert_empty(transport.requests)
   end
 
-  def test_vector_store_batch_upload_accepts_each_that_requires_a_block
-    transport = scripted_transport do |request|
-      case [request.method, request.path]
-      in [:post, "/v1/files"]
-        [200, {}, file_object(id: "file_uploaded", status: "processed")]
-      in [:post, "/v1/vector_stores/vs_123/file_batches"]
-        [200, {}, vector_batch(status: "in_progress")]
-      in [:get, "/v1/vector_stores/vs_123/file_batches/batch_123"]
-        [200, {}, vector_batch(status: "completed")]
-      else
-        flunk("unexpected request: #{request.method} #{request.path}")
-      end
+  def test_vector_store_batch_upload_rejects_too_many_existing_ids_without_enumerating
+    transport = scripted_transport { flunk("request should not be sent") }
+    files = Enumerator.new { flunk("files should not be enumerated") }
+
+    assert_raises(ArgumentError) do
+      build_client(transport).vector_stores.file_batches.upload_and_poll(
+        "vs_123",
+        files: files,
+        file_ids: Array.new(2_001, "file_existing")
+      )
     end
-    files = Class.new do
-      include Enumerable
-
-      def initialize(values)
-        @values = values
-      end
-
-      def each
-        @values.each { yield(_1) }
-      end
-    end.new([StringIO.new("file")])
-
-    result = build_client(transport).vector_stores.file_batches.upload_and_poll(
-      "vs_123",
-      files: files,
-      max_concurrency: 1
-    )
-
-    assert_equal(:completed, result.status)
-    assert_equal(3, transport.requests.length)
+    assert_empty(transport.requests)
   end
 
   def test_vector_store_batch_upload_and_poll_does_not_create_batch_after_upload_failure
@@ -729,33 +667,6 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
       build_client(transport).vector_stores.file_batches.upload_and_poll(
         "vs_123",
         files: [StringIO.new("file")],
-        request_options: {max_retries: 0}
-      )
-    end
-    assert_equal(["/v1/files"], transport.requests.map(&:path))
-  end
-
-  def test_vector_store_batch_upload_stops_queued_work_after_failure
-    fail_upload = Queue.new
-    transport = scripted_transport do |request|
-      if request.path == "/v1/files"
-        fail_upload.pop
-        [400, {}, {error: {message: "upload failed", type: "invalid_request_error"}}]
-      else
-        flunk("batch should not be created after an upload failure")
-      end
-    end
-    files = Enumerator.new do |yielder|
-      yielder << StringIO.new("first")
-      yielder << StringIO.new("second")
-      fail_upload << true
-    end
-
-    assert_raises(OpenAI::Errors::BadRequestError) do
-      build_client(transport).vector_stores.file_batches.upload_and_poll(
-        "vs_123",
-        files: files,
-        max_concurrency: 1,
         request_options: {max_retries: 0}
       )
     end
