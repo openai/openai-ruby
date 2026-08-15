@@ -18,9 +18,16 @@ begin
   )
 
   stream_data_count = 0
+  terminal_choice_count = 0
   # calling `#each` will always clean up the stream, even if an error is thrown inside the `#each` block.
   stream.each do |data|
     stream_data_count += 1
+    terminal_choice_count += data.choices.count do |choice|
+      case choice[:finish_reason]
+      when String, Symbol then true
+      else false
+      end
+    end
     pp(data)
 
     # it is possible to exit out of the `#each` loop early, this will also clean up the stream for you.
@@ -30,6 +37,7 @@ begin
     end
   end
   abort("The stream completed without yielding data") if stream_data_count.zero?
+  abort("The stream ended before a terminal choice was received") if terminal_choice_count.zero?
 
   # once the stream has been exhausted, no more chunks will be produced.
   stream.each do
