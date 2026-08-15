@@ -233,14 +233,16 @@ module OpenAI
           unless access_token.is_a?(String) && !access_token.empty?
             raise invalid_token_response("access_token must be a non-empty string")
           end
-          unless expires_in.is_a?(Integer) || (expires_in.is_a?(Float) && expires_in.finite?)
+          unless expires_in.is_a?(Integer) || expires_in.is_a?(Float)
             raise invalid_token_response("expires_in must be a positive number")
           end
-          unless expires_in.positive?
+          within_float_range = expires_in.is_a?(Integer) ? expires_in <= Float::MAX : expires_in.finite?
+          unless within_float_range && expires_in.positive?
             raise invalid_token_response("expires_in must be a positive number")
           end
+          expires_in = expires_in.to_f
 
-          {id: access_token, expires_in: expires_in.to_f}
+          {id: access_token, expires_in: expires_in}
         end
 
         def invalid_token_response(reason)

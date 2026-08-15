@@ -204,7 +204,7 @@ class X509WorkloadIdentityTest < Minitest::Test
   end
 
   def test_x509_exchange_requires_positive_numeric_expires_in_without_leaking_token
-    [nil, 0, -1, "3600"].each do |expires_in|
+    [nil, 0, -1, "3600", 10**400].each do |expires_in|
       http_client = StubHTTPClient.new do |_request|
         http_response(
           status: 200,
