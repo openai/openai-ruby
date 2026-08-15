@@ -307,6 +307,26 @@ class X509WorkloadIdentityTest < Minitest::Test
     refute_includes(error.inspect, "sensitive mapping diagnostics")
   end
 
+  def test_x509_oauth_errors_discard_untrusted_error_values
+    [
+      {"message" => "sensitive mapping diagnostics", "token" => "sensitive-token"},
+      ["sensitive-token"],
+      "sensitive-token"
+    ].each do |error_value|
+      http_client = StubHTTPClient.new do |_request|
+        http_response(status: 403, body: {"error" => error_value})
+      end
+
+      error = assert_raises(OpenAI::Errors::OAuthError) { x509_auth(http_client).get_token }
+
+      assert_nil(error.error_code)
+      assert_nil(error.body)
+      assert_equal("OAuth2 authentication error", error.message)
+      refute_includes(error.inspect, "sensitive-token")
+      refute_includes(error.inspect, "sensitive mapping diagnostics")
+    end
+  end
+
   def test_refresh_buffer_is_clamped_to_half_of_short_token_ttl
     now = 0.0
     tokens = %w[first-token second-token]
@@ -485,22 +505,32 @@ class X509WorkloadIdentityTest < Minitest::Test
     assert_equal(2, api_count)
   end
 
-  def test_api_401_does_not_replay_a_non_replayable_body
+  def test_api_401_invalidates_but_does_not_replay_a_non_replayable_body
     exchange_count = 0
     api_count = 0
+    api_authorizations = []
     http_client = StubHTTPClient.new do |request|
       if request.url.host == "mtls.auth.openai.com"
         exchange_count += 1
-        http_response(status: 200, body: {"access_token" => "token", "expires_in" => 60})
+        http_response(
+          status: 200,
+          body: {"access_token" => "token-#{exchange_count}", "expires_in" => 60}
+        )
       else
         api_count += 1
-        http_response(status: 401, body: {"error" => {"message" => "rejected"}})
+        api_authorizations << request.headers.fetch("authorization")
+        if api_count == 1
+          http_response(status: 401, body: {"error" => {"message" => "rejected"}})
+        else
+          http_response(status: 200, body: {"ok" => true})
+        end
       end
     end
     body = Enumerator.new { _1 << {value: "one shot"} }
+    client = x509_client(http_client)
 
     assert_raises(OpenAI::Errors::AuthenticationError) do
-      x509_client(http_client).request(
+      client.request(
         method: :post,
         path: "probe",
         headers: {"content-type" => "application/jsonl"},
@@ -508,8 +538,12 @@ class X509WorkloadIdentityTest < Minitest::Test
       )
     end
 
-    assert_equal(1, exchange_count)
-    assert_equal(1, api_count)
+    result = client.request(method: :get, path: "probe", model: OpenAI::Internal::Type::Unknown)
+
+    assert_equal(true, result[:ok])
+    assert_equal(2, exchange_count)
+    assert_equal(2, api_count)
+    assert_equal(["Bearer token-1", "Bearer token-2"], api_authorizations)
   end
 
   private def x509_config(refresh_buffer_seconds: 1200)

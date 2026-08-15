@@ -131,6 +131,18 @@ module OpenAI
       #
       # @api private
       class X509
+        OAUTH_ERROR_CODES = %w[
+          invalid_client
+          invalid_grant
+          invalid_request
+          invalid_scope
+          invalid_subject_token
+          invalid_target
+          unauthorized_client
+          unsupported_grant_type
+        ].freeze
+        private_constant :OAUTH_ERROR_CODES
+
         # @api private
         attr_reader :url
 
@@ -199,7 +211,7 @@ module OpenAI
           case response.status
           when 400, 401, 403
             error_code = body[:error] if body.is_a?(Hash)
-            sanitized_body = error_code.nil? ? nil : {error: error_code}
+            sanitized_body = {error: error_code} if OAUTH_ERROR_CODES.include?(error_code)
             raise OpenAI::Errors::OAuthError.new(
               status: response.status,
               body: sanitized_body,

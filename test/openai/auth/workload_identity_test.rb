@@ -772,6 +772,56 @@ class WorkloadIdentityTest < Minitest::Test
     assert_requested(:post, "http://localhost/chat/completions", times: 2)
   end
 
+  def test_failed_shared_refresh_re_elects_a_waiter_and_preserves_the_exchange_error
+    started = Queue.new
+    release = Queue.new
+    calls = 0
+    mutex = Mutex.new
+    provider = Object.new
+    provider.define_singleton_method(:token_type) { OpenAI::Auth::TokenType::ID }
+    provider.define_singleton_method(:get_token) do
+      current_call = mutex.synchronize { calls += 1 }
+      if current_call == 1
+        started << true
+        release.pop
+      end
+      "id-token"
+    end
+    stub_request(:post, "https://auth.openai.com/oauth/token")
+      .to_return(status: 503, body: "unavailable")
+    config = OpenAI::Auth::WorkloadIdentity.new(
+      identity_provider_id: "idp-123",
+      service_account_id: "sa-456",
+      provider: provider
+    )
+    auth = OpenAI::Auth::WorkloadIdentityAuth.new(config, "org-123")
+    leader = Thread.new do
+      auth.get_token
+    rescue StandardError => e
+      e
+    end
+    started.pop
+    waiter = Thread.new do
+      auth.get_token
+    rescue StandardError => e
+      e
+    end
+    sleep(0.05)
+    release << true
+
+    [leader, waiter].each { assert(_1.join(2), "refresh caller did not finish") }
+    errors = [leader.value, waiter.value]
+
+    assert(errors.all? { _1.is_a?(OpenAI::Errors::APIError) })
+    assert_equal([503, 503], errors.map(&:status))
+    assert_equal(2, calls)
+    assert_requested(:post, "https://auth.openai.com/oauth/token", times: 2)
+  ensure
+    release << true if release
+    leader&.kill if leader&.alive?
+    waiter&.kill if waiter&.alive?
+  end
+
   private def build_workload_identity_auth
     config = OpenAI::Auth::WorkloadIdentity.new(
       identity_provider_id: "idp-123",
