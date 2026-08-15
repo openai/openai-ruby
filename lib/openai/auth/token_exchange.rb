@@ -226,6 +226,8 @@ module OpenAI
         end
 
         def validate_token_response!(body)
+          access_token = nil
+          expires_in = nil
           access_token = body[:access_token] if body.is_a?(Hash)
           expires_in = body[:expires_in] if body.is_a?(Hash)
           unless access_token.is_a?(String) && !access_token.empty?

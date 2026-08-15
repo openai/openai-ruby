@@ -219,6 +219,16 @@ class X509WorkloadIdentityTest < Minitest::Test
     end
   end
 
+  def test_x509_exchange_rejects_a_non_object_token_response
+    http_client = StubHTTPClient.new do |_request|
+      http_response(status: 200, body: "[]")
+    end
+
+    error = assert_raises(OpenAI::Errors::APIError) { x509_auth(http_client).get_token }
+
+    assert_match(/access_token must be a non-empty string/, error.message)
+  end
+
   def test_x509_exchange_honors_retry_after_for_transient_responses
     calls = 0
     delays = []
