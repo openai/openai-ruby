@@ -19,14 +19,68 @@ puts(response.output_text)
 
 The provider uses `https://bedrock-mantle.<region>.api.aws/v1` by default and exposes the normal SDK resources. AWS controls which endpoints and features are supported; unsupported calls surface as normal API errors.
 
+## Bedrock Runtime
+
+Pass `endpoint: :runtime` to use the Bedrock Runtime OpenAI-compatible endpoint. The provider routes requests to `https://bedrock-runtime.<region>.amazonaws.com/openai/v1` and uses the AWS SigV4 signing service `bedrock` when AWS credentials are selected:
+
+```ruby
+require "openai"
+
+client = OpenAI::Client.new(
+  provider: OpenAI::Providers.bedrock(
+    endpoint: :runtime,
+    region: "us-east-1"
+  )
+)
+
+completion = client.chat.completions.create(
+  model: "us.openai.gpt-5.6-sol",
+  messages: [{role: :user, content: "Say hello!"}]
+)
+
+puts(completion.choices.first.message.content)
+```
+
+Use the inference profile configured for your AWS account, for example `us.openai.gpt-5.6-sol`, `us.openai.gpt-5.6-terra`, or `us.openai.gpt-5.6-luna`. Global inference profiles, such as `global.openai.gpt-5.6-sol`, require the appropriate AWS account and regional permissions. Set `BEDROCK_MODEL` to override the model used by [`examples/bedrock_runtime.rb`](examples/bedrock_runtime.rb).
+
+The same client supports Responses and response streaming when AWS makes those APIs available for the selected model:
+
+```ruby
+response = client.responses.create(
+  model: "us.openai.gpt-5.6-sol",
+  input: "Say hello!"
+)
+
+stream = client.chat.completions.stream(
+  model: "us.openai.gpt-5.6-sol",
+  messages: [{role: :user, content: "Say hello!"}]
+)
+
+stream.text.each { |text| print(text) }
+```
+
+The existing Mantle endpoint remains the default. Pass `endpoint: :mantle` when you need to explicitly select it. Both endpoint symbols and the strings `"runtime"` and `"mantle"` are accepted.
+
+| Endpoint | Default URL | SigV4 signing service |
+| --- | --- | --- |
+| `:mantle` (default) | `https://bedrock-mantle.<region>.api.aws/v1` | `bedrock-mantle` |
+| `:runtime` | `https://bedrock-runtime.<region>.amazonaws.com/openai/v1` | `bedrock` |
+
+Runtime URLs automatically use the correct DNS suffix for AWS China, European Sovereign Cloud, and isolated partitions. Canonical Runtime, FIPS, and dual-stack `base_url` values automatically select Runtime when `endpoint` is omitted. Canonical AWS endpoint URLs must use HTTPS, match the selected endpoint family, and agree with the configured AWS region.
+
+## Endpoint configuration
+
 The region is resolved from the explicit `region` option, `AWS_REGION`, `AWS_DEFAULT_REGION`, or the selected AWS profile. Override the endpoint with `base_url` or `AWS_BEDROCK_BASE_URL`:
 
 ```ruby
 provider = OpenAI::Providers.bedrock(
+  endpoint: :runtime,
   region: "us-west-2",
-  base_url: "https://bedrock.example.com/v1"
+  base_url: "https://bedrock.example.com/openai/v1"
 )
 ```
+
+Custom endpoints using AWS credentials require an explicit `endpoint` so the provider can choose the correct signing service. Local HTTP proxies remain supported when the endpoint is selected explicitly. Custom endpoints using bearer credentials can omit `endpoint`; in that case the default remains Mantle.
 
 ## Authentication
 
@@ -101,7 +155,7 @@ client = OpenAI::Client.new(
 )
 ```
 
-The provider signs each finalized attempt with AWS SigV4 service name `bedrock-mantle`. Standard JSON API requests have replayable bodies and work normally. SigV4 rejects one-shot request streams before sending, and signed requests do not automatically follow redirects because a new target requires a new signature. Response streaming is unaffected.
+The provider signs each finalized attempt with AWS SigV4 service name `bedrock-mantle` for Mantle or `bedrock` for Runtime. Standard JSON API requests have replayable bodies and work normally. SigV4 rejects one-shot request streams before sending, and signed requests do not automatically follow redirects because a new target requires a new signature. Response streaming is unaffected.
 
 ### Bearer authentication
 
@@ -126,6 +180,17 @@ client = OpenAI::Client.new(
 ```
 
 Bearer authentication does not load or require `aws-sdk-core`. Passing `api_key: nil` explicitly skips `AWS_BEARER_TOKEN_BEDROCK` and selects AWS authentication.
+
+## Live verification
+
+Real AWS requests are disabled in the test suite unless `BEDROCK_LIVE_TEST=1` is explicitly set. To exercise Runtime against all three default US inference profiles, run:
+
+```sh
+AWS_REGION=us-east-1 BEDROCK_LIVE_TEST=1 \
+  bundle exec ruby test/openai/providers/bedrock_live_test.rb
+```
+
+Set `BEDROCK_AUTH_MODE` to `auto`, `bearer`, `token-provider`, `sigv4`, `static`, or `profile` to select credentials. Use `BEDROCK_MODEL` for one inference profile or `BEDROCK_LIVE_MODELS` for a comma-separated list. Set `BEDROCK_LIVE_RESPONSES=1` to also verify Responses and `BEDROCK_LIVE_STREAM=1` to verify Chat Completions streaming.
 
 ## Security
 

@@ -14,6 +14,7 @@ module OpenAI
 
       sig do
         params(
+          endpoint: T.nilable(T.any(String, Symbol)),
           region: T.nilable(String),
           base_url: T.nilable(String),
           api_key: T.nilable(String),
@@ -26,6 +27,7 @@ module OpenAI
         ).returns(OpenAI::Provider)
       end
       def bedrock(
+        endpoint: nil,
         region: nil,
         base_url: nil,
         api_key: nil,

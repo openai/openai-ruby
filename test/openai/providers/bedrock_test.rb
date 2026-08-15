@@ -300,6 +300,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
 
     sigv4_runtime = OpenAI::Internal::Provider.configure(
       OpenAI::Providers.bedrock(
+        endpoint: :mantle,
         region: "us-east-1",
         base_url: "https://gateway.example/openai/v1",
         access_key_id: "access-key",
@@ -577,22 +578,391 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
     assert_equal(307, error.status)
     assert_not_requested(:get, target)
 
-    mismatched = OpenAI::Internal::Provider.configure(
+    error = assert_raises(ArgumentError) do
       OpenAI::Providers.bedrock(
         region: "us-east-1",
         base_url: "https://bedrock-mantle.us-west-2.api.aws/v1",
         access_key_id: "access-key",
         secret_access_key: "secret-key"
       )
-    )
-    request = {
-      method: :get,
-      url: URI("https://bedrock-mantle.us-west-2.api.aws/v1/models"),
-      headers: {},
-      body: nil
-    }
-    error = assert_raises(OpenAI::Errors::Error) { mismatched.prepare_request.call(request) }
+    end
     assert_match(/region `us-west-2` does not match.*`us-east-1`/, error.message)
+  end
+
+  def test_runtime_derives_partition_aware_hosts_and_signing_services
+    endpoints = {
+      "us-east-1" => "amazonaws.com",
+      "cn-north-1" => "amazonaws.com.cn",
+      "eusc-de-east-1" => "amazonaws.eu",
+      "us-iso-east-1" => "c2s.ic.gov",
+      "us-isob-east-1" => "sc2s.sgov.gov",
+      "eu-isoe-west-1" => "cloud.adc-e.uk",
+      "us-isof-south-1" => "csp.hci.ic.gov"
+    }
+
+    endpoints.each do |region, suffix|
+      base_url = "https://bedrock-runtime.#{region}.#{suffix}/openai/v1"
+      bearer_client = OpenAI::Client.new(
+        provider: OpenAI::Providers.bedrock(endpoint: :runtime, region: region, api_key: "token")
+      )
+      assert_equal(base_url, bearer_client.base_url.to_s)
+
+      runtime = OpenAI::Internal::Provider.configure(
+        OpenAI::Providers.bedrock(
+          endpoint: "runtime",
+          region: region,
+          access_key_id: "access-key",
+          secret_access_key: "secret-key",
+          session_token: "session-token"
+        )
+      )
+      prepared = runtime.prepare_request.call(bedrock_request("#{base_url}/models"))
+
+      assert_includes(prepared.dig(:headers, "authorization"), "/#{region}/bedrock/aws4_request")
+      assert_equal("session-token", prepared.dig(:headers, "x-amz-security-token"))
+    end
+  end
+
+  def test_runtime_infers_canonical_fips_dual_stack_and_partition_hosts
+    hosts = {
+      "bedrock-runtime.us-east-1.amazonaws.com" => "us-east-1",
+      "bedrock-runtime.us-east-1.amazonaws.com." => "us-east-1",
+      "bedrock-runtime.us-east-1.api.aws" => "us-east-1",
+      "bedrock-runtime-fips.us-east-1.amazonaws.com" => "us-east-1",
+      "bedrock-runtime-fips.us-east-1.api.aws" => "us-east-1",
+      "bedrock-runtime.cn-north-1.api.amazonwebservices.com.cn" => "cn-north-1",
+      "bedrock-runtime.eusc-de-east-1.api.amazonwebservices.eu" => "eusc-de-east-1",
+      "bedrock-runtime.us-iso-east-1.api.aws.ic.gov" => "us-iso-east-1",
+      "bedrock-runtime.us-isob-east-1.api.aws.scloud" => "us-isob-east-1",
+      "bedrock-runtime.eu-isoe-west-1.api.cloud-aws.adc-e.uk" => "eu-isoe-west-1",
+      "bedrock-runtime.us-isof-south-1.api.aws.hci.ic.gov" => "us-isof-south-1"
+    }
+
+    hosts.each do |host, region|
+      base_url = "https://#{host}/openai/v1"
+      client = OpenAI::Client.new(
+        provider: OpenAI::Providers.bedrock(region: region, base_url: base_url, api_key: "token")
+      )
+      assert_equal(base_url, client.base_url.to_s)
+
+      runtime = OpenAI::Internal::Provider.configure(
+        OpenAI::Providers.bedrock(
+          region: region,
+          base_url: base_url,
+          access_key_id: "access-key",
+          secret_access_key: "secret-key"
+        )
+      )
+      prepared = runtime.prepare_request.call(bedrock_request("#{base_url}/models"))
+
+      assert_includes(prepared.dig(:headers, "authorization"), "/#{region}/bedrock/aws4_request")
+    end
+
+    ENV["AWS_BEDROCK_BASE_URL"] = "https://bedrock-runtime.us-east-1.amazonaws.com/openai/v1"
+    client = OpenAI::Client.new(
+      provider: OpenAI::Providers.bedrock(region: "us-east-1", api_key: "token")
+    )
+    assert_equal(ENV.fetch("AWS_BEDROCK_BASE_URL"), client.base_url.to_s)
+  end
+
+  def test_runtime_rejects_insecure_mismatched_or_invalid_configuration
+    authentication_options = [
+      {api_key: "token"},
+      {access_key_id: "access-key", secret_access_key: "secret-key"}
+    ]
+    invalid_endpoints = [
+      ["http://bedrock-runtime.us-east-1.amazonaws.com/openai/v1", :runtime, "us-east-1", /HTTPS/],
+      [
+        "https://bedrock-runtime.us-west-2.amazonaws.com/openai/v1",
+        :runtime,
+        "us-east-1",
+        /region `us-west-2` does not match/
+      ],
+      [
+        "https://bedrock-runtime.us-east-1.amazonaws.com/openai/v1",
+        :mantle,
+        "us-east-1",
+        /hostname does not match/
+      ],
+      [
+        "https://bedrock-mantle.us-east-1.api.aws/v1",
+        :runtime,
+        "us-east-1",
+        /hostname does not match/
+      ]
+    ]
+
+    authentication_options.each do |authentication|
+      invalid_endpoints.each do |base_url, endpoint, region, message|
+        error = assert_raises(ArgumentError) do
+          OpenAI::Providers.bedrock(
+            endpoint: endpoint,
+            region: region,
+            base_url: base_url,
+            **authentication
+          )
+        end
+        assert_match(message, error.message)
+      end
+    end
+
+    [:invalid, "runtime-fips", true].each do |endpoint|
+      error = assert_raises(ArgumentError) do
+        OpenAI::Providers.bedrock(endpoint: endpoint, region: "us-east-1", api_key: "token")
+      end
+      assert_match(/must be either `mantle` or `runtime`/, error.message)
+    end
+
+    ["US-EAST-1", "us-east-1.example", "../us-east-1"].each do |region|
+      error = assert_raises(ArgumentError) do
+        OpenAI::Providers.bedrock(endpoint: :runtime, region: region, api_key: "token")
+      end
+      assert_match(/AWS `region` is invalid/, error.message)
+    end
+
+    ENV["AWS_REGION"] = "us-east-1.example"
+    error = assert_raises(ArgumentError) do
+      OpenAI::Providers.bedrock(endpoint: :runtime, api_key: "token")
+    end
+    assert_match(/AWS `region` is invalid/, error.message)
+  end
+
+  def test_runtime_requires_explicit_endpoint_for_custom_signed_proxies
+    error = assert_raises(ArgumentError) do
+      OpenAI::Providers.bedrock(
+        region: "us-east-1",
+        base_url: "http://localhost:8090/openai/v1",
+        access_key_id: "access-key",
+        secret_access_key: "secret-key"
+      )
+    end
+    assert_match(/requires an explicit `endpoint`/, error.message)
+
+    runtime = OpenAI::Internal::Provider.configure(
+      OpenAI::Providers.bedrock(
+        endpoint: :runtime,
+        region: "us-east-1",
+        base_url: "http://localhost:8090/openai/v1",
+        access_key_id: "access-key",
+        secret_access_key: "secret-key"
+      )
+    )
+    prepared = runtime.prepare_request.call(bedrock_request("http://localhost:8090/openai/v1/models"))
+    assert_includes(prepared.dig(:headers, "authorization"), "/us-east-1/bedrock/aws4_request")
+
+    client = OpenAI::Client.new(
+      provider: OpenAI::Providers.bedrock(
+        endpoint: :runtime,
+        base_url: "http://localhost:8090/openai/v1",
+        api_key: "token"
+      )
+    )
+    assert_equal("http://localhost:8090/openai/v1", client.base_url.to_s)
+  end
+
+  def test_runtime_authenticates_chat_and_responses_with_bearer_and_sigv4
+    runtime_authentication_options.each { assert_runtime_api_requests(_1) }
+  end
+
+  private def assert_runtime_api_requests(authentication)
+    WebMock.reset!
+    model = "us.openai.gpt-5.6-sol"
+    base_url = "https://bedrock-runtime.us-east-1.amazonaws.com/openai/v1"
+    chat_url = "#{base_url}/chat/completions"
+    responses_url = "#{base_url}/responses"
+    stub_request(:post, chat_url).to_return_json(
+      status: 200,
+      headers: {"x-request-id" => "runtime-chat-request"},
+      body: {
+        id: "chatcmpl_runtime",
+        choices: [{finish_reason: "stop", index: 0, message: {content: "Hello", role: "assistant"}}],
+        created: 1_700_000_000,
+        model: model,
+        object: "chat.completion",
+        usage: {completion_tokens: 4, prompt_tokens: 3, total_tokens: 7}
+      }
+    )
+    stub_request(:post, responses_url).to_return_json(
+      status: 200,
+      headers: {"x-request-id" => "runtime-response-request"},
+      body: {
+        id: "resp_runtime",
+        object: "response",
+        model: model,
+        output: [
+          {
+            id: "msg_runtime",
+            type: "message",
+            role: "assistant",
+            content: [{type: "output_text", text: "Hello", annotations: []}]
+          }
+        ],
+        status: "completed"
+      }
+    )
+
+    client = OpenAI::Client.new(
+      provider: OpenAI::Providers.bedrock(endpoint: :runtime, region: "us-east-1", **authentication)
+    )
+    completion = client.chat.completions.create(model: model, messages: [{role: :user, content: "Hi"}])
+    response = client.responses.create(model: model, input: "Hi")
+
+    assert_equal("Hello", completion.choices.fetch(0).message.content)
+    assert_equal(:stop, completion.choices.fetch(0).finish_reason)
+    assert_equal(7, completion.usage.total_tokens)
+    assert_equal("runtime-chat-request", completion._request_id)
+    assert_equal("Hello", response.output_text)
+    assert_equal("runtime-response-request", response._request_id)
+
+    [chat_url, responses_url].each do |url|
+      assert_requested(:post, url, times: 1) do |request|
+        assert_runtime_authorization(request, authentication)
+      end
+    end
+  end
+
+  def test_runtime_streams_chat_and_responses_with_bearer_and_sigv4
+    runtime_authentication_options.each { assert_runtime_streaming_requests(_1) }
+  end
+
+  private def assert_runtime_streaming_requests(authentication)
+    WebMock.reset!
+    base_url = "https://bedrock-runtime.us-east-1.amazonaws.com/openai/v1"
+    chat_url = "#{base_url}/chat/completions"
+    responses_url = "#{base_url}/responses"
+    [chat_url, responses_url].each do |url|
+      stub_request(:post, url).to_return(
+        status: 200,
+        body: "data: [DONE]\n\n",
+        headers: {"content-type" => "text/event-stream", "x-request-id" => "runtime-stream-request"}
+      )
+    end
+
+    client = OpenAI::Client.new(
+      provider: OpenAI::Providers.bedrock(endpoint: :runtime, region: "us-east-1", **authentication)
+    )
+    chat_stream = client.chat.completions.stream(
+      model: "us.openai.gpt-5.6-terra",
+      messages: [{role: :user, content: "Hi"}]
+    )
+    response_stream = client.responses.stream(model: "us.openai.gpt-5.6-luna", input: "Hi")
+
+    assert_instance_of(OpenAI::Streaming::ChatCompletionStream, chat_stream)
+    assert_instance_of(OpenAI::Streaming::ResponseStream, response_stream)
+    assert_equal("runtime-stream-request", chat_stream.last_response.request_id)
+    assert_equal("runtime-stream-request", response_stream.last_response.request_id)
+
+    [chat_url, responses_url].each do |url|
+      assert_requested(:post, url, times: 1) do |request|
+        assert_equal(true, JSON.parse(request.body).fetch("stream"))
+        assert_runtime_authorization(request, authentication)
+      end
+    end
+    chat_stream.close
+    response_stream.close
+  end
+
+  def test_runtime_refreshes_bearer_tokens_and_aws_credentials_on_retries
+    [false, true].each { assert_runtime_retry_authentication(_1) }
+  end
+
+  private def assert_runtime_retry_authentication(use_aws_credentials)
+    base_url = "https://bedrock-runtime.us-east-1.amazonaws.com/openai/v1/models"
+    WebMock.reset!
+    calls = 0
+    options =
+      if use_aws_credentials
+        {
+          credentials_provider: lambda do
+            calls += 1
+            Aws::Credentials.new("runtime-access-#{calls}", "runtime-secret-#{calls}")
+          end
+        }
+      else
+        {
+          token_provider: lambda do
+            calls += 1
+            "runtime-token-#{calls}"
+          end
+        }
+      end
+    authorizations = []
+    stub_request(:get, base_url).to_return do |request|
+      authorizations << request.headers.fetch("Authorization")
+      {
+        status: authorizations.length == 1 ? 429 : 200,
+        body: "{}",
+        headers: {"content-type" => "application/json"}
+      }
+    end
+
+    client = OpenAI::Client.new(
+      provider: OpenAI::Providers.bedrock(endpoint: :runtime, region: "us-east-1", **options),
+      max_retries: 1,
+      initial_retry_delay: 0,
+      max_retry_delay: 0
+    )
+    client.request({method: :get, path: "models"})
+
+    assert_equal(2, calls)
+    if use_aws_credentials
+      assert_includes(authorizations.fetch(0), "Credential=runtime-access-1/")
+      assert_includes(authorizations.fetch(1), "Credential=runtime-access-2/")
+      assert_includes(authorizations.fetch(1), "/bedrock/aws4_request")
+    else
+      assert_equal(["Bearer runtime-token-1", "Bearer runtime-token-2"], authorizations)
+    end
+  end
+
+  def test_runtime_preserves_environment_token_precedence_and_default_aws_chain
+    ENV["AWS_REGION"] = "us-east-1"
+    ENV["AWS_BEARER_TOKEN_BEDROCK"] = "environment-token"
+    ENV["AWS_ACCESS_KEY_ID"] = "environment-access-key"
+    ENV["AWS_SECRET_ACCESS_KEY"] = "environment-secret-key"
+    ENV["AWS_SESSION_TOKEN"] = "environment-session-token"
+    request = bedrock_request("https://bedrock-runtime.us-east-1.amazonaws.com/openai/v1/models")
+
+    bearer_runtime = OpenAI::Internal::Provider.configure(
+      OpenAI::Providers.bedrock(endpoint: :runtime)
+    )
+    bearer_request = bearer_runtime.prepare_request.call(request)
+    assert_equal("Bearer environment-token", bearer_request.dig(:headers, "authorization"))
+
+    aws_runtime = OpenAI::Internal::Provider.configure(
+      OpenAI::Providers.bedrock(endpoint: :runtime, api_key: nil)
+    )
+    aws_request = aws_runtime.prepare_request.call(request)
+    assert_includes(aws_request.dig(:headers, "authorization"), "Credential=environment-access-key/")
+    assert_includes(aws_request.dig(:headers, "authorization"), "/bedrock/aws4_request")
+    assert_equal("environment-session-token", aws_request.dig(:headers, "x-amz-security-token"))
+  end
+
+  def test_runtime_resolves_profile_region_without_changing_signing_service
+    File.write(
+      ENV.fetch("AWS_SHARED_CREDENTIALS_FILE"),
+      <<~INI
+        [engineering]
+        aws_access_key_id = profile-access-key
+        aws_secret_access_key = profile-secret-key
+      INI
+    )
+    File.write(
+      ENV.fetch("AWS_CONFIG_FILE"),
+      <<~INI
+        [profile engineering]
+        region = us-west-2
+      INI
+    )
+    reset_shared_config
+    base_url = "https://bedrock-runtime.us-west-2.amazonaws.com/openai/v1"
+
+    runtime = OpenAI::Internal::Provider.configure(
+      OpenAI::Providers.bedrock(endpoint: :runtime, profile: "engineering")
+    )
+    prepared = runtime.prepare_request.call(bedrock_request("#{base_url}/models"))
+
+    assert_includes(prepared.dig(:headers, "authorization"), "Credential=profile-access-key/")
+    assert_includes(prepared.dig(:headers, "authorization"), "/us-west-2/bedrock/aws4_request")
   end
 
   def test_authentication_modes_are_validated
@@ -707,6 +1077,23 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
 
   private def reset_shared_config
     Aws.instance_variable_set(:@shared_config, nil)
+  end
+
+  private def runtime_authentication_options
+    [
+      {api_key: "runtime-token"},
+      {access_key_id: "runtime-access-key", secret_access_key: "runtime-secret-key"}
+    ]
+  end
+
+  private def assert_runtime_authorization(request, authentication)
+    authorization = request.headers.fetch("Authorization")
+    if authentication.key?(:api_key)
+      assert_equal("Bearer runtime-token", authorization)
+    else
+      assert_includes(authorization, "Credential=runtime-access-key/")
+      assert_includes(authorization, "/us-east-1/bedrock/aws4_request")
+    end
   end
 
   private def bedrock_request(url = "https://bedrock-mantle.us-east-1.api.aws/v1/models")
