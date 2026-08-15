@@ -117,7 +117,8 @@ module OpenAI
         ?include_obfuscation: bool,
         ?starting_after: Integer,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Internal::Stream[OpenAI::Models::Responses::response_stream_event]
+      ) -> OpenAI::Internal::Stream[(OpenAI::Models::Responses::response_stream_event
+      | ::Hash[Symbol, untyped])]
 
       def delete: (
         String response_id,
