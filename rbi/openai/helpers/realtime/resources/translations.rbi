@@ -9,9 +9,6 @@ module OpenAI
         end
         attr_reader :client_secrets
 
-        sig { returns(OpenAI::Resources::Realtime::Translations::Calls) }
-        attr_reader :calls
-
         sig do
           params(
             model: String,

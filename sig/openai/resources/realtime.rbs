@@ -5,28 +5,6 @@ module OpenAI
 
       attr_reader calls: OpenAI::Resources::Realtime::Calls
 
-      attr_reader translations: OpenAI::Resources::Realtime::Translations
-
-      def connect: (
-        model: String,
-        ?request_options: OpenAI::request_opts?,
-        ?transport: untyped?,
-        ?transport_options: ::Hash[Symbol, untyped]
-      ) { (OpenAI::Realtime::Connection connection) -> top } -> top
-
-      def connect_to_call: (
-        call_id: String,
-        ?request_options: OpenAI::request_opts?,
-        ?transport: untyped?,
-        ?transport_options: ::Hash[Symbol, untyped]
-      ) { (OpenAI::Realtime::SidebandConnection connection) -> top } -> top
-
-      def connect_transcription: (
-        ?request_options: OpenAI::request_opts?,
-        ?transport: untyped?,
-        ?transport_options: ::Hash[Symbol, untyped]
-      ) { (OpenAI::Realtime::TranscriptionConnection connection) -> top } -> top
-
       def initialize: (client: OpenAI::Client) -> void
     end
   end

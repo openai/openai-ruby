@@ -25,9 +25,6 @@ module OpenAI
     sig { returns(T.nilable(String)) }
     attr_reader :webhook_secret
 
-    sig { returns(T.nilable(URI::Generic)) }
-    attr_reader :websocket_base_url
-
     # Given a prompt, the model will return one or more predicted completions, and can
     # also return the probabilities of alternative tokens at each position.
     sig { returns(OpenAI::Resources::Completions) }
@@ -136,17 +133,6 @@ module OpenAI
     # @api private
     sig { returns(T::Hash[String, String]) }
     private def admin_api_key_auth
-    end
-
-    # @api private
-    sig do
-      params(
-        path: String,
-        query: T::Hash[String, String],
-        options: T.nilable(OpenAI::RequestOptions::OrHash)
-      ).returns(OpenAI::Internal::Transport::BaseClient::RequestInput)
-    end
-    def realtime_connection_request(path:, query:, options: nil)
     end
 
     # @api private

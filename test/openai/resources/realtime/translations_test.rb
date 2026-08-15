@@ -73,6 +73,7 @@ class OpenAI::Test::Resources::Realtime::TranslationsTest < Minitest::Test
       }
     )
 
+    refute_respond_to(client.realtime.translations, :calls)
     assert_instance_of(OpenAI::Realtime::RealtimeTranslationClientSecretCreateResponse, response)
     assert_equal("ek_test", response.value)
     request = http_client.requests.fetch(0)
@@ -139,32 +140,6 @@ class OpenAI::Test::Resources::Realtime::TranslationsTest < Minitest::Test
 
     assert_includes(error.message, "missing required fields")
     assert_empty(http_client.requests)
-  end
-
-  def test_create_translation_call
-    http_client = StubHTTPClient.new(
-      OpenAI::HTTPClient::Response.new(
-        status: 201,
-        headers: {
-          "content-type" => "application/sdp",
-          "location" => "/v1/realtime/translations/calls/rtc_translation",
-          "x-request-id" => "req_translation_call"
-        },
-        body: "answer-sdp"
-      )
-    )
-    client = OpenAI::Client.new(api_key: "ek_test", http_client: http_client)
-
-    response = client.realtime.translations.calls.create(sdp: "offer-sdp")
-
-    assert_equal("answer-sdp", response.sdp)
-    assert_equal("rtc_translation", response.call_id)
-    assert_equal("req_translation_call", response._request_id)
-    assert_equal(201, response.last_response.status)
-    request = http_client.requests.fetch(0)
-    assert_equal("/v1/realtime/translations/calls", request.url.path)
-    assert_equal("application/sdp", request.headers.fetch("content-type"))
-    assert_equal("offer-sdp", request.body)
   end
 
   def test_connect_translation_session_with_typed_events_and_helpers

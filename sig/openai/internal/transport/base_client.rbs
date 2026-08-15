@@ -143,10 +143,6 @@ module OpenAI
           -> OpenAI::Internal::Logging::Context
         } -> OpenAI::HTTPClient::Response
 
-        def request_raw: (
-          OpenAI::Internal::Transport::BaseClient::request_components req
-        ) -> OpenAI::HTTPClient::Response
-
         def request: (
           Symbol method,
           String | ::Array[String] path,

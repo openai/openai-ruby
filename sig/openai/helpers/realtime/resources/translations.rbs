@@ -3,8 +3,6 @@ module OpenAI
     class Realtime
       class Translations
         attr_reader client_secrets: OpenAI::Resources::Realtime::Translations::ClientSecrets
-        attr_reader calls: OpenAI::Resources::Realtime::Translations::Calls
-
         def connect: (
           model: String,
           ?request_options: OpenAI::request_opts?,

@@ -1,0 +1,75 @@
+module OpenAI
+  module Models
+    module Realtime
+      module ConnectionResources
+        class Base
+          def initialize: (OpenAI::Realtime::BaseConnection connection) -> void
+        end
+
+        class Session < Base
+          def update: (**untyped params) -> nil
+        end
+
+        class TranscriptionSession < Base
+          def update: (**untyped params) -> nil
+        end
+
+        class TranslationSession < Session
+          def update: (**untyped params) -> nil
+          def close: (?event_id: String?) -> nil
+        end
+
+        class Response < Base
+          def create: (**untyped params) -> nil
+          def cancel: (?response_id: String?, ?event_id: String?) -> nil
+        end
+
+        class InputAudioBuffer < Base
+          def append: (audio: String, ?event_id: String?) -> nil
+          def append_bytes: (String bytes, ?event_id: String?) -> nil
+          def commit: (?event_id: String?) -> nil
+          def clear: (?event_id: String?) -> nil
+        end
+
+        class TranslationInputAudioBuffer < Base
+          def append: (audio: String, ?event_id: String?) -> nil
+          def append_bytes: (String bytes, ?event_id: String?) -> nil
+        end
+
+        class Conversation < Base
+          attr_reader items: OpenAI::Realtime::ConnectionResources::ConversationItems
+        end
+
+        class ConversationItems < Base
+          def create: (**untyped params) -> nil
+          def delete: (item_id: String, ?event_id: String?) -> nil
+          def retrieve: (item_id: String, ?event_id: String?) -> nil
+          def truncate: (
+            item_id: String,
+            content_index: Integer,
+            audio_end_ms: Integer,
+            ?event_id: String?
+          ) -> nil
+          def create_function_call_output: (
+            call_id: String,
+            output: String,
+            ?id: String?,
+            ?status: (String | Symbol)?,
+            ?event_id: String?
+          ) -> nil
+          def respond_to_mcp_approval: (
+            approval_request_id: String,
+            approve: bool,
+            ?reason: String?,
+            ?id: String?,
+            ?event_id: String?
+          ) -> nil
+        end
+
+        class OutputAudioBuffer < Base
+          def clear: (?event_id: String?) -> nil
+        end
+      end
+    end
+  end
+end

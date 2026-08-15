@@ -4,28 +4,6 @@ module OpenAI
   module Resources
     class Realtime
       class Calls
-        sig do
-          params(
-            sdp: String,
-            session:
-              T.nilable(OpenAI::Realtime::RealtimeSessionCreateRequest::OrHash),
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Realtime::CallCreateResponse)
-        end
-        def create(sdp:, session: nil, request_options: {})
-        end
-
-        # @api private
-        sig do
-          params(
-            params: OpenAI::Realtime::CallCreateParams::OrHash,
-            path: String,
-            hangup_path: String
-          ).returns(OpenAI::Realtime::CallCreateResponse)
-        end
-        def create_with_path(params, path:, hangup_path:)
-        end
-
         # Accept an incoming SIP call and configure the realtime session that will handle
         # it.
         sig do

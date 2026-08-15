@@ -77,14 +77,6 @@ module OpenAI
         def observe_stream(stream, response:)
         end
 
-        sig do
-          params(response: OpenAI::HTTPClient::Response).returns(
-            OpenAI::HTTPClient::Response
-          )
-        end
-        def observe_raw_response(response)
-        end
-
         sig { params(error: StandardError).void }
         def request_failed(error)
         end
@@ -127,34 +119,6 @@ module OpenAI
         end
       end
 
-      class ObservedEnumerable
-        include Enumerable
-
-        Elem = type_member(:out)
-
-        sig do
-          params(
-            enumerable: T::Enumerable[Elem],
-            context: OpenAI::Internal::Logging::Context,
-            response: OpenAI::HTTPClient::Response,
-            close: T.proc.void
-          ).void
-        end
-        def initialize(enumerable:, context:, response:, close:)
-        end
-
-        sig { params(block: T.untyped).returns(T.untyped) }
-        def each(&block)
-        end
-
-        sig { void }
-        def close
-        end
-
-        sig { returns(T::Enumerable[Elem]) }
-        private def iterator
-        end
-      end
       class << self
         sig { params(value: T.any(Symbol, String)).returns(Symbol) }
         def normalize_level(value)

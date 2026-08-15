@@ -8,9 +8,6 @@ module OpenAI
         # @return [OpenAI::Resources::Realtime::Translations::ClientSecrets]
         attr_reader :client_secrets
 
-        # @return [OpenAI::Resources::Realtime::Translations::Calls]
-        attr_reader :calls
-
         # Open a typed translation WebSocket connection.
         #
         # @param model [String]
@@ -38,7 +35,6 @@ module OpenAI
         def initialize(client:)
           @client = client
           @client_secrets = ClientSecrets.new(client: client)
-          @calls = Calls.new(client: client)
         end
       end
     end

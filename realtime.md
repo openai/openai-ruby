@@ -6,7 +6,7 @@ The Ruby SDK supports the server-side parts of the Realtime API:
 - WebRTC SDP negotiation from a trusted Ruby backend;
 - sideband WebSocket control for active WebRTC and SIP calls;
 - SIP accept, reject, refer, and hangup controls; and
-- dedicated WebSocket, client-secret, and WebRTC translation endpoints.
+- dedicated WebSocket and client-secret translation endpoints.
 
 Ruby does not provide a broadly deployed, standard WebRTC media stack. The SDK
 therefore handles the backend SDP exchange and call controls while browsers or a
@@ -300,14 +300,15 @@ end
 
 Call `session.close` after the last audio chunk and continue reading until the
 server sends `session.closed`; closing the socket immediately can discard output
-that is still draining. For browser WebRTC translation, mint an ephemeral secret
-with `translations.client_secrets.create`, then post the browser offer with
-`translations.calls.create`. The helper shares SDP encoding and response handling
-with ordinary call creation but posts to the dedicated
-`/v1/realtime/translations/calls` route. Client-secret and WebSocket event hashes
-accept symbol or string keys recursively, including nested session and expiration
-configuration, so `JSON.parse` and Rails-derived hashes follow the same validation
-path.
+that is still draining. A Ruby server can mint an ephemeral translation secret
+with `translations.client_secrets.create`. The SDK intentionally does not expose
+translation WebRTC call creation: neither the public OpenAPI contract nor the
+public API reference defines that resource yet. Internal service reachability is
+not a compatibility guarantee. Add the Ruby resource only after the endpoint is
+published, at which point Castiron can own its generated surface. Client-secret
+and WebSocket event hashes accept symbol or string keys recursively, including
+nested session and expiration configuration, so `JSON.parse` and Rails-derived
+hashes follow the same validation path.
 
 ## Function calls and MCP approvals
 
@@ -395,24 +396,35 @@ policy, tools, and call lifecycle—not codecs, echo cancellation, or playback.
 
 ### Generated and handwritten ownership
 
-Castiron remains responsible for Realtime HTTP resources, request/response
-models, event models, discriminated event unions, RBI, and RBS. The live
-connection, resource conveniences, transport adapter, and examples are
-handwritten because a bidirectional socket lifecycle is not an OpenAPI request.
-No generator feature is required for that boundary.
+Castiron remains responsible for protocol models, event models, discriminated
+event unions, generated JSON HTTP controls, RBI, and RBS. Handwritten Realtime
+behavior lives under `lib/openai/helpers/realtime`, with matching signatures
+under `rbi/openai/helpers/realtime` and `sig/openai/helpers/realtime`. This keeps
+the live connection, resource conveniences, transport adapter, raw-SDP response
+handling, and translation client-secret bridge out of generated-owned files.
+The only generated seams are the root helper require and the
+`websocket_base_url:` client-constructor keyword in RBI/RBS.
 
 The handwritten decoder reads the generated event unions at runtime, so newly
 generated event variants become typed automatically. A valid event unknown to
 an older gem remains an `UnknownServerEvent`. Regeneration review must still
-check capability-specific connection types and helper signatures when the
-generated client-event shapes change. Realtime message items are the one nested
-union exception: the wire protocol uses both `type: :message` and `role` to
-select system, user, or assistant content, so a handwritten resolver adds that
-second discriminator without changing the SDK-wide generated union framework.
-`calls.create` remains a focused custom HTTP implementation because the unified
+check capability-specific connection types when generated client-event shapes
+change. Flattened helper keyword bags intentionally stay open-ended in RBI/RBS;
+they do not re-enumerate protocol fields that Castiron already owns. The helper
+adds the wire envelope and the generated client-event union performs runtime
+validation. Realtime message items are the one nested-union exception: the wire
+protocol uses both `type: :message` and `role` to select system, user, or
+assistant content, so a handwritten resolver adds that second discriminator
+without changing the SDK-wide generated union framework.
+
+`calls.create` remains a focused custom HTTP implementation because the public
 WebRTC endpoint returns raw SDP and can accept either raw `application/sdp` or
 multipart SDP plus session JSON; ordinary JSON resource generation does not
-model that response cleanly.
+model that response cleanly. Translation client-secret creation is also a narrow
+bridge for a published endpoint that the current generated resource surface does
+not emit. Both should migrate to generated ownership when Castiron supports
+their response/resource shapes. The SDK does not handwrite unpublished
+translation WebRTC call routes.
 
 ## Lifecycle and failures
 
@@ -565,7 +577,7 @@ simplest successful path before protocol details:
 | Conversations | Text item, audio commit, cancel/interruption, truncate played audio |
 | Function calling | Detect final arguments, execute locally, send typed output, request final answer |
 | Remote MCP | Configure server, inspect approval request, approve/reject, observe completion |
-| Translation | Client secret, browser WebRTC call, server WebSocket PCM loop, graceful close |
+| Translation | Client secret, server WebSocket PCM loop, graceful close; add WebRTC after its call endpoint is public |
 | Authentication | Standard key on server, ephemeral browser secret, safety identifier |
 | Azure | Deployment/model targeting and provider-owned handshake authentication |
 | Operations | Timeout, backpressure, logging event IDs, abnormal close, deliberate reconnect policy |

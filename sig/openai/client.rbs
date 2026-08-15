@@ -20,8 +20,6 @@ module OpenAI
 
     attr_reader webhook_secret: String?
 
-    attr_reader websocket_base_url: URI::Generic?
-
     attr_reader completions: OpenAI::Resources::Completions
 
     attr_reader chat: OpenAI::Resources::Chat
@@ -77,12 +75,6 @@ module OpenAI
     private def bearer_auth: -> ::Hash[String, String]
 
     private def admin_api_key_auth: -> ::Hash[String, String]
-
-    def realtime_connection_request: (
-      path: String,
-      query: ::Hash[String, String],
-      ?options: OpenAI::request_opts?
-    ) -> OpenAI::Internal::Transport::BaseClient::request_input
 
     private def prepare_request: (
       OpenAI::Internal::Transport::BaseClient::request_input request,

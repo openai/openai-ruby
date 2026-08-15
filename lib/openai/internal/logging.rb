@@ -112,21 +112,6 @@ module OpenAI
           stream.observe(context: self, response: response)
         end
 
-        def observe_raw_response(response)
-          return response unless enabled?(:error)
-
-          OpenAI::HTTPClient::Response.new(
-            status: response.status,
-            headers: response.headers,
-            body: ObservedEnumerable.new(
-              enumerable: response.body,
-              context: self,
-              response: response,
-              close: -> { OpenAI::Internal::Util.close_fused!(response.body) }
-            )
-          )
-        end
-
         def request_failed(error)
           status = error.is_a?(OpenAI::Errors::APIError) ? error.status : nil
           request_id = error.is_a?(OpenAI::Errors::APIError) ? error.request_id : nil
@@ -239,40 +224,6 @@ module OpenAI
         end
       end
 
-      class ObservedEnumerable
-        include Enumerable
-
-        def initialize(enumerable:, context:, response:, close:)
-          @enumerable = enumerable
-          @context = context
-          @response = response
-          @close = close
-          @iterator = iterator
-        end
-
-        def each(&block) = @iterator.each(&block)
-        def close = OpenAI::Internal::Util.close_fused!(@iterator)
-
-        private def iterator
-          source = @enumerable.to_enum
-          observed = Enumerator.new do |yielder|
-            loop do
-              chunk =
-                begin
-                  source.next
-                rescue StopIteration
-                  @context.completed(@response)
-                  break
-                rescue StandardError => e
-                  @context.request_failed(e)
-                  raise
-                end
-              yielder << chunk
-            end
-          end
-          OpenAI::Internal::Util.fused_enum(observed, &@close)
-        end
-      end
       class << self
         def normalize_level(value)
           level = value.to_s.downcase.to_sym if value.is_a?(String) || value.is_a?(Symbol)

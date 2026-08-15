@@ -1,0 +1,103 @@
+module OpenAI
+  class Client
+    attr_reader websocket_base_url: URI::Generic?
+
+    def realtime_connection_request: (
+      path: String,
+      query: ::Hash[String, String],
+      ?options: OpenAI::request_opts?
+    ) -> OpenAI::Internal::Transport::BaseClient::request_input
+  end
+
+  module Errors
+    class RealtimeConnectionError < OpenAI::Errors::Error
+      attr_reader url: URI::Generic
+      def cause: -> Exception?
+
+      def initialize: (
+        url: URI::Generic,
+        ?message: String?,
+        ?cause: Exception?
+      ) -> void
+    end
+
+    class RealtimeProtocolError < OpenAI::Errors::Error
+      attr_reader data: String
+      def cause: -> StandardError?
+
+      def initialize: (
+        data: String,
+        ?message: String?,
+        ?cause: StandardError?
+      ) -> void
+    end
+  end
+
+  module Internal
+    module Logging
+      class Context
+        def observe_raw_response: (
+          OpenAI::HTTPClient::Response response
+        ) -> OpenAI::HTTPClient::Response
+      end
+
+      class ObservedEnumerable[Elem]
+        include Enumerable[Elem]
+
+        def initialize: (
+          enumerable: Enumerable[Elem],
+          context: OpenAI::Internal::Logging::Context,
+          response: OpenAI::HTTPClient::Response,
+          close: ^() -> void
+        ) -> void
+
+        def each: { (Elem) -> void } -> void
+        def close: -> void
+        private def iterator: -> Enumerable[Elem]
+      end
+    end
+
+    module Transport
+      class BaseClient
+        def request_raw: (
+          OpenAI::Internal::Transport::BaseClient::request_components req
+        ) -> OpenAI::HTTPClient::Response
+      end
+    end
+  end
+
+  module Resources
+    class Realtime
+      attr_reader translations: OpenAI::Resources::Realtime::Translations
+
+      def connect: (
+        model: String,
+        ?request_options: OpenAI::request_opts?,
+        ?transport: untyped?,
+        ?transport_options: ::Hash[Symbol, untyped]
+      ) { (OpenAI::Realtime::Connection connection) -> top } -> top
+
+      def connect_to_call: (
+        call_id: String,
+        ?request_options: OpenAI::request_opts?,
+        ?transport: untyped?,
+        ?transport_options: ::Hash[Symbol, untyped]
+      ) { (OpenAI::Realtime::SidebandConnection connection) -> top } -> top
+
+      def connect_transcription: (
+        ?request_options: OpenAI::request_opts?,
+        ?transport: untyped?,
+        ?transport_options: ::Hash[Symbol, untyped]
+      ) { (OpenAI::Realtime::TranscriptionConnection connection) -> top } -> top
+
+      class Calls
+        def create: (
+          sdp: String,
+          ?session: OpenAI::Realtime::RealtimeSessionCreateRequest
+          | ::Hash[Symbol | String, untyped],
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Realtime::CallCreateResponse
+      end
+    end
+  end
+end

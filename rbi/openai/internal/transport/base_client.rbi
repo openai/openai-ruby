@@ -302,15 +302,6 @@ module OpenAI
         )
         end
 
-        # @api private
-        sig do
-          params(
-            req: OpenAI::Internal::Transport::BaseClient::RequestComponents
-          ).returns(OpenAI::HTTPClient::Response)
-        end
-        def request_raw(req)
-        end
-
         # Execute the request specified by `req`. This is the method that all resource
         # methods call into.
         #

@@ -154,6 +154,29 @@ class OpenAI::Test::Resources::Realtime::CallsTest < OpenAI::Test::ResourceTest
     assert_equal("req_malformed_location", response._request_id)
   end
 
+  def test_create_ignores_parseable_locations_that_do_not_identify_a_call
+    locations = ["/v1/realtime/calls", "/somewhere/else"]
+    responses = locations.map do |location|
+      OpenAI::HTTPClient::Response.new(
+        status: 201,
+        headers: {"content-type" => "application/sdp", "location" => location},
+        body: "usable-answer-sdp"
+      )
+    end
+    client = OpenAI::Client.new(
+      api_key: "test-key",
+      base_url: "https://example.com/v1",
+      http_client: SequenceHTTPClient.new(*responses)
+    )
+
+    locations.each do
+      response = client.realtime.calls.create(sdp: "offer-sdp")
+
+      assert_nil(response.call_id)
+      assert_equal("usable-answer-sdp", response.sdp)
+    end
+  end
+
   def test_create_does_not_retry_by_default
     http_client = SequenceHTTPClient.new(
       OpenAI::HTTPClient::Response.new(
