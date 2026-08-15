@@ -14,6 +14,7 @@ module OpenAI
               OpenAI::Streaming::ResponseTextDoneEvent,
               OpenAI::Streaming::ResponseCompletedEvent,
               OpenAI::Streaming::ResponseFunctionCallArgumentsDeltaEvent,
+              T::Hash[Symbol, T.untyped],
               # Pass through other raw events
               OpenAI::Models::Responses::ResponseStreamEvent::Variants
             )

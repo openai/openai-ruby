@@ -81,6 +81,57 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     end
   end
 
+  def test_keepalive_event_stays_raw_and_does_not_affect_stream_state
+    stub_streaming_response(keepalive_before_created_sse_response)
+
+    events = @client.responses.stream(**basic_params).to_a
+    keepalive = events.first
+
+    assert_equal({type: "keepalive", sequence_number: 0}, keepalive)
+    assert_instance_of(Hash, keepalive)
+    refute_instance_of(OpenAI::Models::Responses::ResponseErrorEvent, keepalive)
+    assert_text_delta_events(
+      events,
+      expected_deltas: ["Hello there! ", "How can I help you ", "today?"],
+      expected_snapshot: "Hello there! How can I help you today?"
+    )
+  end
+
+  def test_raw_stream_preserves_keepalive_event
+    stub_streaming_response(keepalive_before_created_sse_response)
+
+    stream = @client.responses.stream_raw(**basic_params)
+
+    assert_equal({type: "keepalive", sequence_number: 0}, stream.first)
+  ensure
+    stream&.close
+  end
+
+  def test_stable_and_beta_response_stream_unions_preserve_keepalive
+    unions = [
+      [OpenAI::Models::Responses::ResponseStreamEvent, OpenAI::Models::Responses::ResponseErrorEvent],
+      [OpenAI::Models::Beta::BetaResponseStreamEvent, OpenAI::Models::Beta::BetaResponseErrorEvent]
+    ]
+
+    unions.each do |union, error_event_class|
+      input = {"type" => "keepalive", "sequence_number" => 3}
+      state = OpenAI::Internal::Type::Converter.new_coerce_state
+
+      event = OpenAI::Internal::Type::Converter.coerce(union, input, state: state)
+
+      assert_same(input, event)
+      assert_nil(state.fetch(:error))
+      assert_equal({yes: 1, no: 0, maybe: 0}, state.fetch(:exactness))
+      assert_equal(0, state.fetch(:branched))
+
+      error_event = OpenAI::Internal::Type::Converter.coerce(
+        union,
+        {type: "error", code: nil, message: "failed", param: nil, sequence_number: 4}
+      )
+      assert_instance_of(error_event_class, error_event)
+    end
+  end
+
   def test_get_final_response
     stub_streaming_response(basic_text_sse_response)
 
@@ -651,6 +702,14 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     SSE
   end
 
+  def keepalive_before_created_sse_response
+    <<~SSE + basic_text_sse_response
+      event: keepalive
+      data: {"type":"keepalive","sequence_number":0}
+
+    SSE
+  end
+
   def resume_stream_sse_response
     <<~SSE
       event: response.created
@@ -696,6 +755,9 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
 
       event: response.output_text.delta
       data: {"type":"response.output_text.delta","sequence_number":6,"response_id":"msg_456","item_id":"item_001","output_index":0,"content_index":0,"delta":"today?"}
+
+      event: keepalive
+      data: {"type":"keepalive","sequence_number":7}
 
       event: response.output_text.delta
       data: {"type":"response.output_text.delta","sequence_number":8,"response_id":"msg_456","item_id":"item_001","output_index":0,"content_index":0,"delta":"today?"}
