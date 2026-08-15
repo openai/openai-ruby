@@ -830,10 +830,14 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
     base_url = "https://bedrock-runtime.us-east-1.amazonaws.com/openai/v1"
     chat_url = "#{base_url}/chat/completions"
     responses_url = "#{base_url}/responses"
-    [chat_url, responses_url].each do |url|
+    stream_bodies = {
+      chat_url => runtime_chat_stream_body,
+      responses_url => runtime_response_stream_body
+    }
+    stream_bodies.each do |url, body|
       stub_request(:post, url).to_return(
         status: 200,
-        body: "data: [DONE]\n\n",
+        body: body,
         headers: {"content-type" => "text/event-stream", "x-request-id" => "runtime-stream-request"}
       )
     end
@@ -851,6 +855,17 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
     assert_instance_of(OpenAI::Streaming::ResponseStream, response_stream)
     assert_equal("runtime-stream-request", chat_stream.last_response.request_id)
     assert_equal("runtime-stream-request", response_stream.last_response.request_id)
+
+    chat_events = chat_stream.to_a
+    chat_deltas = chat_events.grep(OpenAI::Streaming::ChatContentDeltaEvent)
+    assert_equal(["Hello"], chat_deltas.map(&:delta))
+    assert(chat_events.any? { _1.is_a?(OpenAI::Streaming::ChatContentDoneEvent) })
+
+    response_events = response_stream.to_a
+    response_deltas = response_events.grep(OpenAI::Streaming::ResponseTextDeltaEvent)
+    assert_equal(["Hello"], response_deltas.map(&:delta))
+    assert_equal(:"response.completed", response_events.last.type)
+    assert_equal("Hello", response_stream.get_final_response.output_text)
 
     [chat_url, responses_url].each do |url|
       assert_requested(:post, url, times: 1) do |request|
@@ -1084,6 +1099,55 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
       {api_key: "runtime-token"},
       {access_key_id: "runtime-access-key", secret_access_key: "runtime-secret-key"}
     ]
+  end
+
+  private def runtime_chat_stream_body
+    base = {
+      id: "chatcmpl_runtime_stream",
+      object: "chat.completion.chunk",
+      created: 1_700_000_000,
+      model: "us.openai.gpt-5.6-terra"
+    }
+    chunks = [
+      base.merge(choices: [{index: 0, delta: {role: "assistant", content: "Hello"}, finish_reason: nil}]),
+      base.merge(choices: [{index: 0, delta: {}, finish_reason: "stop"}])
+    ]
+
+    "#{chunks.map { "data: #{JSON.generate(_1)}\n\n" }.join}data: [DONE]\n\n"
+  end
+
+  private def runtime_response_stream_body
+    response = {
+      id: "resp_runtime_stream",
+      object: "response",
+      model: "us.openai.gpt-5.6-luna",
+      status: "in_progress",
+      output: []
+    }
+    item = {id: "msg_runtime_stream", type: "message", status: "in_progress", role: "assistant", content: []}
+    output = {type: "output_text", text: "Hello", annotations: []}
+    indexes = {response_id: response.fetch(:id), item_id: item.fetch(:id), output_index: 0, content_index: 0}
+    completed_item = item.merge(status: "completed", content: [output])
+    completed_response = response.merge(status: "completed", output: [completed_item])
+    events = [
+      {type: "response.created", response: response},
+      {type: "response.output_item.added", response_id: response.fetch(:id), output_index: 0, item: item},
+      {type: "response.content_part.added", **indexes, part: output.merge(text: "")},
+      {type: "response.output_text.delta", **indexes, delta: "Hello"},
+      {type: "response.output_text.done", **indexes, text: "Hello"},
+      {type: "response.content_part.done", **indexes, part: output},
+      {
+        type: "response.output_item.done",
+        response_id: response.fetch(:id),
+        output_index: 0,
+        item: completed_item
+      },
+      {type: "response.completed", response: completed_response}
+    ]
+
+    events.each_with_index.map do |event, index|
+      "event: #{event.fetch(:type)}\ndata: #{JSON.generate(event.merge(sequence_number: index + 1))}\n\n"
+    end.join
   end
 
   private def assert_runtime_authorization(request, authentication)

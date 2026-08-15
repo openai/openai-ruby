@@ -41,7 +41,7 @@ completion = client.chat.completions.create(
 puts(completion.choices.first.message.content)
 ```
 
-Use the inference profile configured for your AWS account, for example `us.openai.gpt-5.6-sol`, `us.openai.gpt-5.6-terra`, or `us.openai.gpt-5.6-luna`. Global inference profiles, such as `global.openai.gpt-5.6-sol`, require the appropriate AWS account and regional permissions. Set `BEDROCK_MODEL` to override the model used by [`examples/bedrock_runtime.rb`](examples/bedrock_runtime.rb).
+Use the inference profile configured for your AWS account, for example `us.openai.gpt-5.6-sol`, `us.openai.gpt-5.6-terra`, or `us.openai.gpt-5.6-luna`. Global inference profiles, such as `global.openai.gpt-5.6-sol`, require the appropriate AWS account and regional permissions. Set `BEDROCK_MODEL` to override the model used by [`examples/bedrock_runtime.rb`](examples/bedrock_runtime.rb). The example uses Chat Completions by default; set `BEDROCK_RESPONSES=1` to also use Responses or `BEDROCK_STREAM=1` to also stream Chat Completions. Set `BEDROCK_AUTH_MODE=sigv4` to explicitly select AWS authentication when a bearer credential is also present.
 
 The same client supports Responses and response streaming when AWS makes those APIs available for the selected model:
 
