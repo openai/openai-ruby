@@ -274,10 +274,11 @@ client = OpenAI::Client.new(
 )
 ```
 
-The SDK cannot infer whether custom HTTP configuration uses mTLS, so it does not
-automatically change `base_url`. An explicit `base_url`, including an EU or
-custom endpoint, is always preserved. Scope client certificates to the expected
-origin, as above, so they cannot be presented elsewhere. Use the
+Custom HTTP configuration by itself does not change `base_url`. X.509 workload
+identity is the one exception: it defaults to the global mTLS API URL when no
+base URL is configured. An explicit `base_url`, including an EU or custom
+endpoint, is always preserved. Scope client certificates to every expected
+origin so they cannot be presented elsewhere. Use the
 `OpenAI::NetHTTPClient` block for TLS and other connection-level configuration.
 Server trust remains separate from the client identity and can be customized
 with `Net::HTTP` properties such as `cert_store` or `ca_file`.
@@ -387,9 +388,25 @@ See [bedrock.md](bedrock.md) for authentication precedence, static and refreshab
 
 ## Workload Identity Authentication
 
-For secure, automated environments like cloud-managed Kubernetes, Azure, and GCP, you can use workload identity authentication with short-lived tokens from cloud identity providers instead of long-lived API keys.
+For secure automated environments, workload identity authentication exchanges
+an external identity for a short-lived OpenAI bearer token instead of using a
+long-lived API key. The SDK supports X.509 client-certificate identity and the
+existing Kubernetes, Azure, and GCP subject-token providers.
 
 `client_id` remains available as an optional parameter for token exchange setups that require an explicit OAuth client ID.
+
+### X.509 workload identity (HTTP)
+
+`OpenAI::Auth::X509WorkloadIdentity` is a separate configuration type and does
+not accept a subject-token provider. It uses the same configured `http_client`
+for fixed-endpoint token exchange and API requests, while certificate and key
+handling remains transport-owned. X.509 clients default to the global mTLS API
+URL only when no base URL is set. Support in this release covers HTTP, not
+Realtime WebSockets.
+
+See the [X.509 workload identity guide](x509_workload_identity.md) for lifecycle,
+security, fork, and rotation behavior, plus the complete [`OPENAI_AUTH_MODE`
+example](examples/x509_workload_identity.rb) for PEM chains and encrypted keys.
 
 ### Kubernetes Service Account
 

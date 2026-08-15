@@ -18,6 +18,8 @@ module OpenAI
     DEFAULT_MAX_RETRY_DELAY = 8.0
 
     WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER = "workload-identity-auth"
+    X509_DEFAULT_BASE_URL = "https://mtls.api.openai.com/v1"
+    private_constant :X509_DEFAULT_BASE_URL
 
     # @return [String, nil]
     attr_reader :api_key
@@ -256,7 +258,7 @@ module OpenAI
     #
     # @param admin_api_key [String, nil] Defaults to `ENV["OPENAI_ADMIN_KEY"]`
     #
-    # @param workload_identity [OpenAI::Auth::WorkloadIdentity, nil]
+    # @param workload_identity [OpenAI::Auth::WorkloadIdentity, OpenAI::Auth::X509WorkloadIdentity, nil]
     #   OAuth2 workload identity configuration for token exchange authentication.
     #   Mutually exclusive with `api_key`.
     #
@@ -271,7 +273,9 @@ module OpenAI
     #   with top-level `api_key`, `admin_api_key`, `workload_identity`, or `base_url`.
     #
     # @param base_url [String, nil] Override the default base URL for the API, e.g.,
-    # `"https://api.example.com/v2/"`. Defaults to `ENV["OPENAI_BASE_URL"]`
+    # `"https://api.example.com/v2/"`. Defaults to `ENV["OPENAI_BASE_URL"]`,
+    # then the global mTLS API URL for X.509 workload identity clients, or the
+    # standard API URL for other clients.
     #
     # @param data_residency [Symbol, String, nil] Select `global`, `us`, `eu`, or
     #   `ae`. Mutually exclusive with an explicit `base_url` or `provider`.
@@ -364,7 +368,8 @@ module OpenAI
       webhook_secret = nil if webhook_secret.equal?(OpenAI::Internal::OMIT)
       base_url = provider_runtime.base_url if provider_runtime
       base_url = nil if base_url.equal?(OpenAI::Internal::OMIT)
-      base_url ||= "https://api.openai.com/v1"
+      x509_workload_identity = workload_identity.is_a?(OpenAI::Auth::X509WorkloadIdentity)
+      base_url ||= x509_workload_identity ? X509_DEFAULT_BASE_URL : "https://api.openai.com/v1"
 
       if !api_key.nil? && !workload_identity.nil?
         raise ArgumentError, "`api_key` and `workload_identity` are mutually exclusive"
@@ -405,10 +410,6 @@ module OpenAI
         @workload_identity_auth = nil
       else
         @api_key = WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER
-        @workload_identity_auth = OpenAI::Auth::WorkloadIdentityAuth.new(
-          workload_identity,
-          organization&.to_s
-        )
       end
 
       @admin_api_key = admin_api_key&.to_s
@@ -427,6 +428,14 @@ module OpenAI
         log_level: log_level,
         on_retry: on_retry
       )
+
+      unless workload_identity.nil?
+        @workload_identity_auth = OpenAI::Auth::WorkloadIdentityAuth.new(
+          workload_identity,
+          organization&.to_s,
+          http_client: requester
+        )
+      end
 
       @copy_options = OpenAI::Internal::ClientOptions.capture(
         api_key: api_key,

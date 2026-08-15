@@ -28,7 +28,8 @@ Gem::Specification.new do |s|
       "examples/mtls_custom_http_client.rb",
       "examples/realtime/README.md",
       "examples/realtime/websocket_transcription.rb",
-      "examples/realtime/websocket_text.rb"
+      "examples/realtime/websocket_text.rb",
+      "examples/x509_workload_identity.rb"
     ]
   s.extra_rdoc_files = [
     "README.md",
@@ -36,7 +37,8 @@ Gem::Specification.new do |s|
     "azure.md",
     "bedrock.md",
     "realtime.md",
-    "examples/realtime/README.md"
+    "examples/realtime/README.md",
+    "x509_workload_identity.md"
   ]
   s.add_dependency("base64")
   s.add_dependency("cgi")

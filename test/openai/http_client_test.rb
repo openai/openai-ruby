@@ -754,6 +754,30 @@ class HTTPClientTest < Minitest::Test
     refute_predicate(second_connection, :finished?)
   end
 
+  def test_net_http_client_partitions_connection_pools_by_origin
+    client_class =
+      Class.new(OpenAI::NetHTTPClient) do
+        def checkout(url, &blk)
+          with_pool(url, deadline: nil, &blk)
+        end
+      end
+    configured_origins = []
+    http_client = client_class.new do |http|
+      configured_origins << [http.address, http.port]
+    end
+
+    http_client.checkout(URI("https://mtls.auth.openai.com/oauth/token")) { nil }
+    http_client.checkout(URI("https://mtls.api.openai.com/v1/responses")) { nil }
+    http_client.checkout(URI("https://mtls.auth.openai.com/other")) { nil }
+
+    assert_equal(
+      [["mtls.auth.openai.com", 443], ["mtls.api.openai.com", 443]],
+      configured_origins
+    )
+  ensure
+    http_client&.close
+  end
+
   def test_custom_http_client_does_not_implicitly_change_the_endpoint
     client = OpenAI::Client.new(
       api_key: "test-key",
@@ -763,8 +787,20 @@ class HTTPClientTest < Minitest::Test
     assert_equal("https://api.openai.com/v1", client.base_url.to_s)
   end
 
-  def test_native_net_http_configuration_presents_the_full_client_chain
+  def test_native_net_http_configuration_loads_encrypted_key_and_presents_full_pem_chain
     chain = build_chain
+    passphrase = "test private key passphrase"
+    certificates = OpenSSL::X509::Certificate.load(
+      chain[:leaf].to_pem + chain[:intermediate].to_pem
+    )
+    leaf_certificate, *intermediates = certificates
+    encrypted_private_key = chain[:leaf_key].export(
+      OpenSSL::Cipher.new("aes-256-cbc"),
+      passphrase
+    )
+    private_key = OpenSSL::PKey.read(encrypted_private_key, passphrase)
+    assert(leaf_certificate.check_private_key(private_key))
+
     server_key = OpenSSL::PKey::RSA.new(2048)
     server_certificate = issue_certificate(
       subject: "/CN=127.0.0.1",
@@ -815,9 +851,9 @@ class HTTPClientTest < Minitest::Test
       raise "unexpected origin" unless http.use_ssl? && expected_destination == [http.address, http.port]
 
       http.cert_store = server_store
-      http.cert = chain[:leaf]
-      http.extra_chain_cert = [chain[:intermediate]]
-      http.key = chain[:leaf_key]
+      http.cert = leaf_certificate
+      http.extra_chain_cert = intermediates
+      http.key = private_key
     end
 
     client = OpenAI::Client.new(

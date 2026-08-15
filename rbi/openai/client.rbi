@@ -201,7 +201,13 @@ module OpenAI
         api_key: T.nilable(String),
 
         admin_api_key: T.nilable(String),
-        workload_identity: T.nilable(OpenAI::Auth::WorkloadIdentity),
+        workload_identity:
+          T.nilable(
+            T.any(
+              OpenAI::Auth::WorkloadIdentity,
+              OpenAI::Auth::X509WorkloadIdentity
+            )
+          ),
         organization: T.nilable(String),
 
         project: T.nilable(String),

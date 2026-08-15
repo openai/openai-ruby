@@ -1,0 +1,25 @@
+module OpenAI
+  module Auth
+    # @api private
+    class WorkloadIdentityAuth
+      def initialize: (
+        OpenAI::Auth::WorkloadIdentity
+        | OpenAI::Auth::X509WorkloadIdentity config,
+        String? organization_id,
+        ?token_exchange_url: String,
+        ?http_client: OpenAI::_HTTPClient?,
+        ?sleeper: ^(Float) -> void,
+        ?monotonic_clock: ^-> Float
+      ) -> void
+
+      # @api private
+      def get_token: -> String
+
+      # @api private
+      def invalidate_token: (?String? rejected_token) -> void
+
+      # @api private
+      def inspect: -> String
+    end
+  end
+end

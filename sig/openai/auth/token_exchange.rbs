@@ -1,0 +1,43 @@
+module OpenAI
+  module Auth
+    # @api private
+    module TokenExchange
+      type token_data = { id: String, expires_in: Integer | Float }
+
+      def self.build: (
+        OpenAI::Auth::WorkloadIdentity
+        | OpenAI::Auth::X509WorkloadIdentity config,
+        token_exchange_url: String,
+        http_client: OpenAI::_HTTPClient?,
+        sleeper: ^(Float) -> void
+      ) -> (OpenAI::Auth::TokenExchange::SubjectToken
+      | OpenAI::Auth::TokenExchange::X509)
+
+      # @api private
+      class SubjectToken
+        attr_reader url: URI::Generic
+
+        def initialize: (
+          OpenAI::Auth::WorkloadIdentity config,
+          ?token_exchange_url: String
+        ) -> void
+
+        def fetch: -> token_data
+      end
+
+      # @api private
+      class X509
+        attr_reader url: URI::Generic
+
+        def initialize: (
+          OpenAI::Auth::X509WorkloadIdentity config,
+          token_exchange_url: String,
+          http_client: OpenAI::_HTTPClient,
+          sleeper: ^(Float) -> void
+        ) -> void
+
+        def fetch: -> token_data
+      end
+    end
+  end
+end

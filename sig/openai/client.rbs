@@ -106,7 +106,8 @@ module OpenAI
     def initialize: (
       ?api_key: String?,
       ?admin_api_key: String?,
-      ?workload_identity: untyped?,
+      ?workload_identity: (OpenAI::Auth::WorkloadIdentity
+      | OpenAI::Auth::X509WorkloadIdentity)?,
       ?organization: String?,
       ?project: String?,
       ?webhook_secret: String?,

@@ -6,6 +6,12 @@ class WorkloadIdentityTest < Minitest::Test
   extend Minitest::Serial
   include WebMock::API
 
+  class IDTokenProvider
+    def get_token = "id-token"
+
+    def token_type = OpenAI::Auth::TokenType::ID
+  end
+
   def before_all
     super
     WebMock.enable!
@@ -483,6 +489,33 @@ class WorkloadIdentityTest < Minitest::Test
 
     auth = OpenAI::Auth::WorkloadIdentityAuth.new(config, "org-123")
     token = auth.get_token
+
+    assert_equal("oauth-access-token", token)
+  end
+
+  def test_workload_identity_auth_id_token_exchange_remains_compatible
+    stub_request(:post, "https://auth.openai.com/oauth/token")
+      .with do |request|
+        JSON.parse(request.body) == {
+          "grant_type" => "urn:ietf:params:oauth:grant-type:token-exchange",
+          "subject_token" => "id-token",
+          "subject_token_type" => "urn:ietf:params:oauth:token-type:id_token",
+          "identity_provider_id" => "idp-123",
+          "service_account_id" => "sa-456"
+        }
+      end
+      .to_return(
+        status: 200,
+        body: JSON.generate({"access_token" => "oauth-access-token", "expires_in" => 3600})
+      )
+
+    config = OpenAI::Auth::WorkloadIdentity.new(
+      identity_provider_id: "idp-123",
+      service_account_id: "sa-456",
+      provider: IDTokenProvider.new
+    )
+
+    token = OpenAI::Auth::WorkloadIdentityAuth.new(config, "org-123").get_token
 
     assert_equal("oauth-access-token", token)
   end
