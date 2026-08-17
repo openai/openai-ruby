@@ -9,9 +9,10 @@
 - Never commit real API keys, access tokens, signing keys, credentials, or
   customer data. Read secrets from environment variables such as
   `OPENAI_API_KEY` and use clearly fake values in examples, tests, and fixtures.
-- Redact authorization headers, cookies, tokens, signed URLs, request/response
-  bodies, prompts, uploaded files, and other sensitive data from logs, errors,
-  snapshots, and CI artifacts.
+- Redact authorization headers, cookies, tokens, signed URLs, customer data,
+  and sensitive request/response bodies, prompts, or uploaded files from logs,
+  errors, snapshots, and CI artifacts. Clearly fake or sanitized payloads may
+  remain in tests and diagnostics.
 - Review direct and transitive dependency changes in `Gemfile`, `Gemfile.lock`,
   and `openai.gemspec`, including gem sources, locked Git revisions, native
   extensions, and install/build scripts. Do not run unreviewed scripts.
