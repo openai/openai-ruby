@@ -27,6 +27,7 @@ module OpenAI
         )
         end
 
+        # @api private
         sig do
           params(
             block:

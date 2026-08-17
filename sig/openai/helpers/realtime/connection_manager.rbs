@@ -12,6 +12,7 @@ module OpenAI
           transport_options: ::Hash[Symbol, untyped]
         ) -> void
 
+        # @api private
         def open: {
           (OpenAI::Realtime::BaseConnection connection) -> top
         } -> top

@@ -46,6 +46,8 @@ module OpenAI
 
       # Open the WebSocket and yield a typed connection for the lifetime of the block.
       #
+      # @api private
+      #
       # @yieldparam connection [OpenAI::Realtime::Connection]
       # @return [Object]
       def open
