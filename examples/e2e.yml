@@ -10,6 +10,9 @@ examples:
   examples/bedrock.rb:
     status: excluded
     reason: Requires AWS credentials, region configuration, and a Bedrock model.
+  examples/bedrock_runtime.rb:
+    status: excluded
+    reason: Requires Amazon Bedrock credentials, region configuration, and model access.
   examples/chat/streaming_basic.rb:
     status: covered
     expected_output: Streamed content received.
