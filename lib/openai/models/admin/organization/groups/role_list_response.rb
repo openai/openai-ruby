@@ -18,11 +18,7 @@ module OpenAI
             #
             #   @return [Array<OpenAI::Models::Admin::Organization::Groups::RoleListResponse::AssignmentSource>, nil]
             required :assignment_sources,
-                     -> do
-                       OpenAI::Internal::Type::ArrayOf[
-                         OpenAI::Models::Admin::Organization::Groups::RoleListResponse::AssignmentSource
-                       ]
-                     end,
+                     -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::Groups::RoleListResponse::AssignmentSource] },
                      nil?: true
 
             # @!attribute created_at

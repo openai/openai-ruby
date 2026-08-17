@@ -16,9 +16,7 @@ module OpenAI
             #
             #   @return [OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey, nil]
             required :api_key,
-                     -> {
-                       OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey
-                     },
+                     -> { OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey },
                      nil?: true
 
             # @!attribute created_at

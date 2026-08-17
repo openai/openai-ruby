@@ -315,9 +315,7 @@ module OpenAI
 
       if provider_runtime.nil? && api_key.nil? && admin_api_key.nil? && workload_identity.nil?
         raise ArgumentError,
-              "Missing credentials. Please pass an `api_key`, `workload_identity`, " \
-              "`admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` " \
-              "environment variable."
+              "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable."
       end
 
       headers = {
