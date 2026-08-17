@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "timeout"
+
 module OpenAI
   module Auth
     class WorkloadIdentityAuth
@@ -29,31 +31,51 @@ module OpenAI
         @cond_var = ConditionVariable.new
       end
 
-      def get_token
-        @mutex.synchronize do
-          @cond_var.wait(@mutex) while @refreshing && token_unusable?
+      # @api private
+      #
+      # @param deadline [Float, nil] absolute monotonic deadline for this request
+      # @return [String]
+      def get_token(deadline: nil)
+        check_deadline!(deadline)
+        action = nil
+        token = nil
 
-          unless token_unusable? || needs_refresh?
-            return @cached_token
+        # Installing refresh cleanup is part of the state transition. No async
+        # exception may observe @refreshing after it changes but before the ensure.
+        Thread.handle_interrupt(Exception => :never) do
+          @mutex.synchronize do
+            if @refreshing
+              action = :wait
+            elsif token_unusable? || needs_refresh?
+              @refreshing = true
+              action = :refresh
+            else
+              token = @cached_token
+              action = :return
+            end
           end
 
-          if @refreshing
-            @cond_var.wait(@mutex) while @refreshing
-            token = @cached_token
-            raise OpenAI::Errors::AuthenticationError, "Token refresh failed" if token_unusable?
-            return token
+          if action == :refresh
+            begin
+              Thread.handle_interrupt(Exception => :immediate) do
+                perform_refresh(deadline: deadline)
+              end
+            ensure
+              @mutex.synchronize do
+                @refreshing = false
+                @cond_var.broadcast
+              end
+            end
           end
-
-          @refreshing = true
         end
 
-        perform_refresh
-        @mutex.synchronize do
-          raise OpenAI::Errors::AuthenticationError, "Token refresh failed" if token_unusable?
-          @cached_token
-        end
+        return token if action == :return
+        return wait_for_refresh(deadline) if action == :wait
+
+        current_token(deadline)
       end
 
+      # @api private
       def invalidate_token
         @mutex.synchronize do
           @cached_token = nil
@@ -62,10 +84,47 @@ module OpenAI
         end
       end
 
-      private
+      private def current_token(deadline)
+        check_deadline!(deadline)
+        @mutex.synchronize do
+          raise_refresh_error! if token_unusable?
 
-      def perform_refresh
-        token_data = fetch_token_from_exchange
+          @cached_token
+        end
+      end
+
+      private def wait_for_refresh(deadline)
+        @mutex.synchronize do
+          while @refreshing
+            remaining = remaining_timeout(deadline)
+            if remaining.nil?
+              @cond_var.wait(@mutex)
+            else
+              @cond_var.wait(@mutex, remaining)
+            end
+          end
+
+          check_deadline!(deadline)
+          raise_refresh_error! if token_unusable?
+
+          @cached_token
+        end
+      end
+
+      private def raise_refresh_error!
+        raise OpenAI::Errors::AuthenticationError.new(
+          url: @token_exchange_url,
+          status: 401,
+          headers: nil,
+          body: nil,
+          request: nil,
+          response: nil,
+          message: "Token refresh failed"
+        )
+      end
+
+      private def perform_refresh(deadline:)
+        token_data = fetch_token_from_exchange(deadline: deadline)
         now = OpenAI::Internal::Util.monotonic_secs
         expires_in = token_data.fetch(:expires_in)
 
@@ -74,15 +133,11 @@ module OpenAI
           @cached_token_expires_at_monotonic = now + expires_in
           @cached_token_refresh_at_monotonic = now + refresh_delay_seconds(expires_in)
         end
-      ensure
-        @mutex.synchronize do
-          @refreshing = false
-          @cond_var.broadcast
-        end
       end
 
-      def fetch_token_from_exchange
+      private def fetch_token_from_exchange(deadline:)
         subject_token = @config.provider.get_token
+        check_deadline!(deadline)
 
         token_type = @config.provider.token_type
         subject_token_type = SUBJECT_TOKEN_TYPES.fetch(token_type) do
@@ -102,21 +157,39 @@ module OpenAI
         body[:client_id] = @config.client_id unless @config.client_id.nil?
         request.body = JSON.generate(body)
 
+        timeout = [remaining_timeout(deadline), 5].compact.min
         response = Net::HTTP.start(
           @token_exchange_url.hostname,
           @token_exchange_url.port,
           use_ssl: @token_exchange_url.scheme == "https",
-          open_timeout: 5,
-          read_timeout: 5,
-          write_timeout: 5
+          open_timeout: timeout,
+          read_timeout: timeout,
+          write_timeout: timeout
         ) do |http|
           http.request(request)
         end
+        check_deadline!(deadline)
 
         handle_token_response(response)
       end
 
-      def handle_token_response(response)
+      private def check_deadline!(deadline)
+        remaining_timeout(deadline)
+        nil
+      end
+
+      private def remaining_timeout(deadline)
+        return if deadline.nil?
+
+        remaining = deadline - OpenAI::Internal::Util.monotonic_secs
+        unless remaining.positive?
+          raise Timeout::Error, "request timed out during workload identity authentication"
+        end
+
+        remaining
+      end
+
+      private def handle_token_response(response)
         body = parse_response_body(response)
 
         case response
@@ -142,7 +215,7 @@ module OpenAI
         end
       end
 
-      def parse_response_body(response)
+      private def parse_response_body(response)
         return nil if response.body.nil? || response.body.empty?
 
         JSON.parse(response.body, symbolize_names: true)
@@ -150,23 +223,23 @@ module OpenAI
         nil
       end
 
-      def token_unusable?
+      private def token_unusable?
         @cached_token.nil? || token_expired?
       end
 
-      def token_expired?
+      private def token_expired?
         return true if @cached_token_expires_at_monotonic.nil?
 
         OpenAI::Internal::Util.monotonic_secs >= @cached_token_expires_at_monotonic
       end
 
-      def needs_refresh?
+      private def needs_refresh?
         return false if @cached_token_refresh_at_monotonic.nil?
 
         OpenAI::Internal::Util.monotonic_secs >= @cached_token_refresh_at_monotonic
       end
 
-      def refresh_delay_seconds(expires_in)
+      private def refresh_delay_seconds(expires_in)
         configured_buffer = @config.refresh_buffer_seconds || DEFAULT_REFRESH_BUFFER_SECONDS
         effective_buffer = [configured_buffer, expires_in / 2].min
 

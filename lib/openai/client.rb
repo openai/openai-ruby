@@ -177,9 +177,13 @@ module OpenAI
       workload_identity_auth_header = "Bearer #{WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER}"
       return super unless request[:headers]["authorization"] == workload_identity_auth_header
 
-      token = @workload_identity_auth.get_token
+      deadline = request[:timeout]&.then { OpenAI::Internal::Util.monotonic_secs + _1 }
+      token = @workload_identity_auth.get_token(deadline: deadline)
       updated_headers = request[:headers].merge("authorization" => "Bearer #{token}")
-      updated_request = request.merge(headers: updated_headers)
+      updated_request = request_with_remaining_timeout(
+        request.merge(headers: updated_headers),
+        deadline
+      )
 
       begin
         super(
@@ -192,9 +196,12 @@ module OpenAI
         raise unless retry_count.zero? && request_replayable?(request)
         @workload_identity_auth.invalidate_token
 
-        fresh_token = @workload_identity_auth.get_token
+        fresh_token = @workload_identity_auth.get_token(deadline: deadline)
         refreshed_headers = request[:headers].merge("authorization" => "Bearer #{fresh_token}")
-        refreshed_request = request.merge(headers: refreshed_headers)
+        refreshed_request = request_with_remaining_timeout(
+          request.merge(headers: refreshed_headers),
+          deadline
+        )
 
         super(
           refreshed_request,
@@ -203,6 +210,18 @@ module OpenAI
           send_retry_header: send_retry_header
         )
       end
+    end
+
+    # @api private
+    private def request_with_remaining_timeout(request, deadline)
+      return request if deadline.nil?
+
+      remaining = deadline - OpenAI::Internal::Util.monotonic_secs
+      unless remaining.positive?
+        raise Timeout::Error, "request timed out during workload identity authentication"
+      end
+
+      request.merge(timeout: remaining)
     end
 
     # Returns a new client of the same class with the supplied constructor options overridden.

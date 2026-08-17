@@ -272,14 +272,14 @@ module OpenAI
         # Existing file IDs can be included alongside new uploads. Upload concurrency is
         # bounded and defaults to 5. Set `max_concurrency` to 1 for sequential uploads.
         # Inputs are enumerated before requests begin so the 2,000-file API limit can be
-        # checked without orphaning uploads. IO streams must remain open until this method returns.
+        # checked without orphaning uploads. Stream-backed inputs are safely spooled during
+        # enumeration, including IO objects yielded from block-scoped enumerators.
         #
         # @overload upload_and_poll(vector_store_id, files:, file_ids: [], max_concurrency: 5, attributes: nil, chunking_strategy: nil, poll_interval: nil, timeout: 1800.0, request_options: {})
         #
         # @param vector_store_id [String] The ID of the vector store for which to create a File Batch.
         #
-        # @param files [Enumerable<Pathname, StringIO, IO, String, OpenAI::FilePart>] Files to upload. IO streams
-        #   yielded by an enumerable must remain open until this method returns.
+        # @param files [Enumerable<Pathname, StringIO, IO, String, OpenAI::FilePart>] Files to upload.
         #
         # @param file_ids [Array<String>] IDs of files that have already been uploaded.
         #

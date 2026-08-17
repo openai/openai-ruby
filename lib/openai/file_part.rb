@@ -11,6 +11,28 @@ module OpenAI
     # @return [String, nil]
     attr_reader :filename
 
+    # Return a copy with different content while preserving multipart behavior.
+    #
+    # @api private
+    #
+    # @param content [Pathname, StringIO, IO, String]
+    # @return [OpenAI::FilePart]
+    def with_content(content)
+      dup.tap do |copy|
+        copy.content = content
+        copy.content_type = content_type || default_content_type
+      end
+    end
+
+    protected(attr_writer(:content, :content_type))
+
+    # @api private
+    #
+    # @return [String]
+    private def default_content_type
+      content.is_a?(String) ? "text/plain" : "application/octet-stream"
+    end
+
     # @api private
     #
     # @return [String]

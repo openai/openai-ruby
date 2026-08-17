@@ -31,16 +31,18 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
   end
 
   class ScriptedWorkloadIdentityAuth
-    attr_reader :invalidations, :token_requests
+    attr_reader :deadlines, :invalidations, :token_requests
 
     def initialize(slow_token_requests:)
       @slow_token_requests = slow_token_requests
+      @deadlines = []
       @invalidations = 0
       @token_requests = 0
     end
 
-    def get_token
+    def get_token(deadline: nil)
       @token_requests += 1
+      @deadlines << deadline
       sleep(5) if @slow_token_requests.include?(@token_requests)
       "token-#{@token_requests}"
     end
@@ -169,6 +171,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     assert_operator(elapsed, :<, 1)
     assert_nil(error.resource)
     assert_equal(1, auth.token_requests)
+    assert_instance_of(Float, auth.deadlines.fetch(0))
     assert_empty(transport.requests)
   end
 
@@ -188,8 +191,50 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     assert_operator(elapsed, :<, 1)
     assert_nil(error.resource)
     assert_equal(2, auth.token_requests)
+    assert_equal(1, auth.deadlines.uniq.length)
+    assert_instance_of(Float, auth.deadlines.fetch(0))
     assert_equal(1, auth.invalidations)
     assert_equal(1, transport.requests.length)
+  end
+
+  def test_unbounded_polling_preserves_a_nil_workload_identity_deadline
+    transport = scripted_transport { [200, {}, file_object(status: "processed")] }
+    auth = ScriptedWorkloadIdentityAuth.new(slow_token_requests: [])
+    client = build_workload_identity_client(transport, auth)
+
+    result = client.files.wait_for_processing(
+      "file_123",
+      timeout: nil,
+      request_options: {timeout: nil}
+    )
+
+    assert_equal(:processed, result.status)
+    assert_nil(auth.deadlines.fetch(0))
+    assert_nil(transport.requests.fetch(0).timeout)
+  end
+
+  def test_workload_identity_authentication_consumes_the_request_timeout
+    transport = scripted_transport { flunk("request should not be sent") }
+    auth = Class.new do
+      attr_reader :deadline
+
+      def get_token(deadline:)
+        @deadline = deadline
+        sleep(0.03)
+        "token"
+      end
+
+      def invalidate_token = nil
+    end.new
+    client = build_workload_identity_client(transport, auth)
+
+    error = assert_raises(Timeout::Error) do
+      client.files.retrieve("file_123", request_options: {timeout: 0.01})
+    end
+
+    assert_match("workload identity authentication", error.message)
+    assert_instance_of(Float, auth.deadline)
+    assert_empty(transport.requests)
   end
 
   def test_poller_preserves_an_inner_timeout_before_its_deadline

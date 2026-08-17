@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "internal/read_io_adapter"
+require "timeout"
 
 module OpenAI
   # The SDK's pooled Net::HTTP implementation.
@@ -41,6 +42,9 @@ module OpenAI
       end
     end
     private_constant :ConnectionConfigurationError
+
+    PooledConnection = Struct.new(:connection)
+    private_constant :PooledConnection
 
     # @api private
     #
@@ -127,7 +131,7 @@ module OpenAI
     # @api private
     #
     # @param url [URI::Generic]
-    # @param deadline [Float]
+    # @param deadline [Float, nil]
     # @param blk [Proc]
     #
     # @raise [Timeout::Error]
@@ -137,17 +141,34 @@ module OpenAI
       pool =
         @mutex.synchronize do
           @pools[origin] ||= ConnectionPool.new(size: @size) do
-            configured_connection(url)
+            PooledConnection.new
           end
         end
 
-      return pool.with(timeout: remaining_timeout(deadline), &blk) if deadline
+      checkout = lambda do |pooled_connection|
+        if pooled_connection.connection.nil?
+          connection = nil
+          begin
+            connection = connect(url: url)
+            configure_connection(connection, url, deadline: deadline)
+            pooled_connection.connection = connection
+          ensure
+            if pooled_connection.connection.nil?
+              close_connection(connection) unless connection.nil?
+              pool.discard_current_connection
+            end
+          end
+        end
+        blk.call(pooled_connection.connection)
+      end
+
+      return pool.with(timeout: remaining_timeout(deadline), &checkout) if deadline
 
       checked_out = false
       begin
-        pool.with do |connection|
+        pool.with do |pooled_connection|
           checked_out = true
-          blk.call(connection)
+          checkout.call(pooled_connection)
         end
       rescue ConnectionPool::TimeoutError
         retry unless checked_out
@@ -157,12 +178,12 @@ module OpenAI
 
     # @api private
     #
+    # @param connection [Net::HTTP]
     # @param url [URI::Generic]
-    #
-    # @return [Net::HTTP]
-    private def configured_connection(url)
-      connection = nil
-      connection = connect(url: url)
+    # @param deadline [Float, nil]
+    # @return [void]
+    private def configure_connection(connection, url, deadline:)
+      remaining_timeout(deadline) unless deadline.nil?
       begin
         @connection_configurator&.call(connection)
       rescue StandardError => e
@@ -179,14 +200,15 @@ module OpenAI
       end
 
       connection.max_retries = 0
-      connection
+      remaining_timeout(deadline) unless deadline.nil?
+      nil
+    end
+
+    # @api private
+    private def close_connection(connection)
+      connection.finish if connection.started?
     rescue StandardError
-      begin
-        connection.finish if connection&.started?
-      rescue StandardError
-        nil
-      end
-      raise
+      nil
     end
 
     # Closes current pooled connections. The client remains reusable and will
@@ -203,7 +225,7 @@ module OpenAI
           current_pools
         end
       pools.each_value do |pool|
-        pool.shutdown { |connection| connection.finish if connection.started? }
+        pool.shutdown { |pooled_connection| close_connection(pooled_connection.connection) }
       end
       nil
     end

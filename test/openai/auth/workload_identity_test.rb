@@ -241,6 +241,135 @@ class WorkloadIdentityTest < Minitest::Test
     assert_equal("oauth-access-token", token)
   end
 
+  def test_workload_identity_refresh_cleanup_is_installed_before_interrupts_resume
+    config = OpenAI::Auth::WorkloadIdentity.new(
+      identity_provider_id: "idp-123",
+      service_account_id: "sa-456",
+      provider: Object.new
+    )
+    auth = OpenAI::Auth::WorkloadIdentityAuth.new(config, "org-123")
+    source_path = auth.method(:get_token).source_location.fetch(0)
+    refresh_line = File.foreach(source_path).with_index(1).find do |line, _number|
+      line.strip.start_with?("perform_refresh")
+    end.fetch(1)
+    start = Queue.new
+    reached_refresh = Queue.new
+    release_refresh = Queue.new
+    errors = Queue.new
+    armed = true
+    runner = Thread.new do
+      start.pop
+      auth.get_token
+    rescue Exception => e # rubocop:disable Lint/RescueException -- verifies fatal async cleanup
+      errors << e
+    end
+    runner.report_on_exception = false
+    trace = TracePoint.new(:line) do |event|
+      next unless armed && Thread.current == runner
+      next unless event.path == source_path && event.lineno == refresh_line
+
+      armed = false
+      reached_refresh << true
+      release_refresh.pop
+    end
+
+    auth.stub(:fetch_token_from_exchange, ->(**) { {id: "recovered-token", expires_in: 3600} }) do
+      trace.enable
+      start << true
+      Timeout.timeout(1) { reached_refresh.pop }
+      runner.raise(Timeout::Error, "cancelled refresh")
+      release_refresh << true
+      runner.join
+
+      assert_instance_of(Timeout::Error, errors.pop(true))
+      refute(auth.instance_variable_get(:@refreshing), "interrupted refresh remained wedged")
+      assert_equal("recovered-token", auth.get_token)
+    end
+  ensure
+    trace&.disable
+    runner&.kill
+    runner&.join
+  end
+
+  def test_workload_identity_waiter_observes_its_own_deadline
+    config = OpenAI::Auth::WorkloadIdentity.new(
+      identity_provider_id: "idp-123",
+      service_account_id: "sa-456",
+      provider: Object.new
+    )
+    auth = OpenAI::Auth::WorkloadIdentityAuth.new(config, "org-123")
+    refresh_started = Queue.new
+    release_refresh = Queue.new
+    fetch = lambda do |deadline:|
+      assert_nil(deadline)
+      refresh_started << true
+      release_refresh.pop
+      {id: "shared-token", expires_in: 3600}
+    end
+    refresher = nil
+    waiter = nil
+
+    auth.stub(:fetch_token_from_exchange, fetch) do
+      refresher = Thread.new { auth.get_token }
+      refresher.report_on_exception = false
+      Timeout.timeout(1) { refresh_started.pop }
+      deadline = OpenAI::Internal::Util.monotonic_secs + 0.02
+
+      error = assert_raises(Timeout::Error) { auth.get_token(deadline: deadline) }
+
+      assert_match("workload identity authentication", error.message)
+      waiter = Thread.new { auth.get_token }
+      waiter.report_on_exception = false
+      Timeout.timeout(1) { Thread.pass until waiter.status == "sleep" }
+      release_refresh << true
+      assert_equal("shared-token", refresher.value)
+      assert_equal("shared-token", waiter.value)
+      assert_equal("shared-token", auth.get_token)
+    end
+  ensure
+    release_refresh&.push(true) if refresher&.alive?
+    refresher&.join
+    waiter&.join
+  end
+
+  def test_workload_identity_waiter_observes_refresh_failure
+    config = OpenAI::Auth::WorkloadIdentity.new(
+      identity_provider_id: "idp-123",
+      service_account_id: "sa-456",
+      provider: Object.new
+    )
+    auth = OpenAI::Auth::WorkloadIdentityAuth.new(config, "org-123")
+    refresh_started = Queue.new
+    release_refresh = Queue.new
+    fetch = lambda do |deadline:|
+      assert_nil(deadline)
+      refresh_started << true
+      release_refresh.pop
+      raise IOError, "refresh failed"
+    end
+    refresher = nil
+    waiter = nil
+
+    auth.stub(:fetch_token_from_exchange, fetch) do
+      refresher = Thread.new { auth.get_token }
+      refresher.report_on_exception = false
+      Timeout.timeout(1) { refresh_started.pop }
+      waiter = Thread.new { auth.get_token }
+      waiter.report_on_exception = false
+      Timeout.timeout(1) { Thread.pass until waiter.status == "sleep" }
+      release_refresh << true
+
+      refresh_error = assert_raises(IOError) { refresher.value }
+      waiter_error = assert_raises(OpenAI::Errors::AuthenticationError) { waiter.value }
+      assert_equal("refresh failed", refresh_error.message)
+      assert_match("Token refresh failed", waiter_error.message)
+    end
+  ensure
+    release_refresh&.push(true) if refresher&.alive?
+    refresher&.kill&.join if refresher&.alive?
+    waiter&.kill&.join if waiter&.alive?
+  end
+
   def test_workload_identity_auth_token_exchange_with_optional_client_id
     File.write(@token_path, "k8s-jwt-token")
     provider = OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(

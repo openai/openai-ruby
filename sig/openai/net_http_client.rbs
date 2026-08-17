@@ -21,7 +21,13 @@ module OpenAI
       (top arg0) -> void
     } -> void
 
-    private def configured_connection: (URI::Generic url) -> top
+    private def configure_connection: (
+      Net::HTTP connection,
+      URI::Generic url,
+      deadline: Float?
+    ) -> void
+
+    private def close_connection: (Net::HTTP connection) -> void
 
     def close: -> void
 

@@ -33,8 +33,12 @@ module OpenAI
     private def with_pool(url, deadline:, &blk)
     end
 
-    sig { params(url: URI::Generic).returns(Net::HTTP) }
-    private def configured_connection(url)
+    sig { params(connection: Net::HTTP, url: URI::Generic, deadline: T.nilable(Float)).void }
+    private def configure_connection(connection, url, deadline:)
+    end
+
+    sig { params(connection: Net::HTTP).void }
+    private def close_connection(connection)
     end
 
     sig { void }

@@ -6,6 +6,10 @@ module OpenAI
 
     attr_reader filename: String?
 
+    def with_content: (Pathname | StringIO | IO | String content) -> OpenAI::FilePart
+
+    private def default_content_type: -> String
+
     private def read: -> String
 
     def to_json: (*top a) -> String

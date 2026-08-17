@@ -12,13 +12,18 @@ class NetHTTPClientTimeoutTest < Minitest::Test
 
     attr_reader :request_count
 
-    def initialize(request_error:)
+    def initialize(request_error:, finish_error: nil)
+      @finish_error = finish_error
       @request_error = request_error
       @request_count = 0
       @started = false
     end
 
-    def finish = (@started = false)
+    def finish
+      @started = false
+      raise @finish_error unless @finish_error.nil?
+    end
+
     def start = (@started = true)
     def started? = @started
     def use_ssl? = true
@@ -59,6 +64,92 @@ class NetHTTPClientTimeoutTest < Minitest::Test
 
     assert_instance_of(ConnectionPool::TimeoutError, error.cause)
     assert_equal(1, connection.request_count)
+  end
+
+  def test_request_deadline_bounds_connection_configuration
+    connection = StubNetHTTP.new(request_error: IOError.new("request should not run"))
+    client_class = Class.new(OpenAI::NetHTTPClient) do
+      define_method(:connect) { |**| connection }
+      private :connect
+    end
+    configurations = 0
+    client = client_class.new do
+      configurations += 1
+      sleep(2) if configurations == 1
+    end
+    request = OpenAI::HTTPClient::Request.new(
+      method: :get,
+      url: URI("https://example.com/v1/probe"),
+      headers: {},
+      body: nil,
+      timeout: 1
+    )
+    poller = OpenAI::Internal::Poller.new(operation: "connection configuration", timeout: 0.02)
+    started_at = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+
+    assert_raises(OpenAI::Errors::PollingTimeoutError) do
+      poller.request({}) { client.execute(request) }
+    end
+
+    elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC) - started_at
+    assert_operator(elapsed, :<, 1)
+    assert_equal(0, connection.request_count)
+
+    assert_raises(OpenAI::Errors::APIConnectionError) { client.execute(nil_timeout_request) }
+    assert_equal(2, configurations)
+    assert_equal(1, connection.request_count)
+  end
+
+  def test_request_deadline_bounds_connection_construction
+    connection = StubNetHTTP.new(request_error: IOError.new("request should not run"))
+    connections = 0
+    client_class = Class.new(OpenAI::NetHTTPClient) do
+      define_method(:connect) do |**|
+        connections += 1
+        sleep(2) if connections == 1
+        connection
+      end
+      private :connect
+    end
+    client = client_class.new
+    request = OpenAI::HTTPClient::Request.new(
+      method: :get,
+      url: URI("https://example.com/v1/probe"),
+      headers: {},
+      body: nil,
+      timeout: 1
+    )
+    poller = OpenAI::Internal::Poller.new(operation: "connection construction", timeout: 0.02)
+    started_at = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+
+    assert_raises(OpenAI::Errors::PollingTimeoutError) do
+      poller.request({}) { client.execute(request) }
+    end
+
+    elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC) - started_at
+    assert_operator(elapsed, :<, 1)
+    assert_equal(0, connection.request_count)
+
+    assert_raises(OpenAI::Errors::APIConnectionError) { client.execute(nil_timeout_request) }
+    assert_equal(2, connections)
+    assert_equal(1, connection.request_count)
+  end
+
+  def test_configuration_error_survives_connection_cleanup_failure
+    connection = StubNetHTTP.new(
+      request_error: IOError.new("request should not run"),
+      finish_error: IOError.new("cleanup failed")
+    )
+    client_class = Class.new(OpenAI::NetHTTPClient) do
+      define_method(:connect) { |**| connection }
+      private :connect
+    end
+    client = client_class.new(&:start)
+
+    error = assert_raises(ArgumentError) { client.execute(nil_timeout_request) }
+
+    assert_equal("connection configuration must leave the connection unstarted", error.message)
+    assert_equal(0, connection.request_count)
   end
 
   private def build_client(connection)
