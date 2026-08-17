@@ -63,7 +63,7 @@ module OpenAI
 
           options.merge!(overrides)
           options[:default_headers] = ResolvedHeaders.new.replace(headers)
-          OpenAI::Client.new(**options)
+          options
         end
       end
     end

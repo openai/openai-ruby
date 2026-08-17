@@ -205,17 +205,19 @@ module OpenAI
       end
     end
 
-    # Returns a new OpenAI::Client with the supplied constructor options overridden.
+    # Returns a new client of the same class with the supplied constructor options overridden.
     # Other settings and the HTTP transport are inherited. The original client
     # is unchanged. Header overrides are merged; nil removes an individual
     # header, and default_headers: nil clears all custom default headers.
+    # Subclasses with incompatible constructors or a private .new must override
+    # this method if they need to support copying.
     #
     # @example Select a regional endpoint for a call
     #   client.with_options(base_url: "https://eu.api.openai.com/v1").responses.create(...)
     # @param overrides [Hash{Symbol=>Object}] Options accepted by {#initialize}.
-    # @return [OpenAI::Client]
+    # @return [self]
     def with_options(**overrides)
-      OpenAI::Internal::ClientOptions.copy(@copy_options, overrides)
+      self.class.new(**OpenAI::Internal::ClientOptions.copy(@copy_options, overrides))
     end
 
     # Creates and returns a new client for interacting with the API.

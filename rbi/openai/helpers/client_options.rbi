@@ -22,7 +22,7 @@ module OpenAI
           params(
             defaults: T::Hash[Symbol, T.untyped],
             overrides: T::Hash[Symbol, T.untyped]
-          ).returns(OpenAI::Client)
+          ).returns(T::Hash[Symbol, T.untyped])
         end
         def copy(defaults, overrides)
         end

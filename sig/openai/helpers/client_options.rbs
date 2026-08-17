@@ -13,7 +13,7 @@ module OpenAI
       def self.copy: (
         ::Hash[Symbol, untyped] defaults,
         ::Hash[Symbol, untyped] overrides
-      ) -> OpenAI::Client
+      ) -> ::Hash[Symbol, untyped]
     end
   end
 end

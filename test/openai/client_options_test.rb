@@ -66,7 +66,7 @@ class OpenAI::Test::ClientOptionsTest < Minitest::Test
 
   def test_copy_without_overrides_preserves_every_constructor_option
     logger = Logger.new(StringIO.new)
-    callback = ->(_event) {}
+    callback = ->(_event) { nil }
     client = new_client(
       admin_api_key: "admin-key", organization: "org", project: "project", webhook_secret: "secret",
       default_headers: {"x-test" => "value"}, max_retries: 4, timeout: nil,
@@ -90,7 +90,32 @@ class OpenAI::Test::ClientOptionsTest < Minitest::Test
     assert_equal(constructor_options.sort, client.instance_variable_get(:@copy_options).keys.sort)
   end
 
-  def test_copy_does_not_require_a_subclass_constructor
+  def test_copy_preserves_subclass_request_behavior
+    client_class = Class.new(OpenAI::Client) do
+      private def auth_headers(security:)
+        super.merge("x-subclass-auth" => "preserved")
+      end
+
+      private def prepare_request(request, redirect_count:, retry_count:)
+        prepared = super
+        prepared.merge(headers: prepared[:headers].merge("x-subclass-request" => "preserved"))
+      end
+    end
+    original = client_class.new(api_key: "test-key", base_url: GLOBAL, http_client: @transport)
+    copy = original.with_options(base_url: EU)
+    copy.responses.create(model: "gpt-4.1-mini", input: "Hello")
+
+    assert_instance_of(client_class, copy)
+    assert_instance_of(client_class, copy.with_options)
+    assert_same(@transport, copy.requester)
+    refute_same(original.responses, copy.responses)
+    assert_equal("#{EU}/responses", @transport.requests.last.url.to_s)
+    assert_equal("preserved", @transport.requests.last.headers["x-subclass-auth"])
+    assert_equal("preserved", @transport.requests.last.headers["x-subclass-request"])
+    assert_equal(GLOBAL, original.base_url.to_s)
+  end
+
+  def test_subclasses_with_extra_constructor_state_must_handle_copying
     client_class = Class.new(OpenAI::Client) do
       def initialize(label:, **options)
         raise ArgumentError, "missing label" if label.empty?
@@ -98,13 +123,16 @@ class OpenAI::Test::ClientOptionsTest < Minitest::Test
       end
     end
     original = client_class.new(label: "shared", api_key: "test-key", http_client: @transport)
-    client_class.private_class_method(:new)
-    copy = original.with_options(base_url: EU)
 
-    assert_instance_of(OpenAI::Client, copy)
-    assert_same(@transport, copy.requester)
-    assert_equal(EU, copy.base_url.to_s)
-    assert_equal(GLOBAL, original.base_url.to_s)
+    assert_raises(ArgumentError) { original.with_options(base_url: EU) }
+  end
+
+  def test_subclasses_with_private_constructors_must_handle_copying
+    client_class = Class.new(OpenAI::Client)
+    original = client_class.new(api_key: "test-key", http_client: @transport)
+    client_class.private_class_method(:new)
+
+    assert_raises(NoMethodError) { original.with_options(base_url: EU) }
   end
 
   def test_eu_example_runs_with_the_mock_transport

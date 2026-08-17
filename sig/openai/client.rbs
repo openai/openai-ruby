@@ -100,7 +100,7 @@ module OpenAI
       ?logger: OpenAI::_Logger?,
       ?log_level: (Symbol | String)?,
       ?on_retry: (^(OpenAI::RetryEvent) -> void)?
-    ) -> OpenAI::Client
+    ) -> self
 
     def initialize: (
       ?api_key: String?,

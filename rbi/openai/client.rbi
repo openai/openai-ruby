@@ -168,7 +168,7 @@ module OpenAI
         logger: T.untyped,
         log_level: T.nilable(T.any(Symbol, String)),
         on_retry: T.nilable(T.proc.params(event: OpenAI::RetryEvent).void)
-      ).returns(OpenAI::Client)
+      ).returns(T.self_type)
     end
     def with_options(
       api_key: T.unsafe(nil),
