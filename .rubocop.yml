@@ -20,15 +20,9 @@ AllCops:
   SuggestExtensions: false
   TargetRubyVersion: 3.3
 
-Bundler:
-  Enabled: false
-Gemspec:
-  Enabled: false
 Layout:
   Enabled: false
 Metrics:
-  Enabled: false
-Migration:
   Enabled: false
 Naming:
   Enabled: false
@@ -46,6 +40,12 @@ Lint/UselessAssignment:
 Lint/RedundantCopDisableDirective:
   Enabled: false
 Lint/RedundantCopEnableDirective:
+  Enabled: false
+
+# Dependency ordering is layout, not package correctness.
+Bundler/OrderedGems:
+  Enabled: false
+Gemspec/OrderedDependencies:
   Enabled: false
 
 # Retain non-layout checks that RuboCop classifies in other departments.
@@ -67,4 +67,112 @@ Style/FrozenStringLiteralComment:
   Exclude:
     - "**/*.rbi"
 Style/MissingRespondToMissing:
+  Enabled: true
+
+Gemspec/RequireMFA:
+  Enabled: true
+Gemspec/DeprecatedAttributeAssignment:
+  Enabled: true
+
+# Preserve the safety cops already enforced by RuboCop 1.81.7.
+# Future pending cops remain opt-in.
+Lint/AmbiguousAssignment:
+  Enabled: true
+Lint/AmbiguousOperatorPrecedence:
+  Enabled: true
+Lint/AmbiguousRange:
+  Enabled: true
+Lint/ArrayLiteralInRegexp:
+  Enabled: true
+Lint/ConstantOverwrittenInRescue:
+  Enabled: true
+Lint/ConstantReassignment:
+  Enabled: true
+Lint/CopDirectiveSyntax:
+  Enabled: true
+Lint/DeprecatedConstants:
+  Enabled: true
+Lint/DuplicateBranch:
+  Enabled: true
+Lint/DuplicateMagicComment:
+  Enabled: true
+Lint/DuplicateMatchPattern:
+  Enabled: true
+Lint/DuplicateRegexpCharacterClassElement:
+  Enabled: true
+Lint/DuplicateSetElement:
+  Enabled: true
+Lint/EmptyBlock:
+  Enabled: true
+Lint/EmptyClass:
+  Enabled: true
+Lint/EmptyInPattern:
+  Enabled: true
+Lint/HashNewWithKeywordArgumentsAsDefault:
+  Enabled: true
+Lint/IncompatibleIoSelectWithFiberScheduler:
+  Enabled: true
+Lint/ItWithoutArgumentsInBlock:
+  Enabled: true
+Lint/LambdaWithoutLiteralBlock:
+  Enabled: true
+Lint/LiteralAssignmentInCondition:
+  Enabled: true
+Lint/MixedCaseRange:
+  Enabled: true
+Lint/NoReturnInBeginEndBlocks:
+  Enabled: true
+Lint/NonAtomicFileOperation:
+  Enabled: true
+Lint/NumberedParameterAssignment:
+  Enabled: true
+Lint/NumericOperationWithConstantResult:
+  Enabled: true
+Lint/OrAssignmentToConstant:
+  Enabled: true
+Lint/RedundantDirGlobSort:
+  Enabled: true
+Lint/RedundantRegexpQuantifiers:
+  Enabled: true
+Lint/RedundantTypeConversion:
+  Enabled: true
+Lint/RefinementImportMethods:
+  Enabled: true
+Lint/RequireRangeParentheses:
+  Enabled: true
+Lint/RequireRelativeSelfPath:
+  Enabled: true
+Lint/SharedMutableDefault:
+  Enabled: true
+Lint/SuppressedExceptionInNumberConversion:
+  Enabled: true
+Lint/SymbolConversion:
+  Enabled: true
+Lint/ToEnumArguments:
+  Enabled: true
+Lint/TripleQuotes:
+  Enabled: true
+Lint/UnescapedBracketInRegexp:
+  Enabled: true
+Lint/UnexpectedBlockArity:
+  Enabled: true
+Lint/UnmodifiedReduceAccumulator:
+  Enabled: true
+Lint/UselessConstantScoping:
+  Enabled: true
+Lint/UselessDefaultValueArgument:
+  Enabled: true
+Lint/UselessDefined:
+  Enabled: true
+Lint/UselessNumericOperation:
+  Enabled: true
+Lint/UselessOr:
+  Enabled: true
+Lint/UselessRescue:
+  Enabled: true
+Lint/UselessRuby2Keywords:
+  Enabled: true
+Security/CompoundHash:
+  Enabled: true
+Security/IoMethods:
   Enabled: true

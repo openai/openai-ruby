@@ -8,28 +8,38 @@ require "tmpdir"
 class FormattingPolicyTest < Minitest::Test
   ROOT = File.expand_path("../..", __dir__)
 
-  NON_LAYOUT_COPS = %w[
-    Bundler/DuplicatedGem
-    Bundler/InsecureProtocolSource
-    Gemspec/DuplicatedAssignment
-    Gemspec/RequiredRubyVersion
+  STYLE_SAFETY_COPS = %w[
     Style/FrozenStringLiteralComment
     Style/MissingRespondToMissing
     Style/MutableConstant
   ].freeze
 
-  def test_rubocop_only_enables_correctness_and_security_checks
+  def test_rubocop_preserves_safety_checks_without_enforcing_layout
     config = RuboCop::ConfigStore.new.for_dir(ROOT)
-    enabled = RuboCop::Cop::Registry.global.select do |cop|
-      config.for_cop(cop)["Enabled"] == true
-    end
+    enabled = RuboCop::Cop::Registry.global.enabled(config).map(&:cop_name)
 
-    other_cops = enabled.reject { %w[Lint Security].include?(_1.department.to_s) }
-    assert_equal(NON_LAYOUT_COPS, other_cops.map(&:cop_name).sort)
-    NON_LAYOUT_COPS.each { assert(config.for_cop(_1)["Enabled"], _1) }
-    assert(config.for_cop("Lint/Syntax")["Enabled"])
-    assert(config.for_cop("Security/Eval")["Enabled"])
+    formatting = enabled.grep(/\A(?:Layout|Metrics|Naming|Style)\//)
+    assert_equal(STYLE_SAFETY_COPS, formatting.sort)
+    %w[
+      Bundler/DuplicatedGem
+      Bundler/InsecureProtocolSource
+      Gemspec/DuplicatedAssignment
+      Gemspec/RequiredRubyVersion
+      Gemspec/RequireMFA
+      Lint/Syntax
+      Security/Eval
+      Security/IoMethods
+    ].each { assert_includes(enabled, _1) }
+    refute_includes(enabled, "Bundler/OrderedGems")
+    refute_includes(enabled, "Gemspec/OrderedDependencies")
     assert_equal("disable", config["AllCops"]["NewCops"])
+
+    # A RuboCop upgrade must make an explicit decision about new safety cops.
+    RuboCop::ConfigLoader.default_configuration.each do |name, options|
+      next unless name.match?(/\A(?:Lint|Security)\//) && options["Enabled"] == "pending"
+
+      assert_includes(enabled, name)
+    end
   end
 
   def test_ruby_formatter_does_not_rewrite_source_during_transition
