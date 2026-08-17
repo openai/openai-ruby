@@ -152,6 +152,10 @@ Lint/SuppressedExceptionInNumberConversion:
   Enabled: true
 Lint/SymbolConversion:
   Enabled: true
+Lint/TopLevelReturnWithArgument:
+  Enabled: true
+  # Remove RuboCop's built-in `.jb` exclusion.
+  Exclude: ~
 Lint/ToEnumArguments:
   Enabled: true
 Lint/TripleQuotes:
