@@ -40,12 +40,7 @@ class OpenAI::Test::Resources::FineTuning::Checkpoints::PermissionsTest < OpenAI
 
     assert_pattern do
       response => {
-        data:
-          ^(
-            OpenAI::Internal::Type::ArrayOf[
-              OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse::Data
-            ]
-          ),
+        data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse::Data]),
         has_more: OpenAI::Internal::Type::Boolean,
         object: Symbol,
         first_id: String | nil,

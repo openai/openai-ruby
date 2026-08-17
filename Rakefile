@@ -30,7 +30,7 @@ multitask(:"docs:preview") do
 end
 
 desc("Run test suites; use `TEST=path/to/test.rb` to run a specific test file")
-multitask(:test) do
+multitask(test: [:"test:examples:inventory"]) do
   rb =
     FileList[ENV.fetch("TEST", "./test/**/*_test.rb")]
     .map { "require_relative(#{_1.dump});" }
@@ -147,6 +147,16 @@ end
 
 desc("Typecheck and validate everything")
 multitask(typecheck: [:"typecheck:sorbet", :"validate:rbs"])
+
+desc("Validate the Ruby example E2E inventory without making live requests")
+task("test:examples:inventory") do
+  ruby(*%w[scripts/examples-e2e.rb --inventory-only])
+end
+
+desc("Run covered Ruby examples end-to-end against the live API")
+task("test:examples:e2e") do
+  ruby(*%w[scripts/examples-e2e.rb])
+end
 
 desc("Lint and typecheck")
 multitask(lint: [:"lint:rubocop", :"lint:rubocop_directives", :typecheck])

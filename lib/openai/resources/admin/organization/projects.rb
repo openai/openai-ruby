@@ -182,8 +182,7 @@ module OpenAI
           def initialize(client:)
             @client = client
             @users = OpenAI::Resources::Admin::Organization::Projects::Users.new(client: client)
-            @service_accounts =
-              OpenAI::Resources::Admin::Organization::Projects::ServiceAccounts.new(client: client)
+            @service_accounts = OpenAI::Resources::Admin::Organization::Projects::ServiceAccounts.new(client: client)
             @api_keys = OpenAI::Resources::Admin::Organization::Projects::APIKeys.new(client: client)
             @rate_limits = OpenAI::Resources::Admin::Organization::Projects::RateLimits.new(client: client)
             @model_permissions =
@@ -192,8 +191,7 @@ module OpenAI
               OpenAI::Resources::Admin::Organization::Projects::HostedToolPermissions.new(client: client)
             @groups = OpenAI::Resources::Admin::Organization::Projects::Groups.new(client: client)
             @roles = OpenAI::Resources::Admin::Organization::Projects::Roles.new(client: client)
-            @data_retention =
-              OpenAI::Resources::Admin::Organization::Projects::DataRetention.new(client: client)
+            @data_retention = OpenAI::Resources::Admin::Organization::Projects::DataRetention.new(client: client)
             @spend_limit = OpenAI::Resources::Admin::Organization::Projects::SpendLimit.new(client: client)
             @spend_alerts = OpenAI::Resources::Admin::Organization::Projects::SpendAlerts.new(client: client)
             @certificates = OpenAI::Resources::Admin::Organization::Projects::Certificates.new(client: client)

@@ -13,9 +13,7 @@ module OpenAI
       #
       #   @return [Hash{Symbol=>String, Float, Boolean}, nil]
       required :attributes,
-               -> {
-                 OpenAI::Internal::Type::HashOf[union: OpenAI::Models::VectorStoreSearchResponse::Attribute]
-               },
+               -> { OpenAI::Internal::Type::HashOf[union: OpenAI::Models::VectorStoreSearchResponse::Attribute] },
                nil?: true
 
       # @!attribute content

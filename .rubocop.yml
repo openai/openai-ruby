@@ -39,8 +39,9 @@ Lint/UselessAssignment:
 # The directive guard still rejects broad or unowned suppressions.
 Lint/RedundantCopDisableDirective:
   Enabled: false
+# Every enable directive must still close an active disable.
 Lint/RedundantCopEnableDirective:
-  Enabled: false
+  Enabled: true
 
 # Dependency ordering is layout, not package correctness.
 Bundler/OrderedGems:
@@ -110,6 +111,8 @@ Lint/EmptyInPattern:
   Enabled: true
 Lint/HashNewWithKeywordArgumentsAsDefault:
   Enabled: true
+Lint/HeredocMethodCallPosition:
+  Enabled: true
 Lint/IncompatibleIoSelectWithFiberScheduler:
   Enabled: true
 Lint/ItWithoutArgumentsInBlock:
@@ -142,12 +145,18 @@ Lint/RequireRangeParentheses:
   Enabled: true
 Lint/RequireRelativeSelfPath:
   Enabled: true
+Lint/ShadowingOuterLocalVariable:
+  Enabled: true
 Lint/SharedMutableDefault:
   Enabled: true
 Lint/SuppressedExceptionInNumberConversion:
   Enabled: true
 Lint/SymbolConversion:
   Enabled: true
+Lint/TopLevelReturnWithArgument:
+  Enabled: true
+  # Remove RuboCop's built-in `.jb` exclusion.
+  Exclude: ~
 Lint/ToEnumArguments:
   Enabled: true
 Lint/TripleQuotes:

@@ -18,7 +18,8 @@ response = client.responses.create(
       content: "What's the weather like in Paris today?"
     }
   ],
-  tools: [GetWeather]
+  tools: [GetWeather],
+  tool_choice: {type: :function, name: "GetWeather"}
 )
 
 response

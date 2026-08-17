@@ -15,10 +15,7 @@ class OpenAI::Test::Resources::WebhooksTest < OpenAI::Test::ResourceTest
     @webhook_service = @client.webhooks
 
     # Standardized test data matching TypeScript
-    @test_payload =
-      '{"id": "evt_685c059ae3a481909bdc86819b066fb6", "object": "event", ' \
-      '"created_at": 1750861210, "type": "response.completed", ' \
-      '"data": {"id": "resp_123"}}'
+    @test_payload = '{"id": "evt_685c059ae3a481909bdc86819b066fb6", "object": "event", "created_at": 1750861210, "type": "response.completed", "data": {"id": "resp_123"}}'
     @test_secret = "whsec_RdvaYFYUXuIFuEbvZHwMfYFhUf7aMYjYcmM24+Aj40c="
 
     @fixed_timestamp = "1750861210"
@@ -203,8 +200,7 @@ class OpenAI::Test::Resources::WebhooksTest < OpenAI::Test::ResourceTest
     old_timestamp = (1_750_861_210 - 400).to_s
 
     headers = {
-      # This won't match the old timestamp, but this test exercises time validation.
-      "webhook-signature" => @webhook_signature,
+      "webhook-signature" => @webhook_signature, # This won't match old timestamp but we're testing time validation
       "webhook-timestamp" => old_timestamp,
       "webhook-id" => @webhook_id
     }

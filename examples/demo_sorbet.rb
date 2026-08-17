@@ -21,7 +21,9 @@ begin
     model: "gpt-4"
   )
 
-  pp(completion.choices.first&.message&.content)
+  content = completion.choices.first&.message&.content
+  abort("The named-arguments request completed without content") if content.to_s.strip.empty?
+  pp(content)
 end
 
 begin
@@ -57,5 +59,7 @@ begin
   #   into compatible methods that have named arguments
   completion = client.chat.completions.create(**params)
 
-  pp(completion.choices.first&.message&.content)
+  content = completion.choices.first&.message&.content
+  abort("The params-class request completed without content") if content.to_s.strip.empty?
+  pp(content)
 end
