@@ -10,7 +10,7 @@ client = OpenAI::Client.new
 eu = client.with_options(base_url: "https://eu.api.openai.com/v1")
 
 response = eu.responses.create(
-  model: ENV.fetch("OPENAI_MODEL", "gpt-4.1-mini"),
+  model: ENV.fetch("OPENAI_MODEL", "gpt-5.6-sol"),
   input: "Reply with a short greeting."
 )
 

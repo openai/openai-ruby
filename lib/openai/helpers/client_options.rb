@@ -22,7 +22,7 @@ module OpenAI
           end.freeze
         end
 
-        def copy(client, defaults, overrides)
+        def copy(defaults, overrides)
           unknown = overrides.keys - defaults.keys
           unless unknown.empty?
             raise ArgumentError, "Unknown client option#{unknown.one? ? '' : 's'}: #{unknown.join(', ')}"
@@ -60,7 +60,7 @@ module OpenAI
 
           options.merge!(overrides)
           options[:default_headers] = ResolvedHeaders.new.replace(headers)
-          client.class.new(**options)
+          OpenAI::Client.new(**options)
         end
       end
     end

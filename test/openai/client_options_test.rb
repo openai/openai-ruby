@@ -90,6 +90,23 @@ class OpenAI::Test::ClientOptionsTest < Minitest::Test
     assert_equal(constructor_options.sort, client.instance_variable_get(:@copy_options).keys.sort)
   end
 
+  def test_copy_does_not_require_a_subclass_constructor
+    client_class = Class.new(OpenAI::Client) do
+      def initialize(label:, **options)
+        raise ArgumentError, "missing label" if label.empty?
+        super(**options)
+      end
+    end
+    original = client_class.new(label: "shared", api_key: "test-key", http_client: @transport)
+    client_class.private_class_method(:new)
+    copy = original.with_options(base_url: EU)
+
+    assert_instance_of(OpenAI::Client, copy)
+    assert_same(@transport, copy.requester)
+    assert_equal(EU, copy.base_url.to_s)
+    assert_equal(GLOBAL, original.base_url.to_s)
+  end
+
   def test_eu_example_runs_with_the_mock_transport
     original_new = OpenAI::Client.method(:new)
     constructor = ->(**options) { original_new.call(api_key: "test-key", http_client: @transport, **options) }
