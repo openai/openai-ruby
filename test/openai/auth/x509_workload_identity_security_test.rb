@@ -209,6 +209,78 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
     retry_request&.kill if retry_request&.alive?
   end
 
+  def test_api_retry_401_invalidates_the_bearer_selected_after_concurrent_rotation
+    retry_scheduled = Queue.new
+    continue_retry = Queue.new
+    exchange_count = 0
+    authorizations = Hash.new { |hash, path| hash[path] = [] }
+    http_client = StubHTTPClient.new do |request|
+      if request.url.host == "mtls.auth.openai.com"
+        exchange_count += 1
+        http_response(
+          status: 200,
+          body: {"access_token" => "token-#{exchange_count}", "expires_in" => 60}
+        )
+      else
+        path = request.url.path
+        authorization = request.headers.fetch("authorization")
+        authorizations[path] << authorization
+        if path.end_with?("/retry")
+          case authorizations.fetch(path).length
+          when 1
+            http_response(status: 503, body: {"error" => "busy"})
+          when 2
+            http_response(status: 401, body: {"error" => {"message" => "rejected"}})
+          else
+            http_response(status: 200, body: {"ok" => true})
+          end
+        elsif path.end_with?("/rotate") && authorizations.fetch(path).length == 1
+          http_response(status: 401, body: {"error" => {"message" => "rejected"}})
+        else
+          http_response(status: 200, body: {"ok" => true})
+        end
+      end
+    end
+    client = OpenAI::Client.new(
+      api_key: nil,
+      workload_identity: x509_config,
+      http_client: http_client,
+      max_retries: 1,
+      initial_retry_delay: 0,
+      max_retry_delay: 0,
+      on_retry: lambda do |event|
+        next unless event.status == 503
+
+        retry_scheduled << true
+        continue_retry.pop
+      end
+    )
+    retry_request = Thread.new do
+      client.request(method: :get, path: "retry", model: OpenAI::Internal::Type::Unknown)
+    end
+    retry_scheduled.pop
+
+    rotated_request = client.request(
+      method: :get,
+      path: "rotate",
+      model: OpenAI::Internal::Type::Unknown
+    )
+    continue_retry << true
+
+    assert(retry_request.join(2), "backing-off API request did not finish")
+    assert_equal(true, retry_request.value[:ok])
+    assert_equal(true, rotated_request[:ok])
+    assert_equal(
+      ["Bearer token-1", "Bearer token-2", "Bearer token-3"],
+      authorizations.fetch("/v1/retry")
+    )
+    assert_equal(["Bearer token-1", "Bearer token-2"], authorizations.fetch("/v1/rotate"))
+    assert_equal(3, exchange_count)
+  ensure
+    continue_retry << true if continue_retry
+    retry_request&.kill if retry_request&.alive?
+  end
+
   def test_api_401_invalidates_and_replays_once_with_a_replayable_body
     exchange_count = 0
     api_count = 0

@@ -205,9 +205,12 @@ module OpenAI
       if policy.authenticated?(request)
         authenticated_token = policy.authenticated_token(request)
         unless @workload_identity_auth.current_token?(authenticated_token)
-          request = policy.authorize(request, @workload_identity_auth.get_token)
+          authenticated_token = @workload_identity_auth.get_token
+          request = policy.authorize(request, authenticated_token)
         end
-        return super(request, redirect_count:, retry_count:, send_retry_header:)
+        return with_workload_identity_401_invalidation(authenticated_token) do
+          super(request, redirect_count:, retry_count:, send_retry_header:)
+        end
       end
 
       workload_identity_auth_header = "Bearer #{WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER}"
@@ -220,31 +223,39 @@ module OpenAI
       updated_request = policy.authorize(request, token)
 
       begin
-        super(
-          updated_request,
-          redirect_count: redirect_count,
-          retry_count: retry_count,
-          send_retry_header: send_retry_header
-        )
+        with_workload_identity_401_invalidation(token) do
+          super(
+            updated_request,
+            redirect_count: redirect_count,
+            retry_count: retry_count,
+            send_retry_header: send_retry_header
+          )
+        end
       rescue OpenAI::Errors::AuthenticationError
-        @workload_identity_auth.invalidate_token(token)
         raise unless retry_count.zero? && request_replayable?(request)
 
         fresh_token = @workload_identity_auth.get_token
         refreshed_request = policy.authorize(request, fresh_token)
 
-        begin
+        with_workload_identity_401_invalidation(fresh_token) do
           super(
             refreshed_request,
             redirect_count: redirect_count,
             retry_count: retry_count + 1,
             send_retry_header: send_retry_header
           )
-        rescue OpenAI::Errors::AuthenticationError
-          @workload_identity_auth.invalidate_token(fresh_token)
-          raise
         end
       end
+    end
+
+    # Invalidates the exact workload-identity bearer selected for a dispatch.
+    #
+    # @api private
+    private def with_workload_identity_401_invalidation(token)
+      yield
+    rescue OpenAI::Errors::AuthenticationError
+      @workload_identity_auth.invalidate_token(token)
+      raise
     end
 
     private def workload_identity_request?(request)

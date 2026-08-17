@@ -103,6 +103,12 @@ module OpenAI
       -> OpenAI::Internal::Logging::Context
     } -> OpenAI::HTTPClient::Response
 
+    private def with_workload_identity_401_invalidation: (
+      String token
+    ) {
+      -> OpenAI::HTTPClient::Response
+    } -> OpenAI::HTTPClient::Response
+
     def with_options: (
       ?api_key: String?,
       ?admin_api_key: String?,
