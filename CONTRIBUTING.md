@@ -3,6 +3,9 @@
 See the [versioning policy](VERSIONING.md) before changing the public API,
 minimum Ruby version, dependencies, or release behavior.
 
+Review the [security requirements](#security-requirements) before installing
+dependencies, changing SDK behavior, or running live examples.
+
 This repository contains a `.ruby-version` file, which should work with either [rbenv](https://github.com/rbenv/rbenv) or [asdf](https://github.com/asdf-vm/asdf) with the [ruby plugin](https://github.com/asdf-vm/asdf-ruby).
 
 Please follow the instructions for your preferred version manager to install the Ruby version specified in the `.ruby-version` file.
@@ -14,6 +17,33 @@ $ ./scripts/bootstrap
 ```
 
 This will install all the required dependencies.
+
+## Security requirements
+
+- **Secrets and fixtures:** Never commit API keys, access tokens, private keys,
+  credentials, or customer data. Load secrets from environment variables such
+  as `OPENAI_API_KEY`; use clearly fake values in examples, tests, snapshots,
+  and WebMock fixtures.
+- **Logs and diagnostics:** Redact authorization headers, cookies, signed URLs,
+  credential-bearing query parameters, request/response bodies, prompts,
+  uploaded files, and customer data from logs, exceptions, error messages,
+  fixtures, and CI artifacts.
+- **Dependencies:** Review `Gemfile`, `Gemfile.lock`, and `openai.gemspec`
+  changes, including direct and transitive gems, sources, locked Git revisions,
+  native extensions, and install/build scripts. Do not run unreviewed scripts
+  or accept unexplained lockfile changes.
+- **CI and publishing:** Pin GitHub Actions to full commit SHAs, grant minimum
+  per-job permissions, and preserve `permissions: {}`,
+  `persist-credentials: false`, protected release environments, and RubyGems
+  trusted publishing. Restrict `id-token: write` to the publishing job; protect
+  GitHub App private keys and do not introduce long-lived publishing tokens.
+- **Sensitive changes:** Request `@openai/sdks-team` review for authentication,
+  network endpoints/transports, redirects, TLS, uploads and file paths,
+  JSON/YAML/Marshal deserialization, request logging, webhooks, dependencies,
+  and CI/release changes. Add targeted regression/security tests for affected
+  credential, network, file, serialization, or publishing boundaries.
+- **Vulnerability reports:** Follow [SECURITY.md](SECURITY.md). Never report a
+  suspected vulnerability in a public issue, pull request, or discussion.
 
 ## Modifying/Adding code
 
@@ -84,6 +114,11 @@ $ bundle exec rake test
 The live example suite executes every example marked as `covered` in
 `examples/e2e.yml`. It requires `OPENAI_API_KEY`, makes real API requests, and
 writes JSON and Markdown execution reports under `tmp/examples-e2e/` by default.
+
+Keep `OPENAI_API_KEY` in the environment and ensure reports, terminal output,
+and uploaded CI artifacts never contain credentials, prompts, model responses,
+uploaded files, or other customer data. Prefer the offline inventory check when
+live requests are unnecessary.
 
 ```bash
 $ bundle exec rake test:examples:e2e
