@@ -1,0 +1,47 @@
+module OpenAI
+  module Auth
+    # @api private
+    class WorkloadIdentityRequestPolicy
+      def self.build: (
+        (OpenAI::Auth::WorkloadIdentity
+        | OpenAI::Auth::X509WorkloadIdentity)? config,
+        base_url: String | URI::Generic
+      ) -> OpenAI::Auth::WorkloadIdentityRequestPolicy?
+
+      def initialize: -> void
+
+      def decorate_request: (
+        OpenAI::Internal::Transport::BaseClient::request_input request,
+        bearer_auth: bool,
+        expected_authorization: String?
+      ) -> OpenAI::Internal::Transport::BaseClient::request_input
+
+      def authenticated?: (
+        OpenAI::Internal::Transport::BaseClient::request_input request
+      ) -> bool
+
+      def authenticated_token: (
+        OpenAI::Internal::Transport::BaseClient::request_input request
+      ) -> String?
+
+      def validate_before_token!: (
+        OpenAI::Internal::Transport::BaseClient::request_input request
+      ) -> void
+
+      def authorize: (
+        OpenAI::Internal::Transport::BaseClient::request_input request,
+        String token
+      ) -> OpenAI::Internal::Transport::BaseClient::request_input
+
+      def validate_prepared!: (
+        OpenAI::Internal::Transport::BaseClient::request_input request,
+        original_headers: ::Hash[String, String]
+      ) -> void
+
+      # @api private
+      class X509 < OpenAI::Auth::WorkloadIdentityRequestPolicy
+        def initialize: (String | URI::Generic base_url) -> void
+      end
+    end
+  end
+end

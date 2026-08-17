@@ -21,116 +21,11 @@ module OpenAI
       MAX_RETRY_DELAY = 8.0
       MAX_RESPONSE_BYTES = 64 * 1024
 
-      # Selects the exchange implementation once at client construction.
-      #
-      # @api private
-      def self.build(config, token_exchange_url:, http_client:, sleeper:)
-        case config
-        when OpenAI::Auth::X509WorkloadIdentity
-          X509.new(
-            config,
-            token_exchange_url: token_exchange_url,
-            http_client: http_client,
-            sleeper: sleeper
-          )
-        when OpenAI::Auth::WorkloadIdentity
-          SubjectToken.new(config, token_exchange_url: token_exchange_url)
-        else
-          raise ArgumentError, "Unsupported workload identity configuration: #{config.class}"
-        end
-      end
-
-      # Exchanges the existing JWT/ID subject-token workload identity flow.
-      #
-      # @api private
-      class SubjectToken
-        # @api private
-        attr_reader :url
-
-        # @api private
-        def initialize(config, token_exchange_url: DEFAULT_URL)
-          @config = config
-          @url = URI(token_exchange_url)
-        end
-
-        # @api private
-        def fetch
-          subject_token = @config.provider.get_token
-          token_type = @config.provider.token_type
-          subject_token_type = SUBJECT_TOKEN_TYPES.fetch(token_type) do
-            raise ArgumentError,
-                  "Unsupported token type: #{token_type.inspect}. " \
-                  "Supported types: #{SUBJECT_TOKEN_TYPES.keys.join(', ')}"
-          end
-
-          request = Net::HTTP::Post.new(@url)
-          request["Content-Type"] = "application/json"
-          body = {
-            grant_type: GRANT_TYPE,
-            subject_token: subject_token,
-            subject_token_type: subject_token_type,
-            identity_provider_id: @config.identity_provider_id,
-            service_account_id: @config.service_account_id
-          }
-          body[:client_id] = @config.client_id unless @config.client_id.nil?
-          request.body = JSON.generate(body)
-
-          response = Net::HTTP.start(
-            @url.hostname,
-            @url.port,
-            use_ssl: @url.scheme == "https",
-            open_timeout: TIMEOUT_SECONDS,
-            read_timeout: TIMEOUT_SECONDS,
-            write_timeout: TIMEOUT_SECONDS
-          ) do |http|
-            http.request(request)
-          end
-
-          handle_response(response)
-        end
-
-        private
-
-        def handle_response(response)
-          body = parse_response_body(response)
-
-          case response
-          in Net::HTTPBadRequest | Net::HTTPUnauthorized | Net::HTTPForbidden
-            raise OpenAI::Errors::OAuthError.new(
-              status: response.code.to_i,
-              body: body,
-              headers: response.to_hash,
-              url: @url
-            )
-          in Net::HTTPSuccess
-            {
-              id: body&.dig(:access_token),
-              expires_in: body&.dig(:expires_in)
-            }
-          else
-            raise OpenAI::Errors::APIError.new(
-              url: @url,
-              status: response.code.to_i,
-              headers: response.to_hash,
-              body: body,
-              message: "Token exchange failed with status #{response.code}"
-            )
-          end
-        end
-
-        def parse_response_body(response)
-          return nil if response.body.nil? || response.body.empty?
-
-          JSON.parse(response.body, symbolize_names: true)
-        rescue JSON::ParserError
-          nil
-        end
-      end
-
       # Exchanges X.509 workload identity through the caller's HTTP transport.
       #
       # @api private
       class X509
+        BEARER_TOKEN_PATTERN = /\A[A-Za-z0-9\-._~+\/]+=*\z/
         OAUTH_ERROR_CODES = %w[
           invalid_client
           invalid_grant
@@ -141,7 +36,7 @@ module OpenAI
           unauthorized_client
           unsupported_grant_type
         ].freeze
-        private_constant :OAUTH_ERROR_CODES
+        private_constant :BEARER_TOKEN_PATTERN, :OAUTH_ERROR_CODES
 
         # @api private
         attr_reader :url
@@ -155,7 +50,8 @@ module OpenAI
             raise ArgumentError, "X.509 workload identity requires an http_client that responds to execute"
           end
 
-          @config = config
+          @identity_provider_id = config.identity_provider_id.to_s.dup.freeze
+          @service_account_id = config.service_account_id.to_s.dup.freeze
           @url = URI(X509_URL)
           @http_client = http_client
           @sleeper = sleeper
@@ -170,8 +66,8 @@ module OpenAI
             body: JSON.generate(
               grant_type: GRANT_TYPE,
               subject_token_type: X509_SUBJECT_TOKEN_TYPE,
-              identity_provider_id: @config.identity_provider_id,
-              service_account_id: @config.service_account_id
+              identity_provider_id: @identity_provider_id,
+              service_account_id: @service_account_id
             ),
             timeout: TIMEOUT_SECONDS
           )
@@ -185,10 +81,7 @@ module OpenAI
 
             if retry_count < MAX_RETRIES && retryable_status?(response.status)
               headers = response.headers
-              OpenAI::Internal::Transport::BaseClient.reap_connection!(
-                response.status,
-                stream: response.body
-              )
+              OpenAI::Internal::Util.close_fused!(response.body)
               wait_before_retry(headers, retry_count: retry_count)
               retry_count += 1
               next
@@ -215,7 +108,7 @@ module OpenAI
             raise OpenAI::Errors::OAuthError.new(
               status: response.status,
               body: sanitized_body,
-              headers: response.headers,
+              headers: sanitized_error_headers(response.headers),
               url: @url
             )
           when 200..299
@@ -230,7 +123,7 @@ module OpenAI
             raise OpenAI::Errors::APIError.new(
               url: @url,
               status: response.status,
-              headers: response.headers,
+              headers: sanitized_error_headers(response.headers),
               body: nil,
               message: message
             )
@@ -242,8 +135,17 @@ module OpenAI
           expires_in = nil
           access_token = body[:access_token] if body.is_a?(Hash)
           expires_in = body[:expires_in] if body.is_a?(Hash)
+          if body.is_a?(Hash) && body.key?(:token_type)
+            token_type = body[:token_type]
+            unless token_type.is_a?(String) && token_type.casecmp?("Bearer")
+              raise invalid_token_response("token_type must be Bearer when present")
+            end
+          end
           unless access_token.is_a?(String) && !access_token.empty?
             raise invalid_token_response("access_token must be a non-empty string")
+          end
+          unless BEARER_TOKEN_PATTERN.match?(access_token)
+            raise invalid_token_response("access_token must use the RFC 6750 bearer token grammar")
           end
           unless expires_in.is_a?(Integer) || expires_in.is_a?(Float)
             raise invalid_token_response("expires_in must be a positive number")
@@ -265,6 +167,12 @@ module OpenAI
             body: nil,
             message: "Invalid X.509 token exchange response: #{reason}"
           )
+        end
+
+        def sanitized_error_headers(headers)
+          headers.reject do |name, _|
+            OpenAI::Internal::Logging.credential_header?(name)
+          end
         end
 
         def parse_response_body(response)

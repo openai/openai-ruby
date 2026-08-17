@@ -37,17 +37,43 @@ Content-Type: application/json
 The JSON structurally omits `subject_token`. The endpoint is fixed and cannot
 be overridden. Redirect responses are rejected. When neither `base_url` nor
 `OPENAI_BASE_URL` is configured, only X.509 clients default to
-`https://mtls.api.openai.com/v1`; an explicit base URL always wins.
+`https://mtls.api.openai.com/v1`; an explicit HTTPS base URL wins.
+
+The configured API base URL establishes the only allowed API origin for that
+X.509 client. Before acquiring a token and again immediately before dispatch,
+the SDK requires HTTPS and compares the normalized scheme, host, and effective
+port. Uppercase hostnames and an explicit default `:443` are equivalent. The
+SDK rejects userinfo or ambiguous authorities, cross-origin absolute request
+paths and redirects, explicit `Host` headers, and request-hook changes to
+credential headers. Header-name checks are case-insensitive and treat `_` as
+`-`, matching common reverse-proxy normalization. Target API requests reject
+`api-key`, `x-api-key`, and `Proxy-Authorization` aliases; bearer-authenticated
+requests also reject per-request `Authorization` overrides. Configure proxy
+credentials on the transport so they are added only to CONNECT. This prevents
+X.509 mode from silently mixing or forwarding another credential. Explicit
+admin-authenticated operations and non-credential request-hook changes remain
+supported.
+
+The injected `http_client` must dispatch the exact immutable request supplied
+by the SDK. It must not follow redirects internally, rewrite request URLs, or
+inject application credentials. Those actions occur inside the caller-owned
+transport, beyond the SDK's final controllable validation boundary.
 
 The SDK validates a positive numeric `expires_in`, caches the bearer against a
 monotonic clock, clamps the refresh buffer to half the returned TTL, and
 collapses concurrent exchanges into one refresh. Transient connection errors,
 `408`, `409`, `429`, and `5xx` responses receive bounded retries that honor
-`Retry-After`. OAuth `400`, `401`, and `403` responses are not retried.
+`Retry-After`; retryable response bodies are closed without being drained.
+OAuth `400`, `401`, and `403` responses are not retried. A present `token_type`
+must be `Bearer` (case-insensitive), and access tokens must match the RFC 6750
+bearer-token grammar before caching or transmission. A missing `token_type`
+remains accepted for compatibility.
 
 An API `401` invalidates the rejected bearer and retries exactly once only when
 the original request body is replayable. Streaming and other one-shot bodies
-are never replayed automatically.
+are never replayed automatically. A second `401` invalidates the refreshed
+bearer without another replay. API retries also recheck the cache after backoff
+and never resend a bearer that another request invalidated or replaced.
 
 ## Toggle and native TLS setup
 

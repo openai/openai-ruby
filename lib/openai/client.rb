@@ -179,29 +179,71 @@ module OpenAI
     end
 
     # @api private
-    private def send_request(request, redirect_count:, retry_count:, send_retry_header:)
-      return super unless workload_identity_request?(request)
+    private def build_request(req, opts)
+      request = super
+      policy = @workload_identity_request_policy
+      return request if policy.nil?
 
-      deadline = request[:timeout]&.then { OpenAI::Internal::Util.monotonic_secs + _1 }
-      request = request.merge(workload_identity_deadline: deadline)
+      security = req[:security] || {bearer_auth: true, admin_api_key_auth: true}
+      policy.decorate_request(
+        request,
+        bearer_auth: security.fetch(:bearer_auth, false),
+        expected_authorization: auth_headers(security: security)["authorization"]
+      )
+    end
+
+    # @api private
+    private def validate_prepared_request!(request, original_headers:, redirect_count:, retry_count:)
+      super
+      @workload_identity_request_policy&.validate_prepared!(request, original_headers: original_headers)
+    end
+
+    # @api private
+    def send_request(request, redirect_count:, retry_count:, send_retry_header:)
+      return super unless @workload_identity_auth
+      policy = @workload_identity_request_policy
+      if policy.authenticated?(request)
+        authenticated_token = policy.authenticated_token(request)
+        unless @workload_identity_auth.current_token?(authenticated_token)
+          request = policy.authorize(request, @workload_identity_auth.get_token)
+        end
+        return super(request, redirect_count:, retry_count:, send_retry_header:)
+      end
+
+      workload_identity_auth_header = "Bearer #{WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER}"
+      policy.validate_before_token!(request)
+      unless request[:headers]["authorization"] == workload_identity_auth_header
+        return super
+      end
+
+      token = @workload_identity_auth.get_token
+      updated_request = policy.authorize(request, token)
 
       begin
         super(
-          request,
+          updated_request,
           redirect_count: redirect_count,
           retry_count: retry_count,
           send_retry_header: send_retry_header
         )
       rescue OpenAI::Errors::AuthenticationError
+        @workload_identity_auth.invalidate_token(token)
         raise unless retry_count.zero? && request_replayable?(request)
-        @workload_identity_auth.invalidate_token
 
-        super(
-          request,
-          redirect_count: redirect_count,
-          retry_count: retry_count + 1,
-          send_retry_header: send_retry_header
-        )
+        fresh_token = @workload_identity_auth.get_token
+        refreshed_request = policy.authorize(request, fresh_token)
+
+        begin
+          super(
+            refreshed_request,
+            redirect_count: redirect_count,
+            retry_count: retry_count + 1,
+            send_retry_header: send_retry_header
+          )
+        rescue OpenAI::Errors::AuthenticationError
+          @workload_identity_auth.invalidate_token(fresh_token)
+          raise
+        end
       end
     end
 
@@ -381,6 +423,11 @@ module OpenAI
           "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable."
         )
       end
+
+      @workload_identity_request_policy = OpenAI::Auth::WorkloadIdentityRequestPolicy.build(
+        workload_identity,
+        base_url: base_url
+      )
 
       headers = {
         "openai-organization" => (@organization = organization&.to_s),

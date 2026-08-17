@@ -276,9 +276,10 @@ client = OpenAI::Client.new(
 
 Custom HTTP configuration by itself does not change `base_url`. X.509 workload
 identity is the one exception: it defaults to the global mTLS API URL when no
-base URL is configured. An explicit `base_url`, including an EU or custom
-endpoint, is always preserved. Scope client certificates to every expected
-origin so they cannot be presented elsewhere. Use the
+base URL is configured. An explicit HTTPS `base_url`, including an EU or custom
+endpoint, is preserved, and X.509 bearer requests are restricted to that exact
+normalized origin. Scope client certificates to every expected origin so they
+cannot be presented elsewhere. Use the
 `OpenAI::NetHTTPClient` block for TLS and other connection-level configuration.
 Server trust remains separate from the client identity and can be customized
 with `Net::HTTP` properties such as `cert_store` or `ca_file`.
@@ -401,8 +402,14 @@ existing Kubernetes, Azure, and GCP subject-token providers.
 not accept a subject-token provider. It uses the same configured `http_client`
 for fixed-endpoint token exchange and API requests, while certificate and key
 handling remains transport-owned. X.509 clients default to the global mTLS API
-URL only when no base URL is set. Support in this release covers HTTP, not
-Realtime WebSockets.
+URL only when no base URL is set. Explicit API base URLs must use HTTPS, and
+the SDK rejects cross-origin absolute request paths, redirects, Host overrides,
+API-key header aliases, target `Proxy-Authorization`, per-request Authorization
+overrides outside the exact SDK-selected authentication mode, and request-hook
+changes to authentication headers before dispatch. Configure proxy
+authentication on the HTTP transport so it is applied only to CONNECT.
+Explicit admin-authenticated operations remain supported. Support in this
+release covers HTTP, not Realtime WebSockets.
 
 See the [X.509 workload identity guide](x509_workload_identity.md) for lifecycle,
 security, fork, and rotation behavior, plus the complete [`OPENAI_AUTH_MODE`

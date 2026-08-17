@@ -42,8 +42,34 @@ module OpenAI
       end
 
       # @api private
+      sig { params(token: T.nilable(String)).returns(T::Boolean) }
+      def current_token?(token)
+      end
+
+      # @api private
       sig { returns(String) }
       def inspect
+      end
+
+      private
+
+      # @api private
+      sig { returns(OpenAI::Auth::TokenExchange::TokenData) }
+      def fetch_token_from_exchange
+      end
+
+      # @api private
+      sig do
+        params(response: Net::HTTPResponse).returns(
+          OpenAI::Auth::TokenExchange::TokenData
+        )
+      end
+      def handle_token_response(response)
+      end
+
+      # @api private
+      sig { params(response: Net::HTTPResponse).returns(T.untyped) }
+      def parse_response_body(response)
       end
     end
   end

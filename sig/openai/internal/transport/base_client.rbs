@@ -32,7 +32,8 @@ module OpenAI
             max_retries: Integer,
             timeout: Float?,
             :follow_redirects? => bool,
-            :provider_auth? => Symbol
+            :provider_auth? => Symbol,
+            :workload_identity_auth? => Symbol
           }
 
         MAX_REDIRECTS: 20
@@ -107,6 +108,13 @@ module OpenAI
           redirect_count: Integer,
           retry_count: Integer
         ) -> OpenAI::Internal::Transport::BaseClient::request_input
+
+        private def validate_prepared_request!: (
+          OpenAI::Internal::Transport::BaseClient::request_input request,
+          original_headers: ::Hash[String, String],
+          redirect_count: Integer,
+          retry_count: Integer
+        ) -> void
 
         private def user_agent: -> String
 

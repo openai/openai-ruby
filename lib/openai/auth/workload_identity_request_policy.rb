@@ -1,0 +1,178 @@
+# frozen_string_literal: true
+
+module OpenAI
+  module Auth
+    # Binds workload-identity authentication to an API request.
+    #
+    # @api private
+    class WorkloadIdentityRequestPolicy
+      AUTHENTICATED = :openai_workload_identity_authenticated
+      private_constant :AUTHENTICATED
+
+      # Selects the request policy once at client construction.
+      #
+      # @api private
+      def self.build(config, base_url:)
+        case config
+        when nil
+          nil
+        when OpenAI::Auth::X509WorkloadIdentity
+          X509.new(base_url)
+        else
+          new
+        end
+      end
+
+      # @api private
+      def decorate_request(request, **)
+        request
+      end
+
+      # @api private
+      def authenticated?(request)
+        request[:workload_identity_auth] == AUTHENTICATED
+      end
+
+      # @api private
+      def authenticated_token(request)
+        return nil unless authenticated?(request)
+
+        authorization = request.fetch(:headers)["authorization"]
+        return nil unless authorization&.start_with?("Bearer ")
+
+        authorization.delete_prefix("Bearer ")
+      end
+
+      # @api private
+      def validate_before_token!(*)
+        nil
+      end
+
+      # @api private
+      def authorize(request, token)
+        headers = request.fetch(:headers).merge("authorization" => "Bearer #{token}")
+        request.merge(headers: headers, workload_identity_auth: AUTHENTICATED)
+      end
+
+      # @api private
+      def validate_prepared!(*, **)
+        nil
+      end
+
+      # Enforces the X.509 bearer request trust boundary.
+      #
+      # @api private
+      class X509 < WorkloadIdentityRequestPolicy
+        REQUIRED = :openai_x509_workload_identity_required
+        API_KEY_HEADERS = %w[api-key x-api-key].freeze
+        PROXY_AUTHORIZATION_HEADER = "proxy-authorization"
+        private_constant :REQUIRED, :API_KEY_HEADERS, :PROXY_AUTHORIZATION_HEADER
+
+        # @api private
+        def initialize(base_url)
+          super()
+          @api_origin = api_origin(parse_url(base_url)) ||
+                        raise(
+                          ArgumentError,
+                          "X.509 workload identity requires an absolute HTTPS API base URL without userinfo."
+                        )
+        end
+
+        # @api private
+        def decorate_request(request, bearer_auth:, expected_authorization:)
+          actual_authorization = request.fetch(:headers)["authorization"]
+          if bearer_auth
+            placeholder = "Bearer #{OpenAI::Client::WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER}"
+            unless expected_authorization == placeholder && actual_authorization == placeholder
+              raise OpenAI::Errors::Error,
+                    "X.509 workload identity cannot be combined with a custom Authorization header."
+            end
+
+            return request.merge(workload_identity_auth: REQUIRED)
+          end
+          return request if actual_authorization == expected_authorization
+
+          raise OpenAI::Errors::Error,
+                "X.509 workload identity cannot be combined with a custom Authorization header."
+        end
+
+        # @api private
+        def validate_before_token!(request)
+          if request[:workload_identity_auth] == REQUIRED
+            expected = "Bearer #{OpenAI::Client::WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER}"
+            unless request.fetch(:headers)["authorization"] == expected
+              raise OpenAI::Errors::Error,
+                    "X.509 workload identity cannot be combined with a custom Authorization header."
+            end
+          end
+          validate_api_request!(request)
+        end
+
+        # @api private
+        def validate_prepared!(request, original_headers:)
+          validate_api_request!(request)
+          return if credential_headers(request.fetch(:headers)) == credential_headers(original_headers)
+
+          raise OpenAI::Errors::Error,
+                "X.509 workload identity request hooks cannot modify credential headers."
+        end
+
+        private
+
+        def parse_url(url)
+          return url if url.is_a?(URI::Generic)
+
+          URI.parse(url.to_s)
+        rescue URI::Error
+          nil
+        end
+
+        def api_origin(uri)
+          return nil unless uri.is_a?(URI::Generic)
+
+          host = uri.host
+          valid =
+            uri.scheme&.casecmp?("https") &&
+            !host.nil? &&
+            !host.empty? &&
+            uri.userinfo.nil? &&
+            !host.include?("%") &&
+            !host.include?("\\")
+          return nil unless valid
+
+          ["https", host.downcase, uri.port || 443].freeze
+        end
+
+        def validate_api_request!(request)
+          unless api_origin(request.fetch(:url)) == @api_origin
+            raise OpenAI::Errors::Error,
+                  "X.509 workload identity requests must use HTTPS and the configured API origin."
+          end
+          header_names = request.fetch(:headers).each_key.map { _1.to_s.downcase.tr("_", "-") }
+          if header_names.intersect?(API_KEY_HEADERS)
+            raise OpenAI::Errors::Error,
+                  "X.509 workload identity cannot be combined with a custom API-key header."
+          end
+          if header_names.include?(PROXY_AUTHORIZATION_HEADER)
+            raise OpenAI::Errors::Error,
+                  "X.509 workload identity requires Proxy-Authorization to be configured by the transport."
+          end
+          return unless header_names.include?("host")
+
+          raise OpenAI::Errors::Error,
+                "X.509 workload identity requests cannot override the Host header."
+        end
+
+        def credential_headers(headers)
+          headers.each_with_object({}) do |(name, value), selected|
+            next unless OpenAI::Internal::Logging.credential_header?(name)
+
+            normalized_name = name.to_s.downcase
+            selected[normalized_name] ||= []
+            selected.fetch(normalized_name) << value.to_s
+          end.transform_values { _1.sort.freeze }.freeze
+        end
+      end
+    end
+  end
+end

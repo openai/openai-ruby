@@ -12,7 +12,7 @@ module OpenAI
 
     attr_reader admin_api_key: String?
 
-    attr_reader workload_identity_auth: untyped?
+    attr_reader workload_identity_auth: OpenAI::Auth::WorkloadIdentityAuth?
 
     attr_reader organization: String?
 
@@ -82,10 +82,32 @@ module OpenAI
       retry_count: Integer
     ) -> OpenAI::Internal::Transport::BaseClient::request_input
 
+    private def build_request: (
+      OpenAI::Internal::Transport::BaseClient::request_components req,
+      OpenAI::request_options opts
+    ) -> OpenAI::Internal::Transport::BaseClient::request_input
+
+    private def validate_prepared_request!: (
+      OpenAI::Internal::Transport::BaseClient::request_input request,
+      original_headers: ::Hash[String, String],
+      redirect_count: Integer,
+      retry_count: Integer
+    ) -> void
+
+    def send_request: (
+      OpenAI::Internal::Transport::BaseClient::request_input request,
+      redirect_count: Integer,
+      retry_count: Integer,
+      send_retry_header: bool
+    ) {
+      -> OpenAI::Internal::Logging::Context
+    } -> OpenAI::HTTPClient::Response
+
     def with_options: (
       ?api_key: String?,
       ?admin_api_key: String?,
-      ?workload_identity: untyped?,
+      ?workload_identity: (OpenAI::Auth::WorkloadIdentity
+      | OpenAI::Auth::X509WorkloadIdentity)?,
       ?organization: String?,
       ?project: String?,
       ?webhook_secret: String?,

@@ -222,6 +222,25 @@ module OpenAI
         end
 
         # @api private
+        sig do
+          overridable
+            .params(
+              request: OpenAI::Internal::Transport::BaseClient::RequestInput,
+              original_headers: T::Hash[String, String],
+              redirect_count: Integer,
+              retry_count: Integer
+            )
+            .void
+        end
+        private def validate_prepared_request!(
+          request,
+          original_headers:,
+          redirect_count:,
+          retry_count:
+        )
+        end
+
+        # @api private
         sig { returns(String) }
         private def user_agent
         end

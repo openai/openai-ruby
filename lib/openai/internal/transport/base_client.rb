@@ -314,6 +314,15 @@ module OpenAI
           request
         end
 
+        # Validate a fully prepared request immediately before it crosses the
+        # transport boundary. Subclasses can use this hook to enforce invariants
+        # that request preparers must not be allowed to change.
+        #
+        # @api private
+        private def validate_prepared_request!(*, **)
+          nil
+        end
+
         # @api private
         #
         # @return [String]
@@ -522,9 +531,18 @@ module OpenAI
               request.fetch(:headers),
               request[:body]
             )
+            original_headers = encoded_headers.to_h do |name, value|
+              [name.dup.freeze, value.dup.freeze]
+            end.freeze
             attempt_request = request.merge(headers: encoded_headers, body: encoded_body)
             prepared_request = prepare_request(
               attempt_request,
+              redirect_count: redirect_count,
+              retry_count: retry_count
+            )
+            validate_prepared_request!(
+              prepared_request,
+              original_headers: original_headers,
               redirect_count: redirect_count,
               retry_count: retry_count
             )

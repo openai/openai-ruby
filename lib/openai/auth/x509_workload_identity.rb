@@ -30,8 +30,8 @@ module OpenAI
           raise ArgumentError, "refresh_buffer_seconds must be greater than or equal to zero"
         end
 
-        @identity_provider_id = identity_provider_id.to_s
-        @service_account_id = service_account_id.to_s
+        @identity_provider_id = identity_provider_id.to_s.dup.freeze
+        @service_account_id = service_account_id.to_s.dup.freeze
         @refresh_buffer_seconds = refresh_buffer_seconds
       end
     end

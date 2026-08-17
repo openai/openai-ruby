@@ -520,6 +520,47 @@ class WorkloadIdentityTest < Minitest::Test
     assert_equal("oauth-access-token", token)
   end
 
+  def test_workload_identity_auth_preserves_private_exchange_subclass_overrides
+    config = OpenAI::Auth::WorkloadIdentity.new(
+      identity_provider_id: "idp-123",
+      service_account_id: "sa-456",
+      provider: IDTokenProvider.new
+    )
+    direct_override =
+      Class.new(OpenAI::Auth::WorkloadIdentityAuth) do
+        private def fetch_token_from_exchange
+          {id: "subclass-token", expires_in: 3600}
+        end
+      end
+
+    assert_equal("subclass-token", direct_override.new(config, "org-123").get_token)
+
+    stub_request(:post, "https://auth.openai.com/oauth/token")
+      .to_return(
+        status: 200,
+        body: JSON.generate({"access_token" => "handled-token", "expires_in" => 3600})
+      )
+    response_override =
+      Class.new(OpenAI::Auth::WorkloadIdentityAuth) do
+        attr_reader :handled, :parsed
+
+        private def handle_token_response(response)
+          @handled = true
+          super
+        end
+
+        private def parse_response_body(response)
+          @parsed = true
+          super
+        end
+      end
+    auth = response_override.new(config, "org-123")
+
+    assert_equal("handled-token", auth.get_token)
+    assert_equal(true, auth.handled)
+    assert_equal(true, auth.parsed)
+  end
+
   def test_workload_identity_auth_oauth_error
     File.write(@token_path, "k8s-jwt-token")
     provider = OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(
@@ -770,6 +811,31 @@ class WorkloadIdentityTest < Minitest::Test
     assert_equal("chatcmpl-123", response2.id)
     assert_requested(:post, "https://auth.openai.com/oauth/token", times: 1)
     assert_requested(:post, "http://localhost/chat/completions", times: 2)
+  end
+
+  def test_existing_workload_identity_preserves_odd_integer_ttl_refresh_timing
+    now = 0.0
+    stub_request(:post, "https://auth.openai.com/oauth/token")
+      .to_return(status: 200, body: JSON.generate({"access_token" => "first-token", "expires_in" => 5}))
+      .then
+      .to_return(status: 200, body: JSON.generate({"access_token" => "second-token", "expires_in" => 5}))
+    config = OpenAI::Auth::WorkloadIdentity.new(
+      identity_provider_id: "idp-123",
+      service_account_id: "sa-456",
+      provider: IDTokenProvider.new
+    )
+    auth = OpenAI::Auth::WorkloadIdentityAuth.new(
+      config,
+      "org-123",
+      monotonic_clock: -> { now }
+    )
+
+    assert_equal("first-token", auth.get_token)
+    now = 2.75
+    assert_equal("first-token", auth.get_token)
+    now = 3.0
+    assert_equal("second-token", auth.get_token)
+    assert_requested(:post, "https://auth.openai.com/oauth/token", times: 2)
   end
 
   def test_failed_shared_refresh_re_elects_a_waiter_and_preserves_the_exchange_error

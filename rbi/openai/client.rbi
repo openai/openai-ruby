@@ -25,6 +25,10 @@ module OpenAI
     sig { returns(T.nilable(String)) }
     attr_reader :webhook_secret
 
+    # @api private
+    sig { returns(T.nilable(OpenAI::Auth::WorkloadIdentityAuth)) }
+    attr_reader :workload_identity_auth
+
     # Given a prompt, the model will return one or more predicted completions, and can
     # also return the probabilities of alternative tokens at each position.
     sig { returns(OpenAI::Resources::Completions) }
@@ -148,12 +152,70 @@ module OpenAI
     private def prepare_request(request, redirect_count:, retry_count:)
     end
 
+    # @api private
+    sig do
+      override
+        .params(
+          req: OpenAI::Internal::Transport::BaseClient::RequestComponents,
+          opts: OpenAI::Internal::AnyHash
+        )
+        .returns(OpenAI::Internal::Transport::BaseClient::RequestInput)
+    end
+    private def build_request(req, opts)
+    end
+
+    # @api private
+    sig do
+      override
+        .params(
+          request: OpenAI::Internal::Transport::BaseClient::RequestInput,
+          original_headers: T::Hash[String, String],
+          redirect_count: Integer,
+          retry_count: Integer
+        )
+        .void
+    end
+    private def validate_prepared_request!(
+      request,
+      original_headers:,
+      redirect_count:,
+      retry_count:
+    )
+    end
+
+    # @api private
+    sig do
+      override
+        .params(
+          request: OpenAI::Internal::Transport::BaseClient::RequestInput,
+          redirect_count: Integer,
+          retry_count: Integer,
+          send_retry_header: T::Boolean,
+          context_provider: T.proc.returns(OpenAI::Internal::Logging::Context)
+        )
+        .returns(OpenAI::HTTPClient::Response)
+    end
+    def send_request(
+      request,
+      redirect_count:,
+      retry_count:,
+      send_retry_header:,
+      &context_provider
+    )
+    end
+
     # Returns a new client with the supplied options overridden.
     sig do
       params(
         api_key: T.nilable(String),
         admin_api_key: T.nilable(String),
-        workload_identity: T.nilable(OpenAI::Auth::WorkloadIdentity),
+        workload_identity:
+          T.nilable(
+            T.any(
+              OpenAI::Auth::WorkloadIdentity,
+              OpenAI::Auth::X509WorkloadIdentity
+            )
+          ),
         organization: T.nilable(String),
         project: T.nilable(String),
         webhook_secret: T.nilable(String),

@@ -23,14 +23,22 @@ module OpenAI
       )
         @config = config
         @organization_id = organization_id
+        case config
+        when OpenAI::Auth::X509WorkloadIdentity
+          @x509_exchange = TokenExchange::X509.new(
+            config,
+            token_exchange_url: token_exchange_url,
+            http_client: http_client,
+            sleeper: sleeper
+          )
+          @token_exchange_url = @x509_exchange.url
+        when OpenAI::Auth::WorkloadIdentity
+          @x509_exchange = nil
+          @token_exchange_url = URI(token_exchange_url)
+        else
+          raise ArgumentError, "Unsupported workload identity configuration: #{config.class}"
+        end
         @refresh_buffer_seconds = config.refresh_buffer_seconds
-        @token_exchange = TokenExchange.build(
-          config,
-          token_exchange_url: token_exchange_url,
-          http_client: http_client,
-          sleeper: sleeper
-        )
-        @token_exchange_url = @token_exchange.url
         @monotonic_clock = monotonic_clock
 
         @cached_token = nil
@@ -107,6 +115,15 @@ module OpenAI
         nil
       end
 
+      # Returns whether a credential is still the usable token owned by this
+      # cache. API retries use this after backoff so they never resend a bearer
+      # that another request invalidated or replaced.
+      #
+      # @api private
+      def current_token?(token)
+        @mutex.synchronize { token == @cached_token && !token_unusable? }
+      end
+
       # @api private
       def inspect
         state = @mutex.synchronize { [!@cached_token.nil?, @refreshing] }
@@ -168,9 +185,9 @@ module OpenAI
       end
 
       private def fetch_token_from_exchange(deadline:)
-        if @token_exchange.is_a?(TokenExchange::X509)
+        unless @x509_exchange.nil?
           check_deadline!(deadline)
-          token_data = @token_exchange.fetch
+          token_data = @x509_exchange.fetch
           check_deadline!(deadline)
           return token_data
         end
@@ -293,17 +310,6 @@ module OpenAI
         [expires_in - effective_buffer, 0].max
       end
 
-      def token_refresh_error
-        OpenAI::Errors::AuthenticationError.new(
-          url: @token_exchange.url,
-          status: 401,
-          headers: nil,
-          body: nil,
-          request: nil,
-          response: nil,
-          message: "Token refresh failed"
-        )
-      end
     end
   end
 end

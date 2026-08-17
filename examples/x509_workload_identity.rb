@@ -21,7 +21,13 @@ client =
     OpenAI::Client.new
   when "x509"
     api_endpoint = URI(ENV.fetch("OPENAI_BASE_URL", "https://mtls.api.openai.com/v1"))
-    unless api_endpoint.scheme == "https" && api_endpoint.userinfo.nil?
+    valid_endpoint =
+      api_endpoint.scheme&.casecmp?("https") &&
+      !api_endpoint.host.to_s.empty? &&
+      api_endpoint.userinfo.nil? &&
+      !api_endpoint.host.include?("%") &&
+      !api_endpoint.host.include?("\\")
+    unless valid_endpoint
       raise ArgumentError, "OPENAI_BASE_URL must be an HTTPS URL without user information"
     end
 
