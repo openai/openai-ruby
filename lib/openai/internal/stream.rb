@@ -50,6 +50,9 @@ module OpenAI
                 raise err
               in decoded
                 unwrapped = OpenAI::Internal::Util.dig(decoded, @unwrap)
+                # Some providers emit transport heartbeats as JSON events. They are not
+                # part of the API's typed streaming event surface.
+                next if unwrapped in {type: "keepalive"}
                 y << OpenAI::Internal::Type::Converter.coerce(@model, unwrapped)
               end
             else

@@ -81,6 +81,32 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     end
   end
 
+  def test_keepalive_event_is_dropped_from_helper_stream
+    stub_streaming_response(keepalive_before_created_sse_response)
+
+    events = @client.responses.stream(**basic_params).to_a
+
+    assert_instance_of(OpenAI::Models::Responses::ResponseCreatedEvent, events.first)
+    refute(events.any? { |event| event.type.to_s == "keepalive" })
+    assert_text_delta_events(
+      events,
+      expected_deltas: ["Hello there! ", "How can I help you ", "today?"],
+      expected_snapshot: "Hello there! How can I help you today?"
+    )
+  end
+
+  def test_keepalive_event_is_dropped_from_raw_stream
+    stub_streaming_response(keepalive_before_created_sse_response)
+
+    stream = @client.responses.stream_raw(**basic_params)
+    events = stream.to_a
+
+    assert_instance_of(OpenAI::Models::Responses::ResponseCreatedEvent, events.first)
+    refute(events.any? { |event| event.type.to_s == "keepalive" })
+  ensure
+    stream&.close
+  end
+
   def test_get_final_response
     stub_streaming_response(basic_text_sse_response)
 
@@ -651,6 +677,14 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     SSE
   end
 
+  def keepalive_before_created_sse_response
+    <<~SSE + basic_text_sse_response
+      event: keepalive
+      data: {"type":"keepalive","sequence_number":0}
+
+    SSE
+  end
+
   def resume_stream_sse_response
     <<~SSE
       event: response.created
@@ -696,6 +730,9 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
 
       event: response.output_text.delta
       data: {"type":"response.output_text.delta","sequence_number":6,"response_id":"msg_456","item_id":"item_001","output_index":0,"content_index":0,"delta":"today?"}
+
+      event: keepalive
+      data: {"type":"keepalive","sequence_number":7}
 
       event: response.output_text.delta
       data: {"type":"response.output_text.delta","sequence_number":8,"response_id":"msg_456","item_id":"item_001","output_index":0,"content_index":0,"delta":"today?"}
