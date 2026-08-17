@@ -196,10 +196,7 @@ module OpenAI
               OpenAI::UnionOf
               OpenAI::BaseModel
             ]
-            message =
-              "#{type} does not implement the " \
-              "#{OpenAI::Helpers::StructuredOutput::JsonSchemaConverter} interface. " \
-              "Please use one of the supported types: #{models}"
+            message = "#{type} does not implement the #{OpenAI::Helpers::StructuredOutput::JsonSchemaConverter} interface. Please use one of the supported types: #{models}"
             raise ArgumentError.new(message)
           end
         end

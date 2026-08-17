@@ -60,9 +60,7 @@ module OpenAI
 
         class << self
           def optional(...)
-            message =
-              "`optional` is not supported for structured output APIs, " \
-              "use `#required` with `nil?: true` instead"
+            message = "`optional` is not supported for structured output APIs, use `#required` with `nil?: true` instead"
             raise message
           end
         end

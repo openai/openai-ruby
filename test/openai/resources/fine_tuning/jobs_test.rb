@@ -28,12 +28,7 @@ class OpenAI::Test::Resources::FineTuning::JobsTest < OpenAI::Test::ResourceTest
         training_file: String,
         validation_file: String | nil,
         estimated_finish: Integer | nil,
-        integrations:
-          ^(
-            OpenAI::Internal::Type::ArrayOf[
-              OpenAI::FineTuning::FineTuningJobWandbIntegrationObject
-            ]
-          ) | nil,
+        integrations: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         method_: OpenAI::FineTuning::FineTuningJob::Method | nil
       }
@@ -65,12 +60,7 @@ class OpenAI::Test::Resources::FineTuning::JobsTest < OpenAI::Test::ResourceTest
         training_file: String,
         validation_file: String | nil,
         estimated_finish: Integer | nil,
-        integrations:
-          ^(
-            OpenAI::Internal::Type::ArrayOf[
-              OpenAI::FineTuning::FineTuningJobWandbIntegrationObject
-            ]
-          ) | nil,
+        integrations: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         method_: OpenAI::FineTuning::FineTuningJob::Method | nil
       }
@@ -109,12 +99,7 @@ class OpenAI::Test::Resources::FineTuning::JobsTest < OpenAI::Test::ResourceTest
         training_file: String,
         validation_file: String | nil,
         estimated_finish: Integer | nil,
-        integrations:
-          ^(
-            OpenAI::Internal::Type::ArrayOf[
-              OpenAI::FineTuning::FineTuningJobWandbIntegrationObject
-            ]
-          ) | nil,
+        integrations: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         method_: OpenAI::FineTuning::FineTuningJob::Method | nil
       }
@@ -146,12 +131,7 @@ class OpenAI::Test::Resources::FineTuning::JobsTest < OpenAI::Test::ResourceTest
         training_file: String,
         validation_file: String | nil,
         estimated_finish: Integer | nil,
-        integrations:
-          ^(
-            OpenAI::Internal::Type::ArrayOf[
-              OpenAI::FineTuning::FineTuningJobWandbIntegrationObject
-            ]
-          ) | nil,
+        integrations: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         method_: OpenAI::FineTuning::FineTuningJob::Method | nil
       }
@@ -210,12 +190,7 @@ class OpenAI::Test::Resources::FineTuning::JobsTest < OpenAI::Test::ResourceTest
         training_file: String,
         validation_file: String | nil,
         estimated_finish: Integer | nil,
-        integrations:
-          ^(
-            OpenAI::Internal::Type::ArrayOf[
-              OpenAI::FineTuning::FineTuningJobWandbIntegrationObject
-            ]
-          ) | nil,
+        integrations: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         method_: OpenAI::FineTuning::FineTuningJob::Method | nil
       }
@@ -247,12 +222,7 @@ class OpenAI::Test::Resources::FineTuning::JobsTest < OpenAI::Test::ResourceTest
         training_file: String,
         validation_file: String | nil,
         estimated_finish: Integer | nil,
-        integrations:
-          ^(
-            OpenAI::Internal::Type::ArrayOf[
-              OpenAI::FineTuning::FineTuningJobWandbIntegrationObject
-            ]
-          ) | nil,
+        integrations: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         method_: OpenAI::FineTuning::FineTuningJob::Method | nil
       }
