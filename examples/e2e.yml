@@ -46,6 +46,48 @@ examples:
   examples/image_stream.rb:
     status: covered
     expected_output: Final image completed!
+  examples/realtime/event_stream.rb:
+    status: excluded
+    reason: Support library imported by runnable Realtime examples; it has no standalone entry point.
+  examples/realtime/function_calling.rb:
+    status: covered
+    expected_output: "[tool] result="
+  examples/realtime/image_input.rb:
+    status: excluded
+    reason: Requires a caller-supplied PNG or JPEG fixture via REALTIME_INPUT_IMAGE.
+  examples/realtime/mcp_approval.rb:
+    status: excluded
+    reason: Requires an external MCP endpoint configured via MCP_SERVER_URL.
+  examples/realtime/realtime_conversation.rb:
+    status: excluded
+    reason: Requires interactive microphone and playback devices, or caller-supplied PCM input and output fixtures.
+  examples/realtime/sideband.rb:
+    status: excluded
+    reason: Requires an active Realtime call ID received from a separate incoming-call workflow.
+  examples/realtime/sip.rb:
+    status: excluded
+    reason: Requires an active incoming SIP call ID and configured SIP routing.
+  examples/realtime/sorbet_connection_types.rb:
+    status: excluded
+    reason: Static Sorbet contract fixture that intentionally has no runtime entry point.
+  examples/realtime/translation.rb:
+    status: excluded
+    reason: Requires caller-supplied raw PCM audio via REALTIME_INPUT_PCM.
+  examples/realtime/webrtc_call.rb:
+    status: excluded
+    reason: Requires a live browser-generated SDP offer on standard input and an owning WebRTC peer.
+  examples/realtime/webrtc_conversation.rb:
+    status: excluded
+    reason: Interactive browser demo requiring microphone permission and a persistent local server.
+  examples/realtime/websocket_audio.rb:
+    status: excluded
+    reason: Requires caller-supplied raw PCM input and writes binary audio output.
+  examples/realtime/websocket_text.rb:
+    status: covered
+    expected_output: "[realtime] smoke test passed"
+  examples/realtime/websocket_transcription.rb:
+    status: excluded
+    reason: Requires caller-supplied raw PCM audio via REALTIME_INPUT_PCM.
   examples/mtls_custom_http_client.rb:
     status: excluded
     reason: Requires an enrolled mTLS certificate, private key, endpoint, and model.
