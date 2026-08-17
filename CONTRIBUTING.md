@@ -81,7 +81,7 @@ $ bundle exec rake test
 
 ## Linting and formatting
 
-This repository uses [rubocop](https://github.com/rubocop/rubocop) for linting and formatting of `*.rb` files; And [syntax_tree](https://github.com/ruby-syntax-tree/syntax_tree) is used for formatting of both `*.rbi` and `*.rbs` files.
+This repository uses [rubocop](https://github.com/rubocop/rubocop) for correctness and security checks. Ruby source formatting is temporarily paused while we switch to rubyfmt. [syntax_tree](https://github.com/ruby-syntax-tree/syntax_tree) continues to format `*.rbi` and `*.rbs` files.
 
 There are two separate type checkers supported by this library: [sorbet](https://github.com/sorbet/sorbet) and [steep](https://github.com/soutaro/steep) are used for verifying `*.rbi` and `*.rbs` files respectively.
 
@@ -91,7 +91,7 @@ To lint and typecheck:
 $ bundle exec rake lint
 ```
 
-To format and fix all lint issues automatically:
+To run the available formatters:
 
 ```bash
 $ bundle exec rake format
