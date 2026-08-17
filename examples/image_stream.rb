@@ -10,13 +10,14 @@ client = OpenAI::Client.new
 puts "Starting image streaming example..."
 
 stream = client.images.generate_stream_raw(
-  model: "gpt-image-1",
+  model: "gpt-image-2",
   prompt: "A cute baby sea otter",
   n: 1,
   size: "1024x1024",
   partial_images: 3
 )
 
+completed_count = 0
 stream.each do |event|
   case event
   when OpenAI::Models::ImageGenPartialImageEvent
@@ -30,15 +31,20 @@ stream.each do |event|
     puts("  Saved to: #{File.expand_path(filename)}")
 
   when OpenAI::Models::ImageGenCompletedEvent
+    image_data = Base64.decode64(event.b64_json)
+    abort("The completed image event did not contain image data") if image_data.empty?
+
+    completed_count += 1
     puts("\n✅ Final image completed!")
     puts("  Size: #{event.b64_json.length} characters (base64)")
 
     # Save final image to file
     filename = "final_image.png"
-    image_data = Base64.decode64(event.b64_json)
     File.write(filename, image_data)
     puts("  Saved to: #{File.expand_path(filename)}")
   end
 end
+
+abort("Image stream ended before the final image completed") if completed_count.zero?
 
 puts "Image streaming completed!"

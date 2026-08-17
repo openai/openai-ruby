@@ -1,0 +1,41 @@
+name: Examples E2E
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  examples-e2e:
+    name: live Ruby examples
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      github.repository == 'openai/openai-ruby'
+    runs-on: ubuntu-latest
+    environment: ci
+    timeout-minutes: 90
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
+          ref: ${{ github.sha }}
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1
+        with:
+          ruby-version: "4.0"
+          bundler-cache: true
+      - name: Run examples against the live API
+        env:
+          EXAMPLES_E2E_REPORT_DIR: ${{ runner.temp }}/examples-e2e
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: bundle exec rake test:examples:e2e
+      - name: Upload example result reports
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: examples-e2e-${{ github.run_id }}
+          path: ${{ runner.temp }}/examples-e2e
+          if-no-files-found: warn
+          retention-days: 14

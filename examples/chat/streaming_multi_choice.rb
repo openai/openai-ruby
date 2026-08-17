@@ -37,7 +37,15 @@ stream.each do |event|
   end
 end
 
+expected_choice_indices = [0, 1]
+completed_choices = expected_choice_indices.select do |index|
+  choice_finished[index] && !choice_contents.fetch(index, "").strip.empty?
+end
+unless completed_choices == expected_choice_indices
+  abort("Expected two completed choices with content; received #{completed_choices.length}")
+end
+
 puts("------ final choices ------")
-choice_contents.keys.sort.each do |i|
+expected_choice_indices.each do |i|
   puts("[#{i}] #{choice_contents[i]}")
 end

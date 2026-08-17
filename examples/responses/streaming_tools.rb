@@ -32,12 +32,17 @@ class Query < OpenAI::BaseModel
   required :order_by, OpenAI::EnumOf[:asc, :desc]
 end
 
+def parsed_query?(value)
+  value.is_a?(Query)
+end
+
 client = OpenAI::Client.new
 
 stream = client.responses.stream(
   model: "gpt-4o-2024-08-06",
   input: "look up all my orders in november of last year that were fulfilled but not delivered on time",
-  tools: [Query]
+  tools: [Query],
+  tool_choice: {type: :function, name: "Query"}
 )
 
 stream.each do |event|
@@ -52,12 +57,18 @@ response = stream.get_final_response
 
 puts
 puts("----- parsed outputs from final response -----")
+parsed_tool_call_count = 0
 response
   .output
   .each do |output|
     case output
     when OpenAI::Models::Responses::ResponseFunctionToolCall
       # parsed is an instance of `Query`
-      pp(output.parsed)
+      parsed = output.parsed
+      next unless parsed_query?(parsed)
+
+      parsed_tool_call_count += 1
+      pp(parsed)
     end
   end
+abort("The final response did not contain a parsed Query tool call") if parsed_tool_call_count.zero?
