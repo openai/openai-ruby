@@ -39,8 +39,9 @@ Lint/UselessAssignment:
 # The directive guard still rejects broad or unowned suppressions.
 Lint/RedundantCopDisableDirective:
   Enabled: false
+# Every enable directive must still close an active disable.
 Lint/RedundantCopEnableDirective:
-  Enabled: false
+  Enabled: true
 
 # Dependency ordering is layout, not package correctness.
 Bundler/OrderedGems:
