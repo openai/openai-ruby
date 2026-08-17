@@ -485,8 +485,6 @@ module OpenAI
         if !region.nil? && normalized_region.nil?
           raise ArgumentError, "The Bedrock AWS `region` must not be empty."
         end
-        normalized_region ||= Bedrock.normalize_optional_string(ENV["AWS_REGION"]) ||
-                              Bedrock.normalize_optional_string(ENV["AWS_DEFAULT_REGION"])
         Bedrock.validate_region!(normalized_region) if normalized_region
 
         normalized_profile = Bedrock.normalize_optional_string(profile)
@@ -509,9 +507,6 @@ module OpenAI
           Bedrock.parse_endpoint_hostname(URI(configured_base_url).host)
         end
         resolved_endpoint = normalized_endpoint || canonical_endpoint&.fetch(:endpoint) || :mantle
-        if configured_base_url
-          Bedrock.validate_canonical_endpoint!(configured_base_url, resolved_endpoint, normalized_region)
-        end
 
         has_access_key = !access_key_id.nil?
         has_secret_key = !secret_access_key.nil?
@@ -573,6 +568,16 @@ module OpenAI
                 raise(OpenAI::Errors::Error, Bedrock::MISSING_CREDENTIALS_MESSAGE)
             end
           end
+
+        if normalized_region.nil? && (bearer_provider.nil? || configured_base_url.nil?)
+          normalized_region = Bedrock.normalize_optional_string(ENV["AWS_REGION"]) ||
+                              Bedrock.normalize_optional_string(ENV["AWS_DEFAULT_REGION"])
+          Bedrock.validate_region!(normalized_region) if normalized_region
+        end
+
+        if configured_base_url
+          Bedrock.validate_canonical_endpoint!(configured_base_url, resolved_endpoint, normalized_region)
+        end
 
         if bearer_provider && configured_base_url.nil? && normalized_region.nil?
           raise ArgumentError, Bedrock::MISSING_REGION_MESSAGE

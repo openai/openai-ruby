@@ -80,7 +80,7 @@ provider = OpenAI::Providers.bedrock(
 )
 ```
 
-Custom endpoints using AWS credentials require an explicit `endpoint` so the provider can choose the correct signing service. Local HTTP proxies remain supported when the endpoint is selected explicitly. Custom endpoints using bearer credentials can omit `endpoint`; in that case the default remains Mantle.
+Custom endpoints using AWS credentials default to Mantle signing when `endpoint` is omitted; pass `endpoint: :runtime` to use Runtime signing. Local HTTP proxies remain supported when the endpoint is selected explicitly. Custom endpoints using bearer credentials can omit `endpoint`; in that case the default remains Mantle.
 
 ## Authentication
 

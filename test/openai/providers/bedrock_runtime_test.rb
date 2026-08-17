@@ -82,6 +82,59 @@ class OpenAI::Test::BedrockRuntimeProviderTest < Minitest::Test
     assert_equal(ENV.fetch("AWS_BEDROCK_BASE_URL"), client.base_url.to_s)
   end
 
+  def test_bearer_custom_urls_ignore_malformed_ambient_regions
+    ENV["AWS_BEARER_TOKEN_BEDROCK"] = "environment-token"
+    ENV["AWS_BEDROCK_BASE_URL"] = "https://environment.example/openai/v1"
+    custom_url = "https://proxy.example/openai/v1"
+
+    %w[AWS_REGION AWS_DEFAULT_REGION].each do |variable|
+      ENV[variable] = "local"
+
+      runtime_bearer_authentication_options.each do |authentication|
+        explicit_client = OpenAI::Client.new(
+          provider: OpenAI::Providers.bedrock(base_url: custom_url, **authentication)
+        )
+        environment_client = OpenAI::Client.new(
+          provider: OpenAI::Providers.bedrock(**authentication)
+        )
+
+        assert_equal(custom_url, explicit_client.base_url.to_s)
+        assert_equal(ENV.fetch("AWS_BEDROCK_BASE_URL"), environment_client.base_url.to_s)
+      end
+
+      ENV.delete(variable)
+    end
+
+    error = assert_raises(ArgumentError) do
+      OpenAI::Providers.bedrock(region: "local", base_url: custom_url, api_key: "token")
+    end
+    assert_match(/AWS `region` is invalid/, error.message)
+  end
+
+  def test_bearer_canonical_urls_ignore_conflicting_ambient_regions
+    ENV["AWS_REGION"] = "us-west-2"
+    ENV["AWS_BEARER_TOKEN_BEDROCK"] = "environment-token"
+    canonical_url = "https://bedrock-runtime.us-east-1.amazonaws.com/openai/v1"
+    ENV["AWS_BEDROCK_BASE_URL"] = canonical_url
+
+    runtime_bearer_authentication_options.each do |authentication|
+      explicit_client = OpenAI::Client.new(
+        provider: OpenAI::Providers.bedrock(base_url: canonical_url, **authentication)
+      )
+      environment_client = OpenAI::Client.new(
+        provider: OpenAI::Providers.bedrock(**authentication)
+      )
+
+      assert_equal(canonical_url, explicit_client.base_url.to_s)
+      assert_equal(canonical_url, environment_client.base_url.to_s)
+    end
+
+    error = assert_raises(ArgumentError) do
+      OpenAI::Providers.bedrock(region: "us-west-2", base_url: canonical_url, api_key: "token")
+    end
+    assert_match(/region `us-east-1` does not match/, error.message)
+  end
+
   def test_runtime_rejects_insecure_mismatched_or_invalid_configuration
     authentication_options = [
       {api_key: "token"},
@@ -402,6 +455,14 @@ class OpenAI::Test::BedrockRuntimeProviderTest < Minitest::Test
     [
       {api_key: "runtime-token"},
       {access_key_id: "runtime-access-key", secret_access_key: "runtime-secret-key"}
+    ]
+  end
+
+  private def runtime_bearer_authentication_options
+    [
+      {api_key: "runtime-token"},
+      {token_provider: -> { "runtime-token" }},
+      {}
     ]
   end
 
