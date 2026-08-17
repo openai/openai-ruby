@@ -155,7 +155,8 @@ module OpenAI
           ensure
             if pooled_connection.connection.nil?
               close_connection(connection) unless connection.nil?
-              pool.discard_current_connection
+              # Return the empty slot to the pool so a later checkout retries setup.
+              # This also keeps compatibility with connection_pool 2.x.
             end
           end
         end
