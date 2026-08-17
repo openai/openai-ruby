@@ -19,7 +19,8 @@ chat_completion = client.chat.completions.create(
       content: "What's the weather like in Paris today?"
     }
   ],
-  tools: [GetWeather]
+  tools: [GetWeather],
+  tool_choice: {type: :function, function: {name: "GetWeather"}}
 )
 
 chat_completion

@@ -14,8 +14,7 @@ module OpenAI
       )
         if identity_provider_id.to_s.strip.empty?
           raise ArgumentError,
-                "identity_provider_id must not be blank; pass identity_provider_id: " \
-                "or set IDENTITY_PROVIDER_ID"
+                "identity_provider_id must not be blank; pass identity_provider_id: or set IDENTITY_PROVIDER_ID"
         end
 
         if service_account_id.to_s.strip.empty?

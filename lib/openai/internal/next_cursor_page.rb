@@ -83,8 +83,7 @@ module OpenAI
       def inspect
         model = OpenAI::Internal::Type::Converter.inspect(@model, depth: 1)
 
-        "#<#{self.class}[#{model}]:0x#{object_id.to_s(16)} " \
-          "has_more=#{has_more.inspect} next_=#{next_.inspect}>"
+        "#<#{self.class}[#{model}]:0x#{object_id.to_s(16)} has_more=#{has_more.inspect} next_=#{next_.inspect}>"
       end
     end
   end

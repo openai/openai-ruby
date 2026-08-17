@@ -1,68 +1,10 @@
 # frozen_string_literal: true
 
-require_relative "../test_helper"
-
-require "aws-sdk-core"
-require "fileutils"
-require "tmpdir"
+require_relative "bedrock_test_helper"
 
 class OpenAI::Test::BedrockProviderTest < Minitest::Test
   extend Minitest::Serial
-  include WebMock::API
-
-  ENVIRONMENT_VARIABLES = %w[
-    AWS_ACCESS_KEY_ID
-    AWS_BEARER_TOKEN_BEDROCK
-    AWS_BEDROCK_BASE_URL
-    AWS_CONFIG_FILE
-    AWS_DEFAULT_PROFILE
-    AWS_DEFAULT_REGION
-    AWS_EC2_METADATA_DISABLED
-    AWS_PROFILE
-    AWS_REGION
-    AWS_SDK_CONFIG_OPT_OUT
-    AWS_SECRET_ACCESS_KEY
-    AWS_SESSION_TOKEN
-    AWS_SHARED_CREDENTIALS_FILE
-    OPENAI_ADMIN_KEY
-    OPENAI_API_KEY
-    OPENAI_BASE_URL
-    OPENAI_CUSTOM_HEADERS
-    OPENAI_ORG_ID
-    OPENAI_PROJECT_ID
-  ].freeze
-
-  def before_all
-    super
-    WebMock.enable!
-  end
-
-  def setup
-    super
-    @environment = ENVIRONMENT_VARIABLES.to_h { [_1, ENV[_1]] }
-    ENVIRONMENT_VARIABLES.each { ENV.delete(_1) }
-    @aws_dir = Dir.mktmpdir("openai-bedrock-test")
-    ENV["AWS_SHARED_CREDENTIALS_FILE"] = File.join(@aws_dir, "credentials")
-    ENV["AWS_CONFIG_FILE"] = File.join(@aws_dir, "config")
-    ENV["AWS_EC2_METADATA_DISABLED"] = "true"
-    File.write(ENV.fetch("AWS_SHARED_CREDENTIALS_FILE"), "")
-    File.write(ENV.fetch("AWS_CONFIG_FILE"), "")
-    reset_shared_config
-  end
-
-  def teardown
-    Thread.current.thread_variable_set(:time_now, nil)
-    WebMock.reset!
-    FileUtils.rm_rf(@aws_dir)
-    @environment.each { |name, value| value.nil? ? ENV.delete(name) : ENV[name] = value }
-    reset_shared_config
-    super
-  end
-
-  def after_all
-    WebMock.disable!
-    super
-  end
+  include OpenAI::Test::BedrockTestHelper
 
   def test_bearer_provider_owns_endpoint_and_authentication
     stub_request(:get, "https://bedrock-mantle.us-east-1.api.aws/v1/models")
@@ -300,6 +242,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
 
     sigv4_runtime = OpenAI::Internal::Provider.configure(
       OpenAI::Providers.bedrock(
+        endpoint: :mantle,
         region: "us-east-1",
         base_url: "https://gateway.example/openai/v1",
         access_key_id: "access-key",
@@ -310,6 +253,28 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
       bedrock_request("https://gateway.example/openai/v1/models")
     )
     assert_includes(prepared.dig(:headers, "authorization"), "bedrock-mantle/aws4_request")
+  end
+
+  def test_custom_signed_endpoints_default_to_mantle
+    ENV["AWS_BEDROCK_BASE_URL"] = "https://environment.example/openai/v1"
+    custom_endpoints = {
+      "https://environment.example/openai/v1" => {},
+      "https://gateway.example/openai/v1" => {base_url: "https://gateway.example/openai/v1"}
+    }
+
+    custom_endpoints.each do |base_url, options|
+      runtime = OpenAI::Internal::Provider.configure(
+        OpenAI::Providers.bedrock(
+          region: "us-east-1",
+          access_key_id: "access-key",
+          secret_access_key: "secret-key",
+          **options
+        )
+      )
+      prepared = runtime.prepare_request.call(bedrock_request("#{base_url}/models"))
+
+      assert_includes(prepared.dig(:headers, "authorization"), "/us-east-1/bedrock-mantle/aws4_request")
+    end
   end
 
   def test_sigv4_matches_the_shared_fixture
@@ -577,21 +542,14 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
     assert_equal(307, error.status)
     assert_not_requested(:get, target)
 
-    mismatched = OpenAI::Internal::Provider.configure(
+    error = assert_raises(ArgumentError) do
       OpenAI::Providers.bedrock(
         region: "us-east-1",
         base_url: "https://bedrock-mantle.us-west-2.api.aws/v1",
         access_key_id: "access-key",
         secret_access_key: "secret-key"
       )
-    )
-    request = {
-      method: :get,
-      url: URI("https://bedrock-mantle.us-west-2.api.aws/v1/models"),
-      headers: {},
-      body: nil
-    }
-    error = assert_raises(OpenAI::Errors::Error) { mismatched.prepare_request.call(request) }
+    end
     assert_match(/region `us-west-2` does not match.*`us-east-1`/, error.message)
   end
 
@@ -703,13 +661,5 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
       sigv4_runtime.prepare_request.call(bedrock_request.except(:method))
     end
     assert_match(/method/, error.message)
-  end
-
-  private def reset_shared_config
-    Aws.instance_variable_set(:@shared_config, nil)
-  end
-
-  private def bedrock_request(url = "https://bedrock-mantle.us-east-1.api.aws/v1/models")
-    {method: :get, url: URI(url), headers: {}, body: nil}
   end
 end

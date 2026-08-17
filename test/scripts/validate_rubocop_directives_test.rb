@@ -2,6 +2,7 @@
 
 require "minitest/autorun"
 require "fileutils"
+require "open3"
 require "tmpdir"
 
 require_relative "../../scripts/rubocop_directive_guard"
@@ -130,17 +131,38 @@ class ValidateRuboCopDirectivesTest < Minitest::Test
     end
   end
 
-  def test_skips_tracked_sources_missing_from_the_worktree
-    status = Minitest::Mock.new
-    status.expect(:success?, true)
+  def test_validates_source_trees_without_git
+    Dir.mktmpdir do |directory|
+      FileUtils.cp(File.expand_path("../../.rubocop.yml", __dir__), directory)
+      %w[lib/generated.rb vendor/bundle/dependency.rb sorbet/rbi/gems/dependency.rbi].each do |path|
+        full_path = File.join(directory, path)
+        FileUtils.mkdir_p(File.dirname(full_path))
+        File.write(full_path, "# rubocop:disable Lint\n")
+      end
 
-    Open3.stub(:capture2, ["missing.rb\0", status]) do
-      assert_empty(RuboCopDirectiveGuard.tracked_ruby_sources)
+      _stdout, stderr, status = validate_directory(directory)
+      refute(status.success?)
+      assert_equal("lib/generated.rb:1: department-wide rubocop:disable Lint is forbidden\n", stderr)
     end
-    status.verify
+  end
+
+  def test_validates_new_untracked_sources
+    Dir.mktmpdir do |directory|
+      assert(system("git", "init", "--quiet", directory))
+      File.write(File.join(directory, "new.rb"), "# rubocop:disable Lint\n")
+
+      _stdout, stderr, status = validate_directory(directory)
+      refute(status.success?)
+      assert_equal("new.rb:1: department-wide rubocop:disable Lint is forbidden\n", stderr)
+    end
   end
 
   private
+
+  def validate_directory(directory)
+    script = File.expand_path("../../scripts/validate-rubocop-directives", __dir__)
+    Open3.capture3(RbConfig.ruby, script, chdir: directory)
+  end
 
   def violations(body)
     directive = "# rubocop:#{body}\n"

@@ -472,14 +472,7 @@ class LoggingTest < Minitest::Test
     assert_equal(0.0, event.delay)
     assert_equal(429, event.status)
     assert_equal("req_1", event.request_id)
-    assert_equal(
-      {
-        "content-type" => "application/json",
-        "retry-after" => "0",
-        "x-request-id" => "req_1"
-      },
-      event.response.headers
-    )
+    assert_equal({"content-type" => "application/json", "retry-after" => "0", "x-request-id" => "req_1"}, event.response.headers)
     assert_nil(event.error)
     assert_predicate(event, :frozen?)
   end

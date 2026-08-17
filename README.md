@@ -15,7 +15,7 @@ To use this gem, install via Bundler by adding the following to your application
 <!-- x-release-please-start-version -->
 
 ```ruby
-gem "openai", "~> 0.79.0"
+gem "openai", "~> 0.80.0"
 ```
 
 <!-- x-release-please-end -->
@@ -112,7 +112,7 @@ puts(transcription.text)
 image = OpenAI::FilePart.new(Pathname("dog.jpg"), content_type: "image/jpeg")
 edited = openai.images.edit(
   prompt: "make this image look like a painting",
-  model: "gpt-image-1",
+  model: "gpt-image-2",
   size: "1024x1024",
   image: image
 )

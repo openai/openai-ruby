@@ -37,10 +37,16 @@ response = stream.get_final_response
 
 puts
 puts("----- parsed outputs from final response -----")
+parsed_output_received = false
 response
   .output
   .flat_map { _1.content }
   .each do |content|
     # parsed is an instance of `MathResponse`
-    pp(content.parsed)
+    parsed = content.parsed
+    next unless parsed.is_a?(MathResponse)
+
+    parsed_output_received = true
+    pp(parsed)
   end
+abort("The final response did not contain a parsed MathResponse") unless parsed_output_received

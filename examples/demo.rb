@@ -21,7 +21,9 @@ begin
     ]
   )
 
-  pp(completion.choices.first&.message&.content)
+  content = completion.choices.first&.message&.content
+  abort("The standard request completed without content") if content.to_s.strip.empty?
+  pp(content)
 end
 
 begin
@@ -38,9 +40,23 @@ begin
     ]
   )
 
+  streamed_content = String.new
+  terminal_choice_count = 0
   stream.each do |chunk|
     next if chunk.choices.to_a.empty?
 
-    pp(chunk.choices.first&.delta&.content)
+    terminal_choice_count += chunk.choices.count do |choice|
+      case choice[:finish_reason]
+      when String, Symbol then true
+      else false
+      end
+    end
+    content = chunk.choices.first&.delta&.content
+    streamed_content << content.to_s
+    pp(content)
+  end
+  abort("The streaming request completed without content") if streamed_content.strip.empty?
+  if terminal_choice_count.zero?
+    abort("The streaming request ended before a terminal choice was received")
   end
 end

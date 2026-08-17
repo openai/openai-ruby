@@ -79,9 +79,29 @@ $ ./scripts/mock
 $ bundle exec rake test
 ```
 
+### Running examples end-to-end
+
+The live example suite executes every example marked as `covered` in
+`examples/e2e.yml`. It requires `OPENAI_API_KEY`, makes real API requests, and
+writes JSON and Markdown execution reports under `tmp/examples-e2e/` by default.
+
+```bash
+$ bundle exec rake test:examples:e2e
+```
+
+To validate the example inventory without making API requests:
+
+```bash
+$ bundle exec rake test:examples:inventory
+```
+
+Every `examples/**/*.rb` file must be classified as covered or explicitly
+excluded with a reason. In GitHub Actions, live execution is available only
+through the manually dispatched `Examples E2E` workflow.
+
 ## Linting and formatting
 
-This repository uses [rubocop](https://github.com/rubocop/rubocop) for linting and formatting of `*.rb` files; And [syntax_tree](https://github.com/ruby-syntax-tree/syntax_tree) is used for formatting of both `*.rbi` and `*.rbs` files.
+This repository uses [rubocop](https://github.com/rubocop/rubocop) for correctness and security checks. Ruby source formatting is temporarily paused while we switch to rubyfmt. [syntax_tree](https://github.com/ruby-syntax-tree/syntax_tree) continues to format `*.rbi` and `*.rbs` files.
 
 There are two separate type checkers supported by this library: [sorbet](https://github.com/sorbet/sorbet) and [steep](https://github.com/soutaro/steep) are used for verifying `*.rbi` and `*.rbs` files respectively.
 
@@ -91,7 +111,7 @@ To lint and typecheck:
 $ bundle exec rake lint
 ```
 
-To format and fix all lint issues automatically:
+To run the available formatters:
 
 ```bash
 $ bundle exec rake format

@@ -39,12 +39,7 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::Groups::RolesTest 
     assert_pattern do
       response => {
         id: String,
-        assignment_sources:
-          ^(
-            OpenAI::Internal::Type::ArrayOf[
-              OpenAI::Models::Admin::Organization::Projects::Groups::RoleRetrieveResponse::AssignmentSource
-            ]
-          ) | nil,
+        assignment_sources: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::Projects::Groups::RoleRetrieveResponse::AssignmentSource]) | nil,
         created_at: Integer | nil,
         created_by: String | nil,
         created_by_user_obj: ^(OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]) | nil,
@@ -76,12 +71,7 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::Groups::RolesTest 
     assert_pattern do
       row => {
         id: String,
-        assignment_sources:
-          ^(
-            OpenAI::Internal::Type::ArrayOf[
-              OpenAI::Models::Admin::Organization::Projects::Groups::RoleListResponse::AssignmentSource
-            ]
-          ) | nil,
+        assignment_sources: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::Projects::Groups::RoleListResponse::AssignmentSource]) | nil,
         created_at: Integer | nil,
         created_by: String | nil,
         created_by_user_obj: ^(OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]) | nil,

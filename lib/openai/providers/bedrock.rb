@@ -4,8 +4,8 @@ module OpenAI
   module Providers
     # @api private
     module Bedrock
-      SERVICE = "bedrock-mantle"
-      CANONICAL_HOST = /\Abedrock-mantle\.([a-z0-9-]+)\.api\.aws\z/i
+      SERVICES = {mantle: "bedrock-mantle", runtime: "bedrock"}.freeze
+      AWS_REGION_PATTERN = /\A[a-z]{2,8}(?:-[a-z0-9]+)+-\d+\z/
       AUTH_HEADERS = %w[authorization].freeze
       SIGNING_HEADERS = %w[authorization x-amz-content-sha256 x-amz-date x-amz-security-token].freeze
       BEARER_AUTH_MARKER = :openai_bedrock_bearer
@@ -39,6 +39,7 @@ module OpenAI
         attr_reader :name
 
         def initialize(
+          endpoint:,
           region:,
           base_url:,
           bearer_provider:,
@@ -50,6 +51,7 @@ module OpenAI
           default_chain:
         )
           @name = "bedrock"
+          @endpoint = endpoint
           @region = region&.freeze
           @base_url = base_url&.freeze
           @bearer_provider = bearer_provider
@@ -63,14 +65,17 @@ module OpenAI
 
         def configure
           if @bearer_provider
-            base_url = Bedrock.resolve_base_url(@base_url, @region)
+            base_url = Bedrock.resolve_base_url(@base_url, @region, endpoint: @endpoint)
+            Bedrock.validate_canonical_endpoint!(base_url, @endpoint, @region)
             auth = BearerAuth.new(token_provider: @bearer_provider, base_url: base_url)
           else
             Bedrock.load_aws!
             region = @region || Bedrock.profile_region(@profile)
             raise ArgumentError, MISSING_REGION_MESSAGE if region.nil?
+            Bedrock.validate_region!(region)
 
-            base_url = Bedrock.resolve_base_url(@base_url, region)
+            base_url = Bedrock.resolve_base_url(@base_url, region, endpoint: @endpoint)
+            Bedrock.validate_canonical_endpoint!(base_url, @endpoint, region)
             credentials =
               if @access_key_id
                 Aws::Credentials.new(@access_key_id, @secret_access_key, @session_token)
@@ -82,6 +87,7 @@ module OpenAI
                 DefaultCredentialsProvider.new
               end
             auth = SigV4Auth.new(
+              endpoint: @endpoint,
               region: region,
               base_url: base_url,
               credentials_provider: credentials,
@@ -130,12 +136,13 @@ module OpenAI
       end
 
       class SigV4Auth
-        def initialize(region:, base_url:, credentials_provider:, default_chain:)
+        def initialize(endpoint:, region:, base_url:, credentials_provider:, default_chain:)
+          @endpoint = endpoint
           @region = region
           @base_url = URI(base_url)
           @default_chain = default_chain
           @signer = Aws::Sigv4::Signer.new(
-            service: SERVICE,
+            service: SERVICES.fetch(endpoint),
             region: region,
             credentials_provider: credentials_provider
           )
@@ -144,7 +151,7 @@ module OpenAI
         def prepare_request(request)
           url = request.fetch(:url)
           Bedrock.validate_origin!(url, @base_url, action: "sign")
-          Bedrock.validate_endpoint_region!(url, @region)
+          Bedrock.validate_endpoint_region!(url, @region, endpoint: @endpoint)
           body = request[:body]
           unless body.nil? || body.is_a?(String)
             raise OpenAI::Errors::Error, NON_REPLAYABLE_BODY_MESSAGE
@@ -263,10 +270,86 @@ module OpenAI
           raise OpenAI::Errors::Error.new(MISSING_DEPENDENCY_MESSAGE), cause: e
         end
 
-        def resolve_base_url(base_url, region)
+        def resolve_base_url(base_url, region, endpoint:)
           return base_url if base_url
           raise ArgumentError, MISSING_REGION_MESSAGE if region.nil?
-          "https://bedrock-mantle.#{region}.api.aws/v1"
+
+          if endpoint == :runtime
+            suffix, = runtime_dns_suffixes(region)
+            "https://bedrock-runtime.#{region}.#{suffix}/openai/v1"
+          else
+            "https://bedrock-mantle.#{region}.api.aws/v1"
+          end
+        end
+
+        def runtime_dns_suffixes(region)
+          case region
+          when /\Acn-/
+            ["amazonaws.com.cn", "api.amazonwebservices.com.cn"]
+          when /\Aeusc-/
+            ["amazonaws.eu", "api.amazonwebservices.eu"]
+          when /\Aus-iso-/
+            ["c2s.ic.gov", "api.aws.ic.gov"]
+          when /\Aus-isob-/
+            ["sc2s.sgov.gov", "api.aws.scloud"]
+          when /\Aeu-isoe-/
+            ["cloud.adc-e.uk", "api.cloud-aws.adc-e.uk"]
+          when /\Aus-isof-/
+            ["csp.hci.ic.gov", "api.aws.hci.ic.gov"]
+          else
+            ["amazonaws.com", "api.aws"]
+          end
+        end
+
+        def parse_endpoint_hostname(hostname)
+          service, region, *suffix_parts = hostname.delete_suffix(".").downcase.split(".")
+          suffix = suffix_parts.join(".")
+
+          if service == "bedrock-mantle" && region&.match?(/\A[a-z0-9-]+\z/) && suffix == "api.aws"
+            return {endpoint: :mantle, region: region}
+          end
+
+          if %w[bedrock-runtime bedrock-runtime-fips].include?(service) && region &&
+             runtime_dns_suffixes(region).include?(suffix)
+            return {endpoint: :runtime, region: region}
+          end
+
+          nil
+        end
+
+        def validate_canonical_endpoint!(base_url, endpoint, region)
+          uri = URI(base_url)
+          canonical = parse_endpoint_hostname(uri.host)
+          return unless canonical
+
+          unless uri.is_a?(URI::HTTPS)
+            raise ArgumentError, "Canonical Amazon Bedrock endpoints require HTTPS."
+          end
+          if canonical.fetch(:endpoint) != endpoint
+            raise ArgumentError,
+                  "The Bedrock #{canonical.fetch(:endpoint)} hostname does not match the " \
+                  "selected `#{endpoint}` endpoint."
+          end
+          return if region.nil? || canonical.fetch(:region) == region
+
+          raise ArgumentError,
+                "The Bedrock endpoint region `#{canonical.fetch(:region)}` does not match the " \
+                "configured AWS region `#{region}`."
+        end
+
+        def validate_region!(region)
+          return if AWS_REGION_PATTERN.match?(region)
+
+          raise ArgumentError,
+                "The Bedrock AWS `region` is invalid. Use a standard AWS region such as `us-east-1`."
+        end
+
+        def normalize_endpoint(endpoint)
+          return nil if endpoint.nil?
+          return endpoint.to_sym if endpoint == "mantle" || endpoint == "runtime"
+          return endpoint if endpoint == :mantle || endpoint == :runtime
+
+          raise ArgumentError, "The Bedrock `endpoint` must be either `mantle` or `runtime`."
         end
 
         def normalize_base_url(base_url)
@@ -310,9 +393,18 @@ module OpenAI
                 message
         end
 
-        def validate_endpoint_region!(url, region)
-          endpoint_region = CANONICAL_HOST.match(url.host)&.[](1)
-          return if endpoint_region.nil? || endpoint_region == region
+        def validate_endpoint_region!(url, region, endpoint:)
+          canonical = parse_endpoint_hostname(url.host)
+          return unless canonical
+
+          if canonical.fetch(:endpoint) != endpoint
+            raise OpenAI::Errors::Error,
+                  "The Bedrock #{canonical.fetch(:endpoint)} hostname does not match the " \
+                  "selected `#{endpoint}` endpoint."
+          end
+
+          endpoint_region = canonical.fetch(:region)
+          return if endpoint_region == region
           message =
             "The Bedrock endpoint region `#{endpoint_region}` does not match the SigV4 " \
             "region `#{region}`."
@@ -342,16 +434,19 @@ module OpenAI
     end
 
     class << self
-      # Configure the standard OpenAI client for Amazon Bedrock Mantle.
+      # Configure the standard OpenAI client for Amazon Bedrock Mantle or Runtime.
       #
       # Authentication precedence is an explicit bearer or AWS mode, then
       # AWS_BEARER_TOKEN_BEDROCK, then the standard AWS credential chain.
+      #
+      # @param endpoint [String, Symbol, nil] Bedrock endpoint family. Defaults to
+      #   Mantle unless a canonical Runtime `base_url` is supplied.
       #
       # @param region [String, nil] AWS signing region. Defaults to `AWS_REGION`,
       #   `AWS_DEFAULT_REGION`, or the selected profile's configured region.
       #
       # @param base_url [String, nil] Bedrock API root. Defaults to
-      #   `AWS_BEDROCK_BASE_URL` or the regional Bedrock Mantle endpoint.
+      #   `AWS_BEDROCK_BASE_URL` or the selected regional Bedrock endpoint.
       #
       # @param api_key [String, nil] Explicit Bedrock bearer credential. Passing
       #   `nil` explicitly skips the `AWS_BEARER_TOKEN_BEDROCK` fallback.
@@ -374,6 +469,7 @@ module OpenAI
       #
       # @return [OpenAI::Provider]
       def bedrock(
+        endpoint: nil,
         region: nil,
         base_url: OpenAI::Internal::OMIT,
         api_key: OpenAI::Internal::OMIT,
@@ -384,12 +480,12 @@ module OpenAI
         profile: nil,
         credentials_provider: nil
       )
+        normalized_endpoint = Bedrock.normalize_endpoint(endpoint)
         normalized_region = Bedrock.normalize_optional_string(region)
         if !region.nil? && normalized_region.nil?
           raise ArgumentError, "The Bedrock AWS `region` must not be empty."
         end
-        normalized_region ||= Bedrock.normalize_optional_string(ENV["AWS_REGION"]) ||
-                              Bedrock.normalize_optional_string(ENV["AWS_DEFAULT_REGION"])
+        Bedrock.validate_region!(normalized_region) if normalized_region
 
         normalized_profile = Bedrock.normalize_optional_string(profile)
         if !profile.nil? && normalized_profile.nil?
@@ -407,6 +503,10 @@ module OpenAI
             normalized
           end
         configured_base_url = Bedrock.normalize_base_url(configured_base_url) if configured_base_url
+        canonical_endpoint = if configured_base_url
+          Bedrock.parse_endpoint_hostname(URI(configured_base_url).host)
+        end
+        resolved_endpoint = normalized_endpoint || canonical_endpoint&.fetch(:endpoint) || :mantle
 
         has_access_key = !access_key_id.nil?
         has_secret_key = !secret_access_key.nil?
@@ -469,11 +569,22 @@ module OpenAI
             end
           end
 
+        if normalized_region.nil? && (bearer_provider.nil? || configured_base_url.nil?)
+          normalized_region = Bedrock.normalize_optional_string(ENV["AWS_REGION"]) ||
+                              Bedrock.normalize_optional_string(ENV["AWS_DEFAULT_REGION"])
+          Bedrock.validate_region!(normalized_region) if normalized_region
+        end
+
+        if configured_base_url
+          Bedrock.validate_canonical_endpoint!(configured_base_url, resolved_endpoint, normalized_region)
+        end
+
         if bearer_provider && configured_base_url.nil? && normalized_region.nil?
           raise ArgumentError, Bedrock::MISSING_REGION_MESSAGE
         end
 
         definition = Bedrock::Definition.new(
+          endpoint: resolved_endpoint,
           region: normalized_region,
           base_url: configured_base_url,
           bearer_provider: bearer_provider,

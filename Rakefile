@@ -30,7 +30,7 @@ multitask(:"docs:preview") do
 end
 
 desc("Run test suites; use `TEST=path/to/test.rb` to run a specific test file")
-multitask(:test) do
+multitask(test: [:"test:examples:inventory"]) do
   rb =
     FileList[ENV.fetch("TEST", "./test/**/*_test.rb")]
     .map { "require_relative(#{_1.dump});" }
@@ -70,12 +70,9 @@ Rake::Task[:"lint:rubocop"].enhance([:"lint:rubocop_directives"])
 
 norm_lines = %w[tr -- \n \0].shelljoin
 
-desc("Format `*.rb`")
+desc("Format `*.rb` (paused until rubyfmt is installed)")
 multitask(:"format:rb") do
-  # while `syntax_tree` is much faster than `rubocop`, `rubocop` is the only formatter with full syntax support
-  files = filtered["rb", %w[./lib ./test ./examples]]
-  fmt = xargs + %w[rubocop --fail-level F --autocorrect --format simple --]
-  sh("#{files.shelljoin} | #{norm_lines} | #{fmt.shelljoin}")
+  puts("Ruby source formatting is paused until the rubyfmt cutover.")
 end
 
 desc("Format `*.rbi`")
@@ -150,6 +147,16 @@ end
 
 desc("Typecheck and validate everything")
 multitask(typecheck: [:"typecheck:sorbet", :"validate:rbs"])
+
+desc("Validate the Ruby example E2E inventory without making live requests")
+task("test:examples:inventory") do
+  ruby(*%w[scripts/examples-e2e.rb --inventory-only])
+end
+
+desc("Run covered Ruby examples end-to-end against the live API")
+task("test:examples:e2e") do
+  ruby(*%w[scripts/examples-e2e.rb])
+end
 
 desc("Lint and typecheck")
 multitask(lint: [:"lint:rubocop", :"lint:rubocop_directives", :typecheck])

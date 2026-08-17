@@ -15,6 +15,7 @@ stream = client.chat.completions.stream(
   ]
 )
 
+logprobs_received = false
 stream.each do |event|
   case event
   when OpenAI::Streaming::ChatContentDeltaEvent
@@ -27,6 +28,10 @@ stream.each do |event|
     alts = last.top_logprobs.map { |t| "#{t.token}=#{format('%.2f', t.logprob)}" }.join(", ")
     puts("\nlogprobs: [#{alts}]")
   when OpenAI::Streaming::ChatLogprobsContentDoneEvent
+    abort("The logprobs stream completed without tokens") if event.content.empty?
+
+    logprobs_received = true
     puts("\n--- logprobs collection finished (#{event.content.length} tokens) ---")
   end
 end
+abort("The logprobs stream ended before completion") unless logprobs_received

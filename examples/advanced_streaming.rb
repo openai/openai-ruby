@@ -31,6 +31,16 @@ begin
     end
 
   pp(all_choices)
+  abort("The eager stream completed without choices") if all_choices.empty?
+  eager_stream_finished = all_choices.any? do |choice|
+    case choice[:finish_reason]
+    when String, Symbol then true
+    else false
+    end
+  end
+  unless eager_stream_finished
+    abort("The eager stream ended before a terminal choice was received")
+  end
 
   # once the stream has been consumed, it will become "empty"
   pp("this will print an empty array")
@@ -67,8 +77,18 @@ begin
 
   # method calls that do not return another `enumerable` will consume the intermediary stream
   #   and perform cleanup
+  lazy_choice_count = 0
+  lazy_terminal_choice_count = 0
   stream_of_choices.each do |choice|
+    lazy_choice_count += 1
+    case choice[:finish_reason]
+    when String, Symbol then lazy_terminal_choice_count += 1
+    end
     pp(choice)
+  end
+  abort("The lazy stream completed without choices") if lazy_choice_count.zero?
+  if lazy_terminal_choice_count.zero?
+    abort("The lazy stream ended before a terminal choice was received")
   end
 
   # at this point the stream has been consumed already, so it will return an empty array
