@@ -145,7 +145,7 @@ module OpenAI
 
           if choice.finish_reason
             choice_snapshot.finish_reason = choice.finish_reason
-            handle_finish_reason(choice.finish_reason)
+            handle_finish_reason(choice.finish_reason, completion_snapshot)
           end
 
           parse_tool_calls!(choice.delta.tool_calls, choice_snapshot.message.tool_calls)
@@ -273,12 +273,12 @@ module OpenAI
           events
         end
 
-        def handle_finish_reason(finish_reason)
+        def handle_finish_reason(finish_reason, completion_snapshot)
           return unless parseable_input?
 
           case finish_reason
           when :length
-            raise LengthFinishReasonError.new(completion: @chat_completion)
+            raise LengthFinishReasonError.new(completion: completion_snapshot)
           when :content_filter
             raise ContentFilterFinishReasonError.new
           end
