@@ -16,6 +16,7 @@ module OpenAI
           def initialize(connection, url:)
             @connection = connection
             @url = url
+            @aborted = false
           end
 
           def read
@@ -37,7 +38,18 @@ module OpenAI
             raise OpenAI::Errors::RealtimeConnectionError.new(url: @url, cause: e)
           end
 
-          def closed? = @connection.closed?
+          # @api private
+          def abort
+            @connection.framer.close
+            @aborted = true
+          rescue StandardError => e
+            raise OpenAI::Errors::RealtimeConnectionError.new(url: @url, cause: e)
+          end
+
+          # @api private
+          def aborted? = @aborted
+
+          def closed? = @aborted || @connection.closed?
         end
 
         def open(url:, headers:, timeout:, **endpoint_options)
@@ -63,16 +75,23 @@ module OpenAI
           ::Kernel.Sync do
             client = ::Async::WebSocket::Client.open(endpoint)
             connection = nil
+            socket = nil
             begin
               connection = negotiate(client, endpoint, headers: headers, timeout: timeout)
+              socket = Socket.new(connection, url: url)
               begin
-                yield(Socket.new(connection, url: url))
+                yield(socket)
               rescue StandardError => e
                 block_error = e
                 raise
               end
             ensure
-              close_resources(connection, client, pending_error: $ERROR_INFO)
+              close_resources(
+                connection,
+                client,
+                connection_aborted: socket&.aborted?,
+                pending_error: $ERROR_INFO
+              )
             end
           end
         rescue OpenAI::Errors::RealtimeConnectionError
@@ -107,9 +126,11 @@ module OpenAI
           context
         end
 
-        private def close_resources(connection, client, pending_error:)
+        private def close_resources(connection, client, connection_aborted:, pending_error:)
           cleanup_error = nil
-          [connection, client].compact.each do |resource|
+          resources = [client]
+          resources.unshift(connection) unless connection_aborted
+          resources.compact.each do |resource|
             resource.close
           rescue StandardError => e
             cleanup_error ||= e

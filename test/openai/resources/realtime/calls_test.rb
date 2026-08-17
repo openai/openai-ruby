@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "../../test_helper"
+require "async/queue"
 
 class OpenAI::Test::Resources::Realtime::CallsTest < OpenAI::Test::ResourceTest
   class CapturingLogger
@@ -72,6 +73,26 @@ class OpenAI::Test::Resources::Realtime::CallsTest < OpenAI::Test::ResourceTest
 
       yield("partial-answer")
       raise IOError, "SDP read failed"
+    end
+
+    def close = @closed = true
+  end
+
+  class BlockingBody
+    include Enumerable
+
+    attr_reader :closed
+
+    def initialize(started)
+      @started = started
+      @closed = false
+    end
+
+    def each
+      return enum_for(__method__) unless block_given?
+
+      @started.enqueue(true)
+      Kernel.sleep(3_600)
     end
 
     def close = @closed = true
@@ -262,7 +283,8 @@ class OpenAI::Test::Resources::Realtime::CallsTest < OpenAI::Test::ResourceTest
         sdp: "offer-sdp",
         request_options: {
           extra_headers: {"x-routing-key" => "tenant_123"},
-          extra_query: {"route" => "primary"}
+          extra_query: {"route" => "primary"},
+          timeout: 0.125
         }
       )
     end
@@ -281,7 +303,41 @@ class OpenAI::Test::Resources::Realtime::CallsTest < OpenAI::Test::ResourceTest
       ["tenant_123"] * 3,
       http_client.requests.map { _1.headers.fetch("x-routing-key") }
     )
+    assert_equal([0.125] * 3, http_client.requests.map(&:timeout))
     assert(failing_body.closed)
+  end
+
+  def test_create_hangs_up_an_allocated_call_when_the_async_task_is_cancelled
+    started = Async::Queue.new
+    blocking_body = BlockingBody.new(started)
+    http_client = SequenceHTTPClient.new(
+      OpenAI::HTTPClient::Response.new(
+        status: 201,
+        headers: {
+          "content-type" => "application/sdp",
+          "location" => "/v1/realtime/calls/rtc_cancelled"
+        },
+        body: blocking_body
+      ),
+      OpenAI::HTTPClient::Response.new(status: 200, headers: {}, body: "")
+    )
+    client = OpenAI::Client.new(
+      api_key: "test-key",
+      base_url: "https://example.com/v1",
+      http_client: http_client
+    )
+
+    Sync do |task|
+      create = task.async { client.realtime.calls.create(sdp: "offer-sdp") }
+      started.dequeue
+      create.stop
+    end
+
+    assert_equal(
+      ["/v1/realtime/calls", "/v1/realtime/calls/rtc_cancelled/hangup"],
+      http_client.requests.map { _1.url.path }
+    )
+    assert(blocking_body.closed)
   end
 
   def test_accept_required_params

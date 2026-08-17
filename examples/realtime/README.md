@@ -6,10 +6,10 @@ They default to `gpt-realtime-2.1`; override `OPENAI_REALTIME_MODEL` when needed
 ## Browser voice conversation (recommended)
 
 For natural hands-free conversation, use the WebRTC example. Ruby keeps the
-standard API key private, accepts the browser's SDP offer, configures the
-Realtime call, and returns the SDP answer. The browser owns the media peer and
-requests acoustic echo cancellation, noise suppression, and automatic gain
-control.
+standard API key private and mints a short-lived client secret containing the
+Realtime session configuration. The browser uses that secret to negotiate SDP
+directly with OpenAI, owns the media peer, and requests acoustic echo
+cancellation, noise suppression, and automatic gain control.
 
 ```sh
 bundle exec ruby examples/realtime/webrtc_conversation.rb
@@ -17,26 +17,20 @@ bundle exec ruby examples/realtime/webrtc_conversation.rb
 
 Open `http://127.0.0.1:4567`, click **Start conversation**, and allow microphone
 access. Talk normally and speak over the model to interrupt it. Click **Stop**
-to close the peer and ask Ruby to hang up the call. No API key is sent to the
-browser. Override the port with `REALTIME_DEMO_PORT`.
+to close the peer. The standard API key is never sent to the browser. Override
+the port with `REALTIME_DEMO_PORT`.
 
 The demo binds only to `127.0.0.1` or `::1` and checks both `Host` and `Origin`
-before creating or hanging up a paid call. This keeps the local API-key-backed
-control plane out of reach of DNS rebinding and other origins; use an
-authenticated application server rather than exposing this demonstration on a
-network interface.
+before minting a client secret. This keeps the local API-key-backed credential
+endpoint out of reach of DNS rebinding and other origins; use an authenticated
+application server rather than exposing this demonstration on a network
+interface.
 
 A transient WebRTC `disconnected` state keeps the peer alive while the browser
 attempts recovery. A terminal `failed` state stops the microphone and peer
-immediately and asks the Ruby backend to hang up the call.
-If the hangup request fails, the browser retains the call ID, disables starting
-a replacement call, and changes **Stop** to **Retry hangup**. It also keeps the
-ID available to the page-exit beacon until the backend confirms cleanup. The
-Ruby endpoint refuses to return an SDP answer without a recoverable call ID and
-acknowledges a retry for a recently completed, previously owned call without
-issuing a second API hangup.
-Pressing Control-C in the Ruby process also attempts to hang up every call still
-tracked by the local control plane before the example exits.
+immediately. Because Ruby never allocates or tracks the browser's call, a browser
+disconnect while the token response is being delivered cannot orphan a
+server-owned call.
 
 ## WebSocket microphone loop (advanced)
 
@@ -232,10 +226,11 @@ stderr.
 bundle exec ruby examples/realtime/webrtc_call.rb < offer.sdp > answer.sdp
 ```
 
-The recommended `webrtc_conversation.rb` example above exercises this exchange
-end to end with a real `RTCPeerConnection`. `webrtc_call.rb` remains a minimal
-stdin/stdout building block for integrating the same SDK call into another web
-framework.
+The recommended `webrtc_conversation.rb` instead demonstrates the preferred
+browser path: Ruby creates a short-lived client secret and the browser exchanges
+SDP directly with OpenAI. `webrtc_call.rb` remains a minimal stdin/stdout
+building block for a trusted server integration that deliberately owns call
+creation and preserves the returned call ID.
 
 ## Sideband control
 

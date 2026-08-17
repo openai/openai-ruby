@@ -372,9 +372,9 @@ class OpenAI::Test::RealtimeExamplesTest < OpenAI::Test::RealtimeExamplesTestCas
   end
 
   def test_webrtc_conversation_serves_a_browser_peer_with_audio_processing
-    calls = RecordingWebRTCCalls.new
+    client_secrets = RecordingClientSecrets.new
     app = OpenAI::Examples::Realtime::WebRTCConversation::App.new(
-      client: RecordingClient.new(Data.define(:calls).new(calls))
+      client: RecordingClient.new(Data.define(:client_secrets).new(client_secrets))
     )
     response = HTTPResponse.new
 
@@ -396,17 +396,17 @@ class OpenAI::Test::RealtimeExamplesTest < OpenAI::Test::RealtimeExamplesTestCas
     assert_includes(response.body, "autoGainControl: true")
     assert_includes(response.body, 'stopConversation({status: "Connection failed"})')
     assert_includes(response.body, "Connection interrupted; reconnecting…".b)
-    assert_includes(response.body, "if (!response.ok) throw new Error")
-    assert_includes(response.body, "callID = activeCallID;")
-    assert_includes(response.body, "Retry hangup")
-    refute_includes(response.body, "catch(() => undefined)")
+    assert_includes(response.body, 'fetch("/token", {method: "POST"})')
+    assert_includes(response.body, 'fetch("https://api.openai.com/v1/realtime/calls"')
+    assert_includes(response.body, '"Authorization": `Bearer ${token.value}`')
+    refute_includes(response.body, "/hangup")
     refute_includes(response.body, "OPENAI_API_KEY")
   end
 
-  def test_webrtc_conversation_negotiates_and_hangs_up_through_ruby
-    calls = RecordingWebRTCCalls.new
+  def test_webrtc_conversation_mints_a_short_lived_browser_secret
+    client_secrets = RecordingClientSecrets.new
     app = OpenAI::Examples::Realtime::WebRTCConversation::App.new(
-      client: RecordingClient.new(Data.define(:calls).new(calls)),
+      client: RecordingClient.new(Data.define(:client_secrets).new(client_secrets)),
       html: "test"
     )
     response = HTTPResponse.new
@@ -414,121 +414,47 @@ class OpenAI::Test::RealtimeExamplesTest < OpenAI::Test::RealtimeExamplesTestCas
     app.handle(
       HTTPRequest.new(
         request_method: "POST",
-        path: "/session",
-        body: "v=0\r\nt=0 0\r\n",
-        headers: {**WEBRTC_HEADERS, "content-type" => "application/sdp"}
+        path: "/token",
+        body: "",
+        headers: WEBRTC_HEADERS
       ),
       response
     )
 
     assert_equal(201, response.status)
-    assert_equal("answer-sdp", response.body)
-    assert_equal("rtc_example", response.headers.fetch("X-OpenAI-Call-ID"))
-    assert_equal("v=0\r\nt=0 0\r\n", calls.creates.fetch(0).fetch(:sdp))
-    session = calls.creates.fetch(0).fetch(:session)
+    assert_equal("application/json", response.headers.fetch("Content-Type"))
+    assert_equal({"value" => "ek_test", "expires_at" => 1_750_000_000}, JSON.parse(response.body))
+    session = client_secrets.creates.fetch(0).fetch(:session)
     assert_equal("gpt-realtime-2.1", session.fetch(:model))
     assert_equal(true, session.dig(:audio, :input, :turn_detection, :interrupt_response))
-
-    hangup_response = HTTPResponse.new
-    app.handle(
-      HTTPRequest.new(
-        request_method: "POST",
-        path: "/hangup",
-        body: "rtc_example",
-        headers: WEBRTC_HEADERS
-      ),
-      hangup_response
-    )
-
-    assert_equal(204, hangup_response.status)
-    assert_equal(["rtc_example"], calls.hangups)
   end
 
-  def test_webrtc_conversation_hangs_up_every_tracked_call_during_shutdown
-    calls = RecordingWebRTCCalls.new
-    calls.call_ids = %w[rtc_first rtc_second]
+  def test_webrtc_conversation_does_not_proxy_sdp
+    client_secrets = RecordingClientSecrets.new
     app = OpenAI::Examples::Realtime::WebRTCConversation::App.new(
-      client: RecordingClient.new(Data.define(:calls).new(calls)),
-      html: "test"
-    )
-    request = HTTPRequest.new(
-      request_method: "POST",
-      path: "/session",
-      body: "v=0\r\nt=0 0\r\n",
-      headers: {**WEBRTC_HEADERS, "content-type" => "application/sdp"}
-    )
-    2.times { app.handle(request, HTTPResponse.new) }
-
-    app.shutdown
-
-    assert_equal(%w[rtc_first rtc_second], calls.hangups)
-  end
-
-  def test_webrtc_conversation_rejects_non_sdp_requests
-    calls = RecordingWebRTCCalls.new
-    app = OpenAI::Examples::Realtime::WebRTCConversation::App.new(
-      client: RecordingClient.new(Data.define(:calls).new(calls)),
+      client: RecordingClient.new(Data.define(:client_secrets).new(client_secrets)),
       html: "test"
     )
     response = HTTPResponse.new
 
-    app.handle(
-      HTTPRequest.new(
-        request_method: "POST",
-        path: "/session",
-        body: "not sdp",
-        headers: {**WEBRTC_HEADERS, "content-type" => "text/plain"}
-      ),
-      response
-    )
-
-    assert_equal(400, response.status)
-    assert_empty(calls.creates)
-  end
-
-  def test_webrtc_conversation_treats_an_already_closed_call_as_hung_up
-    calls = RecordingWebRTCCalls.new
-    calls.hangup_error = OpenAI::Errors::NotFoundError.new(
-      url: URI("https://api.openai.com/v1/realtime/calls/rtc_example/hangup"),
-      status: 404,
-      headers: {},
-      body: {},
-      request: nil,
-      response: nil
-    )
-    app = OpenAI::Examples::Realtime::WebRTCConversation::App.new(
-      client: RecordingClient.new(Data.define(:calls).new(calls)),
-      html: "test"
-    )
     app.handle(
       HTTPRequest.new(
         request_method: "POST",
         path: "/session",
         body: "v=0\r\nt=0 0\r\n",
-        headers: {**WEBRTC_HEADERS, "content-type" => "application/sdp"}
-      ),
-      HTTPResponse.new
-    )
-    response = HTTPResponse.new
-
-    app.handle(
-      HTTPRequest.new(
-        request_method: "POST",
-        path: "/hangup",
-        body: "rtc_example",
         headers: WEBRTC_HEADERS
       ),
       response
     )
 
-    assert_equal(204, response.status)
-    assert_equal(["rtc_example"], calls.hangups)
+    assert_equal(404, response.status)
+    assert_empty(client_secrets.creates)
   end
 
-  def test_webrtc_conversation_rejects_untrusted_hosts_and_origins_before_creating_calls
-    calls = RecordingWebRTCCalls.new
+  def test_webrtc_conversation_rejects_untrusted_hosts_and_origins_before_minting_secrets
+    client_secrets = RecordingClientSecrets.new
     app = OpenAI::Examples::Realtime::WebRTCConversation::App.new(
-      client: RecordingClient.new(Data.define(:calls).new(calls)),
+      client: RecordingClient.new(Data.define(:client_secrets).new(client_secrets)),
       origin: WEBRTC_ORIGIN,
       html: "test"
     )
@@ -543,9 +469,9 @@ class OpenAI::Test::RealtimeExamplesTest < OpenAI::Test::RealtimeExamplesTestCas
       app.handle(
         HTTPRequest.new(
           request_method: "POST",
-          path: "/session",
-          body: "v=0\r\nt=0 0\r\n",
-          headers: {**headers, "content-type" => "application/sdp"}
+          path: "/token",
+          body: "",
+          headers: headers
         ),
         response
       )
@@ -553,39 +479,7 @@ class OpenAI::Test::RealtimeExamplesTest < OpenAI::Test::RealtimeExamplesTestCas
       assert_equal(403, response.status)
       assert_equal("Forbidden\n", response.body)
     end
-    assert_empty(calls.creates)
-  end
-
-  def test_webrtc_conversation_protects_hangup_with_the_same_origin_check
-    calls = RecordingWebRTCCalls.new
-    app = OpenAI::Examples::Realtime::WebRTCConversation::App.new(
-      client: RecordingClient.new(Data.define(:calls).new(calls)),
-      origin: WEBRTC_ORIGIN,
-      html: "test"
-    )
-    app.handle(
-      HTTPRequest.new(
-        request_method: "POST",
-        path: "/session",
-        body: "v=0\r\nt=0 0\r\n",
-        headers: {**WEBRTC_HEADERS, "content-type" => "application/sdp"}
-      ),
-      HTTPResponse.new
-    )
-    response = HTTPResponse.new
-
-    app.handle(
-      HTTPRequest.new(
-        request_method: "POST",
-        path: "/hangup",
-        body: "rtc_example",
-        headers: {"host" => "127.0.0.1:4567", "origin" => "https://attacker.example"}
-      ),
-      response
-    )
-
-    assert_equal(403, response.status)
-    assert_empty(calls.hangups)
+    assert_empty(client_secrets.creates)
   end
 
   def test_webrtc_conversation_only_binds_to_explicit_loopback_addresses
@@ -607,7 +501,7 @@ class OpenAI::Test::RealtimeExamplesTest < OpenAI::Test::RealtimeExamplesTestCas
     assert_includes(error.message, "loopback")
 
     ipv6_app = OpenAI::Examples::Realtime::WebRTCConversation::App.new(
-      client: RecordingClient.new(Data.define(:calls).new(RecordingWebRTCCalls.new)),
+      client: RecordingClient.new(Data.define(:client_secrets).new(RecordingClientSecrets.new)),
       origin: "http://[::1]:4567",
       html: "test"
     )

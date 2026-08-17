@@ -13,6 +13,8 @@ module OpenAI
         def receive_raw: -> String?
         def send_raw: (String data) -> nil
         def close: (?code: Integer, ?reason: String) -> nil
+        # @api private
+        def abort: -> nil
         def closed?: -> bool
       end
     end

@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require "async"
+require "async/barrier"
 require_relative "../../lib/openai"
 require_relative "event_stream"
 
@@ -42,43 +43,42 @@ module OpenAI
               connection.input_audio_buffer.append_bytes(chunk)
             end
           end
-        ensure
-          close_session(connection, preserve_error: !$ERROR_INFO.nil?)
-        end
-
-        def close_session(connection, preserve_error:)
-          connection.session.close
-        rescue StandardError
-          raise unless preserve_error
         end
 
         def exchange(connection, input_path:, audio_output:, transcript_output:)
-          uploader = nil
-          reader = Async do
+          barrier = Async::Barrier.new
+          reader = barrier.async do
             stream(
               connection,
               audio_output: audio_output,
               transcript_output: transcript_output
             )
-            nil
+            [:reader, nil]
           rescue StandardError => e
-            uploader&.stop
-            e
+            [:reader, e]
           end
           if reader.finished?
-            reader_error = reader.wait
-            raise reader_error if reader_error
+            _result, error = reader.wait
+            raise error if error
 
             return
           end
 
-          uploader = Async { write_input(connection, input_path) }
-          uploader.wait
-          reader_error = reader.wait
-          raise reader_error if reader_error
+          barrier.async do
+            write_input(connection, input_path)
+            connection.session.close
+            [:uploader, nil]
+          rescue StandardError => e
+            [:uploader, e]
+          end
+          barrier.wait do |task|
+            result, error = task.wait
+            raise error if error
+
+            break if result == :reader
+          end
         ensure
-          uploader&.stop
-          reader&.stop
+          barrier&.stop
         end
 
         def run(client:, model:, input_path:, output_path:, target_language:, transcript_output: $stdout)

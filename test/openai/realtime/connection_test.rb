@@ -10,6 +10,7 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
       @reads = reads
       @writes = []
       @closed = false
+      @aborted = false
     end
 
     def read = @reads.shift
@@ -20,6 +21,13 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
       @closed = true
       @close_args = {code: code, reason: reason}
     end
+
+    def abort
+      @closed = true
+      @aborted = true
+    end
+
+    def aborted? = @aborted
   end
 
   class FakeTransport
@@ -489,7 +497,7 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
     end
   end
 
-  def test_connection_closes_when_the_block_raises
+  def test_connection_aborts_when_the_block_raises
     socket = FakeSocket.new
     transport = FakeTransport.new(socket)
 
@@ -499,7 +507,8 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
       end
     end
 
-    assert(socket.closed?)
+    assert_predicate(socket, :aborted?)
+    assert_nil(socket.close_args)
   end
 
   def test_application_error_wins_when_cleanup_also_fails

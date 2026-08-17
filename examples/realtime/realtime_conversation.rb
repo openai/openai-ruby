@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require "async"
+require "async/barrier"
 require "timeout"
 require_relative "../../lib/openai"
 require_relative "event_stream"
@@ -433,15 +434,14 @@ module OpenAI
           playback = AudioPlayback.new(speaker)
           outbound = OutboundWriter.new(connection)
 
-          writer = Async do
+          barrier = Async::Barrier.new
+          barrier.async do
             outbound.run
-            nil
+            [:writer, nil]
           rescue StandardError => e
-            e
-          ensure
-            microphone.stop
+            [:writer, e]
           end
-          receiver = Async do
+          barrier.async do
             stream_events(
               connection,
               microphone: microphone,
@@ -450,21 +450,27 @@ module OpenAI
               output: output,
               stop_after: stop_after
             )
+            [:receiver, nil]
+          rescue StandardError => e
+            [:receiver, e]
           end
-          sender = Async { forward_microphone(outbound, microphone) }
-          sender.wait
-          outbound.close
-          writer_error = writer.wait
-          raise writer_error if writer_error
+          barrier.async do
+            forward_microphone(outbound, microphone)
+            [:sender, nil]
+          rescue StandardError => e
+            [:sender, e]
+          end
+          barrier.wait do |task|
+            result, error = task.wait
+            raise error if error
 
-          receiver.wait
+            outbound.close if result == :sender
+          end
         ensure
           microphone.stop
           outbound&.close
+          barrier&.stop
           playback&.close || speaker.close
-          sender&.stop
-          receiver&.stop
-          writer&.stop
         end
 
         def run(

@@ -281,7 +281,7 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     assert_predicate(client, :closed)
   end
 
-  def test_default_transport_preserves_block_errors_when_all_cleanup_fails
+  def test_default_transport_preserves_block_errors_when_fallback_cleanup_fails
     connection = FailingCloseSynchronousConnection.new
     transport_client = FailingCloseSynchronousClient.new(connection)
     sdk_client = OpenAI::Client.new(
@@ -298,7 +298,7 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     end
 
     assert_equal("application failed", error.message)
-    assert_equal(2, connection.close_count)
+    assert_equal(1, connection.close_count)
     assert_equal(1, transport_client.close_count)
     assert_predicate(connection, :closed?)
     assert_predicate(transport_client, :closed)
@@ -346,6 +346,9 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
         )
       )
       connection.flush
+    rescue EOFError
+      # Exceptional client-block exits hard-close without a WebSocket close frame.
+      nil
     end
     server = Async::HTTP::Server.new(websocket, endpoint)
 

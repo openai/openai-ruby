@@ -73,7 +73,11 @@ module OpenAI
           ensure
             pending_error = $ERROR_INFO
             begin
-              connection.close unless connection.closed?
+              if pending_error
+                connection.abort unless connection.closed?
+              else
+                connection.close unless connection.closed?
+              end
             rescue StandardError
               raise if pending_error.nil?
             end

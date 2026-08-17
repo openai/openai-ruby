@@ -93,7 +93,6 @@
       let peerConnection;
       let dataChannel;
       let microphoneStream;
-      let callID;
       let transcriptLine;
 
       function setStatus(message) {
@@ -174,24 +173,30 @@
           dataChannel.addEventListener("open", () => setStatus("Listening…"));
 
           await peerConnection.setLocalDescription(await peerConnection.createOffer());
-          const response = await fetch("/session", {
+          const tokenResponse = await fetch("/token", {method: "POST"});
+          if (!tokenResponse.ok) throw new Error(await tokenResponse.text());
+          const token = await tokenResponse.json();
+          if (!token.value) throw new Error("Realtime client secret was missing");
+
+          const response = await fetch("https://api.openai.com/v1/realtime/calls", {
             method: "POST",
-            headers: {"Content-Type": "application/sdp"},
+            headers: {
+              "Authorization": `Bearer ${token.value}`,
+              "Content-Type": "application/sdp"
+            },
             body: peerConnection.localDescription.sdp
           });
           if (!response.ok) throw new Error(await response.text());
 
-          callID = response.headers.get("X-OpenAI-Call-ID");
           await peerConnection.setRemoteDescription({type: "answer", sdp: await response.text()});
           stopButton.disabled = false;
         } catch (error) {
-          const stopped = await stopConversation();
-          if (stopped) setStatus(error.message.trim() || "Unable to start the conversation");
+          stopConversation();
+          setStatus(error.message.trim() || "Unable to start the conversation");
         }
       }
 
-      async function stopConversation({hangup = true, status = "Stopped"} = {}) {
-        const activeCallID = callID;
+      function stopConversation({status = "Stopped"} = {}) {
         dataChannel?.close();
         peerConnection?.close();
         microphoneStream?.getTracks().forEach((track) => track.stop());
@@ -200,38 +205,15 @@
         peerConnection = undefined;
         microphoneStream = undefined;
         transcriptLine = undefined;
-        startButton.disabled = Boolean(hangup && activeCallID);
+        startButton.disabled = false;
         stopButton.disabled = true;
-        stopButton.textContent = "Stop";
         mediaElement.textContent = "";
         setStatus(status);
-
-        if (hangup && activeCallID) {
-          try {
-            const response = await fetch("/hangup", {method: "POST", body: activeCallID});
-            if (!response.ok) throw new Error(await response.text());
-
-            if (callID === activeCallID) callID = undefined;
-            startButton.disabled = false;
-          } catch (error) {
-            callID = activeCallID;
-            startButton.disabled = true;
-            stopButton.disabled = false;
-            stopButton.textContent = "Retry hangup";
-            setStatus(`Local media stopped; hangup failed. ${error.message.trim() || "Try again."}`);
-            return false;
-          }
-        } else {
-          callID = undefined;
-          startButton.disabled = false;
-        }
-        return true;
       }
 
       startButton.addEventListener("click", startConversation);
       stopButton.addEventListener("click", () => stopConversation());
       window.addEventListener("pagehide", () => {
-        if (callID) navigator.sendBeacon("/hangup", callID);
         microphoneStream?.getTracks().forEach((track) => track.stop());
         peerConnection?.close();
       });

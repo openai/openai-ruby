@@ -100,6 +100,16 @@ module OpenAI
         nil
       end
 
+      # Abort without waiting for the WebSocket close handshake.
+      #
+      # @api private
+      def abort
+        return if closed?
+
+        @socket.abort
+        nil
+      end
+
       # @return [Boolean]
       def closed? = @socket.closed?
 

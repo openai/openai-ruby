@@ -31,6 +31,11 @@ module OpenAI
         def close(code: 1000, reason: "")
         end
 
+        # @api private
+        sig { void }
+        def abort
+        end
+
         sig { returns(T::Boolean) }
         def closed?
         end

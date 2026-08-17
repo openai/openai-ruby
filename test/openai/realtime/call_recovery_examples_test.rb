@@ -3,71 +3,93 @@
 require_relative "examples_test_case"
 require_relative "../../../examples/realtime/sip"
 require_relative "../../../examples/realtime/webrtc_conversation"
+require "socket"
+require "timeout"
+require "webrick"
 
 class OpenAI::Test::RealtimeCallRecoveryExamplesTest < OpenAI::Test::RealtimeExamplesTestCase
+  extend Minitest::Serial
+
   WEBRTC_HEADERS = {
     "host" => "127.0.0.1:4567",
     "origin" => "http://127.0.0.1:4567"
   }.freeze
 
-  def test_webrtc_conversation_requires_a_call_id_before_returning_sdp
-    calls = RecordingWebRTCCalls.new
-    calls.call_ids = [nil]
-    app = OpenAI::Examples::Realtime::WebRTCConversation::App.new(
-      client: RecordingClient.new(Data.define(:calls).new(calls)),
-      html: "test"
-    )
-    response = HTTPResponse.new
+  class BlockingClientSecrets
+    Secret = Data.define(:value, :expires_at)
 
-    _stdout, _stderr = capture_io do
-      app.handle(
-        HTTPRequest.new(
-          request_method: "POST",
-          path: "/session",
-          body: "v=0\r\nt=0 0\r\n",
-          headers: {**WEBRTC_HEADERS, "content-type" => "application/sdp"}
-        ),
-        response
-      )
+    attr_reader :creates
+
+    def initialize
+      @creates = []
+      @started = Thread::Queue.new
+      @release = Thread::Queue.new
     end
 
-    assert_equal(502, response.status)
-    assert_equal("Realtime request failed\n", response.body)
-    refute(response.headers.key?("X-OpenAI-Call-ID"))
-    assert_empty(calls.hangups)
+    def create(**params)
+      @creates << params
+      @started << true
+      @release.pop
+      Secret.new(value: "ek_test", expires_at: Time.now.to_i + 60)
+    end
+
+    def wait_until_started = @started.pop
+    def release = @release << true
   end
 
-  def test_webrtc_conversation_repeats_completed_hangups_idempotently
-    calls = RecordingWebRTCCalls.new
+  class UnexpectedCalls
+    attr_reader :creates
+
+    def initialize = @creates = []
+
+    def create(**params)
+      @creates << params
+      raise "Ruby must not allocate the browser WebRTC call"
+    end
+  end
+
+  def test_webrtc_conversation_does_not_allocate_a_call_when_the_browser_resets
+    released = false
+    client_secrets = BlockingClientSecrets.new
+    calls = UnexpectedCalls.new
+    realtime = Data.define(:client_secrets, :calls).new(client_secrets, calls)
+    server = WEBrick::HTTPServer.new(
+      BindAddress: "127.0.0.1",
+      Port: 0,
+      Logger: WEBrick::Log.new(File::NULL, WEBrick::BasicLog::FATAL),
+      AccessLog: []
+    )
+    port = server.listeners.fetch(0).addr.fetch(1)
+    origin = "http://127.0.0.1:#{port}"
     app = OpenAI::Examples::Realtime::WebRTCConversation::App.new(
-      client: RecordingClient.new(Data.define(:calls).new(calls)),
+      client: RecordingClient.new(realtime: realtime),
+      origin: origin,
       html: "test"
     )
-    app.handle(
-      HTTPRequest.new(
-        request_method: "POST",
-        path: "/session",
-        body: "v=0\r\nt=0 0\r\n",
-        headers: {**WEBRTC_HEADERS, "content-type" => "application/sdp"}
-      ),
-      HTTPResponse.new
+    server.mount_proc("/") { |request, response| app.handle(request, response) }
+    server_thread = Thread.new { server.start }
+    socket = TCPSocket.new("127.0.0.1", port)
+    socket.write(
+      "POST /token HTTP/1.1\r\n" \
+      "Host: 127.0.0.1:#{port}\r\n" \
+      "Origin: #{origin}\r\n" \
+      "Content-Length: 0\r\n" \
+      "Connection: close\r\n\r\n"
     )
 
-    2.times do
-      response = HTTPResponse.new
-      app.handle(
-        HTTPRequest.new(
-          request_method: "POST",
-          path: "/hangup",
-          body: "rtc_example",
-          headers: WEBRTC_HEADERS
-        ),
-        response
-      )
-      assert_equal(204, response.status)
-    end
+    Timeout.timeout(1) { client_secrets.wait_until_started }
+    socket.setsockopt(Socket::SOL_SOCKET, Socket::SO_LINGER, [1, 0].pack("ii"))
+    socket.close
+    client_secrets.release
+    released = true
 
-    assert_equal(["rtc_example"], calls.hangups)
+    assert_empty(calls.creates)
+    assert_equal(1, client_secrets.creates.length)
+  ensure
+    client_secrets&.release unless released
+    socket&.close unless socket&.closed?
+    server&.shutdown
+    server_thread&.join
   end
 
   def test_sip_example_hangs_up_after_an_ambiguous_accept_failure

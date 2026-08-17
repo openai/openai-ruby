@@ -169,30 +169,18 @@ class OpenAI::Test::RealtimeExamplesTestCase < Minitest::Test
     end
   end
 
-  class RecordingWebRTCCalls
-    attr_accessor :call_ids, :hangup_error
-    attr_reader :creates, :hangups
+  class RecordingClientSecrets
+    Secret = Data.define(:value, :expires_at)
+
+    attr_reader :creates
 
     def initialize
       @creates = []
-      @hangups = []
-      @call_ids = ["rtc_example"]
     end
 
     def create(**params)
       @creates << params
-      call_id = @call_ids.empty? ? "rtc_example" : @call_ids.shift
-      attributes = {
-        sdp: "answer-sdp",
-        headers: {}
-      }
-      attributes[:call_id] = call_id if call_id
-      OpenAI::Realtime::CallCreateResponse.new(attributes)
-    end
-
-    def hangup(call_id)
-      @hangups << call_id
-      raise @hangup_error if @hangup_error
+      Secret.new(value: "ek_test", expires_at: 1_750_000_000)
     end
   end
 

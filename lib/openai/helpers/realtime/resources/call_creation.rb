@@ -16,7 +16,7 @@ module OpenAI
           session = parsed[:session]
           options = options.to_h
           options = {**options, max_retries: options[:max_retries] || 0}
-          cleanup_options = options.slice(:extra_headers, :extra_query)
+          cleanup_options = options.slice(:extra_headers, :extra_query, :timeout)
           headers, body = request_body(sdp: sdp, session: session)
 
           response = @client.request_raw(
@@ -28,12 +28,17 @@ module OpenAI
             options: options
           )
           call_id = call_id_from_location(response.headers["location"])
-          attributes = {
-            sdp: read_sdp(response, call_id: call_id, cleanup_options: cleanup_options),
-            headers: response.headers
-          }
-          attributes[:call_id] = call_id if call_id
-          OpenAI::Realtime::CallCreateResponse.new(attributes)._set_last_response(response.metadata)
+          delivered = false
+          begin
+            attributes = {sdp: response.body.to_a.join, headers: response.headers}
+            attributes[:call_id] = call_id if call_id
+            result = OpenAI::Realtime::CallCreateResponse.new(attributes)
+                                                       ._set_last_response(response.metadata)
+            delivered = true
+            result
+          ensure
+            cleanup_created_call(call_id, request_options: cleanup_options) unless delivered
+          end
         end
 
         private def request_body(sdp:, session:)
@@ -48,13 +53,6 @@ module OpenAI
               }
             ]
           end
-        end
-
-        private def read_sdp(response, call_id:, cleanup_options:)
-          response.body.to_a.join
-        rescue StandardError
-          cleanup_created_call(call_id, request_options: cleanup_options)
-          raise
         end
 
         private def cleanup_created_call(call_id, request_options:)

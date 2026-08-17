@@ -31,8 +31,9 @@ transport contract described below.
 ## Start a WebSocket session
 
 `connect` is block-scoped. This is the safest lifecycle in Rails jobs,
-Rack servers, CLI programs, and long-running workers because normal returns and
-exceptions both close the socket.
+Rack servers, CLI programs, and long-running workers because normal returns
+gracefully close the socket and exceptional exits abort it without waiting on a
+second potentially blocked socket write.
 
 ```ruby
 client = OpenAI::Client.new
@@ -186,9 +187,10 @@ WebRTC media is intentionally not a Ruby SDK responsibility. In a browser or
 mobile voice application, the client owns `RTCPeerConnection`, microphone
 permissions, audio playback, jitter buffering, and acoustic echo cancellation.
 Ruby owns the trusted-server control plane: API credentials, session
-configuration, SDP negotiation, sideband tools and policy, and call lifecycle.
-The SDK therefore supports WebRTC session negotiation and server controls; it
-does not attempt to expose a Ruby WebRTC peer API.
+configuration, ephemeral client secrets, sideband tools, and policy. The SDK
+also supports SDP negotiation and call controls for server integrations that
+deliberately own that lifecycle; it does not attempt to expose a Ruby WebRTC
+peer API.
 
 Use `calls.create` in the trusted application server that receives a browser's
 SDP offer:
@@ -230,24 +232,21 @@ With a standard server API key, provide `session:` and the SDK sends multipart
 form data with correctly typed `sdp` and `session` parts. It never exposes a
 standard API key to browser code. Call creation defaults to zero retries because
 replaying a successful request could allocate a second live call without a known
-ID. If reading the SDP answer fails after the service returns a call ID, the SDK
-uses the client's configured retry policy for the idempotent hangup cleanup and
-preserves the original read error. Request-scoped routing headers and query
-parameters are carried into that cleanup request; the create request's
-zero-retry safeguard is not, so cleanup can use the configured retry policy.
+ID. From the moment a response supplies a call ID until the complete typed result
+is ready for the caller, the SDK owns that allocation. Any failure or task
+cancellation during that interval triggers idempotent hangup from `ensure` and
+preserves the original failure. Request-scoped routing headers, query parameters,
+and timeout are carried into cleanup; the create request's zero-retry safeguard
+is intentionally omitted so cleanup can use the configured retry policy.
 
-The repository browser demo treats that Ruby endpoint as a local credentialed
-control plane: it binds only to an explicit loopback address, validates `Host`
-for every request, and requires the exact browser `Origin` for both session
-creation and hangup. Production Rails or Sinatra endpoints need their normal
-user authentication and CSRF/origin policy before calling `calls.create`.
-Browser cleanup retains the call ID after a failed hangup, prevents a new call
-from overwriting it, exposes a retry action, and leaves the page-exit beacon
-armed until the backend confirms the call ended. The demo refuses to establish
-browser media unless call creation returns a recoverable call ID, and it treats
-retries for recently completed, previously owned IDs as successful. Stopping the
-Ruby process also attempts to hang up every active call still tracked by the
-local control plane.
+The repository browser demo uses a smaller ownership boundary: Ruby mints a
+short-lived client secret containing the session configuration, then the browser
+posts its SDP directly to OpenAI and owns the peer until it closes. The local
+credential endpoint binds only to an explicit loopback address, validates
+`Host`, and requires the exact browser `Origin`. Production Rails or Sinatra
+token endpoints need their normal user authentication and CSRF/origin policy
+before calling `client_secrets.create`. Because the Ruby response does not
+allocate a call, a browser reset before token delivery cannot orphan a paid call.
 
 ## SIP calls
 
@@ -383,7 +382,7 @@ copying APIs that fit those runtimes better:
 | Connection lifetime | Sync/async context managers | Socket lifecycle events | Required block with ensure-based cleanup |
 | Concurrency | Separate sync and async clients | Promise/event-loop APIs | One fiber-aware API inside or outside an Async reactor |
 | Reconnect | Opt-in callback, retry, and send queue | No core automatic reconnect | No automatic reconnect or state replay |
-| Browser media | Separate client patterns | Native WebSocket plus Agents SDK WebRTC | Ruby backend negotiates SDP; browser owns WebRTC media |
+| Browser media | Separate client patterns | Native WebSocket plus Agents SDK WebRTC | Ruby mints a client secret; browser negotiates SDP and owns WebRTC media |
 | Transport dependency | Optional Python extra | Optional `ws` peer dependency | Optional `async-websocket` Gemfile dependency |
 
 The callback omission is deliberate: an additional dispatcher would introduce a
@@ -401,8 +400,10 @@ an SDK abstraction, but transport retries alone are not session recovery.
 Node's browser and Agents SDK layers remain out of scope for this gem. Public
 OpenAI guidance prefers WebRTC when a browser captures or plays audio, and Ruby
 does not have a standard media stack comparable to `RTCPeerConnection`. The
-Ruby SDK should own secrets, ephemeral credentials, SDP exchange, sideband
-policy, tools, and call lifecycle—not codecs, echo cancellation, or playback.
+Ruby SDK should own standard secrets, ephemeral credentials, session policy,
+tools, and server-side call controls—not browser SDP delivery, codecs, echo
+cancellation, or playback. Server integrations can still use `calls.create`
+when they intentionally own SDP exchange and the returned call lifecycle.
 
 ### Generated and handwritten ownership
 
@@ -451,9 +452,9 @@ for translation; and the requested `OPENAI_REALTIME_STOP_AFTER` checkpoint for
 bounded sideband and SIP runs. The deterministic PCM conversation smoke also
 requires a completed `response.done`; a cancelled response is a failed bounded
 run even though cancellation remains an expected interactive barge-in outcome.
-Cleanup must also preserve an active upload or processing error when a graceful
-close fails, while surfacing the close failure after an otherwise successful
-operation.
+Cleanup must preserve an active upload or processing error without attempting a
+second potentially blocking protocol write. Graceful close is reserved for a
+successful operation, and its failure is surfaced.
 
 Transcription failures use their dedicated
 `ConversationItemInputAudioTranscriptionFailedEvent`, not `RealtimeErrorEvent`.
@@ -466,8 +467,10 @@ the text smoke requires a non-empty text delta, while the raw-audio and
 translation smokes require at least one decoded audio byte before their terminal
 events. The file-audio smoke disables VAD and waits for the acknowledged session
 update before its manual commit. Translation reader failures cancel an in-flight
-upload rather than waiting for the input file to drain; an already-buffered
-reader failure prevents the uploader from starting at all. Microphone shutdown
+upload rather than waiting for the input file to drain or attempting another
+blocking protocol write; only a successful upload sends graceful
+`session.close`. An already-buffered reader failure prevents the uploader from
+starting at all. Microphone shutdown
 is latched before capture starts, so an immediately closed connection cannot
 start an orphaned ffmpeg process after cleanup has begun.
 
@@ -480,7 +483,9 @@ arguments.
 Raw WebRTC SDP responses remain lazily consumed. Request observability follows
 that body lifecycle: completion is recorded only after the SDP body is fully
 drained, and a body read failure records `request failed` without a contradictory
-completion event.
+completion event. The allocation is not released to the caller until the typed
+result is fully constructed; cancellation or failure first performs bounded,
+routing-aware hangup cleanup.
 
 - Invalid JSON or a payload that cannot match the selected event union raises
   `OpenAI::Errors::RealtimeProtocolError`, with `data` and `cause`.
@@ -490,10 +495,11 @@ completion event.
   stream so applications can follow the API's recoverability guidance.
 - Valid events introduced after the installed SDK version remain observable as
   immutable `UnknownServerEvent` values instead of terminating the session.
-- Exceptions raised by the application block propagate unchanged while the
-  adapter still attempts both connection and client cleanup. Cleanup does not
-  replace an active error; after a successful block, its first cleanup error is
-  surfaced.
+- Exceptions raised by the application block propagate unchanged. The
+  connection hard-aborts instead of starting another potentially blocked
+  WebSocket close handshake, while the adapter still releases its client.
+  Cleanup does not replace an active error; after a successful block, its first
+  graceful cleanup error is surfaced.
 
 The request timeout applies only through WebSocket negotiation. It is not left
 on the upgraded socket: an established Realtime session may be quiet for longer
@@ -527,6 +533,7 @@ transport.open(url:, headers:, timeout:, **transport_options) do |socket|
   # socket.read                         # String-like message or nil
   # socket.write(json_string)           # synchronous write/backpressure
   # socket.close(code:, reason:)
+  # socket.abort                        # immediate close after exceptional exit
   # socket.closed?
 end
 ```
@@ -585,7 +592,7 @@ simplest successful path before protocol details:
 | WebSocket | Text, PCM16 input/output, manual `receive`, Enumerable iteration, error handling |
 | Image input | PNG/JPEG data URI plus text instruction and a completed response |
 | Transcription | `connect_transcription`, PCM16 streaming, delta/completed events, and `item_id` correlation |
-| WebRTC | Complete browser peer plus Ruby endpoint; Rails and Sinatra variants using `calls.create` |
+| WebRTC | Complete browser peer plus Ruby client-secret endpoint; separate Rails and Sinatra server-owned `calls.create` variants |
 | Server controls | Preserve `call.call_id`, open sideband, update session, hang up |
 | SIP | Verify webhook, accept/reject, sideband, refer, hang up, idempotent webhook handling |
 | Conversations | Text item, audio commit, cancel/interruption, truncate played audio |
@@ -597,8 +604,10 @@ simplest successful path before protocol details:
 | Operations | Timeout, backpressure, logging event IDs, abnormal close, deliberate reconnect policy |
 
 The WebRTC browser half remains JavaScript because Ruby runs on the trusted
-server; Ruby snippets should own secrets, session configuration, SDP proxying,
-webhook verification, tools, and business logic.
+server; the recommended Ruby snippet should own client-secret issuance and
+session configuration. Separate server-side snippets can deliberately own SDP
+proxying and its call ID, alongside webhook verification, tools, and business
+logic.
 
 The local voice example is also exercised against the installed FFmpeg tools,
 not only Ruby fakes. In particular, raw PCM playback declares mono input with

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "../test_helper"
+require_relative "examples_test_case"
 require "async/notification"
 require_relative "../../../examples/realtime/mcp_approval"
 require_relative "../../../examples/realtime/realtime_conversation"
@@ -49,6 +50,17 @@ class OpenAI::Test::RealtimeExampleStreamLifecycleTest < Minitest::Test
     def close = @closed = true
   end
 
+  class BlockingCloseSession
+    attr_reader :calls
+
+    def initialize = @calls = []
+
+    def close
+      @calls << :close
+      Kernel.sleep(3_600)
+    end
+  end
+
   class RecordingEndpoint
     attr_reader :calls
 
@@ -79,7 +91,7 @@ class OpenAI::Test::RealtimeExampleStreamLifecycleTest < Minitest::Test
       upload_started = Async::Notification.new
       @event = event
       @input_audio_buffer = BlockingAudioBuffer.new(upload_started)
-      @session = ClosingSession.new
+      @session = BlockingCloseSession.new
       @upload_started = upload_started
     end
 
@@ -102,6 +114,33 @@ class OpenAI::Test::RealtimeExampleStreamLifecycleTest < Minitest::Test
   end
 
   TranslationConnection = Data.define(:input_audio_buffer, :session)
+
+  class BackpressuredConversationConnection
+    attr_reader :conversation, :input_audio_buffer, :response, :session
+
+    def initialize(event)
+      @write_started = Async::Notification.new
+      @event = event
+      @input_audio_buffer = BlockingAudioBuffer.new(@write_started)
+      @session = OpenAI::Test::RealtimeExamplesTestCase::RecordingSession.new
+      @conversation = OpenAI::Test::RealtimeExamplesTestCase::RecordingConversation.new
+      @response = OpenAI::Test::RealtimeExamplesTestCase::RecordingResource.new
+      @session_updated = OpenAI::Realtime::SessionUpdatedEvent.new(
+        event_id: "event_session",
+        session: {}
+      )
+    end
+
+    def receive
+      @session_updated.tap { @session_updated = nil }
+    end
+
+    def each
+      @write_started.wait
+      Kernel.sleep(0.01)
+      yield(@event)
+    end
+  end
 
   Event = Data.define(:type, :data) do
     def to_h = data
@@ -215,6 +254,32 @@ class OpenAI::Test::RealtimeExampleStreamLifecycleTest < Minitest::Test
   ensure
     playback&.close
     speaker&.verify
+  end
+
+  def test_realtime_conversation_surfaces_receiver_failure_while_the_sender_is_backpressured
+    connection = BackpressuredConversationConnection.new(
+      realtime_error_event("conversation receiver failed")
+    )
+    microphone = OpenAI::Test::RealtimeExamplesTestCase::RecordingMicrophone.new(
+      ["first", "second", "third"]
+    )
+
+    error = assert_raises(RuntimeError) do
+      Sync do |task|
+        task.with_timeout(0.5) do
+          OpenAI::Examples::Realtime::Conversation.run_session(
+            connection,
+            microphone: microphone,
+            speaker: OpenAI::Test::RealtimeExamplesTestCase::RecordingSpeaker.new,
+            voice: :marin,
+            instructions: "Speak naturally.",
+            output: StringIO.new
+          )
+        end
+      end
+    end
+
+    assert_equal("conversation receiver failed", error.message)
   end
 
   def test_websocket_audio_accepts_audio_followed_by_a_completed_response
@@ -445,7 +510,7 @@ class OpenAI::Test::RealtimeExampleStreamLifecycleTest < Minitest::Test
     assert_equal("Audio could not be transcribed", error.message)
   end
 
-  def test_translation_preserves_an_upload_error_when_session_close_also_fails
+  def test_translation_does_not_close_the_session_after_an_upload_error
     upload_error = RuntimeError.new("upload failed")
     input_audio_buffer = RaisingEndpoint.new(upload_error)
     session = RaisingEndpoint.new(RuntimeError.new("close failed"))
@@ -462,7 +527,7 @@ class OpenAI::Test::RealtimeExampleStreamLifecycleTest < Minitest::Test
       assert_same(upload_error, error)
     end
     assert_equal([[:append_bytes, "audio"]], input_audio_buffer.calls)
-    assert_equal([[:close]], session.calls)
+    assert_empty(session.calls)
   end
 
   def test_translation_stops_uploading_when_the_reader_fails
@@ -488,7 +553,7 @@ class OpenAI::Test::RealtimeExampleStreamLifecycleTest < Minitest::Test
       assert_equal("translation failed", error.message)
     end
     assert_equal(["audio"], connection.input_audio_buffer.chunks)
-    assert(connection.session.closed)
+    assert_empty(connection.session.calls)
   end
 
   def test_translation_does_not_start_upload_after_a_buffered_reader_failure
