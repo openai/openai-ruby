@@ -88,3 +88,6 @@ examples:
   examples/structured_outputs_responses_function_calling.rb:
     status: covered
     expected_output: GetWeather
+  examples/x509_workload_identity.rb:
+    status: excluded
+    reason: Requires an enrolled mTLS certificate, private key, and workload identity configuration.

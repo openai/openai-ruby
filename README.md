@@ -399,16 +399,11 @@ existing Kubernetes, Azure, and GCP subject-token providers.
 ### X.509 workload identity (HTTP)
 
 `OpenAI::Auth::X509WorkloadIdentity` is a separate configuration type and does
-not accept a subject-token provider. It uses the same configured `http_client`
-for fixed-endpoint token exchange and API requests, while certificate and key
-handling remains transport-owned. X.509 clients default to the global mTLS API
-URL only when no base URL is set. Explicit API base URLs must use HTTPS, and
-the SDK rejects cross-origin absolute request paths, redirects, Host overrides,
-API-key header aliases, target `Proxy-Authorization`, per-request Authorization
-overrides outside the exact SDK-selected authentication mode, and request-hook
-changes to authentication headers before dispatch. Configure proxy
-authentication on the HTTP transport so it is applied only to CONNECT.
-Explicit admin-authenticated operations remain supported. Support in this
+not accept a subject-token provider. It uses the configured `http_client` for
+the fixed token exchange and API calls; certificate and key handling remains
+transport-owned. With no configured base URL, X.509 clients default to the
+global mTLS API URL. Explicit base URLs must use HTTPS, and the SDK enforces the
+configured API origin and authentication provenance before dispatch. This
 release covers HTTP, not Realtime WebSockets.
 
 See the [X.509 workload identity guide](x509_workload_identity.md) for lifecycle,
