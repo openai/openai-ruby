@@ -468,10 +468,7 @@ module OpenAI
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(
           OpenAI::Internal::Stream[
-            T.any(
-              OpenAI::Responses::ResponseStreamEvent::Variants,
-              T::Hash[Symbol, T.untyped]
-            )
+            OpenAI::Responses::ResponseStreamEvent::Variants
           ]
         )
       end
@@ -997,10 +994,7 @@ module OpenAI
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(
           OpenAI::Internal::Stream[
-            T.any(
-              OpenAI::Responses::ResponseStreamEvent::Variants,
-              T::Hash[Symbol, T.untyped]
-            )
+            OpenAI::Responses::ResponseStreamEvent::Variants
           ]
         )
       end

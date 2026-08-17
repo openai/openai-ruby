@@ -63,7 +63,7 @@ module OpenAI
             @raw_stream.each do |raw_event|
               events_to_yield = @state.handle_event(raw_event)
               events_to_yield.each do |event|
-                if @starting_after.nil? || event[:sequence_number] > @starting_after
+                if @starting_after.nil? || event.sequence_number > @starting_after
                   y << event
                 end
               end
@@ -82,9 +82,6 @@ module OpenAI
         end
 
         def handle_event(event)
-          # Keepalive is a transport heartbeat, not a Responses API state transition.
-          return [event] if event[:type].to_s == "keepalive"
-
           @current_snapshot = accumulate_event(
             event: event,
             current_snapshot: @current_snapshot

@@ -48,7 +48,7 @@ class OpenAI::Test::PathParameterQueryTest < Minitest::Test
   end
 
   def test_response_retrieve_streaming_enables_stream_query_parameter
-    request = stub_response_stream(query: {"stream" => "true"})
+    request = stub_response_stream(query: {"stream" => "true"}, include_keepalive: true)
 
     events = @client.responses.retrieve_streaming("resp_audit").to_a
 
@@ -80,7 +80,10 @@ class OpenAI::Test::PathParameterQueryTest < Minitest::Test
   end
 
   def test_beta_response_retrieve_streaming_enables_stream_query_parameter
-    request = stub_response_stream(query: {"beta" => "true", "stream" => "true"})
+    request = stub_response_stream(
+      query: {"beta" => "true", "stream" => "true"},
+      include_keepalive: true
+    )
 
     events = @client.beta.responses.retrieve_streaming("resp_audit").to_a
 
@@ -265,7 +268,7 @@ class OpenAI::Test::PathParameterQueryTest < Minitest::Test
 
   private
 
-  def stub_response_stream(query:, headers: {})
+  def stub_response_stream(query:, headers: {}, include_keepalive: false)
     event = {
       type: "response.output_text.delta",
       content_index: 0,
@@ -275,6 +278,9 @@ class OpenAI::Test::PathParameterQueryTest < Minitest::Test
       output_index: 0,
       sequence_number: 8
     }
+    body = +""
+    body << "event: keepalive\ndata: {\"type\":\"keepalive\",\"sequence_number\":7}\n\n" if include_keepalive
+    body << "event: response.output_text.delta\ndata: #{JSON.generate(event)}\n\n"
 
     stub_request(:get, "http://localhost/responses/resp_audit")
       .with(
@@ -284,7 +290,7 @@ class OpenAI::Test::PathParameterQueryTest < Minitest::Test
       .to_return(
         status: 200,
         headers: {"Content-Type" => "text/event-stream"},
-        body: "event: response.output_text.delta\ndata: #{JSON.generate(event)}\n\n"
+        body: body
       )
   end
 

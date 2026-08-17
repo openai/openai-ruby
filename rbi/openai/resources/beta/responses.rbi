@@ -473,10 +473,7 @@ module OpenAI
             request_options: OpenAI::RequestOptions::OrHash
           ).returns(
             OpenAI::Internal::Stream[
-              T.any(
-                OpenAI::Beta::BetaResponseStreamEvent::Variants,
-                T::Hash[Symbol, T.untyped]
-              )
+              OpenAI::Beta::BetaResponseStreamEvent::Variants
             ]
           )
         end
@@ -767,10 +764,7 @@ module OpenAI
             request_options: OpenAI::RequestOptions::OrHash
           ).returns(
             OpenAI::Internal::Stream[
-              T.any(
-                OpenAI::Beta::BetaResponseStreamEvent::Variants,
-                T::Hash[Symbol, T.untyped]
-              )
+              OpenAI::Beta::BetaResponseStreamEvent::Variants
             ]
           )
         end

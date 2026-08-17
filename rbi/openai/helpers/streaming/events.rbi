@@ -3,19 +3,6 @@
 module OpenAI
   module Helpers
     module Streaming
-      # @api private
-      module KeepAliveEventCoercion
-        # @api private
-        sig do
-          params(
-            value: T.anything,
-            state: OpenAI::Internal::Type::Converter::CoerceState
-          ).returns(T.anything)
-        end
-        def coerce(value, state:)
-        end
-      end
-
       class ResponseTextDeltaEvent < OpenAI::Models::Responses::ResponseTextDeltaEvent
         sig { returns(String) }
         def snapshot

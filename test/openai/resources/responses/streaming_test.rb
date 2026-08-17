@@ -81,15 +81,13 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     end
   end
 
-  def test_keepalive_event_stays_raw_and_does_not_affect_stream_state
+  def test_keepalive_event_is_dropped_from_helper_stream
     stub_streaming_response(keepalive_before_created_sse_response)
 
     events = @client.responses.stream(**basic_params).to_a
-    keepalive = events.first
 
-    assert_equal({type: "keepalive", sequence_number: 0}, keepalive)
-    assert_instance_of(Hash, keepalive)
-    refute_instance_of(OpenAI::Models::Responses::ResponseErrorEvent, keepalive)
+    assert_instance_of(OpenAI::Models::Responses::ResponseCreatedEvent, events.first)
+    refute(events.any? { |event| event.type.to_s == "keepalive" })
     assert_text_delta_events(
       events,
       expected_deltas: ["Hello there! ", "How can I help you ", "today?"],
@@ -97,39 +95,16 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     )
   end
 
-  def test_raw_stream_preserves_keepalive_event
+  def test_keepalive_event_is_dropped_from_raw_stream
     stub_streaming_response(keepalive_before_created_sse_response)
 
     stream = @client.responses.stream_raw(**basic_params)
+    events = stream.to_a
 
-    assert_equal({type: "keepalive", sequence_number: 0}, stream.first)
+    assert_instance_of(OpenAI::Models::Responses::ResponseCreatedEvent, events.first)
+    refute(events.any? { |event| event.type.to_s == "keepalive" })
   ensure
     stream&.close
-  end
-
-  def test_stable_and_beta_response_stream_unions_preserve_keepalive
-    unions = [
-      [OpenAI::Models::Responses::ResponseStreamEvent, OpenAI::Models::Responses::ResponseErrorEvent],
-      [OpenAI::Models::Beta::BetaResponseStreamEvent, OpenAI::Models::Beta::BetaResponseErrorEvent]
-    ]
-
-    unions.each do |union, error_event_class|
-      input = {"type" => "keepalive", "sequence_number" => 3}
-      state = OpenAI::Internal::Type::Converter.new_coerce_state
-
-      event = OpenAI::Internal::Type::Converter.coerce(union, input, state: state)
-
-      assert_same(input, event)
-      assert_nil(state.fetch(:error))
-      assert_equal({yes: 1, no: 0, maybe: 0}, state.fetch(:exactness))
-      assert_equal(0, state.fetch(:branched))
-
-      error_event = OpenAI::Internal::Type::Converter.coerce(
-        union,
-        {type: "error", code: nil, message: "failed", param: nil, sequence_number: 4}
-      )
-      assert_instance_of(error_event_class, error_event)
-    end
   end
 
   def test_get_final_response
