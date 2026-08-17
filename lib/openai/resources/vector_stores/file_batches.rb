@@ -296,7 +296,8 @@ module OpenAI
         #   indefinitely.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] Applied to every upload and to the
-        #   batch creation and polling requests.
+        #   batch creation and polling requests. Idempotency keys are scoped to each
+        #   upload and the batch creation.
         #
         # @raise [ArgumentError, OpenAI::Errors::PollingError]
         # @return [OpenAI::Models::VectorStores::VectorStoreFileBatch]
@@ -312,6 +313,7 @@ module OpenAI
           request_options: {}
         )
           OpenAI::Internal::Poller.validate!(poll_interval: poll_interval, timeout: timeout)
+          request_options_scope = OpenAI::Internal::RequestOptionsScope.new(request_options)
 
           max_files = OpenAI::Internal::VectorStoreFileUploader::MAX_FILES_PER_BATCH
           if file_ids.length > max_files
@@ -336,7 +338,7 @@ module OpenAI
             chunking_strategy: chunking_strategy,
             poll_interval: poll_interval,
             timeout: timeout,
-            request_options: request_options
+            request_options: request_options_scope.child("file-batch")
           )
         end
 

@@ -507,27 +507,28 @@ module OpenAI
             )
           end
 
-          encoded_headers, encoded_body = OpenAI::Internal::Util.encode_content(
-            request.fetch(:headers),
-            request[:body]
-          )
-          attempt_request = request.merge(headers: encoded_headers, body: encoded_body)
-          prepared_request = prepare_request(
-            attempt_request,
-            redirect_count: redirect_count,
-            retry_count: retry_count
-          )
-          url, max_retries, timeout = prepared_request.fetch_values(:url, :max_retries, :timeout)
-          input = OpenAI::HTTPClient::Request.new(
-            method: prepared_request.fetch(:method),
-            url: url,
-            headers: prepared_request.fetch(:headers),
-            body: prepared_request[:body],
-            timeout: timeout
-          )
-          log_context.request_started(input, redirect_count: redirect_count)
+          url, max_retries = request.fetch_values(:url, :max_retries)
 
           begin
+            encoded_headers, encoded_body = OpenAI::Internal::Util.encode_content(
+              request.fetch(:headers),
+              request[:body]
+            )
+            attempt_request = request.merge(headers: encoded_headers, body: encoded_body)
+            prepared_request = prepare_request(
+              attempt_request,
+              redirect_count: redirect_count,
+              retry_count: retry_count
+            )
+            url, max_retries, timeout = prepared_request.fetch_values(:url, :max_retries, :timeout)
+            input = OpenAI::HTTPClient::Request.new(
+              method: prepared_request.fetch(:method),
+              url: url,
+              headers: prepared_request.fetch(:headers),
+              body: prepared_request[:body],
+              timeout: timeout
+            )
+            log_context.request_started(input, redirect_count: redirect_count)
             http_response = @requester.execute(input)
             unless http_response.is_a?(OpenAI::HTTPClient::Response)
               raise TypeError, "`http_client#execute` must return an OpenAI::HTTPClient::Response"

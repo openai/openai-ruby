@@ -377,8 +377,8 @@ class OpenAI::Test::VectorStoreFileUploaderTest < Minitest::Test
 
   def test_upload_accepts_block_scoped_io
     contents = []
-    resource = FilesResource.new do |file|
-      contents << file.content.binread
+    resource = FilesResource.new(capture_contents: false) do |file|
+      contents << file.content.read
       UploadedFile.new("uploaded")
     end
     tempfile = Tempfile.new("openai-ruby-upload")

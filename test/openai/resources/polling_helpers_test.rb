@@ -52,6 +52,23 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     end
   end
 
+  class SlowSubjectTokenProvider
+    attr_reader :calls
+
+    def initialize(delay:)
+      @delay = delay
+      @calls = 0
+    end
+
+    def get_token
+      @calls += 1
+      sleep(@delay)
+      "subject-token"
+    end
+
+    def token_type = OpenAI::Auth::TokenType::JWT
+  end
+
   def test_files_wait_for_processing_uses_server_interval_and_preserves_options
     responses = [file_object(status: "uploaded"), file_object(status: "processed")]
     transport = scripted_transport do
@@ -228,12 +245,41 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     end.new
     client = build_workload_identity_client(transport, auth)
 
-    error = assert_raises(Timeout::Error) do
+    error = assert_raises(OpenAI::Errors::APITimeoutError) do
       client.files.retrieve("file_123", request_options: {timeout: 0.01})
     end
 
     assert_match("workload identity authentication", error.message)
+    assert_instance_of(Timeout::Error, error.cause)
     assert_instance_of(Float, auth.deadline)
+    assert_empty(transport.requests)
+  end
+
+  def test_workload_identity_timeout_uses_the_sdk_error_and_retry_contract
+    transport = scripted_transport { flunk("request should not be sent") }
+    provider = SlowSubjectTokenProvider.new(delay: 0.02)
+    config = OpenAI::Auth::WorkloadIdentity.new(
+      identity_provider_id: "idp-123",
+      service_account_id: "sa-456",
+      provider: provider
+    )
+    client = OpenAI::Client.new(
+      api_key: nil,
+      workload_identity: config,
+      organization: "org-123",
+      base_url: "http://example.test/v1",
+      http_client: transport,
+      max_retries: 2,
+      initial_retry_delay: 0,
+      max_retry_delay: 0
+    )
+
+    error = assert_raises(OpenAI::Errors::APITimeoutError) do
+      client.files.retrieve("file_123", request_options: {timeout: 0.005})
+    end
+
+    assert_instance_of(Timeout::Error, error.cause)
+    assert_equal(3, provider.calls)
     assert_empty(transport.requests)
   end
 
@@ -515,6 +561,30 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     assert_equal("true", transport.requests.last.headers["x-stainless-poll-helper"])
   end
 
+  def test_vector_store_file_upload_scopes_idempotency_per_write
+    transport = scripted_transport do |request|
+      case request.path
+      when "/v1/files"
+        [200, {}, file_object(id: "file_uploaded", status: "processed")]
+      when "/v1/vector_stores/vs_123/files"
+        [200, {}, vector_file(id: "file_uploaded", status: "completed")]
+      else
+        flunk("unexpected request: #{request.method} #{request.path}")
+      end
+    end
+
+    result = build_client(transport).vector_stores.files.upload(
+      "vs_123",
+      file: "contents",
+      request_options: {extra_headers: {"Idempotency-Key" => "operation-key"}}
+    )
+
+    assert_equal(:completed, result.status)
+    keys = transport.requests.map { _1.headers.fetch("idempotency-key") }
+    assert_equal(2, keys.uniq.length)
+    assert(keys.all? { _1.match?(/\Astainless-ruby-[0-9a-f]{64}\z/) })
+  end
+
   def test_vector_store_batch_poll_handles_all_terminal_states
     %w[completed failed cancelled].each do |status|
       transport = scripted_transport { [200, {}, vector_batch(status: status)] }
@@ -641,6 +711,93 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     transport.requests.each { assert_equal("yes", _1.headers["x-test"]) }
     batch_request = transport.requests.find { _1.path.end_with?("/file_batches") }
     assert_equal("assistants=v2", batch_request.headers["openai-beta"])
+  end
+
+  def test_vector_store_batch_upload_preserves_raw_io_non_retry_semantics
+    direct_attempts = 0
+    direct_transport = scripted_transport do
+      direct_attempts += 1
+      [500, {}, {error: {message: "persisted before failure", type: "server_error"}}]
+    end
+    direct_reader, direct_writer = IO.pipe
+    direct_writer.write("direct")
+    direct_writer.close
+
+    assert_raises(OpenAI::Errors::InternalServerError) do
+      build_client(direct_transport, max_retries: 1).files.create(
+        file: direct_reader,
+        purpose: :assistants
+      )
+    end
+
+    batch_attempts = 0
+    batch_transport = scripted_transport do |request|
+      assert_equal("/v1/files", request.path)
+      batch_attempts += 1
+      [500, {}, {error: {message: "persisted before failure", type: "server_error"}}]
+    end
+    batch_reader, batch_writer = IO.pipe
+    batch_writer.write("batch")
+    batch_writer.close
+
+    assert_raises(OpenAI::Errors::InternalServerError) do
+      build_client(batch_transport, max_retries: 1).vector_stores.file_batches.upload_and_poll(
+        "vs_123",
+        files: [batch_reader]
+      )
+    end
+
+    assert_equal(1, direct_attempts)
+    assert_equal(1, batch_attempts)
+  ensure
+    direct_reader&.close
+    direct_writer&.close unless direct_writer&.closed?
+    batch_reader&.close
+    batch_writer&.close unless batch_writer&.closed?
+  end
+
+  def test_vector_store_batch_upload_derives_stable_per_operation_idempotency_keys
+    persisted = {}
+    post_keys = Hash.new { |hash, path| hash[path] = [] }
+    next_file = 0
+    transport = scripted_transport do |request|
+      if request.method == :get
+        next [200, {}, vector_batch(status: "completed")]
+      end
+
+      key = request.headers.fetch("idempotency-key")
+      post_keys[request.path] << key
+      next persisted.fetch(key) if persisted.key?(key)
+
+      success =
+        case request.path
+        when "/v1/files"
+          next_file += 1
+          [200, {}, file_object(id: "file_uploaded_#{next_file}", status: "processed")]
+        when "/v1/vector_stores/vs_123/file_batches"
+          [200, {}, vector_batch(status: "in_progress")]
+        else
+          flunk("unexpected request: #{request.method} #{request.path}")
+        end
+      persisted[key] = success
+      [500, {}, {error: {message: "persisted before failure", type: "server_error"}}]
+    end
+
+    result = build_client(transport, max_retries: 1).vector_stores.file_batches.upload_and_poll(
+      "vs_123",
+      files: %w[ALPHA BRAVO],
+      max_concurrency: 2,
+      request_options: {extra_headers: {"Idempotency-Key" => "operation-key"}}
+    )
+
+    assert_equal(:completed, result.status)
+    upload_keys = post_keys.fetch("/v1/files")
+    batch_keys = post_keys.fetch("/v1/vector_stores/vs_123/file_batches")
+    assert_equal([2, 2], upload_keys.tally.values.sort)
+    assert_equal(2, upload_keys.uniq.length)
+    assert_equal(1, batch_keys.uniq.length)
+    assert_equal(2, batch_keys.length)
+    refute_includes(upload_keys, batch_keys.first)
   end
 
   def test_vector_store_batch_upload_and_poll_validates_inputs_before_requesting

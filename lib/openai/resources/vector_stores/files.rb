@@ -306,7 +306,8 @@ module OpenAI
         #
         # @param chunking_strategy [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam] The chunking strategy used to chunk the file.
         #
-        # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+        # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] Applied to the upload and attach
+        #   requests. Idempotency keys are scoped to each operation.
         #
         # @return [OpenAI::Models::VectorStores::VectorStoreFile]
         def upload(
@@ -316,8 +317,16 @@ module OpenAI
           chunking_strategy: nil,
           request_options: {}
         )
-          uploaded = @client.files.create(file: file, purpose: :assistants, request_options: request_options)
-          params = {file_id: uploaded.id, request_options: request_options}
+          request_options_scope = OpenAI::Internal::RequestOptionsScope.new(request_options)
+          uploaded = @client.files.create(
+            file: file,
+            purpose: :assistants,
+            request_options: request_options_scope.child("file-upload")
+          )
+          params = {
+            file_id: uploaded.id,
+            request_options: request_options_scope.child("vector-store-file")
+          }
           params[:attributes] = attributes unless attributes.nil?
           params[:chunking_strategy] = chunking_strategy unless chunking_strategy.nil?
           create(vector_store_id, params)
@@ -346,7 +355,7 @@ module OpenAI
         #   indefinitely.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] Applied to the upload, attach,
-        #   and polling requests.
+        #   and polling requests. Idempotency keys are scoped to each write.
         #
         # @raise [ArgumentError, OpenAI::Errors::PollingError]
         # @return [OpenAI::Models::VectorStores::VectorStoreFile]

@@ -8,10 +8,14 @@ module OpenAI
     #
     # The caller enumerates and snapshots stream-backed inputs before workers start,
     # so lazy and stateful Ruby enumerables are never advanced from worker threads.
-    # Results retain input order.
+    # Originally streamed inputs are reopened as streams for `files.create`, retaining
+    # its non-retryable request semantics. Results retain input order.
     #
     # @api private
     class VectorStoreFileUploader
+      StagedFile = Data.define(:file, :streamed)
+      private_constant :StagedFile
+
       # The API limit for files attached in one vector store batch.
       #
       # @api private
@@ -29,7 +33,7 @@ module OpenAI
 
         @client = client
         @max_concurrency = max_concurrency
-        @request_options = request_options
+        @request_options = OpenAI::Internal::RequestOptionsScope.new(request_options)
       end
 
       # @api private
@@ -91,23 +95,26 @@ module OpenAI
 
       private def stage_file(file, temporary_files)
         if file.is_a?(Pathname) || (file.is_a?(OpenAI::FilePart) && file.content.is_a?(Pathname))
-          return file
+          return StagedFile.new(file: file, streamed: false)
         end
 
         case file
         in OpenAI::FilePart
           path = spool(file.content, temporary_files)
-          file.with_content(path)
+          StagedFile.new(file: file.with_content(path), streamed: file.content.is_a?(IO))
         in String
           path = spool(file, temporary_files)
-          OpenAI::FilePart.new(path, filename: "upload", content_type: "text/plain")
+          part = OpenAI::FilePart.new(path, filename: "upload", content_type: "text/plain")
+          StagedFile.new(file: part, streamed: false)
         in StringIO
           path = spool(file, temporary_files)
-          OpenAI::FilePart.new(path, filename: "upload", content_type: "application/octet-stream")
+          part = OpenAI::FilePart.new(path, filename: "upload", content_type: "application/octet-stream")
+          StagedFile.new(file: part, streamed: false)
         in IO
           filename = file.to_path.nil? ? "upload" : ::File.basename(file.to_path)
           path = spool(file, temporary_files)
-          OpenAI::FilePart.new(path, filename: filename, content_type: "application/octet-stream")
+          part = OpenAI::FilePart.new(path, filename: filename, content_type: "application/octet-stream")
+          StagedFile.new(file: part, streamed: true)
         else
           raise ArgumentError, "`files` contains an unsupported file input"
         end
@@ -162,13 +169,24 @@ module OpenAI
       end
 
       private def upload_one(work, lock, uploaded)
-        index, file = work
-        result = @client.files.create(
+        index, staged_file = work
+        result =
+          if staged_file.streamed
+            ::File.open(staged_file.file.content, "rb") do |stream|
+              create_file(staged_file.file.with_content(stream), index)
+            end
+          else
+            create_file(staged_file.file, index)
+          end
+        lock.synchronize { uploaded[index] = result }
+      end
+
+      private def create_file(file, index)
+        @client.files.create(
           file: file,
           purpose: :assistants,
-          request_options: @request_options
+          request_options: @request_options.child("file-upload-#{index}")
         )
-        lock.synchronize { uploaded[index] = result }
       end
 
       private def claim_work(staged, lock, state)
