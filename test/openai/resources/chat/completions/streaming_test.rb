@@ -346,8 +346,68 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
       }
     ]
 
-    assert_raises(OpenAI::LengthFinishReasonError) do
+    error = assert_raises(OpenAI::LengthFinishReasonError) do
       @client.chat.completions.stream(**basic_params, tools: tools).each { |_e| } # rubocop:disable Lint/EmptyBlock
+    end
+
+    assert_pattern do
+      error.completion => OpenAI::Chat::ParsedChatCompletion[
+        object: :"chat.completion",
+        choices: [
+          OpenAI::Chat::ParsedChoice[
+            finish_reason: :length,
+            index: 0,
+            message: {
+              role: :assistant,
+              tool_calls: [
+                {
+                  id: "call_123",
+                  type: :function,
+                  function: {name: "get_weather", arguments: '{"city":"Paris"}'}
+                }
+              ]
+            }
+          ]
+        ]
+      ]
+    end
+  end
+
+  def test_length_finish_reason_exposes_partial_completion
+    sse_response = <<~SSE
+      data: {"id":"chatcmpl-123","object":"chat.completion.chunk","created":1234567890,"model":"gpt-4o-mini","choices":[{"index":0,"delta":{"role":"assistant","content":"{\\"name\\":"},"finish_reason":null}]}
+
+      data: {"id":"chatcmpl-123","object":"chat.completion.chunk","created":1234567890,"model":"gpt-4o-mini","choices":[{"index":0,"delta":{"content":"\\"John\\","},"finish_reason":null}]}
+
+      data: {"id":"chatcmpl-123","object":"chat.completion.chunk","created":1234567890,"model":"gpt-4o-mini","choices":[{"index":0,"delta":{},"finish_reason":"length"}]}
+
+      data: [DONE]
+
+    SSE
+
+    stub_streaming_response(sse_response)
+
+    error = assert_raises(OpenAI::LengthFinishReasonError) do
+      @client.chat.completions
+             .stream(**basic_params, response_format: PersonModel)
+             .each { |_e| } # rubocop:disable Lint/EmptyBlock
+    end
+
+    # The partial completion accumulated before the length limit was hit is the
+    # only way for callers to recover the truncated content.
+    assert_pattern do
+      error.completion => OpenAI::Chat::ParsedChatCompletion[
+        id: "chatcmpl-123",
+        model: "gpt-4o-mini",
+        object: :"chat.completion",
+        choices: [
+          OpenAI::Chat::ParsedChoice[
+            finish_reason: :length,
+            index: 0,
+            message: {role: :assistant, content: '{"name":"John",'}
+          ]
+        ]
+      ]
     end
   end
 
