@@ -20,7 +20,6 @@ AllCops:
   SuggestExtensions: false
   TargetRubyVersion: 3.3
 
-
 Bundler:
   Enabled: false
 Gemspec:
@@ -48,3 +47,24 @@ Lint/RedundantCopDisableDirective:
   Enabled: false
 Lint/RedundantCopEnableDirective:
   Enabled: false
+
+# Retain non-layout checks that RuboCop classifies in other departments.
+Bundler/DuplicatedGem:
+  Enabled: true
+Bundler/InsecureProtocolSource:
+  Enabled: true
+Gemspec/DuplicatedAssignment:
+  Enabled: true
+Gemspec/RequiredRubyVersion:
+  Enabled: true
+Style/MutableConstant:
+  Enabled: true
+  Exclude:
+    - "**/*.rbi"
+Style/FrozenStringLiteralComment:
+  Enabled: true
+  EnforcedStyle: always
+  Exclude:
+    - "**/*.rbi"
+Style/MissingRespondToMissing:
+  Enabled: true

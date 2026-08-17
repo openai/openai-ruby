@@ -8,13 +8,25 @@ require "tmpdir"
 class FormattingPolicyTest < Minitest::Test
   ROOT = File.expand_path("../..", __dir__)
 
+  NON_LAYOUT_COPS = %w[
+    Bundler/DuplicatedGem
+    Bundler/InsecureProtocolSource
+    Gemspec/DuplicatedAssignment
+    Gemspec/RequiredRubyVersion
+    Style/FrozenStringLiteralComment
+    Style/MissingRespondToMissing
+    Style/MutableConstant
+  ].freeze
+
   def test_rubocop_only_enables_correctness_and_security_checks
     config = RuboCop::ConfigStore.new.for_dir(ROOT)
     enabled = RuboCop::Cop::Registry.global.select do |cop|
       config.for_cop(cop)["Enabled"] == true
     end
 
-    assert_equal(%w[Lint Security], enabled.map { _1.department.to_s }.uniq.sort)
+    other_cops = enabled.reject { %w[Lint Security].include?(_1.department.to_s) }
+    assert_equal(NON_LAYOUT_COPS, other_cops.map(&:cop_name).sort)
+    NON_LAYOUT_COPS.each { assert(config.for_cop(_1)["Enabled"], _1) }
     assert(config.for_cop("Lint/Syntax")["Enabled"])
     assert(config.for_cop("Security/Eval")["Enabled"])
     assert_equal("disable", config["AllCops"]["NewCops"])
