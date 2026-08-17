@@ -51,5 +51,15 @@ module OpenAI
       )
       end
     end
+
+    class WorkloadIdentityAuth
+      sig { params(deadline: T.nilable(Float)).returns(String) }
+      def get_token(deadline: nil)
+      end
+
+      sig { void }
+      def invalidate_token
+      end
+    end
   end
 end
