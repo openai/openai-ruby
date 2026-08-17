@@ -58,7 +58,7 @@ module OpenAI
         private def cleanup_created_call(call_id)
           return if call_id.nil?
 
-          hangup(call_id, request_options: {max_retries: 0})
+          hangup(call_id)
         rescue StandardError
           nil
         end

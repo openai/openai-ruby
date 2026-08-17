@@ -214,12 +214,20 @@ class OpenAI::Test::Resources::Realtime::CallsTest < OpenAI::Test::ResourceTest
         },
         body: failing_body
       ),
+      OpenAI::HTTPClient::Response.new(
+        status: 500,
+        headers: {"content-type" => "application/json"},
+        body: JSON.generate(error: {message: "temporary hangup failure", type: "server_error"})
+      ),
       OpenAI::HTTPClient::Response.new(status: 200, headers: {}, body: "")
     )
     client = OpenAI::Client.new(
       api_key: "test-key",
       base_url: "https://example.com/v1",
-      http_client: http_client
+      http_client: http_client,
+      max_retries: 1,
+      initial_retry_delay: 0,
+      max_retry_delay: 0
     )
 
     error = assert_raises(IOError) do
@@ -228,7 +236,11 @@ class OpenAI::Test::Resources::Realtime::CallsTest < OpenAI::Test::ResourceTest
 
     assert_equal("SDP read failed", error.message)
     assert_equal(
-      ["/v1/realtime/calls", "/v1/realtime/calls/rtc_orphan/hangup"],
+      [
+        "/v1/realtime/calls",
+        "/v1/realtime/calls/rtc_orphan/hangup",
+        "/v1/realtime/calls/rtc_orphan/hangup"
+      ],
       http_client.requests.map { _1.url.path }
     )
     assert(failing_body.closed)

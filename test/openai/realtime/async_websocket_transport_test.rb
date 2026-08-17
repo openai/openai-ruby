@@ -99,6 +99,59 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     assert_nil(Fiber.scheduler)
   end
 
+  def test_default_transport_enforces_secure_tls_for_localhost
+    connection = SynchronousConnection.new
+    client = SynchronousClient.new(connection)
+    transport = OpenAI::Realtime::Transports::AsyncWebSocket.new
+    parsed_endpoint = nil
+    parse = Async::HTTP::Endpoint.method(:parse)
+    parser = lambda do |url, **options|
+      parsed_endpoint = parse.call(url, **options)
+    end
+    url = URI("wss://localhost/v1/realtime?model=gpt-realtime-2.1")
+
+    Async::HTTP::Endpoint.stub(:parse, parser) do
+      Async::WebSocket::Client.stub(:open, client) do
+        transport.open(url: url, headers: {}, timeout: nil) { |_socket| nil }
+      end
+    end
+
+    context = parsed_endpoint.ssl_context
+    assert_equal(OpenSSL::SSL::VERIFY_PEER, context.verify_mode)
+    assert_predicate(context, :verify_hostname)
+    assert_equal(Async::HTTP::Protocol::HTTP11.names, context.alpn_protocols)
+  end
+
+  def test_default_transport_rejects_a_self_signed_localhost_server
+    server_key = OpenSSL::PKey::RSA.new(2048)
+    server_certificate = issue_realtime_certificate(
+      subject: "/CN=attacker.invalid",
+      key: server_key,
+      extended_key_usage: "serverAuth",
+      subject_alt_name: "DNS:attacker.invalid"
+    )
+    server_context = OpenSSL::SSL::SSLContext.new
+    server_context.cert = server_certificate
+    server_context.key = server_key
+    server_context.alpn_select_cb = lambda do |protocols|
+      (protocols & Async::HTTP::Protocol::HTTP11.names).fetch(0)
+    end
+    handler = ->(_connection) { raise "unverified WebSocket connected" }
+
+    error = assert_raises(OpenAI::Errors::RealtimeConnectionError) do
+      with_secure_websocket_server(
+        handler,
+        ssl_context: server_context,
+        client_host: "localhost"
+      ) do |client|
+        client.realtime.connect(model: "gpt-realtime-2.1", &:receive)
+      end
+    end
+
+    assert_instance_of(OpenSSL::SSL::SSLError, error.cause)
+    assert_match(/certificate verify failed/, error.cause.message)
+  end
+
   def test_tls_configurator_preserves_custom_trust_and_enforces_secure_verification
     store = OpenSSL::X509::Store.new
     transport = OpenAI::Realtime::Transports::AsyncWebSocket.new do |context|
@@ -844,7 +897,7 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     end
   end
 
-  private def with_secure_websocket_server(handler, ssl_context:)
+  private def with_secure_websocket_server(handler, ssl_context:, client_host: "127.0.0.1")
     port = available_port
     endpoint = Async::HTTP::Endpoint.parse(
       "https://127.0.0.1:#{port}",
@@ -859,7 +912,7 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
       server_task = task.async { server.run.wait }
       client = OpenAI::Client.new(
         api_key: "test-key",
-        base_url: "https://127.0.0.1:#{port}/v1",
+        base_url: "https://#{client_host}:#{port}/v1",
         timeout: 5
       )
       yield(client)

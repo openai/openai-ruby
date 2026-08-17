@@ -230,7 +230,8 @@ form data with correctly typed `sdp` and `session` parts. It never exposes a
 standard API key to browser code. Call creation defaults to zero retries because
 replaying a successful request could allocate a second live call without a known
 ID. If reading the SDP answer fails after the service returns a call ID, the SDK
-makes one best-effort hangup request and preserves the original read error.
+uses the client's configured retry policy for the idempotent hangup cleanup and
+preserves the original read error.
 
 The repository browser demo treats that Ruby endpoint as a local credentialed
 control plane: it binds only to an explicit loopback address, validates `Host`
@@ -239,8 +240,11 @@ creation and hangup. Production Rails or Sinatra endpoints need their normal
 user authentication and CSRF/origin policy before calling `calls.create`.
 Browser cleanup retains the call ID after a failed hangup, prevents a new call
 from overwriting it, exposes a retry action, and leaves the page-exit beacon
-armed until the backend confirms the call ended. Stopping the Ruby process also
-attempts to hang up every call still tracked by the local control plane.
+armed until the backend confirms the call ended. The demo refuses to establish
+browser media unless call creation returns a recoverable call ID, and it treats
+retries for recently completed, previously owned IDs as successful. Stopping the
+Ruby process also attempts to hang up every active call still tracked by the
+local control plane.
 
 ## SIP calls
 
@@ -265,7 +269,10 @@ end
 ```
 
 `calls.reject`, `calls.refer`, and `calls.hangup` provide the remaining SIP and
-call-lifecycle controls.
+call-lifecycle controls. The runnable SIP example assumes cleanup ownership as
+soon as it receives the verified incoming call ID, before sending `accept`; an
+ambiguous lost accept response therefore still triggers hangup without replacing
+the original transport error.
 
 ## Translation
 
@@ -542,12 +549,13 @@ client.realtime.connect(
 ) { |connection| run_session(connection) }
 ```
 
-The block receives a fresh native `OpenSSL::SSL::SSLContext` for each
-connection. The adapter always restores peer verification, hostname
-verification, and HTTP/1.1 ALPN after the block; it rejects verification
-callbacks and refuses TLS configuration for a plaintext `ws://` endpoint. A
-raw `ssl_context` remains forbidden in `transport_options`, where it could
-silently replace those SDK-owned guarantees.
+Every `wss://` connection receives a fresh native
+`OpenSSL::SSL::SSLContext`, including default localhost gateways. The optional
+block customizes that context for mTLS or private roots. The adapter always
+restores peer verification, hostname verification, and HTTP/1.1 ALPN afterward;
+it rejects verification callbacks and refuses TLS configuration for a plaintext
+`ws://` endpoint. A raw `ssl_context` remains forbidden in
+`transport_options`, where it could silently replace those SDK-owned guarantees.
 
 The SDK owns URL construction, authentication, typed JSON encoding/decoding, and
 block cleanup. The transport owns the WebSocket handshake, frame I/O, TLS,

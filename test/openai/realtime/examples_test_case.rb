@@ -111,7 +111,7 @@ class OpenAI::Test::RealtimeExamplesTestCase < Minitest::Test
   end
 
   class RecordingCalls
-    attr_accessor :hangup_error
+    attr_accessor :accept_error, :hangup_error
     attr_reader :accepts, :hangups
 
     def initialize
@@ -121,6 +121,7 @@ class OpenAI::Test::RealtimeExamplesTestCase < Minitest::Test
 
     def accept(call_id, **params)
       @accepts << [call_id, params]
+      raise @accept_error if @accept_error
     end
 
     def hangup(call_id)
@@ -180,11 +181,13 @@ class OpenAI::Test::RealtimeExamplesTestCase < Minitest::Test
 
     def create(**params)
       @creates << params
-      OpenAI::Realtime::CallCreateResponse.new(
+      call_id = @call_ids.empty? ? "rtc_example" : @call_ids.shift
+      attributes = {
         sdp: "answer-sdp",
-        call_id: @call_ids.shift || "rtc_example",
         headers: {}
-      )
+      }
+      attributes[:call_id] = call_id if call_id
+      OpenAI::Realtime::CallCreateResponse.new(attributes)
     end
 
     def hangup(call_id)

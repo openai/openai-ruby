@@ -49,7 +49,9 @@ module OpenAI
             alpn_protocols: ::Async::HTTP::Protocol::HTTP11.names,
             **endpoint_options
           }
-          options[:ssl_context] = build_tls_context(url) if @tls_configurator
+          if url.scheme == "wss" || @tls_configurator
+            options[:ssl_context] = build_tls_context(url)
+          end
           endpoint = ::Async::HTTP::Endpoint.parse(
             url.to_s,
             **options
@@ -94,7 +96,7 @@ module OpenAI
           end
 
           context = OpenSSL::SSL::SSLContext.new
-          @tls_configurator.call(context)
+          @tls_configurator&.call(context)
           if context.verify_callback
             raise ArgumentError, "Realtime WebSocket TLS configuration cannot set verify_callback"
           end

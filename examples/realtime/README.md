@@ -31,7 +31,10 @@ attempts recovery. A terminal `failed` state stops the microphone and peer
 immediately and asks the Ruby backend to hang up the call.
 If the hangup request fails, the browser retains the call ID, disables starting
 a replacement call, and changes **Stop** to **Retry hangup**. It also keeps the
-ID available to the page-exit beacon until the backend confirms cleanup.
+ID available to the page-exit beacon until the backend confirms cleanup. The
+Ruby endpoint refuses to return an SDP answer without a recoverable call ID and
+acknowledges a retry for a recently completed, previously owned call without
+issuing a second API hangup.
 Pressing Control-C in the Ruby process also attempts to hang up every call still
 tracked by the local control plane before the example exits.
 
@@ -263,7 +266,9 @@ The script accepts the call, attaches a sideband WebSocket, and prints the audio
 transcript. `OPENAI_REALTIME_STOP_AFTER` and `OPENAI_REALTIME_TIMEOUT` provide
 bounded smoke-test controls. Once accepted, the call is hung up during cleanup,
 including after a timeout or sideband failure; an already-ended call is treated
-as successfully cleaned up. EOF before the selected event fails a bounded run.
+as successfully cleaned up. Cleanup ownership begins before the accept request,
+so a lost response after the service accepts the call still triggers hangup
+while preserving the original error. EOF before the selected event fails a bounded run.
 Without a carrier-originated incoming call, the same accept-then-attach
 orchestration is covered by the local example and HTTP resource tests, but that
 is not a substitute for the final telephony smoke test.

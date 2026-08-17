@@ -7,6 +7,7 @@ module OpenAI
   module Examples
     module Realtime
       module WebRTCConversation
+        COMPLETED_CALL_LIMIT = 128
         MAX_SDP_BYTES = 1_048_576
         LOOPBACK_HOSTS = ["127.0.0.1", "::1"].freeze
 
@@ -21,7 +22,8 @@ module OpenAI
             @expected_host = expected_host(origin)
             @expected_origin = "#{origin.scheme}://#{@expected_host}"
             @html = html
-            @call_ids = {}
+            @active_call_ids = {}
+            @completed_call_ids = {}
             @call_ids_lock = Mutex.new
           end
 
@@ -58,10 +60,10 @@ module OpenAI
           end
 
           def shutdown
-            call_ids = @call_ids_lock.synchronize { @call_ids.keys }
+            call_ids = @call_ids_lock.synchronize { @active_call_ids.keys }
             call_ids.each do |call_id|
               hangup_call(call_id)
-              forget(call_id)
+              complete(call_id)
             rescue StandardError => e
               warn("Realtime WebRTC shutdown could not hang up #{call_id}: #{e.class}: #{e.message}")
             end
@@ -80,8 +82,11 @@ module OpenAI
             raise ArgumentError, "Invalid SDP offer" unless offer.lstrip.start_with?("v=")
 
             call = @client.realtime.calls.create(sdp: offer, session: session_config)
-            remember(call.call_id)
-            response["X-OpenAI-Call-ID"] = call.call_id if call.call_id
+            call_id = call.call_id
+            raise "Realtime call response did not include a call ID" unless call_id
+
+            remember(call_id)
+            response["X-OpenAI-Call-ID"] = call_id
             render(response, status: 201, content_type: "application/sdp", body: call.sdp)
           end
 
@@ -107,8 +112,8 @@ module OpenAI
             call_id = request.body.to_s.strip
             raise ArgumentError, "Expected a call ID" if call_id.empty?
 
-            known = @call_ids_lock.synchronize { @call_ids.include?(call_id) }
-            unless known
+            state = call_state(call_id)
+            if state.nil?
               return render(
                 response,
                 status: 404,
@@ -117,8 +122,10 @@ module OpenAI
               )
             end
 
-            hangup_call(call_id)
-            forget(call_id)
+            if state == :active
+              hangup_call(call_id)
+              complete(call_id)
+            end
             render(response, status: 204, content_type: "text/plain; charset=utf-8", body: "")
           end
 
@@ -128,8 +135,22 @@ module OpenAI
             # Closing the browser peer can end the call before this cleanup request arrives.
           end
 
-          private def forget(call_id)
-            @call_ids_lock.synchronize { @call_ids.delete(call_id) }
+          private def call_state(call_id)
+            @call_ids_lock.synchronize do
+              if @active_call_ids.include?(call_id)
+                :active
+              elsif @completed_call_ids.include?(call_id)
+                :completed
+              end
+            end
+          end
+
+          private def complete(call_id)
+            @call_ids_lock.synchronize do
+              @active_call_ids.delete(call_id)
+              @completed_call_ids[call_id] = true
+              @completed_call_ids.shift while @completed_call_ids.size > COMPLETED_CALL_LIMIT
+            end
           end
 
           private def session_config
@@ -158,7 +179,10 @@ module OpenAI
           end
 
           private def remember(call_id)
-            @call_ids_lock.synchronize { @call_ids[call_id] = true } if call_id
+            @call_ids_lock.synchronize do
+              @completed_call_ids.delete(call_id)
+              @active_call_ids[call_id] = true
+            end
           end
 
           private def render(response, status:, content_type:, body:)
