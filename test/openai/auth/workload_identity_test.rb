@@ -291,13 +291,47 @@ class WorkloadIdentityTest < Minitest::Test
     runner&.join
   end
 
-  def test_workload_identity_waiter_observes_its_own_deadline
-    config = OpenAI::Auth::WorkloadIdentity.new(
-      identity_provider_id: "idp-123",
-      service_account_id: "sa-456",
-      provider: Object.new
-    )
-    auth = OpenAI::Auth::WorkloadIdentityAuth.new(config, "org-123")
+  def test_workload_identity_returns_usable_token_during_proactive_refresh
+    auth = build_workload_identity_auth
+    cache_workload_identity_token(auth, token: "cached-token", expires_in: 60, refresh_in: -1)
+    refresh_started = Queue.new
+    release_refresh = Queue.new
+    fetch = lambda do |deadline:|
+      assert_nil(deadline)
+      refresh_started << true
+      release_refresh.pop
+      {id: "refreshed-token", expires_in: 3600}
+    end
+    refresher = nil
+    callers = []
+
+    auth.stub(:fetch_token_from_exchange, fetch) do
+      refresher = Thread.new { auth.get_token }
+      refresher.report_on_exception = false
+      Timeout.timeout(1) { refresh_started.pop }
+
+      callers = 4.times.map do
+        Thread.new do
+          deadline = OpenAI::Internal::Util.monotonic_secs + 0.1
+          auth.get_token(deadline: deadline)
+        end.tap { _1.report_on_exception = false }
+      end
+
+      callers.each { |caller| assert_equal("cached-token", Timeout.timeout(1) { caller.value }) }
+      assert_predicate(refresher, :alive?)
+      release_refresh << true
+      assert_equal("refreshed-token", refresher.value)
+      assert_equal("refreshed-token", auth.get_token)
+    end
+  ensure
+    release_refresh&.push(true) if refresher&.alive?
+    refresher&.join
+    callers&.each { _1.kill.join if _1.alive? }
+  end
+
+  def test_workload_identity_expired_token_waiters_observe_deadlines
+    auth = build_workload_identity_auth
+    cache_workload_identity_token(auth, token: "expired-token", expires_in: -1, refresh_in: -2)
     refresh_started = Queue.new
     release_refresh = Queue.new
     fetch = lambda do |deadline:|
@@ -332,13 +366,9 @@ class WorkloadIdentityTest < Minitest::Test
     waiter&.join
   end
 
-  def test_workload_identity_waiter_observes_refresh_failure
-    config = OpenAI::Auth::WorkloadIdentity.new(
-      identity_provider_id: "idp-123",
-      service_account_id: "sa-456",
-      provider: Object.new
-    )
-    auth = OpenAI::Auth::WorkloadIdentityAuth.new(config, "org-123")
+  def test_workload_identity_expired_token_waiter_observes_refresh_failure
+    auth = build_workload_identity_auth
+    cache_workload_identity_token(auth, token: "expired-token", expires_in: -1, refresh_in: -2)
     refresh_started = Queue.new
     release_refresh = Queue.new
     fetch = lambda do |deadline:|
@@ -367,6 +397,40 @@ class WorkloadIdentityTest < Minitest::Test
   ensure
     release_refresh&.push(true) if refresher&.alive?
     refresher&.kill&.join if refresher&.alive?
+    waiter&.kill&.join if waiter&.alive?
+  end
+
+  def test_workload_identity_invalidation_makes_proactive_refresh_mandatory
+    auth = build_workload_identity_auth
+    cache_workload_identity_token(auth, token: "cached-token", expires_in: 60, refresh_in: -1)
+    refresh_started = Queue.new
+    release_refresh = Queue.new
+    fetch = lambda do |deadline:|
+      assert_nil(deadline)
+      refresh_started << true
+      release_refresh.pop
+      {id: "refreshed-token", expires_in: 3600}
+    end
+    refresher = nil
+    waiter = nil
+
+    auth.stub(:fetch_token_from_exchange, fetch) do
+      refresher = Thread.new { auth.get_token }
+      refresher.report_on_exception = false
+      Timeout.timeout(1) { refresh_started.pop }
+      auth.invalidate_token
+      waiter = Thread.new { auth.get_token }
+      waiter.report_on_exception = false
+      Timeout.timeout(1) { Thread.pass until waiter.status == "sleep" }
+
+      assert_predicate(waiter, :alive?)
+      release_refresh << true
+      assert_equal("refreshed-token", refresher.value)
+      assert_equal("refreshed-token", waiter.value)
+    end
+  ensure
+    release_refresh&.push(true) if refresher&.alive?
+    refresher&.join
     waiter&.kill&.join if waiter&.alive?
   end
 
@@ -655,5 +719,23 @@ class WorkloadIdentityTest < Minitest::Test
     assert_equal("chatcmpl-123", response2.id)
     assert_requested(:post, "https://auth.openai.com/oauth/token", times: 1)
     assert_requested(:post, "http://localhost/chat/completions", times: 2)
+  end
+
+  private def build_workload_identity_auth
+    config = OpenAI::Auth::WorkloadIdentity.new(
+      identity_provider_id: "idp-123",
+      service_account_id: "sa-456",
+      provider: Object.new
+    )
+    OpenAI::Auth::WorkloadIdentityAuth.new(config, "org-123")
+  end
+
+  private def cache_workload_identity_token(auth, token:, expires_in:, refresh_in:)
+    now = OpenAI::Internal::Util.monotonic_secs
+    auth.instance_variable_get(:@mutex).synchronize do
+      auth.instance_variable_set(:@cached_token, token)
+      auth.instance_variable_set(:@cached_token_expires_at_monotonic, now + expires_in)
+      auth.instance_variable_set(:@cached_token_refresh_at_monotonic, now + refresh_in)
+    end
   end
 end

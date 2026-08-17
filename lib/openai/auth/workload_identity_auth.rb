@@ -45,7 +45,12 @@ module OpenAI
         Thread.handle_interrupt(Exception => :never) do
           @mutex.synchronize do
             if @refreshing
-              action = :wait
+              if token_unusable?
+                action = :wait
+              else
+                token = @cached_token
+                action = :return
+              end
             elsif token_unusable? || needs_refresh?
               @refreshing = true
               action = :refresh
