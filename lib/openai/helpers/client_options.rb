@@ -8,10 +8,12 @@ module OpenAI
     module ClientOptions
       # Marks an already-resolved header set: the constructor must not read
       # OPENAI_CUSTOM_HEADERS again when creating a derived client.
+      # @api private
       class ResolvedHeaders < Hash
       end
 
       class << self
+        # @api private
         def capture(**options)
           options.transform_values do |value|
             case value
@@ -22,6 +24,7 @@ module OpenAI
           end.freeze
         end
 
+        # @api private
         def copy(defaults, overrides)
           unknown = overrides.keys - defaults.keys
           unless unknown.empty?
