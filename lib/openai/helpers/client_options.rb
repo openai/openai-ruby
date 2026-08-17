@@ -30,10 +30,12 @@ module OpenAI
 
           options = defaults.dup
           provider_changed = overrides.key?(:provider) && !overrides[:provider].equal?(defaults[:provider])
-          credentials_changed = %i[api_key admin_api_key workload_identity].any? { overrides.key?(_1) }
+          credentials_changed = [:api_key, :admin_api_key, :workload_identity].any? { overrides.key?(_1) }
 
           if provider_changed
-            %i[api_key admin_api_key workload_identity base_url organization project].each { options[_1] = nil }
+            [:api_key, :admin_api_key, :workload_identity, :base_url, :organization, :project].each do |name|
+              options[name] = nil
+            end
             options[:default_headers] = {}
           elsif credentials_changed
             options[:default_headers] = options.fetch(:default_headers).reject do |name, _value|

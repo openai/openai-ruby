@@ -75,8 +75,8 @@ class OpenAI::Test::ClientOptionsTest < Minitest::Test
     )
     copy = client.with_options
 
-    %i[api_key admin_api_key organization project webhook_secret base_url headers max_retries
-       timeout initial_retry_delay max_retry_delay logger log_level on_retry requester].each do |name|
+    [:api_key, :admin_api_key, :organization, :project, :webhook_secret, :base_url, :headers, :max_retries,
+     :timeout, :initial_retry_delay, :max_retry_delay, :logger, :log_level, :on_retry, :requester].each do |name|
       expected = client.public_send(name)
       actual = copy.public_send(name)
       expected.nil? ? assert_nil(actual, "#{name} was not inherited") : assert_equal(expected, actual, "#{name} was not inherited")
@@ -85,7 +85,7 @@ class OpenAI::Test::ClientOptionsTest < Minitest::Test
     refute_same(client.headers, copy.headers)
     assert_same(callback, copy.on_retry)
     constructor_options = OpenAI::Client.instance_method(:initialize).parameters.filter_map do |kind, name|
-      name if %i[key keyreq].include?(kind)
+      name if [:key, :keyreq].include?(kind)
     end
     assert_equal(constructor_options.sort, client.instance_variable_get(:@copy_options).keys.sort)
   end
