@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.80.0](https://github.com/openai/openai-ruby/compare/v0.79.0...v0.80.0) (2026-08-17)
+
+
+### Features
+
+* add Amazon Bedrock Runtime support ([#424](https://github.com/openai/openai-ruby/issues/424)) ([cf48c01](https://github.com/openai/openai-ruby/commit/cf48c0157183797b5c4c66635ad4bfcb14fe2b3a))
+* **api:** Ultrafast tier, structured MCP and websocket errors, separate websocket events ([#414](https://github.com/openai/openai-ruby/issues/414)) ([c1f3525](https://github.com/openai/openai-ruby/commit/c1f35252bc042445ba419e413b744a2f55c514ce))
+
+
+### Bug Fixes
+
+* validate RuboCop directives without a Git checkout ([#425](https://github.com/openai/openai-ruby/issues/425)) ([a3cae51](https://github.com/openai/openai-ruby/commit/a3cae518dc18d1cc222558ed86332cc97f1316cc))
+
+
+### Chores
+
+* enforce heredoc method call position ([#431](https://github.com/openai/openai-ruby/issues/431)) ([70cebe3](https://github.com/openai/openai-ruby/commit/70cebe3c460a659c5d181b66f92d620d2f6654f5))
+* remove SDK namespace line-length exemption ([#419](https://github.com/openai/openai-ruby/issues/419)) ([a089ee1](https://github.com/openai/openai-ruby/commit/a089ee1788b9399fa0570896dc422ae375b6baf3))
+
 ## [0.79.0](https://github.com/openai/openai-ruby/compare/v0.78.0...v0.79.0) (2026-08-14)
 
 
