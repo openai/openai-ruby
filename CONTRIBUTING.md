@@ -25,9 +25,10 @@ This will install all the required dependencies.
   as `OPENAI_API_KEY`; use clearly fake values in examples, tests, snapshots,
   and WebMock fixtures.
 - **Logs and diagnostics:** Redact authorization headers, cookies, signed URLs,
-  credential-bearing query parameters, request/response bodies, prompts,
-  uploaded files, and customer data from logs, exceptions, error messages,
-  fixtures, and CI artifacts.
+  credential-bearing query parameters, customer data, and sensitive
+  request/response bodies, prompts, or uploaded files from logs, exceptions,
+  error messages, fixtures, and CI artifacts. Clearly fake or sanitized
+  payloads may remain in tests and diagnostics.
 - **Dependencies:** Review `Gemfile`, `Gemfile.lock`, and `openai.gemspec`
   changes, including direct and transitive gems, sources, locked Git revisions,
   native extensions, and install/build scripts. Do not run unreviewed scripts
@@ -115,19 +116,21 @@ The live example suite executes every example marked as `covered` in
 `examples/e2e.yml`. It requires `OPENAI_API_KEY`, makes real API requests, and
 writes JSON and Markdown execution reports under `tmp/examples-e2e/` by default.
 
-Keep `OPENAI_API_KEY` in the environment and ensure reports, terminal output,
-and uploaded CI artifacts never contain credentials, prompts, model responses,
-uploaded files, or other customer data. Prefer the offline inventory check when
-live requests are unnecessary.
-
-```bash
-$ bundle exec rake test:examples:e2e
-```
-
-To validate the example inventory without making API requests:
+Keep `OPENAI_API_KEY` in the environment. Prefer the offline inventory check,
+which makes no API requests:
 
 ```bash
 $ bundle exec rake test:examples:inventory
+```
+
+Failed live examples currently include captured stdout and stderr in their
+reports, and the live CI workflow uploads those reports even on failure. Do not
+run the live suite or workflow until captured output and reports redact or omit
+credentials, customer data, and other sensitive prompts, model responses, or
+uploaded files. Only run the suite after those safeguards are in place:
+
+```bash
+$ bundle exec rake test:examples:e2e
 ```
 
 Every `examples/**/*.rb` file must be classified as covered or explicitly
