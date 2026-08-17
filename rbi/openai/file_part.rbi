@@ -12,6 +12,26 @@ module OpenAI
     attr_reader :filename
 
     # @api private
+    sig do
+      params(content: T.any(Pathname, StringIO, IO, String)).returns(OpenAI::FilePart)
+    end
+    def with_content(content)
+    end
+
+    sig { params(content: T.any(Pathname, StringIO, IO, String)).returns(T.any(Pathname, StringIO, IO, String)) }
+    protected def content=(content)
+    end
+
+    sig { params(content_type: T.nilable(String)).returns(T.nilable(String)) }
+    protected def content_type=(content_type)
+    end
+
+    # @api private
+    sig { returns(String) }
+    private def default_content_type
+    end
+
+    # @api private
     sig { returns(String) }
     private def read
     end

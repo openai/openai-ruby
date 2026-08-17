@@ -164,6 +164,65 @@ module OpenAI
         )
       end
 
+      # Wait for an uploaded file to finish processing.
+      #
+      # The returned file may have an `error` status; callers should inspect the
+      # status before using it. Polling intervals and the overall timeout are in
+      # seconds. Finite timeouts include authentication and request replay time and
+      # disable transport retries so the deadline remains strict. Set `timeout` to
+      # `nil` to wait indefinitely and retain configured transport retries.
+      #
+      # @overload wait_for_processing(file_id, poll_interval: nil, timeout: 1800.0, request_options: {})
+      #
+      # @param file_id [String] The ID of the file to wait for.
+      #
+      # @param poll_interval [Integer, Float, nil] How often to retrieve the file. When omitted, the SDK honors the server's
+      #   polling hint and otherwise waits 5 seconds.
+      #
+      # @param timeout [Integer, Float, nil] Maximum total time to poll. Defaults to 30 minutes. Set to `nil` to wait
+      #   indefinitely.
+      #
+      # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+      #
+      # @raise [ArgumentError, OpenAI::Errors::PollingError]
+      # @return [OpenAI::Models::FileObject]
+      def wait_for_processing(
+        file_id,
+        poll_interval: nil,
+        timeout: OpenAI::Internal::Poller::DEFAULT_TIMEOUT,
+        request_options: {}
+      )
+        poller = OpenAI::Internal::Poller.new(
+          operation: "file #{file_id}",
+          poll_interval: poll_interval,
+          timeout: timeout
+        )
+        file = nil
+
+        begin
+          loop do
+            file = poller.request(request_options, resource: file) do |options|
+              retrieve(file_id, request_options: options)
+            end
+            case file.status
+            when OpenAI::FileObject::Status::UPLOADED
+              poller.wait(file)
+            when OpenAI::FileObject::Status::PROCESSED,
+                 OpenAI::FileObject::Status::ERROR,
+                 :deleted,
+                 "deleted"
+              return file
+            else
+              raise OpenAI::Errors::PollingError,
+                    "Unexpected status while waiting for file #{file_id}: #{file.status.inspect}"
+            end
+          end
+        rescue OpenAI::Errors::APITimeoutError
+          poller.check_deadline!(file)
+          raise
+        end
+      end
+
       # @api private
       #
       # @param client [OpenAI::Client]

@@ -11,6 +11,41 @@ module OpenAI
     class InvalidWebhookSignatureError < OpenAI::Errors::Error
     end
 
+    # Raised when a polling helper cannot continue safely.
+    class PollingError < OpenAI::Errors::Error
+    end
+
+    # Raised when a polling helper exceeds its overall timeout.
+    class PollingTimeoutError < OpenAI::Errors::PollingError
+      # The last resource returned by the API before the timeout, or `nil` when
+      # the deadline elapsed before the first response.
+      #
+      # @return [Object, nil]
+      attr_reader :resource
+
+      # The configured overall polling timeout in seconds.
+      #
+      # @return [Float]
+      attr_reader :timeout
+
+      # A human-readable description of the operation being polled.
+      #
+      # @return [String]
+      attr_reader :operation
+
+      # @api private
+      #
+      # @param operation [String]
+      # @param timeout [Float]
+      # @param resource [Object, nil]
+      def initialize(operation:, timeout:, resource:)
+        @operation = operation
+        @timeout = timeout
+        @resource = resource
+        super("Timed out waiting for #{operation} after #{timeout} seconds.")
+      end
+    end
+
     class ConversionError < OpenAI::Errors::Error
       # @return [StandardError, nil]
       def cause = @cause.nil? ? super : @cause

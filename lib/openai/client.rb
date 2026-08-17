@@ -165,25 +165,22 @@ module OpenAI
 
     # @api private
     private def prepare_request(request, redirect_count:, retry_count:)
+      request = prepare_workload_identity_request(request) if workload_identity_request?(request)
       preparer = @provider_runtime&.prepare_request
-      return super unless preparer
+      return super(request, redirect_count: redirect_count, retry_count: retry_count) unless preparer
       preparer.call(request)
     end
 
     # @api private
     private def send_request(request, redirect_count:, retry_count:, send_retry_header:)
-      return super unless @workload_identity_auth
+      return super unless workload_identity_request?(request)
 
-      workload_identity_auth_header = "Bearer #{WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER}"
-      return super unless request[:headers]["authorization"] == workload_identity_auth_header
-
-      token = @workload_identity_auth.get_token
-      updated_headers = request[:headers].merge("authorization" => "Bearer #{token}")
-      updated_request = request.merge(headers: updated_headers)
+      deadline = request[:timeout]&.then { OpenAI::Internal::Util.monotonic_secs + _1 }
+      request = request.merge(workload_identity_deadline: deadline)
 
       begin
         super(
-          updated_request,
+          request,
           redirect_count: redirect_count,
           retry_count: retry_count,
           send_retry_header: send_retry_header
@@ -192,17 +189,44 @@ module OpenAI
         raise unless retry_count.zero? && request_replayable?(request)
         @workload_identity_auth.invalidate_token
 
-        fresh_token = @workload_identity_auth.get_token
-        refreshed_headers = request[:headers].merge("authorization" => "Bearer #{fresh_token}")
-        refreshed_request = request.merge(headers: refreshed_headers)
-
         super(
-          refreshed_request,
+          request,
           redirect_count: redirect_count,
           retry_count: retry_count + 1,
           send_retry_header: send_retry_header
         )
       end
+    end
+
+    private def workload_identity_request?(request)
+      return false unless @workload_identity_auth
+
+      expected = "Bearer #{WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER}"
+      request[:headers]["authorization"] == expected
+    end
+
+    private def prepare_workload_identity_request(request)
+      deadline = request[:workload_identity_deadline]
+      token = @workload_identity_auth.get_token(deadline: deadline)
+      updated_headers = request[:headers].merge("authorization" => "Bearer #{token}")
+      request_with_remaining_timeout(
+        request.except(:workload_identity_deadline).merge(headers: updated_headers),
+        deadline
+      )
+    rescue Timeout::Error => e
+      raise OpenAI::Errors::APITimeoutError.new(url: request.fetch(:url), message: e.message)
+    end
+
+    # @api private
+    private def request_with_remaining_timeout(request, deadline)
+      return request if deadline.nil?
+
+      remaining = deadline - OpenAI::Internal::Util.monotonic_secs
+      unless remaining.positive?
+        raise Timeout::Error, "request timed out during workload identity authentication"
+      end
+
+      request.merge(timeout: remaining)
     end
 
     # Returns a new client of the same class with the supplied constructor options overridden.

@@ -1,0 +1,29 @@
+module OpenAI
+  module Internal
+    class Poller
+      DEFAULT_INTERVAL: Float
+      DEFAULT_TIMEOUT: Float
+
+      def initialize: (
+        operation: String,
+        ?poll_interval: (Integer | Float)?,
+        ?timeout: (Integer | Float)?
+      ) -> void
+
+      def self.validate!: (
+        ?poll_interval: (Integer | Float)?,
+        ?timeout: (Integer | Float)?
+      ) -> [(Float)?, (Float)?]
+
+      def request: (
+        OpenAI::request_opts? request_options,
+        ?extra_headers: ::Hash[String, String?],
+        ?resource: top
+      ) { (::Hash[Symbol, top] options) -> top } -> top
+
+      def check_deadline!: (?top resource) -> Float?
+
+      def wait: (OpenAI::Internal::Type::BaseModel resource) -> void
+    end
+  end
+end
