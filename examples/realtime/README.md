@@ -89,8 +89,8 @@ OPENAI_REALTIME_TIMEOUT=30 \
 bundle exec ruby examples/realtime/realtime_conversation.rb
 ```
 
-This bounded mode exits successfully only after the requested `response.done`;
-a clean EOF before that event fails the smoke test.
+This bounded mode exits successfully only after a completed `response.done`;
+a cancelled response or clean EOF before that event fails the smoke test.
 
 ## WebSocket text
 

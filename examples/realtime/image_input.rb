@@ -29,13 +29,15 @@ module OpenAI
         end
 
         def run(client:, model:, image_path:, prompt:, output: $stdout)
+          image_url = data_uri(image_path)
+
           client.realtime.connect(model: model) do |connection|
             connection.session.update(type: :realtime, output_modalities: [:text])
             connection.conversation.items.create(
               type: :message,
               role: :user,
               content: [
-                {type: :input_image, image_url: data_uri(image_path)},
+                {type: :input_image, image_url: image_url},
                 {type: :input_text, text: prompt}
               ]
             )

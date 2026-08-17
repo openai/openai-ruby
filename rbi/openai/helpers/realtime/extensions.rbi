@@ -60,6 +60,7 @@ module OpenAI
   module Internal
     module Logging
       class Context
+        # @api private
         sig do
           params(response: OpenAI::HTTPClient::Response).returns(
             OpenAI::HTTPClient::Response

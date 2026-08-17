@@ -5,6 +5,7 @@ module OpenAI
     module Realtime
       # Raw-response observation for non-JSON Realtime endpoints.
       module LoggingExtension
+        # @api private
         def observe_raw_response(response)
           return response unless enabled?(:error)
 

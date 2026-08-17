@@ -203,6 +203,33 @@ class OpenAI::Test::Resources::Realtime::CallsTest < OpenAI::Test::ResourceTest
     assert_equal(1, http_client.requests.length)
   end
 
+  def test_create_treats_a_nil_retry_override_as_the_no_retry_default
+    http_client = SequenceHTTPClient.new(
+      OpenAI::HTTPClient::Response.new(
+        status: 500,
+        headers: {"content-type" => "application/json"},
+        body: JSON.generate(error: {message: "try once", type: "server_error"})
+      ),
+      OpenAI::HTTPClient::Response.new(
+        status: 201,
+        headers: {"content-type" => "application/sdp"},
+        body: "unexpected retry"
+      )
+    )
+    client = OpenAI::Client.new(
+      api_key: "test-key",
+      base_url: "https://example.com/v1",
+      http_client: http_client,
+      max_retries: 1
+    )
+
+    assert_raises(OpenAI::Errors::InternalServerError) do
+      client.realtime.calls.create(sdp: "offer-sdp", request_options: {max_retries: nil})
+    end
+
+    assert_equal(1, http_client.requests.length)
+  end
+
   def test_create_hangs_up_an_allocated_call_when_reading_the_sdp_fails
     failing_body = FailingBody.new
     http_client = SequenceHTTPClient.new(
@@ -231,7 +258,13 @@ class OpenAI::Test::Resources::Realtime::CallsTest < OpenAI::Test::ResourceTest
     )
 
     error = assert_raises(IOError) do
-      client.realtime.calls.create(sdp: "offer-sdp")
+      client.realtime.calls.create(
+        sdp: "offer-sdp",
+        request_options: {
+          extra_headers: {"x-routing-key" => "tenant_123"},
+          extra_query: {"route" => "primary"}
+        }
+      )
     end
 
     assert_equal("SDP read failed", error.message)
@@ -242,6 +275,11 @@ class OpenAI::Test::Resources::Realtime::CallsTest < OpenAI::Test::ResourceTest
         "/v1/realtime/calls/rtc_orphan/hangup"
       ],
       http_client.requests.map { _1.url.path }
+    )
+    assert_equal(["route=primary"] * 3, http_client.requests.map { _1.url.query })
+    assert_equal(
+      ["tenant_123"] * 3,
+      http_client.requests.map { _1.headers.fetch("x-routing-key") }
     )
     assert(failing_body.closed)
   end

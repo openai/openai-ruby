@@ -36,6 +36,7 @@ module OpenAI
   module Internal
     module Logging
       class Context
+        # @api private
         def observe_raw_response: (
           OpenAI::HTTPClient::Response response
         ) -> OpenAI::HTTPClient::Response

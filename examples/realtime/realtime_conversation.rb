@@ -401,6 +401,11 @@ module OpenAI
         def stream_events(connection, microphone:, outbound:, playback:, output:, stop_after: nil)
           EventStream.each_until(connection, stop_after: stop_after) do |event|
             handle_event(event, outbound: outbound, playback: playback, output: output)
+            if stop_after == "response.done" &&
+                event.is_a?(OpenAI::Realtime::ResponseDoneEvent) &&
+                event.response.status != :completed
+              raise "Realtime response was cancelled before bounded smoke completed"
+            end
           end
         ensure
           microphone.stop

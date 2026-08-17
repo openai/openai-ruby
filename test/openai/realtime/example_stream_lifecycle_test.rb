@@ -3,6 +3,7 @@
 require_relative "../test_helper"
 require "async/notification"
 require_relative "../../../examples/realtime/mcp_approval"
+require_relative "../../../examples/realtime/realtime_conversation"
 require_relative "../../../examples/realtime/sideband"
 require_relative "../../../examples/realtime/sip"
 require_relative "../../../examples/realtime/translation"
@@ -182,6 +183,38 @@ class OpenAI::Test::RealtimeExampleStreamLifecycleTest < Minitest::Test
     end
 
     assert_equal("Realtime connection closed before response.done", error.message)
+  end
+
+  def test_bounded_realtime_conversation_rejects_a_cancelled_response
+    microphone = Minitest::Mock.new
+    microphone.expect(:stop, nil)
+    speaker = Minitest::Mock.new
+    speaker.expect(:close, nil)
+    playback = OpenAI::Examples::Realtime::Conversation::AudioPlayback.new(speaker)
+    event = OpenAI::Realtime::ResponseDoneEvent.new(
+      event_id: "event_cancelled",
+      response: OpenAI::Realtime::RealtimeResponse.new(
+        id: "response_cancelled",
+        status: :cancelled
+      )
+    )
+
+    error = assert_raises(RuntimeError) do
+      OpenAI::Examples::Realtime::Conversation.stream_events(
+        RecordingConnection.new([event]),
+        microphone: microphone,
+        outbound: nil,
+        playback: playback,
+        output: StringIO.new,
+        stop_after: "response.done"
+      )
+    end
+
+    assert_equal("Realtime response was cancelled before bounded smoke completed", error.message)
+    microphone.verify
+  ensure
+    playback&.close
+    speaker&.verify
   end
 
   def test_websocket_audio_accepts_audio_followed_by_a_completed_response

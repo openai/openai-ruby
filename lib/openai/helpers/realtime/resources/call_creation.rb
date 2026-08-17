@@ -14,7 +14,9 @@ module OpenAI
           parsed, options = OpenAI::Realtime::CallCreateParams.dump_request(params)
           sdp = parsed.fetch(:sdp)
           session = parsed[:session]
-          options = {max_retries: 0, **options.to_h}
+          options = options.to_h
+          options = {**options, max_retries: options[:max_retries] || 0}
+          cleanup_options = options.slice(:extra_headers, :extra_query)
           headers, body = request_body(sdp: sdp, session: session)
 
           response = @client.request_raw(
@@ -27,7 +29,7 @@ module OpenAI
           )
           call_id = call_id_from_location(response.headers["location"])
           attributes = {
-            sdp: read_sdp(response, call_id: call_id),
+            sdp: read_sdp(response, call_id: call_id, cleanup_options: cleanup_options),
             headers: response.headers
           }
           attributes[:call_id] = call_id if call_id
@@ -48,17 +50,17 @@ module OpenAI
           end
         end
 
-        private def read_sdp(response, call_id:)
+        private def read_sdp(response, call_id:, cleanup_options:)
           response.body.to_a.join
         rescue StandardError
-          cleanup_created_call(call_id)
+          cleanup_created_call(call_id, request_options: cleanup_options)
           raise
         end
 
-        private def cleanup_created_call(call_id)
+        private def cleanup_created_call(call_id, request_options:)
           return if call_id.nil?
 
-          hangup(call_id)
+          hangup(call_id, request_options: request_options)
         rescue StandardError
           nil
         end

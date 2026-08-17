@@ -49,16 +49,26 @@ class OpenAI::Test::RealtimeInputAndToolsExamplesTest < OpenAI::Test::RealtimeEx
   end
 
   def test_image_input_example_rejects_an_unsupported_file_format
+    realtime = RecordingRealtime.new(RecordingConnection.new)
+
     Tempfile.create("realtime-image") do |image|
       image.write("not an image")
       image.flush
 
       error = assert_raises(ArgumentError) do
-        OpenAI::Examples::Realtime::ImageInput.data_uri(image.path)
+        OpenAI::Examples::Realtime::ImageInput.run(
+          client: RecordingClient.new(realtime: realtime),
+          model: "gpt-realtime-2.1",
+          image_path: image.path,
+          prompt: "What is shown?",
+          output: StringIO.new
+        )
       end
 
       assert_equal("Realtime image input must be a PNG or JPEG file", error.message)
     end
+
+    assert_empty(realtime.connections)
   end
 
   def test_function_calling_example_executes_the_tool_and_requests_a_final_answer

@@ -177,7 +177,8 @@ connection.response.create(output_modalities: [:text])
 
 Run the complete live sample with `REALTIME_INPUT_IMAGE=photo.png bundle exec
 ruby examples/realtime/image_input.rb`. It verifies the PNG or JPEG signature
-before sending and requires non-empty model text plus a completed response.
+before opening the WebSocket and requires non-empty model text plus a completed
+response.
 
 ## Create a WebRTC call
 
@@ -231,7 +232,9 @@ standard API key to browser code. Call creation defaults to zero retries because
 replaying a successful request could allocate a second live call without a known
 ID. If reading the SDP answer fails after the service returns a call ID, the SDK
 uses the client's configured retry policy for the idempotent hangup cleanup and
-preserves the original read error.
+preserves the original read error. Request-scoped routing headers and query
+parameters are carried into that cleanup request; the create request's
+zero-retry safeguard is not, so cleanup can use the configured retry policy.
 
 The repository browser demo treats that Ruby endpoint as a local credentialed
 control plane: it binds only to an explicit loopback address, validates `Host`
@@ -445,9 +448,12 @@ Runnable smoke tests require their protocol-specific terminal event rather than
 treating a clean WebSocket EOF as success: completed `response.done` for text,
 audio, and MCP; transcription completion for transcription; `session.closed`
 for translation; and the requested `OPENAI_REALTIME_STOP_AFTER` checkpoint for
-bounded sideband, SIP, and conversation runs. Cleanup must also preserve an
-active upload or processing error when a graceful close fails, while surfacing
-the close failure after an otherwise successful operation.
+bounded sideband and SIP runs. The deterministic PCM conversation smoke also
+requires a completed `response.done`; a cancelled response is a failed bounded
+run even though cancellation remains an expected interactive barge-in outcome.
+Cleanup must also preserve an active upload or processing error when a graceful
+close fails, while surfacing the close failure after an otherwise successful
+operation.
 
 Transcription failures use their dedicated
 `ConversationItemInputAudioTranscriptionFailedEvent`, not `RealtimeErrorEvent`.
@@ -606,7 +612,8 @@ WebSocket barge-in requires client playback state in addition to server VAD.
 On `input_audio_buffer.speech_started`, the voice example stops ffplay, records
 the elapsed audio offset, sends `conversation.item.truncate`, and ignores queued
 audio and transcript deltas for the cancelled response. A cancelled
-`response.done` is an expected interruption outcome rather than an exception.
+`response.done` is an expected interruption outcome in the interactive loop
+rather than an exception; deterministic PCM smoke mode requires completion.
 
 The FFmpeg WebSocket loop cannot provide acoustic echo cancellation and must
 not be positioned as the default laptop conversation sample. With speakers,
