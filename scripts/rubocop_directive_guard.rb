@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require "open3"
 require "ripper"
 require "rubocop"
 
@@ -62,17 +61,11 @@ module RuboCopDirectiveGuard
     false
   end
 
-  def tracked_ruby_sources
-    paths, status = Open3.capture2("git", "ls-files", "-z")
-    raise "git ls-files failed" unless status.success?
-
-    tracked_paths = paths.split("\0").to_h { [_1, true] }
+  def ruby_sources
     root = File.expand_path(".")
     root_prefix = "#{root}/"
-    rubocop_target_paths.filter_map do |target|
+    rubocop_target_paths.map do |target|
       path = File.expand_path(target).delete_prefix(root_prefix)
-      next unless tracked_paths.key?(path)
-
       [path, File.read(target)]
     end
   end
@@ -84,6 +77,6 @@ module RuboCopDirectiveGuard
   end
 
   def validate
-    tracked_ruby_sources.flat_map { |path, source| violations_for(path, source) }
+    ruby_sources.flat_map { |path, source| violations_for(path, source) }
   end
 end
