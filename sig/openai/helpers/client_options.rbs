@@ -1,0 +1,19 @@
+module OpenAI
+  module Internal
+    # @api private
+    module ClientOptions
+      # @api private
+      class ResolvedHeaders < ::Hash[String, String?]
+      end
+
+      # @api private
+      def self.capture: (**untyped options) -> ::Hash[Symbol, untyped]
+
+      # @api private
+      def self.copy: (
+        ::Hash[Symbol, untyped] defaults,
+        ::Hash[Symbol, untyped] overrides
+      ) -> ::Hash[Symbol, untyped]
+    end
+  end
+end
