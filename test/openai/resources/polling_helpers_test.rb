@@ -561,7 +561,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     assert_equal("true", transport.requests.last.headers["x-stainless-poll-helper"])
   end
 
-  def test_vector_store_file_upload_scopes_idempotency_per_write
+  def test_vector_store_file_upload_prefers_an_explicit_idempotency_header
     transport = scripted_transport do |request|
       case request.path
       when "/v1/files"
@@ -576,13 +576,18 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     result = build_client(transport).vector_stores.files.upload(
       "vs_123",
       file: "contents",
-      request_options: {extra_headers: {"Idempotency-Key" => "operation-key"}}
+      request_options: {
+        idempotency_key: "structured-key",
+        extra_headers: {"IDEMPOTENCY-KEY" => "header-key"}
+      }
     )
 
     assert_equal(:completed, result.status)
     keys = transport.requests.map { _1.headers.fetch("idempotency-key") }
-    assert_equal(2, keys.uniq.length)
-    assert(keys.all? { _1.match?(/\Astainless-ruby-[0-9a-f]{64}\z/) })
+    expected = %w[file-upload vector-store-file].map do |operation|
+      "stainless-ruby-#{Digest::SHA256.hexdigest("header-key\0#{operation}")}"
+    end
+    assert_equal(expected, keys)
   end
 
   def test_vector_store_batch_poll_handles_all_terminal_states
@@ -787,17 +792,19 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
       "vs_123",
       files: %w[ALPHA BRAVO],
       max_concurrency: 2,
-      request_options: {extra_headers: {"Idempotency-Key" => "operation-key"}}
+      request_options: {idempotency_key: "operation-key"}
     )
 
     assert_equal(:completed, result.status)
     upload_keys = post_keys.fetch("/v1/files")
     batch_keys = post_keys.fetch("/v1/vector_stores/vs_123/file_batches")
     assert_equal([2, 2], upload_keys.tally.values.sort)
-    assert_equal(2, upload_keys.uniq.length)
-    assert_equal(1, batch_keys.uniq.length)
-    assert_equal(2, batch_keys.length)
-    refute_includes(upload_keys, batch_keys.first)
+    expected_upload_keys = 2.times.map do |index|
+      "stainless-ruby-#{Digest::SHA256.hexdigest("operation-key\0file-upload-#{index}")}"
+    end
+    expected_batch_key = "stainless-ruby-#{Digest::SHA256.hexdigest("operation-key\0file-batch")}"
+    assert_equal(expected_upload_keys.sort, upload_keys.uniq.sort)
+    assert_equal([expected_batch_key, expected_batch_key], batch_keys)
   end
 
   def test_vector_store_batch_upload_and_poll_validates_inputs_before_requesting

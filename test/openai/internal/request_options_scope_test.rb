@@ -29,17 +29,28 @@ class OpenAI::Test::RequestOptionsScopeTest < Minitest::Test
       first.fetch(:extra_headers).fetch("IDEMPOTENCY-KEY"),
       second.fetch(:extra_headers).fetch("IDEMPOTENCY-KEY")
     )
+    refute_equal(first[:idempotency_key], first.fetch(:extra_headers).fetch("IDEMPOTENCY-KEY"))
     assert_match(/\Astainless-ruby-[0-9a-f]{64}\z/, first[:idempotency_key])
     assert_equal("model-key", original.idempotency_key)
     assert_equal({"IDEMPOTENCY-KEY" => "header-key"}, original.extra_headers)
   end
 
-  def test_child_ignores_a_nil_idempotency_header
+  def test_child_materializes_a_structured_key_as_a_header
     child = OpenAI::Internal::RequestOptionsScope.new(
+      idempotency_key: "operation-key"
+    ).child("upload-0")
+
+    assert_equal(child[:idempotency_key], child.dig(:extra_headers, "Idempotency-Key"))
+  end
+
+  def test_child_respects_a_nil_explicit_idempotency_header
+    child = OpenAI::Internal::RequestOptionsScope.new(
+      idempotency_key: "operation-key",
       extra_headers: {"Idempotency-Key" => nil}
     ).child("upload-0")
 
-    assert_equal({extra_headers: {"Idempotency-Key" => nil}}, child)
+    assert_match(/\Astainless-ruby-[0-9a-f]{64}\z/, child[:idempotency_key])
+    assert_nil(child.fetch(:extra_headers).fetch("Idempotency-Key"))
   end
 
   def test_child_accepts_nil_options
