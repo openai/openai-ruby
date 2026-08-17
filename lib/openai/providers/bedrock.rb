@@ -577,10 +577,6 @@ module OpenAI
         if bearer_provider && configured_base_url.nil? && normalized_region.nil?
           raise ArgumentError, Bedrock::MISSING_REGION_MESSAGE
         end
-        if bearer_provider.nil? && configured_base_url && canonical_endpoint.nil? && normalized_endpoint.nil?
-          raise ArgumentError,
-                "A custom Bedrock endpoint requires an explicit `endpoint` option when using AWS credentials."
-        end
 
         definition = Bedrock::Definition.new(
           endpoint: resolved_endpoint,
