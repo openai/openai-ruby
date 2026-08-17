@@ -144,6 +144,8 @@ Lint/RequireRangeParentheses:
   Enabled: true
 Lint/RequireRelativeSelfPath:
   Enabled: true
+Lint/ShadowingOuterLocalVariable:
+  Enabled: true
 Lint/SharedMutableDefault:
   Enabled: true
 Lint/SuppressedExceptionInNumberConversion:
