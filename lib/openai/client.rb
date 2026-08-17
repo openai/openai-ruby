@@ -205,6 +205,19 @@ module OpenAI
       end
     end
 
+    # Returns a new client with the supplied constructor options overridden.
+    # Other settings and the HTTP transport are inherited. The original client
+    # is unchanged. Header overrides are merged; nil removes an individual
+    # header, and default_headers: nil clears all custom default headers.
+    #
+    # @example Select a regional endpoint for a call
+    #   client.with_options(base_url: "https://eu.api.openai.com/v1").responses.create(...)
+    # @param overrides [Hash{Symbol=>Object}] Options accepted by {#initialize}.
+    # @return [OpenAI::Client]
+    def with_options(**overrides)
+      OpenAI::Internal::ClientOptions.copy(self, @copy_options, overrides)
+    end
+
     # Creates and returns a new client for interacting with the API.
     #
     # @param api_key [String, nil] Defaults to `ENV["OPENAI_API_KEY"]`.
@@ -323,7 +336,8 @@ module OpenAI
         "openai-project" => (@project = project&.to_s)
       }
       parsed = {}
-      custom_headers_env = ENV["OPENAI_CUSTOM_HEADERS"] unless provider_runtime
+      resolved_headers = default_headers.is_a?(OpenAI::Internal::ClientOptions::ResolvedHeaders)
+      custom_headers_env = ENV["OPENAI_CUSTOM_HEADERS"] unless provider_runtime || resolved_headers
       unless custom_headers_env.nil?
         custom_headers_env.split("\n").each do |line|
           colon = line.index(":")
@@ -363,6 +377,26 @@ module OpenAI
         logger: logger,
         log_level: log_level,
         on_retry: on_retry
+      )
+
+      @copy_options = OpenAI::Internal::ClientOptions.capture(
+        api_key: api_key,
+        admin_api_key: @admin_api_key,
+        workload_identity: workload_identity,
+        organization: @organization,
+        project: @project,
+        webhook_secret: @webhook_secret,
+        provider: provider,
+        base_url: provider.nil? ? self.base_url.to_s : nil,
+        default_headers: OpenAI::Internal::Util.normalized_headers(parsed, client_headers),
+        max_retries: self.max_retries,
+        timeout: self.timeout,
+        initial_retry_delay: self.initial_retry_delay,
+        max_retry_delay: self.max_retry_delay,
+        http_client: requester,
+        logger: self.logger,
+        log_level: self.log_level,
+        on_retry: self.on_retry
       )
 
       @completions = OpenAI::Resources::Completions.new(client: self)

@@ -40,6 +40,9 @@ examples:
   examples/demo_sorbet.rb:
     status: covered
     expected_output: using params class correctly in sorbet
+  examples/eu_residency.rb:
+    status: excluded
+    reason: Requires a project and model eligible for the EU residency endpoint; ordinary CI verifies routing with a mock transport.
   examples/image_stream.rb:
     status: covered
     expected_output: Final image completed!

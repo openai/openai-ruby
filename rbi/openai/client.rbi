@@ -148,6 +148,49 @@ module OpenAI
     private def prepare_request(request, redirect_count:, retry_count:)
     end
 
+    # Returns a new client with the supplied options overridden.
+    sig do
+      params(
+        api_key: T.nilable(String),
+        admin_api_key: T.nilable(String),
+        workload_identity: T.nilable(OpenAI::Auth::WorkloadIdentity),
+        organization: T.nilable(String),
+        project: T.nilable(String),
+        webhook_secret: T.nilable(String),
+        provider: T.nilable(OpenAI::Provider),
+        base_url: T.nilable(String),
+        default_headers: T.nilable(T::Hash[String, T.nilable(String)]),
+        max_retries: Integer,
+        timeout: T.nilable(Float),
+        initial_retry_delay: Float,
+        max_retry_delay: Float,
+        http_client: T.untyped,
+        logger: T.untyped,
+        log_level: T.nilable(T.any(Symbol, String)),
+        on_retry: T.nilable(T.proc.params(event: OpenAI::RetryEvent).void)
+      ).returns(T.self_type)
+    end
+    def with_options(
+      api_key: T.unsafe(nil),
+      admin_api_key: T.unsafe(nil),
+      workload_identity: T.unsafe(nil),
+      organization: T.unsafe(nil),
+      project: T.unsafe(nil),
+      webhook_secret: T.unsafe(nil),
+      provider: T.unsafe(nil),
+      base_url: T.unsafe(nil),
+      default_headers: T.unsafe(nil),
+      max_retries: T.unsafe(nil),
+      timeout: T.unsafe(nil),
+      initial_retry_delay: T.unsafe(nil),
+      max_retry_delay: T.unsafe(nil),
+      http_client: T.unsafe(nil),
+      logger: T.unsafe(nil),
+      log_level: T.unsafe(nil),
+      on_retry: T.unsafe(nil)
+    )
+    end
+
     # Creates and returns a new client for interacting with the API.
     sig do
       params(

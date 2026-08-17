@@ -82,6 +82,26 @@ module OpenAI
       retry_count: Integer
     ) -> OpenAI::Internal::Transport::BaseClient::request_input
 
+    def with_options: (
+      ?api_key: String?,
+      ?admin_api_key: String?,
+      ?workload_identity: untyped?,
+      ?organization: String?,
+      ?project: String?,
+      ?webhook_secret: String?,
+      ?provider: OpenAI::Provider?,
+      ?base_url: String?,
+      ?default_headers: ::Hash[String, String?]?,
+      ?max_retries: Integer,
+      ?timeout: Float?,
+      ?initial_retry_delay: Float,
+      ?max_retry_delay: Float,
+      ?http_client: OpenAI::_HTTPClient?,
+      ?logger: OpenAI::_Logger?,
+      ?log_level: (Symbol | String)?,
+      ?on_retry: (^(OpenAI::RetryEvent) -> self)?
+    ) -> self
+
     def initialize: (
       ?api_key: String?,
       ?admin_api_key: String?,

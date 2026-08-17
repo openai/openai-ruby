@@ -87,6 +87,11 @@ module OpenAI
         end
         attr_accessor :output
 
+        # Concatenates text from all output messages.
+        sig { returns(String) }
+        def output_text
+        end
+
         # Whether to allow the model to run tool calls in parallel.
         sig { returns(T::Boolean) }
         attr_accessor :parallel_tool_calls

@@ -798,6 +798,30 @@ Note that requests that time out are retried by default.
 
 ## Advanced concepts
 
+### Deriving a client with different options
+
+Use `with_options` to create a client with different settings without changing
+the original. It accepts the same options as `OpenAI::Client.new` and reuses the
+HTTP client and connection pool unless you supply another `http_client`.
+
+```ruby
+client = OpenAI::Client.new
+eu = client.with_options(base_url: "https://eu.api.openai.com/v1")
+
+response = eu.responses.create(model: "gpt-4.1-mini", input: "Hello")
+puts(response.output_text)
+```
+
+The selected endpoint must be supported by your project and model. See the
+[EU-routing example](examples/eu_residency.rb) and
+[data residency documentation](https://developers.openai.com/api/docs/guides/your-data#data-residency-controls).
+
+Omitted options keep their resolved values, even if environment variables have
+changed. `default_headers` merges with inherited custom headers; use a `nil`
+header value to remove one, or `default_headers: nil` to clear them all. Switching
+providers clears inherited credentials, endpoint, organization/project, and
+custom headers; configure the new provider explicitly.
+
 ### Default request headers
 
 Use `default_headers` to send the same custom headers with every request made by a client:

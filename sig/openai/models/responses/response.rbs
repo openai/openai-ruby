@@ -58,6 +58,8 @@ module OpenAI
 
         attr_accessor output: ::Array[OpenAI::Models::Responses::response_output_item]
 
+        def output_text: -> String
+
         attr_accessor parallel_tool_calls: bool
 
         attr_accessor temperature: Float?
