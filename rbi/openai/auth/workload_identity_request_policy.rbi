@@ -20,6 +20,12 @@ module OpenAI
       end
 
       sig do
+        params(base_url: T.any(String, URI::Generic)).returns(T.attached_class)
+      end
+      def self.new(base_url)
+      end
+
+      sig do
         params(
           request: OpenAI::Internal::Transport::BaseClient::RequestInput,
           bearer_auth: T::Boolean,

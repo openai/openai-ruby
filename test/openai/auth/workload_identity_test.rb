@@ -20,7 +20,7 @@ class WorkloadIdentityTest < Minitest::Test
   def setup
     super
     @token_path = File.join(Dir.tmpdir, "test_k8s_token_#{SecureRandom.hex}")
-    @environment = %w[IDENTITY_PROVIDER_ID SERVICE_ACCOUNT_ID].to_h { [_1, ENV[_1]] }
+    @environment = %w[IDENTITY_PROVIDER_ID SERVICE_ACCOUNT_ID OPENAI_BASE_URL].to_h { [_1, ENV[_1]] }
     @environment.each_key { ENV.delete(_1) }
   end
 
@@ -616,6 +616,103 @@ class WorkloadIdentityTest < Minitest::Test
     )
 
     refute_nil(client.workload_identity_auth)
+  end
+
+  def test_workload_identity_rejects_provider_owned_azure_origins_from_every_configuration_source
+    azure_base_url = "https://attacker-controlled.openai.azure.com/openai/v1"
+    providers = [
+      OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(token_path: @token_path),
+      IDTokenProvider.new
+    ]
+
+    providers.product(%i[environment explicit]).each do |provider, source|
+      ENV["OPENAI_BASE_URL"] = azure_base_url if source == :environment
+      options = {base_url: azure_base_url} if source == :explicit
+      config = OpenAI::Auth::WorkloadIdentity.new(
+        identity_provider_id: "idp-123",
+        service_account_id: "sa-456",
+        provider: provider
+      )
+
+      error = assert_raises(ArgumentError) do
+        OpenAI::Client.new(api_key: nil, workload_identity: config, **options.to_h)
+      end
+
+      assert_match(/provider-owned API origin/, error.message)
+      ENV.delete("OPENAI_BASE_URL")
+    end
+  end
+
+  def test_workload_identity_refuses_cross_origin_redirects_for_jwt_and_id_tokens
+    File.write(@token_path, "k8s-jwt-token")
+    providers = [
+      OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(token_path: @token_path),
+      IDTokenProvider.new
+    ]
+
+    providers.each_with_index do |provider, index|
+      trusted_url = "https://api#{index}.example/v1/probe"
+      attacker_url = "https://attacker#{index}.invalid/collect"
+      stub_request(:post, "https://auth.openai.com/oauth/token")
+        .to_return(status: 200, body: JSON.generate({"access_token" => "sensitive-token", "expires_in" => 60}))
+      stub_request(:get, trusted_url)
+        .to_return(status: 307, headers: {"Location" => attacker_url}, body: "redirect")
+      stub_request(:get, attacker_url).to_return_json(status: 200, body: {ok: true})
+      config = OpenAI::Auth::WorkloadIdentity.new(
+        identity_provider_id: "idp-123",
+        service_account_id: "sa-456",
+        provider: provider
+      )
+      client = OpenAI::Client.new(
+        base_url: "https://api#{index}.example/v1",
+        api_key: nil,
+        workload_identity: config,
+        max_retries: 0
+      )
+
+      error = assert_raises(OpenAI::Errors::Error) do
+        client.request(method: :get, path: "probe", model: OpenAI::Internal::Type::Unknown)
+      end
+
+      assert_match(/configured API origin/, error.message)
+      assert_requested(:get, trusted_url, times: 1)
+      assert_not_requested(:get, attacker_url)
+    end
+  end
+
+  def test_workload_identity_preserves_same_origin_redirects_for_jwt_and_id_tokens
+    File.write(@token_path, "k8s-jwt-token")
+    providers = [
+      OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(token_path: @token_path),
+      IDTokenProvider.new
+    ]
+
+    providers.each_with_index do |provider, index|
+      base_url = "https://api#{index}.example/v1"
+      stub_request(:post, "https://auth.openai.com/oauth/token")
+        .to_return(status: 200, body: JSON.generate({"access_token" => "token-#{index}", "expires_in" => 60}))
+      stub_request(:get, "#{base_url}/probe")
+        .to_return(status: 307, headers: {"Location" => "#{base_url}/final"}, body: "redirect")
+      stub_request(:get, "#{base_url}/final")
+        .with(headers: {"Authorization" => "Bearer token-#{index}"})
+        .to_return_json(status: 200, body: {ok: true})
+      config = OpenAI::Auth::WorkloadIdentity.new(
+        identity_provider_id: "idp-123",
+        service_account_id: "sa-456",
+        provider: provider
+      )
+      client = OpenAI::Client.new(
+        base_url: base_url,
+        api_key: nil,
+        workload_identity: config,
+        max_retries: 0
+      )
+
+      result = client.request(method: :get, path: "probe", model: OpenAI::Internal::Type::Unknown)
+
+      assert_equal(true, result[:ok])
+      assert_requested(:get, "#{base_url}/final", times: 1)
+    end
   end
 
   def test_workload_identity_mutually_exclusive_with_api_key

@@ -129,6 +129,29 @@ class X509WorkloadIdentityTest < Minitest::Test
     assert_equal("https://explicit.example/v1", explicit_client.base_url.to_s)
   end
 
+  def test_x509_mode_rejects_provider_owned_azure_origins_from_every_configuration_source
+    azure_base_url = "https://attacker-controlled.openai.azure.com/openai/v1"
+
+    %i[environment explicit].each do |source|
+      http_client = StubHTTPClient.new { raise "request reached transport" }
+      ENV["OPENAI_BASE_URL"] = azure_base_url if source == :environment
+      options = {base_url: azure_base_url} if source == :explicit
+
+      error = assert_raises(ArgumentError) do
+        OpenAI::Client.new(
+          api_key: nil,
+          workload_identity: x509_config,
+          http_client: http_client,
+          **options.to_h
+        )
+      end
+
+      assert_match(/provider-owned API origin/, error.message)
+      assert_empty(http_client.requests)
+      ENV.delete("OPENAI_BASE_URL")
+    end
+  end
+
   def test_x509_mode_rejects_plaintext_environment_and_explicit_base_urls_before_exchange
     %w[environment explicit].each do |source|
       http_client = StubHTTPClient.new { raise "unexpected request" }

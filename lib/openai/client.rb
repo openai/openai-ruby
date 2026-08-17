@@ -202,6 +202,7 @@ module OpenAI
     def send_request(request, redirect_count:, retry_count:, send_retry_header:)
       return super unless @workload_identity_auth
       policy = @workload_identity_request_policy
+      policy.validate_before_token!(request)
       if policy.authenticated?(request)
         authenticated_token = policy.authenticated_token(request)
         unless @workload_identity_auth.current_token?(authenticated_token)
@@ -214,7 +215,6 @@ module OpenAI
       end
 
       workload_identity_auth_header = "Bearer #{WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER}"
-      policy.validate_before_token!(request)
       unless request[:headers]["authorization"] == workload_identity_auth_header
         return super
       end

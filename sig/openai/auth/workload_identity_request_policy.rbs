@@ -8,7 +8,7 @@ module OpenAI
         base_url: String | URI::Generic
       ) -> OpenAI::Auth::WorkloadIdentityRequestPolicy?
 
-      def initialize: -> void
+      def initialize: (String | URI::Generic base_url) -> void
 
       def decorate_request: (
         OpenAI::Internal::Transport::BaseClient::request_input request,

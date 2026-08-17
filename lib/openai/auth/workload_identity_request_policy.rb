@@ -7,7 +7,9 @@ module OpenAI
     # @api private
     class WorkloadIdentityRequestPolicy
       AUTHENTICATED = :openai_workload_identity_authenticated
-      private_constant :AUTHENTICATED
+      HTTP_SCHEMES = %w[http https].freeze
+      PROVIDER_OWNED_HOST_SUFFIXES = %w[openai.azure.com].freeze
+      private_constant :AUTHENTICATED, :HTTP_SCHEMES, :PROVIDER_OWNED_HOST_SUFFIXES
 
       # Selects the request policy once at client construction.
       #
@@ -19,8 +21,18 @@ module OpenAI
         when OpenAI::Auth::X509WorkloadIdentity
           X509.new(base_url)
         else
-          new
+          new(base_url)
         end
+      end
+
+      # @api private
+      def initialize(base_url)
+        @api_origin = api_origin(parse_url(base_url))
+        raise ArgumentError, invalid_base_url_message if @api_origin.nil?
+        return unless provider_owned_origin?(@api_origin)
+
+        raise ArgumentError,
+              "Workload identity cannot authenticate a provider-owned API origin."
       end
 
       # @api private
@@ -44,8 +56,8 @@ module OpenAI
       end
 
       # @api private
-      def validate_before_token!(*)
-        nil
+      def validate_before_token!(request)
+        validate_api_request!(request)
       end
 
       # @api private
@@ -55,8 +67,58 @@ module OpenAI
       end
 
       # @api private
-      def validate_prepared!(*, **)
+      def validate_prepared!(request, **)
+        validate_api_request!(request)
+      end
+
+      private
+
+      def parse_url(url)
+        return url if url.is_a?(URI::Generic)
+
+        URI.parse(url.to_s)
+      rescue URI::Error
         nil
+      end
+
+      def api_origin(uri)
+        return nil unless uri.is_a?(URI::Generic)
+
+        scheme = uri.scheme&.downcase
+        host = uri.host&.downcase&.delete_suffix(".")
+        valid =
+          valid_scheme?(scheme) &&
+          !host.nil? &&
+          !host.empty? &&
+          uri.userinfo.nil? &&
+          !host.include?("%") &&
+          !host.include?("\\")
+        return nil unless valid
+
+        port = uri.port || (scheme == "https" ? 443 : 80)
+        [scheme, host, port].freeze
+      end
+
+      def invalid_base_url_message
+        "Workload identity requires an absolute HTTP or HTTPS API base URL without userinfo."
+      end
+
+      def valid_scheme?(scheme)
+        HTTP_SCHEMES.include?(scheme)
+      end
+
+      def provider_owned_origin?(origin)
+        host = origin.fetch(1)
+        PROVIDER_OWNED_HOST_SUFFIXES.any? do |suffix|
+          host == suffix || host.end_with?(".#{suffix}")
+        end
+      end
+
+      def validate_api_request!(request)
+        return if api_origin(request.fetch(:url)) == @api_origin
+
+        raise OpenAI::Errors::Error,
+              "Workload identity requests must use the configured API origin."
       end
 
       # Enforces the X.509 bearer request trust boundary.
@@ -67,16 +129,6 @@ module OpenAI
         API_KEY_HEADERS = %w[api-key x-api-key].freeze
         PROXY_AUTHORIZATION_HEADER = "proxy-authorization"
         private_constant :REQUIRED, :API_KEY_HEADERS, :PROXY_AUTHORIZATION_HEADER
-
-        # @api private
-        def initialize(base_url)
-          super()
-          @api_origin = api_origin(parse_url(base_url)) ||
-                        raise(
-                          ArgumentError,
-                          "X.509 workload identity requires an absolute HTTPS API base URL without userinfo."
-                        )
-        end
 
         # @api private
         def decorate_request(request, bearer_auth:, expected_authorization:)
@@ -105,12 +157,12 @@ module OpenAI
                     "X.509 workload identity cannot be combined with a custom Authorization header."
             end
           end
-          validate_api_request!(request)
+          super
         end
 
         # @api private
         def validate_prepared!(request, original_headers:)
-          validate_api_request!(request)
+          super
           return if credential_headers(request.fetch(:headers)) == credential_headers(original_headers)
 
           raise OpenAI::Errors::Error,
@@ -119,35 +171,16 @@ module OpenAI
 
         private
 
-        def parse_url(url)
-          return url if url.is_a?(URI::Generic)
-
-          URI.parse(url.to_s)
-        rescue URI::Error
-          nil
+        def invalid_base_url_message
+          "X.509 workload identity requires an absolute HTTPS API base URL without userinfo."
         end
 
-        def api_origin(uri)
-          return nil unless uri.is_a?(URI::Generic)
-
-          host = uri.host
-          valid =
-            uri.scheme&.casecmp?("https") &&
-            !host.nil? &&
-            !host.empty? &&
-            uri.userinfo.nil? &&
-            !host.include?("%") &&
-            !host.include?("\\")
-          return nil unless valid
-
-          ["https", host.downcase, uri.port || 443].freeze
+        def valid_scheme?(scheme)
+          scheme == "https"
         end
 
         def validate_api_request!(request)
-          unless api_origin(request.fetch(:url)) == @api_origin
-            raise OpenAI::Errors::Error,
-                  "X.509 workload identity requests must use HTTPS and the configured API origin."
-          end
+          super
           header_names = request.fetch(:headers).each_key.map { _1.to_s.downcase.tr("_", "-") }
           if header_names.intersect?(API_KEY_HEADERS)
             raise OpenAI::Errors::Error,
