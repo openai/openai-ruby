@@ -46,14 +46,6 @@ module OpenAI
       sig do
         params(
           request: OpenAI::Internal::Transport::BaseClient::RequestInput
-        ).returns(T.nilable(String))
-      end
-      def authenticated_token(request)
-      end
-
-      sig do
-        params(
-          request: OpenAI::Internal::Transport::BaseClient::RequestInput
         ).void
       end
       def validate_before_token!(request)

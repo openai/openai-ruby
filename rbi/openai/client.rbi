@@ -207,11 +207,11 @@ module OpenAI
     # @api private
     sig do
       params(
-        token: String,
+        context: OpenAI::Internal::AnyHash,
         blk: T.proc.returns(OpenAI::HTTPClient::Response)
       ).returns(OpenAI::HTTPClient::Response)
     end
-    private def with_workload_identity_401_invalidation(token, &blk)
+    private def with_workload_identity_401_invalidation(context, &blk)
     end
 
     # Returns a new client with the supplied options overridden.

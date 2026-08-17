@@ -47,7 +47,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
       "token-#{@token_requests}"
     end
 
-    def invalidate_token
+    def invalidate_token(_rejected_token = nil)
       @invalidations += 1
     end
   end

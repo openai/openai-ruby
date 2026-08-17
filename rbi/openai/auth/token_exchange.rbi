@@ -24,8 +24,12 @@ module OpenAI
         def self.new(config, token_exchange_url:, http_client:, sleeper:)
         end
 
-        sig { returns(OpenAI::Auth::TokenExchange::TokenData) }
-        def fetch
+        sig do
+          params(timeout: T.nilable(Float)).returns(
+            OpenAI::Auth::TokenExchange::TokenData
+          )
+        end
+        def fetch(timeout: nil)
         end
       end
     end

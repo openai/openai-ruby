@@ -58,7 +58,7 @@ module OpenAI
         end
 
         # @api private
-        def fetch
+        def fetch(timeout: nil)
           request = OpenAI::HTTPClient::Request.new(
             method: :post,
             url: @url,
@@ -69,7 +69,7 @@ module OpenAI
               identity_provider_id: @identity_provider_id,
               service_account_id: @service_account_id
             ),
-            timeout: TIMEOUT_SECONDS
+            timeout: [timeout, TIMEOUT_SECONDS].compact.min
           )
 
           retry_count = 0

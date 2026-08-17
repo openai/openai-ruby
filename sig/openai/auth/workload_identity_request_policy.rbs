@@ -20,10 +20,6 @@ module OpenAI
         OpenAI::Internal::Transport::BaseClient::request_input request
       ) -> bool
 
-      def authenticated_token: (
-        OpenAI::Internal::Transport::BaseClient::request_input request
-      ) -> String?
-
       def validate_before_token!: (
         OpenAI::Internal::Transport::BaseClient::request_input request
       ) -> void

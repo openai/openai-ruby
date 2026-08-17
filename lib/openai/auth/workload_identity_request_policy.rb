@@ -46,16 +46,6 @@ module OpenAI
       end
 
       # @api private
-      def authenticated_token(request)
-        return nil unless authenticated?(request)
-
-        authorization = request.fetch(:headers)["authorization"]
-        return nil unless authorization&.start_with?("Bearer ")
-
-        authorization.delete_prefix("Bearer ")
-      end
-
-      # @api private
       def validate_before_token!(request)
         validate_api_request!(request)
       end
@@ -150,6 +140,8 @@ module OpenAI
 
         # @api private
         def validate_before_token!(request)
+          super
+
           if request[:workload_identity_auth] == REQUIRED
             expected = "Bearer #{OpenAI::Client::WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER}"
             unless request.fetch(:headers)["authorization"] == expected
@@ -157,7 +149,6 @@ module OpenAI
                     "X.509 workload identity cannot be combined with a custom Authorization header."
             end
           end
-          super
         end
 
         # @api private

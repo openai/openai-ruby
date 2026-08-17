@@ -108,6 +108,43 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
     assert_equal([2, 2], clients.map { _1.requester.requests.length })
   end
 
+  def test_x509_token_exchange_respects_the_api_request_deadline
+    http_client = StubHTTPClient.new do |request|
+      if request.url.host == "mtls.auth.openai.com"
+        http_response(status: 200, body: {"access_token" => "token", "expires_in" => 60})
+      else
+        http_response(status: 200, body: {"ok" => true})
+      end
+    end
+    client = OpenAI::Client.new(
+      api_key: nil,
+      workload_identity: x509_config,
+      http_client: http_client,
+      timeout: 0.25
+    )
+
+    client.request(method: :get, path: "probe", model: OpenAI::Internal::Type::Unknown)
+
+    assert_operator(http_client.requests.fetch(0).timeout, :>, 0)
+    assert_operator(http_client.requests.fetch(0).timeout, :<=, 0.25)
+  end
+
+  def test_x509_client_copy_rejects_provider_owned_origins_before_exchange
+    http_client = StubHTTPClient.new { raise "client copy performed network I/O" }
+    client = OpenAI::Client.new(
+      api_key: nil,
+      workload_identity: x509_config,
+      http_client: http_client
+    )
+
+    error = assert_raises(ArgumentError) do
+      client.with_options(base_url: "https://attacker-controlled.openai.azure.com/openai/v1")
+    end
+
+    assert_match(/provider-owned API origin/, error.message)
+    assert_empty(http_client.requests)
+  end
+
   def test_late_invalidation_during_retry_backoff_does_not_strand_waiters
     retry_started = Queue.new
     release_retry = Queue.new

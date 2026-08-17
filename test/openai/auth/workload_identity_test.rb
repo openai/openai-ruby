@@ -310,7 +310,7 @@ class WorkloadIdentityTest < Minitest::Test
     cache_workload_identity_token(auth, token: "cached-token", expires_in: 60, refresh_in: -1)
     refresh_started = Queue.new
     release_refresh = Queue.new
-    fetch = lambda do |deadline:|
+    fetch = lambda do |deadline: nil|
       assert_nil(deadline)
       refresh_started << true
       release_refresh.pop
@@ -352,7 +352,7 @@ class WorkloadIdentityTest < Minitest::Test
     cache_workload_identity_token(auth, token: "expired-token", expires_in: -1, refresh_in: -2)
     refresh_started = Queue.new
     release_refresh = Queue.new
-    fetch = lambda do |deadline:|
+    fetch = lambda do |deadline: nil|
       assert_nil(deadline)
       refresh_started << true
       release_refresh.pop
@@ -391,7 +391,7 @@ class WorkloadIdentityTest < Minitest::Test
     cache_workload_identity_token(auth, token: "expired-token", expires_in: -1, refresh_in: -2)
     refresh_started = Queue.new
     release_refresh = Queue.new
-    fetch = lambda do |deadline:|
+    fetch = lambda do |deadline: nil|
       assert_nil(deadline)
       refresh_started << true
       release_refresh.pop
@@ -427,7 +427,7 @@ class WorkloadIdentityTest < Minitest::Test
     cache_workload_identity_token(auth, token: "cached-token", expires_in: 60, refresh_in: -1)
     refresh_started = Queue.new
     release_refresh = Queue.new
-    fetch = lambda do |deadline:|
+    fetch = lambda do |deadline: nil|
       assert_nil(deadline)
       refresh_started << true
       release_refresh.pop

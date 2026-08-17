@@ -195,7 +195,14 @@ module OpenAI
     # @api private
     private def validate_prepared_request!(request, original_headers:, redirect_count:, retry_count:)
       super
-      @workload_identity_request_policy&.validate_prepared!(request, original_headers: original_headers)
+      policy = @workload_identity_request_policy
+      return if policy.nil?
+
+      context = request[:workload_identity_context]
+      if context && policy.authenticated?(request)
+        original_headers = original_headers.merge("authorization" => "Bearer #{context.fetch(:token)}")
+      end
+      policy.validate_prepared!(request, original_headers: original_headers)
     end
 
     # @api private
@@ -203,29 +210,21 @@ module OpenAI
       return super unless @workload_identity_auth
       policy = @workload_identity_request_policy
       policy.validate_before_token!(request)
-      if policy.authenticated?(request)
-        authenticated_token = policy.authenticated_token(request)
-        unless @workload_identity_auth.current_token?(authenticated_token)
-          authenticated_token = @workload_identity_auth.get_token
-          request = policy.authorize(request, authenticated_token)
-        end
-        return with_workload_identity_401_invalidation(authenticated_token) do
-          super(request, redirect_count:, retry_count:, send_retry_header:)
-        end
-      end
+      return super unless workload_identity_request?(request)
 
-      workload_identity_auth_header = "Bearer #{WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER}"
-      unless request[:headers]["authorization"] == workload_identity_auth_header
-        return super
+      context = request[:workload_identity_context]
+      if context.nil?
+        deadline = request[:timeout]&.then { OpenAI::Internal::Util.monotonic_secs + _1 }
+        context = {deadline: deadline, token: nil}
+        request = request.merge(workload_identity_context: context)
+      elsif retry_count.positive?
+        context[:deadline] = request[:timeout]&.then { OpenAI::Internal::Util.monotonic_secs + _1 }
       end
-
-      token = @workload_identity_auth.get_token
-      updated_request = policy.authorize(request, token)
 
       begin
-        with_workload_identity_401_invalidation(token) do
+        with_workload_identity_401_invalidation(context) do
           super(
-            updated_request,
+            request,
             redirect_count: redirect_count,
             retry_count: retry_count,
             send_retry_header: send_retry_header
@@ -234,12 +233,9 @@ module OpenAI
       rescue OpenAI::Errors::AuthenticationError
         raise unless retry_count.zero? && request_replayable?(request)
 
-        fresh_token = @workload_identity_auth.get_token
-        refreshed_request = policy.authorize(request, fresh_token)
-
-        with_workload_identity_401_invalidation(fresh_token) do
+        with_workload_identity_401_invalidation(context) do
           super(
-            refreshed_request,
+            request,
             redirect_count: redirect_count,
             retry_count: retry_count + 1,
             send_retry_header: send_retry_header
@@ -251,10 +247,10 @@ module OpenAI
     # Invalidates the exact workload-identity bearer selected for a dispatch.
     #
     # @api private
-    private def with_workload_identity_401_invalidation(token)
+    private def with_workload_identity_401_invalidation(context)
       yield
     rescue OpenAI::Errors::AuthenticationError
-      @workload_identity_auth.invalidate_token(token)
+      @workload_identity_auth.invalidate_token(context.fetch(:token))
       raise
     end
 
@@ -266,13 +262,12 @@ module OpenAI
     end
 
     private def prepare_workload_identity_request(request)
-      deadline = request[:workload_identity_deadline]
+      context = request.fetch(:workload_identity_context)
+      deadline = context.fetch(:deadline)
       token = @workload_identity_auth.get_token(deadline: deadline)
-      updated_headers = request[:headers].merge("authorization" => "Bearer #{token}")
-      request_with_remaining_timeout(
-        request.except(:workload_identity_deadline).merge(headers: updated_headers),
-        deadline
-      )
+      context[:token] = token
+      authorized_request = @workload_identity_request_policy.authorize(request, token)
+      request_with_remaining_timeout(authorized_request, deadline)
     rescue Timeout::Error => e
       raise OpenAI::Errors::APITimeoutError.new(url: request.fetch(:url), message: e.message)
     end

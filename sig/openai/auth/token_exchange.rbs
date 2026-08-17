@@ -15,7 +15,7 @@ module OpenAI
           sleeper: ^(Float) -> void
         ) -> void
 
-        def fetch: -> token_data
+        def fetch: (?timeout: Float?) -> token_data
       end
     end
   end

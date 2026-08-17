@@ -38,6 +38,9 @@ The JSON structurally omits `subject_token`. The endpoint is fixed and cannot
 be overridden. Redirect responses are rejected. When neither `base_url` nor
 `OPENAI_BASE_URL` is configured, only X.509 clients default to
 `https://mtls.api.openai.com/v1`; an explicit HTTPS base URL wins.
+Provider-owned API origins, including Azure OpenAI endpoints, cannot receive
+OpenAI workload credentials, whether configured explicitly, through
+`OPENAI_BASE_URL`, or when copying a client with `with_options`.
 
 The configured API base URL establishes the only allowed API origin for that
 X.509 client. Before acquiring a token and again immediately before dispatch,

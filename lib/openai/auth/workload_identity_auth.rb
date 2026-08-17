@@ -45,6 +45,7 @@ module OpenAI
         @cached_token_expires_at_monotonic = nil
         @cached_token_refresh_at_monotonic = nil
         @refreshing = false
+        @retry_failed_refresh = false
         @mutex = Mutex.new
         @cond_var = ConditionVariable.new
       end
@@ -71,6 +72,7 @@ module OpenAI
               end
             elsif token_unusable? || needs_refresh?
               @refreshing = true
+              @retry_failed_refresh = true
               action = :refresh
             else
               token = @cached_token
@@ -83,7 +85,11 @@ module OpenAI
               Thread.handle_interrupt(Exception => :immediate) do
                 perform_refresh(deadline: deadline)
               end
-
+            rescue StandardError => e
+              @mutex.synchronize do
+                @retry_failed_refresh = e.is_a?(OpenAI::Errors::APIError)
+              end
+              raise
             ensure
               @mutex.synchronize do
                 @refreshing = false
@@ -115,15 +121,6 @@ module OpenAI
         nil
       end
 
-      # Returns whether a credential is still the usable token owned by this
-      # cache. API retries use this after backoff so they never resend a bearer
-      # that another request invalidated or replaced.
-      #
-      # @api private
-      def current_token?(token)
-        @mutex.synchronize { token == @cached_token && !token_unusable? }
-      end
-
       # @api private
       def inspect
         state = @mutex.synchronize { [!@cached_token.nil?, @refreshing] }
@@ -152,10 +149,11 @@ module OpenAI
           end
 
           check_deadline!(deadline)
-          raise_refresh_error! if token_unusable?
-
-          @cached_token
+          return @cached_token unless token_unusable?
+          raise_refresh_error! unless @retry_failed_refresh
         end
+
+        get_token(deadline: deadline)
       end
 
       private def raise_refresh_error!
@@ -173,7 +171,12 @@ module OpenAI
       end
 
       private def perform_refresh(deadline:)
-        token_data = fetch_token_from_exchange(deadline: deadline)
+        token_data =
+          if deadline.nil?
+            fetch_token_from_exchange
+          else
+            fetch_token_from_exchange(deadline: deadline)
+          end
         now = @monotonic_clock.call
         expires_in = token_data.fetch(:expires_in)
 
@@ -184,10 +187,9 @@ module OpenAI
         end
       end
 
-      private def fetch_token_from_exchange(deadline:)
+      private def fetch_token_from_exchange(deadline: nil)
         unless @x509_exchange.nil?
-          check_deadline!(deadline)
-          token_data = @x509_exchange.fetch
+          token_data = @x509_exchange.fetch(timeout: remaining_timeout(deadline))
           check_deadline!(deadline)
           return token_data
         end
@@ -309,7 +311,6 @@ module OpenAI
 
         [expires_in - effective_buffer, 0].max
       end
-
     end
   end
 end

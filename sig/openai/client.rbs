@@ -104,7 +104,7 @@ module OpenAI
     } -> OpenAI::HTTPClient::Response
 
     private def with_workload_identity_401_invalidation: (
-      String token
+      ::Hash[Symbol, untyped] context
     ) {
       -> OpenAI::HTTPClient::Response
     } -> OpenAI::HTTPClient::Response

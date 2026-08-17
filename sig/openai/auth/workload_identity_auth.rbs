@@ -13,21 +13,14 @@ module OpenAI
       ) -> void
 
       # @api private
-      def get_token: -> String
-
-      # @api private
-      def invalidate_token: (?String? rejected_token) -> void
-
-      # @api private
-      def current_token?: (String? token) -> bool
-
-      # @api private
       def inspect: -> String
 
       private
 
       # @api private
-      def fetch_token_from_exchange: -> OpenAI::Auth::TokenExchange::token_data
+      def fetch_token_from_exchange: (
+        ?deadline: Float?
+      ) -> OpenAI::Auth::TokenExchange::token_data
 
       # @api private
       def handle_token_response: (

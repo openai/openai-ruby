@@ -33,29 +33,18 @@ module OpenAI
 
       # @api private
       sig { returns(String) }
-      def get_token
-      end
-
-      # @api private
-      sig { params(rejected_token: T.nilable(String)).void }
-      def invalidate_token(rejected_token = nil)
-      end
-
-      # @api private
-      sig { params(token: T.nilable(String)).returns(T::Boolean) }
-      def current_token?(token)
-      end
-
-      # @api private
-      sig { returns(String) }
       def inspect
       end
 
       private
 
       # @api private
-      sig { returns(OpenAI::Auth::TokenExchange::TokenData) }
-      def fetch_token_from_exchange
+      sig do
+        params(deadline: T.nilable(Float)).returns(
+          OpenAI::Auth::TokenExchange::TokenData
+        )
+      end
+      def fetch_token_from_exchange(deadline: nil)
       end
 
       # @api private
