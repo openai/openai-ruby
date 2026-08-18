@@ -181,7 +181,8 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
   end
 
   def test_abnormal_remote_close_is_a_connection_error
-    handler = ->(connection) { connection.close(1011, "service failed") }
+    peer_detail = "customer prompt: do not log this"
+    handler = ->(connection) { connection.close(1011, peer_detail) }
 
     with_websocket_server(handler) do |client|
       error = assert_raises(OpenAI::Errors::RealtimeConnectionError) do
@@ -189,7 +190,9 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
       end
 
       assert_instance_of(Protocol::WebSocket::ClosedError, error.cause)
-      assert_includes(error.message, "service failed")
+      assert_includes(error.cause.message, peer_detail)
+      assert_equal("Realtime WebSocket connection error.", error.message)
+      refute_includes(error.message, peer_detail)
     end
   end
 
@@ -210,7 +213,8 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
       error.url.to_s
     )
     refute_nil(error.cause)
-    assert_includes(error.message, error.cause.message)
+    assert_equal("Realtime WebSocket connection error.", error.message)
+    refute_includes(error.message, error.cause.message)
   end
 
   def test_request_timeout_bounds_negotiation_but_not_an_established_session

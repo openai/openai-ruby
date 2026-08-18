@@ -27,8 +27,7 @@ module OpenAI
         @url = url
         @cause = cause
         @http_status = http_status
-        detail = cause && !cause.message.empty? ? ": #{cause.message}" : "."
-        super(message || "Realtime WebSocket connection error#{detail}")
+        super(message || "Realtime WebSocket connection error.")
       end
     end
 

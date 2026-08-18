@@ -221,6 +221,7 @@ class OpenAI::Test::RealtimeNetworkInvariantsTest < Minitest::Test
 
   def test_workload_identity_retries_one_real_upgrade_after_a_401
     attempts = []
+    deadlines = []
     invalidations = 0
     tokens = ["stale-token", "fresh-token"]
     handler = ->(_connection) { nil }
@@ -236,7 +237,11 @@ class OpenAI::Test::RealtimeNetworkInvariantsTest < Minitest::Test
       end
     }) do |url|
       client = workload_identity_client(url)
-      client.workload_identity_auth.stub(:get_token, -> { tokens.shift }) do
+      get_token = lambda do |deadline:|
+        deadlines << deadline
+        tokens.shift
+      end
+      client.workload_identity_auth.stub(:get_token, get_token) do
         client.workload_identity_auth.stub(:invalidate_token, -> { invalidations += 1 }) do
           client.realtime.connect(model: "gpt-realtime-2.1") { |_connection| nil }
         end
@@ -244,6 +249,7 @@ class OpenAI::Test::RealtimeNetworkInvariantsTest < Minitest::Test
     end
 
     assert_equal(["Bearer stale-token", "Bearer fresh-token"], attempts)
+    assert_equal(1, deadlines.uniq.length)
     assert_equal(1, invalidations)
   end
 
