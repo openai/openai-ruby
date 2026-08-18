@@ -29,8 +29,10 @@ module OpenAI
             #   Email notification settings for a spend alert.
             #
             #   @return [OpenAI::Models::Admin::Organization::Projects::ProjectSpendAlert::NotificationChannel]
-            required :notification_channel,
-                     -> { OpenAI::Admin::Organization::Projects::ProjectSpendAlert::NotificationChannel }
+            required(
+              :notification_channel,
+              -> { OpenAI::Admin::Organization::Projects::ProjectSpendAlert::NotificationChannel }
+            )
 
             # @!attribute object
             #   The object type, which is always `project.spend_alert`.

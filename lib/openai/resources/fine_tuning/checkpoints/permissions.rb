@@ -142,10 +142,10 @@ module OpenAI
           # @see OpenAI::Models::FineTuning::Checkpoints::PermissionDeleteParams
           def delete(permission_id, params)
             parsed, options = OpenAI::FineTuning::Checkpoints::PermissionDeleteParams.dump_request(params)
-            fine_tuned_model_checkpoint =
-              parsed.delete(:fine_tuned_model_checkpoint) do
-                raise ArgumentError.new("missing required path argument #{_1}")
-              end
+            fine_tuned_model_checkpoint = parsed.delete(:fine_tuned_model_checkpoint) do
+              raise ArgumentError.new("missing required path argument #{_1}")
+            end
+
             @client.request(
               method: :delete,
               path: [

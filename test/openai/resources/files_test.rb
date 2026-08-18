@@ -12,16 +12,16 @@ class OpenAI::Test::Resources::FilesTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        bytes: Integer,
-        created_at: Integer,
-        filename: String,
-        object: Symbol,
-        purpose: OpenAI::FileObject::Purpose,
-        status: OpenAI::FileObject::Status,
-        expires_at: Integer | nil,
-        status_details: String | nil
-      }
+          id: String,
+          bytes: Integer,
+          created_at: Integer,
+          filename: String,
+          object: Symbol,
+          purpose: OpenAI::FileObject::Purpose,
+          status: OpenAI::FileObject::Status,
+          expires_at: Integer | nil,
+          status_details: String | nil
+        }
     end
   end
 
@@ -34,16 +34,16 @@ class OpenAI::Test::Resources::FilesTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        bytes: Integer,
-        created_at: Integer,
-        filename: String,
-        object: Symbol,
-        purpose: OpenAI::FileObject::Purpose,
-        status: OpenAI::FileObject::Status,
-        expires_at: Integer | nil,
-        status_details: String | nil
-      }
+          id: String,
+          bytes: Integer,
+          created_at: Integer,
+          filename: String,
+          object: Symbol,
+          purpose: OpenAI::FileObject::Purpose,
+          status: OpenAI::FileObject::Status,
+          expires_at: Integer | nil,
+          status_details: String | nil
+        }
     end
   end
 
@@ -63,16 +63,16 @@ class OpenAI::Test::Resources::FilesTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       row => {
-        id: String,
-        bytes: Integer,
-        created_at: Integer,
-        filename: String,
-        object: Symbol,
-        purpose: OpenAI::FileObject::Purpose,
-        status: OpenAI::FileObject::Status,
-        expires_at: Integer | nil,
-        status_details: String | nil
-      }
+          id: String,
+          bytes: Integer,
+          created_at: Integer,
+          filename: String,
+          object: Symbol,
+          purpose: OpenAI::FileObject::Purpose,
+          status: OpenAI::FileObject::Status,
+          expires_at: Integer | nil,
+          status_details: String | nil
+        }
     end
   end
 
@@ -85,10 +85,10 @@ class OpenAI::Test::Resources::FilesTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        deleted: OpenAI::Internal::Type::Boolean,
-        object: Symbol
-      }
+          id: String,
+          deleted: OpenAI::Internal::Type::Boolean,
+          object: Symbol
+        }
     end
   end
 

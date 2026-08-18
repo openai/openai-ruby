@@ -45,20 +45,23 @@ module OpenAI
           request = Net::HTTP::Get.new(uri)
           request["Metadata"] = "true"
 
-          response = Net::HTTP.start(
-            uri.hostname,
-            uri.port,
-            use_ssl: uri.scheme == "https",
-            open_timeout: @timeout,
-            read_timeout: @timeout
-          ) do |http|
-            http.request(request)
-          end
+          response = Net::HTTP
+            .start(
+              uri.hostname,
+              uri.port,
+              use_ssl: uri.scheme == "https",
+              open_timeout: @timeout,
+              read_timeout: @timeout
+            ) do |http|
+              http.request(request)
+            end
 
           unless response.is_a?(Net::HTTPSuccess)
-            raise OpenAI::Errors::SubjectTokenProviderError.new(
-              message: "Azure IMDS returned #{response.code}: #{response.body}",
-              provider: "azure-imds"
+            raise(
+              OpenAI::Errors::SubjectTokenProviderError.new(
+                message: "Azure IMDS returned #{response.code}: #{response.body}",
+                provider: "azure-imds"
+              )
             )
           end
 
@@ -68,18 +71,23 @@ module OpenAI
           in {access_token: String => token}
             token
           else
-            raise OpenAI::Errors::SubjectTokenProviderError.new(
-              message: "Azure IMDS response missing access_token field",
-              provider: "azure-imds"
+            raise(
+              OpenAI::Errors::SubjectTokenProviderError.new(
+                message: "Azure IMDS response missing access_token field",
+                provider: "azure-imds"
+              )
             )
           end
+
         rescue OpenAI::Errors::SubjectTokenProviderError
           raise
         rescue StandardError => e
-          raise OpenAI::Errors::SubjectTokenProviderError.new(
-            message: "Failed to fetch token from Azure IMDS: #{e.message}",
-            provider: "azure-imds",
-            cause: e
+          raise(
+            OpenAI::Errors::SubjectTokenProviderError.new(
+              message: "Failed to fetch token from Azure IMDS: #{e.message}",
+              provider: "azure-imds",
+              cause: e
+            )
           )
         end
       end

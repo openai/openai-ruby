@@ -46,10 +46,10 @@ module OpenAI
             # @see OpenAI::Models::Admin::Organization::Groups::RoleRetrieveParams
             def retrieve(role_id, params)
               parsed, options = OpenAI::Admin::Organization::Groups::RoleRetrieveParams.dump_request(params)
-              group_id =
-                parsed.delete(:group_id) do
-                  raise ArgumentError.new("missing required path argument #{_1}")
-                end
+              group_id = parsed.delete(:group_id) do
+                raise ArgumentError.new("missing required path argument #{_1}")
+              end
+
               @client.request(
                 method: :get,
                 path: ["organization/groups/%1$s/roles/%2$s", group_id, role_id],
@@ -108,10 +108,10 @@ module OpenAI
             # @see OpenAI::Models::Admin::Organization::Groups::RoleDeleteParams
             def delete(role_id, params)
               parsed, options = OpenAI::Admin::Organization::Groups::RoleDeleteParams.dump_request(params)
-              group_id =
-                parsed.delete(:group_id) do
-                  raise ArgumentError.new("missing required path argument #{_1}")
-                end
+              group_id = parsed.delete(:group_id) do
+                raise ArgumentError.new("missing required path argument #{_1}")
+              end
+
               @client.request(
                 method: :delete,
                 path: ["organization/groups/%1$s/roles/%2$s", group_id, role_id],

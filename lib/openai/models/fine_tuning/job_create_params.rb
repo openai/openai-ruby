@@ -51,9 +51,11 @@ module OpenAI
         #   A list of integrations to enable for your fine-tuning job.
         #
         #   @return [Array<OpenAI::Models::FineTuning::JobCreateParams::Integration>, nil]
-        optional :integrations,
-                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::FineTuning::JobCreateParams::Integration] },
-                 nil?: true
+        optional(
+          :integrations,
+          -> { OpenAI::Internal::Type::ArrayOf[OpenAI::FineTuning::JobCreateParams::Integration] },
+          nil?: true
+        )
 
         # @!attribute metadata
         #   Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -178,8 +180,10 @@ module OpenAI
           #   avoid overfitting.
           #
           #   @return [Symbol, :auto, Float, nil]
-          optional :learning_rate_multiplier,
-                   union: -> { OpenAI::FineTuning::JobCreateParams::Hyperparameters::LearningRateMultiplier }
+          optional(
+            :learning_rate_multiplier,
+            union: -> { OpenAI::FineTuning::JobCreateParams::Hyperparameters::LearningRateMultiplier }
+          )
 
           # @!attribute n_epochs
           #   The number of epochs to train the model for. An epoch refers to one full cycle

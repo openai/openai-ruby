@@ -25,6 +25,7 @@ class OpenAITest < Minitest::Test
     else
       ENV["OPENAI_CUSTOM_HEADERS"] = @openai_custom_headers
     end
+
     WebMock.reset!
     super
   end
@@ -89,6 +90,7 @@ class OpenAITest < Minitest::Test
     error = assert_raises(ArgumentError) do
       openai.send(:auth_headers, security: {bearer_auth: true})
     end
+
     assert_match(/Could not resolve authentication method/, error.message)
   end
 
@@ -197,6 +199,7 @@ class OpenAITest < Minitest::Test
       requests << request.headers.transform_keys(&:downcase)
       {status: 200, body: "{}"}
     end
+
     openai = OpenAI::Client.new(
       base_url: "http://localhost",
       api_key: "My API Key",
@@ -250,12 +253,11 @@ class OpenAITest < Minitest::Test
       .with(headers: {"Authorization" => "Bearer My API Key"})
       .to_return(status: 200, body: "data: [DONE]\n\n", headers: {"Content-Type" => "text/event-stream"})
 
-    openai =
-      OpenAI::Client.new(
-        base_url: "http://localhost",
-        api_key: "My API Key",
-        admin_api_key: "My Admin API Key"
-      )
+    openai = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      admin_api_key: "My Admin API Key"
+    )
 
     stream = openai.chat.completions.stream(
       messages: [{content: "string", role: :developer}],
@@ -271,12 +273,11 @@ class OpenAITest < Minitest::Test
       .with(headers: {"Authorization" => "Bearer My API Key"})
       .to_return(status: 200, body: "data: [DONE]\n\n", headers: {"Content-Type" => "text/event-stream"})
 
-    openai =
-      OpenAI::Client.new(
-        base_url: "http://localhost",
-        api_key: "My API Key",
-        admin_api_key: "My Admin API Key"
-      )
+    openai = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      admin_api_key: "My Admin API Key"
+    )
 
     stream = openai.responses.stream({})
 
@@ -289,12 +290,11 @@ class OpenAITest < Minitest::Test
       .with(headers: {"Authorization" => "Bearer My API Key"}, query: {"stream" => "true"})
       .to_return(status: 200, body: "data: [DONE]\n\n", headers: {"Content-Type" => "text/event-stream"})
 
-    openai =
-      OpenAI::Client.new(
-        base_url: "http://localhost",
-        api_key: "My API Key",
-        admin_api_key: "My Admin API Key"
-      )
+    openai = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      admin_api_key: "My Admin API Key"
+    )
 
     stream = openai.responses.stream(response_id: "resp_123")
 
@@ -322,12 +322,11 @@ class OpenAITest < Minitest::Test
       }
     )
 
-    openai =
-      OpenAI::Client.new(
-        base_url: "http://localhost",
-        api_key: "My API Key",
-        admin_api_key: "My Admin API Key"
-      )
+    openai = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      admin_api_key: "My Admin API Key"
+    )
 
     response = openai.chat.completions.create(
       messages: [{content: "string", role: :developer}],
@@ -368,12 +367,11 @@ class OpenAITest < Minitest::Test
       body: {data: [], object: "list"}
     )
 
-    openai =
-      OpenAI::Client.new(
-        base_url: "http://localhost",
-        api_key: "My API Key",
-        admin_api_key: "My Admin API Key"
-      )
+    openai = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      admin_api_key: "My Admin API Key"
+    )
 
     response = openai.models.list
 
@@ -422,12 +420,11 @@ class OpenAITest < Minitest::Test
       body: {error: {message: "Invalid request"}}
     )
 
-    openai =
-      OpenAI::Client.new(
-        base_url: "http://localhost",
-        api_key: "My API Key",
-        admin_api_key: "My Admin API Key"
-      )
+    openai = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      admin_api_key: "My Admin API Key"
+    )
 
     error = assert_raises(OpenAI::Errors::BadRequestError) do
       openai.chat.completions.create(
@@ -463,12 +460,11 @@ class OpenAITest < Minitest::Test
   def test_client_default_request_default_retry_attempts
     stub_request(:post, "http://localhost/chat/completions").to_return_json(status: 500, body: {})
 
-    openai =
-      OpenAI::Client.new(
-        base_url: "http://localhost",
-        api_key: "My API Key",
-        admin_api_key: "My Admin API Key"
-      )
+    openai = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      admin_api_key: "My Admin API Key"
+    )
 
     assert_raises(OpenAI::Errors::InternalServerError) do
       openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"gpt-5.4")
@@ -480,13 +476,12 @@ class OpenAITest < Minitest::Test
   def test_client_given_request_default_retry_attempts
     stub_request(:post, "http://localhost/chat/completions").to_return_json(status: 500, body: {})
 
-    openai =
-      OpenAI::Client.new(
-        base_url: "http://localhost",
-        api_key: "My API Key",
-        admin_api_key: "My Admin API Key",
-        max_retries: 3
-      )
+    openai = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      admin_api_key: "My Admin API Key",
+      max_retries: 3
+    )
 
     assert_raises(OpenAI::Errors::InternalServerError) do
       openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"gpt-5.4")
@@ -498,12 +493,11 @@ class OpenAITest < Minitest::Test
   def test_client_default_request_given_retry_attempts
     stub_request(:post, "http://localhost/chat/completions").to_return_json(status: 500, body: {})
 
-    openai =
-      OpenAI::Client.new(
-        base_url: "http://localhost",
-        api_key: "My API Key",
-        admin_api_key: "My Admin API Key"
-      )
+    openai = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      admin_api_key: "My Admin API Key"
+    )
 
     assert_raises(OpenAI::Errors::InternalServerError) do
       openai.chat.completions.create(
@@ -519,13 +513,12 @@ class OpenAITest < Minitest::Test
   def test_client_given_request_given_retry_attempts
     stub_request(:post, "http://localhost/chat/completions").to_return_json(status: 500, body: {})
 
-    openai =
-      OpenAI::Client.new(
-        base_url: "http://localhost",
-        api_key: "My API Key",
-        admin_api_key: "My Admin API Key",
-        max_retries: 3
-      )
+    openai = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      admin_api_key: "My Admin API Key",
+      max_retries: 3
+    )
 
     assert_raises(OpenAI::Errors::InternalServerError) do
       openai.chat.completions.create(
@@ -545,13 +538,12 @@ class OpenAITest < Minitest::Test
       body: {}
     )
 
-    openai =
-      OpenAI::Client.new(
-        base_url: "http://localhost",
-        api_key: "My API Key",
-        admin_api_key: "My Admin API Key",
-        max_retries: 1
-      )
+    openai = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      admin_api_key: "My Admin API Key",
+      max_retries: 1
+    )
 
     assert_raises(OpenAI::Errors::InternalServerError) do
       openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"gpt-5.4")
@@ -569,19 +561,19 @@ class OpenAITest < Minitest::Test
       body: {}
     )
 
-    openai =
-      OpenAI::Client.new(
-        base_url: "http://localhost",
-        api_key: "My API Key",
-        admin_api_key: "My Admin API Key",
-        max_retries: 1
-      )
+    openai = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      admin_api_key: "My Admin API Key",
+      max_retries: 1
+    )
 
     begin
       Thread.current.thread_variable_set(:time_now, now)
       assert_raises(OpenAI::Errors::InternalServerError) do
         openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"gpt-5.4")
       end
+
     ensure
       Thread.current.thread_variable_set(:time_now, nil)
     end
@@ -597,13 +589,12 @@ class OpenAITest < Minitest::Test
       body: {}
     )
 
-    openai =
-      OpenAI::Client.new(
-        base_url: "http://localhost",
-        api_key: "My API Key",
-        admin_api_key: "My Admin API Key",
-        max_retries: 1
-      )
+    openai = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      admin_api_key: "My Admin API Key",
+      max_retries: 1
+    )
 
     assert_raises(OpenAI::Errors::InternalServerError) do
       openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"gpt-5.4")
@@ -616,12 +607,11 @@ class OpenAITest < Minitest::Test
   def test_retry_count_header
     stub_request(:post, "http://localhost/chat/completions").to_return_json(status: 500, body: {})
 
-    openai =
-      OpenAI::Client.new(
-        base_url: "http://localhost",
-        api_key: "My API Key",
-        admin_api_key: "My Admin API Key"
-      )
+    openai = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      admin_api_key: "My Admin API Key"
+    )
 
     assert_raises(OpenAI::Errors::InternalServerError) do
       openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"gpt-5.4")
@@ -635,12 +625,11 @@ class OpenAITest < Minitest::Test
   def test_omit_retry_count_header
     stub_request(:post, "http://localhost/chat/completions").to_return_json(status: 500, body: {})
 
-    openai =
-      OpenAI::Client.new(
-        base_url: "http://localhost",
-        api_key: "My API Key",
-        admin_api_key: "My Admin API Key"
-      )
+    openai = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      admin_api_key: "My Admin API Key"
+    )
 
     assert_raises(OpenAI::Errors::InternalServerError) do
       openai.chat.completions.create(
@@ -658,12 +647,11 @@ class OpenAITest < Minitest::Test
   def test_overwrite_retry_count_header
     stub_request(:post, "http://localhost/chat/completions").to_return_json(status: 500, body: {})
 
-    openai =
-      OpenAI::Client.new(
-        base_url: "http://localhost",
-        api_key: "My API Key",
-        admin_api_key: "My Admin API Key"
-      )
+    openai = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      admin_api_key: "My Admin API Key"
+    )
 
     assert_raises(OpenAI::Errors::InternalServerError) do
       openai.chat.completions.create(
@@ -687,12 +675,11 @@ class OpenAITest < Minitest::Test
       headers: {"location" => "/redirected"}
     )
 
-    openai =
-      OpenAI::Client.new(
-        base_url: "http://localhost",
-        api_key: "My API Key",
-        admin_api_key: "My Admin API Key"
-      )
+    openai = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      admin_api_key: "My Admin API Key"
+    )
 
     assert_raises(OpenAI::Errors::APIConnectionError) do
       openai.chat.completions.create(
@@ -725,12 +712,11 @@ class OpenAITest < Minitest::Test
       headers: {"location" => "/redirected"}
     )
 
-    openai =
-      OpenAI::Client.new(
-        base_url: "http://localhost",
-        api_key: "My API Key",
-        admin_api_key: "My Admin API Key"
-      )
+    openai = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      admin_api_key: "My Admin API Key"
+    )
 
     assert_raises(OpenAI::Errors::APIConnectionError) do
       openai.chat.completions.create(
@@ -758,17 +744,16 @@ class OpenAITest < Minitest::Test
       headers: {"location" => "/redirected"}
     )
 
-    openai =
-      OpenAI::Client.new(
-        base_url: "http://localhost",
-        api_key: "My API Key",
-        admin_api_key: "My Admin API Key",
-        default_headers: {
-          "api-key" => "custom-api-key",
-          :"X-API-Key" => "custom-x-api-key",
-          "X-Amz-Security-Token" => "custom-session-token"
-        }
-      )
+    openai = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      admin_api_key: "My Admin API Key",
+      default_headers: {
+        "api-key" => "custom-api-key",
+        :"X-API-Key" => "custom-x-api-key",
+        "X-Amz-Security-Token" => "custom-session-token"
+      }
+    )
 
     assert_raises(OpenAI::Errors::APIConnectionError) do
       openai.chat.completions.create(
@@ -802,12 +787,11 @@ class OpenAITest < Minitest::Test
       headers: {"location" => "https://example.com/redirected"}
     )
 
-    openai =
-      OpenAI::Client.new(
-        base_url: "http://localhost",
-        api_key: "My API Key",
-        admin_api_key: "My Admin API Key"
-      )
+    openai = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      admin_api_key: "My Admin API Key"
+    )
 
     assert_raises(OpenAI::Errors::APIConnectionError) do
       openai.chat.completions.create(
@@ -889,20 +873,20 @@ class OpenAITest < Minitest::Test
         :"X-Auth-Token" => "custom-auth-token",
         "X-Goog-API-Key" => "custom-google-key",
         :"X-Client-Secret" => "custom-client-secret",
-        api_key: "custom-underscore-key",
+        :api_key => "custom-underscore-key",
         "X-Password" => "custom-password",
         "X-Idempotency-Api-Key" => "custom-idempotency-api-key",
         "X-Idempotency-Token" => "custom-idempotency-token",
         "X-Api-Key-Idempotency-Key" => "custom-prefixed-api-key",
         "X-Auth-Token-Idempotency-Key" => "custom-prefixed-token",
         "X-Api-Key-Other-Idempotency-Key" => "custom-embedded-api-key",
-        Vendor_Token_Idempotency_Key: "custom-underscore-prefixed-token",
+        :Vendor_Token_Idempotency_Key => "custom-underscore-prefixed-token",
         "Vendor_Idempotency_Token" => "custom-underscore-suffixed-token",
         "Authorization-Idempotency-Key" => "custom-prefixed-authorization",
-        Cookie: "session=private",
-        "Proxy-Authorization": "Basic proxy-secret",
+        :Cookie => "session=private",
+        :"Proxy-Authorization" => "Basic proxy-secret",
         "Set-Cookie" => "session=private-response",
-        Host: "trusted.example",
+        :Host => "trusted.example",
         "Idempotency-Key" => "retry-safe-id",
         :"X-Idempotency-Key" => "retry-safe-prefixed-id",
         "Vendor_Idempotency_Key" => "retry-safe-underscore-id",
@@ -959,6 +943,7 @@ class OpenAITest < Minitest::Test
     sensitive_headers.each do |header|
       refute_includes(redirected_headers, header)
     end
+
     assert_equal("retry-safe-id", redirected_headers.fetch("idempotency-key"))
     assert_equal("retry-safe-prefixed-id", redirected_headers.fetch("x-idempotency-key"))
     assert_equal("retry-safe-underscore-id", redirected_headers.fetch("vendor_idempotency_key"))
@@ -968,12 +953,11 @@ class OpenAITest < Minitest::Test
   def test_default_headers
     stub_request(:post, "http://localhost/chat/completions").to_return_json(status: 200, body: {})
 
-    openai =
-      OpenAI::Client.new(
-        base_url: "http://localhost",
-        api_key: "My API Key",
-        admin_api_key: "My Admin API Key"
-      )
+    openai = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "My API Key",
+      admin_api_key: "My Admin API Key"
+    )
 
     openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"gpt-5.4")
 

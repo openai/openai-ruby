@@ -32,9 +32,11 @@ module OpenAI
         #   The tool invocation context(s).
         #
         #   @return [Array<Symbol, OpenAI::Models::Beta::BetaFunctionTool::AllowedCaller>, nil]
-        optional :allowed_callers,
-                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::BetaFunctionTool::AllowedCaller] },
-                 nil?: true
+        optional(
+          :allowed_callers,
+          -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::BetaFunctionTool::AllowedCaller] },
+          nil?: true
+        )
 
         # @!attribute defer_loading
         #   Whether this function is deferred and loaded via tool search.

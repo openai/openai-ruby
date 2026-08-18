@@ -53,13 +53,12 @@ module OpenAI
           #   @option spec [Boolean] :"nil?"
           private def add_field(name_sym, required:, type_info:, spec:)
             meta = OpenAI::Internal::Type::Converter.meta_info(type_info, spec)
-            type_fn, info =
-              case type_info
-              in Proc | OpenAI::Internal::Type::Converter | Class
-                [OpenAI::Internal::Type::Converter.type_info({**spec, union: type_info}), spec]
-              in Hash
-                [OpenAI::Internal::Type::Converter.type_info(type_info), type_info]
-              end
+            type_fn, info = case type_info
+            in Proc | OpenAI::Internal::Type::Converter | Class
+              [OpenAI::Internal::Type::Converter.type_info({**spec, union: type_info}), spec]
+            in Hash
+              [OpenAI::Internal::Type::Converter.type_info(type_info), type_info]
+            end
 
             setter = :"#{name_sym}="
             api_name = info.fetch(:api_name, name_sym)
@@ -68,29 +67,28 @@ module OpenAI
 
             [name_sym, setter].each { undef_method(_1) } if known_fields.key?(name_sym)
 
-            known_fields[name_sym] =
-              {
-                mode: @mode,
-                api_name: api_name,
-                required: required,
-                nilable: nilable,
-                const: const,
-                type_fn: type_fn,
-                meta: meta
-              }
+            known_fields[name_sym] = {
+              mode: @mode,
+              api_name: api_name,
+              required: required,
+              nilable: nilable,
+              const: const,
+              type_fn: type_fn,
+              meta: meta
+            }
 
             define_method(setter) do |value|
               target = type_fn.call
               state = OpenAI::Internal::Type::Converter.new_coerce_state(translate_names: false)
               coerced = OpenAI::Internal::Type::Converter.coerce(target, value, state: state)
               error = @coerced.store(name_sym, state.fetch(:error) || true)
-              stored =
-                case [target, error]
-                in [OpenAI::Internal::Type::Converter | Symbol, nil]
-                  coerced
-                else
-                  value
-                end
+              stored = case [target, error]
+              in [OpenAI::Internal::Type::Converter | Symbol, nil]
+                coerced
+              else
+                value
+              end
+
               @data.store(name_sym, stored)
             end
 
@@ -103,12 +101,14 @@ module OpenAI
               in true | false if OpenAI::Internal::Type::Converter === target
                 @data.fetch(name_sym)
               in ::StandardError => e
-                raise OpenAI::Errors::ConversionError.new(
-                  on: self.class,
-                  method: __method__,
-                  target: target,
-                  value: @data.fetch(name_sym),
-                  cause: e
+                raise(
+                  OpenAI::Errors::ConversionError.new(
+                    on: self.class,
+                    method: __method__,
+                    target: target,
+                    value: @data.fetch(name_sym),
+                    cause: e
+                  )
                 )
               else
                 Kernel.then do
@@ -118,16 +118,21 @@ module OpenAI
                     nil
                   else
                     OpenAI::Internal::Type::Converter.coerce(
-                      target, value, state: state
+                      target,
+                      value,
+                      state: state
                     )
                   end
+
                 rescue StandardError => e
-                  raise OpenAI::Errors::ConversionError.new(
-                    on: self.class,
-                    method: __method__,
-                    target: target,
-                    value: value,
-                    cause: e
+                  raise(
+                    OpenAI::Errors::ConversionError.new(
+                      on: self.class,
+                      method: __method__,
+                      target: target,
+                      value: value,
+                      cause: e
+                    )
                   )
                 end
               end
@@ -283,6 +288,7 @@ module OpenAI
               state[:error] = TypeError.new("#{value.class} can't be coerced into #{Hash}")
               return value
             end
+
             exactness[:yes] += 1
 
             keys = val.keys.to_set
@@ -302,6 +308,7 @@ module OpenAI
                 else
                   exactness[:yes] += 1
                 end
+
                 next
               end
 
@@ -309,19 +316,18 @@ module OpenAI
               keys.delete(src_name)
 
               state[:error] = nil
-              converted =
-                if item.nil? && (nilable || !required)
-                  exactness[nilable ? :yes : :maybe] += 1
-                  nil
+              converted = if item.nil? && (nilable || !required)
+                exactness[nilable ? :yes : :maybe] += 1
+                nil
+              else
+                coerced = OpenAI::Internal::Type::Converter.coerce(target, item, state: state)
+                case target
+                in OpenAI::Internal::Type::Converter | Symbol
+                  coerced
                 else
-                  coerced = OpenAI::Internal::Type::Converter.coerce(target, item, state: state)
-                  case target
-                  in OpenAI::Internal::Type::Converter | Symbol
-                    coerced
-                  else
-                    item
-                  end
+                  item
                 end
+              end
 
               viability.store(name, state.fetch(:error) || true)
               data.store(name, converted)
@@ -390,7 +396,7 @@ module OpenAI
           #
           # @return [Hash{Symbol=>Object}]
           def recursively_to_h(model, convert:)
-            rec = ->(x) do
+            rec = -> (x) do
               case x
               in OpenAI::Internal::Type::BaseModel
                 if convert
@@ -403,6 +409,7 @@ module OpenAI
                 else
                   rec.call(x.to_h)
                 end
+
               in Hash
                 x.transform_values(&rec)
               in Array
@@ -411,6 +418,7 @@ module OpenAI
                 x
               end
             end
+
             rec.call(model)
           end
         end

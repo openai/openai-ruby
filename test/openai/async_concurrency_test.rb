@@ -21,13 +21,14 @@ class AsyncConcurrencyTest < Minitest::Test
         end
       end
 
-      body = '{"ok":true}'
+      body = "{\"ok\":true}"
       connections.each do |socket|
         socket.write(
           "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n" \
-          "Content-Length: #{body.bytesize}\r\nConnection: close\r\n\r\n#{body}"
+            "Content-Length: #{body.bytesize}\r\nConnection: close\r\n\r\n#{body}"
         )
       end
+
     ensure
       connections&.each do |socket|
         socket.close
@@ -46,12 +47,15 @@ class AsyncConcurrencyTest < Minitest::Test
       http_client: http_client
     )
 
-    responses =
-      Async do |task|
-        2.times.map do
+    responses = Async do |task|
+      2
+        .times
+        .map do
           task.async { client.request(method: :get, path: "probe") }
-        end.map(&:wait)
-      end.wait
+        end
+        .map(&:wait)
+    end
+      .wait
 
     assert_equal([{ok: true}, {ok: true}], responses)
     server_thread.value

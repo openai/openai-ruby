@@ -31,20 +31,24 @@ module RuboCopDirectiveGuard
       if cops.any? { _1.casecmp("all").zero? }
         violations << "#{path}:#{line_number}: rubocop:#{action} all is forbidden"
       end
+
       cops.reject { _1.include?("/") }.each do |department|
         violations <<
           "#{path}:#{line_number}: department-wide rubocop:#{action} #{department} is forbidden"
       end
+
       next unless action == "todo"
 
       unless metadata&.match?(TODO_OWNER)
         violations << "#{path}:#{line_number}: rubocop:todo requires `owner: ...` metadata"
       end
+
       unless valid_todo_removal?(metadata)
         violations <<
           "#{path}:#{line_number}: rubocop:todo requires `issue: #123` or `remove-by: YYYY-MM-DD` metadata"
       end
     end
+
     violations
   end
 
@@ -73,7 +77,7 @@ module RuboCopDirectiveGuard
   def rubocop_target_paths(root = ".")
     RuboCop::TargetFinder
       .new(RuboCop::ConfigStore.new)
-      .find([root], :only_recognized_file_types)
+      .find(Array(root), :only_recognized_file_types)
   end
 
   def validate

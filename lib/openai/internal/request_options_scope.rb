@@ -25,6 +25,7 @@ module OpenAI
         if options.key?(:extra_headers)
           options[:extra_headers] = options[:extra_headers].to_h.dup.freeze
         end
+
         @options = options.freeze
       end
 

@@ -19,14 +19,14 @@ class OpenAI::Test::Resources::FineTuning::Jobs::CheckpointsTest < OpenAI::Test:
 
     assert_pattern do
       row => {
-        id: String,
-        created_at: Integer,
-        fine_tuned_model_checkpoint: String,
-        fine_tuning_job_id: String,
-        metrics: OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics,
-        object: Symbol,
-        step_number: Integer
-      }
+          id: String,
+          created_at: Integer,
+          fine_tuned_model_checkpoint: String,
+          fine_tuning_job_id: String,
+          metrics: OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics,
+          object: Symbol,
+          step_number: Integer
+        }
     end
   end
 end

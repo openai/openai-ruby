@@ -20,8 +20,10 @@ module OpenAI
           #   supported, default to `1d`.
           #
           #   @return [Symbol, OpenAI::Models::Admin::Organization::UsageCodeInterpreterSessionsParams::BucketWidth, nil]
-          optional :bucket_width,
-                   enum: -> { OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::BucketWidth }
+          optional(
+            :bucket_width,
+            enum: -> { OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::BucketWidth }
+          )
 
           # @!attribute end_time
           #   End time (Unix seconds) of the query time range, exclusive.
@@ -34,8 +36,14 @@ module OpenAI
           #   `project_id`.
           #
           #   @return [Array<Symbol, OpenAI::Models::Admin::Organization::UsageCodeInterpreterSessionsParams::GroupBy>, nil]
-          optional :group_by,
-                   -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::GroupBy] }
+          optional(
+            :group_by,
+            -> {
+              OpenAI::Internal::Type::ArrayOf[
+                enum: OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::GroupBy
+              ]
+            }
+          )
 
           # @!attribute limit
           #   Specifies the number of buckets to return.

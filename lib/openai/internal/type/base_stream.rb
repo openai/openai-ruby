@@ -42,19 +42,20 @@ module OpenAI
           source = @iterator
           @iterator = OpenAI::Internal::Util.chain_fused(source) do |yielder|
             loop do
-              event =
-                begin
-                  source.next
-                rescue StopIteration
-                  context.completed(response)
-                  break
-                rescue StandardError => e
-                  context.request_failed(e)
-                  raise
-                end
+              event = begin
+                source.next
+              rescue StopIteration
+                context.completed(response)
+                break
+              rescue StandardError => e
+                context.request_failed(e)
+                raise
+              end
+
               yielder << event
             end
           end
+
           self
         end
 
@@ -73,6 +74,7 @@ module OpenAI
           unless block_given?
             raise ArgumentError.new("A block must be given to ##{__method__}")
           end
+
           @iterator.each(&blk)
         end
 

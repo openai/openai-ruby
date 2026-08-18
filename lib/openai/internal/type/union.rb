@@ -73,13 +73,12 @@ module OpenAI
         #   @option spec [Boolean] :"nil?"
         private def variant(key, spec = nil)
           meta = OpenAI::Internal::Type::Converter.meta_info(nil, spec)
-          variant_info =
-            case key
-            in Symbol
-              [key, OpenAI::Internal::Type::Converter.type_info(spec), meta]
-            in Proc | OpenAI::Internal::Type::Converter | Class | Hash
-              [nil, OpenAI::Internal::Type::Converter.type_info(key), meta]
-            end
+          variant_info = case key
+          in Symbol
+            [key, OpenAI::Internal::Type::Converter.type_info(spec), meta]
+          in Proc | OpenAI::Internal::Type::Converter | Class | Hash
+            [nil, OpenAI::Internal::Type::Converter.type_info(key), meta]
+          end
 
           known_variants << variant_info
         end
@@ -250,7 +249,7 @@ module OpenAI
           members = variants.map { OpenAI::Internal::Type::Converter.inspect(_1, depth: depth.succ) }
           prefix = is_a?(Module) ? name : self.class.name
 
-          "#{prefix}[#{members.join(' | ')}]"
+          "#{prefix}[#{members.join(" | ")}]"
         end
       end
     end

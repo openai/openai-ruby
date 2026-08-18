@@ -12,14 +12,14 @@ class OpenAI::Test::Resources::CompletionsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        choices: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::CompletionChoice]),
-        created: Integer,
-        model: String,
-        object: Symbol,
-        system_fingerprint: String | nil,
-        usage: OpenAI::CompletionUsage | nil
-      }
+          id: String,
+          choices: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::CompletionChoice]),
+          created: Integer,
+          model: String,
+          object: Symbol,
+          system_fingerprint: String | nil,
+          usage: OpenAI::CompletionUsage | nil
+        }
     end
   end
 end

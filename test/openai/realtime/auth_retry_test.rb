@@ -24,10 +24,12 @@ class OpenAI::Test::RealtimeAuthRetryTest < Minitest::Test
     def open(url:, headers:, timeout:, **options)
       @attempts << {url: url, headers: headers, timeout: timeout, options: options}
       if @reject_every_attempt || @attempts.one?
-        raise OpenAI::Errors::RealtimeConnectionError.new(
-          url: url,
-          message: "upgrade rejected",
-          http_status: 401
+        raise(
+          OpenAI::Errors::RealtimeConnectionError.new(
+            url: url,
+            message: "upgrade rejected",
+            http_status: 401
+          )
         )
       end
 
@@ -57,6 +59,7 @@ class OpenAI::Test::RealtimeAuthRetryTest < Minitest::Test
       deadlines << deadline
       tokens.shift
     end
+
     client.workload_identity_auth.stub(:get_token, get_token) do
       client.workload_identity_auth.stub(:invalidate_token, -> { invalidations += 1 }) do
         client.realtime.connect(model: "gpt-realtime-2.1", transport: transport) do |_connection|
@@ -85,6 +88,7 @@ class OpenAI::Test::RealtimeAuthRetryTest < Minitest::Test
         deadlines << deadline
         tokens.shift
       end
+
       client.workload_identity_auth.stub(:get_token, get_token) do
         client.workload_identity_auth.stub(:invalidate_token, -> { invalidations += 1 }) do
           client.realtime.connect(model: "gpt-realtime-2.1", transport: transport) do |_connection|
@@ -118,6 +122,7 @@ class OpenAI::Test::RealtimeAuthRetryTest < Minitest::Test
         token_requests += 1
         "fresh-token"
       end
+
       client.workload_identity_auth.stub(:get_token, get_token) do
         client.workload_identity_auth.stub(:invalidate_token, -> { invalidations += 1 }) do
           client.realtime.connect(model: "gpt-realtime-2.1", transport: transport) do |_connection|
@@ -146,6 +151,7 @@ class OpenAI::Test::RealtimeAuthRetryTest < Minitest::Test
         observed_deadline = deadline
         "fresh-token"
       end
+
       client.workload_identity_auth.stub(:get_token, get_token) do
         client.realtime.connect(model: "gpt-realtime-2.1", transport: transport) do |_connection|
           nil
@@ -168,6 +174,7 @@ class OpenAI::Test::RealtimeAuthRetryTest < Minitest::Test
         observed_deadline = deadline
         "fresh-token"
       end
+
       client.workload_identity_auth.stub(:get_token, get_token) do
         assert_raises(OpenAI::Errors::RealtimeConnectionError) do
           client.realtime.connect(model: "gpt-realtime-2.1", transport: transport) do |_connection|
@@ -193,13 +200,16 @@ class OpenAI::Test::RealtimeAuthRetryTest < Minitest::Test
       token_requests += 1
       "unused-token"
     end
+
     error = client.workload_identity_auth.stub(:get_token, get_token) do
       assert_raises(ArgumentError) do
-        client.realtime.connect(
-          model: "gpt-realtime-2.1",
-          request_options: {extra_query: {"credential" => "fake-sensitive-value"}},
-          transport: transport
-        ) { |_connection| nil }
+        client
+          .realtime
+          .connect(
+            model: "gpt-realtime-2.1",
+            request_options: {extra_query: {"credential" => "fake-sensitive-value"}},
+            transport: transport
+          ) { |_connection| nil }
       end
     end
 
@@ -219,12 +229,15 @@ class OpenAI::Test::RealtimeAuthRetryTest < Minitest::Test
       transport_options[:headers] = {"authorization" => "Bearer stolen"}
       "fresh-token"
     end
+
     client.workload_identity_auth.stub(:get_token, get_token) do
-      client.realtime.connect(
-        model: "gpt-realtime-2.1",
-        transport: transport,
-        transport_options: transport_options
-      ) { |_connection| nil }
+      client
+        .realtime
+        .connect(
+          model: "gpt-realtime-2.1",
+          transport: transport,
+          transport_options: transport_options
+        ) { |_connection| nil }
     end
 
     attempt = transport.attempts.fetch(0)

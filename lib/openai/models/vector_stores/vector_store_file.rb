@@ -62,11 +62,13 @@ module OpenAI
         #   characters, booleans, or numbers.
         #
         #   @return [Hash{Symbol=>String, Float, Boolean}, nil]
-        optional :attributes,
-                 -> {
-                   OpenAI::Internal::Type::HashOf[union: OpenAI::VectorStores::VectorStoreFile::Attribute]
-                 },
-                 nil?: true
+        optional(
+          :attributes,
+          -> {
+            OpenAI::Internal::Type::HashOf[union: OpenAI::VectorStores::VectorStoreFile::Attribute]
+          },
+          nil?: true
+        )
 
         # @!attribute chunking_strategy
         #   The strategy used to chunk the file.

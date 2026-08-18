@@ -41,6 +41,7 @@ expected_choice_indices = [0, 1]
 completed_choices = expected_choice_indices.select do |index|
   choice_finished[index] && !choice_contents.fetch(index, "").strip.empty?
 end
+
 unless completed_choices == expected_choice_indices
   abort("Expected two completed choices with content; received #{completed_choices.length}")
 end

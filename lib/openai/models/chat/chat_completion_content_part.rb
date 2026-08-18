@@ -40,8 +40,10 @@ module OpenAI
           #   token block.
           #
           #   @return [OpenAI::Models::Chat::ChatCompletionContentPart::File::PromptCacheBreakpoint, nil]
-          optional :prompt_cache_breakpoint,
-                   -> { OpenAI::Chat::ChatCompletionContentPart::File::PromptCacheBreakpoint }
+          optional(
+            :prompt_cache_breakpoint,
+            -> { OpenAI::Chat::ChatCompletionContentPart::File::PromptCacheBreakpoint }
+          )
 
           # @!method initialize(file:, prompt_cache_breakpoint: nil, type: :file)
           #   Some parameter documentations has been truncated, see

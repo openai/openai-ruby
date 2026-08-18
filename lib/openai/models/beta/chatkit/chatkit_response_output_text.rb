@@ -9,8 +9,10 @@ module OpenAI
           #   Ordered list of annotations attached to the response text.
           #
           #   @return [Array<OpenAI::Models::Beta::ChatKit::ChatKitResponseOutputText::Annotation::File, OpenAI::Models::Beta::ChatKit::ChatKitResponseOutputText::Annotation::URL>]
-          required :annotations,
-                   -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::ChatKit::ChatKitResponseOutputText::Annotation] }
+          required(
+            :annotations,
+            -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::ChatKit::ChatKitResponseOutputText::Annotation] }
+          )
 
           # @!attribute text
           #   Assistant generated text.

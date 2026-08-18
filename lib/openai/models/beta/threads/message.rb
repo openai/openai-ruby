@@ -24,9 +24,11 @@ module OpenAI
           #   A list of files attached to the message, and the tools they were added to.
           #
           #   @return [Array<OpenAI::Models::Beta::Threads::Message::Attachment>, nil]
-          required :attachments,
-                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::Threads::Message::Attachment] },
-                   nil?: true
+          required(
+            :attachments,
+            -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::Threads::Message::Attachment] },
+            nil?: true
+          )
 
           # @!attribute completed_at
           #   The Unix timestamp (in seconds) for when the message was completed.
@@ -149,8 +151,10 @@ module OpenAI
             #   The tools to add this file to.
             #
             #   @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly>, nil]
-            optional :tools,
-                     -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::Message::Attachment::Tool] }
+            optional(
+              :tools,
+              -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::Message::Attachment::Tool] }
+            )
 
             # @!method initialize(file_id: nil, tools: nil)
             #   @param file_id [String] The ID of the file to attach to the message.

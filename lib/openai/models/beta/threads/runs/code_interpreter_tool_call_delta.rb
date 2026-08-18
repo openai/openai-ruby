@@ -29,8 +29,10 @@ module OpenAI
             #   The Code Interpreter tool call definition.
             #
             #   @return [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter, nil]
-            optional :code_interpreter,
-                     -> { OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter }
+            optional(
+              :code_interpreter,
+              -> { OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter }
+            )
 
             # @!method initialize(index:, id: nil, code_interpreter: nil, type: :code_interpreter)
             #   Some parameter documentations has been truncated, see
@@ -61,8 +63,14 @@ module OpenAI
               #   represented by a different object type.
               #
               #   @return [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage>, nil]
-              optional :outputs,
-                       -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::Output] }
+              optional(
+                :outputs,
+                -> {
+                  OpenAI::Internal::Type::ArrayOf[
+                    union: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::Output
+                  ]
+                }
+              )
 
               # @!method initialize(input: nil, outputs: nil)
               #   Some parameter documentations has been truncated, see

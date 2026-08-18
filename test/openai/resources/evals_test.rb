@@ -4,20 +4,19 @@ require_relative "../test_helper"
 
 class OpenAI::Test::Resources::EvalsTest < OpenAI::Test::ResourceTest
   def test_create_required_params
-    response =
-      @openai.evals.create(
-        data_source_config: {item_schema: {foo: "bar"}, type: :custom},
-        testing_criteria: [
-          {
-            input: [{content: "content", role: "role"}],
-            labels: ["string"],
-            model: "model",
-            name: "name",
-            passing_labels: ["string"],
-            type: :label_model
-          }
-        ]
-      )
+    response = @openai.evals.create(
+      data_source_config: {item_schema: {foo: "bar"}, type: :custom},
+      testing_criteria: [
+        {
+          input: [{content: "content", role: "role"}],
+          labels: ["string"],
+          model: "model",
+          name: "name",
+          passing_labels: ["string"],
+          type: :label_model
+        }
+      ]
+    )
 
     assert_pattern do
       response => OpenAI::Models::EvalCreateResponse
@@ -25,14 +24,16 @@ class OpenAI::Test::Resources::EvalsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        data_source_config: OpenAI::Models::EvalCreateResponse::DataSourceConfig,
-        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
-        name: String,
-        object: Symbol,
-        testing_criteria: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::EvalCreateResponse::TestingCriterion])
-      }
+          id: String,
+          created_at: Integer,
+          data_source_config: OpenAI::Models::EvalCreateResponse::DataSourceConfig,
+          metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
+          name: String,
+          object: Symbol,
+          testing_criteria: ^(OpenAI::Internal::Type::ArrayOf[
+            union: OpenAI::Models::EvalCreateResponse::TestingCriterion
+          ])
+        }
     end
   end
 
@@ -45,14 +46,16 @@ class OpenAI::Test::Resources::EvalsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        data_source_config: OpenAI::Models::EvalRetrieveResponse::DataSourceConfig,
-        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
-        name: String,
-        object: Symbol,
-        testing_criteria: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::EvalRetrieveResponse::TestingCriterion])
-      }
+          id: String,
+          created_at: Integer,
+          data_source_config: OpenAI::Models::EvalRetrieveResponse::DataSourceConfig,
+          metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
+          name: String,
+          object: Symbol,
+          testing_criteria: ^(OpenAI::Internal::Type::ArrayOf[
+            union: OpenAI::Models::EvalRetrieveResponse::TestingCriterion
+          ])
+        }
     end
   end
 
@@ -65,14 +68,16 @@ class OpenAI::Test::Resources::EvalsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        data_source_config: OpenAI::Models::EvalUpdateResponse::DataSourceConfig,
-        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
-        name: String,
-        object: Symbol,
-        testing_criteria: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::EvalUpdateResponse::TestingCriterion])
-      }
+          id: String,
+          created_at: Integer,
+          data_source_config: OpenAI::Models::EvalUpdateResponse::DataSourceConfig,
+          metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
+          name: String,
+          object: Symbol,
+          testing_criteria: ^(OpenAI::Internal::Type::ArrayOf[
+            union: OpenAI::Models::EvalUpdateResponse::TestingCriterion
+          ])
+        }
     end
   end
 
@@ -92,14 +97,14 @@ class OpenAI::Test::Resources::EvalsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       row => {
-        id: String,
-        created_at: Integer,
-        data_source_config: OpenAI::Models::EvalListResponse::DataSourceConfig,
-        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
-        name: String,
-        object: Symbol,
-        testing_criteria: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::EvalListResponse::TestingCriterion])
-      }
+          id: String,
+          created_at: Integer,
+          data_source_config: OpenAI::Models::EvalListResponse::DataSourceConfig,
+          metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
+          name: String,
+          object: Symbol,
+          testing_criteria: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::EvalListResponse::TestingCriterion])
+        }
     end
   end
 
@@ -112,10 +117,10 @@ class OpenAI::Test::Resources::EvalsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        deleted: OpenAI::Internal::Type::Boolean,
-        eval_id: String,
-        object: String
-      }
+          deleted: OpenAI::Internal::Type::Boolean,
+          eval_id: String,
+          object: String
+        }
     end
   end
 end

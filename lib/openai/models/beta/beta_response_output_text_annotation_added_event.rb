@@ -8,9 +8,11 @@ module OpenAI
         #   An annotation that applies to a span of output text.
         #
         #   @return [OpenAI::Models::Beta::BetaResponseOutputTextAnnotationAddedEvent::Annotation::FileCitation, OpenAI::Models::Beta::BetaResponseOutputTextAnnotationAddedEvent::Annotation::URLCitation, OpenAI::Models::Beta::BetaResponseOutputTextAnnotationAddedEvent::Annotation::ContainerFileCitation, OpenAI::Models::Beta::BetaResponseOutputTextAnnotationAddedEvent::Annotation::FilePath, nil]
-        required :annotation,
-                 union: -> { OpenAI::Beta::BetaResponseOutputTextAnnotationAddedEvent::Annotation },
-                 nil?: true
+        required(
+          :annotation,
+          union: -> { OpenAI::Beta::BetaResponseOutputTextAnnotationAddedEvent::Annotation },
+          nil?: true
+        )
 
         # @!attribute annotation_index
         #   The index of the annotation within the content part.
@@ -82,16 +84,22 @@ module OpenAI
           discriminator :type
 
           # A citation to a file.
-          variant :file_citation,
-                  -> { OpenAI::Beta::BetaResponseOutputTextAnnotationAddedEvent::Annotation::FileCitation }
+          variant(
+            :file_citation,
+            -> { OpenAI::Beta::BetaResponseOutputTextAnnotationAddedEvent::Annotation::FileCitation }
+          )
 
           # A citation for a web resource used to generate a model response.
-          variant :url_citation,
-                  -> { OpenAI::Beta::BetaResponseOutputTextAnnotationAddedEvent::Annotation::URLCitation }
+          variant(
+            :url_citation,
+            -> { OpenAI::Beta::BetaResponseOutputTextAnnotationAddedEvent::Annotation::URLCitation }
+          )
 
           # A citation for a container file used to generate a model response.
-          variant :container_file_citation,
-                  -> { OpenAI::Beta::BetaResponseOutputTextAnnotationAddedEvent::Annotation::ContainerFileCitation }
+          variant(
+            :container_file_citation,
+            -> { OpenAI::Beta::BetaResponseOutputTextAnnotationAddedEvent::Annotation::ContainerFileCitation }
+          )
 
           # A path to a file.
           variant :file_path, -> { OpenAI::Beta::BetaResponseOutputTextAnnotationAddedEvent::Annotation::FilePath }

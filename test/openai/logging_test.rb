@@ -19,10 +19,10 @@ class LoggingTest < Minitest::Test
   end
 
   class RaisingLogger
-    def debug(_message) = raise("debug logger failed")
-    def info(_message) = raise("info logger failed")
-    def warn(_message) = raise("warn logger failed")
-    def error(_message) = raise("error logger failed")
+    def debug(_message) = raise "debug logger failed"
+    def info(_message) = raise "info logger failed"
+    def warn(_message) = raise "warn logger failed"
+    def error(_message) = raise "error logger failed"
   end
 
   class StubHTTPClient < OpenAI::HTTPClient
@@ -58,7 +58,7 @@ class LoggingTest < Minitest::Test
   end
 
   class UnbufferableChunk < String
-    def byteslice(*) = raise("stream chunk was buffered")
+    def byteslice(*) = raise "stream chunk was buffered"
   end
 
   def setup
@@ -153,9 +153,10 @@ class LoggingTest < Minitest::Test
       OpenAI::HTTPClient::Response.new(
         status: attempts == 1 ? 500 : 200,
         headers: {"content-type" => "application/json"},
-        body: attempts == 1 ? '{"error":"retry"}' : '{"ok":true}'
+        body: attempts == 1 ? "{\"error\":\"retry\"}" : "{\"ok\":true}"
       )
     end
+
     client = diagnostic_client(
       api_key: "test-key",
       http_client: http_client,
@@ -209,9 +210,10 @@ class LoggingTest < Minitest::Test
           "set-cookie" => "session=secret-cookie",
           "x-request-id" => "req_success"
         },
-        body: '{"answer":"sensitive response"}'
+        body: "{\"answer\":\"sensitive response\"}"
       )
     end
+
     client = diagnostic_client(
       api_key: "secret-key",
       base_url: "https://example.com/v1",
@@ -259,6 +261,7 @@ class LoggingTest < Minitest::Test
         body: JSON.generate(response_body)
       )
     end
+
     client = diagnostic_client(
       api_key: "secret-key",
       base_url: "https://example.com/v1",
@@ -310,8 +313,8 @@ class LoggingTest < Minitest::Test
     url = OpenAI::Internal::Logging.safe_url(
       URI(
         "https://user:password@example.com/probe?Credential=query-secret&" \
-        "access_token=oauth-secret&client_secret=client-secret&" \
-        "X-Amz-Signature=signature-secret&safe=visible"
+          "access_token=oauth-secret&client_secret=client-secret&" \
+          "X-Amz-Signature=signature-secret&safe=visible"
       )
     )
 
@@ -386,7 +389,7 @@ class LoggingTest < Minitest::Test
   def test_debug_logging_summarizes_base64url_data_uris_and_jwts
     encoded_bytes = OpenAI::Internal::Logging::OPAQUE_STRING_BYTES + 1
     base64url = "-_" * ((encoded_bytes / 2) + 1)
-    data_uri = "data:image/png;base64,#{'a' * encoded_bytes}"
+    data_uri = "data:image/png;base64,#{"a" * encoded_bytes}"
     jwt = ["e" * encoded_bytes, "payload", "signature"].join(".")
     formatted = OpenAI::Internal::Logging.format_body(
       JSON.generate(base64url: base64url, image: data_uri, assertion: jwt),
@@ -408,9 +411,10 @@ class LoggingTest < Minitest::Test
       OpenAI::HTTPClient::Response.new(
         status: attempts == 1 ? 500 : 200,
         headers: {"content-type" => "application/json", "x-request-id" => "req_#{attempts}"},
-        body: attempts == 1 ? '{"error":"retry"}' : '{"ok":true}'
+        body: attempts == 1 ? "{\"error\":\"retry\"}" : "{\"ok\":true}"
       )
     end
+
     client = diagnostic_client(
       api_key: "test-key",
       http_client: http_client,
@@ -450,12 +454,14 @@ class LoggingTest < Minitest::Test
           "retry-after" => "0",
           "x-request-id" => "req_#{attempts}"
         },
-        body: attempts == 1 ? '{"error":"retry"}' : '{"ok":true}'
+        body: attempts == 1 ? "{\"error\":\"retry\"}" : "{\"ok\":true}"
       )
     end
+
     on_retry = lambda do |event|
       events << [event, attempts]
     end
+
     client = diagnostic_client(
       http_client: http_client,
       max_retries: 3,
@@ -472,7 +478,10 @@ class LoggingTest < Minitest::Test
     assert_equal(0.0, event.delay)
     assert_equal(429, event.status)
     assert_equal("req_1", event.request_id)
-    assert_equal({"content-type" => "application/json", "retry-after" => "0", "x-request-id" => "req_1"}, event.response.headers)
+    assert_equal(
+      {"content-type" => "application/json", "retry-after" => "0", "x-request-id" => "req_1"},
+      event.response.headers
+    )
     assert_nil(event.error)
     assert_predicate(event, :frozen?)
   end
@@ -489,13 +498,15 @@ class LoggingTest < Minitest::Test
       OpenAI::HTTPClient::Response.new(
         status: 200,
         headers: {"content-type" => "application/json"},
-        body: '{"ok":true}'
+        body: "{\"ok\":true}"
       )
     end
+
     on_retry = lambda do |event|
       events << event
       raise "observer failed"
     end
+
     client = diagnostic_client(
       http_client: http_client,
       max_retries: 1,
@@ -519,9 +530,10 @@ class LoggingTest < Minitest::Test
       OpenAI::HTTPClient::Response.new(
         status: 400,
         headers: {"content-type" => "application/json", "x-request-id" => "req_error"},
-        body: '{"error":{"message":"sensitive failure"}}'
+        body: "{\"error\":{\"message\":\"sensitive failure\"}}"
       )
     end
+
     client = diagnostic_client(
       api_key: "test-key",
       http_client: http_client,
@@ -553,6 +565,7 @@ class LoggingTest < Minitest::Test
           body: source
         )
       end
+
       client = diagnostic_client(http_client: http_client, logger: logger, log_level: :debug)
 
       events = client.request(method: :get, path: "stream", stream: stream_class)
@@ -579,6 +592,7 @@ class LoggingTest < Minitest::Test
         body: "data: {\"message\":\"done\"}\n\n"
       )
     end
+
     client = diagnostic_client(
       api_key: "test-key",
       http_client: http_client,
@@ -609,6 +623,7 @@ class LoggingTest < Minitest::Test
           body: source
         )
       end
+
       client = diagnostic_client(http_client: http_client, logger: logger, log_level: level)
 
       stream = client.request(method: :get, path: "stream", stream: OpenAI::Internal::Stream)
@@ -642,6 +657,7 @@ class LoggingTest < Minitest::Test
           body: source
         )
       end
+
       client = diagnostic_client(http_client: http_client, logger: logger, log_level: level)
 
       stream = client.request(method: :get, path: "stream", stream: OpenAI::Internal::Stream)
@@ -669,6 +685,7 @@ class LoggingTest < Minitest::Test
         body: source
       )
     end
+
     client = diagnostic_client(http_client: http_client, logger: logger, log_level: :debug)
     stream = client.request(method: :get, path: "stream", stream: OpenAI::Internal::Stream)
 
@@ -694,6 +711,7 @@ class LoggingTest < Minitest::Test
           body: "data: {\"error\":{\"message\":\"stream failed\"}}\n\n"
         )
       end
+
       client = diagnostic_client(
         api_key: "test-key",
         http_client: http_client,
@@ -727,6 +745,7 @@ class LoggingTest < Minitest::Test
         body: source
       )
     end
+
     client = diagnostic_client(http_client: http_client, logger: logger, log_level: :debug)
     stream = client.request(method: :get, path: "stream", stream: OpenAI::Internal::Stream)
     iterator = stream.to_enum
@@ -749,6 +768,7 @@ class LoggingTest < Minitest::Test
         body: "data: {\"message\":\"first\"}\n\n"
       )
     end
+
     client = diagnostic_client(
       api_key: "test-key",
       http_client: http_client,
@@ -762,7 +782,7 @@ class LoggingTest < Minitest::Test
     )
 
     error = assert_raises(RuntimeError) do
-      callback = ->(_event) { raise "consumer failed" }
+      callback = -> (_event) { raise "consumer failed" }
       stream.each(&callback)
     end
 
@@ -777,9 +797,10 @@ class LoggingTest < Minitest::Test
       OpenAI::HTTPClient::Response.new(
         status: 200,
         headers: {"content-type" => "application/json"},
-        body: '{"ok":true}'
+        body: "{\"ok\":true}"
       )
     end
+
     client = diagnostic_client(
       api_key: "test-key",
       http_client: http_client,
@@ -812,6 +833,7 @@ class LoggingTest < Minitest::Test
         body: "binary-secret"
       )
     end
+
     client = diagnostic_client(
       api_key: "test-key",
       http_client: http_client,
@@ -835,9 +857,10 @@ class LoggingTest < Minitest::Test
       OpenAI::HTTPClient::Response.new(
         status: 200,
         headers: {"content-type" => "application/json"},
-        body: '{"ok":true}'
+        body: "{\"ok\":true}"
       )
     end
+
     client = diagnostic_client(
       api_key: "test-key",
       http_client: http_client,
@@ -870,6 +893,7 @@ class LoggingTest < Minitest::Test
         body: "data: {\"message\":\"done\"}\n\n"
       )
     end
+
     client = diagnostic_client(
       api_key: "test-key",
       http_client: http_client,
@@ -888,6 +912,7 @@ class LoggingTest < Minitest::Test
     completions = logger.events.count do |level, message|
       level == :info && message.include?("request complete")
     end
+
     bodies = logger.events.count { |level, message| level == :debug && message.include?("response body") }
     assert_equal(1, completions)
     assert_equal(1, bodies)
@@ -899,9 +924,10 @@ class LoggingTest < Minitest::Test
       OpenAI::HTTPClient::Response.new(
         status: 200,
         headers: {"content-type" => "application/json"},
-        body: '{"ok":true}'
+        body: "{\"ok\":true}"
       )
     end
+
     successful_client = diagnostic_client(
       api_key: "test-key",
       http_client: successful_http_client,
@@ -915,9 +941,10 @@ class LoggingTest < Minitest::Test
       OpenAI::HTTPClient::Response.new(
         status: 400,
         headers: {"content-type" => "application/json"},
-        body: '{"error":{"message":"bad request"}}'
+        body: "{\"error\":{\"message\":\"bad request\"}}"
       )
     end
+
     failing_client = diagnostic_client(
       api_key: "test-key",
       http_client: failing_http_client,
@@ -937,9 +964,10 @@ class LoggingTest < Minitest::Test
       OpenAI::HTTPClient::Response.new(
         status: 200,
         headers: {"content-type" => "application/json", "x-invalid" => invalid_utf8},
-        body: '{"ok":true}'
+        body: "{\"ok\":true}"
       )
     end
+
     client = diagnostic_client(
       api_key: "test-key",
       http_client: http_client,

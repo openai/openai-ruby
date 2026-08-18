@@ -40,9 +40,11 @@ module OpenAI
         #   Audio encoding for `delta`.
         #
         #   @return [Symbol, OpenAI::Models::Realtime::RealtimeTranslationOutputAudioDeltaEvent::Format, nil]
-        optional :format_,
-                 enum: -> { OpenAI::Realtime::RealtimeTranslationOutputAudioDeltaEvent::Format },
-                 api_name: :format
+        optional(
+          :format_,
+          enum: -> { OpenAI::Realtime::RealtimeTranslationOutputAudioDeltaEvent::Format },
+          api_name: :format
+        )
 
         # @!attribute sample_rate
         #   Sample rate of the audio delta.

@@ -139,11 +139,13 @@ module OpenAI
         #   modifying the behavior on a per-run basis.
         #
         #   @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>, nil]
-        optional :tools,
-                 -> {
-                   OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AssistantTool]
-                 },
-                 nil?: true
+        optional(
+          :tools,
+          -> {
+            OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AssistantTool]
+          },
+          nil?: true
+        )
 
         # @!attribute top_p
         #   An alternative to sampling with temperature, called nucleus sampling, where the
@@ -160,9 +162,11 @@ module OpenAI
         #   control the initial context window of the run.
         #
         #   @return [OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy, nil]
-        optional :truncation_strategy,
-                 -> { OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy },
-                 nil?: true
+        optional(
+          :truncation_strategy,
+          -> { OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy },
+          nil?: true
+        )
 
         # @!method initialize(assistant_id:, instructions: nil, max_completion_tokens: nil, max_prompt_tokens: nil, metadata: nil, model: nil, parallel_tool_calls: nil, response_format: nil, temperature: nil, thread: nil, tool_choice: nil, tool_resources: nil, tools: nil, top_p: nil, truncation_strategy: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
@@ -222,8 +226,10 @@ module OpenAI
           #   start the thread with.
           #
           #   @return [Array<OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message>, nil]
-          optional :messages,
-                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message] }
+          optional(
+            :messages,
+            -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message] }
+          )
 
           # @!attribute metadata
           #   Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -243,11 +249,13 @@ module OpenAI
           #   tool requires a list of vector store IDs.
           #
           #   @return [OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources, nil]
-          optional :tool_resources,
-                   -> {
-                     OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources
-                   },
-                   nil?: true
+          optional(
+            :tool_resources,
+            -> {
+              OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources
+            },
+            nil?: true
+          )
 
           # @!method initialize(messages: nil, metadata: nil, tool_resources: nil)
           #   Some parameter documentations has been truncated, see
@@ -284,11 +292,13 @@ module OpenAI
             #   A list of files attached to the message, and the tools they should be added to.
             #
             #   @return [Array<OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment>, nil]
-            optional :attachments,
-                     -> {
-                       OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment]
-                     },
-                     nil?: true
+            optional(
+              :attachments,
+              -> {
+                OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment]
+              },
+              nil?: true
+            )
 
             # @!attribute metadata
             #   Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -324,14 +334,19 @@ module OpenAI
               variant String
 
               # An array of content parts with a defined type, each can be of type `text` or images can be passed with `image_url` or `image_file`. Image types are only supported on [Vision-compatible models](https://platform.openai.com/docs/models).
-              variant -> { OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Content::MessageContentPartParamArray }
+              variant(
+                -> {
+                  OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Content::MessageContentPartParamArray
+                }
+              )
 
               # @!method self.variants
               #   @return [Array(String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>)]
 
               # @type [OpenAI::Internal::Type::Converter]
-              MessageContentPartParamArray =
-                OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Beta::Threads::MessageContentPartParam }]
+              MessageContentPartParamArray = OpenAI::Internal::Type::ArrayOf[
+                union: -> { OpenAI::Beta::Threads::MessageContentPartParam }
+              ]
             end
 
             # The role of the entity that is creating the message. Allowed values include:
@@ -363,8 +378,14 @@ module OpenAI
               #   The tools to add this file to.
               #
               #   @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::Tool::FileSearch>, nil]
-              optional :tools,
-                       -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::Tool] }
+              optional(
+                :tools,
+                -> {
+                  OpenAI::Internal::Type::ArrayOf[
+                    union: OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::Tool
+                  ]
+                }
+              )
 
               # @!method initialize(file_id: nil, tools: nil)
               #   @param file_id [String] The ID of the file to attach to the message.
@@ -378,8 +399,10 @@ module OpenAI
 
                 variant :code_interpreter, -> { OpenAI::Beta::CodeInterpreterTool }
 
-                variant :file_search,
-                        -> { OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::Tool::FileSearch }
+                variant(
+                  :file_search,
+                  -> { OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::Tool::FileSearch }
+                )
 
                 class FileSearch < OpenAI::Internal::Type::BaseModel
                   # @!attribute type
@@ -403,8 +426,10 @@ module OpenAI
             # @!attribute code_interpreter
             #
             #   @return [OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::CodeInterpreter, nil]
-            optional :code_interpreter,
-                     -> { OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources::CodeInterpreter }
+            optional(
+              :code_interpreter,
+              -> { OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources::CodeInterpreter }
+            )
 
             # @!attribute file_search
             #
@@ -456,8 +481,14 @@ module OpenAI
               #   store attached to the thread.
               #
               #   @return [Array<OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore>, nil]
-              optional :vector_stores,
-                       -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore] }
+              optional(
+                :vector_stores,
+                -> {
+                  OpenAI::Internal::Type::ArrayOf[
+                    OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore
+                  ]
+                }
+              )
 
               # @!method initialize(vector_store_ids: nil, vector_stores: nil)
               #   Some parameter documentations has been truncated, see
@@ -474,8 +505,12 @@ module OpenAI
                 #   strategy.
                 #
                 #   @return [OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static, nil]
-                optional :chunking_strategy,
-                         union: -> { OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy }
+                optional(
+                  :chunking_strategy,
+                  union: -> {
+                    OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy
+                  }
+                )
 
                 # @!attribute file_ids
                 #   A list of [file](https://platform.openai.com/docs/api-reference/files) IDs to
@@ -518,11 +553,19 @@ module OpenAI
                   discriminator :type
 
                   # The default strategy. This strategy currently uses a `max_chunk_size_tokens` of `800` and `chunk_overlap_tokens` of `400`.
-                  variant :auto,
-                          -> { OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto }
+                  variant(
+                    :auto,
+                    -> {
+                      OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto
+                    }
+                  )
 
-                  variant :static,
-                          -> { OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static }
+                  variant(
+                    :static,
+                    -> {
+                      OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
+                    }
+                  )
 
                   class Auto < OpenAI::Internal::Type::BaseModel
                     # @!attribute type
@@ -542,8 +585,12 @@ module OpenAI
                     # @!attribute static
                     #
                     #   @return [OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static]
-                    required :static,
-                             -> { OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static }
+                    required(
+                      :static,
+                      -> {
+                        OpenAI::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static
+                      }
+                    )
 
                     # @!attribute type
                     #   Always `static`.

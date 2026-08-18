@@ -217,12 +217,12 @@ class WorkloadIdentityTest < Minitest::Test
     stub_request(:post, "https://auth.openai.com/oauth/token")
       .with do |request|
         JSON.parse(request.body) == {
-          "grant_type" => "urn:ietf:params:oauth:grant-type:token-exchange",
-          "subject_token" => "k8s-jwt-token",
-          "subject_token_type" => "urn:ietf:params:oauth:token-type:jwt",
-          "identity_provider_id" => "idp-123",
-          "service_account_id" => "sa-456"
-        }
+            "grant_type" => "urn:ietf:params:oauth:grant-type:token-exchange",
+            "subject_token" => "k8s-jwt-token",
+            "subject_token_type" => "urn:ietf:params:oauth:token-type:jwt",
+            "identity_provider_id" => "idp-123",
+            "service_account_id" => "sa-456"
+          }
       end
       .to_return(
         status: 200,
@@ -249,9 +249,13 @@ class WorkloadIdentityTest < Minitest::Test
     )
     auth = OpenAI::Auth::WorkloadIdentityAuth.new(config, "org-123")
     source_path = auth.method(:get_token).source_location.fetch(0)
-    refresh_line = File.foreach(source_path).with_index(1).find do |line, _number|
-      line.strip.start_with?("perform_refresh")
-    end.fetch(1)
+    refresh_line = File
+      .foreach(source_path)
+      .with_index(1)
+      .find do |line, _number|
+        line.strip.start_with?("perform_refresh")
+      end
+      .fetch(1)
     start = Queue.new
     reached_refresh = Queue.new
     release_refresh = Queue.new
@@ -260,9 +264,12 @@ class WorkloadIdentityTest < Minitest::Test
     runner = Thread.new do
       start.pop
       auth.get_token
-    rescue Exception => e # rubocop:disable Lint/RescueException -- verifies fatal async cleanup
+      # rubocop:disable Lint/RescueException -- verifies fatal async cleanup
+    rescue Exception => e
       errors << e
     end
+    # rubocop:enable Lint/RescueException
+
     runner.report_on_exception = false
     trace = TracePoint.new(:line) do |event|
       next unless armed && Thread.current == runner
@@ -273,11 +280,11 @@ class WorkloadIdentityTest < Minitest::Test
       release_refresh.pop
     end
 
-    auth.stub(:fetch_token_from_exchange, ->(**) { {id: "recovered-token", expires_in: 3600} }) do
+    auth.stub(:fetch_token_from_exchange, -> (**) { {id: "recovered-token", expires_in: 3600} }) do
       trace.enable
       start << true
       Timeout.timeout(1) { reached_refresh.pop }
-      runner.raise(Timeout::Error, "cancelled refresh")
+      runner.raise Timeout::Error, "cancelled refresh"
       release_refresh << true
       runner.join
 
@@ -285,6 +292,7 @@ class WorkloadIdentityTest < Minitest::Test
       refute(auth.instance_variable_get(:@refreshing), "interrupted refresh remained wedged")
       assert_equal("recovered-token", auth.get_token)
     end
+
   ensure
     trace&.disable
     runner&.kill
@@ -302,6 +310,7 @@ class WorkloadIdentityTest < Minitest::Test
       release_refresh.pop
       {id: "refreshed-token", expires_in: 3600}
     end
+
     refresher = nil
     callers = []
 
@@ -311,10 +320,12 @@ class WorkloadIdentityTest < Minitest::Test
       Timeout.timeout(1) { refresh_started.pop }
 
       callers = 4.times.map do
-        Thread.new do
-          deadline = OpenAI::Internal::Util.monotonic_secs + 0.1
-          auth.get_token(deadline: deadline)
-        end.tap { _1.report_on_exception = false }
+        Thread
+          .new do
+            deadline = OpenAI::Internal::Util.monotonic_secs + 0.1
+            auth.get_token(deadline: deadline)
+          end
+          .tap { _1.report_on_exception = false }
       end
 
       callers.each { |caller| assert_equal("cached-token", Timeout.timeout(1) { caller.value }) }
@@ -323,6 +334,7 @@ class WorkloadIdentityTest < Minitest::Test
       assert_equal("refreshed-token", refresher.value)
       assert_equal("refreshed-token", auth.get_token)
     end
+
   ensure
     release_refresh&.push(true) if refresher&.alive?
     refresher&.join
@@ -340,6 +352,7 @@ class WorkloadIdentityTest < Minitest::Test
       release_refresh.pop
       {id: "shared-token", expires_in: 3600}
     end
+
     refresher = nil
     waiter = nil
 
@@ -360,6 +373,7 @@ class WorkloadIdentityTest < Minitest::Test
       assert_equal("shared-token", waiter.value)
       assert_equal("shared-token", auth.get_token)
     end
+
   ensure
     release_refresh&.push(true) if refresher&.alive?
     refresher&.join
@@ -377,6 +391,7 @@ class WorkloadIdentityTest < Minitest::Test
       release_refresh.pop
       raise IOError, "refresh failed"
     end
+
     refresher = nil
     waiter = nil
 
@@ -394,6 +409,7 @@ class WorkloadIdentityTest < Minitest::Test
       assert_equal("refresh failed", refresh_error.message)
       assert_match("Token refresh failed", waiter_error.message)
     end
+
   ensure
     release_refresh&.push(true) if refresher&.alive?
     refresher&.kill&.join if refresher&.alive?
@@ -411,6 +427,7 @@ class WorkloadIdentityTest < Minitest::Test
       release_refresh.pop
       {id: "refreshed-token", expires_in: 3600}
     end
+
     refresher = nil
     waiter = nil
 
@@ -428,6 +445,7 @@ class WorkloadIdentityTest < Minitest::Test
       assert_equal("refreshed-token", refresher.value)
       assert_equal("refreshed-token", waiter.value)
     end
+
   ensure
     release_refresh&.push(true) if refresher&.alive?
     refresher&.join

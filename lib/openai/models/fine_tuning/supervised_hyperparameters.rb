@@ -16,8 +16,10 @@ module OpenAI
         #   avoid overfitting.
         #
         #   @return [Symbol, :auto, Float, nil]
-        optional :learning_rate_multiplier,
-                 union: -> { OpenAI::FineTuning::SupervisedHyperparameters::LearningRateMultiplier }
+        optional(
+          :learning_rate_multiplier,
+          union: -> { OpenAI::FineTuning::SupervisedHyperparameters::LearningRateMultiplier }
+        )
 
         # @!attribute n_epochs
         #   The number of epochs to train the model for. An epoch refers to one full cycle

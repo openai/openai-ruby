@@ -15,9 +15,10 @@ class OpenAI::Test::VectorStoreFileUploaderTest < Minitest::Test
     attr_reader :calls, :contents
 
     def initialize(capture_contents: true, &handler)
-      @handler = handler || lambda do |file|
-        UploadedFile.new("uploaded_#{OpenAI::Test::VectorStoreFileUploaderTest.file_contents(file)}")
-      end
+      @handler = handler ||
+        lambda do |file|
+          UploadedFile.new("uploaded_#{OpenAI::Test::VectorStoreFileUploaderTest.file_contents(file)}")
+        end
       @capture_contents = capture_contents
       @calls = []
       @contents = []
@@ -30,6 +31,7 @@ class OpenAI::Test::VectorStoreFileUploaderTest < Minitest::Test
         @calls << {file: file, purpose: purpose, request_options: request_options}
         @contents << contents if @capture_contents
       end
+
       @handler.call(file)
     end
   end
@@ -49,8 +51,10 @@ class OpenAI::Test::VectorStoreFileUploaderTest < Minitest::Test
       when "third"
         third_started << true
       end
+
       UploadedFile.new("uploaded_#{contents}")
     end
+
     runner = Thread.new { uploader(resource, max_concurrency: 2).upload(%w[slow second third]) }
     runner.report_on_exception = false
 
@@ -92,8 +96,10 @@ class OpenAI::Test::VectorStoreFileUploaderTest < Minitest::Test
         first_started << true
         release_first.pop
       end
+
       UploadedFile.new("uploaded_#{file}")
     end
+
     outcome = Queue.new
     runner = Thread.new do
       Timeout.timeout(0.05) { uploader(resource).upload(%w[one two]) }
@@ -101,6 +107,7 @@ class OpenAI::Test::VectorStoreFileUploaderTest < Minitest::Test
     rescue StandardError => e
       outcome << [:raised, e]
     end
+
     runner.report_on_exception = false
 
     begin
@@ -124,6 +131,7 @@ class OpenAI::Test::VectorStoreFileUploaderTest < Minitest::Test
       Timeout.timeout(0.02) { sleep(0.2) }
       UploadedFile.new("uploaded_#{file}")
     end
+
     started_at = Process.clock_gettime(Process::CLOCK_MONOTONIC)
 
     assert_raises(Timeout::Error) { uploader(resource).upload(["one"]) }
@@ -145,8 +153,10 @@ class OpenAI::Test::VectorStoreFileUploaderTest < Minitest::Test
         sleep(0.1)
         second_finished << true
       end
+
       UploadedFile.new("uploaded_#{file}")
     end
+
     original_thread_new = Thread.method(:new)
     calls = 0
     thread_factory = lambda do |*args, &block|
@@ -182,6 +192,7 @@ class OpenAI::Test::VectorStoreFileUploaderTest < Minitest::Test
         second_started << true
         sleep(0.1)
       end
+
       UploadedFile.new("uploaded")
     end
 
@@ -206,10 +217,12 @@ class OpenAI::Test::VectorStoreFileUploaderTest < Minitest::Test
         staged_paths << path
         staged_paths.length == 1
       end
+
       first_upload << true if first
       release_uploads.pop
       UploadedFile.new("uploaded")
     end
+
     files = Enumerator.new do |yielder|
       file_count.times { yielder << ("x" * body_size) }
     end
@@ -345,21 +358,23 @@ class OpenAI::Test::VectorStoreFileUploaderTest < Minitest::Test
   end
 
   def test_upload_ignores_temporary_file_cleanup_errors
-    temporary_file = Class.new do
-      attr_reader :path
+    temporary_file = Class
+      .new do
+        attr_reader(:path)
 
-      def initialize
-        @path = File.join(Dir.tmpdir, "already-removed-vector-store-upload")
+        def initialize
+          @path = File.join(Dir.tmpdir, "already-removed-vector-store-upload")
+        end
+
+        def binmode = nil
+        def close = nil
+        def write(_contents) = nil
+        def close! = raise IOError, "already removed"
       end
-
-      def binmode = nil
-      def close = nil
-      def write(_contents) = nil
-      def close! = raise(IOError, "already removed")
-    end.new
+      .new
     resource = FilesResource.new(capture_contents: false) { UploadedFile.new("uploaded") }
 
-    result = Tempfile.stub(:new, ->(*) { temporary_file }) do
+    result = Tempfile.stub(:new, -> (*) { temporary_file }) do
       uploader(resource).upload(["body"])
     end
 
@@ -381,6 +396,7 @@ class OpenAI::Test::VectorStoreFileUploaderTest < Minitest::Test
       contents << file.content.read
       UploadedFile.new("uploaded")
     end
+
     tempfile = Tempfile.new("openai-ruby-upload")
     tempfile.write("contents")
     tempfile.close
@@ -420,17 +436,19 @@ class OpenAI::Test::VectorStoreFileUploaderTest < Minitest::Test
 
   def test_upload_accepts_each_that_requires_a_block
     resource = FilesResource.new
-    files = Class.new do
-      include Enumerable
+    files = Class
+      .new do
+        include(Enumerable)
 
-      def initialize(values)
-        @values = values
-      end
+        def initialize(values)
+          @values = values
+        end
 
-      def each
-        @values.each { yield(_1) }
+        def each
+          @values.each { yield(_1) }
+        end
       end
-    end.new(%w[one two])
+      .new(%w[one two])
 
     result = uploader(resource).upload(files)
 

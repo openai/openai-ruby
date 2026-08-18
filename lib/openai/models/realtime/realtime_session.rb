@@ -23,9 +23,11 @@ module OpenAI
         #     transcription.
         #
         #   @return [Array<Symbol, OpenAI::Models::Realtime::RealtimeSession::Include>, nil]
-        optional :include,
-                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeSession::Include] },
-                 nil?: true
+        optional(
+          :include,
+          -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeSession::Include] },
+          nil?: true
+        )
 
         # @!attribute input_audio_format
         #   The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`. For
@@ -80,16 +82,20 @@ module OpenAI
         #   `inf` for the maximum available tokens for a given model. Defaults to `inf`.
         #
         #   @return [Integer, Symbol, :inf, nil]
-        optional :max_response_output_tokens,
-                 union: -> { OpenAI::Realtime::RealtimeSession::MaxResponseOutputTokens }
+        optional(
+          :max_response_output_tokens,
+          union: -> { OpenAI::Realtime::RealtimeSession::MaxResponseOutputTokens }
+        )
 
         # @!attribute modalities
         #   The set of modalities the model can respond with. To disable audio, set this to
         #   ["text"].
         #
         #   @return [Array<Symbol, OpenAI::Models::Realtime::RealtimeSession::Modality>, nil]
-        optional :modalities,
-                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeSession::Modality] }
+        optional(
+          :modalities,
+          -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeSession::Modality] }
+        )
 
         # @!attribute model
         #   The Realtime model used for this session.
@@ -329,7 +335,9 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Realtime::RealtimeSession::Model::GPT_4O_MINI_REALTIME_PREVIEW }
 
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSession::Model::GPT_4O_MINI_REALTIME_PREVIEW_2024_12_17 }
+          variant(
+            const: -> { OpenAI::Models::Realtime::RealtimeSession::Model::GPT_4O_MINI_REALTIME_PREVIEW_2024_12_17 }
+          )
 
           variant const: -> { OpenAI::Models::Realtime::RealtimeSession::Model::GPT_REALTIME_MINI }
 

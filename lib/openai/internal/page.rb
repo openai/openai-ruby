@@ -64,6 +64,7 @@ module OpenAI
           @data = data.map { OpenAI::Internal::Type::Converter.coerce(@model, _1) }
         else
         end
+
         @object = page_data[:object]
       end
 

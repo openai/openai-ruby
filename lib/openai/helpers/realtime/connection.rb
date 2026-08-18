@@ -36,6 +36,7 @@ module OpenAI
         while (event = receive)
           yield(event)
         end
+
         self
       end
 
@@ -71,6 +72,7 @@ module OpenAI
         if (cause = coercion_error(state))
           raise OpenAI::Errors::RealtimeProtocolError.new(data: data, cause: cause)
         end
+
         event
       rescue OpenAI::Errors::RealtimeProtocolError
         raise
@@ -87,6 +89,7 @@ module OpenAI
         if event.is_a?(Hash)
           validate_discriminator!(event, @client_event_names, kind: "client")
         end
+
         normalized = OpenAI::Internal::Type::Converter.dump(
           OpenAI::Realtime::RealtimeClientEvent,
           event
@@ -100,6 +103,7 @@ module OpenAI
         if (cause = coercion_error(state))
           raise cause
         end
+
         payload = OpenAI::Internal::Type::Converter.dump(OpenAI::Realtime::RealtimeClientEvent, coerced)
         validate_discriminator!(payload, @client_event_names, kind: "client")
         JSON.generate(payload)
@@ -110,11 +114,14 @@ module OpenAI
       # Send an already encoded text message.
       def send_raw(data)
         if closed?
-          raise OpenAI::Errors::RealtimeConnectionError.new(
-            url: @url,
-            message: "Cannot send on a closed Realtime WebSocket."
+          raise(
+            OpenAI::Errors::RealtimeConnectionError.new(
+              url: @url,
+              message: "Cannot send on a closed Realtime WebSocket."
+            )
           )
         end
+
         text = data.dup
         text.force_encoding(Encoding::UTF_8) if text.encoding == Encoding::BINARY
         text = text.encode(Encoding::UTF_8) unless text.encoding == Encoding::UTF_8
@@ -166,12 +173,12 @@ module OpenAI
       end
 
       private def validate_discriminator!(event, allowed, kind:)
-        type =
-          if event.key?(:type)
-            event.fetch(:type)
-          elsif event.key?("type")
-            event.fetch("type")
-          end
+        type = if event.key?(:type)
+          event.fetch(:type)
+        elsif event.key?("type")
+          event.fetch("type")
+        end
+
         return if type && allowed.key?(type.to_s)
 
         raise ArgumentError, "Unknown Realtime #{kind} event type: #{type.inspect}"

@@ -8,8 +8,10 @@ module OpenAI
         #   The content of the message.
         #
         #   @return [Array<OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage::Content>]
-        required :content,
-                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Realtime::RealtimeConversationItemAssistantMessage::Content] }
+        required(
+          :content,
+          -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Realtime::RealtimeConversationItemAssistantMessage::Content] }
+        )
 
         # @!attribute role
         #   The role of the message sender. Always `assistant`.

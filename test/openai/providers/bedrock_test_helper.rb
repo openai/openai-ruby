@@ -29,7 +29,8 @@ module OpenAI::Test::BedrockTestHelper
     OPENAI_CUSTOM_HEADERS
     OPENAI_ORG_ID
     OPENAI_PROJECT_ID
-  ].freeze
+  ]
+    .freeze
 
   def before_all
     super

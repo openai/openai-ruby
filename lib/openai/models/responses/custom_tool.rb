@@ -20,9 +20,11 @@ module OpenAI
         #   The tool invocation context(s).
         #
         #   @return [Array<Symbol, OpenAI::Models::Responses::CustomTool::AllowedCaller>, nil]
-        optional :allowed_callers,
-                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Responses::CustomTool::AllowedCaller] },
-                 nil?: true
+        optional(
+          :allowed_callers,
+          -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Responses::CustomTool::AllowedCaller] },
+          nil?: true
+        )
 
         # @!attribute defer_loading
         #   Whether this tool should be deferred and discovered via tool search.

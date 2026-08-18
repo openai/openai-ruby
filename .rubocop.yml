@@ -111,8 +111,9 @@ Lint/EmptyInPattern:
   Enabled: true
 Lint/HashNewWithKeywordArgumentsAsDefault:
   Enabled: true
+# This cop only chooses source layout; rubyfmt owns heredoc placement.
 Lint/HeredocMethodCallPosition:
-  Enabled: true
+  Enabled: false
 Lint/IncompatibleIoSelectWithFiberScheduler:
   Enabled: true
 Lint/ItWithoutArgumentsInBlock:

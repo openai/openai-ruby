@@ -15,11 +15,13 @@ module OpenAI
         #   response completes.
         #
         #   @return [String, OpenAI::Models::Responses::ResponseConversationParam, nil]
-        optional :conversation,
-                 union: -> {
-                   OpenAI::Responses::InputTokenCountParams::Conversation
-                 },
-                 nil?: true
+        optional(
+          :conversation,
+          union: -> {
+            OpenAI::Responses::InputTokenCountParams::Conversation
+          },
+          nil?: true
+        )
 
         # @!attribute input
         #   Text, image, or file inputs to the model, used to generate a response
@@ -172,8 +174,7 @@ module OpenAI
           #   @return [Array(String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam, OpenAI::Models::Responses::ResponseInputItem::AdditionalTools, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger, OpenAI::Models::Responses::ResponseInputItem::ItemReference, OpenAI::Models::Responses::ResponseInputItem::Program, OpenAI::Models::Responses::ResponseInputItem::ProgramOutput>)]
 
           # @type [OpenAI::Internal::Type::Converter]
-          ResponseInputItemArray =
-            OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Responses::ResponseInputItem }]
+          ResponseInputItemArray = OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Responses::ResponseInputItem }]
         end
 
         # A model-owned style preset to apply to this request. Omit this parameter to use
@@ -229,11 +230,13 @@ module OpenAI
           #   default is `medium`.
           #
           #   @return [Symbol, OpenAI::Models::Responses::InputTokenCountParams::Text::Verbosity, nil]
-          optional :verbosity,
-                   enum: -> {
-                     OpenAI::Responses::InputTokenCountParams::Text::Verbosity
-                   },
-                   nil?: true
+          optional(
+            :verbosity,
+            enum: -> {
+              OpenAI::Responses::InputTokenCountParams::Text::Verbosity
+            },
+            nil?: true
+          )
 
           # @!method initialize(format_: nil, verbosity: nil)
           #   Some parameter documentations has been truncated, see

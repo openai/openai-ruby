@@ -44,11 +44,13 @@ module OpenAI
           #   The input format for the custom tool. Default is unconstrained text.
           #
           #   @return [OpenAI::Models::Chat::ChatCompletionCustomTool::Custom::Format::Text, OpenAI::Models::Chat::ChatCompletionCustomTool::Custom::Format::Grammar, nil]
-          optional :format_,
-                   union: -> {
-                     OpenAI::Chat::ChatCompletionCustomTool::Custom::Format
-                   },
-                   api_name: :format
+          optional(
+            :format_,
+            union: -> {
+              OpenAI::Chat::ChatCompletionCustomTool::Custom::Format
+            },
+            api_name: :format
+          )
 
           # @!method initialize(name:, description: nil, format_: nil)
           #   Some parameter documentations has been truncated, see
@@ -121,8 +123,10 @@ module OpenAI
                 #   The syntax of the grammar definition. One of `lark` or `regex`.
                 #
                 #   @return [Symbol, OpenAI::Models::Chat::ChatCompletionCustomTool::Custom::Format::Grammar::Grammar::Syntax]
-                required :syntax,
-                         enum: -> { OpenAI::Chat::ChatCompletionCustomTool::Custom::Format::Grammar::Grammar::Syntax }
+                required(
+                  :syntax,
+                  enum: -> { OpenAI::Chat::ChatCompletionCustomTool::Custom::Format::Grammar::Grammar::Syntax }
+                )
 
                 # @!method initialize(definition:, syntax:)
                 #   Your chosen grammar.

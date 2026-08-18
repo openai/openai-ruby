@@ -68,15 +68,19 @@ module OpenAI
         #   Usage statistics for each model during the evaluation run.
         #
         #   @return [Array<OpenAI::Models::Evals::RunRetrieveResponse::PerModelUsage>]
-        required :per_model_usage,
-                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Evals::RunRetrieveResponse::PerModelUsage] }
+        required(
+          :per_model_usage,
+          -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Evals::RunRetrieveResponse::PerModelUsage] }
+        )
 
         # @!attribute per_testing_criteria_results
         #   Results per testing criteria applied during the evaluation run.
         #
         #   @return [Array<OpenAI::Models::Evals::RunRetrieveResponse::PerTestingCriteriaResult>]
-        required :per_testing_criteria_results,
-                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Evals::RunRetrieveResponse::PerTestingCriteriaResult] }
+        required(
+          :per_testing_criteria_results,
+          -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Evals::RunRetrieveResponse::PerTestingCriteriaResult] }
+        )
 
         # @!attribute report_url
         #   The URL to the rendered evaluation run report on the UI dashboard.
@@ -167,8 +171,10 @@ module OpenAI
             #   namespace.
             #
             #   @return [OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template, OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::ItemReference, nil]
-            optional :input_messages,
-                     union: -> { OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages }
+            optional(
+              :input_messages,
+              union: -> { OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages }
+            )
 
             # @!attribute model
             #   The name of the model to use for generating completions (e.g. "o3-mini").
@@ -179,8 +185,10 @@ module OpenAI
             # @!attribute sampling_params
             #
             #   @return [OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::SamplingParams, nil]
-            optional :sampling_params,
-                     -> { OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::SamplingParams }
+            optional(
+              :sampling_params,
+              -> { OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::SamplingParams }
+            )
 
             # @!method initialize(source:, input_messages: nil, model: nil, sampling_params: nil, type: :responses)
             #   Some parameter documentations has been truncated, see
@@ -207,22 +215,35 @@ module OpenAI
 
               discriminator :type
 
-              variant :file_content,
-                      -> { OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::Source::FileContent }
+              variant(
+                :file_content,
+                -> { OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::Source::FileContent }
+              )
 
-              variant :file_id, -> { OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::Source::FileID }
+              variant(
+                :file_id,
+                -> { OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::Source::FileID }
+              )
 
               # A EvalResponsesSource object describing a run data source configuration.
-              variant :responses,
-                      -> { OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::Source::Responses }
+              variant(
+                :responses,
+                -> { OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::Source::Responses }
+              )
 
               class FileContent < OpenAI::Internal::Type::BaseModel
                 # @!attribute content
                 #   The content of the jsonl file.
                 #
                 #   @return [Array<OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::Source::FileContent::Content>]
-                required :content,
-                         -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::Source::FileContent::Content] }
+                required(
+                  :content,
+                  -> {
+                    OpenAI::Internal::Type::ArrayOf[
+                      OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::Source::FileContent::Content
+                    ]
+                  }
+                )
 
                 # @!attribute type
                 #   The type of jsonl source. Always `file_content`.
@@ -393,11 +414,15 @@ module OpenAI
 
               discriminator :type
 
-              variant :template,
-                      -> { OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template }
+              variant(
+                :template,
+                -> { OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template }
+              )
 
-              variant :item_reference,
-                      -> { OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::ItemReference }
+              variant(
+                :item_reference,
+                -> { OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::ItemReference }
+              )
 
               class Template < OpenAI::Internal::Type::BaseModel
                 # @!attribute template
@@ -405,12 +430,14 @@ module OpenAI
                 #   references to the `item` namespace, ie {{item.name}}.
                 #
                 #   @return [Array<OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::ChatMessage, OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem>]
-                required :template,
-                         -> do
-                           OpenAI::Internal::Type::ArrayOf[
-                             union: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template
-                           ]
-                         end
+                required(
+                  :template,
+                  -> do
+                    OpenAI::Internal::Type::ArrayOf[
+                      union: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template
+                    ]
+                  end
+                )
 
                 # @!attribute type
                 #   The type of input messages. Always `template`.
@@ -435,14 +462,22 @@ module OpenAI
                 module Template
                   extend OpenAI::Internal::Type::Union
 
-                  variant -> { OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::ChatMessage }
+                  variant(
+                    -> {
+                      OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::ChatMessage
+                    }
+                  )
 
                   # A message input to the model with a role indicating instruction following
                   # hierarchy. Instructions given with the `developer` or `system` role take
                   # precedence over instructions given with the `user` role. Messages with the
                   # `assistant` role are presumed to have been generated by the model in previous
                   # interactions.
-                  variant -> { OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem }
+                  variant(
+                    -> {
+                      OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem
+                    }
+                  )
 
                   class ChatMessage < OpenAI::Internal::Type::BaseModel
                     # @!attribute content
@@ -469,23 +504,35 @@ module OpenAI
                     #   input images, and input audio, either as a single item or an array of items.
                     #
                     #   @return [String, OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::OutputText, OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::InputImage, OpenAI::Models::Responses::ResponseInputAudio, Array<String, OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Graders::GraderInputItem::OutputText, OpenAI::Models::Graders::GraderInputItem::InputImage, OpenAI::Models::Responses::ResponseInputAudio>]
-                    required :content,
-                             union: -> { OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content }
+                    required(
+                      :content,
+                      union: -> {
+                        OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content
+                      }
+                    )
 
                     # @!attribute role
                     #   The role of the message input. One of `user`, `assistant`, `system`, or
                     #   `developer`.
                     #
                     #   @return [Symbol, OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Role]
-                    required :role,
-                             enum: -> { OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Role }
+                    required(
+                      :role,
+                      enum: -> {
+                        OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Role
+                      }
+                    )
 
                     # @!attribute type
                     #   The type of the message input. Always `message`.
                     #
                     #   @return [Symbol, OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Type, nil]
-                    optional :type,
-                             enum: -> { OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Type }
+                    optional(
+                      :type,
+                      enum: -> {
+                        OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Type
+                      }
+                    )
 
                     # @!method initialize(content:, role:, type: nil)
                     #   Some parameter documentations has been truncated, see
@@ -518,10 +565,18 @@ module OpenAI
                       variant -> { OpenAI::Responses::ResponseInputText }
 
                       # A text output from the model.
-                      variant -> { OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::OutputText }
+                      variant(
+                        -> {
+                          OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::OutputText
+                        }
+                      )
 
                       # An image input block used within EvalItem content arrays.
-                      variant -> { OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::InputImage }
+                      variant(
+                        -> {
+                          OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::InputImage
+                        }
+                      )
 
                       # An audio input to the model.
                       variant -> { OpenAI::Responses::ResponseInputAudio }
@@ -689,8 +744,10 @@ module OpenAI
               #   - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
               #
               #   @return [OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::SamplingParams::Text, nil]
-              optional :text,
-                       -> { OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::SamplingParams::Text }
+              optional(
+                :text,
+                -> { OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::SamplingParams::Text }
+              )
 
               # @!attribute tools
               #   An array of tools the model may call while generating a response. You can
@@ -754,11 +811,13 @@ module OpenAI
                 #   preferred for models that support it.
                 #
                 #   @return [OpenAI::Models::ResponseFormatText, OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig, OpenAI::Models::ResponseFormatJSONObject, nil]
-                optional :format_,
-                         union: -> {
-                           OpenAI::Responses::ResponseFormatTextConfig
-                         },
-                         api_name: :format
+                optional(
+                  :format_,
+                  union: -> {
+                    OpenAI::Responses::ResponseFormatTextConfig
+                  },
+                  api_name: :format
+                )
 
                 # @!method initialize(format_: nil)
                 #   Some parameter documentations has been truncated, see

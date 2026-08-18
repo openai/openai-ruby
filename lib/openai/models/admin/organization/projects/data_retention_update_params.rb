@@ -19,8 +19,10 @@ module OpenAI
             #   The desired project data retention type.
             #
             #   @return [Symbol, OpenAI::Models::Admin::Organization::Projects::DataRetentionUpdateParams::RetentionType]
-            required :retention_type,
-                     enum: -> { OpenAI::Admin::Organization::Projects::DataRetentionUpdateParams::RetentionType }
+            required(
+              :retention_type,
+              enum: -> { OpenAI::Admin::Organization::Projects::DataRetentionUpdateParams::RetentionType }
+            )
 
             # @!method initialize(project_id:, retention_type:, request_options: {})
             #   @param project_id [String]

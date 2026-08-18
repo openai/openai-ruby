@@ -17,6 +17,7 @@ module OpenAI
             value = payload.key?(key) ? payload.delete(key) : payload.delete(key.to_s)
             [key, value]
           end
+
           [payload, metadata]
         end
       end

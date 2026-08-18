@@ -51,12 +51,11 @@ module OpenAI
             #
             # @see OpenAI::Models::Admin::Organization::Projects::ServiceAccountRetrieveParams
             def retrieve(service_account_id, params)
-              parsed, options =
-                OpenAI::Admin::Organization::Projects::ServiceAccountRetrieveParams.dump_request(params)
-              project_id =
-                parsed.delete(:project_id) do
-                  raise ArgumentError.new("missing required path argument #{_1}")
-                end
+              parsed, options = OpenAI::Admin::Organization::Projects::ServiceAccountRetrieveParams.dump_request(params)
+              project_id = parsed.delete(:project_id) do
+                raise ArgumentError.new("missing required path argument #{_1}")
+              end
+
               @client.request(
                 method: :get,
                 path: ["organization/projects/%1$s/service_accounts/%2$s", project_id, service_account_id],
@@ -85,10 +84,10 @@ module OpenAI
             # @see OpenAI::Models::Admin::Organization::Projects::ServiceAccountUpdateParams
             def update(service_account_id, params)
               parsed, options = OpenAI::Admin::Organization::Projects::ServiceAccountUpdateParams.dump_request(params)
-              project_id =
-                parsed.delete(:project_id) do
-                  raise ArgumentError.new("missing required path argument #{_1}")
-                end
+              project_id = parsed.delete(:project_id) do
+                raise ArgumentError.new("missing required path argument #{_1}")
+              end
+
               @client.request(
                 method: :post,
                 path: ["organization/projects/%1$s/service_accounts/%2$s", project_id, service_account_id],
@@ -150,10 +149,10 @@ module OpenAI
             # @see OpenAI::Models::Admin::Organization::Projects::ServiceAccountDeleteParams
             def delete(service_account_id, params)
               parsed, options = OpenAI::Admin::Organization::Projects::ServiceAccountDeleteParams.dump_request(params)
-              project_id =
-                parsed.delete(:project_id) do
-                  raise ArgumentError.new("missing required path argument #{_1}")
-                end
+              project_id = parsed.delete(:project_id) do
+                raise ArgumentError.new("missing required path argument #{_1}")
+              end
+
               @client.request(
                 method: :delete,
                 path: ["organization/projects/%1$s/service_accounts/%2$s", project_id, service_account_id],
@@ -168,8 +167,7 @@ module OpenAI
             # @param client [OpenAI::Client]
             def initialize(client:)
               @client = client
-              @api_keys =
-                OpenAI::Resources::Admin::Organization::Projects::ServiceAccounts::APIKeys.new(client: client)
+              @api_keys = OpenAI::Resources::Admin::Organization::Projects::ServiceAccounts::APIKeys.new(client: client)
             end
           end
         end

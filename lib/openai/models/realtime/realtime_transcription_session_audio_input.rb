@@ -52,9 +52,11 @@ module OpenAI
         #   `null`; VAD is not supported.
         #
         #   @return [OpenAI::Models::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::ServerVad, OpenAI::Models::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::SemanticVad, nil]
-        optional :turn_detection,
-                 union: -> { OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection },
-                 nil?: true
+        optional(
+          :turn_detection,
+          union: -> { OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection },
+          nil?: true
+        )
 
         # @!method initialize(format_: nil, noise_reduction: nil, transcription: nil, turn_detection: nil)
         #   Some parameter documentations has been truncated, see

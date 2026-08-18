@@ -64,10 +64,10 @@ module OpenAI
           # @see OpenAI::Models::Beta::Threads::MessageRetrieveParams
           def retrieve(message_id, params)
             parsed, options = OpenAI::Beta::Threads::MessageRetrieveParams.dump_request(params)
-            thread_id =
-              parsed.delete(:thread_id) do
-                raise ArgumentError.new("missing required path argument #{_1}")
-              end
+            thread_id = parsed.delete(:thread_id) do
+              raise ArgumentError.new("missing required path argument #{_1}")
+            end
+
             @client.request(
               method: :get,
               path: ["threads/%1$s/messages/%2$s", thread_id, message_id],
@@ -99,10 +99,10 @@ module OpenAI
           # @see OpenAI::Models::Beta::Threads::MessageUpdateParams
           def update(message_id, params)
             parsed, options = OpenAI::Beta::Threads::MessageUpdateParams.dump_request(params)
-            thread_id =
-              parsed.delete(:thread_id) do
-                raise ArgumentError.new("missing required path argument #{_1}")
-              end
+            thread_id = parsed.delete(:thread_id) do
+              raise ArgumentError.new("missing required path argument #{_1}")
+            end
+
             @client.request(
               method: :post,
               path: ["threads/%1$s/messages/%2$s", thread_id, message_id],
@@ -170,10 +170,10 @@ module OpenAI
           # @see OpenAI::Models::Beta::Threads::MessageDeleteParams
           def delete(message_id, params)
             parsed, options = OpenAI::Beta::Threads::MessageDeleteParams.dump_request(params)
-            thread_id =
-              parsed.delete(:thread_id) do
-                raise ArgumentError.new("missing required path argument #{_1}")
-              end
+            thread_id = parsed.delete(:thread_id) do
+              raise ArgumentError.new("missing required path argument #{_1}")
+            end
+
             @client.request(
               method: :delete,
               path: ["threads/%1$s/messages/%2$s", thread_id, message_id],

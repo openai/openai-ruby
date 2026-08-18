@@ -9,8 +9,10 @@ module OpenAI
           # @!attribute data
           #
           #   @return [Array<OpenAI::Models::Admin::Organization::UsageCostsResponse::Data>]
-          required :data,
-                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::UsageCostsResponse::Data] }
+          required(
+            :data,
+            -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::UsageCostsResponse::Data] }
+          )
 
           # @!attribute has_more
           #
@@ -47,8 +49,14 @@ module OpenAI
             # @!attribute results
             #
             #   @return [Array<OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageCompletionsResult, OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageEmbeddingsResult, OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageModerationsResult, OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageImagesResult, OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageAudioSpeechesResult, OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageAudioTranscriptionsResult, OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageVectorStoresResult, OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageCodeInterpreterSessionsResult, OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageFileSearchesResult, OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageWebSearchesResult, OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationCostsResult>]
-            required :results,
-                     -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result] }
+            required(
+              :results,
+              -> {
+                OpenAI::Internal::Type::ArrayOf[
+                  union: OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result
+                ]
+              }
+            )
 
             # @!attribute start_time
             #
@@ -68,48 +76,90 @@ module OpenAI
               discriminator :object
 
               # The aggregated completions usage details of the specific time bucket.
-              variant :"organization.usage.completions.result",
-                      -> { OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageCompletionsResult }
+              variant(
+                :"organization.usage.completions.result",
+                -> {
+                  OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageCompletionsResult
+                }
+              )
 
               # The aggregated embeddings usage details of the specific time bucket.
-              variant :"organization.usage.embeddings.result",
-                      -> { OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageEmbeddingsResult }
+              variant(
+                :"organization.usage.embeddings.result",
+                -> {
+                  OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageEmbeddingsResult
+                }
+              )
 
               # The aggregated moderations usage details of the specific time bucket.
-              variant :"organization.usage.moderations.result",
-                      -> { OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageModerationsResult }
+              variant(
+                :"organization.usage.moderations.result",
+                -> {
+                  OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageModerationsResult
+                }
+              )
 
               # The aggregated images usage details of the specific time bucket.
-              variant :"organization.usage.images.result",
-                      -> { OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageImagesResult }
+              variant(
+                :"organization.usage.images.result",
+                -> {
+                  OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageImagesResult
+                }
+              )
 
               # The aggregated audio speeches usage details of the specific time bucket.
-              variant :"organization.usage.audio_speeches.result",
-                      -> { OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageAudioSpeechesResult }
+              variant(
+                :"organization.usage.audio_speeches.result",
+                -> {
+                  OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageAudioSpeechesResult
+                }
+              )
 
               # The aggregated audio transcriptions usage details of the specific time bucket.
-              variant :"organization.usage.audio_transcriptions.result",
-                      -> { OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageAudioTranscriptionsResult }
+              variant(
+                :"organization.usage.audio_transcriptions.result",
+                -> {
+                  OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageAudioTranscriptionsResult
+                }
+              )
 
               # The aggregated vector stores usage details of the specific time bucket.
-              variant :"organization.usage.vector_stores.result",
-                      -> { OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageVectorStoresResult }
+              variant(
+                :"organization.usage.vector_stores.result",
+                -> {
+                  OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageVectorStoresResult
+                }
+              )
 
               # The aggregated code interpreter sessions usage details of the specific time bucket.
-              variant :"organization.usage.code_interpreter_sessions.result",
-                      -> { OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageCodeInterpreterSessionsResult }
+              variant(
+                :"organization.usage.code_interpreter_sessions.result",
+                -> {
+                  OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageCodeInterpreterSessionsResult
+                }
+              )
 
               # The aggregated file search calls usage details of the specific time bucket.
-              variant :"organization.usage.file_searches.result",
-                      -> { OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageFileSearchesResult }
+              variant(
+                :"organization.usage.file_searches.result",
+                -> {
+                  OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageFileSearchesResult
+                }
+              )
 
               # The aggregated web search calls usage details of the specific time bucket.
-              variant :"organization.usage.web_searches.result",
-                      -> { OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageWebSearchesResult }
+              variant(
+                :"organization.usage.web_searches.result",
+                -> {
+                  OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageWebSearchesResult
+                }
+              )
 
               # The aggregated costs details of the specific time bucket.
-              variant :"organization.costs.result",
-                      -> { OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationCostsResult }
+              variant(
+                :"organization.costs.result",
+                -> { OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationCostsResult }
+              )
 
               class OrganizationUsageCompletionsResult < OpenAI::Internal::Type::BaseModel
                 # @!attribute input_tokens
@@ -880,8 +930,12 @@ module OpenAI
                 #   The monetary value in its associated currency.
                 #
                 #   @return [OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationCostsResult::Amount, nil]
-                optional :amount,
-                         -> { OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationCostsResult::Amount }
+                optional(
+                  :amount,
+                  -> {
+                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationCostsResult::Amount
+                  }
+                )
 
                 # @!attribute api_key_id
                 #   When `group_by=api_key_id`, this field provides the API Key ID of the grouped

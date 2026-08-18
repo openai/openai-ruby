@@ -21,16 +21,17 @@ module OpenAI
 
           def to_h
             @fields.to_h do |name, value|
-              safe_value =
-                if OpenAI::Internal::Logging.sensitive_header?(name)
-                  REDACTED_HEADER_VALUE
-                else
-                  value
-                end
+              safe_value = if OpenAI::Internal::Logging.sensitive_header?(name)
+                REDACTED_HEADER_VALUE
+              else
+                value
+              end
+
               [name, safe_value]
             end
           end
         end
+
         private_constant :TraceSafeHeaderFields
 
         module TraceSafeHeaders
@@ -40,6 +41,7 @@ module OpenAI
             TraceSafeHeaderFields.new(super)
           end
         end
+
         private_constant :TraceSafeHeaders
 
         # Async's ordinary framer close flushes buffered output. Exceptional cleanup
@@ -60,6 +62,7 @@ module OpenAI
             end
           end
         end
+
         private_constant :AbortableFramer
 
         # Configure the native TLS context used by secure Realtime WebSockets.
@@ -130,6 +133,7 @@ module OpenAI
           if url.scheme == "wss" || @tls_configurator
             options[:ssl_context] = build_tls_context(url)
           end
+
           endpoint = ::Async::HTTP::Endpoint.parse(
             url.to_s,
             **options
@@ -145,11 +149,12 @@ module OpenAI
             )
             endpoint = tunnel.wrap_endpoint(endpoint)
           end
+
           block_error = nil
           # Keep the request timeout scoped to WebSocket negotiation. Endpoint timeouts
           # remain installed on the socket and would otherwise terminate healthy idle
           # Realtime sessions after the ordinary HTTP request timeout.
-          ::Kernel.Sync do
+          ::Kernel.Sync() do
             client = ::Async::WebSocket::Client.open(endpoint)
             connection = nil
             socket = nil
@@ -162,6 +167,7 @@ module OpenAI
                 block_error = e
                 raise
               end
+
             ensure
               close_resources(
                 connection,
@@ -172,15 +178,18 @@ module OpenAI
               )
             end
           end
+
         rescue OpenAI::Errors::RealtimeConnectionError
           raise
         rescue StandardError => e
           raise if e.equal?(block_error)
 
-          raise OpenAI::Errors::RealtimeConnectionError.new(
-            url: url,
-            cause: e,
-            http_status: handshake_status(e)
+          raise(
+            OpenAI::Errors::RealtimeConnectionError.new(
+              url: url,
+              cause: e,
+              http_status: handshake_status(e)
+            )
           )
         end
 
@@ -189,6 +198,7 @@ module OpenAI
           operation = lambda do
             client.connect(authority(endpoint.url), endpoint.path, headers: safe_headers)
           end
+
           return operation.call if timeout.nil?
 
           ::Async::Task.current.with_timeout(timeout, &operation)
@@ -228,9 +238,9 @@ module OpenAI
           require("async/websocket/client")
           require("async/http/endpoint")
           require("async/http/proxy")
+
         rescue LoadError => e
-          message =
-            "Realtime WebSockets require the `async-websocket` gem. " \
+          message = "Realtime WebSockets require the `async-websocket` gem. " \
             "Add `gem \"async-websocket\"` to your Gemfile."
           raise OpenAI::Errors::RealtimeConnectionError.new(url: url, message: message, cause: e)
         end
@@ -276,7 +286,7 @@ module OpenAI
 
         private def trace_safe_headers_class
           @trace_safe_headers_class ||= Class.new(::Protocol::HTTP::Headers) do
-            include TraceSafeHeaders
+            include(TraceSafeHeaders)
           end
         end
 

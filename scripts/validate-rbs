@@ -19,22 +19,22 @@ module OpenAI
       raise Errno::ENOENT, steepfile unless steepfile.file?
 
       signatures = signature_paths(root)
-      raise "No RBS files found under #{root.join('sig')}" if signatures.empty?
+      raise "No RBS files found under #{root.join("sig")}" if signatures.empty?
 
-      status =
-        if signatures.any? { requires_reference_check?(_1) }
-          run_reference_check(root, stdout: stdout, stderr: stderr, env: env)
-        else
-          fast_status = run_parse_check(root, env: env)
-          fast_status = run_consolidated_check(root, steepfile, signatures, env: env) if fast_status.success?
-          unless fast_status.success?
-            stdout.puts(
-              "Fast RBS validation failed; checking original signature files for exact diagnostics."
-            )
-            fast_status = run_reference_check(root, stdout: stdout, stderr: stderr, env: env)
-          end
-          fast_status
+      status = if signatures.any? { requires_reference_check?(_1) }
+        run_reference_check(root, stdout: stdout, stderr: stderr, env: env)
+      else
+        fast_status = run_parse_check(root, env: env)
+        fast_status = run_consolidated_check(root, steepfile, signatures, env: env) if fast_status.success?
+        unless fast_status.success?
+          stdout.puts(
+            "Fast RBS validation failed; checking original signature files for exact diagnostics."
+          )
+          fast_status = run_reference_check(root, stdout: stdout, stderr: stderr, env: env)
         end
+
+        fast_status
+      end
 
       if status.success?
         noun = signatures.one? ? "file" : "files"
@@ -43,13 +43,14 @@ module OpenAI
       else
         1
       end
+
     rescue StandardError => e
-      message =
-        if e.respond_to?(:detailed_message)
-          e.detailed_message(highlight: false)
-        else
-          "#{e.class}: #{e.message}"
-        end
+      message = if e.respond_to?(:detailed_message)
+        e.detailed_message(highlight: false)
+      else
+        "#{e.class}: #{e.message}"
+      end
+
       stderr.puts(message)
       1
     end
@@ -57,6 +58,7 @@ module OpenAI
     def signature_paths(root)
       Dir.glob(root.join("sig/**/*.rbs")).map { Pathname(_1) }
     end
+
     private_class_method :signature_paths
 
     def requires_reference_check?(path)
@@ -67,12 +69,14 @@ module OpenAI
       # whitespace matcher to span lines (for example, "#\nresolve-type-names:").
       contents.include?("\0") || contents.match?(FILE_SCOPED_DIRECTIVE)
     end
+
     private_class_method :requires_reference_check?
 
     def run_parse_check(root, env:)
       _stdout, _stderr, status = Open3.capture3(env, "rbs", "parse", "sig", chdir: root.to_s)
       status
     end
+
     private_class_method :run_parse_check
 
     def run_consolidated_check(root, steepfile, signatures, env:)
@@ -93,6 +97,7 @@ module OpenAI
         status
       end
     end
+
     private_class_method :run_consolidated_check
 
     def concatenate(signatures, destination)
@@ -105,17 +110,19 @@ module OpenAI
         end
       end
     end
+
     private_class_method :concatenate
 
     def run_reference_check(root, stdout:, stderr:, env:)
       command = [env.fetch("STEEP_COMMAND", "steep"), "check", "--no-type-check"]
-      command << "--jobs=#{env.fetch('STEEP_JOBS')}" if env.key?("STEEP_JOBS")
+      command << "--jobs=#{env.fetch("STEEP_JOBS")}" if env.key?("STEEP_JOBS")
       command << "--format=github" if env.key?("CI")
       output, errors, status = Open3.capture3(env, *command, chdir: root.to_s)
       stdout.print(output)
       stderr.print(errors)
       status
     end
+
     private_class_method :run_reference_check
   end
 end

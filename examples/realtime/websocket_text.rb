@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require "timeout"
+
 require_relative "../../lib/openai"
 
 module OpenAI
@@ -39,6 +40,7 @@ module OpenAI
               raise "Realtime API error."
             end
           end
+
           raise "Realtime connection closed before response.done" unless completed
         end
 
@@ -62,6 +64,7 @@ module OpenAI
             connection.response.create
             stream_response(connection, output: output)
           end
+
           output.puts("[realtime] smoke test passed")
         end
       end

@@ -34,194 +34,242 @@ module OpenAI
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyCreated, nil]
-          optional :api_key_created,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyCreated },
-                   api_name: :"api_key.created"
+          optional(
+            :api_key_created,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyCreated },
+            api_name: :"api_key.created"
+          )
 
           # @!attribute api_key_deleted
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyDeleted, nil]
-          optional :api_key_deleted,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyDeleted },
-                   api_name: :"api_key.deleted"
+          optional(
+            :api_key_deleted,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyDeleted },
+            api_name: :"api_key.deleted"
+          )
 
           # @!attribute api_key_updated
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated, nil]
-          optional :api_key_updated,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated },
-                   api_name: :"api_key.updated"
+          optional(
+            :api_key_updated,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated },
+            api_name: :"api_key.updated"
+          )
 
           # @!attribute certificate_created
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateCreated, nil]
-          optional :certificate_created,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateCreated },
-                   api_name: :"certificate.created"
+          optional(
+            :certificate_created,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateCreated },
+            api_name: :"certificate.created"
+          )
 
           # @!attribute certificate_deleted
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateDeleted, nil]
-          optional :certificate_deleted,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateDeleted },
-                   api_name: :"certificate.deleted"
+          optional(
+            :certificate_deleted,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateDeleted },
+            api_name: :"certificate.deleted"
+          )
 
           # @!attribute certificate_updated
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateUpdated, nil]
-          optional :certificate_updated,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateUpdated },
-                   api_name: :"certificate.updated"
+          optional(
+            :certificate_updated,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateUpdated },
+            api_name: :"certificate.updated"
+          )
 
           # @!attribute certificates_activated
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesActivated, nil]
-          optional :certificates_activated,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesActivated },
-                   api_name: :"certificates.activated"
+          optional(
+            :certificates_activated,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesActivated },
+            api_name: :"certificates.activated"
+          )
 
           # @!attribute certificates_deactivated
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesDeactivated, nil]
-          optional :certificates_deactivated,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesDeactivated },
-                   api_name: :"certificates.deactivated"
+          optional(
+            :certificates_deactivated,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesDeactivated },
+            api_name: :"certificates.deactivated"
+          )
 
           # @!attribute checkpoint_permission_created
           #   The project and fine-tuned model checkpoint that the checkpoint permission was
           #   created for.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated, nil]
-          optional :checkpoint_permission_created,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated },
-                   api_name: :"checkpoint.permission.created"
+          optional(
+            :checkpoint_permission_created,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated },
+            api_name: :"checkpoint.permission.created"
+          )
 
           # @!attribute checkpoint_permission_deleted
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionDeleted, nil]
-          optional :checkpoint_permission_deleted,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionDeleted },
-                   api_name: :"checkpoint.permission.deleted"
+          optional(
+            :checkpoint_permission_deleted,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionDeleted },
+            api_name: :"checkpoint.permission.deleted"
+          )
 
           # @!attribute external_key_registered
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRegistered, nil]
-          optional :external_key_registered,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRegistered },
-                   api_name: :"external_key.registered"
+          optional(
+            :external_key_registered,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRegistered },
+            api_name: :"external_key.registered"
+          )
 
           # @!attribute external_key_removed
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRemoved, nil]
-          optional :external_key_removed,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRemoved },
-                   api_name: :"external_key.removed"
+          optional(
+            :external_key_removed,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRemoved },
+            api_name: :"external_key.removed"
+          )
 
           # @!attribute group_created
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated, nil]
-          optional :group_created,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated },
-                   api_name: :"group.created"
+          optional(
+            :group_created,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated },
+            api_name: :"group.created"
+          )
 
           # @!attribute group_deleted
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupDeleted, nil]
-          optional :group_deleted,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupDeleted },
-                   api_name: :"group.deleted"
+          optional(
+            :group_deleted,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupDeleted },
+            api_name: :"group.deleted"
+          )
 
           # @!attribute group_updated
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated, nil]
-          optional :group_updated,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated },
-                   api_name: :"group.updated"
+          optional(
+            :group_updated,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated },
+            api_name: :"group.updated"
+          )
 
           # @!attribute invite_accepted
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteAccepted, nil]
-          optional :invite_accepted,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteAccepted },
-                   api_name: :"invite.accepted"
+          optional(
+            :invite_accepted,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteAccepted },
+            api_name: :"invite.accepted"
+          )
 
           # @!attribute invite_deleted
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteDeleted, nil]
-          optional :invite_deleted,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteDeleted },
-                   api_name: :"invite.deleted"
+          optional(
+            :invite_deleted,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteDeleted },
+            api_name: :"invite.deleted"
+          )
 
           # @!attribute invite_sent
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteSent, nil]
-          optional :invite_sent,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteSent },
-                   api_name: :"invite.sent"
+          optional(
+            :invite_sent,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteSent },
+            api_name: :"invite.sent"
+          )
 
           # @!attribute ip_allowlist_config_activated
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigActivated, nil]
-          optional :ip_allowlist_config_activated,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigActivated },
-                   api_name: :"ip_allowlist.config.activated"
+          optional(
+            :ip_allowlist_config_activated,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigActivated },
+            api_name: :"ip_allowlist.config.activated"
+          )
 
           # @!attribute ip_allowlist_config_deactivated
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigDeactivated, nil]
-          optional :ip_allowlist_config_deactivated,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigDeactivated },
-                   api_name: :"ip_allowlist.config.deactivated"
+          optional(
+            :ip_allowlist_config_deactivated,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigDeactivated },
+            api_name: :"ip_allowlist.config.deactivated"
+          )
 
           # @!attribute ip_allowlist_created
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistCreated, nil]
-          optional :ip_allowlist_created,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistCreated },
-                   api_name: :"ip_allowlist.created"
+          optional(
+            :ip_allowlist_created,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistCreated },
+            api_name: :"ip_allowlist.created"
+          )
 
           # @!attribute ip_allowlist_deleted
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistDeleted, nil]
-          optional :ip_allowlist_deleted,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistDeleted },
-                   api_name: :"ip_allowlist.deleted"
+          optional(
+            :ip_allowlist_deleted,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistDeleted },
+            api_name: :"ip_allowlist.deleted"
+          )
 
           # @!attribute ip_allowlist_updated
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistUpdated, nil]
-          optional :ip_allowlist_updated,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistUpdated },
-                   api_name: :"ip_allowlist.updated"
+          optional(
+            :ip_allowlist_updated,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistUpdated },
+            api_name: :"ip_allowlist.updated"
+          )
 
           # @!attribute login_failed
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::LoginFailed, nil]
-          optional :login_failed,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::LoginFailed },
-                   api_name: :"login.failed"
+          optional(
+            :login_failed,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::LoginFailed },
+            api_name: :"login.failed"
+          )
 
           # @!attribute login_succeeded
           #   This event has no additional fields beyond the standard audit log attributes.
@@ -233,9 +281,11 @@ module OpenAI
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::LogoutFailed, nil]
-          optional :logout_failed,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::LogoutFailed },
-                   api_name: :"logout.failed"
+          optional(
+            :logout_failed,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::LogoutFailed },
+            api_name: :"logout.failed"
+          )
 
           # @!attribute logout_succeeded
           #   This event has no additional fields beyond the standard audit log attributes.
@@ -247,9 +297,11 @@ module OpenAI
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::OrganizationUpdated, nil]
-          optional :organization_updated,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::OrganizationUpdated },
-                   api_name: :"organization.updated"
+          optional(
+            :organization_updated,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::OrganizationUpdated },
+            api_name: :"organization.updated"
+          )
 
           # @!attribute project
           #   The project that the action was scoped to. Absent for actions not scoped to
@@ -263,217 +315,271 @@ module OpenAI
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectArchived, nil]
-          optional :project_archived,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectArchived },
-                   api_name: :"project.archived"
+          optional(
+            :project_archived,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectArchived },
+            api_name: :"project.archived"
+          )
 
           # @!attribute project_created
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectCreated, nil]
-          optional :project_created,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectCreated },
-                   api_name: :"project.created"
+          optional(
+            :project_created,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectCreated },
+            api_name: :"project.created"
+          )
 
           # @!attribute project_deleted
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectDeleted, nil]
-          optional :project_deleted,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectDeleted },
-                   api_name: :"project.deleted"
+          optional(
+            :project_deleted,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectDeleted },
+            api_name: :"project.deleted"
+          )
 
           # @!attribute project_updated
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectUpdated, nil]
-          optional :project_updated,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectUpdated },
-                   api_name: :"project.updated"
+          optional(
+            :project_updated,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectUpdated },
+            api_name: :"project.updated"
+          )
 
           # @!attribute rate_limit_deleted
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitDeleted, nil]
-          optional :rate_limit_deleted,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitDeleted },
-                   api_name: :"rate_limit.deleted"
+          optional(
+            :rate_limit_deleted,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitDeleted },
+            api_name: :"rate_limit.deleted"
+          )
 
           # @!attribute rate_limit_updated
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated, nil]
-          optional :rate_limit_updated,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated },
-                   api_name: :"rate_limit.updated"
+          optional(
+            :rate_limit_updated,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated },
+            api_name: :"rate_limit.updated"
+          )
 
           # @!attribute role_assignment_created
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentCreated, nil]
-          optional :role_assignment_created,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentCreated },
-                   api_name: :"role.assignment.created"
+          optional(
+            :role_assignment_created,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentCreated },
+            api_name: :"role.assignment.created"
+          )
 
           # @!attribute role_assignment_deleted
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentDeleted, nil]
-          optional :role_assignment_deleted,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentDeleted },
-                   api_name: :"role.assignment.deleted"
+          optional(
+            :role_assignment_deleted,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentDeleted },
+            api_name: :"role.assignment.deleted"
+          )
 
           # @!attribute role_bound_to_resource
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource, nil]
-          optional :role_bound_to_resource,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource },
-                   api_name: :"role.bound_to_resource"
+          optional(
+            :role_bound_to_resource,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource },
+            api_name: :"role.bound_to_resource"
+          )
 
           # @!attribute role_created
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleCreated, nil]
-          optional :role_created,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleCreated },
-                   api_name: :"role.created"
+          optional(
+            :role_created,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleCreated },
+            api_name: :"role.created"
+          )
 
           # @!attribute role_deleted
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleDeleted, nil]
-          optional :role_deleted,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleDeleted },
-                   api_name: :"role.deleted"
+          optional(
+            :role_deleted,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleDeleted },
+            api_name: :"role.deleted"
+          )
 
           # @!attribute role_unbound_from_resource
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource, nil]
-          optional :role_unbound_from_resource,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource },
-                   api_name: :"role.unbound_from_resource"
+          optional(
+            :role_unbound_from_resource,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource },
+            api_name: :"role.unbound_from_resource"
+          )
 
           # @!attribute role_updated
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated, nil]
-          optional :role_updated,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated },
-                   api_name: :"role.updated"
+          optional(
+            :role_updated,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated },
+            api_name: :"role.updated"
+          )
 
           # @!attribute scim_disabled
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimDisabled, nil]
-          optional :scim_disabled,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimDisabled },
-                   api_name: :"scim.disabled"
+          optional(
+            :scim_disabled,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimDisabled },
+            api_name: :"scim.disabled"
+          )
 
           # @!attribute scim_enabled
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimEnabled, nil]
-          optional :scim_enabled,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimEnabled },
-                   api_name: :"scim.enabled"
+          optional(
+            :scim_enabled,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimEnabled },
+            api_name: :"scim.enabled"
+          )
 
           # @!attribute service_account_created
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated, nil]
-          optional :service_account_created,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated },
-                   api_name: :"service_account.created"
+          optional(
+            :service_account_created,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated },
+            api_name: :"service_account.created"
+          )
 
           # @!attribute service_account_deleted
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountDeleted, nil]
-          optional :service_account_deleted,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountDeleted },
-                   api_name: :"service_account.deleted"
+          optional(
+            :service_account_deleted,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountDeleted },
+            api_name: :"service_account.deleted"
+          )
 
           # @!attribute service_account_updated
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated, nil]
-          optional :service_account_updated,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated },
-                   api_name: :"service_account.updated"
+          optional(
+            :service_account_updated,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated },
+            api_name: :"service_account.updated"
+          )
 
           # @!attribute user_added
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded, nil]
-          optional :user_added,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded },
-                   api_name: :"user.added"
+          optional(
+            :user_added,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded },
+            api_name: :"user.added"
+          )
 
           # @!attribute user_deleted
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::UserDeleted, nil]
-          optional :user_deleted,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::UserDeleted },
-                   api_name: :"user.deleted"
+          optional(
+            :user_deleted,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::UserDeleted },
+            api_name: :"user.deleted"
+          )
 
           # @!attribute user_updated
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated, nil]
-          optional :user_updated,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated },
-                   api_name: :"user.updated"
+          optional(
+            :user_updated,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated },
+            api_name: :"user.updated"
+          )
 
           # @!attribute workload_identity_provider_mapping_created
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated, nil]
-          optional :workload_identity_provider_mapping_created,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated },
-                   api_name: :"workload_identity_provider_mapping.created"
+          optional(
+            :workload_identity_provider_mapping_created,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated },
+            api_name: :"workload_identity_provider_mapping.created"
+          )
 
           # @!attribute workload_identity_provider_mapping_deleted
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted, nil]
-          optional :workload_identity_provider_mapping_deleted,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted },
-                   api_name: :"workload_identity_provider_mapping.deleted"
+          optional(
+            :workload_identity_provider_mapping_deleted,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted },
+            api_name: :"workload_identity_provider_mapping.deleted"
+          )
 
           # @!attribute workload_identity_provider_mapping_updated
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated, nil]
-          optional :workload_identity_provider_mapping_updated,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated },
-                   api_name: :"workload_identity_provider_mapping.updated"
+          optional(
+            :workload_identity_provider_mapping_updated,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated },
+            api_name: :"workload_identity_provider_mapping.updated"
+          )
 
           # @!attribute workload_identity_provider_created
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated, nil]
-          optional :workload_identity_provider_created,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated },
-                   api_name: :"workload_identity_provider.created"
+          optional(
+            :workload_identity_provider_created,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated },
+            api_name: :"workload_identity_provider.created"
+          )
 
           # @!attribute workload_identity_provider_deleted
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted, nil]
-          optional :workload_identity_provider_deleted,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted },
-                   api_name: :"workload_identity_provider.deleted"
+          optional(
+            :workload_identity_provider_deleted,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted },
+            api_name: :"workload_identity_provider.deleted"
+          )
 
           # @!attribute workload_identity_provider_updated
           #   The details for events with this `type`.
           #
           #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated, nil]
-          optional :workload_identity_provider_updated,
-                   -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated },
-                   api_name: :"workload_identity_provider.updated"
+          optional(
+            :workload_identity_provider_updated,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated },
+            api_name: :"workload_identity_provider.updated"
+          )
 
           # @!method initialize(id:, effective_at:, type:, actor: nil, api_key_created: nil, api_key_deleted: nil, api_key_updated: nil, certificate_created: nil, certificate_deleted: nil, certificate_updated: nil, certificates_activated: nil, certificates_deactivated: nil, checkpoint_permission_created: nil, checkpoint_permission_deleted: nil, external_key_registered: nil, external_key_removed: nil, group_created: nil, group_deleted: nil, group_updated: nil, invite_accepted: nil, invite_deleted: nil, invite_sent: nil, ip_allowlist_config_activated: nil, ip_allowlist_config_deactivated: nil, ip_allowlist_created: nil, ip_allowlist_deleted: nil, ip_allowlist_updated: nil, login_failed: nil, login_succeeded: nil, logout_failed: nil, logout_succeeded: nil, organization_updated: nil, project: nil, project_archived: nil, project_created: nil, project_deleted: nil, project_updated: nil, rate_limit_deleted: nil, rate_limit_updated: nil, role_assignment_created: nil, role_assignment_deleted: nil, role_bound_to_resource: nil, role_created: nil, role_deleted: nil, role_unbound_from_resource: nil, role_updated: nil, scim_disabled: nil, scim_enabled: nil, service_account_created: nil, service_account_deleted: nil, service_account_updated: nil, user_added: nil, user_deleted: nil, user_updated: nil, workload_identity_provider_mapping_created: nil, workload_identity_provider_mapping_deleted: nil, workload_identity_provider_mapping_updated: nil, workload_identity_provider_created: nil, workload_identity_provider_deleted: nil, workload_identity_provider_updated: nil)
           #   Some parameter documentations has been truncated, see
@@ -798,15 +904,19 @@ module OpenAI
               #   The service account that performed the audit logged action.
               #
               #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::ServiceAccount, nil]
-              optional :service_account,
-                       -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::ServiceAccount }
+              optional(
+                :service_account,
+                -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::ServiceAccount }
+              )
 
               # @!attribute type
               #   The type of API key. Can be either `user` or `service_account`.
               #
               #   @return [Symbol, OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::Type, nil]
-              optional :type,
-                       enum: -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::Type }
+              optional(
+                :type,
+                enum: -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::Type }
+              )
 
               # @!attribute user
               #   The user who performed the audit logged action.
@@ -995,8 +1105,10 @@ module OpenAI
             #   The payload used to update the API key.
             #
             #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated::ChangesRequested, nil]
-            optional :changes_requested,
-                     -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated::ChangesRequested }
+            optional(
+              :changes_requested,
+              -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated::ChangesRequested }
+            )
 
             # @!method initialize(id: nil, changes_requested: nil)
             #   The details for events with this `type`.
@@ -1099,8 +1211,14 @@ module OpenAI
             # @!attribute certificates
             #
             #   @return [Array<OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesActivated::Certificate>, nil]
-            optional :certificates,
-                     -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesActivated::Certificate] }
+            optional(
+              :certificates,
+              -> {
+                OpenAI::Internal::Type::ArrayOf[
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesActivated::Certificate
+                ]
+              }
+            )
 
             # @!method initialize(certificates: nil)
             #   The details for events with this `type`.
@@ -1132,8 +1250,14 @@ module OpenAI
             # @!attribute certificates
             #
             #   @return [Array<OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesDeactivated::Certificate>, nil]
-            optional :certificates,
-                     -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesDeactivated::Certificate] }
+            optional(
+              :certificates,
+              -> {
+                OpenAI::Internal::Type::ArrayOf[
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesDeactivated::Certificate
+                ]
+              }
+            )
 
             # @!method initialize(certificates: nil)
             #   The details for events with this `type`.
@@ -1172,8 +1296,10 @@ module OpenAI
             #   The payload used to create the checkpoint permission.
             #
             #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated::Data, nil]
-            optional :data,
-                     -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated::Data }
+            optional(
+              :data,
+              -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated::Data }
+            )
 
             # @!method initialize(id: nil, data: nil)
             #   The project and fine-tuned model checkpoint that the checkpoint permission was
@@ -1318,8 +1444,10 @@ module OpenAI
             #   The payload used to update the group.
             #
             #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated::ChangesRequested, nil]
-            optional :changes_requested,
-                     -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated::ChangesRequested }
+            optional(
+              :changes_requested,
+              -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated::ChangesRequested }
+            )
 
             # @!method initialize(id: nil, changes_requested: nil)
             #   The details for events with this `type`.
@@ -1421,8 +1549,14 @@ module OpenAI
             #   The configurations that were activated.
             #
             #   @return [Array<OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigActivated::Config>, nil]
-            optional :configs,
-                     -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigActivated::Config] }
+            optional(
+              :configs,
+              -> {
+                OpenAI::Internal::Type::ArrayOf[
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigActivated::Config
+                ]
+              }
+            )
 
             # @!method initialize(configs: nil)
             #   The details for events with this `type`.
@@ -1455,8 +1589,14 @@ module OpenAI
             #   The configurations that were deactivated.
             #
             #   @return [Array<OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigDeactivated::Config>, nil]
-            optional :configs,
-                     -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigDeactivated::Config] }
+            optional(
+              :configs,
+              -> {
+                OpenAI::Internal::Type::ArrayOf[
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigDeactivated::Config
+                ]
+              }
+            )
 
             # @!method initialize(configs: nil)
             #   The details for events with this `type`.
@@ -1621,8 +1761,10 @@ module OpenAI
             #   The payload used to update the organization settings.
             #
             #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::OrganizationUpdated::ChangesRequested, nil]
-            optional :changes_requested,
-                     -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::OrganizationUpdated::ChangesRequested }
+            optional(
+              :changes_requested,
+              -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::OrganizationUpdated::ChangesRequested }
+            )
 
             # @!method initialize(id: nil, changes_requested: nil)
             #   The details for events with this `type`.
@@ -1811,8 +1953,10 @@ module OpenAI
             #   The payload used to update the project.
             #
             #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectUpdated::ChangesRequested, nil]
-            optional :changes_requested,
-                     -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectUpdated::ChangesRequested }
+            optional(
+              :changes_requested,
+              -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectUpdated::ChangesRequested }
+            )
 
             # @!method initialize(id: nil, changes_requested: nil)
             #   The details for events with this `type`.
@@ -1862,8 +2006,10 @@ module OpenAI
             #   The payload used to update the rate limits.
             #
             #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated::ChangesRequested, nil]
-            optional :changes_requested,
-                     -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated::ChangesRequested }
+            optional(
+              :changes_requested,
+              -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated::ChangesRequested }
+            )
 
             # @!method initialize(id: nil, changes_requested: nil)
             #   The details for events with this `type`.
@@ -2075,8 +2221,10 @@ module OpenAI
             #   The connector role mutation path that produced the event.
             #
             #   @return [Symbol, OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::Source, nil]
-            optional :source,
-                     enum: -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::Source }
+            optional(
+              :source,
+              enum: -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::Source }
+            )
 
             # @!attribute workspace_id
             #   The workspace ID for a ChatGPT workspace connector resource.
@@ -2244,8 +2392,10 @@ module OpenAI
             #   The connector role mutation path that produced the event.
             #
             #   @return [Symbol, OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::Source, nil]
-            optional :source,
-                     enum: -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::Source }
+            optional(
+              :source,
+              enum: -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::Source }
+            )
 
             # @!attribute workspace_id
             #   The workspace ID for a ChatGPT workspace connector resource.
@@ -2309,8 +2459,10 @@ module OpenAI
             #   The payload used to update the role.
             #
             #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated::ChangesRequested, nil]
-            optional :changes_requested,
-                     -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated::ChangesRequested }
+            optional(
+              :changes_requested,
+              -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated::ChangesRequested }
+            )
 
             # @!method initialize(id: nil, changes_requested: nil)
             #   The details for events with this `type`.
@@ -2422,8 +2574,10 @@ module OpenAI
             #   The payload used to create the service account.
             #
             #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated::Data, nil]
-            optional :data,
-                     -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated::Data }
+            optional(
+              :data,
+              -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated::Data }
+            )
 
             # @!method initialize(id: nil, data: nil)
             #   The details for events with this `type`.
@@ -2473,8 +2627,10 @@ module OpenAI
             #   The payload used to updated the service account.
             #
             #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated::ChangesRequested, nil]
-            optional :changes_requested,
-                     -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated::ChangesRequested }
+            optional(
+              :changes_requested,
+              -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated::ChangesRequested }
+            )
 
             # @!method initialize(id: nil, changes_requested: nil)
             #   The details for events with this `type`.
@@ -2560,8 +2716,10 @@ module OpenAI
             #   The payload used to update the user.
             #
             #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated::ChangesRequested, nil]
-            optional :changes_requested,
-                     -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated::ChangesRequested }
+            optional(
+              :changes_requested,
+              -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated::ChangesRequested }
+            )
 
             # @!method initialize(id: nil, changes_requested: nil)
             #   The details for events with this `type`.

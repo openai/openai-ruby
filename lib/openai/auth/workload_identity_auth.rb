@@ -65,6 +65,7 @@ module OpenAI
               Thread.handle_interrupt(Exception => :immediate) do
                 perform_refresh(deadline: deadline)
               end
+
             ensure
               @mutex.synchronize do
                 @refreshing = false
@@ -117,14 +118,16 @@ module OpenAI
       end
 
       private def raise_refresh_error!
-        raise OpenAI::Errors::AuthenticationError.new(
-          url: @token_exchange_url,
-          status: 401,
-          headers: nil,
-          body: nil,
-          request: nil,
-          response: nil,
-          message: "Token refresh failed"
+        raise(
+          OpenAI::Errors::AuthenticationError.new(
+            url: @token_exchange_url,
+            status: 401,
+            headers: nil,
+            body: nil,
+            request: nil,
+            response: nil,
+            message: "Token refresh failed"
+          )
         )
       end
 
@@ -146,8 +149,10 @@ module OpenAI
 
         token_type = @config.provider.token_type
         subject_token_type = SUBJECT_TOKEN_TYPES.fetch(token_type) do
-          raise ArgumentError,
-                "Unsupported token type: #{token_type.inspect}. Supported types: #{SUBJECT_TOKEN_TYPES.keys.join(', ')}"
+          raise(
+            ArgumentError,
+            "Unsupported token type: #{token_type.inspect}. Supported types: #{SUBJECT_TOKEN_TYPES.keys.join(", ")}"
+          )
         end
 
         request = Net::HTTP::Post.new(@token_exchange_url)
@@ -163,16 +168,18 @@ module OpenAI
         request.body = JSON.generate(body)
 
         timeout = [remaining_timeout(deadline), 5].compact.min
-        response = Net::HTTP.start(
-          @token_exchange_url.hostname,
-          @token_exchange_url.port,
-          use_ssl: @token_exchange_url.scheme == "https",
-          open_timeout: timeout,
-          read_timeout: timeout,
-          write_timeout: timeout
-        ) do |http|
-          http.request(request)
-        end
+        response = Net::HTTP
+          .start(
+            @token_exchange_url.hostname,
+            @token_exchange_url.port,
+            use_ssl: @token_exchange_url.scheme == "https",
+            open_timeout: timeout,
+            read_timeout: timeout,
+            write_timeout: timeout
+          ) do |http|
+            http.request(request)
+          end
+
         check_deadline!(deadline)
 
         handle_token_response(response)
@@ -199,10 +206,12 @@ module OpenAI
 
         case response
         in Net::HTTPBadRequest | Net::HTTPUnauthorized | Net::HTTPForbidden
-          raise OpenAI::Errors::OAuthError.new(
-            status: response.code.to_i,
-            body: body,
-            headers: response.to_hash
+          raise(
+            OpenAI::Errors::OAuthError.new(
+              status: response.code.to_i,
+              body: body,
+              headers: response.to_hash
+            )
           )
         in Net::HTTPSuccess
           {
@@ -210,12 +219,14 @@ module OpenAI
             expires_in: body&.dig(:expires_in)
           }
         else
-          raise OpenAI::Errors::APIError.new(
-            url: @token_exchange_url,
-            status: response.code.to_i,
-            headers: response.to_hash,
-            body: body,
-            message: "Token exchange failed with status #{response.code}"
+          raise(
+            OpenAI::Errors::APIError.new(
+              url: @token_exchange_url,
+              status: response.code.to_i,
+              headers: response.to_hash,
+              body: body,
+              message: "Token exchange failed with status #{response.code}"
+            )
           )
         end
       end

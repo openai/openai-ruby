@@ -12,10 +12,10 @@ class OpenAI::Test::Resources::Admin::Organization::Groups::UsersTest < OpenAI::
 
     assert_pattern do
       response => {
-        group_id: String,
-        object: Symbol,
-        user_id: String
-      }
+          group_id: String,
+          object: Symbol,
+          user_id: String
+        }
     end
   end
 
@@ -28,13 +28,13 @@ class OpenAI::Test::Resources::Admin::Organization::Groups::UsersTest < OpenAI::
 
     assert_pattern do
       response => {
-        id: String,
-        email: String | nil,
-        is_service_account: OpenAI::Internal::Type::Boolean | nil,
-        name: String,
-        picture: String | nil,
-        user_type: OpenAI::Models::Admin::Organization::Groups::UserRetrieveResponse::UserType
-      }
+          id: String,
+          email: String | nil,
+          is_service_account: OpenAI::Internal::Type::Boolean | nil,
+          name: String,
+          picture: String | nil,
+          user_type: OpenAI::Models::Admin::Organization::Groups::UserRetrieveResponse::UserType
+        }
     end
   end
 
@@ -54,10 +54,10 @@ class OpenAI::Test::Resources::Admin::Organization::Groups::UsersTest < OpenAI::
 
     assert_pattern do
       row => {
-        id: String,
-        email: String | nil,
-        name: String
-      }
+          id: String,
+          email: String | nil,
+          name: String
+        }
     end
   end
 
@@ -70,9 +70,9 @@ class OpenAI::Test::Resources::Admin::Organization::Groups::UsersTest < OpenAI::
 
     assert_pattern do
       response => {
-        deleted: OpenAI::Internal::Type::Boolean,
-        object: Symbol
-      }
+          deleted: OpenAI::Internal::Type::Boolean,
+          object: Symbol
+        }
     end
   end
 end

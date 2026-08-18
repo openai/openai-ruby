@@ -67,7 +67,9 @@ module OpenAI
             #   @return [Array(String, Symbol)]
 
             define_sorbet_constant!(:Variants) do
-              T.type_alias { T.any(String, OpenAI::Admin::Organization::OrganizationSpendLimit::Currency::TaggedSymbol) }
+              T.type_alias {
+                T.any(String, OpenAI::Admin::Organization::OrganizationSpendLimit::Currency::TaggedSymbol)
+              }
             end
 
             # @!group
@@ -98,15 +100,25 @@ module OpenAI
 
               variant String
 
-              variant const: -> { OpenAI::Models::Admin::Organization::OrganizationSpendLimit::Enforcement::Status::INACTIVE }
+              variant(
+                const: -> {
+                  OpenAI::Models::Admin::Organization::OrganizationSpendLimit::Enforcement::Status::INACTIVE
+                }
+              )
 
-              variant const: -> { OpenAI::Models::Admin::Organization::OrganizationSpendLimit::Enforcement::Status::ENFORCING }
+              variant(
+                const: -> {
+                  OpenAI::Models::Admin::Organization::OrganizationSpendLimit::Enforcement::Status::ENFORCING
+                }
+              )
 
               # @!method self.variants
               #   @return [Array(String, Symbol)]
 
               define_sorbet_constant!(:Variants) do
-                T.type_alias { T.any(String, OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement::Status::TaggedSymbol) }
+                T.type_alias {
+                  T.any(String, OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement::Status::TaggedSymbol)
+                }
               end
 
               # @!group
@@ -133,7 +145,9 @@ module OpenAI
             #   @return [Array(String, Symbol)]
 
             define_sorbet_constant!(:Variants) do
-              T.type_alias { T.any(String, OpenAI::Admin::Organization::OrganizationSpendLimit::Interval::TaggedSymbol) }
+              T.type_alias {
+                T.any(String, OpenAI::Admin::Organization::OrganizationSpendLimit::Interval::TaggedSymbol)
+              }
             end
 
             # @!group

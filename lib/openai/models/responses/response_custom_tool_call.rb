@@ -38,10 +38,12 @@ module OpenAI
         #   The execution context that produced this tool call.
         #
         #   @return [OpenAI::Models::Responses::ResponseCustomToolCall::Caller::Direct, OpenAI::Models::Responses::ResponseCustomToolCall::Caller::Program, nil]
-        optional :caller_,
-                 union: -> { OpenAI::Responses::ResponseCustomToolCall::Caller },
-                 api_name: :caller,
-                 nil?: true
+        optional(
+          :caller_,
+          union: -> { OpenAI::Responses::ResponseCustomToolCall::Caller },
+          api_name: :caller,
+          nil?: true
+        )
 
         # @!attribute namespace
         #   The namespace of the custom tool being called.

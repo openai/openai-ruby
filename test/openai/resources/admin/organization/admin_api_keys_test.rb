@@ -20,15 +20,15 @@ class OpenAI::Test::Resources::Admin::Organization::AdminAPIKeysTest < OpenAI::T
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        expires_at: Integer | nil,
-        object: Symbol,
-        owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
-        redacted_value: String,
-        last_used_at: Integer | nil,
-        name: String | nil
-      }
+          id: String,
+          created_at: Integer,
+          expires_at: Integer | nil,
+          object: Symbol,
+          owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
+          redacted_value: String,
+          last_used_at: Integer | nil,
+          name: String | nil
+        }
     end
   end
 
@@ -48,15 +48,15 @@ class OpenAI::Test::Resources::Admin::Organization::AdminAPIKeysTest < OpenAI::T
 
     assert_pattern do
       row => {
-        id: String,
-        created_at: Integer,
-        expires_at: Integer | nil,
-        object: Symbol,
-        owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
-        redacted_value: String,
-        last_used_at: Integer | nil,
-        name: String | nil
-      }
+          id: String,
+          created_at: Integer,
+          expires_at: Integer | nil,
+          object: Symbol,
+          owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
+          redacted_value: String,
+          last_used_at: Integer | nil,
+          name: String | nil
+        }
     end
   end
 
@@ -69,10 +69,10 @@ class OpenAI::Test::Resources::Admin::Organization::AdminAPIKeysTest < OpenAI::T
 
     assert_pattern do
       response => {
-        id: String,
-        deleted: OpenAI::Internal::Type::Boolean,
-        object: Symbol
-      }
+          id: String,
+          deleted: OpenAI::Internal::Type::Boolean,
+          object: Symbol
+        }
     end
   end
 end

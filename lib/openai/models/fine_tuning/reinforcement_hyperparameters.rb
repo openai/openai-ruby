@@ -15,8 +15,10 @@ module OpenAI
         #   Multiplier on amount of compute used for exploring search space during training.
         #
         #   @return [Symbol, :auto, Float, nil]
-        optional :compute_multiplier,
-                 union: -> { OpenAI::FineTuning::ReinforcementHyperparameters::ComputeMultiplier }
+        optional(
+          :compute_multiplier,
+          union: -> { OpenAI::FineTuning::ReinforcementHyperparameters::ComputeMultiplier }
+        )
 
         # @!attribute eval_interval
         #   The number of training steps between evaluation runs.
@@ -35,8 +37,10 @@ module OpenAI
         #   avoid overfitting.
         #
         #   @return [Symbol, :auto, Float, nil]
-        optional :learning_rate_multiplier,
-                 union: -> { OpenAI::FineTuning::ReinforcementHyperparameters::LearningRateMultiplier }
+        optional(
+          :learning_rate_multiplier,
+          union: -> { OpenAI::FineTuning::ReinforcementHyperparameters::LearningRateMultiplier }
+        )
 
         # @!attribute n_epochs
         #   The number of epochs to train the model for. An epoch refers to one full cycle

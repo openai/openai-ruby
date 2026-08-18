@@ -16,9 +16,11 @@ module OpenAI
         #   images or files.
         #
         #   @return [Hash{Symbol=>String, OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile}, nil]
-        optional :variables,
-                 -> { OpenAI::Internal::Type::HashOf[union: OpenAI::Responses::ResponsePrompt::Variable] },
-                 nil?: true
+        optional(
+          :variables,
+          -> { OpenAI::Internal::Type::HashOf[union: OpenAI::Responses::ResponsePrompt::Variable] },
+          nil?: true
+        )
 
         # @!attribute version
         #   Optional version of the prompt template.

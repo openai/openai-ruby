@@ -6,15 +6,21 @@ class OpenAI::Test::DataResidencyTest < Minitest::Test
   extend Minitest::Serial
 
   URLS = {
-global: "https://api.openai.com/v1",
-us: "https://us.api.openai.com/v1",
-eu: "https://eu.api.openai.com/v1",
-ae: "https://ae.api.openai.com/v1"
-}.freeze
+    global: "https://api.openai.com/v1",
+    us: "https://us.api.openai.com/v1",
+    eu: "https://eu.api.openai.com/v1",
+    ae: "https://ae.api.openai.com/v1"
+  }.freeze
   CUSTOM_URL = "https://example.com/v1"
   ENVIRONMENT_VARIABLES = [
-    "OPENAI_API_KEY", "OPENAI_ADMIN_KEY", "OPENAI_BASE_URL", "OPENAI_CUSTOM_HEADERS",
-    "OPENAI_ORG_ID", "OPENAI_PROJECT_ID", "OPENAI_WEBHOOK_SECRET", "OPENAI_LOG"
+    "OPENAI_API_KEY",
+    "OPENAI_ADMIN_KEY",
+    "OPENAI_BASE_URL",
+    "OPENAI_CUSTOM_HEADERS",
+    "OPENAI_ORG_ID",
+    "OPENAI_PROJECT_ID",
+    "OPENAI_WEBHOOK_SECRET",
+    "OPENAI_LOG"
   ].freeze
 
   class Capture < OpenAI::HTTPClient
@@ -30,7 +36,7 @@ ae: "https://ae.api.openai.com/v1"
       OpenAI::HTTPClient::Response.new(
         status: 200,
         headers: {"content-type" => "application/json"},
-        body: ['{"id":"resp_test","object":"response","output":[]}']
+        body: ["{\"id\":\"resp_test\",\"object\":\"response\",\"output\":[]}"]
       )
     end
   end
@@ -111,6 +117,7 @@ ae: "https://ae.api.openai.com/v1"
         super.merge("x-subclass-auth" => "preserved")
       end
     end
+
     original = client_class.new(api_key: "test-key", data_residency: :us, http_client: @transport)
     copy = original.with_options(data_residency: :eu)
     copy.responses.create(model: "gpt-5.6-sol", input: "Hello")
@@ -130,6 +137,7 @@ ae: "https://ae.api.openai.com/v1"
       assert_includes(error.message, URLS.keys.join(", "))
       assert_raises(ArgumentError) { original.with_options(data_residency: value) }
     end
+
     assert_empty(@transport.requests)
   end
 

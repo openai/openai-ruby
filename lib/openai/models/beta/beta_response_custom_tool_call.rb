@@ -44,10 +44,12 @@ module OpenAI
         #   The execution context that produced this tool call.
         #
         #   @return [OpenAI::Models::Beta::BetaResponseCustomToolCall::Caller::Direct, OpenAI::Models::Beta::BetaResponseCustomToolCall::Caller::Program, nil]
-        optional :caller_,
-                 union: -> { OpenAI::Beta::BetaResponseCustomToolCall::Caller },
-                 api_name: :caller,
-                 nil?: true
+        optional(
+          :caller_,
+          union: -> { OpenAI::Beta::BetaResponseCustomToolCall::Caller },
+          api_name: :caller,
+          nil?: true
+        )
 
         # @!attribute namespace
         #   The namespace of the custom tool being called.

@@ -118,8 +118,10 @@ module OpenAI
           #   Encrypted content sent between agents.
           #
           #   @return [Array<OpenAI::Models::Beta::BetaResponseInputText, OpenAI::Models::Beta::BetaResponseOutputText, OpenAI::Models::Beta::BetaResponseItem::AgentMessage::Content::Text, OpenAI::Models::Beta::BetaResponseItem::AgentMessage::Content::SummaryText, OpenAI::Models::Beta::BetaResponseItem::AgentMessage::Content::ReasoningText, OpenAI::Models::Beta::BetaResponseOutputRefusal, OpenAI::Models::Beta::BetaResponseInputImage, OpenAI::Models::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot, OpenAI::Models::Beta::BetaResponseInputFile, OpenAI::Models::Beta::BetaResponseItem::AgentMessage::Content::EncryptedContent>]
-          required :content,
-                   -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::BetaResponseItem::AgentMessage::Content] }
+          required(
+            :content,
+            -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::BetaResponseItem::AgentMessage::Content] }
+          )
 
           # @!attribute recipient
           #   The destination agent identity.
@@ -180,8 +182,10 @@ module OpenAI
             variant :input_image, -> { OpenAI::Beta::BetaResponseInputImage }
 
             # A screenshot of a computer.
-            variant :computer_screenshot,
-                    -> { OpenAI::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot }
+            variant(
+              :computer_screenshot,
+              -> { OpenAI::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot }
+            )
 
             # A file input to the model.
             variant :input_file, -> { OpenAI::Beta::BetaResponseInputFile }
@@ -255,8 +259,10 @@ module OpenAI
               #   `low`, `auto`, or `original`. Defaults to `auto`.
               #
               #   @return [Symbol, OpenAI::Models::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot::Detail]
-              required :detail,
-                       enum: -> { OpenAI::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot::Detail }
+              required(
+                :detail,
+                enum: -> { OpenAI::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot::Detail }
+              )
 
               # @!attribute file_id
               #   The identifier of an uploaded file that contains the screenshot.
@@ -283,8 +289,10 @@ module OpenAI
               #   token block.
               #
               #   @return [OpenAI::Models::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint, nil]
-              optional :prompt_cache_breakpoint,
-                       -> { OpenAI::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint }
+              optional(
+                :prompt_cache_breakpoint,
+                -> { OpenAI::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint }
+              )
 
               # @!method initialize(detail:, file_id:, image_url:, prompt_cache_breakpoint: nil, type: :computer_screenshot)
               #   Some parameter documentations has been truncated, see
@@ -1004,11 +1012,13 @@ module OpenAI
           #   The status of the item. One of `in_progress`, `completed`, or `incomplete`.
           #
           #   @return [Symbol, OpenAI::Models::Beta::BetaResponseItem::LocalShellCallOutput::Status, nil]
-          optional :status,
-                   enum: -> {
-                     OpenAI::Beta::BetaResponseItem::LocalShellCallOutput::Status
-                   },
-                   nil?: true
+          optional(
+            :status,
+            enum: -> {
+              OpenAI::Beta::BetaResponseItem::LocalShellCallOutput::Status
+            },
+            nil?: true
+          )
 
           # @!method initialize(id:, output:, agent: nil, status: nil, type: :local_shell_call_output)
           #   Some parameter documentations has been truncated, see
@@ -1072,8 +1082,10 @@ module OpenAI
           #   The tools available on the server.
           #
           #   @return [Array<OpenAI::Models::Beta::BetaResponseItem::McpListTools::Tool>]
-          required :tools,
-                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponseItem::McpListTools::Tool] }
+          required(
+            :tools,
+            -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponseItem::McpListTools::Tool] }
+          )
 
           # @!attribute type
           #   The type of the item. Always `mcp_list_tools`.

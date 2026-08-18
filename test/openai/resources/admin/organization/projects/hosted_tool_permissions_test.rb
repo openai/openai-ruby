@@ -12,12 +12,12 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::HostedToolPermissi
 
     assert_pattern do
       response => {
-        code_interpreter: OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions::CodeInterpreter,
-        file_search: OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions::FileSearch,
-        image_generation: OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions::ImageGeneration,
-        mcp: OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions::Mcp,
-        web_search: OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions::WebSearch
-      }
+          code_interpreter: OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions::CodeInterpreter,
+          file_search: OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions::FileSearch,
+          image_generation: OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions::ImageGeneration,
+          mcp: OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions::Mcp,
+          web_search: OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions::WebSearch
+        }
     end
   end
 
@@ -30,12 +30,12 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::HostedToolPermissi
 
     assert_pattern do
       response => {
-        code_interpreter: OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions::CodeInterpreter,
-        file_search: OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions::FileSearch,
-        image_generation: OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions::ImageGeneration,
-        mcp: OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions::Mcp,
-        web_search: OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions::WebSearch
-      }
+          code_interpreter: OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions::CodeInterpreter,
+          file_search: OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions::FileSearch,
+          image_generation: OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions::ImageGeneration,
+          mcp: OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions::Mcp,
+          web_search: OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions::WebSearch
+        }
     end
   end
 end

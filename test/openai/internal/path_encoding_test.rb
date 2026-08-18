@@ -69,7 +69,7 @@ class OpenAI::Test::PathEncodingTest < Minitest::Test
             ["proj_123", "scoped_123", segment]
           ].each do |project_id, scoped_id, role_id|
             assert_raises(ArgumentError) do
-              resource.delete(role_id, project_id: project_id, scoped_identifier => scoped_id)
+              resource.delete(role_id, :project_id => project_id, scoped_identifier => scoped_id)
             end
           end
         end
@@ -86,7 +86,7 @@ class OpenAI::Test::PathEncodingTest < Minitest::Test
       response = OpenAI::HTTPClient::Response.new(
         status: 200,
         headers: {"content-type" => "application/json"},
-        body: ['{"deleted":true,"object":"role.deleted"}']
+        body: ["{\"deleted\":true,\"object\":\"role.deleted\"}"]
       )
       transport.expect(:execute, response) do |request|
         assert_equal(:delete, request.method)

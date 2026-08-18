@@ -21,8 +21,10 @@ module OpenAI
       #   namespace (ie, `{{sample.output_text}}`).
       #
       #   @return [Array<OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::EvalCreateParams::TestingCriterion::TextSimilarity, OpenAI::Models::EvalCreateParams::TestingCriterion::Python, OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel>]
-      required :testing_criteria,
-               -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::EvalCreateParams::TestingCriterion] }
+      required(
+        :testing_criteria,
+        -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::EvalCreateParams::TestingCriterion] }
+      )
 
       # @!attribute metadata
       #   Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -190,8 +192,12 @@ module OpenAI
           #   references to the `item` namespace, ie {{item.name}}.
           #
           #   @return [Array<OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem>]
-          required :input,
-                   -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input] }
+          required(
+            :input,
+            -> {
+              OpenAI::Internal::Type::ArrayOf[union: OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input]
+            }
+          )
 
           # @!attribute labels
           #   The labels to classify to each item in the evaluation.
@@ -282,21 +288,29 @@ module OpenAI
               #   input images, and input audio, either as a single item or an array of items.
               #
               #   @return [String, OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::InputImage, OpenAI::Models::Responses::ResponseInputAudio, Array<String, OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Graders::GraderInputItem::OutputText, OpenAI::Models::Graders::GraderInputItem::InputImage, OpenAI::Models::Responses::ResponseInputAudio>]
-              required :content,
-                       union: -> { OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content }
+              required(
+                :content,
+                union: -> { OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content }
+              )
 
               # @!attribute role
               #   The role of the message input. One of `user`, `assistant`, `system`, or
               #   `developer`.
               #
               #   @return [Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Role]
-              required :role, enum: -> { OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Role }
+              required(
+                :role,
+                enum: -> { OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Role }
+              )
 
               # @!attribute type
               #   The type of the message input. Always `message`.
               #
               #   @return [Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Type, nil]
-              optional :type, enum: -> { OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Type }
+              optional(
+                :type,
+                enum: -> { OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Type }
+              )
 
               # @!method initialize(content:, role:, type: nil)
               #   Some parameter documentations has been truncated, see
@@ -329,10 +343,14 @@ module OpenAI
                 variant -> { OpenAI::Responses::ResponseInputText }
 
                 # A text output from the model.
-                variant -> { OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText }
+                variant(
+                  -> { OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText }
+                )
 
                 # An image input block used within EvalItem content arrays.
-                variant -> { OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::InputImage }
+                variant(
+                  -> { OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::InputImage }
+                )
 
                 # An audio input to the model.
                 variant -> { OpenAI::Responses::ResponseInputAudio }

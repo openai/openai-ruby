@@ -11,22 +11,28 @@ module OpenAI
             #   Permission state for a single hosted tool on a project.
             #
             #   @return [OpenAI::Models::Admin::Organization::Projects::ProjectHostedToolPermissions::CodeInterpreter]
-            required :code_interpreter,
-                     -> { OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions::CodeInterpreter }
+            required(
+              :code_interpreter,
+              -> { OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions::CodeInterpreter }
+            )
 
             # @!attribute file_search
             #   Permission state for a single hosted tool on a project.
             #
             #   @return [OpenAI::Models::Admin::Organization::Projects::ProjectHostedToolPermissions::FileSearch]
-            required :file_search,
-                     -> { OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions::FileSearch }
+            required(
+              :file_search,
+              -> { OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions::FileSearch }
+            )
 
             # @!attribute image_generation
             #   Permission state for a single hosted tool on a project.
             #
             #   @return [OpenAI::Models::Admin::Organization::Projects::ProjectHostedToolPermissions::ImageGeneration]
-            required :image_generation,
-                     -> { OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions::ImageGeneration }
+            required(
+              :image_generation,
+              -> { OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions::ImageGeneration }
+            )
 
             # @!attribute mcp
             #   Permission state for a single hosted tool on a project.
@@ -38,8 +44,10 @@ module OpenAI
             #   Permission state for a single hosted tool on a project.
             #
             #   @return [OpenAI::Models::Admin::Organization::Projects::ProjectHostedToolPermissions::WebSearch]
-            required :web_search,
-                     -> { OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions::WebSearch }
+            required(
+              :web_search,
+              -> { OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions::WebSearch }
+            )
 
             # @!method initialize(code_interpreter:, file_search:, image_generation:, mcp:, web_search:)
             #   Represents hosted tool permissions for a project.

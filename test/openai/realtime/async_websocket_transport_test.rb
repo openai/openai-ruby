@@ -47,7 +47,7 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     context = server_tls_context(certificate, key)
 
     error = assert_raises(OpenAI::Errors::RealtimeConnectionError) do
-      with_secure_websocket_server(->(_connection) { nil }, ssl_context: context, host: "localhost") do |client|
+      with_secure_websocket_server(-> (_connection) { nil }, ssl_context: context, host: "localhost") do |client|
         client.realtime.connect(model: "gpt-realtime-2.1") { |_connection| nil }
       end
     end
@@ -81,13 +81,13 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     server_context = server_tls_context(server_certificate, server_key)
     server_context.cert_store = trust_store
     server_context.client_ca = [root]
-    server_context.verify_mode =
-      OpenSSL::SSL::VERIFY_PEER | OpenSSL::SSL::VERIFY_FAIL_IF_NO_PEER_CERT
+    server_context.verify_mode = OpenSSL::SSL::VERIFY_PEER | OpenSSL::SSL::VERIFY_FAIL_IF_NO_PEER_CERT
     transport = OpenAI::Realtime::Transports::AsyncWebSocket.new do |context|
       context.cert_store = trust_store
       context.cert = client_certificate
       context.key = client_key
     end
+
     handler = lambda do |connection|
       write_event(connection, **JSON.parse(text_delta("mutual TLS connected"), symbolize_names: true))
     end
@@ -105,18 +105,22 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
   end
 
   def test_tls_configurator_cannot_disable_verification_or_install_a_callback
-    connection = Class.new do
-      def read = nil
-      def closed? = true
-      def close(*) = nil
-    end.new
-    client = Class.new do
-      attr_reader :closed
+    connection = Class
+      .new do
+        def read = nil
+        def closed? = true
+        def close(*) = nil
+      end
+      .new
+    client = Class
+      .new do
+        attr_reader(:closed)
 
-      def initialize(connection) = @connection = connection
-      def connect(*) = @connection
-      def close = @closed = true
-    end.new(connection)
+        def initialize(connection) = @connection = connection
+        def connect(*) = @connection
+        def close = @closed = true
+      end
+      .new(connection)
     parsed_endpoint = nil
     parse = Async::HTTP::Endpoint.method(:parse)
     parser = lambda do |url, **options|
@@ -124,10 +128,12 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
         parsed_endpoint = endpoint if url.to_s.start_with?("wss://example.com/")
       end
     end
+
     transport = OpenAI::Realtime::Transports::AsyncWebSocket.new do |context|
       context.verify_mode = OpenSSL::SSL::VERIFY_NONE
       context.verify_hostname = false
     end
+
     url = URI("wss://example.com/v1/realtime?model=gpt-realtime-2.1")
 
     Async::HTTP::Endpoint.stub(:parse, parser) do
@@ -141,11 +147,13 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     assert_predicate(client, :closed)
 
     callback_transport = OpenAI::Realtime::Transports::AsyncWebSocket.new do |context|
-      context.verify_callback = ->(_verified, _store_context) { true }
+      context.verify_callback = -> (_verified, _store_context) { true }
     end
+
     error = assert_raises(OpenAI::Errors::RealtimeConnectionError) do
       callback_transport.open(url: url, headers: {}, timeout: nil) { |_socket| nil }
     end
+
     assert_includes(error.cause.message, "verify_callback")
   end
 
@@ -182,7 +190,7 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
 
   def test_abnormal_remote_close_is_a_connection_error
     peer_detail = "customer prompt: do not log this"
-    handler = ->(connection) { connection.close(1011, peer_detail) }
+    handler = -> (connection) { connection.close(1011, peer_detail) }
 
     with_websocket_server(handler) do |client|
       error = assert_raises(OpenAI::Errors::RealtimeConnectionError) do
@@ -229,6 +237,7 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     ensure
       socket&.close
     end
+
     client = OpenAI::Client.new(
       api_key: "test-key",
       base_url: "http://127.0.0.1:#{server.local_address.ip_port}/v1",
@@ -238,16 +247,19 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     error = assert_raises(OpenAI::Errors::RealtimeConnectionError) do
       client.realtime.connect(model: "gpt-realtime-2.1") { |_connection| nil }
     end
+
     assert_instance_of(Async::TimeoutError, error.cause)
 
     delayed = lambda do |connection|
       sleep(0.3)
       write_event(connection, **JSON.parse(text_delta("still connected"), symbolize_names: true))
     end
+
     with_websocket_server(delayed, timeout: 0.1) do |established_client|
       event = established_client.realtime.connect(model: "gpt-realtime-2.1", &:receive)
       assert_equal("still connected", event.delta)
     end
+
   ensure
     release_server&.push(true)
     server&.close
@@ -262,6 +274,7 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
         super
       end
     end
+
     url = URI("wss://example.com/v1/realtime?model=gpt-realtime-2.1")
 
     error = assert_raises(OpenAI::Errors::RealtimeConnectionError) do
@@ -291,6 +304,7 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     unless read_event(connection).fetch("type") == "conversation.item.create"
       raise "expected conversation item"
     end
+
     raise "expected response.create" unless read_event(connection).fetch("type") == "response.create"
 
     write_event(
@@ -308,7 +322,7 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
   private def with_websocket_server(handler, timeout: 5)
     port = available_port
     endpoint = Async::HTTP::Endpoint.parse("http://127.0.0.1:#{port}")
-    fallback = ->(_request) { Protocol::HTTP::Response[404, {}, []] }
+    fallback = -> (_request) { Protocol::HTTP::Response[404, {}, []] }
     websocket = Async::WebSocket::Server.new(fallback, &handler)
     server = Async::HTTP::Server.new(websocket, endpoint)
 
@@ -332,7 +346,7 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
       ssl_context: ssl_context,
       protocol: Async::HTTP::Protocol::HTTP11
     )
-    fallback = ->(_request) { Protocol::HTTP::Response[404, {}, []] }
+    fallback = -> (_request) { Protocol::HTTP::Response[404, {}, []] }
     websocket = Async::WebSocket::Server.new(fallback, &handler)
     server = Async::HTTP::Server.new(websocket, endpoint)
 
@@ -395,9 +409,11 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     if extended_key_usage
       certificate.add_extension(extensions.create_extension("extendedKeyUsage", extended_key_usage))
     end
+
     if subject_alt_name
       certificate.add_extension(extensions.create_extension("subjectAltName", subject_alt_name))
     end
+
     certificate.sign(issuer_key || key, OpenSSL::Digest.new("SHA256"))
     certificate
   end

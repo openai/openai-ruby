@@ -204,20 +204,22 @@ module OpenAI
           events = []
 
           if choice.delta.content && choice_snapshot.message.content
-            events << ChatContentDeltaEvent.new(
-              type: :"content.delta",
-              delta: choice.delta.content,
-              snapshot: choice_snapshot.message.content,
-              parsed: choice_snapshot.message.parsed
-            )
+            events <<
+              ChatContentDeltaEvent.new(
+                type: :"content.delta",
+                delta: choice.delta.content,
+                snapshot: choice_snapshot.message.content,
+                parsed: choice_snapshot.message.parsed
+              )
           end
 
           if choice.delta.refusal && choice_snapshot.message.refusal
-            events << ChatRefusalDeltaEvent.new(
-              type: :"refusal.delta",
-              delta: choice.delta.refusal,
-              snapshot: choice_snapshot.message.refusal
-            )
+            events <<
+              ChatRefusalDeltaEvent.new(
+                type: :"refusal.delta",
+                delta: choice.delta.refusal,
+                snapshot: choice_snapshot.message.refusal
+              )
           end
 
           events
@@ -237,14 +239,16 @@ module OpenAI
             parsed_args = if tool_call.function.respond_to?(:parsed)
               tool_call.function.parsed
             end
-            events << ChatFunctionToolCallArgumentsDeltaEvent.new(
-              type: :"tool_calls.function.arguments.delta",
-              name: tool_call.function.name,
-              index: tool_call_delta.index,
-              arguments: tool_call.function.arguments,
-              parsed: parsed_args,
-              arguments_delta: tool_call_delta.function.arguments || ""
-            )
+
+            events <<
+              ChatFunctionToolCallArgumentsDeltaEvent.new(
+                type: :"tool_calls.function.arguments.delta",
+                name: tool_call.function.name,
+                index: tool_call_delta.index,
+                arguments: tool_call.function.arguments,
+                parsed: parsed_args,
+                arguments_delta: tool_call_delta.function.arguments || ""
+              )
           end
 
           events
@@ -255,19 +259,21 @@ module OpenAI
           return events unless choice.logprobs && choice_snapshot.logprobs
 
           if choice.logprobs.content && choice_snapshot.logprobs.content
-            events << ChatLogprobsContentDeltaEvent.new(
-              type: :"logprobs.content.delta",
-              content: choice.logprobs.content,
-              snapshot: choice_snapshot.logprobs.content
-            )
+            events <<
+              ChatLogprobsContentDeltaEvent.new(
+                type: :"logprobs.content.delta",
+                content: choice.logprobs.content,
+                snapshot: choice_snapshot.logprobs.content
+              )
           end
 
           if choice.logprobs.refusal && choice_snapshot.logprobs.refusal
-            events << ChatLogprobsRefusalDeltaEvent.new(
-              type: :"logprobs.refusal.delta",
-              refusal: choice.logprobs.refusal,
-              snapshot: choice_snapshot.logprobs.refusal
-            )
+            events <<
+              ChatLogprobsRefusalDeltaEvent.new(
+                type: :"logprobs.refusal.delta",
+                refusal: choice.logprobs.refusal,
+                snapshot: choice_snapshot.logprobs.refusal
+              )
           end
 
           events
@@ -411,6 +417,7 @@ module OpenAI
           else
             parsed
           end
+
         rescue JSON::ParserError
           nil
         end
@@ -426,6 +433,7 @@ module OpenAI
           else
             parsed
           end
+
         rescue JSON::ParserError
           nil
         end
@@ -468,7 +476,8 @@ module OpenAI
         def accumulate_delta(acc, delta)
           return acc if delta.nil?
 
-          delta.each do |key, delta_value| # rubocop:disable Metrics/BlockLength
+          # rubocop:disable Metrics/BlockLength
+          delta.each do |key, delta_value|
             key = key.to_sym if key.is_a?(String)
 
             unless acc.key?(key)
@@ -488,9 +497,10 @@ module OpenAI
               next
             end
 
+            # rubocop:disable Lint/DuplicateBranch
             if acc_value.is_a?(String) && delta_value.is_a?(String)
               acc[key] = acc_value + delta_value
-            elsif acc_value.is_a?(Numeric) && delta_value.is_a?(Numeric) # rubocop:disable Lint/DuplicateBranch
+            elsif acc_value.is_a?(Numeric) && delta_value.is_a?(Numeric)
               acc[key] = acc_value + delta_value
             elsif acc_value.is_a?(Hash) && delta_value.is_a?(Hash)
               acc[key] = accumulate_delta(acc_value, delta_value)
@@ -502,17 +512,22 @@ module OpenAI
 
               delta_value.each do |delta_entry|
                 unless delta_entry.is_a?(Hash)
-                  raise TypeError,
-                        "Unexpected list delta entry is not a hash: #{delta_entry}"
+                  raise(
+                    TypeError,
+                    "Unexpected list delta entry is not a hash: #{delta_entry}"
+                  )
                 end
 
                 index = delta_entry[:index] || delta_entry["index"]
                 if index.nil?
                   raise "Expected list delta entry to have an `index` key; #{delta_entry}"
                 end
+
                 unless index.is_a?(Integer)
-                  raise TypeError,
-                        "Unexpected, list delta entry `index` value is not an integer; #{index}"
+                  raise(
+                    TypeError,
+                    "Unexpected, list delta entry `index` value is not an integer; #{index}"
+                  )
                 end
 
                 if acc_value[index].nil?
@@ -524,6 +539,7 @@ module OpenAI
             else
               acc[key] = acc_value
             end
+            # rubocop:enable Lint/DuplicateBranch
           end
 
           acc
@@ -579,19 +595,21 @@ module OpenAI
             parsed = parse_content(choice_snapshot.message, response_format)
             choice_snapshot.message.parsed = parsed
 
-            events << ChatContentDoneEvent.new(
-              type: :"content.done",
-              content: choice_snapshot.message.content,
-              parsed: parsed
-            )
+            events <<
+              ChatContentDoneEvent.new(
+                type: :"content.done",
+                content: choice_snapshot.message.content,
+                parsed: parsed
+              )
           end
 
           if choice_snapshot.message.refusal && !@refusal_done
             @refusal_done = true
-            events << ChatRefusalDoneEvent.new(
-              type: :"refusal.done",
-              refusal: choice_snapshot.message.refusal
-            )
+            events <<
+              ChatRefusalDoneEvent.new(
+                type: :"refusal.done",
+                refusal: choice_snapshot.message.refusal
+              )
           end
 
           events + logprobs_done_events(choice_snapshot)
@@ -604,18 +622,20 @@ module OpenAI
 
           if logprobs.content&.any? && !@logprobs_content_done
             @logprobs_content_done = true
-            events << ChatLogprobsContentDoneEvent.new(
-              type: :"logprobs.content.done",
-              content: logprobs.content
-            )
+            events <<
+              ChatLogprobsContentDoneEvent.new(
+                type: :"logprobs.content.done",
+                content: logprobs.content
+              )
           end
 
           if logprobs.refusal&.any? && !@logprobs_refusal_done
             @logprobs_refusal_done = true
-            events << ChatLogprobsRefusalDoneEvent.new(
-              type: :"logprobs.refusal.done",
-              refusal: logprobs.refusal
-            )
+            events <<
+              ChatLogprobsRefusalDoneEvent.new(
+                type: :"logprobs.refusal.done",
+                refusal: logprobs.refusal
+              )
           end
 
           events
@@ -653,6 +673,7 @@ module OpenAI
           else
             parsed
           end
+
         rescue JSON::ParserError
           nil
         end
@@ -670,6 +691,7 @@ module OpenAI
           else
             parsed
           end
+
         rescue JSON::ParserError
           nil
         end

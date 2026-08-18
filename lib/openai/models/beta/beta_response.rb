@@ -235,9 +235,11 @@ module OpenAI
         #     `prompt_cache_retention` is not specified.
         #
         #   @return [Symbol, OpenAI::Models::Beta::BetaResponse::PromptCacheRetention, nil]
-        optional :prompt_cache_retention,
-                 enum: -> { OpenAI::Beta::BetaResponse::PromptCacheRetention },
-                 nil?: true
+        optional(
+          :prompt_cache_retention,
+          enum: -> { OpenAI::Beta::BetaResponse::PromptCacheRetention },
+          nil?: true
+        )
 
         # @!attribute reasoning
         #   **gpt-5 and o-series models only**
@@ -465,8 +467,9 @@ module OpenAI
           #   @return [Array(String, Array<OpenAI::Models::Beta::BetaEasyInputMessage, OpenAI::Models::Beta::BetaResponseInputItem::Message, OpenAI::Models::Beta::BetaResponseOutputMessage, OpenAI::Models::Beta::BetaResponseFileSearchToolCall, OpenAI::Models::Beta::BetaResponseComputerToolCall, OpenAI::Models::Beta::BetaResponseInputItem::ComputerCallOutput, OpenAI::Models::Beta::BetaResponseFunctionWebSearch, OpenAI::Models::Beta::BetaResponseFunctionToolCall, OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::AgentMessage, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCall, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ToolSearchCall, OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam, OpenAI::Models::Beta::BetaResponseInputItem::AdditionalTools, OpenAI::Models::Beta::BetaResponseReasoningItem, OpenAI::Models::Beta::BetaResponseCompactionItemParam, OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall, OpenAI::Models::Beta::BetaResponseCodeInterpreterToolCall, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCall, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ShellCall, OpenAI::Models::Beta::BetaResponseInputItem::ShellCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::McpListTools, OpenAI::Models::Beta::BetaResponseInputItem::McpApprovalRequest, OpenAI::Models::Beta::BetaResponseInputItem::McpApprovalResponse, OpenAI::Models::Beta::BetaResponseInputItem::McpCall, OpenAI::Models::Beta::BetaResponseCustomToolCallOutput, OpenAI::Models::Beta::BetaResponseCustomToolCall, OpenAI::Models::Beta::BetaResponseInputItem::CompactionTrigger, OpenAI::Models::Beta::BetaResponseInputItem::ItemReference, OpenAI::Models::Beta::BetaResponseInputItem::Program, OpenAI::Models::Beta::BetaResponseInputItem::ProgramOutput>)]
 
           # @type [OpenAI::Internal::Type::Converter]
-          BetaResponseInputItemArray =
-            OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Beta::BetaResponseInputItem }]
+          BetaResponseInputItemArray = OpenAI::Internal::Type::ArrayOf[
+            union: -> { OpenAI::Beta::BetaResponseInputItem }
+          ]
         end
 
         # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
@@ -920,12 +923,16 @@ module OpenAI
               #   Which modalities of input are reflected by the score for each category.
               #
               #   @return [Hash{Symbol=>Array<Symbol, OpenAI::Models::Beta::BetaResponse::Moderation::Input::ModerationResult::CategoryAppliedInputType>}]
-              required :category_applied_input_types,
-                       -> do
-                         OpenAI::Internal::Type::HashOf[
-                           OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::BetaResponse::Moderation::Input::ModerationResult::CategoryAppliedInputType]
-                         ]
-                       end
+              required(
+                :category_applied_input_types,
+                -> do
+                  OpenAI::Internal::Type::HashOf[
+                    OpenAI::Internal::Type::ArrayOf[
+                      enum: OpenAI::Beta::BetaResponse::Moderation::Input::ModerationResult::CategoryAppliedInputType
+                    ]
+                  ]
+                end
+              )
 
               # @!attribute category_scores
               #   A dictionary of moderation categories to scores.
@@ -1041,12 +1048,16 @@ module OpenAI
               #   Which modalities of input are reflected by the score for each category.
               #
               #   @return [Hash{Symbol=>Array<Symbol, OpenAI::Models::Beta::BetaResponse::Moderation::Output::ModerationResult::CategoryAppliedInputType>}]
-              required :category_applied_input_types,
-                       -> do
-                         OpenAI::Internal::Type::HashOf[
-                           OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::BetaResponse::Moderation::Output::ModerationResult::CategoryAppliedInputType]
-                         ]
-                       end
+              required(
+                :category_applied_input_types,
+                -> do
+                  OpenAI::Internal::Type::HashOf[
+                    OpenAI::Internal::Type::ArrayOf[
+                      enum: OpenAI::Beta::BetaResponse::Moderation::Output::ModerationResult::CategoryAppliedInputType
+                    ]
+                  ]
+                end
+              )
 
               # @!attribute category_scores
               #   A dictionary of moderation categories to scores.
@@ -1250,9 +1261,11 @@ module OpenAI
           #   `concise`, or `detailed`.
           #
           #   @return [Symbol, OpenAI::Models::Beta::BetaResponse::Reasoning::GenerateSummary, nil]
-          optional :generate_summary,
-                   enum: -> { OpenAI::Beta::BetaResponse::Reasoning::GenerateSummary },
-                   nil?: true
+          optional(
+            :generate_summary,
+            enum: -> { OpenAI::Beta::BetaResponse::Reasoning::GenerateSummary },
+            nil?: true
+          )
 
           # @!attribute mode
           #   Controls the reasoning execution mode for the request.

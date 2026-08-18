@@ -19,12 +19,14 @@ class HTTPClientTest < Minitest::Test
   end
 
   class StubNetHTTP
-    attr_accessor :continue_timeout,
-                  :keep_alive_timeout,
-                  :max_retries,
-                  :open_timeout,
-                  :read_timeout,
-                  :write_timeout
+    attr_accessor(
+      :continue_timeout,
+      :keep_alive_timeout,
+      :max_retries,
+      :open_timeout,
+      :read_timeout,
+      :write_timeout
+    )
 
     def initialize(use_ssl:, request_error: nil)
       @use_ssl = use_ssl
@@ -131,6 +133,7 @@ class HTTPClientTest < Minitest::Test
       runs += 1
       yielder << "response body"
     end
+
     response = OpenAI::HTTPClient::Response.new(status: 200, headers: {}, body: source)
 
     assert_equal(["response body"], response.body.to_a)
@@ -144,9 +147,10 @@ class HTTPClientTest < Minitest::Test
       OpenAI::HTTPClient::Response.new(
         status: 200,
         headers: {"content-type" => "application/json"},
-        body: ['{"ok":true}']
+        body: ["{\"ok\":true}"]
       )
     end
+
     client = OpenAI::Client.new(
       api_key: "test-key",
       base_url: "https://example.com/v1",
@@ -172,9 +176,10 @@ class HTTPClientTest < Minitest::Test
       OpenAI::HTTPClient::Response.new(
         status: 200,
         headers: {"content-type" => "application/json"},
-        body: ['{"ok":true}']
+        body: ["{\"ok\":true}"]
       )
     end
+
     client = OpenAI::Client.new(
       api_key: "test-key",
       base_url: "https://example.com/v1",
@@ -197,6 +202,7 @@ class HTTPClientTest < Minitest::Test
       http.keep_alive_timeout = 42
       http.max_retries = 4
     end
+
     client = OpenAI::Client.new(
       api_key: "test-key",
       base_url: "https://example.com/v1",
@@ -221,11 +227,11 @@ class HTTPClientTest < Minitest::Test
 
   def test_net_http_client_preserves_a_configured_keep_alive_timeout_when_requesting
     connection = StubNetHTTP.new(use_ssl: true, request_error: IOError.new("connection closed"))
-    client_class =
-      Class.new(OpenAI::NetHTTPClient) do
-        define_method(:connect) { |**| connection }
-        private :connect
-      end
+    client_class = Class.new(OpenAI::NetHTTPClient) do
+      define_method(:connect) { |**| connection }
+      private(:connect)
+    end
+
     request = OpenAI::HTTPClient::Request.new(
       method: :get,
       url: URI("https://example.com/v1/probe"),
@@ -253,9 +259,10 @@ class HTTPClientTest < Minitest::Test
       OpenAI::HTTPClient::Response.new(
         status: 200,
         headers: {"content-type" => "application/json"},
-        body: '{"ok":true}'
+        body: "{\"ok\":true}"
       )
     end
+
     client = OpenAI::Client.new(api_key: "test-key", http_client: http_client)
 
     assert_equal(true, client.request(method: :get, path: "probe")[:ok])
@@ -283,9 +290,10 @@ class HTTPClientTest < Minitest::Test
       OpenAI::HTTPClient::Response.new(
         status: attempts == 1 ? 500 : 200,
         headers: {"content-type" => "application/json"},
-        body: [attempts == 1 ? '{"error":"retry"}' : '{"ok":true}']
+        body: [attempts == 1 ? "{\"error\":\"retry\"}" : "{\"ok\":true}"]
       )
     end
+
     client = OpenAI::Client.new(
       api_key: "test-key",
       http_client: http_client,
@@ -307,9 +315,10 @@ class HTTPClientTest < Minitest::Test
       OpenAI::HTTPClient::Response.new(
         status: requests.one? ? 500 : 200,
         headers: {"content-type" => "application/json"},
-        body: requests.one? ? '{"error":"retry"}' : '{"ok":true}'
+        body: requests.one? ? "{\"error\":\"retry\"}" : "{\"ok\":true}"
       )
     end
+
     client = OpenAI::Client.new(
       api_key: "test-key",
       http_client: http_client,
@@ -341,9 +350,10 @@ class HTTPClientTest < Minitest::Test
       OpenAI::HTTPClient::Response.new(
         status: 500,
         headers: {"content-type" => "application/json"},
-        body: '{"error":"do not retry"}'
+        body: "{\"error\":\"do not retry\"}"
       )
     end
+
     client = OpenAI::Client.new(
       api_key: "test-key",
       http_client: http_client,
@@ -373,9 +383,10 @@ class HTTPClientTest < Minitest::Test
       OpenAI::HTTPClient::Response.new(
         status: 500,
         headers: {"content-type" => "application/json"},
-        body: '{"error":"do not retry"}'
+        body: "{\"error\":\"do not retry\"}"
       )
     end
+
     client = OpenAI::Client.new(
       api_key: "test-key",
       http_client: http_client,
@@ -398,15 +409,16 @@ class HTTPClientTest < Minitest::Test
 
   def test_sdk_closes_a_custom_response_body_before_retrying
     attempts = 0
-    retry_body = CloseableBody.new('{"error":"retry"}')
+    retry_body = CloseableBody.new("{\"error\":\"retry\"}")
     http_client = StubHTTPClient.new do
       attempts += 1
       OpenAI::HTTPClient::Response.new(
         status: attempts == 1 ? 500 : 200,
         headers: {"content-type" => "application/json"},
-        body: attempts == 1 ? retry_body : '{"ok":true}'
+        body: attempts == 1 ? retry_body : "{\"ok\":true}"
       )
     end
+
     client = OpenAI::Client.new(
       api_key: "test-key",
       http_client: http_client,
@@ -429,9 +441,10 @@ class HTTPClientTest < Minitest::Test
       OpenAI::HTTPClient::Response.new(
         status: 200,
         headers: {"content-type" => "application/json"},
-        body: '{"ok":true}'
+        body: "{\"ok\":true}"
       )
     end
+
     client = OpenAI::Client.new(
       api_key: "test-key",
       http_client: http_client,
@@ -460,10 +473,11 @@ class HTTPClientTest < Minitest::Test
         OpenAI::HTTPClient::Response.new(
           status: 200,
           headers: {"content-type" => "application/json"},
-          body: '{"ok":true}'
+          body: "{\"ok\":true}"
         )
       end
     end
+
     client = OpenAI::Client.new(
       api_key: "test-key",
       base_url: "https://example.com/v1",
@@ -494,15 +508,15 @@ class HTTPClientTest < Minitest::Test
       request.body.to_a if request.body
       OpenAI::HTTPClient::Response.new(
         status: requests.one? ? 303 : 200,
-        headers:
-          if requests.one?
-            {"location" => "https://example.com/v1/redirected"}
-          else
-            {"content-type" => "application/json"}
-          end,
-        body: requests.one? ? "" : '{"ok":true}'
+        headers: if requests.one?
+          {"location" => "https://example.com/v1/redirected"}
+        else
+          {"content-type" => "application/json"}
+        end,
+        body: requests.one? ? "" : "{\"ok\":true}"
       )
     end
+
     client = OpenAI::Client.new(
       api_key: "test-key",
       base_url: "https://example.com/v1",
@@ -543,7 +557,7 @@ class HTTPClientTest < Minitest::Test
     _, stderr, status = Open3.capture3(
       {"RUBYOPT" => nil},
       RbConfig.ruby,
-      "-I#{File.join(root, 'lib')}",
+      "-I#{File.join(root, "lib")}",
       "-e",
       script,
       chdir: root
@@ -568,7 +582,7 @@ class HTTPClientTest < Minitest::Test
     _, stderr, status = Open3.capture3(
       {"RUBYOPT" => nil},
       RbConfig.ruby,
-      "-I#{File.join(root, 'lib')}",
+      "-I#{File.join(root, "lib")}",
       "-e",
       script,
       chdir: root
@@ -583,6 +597,7 @@ class HTTPClientTest < Minitest::Test
       calls += 1
       http.instance_variable_set(:@started, true)
     end
+
     client = OpenAI::Client.new(
       api_key: "test-key",
       base_url: "https://example.com/v1",
@@ -627,6 +642,7 @@ class HTTPClientTest < Minitest::Test
         calls += 1
         raise configuration_error
       end
+
       client = OpenAI::Client.new(
         api_key: "test-key",
         base_url: "https://example.com/v1",
@@ -648,15 +664,16 @@ class HTTPClientTest < Minitest::Test
   def test_net_http_client_closes_a_connection_started_by_a_failing_configurator
     connection = StubNetHTTP.new(use_ssl: true)
     configuration_error = Class.new(StandardError).new("invalid local configuration")
-    client_class =
-      Class.new(OpenAI::NetHTTPClient) do
-        define_method(:connect) { |**| connection }
-        private :connect
-      end
+    client_class = Class.new(OpenAI::NetHTTPClient) do
+      define_method(:connect) { |**| connection }
+      private(:connect)
+    end
+
     http_client = client_class.new do |http|
       http.start
       raise configuration_error
     end
+
     request = OpenAI::HTTPClient::Request.new(
       method: :get,
       url: URI("https://example.com/v1/probe"),
@@ -676,11 +693,11 @@ class HTTPClientTest < Minitest::Test
   def test_net_http_client_wraps_malformed_responses_as_connection_errors
     [Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Zlib::DataError].each do |error_class|
       connection = StubNetHTTP.new(use_ssl: true, request_error: error_class.new("malformed"))
-      client_class =
-        Class.new(OpenAI::NetHTTPClient) do
-          define_method(:connect) { |**| connection }
-          private :connect
-        end
+      client_class = Class.new(OpenAI::NetHTTPClient) do
+        define_method(:connect) { |**| connection }
+        private(:connect)
+      end
+
       request = OpenAI::HTTPClient::Request.new(
         method: :get,
         url: URI("https://example.com/v1/probe"),
@@ -715,13 +732,14 @@ class HTTPClientTest < Minitest::Test
 
   def test_net_http_client_close_retires_connections_and_remains_reusable
     connections = []
-    client_class =
-      Class.new(OpenAI::NetHTTPClient) do
-        define_method(:connect) do |url:|
-          StubNetHTTP.new(use_ssl: url.scheme == "https").tap { connections << _1 }
-        end
-        private :connect
+    client_class = Class.new(OpenAI::NetHTTPClient) do
+      define_method(:connect) do |url:|
+        StubNetHTTP.new(use_ssl: url.scheme == "https").tap { connections << _1 }
       end
+
+      private(:connect)
+    end
+
     http_client = client_class.new
     url = URI("https://example.com")
 
@@ -763,33 +781,32 @@ class HTTPClientTest < Minitest::Test
     server_context.key = server_key
     server_context.cert_store = server_store
     server_context.client_ca = [chain[:root]]
-    server_context.verify_mode =
-      OpenSSL::SSL::VERIFY_PEER | OpenSSL::SSL::VERIFY_FAIL_IF_NO_PEER_CERT
+    server_context.verify_mode = OpenSSL::SSL::VERIFY_PEER | OpenSSL::SSL::VERIFY_FAIL_IF_NO_PEER_CERT
 
     tcp_server = TCPServer.new("127.0.0.1", 0)
     ssl_server = OpenSSL::SSL::SSLServer.new(tcp_server, server_context)
     peer_certificate = nil
     peer_chain = nil
     authorization = nil
-    server_thread =
-      Thread.new do
-        connection = ssl_server.accept
-        peer_certificate = connection.peer_cert
-        peer_chain = connection.peer_cert_chain
-        connection.gets
-        loop do
-          line = connection.gets
-          break if line.nil? || line == "\r\n"
-          authorization = line.split(":", 2).last&.strip if line.downcase.start_with?("authorization:")
-        end
-        body = '{"ok":true}'
-        connection.write(
-          "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n" \
-          "Content-Length: #{body.bytesize}\r\nConnection: close\r\n\r\n#{body}"
-        )
-      ensure
-        connection&.close
+    server_thread = Thread.new do
+      connection = ssl_server.accept
+      peer_certificate = connection.peer_cert
+      peer_chain = connection.peer_cert_chain
+      connection.gets
+      loop do
+        line = connection.gets
+        break if line.nil? || line == "\r\n"
+        authorization = line.split(":", 2).last&.strip if line.downcase.start_with?("authorization:")
       end
+
+      body = "{\"ok\":true}"
+      connection.write(
+        "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n" \
+          "Content-Length: #{body.bytesize}\r\nConnection: close\r\n\r\n#{body}"
+      )
+    ensure
+      connection&.close
+    end
 
     port = tcp_server.local_address.ip_port
     endpoint = URI("https://127.0.0.1:#{port}/v1")
@@ -802,6 +819,7 @@ class HTTPClientTest < Minitest::Test
       http.extra_chain_cert = [chain[:intermediate]]
       http.key = chain[:leaf_key]
     end
+
     client = OpenAI::Client.new(
       api_key: "test-key",
       base_url: endpoint.to_s,
@@ -873,6 +891,7 @@ class HTTPClientTest < Minitest::Test
         body: ""
       )
     end
+
     client = OpenAI::Client.new(
       api_key: "test-key",
       base_url: "https://example.com/v1",
@@ -932,9 +951,11 @@ class HTTPClientTest < Minitest::Test
     unless extended_key_usage.nil?
       certificate.add_extension(extensions.create_extension("extendedKeyUsage", extended_key_usage))
     end
+
     unless subject_alt_name.nil?
       certificate.add_extension(extensions.create_extension("subjectAltName", subject_alt_name))
     end
+
     certificate.sign(issuer_key || key, OpenSSL::Digest.new("SHA256"))
     certificate
   end

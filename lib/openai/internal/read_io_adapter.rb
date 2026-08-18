@@ -10,8 +10,11 @@ module OpenAI
         class InterruptibleEnumerator
           # Cancellation must bypass application rescues so a suspended source cannot
           # swallow it and keep the request teardown blocked.
-          class Interrupt < Exception # rubocop:disable Lint/InheritException
+          # rubocop:disable Lint/InheritException
+          class Interrupt < Exception
           end
+          # rubocop:enable Lint/InheritException
+
           private_constant :Interrupt
 
           def initialize(source)
@@ -40,13 +43,14 @@ module OpenAI
           end
 
           def close
-            @fiber&.raise(Interrupt) if @started && @fiber&.alive?
+            @fiber&.raise Interrupt if @started && @fiber&.alive?
           rescue Interrupt
             nil
           ensure
             @fiber = nil
           end
         end
+
         private_constant :InterruptibleEnumerator
 
         # @api private
@@ -81,6 +85,7 @@ module OpenAI
             @buf << @stream.next.b while @buf.bytesize < max_len
             read_buffer(max_len)
           end
+
         rescue StopIteration
           return @buf.slice!(0..) if max_len.nil?
 
@@ -112,15 +117,14 @@ module OpenAI
             raise ArgumentError, "negative length #{max_len} given"
           end
 
-          read =
-            case @stream
-            in nil
-              max_len.nil? || max_len.zero? ? +"" : nil
-            in IO | StringIO
-              return @stream.read(max_len, out_string).tap(&@blk)
-            in Enumerator | InterruptibleEnumerator
-              read_enum(max_len)
-            end
+          read = case @stream
+          in nil
+            max_len.nil? || max_len.zero? ? +"" : nil
+          in IO | StringIO
+            return @stream.read(max_len, out_string).tap(&@blk)
+          in Enumerator | InterruptibleEnumerator
+            read_enum(max_len)
+          end
 
           case out_string
           in String
@@ -139,19 +143,19 @@ module OpenAI
         #
         # @yieldparam [String]
         def initialize(src, &blk)
-          @stream =
-            case src
-            in String
-              StringIO.new(src)
-            in Pathname
-              @closing = true
-              src.open(binmode: true)
-            in Enumerator
-              @closing = true
-              InterruptibleEnumerator.new(src)
-            else
-              src
-            end
+          @stream = case src
+          in String
+            StringIO.new(src)
+          in Pathname
+            @closing = true
+            src.open(binmode: true)
+          in Enumerator
+            @closing = true
+            InterruptibleEnumerator.new(src)
+          else
+            src
+          end
+
           @buf = String.new.b
           @blk = blk
         end

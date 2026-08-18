@@ -48,13 +48,15 @@ module OpenAI
         #   to build JSON schemas [here](https://json-schema.org/).
         #
         #   @return [Hash{Symbol=>Object}, nil]
-        optional :schema,
-                 union: -> {
-                   OpenAI::UnionOf[
-                     OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown],
-                     OpenAI::StructuredOutput::JsonSchemaConverter
-                   ]
-                 }
+        optional(
+          :schema,
+          union: -> {
+            OpenAI::UnionOf[
+              OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown],
+              OpenAI::StructuredOutput::JsonSchemaConverter
+            ]
+          }
+        )
 
         # @!attribute strict
         #   Whether to enable strict schema adherence when generating the output. If set to

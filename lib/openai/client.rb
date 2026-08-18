@@ -135,9 +135,12 @@ module OpenAI
       enabled_security = security.select { |_, enabled| enabled }
       headers = {bearer_auth:, admin_api_key_auth:}.slice(*enabled_security.keys).values.reduce({}, :merge)
       if headers.empty? && enabled_security.any?
-        raise ArgumentError,
-              "Could not resolve authentication method. Expected either api_key or admin_api_key to be set."
+        raise(
+          ArgumentError,
+          "Could not resolve authentication method. Expected either api_key or admin_api_key to be set."
+        )
       end
+
       headers
     end
 
@@ -315,7 +318,9 @@ module OpenAI
       on_retry: nil
     )
       base_url = OpenAI::Internal::ClientOptions.resolve_data_residency(
-        data_residency, base_url: base_url, provider: provider
+        data_residency,
+        base_url: base_url,
+        provider: provider
       )
       provider_runtime = nil
       unless provider.nil?
@@ -328,13 +333,14 @@ module OpenAI
         }.filter_map do |name, value|
           name unless value.equal?(OpenAI::Internal::OMIT) || value.nil?
         end
+
         unless conflicts.empty?
           formatted = conflicts.map { "`#{_1}`" }.join(", ")
-          message =
-            "`provider` cannot be combined with top-level #{formatted}. Move provider " \
+          message = "`provider` cannot be combined with top-level #{formatted}. Move provider " \
             "authentication and routing options into `#{provider_name}(...)`."
           raise ArgumentError, message
         end
+
         provider_runtime = OpenAI::Internal::Provider.configure(provider)
       end
 
@@ -342,9 +348,11 @@ module OpenAI
       if admin_api_key.equal?(OpenAI::Internal::OMIT) && provider_runtime.nil?
         admin_api_key = ENV["OPENAI_ADMIN_KEY"]
       end
+
       if organization.equal?(OpenAI::Internal::OMIT) && provider_runtime.nil?
         organization = ENV["OPENAI_ORG_ID"]
       end
+
       project = ENV["OPENAI_PROJECT_ID"] if project.equal?(OpenAI::Internal::OMIT) && provider_runtime.nil?
       webhook_secret = ENV["OPENAI_WEBHOOK_SECRET"] if webhook_secret.equal?(OpenAI::Internal::OMIT)
       base_url = ENV["OPENAI_BASE_URL"] if base_url.equal?(OpenAI::Internal::OMIT) && provider_runtime.nil?
@@ -363,8 +371,10 @@ module OpenAI
       end
 
       if provider_runtime.nil? && api_key.nil? && admin_api_key.nil? && workload_identity.nil?
-        raise ArgumentError,
-              "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable."
+        raise(
+          ArgumentError,
+          "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable."
+        )
       end
 
       headers = {
@@ -382,10 +392,12 @@ module OpenAI
           end
         end
       end
+
       client_headers = OpenAI::Internal::Util.normalized_headers(default_headers.to_h)
       unless provider_runtime.nil?
         provider_runtime.authentication_headers.each { client_headers.delete(_1) }
       end
+
       headers = OpenAI::Internal::Util.normalized_headers(parsed, headers, client_headers)
 
       if workload_identity.nil?
@@ -398,6 +410,7 @@ module OpenAI
           organization&.to_s
         )
       end
+
       @admin_api_key = admin_api_key&.to_s
       @webhook_secret = webhook_secret&.to_s
       @provider_runtime = provider_runtime
@@ -425,14 +438,14 @@ module OpenAI
         provider: provider,
         base_url: provider.nil? ? self.base_url.to_s : nil,
         default_headers: OpenAI::Internal::Util.normalized_headers(parsed, client_headers),
-        max_retries: self.max_retries,
-        timeout: self.timeout,
-        initial_retry_delay: self.initial_retry_delay,
-        max_retry_delay: self.max_retry_delay,
+        max_retries: self.max_retries(),
+        timeout: self.timeout(),
+        initial_retry_delay: self.initial_retry_delay(),
+        max_retry_delay: self.max_retry_delay(),
         http_client: requester,
-        logger: self.logger,
-        log_level: self.log_level,
-        on_retry: self.on_retry
+        logger: self.logger(),
+        log_level: self.log_level(),
+        on_retry: self.on_retry()
       )
 
       @completions = OpenAI::Resources::Completions.new(client: self)

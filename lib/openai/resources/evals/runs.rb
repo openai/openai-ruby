@@ -58,10 +58,10 @@ module OpenAI
         # @see OpenAI::Models::Evals::RunRetrieveParams
         def retrieve(run_id, params)
           parsed, options = OpenAI::Evals::RunRetrieveParams.dump_request(params)
-          eval_id =
-            parsed.delete(:eval_id) do
-              raise ArgumentError.new("missing required path argument #{_1}")
-            end
+          eval_id = parsed.delete(:eval_id) do
+            raise ArgumentError.new("missing required path argument #{_1}")
+          end
+
           @client.request(
             method: :get,
             path: ["evals/%1$s/runs/%2$s", eval_id, run_id],
@@ -122,10 +122,10 @@ module OpenAI
         # @see OpenAI::Models::Evals::RunDeleteParams
         def delete(run_id, params)
           parsed, options = OpenAI::Evals::RunDeleteParams.dump_request(params)
-          eval_id =
-            parsed.delete(:eval_id) do
-              raise ArgumentError.new("missing required path argument #{_1}")
-            end
+          eval_id = parsed.delete(:eval_id) do
+            raise ArgumentError.new("missing required path argument #{_1}")
+          end
+
           @client.request(
             method: :delete,
             path: ["evals/%1$s/runs/%2$s", eval_id, run_id],
@@ -150,10 +150,10 @@ module OpenAI
         # @see OpenAI::Models::Evals::RunCancelParams
         def cancel(run_id, params)
           parsed, options = OpenAI::Evals::RunCancelParams.dump_request(params)
-          eval_id =
-            parsed.delete(:eval_id) do
-              raise ArgumentError.new("missing required path argument #{_1}")
-            end
+          eval_id = parsed.delete(:eval_id) do
+            raise ArgumentError.new("missing required path argument #{_1}")
+          end
+
           @client.request(
             method: :post,
             path: ["evals/%1$s/runs/%2$s", eval_id, run_id],

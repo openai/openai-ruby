@@ -12,18 +12,17 @@ class OpenAI::Test::Resources::Admin::Organization::SpendLimitTest < OpenAI::Tes
 
     assert_pattern do
       response => {
-        currency: OpenAI::Admin::Organization::OrganizationSpendLimit::Currency,
-        enforcement: OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement,
-        interval: OpenAI::Admin::Organization::OrganizationSpendLimit::Interval,
-        object: Symbol,
-        threshold_amount: Integer
-      }
+          currency: OpenAI::Admin::Organization::OrganizationSpendLimit::Currency,
+          enforcement: OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement,
+          interval: OpenAI::Admin::Organization::OrganizationSpendLimit::Interval,
+          object: Symbol,
+          threshold_amount: Integer
+        }
     end
   end
 
   def test_update_required_params
-    response =
-      @openai.admin.organization.spend_limit.update(currency: :USD, interval: :month, threshold_amount: 1)
+    response = @openai.admin.organization.spend_limit.update(currency: :USD, interval: :month, threshold_amount: 1)
 
     assert_pattern do
       response => OpenAI::Admin::Organization::OrganizationSpendLimit
@@ -31,12 +30,12 @@ class OpenAI::Test::Resources::Admin::Organization::SpendLimitTest < OpenAI::Tes
 
     assert_pattern do
       response => {
-        currency: OpenAI::Admin::Organization::OrganizationSpendLimit::Currency,
-        enforcement: OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement,
-        interval: OpenAI::Admin::Organization::OrganizationSpendLimit::Interval,
-        object: Symbol,
-        threshold_amount: Integer
-      }
+          currency: OpenAI::Admin::Organization::OrganizationSpendLimit::Currency,
+          enforcement: OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement,
+          interval: OpenAI::Admin::Organization::OrganizationSpendLimit::Interval,
+          object: Symbol,
+          threshold_amount: Integer
+        }
     end
   end
 
@@ -49,9 +48,9 @@ class OpenAI::Test::Resources::Admin::Organization::SpendLimitTest < OpenAI::Tes
 
     assert_pattern do
       response => {
-        deleted: OpenAI::Internal::Type::Boolean,
-        object: Symbol
-      }
+          deleted: OpenAI::Internal::Type::Boolean,
+          object: Symbol
+        }
     end
   end
 end

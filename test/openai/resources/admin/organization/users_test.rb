@@ -12,23 +12,23 @@ class OpenAI::Test::Resources::Admin::Organization::UsersTest < OpenAI::Test::Re
 
     assert_pattern do
       response => {
-        id: String,
-        added_at: Integer,
-        object: Symbol,
-        api_key_last_used_at: Integer | nil,
-        created: Integer | nil,
-        developer_persona: String | nil,
-        email: String | nil,
-        is_default: OpenAI::Internal::Type::Boolean | nil,
-        is_scale_tier_authorized_purchaser: OpenAI::Internal::Type::Boolean | nil,
-        is_scim_managed: OpenAI::Internal::Type::Boolean | nil,
-        is_service_account: OpenAI::Internal::Type::Boolean | nil,
-        name: String | nil,
-        projects: OpenAI::Admin::Organization::OrganizationUser::Projects | nil,
-        role: String | nil,
-        technical_level: String | nil,
-        user: OpenAI::Admin::Organization::OrganizationUser::User | nil
-      }
+          id: String,
+          added_at: Integer,
+          object: Symbol,
+          api_key_last_used_at: Integer | nil,
+          created: Integer | nil,
+          developer_persona: String | nil,
+          email: String | nil,
+          is_default: OpenAI::Internal::Type::Boolean | nil,
+          is_scale_tier_authorized_purchaser: OpenAI::Internal::Type::Boolean | nil,
+          is_scim_managed: OpenAI::Internal::Type::Boolean | nil,
+          is_service_account: OpenAI::Internal::Type::Boolean | nil,
+          name: String | nil,
+          projects: OpenAI::Admin::Organization::OrganizationUser::Projects | nil,
+          role: String | nil,
+          technical_level: String | nil,
+          user: OpenAI::Admin::Organization::OrganizationUser::User | nil
+        }
     end
   end
 
@@ -41,23 +41,23 @@ class OpenAI::Test::Resources::Admin::Organization::UsersTest < OpenAI::Test::Re
 
     assert_pattern do
       response => {
-        id: String,
-        added_at: Integer,
-        object: Symbol,
-        api_key_last_used_at: Integer | nil,
-        created: Integer | nil,
-        developer_persona: String | nil,
-        email: String | nil,
-        is_default: OpenAI::Internal::Type::Boolean | nil,
-        is_scale_tier_authorized_purchaser: OpenAI::Internal::Type::Boolean | nil,
-        is_scim_managed: OpenAI::Internal::Type::Boolean | nil,
-        is_service_account: OpenAI::Internal::Type::Boolean | nil,
-        name: String | nil,
-        projects: OpenAI::Admin::Organization::OrganizationUser::Projects | nil,
-        role: String | nil,
-        technical_level: String | nil,
-        user: OpenAI::Admin::Organization::OrganizationUser::User | nil
-      }
+          id: String,
+          added_at: Integer,
+          object: Symbol,
+          api_key_last_used_at: Integer | nil,
+          created: Integer | nil,
+          developer_persona: String | nil,
+          email: String | nil,
+          is_default: OpenAI::Internal::Type::Boolean | nil,
+          is_scale_tier_authorized_purchaser: OpenAI::Internal::Type::Boolean | nil,
+          is_scim_managed: OpenAI::Internal::Type::Boolean | nil,
+          is_service_account: OpenAI::Internal::Type::Boolean | nil,
+          name: String | nil,
+          projects: OpenAI::Admin::Organization::OrganizationUser::Projects | nil,
+          role: String | nil,
+          technical_level: String | nil,
+          user: OpenAI::Admin::Organization::OrganizationUser::User | nil
+        }
     end
   end
 
@@ -77,23 +77,23 @@ class OpenAI::Test::Resources::Admin::Organization::UsersTest < OpenAI::Test::Re
 
     assert_pattern do
       row => {
-        id: String,
-        added_at: Integer,
-        object: Symbol,
-        api_key_last_used_at: Integer | nil,
-        created: Integer | nil,
-        developer_persona: String | nil,
-        email: String | nil,
-        is_default: OpenAI::Internal::Type::Boolean | nil,
-        is_scale_tier_authorized_purchaser: OpenAI::Internal::Type::Boolean | nil,
-        is_scim_managed: OpenAI::Internal::Type::Boolean | nil,
-        is_service_account: OpenAI::Internal::Type::Boolean | nil,
-        name: String | nil,
-        projects: OpenAI::Admin::Organization::OrganizationUser::Projects | nil,
-        role: String | nil,
-        technical_level: String | nil,
-        user: OpenAI::Admin::Organization::OrganizationUser::User | nil
-      }
+          id: String,
+          added_at: Integer,
+          object: Symbol,
+          api_key_last_used_at: Integer | nil,
+          created: Integer | nil,
+          developer_persona: String | nil,
+          email: String | nil,
+          is_default: OpenAI::Internal::Type::Boolean | nil,
+          is_scale_tier_authorized_purchaser: OpenAI::Internal::Type::Boolean | nil,
+          is_scim_managed: OpenAI::Internal::Type::Boolean | nil,
+          is_service_account: OpenAI::Internal::Type::Boolean | nil,
+          name: String | nil,
+          projects: OpenAI::Admin::Organization::OrganizationUser::Projects | nil,
+          role: String | nil,
+          technical_level: String | nil,
+          user: OpenAI::Admin::Organization::OrganizationUser::User | nil
+        }
     end
   end
 
@@ -106,10 +106,10 @@ class OpenAI::Test::Resources::Admin::Organization::UsersTest < OpenAI::Test::Re
 
     assert_pattern do
       response => {
-        id: String,
-        deleted: OpenAI::Internal::Type::Boolean,
-        object: Symbol
-      }
+          id: String,
+          deleted: OpenAI::Internal::Type::Boolean,
+          object: Symbol
+        }
     end
   end
 end

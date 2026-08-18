@@ -108,6 +108,7 @@ class OpenAI::Test::BedrockRuntimeProviderTest < Minitest::Test
     error = assert_raises(ArgumentError) do
       OpenAI::Providers.bedrock(region: "local", base_url: custom_url, api_key: "token")
     end
+
     assert_match(/AWS `region` is invalid/, error.message)
   end
 
@@ -132,6 +133,7 @@ class OpenAI::Test::BedrockRuntimeProviderTest < Minitest::Test
     error = assert_raises(ArgumentError) do
       OpenAI::Providers.bedrock(region: "us-west-2", base_url: canonical_url, api_key: "token")
     end
+
     assert_match(/region `us-east-1` does not match/, error.message)
   end
 
@@ -172,6 +174,7 @@ class OpenAI::Test::BedrockRuntimeProviderTest < Minitest::Test
             **authentication
           )
         end
+
         assert_match(message, error.message)
       end
     end
@@ -180,6 +183,7 @@ class OpenAI::Test::BedrockRuntimeProviderTest < Minitest::Test
       error = assert_raises(ArgumentError) do
         OpenAI::Providers.bedrock(endpoint: endpoint, region: "us-east-1", api_key: "token")
       end
+
       assert_match(/must be either `mantle` or `runtime`/, error.message)
     end
 
@@ -187,6 +191,7 @@ class OpenAI::Test::BedrockRuntimeProviderTest < Minitest::Test
       error = assert_raises(ArgumentError) do
         OpenAI::Providers.bedrock(endpoint: :runtime, region: region, api_key: "token")
       end
+
       assert_match(/AWS `region` is invalid/, error.message)
     end
 
@@ -194,6 +199,7 @@ class OpenAI::Test::BedrockRuntimeProviderTest < Minitest::Test
     error = assert_raises(ArgumentError) do
       OpenAI::Providers.bedrock(endpoint: :runtime, api_key: "token")
     end
+
     assert_match(/AWS `region` is invalid/, error.message)
   end
 
@@ -344,6 +350,7 @@ class OpenAI::Test::BedrockRuntimeProviderTest < Minitest::Test
         assert_runtime_authorization(request, authentication)
       end
     end
+
     chat_stream.close
     response_stream.close
   end
@@ -356,22 +363,22 @@ class OpenAI::Test::BedrockRuntimeProviderTest < Minitest::Test
     base_url = "https://bedrock-runtime.us-east-1.amazonaws.com/openai/v1/models"
     WebMock.reset!
     calls = 0
-    options =
-      if use_aws_credentials
-        {
-          credentials_provider: lambda do
-            calls += 1
-            Aws::Credentials.new("runtime-access-#{calls}", "runtime-secret-#{calls}")
-          end
-        }
-      else
-        {
-          token_provider: lambda do
-            calls += 1
-            "runtime-token-#{calls}"
-          end
-        }
-      end
+    options = if use_aws_credentials
+      {
+        credentials_provider: lambda do
+          calls += 1
+          Aws::Credentials.new("runtime-access-#{calls}", "runtime-secret-#{calls}")
+        end
+      }
+    else
+      {
+        token_provider: lambda do
+          calls += 1
+          "runtime-token-#{calls}"
+        end
+      }
+    end
+
     authorizations = []
     stub_request(:get, base_url).to_return do |request|
       authorizations << request.headers.fetch("Authorization")
@@ -510,9 +517,12 @@ class OpenAI::Test::BedrockRuntimeProviderTest < Minitest::Test
       {type: "response.completed", response: completed_response}
     ]
 
-    events.each_with_index.map do |event, index|
-      "event: #{event.fetch(:type)}\ndata: #{JSON.generate(event.merge(sequence_number: index + 1))}\n\n"
-    end.join
+    events
+      .each_with_index
+      .map do |event, index|
+        "event: #{event.fetch(:type)}\ndata: #{JSON.generate(event.merge(sequence_number: index + 1))}\n\n"
+      end
+      .join
   end
 
   private def assert_runtime_authorization(request, authentication)

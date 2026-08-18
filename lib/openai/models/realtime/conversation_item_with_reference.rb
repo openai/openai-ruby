@@ -37,8 +37,10 @@ module OpenAI
         #   - Message items of role `assistant` support `text` content.
         #
         #   @return [Array<OpenAI::Models::Realtime::ConversationItemWithReference::Content>, nil]
-        optional :content,
-                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Realtime::ConversationItemWithReference::Content] }
+        optional(
+          :content,
+          -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Realtime::ConversationItemWithReference::Content] }
+        )
 
         # @!attribute name
         #   The name of the function being called (for `function_call` items).

@@ -47,14 +47,18 @@ begin
 
     terminal_choice_count += chunk.choices.count do |choice|
       case choice[:finish_reason]
-      when String, Symbol then true
-      else false
+      when String, Symbol
+        true
+      else
+        false
       end
     end
+
     content = chunk.choices.first&.delta&.content
     streamed_content << content.to_s
     pp(content)
   end
+
   abort("The streaming request completed without content") if streamed_content.strip.empty?
   if terminal_choice_count.zero?
     abort("The streaming request ended before a terminal choice was received")

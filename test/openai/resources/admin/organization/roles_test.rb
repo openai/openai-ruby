@@ -12,14 +12,14 @@ class OpenAI::Test::Resources::Admin::Organization::RolesTest < OpenAI::Test::Re
 
     assert_pattern do
       response => {
-        id: String,
-        description: String | nil,
-        name: String,
-        object: Symbol,
-        permissions: ^(OpenAI::Internal::Type::ArrayOf[String]),
-        predefined_role: OpenAI::Internal::Type::Boolean,
-        resource_type: String
-      }
+          id: String,
+          description: String | nil,
+          name: String,
+          object: Symbol,
+          permissions: ^(OpenAI::Internal::Type::ArrayOf[String]),
+          predefined_role: OpenAI::Internal::Type::Boolean,
+          resource_type: String
+        }
     end
   end
 
@@ -32,14 +32,14 @@ class OpenAI::Test::Resources::Admin::Organization::RolesTest < OpenAI::Test::Re
 
     assert_pattern do
       response => {
-        id: String,
-        description: String | nil,
-        name: String,
-        object: Symbol,
-        permissions: ^(OpenAI::Internal::Type::ArrayOf[String]),
-        predefined_role: OpenAI::Internal::Type::Boolean,
-        resource_type: String
-      }
+          id: String,
+          description: String | nil,
+          name: String,
+          object: Symbol,
+          permissions: ^(OpenAI::Internal::Type::ArrayOf[String]),
+          predefined_role: OpenAI::Internal::Type::Boolean,
+          resource_type: String
+        }
     end
   end
 
@@ -52,14 +52,14 @@ class OpenAI::Test::Resources::Admin::Organization::RolesTest < OpenAI::Test::Re
 
     assert_pattern do
       response => {
-        id: String,
-        description: String | nil,
-        name: String,
-        object: Symbol,
-        permissions: ^(OpenAI::Internal::Type::ArrayOf[String]),
-        predefined_role: OpenAI::Internal::Type::Boolean,
-        resource_type: String
-      }
+          id: String,
+          description: String | nil,
+          name: String,
+          object: Symbol,
+          permissions: ^(OpenAI::Internal::Type::ArrayOf[String]),
+          predefined_role: OpenAI::Internal::Type::Boolean,
+          resource_type: String
+        }
     end
   end
 
@@ -79,14 +79,14 @@ class OpenAI::Test::Resources::Admin::Organization::RolesTest < OpenAI::Test::Re
 
     assert_pattern do
       row => {
-        id: String,
-        description: String | nil,
-        name: String,
-        object: Symbol,
-        permissions: ^(OpenAI::Internal::Type::ArrayOf[String]),
-        predefined_role: OpenAI::Internal::Type::Boolean,
-        resource_type: String
-      }
+          id: String,
+          description: String | nil,
+          name: String,
+          object: Symbol,
+          permissions: ^(OpenAI::Internal::Type::ArrayOf[String]),
+          predefined_role: OpenAI::Internal::Type::Boolean,
+          resource_type: String
+        }
     end
   end
 
@@ -99,10 +99,10 @@ class OpenAI::Test::Resources::Admin::Organization::RolesTest < OpenAI::Test::Re
 
     assert_pattern do
       response => {
-        id: String,
-        deleted: OpenAI::Internal::Type::Boolean,
-        object: Symbol
-      }
+          id: String,
+          deleted: OpenAI::Internal::Type::Boolean,
+          object: Symbol
+        }
     end
   end
 end

@@ -12,14 +12,14 @@ class OpenAI::Test::Resources::SkillsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        default_version: String,
-        description: String,
-        latest_version: String,
-        name: String,
-        object: Symbol
-      }
+          id: String,
+          created_at: Integer,
+          default_version: String,
+          description: String,
+          latest_version: String,
+          name: String,
+          object: Symbol
+        }
     end
   end
 
@@ -32,14 +32,14 @@ class OpenAI::Test::Resources::SkillsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        default_version: String,
-        description: String,
-        latest_version: String,
-        name: String,
-        object: Symbol
-      }
+          id: String,
+          created_at: Integer,
+          default_version: String,
+          description: String,
+          latest_version: String,
+          name: String,
+          object: Symbol
+        }
     end
   end
 
@@ -52,14 +52,14 @@ class OpenAI::Test::Resources::SkillsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        default_version: String,
-        description: String,
-        latest_version: String,
-        name: String,
-        object: Symbol
-      }
+          id: String,
+          created_at: Integer,
+          default_version: String,
+          description: String,
+          latest_version: String,
+          name: String,
+          object: Symbol
+        }
     end
   end
 
@@ -79,14 +79,14 @@ class OpenAI::Test::Resources::SkillsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       row => {
-        id: String,
-        created_at: Integer,
-        default_version: String,
-        description: String,
-        latest_version: String,
-        name: String,
-        object: Symbol
-      }
+          id: String,
+          created_at: Integer,
+          default_version: String,
+          description: String,
+          latest_version: String,
+          name: String,
+          object: Symbol
+        }
     end
   end
 
@@ -99,10 +99,10 @@ class OpenAI::Test::Resources::SkillsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        deleted: OpenAI::Internal::Type::Boolean,
-        object: Symbol
-      }
+          id: String,
+          deleted: OpenAI::Internal::Type::Boolean,
+          object: Symbol
+        }
     end
   end
 end

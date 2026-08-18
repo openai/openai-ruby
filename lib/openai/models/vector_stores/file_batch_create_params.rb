@@ -21,11 +21,13 @@ module OpenAI
         #   characters, booleans, or numbers.
         #
         #   @return [Hash{Symbol=>String, Float, Boolean}, nil]
-        optional :attributes,
-                 -> {
-                   OpenAI::Internal::Type::HashOf[union: OpenAI::VectorStores::FileBatchCreateParams::Attribute]
-                 },
-                 nil?: true
+        optional(
+          :attributes,
+          -> {
+            OpenAI::Internal::Type::HashOf[union: OpenAI::VectorStores::FileBatchCreateParams::Attribute]
+          },
+          nil?: true
+        )
 
         # @!attribute chunking_strategy
         #   The chunking strategy used to chunk the file(s). If not set, will use the `auto`
@@ -104,11 +106,13 @@ module OpenAI
           #   characters, booleans, or numbers.
           #
           #   @return [Hash{Symbol=>String, Float, Boolean}, nil]
-          optional :attributes,
-                   -> {
-                     OpenAI::Internal::Type::HashOf[union: OpenAI::VectorStores::FileBatchCreateParams::File::Attribute]
-                   },
-                   nil?: true
+          optional(
+            :attributes,
+            -> {
+              OpenAI::Internal::Type::HashOf[union: OpenAI::VectorStores::FileBatchCreateParams::File::Attribute]
+            },
+            nil?: true
+          )
 
           # @!attribute chunking_strategy
           #   The chunking strategy used to chunk the file(s). If not set, will use the `auto`

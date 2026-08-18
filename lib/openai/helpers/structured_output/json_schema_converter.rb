@@ -6,17 +6,23 @@ module OpenAI
       # To customize the JSON schema conversion for a type, implement the `JsonSchemaConverter` interface.
       module JsonSchemaConverter
         # @api private
-        POINTERS = Object.new.tap do
-          _1.define_singleton_method(:inspect) do
-            "#<#{OpenAI::Helpers::StructuredOutput::JsonSchemaConverter}::POINTERS>"
+        POINTERS = Object
+          .new
+          .tap do
+            _1.define_singleton_method(:inspect) do
+              "#<#{OpenAI::Helpers::StructuredOutput::JsonSchemaConverter}::POINTERS>"
+            end
           end
-        end.freeze
+          .freeze
         # @api private
-        NO_REF = Object.new.tap do
-          _1.define_singleton_method(:inspect) do
-            "#<#{OpenAI::Helpers::StructuredOutput::JsonSchemaConverter}::NO_REF>"
+        NO_REF = Object
+          .new
+          .tap do
+            _1.define_singleton_method(:inspect) do
+              "#<#{OpenAI::Helpers::StructuredOutput::JsonSchemaConverter}::NO_REF>"
+            end
           end
-        end.freeze
+          .freeze
 
         # rubocop:disable Lint/UnusedMethodArgument
 
@@ -68,6 +74,7 @@ module OpenAI
             if schema.key?(:$ref) && !xformed.empty?
               schema.merge!(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::NO_REF => true)
             end
+
             schema.merge!(xformed)
           end
 
@@ -140,6 +147,7 @@ module OpenAI
                 end
               else
               end
+
               no_refs.each { _1.replace(_1.except(:$ref).merge(sch)) }
             end
 
@@ -147,6 +155,7 @@ module OpenAI
               pointer_token = URI::RFC2396_PARSER.unescape(_1.delete_prefix("#/$defs/"))
               pointer_token.gsub("~1", "/").gsub("~0", "~")
             end
+
             xformed.empty? ? schema : {"$defs": xformed}.update(schema)
           end
 
@@ -179,6 +188,7 @@ module OpenAI
                 return {type: "string"}
               else
               end
+
             in _ if OpenAI::Internal::Util.primitive?(type)
               return {const: type.is_a?(Symbol) ? type.to_s : type}
             else

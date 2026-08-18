@@ -47,14 +47,19 @@ module OpenAI
           variant String
 
           # An array of content parts with a defined type. For developer messages, only type `text` is supported.
-          variant -> { OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam::Content::ChatCompletionContentPartTextArray }
+          variant(
+            -> {
+              OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam::Content::ChatCompletionContentPartTextArray
+            }
+          )
 
           # @!method self.variants
           #   @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>)]
 
           # @type [OpenAI::Internal::Type::Converter]
-          ChatCompletionContentPartTextArray =
-            OpenAI::Internal::Type::ArrayOf[-> { OpenAI::Chat::ChatCompletionContentPartText }]
+          ChatCompletionContentPartTextArray = OpenAI::Internal::Type::ArrayOf[
+            -> { OpenAI::Chat::ChatCompletionContentPartText }
+          ]
         end
       end
     end

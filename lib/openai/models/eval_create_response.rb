@@ -49,8 +49,10 @@ module OpenAI
       #   A list of testing criteria.
       #
       #   @return [Array<OpenAI::Models::Graders::LabelModelGrader, OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::EvalCreateResponse::TestingCriterion::EvalGraderTextSimilarity, OpenAI::Models::EvalCreateResponse::TestingCriterion::EvalGraderPython, OpenAI::Models::EvalCreateResponse::TestingCriterion::EvalGraderScoreModel>]
-      required :testing_criteria,
-               -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::EvalCreateResponse::TestingCriterion] }
+      required(
+        :testing_criteria,
+        -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::EvalCreateResponse::TestingCriterion] }
+      )
 
       # @!method initialize(id:, created_at:, data_source_config:, metadata:, name:, testing_criteria:, object: :eval)
       #   Some parameter documentations has been truncated, see

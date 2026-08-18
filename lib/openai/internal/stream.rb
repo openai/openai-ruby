@@ -29,15 +29,15 @@ module OpenAI
             in {data: String => data}
               case JSON.parse(data, symbolize_names: true)
               in {error: error}
-                message =
-                  case error
-                  in String
-                    error
-                  in {message: String => m}
-                    m
-                  else
-                    "An error occurred during streaming"
-                  end
+                message = case error
+                in String
+                  error
+                in {message: String => m}
+                  m
+                else
+                  "An error occurred during streaming"
+                end
+
                 err = OpenAI::Errors::APIStatusError.for(
                   url: @url,
                   status: status,

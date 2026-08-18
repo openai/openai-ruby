@@ -46,10 +46,12 @@ module OpenAI
         #   The execution context that produced this tool call.
         #
         #   @return [OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::Caller::Direct, OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::Caller::Program, nil]
-        optional :caller_,
-                 union: -> { OpenAI::Beta::BetaResponseFunctionToolCallOutputItem::Caller },
-                 api_name: :caller,
-                 nil?: true
+        optional(
+          :caller_,
+          union: -> { OpenAI::Beta::BetaResponseFunctionToolCallOutputItem::Caller },
+          api_name: :caller,
+          nil?: true
+        )
 
         # @!attribute created_by
         #   The identifier of the actor that created the item.
@@ -129,10 +131,11 @@ module OpenAI
           #   @return [Array(String, Array<OpenAI::Models::Beta::BetaResponseInputText, OpenAI::Models::Beta::BetaResponseInputImage, OpenAI::Models::Beta::BetaResponseInputFile>)]
 
           # @type [OpenAI::Internal::Type::Converter]
-          OutputContentListArray =
-            OpenAI::Internal::Type::ArrayOf[union: -> {
+          OutputContentListArray = OpenAI::Internal::Type::ArrayOf[
+            union: -> {
               OpenAI::Beta::BetaResponseFunctionToolCallOutputItem::Output::OutputContentList
-            }]
+            }
+          ]
         end
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.

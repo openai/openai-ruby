@@ -65,11 +65,11 @@ module OpenAI
           deadline: nil
         )
           if @provider_runtime && @provider_runtime.name != "azure"
-            message =
-              "Realtime WebSocket connections are not supported by the " \
+            message = "Realtime WebSocket connections are not supported by the " \
               "#{@provider_runtime.name} provider."
             raise OpenAI::Errors::Error, message
           end
+
           if websocket_base_url && @provider_runtime
             raise ArgumentError, "`websocket_base_url` cannot be combined with `provider`"
           end
@@ -80,18 +80,18 @@ module OpenAI
           OpenAI::RequestOptions.validate!(opts)
           extra_query = opts.delete(:extra_query)
           unless extra_query.nil? || (extra_query.respond_to?(:empty?) && extra_query.empty?)
-            message =
-              "`request_options[:extra_query]` is not supported for Realtime WebSocket " \
+            message = "`request_options[:extra_query]` is not supported for Realtime WebSocket " \
               "connections; omit it"
             raise ArgumentError, message
           end
+
           max_retries = opts[:max_retries]
           unless max_retries.nil? || max_retries == 0
-            message =
-              "`request_options[:max_retries]` is not supported for Realtime WebSocket " \
+            message = "`request_options[:max_retries]` is not supported for Realtime WebSocket " \
               "connections; use 0 or omit it"
             raise ArgumentError, message
           end
+
           request = build_request(
             {
               method: :get,
@@ -101,12 +101,12 @@ module OpenAI
             },
             opts
           )
-          error_request =
-            if websocket_uri
-              with_websocket_base_url(request, path: path, base_url: websocket_uri)
-            else
-              request
-            end
+          error_request = if websocket_uri
+            with_websocket_base_url(request, path: path, base_url: websocket_uri)
+          else
+            request
+          end
+
           error_url = websocket_url(error_request.fetch(:url))
 
           if @workload_identity_auth
@@ -130,13 +130,16 @@ module OpenAI
           headers = request.fetch(:headers).except("accept", "content-type").reject do |name, _value|
             name.to_s.casecmp?("proxy-authorization")
           end
+
           request = request.merge(url: url, headers: headers)
           request = request_with_remaining_timeout(request, deadline) unless deadline.nil?
           [request, deadline]
         rescue Timeout::Error => e
-          raise OpenAI::Errors::RealtimeConnectionError.new(
-            url: error_url,
-            cause: e
+          raise(
+            OpenAI::Errors::RealtimeConnectionError.new(
+              url: error_url,
+              cause: e
+            )
           )
         end
 
@@ -156,11 +159,11 @@ module OpenAI
           valid_scheme = %w[http https ws wss].include?(uri.scheme)
           ambiguous_component = uri.userinfo || uri.query || uri.fragment
           unless uri.absolute? && uri.host && valid_scheme && !ambiguous_component
-            message =
-              "`websocket_base_url` must be an absolute HTTP or WebSocket URL " \
+            message = "`websocket_base_url` must be an absolute HTTP or WebSocket URL " \
               "without credentials, query, or fragment"
             raise ArgumentError, message
           end
+
           uri
         rescue URI::Error => e
           raise ArgumentError, "`websocket_base_url` is not a valid URL", cause: e

@@ -25,20 +25,21 @@ module OpenAI
         # @return [Hash{Symbol=>Object}]
         def to_json_schema_inner(state:)
           OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.cache_def!(state, type: self) do
-            types = values.map do
-              case _1
-              in NilClass
-                "null"
-              in true | false
-                "boolean"
-              in Integer
-                "integer"
-              in Float
-                "number"
-              in Symbol
-                "string"
+            types = values
+              .map do
+                case _1
+                in NilClass
+                  "null"
+                in true | false
+                  "boolean"
+                in Integer
+                  "integer"
+                in Float
+                  "number"
+                in Symbol
+                  "string"
+                end
               end
-            end
               .uniq
 
             {

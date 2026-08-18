@@ -4,11 +4,13 @@ require_relative "test_helper"
 
 class NetHTTPClientTimeoutTest < Minitest::Test
   class StubNetHTTP
-    attr_accessor :continue_timeout,
-                  :max_retries,
-                  :open_timeout,
-                  :read_timeout,
-                  :write_timeout
+    attr_accessor(
+      :continue_timeout,
+      :max_retries,
+      :open_timeout,
+      :read_timeout,
+      :write_timeout
+    )
 
     attr_reader :request_count
 
@@ -70,13 +72,15 @@ class NetHTTPClientTimeoutTest < Minitest::Test
     connection = StubNetHTTP.new(request_error: IOError.new("request should not run"))
     client_class = Class.new(OpenAI::NetHTTPClient) do
       define_method(:connect) { |**| connection }
-      private :connect
+      private(:connect)
     end
+
     configurations = 0
     client = client_class.new do
       configurations += 1
       sleep(2) if configurations == 1
     end
+
     request = OpenAI::HTTPClient::Request.new(
       method: :get,
       url: URI("https://example.com/v1/probe"),
@@ -109,8 +113,10 @@ class NetHTTPClientTimeoutTest < Minitest::Test
         sleep(2) if connections == 1
         connection
       end
-      private :connect
+
+      private(:connect)
     end
+
     client = client_class.new
     request = OpenAI::HTTPClient::Request.new(
       method: :get,
@@ -142,8 +148,9 @@ class NetHTTPClientTimeoutTest < Minitest::Test
     )
     client_class = Class.new(OpenAI::NetHTTPClient) do
       define_method(:connect) { |**| connection }
-      private :connect
+      private(:connect)
     end
+
     client = client_class.new(&:start)
 
     error = assert_raises(ArgumentError) { client.execute(nil_timeout_request) }
@@ -153,10 +160,12 @@ class NetHTTPClientTimeoutTest < Minitest::Test
   end
 
   private def build_client(connection)
-    Class.new(OpenAI::NetHTTPClient) do
-      define_method(:connect) { |**| connection }
-      private :connect
-    end.new
+    Class
+      .new(OpenAI::NetHTTPClient) do
+        define_method(:connect) { |**| connection }
+        private(:connect)
+      end
+      .new
   end
 
   private def nil_timeout_request

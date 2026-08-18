@@ -29,8 +29,10 @@ module OpenAI
         #   ```
         #
         #   @return [Array<Hash{Symbol=>Object}>]
-        required :tools,
-                 OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]]
+        required(
+          :tools,
+          OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]]
+        )
 
         # @!attribute type
         #   Allowed tool configuration type. Always `allowed_tools`.

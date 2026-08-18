@@ -12,13 +12,13 @@ class OpenAI::Test::Resources::VectorStores::FileBatchesTest < OpenAI::Test::Res
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        file_counts: OpenAI::VectorStores::VectorStoreFileBatch::FileCounts,
-        object: Symbol,
-        status: OpenAI::VectorStores::VectorStoreFileBatch::Status,
-        vector_store_id: String
-      }
+          id: String,
+          created_at: Integer,
+          file_counts: OpenAI::VectorStores::VectorStoreFileBatch::FileCounts,
+          object: Symbol,
+          status: OpenAI::VectorStores::VectorStoreFileBatch::Status,
+          vector_store_id: String
+        }
     end
   end
 
@@ -31,13 +31,13 @@ class OpenAI::Test::Resources::VectorStores::FileBatchesTest < OpenAI::Test::Res
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        file_counts: OpenAI::VectorStores::VectorStoreFileBatch::FileCounts,
-        object: Symbol,
-        status: OpenAI::VectorStores::VectorStoreFileBatch::Status,
-        vector_store_id: String
-      }
+          id: String,
+          created_at: Integer,
+          file_counts: OpenAI::VectorStores::VectorStoreFileBatch::FileCounts,
+          object: Symbol,
+          status: OpenAI::VectorStores::VectorStoreFileBatch::Status,
+          vector_store_id: String
+        }
     end
   end
 
@@ -50,13 +50,13 @@ class OpenAI::Test::Resources::VectorStores::FileBatchesTest < OpenAI::Test::Res
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        file_counts: OpenAI::VectorStores::VectorStoreFileBatch::FileCounts,
-        object: Symbol,
-        status: OpenAI::VectorStores::VectorStoreFileBatch::Status,
-        vector_store_id: String
-      }
+          id: String,
+          created_at: Integer,
+          file_counts: OpenAI::VectorStores::VectorStoreFileBatch::FileCounts,
+          object: Symbol,
+          status: OpenAI::VectorStores::VectorStoreFileBatch::Status,
+          vector_store_id: String
+        }
     end
   end
 
@@ -76,16 +76,16 @@ class OpenAI::Test::Resources::VectorStores::FileBatchesTest < OpenAI::Test::Res
 
     assert_pattern do
       row => {
-        id: String,
-        created_at: Integer,
-        last_error: OpenAI::VectorStores::VectorStoreFile::LastError | nil,
-        object: Symbol,
-        status: OpenAI::VectorStores::VectorStoreFile::Status,
-        usage_bytes: Integer,
-        vector_store_id: String,
-        attributes: ^(OpenAI::Internal::Type::HashOf[union: OpenAI::VectorStores::VectorStoreFile::Attribute]) | nil,
-        chunking_strategy: OpenAI::FileChunkingStrategy | nil
-      }
+          id: String,
+          created_at: Integer,
+          last_error: OpenAI::VectorStores::VectorStoreFile::LastError | nil,
+          object: Symbol,
+          status: OpenAI::VectorStores::VectorStoreFile::Status,
+          usage_bytes: Integer,
+          vector_store_id: String,
+          attributes: ^(OpenAI::Internal::Type::HashOf[union: OpenAI::VectorStores::VectorStoreFile::Attribute]) | nil,
+          chunking_strategy: OpenAI::FileChunkingStrategy | nil
+        }
     end
   end
 end

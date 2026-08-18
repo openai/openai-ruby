@@ -98,6 +98,7 @@ class OpenAI::Test::RealtimeWebSocketTextExampleTest < Minitest::Test
         output: StringIO.new
       )
     end
+
     assert_equal("Realtime connection closed before response.done", eof_error.message)
 
     empty_error = assert_raises(RuntimeError) do
@@ -106,6 +107,7 @@ class OpenAI::Test::RealtimeWebSocketTextExampleTest < Minitest::Test
         output: StringIO.new
       )
     end
+
     assert_equal("Realtime response completed without text output", empty_error.message)
   end
 

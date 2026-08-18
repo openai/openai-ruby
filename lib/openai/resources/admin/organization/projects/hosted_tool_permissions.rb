@@ -49,8 +49,9 @@ module OpenAI
             #
             # @see OpenAI::Models::Admin::Organization::Projects::HostedToolPermissionUpdateParams
             def update(project_id, params = {})
-              parsed, options =
-                OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams.dump_request(params)
+              parsed, options = OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams.dump_request(
+                params
+              )
               @client.request(
                 method: :post,
                 path: ["organization/projects/%1$s/hosted_tool_permissions", project_id],

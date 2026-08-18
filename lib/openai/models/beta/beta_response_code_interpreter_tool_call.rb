@@ -27,11 +27,13 @@ module OpenAI
         #   null if no outputs are available.
         #
         #   @return [Array<OpenAI::Models::Beta::BetaResponseCodeInterpreterToolCall::Output::Logs, OpenAI::Models::Beta::BetaResponseCodeInterpreterToolCall::Output::Image>, nil]
-        required :outputs,
-                 -> {
-                   OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::BetaResponseCodeInterpreterToolCall::Output]
-                 },
-                 nil?: true
+        required(
+          :outputs,
+          -> {
+            OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::BetaResponseCodeInterpreterToolCall::Output]
+          },
+          nil?: true
+        )
 
         # @!attribute status
         #   The status of the code interpreter tool call. Valid values are `in_progress`,

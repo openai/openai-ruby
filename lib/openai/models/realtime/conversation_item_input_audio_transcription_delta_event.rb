@@ -43,9 +43,11 @@ module OpenAI
         #   multiple valid options for a given chunk of transcription.
         #
         #   @return [Array<OpenAI::Models::Realtime::LogProbProperties>, nil]
-        optional :logprobs,
-                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Realtime::LogProbProperties] },
-                 nil?: true
+        optional(
+          :logprobs,
+          -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Realtime::LogProbProperties] },
+          nil?: true
+        )
 
         # @!method initialize(event_id:, item_id:, content_index: nil, delta: nil, logprobs: nil, type: :"conversation.item.input_audio_transcription.delta")
         #   Some parameter documentations has been truncated, see

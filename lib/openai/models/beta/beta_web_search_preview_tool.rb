@@ -14,8 +14,10 @@ module OpenAI
         # @!attribute search_content_types
         #
         #   @return [Array<Symbol, OpenAI::Models::Beta::BetaWebSearchPreviewTool::SearchContentType>, nil]
-        optional :search_content_types,
-                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::BetaWebSearchPreviewTool::SearchContentType] }
+        optional(
+          :search_content_types,
+          -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::BetaWebSearchPreviewTool::SearchContentType] }
+        )
 
         # @!attribute search_context_size
         #   High level guidance for the amount of context window space to use for the

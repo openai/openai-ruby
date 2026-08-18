@@ -25,8 +25,10 @@ module OpenAI
           #   A list of tools for which the outputs are being submitted.
           #
           #   @return [Array<OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput>]
-          required :tool_outputs,
-                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput] }
+          required(
+            :tool_outputs,
+            -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput] }
+          )
 
           # @!method initialize(thread_id:, run_id:, tool_outputs:, request_options: {})
           #   @param thread_id [String]

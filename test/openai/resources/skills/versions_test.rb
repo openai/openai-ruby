@@ -12,14 +12,14 @@ class OpenAI::Test::Resources::Skills::VersionsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        description: String,
-        name: String,
-        object: Symbol,
-        skill_id: String,
-        version: String
-      }
+          id: String,
+          created_at: Integer,
+          description: String,
+          name: String,
+          object: Symbol,
+          skill_id: String,
+          version: String
+        }
     end
   end
 
@@ -32,14 +32,14 @@ class OpenAI::Test::Resources::Skills::VersionsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        description: String,
-        name: String,
-        object: Symbol,
-        skill_id: String,
-        version: String
-      }
+          id: String,
+          created_at: Integer,
+          description: String,
+          name: String,
+          object: Symbol,
+          skill_id: String,
+          version: String
+        }
     end
   end
 
@@ -59,14 +59,14 @@ class OpenAI::Test::Resources::Skills::VersionsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       row => {
-        id: String,
-        created_at: Integer,
-        description: String,
-        name: String,
-        object: Symbol,
-        skill_id: String,
-        version: String
-      }
+          id: String,
+          created_at: Integer,
+          description: String,
+          name: String,
+          object: Symbol,
+          skill_id: String,
+          version: String
+        }
     end
   end
 
@@ -79,11 +79,11 @@ class OpenAI::Test::Resources::Skills::VersionsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        deleted: OpenAI::Internal::Type::Boolean,
-        object: Symbol,
-        version: String
-      }
+          id: String,
+          deleted: OpenAI::Internal::Type::Boolean,
+          object: Symbol,
+          version: String
+        }
     end
   end
 end

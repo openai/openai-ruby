@@ -32,7 +32,8 @@ module OpenAI
         required :type, const: :"content.delta"
         required :delta, String
         required :snapshot, String
-        optional :parsed, Object # Partially parsed structured output
+        # Partially parsed structured output
+        optional :parsed, Object
       end
 
       # Text content completion event.
@@ -47,7 +48,8 @@ module OpenAI
       class ChatContentDoneEvent < OpenAI::Internal::Type::BaseModel
         required :type, const: :"content.done"
         required :content, String
-        optional :parsed, Object # Fully parsed structured output
+        # Fully parsed structured output
+        optional :parsed, Object
       end
 
       # Incremental refusal update event.
@@ -114,7 +116,8 @@ module OpenAI
         required :name, String
         required :index, Integer
         required :arguments, String
-        required :parsed, Object # (only for strict: true tools)
+        # (only for strict: true tools)
+        required :parsed, Object
       end
 
       # Incremental logprobs update for content tokens.

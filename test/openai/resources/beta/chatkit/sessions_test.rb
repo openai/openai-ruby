@@ -12,17 +12,17 @@ class OpenAI::Test::Resources::Beta::ChatKit::SessionsTest < OpenAI::Test::Resou
 
     assert_pattern do
       response => {
-        id: String,
-        chatkit_configuration: OpenAI::Beta::ChatKit::ChatSessionChatKitConfiguration,
-        client_secret: String,
-        expires_at: Integer,
-        max_requests_per_1_minute: Integer,
-        object: Symbol,
-        rate_limits: OpenAI::Beta::ChatKit::ChatSessionRateLimits,
-        status: OpenAI::Beta::ChatKit::ChatSessionStatus,
-        user: String,
-        workflow: OpenAI::Beta::ChatKitWorkflow
-      }
+          id: String,
+          chatkit_configuration: OpenAI::Beta::ChatKit::ChatSessionChatKitConfiguration,
+          client_secret: String,
+          expires_at: Integer,
+          max_requests_per_1_minute: Integer,
+          object: Symbol,
+          rate_limits: OpenAI::Beta::ChatKit::ChatSessionRateLimits,
+          status: OpenAI::Beta::ChatKit::ChatSessionStatus,
+          user: String,
+          workflow: OpenAI::Beta::ChatKitWorkflow
+        }
     end
   end
 
@@ -35,17 +35,17 @@ class OpenAI::Test::Resources::Beta::ChatKit::SessionsTest < OpenAI::Test::Resou
 
     assert_pattern do
       response => {
-        id: String,
-        chatkit_configuration: OpenAI::Beta::ChatKit::ChatSessionChatKitConfiguration,
-        client_secret: String,
-        expires_at: Integer,
-        max_requests_per_1_minute: Integer,
-        object: Symbol,
-        rate_limits: OpenAI::Beta::ChatKit::ChatSessionRateLimits,
-        status: OpenAI::Beta::ChatKit::ChatSessionStatus,
-        user: String,
-        workflow: OpenAI::Beta::ChatKitWorkflow
-      }
+          id: String,
+          chatkit_configuration: OpenAI::Beta::ChatKit::ChatSessionChatKitConfiguration,
+          client_secret: String,
+          expires_at: Integer,
+          max_requests_per_1_minute: Integer,
+          object: Symbol,
+          rate_limits: OpenAI::Beta::ChatKit::ChatSessionRateLimits,
+          status: OpenAI::Beta::ChatKit::ChatSessionStatus,
+          user: String,
+          workflow: OpenAI::Beta::ChatKitWorkflow
+        }
     end
   end
 end

@@ -7,6 +7,7 @@ require "async/websocket/server"
 require "socket"
 require "traces/backend/capture"
 require "traces"
+
 Traces.extend(Traces::Backend::Capture::Interface)
 require "traces/provider/protocol/http1"
 
@@ -24,13 +25,16 @@ class OpenAI::Test::RealtimeNetworkInvariantsTest < Minitest::Test
       connection.flush
     end
 
-    with_server(handler, wrap: lambda { |websocket|
-      lambda do |request|
-        wire_headers = request.headers.to_h
-        wire_target = request.path
-        websocket.call(request)
-      end
-    }) do |url|
+    with_server(
+      handler,
+      wrap: lambda { |websocket|
+        lambda do |request|
+          wire_headers = request.headers.to_h
+          wire_target = request.path
+          websocket.call(request)
+        end
+      }
+    ) do |url|
       base_url = url.dup
       base_url.scheme = "http"
       base_url.path = "/v1"
@@ -85,18 +89,19 @@ class OpenAI::Test::RealtimeNetworkInvariantsTest < Minitest::Test
 
   def test_ipv6_websocket_handshake_uses_a_bracketed_authority
     authority = nil
-    handler = ->(_connection) { nil }
+    handler = -> (_connection) { nil }
     port = available_port("::1")
     endpoint = Async::HTTP::Endpoint.parse("http://[::1]:#{port}")
     server = nil
 
     Sync do |task|
-      fallback = ->(_request) { Protocol::HTTP::Response[404, {}, []] }
+      fallback = -> (_request) { Protocol::HTTP::Response[404, {}, []] }
       websocket = Async::WebSocket::Server.new(fallback, &handler)
       app = lambda do |request|
         authority = request.authority
         websocket.call(request)
       end
+
       server = Async::HTTP::Server.new(app, endpoint)
       server_task = task.async { server.run.wait }
       client = OpenAI::Client.new(
@@ -110,6 +115,7 @@ class OpenAI::Test::RealtimeNetworkInvariantsTest < Minitest::Test
     ensure
       server_task&.stop
     end
+
   rescue SocketError, Errno::EADDRNOTAVAIL
     skip("IPv6 loopback is unavailable")
   end
@@ -123,12 +129,15 @@ class OpenAI::Test::RealtimeNetworkInvariantsTest < Minitest::Test
       connection.flush
     end
 
-    with_server(handler, wrap: lambda { |websocket|
-      lambda do |request|
-        origin_headers = request.headers.to_h
-        websocket.call(request)
-      end
-    }) do |target_url|
+    with_server(
+      handler,
+      wrap: lambda { |websocket|
+        lambda do |request|
+          origin_headers = request.headers.to_h
+          websocket.call(request)
+        end
+      }
+    ) do |target_url|
       proxy = TCPServer.new("127.0.0.1", 0)
       proxy_thread = Thread.new do
         downstream = proxy.accept
@@ -140,6 +149,7 @@ class OpenAI::Test::RealtimeNetworkInvariantsTest < Minitest::Test
         downstream&.close
         upstream&.close
       end
+
       env = {
         "http_proxy" => "http://proxy-user:proxy-pass@127.0.0.1:#{proxy.local_address.ip_port}",
         "HTTP_PROXY" => nil,
@@ -191,14 +201,14 @@ class OpenAI::Test::RealtimeNetworkInvariantsTest < Minitest::Test
       ) do
         transport = OpenAI::Realtime::Transports::AsyncWebSocket.new
         message = transport.open(url: url, headers: {}, timeout: 2, &:read)
-        assert_equal('{"type":"session.created"}', message.to_str)
+        assert_equal("{\"type\":\"session.created\"}", message.to_str)
       end
     end
   end
 
   def test_exceptional_cleanup_hard_closes_a_congested_websocket
     release = Async::Queue.new
-    handler = ->(_connection) { release.dequeue }
+    handler = -> (_connection) { release.dequeue }
     writer = nil
 
     with_server(handler) do |url|
@@ -216,6 +226,7 @@ class OpenAI::Test::RealtimeNetworkInvariantsTest < Minitest::Test
             rescue Async::Stop, OpenAI::Errors::RealtimeConnectionError
               nil
             end
+
             sleep(0.05)
             raise "application failed"
           end
@@ -226,6 +237,7 @@ class OpenAI::Test::RealtimeNetworkInvariantsTest < Minitest::Test
       assert_predicate(writer, :finished?)
       release.enqueue(true)
     end
+
   ensure
     release&.enqueue(true)
   end
@@ -235,23 +247,27 @@ class OpenAI::Test::RealtimeNetworkInvariantsTest < Minitest::Test
     deadlines = []
     invalidations = 0
     tokens = ["stale-token", "fresh-token"]
-    handler = ->(_connection) { nil }
+    handler = -> (_connection) { nil }
 
-    with_server(handler, wrap: lambda { |websocket|
-      lambda do |request|
-        attempts << request.headers["authorization"]
-        if attempts.one?
-          Protocol::HTTP::Response[401, {"content-type" => "text/plain"}, ["expired"]]
-        else
-          websocket.call(request)
+    with_server(
+      handler,
+      wrap: lambda { |websocket|
+        lambda do |request|
+          attempts << request.headers["authorization"]
+          if attempts.one?
+            Protocol::HTTP::Response[401, {"content-type" => "text/plain"}, ["expired"]]
+          else
+            websocket.call(request)
+          end
         end
-      end
-    }) do |url|
+      }
+    ) do |url|
       client = workload_identity_client(url)
       get_token = lambda do |deadline:|
         deadlines << deadline
         tokens.shift
       end
+
       client.workload_identity_auth.stub(:get_token, get_token) do
         client.workload_identity_auth.stub(:invalidate_token, -> { invalidations += 1 }) do
           client.realtime.connect(model: "gpt-realtime-2.1") { |_connection| nil }
@@ -269,7 +285,7 @@ class OpenAI::Test::RealtimeNetworkInvariantsTest < Minitest::Test
     endpoint = Async::HTTP::Endpoint.parse("http://127.0.0.1:#{port}")
     server = nil
     Sync do |task|
-      fallback = ->(_request) { Protocol::HTTP::Response[404, {}, []] }
+      fallback = -> (_request) { Protocol::HTTP::Response[404, {}, []] }
       websocket = Async::WebSocket::Server.new(fallback, &handler)
       app = wrap ? wrap.call(websocket) : websocket
       server = Async::HTTP::Server.new(app, endpoint)
@@ -318,6 +334,7 @@ class OpenAI::Test::RealtimeNetworkInvariantsTest < Minitest::Test
       candidate.name == "protocol.http1.connection.write_request" &&
         candidate.attributes[:method] == method
     end
+
     refute_nil(span)
     span
   end

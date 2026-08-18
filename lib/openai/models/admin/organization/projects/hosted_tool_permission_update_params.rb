@@ -19,49 +19,59 @@ module OpenAI
             #   The code interpreter permission update.
             #
             #   @return [OpenAI::Models::Admin::Organization::Projects::HostedToolPermissionUpdateParams::CodeInterpreter, nil]
-            optional :code_interpreter,
-                     -> {
-                       OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::CodeInterpreter
-                     },
-                     nil?: true
+            optional(
+              :code_interpreter,
+              -> {
+                OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::CodeInterpreter
+              },
+              nil?: true
+            )
 
             # @!attribute file_search
             #   The file search permission update.
             #
             #   @return [OpenAI::Models::Admin::Organization::Projects::HostedToolPermissionUpdateParams::FileSearch, nil]
-            optional :file_search,
-                     -> {
-                       OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::FileSearch
-                     },
-                     nil?: true
+            optional(
+              :file_search,
+              -> {
+                OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::FileSearch
+              },
+              nil?: true
+            )
 
             # @!attribute image_generation
             #   The image generation permission update.
             #
             #   @return [OpenAI::Models::Admin::Organization::Projects::HostedToolPermissionUpdateParams::ImageGeneration, nil]
-            optional :image_generation,
-                     -> {
-                       OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::ImageGeneration
-                     },
-                     nil?: true
+            optional(
+              :image_generation,
+              -> {
+                OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::ImageGeneration
+              },
+              nil?: true
+            )
 
             # @!attribute mcp
             #   The MCP permission update.
             #
             #   @return [OpenAI::Models::Admin::Organization::Projects::HostedToolPermissionUpdateParams::Mcp, nil]
-            optional :mcp,
-                     -> { OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::Mcp },
-                     nil?: true
+            optional(
+              :mcp,
+              -> { OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::Mcp },
+              nil?: true
+            )
 
             # @!attribute web_search
             #   The web search permission update.
             #
             #   @return [OpenAI::Models::Admin::Organization::Projects::HostedToolPermissionUpdateParams::WebSearch, nil]
-            optional :web_search,
-                     -> {
-                       OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::WebSearch
-                     },
-                     nil?: true
+            optional(
+              :web_search,
+              -> {
+                OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::WebSearch
+              },
+              nil?: true
+            )
 
             # @!method initialize(project_id:, code_interpreter: nil, file_search: nil, image_generation: nil, mcp: nil, web_search: nil, request_options: {})
             #   @param project_id [String]

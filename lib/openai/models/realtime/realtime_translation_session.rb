@@ -76,9 +76,11 @@ module OpenAI
             #   Optional input noise reduction.
             #
             #   @return [OpenAI::Models::Realtime::RealtimeTranslationSession::Audio::Input::NoiseReduction, nil]
-            optional :noise_reduction,
-                     -> { OpenAI::Realtime::RealtimeTranslationSession::Audio::Input::NoiseReduction },
-                     nil?: true
+            optional(
+              :noise_reduction,
+              -> { OpenAI::Realtime::RealtimeTranslationSession::Audio::Input::NoiseReduction },
+              nil?: true
+            )
 
             # @!attribute transcription
             #   Optional source-language transcription. When configured, the server emits
@@ -86,9 +88,11 @@ module OpenAI
             #   input audio stream.
             #
             #   @return [OpenAI::Models::Realtime::RealtimeTranslationSession::Audio::Input::Transcription, nil]
-            optional :transcription,
-                     -> { OpenAI::Realtime::RealtimeTranslationSession::Audio::Input::Transcription },
-                     nil?: true
+            optional(
+              :transcription,
+              -> { OpenAI::Realtime::RealtimeTranslationSession::Audio::Input::Transcription },
+              nil?: true
+            )
 
             # @!method initialize(noise_reduction: nil, transcription: nil)
             #   Some parameter documentations has been truncated, see

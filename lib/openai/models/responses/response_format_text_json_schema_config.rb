@@ -16,12 +16,15 @@ module OpenAI
         #   to build JSON schemas [here](https://json-schema.org/).
         #
         #   @return [Hash{Symbol=>Object}, OpenAI::StructuredOutput::JsonSchemaConverter]
-        required :schema,
-                 union: -> {
-                   OpenAI::UnionOf[
-                     OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown], OpenAI::StructuredOutput::JsonSchemaConverter
-                   ]
-                 }
+        required(
+          :schema,
+          union: -> {
+            OpenAI::UnionOf[
+              OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown],
+              OpenAI::StructuredOutput::JsonSchemaConverter
+            ]
+          }
+        )
 
         # @!attribute type
         #   The type of response format being defined. Always `json_schema`.

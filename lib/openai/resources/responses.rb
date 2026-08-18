@@ -102,7 +102,7 @@ module OpenAI
 
         model, tool_models = get_structured_output_models(parsed)
 
-        unwrap = ->(raw) do
+        unwrap = -> (raw) do
           parse_structured_outputs!(raw, model, tool_models)
         end
 
@@ -206,12 +206,14 @@ module OpenAI
         if starting_after && !response_id
           raise ArgumentError, "starting_after can only be used with response_id"
         end
+
         model, tool_models = get_structured_output_models(parsed)
 
-        unwrap = ->(raw) do
+        unwrap = -> (raw) do
           if raw[:type] == "response.completed" && raw[:response]
             parse_structured_outputs!(raw[:response], model, tool_models)
           end
+
           raw
         end
 
@@ -330,6 +332,7 @@ module OpenAI
           message = "Please use `#create` for the non-streaming use case."
           raise ArgumentError.new(message)
         end
+
         parsed.store(:stream, true)
 
         @client.request(
@@ -373,6 +376,7 @@ module OpenAI
           message = "Please use `#retrieve_streaming` for the streaming use case."
           raise ArgumentError.new(message)
         end
+
         @client.request(
           method: :get,
           path: ["responses/%1$s", response_id],
@@ -411,6 +415,7 @@ module OpenAI
           message = "Please use `#retrieve` for the non-streaming use case."
           raise ArgumentError.new(message)
         end
+
         parsed.store(:stream, true)
         query = OpenAI::Internal::Util.encode_query_params(parsed)
         @client.request(
@@ -571,10 +576,12 @@ module OpenAI
               rescue JSON::ParserError => e
                 parsed = e
               end
+
               coerced = OpenAI::Internal::Type::Converter.coerce(model, parsed)
               content.store(:parsed, coerced)
             end
         end
+
         raw[:output]&.each do |output|
           next unless output[:type] == "function_call"
           next if (model = tool_models[output.fetch(:name)]).nil?
@@ -583,6 +590,7 @@ module OpenAI
           rescue JSON::ParserError => e
             parsed = e
           end
+
           coerced = OpenAI::Internal::Type::Converter.coerce(model, parsed)
           output.store(:parsed, coerced)
         end
@@ -631,8 +639,14 @@ module OpenAI
               schema: model.to_json_schema
             }
           )
-        in {text: {format: {type: :json_schema,
-                            schema: OpenAI::StructuredOutput::JsonSchemaConverter => model}}}
+        in {
+            text: {
+                format: {
+                    type: :json_schema,
+                    schema: OpenAI::StructuredOutput::JsonSchemaConverter => model
+                  }
+              }
+          }
           parsed.dig(:text, :format).store(:schema, model.to_json_schema)
         else
         end
@@ -662,8 +676,11 @@ module OpenAI
               tool_models.store(name, params)
               tool[:function][:parameters] = params.to_json_schema
               tool
-            in {type: _, function: Hash => func} if func[:parameters].is_a?(Class) && func[:parameters] < OpenAI::Internal::Type::BaseModel
+            in {type: _, function: Hash => func}
               params = func[:parameters]
+              # rubyfmt 0.14.1 corrupts a long guarded `in` clause into `in if`.
+              # Keep the same guard in the existing handwritten branch instead.
+              next tool unless params.is_a?(Class) && params < OpenAI::Internal::Type::BaseModel
               name = func[:name] || params.name.split("::").last
               tool_models.store(name, params)
               func[:parameters] = params.to_json_schema

@@ -38,9 +38,11 @@ module OpenAI
         tolerance = 300
       )
         if webhook_secret.nil? || webhook_secret.strip.empty?
-          raise ArgumentError,
-                "The webhook secret must either be set using the env var, OPENAI_WEBHOOK_SECRET, " \
-                "or passed to this function"
+          raise(
+            ArgumentError,
+            "The webhook secret must either be set using the env var, OPENAI_WEBHOOK_SECRET, " \
+              "or passed to this function"
+          )
         end
 
         header_names = %w[webhook-signature webhook-timestamp webhook-id]
@@ -111,15 +113,19 @@ module OpenAI
         signed_payload = "#{webhook_id}.#{timestamp_header}.#{payload}"
 
         # Compute HMAC-SHA256 signature
-        expected_signature = Base64.encode64(
-          OpenSSL::HMAC.digest("sha256", decoded_secret, signed_payload)
-        ).strip
+        expected_signature = Base64
+          .encode64(
+            OpenSSL::HMAC.digest("sha256", decoded_secret, signed_payload)
+          )
+          .strip
 
         # Accept if any signature matches using timing-safe comparison
         return if signatures.any? { |signature| OpenSSL.secure_compare(expected_signature, signature) }
 
-        raise OpenAI::Errors::InvalidWebhookSignatureError,
-              "The given webhook signature does not match the expected signature"
+        raise(
+          OpenAI::Errors::InvalidWebhookSignatureError,
+          "The given webhook signature does not match the expected signature"
+        )
       end
 
       # @api private

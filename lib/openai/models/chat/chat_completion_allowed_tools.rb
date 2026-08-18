@@ -28,8 +28,10 @@ module OpenAI
         #   ```
         #
         #   @return [Array<Hash{Symbol=>Object}>]
-        required :tools,
-                 OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]]
+        required(
+          :tools,
+          OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]]
+        )
 
         # @!method initialize(mode:, tools:)
         #   Some parameter documentations has been truncated, see

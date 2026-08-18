@@ -25,8 +25,10 @@ module OpenAI
           #   Email notification settings for a spend alert.
           #
           #   @return [OpenAI::Models::Admin::Organization::SpendAlertCreateParams::NotificationChannel]
-          required :notification_channel,
-                   -> { OpenAI::Admin::Organization::SpendAlertCreateParams::NotificationChannel }
+          required(
+            :notification_channel,
+            -> { OpenAI::Admin::Organization::SpendAlertCreateParams::NotificationChannel }
+          )
 
           # @!attribute threshold_amount
           #   The alert threshold amount, in cents.

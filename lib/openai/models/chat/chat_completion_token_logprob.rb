@@ -32,8 +32,10 @@ module OpenAI
         #   position. The number of entries may be fewer than the requested `top_logprobs`.
         #
         #   @return [Array<OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob>]
-        required :top_logprobs,
-                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletionTokenLogprob::TopLogprob] }
+        required(
+          :top_logprobs,
+          -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletionTokenLogprob::TopLogprob] }
+        )
 
         # @!method initialize(token:, bytes:, logprob:, top_logprobs:)
         #   Some parameter documentations has been truncated, see

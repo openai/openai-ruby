@@ -33,10 +33,12 @@ module OpenAI
         #   The execution context that produced this tool call.
         #
         #   @return [OpenAI::Models::Responses::ResponseCustomToolCallOutput::Caller::Direct, OpenAI::Models::Responses::ResponseCustomToolCallOutput::Caller::Program, nil]
-        optional :caller_,
-                 union: -> { OpenAI::Responses::ResponseCustomToolCallOutput::Caller },
-                 api_name: :caller,
-                 nil?: true
+        optional(
+          :caller_,
+          union: -> { OpenAI::Responses::ResponseCustomToolCallOutput::Caller },
+          api_name: :caller,
+          nil?: true
+        )
 
         # @!method initialize(call_id:, output:, id: nil, caller_: nil, type: :custom_tool_call_output)
         #   Some parameter documentations has been truncated, see
@@ -90,10 +92,11 @@ module OpenAI
           #   @return [Array(String, Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile>)]
 
           # @type [OpenAI::Internal::Type::Converter]
-          OutputContentListArray =
-            OpenAI::Internal::Type::ArrayOf[union: -> {
+          OutputContentListArray = OpenAI::Internal::Type::ArrayOf[
+            union: -> {
               OpenAI::Responses::ResponseCustomToolCallOutput::Output::OutputContentList
-            }]
+            }
+          ]
         end
 
         # The execution context that produced this tool call.

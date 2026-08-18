@@ -20,8 +20,10 @@ module OpenAI
         #   The output contents emitted for the shell command.
         #
         #   @return [Array<OpenAI::Models::Beta::BetaResponseShellCallOutputContentDoneEvent::Output>]
-        required :output,
-                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Output] }
+        required(
+          :output,
+          -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Output] }
+        )
 
         # @!attribute output_index
         #   The index of the output item that was updated.
@@ -70,8 +72,10 @@ module OpenAI
           #   shell call output chunk.
           #
           #   @return [OpenAI::Models::Beta::BetaResponseShellCallOutputContentDoneEvent::Output::Outcome::Timeout, OpenAI::Models::Beta::BetaResponseShellCallOutputContentDoneEvent::Output::Outcome::Exit]
-          required :outcome,
-                   union: -> { OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Output::Outcome }
+          required(
+            :outcome,
+            union: -> { OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Output::Outcome }
+          )
 
           # @!attribute stderr
           #   The standard error output that was captured.
@@ -116,8 +120,10 @@ module OpenAI
             discriminator :type
 
             # Indicates that the shell call exceeded its configured time limit.
-            variant :timeout,
-                    -> { OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Output::Outcome::Timeout }
+            variant(
+              :timeout,
+              -> { OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Output::Outcome::Timeout }
+            )
 
             # Indicates that the shell commands finished and returned an exit code.
             variant :exit, -> { OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Output::Outcome::Exit }

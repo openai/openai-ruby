@@ -25,12 +25,12 @@ module OpenAI
               #
               # @see OpenAI::Models::Admin::Organization::Projects::ServiceAccounts::APIKeyCreateParams
               def create(service_account_id, params)
-                parsed, options =
-                  OpenAI::Admin::Organization::Projects::ServiceAccounts::APIKeyCreateParams.dump_request(params)
-                project_id =
-                  parsed.delete(:project_id) do
-                    raise ArgumentError.new("missing required path argument #{_1}")
-                  end
+                parsed, options = OpenAI::Admin::Organization::Projects::ServiceAccounts::APIKeyCreateParams
+                  .dump_request(params)
+                project_id = parsed.delete(:project_id) do
+                  raise ArgumentError.new("missing required path argument #{_1}")
+                end
+
                 @client.request(
                   method: :post,
                   path: [

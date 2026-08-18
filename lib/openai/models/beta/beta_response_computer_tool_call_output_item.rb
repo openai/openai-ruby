@@ -40,8 +40,14 @@ module OpenAI
         #   developer.
         #
         #   @return [Array<OpenAI::Models::Beta::BetaResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck>, nil]
-        optional :acknowledged_safety_checks,
-                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck] }
+        optional(
+          :acknowledged_safety_checks,
+          -> {
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Beta::BetaResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck
+            ]
+          }
+        )
 
         # @!attribute agent
         #   The agent that produced this item.

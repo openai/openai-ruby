@@ -22,9 +22,11 @@ module OpenAI
         #   token block.
         #
         #   @return [OpenAI::Models::Beta::BetaResponseInputTextContent::PromptCacheBreakpoint, nil]
-        optional :prompt_cache_breakpoint,
-                 -> { OpenAI::Beta::BetaResponseInputTextContent::PromptCacheBreakpoint },
-                 nil?: true
+        optional(
+          :prompt_cache_breakpoint,
+          -> { OpenAI::Beta::BetaResponseInputTextContent::PromptCacheBreakpoint },
+          nil?: true
+        )
 
         # @!method initialize(text:, prompt_cache_breakpoint: nil, type: :input_text)
         #   Some parameter documentations has been truncated, see

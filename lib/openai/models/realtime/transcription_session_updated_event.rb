@@ -64,8 +64,14 @@ module OpenAI
           #   ["text"].
           #
           #   @return [Array<Symbol, OpenAI::Models::Realtime::TranscriptionSessionUpdatedEvent::Session::Modality>, nil]
-          optional :modalities,
-                   -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::TranscriptionSessionUpdatedEvent::Session::Modality] }
+          optional(
+            :modalities,
+            -> {
+              OpenAI::Internal::Type::ArrayOf[
+                enum: OpenAI::Realtime::TranscriptionSessionUpdatedEvent::Session::Modality
+              ]
+            }
+          )
 
           # @!attribute turn_detection
           #   Configuration for turn detection. Can be set to `null` to turn off. Server VAD
@@ -73,8 +79,10 @@ module OpenAI
           #   volume and respond at the end of user speech.
           #
           #   @return [OpenAI::Models::Realtime::TranscriptionSessionUpdatedEvent::Session::TurnDetection, nil]
-          optional :turn_detection,
-                   -> { OpenAI::Realtime::TranscriptionSessionUpdatedEvent::Session::TurnDetection }
+          optional(
+            :turn_detection,
+            -> { OpenAI::Realtime::TranscriptionSessionUpdatedEvent::Session::TurnDetection }
+          )
 
           # @!method initialize(client_secret:, input_audio_format: nil, input_audio_transcription: nil, modalities: nil, turn_detection: nil)
           #   Some parameter documentations has been truncated, see

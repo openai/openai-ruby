@@ -42,11 +42,13 @@ module OpenAI
           #   Context management configuration for this request.
           #
           #   @return [Array<OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::ContextManagement>, nil]
-          optional :context_management,
-                   -> {
-                     OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ContextManagement]
-                   },
-                   nil?: true
+          optional(
+            :context_management,
+            -> {
+              OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ContextManagement]
+            },
+            nil?: true
+          )
 
           # @!attribute conversation
           #   The conversation that this response belongs to. Items from this conversation are
@@ -55,9 +57,11 @@ module OpenAI
           #   response completes.
           #
           #   @return [String, OpenAI::Models::Beta::BetaResponseConversationParam, nil]
-          optional :conversation,
-                   union: -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Conversation },
-                   nil?: true
+          optional(
+            :conversation,
+            union: -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Conversation },
+            nil?: true
+          )
 
           # @!attribute include
           #   Specify additional output data to include in the model response. Currently
@@ -80,9 +84,11 @@ module OpenAI
           #     in the zero data retention program).
           #
           #   @return [Array<Symbol, OpenAI::Models::Beta::BetaResponseIncludable>, nil]
-          optional :include,
-                   -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::BetaResponseIncludable] },
-                   nil?: true
+          optional(
+            :include,
+            -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::BetaResponseIncludable] },
+            nil?: true
+          )
 
           # @!attribute input
           #   Text, image, or file inputs to the model, used to generate a response.
@@ -150,17 +156,21 @@ module OpenAI
           #   Configuration for running moderation on the input and output of this response.
           #
           #   @return [OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation, nil]
-          optional :moderation,
-                   -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation },
-                   nil?: true
+          optional(
+            :moderation,
+            -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation },
+            nil?: true
+          )
 
           # @!attribute multi_agent
           #   Configuration for server-hosted multi-agent execution.
           #
           #   @return [OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::MultiAgent, nil]
-          optional :multi_agent,
-                   -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::MultiAgent },
-                   nil?: true
+          optional(
+            :multi_agent,
+            -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::MultiAgent },
+            nil?: true
+          )
 
           # @!attribute parallel_tool_calls
           #   Whether to allow the model to run tool calls in parallel.
@@ -204,8 +214,10 @@ module OpenAI
           #   for current details.
           #
           #   @return [OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions, nil]
-          optional :prompt_cache_options,
-                   -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions }
+          optional(
+            :prompt_cache_options,
+            -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions }
+          )
 
           # @!attribute prompt_cache_retention
           #   @deprecated
@@ -229,9 +241,11 @@ module OpenAI
           #     `prompt_cache_retention` is not specified.
           #
           #   @return [Symbol, OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheRetention, nil]
-          optional :prompt_cache_retention,
-                   enum: -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheRetention },
-                   nil?: true
+          optional(
+            :prompt_cache_retention,
+            enum: -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheRetention },
+            nil?: true
+          )
 
           # @!attribute reasoning
           #   **gpt-5 and o-series models only**
@@ -240,11 +254,13 @@ module OpenAI
           #   [reasoning models](https://platform.openai.com/docs/guides/reasoning).
           #
           #   @return [OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning, nil]
-          optional :reasoning,
-                   -> {
-                     OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning
-                   },
-                   nil?: true
+          optional(
+            :reasoning,
+            -> {
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning
+            },
+            nil?: true
+          )
 
           # @!attribute safety_identifier
           #   A stable identifier used to help detect users of your application that may be
@@ -284,9 +300,11 @@ module OpenAI
           #   parameter.
           #
           #   @return [Symbol, OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier, nil]
-          optional :service_tier,
-                   enum: -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier },
-                   nil?: true
+          optional(
+            :service_tier,
+            enum: -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier },
+            nil?: true
+          )
 
           # @!attribute store
           #   Whether to store the generated model response for later retrieval via API.
@@ -319,9 +337,11 @@ module OpenAI
           #   Options for streaming responses. Only set this when you set `stream: true`.
           #
           #   @return [OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::StreamOptions, nil]
-          optional :stream_options,
-                   -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::StreamOptions },
-                   nil?: true
+          optional(
+            :stream_options,
+            -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::StreamOptions },
+            nil?: true
+          )
 
           # @!attribute temperature
           #   What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
@@ -404,9 +424,11 @@ module OpenAI
           #     for a model, the request will fail with a 400 error.
           #
           #   @return [Symbol, OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Truncation, nil]
-          optional :truncation,
-                   enum: -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Truncation },
-                   nil?: true
+          optional(
+            :truncation,
+            enum: -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Truncation },
+            nil?: true
+          )
 
           # @!attribute user
           #   @deprecated
@@ -585,7 +607,9 @@ module OpenAI
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_5 }
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_5_2026_04_23 }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_5_2026_04_23 }
+            )
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_4 }
 
@@ -593,31 +617,53 @@ module OpenAI
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_4_NANO }
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_4_MINI_2026_03_17 }
+            variant(
+              const: -> {
+                OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_4_MINI_2026_03_17
+              }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_4_NANO_2026_03_17 }
+            variant(
+              const: -> {
+                OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_4_NANO_2026_03_17
+              }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_3_CHAT_LATEST }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_3_CHAT_LATEST }
+            )
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_2 }
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_2_2025_12_11 }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_2_2025_12_11 }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_2_CHAT_LATEST }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_2_CHAT_LATEST }
+            )
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_2_PRO }
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_2_PRO_2025_12_11 }
+            variant(
+              const: -> {
+                OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_2_PRO_2025_12_11
+              }
+            )
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_1 }
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_1_2025_11_13 }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_1_2025_11_13 }
+            )
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_1_CODEX }
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_1_MINI }
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_1_CHAT_LATEST }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_1_CHAT_LATEST }
+            )
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5 }
 
@@ -625,13 +671,25 @@ module OpenAI
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_NANO }
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_2025_08_07 }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_2025_08_07 }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_MINI_2025_08_07 }
+            variant(
+              const: -> {
+                OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_MINI_2025_08_07
+              }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_NANO_2025_08_07 }
+            variant(
+              const: -> {
+                OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_NANO_2025_08_07
+              }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_CHAT_LATEST }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_CHAT_LATEST }
+            )
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4_1 }
 
@@ -639,15 +697,27 @@ module OpenAI
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4_1_NANO }
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4_1_2025_04_14 }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4_1_2025_04_14 }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4_1_MINI_2025_04_14 }
+            variant(
+              const: -> {
+                OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4_1_MINI_2025_04_14
+              }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4_1_NANO_2025_04_14 }
+            variant(
+              const: -> {
+                OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4_1_NANO_2025_04_14
+              }
+            )
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::O4_MINI }
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::O4_MINI_2025_04_16 }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::O4_MINI_2025_04_16 }
+            )
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::O3 }
 
@@ -655,7 +725,9 @@ module OpenAI
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::O3_MINI }
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::O3_MINI_2025_01_31 }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::O3_MINI_2025_01_31 }
+            )
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::O1 }
 
@@ -663,59 +735,129 @@ module OpenAI
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::O1_PREVIEW }
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::O1_PREVIEW_2024_09_12 }
+            variant(
+              const: -> {
+                OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::O1_PREVIEW_2024_09_12
+              }
+            )
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::O1_MINI }
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::O1_MINI_2024_09_12 }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::O1_MINI_2024_09_12 }
+            )
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O }
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_2024_11_20 }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_2024_11_20 }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_2024_08_06 }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_2024_08_06 }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_2024_05_13 }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_2024_05_13 }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_AUDIO_PREVIEW }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_AUDIO_PREVIEW }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_AUDIO_PREVIEW_2024_10_01 }
+            variant(
+              const: -> {
+                OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_AUDIO_PREVIEW_2024_10_01
+              }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_AUDIO_PREVIEW_2024_12_17 }
+            variant(
+              const: -> {
+                OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_AUDIO_PREVIEW_2024_12_17
+              }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_AUDIO_PREVIEW_2025_06_03 }
+            variant(
+              const: -> {
+                OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_AUDIO_PREVIEW_2025_06_03
+              }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_MINI_AUDIO_PREVIEW }
+            variant(
+              const: -> {
+                OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_MINI_AUDIO_PREVIEW
+              }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_MINI_AUDIO_PREVIEW_2024_12_17 }
+            variant(
+              const: -> {
+                OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_MINI_AUDIO_PREVIEW_2024_12_17
+              }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_SEARCH_PREVIEW }
+            variant(
+              const: -> {
+                OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_SEARCH_PREVIEW
+              }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_MINI_SEARCH_PREVIEW }
+            variant(
+              const: -> {
+                OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_MINI_SEARCH_PREVIEW
+              }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_SEARCH_PREVIEW_2025_03_11 }
+            variant(
+              const: -> {
+                OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_SEARCH_PREVIEW_2025_03_11
+              }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_MINI_SEARCH_PREVIEW_2025_03_11 }
+            variant(
+              const: -> {
+                OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_MINI_SEARCH_PREVIEW_2025_03_11
+              }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::CHATGPT_4O_LATEST }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::CHATGPT_4O_LATEST }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::CODEX_MINI_LATEST }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::CODEX_MINI_LATEST }
+            )
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_MINI }
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_MINI_2024_07_18 }
+            variant(
+              const: -> {
+                OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4O_MINI_2024_07_18
+              }
+            )
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4_TURBO }
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4_TURBO_2024_04_09 }
+            variant(
+              const: -> {
+                OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4_TURBO_2024_04_09
+              }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4_0125_PREVIEW }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4_0125_PREVIEW }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4_TURBO_PREVIEW }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4_TURBO_PREVIEW }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4_1106_PREVIEW }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4_1106_PREVIEW }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4_VISION_PREVIEW }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4_VISION_PREVIEW }
+            )
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_4 }
 
@@ -731,53 +873,107 @@ module OpenAI
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_3_5_TURBO }
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_3_5_TURBO_16K }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_3_5_TURBO_16K }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_3_5_TURBO_0301 }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_3_5_TURBO_0301 }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_3_5_TURBO_0613 }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_3_5_TURBO_0613 }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_3_5_TURBO_1106 }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_3_5_TURBO_1106 }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_3_5_TURBO_0125 }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_3_5_TURBO_0125 }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_3_5_TURBO_16K_0613 }
+            variant(
+              const: -> {
+                OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_3_5_TURBO_16K_0613
+              }
+            )
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::O1_PRO }
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::O1_PRO_2025_03_19 }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::O1_PRO_2025_03_19 }
+            )
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::O3_PRO }
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::O3_PRO_2025_06_10 }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::O3_PRO_2025_06_10 }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::O3_DEEP_RESEARCH }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::O3_DEEP_RESEARCH }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::O3_DEEP_RESEARCH_2025_06_26 }
+            variant(
+              const: -> {
+                OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::O3_DEEP_RESEARCH_2025_06_26
+              }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::O4_MINI_DEEP_RESEARCH }
+            variant(
+              const: -> {
+                OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::O4_MINI_DEEP_RESEARCH
+              }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::O4_MINI_DEEP_RESEARCH_2025_06_26 }
+            variant(
+              const: -> {
+                OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::O4_MINI_DEEP_RESEARCH_2025_06_26
+              }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::COMPUTER_USE_PREVIEW }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::COMPUTER_USE_PREVIEW }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::COMPUTER_USE_PREVIEW_2025_03_11 }
+            variant(
+              const: -> {
+                OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::COMPUTER_USE_PREVIEW_2025_03_11
+              }
+            )
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_5_PRO }
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_5_PRO_2026_04_23 }
+            variant(
+              const: -> {
+                OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_5_PRO_2026_04_23
+              }
+            )
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_CODEX }
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_PRO }
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_PRO_2025_10_06 }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_PRO_2025_10_06 }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_1_CODEX_MAX }
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_1_CODEX_MAX }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_DAYBREAK_BLUE_LATEST }
+            variant(
+              const: -> {
+                OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_DAYBREAK_BLUE_LATEST
+              }
+            )
 
-            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_DAYBREAK_RED_LATEST }
+            variant(
+              const: -> {
+                OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_DAYBREAK_RED_LATEST
+              }
+            )
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_5_6_CYBER }
 
@@ -787,7 +983,9 @@ module OpenAI
             #   @return [Array(Symbol, String)]
 
             define_sorbet_constant!(:Variants) do
-              T.type_alias { T.any(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol, String) }
+              T.type_alias {
+                T.any(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol, String)
+              }
             end
 
             # @!group
@@ -911,9 +1109,11 @@ module OpenAI
             #   The policy to apply to moderated response input and output.
             #
             #   @return [OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy, nil]
-            optional :policy,
-                     -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy },
-                     nil?: true
+            optional(
+              :policy,
+              -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy },
+              nil?: true
+            )
 
             # @!method initialize(model:, policy: nil)
             #   Some parameter documentations has been truncated, see
@@ -932,21 +1132,25 @@ module OpenAI
               #   The moderation policy for the response input.
               #
               #   @return [OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input, nil]
-              optional :input,
-                       -> {
-                         OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input
-                       },
-                       nil?: true
+              optional(
+                :input,
+                -> {
+                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input
+                },
+                nil?: true
+              )
 
               # @!attribute output
               #   The moderation policy for the response output.
               #
               #   @return [OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output, nil]
-              optional :output,
-                       -> {
-                         OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output
-                       },
-                       nil?: true
+              optional(
+                :output,
+                -> {
+                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output
+                },
+                nil?: true
+              )
 
               # @!method initialize(input: nil, output: nil)
               #   The policy to apply to moderated response input and output.
@@ -960,8 +1164,10 @@ module OpenAI
                 # @!attribute mode
                 #
                 #   @return [Symbol, OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::Mode]
-                required :mode,
-                         enum: -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::Mode }
+                required(
+                  :mode,
+                  enum: -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::Mode }
+                )
 
                 # @!method initialize(mode:)
                 #   The moderation policy for the response input.
@@ -985,8 +1191,10 @@ module OpenAI
                 # @!attribute mode
                 #
                 #   @return [Symbol, OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::Mode]
-                required :mode,
-                         enum: -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::Mode }
+                required(
+                  :mode,
+                  enum: -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::Mode }
+                )
 
                 # @!method initialize(mode:)
                 #   The moderation policy for the response output.
@@ -1049,8 +1257,10 @@ module OpenAI
             #   request does not use prompt caching.
             #
             #   @return [Symbol, OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode, nil]
-            optional :mode,
-                     enum: -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode }
+            optional(
+              :mode,
+              enum: -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode }
+            )
 
             # @!attribute ttl
             #   The minimum lifetime applied to every implicit and explicit cache breakpoint
@@ -1058,8 +1268,10 @@ module OpenAI
             #   value. The backend may retain cache entries for longer.
             #
             #   @return [Symbol, OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl, nil]
-            optional :ttl,
-                     enum: -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl }
+            optional(
+              :ttl,
+              enum: -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl }
+            )
 
             # @!method initialize(mode: nil, ttl: nil)
             #   Some parameter documentations has been truncated, see
@@ -1155,9 +1367,11 @@ module OpenAI
             #   for the response.
             #
             #   @return [Symbol, OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Context, nil]
-            optional :context,
-                     enum: -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Context },
-                     nil?: true
+            optional(
+              :context,
+              enum: -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Context },
+              nil?: true
+            )
 
             # @!attribute effort
             #   Constrains effort on reasoning for reasoning models. Currently supported values
@@ -1168,9 +1382,11 @@ module OpenAI
             #   model-specific support.
             #
             #   @return [Symbol, OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Effort, nil]
-            optional :effort,
-                     enum: -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Effort },
-                     nil?: true
+            optional(
+              :effort,
+              enum: -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Effort },
+              nil?: true
+            )
 
             # @!attribute generate_summary
             #   @deprecated
@@ -1182,11 +1398,13 @@ module OpenAI
             #   `concise`, or `detailed`.
             #
             #   @return [Symbol, OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::GenerateSummary, nil]
-            optional :generate_summary,
-                     enum: -> {
-                       OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::GenerateSummary
-                     },
-                     nil?: true
+            optional(
+              :generate_summary,
+              enum: -> {
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::GenerateSummary
+              },
+              nil?: true
+            )
 
             # @!attribute mode
             #   Controls the reasoning execution mode for the request.
@@ -1205,9 +1423,11 @@ module OpenAI
             #   models after `gpt-5`.
             #
             #   @return [Symbol, OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Summary, nil]
-            optional :summary,
-                     enum: -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Summary },
-                     nil?: true
+            optional(
+              :summary,
+              enum: -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Summary },
+              nil?: true
+            )
 
             # @!method initialize(context: nil, effort: nil, generate_summary: nil, mode: nil, summary: nil)
             #   Some parameter documentations has been truncated, see
@@ -1301,15 +1521,21 @@ module OpenAI
 
               variant String
 
-              variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Mode::STANDARD }
+              variant(
+                const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Mode::STANDARD }
+              )
 
-              variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Mode::PRO }
+              variant(
+                const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Mode::PRO }
+              )
 
               # @!method self.variants
               #   @return [Array(String, Symbol)]
 
               define_sorbet_constant!(:Variants) do
-                T.type_alias { T.any(String, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Mode::TaggedSymbol) }
+                T.type_alias {
+                  T.any(String, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Mode::TaggedSymbol)
+                }
               end
 
               # @!group
@@ -1438,7 +1664,11 @@ module OpenAI
             # Use this option to force the model to call a specific custom tool.
             variant -> { OpenAI::Beta::BetaToolChoiceCustom }
 
-            variant -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ToolChoice::BetaSpecificProgrammaticToolCallingParam }
+            variant(
+              -> {
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ToolChoice::BetaSpecificProgrammaticToolCallingParam
+              }
+            )
 
             # Forces the model to call the apply_patch tool when executing a tool call.
             variant -> { OpenAI::Beta::BetaToolChoiceApplyPatch }

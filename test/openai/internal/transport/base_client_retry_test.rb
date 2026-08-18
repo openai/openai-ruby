@@ -109,12 +109,12 @@ class OpenAI::Test::BaseClientRetryTest < Minitest::Test
     rate_limited = OpenAI::HTTPClient::Response.new(
       status: 429,
       headers: {"content-type" => "application/json", "retry-after" => "-1"},
-      body: '{"error":"rate limited"}'
+      body: "{\"error\":\"rate limited\"}"
     )
     successful = OpenAI::HTTPClient::Response.new(
       status: 200,
       headers: {"content-type" => "application/json"},
-      body: '{"ok":true}'
+      body: "{\"ok\":true}"
     )
     http_client = Minitest::Mock.new(OpenAI::HTTPClient.new)
     http_client.expect(:execute, rate_limited, [OpenAI::HTTPClient::Request])
@@ -125,11 +125,11 @@ class OpenAI::Test::BaseClientRetryTest < Minitest::Test
       api_key: "test-key",
       http_client: http_client,
       max_retries: 1,
-      on_retry: ->(event) { retry_events << event }
+      on_retry: -> (event) { retry_events << event }
     )
 
     client.stub(:rand, 0.0) do
-      client.stub(:sleep, ->(delay) { slept << delay }) do
+      client.stub(:sleep, -> (delay) { slept << delay }) do
         assert_equal(true, client.request(method: :get, path: "probe")[:ok])
       end
     end

@@ -144,8 +144,10 @@ module OpenAI
           #   and `high` have max timeouts of 8s, 4s, and 2s respectively.
           #
           #   @return [Symbol, OpenAI::Models::Realtime::RealtimeAudioInputTurnDetection::SemanticVad::Eagerness, nil]
-          optional :eagerness,
-                   enum: -> { OpenAI::Realtime::RealtimeAudioInputTurnDetection::SemanticVad::Eagerness }
+          optional(
+            :eagerness,
+            enum: -> { OpenAI::Realtime::RealtimeAudioInputTurnDetection::SemanticVad::Eagerness }
+          )
 
           # @!attribute interrupt_response
           #   Whether or not to automatically interrupt any ongoing response with output to
