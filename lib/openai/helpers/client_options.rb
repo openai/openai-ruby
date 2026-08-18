@@ -36,7 +36,8 @@ module OpenAI
           credentials_changed = [:api_key, :admin_api_key, :workload_identity].any? { overrides.key?(_1) }
 
           if provider_changed
-            [:api_key, :admin_api_key, :workload_identity, :base_url, :organization, :project].each do |name|
+            [:api_key, :admin_api_key, :workload_identity, :base_url, :websocket_base_url,
+             :organization, :project].each do |name|
               options[name] = nil
             end
             options[:default_headers] = {}

@@ -2,9 +2,6 @@
 
 module OpenAI
   class Client
-    sig { returns(T.nilable(URI::Generic)) }
-    attr_reader :websocket_base_url
-
     # @api private
     sig do
       params(

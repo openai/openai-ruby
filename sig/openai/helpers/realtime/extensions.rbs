@@ -1,7 +1,5 @@
 module OpenAI
   class Client
-    attr_reader websocket_base_url: URI::Generic?
-
     def realtime_connection_request: (
       path: String,
       query: ::Hash[String, String],

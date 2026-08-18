@@ -32,6 +32,11 @@ module OpenAI
     # @return [String, nil]
     attr_reader :webhook_secret
 
+    # Optional base URL used for WebSocket connections.
+    #
+    # @return [URI::Generic, nil]
+    attr_reader :websocket_base_url
+
     # @return [OpenAI::Auth::WorkloadIdentityAuth, nil]
     # @api private
     attr_reader :workload_identity_auth
@@ -271,6 +276,8 @@ module OpenAI
     # @param default_headers [Hash{String=>String, nil}, nil] Extra headers to send
     #   with every request. Explicit values override `ENV["OPENAI_CUSTOM_HEADERS"]`.
     #
+    # @param websocket_base_url [String, nil] Optional base URL used for WebSocket connections.
+    #
     # @param max_retries [Integer] Max number of retries to attempt after a failed retryable request.
     #
     # @param timeout [Float, nil]
@@ -298,6 +305,7 @@ module OpenAI
       provider: nil,
       base_url: OpenAI::Internal::OMIT,
       default_headers: nil,
+      websocket_base_url: nil,
       max_retries: self.class::DEFAULT_MAX_RETRIES,
       timeout: self.class::DEFAULT_TIMEOUT_IN_SECONDS,
       initial_retry_delay: self.class::DEFAULT_INITIAL_RETRY_DELAY,
@@ -314,7 +322,8 @@ module OpenAI
           api_key: api_key,
           admin_api_key: admin_api_key,
           workload_identity: workload_identity,
-          base_url: base_url
+          base_url: base_url,
+          websocket_base_url: websocket_base_url
         }.filter_map do |name, value|
           name unless value.equal?(OpenAI::Internal::OMIT) || value.nil?
         end
@@ -347,6 +356,7 @@ module OpenAI
       base_url = provider_runtime.base_url if provider_runtime
       base_url = nil if base_url.equal?(OpenAI::Internal::OMIT)
       base_url ||= "https://api.openai.com/v1"
+      @websocket_base_url = parse_websocket_base_url(websocket_base_url)
 
       if !api_key.nil? && !workload_identity.nil?
         raise ArgumentError, "`api_key` and `workload_identity` are mutually exclusive"
@@ -415,6 +425,7 @@ module OpenAI
         provider: provider,
         base_url: provider.nil? ? self.base_url.to_s : nil,
         default_headers: OpenAI::Internal::Util.normalized_headers(parsed, client_headers),
+        websocket_base_url: @websocket_base_url&.to_s,
         max_retries: self.max_retries,
         timeout: self.timeout,
         initial_retry_delay: self.initial_retry_delay,
@@ -449,6 +460,23 @@ module OpenAI
       @containers = OpenAI::Resources::Containers.new(client: self)
       @skills = OpenAI::Resources::Skills.new(client: self)
       @videos = OpenAI::Resources::Videos.new(client: self)
+    end
+
+    private def parse_websocket_base_url(value)
+      return if value.nil?
+
+      uri = URI(value)
+      valid_scheme = %w[http https ws wss].include?(uri.scheme)
+      ambiguous_component = uri.userinfo || uri.query || uri.fragment
+      unless uri.absolute? && uri.host && valid_scheme && !ambiguous_component
+        message =
+          "`websocket_base_url` must be an absolute HTTP or WebSocket URL " \
+          "without credentials, query, or fragment"
+        raise ArgumentError, message
+      end
+      uri
+    rescue URI::Error => e
+      raise ArgumentError, "`websocket_base_url` is not a valid URL", cause: e
     end
   end
 end

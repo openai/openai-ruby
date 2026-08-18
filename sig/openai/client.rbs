@@ -1,5 +1,7 @@
 module OpenAI
   class Client < OpenAI::Internal::Transport::BaseClient
+    attr_reader websocket_base_url: URI::Generic?
+
     DEFAULT_MAX_RETRIES: 2
 
     DEFAULT_TIMEOUT_IN_SECONDS: Float
@@ -92,6 +94,7 @@ module OpenAI
       ?provider: OpenAI::Provider?,
       ?base_url: String?,
       ?default_headers: ::Hash[String, String?]?,
+      ?websocket_base_url: String?,
       ?max_retries: Integer,
       ?timeout: Float?,
       ?initial_retry_delay: Float,

@@ -2,6 +2,9 @@
 
 module OpenAI
   class Client < OpenAI::Internal::Transport::BaseClient
+    sig { returns(T.nilable(URI::Generic)) }
+    attr_reader :websocket_base_url
+
     DEFAULT_MAX_RETRIES = 2
 
     DEFAULT_TIMEOUT_IN_SECONDS = T.let(600.0, Float)
@@ -160,6 +163,7 @@ module OpenAI
         provider: T.nilable(OpenAI::Provider),
         base_url: T.nilable(String),
         default_headers: T.nilable(T::Hash[String, T.nilable(String)]),
+        websocket_base_url: T.nilable(String),
         max_retries: Integer,
         timeout: T.nilable(Float),
         initial_retry_delay: Float,
@@ -180,6 +184,7 @@ module OpenAI
       provider: T.unsafe(nil),
       base_url: T.unsafe(nil),
       default_headers: T.unsafe(nil),
+      websocket_base_url: T.unsafe(nil),
       max_retries: T.unsafe(nil),
       timeout: T.unsafe(nil),
       initial_retry_delay: T.unsafe(nil),

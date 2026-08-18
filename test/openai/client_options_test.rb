@@ -71,12 +71,14 @@ class OpenAI::Test::ClientOptionsTest < Minitest::Test
       admin_api_key: "admin-key", organization: "org", project: "project", webhook_secret: "secret",
       default_headers: {"x-test" => "value"}, max_retries: 4, timeout: nil,
       initial_retry_delay: 0.1, max_retry_delay: 2.0,
+      websocket_base_url: "wss://socket.example.test/realtime",
       logger: logger, log_level: :debug, on_retry: callback
     )
     copy = client.with_options
 
-    [:api_key, :admin_api_key, :organization, :project, :webhook_secret, :base_url, :headers, :max_retries,
-     :timeout, :initial_retry_delay, :max_retry_delay, :logger, :log_level, :on_retry, :requester].each do |name|
+    [:api_key, :admin_api_key, :organization, :project, :webhook_secret, :base_url, :websocket_base_url,
+     :headers, :max_retries, :timeout, :initial_retry_delay, :max_retry_delay, :logger, :log_level, :on_retry,
+     :requester].each do |name|
       expected = client.public_send(name)
       actual = copy.public_send(name)
       expected.nil? ? assert_nil(actual, "#{name} was not inherited") : assert_equal(expected, actual, "#{name} was not inherited")
@@ -237,7 +239,8 @@ class OpenAI::Test::ClientOptionsTest < Minitest::Test
   def test_switching_providers_does_not_leak_previous_configuration
     original = new_client(
       admin_api_key: "admin-key", organization: "org", project: "project",
-      default_headers: {"x-api-key" => "old-secret", "x-private" => "old-value"}
+      default_headers: {"x-api-key" => "old-secret", "x-private" => "old-value"},
+      websocket_base_url: "wss://socket.example.test/realtime"
     )
     provider = OpenAI::Providers.bedrock(region: "us-east-1", api_key: "bedrock-key")
     bedrock = original.with_options(provider: provider)
@@ -245,6 +248,7 @@ class OpenAI::Test::ClientOptionsTest < Minitest::Test
     headers = @transport.requests.last.headers
 
     assert_equal("Bearer bedrock-key", headers["authorization"])
+    assert_nil(bedrock.websocket_base_url)
     %w[x-api-key x-private openai-organization openai-project].each { refute_includes(headers, _1) }
     assert_raises(ArgumentError) { bedrock.with_options(provider: nil) }
     probe(bedrock.with_options(provider: nil, api_key: "new-key", base_url: EU))
