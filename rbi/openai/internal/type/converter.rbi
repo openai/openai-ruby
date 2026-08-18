@@ -22,7 +22,7 @@ module OpenAI
                 no: Integer,
                 maybe: Integer
               },
-              error: T::Class[StandardError],
+              error: T.nilable(StandardError),
               branched: Integer
             }
           end
@@ -180,6 +180,17 @@ module OpenAI
             # See implementation below for more details.
             state: OpenAI::Internal::Type::Converter.new_coerce_state
           )
+          end
+
+          # @api private
+          sig do
+            params(
+              target: OpenAI::Internal::Type::Converter::Input,
+              value: T.anything,
+              state: OpenAI::Internal::Type::Converter::CoerceState
+            ).returns([T.anything, T.nilable(StandardError)])
+          end
+          def self.coerce_with_error(target, value, state:)
           end
 
           # @api private
