@@ -50,6 +50,33 @@ stream.each do |event|
 end
 ```
 
+### Realtime WebSockets
+
+The SDK supports block-scoped, typed Realtime WebSocket sessions for
+server-side text workflows. Add the optional `async-websocket` gem, then use
+`client.realtime.connect`:
+
+```ruby
+client.realtime.connect(model: "gpt-realtime-2.1") do |connection|
+  connection.session.update(type: :realtime, output_modalities: [:text])
+  connection.conversation.items.create(
+    type: :message,
+    role: :user,
+    content: [{type: :input_text, text: "Hello"}]
+  )
+  connection.response.create
+
+  connection.each do |event|
+    print(event.delta) if event.is_a?(OpenAI::Realtime::ResponseTextDeltaEvent)
+    break if event.is_a?(OpenAI::Realtime::ResponseDoneEvent)
+  end
+end
+```
+
+See the [Realtime WebSocket guide](realtime.md) and the runnable
+[text example](examples/realtime/README.md) for lifecycle, authentication,
+proxy, TLS, and custom transport details.
+
 ### Pagination
 
 List methods in the OpenAI API are paginated.

@@ -1,0 +1,33 @@
+module OpenAI
+  module Models
+    module Realtime
+      module ConnectionResources
+        class Base
+          # @api private
+          def initialize: (OpenAI::Realtime::Connection connection) -> void
+        end
+
+        class Session < Base
+          def update: (**untyped params) -> nil
+        end
+
+        class Response < Base
+          def create: (**untyped params) -> nil
+          def cancel: (?response_id: String?, ?event_id: String?) -> nil
+        end
+
+        class Conversation < Base
+          # @api private
+          def initialize: (OpenAI::Realtime::Connection connection) -> void
+          attr_reader items: OpenAI::Realtime::ConnectionResources::ConversationItems
+        end
+
+        class ConversationItems < Base
+          def create: (**untyped params) -> nil
+          def delete: (item_id: String, ?event_id: String?) -> nil
+          def retrieve: (item_id: String, ?event_id: String?) -> nil
+        end
+      end
+    end
+  end
+end
