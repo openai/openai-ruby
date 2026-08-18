@@ -2,16 +2,19 @@
 
 module OpenAI
   module Models
+
     module Beta
+
       module Threads
+
         class FilePathAnnotation < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Beta::Threads::FilePathAnnotation,
-                OpenAI::Internal::AnyHash
-              )
-            end
+
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::Threads::FilePathAnnotation,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           sig { returns(Integer) }
           attr_accessor :end_index
@@ -19,12 +22,7 @@ module OpenAI
           sig { returns(OpenAI::Beta::Threads::FilePathAnnotation::FilePath) }
           attr_reader :file_path
 
-          sig do
-            params(
-              file_path:
-                OpenAI::Beta::Threads::FilePathAnnotation::FilePath::OrHash
-            ).void
-          end
+          sig { params(file_path: OpenAI::Beta::Threads::FilePathAnnotation::FilePath::OrHash).void }
           attr_writer :file_path
 
           sig { returns(Integer) }
@@ -42,21 +40,32 @@ module OpenAI
           # `code_interpreter` tool to generate a file.
           sig do
             params(
+
               end_index: Integer,
-              file_path:
-                OpenAI::Beta::Threads::FilePathAnnotation::FilePath::OrHash,
+
+              file_path: OpenAI::Beta::Threads::FilePathAnnotation::FilePath::OrHash,
+
               start_index: Integer,
+
               text: String,
+
               type: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             end_index:,
+
             file_path:,
+
             start_index:,
+
             # The text in the message content that needs to be replaced.
             text:,
+
             # Always `file_path`.
+
             type: :file_path
           )
           end
@@ -76,31 +85,47 @@ module OpenAI
           end
 
           class FilePath < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Beta::Threads::FilePathAnnotation::FilePath,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::FilePathAnnotation::FilePath,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # The ID of the file that was generated.
             sig { returns(String) }
             attr_accessor :file_id
 
-            sig { params(file_id: String).returns(T.attached_class) }
+            sig do
+              params(
+
+                file_id: String
+              )
+                .returns(T.attached_class)
+            end
             def self.new(
+
               # The ID of the file that was generated.
+
               file_id:
             )
             end
 
-            sig { override.returns({ file_id: String }) }
+            sig do
+              override.returns(
+                {file_id: String}
+              )
+            end
             def to_hash
             end
+
           end
+
         end
+
       end
+
     end
+
   end
 end

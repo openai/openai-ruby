@@ -2,19 +2,22 @@
 
 module OpenAI
   module Models
+
     module Admin
+
       module Organization
+
         class DataRetentionRetrieveParams < OpenAI::Internal::Type::BaseModel
+
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Admin::Organization::DataRetentionRetrieveParams,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Admin::Organization::DataRetentionRetrieveParams,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           sig do
             params(request_options: OpenAI::RequestOptions::OrHash).returns(
@@ -24,11 +27,15 @@ module OpenAI
           def self.new(request_options: {})
           end
 
-          sig { override.returns({ request_options: OpenAI::RequestOptions }) }
+          sig { override.returns({request_options: OpenAI::RequestOptions}) }
           def to_hash
           end
+
         end
+
       end
+
     end
+
   end
 end

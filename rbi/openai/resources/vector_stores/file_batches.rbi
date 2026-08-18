@@ -2,32 +2,26 @@
 
 module OpenAI
   module Resources
+
     class VectorStores
+
       class FileBatches
+
         # Create a vector store file batch.
-        sig do
+        sig {
           params(
             vector_store_id: String,
-            attributes:
-              T.nilable(
-                T::Hash[
-                  Symbol,
-                  OpenAI::VectorStores::FileBatchCreateParams::Attribute::Variants
-                ]
-              ),
-            chunking_strategy:
-              T.any(
-                OpenAI::AutoFileChunkingStrategyParam::OrHash,
-                OpenAI::StaticFileChunkingStrategyObjectParam::OrHash
-              ),
+            attributes: T.nilable(T::Hash[Symbol, OpenAI::VectorStores::FileBatchCreateParams::Attribute::Variants]),
+            chunking_strategy: T.any(
+              OpenAI::AutoFileChunkingStrategyParam::OrHash,
+              OpenAI::StaticFileChunkingStrategyObjectParam::OrHash
+            ),
             file_ids: T::Array[String],
-            files:
-              T::Array[
-                OpenAI::VectorStores::FileBatchCreateParams::File::OrHash
-              ],
+            files: T::Array[OpenAI::VectorStores::FileBatchCreateParams::File::OrHash],
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::VectorStores::VectorStoreFileBatch)
-        end
+          )
+            .returns(OpenAI::VectorStores::VectorStoreFileBatch)
+        }
         def create(
           # The ID of the vector store for which to create a File Batch.
           vector_store_id,
@@ -62,27 +56,25 @@ module OpenAI
         sig do
           params(
             vector_store_id: String,
-            attributes:
-              T.nilable(
-                T::Hash[
-                  Symbol,
-                  OpenAI::VectorStores::FileBatchCreateParams::Attribute::Variants
-                ]
-              ),
-            chunking_strategy:
-              T.any(
-                OpenAI::AutoFileChunkingStrategyParam::OrHash,
-                OpenAI::StaticFileChunkingStrategyObjectParam::OrHash
-              ),
+            attributes: T.nilable(
+              T::Hash[
+                Symbol,
+                OpenAI::VectorStores::FileBatchCreateParams::Attribute::Variants
+              ]
+            ),
+            chunking_strategy: T.any(
+              OpenAI::AutoFileChunkingStrategyParam::OrHash,
+              OpenAI::StaticFileChunkingStrategyObjectParam::OrHash
+            ),
             file_ids: T::Array[String],
-            files:
-              T::Array[
-                OpenAI::VectorStores::FileBatchCreateParams::File::OrHash
-              ],
+            files: T::Array[
+              OpenAI::VectorStores::FileBatchCreateParams::File::OrHash
+            ],
             poll_interval: T.nilable(T.any(Integer, Float)),
             timeout: T.nilable(T.any(Integer, Float)),
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::VectorStores::VectorStoreFileBatch)
+          )
+            .returns(OpenAI::VectorStores::VectorStoreFileBatch)
         end
         def create_and_poll(
           vector_store_id,
@@ -97,13 +89,11 @@ module OpenAI
         end
 
         # Retrieves a vector store file batch.
-        sig do
-          params(
-            batch_id: String,
-            vector_store_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::VectorStores::VectorStoreFileBatch)
-        end
+        sig {
+          params(batch_id: String, vector_store_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+            OpenAI::VectorStores::VectorStoreFileBatch
+          )
+        }
         def retrieve(
           # The ID of the file batch being retrieved.
           batch_id,
@@ -115,13 +105,11 @@ module OpenAI
 
         # Cancel a vector store file batch. This attempts to cancel the processing of
         # files in this batch as soon as possible.
-        sig do
-          params(
-            batch_id: String,
-            vector_store_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::VectorStores::VectorStoreFileBatch)
-        end
+        sig {
+          params(batch_id: String, vector_store_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+            OpenAI::VectorStores::VectorStoreFileBatch
+          )
+        }
         def cancel(
           # The ID of the file batch to cancel.
           batch_id,
@@ -132,22 +120,19 @@ module OpenAI
         end
 
         # Returns a list of vector store files in a batch.
-        sig do
+        sig {
           params(
             batch_id: String,
             vector_store_id: String,
             after: String,
             before: String,
-            filter:
-              OpenAI::VectorStores::FileBatchListFilesParams::Filter::OrSymbol,
+            filter: OpenAI::VectorStores::FileBatchListFilesParams::Filter::OrSymbol,
             limit: Integer,
-            order:
-              OpenAI::VectorStores::FileBatchListFilesParams::Order::OrSymbol,
+            order: OpenAI::VectorStores::FileBatchListFilesParams::Order::OrSymbol,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(
-            OpenAI::Internal::CursorPage[OpenAI::VectorStores::VectorStoreFile]
           )
-        end
+            .returns(OpenAI::Internal::CursorPage[OpenAI::VectorStores::VectorStoreFile])
+        }
         def list_files(
           # Path param: The ID of the file batch that the files belong to.
           batch_id,
@@ -184,7 +169,8 @@ module OpenAI
             poll_interval: T.nilable(T.any(Integer, Float)),
             timeout: T.nilable(T.any(Integer, Float)),
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::VectorStores::VectorStoreFileBatch)
+          )
+            .returns(OpenAI::VectorStores::VectorStoreFileBatch)
         end
         def poll(
           batch_id,
@@ -203,22 +189,21 @@ module OpenAI
             files: T::Enumerable[OpenAI::Internal::FileInput],
             file_ids: T::Array[String],
             max_concurrency: Integer,
-            attributes:
-              T.nilable(
-                T::Hash[
-                  Symbol,
-                  OpenAI::VectorStores::FileBatchCreateParams::Attribute::Variants
-                ]
-              ),
-            chunking_strategy:
-              T.any(
-                OpenAI::AutoFileChunkingStrategyParam::OrHash,
-                OpenAI::StaticFileChunkingStrategyObjectParam::OrHash
-              ),
+            attributes: T.nilable(
+              T::Hash[
+                Symbol,
+                OpenAI::VectorStores::FileBatchCreateParams::Attribute::Variants
+              ]
+            ),
+            chunking_strategy: T.any(
+              OpenAI::AutoFileChunkingStrategyParam::OrHash,
+              OpenAI::StaticFileChunkingStrategyObjectParam::OrHash
+            ),
             poll_interval: T.nilable(T.any(Integer, Float)),
             timeout: T.nilable(T.any(Integer, Float)),
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::VectorStores::VectorStoreFileBatch)
+          )
+            .returns(OpenAI::VectorStores::VectorStoreFileBatch)
         end
         def upload_and_poll(
           vector_store_id,
@@ -238,6 +223,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

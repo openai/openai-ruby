@@ -2,15 +2,20 @@
 
 module OpenAI
   module Models
+
     module FineTuning
+
       class JobListParams < OpenAI::Internal::Type::BaseModel
+
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        OrHash =
-          T.type_alias do
-            T.any(OpenAI::FineTuning::JobListParams, OpenAI::Internal::AnyHash)
-          end
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::FineTuning::JobListParams,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # Identifier for the last job from the previous pagination request.
         sig { returns(T.nilable(String)) }
@@ -33,20 +38,29 @@ module OpenAI
 
         sig do
           params(
+
             after: String,
+
             limit: Integer,
+
             metadata: T.nilable(T::Hash[Symbol, String]),
+
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Identifier for the last job from the previous pagination request.
           after: nil,
+
           # Number of fine-tuning jobs to retrieve.
           limit: nil,
+
           # Optional metadata filter. To filter, use the syntax `metadata[k]=v`.
           # Alternatively, set `metadata=null` to indicate no metadata.
           metadata: nil,
+
           request_options: {}
         )
         end
@@ -63,7 +77,10 @@ module OpenAI
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

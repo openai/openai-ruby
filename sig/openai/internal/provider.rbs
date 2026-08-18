@@ -19,9 +19,7 @@ module OpenAI
         ) -> void
       end
 
-      def self.create: (
-        untyped definition
-      ) -> OpenAI::Provider
+      def self.create: (untyped definition) -> OpenAI::Provider
       def self.name: (OpenAI::Provider provider) -> String
       def self.configure: (
         OpenAI::Provider provider

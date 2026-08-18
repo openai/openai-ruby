@@ -2,20 +2,21 @@
 
 module OpenAI
   module Resources
+
     class Admin
+
       class Organization
+
         class Users
+
           class Roles
+
             # Assigns an organization role to a user within the organization.
-            sig do
-              params(
-                user_id: String,
-                role_id: String,
-                request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
+            sig {
+              params(user_id: String, role_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
                 OpenAI::Models::Admin::Organization::Users::RoleCreateResponse
               )
-            end
+            }
             def create(
               # The ID of the user that should receive the organization role.
               user_id,
@@ -26,15 +27,11 @@ module OpenAI
             end
 
             # Retrieves an organization role assigned to a user.
-            sig do
-              params(
-                role_id: String,
-                user_id: String,
-                request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
+            sig {
+              params(role_id: String, user_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
                 OpenAI::Models::Admin::Organization::Users::RoleRetrieveResponse
               )
-            end
+            }
             def retrieve(
               # The ID of the organization role to retrieve for the user.
               role_id,
@@ -45,20 +42,16 @@ module OpenAI
             end
 
             # Lists the organization roles assigned to a user within the organization.
-            sig do
+            sig {
               params(
                 user_id: String,
                 after: String,
                 limit: Integer,
-                order:
-                  OpenAI::Admin::Organization::Users::RoleListParams::Order::OrSymbol,
+                order: OpenAI::Admin::Organization::Users::RoleListParams::Order::OrSymbol,
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
-                OpenAI::Internal::NextCursorPage[
-                  OpenAI::Models::Admin::Organization::Users::RoleListResponse
-                ]
               )
-            end
+                .returns(OpenAI::Internal::NextCursorPage[OpenAI::Models::Admin::Organization::Users::RoleListResponse])
+            }
             def list(
               # The ID of the user to inspect.
               user_id,
@@ -74,15 +67,11 @@ module OpenAI
             end
 
             # Unassigns an organization role from a user within the organization.
-            sig do
-              params(
-                role_id: String,
-                user_id: String,
-                request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
+            sig {
+              params(role_id: String, user_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
                 OpenAI::Models::Admin::Organization::Users::RoleDeleteResponse
               )
-            end
+            }
             def delete(
               # The ID of the organization role to remove from the user.
               role_id,
@@ -97,8 +86,12 @@ module OpenAI
             def self.new(client:)
             end
           end
+
         end
+
       end
+
     end
+
   end
 end

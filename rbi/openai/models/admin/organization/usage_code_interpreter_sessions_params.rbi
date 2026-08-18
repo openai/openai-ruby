@@ -2,19 +2,22 @@
 
 module OpenAI
   module Models
+
     module Admin
+
       module Organization
+
         class UsageCodeInterpreterSessionsParams < OpenAI::Internal::Type::BaseModel
+
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # Start time (Unix seconds) of the query time range, inclusive.
           sig { returns(Integer) }
@@ -22,21 +25,15 @@ module OpenAI
 
           # Width of each time bucket in response. Currently `1m`, `1h` and `1d` are
           # supported, default to `1d`.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::BucketWidth::OrSymbol
-              )
-            )
-          end
+          sig {
+            returns(T.nilable(OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::BucketWidth::OrSymbol))
+          }
           attr_reader :bucket_width
 
-          sig do
-            params(
-              bucket_width:
-                OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::BucketWidth::OrSymbol
-            ).void
-          end
+          sig {
+            params(bucket_width: OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::BucketWidth::OrSymbol)
+              .void
+          }
           attr_writer :bucket_width
 
           # End time (Unix seconds) of the query time range, exclusive.
@@ -48,25 +45,19 @@ module OpenAI
 
           # Group the usage data by the specified fields. Support fields include
           # `project_id`.
-          sig do
+          sig {
             returns(
-              T.nilable(
-                T::Array[
-                  OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::GroupBy::OrSymbol
-                ]
-              )
+              T.nilable(T::Array[OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::GroupBy::OrSymbol])
             )
-          end
+          }
           attr_reader :group_by
 
-          sig do
+          sig {
             params(
-              group_by:
-                T::Array[
-                  OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::GroupBy::OrSymbol
-                ]
-            ).void
-          end
+              group_by: T::Array[OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::GroupBy::OrSymbol]
+            )
+              .void
+          }
           attr_writer :group_by
 
           # Specifies the number of buckets to return.
@@ -97,42 +88,55 @@ module OpenAI
 
           sig do
             params(
+
               start_time: Integer,
-              bucket_width:
-                OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::BucketWidth::OrSymbol,
+
+              bucket_width: OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::BucketWidth::OrSymbol,
+
               end_time: Integer,
-              group_by:
-                T::Array[
-                  OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::GroupBy::OrSymbol
-                ],
+
+              group_by: T::Array[OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::GroupBy::OrSymbol],
+
               limit: Integer,
+
               page: String,
+
               project_ids: T::Array[String],
+
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # Start time (Unix seconds) of the query time range, inclusive.
             start_time:,
+
             # Width of each time bucket in response. Currently `1m`, `1h` and `1d` are
             # supported, default to `1d`.
             bucket_width: nil,
+
             # End time (Unix seconds) of the query time range, exclusive.
             end_time: nil,
+
             # Group the usage data by the specified fields. Support fields include
             # `project_id`.
             group_by: nil,
+
             # Specifies the number of buckets to return.
             #
             # - `bucket_width=1d`: default: 7, max: 31
             # - `bucket_width=1h`: default: 24, max: 168
             # - `bucket_width=1m`: default: 60, max: 1440
             limit: nil,
+
             # A cursor for use in pagination. Corresponding to the `next_page` field from the
             # previous response.
             page: nil,
+
             # Return only usage for these projects.
             project_ids: nil,
+
             request_options: {}
           )
           end
@@ -141,13 +145,9 @@ module OpenAI
             override.returns(
               {
                 start_time: Integer,
-                bucket_width:
-                  OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::BucketWidth::OrSymbol,
+                bucket_width: OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::BucketWidth::OrSymbol,
                 end_time: Integer,
-                group_by:
-                  T::Array[
-                    OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::GroupBy::OrSymbol
-                  ],
+                group_by: T::Array[OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::GroupBy::OrSymbol],
                 limit: Integer,
                 page: String,
                 project_ids: T::Array[String],
@@ -163,38 +163,29 @@ module OpenAI
           module BucketWidth
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::BucketWidth
-                )
-              end
+            TaggedSymbol = T.type_alias {
+              T.all(Symbol, OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::BucketWidth)
+            }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            BUCKET_WIDTH_1M =
-              T.let(
-                :"1m",
-                OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::BucketWidth::TaggedSymbol
-              )
-            BUCKET_WIDTH_1H =
-              T.let(
-                :"1h",
-                OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::BucketWidth::TaggedSymbol
-              )
-            BUCKET_WIDTH_1D =
-              T.let(
-                :"1d",
-                OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::BucketWidth::TaggedSymbol
-              )
+            BUCKET_WIDTH_1M = T.let(
+              :"1m",
+              OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::BucketWidth::TaggedSymbol
+            )
+            BUCKET_WIDTH_1H = T.let(
+              :"1h",
+              OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::BucketWidth::TaggedSymbol
+            )
+            BUCKET_WIDTH_1D = T.let(
+              :"1d",
+              OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::BucketWidth::TaggedSymbol
+            )
 
-            sig do
+            sig {
               override.returns(
-                T::Array[
-                  OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::BucketWidth::TaggedSymbol
-                ]
+                T::Array[OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::BucketWidth::TaggedSymbol]
               )
-            end
+            }
             def self.values
             end
           end
@@ -202,33 +193,30 @@ module OpenAI
           module GroupBy
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::GroupBy
-                )
-              end
+            TaggedSymbol = T.type_alias {
+              T.all(Symbol, OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::GroupBy)
+            }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            PROJECT_ID =
-              T.let(
-                :project_id,
-                OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::GroupBy::TaggedSymbol
-              )
+            PROJECT_ID = T.let(
+              :project_id,
+              OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::GroupBy::TaggedSymbol
+            )
 
-            sig do
+            sig {
               override.returns(
-                T::Array[
-                  OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::GroupBy::TaggedSymbol
-                ]
+                T::Array[OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::GroupBy::TaggedSymbol]
               )
-            end
+            }
             def self.values
             end
           end
+
         end
+
       end
+
     end
+
   end
 end

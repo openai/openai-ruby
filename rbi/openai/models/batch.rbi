@@ -2,8 +2,15 @@
 
 module OpenAI
   module Models
+
     class Batch < OpenAI::Internal::Type::BaseModel
-      OrHash = T.type_alias { T.any(OpenAI::Batch, OpenAI::Internal::AnyHash) }
+
+      OrHash = T.type_alias do
+        T.any(
+          OpenAI::Batch,
+          OpenAI::Internal::AnyHash
+        )
+      end
 
       sig { returns(String) }
       attr_accessor :id
@@ -146,61 +153,101 @@ module OpenAI
 
       sig do
         params(
+
           id: String,
+
           completion_window: String,
+
           created_at: Integer,
+
           endpoint: String,
+
           input_file_id: String,
+
           status: OpenAI::Batch::Status::OrSymbol,
+
           cancelled_at: Integer,
+
           cancelling_at: Integer,
+
           completed_at: Integer,
+
           error_file_id: String,
+
           errors: OpenAI::Batch::Errors::OrHash,
+
           expired_at: Integer,
+
           expires_at: Integer,
+
           failed_at: Integer,
+
           finalizing_at: Integer,
+
           in_progress_at: Integer,
+
           metadata: T.nilable(T::Hash[Symbol, String]),
+
           model: String,
+
           output_file_id: String,
+
           request_counts: OpenAI::BatchRequestCounts::OrHash,
+
           usage: OpenAI::BatchUsage::OrHash,
+
           object: Symbol
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(
+
         id:,
+
         # The time frame within which the batch should be processed.
         completion_window:,
+
         # The Unix timestamp (in seconds) for when the batch was created.
         created_at:,
+
         # The OpenAI API endpoint used by the batch.
         endpoint:,
+
         # The ID of the input file for the batch.
         input_file_id:,
+
         # The current status of the batch.
         status:,
+
         # The Unix timestamp (in seconds) for when the batch was cancelled.
         cancelled_at: nil,
+
         # The Unix timestamp (in seconds) for when the batch started cancelling.
         cancelling_at: nil,
+
         # The Unix timestamp (in seconds) for when the batch was completed.
         completed_at: nil,
+
         # The ID of the file containing the outputs of requests with errors.
         error_file_id: nil,
+
         errors: nil,
+
         # The Unix timestamp (in seconds) for when the batch expired.
         expired_at: nil,
+
         # The Unix timestamp (in seconds) for when the batch will expire.
         expires_at: nil,
+
         # The Unix timestamp (in seconds) for when the batch failed.
         failed_at: nil,
+
         # The Unix timestamp (in seconds) for when the batch started finalizing.
         finalizing_at: nil,
+
         # The Unix timestamp (in seconds) for when the batch started processing.
         in_progress_at: nil,
+
         # Set of 16 key-value pairs that can be attached to an object. This can be useful
         # for storing additional information about the object in a structured format, and
         # querying for objects via API or the dashboard.
@@ -208,21 +255,27 @@ module OpenAI
         # Keys are strings with a maximum length of 64 characters. Values are strings with
         # a maximum length of 512 characters.
         metadata: nil,
+
         # Model ID used to process the batch, like `gpt-5-2025-08-07`. OpenAI offers a
         # wide range of models with different capabilities, performance characteristics,
         # and price points. Refer to the
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
         # available models.
         model: nil,
+
         # The ID of the file containing the outputs of successfully executed requests.
         output_file_id: nil,
+
         # The request counts for different statuses within the batch.
         request_counts: nil,
+
         # Represents token usage details including input tokens, output tokens, a
         # breakdown of output tokens, and the total tokens used. Only populated on batches
         # created after September 7, 2025.
         usage: nil,
+
         # The object type, which is always `batch`.
+
         object: :batch
       )
       end
@@ -280,10 +333,12 @@ module OpenAI
       end
 
       class Errors < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(OpenAI::Batch::Errors, OpenAI::Internal::AnyHash)
-          end
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Batch::Errors,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         sig { returns(T.nilable(T::Array[OpenAI::BatchError])) }
         attr_reader :data
@@ -300,25 +355,34 @@ module OpenAI
 
         sig do
           params(
+
             data: T::Array[OpenAI::BatchError::OrHash],
+
             object: String
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           data: nil,
+
           # The object type, which is always `list`.
+
           object: nil
         )
         end
 
         sig do
           override.returns(
-            { data: T::Array[OpenAI::BatchError], object: String }
+            {data: T::Array[OpenAI::BatchError], object: String}
           )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

@@ -2,21 +2,23 @@
 
 module OpenAI
   module Resources
+
     # Get a vector representation of a given input that can be easily consumed by
     # machine learning models and algorithms.
     class Embeddings
+
       # Creates an embedding vector representing the input text.
-      sig do
+      sig {
         params(
           input: OpenAI::EmbeddingCreateParams::Input::Variants,
           model: T.any(String, OpenAI::EmbeddingModel::OrSymbol),
           dimensions: Integer,
-          encoding_format:
-            OpenAI::EmbeddingCreateParams::EncodingFormat::OrSymbol,
+          encoding_format: OpenAI::EmbeddingCreateParams::EncodingFormat::OrSymbol,
           user: String,
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::CreateEmbeddingResponse)
-      end
+        )
+          .returns(OpenAI::CreateEmbeddingResponse)
+      }
       def create(
         # Input text to embed, encoded as a string or array of tokens. To embed multiple
         # inputs in a single request, pass an array of strings or array of token arrays.
@@ -53,5 +55,6 @@ module OpenAI
       def self.new(client:)
       end
     end
+
   end
 end

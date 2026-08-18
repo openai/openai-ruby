@@ -2,39 +2,52 @@
 
 module OpenAI
   module Models
+
     module Chat
+
       class CompletionRetrieveParams < OpenAI::Internal::Type::BaseModel
+
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Chat::CompletionRetrieveParams,
-              OpenAI::Internal::AnyHash
-            )
-          end
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Chat::CompletionRetrieveParams,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         sig { returns(String) }
         attr_accessor :completion_id
 
         sig do
           params(
+
             completion_id: String,
+
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
-        def self.new(completion_id:, request_options: {})
+        def self.new(
+
+          completion_id:,
+
+          request_options: {}
+        )
         end
 
         sig do
           override.returns(
-            { completion_id: String, request_options: OpenAI::RequestOptions }
+            {completion_id: String, request_options: OpenAI::RequestOptions}
           )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

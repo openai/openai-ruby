@@ -13,12 +13,18 @@ module OpenAI
 
     # @api private
     sig do
-      params(content: T.any(Pathname, StringIO, IO, String)).returns(OpenAI::FilePart)
+      params(content: T.any(Pathname, StringIO, IO, String)).returns(
+        OpenAI::FilePart
+      )
     end
     def with_content(content)
     end
 
-    sig { params(content: T.any(Pathname, StringIO, IO, String)).returns(T.any(Pathname, StringIO, IO, String)) }
+    sig do
+      params(content: T.any(Pathname, StringIO, IO, String)).returns(
+        T.any(Pathname, StringIO, IO, String)
+      )
+    end
     protected def content=(content)
     end
 
@@ -49,7 +55,8 @@ module OpenAI
         content: T.any(Pathname, StringIO, IO, String),
         filename: T.nilable(T.any(Pathname, String)),
         content_type: T.nilable(String)
-      ).returns(T.attached_class)
+      )
+        .returns(T.attached_class)
     end
     def self.new(content, filename: nil, content_type: nil)
     end

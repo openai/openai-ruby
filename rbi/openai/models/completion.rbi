@@ -2,9 +2,15 @@
 
 module OpenAI
   module Models
+
     class Completion < OpenAI::Internal::Type::BaseModel
-      OrHash =
-        T.type_alias { T.any(OpenAI::Completion, OpenAI::Internal::AnyHash) }
+
+      OrHash = T.type_alias do
+        T.any(
+          OpenAI::Completion,
+          OpenAI::Internal::AnyHash
+        )
+      end
 
       # A unique identifier for the completion.
       sig { returns(String) }
@@ -47,32 +53,48 @@ module OpenAI
       # non-streamed response objects share the same shape (unlike the chat endpoint).
       sig do
         params(
+
           id: String,
+
           choices: T::Array[OpenAI::CompletionChoice::OrHash],
+
           created: Integer,
+
           model: String,
+
           system_fingerprint: String,
+
           usage: OpenAI::CompletionUsage::OrHash,
+
           object: Symbol
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(
+
         # A unique identifier for the completion.
         id:,
+
         # The list of completion choices the model generated for the input prompt.
         choices:,
+
         # The Unix timestamp (in seconds) of when the completion was created.
         created:,
+
         # The model used for completion.
         model:,
+
         # This fingerprint represents the backend configuration that the model runs with.
         #
         # Can be used in conjunction with the `seed` request parameter to understand when
         # backend changes have been made that might impact determinism.
         system_fingerprint: nil,
+
         # Usage statistics for the completion request.
         usage: nil,
+
         # The object type, which is always "text_completion"
+
         object: :text_completion
       )
       end
@@ -92,6 +114,8 @@ module OpenAI
       end
       def to_hash
       end
+
     end
+
   end
 end

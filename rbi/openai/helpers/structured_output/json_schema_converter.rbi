@@ -14,23 +14,23 @@ module OpenAI
         # @api private
         NO_REF = T.let(Object.new.freeze, T.anything)
 
-        Input =
-          T.type_alias do
-            T.any(
-              OpenAI::Helpers::StructuredOutput::JsonSchemaConverter,
-              T::Class[T.anything]
-            )
-          end
-        State =
-          T.type_alias do
-            { defs: T::Hash[Object, String], path: T::Array[String] }
-          end
+        Input = T.type_alias do
+          T.any(
+            OpenAI::Helpers::StructuredOutput::JsonSchemaConverter,
+            T::Class[T.anything]
+          )
+        end
+
+        State = T.type_alias do
+          {defs: T::Hash[Object, String], path: T::Array[String]}
+        end
 
         # The exact JSON schema produced is subject to improvement between minor release versions.
         sig do
           params(
             state: OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::State
-          ).returns(OpenAI::Helpers::StructuredOutput::JsonSchema)
+          )
+            .returns(OpenAI::Helpers::StructuredOutput::JsonSchema)
         end
         def to_json_schema_inner(state:)
         end
@@ -41,7 +41,8 @@ module OpenAI
           sig do
             params(
               schema: OpenAI::Helpers::StructuredOutput::JsonSchema
-            ).returns(OpenAI::Helpers::StructuredOutput::JsonSchema)
+            )
+              .returns(OpenAI::Helpers::StructuredOutput::JsonSchema)
           end
           def to_nilable(schema)
           end
@@ -51,7 +52,8 @@ module OpenAI
             params(
               schema: OpenAI::Helpers::StructuredOutput::JsonSchema,
               meta: OpenAI::Internal::AnyHash
-            ).void
+            )
+              .void
           end
           def assoc_meta!(schema, meta:)
           end
@@ -59,12 +61,11 @@ module OpenAI
           # @api private
           sig do
             params(
-              state:
-                OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::State,
-              type:
-                OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::Input,
+              state: OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::State,
+              type: OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::Input,
               blk: T.proc.returns(OpenAI::Helpers::StructuredOutput::JsonSchema)
-            ).void
+            )
+              .void
           end
           def cache_def!(state, type:, &blk)
           end
@@ -72,9 +73,9 @@ module OpenAI
           # @api private
           sig do
             params(
-              type:
-                OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::Input
-            ).returns(OpenAI::Helpers::StructuredOutput::JsonSchema)
+              type: OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::Input
+            )
+              .returns(OpenAI::Helpers::StructuredOutput::JsonSchema)
           end
           def to_json_schema(type)
           end
@@ -82,11 +83,10 @@ module OpenAI
           # @api private
           sig do
             params(
-              type:
-                OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::Input,
-              state:
-                OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::State
-            ).returns(OpenAI::Helpers::StructuredOutput::JsonSchema)
+              type: OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::Input,
+              state: OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::State
+            )
+              .returns(OpenAI::Helpers::StructuredOutput::JsonSchema)
           end
           def to_json_schema_inner(type, state:)
           end

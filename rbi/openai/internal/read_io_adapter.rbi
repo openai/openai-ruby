@@ -32,7 +32,8 @@ module OpenAI
           params(
             max_len: T.nilable(Integer),
             out_string: T.nilable(String)
-          ).returns(T.nilable(String))
+          )
+            .returns(T.nilable(String))
         end
         def read(max_len = nil, out_string = nil)
         end
@@ -42,7 +43,8 @@ module OpenAI
           params(
             src: T.any(String, Pathname, StringIO, T::Enumerable[String]),
             blk: T.proc.params(arg0: String).void
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(src, &blk)
         end

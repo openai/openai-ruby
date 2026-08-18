@@ -47,20 +47,19 @@ module OpenAI
         # @api private
         sig do
           params(
-            key:
-              T.any(
-                Symbol,
-                OpenAI::Internal::AnyHash,
-                T.proc.returns(T.anything),
-                T.anything
-              ),
-            spec:
-              T.any(
-                OpenAI::Internal::AnyHash,
-                T.proc.returns(T.anything),
-                T.anything
-              )
-          ).void
+            key: T.any(
+              Symbol,
+              OpenAI::Internal::AnyHash,
+              T.proc.returns(T.anything),
+              T.anything
+            ),
+            spec: T.any(
+              OpenAI::Internal::AnyHash,
+              T.proc.returns(T.anything),
+              T.anything
+            )
+          )
+            .void
         end
         private def variant(key, spec = nil)
         end

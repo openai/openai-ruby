@@ -2,18 +2,20 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class RealtimeAudioConfigOutput < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::RealtimeAudioConfigOutput,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::RealtimeAudioConfigOutput,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The format of the output audio.
-        sig do
+        sig {
           returns(
             T.nilable(
               T.any(
@@ -23,19 +25,19 @@ module OpenAI
               )
             )
           )
-        end
+        }
         attr_reader :format_
 
-        sig do
+        sig {
           params(
-            format_:
-              T.any(
-                OpenAI::Realtime::RealtimeAudioFormats::AudioPCM::OrHash,
-                OpenAI::Realtime::RealtimeAudioFormats::AudioPCMU::OrHash,
-                OpenAI::Realtime::RealtimeAudioFormats::AudioPCMA::OrHash
-              )
-          ).void
-        end
+            format_: T.any(
+              OpenAI::Realtime::RealtimeAudioFormats::AudioPCM::OrHash,
+              OpenAI::Realtime::RealtimeAudioFormats::AudioPCMU::OrHash,
+              OpenAI::Realtime::RealtimeAudioFormats::AudioPCMA::OrHash
+            )
+          )
+            .void
+        }
         attr_writer :format_
 
         # The speed of the model's spoken response as a multiple of the original speed.
@@ -57,7 +59,7 @@ module OpenAI
         # `{ "id": "voice_1234" }`. Voice cannot be changed during the session once the
         # model has responded with audio at least once. We recommend `marin` and `cedar`
         # for best quality.
-        sig do
+        sig {
           returns(
             T.nilable(
               T.any(
@@ -67,41 +69,45 @@ module OpenAI
               )
             )
           )
-        end
+        }
         attr_reader :voice
 
-        sig do
+        sig {
           params(
-            voice:
-              T.any(
-                String,
-                OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::OrSymbol,
-                OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::ID::OrHash
-              )
-          ).void
-        end
+            voice: T.any(
+              String,
+              OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::OrSymbol,
+              OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::ID::OrHash
+            )
+          )
+            .void
+        }
         attr_writer :voice
 
         sig do
           params(
-            format_:
-              T.any(
-                OpenAI::Realtime::RealtimeAudioFormats::AudioPCM::OrHash,
-                OpenAI::Realtime::RealtimeAudioFormats::AudioPCMU::OrHash,
-                OpenAI::Realtime::RealtimeAudioFormats::AudioPCMA::OrHash
-              ),
+
+            format_: T.any(
+              OpenAI::Realtime::RealtimeAudioFormats::AudioPCM::OrHash,
+              OpenAI::Realtime::RealtimeAudioFormats::AudioPCMU::OrHash,
+              OpenAI::Realtime::RealtimeAudioFormats::AudioPCMA::OrHash
+            ),
+
             speed: Float,
-            voice:
-              T.any(
-                String,
-                OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::OrSymbol,
-                OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::ID::OrHash
-              )
-          ).returns(T.attached_class)
+
+            voice: T.any(
+              String,
+              OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::OrSymbol,
+              OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::ID::OrHash
+            )
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The format of the output audio.
           format_: nil,
+
           # The speed of the model's spoken response as a multiple of the original speed.
           # 1.0 is the default speed. 0.25 is the minimum speed. 1.5 is the maximum speed.
           # This value can only be changed in between model turns, not while a response is
@@ -110,12 +116,14 @@ module OpenAI
           # This parameter is a post-processing adjustment to the audio after it is
           # generated, it's also possible to prompt the model to speak faster or slower.
           speed: nil,
+
           # The voice the model uses to respond. Supported built-in voices are `alloy`,
           # `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`, and
           # `cedar`. You may also provide a custom voice object with an `id`, for example
           # `{ "id": "voice_1234" }`. Voice cannot be changed during the session once the
           # model has responded with audio at least once. We recommend `marin` and `cedar`
           # for best quality.
+
           voice: nil
         )
         end
@@ -123,19 +131,17 @@ module OpenAI
         sig do
           override.returns(
             {
-              format_:
-                T.any(
-                  OpenAI::Realtime::RealtimeAudioFormats::AudioPCM,
-                  OpenAI::Realtime::RealtimeAudioFormats::AudioPCMU,
-                  OpenAI::Realtime::RealtimeAudioFormats::AudioPCMA
-                ),
+              format_: T.any(
+                OpenAI::Realtime::RealtimeAudioFormats::AudioPCM,
+                OpenAI::Realtime::RealtimeAudioFormats::AudioPCMU,
+                OpenAI::Realtime::RealtimeAudioFormats::AudioPCMA
+              ),
               speed: Float,
-              voice:
-                T.any(
-                  String,
-                  OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::OrSymbol,
-                  OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::ID
-                )
+              voice: T.any(
+                String,
+                OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::OrSymbol,
+                OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::ID
+              )
             }
           )
         end
@@ -151,109 +157,78 @@ module OpenAI
         module Voice
           extend OpenAI::Internal::Type::Union
 
-          Variants =
-            T.type_alias do
-              T.any(
-                String,
-                OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::TaggedSymbol,
-                OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::ID
-              )
-            end
+          Variants = T.type_alias {
+            T.any(
+              String,
+              OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::TaggedSymbol,
+              OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::ID
+            )
+          }
 
           class ID < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::ID,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::ID,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # The custom voice ID, e.g. `voice_1234`.
             sig { returns(String) }
             attr_accessor :id
 
             # Custom voice reference.
-            sig { params(id: String).returns(T.attached_class) }
+            sig do
+              params(
+
+                id: String
+              )
+                .returns(T.attached_class)
+            end
             def self.new(
+
               # The custom voice ID, e.g. `voice_1234`.
+
               id:
             )
             end
 
-            sig { override.returns({ id: String }) }
+            sig do
+              override.returns(
+                {id: String}
+              )
+            end
             def to_hash
             end
+
           end
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::Variants
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::Variants]) }
           def self.variants
           end
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(Symbol, OpenAI::Realtime::RealtimeAudioConfigOutput::Voice)
-            end
+          TaggedSymbol = T.type_alias do
+            T.all(Symbol, OpenAI::Realtime::RealtimeAudioConfigOutput::Voice)
+          end
+
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          ALLOY =
-            T.let(
-              :alloy,
-              OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::TaggedSymbol
-            )
-          ASH =
-            T.let(
-              :ash,
-              OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::TaggedSymbol
-            )
-          BALLAD =
-            T.let(
-              :ballad,
-              OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::TaggedSymbol
-            )
-          CORAL =
-            T.let(
-              :coral,
-              OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::TaggedSymbol
-            )
-          ECHO =
-            T.let(
-              :echo,
-              OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::TaggedSymbol
-            )
-          SAGE =
-            T.let(
-              :sage,
-              OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::TaggedSymbol
-            )
-          SHIMMER =
-            T.let(
-              :shimmer,
-              OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::TaggedSymbol
-            )
-          VERSE =
-            T.let(
-              :verse,
-              OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::TaggedSymbol
-            )
-          MARIN =
-            T.let(
-              :marin,
-              OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::TaggedSymbol
-            )
-          CEDAR =
-            T.let(
-              :cedar,
-              OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::TaggedSymbol
-            )
+          ALLOY = T.let(:alloy, OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::TaggedSymbol)
+          ASH = T.let(:ash, OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::TaggedSymbol)
+          BALLAD = T.let(:ballad, OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::TaggedSymbol)
+          CORAL = T.let(:coral, OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::TaggedSymbol)
+          ECHO = T.let(:echo, OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::TaggedSymbol)
+          SAGE = T.let(:sage, OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::TaggedSymbol)
+          SHIMMER = T.let(:shimmer, OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::TaggedSymbol)
+          VERSE = T.let(:verse, OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::TaggedSymbol)
+          MARIN = T.let(:marin, OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::TaggedSymbol)
+          CEDAR = T.let(:cedar, OpenAI::Realtime::RealtimeAudioConfigOutput::Voice::TaggedSymbol)
+
         end
+
       end
+
     end
+
   end
 end

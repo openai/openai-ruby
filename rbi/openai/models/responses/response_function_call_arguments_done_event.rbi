@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Responses
+
       class ResponseFunctionCallArgumentsDoneEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Responses::ResponseFunctionCallArgumentsDoneEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Responses::ResponseFunctionCallArgumentsDoneEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The function-call arguments.
         sig { returns(String) }
@@ -38,25 +40,38 @@ module OpenAI
         # Emitted when function-call arguments are finalized.
         sig do
           params(
+
             arguments: String,
+
             item_id: String,
+
             name: String,
+
             output_index: Integer,
+
             sequence_number: Integer,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The function-call arguments.
           arguments:,
+
           # The ID of the item.
           item_id:,
+
           # The name of the function that was called.
           name:,
+
           # The index of the output item.
           output_index:,
+
           # The sequence number of this event.
           sequence_number:,
+
           type: :"response.function_call_arguments.done"
         )
         end
@@ -75,7 +90,10 @@ module OpenAI
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

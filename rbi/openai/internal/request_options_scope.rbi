@@ -7,7 +7,8 @@ module OpenAI
       sig do
         params(
           request_options: T.nilable(OpenAI::RequestOptions::OrHash)
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(request_options)
       end

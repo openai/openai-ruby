@@ -2,17 +2,19 @@
 
 module OpenAI
   module Models
+
     BetaResponseTextConfig = Beta::BetaResponseTextConfig
 
     module Beta
+
       class BetaResponseTextConfig < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Beta::BetaResponseTextConfig,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Beta::BetaResponseTextConfig,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # An object specifying the format that the model must output.
         #
@@ -27,7 +29,7 @@ module OpenAI
         # Setting to `{ "type": "json_object" }` enables the older JSON mode, which
         # ensures the message the model generates is valid JSON. Using `json_schema` is
         # preferred for models that support it.
-        sig do
+        sig {
           returns(
             T.nilable(
               T.any(
@@ -37,30 +39,26 @@ module OpenAI
               )
             )
           )
-        end
+        }
         attr_reader :format_
 
-        sig do
+        sig {
           params(
-            format_:
-              T.any(
-                OpenAI::Beta::BetaResponseFormatTextConfig::Text::OrHash,
-                OpenAI::Beta::BetaResponseFormatTextJSONSchemaConfig::OrHash,
-                OpenAI::Beta::BetaResponseFormatTextConfig::JSONObject::OrHash
-              )
-          ).void
-        end
+            format_: T.any(
+              OpenAI::Beta::BetaResponseFormatTextConfig::Text::OrHash,
+              OpenAI::Beta::BetaResponseFormatTextJSONSchemaConfig::OrHash,
+              OpenAI::Beta::BetaResponseFormatTextConfig::JSONObject::OrHash
+            )
+          )
+            .void
+        }
         attr_writer :format_
 
         # Constrains the verbosity of the model's response. Lower values will result in
         # more concise responses, while higher values will result in more verbose
         # responses. Currently supported values are `low`, `medium`, and `high`. The
         # default is `medium`.
-        sig do
-          returns(
-            T.nilable(OpenAI::Beta::BetaResponseTextConfig::Verbosity::OrSymbol)
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Beta::BetaResponseTextConfig::Verbosity::OrSymbol)) }
         attr_accessor :verbosity
 
         # Configuration options for a text response from the model. Can be plain text or
@@ -70,19 +68,19 @@ module OpenAI
         # - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
         sig do
           params(
-            format_:
-              T.any(
-                OpenAI::Beta::BetaResponseFormatTextConfig::Text::OrHash,
-                OpenAI::Beta::BetaResponseFormatTextJSONSchemaConfig::OrHash,
-                OpenAI::Beta::BetaResponseFormatTextConfig::JSONObject::OrHash
-              ),
-            verbosity:
-              T.nilable(
-                OpenAI::Beta::BetaResponseTextConfig::Verbosity::OrSymbol
-              )
-          ).returns(T.attached_class)
+
+            format_: T.any(
+              OpenAI::Beta::BetaResponseFormatTextConfig::Text::OrHash,
+              OpenAI::Beta::BetaResponseFormatTextJSONSchemaConfig::OrHash,
+              OpenAI::Beta::BetaResponseFormatTextConfig::JSONObject::OrHash
+            ),
+
+            verbosity: T.nilable(OpenAI::Beta::BetaResponseTextConfig::Verbosity::OrSymbol)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # An object specifying the format that the model must output.
           #
           # Configuring `{ "type": "json_schema" }` enables Structured Outputs, which
@@ -97,10 +95,12 @@ module OpenAI
           # ensures the message the model generates is valid JSON. Using `json_schema` is
           # preferred for models that support it.
           format_: nil,
+
           # Constrains the verbosity of the model's response. Lower values will result in
           # more concise responses, while higher values will result in more verbose
           # responses. Currently supported values are `low`, `medium`, and `high`. The
           # default is `medium`.
+
           verbosity: nil
         )
         end
@@ -108,16 +108,12 @@ module OpenAI
         sig do
           override.returns(
             {
-              format_:
-                T.any(
-                  OpenAI::Beta::BetaResponseFormatTextConfig::Text,
-                  OpenAI::Beta::BetaResponseFormatTextJSONSchemaConfig,
-                  OpenAI::Beta::BetaResponseFormatTextConfig::JSONObject
-                ),
-              verbosity:
-                T.nilable(
-                  OpenAI::Beta::BetaResponseTextConfig::Verbosity::OrSymbol
-                )
+              format_: T.any(
+                OpenAI::Beta::BetaResponseFormatTextConfig::Text,
+                OpenAI::Beta::BetaResponseFormatTextJSONSchemaConfig,
+                OpenAI::Beta::BetaResponseFormatTextConfig::JSONObject
+              ),
+              verbosity: T.nilable(OpenAI::Beta::BetaResponseTextConfig::Verbosity::OrSymbol)
             }
           )
         end
@@ -131,39 +127,21 @@ module OpenAI
         module Verbosity
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(Symbol, OpenAI::Beta::BetaResponseTextConfig::Verbosity)
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::BetaResponseTextConfig::Verbosity) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          LOW =
-            T.let(
-              :low,
-              OpenAI::Beta::BetaResponseTextConfig::Verbosity::TaggedSymbol
-            )
-          MEDIUM =
-            T.let(
-              :medium,
-              OpenAI::Beta::BetaResponseTextConfig::Verbosity::TaggedSymbol
-            )
-          HIGH =
-            T.let(
-              :high,
-              OpenAI::Beta::BetaResponseTextConfig::Verbosity::TaggedSymbol
-            )
+          LOW = T.let(:low, OpenAI::Beta::BetaResponseTextConfig::Verbosity::TaggedSymbol)
+          MEDIUM = T.let(:medium, OpenAI::Beta::BetaResponseTextConfig::Verbosity::TaggedSymbol)
+          HIGH = T.let(:high, OpenAI::Beta::BetaResponseTextConfig::Verbosity::TaggedSymbol)
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Beta::BetaResponseTextConfig::Verbosity::TaggedSymbol
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Beta::BetaResponseTextConfig::Verbosity::TaggedSymbol]) }
           def self.values
           end
         end
+
       end
+
     end
+
   end
 end

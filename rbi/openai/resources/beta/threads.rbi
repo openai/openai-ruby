@@ -2,9 +2,12 @@
 
 module OpenAI
   module Resources
+
     class Beta
+
       # Build Assistants that can call models and use tools.
       class Threads
+
         # Build Assistants that can call models and use tools.
         sig { returns(OpenAI::Resources::Beta::Threads::Runs) }
         attr_reader :runs
@@ -14,18 +17,15 @@ module OpenAI
         attr_reader :messages
 
         # Create a thread.
-        sig do
+        sig {
           params(
-            messages:
-              T::Array[OpenAI::Beta::ThreadCreateParams::Message::OrHash],
+            messages: T::Array[OpenAI::Beta::ThreadCreateParams::Message::OrHash],
             metadata: T.nilable(T::Hash[Symbol, String]),
-            tool_resources:
-              T.nilable(
-                OpenAI::Beta::ThreadCreateParams::ToolResources::OrHash
-              ),
+            tool_resources: T.nilable(OpenAI::Beta::ThreadCreateParams::ToolResources::OrHash),
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Beta::Thread)
-        end
+          )
+            .returns(OpenAI::Beta::Thread)
+        }
         def create(
           # A list of [messages](https://platform.openai.com/docs/api-reference/messages) to
           # start the thread with.
@@ -47,12 +47,9 @@ module OpenAI
         end
 
         # Retrieves a thread.
-        sig do
-          params(
-            thread_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Beta::Thread)
-        end
+        sig {
+          params(thread_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::Beta::Thread)
+        }
         def retrieve(
           # The ID of the thread to retrieve.
           thread_id,
@@ -61,17 +58,15 @@ module OpenAI
         end
 
         # Modifies a thread.
-        sig do
+        sig {
           params(
             thread_id: String,
             metadata: T.nilable(T::Hash[Symbol, String]),
-            tool_resources:
-              T.nilable(
-                OpenAI::Beta::ThreadUpdateParams::ToolResources::OrHash
-              ),
+            tool_resources: T.nilable(OpenAI::Beta::ThreadUpdateParams::ToolResources::OrHash),
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Beta::Thread)
-        end
+          )
+            .returns(OpenAI::Beta::Thread)
+        }
         def update(
           # The ID of the thread to modify. Only the `metadata` can be modified.
           thread_id,
@@ -92,12 +87,11 @@ module OpenAI
         end
 
         # Delete a thread.
-        sig do
-          params(
-            thread_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Beta::ThreadDeleted)
-        end
+        sig {
+          params(thread_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+            OpenAI::Beta::ThreadDeleted
+          )
+        }
         def delete(
           # The ID of the thread to delete.
           thread_id,
@@ -108,7 +102,7 @@ module OpenAI
         # See {OpenAI::Resources::Beta::Threads#stream_raw} for streaming counterpart.
         #
         # Create a thread and run it in one request.
-        sig do
+        sig {
           params(
             assistant_id: String,
             instructions: T.nilable(String),
@@ -117,47 +111,36 @@ module OpenAI
             metadata: T.nilable(T::Hash[Symbol, String]),
             model: T.nilable(T.any(String, OpenAI::ChatModel::OrSymbol)),
             parallel_tool_calls: T::Boolean,
-            response_format:
-              T.nilable(
-                T.any(
-                  Symbol,
-                  OpenAI::ResponseFormatText::OrHash,
-                  OpenAI::ResponseFormatJSONObject::OrHash,
-                  OpenAI::ResponseFormatJSONSchema::OrHash
-                )
-              ),
+            response_format: T.nilable(
+              T.any(
+                Symbol,
+                OpenAI::ResponseFormatText::OrHash,
+                OpenAI::ResponseFormatJSONObject::OrHash,
+                OpenAI::ResponseFormatJSONSchema::OrHash
+              )
+            ),
             temperature: T.nilable(Float),
             thread: OpenAI::Beta::ThreadCreateAndRunParams::Thread::OrHash,
-            tool_choice:
-              T.nilable(
+            tool_choice: T.nilable(
+              T.any(OpenAI::Beta::AssistantToolChoiceOption::Auto::OrSymbol, OpenAI::Beta::AssistantToolChoice::OrHash)
+            ),
+            tool_resources: T.nilable(OpenAI::Beta::ThreadCreateAndRunParams::ToolResources::OrHash),
+            tools: T.nilable(
+              T::Array[
                 T.any(
-                  OpenAI::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
-                  OpenAI::Beta::AssistantToolChoice::OrHash
+                  OpenAI::Beta::CodeInterpreterTool::OrHash,
+                  OpenAI::Beta::FileSearchTool::OrHash,
+                  OpenAI::Beta::FunctionTool::OrHash
                 )
-              ),
-            tool_resources:
-              T.nilable(
-                OpenAI::Beta::ThreadCreateAndRunParams::ToolResources::OrHash
-              ),
-            tools:
-              T.nilable(
-                T::Array[
-                  T.any(
-                    OpenAI::Beta::CodeInterpreterTool::OrHash,
-                    OpenAI::Beta::FileSearchTool::OrHash,
-                    OpenAI::Beta::FunctionTool::OrHash
-                  )
-                ]
-              ),
+              ]
+            ),
             top_p: T.nilable(Float),
-            truncation_strategy:
-              T.nilable(
-                OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy::OrHash
-              ),
+            truncation_strategy: T.nilable(OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy::OrHash),
             stream: T.noreturn,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Beta::Threads::Run)
-        end
+          )
+            .returns(OpenAI::Beta::Threads::Run)
+        }
         def create_and_run(
           # The ID of the
           # [assistant](https://platform.openai.com/docs/api-reference/assistants) to use to
@@ -258,7 +241,7 @@ module OpenAI
         # counterpart.
         #
         # Create a thread and run it in one request.
-        sig do
+        sig {
           params(
             assistant_id: String,
             instructions: T.nilable(String),
@@ -267,51 +250,36 @@ module OpenAI
             metadata: T.nilable(T::Hash[Symbol, String]),
             model: T.nilable(T.any(String, OpenAI::ChatModel::OrSymbol)),
             parallel_tool_calls: T::Boolean,
-            response_format:
-              T.nilable(
-                T.any(
-                  Symbol,
-                  OpenAI::ResponseFormatText::OrHash,
-                  OpenAI::ResponseFormatJSONObject::OrHash,
-                  OpenAI::ResponseFormatJSONSchema::OrHash
-                )
-              ),
+            response_format: T.nilable(
+              T.any(
+                Symbol,
+                OpenAI::ResponseFormatText::OrHash,
+                OpenAI::ResponseFormatJSONObject::OrHash,
+                OpenAI::ResponseFormatJSONSchema::OrHash
+              )
+            ),
             temperature: T.nilable(Float),
             thread: OpenAI::Beta::ThreadCreateAndRunParams::Thread::OrHash,
-            tool_choice:
-              T.nilable(
+            tool_choice: T.nilable(
+              T.any(OpenAI::Beta::AssistantToolChoiceOption::Auto::OrSymbol, OpenAI::Beta::AssistantToolChoice::OrHash)
+            ),
+            tool_resources: T.nilable(OpenAI::Beta::ThreadCreateAndRunParams::ToolResources::OrHash),
+            tools: T.nilable(
+              T::Array[
                 T.any(
-                  OpenAI::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
-                  OpenAI::Beta::AssistantToolChoice::OrHash
+                  OpenAI::Beta::CodeInterpreterTool::OrHash,
+                  OpenAI::Beta::FileSearchTool::OrHash,
+                  OpenAI::Beta::FunctionTool::OrHash
                 )
-              ),
-            tool_resources:
-              T.nilable(
-                OpenAI::Beta::ThreadCreateAndRunParams::ToolResources::OrHash
-              ),
-            tools:
-              T.nilable(
-                T::Array[
-                  T.any(
-                    OpenAI::Beta::CodeInterpreterTool::OrHash,
-                    OpenAI::Beta::FileSearchTool::OrHash,
-                    OpenAI::Beta::FunctionTool::OrHash
-                  )
-                ]
-              ),
+              ]
+            ),
             top_p: T.nilable(Float),
-            truncation_strategy:
-              T.nilable(
-                OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy::OrHash
-              ),
+            truncation_strategy: T.nilable(OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy::OrHash),
             stream: T.noreturn,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(
-            OpenAI::Internal::Stream[
-              OpenAI::Beta::AssistantStreamEvent::Variants
-            ]
           )
-        end
+            .returns(OpenAI::Internal::Stream[OpenAI::Beta::AssistantStreamEvent::Variants])
+        }
         def stream_raw(
           # The ID of the
           # [assistant](https://platform.openai.com/docs/api-reference/assistants) to use to
@@ -413,6 +381,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

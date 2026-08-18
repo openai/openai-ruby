@@ -2,12 +2,17 @@
 
 module OpenAI
   module Models
+
     module Beta
+
       class ThreadStreamEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(OpenAI::Beta::ThreadStreamEvent, OpenAI::Internal::AnyHash)
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Beta::ThreadStreamEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # Represents a thread that contains
         # [messages](https://platform.openai.com/docs/api-reference/messages).
@@ -32,29 +37,39 @@ module OpenAI
         # created.
         sig do
           params(
+
             data: OpenAI::Beta::Thread::OrHash,
+
             enabled: T::Boolean,
+
             event: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Represents a thread that contains
           # [messages](https://platform.openai.com/docs/api-reference/messages).
           data:,
+
           # Whether to enable input audio transcription.
           enabled: nil,
+
           event: :"thread.created"
         )
         end
 
         sig do
           override.returns(
-            { data: OpenAI::Beta::Thread, event: Symbol, enabled: T::Boolean }
+            {data: OpenAI::Beta::Thread, event: Symbol, enabled: T::Boolean}
           )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

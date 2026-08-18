@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class ResponseDoneEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::ResponseDoneEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::ResponseDoneEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The unique ID of the server event.
         sig { returns(String) }
@@ -20,9 +22,7 @@ module OpenAI
         sig { returns(OpenAI::Realtime::RealtimeResponse) }
         attr_reader :response
 
-        sig do
-          params(response: OpenAI::Realtime::RealtimeResponse::OrHash).void
-        end
+        sig { params(response: OpenAI::Realtime::RealtimeResponse::OrHash).void }
         attr_writer :response
 
         # The event type, must be `response.done`.
@@ -41,33 +41,40 @@ module OpenAI
         # response, excluding any audio content.
         sig do
           params(
+
             event_id: String,
+
             response: OpenAI::Realtime::RealtimeResponse::OrHash,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The unique ID of the server event.
           event_id:,
+
           # The response resource.
           response:,
+
           # The event type, must be `response.done`.
+
           type: :"response.done"
         )
         end
 
         sig do
           override.returns(
-            {
-              event_id: String,
-              response: OpenAI::Realtime::RealtimeResponse,
-              type: Symbol
-            }
+            {event_id: String, response: OpenAI::Realtime::RealtimeResponse, type: Symbol}
           )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

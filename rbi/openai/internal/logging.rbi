@@ -20,7 +20,8 @@ module OpenAI
             on_retry: T.nilable(T.proc.params(event: OpenAI::RetryEvent).void),
             method: Symbol,
             url: URI::Generic
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(logger:, log_level:, on_retry:, method:, url:)
         end
@@ -29,7 +30,8 @@ module OpenAI
           params(
             request: OpenAI::HTTPClient::Request,
             redirect_count: Integer
-          ).void
+          )
+            .void
         end
         def request_started(request, redirect_count:)
         end
@@ -53,7 +55,8 @@ module OpenAI
             response: T.nilable(OpenAI::ResponseMetadata),
             retry_count: Integer,
             max_retries: Integer
-          ).void
+          )
+            .void
         end
         def retry_scheduled(
           cause,
@@ -72,7 +75,8 @@ module OpenAI
           params(
             stream: T.untyped,
             response: OpenAI::HTTPClient::Response
-          ).returns(T.untyped)
+          )
+            .returns(T.untyped)
         end
         def observe_stream(stream, response:)
         end
@@ -88,7 +92,8 @@ module OpenAI
             complete: T::Boolean,
             total_bytes: Integer,
             attempt: Integer
-          ).void
+          )
+            .void
         end
         def response_body(body, headers:, complete:, total_bytes:, attempt:)
         end
@@ -97,7 +102,7 @@ module OpenAI
       class ObservedBody
         include Enumerable
 
-        Elem = type_member { { fixed: String } }
+        Elem = type_member { {fixed: String} }
 
         sig do
           params(
@@ -105,7 +110,8 @@ module OpenAI
             headers: T::Hash[String, String],
             context: OpenAI::Internal::Logging::Context,
             attempt: Integer
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(body:, headers:, context:, attempt:)
         end
@@ -182,7 +188,8 @@ module OpenAI
             headers: T::Hash[String, String],
             complete: T::Boolean,
             total_bytes: Integer
-          ).returns(String)
+          )
+            .returns(String)
         end
         def format_observed_body(body, headers:, complete:, total_bytes:)
         end

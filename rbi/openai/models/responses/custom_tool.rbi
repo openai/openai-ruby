@@ -2,12 +2,17 @@
 
 module OpenAI
   module Models
+
     module Responses
+
       class CustomTool < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(OpenAI::Responses::CustomTool, OpenAI::Internal::AnyHash)
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Responses::CustomTool,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The name of the custom tool, used to identify it in tool calls.
         sig { returns(String) }
@@ -18,13 +23,7 @@ module OpenAI
         attr_accessor :type
 
         # The tool invocation context(s).
-        sig do
-          returns(
-            T.nilable(
-              T::Array[OpenAI::Responses::CustomTool::AllowedCaller::OrSymbol]
-            )
-          )
-        end
+        sig { returns(T.nilable(T::Array[OpenAI::Responses::CustomTool::AllowedCaller::OrSymbol])) }
         attr_accessor :allowed_callers
 
         # Whether this tool should be deferred and discovered via tool search.
@@ -42,60 +41,55 @@ module OpenAI
         attr_writer :description
 
         # The input format for the custom tool. Default is unconstrained text.
-        sig do
-          returns(
-            T.nilable(
-              T.any(
-                OpenAI::CustomToolInputFormat::Text,
-                OpenAI::CustomToolInputFormat::Grammar
-              )
-            )
-          )
-        end
+        sig { returns(T.nilable(T.any(OpenAI::CustomToolInputFormat::Text, OpenAI::CustomToolInputFormat::Grammar))) }
         attr_reader :format_
 
-        sig do
+        sig {
           params(
-            format_:
-              T.any(
-                OpenAI::CustomToolInputFormat::Text::OrHash,
-                OpenAI::CustomToolInputFormat::Grammar::OrHash
-              )
-          ).void
-        end
+            format_: T.any(OpenAI::CustomToolInputFormat::Text::OrHash, OpenAI::CustomToolInputFormat::Grammar::OrHash)
+          )
+            .void
+        }
         attr_writer :format_
 
         # A custom tool that processes input using a specified format. Learn more about
         # [custom tools](https://platform.openai.com/docs/guides/function-calling#custom-tools)
         sig do
           params(
+
             name: String,
-            allowed_callers:
-              T.nilable(
-                T::Array[OpenAI::Responses::CustomTool::AllowedCaller::OrSymbol]
-              ),
+
+            allowed_callers: T.nilable(T::Array[OpenAI::Responses::CustomTool::AllowedCaller::OrSymbol]),
+
             defer_loading: T::Boolean,
+
             description: String,
-            format_:
-              T.any(
-                OpenAI::CustomToolInputFormat::Text::OrHash,
-                OpenAI::CustomToolInputFormat::Grammar::OrHash
-              ),
+
+            format_: T.any(OpenAI::CustomToolInputFormat::Text::OrHash, OpenAI::CustomToolInputFormat::Grammar::OrHash),
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The name of the custom tool, used to identify it in tool calls.
           name:,
+
           # The tool invocation context(s).
           allowed_callers: nil,
+
           # Whether this tool should be deferred and discovered via tool search.
           defer_loading: nil,
+
           # Optional description of the custom tool, used to provide more context.
           description: nil,
+
           # The input format for the custom tool. Default is unconstrained text.
           format_: nil,
+
           # The type of the custom tool. Always `custom`.
+
           type: :custom
         )
         end
@@ -105,19 +99,10 @@ module OpenAI
             {
               name: String,
               type: Symbol,
-              allowed_callers:
-                T.nilable(
-                  T::Array[
-                    OpenAI::Responses::CustomTool::AllowedCaller::OrSymbol
-                  ]
-                ),
+              allowed_callers: T.nilable(T::Array[OpenAI::Responses::CustomTool::AllowedCaller::OrSymbol]),
               defer_loading: T::Boolean,
               description: String,
-              format_:
-                T.any(
-                  OpenAI::CustomToolInputFormat::Text,
-                  OpenAI::CustomToolInputFormat::Grammar
-                )
+              format_: T.any(OpenAI::CustomToolInputFormat::Text, OpenAI::CustomToolInputFormat::Grammar)
             }
           )
         end
@@ -127,34 +112,20 @@ module OpenAI
         module AllowedCaller
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(Symbol, OpenAI::Responses::CustomTool::AllowedCaller)
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::CustomTool::AllowedCaller) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          DIRECT =
-            T.let(
-              :direct,
-              OpenAI::Responses::CustomTool::AllowedCaller::TaggedSymbol
-            )
-          PROGRAMMATIC =
-            T.let(
-              :programmatic,
-              OpenAI::Responses::CustomTool::AllowedCaller::TaggedSymbol
-            )
+          DIRECT = T.let(:direct, OpenAI::Responses::CustomTool::AllowedCaller::TaggedSymbol)
+          PROGRAMMATIC = T.let(:programmatic, OpenAI::Responses::CustomTool::AllowedCaller::TaggedSymbol)
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Responses::CustomTool::AllowedCaller::TaggedSymbol
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Responses::CustomTool::AllowedCaller::TaggedSymbol]) }
           def self.values
           end
         end
+
       end
+
     end
+
   end
 end

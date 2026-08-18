@@ -2,26 +2,30 @@
 
 module OpenAI
   module Resources
+
     class Admin
+
       class Organization
+
         class DataRetention
+
           # Retrieves organization data retention controls.
-          sig do
+          sig {
             params(request_options: OpenAI::RequestOptions::OrHash).returns(
               OpenAI::Admin::Organization::OrganizationDataRetention
             )
-          end
+          }
           def retrieve(request_options: {})
           end
 
           # Updates organization data retention controls.
-          sig do
+          sig {
             params(
-              retention_type:
-                OpenAI::Admin::Organization::DataRetentionUpdateParams::RetentionType::OrSymbol,
+              retention_type: OpenAI::Admin::Organization::DataRetentionUpdateParams::RetentionType::OrSymbol,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Admin::Organization::OrganizationDataRetention)
-          end
+            )
+              .returns(OpenAI::Admin::Organization::OrganizationDataRetention)
+          }
           def update(
             # The desired organization data retention type.
             retention_type:,
@@ -34,7 +38,10 @@ module OpenAI
           def self.new(client:)
           end
         end
+
       end
+
     end
+
   end
 end

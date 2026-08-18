@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class RealtimeFunctionTool < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::RealtimeFunctionTool,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::RealtimeFunctionTool,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The description of the function, including guidance on when and how to call it,
         # and guidance about what to tell the user when calling (if anything).
@@ -35,37 +37,39 @@ module OpenAI
         attr_writer :parameters
 
         # The type of the tool, i.e. `function`.
-        sig do
-          returns(
-            T.nilable(OpenAI::Realtime::RealtimeFunctionTool::Type::OrSymbol)
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Realtime::RealtimeFunctionTool::Type::OrSymbol)) }
         attr_reader :type
 
-        sig do
-          params(
-            type: OpenAI::Realtime::RealtimeFunctionTool::Type::OrSymbol
-          ).void
-        end
+        sig { params(type: OpenAI::Realtime::RealtimeFunctionTool::Type::OrSymbol).void }
         attr_writer :type
 
         sig do
           params(
+
             description: String,
+
             name: String,
+
             parameters: T.anything,
+
             type: OpenAI::Realtime::RealtimeFunctionTool::Type::OrSymbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The description of the function, including guidance on when and how to call it,
           # and guidance about what to tell the user when calling (if anything).
           description: nil,
+
           # The name of the function.
           name: nil,
+
           # Parameters of the function in JSON Schema.
           parameters: nil,
+
           # The type of the tool, i.e. `function`.
+
           type: nil
         )
         end
@@ -87,29 +91,19 @@ module OpenAI
         module Type
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(Symbol, OpenAI::Realtime::RealtimeFunctionTool::Type)
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Realtime::RealtimeFunctionTool::Type) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          FUNCTION =
-            T.let(
-              :function,
-              OpenAI::Realtime::RealtimeFunctionTool::Type::TaggedSymbol
-            )
+          FUNCTION = T.let(:function, OpenAI::Realtime::RealtimeFunctionTool::Type::TaggedSymbol)
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Realtime::RealtimeFunctionTool::Type::TaggedSymbol
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Realtime::RealtimeFunctionTool::Type::TaggedSymbol]) }
           def self.values
           end
         end
+
       end
+
     end
+
   end
 end

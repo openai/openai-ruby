@@ -2,38 +2,38 @@
 
 module OpenAI
   module Models
+
     module Admin
+
       module Organization
+
         module Projects
+
           class ServiceAccountCreateResponse < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             sig { returns(String) }
             attr_accessor :id
 
-            sig do
-              returns(
-                T.nilable(
-                  OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey
-                )
-              )
-            end
+            sig {
+              returns(T.nilable(OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey))
+            }
             attr_reader :api_key
 
-            sig do
+            sig {
               params(
-                api_key:
-                  T.nilable(
-                    OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey::OrHash
-                  )
-              ).void
-            end
+                api_key: T.nilable(
+                  OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey::OrHash
+                )
+              )
+                .void
+            }
             attr_writer :api_key
 
             sig { returns(Integer) }
@@ -47,35 +47,44 @@ module OpenAI
 
             # Service accounts created with default project membership have role `member`.
             # Accounts created with `create_service_account_only` have role `none`.
-            sig do
-              returns(
-                OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role::TaggedSymbol
-              )
-            end
+            sig {
+              returns(OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role::TaggedSymbol)
+            }
             attr_accessor :role
 
             sig do
               params(
+
                 id: String,
-                api_key:
-                  T.nilable(
-                    OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey::OrHash
-                  ),
+
+                api_key: T.nilable(
+                  OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey::OrHash
+                ),
+
                 created_at: Integer,
+
                 name: String,
-                role:
-                  OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role::OrSymbol,
+
+                role: OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role::OrSymbol,
+
                 object: Symbol
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               id:,
+
               api_key:,
+
               created_at:,
+
               name:,
+
               # Service accounts created with default project membership have role `member`.
               # Accounts created with `create_service_account_only` have role `none`.
               role:,
+
               object: :"organization.project.service_account"
             )
             end
@@ -84,15 +93,13 @@ module OpenAI
               override.returns(
                 {
                   id: String,
-                  api_key:
-                    T.nilable(
-                      OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey
-                    ),
+                  api_key: T.nilable(
+                    OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey
+                  ),
                   created_at: Integer,
                   name: String,
                   object: Symbol,
-                  role:
-                    OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role::TaggedSymbol
+                  role: OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role::TaggedSymbol
                 }
               )
             end
@@ -100,13 +107,12 @@ module OpenAI
             end
 
             class APIKey < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               sig { returns(String) }
               attr_accessor :id
@@ -126,36 +132,43 @@ module OpenAI
 
               sig do
                 params(
+
                   id: String,
+
                   created_at: Integer,
+
                   name: String,
+
                   value: String,
+
                   object: Symbol
-                ).returns(T.attached_class)
+                )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 id:,
+
                 created_at:,
+
                 name:,
+
                 value:,
+
                 # The object type, which is always `organization.project.service_account.api_key`
+
                 object: :"organization.project.service_account.api_key"
               )
               end
 
               sig do
                 override.returns(
-                  {
-                    id: String,
-                    created_at: Integer,
-                    name: String,
-                    object: Symbol,
-                    value: String
-                  }
+                  {id: String, created_at: Integer, name: String, object: Symbol, value: String}
                 )
               end
               def to_hash
               end
+
             end
 
             # Service accounts created with default project membership have role `member`.
@@ -163,39 +176,38 @@ module OpenAI
             module Role
               extend OpenAI::Internal::Type::Enum
 
-              TaggedSymbol =
-                T.type_alias do
-                  T.all(
-                    Symbol,
-                    OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role
-                  )
-                end
+              TaggedSymbol = T.type_alias {
+                T.all(Symbol, OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role)
+              }
               OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-              MEMBER =
-                T.let(
-                  :member,
-                  OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role::TaggedSymbol
-                )
-              NONE =
-                T.let(
-                  :none,
-                  OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role::TaggedSymbol
-                )
+              MEMBER = T.let(
+                :member,
+                OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role::TaggedSymbol
+              )
+              NONE = T.let(
+                :none,
+                OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role::TaggedSymbol
+              )
 
-              sig do
+              sig {
                 override.returns(
                   T::Array[
                     OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role::TaggedSymbol
                   ]
                 )
-              end
+              }
               def self.values
               end
             end
+
           end
+
         end
+
       end
+
     end
+
   end
 end

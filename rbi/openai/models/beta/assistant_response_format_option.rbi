@@ -2,7 +2,9 @@
 
 module OpenAI
   module Models
+
     module Beta
+
       # Specifies the format that the model must output. Compatible with
       # [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
       # [GPT-4 Turbo](https://platform.openai.com/docs/models#gpt-4-turbo-and-gpt-4),
@@ -26,24 +28,22 @@ module OpenAI
       module AssistantResponseFormatOption
         extend OpenAI::Internal::Type::Union
 
-        Variants =
-          T.type_alias do
-            T.any(
-              Symbol,
-              OpenAI::ResponseFormatText,
-              OpenAI::ResponseFormatJSONObject,
-              OpenAI::ResponseFormatJSONSchema
-            )
-          end
-
-        sig do
-          override.returns(
-            T::Array[OpenAI::Beta::AssistantResponseFormatOption::Variants]
+        Variants = T.type_alias do
+          T.any(
+            Symbol,
+            OpenAI::ResponseFormatText,
+            OpenAI::ResponseFormatJSONObject,
+            OpenAI::ResponseFormatJSONSchema
           )
         end
+
+        sig { override.returns(T::Array[OpenAI::Beta::AssistantResponseFormatOption::Variants]) }
         def self.variants
         end
+
       end
+
     end
+
   end
 end

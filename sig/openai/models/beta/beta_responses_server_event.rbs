@@ -2007,8 +2007,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseOutputTextAnnotationAddedEvent::Agent?,
-            ?type: :"response.output_text.annotation.added",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.output_text.annotation.added"
           ) -> void
 
           def to_hash: -> {

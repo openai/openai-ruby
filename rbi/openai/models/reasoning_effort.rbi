@@ -2,6 +2,7 @@
 
 module OpenAI
   module Models
+
     # Constrains effort on reasoning for reasoning models. Currently supported values
     # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
     # reasoning effort can result in faster responses and fewer tokens used on
@@ -26,5 +27,6 @@ module OpenAI
       def self.values
       end
     end
+
   end
 end

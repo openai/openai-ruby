@@ -2,18 +2,20 @@
 
 module OpenAI
   module Models
+
     module Skills
+
       class VersionCreateParams < OpenAI::Internal::Type::BaseModel
+
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Skills::VersionCreateParams,
-              OpenAI::Internal::AnyHash
-            )
-          end
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Skills::VersionCreateParams,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         sig { returns(String) }
         attr_accessor :skill_id
@@ -30,38 +32,39 @@ module OpenAI
         # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
         # metadata. Use `OpenAI::FilePart` when you need to override the filename or
         # content type.
-        sig do
-          returns(
-            T.nilable(OpenAI::Skills::VersionCreateParams::Files::Variants)
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Skills::VersionCreateParams::Files::Variants)) }
         attr_reader :files
 
-        sig do
-          params(
-            files: OpenAI::Skills::VersionCreateParams::Files::Variants
-          ).void
-        end
+        sig { params(files: OpenAI::Skills::VersionCreateParams::Files::Variants).void }
         attr_writer :files
 
         sig do
           params(
+
             skill_id: String,
+
             default: T::Boolean,
+
             files: OpenAI::Skills::VersionCreateParams::Files::Variants,
+
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           skill_id:,
+
           # Whether to set this version as the default.
           default: nil,
+
           # Skill files to upload (directory upload) or a single zip file.
           #
           # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
           # metadata. Use `OpenAI::FilePart` when you need to override the filename or
           # content type.
           files: nil,
+
           request_options: {}
         )
         end
@@ -85,23 +88,20 @@ module OpenAI
 
           Variants = T.type_alias { T.any(T::Array[StringIO], StringIO) }
 
-          sig do
-            override.returns(
-              T::Array[OpenAI::Skills::VersionCreateParams::Files::Variants]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Skills::VersionCreateParams::Files::Variants]) }
           def self.variants
           end
 
-          StringArray =
-            T.let(
-              OpenAI::Internal::Type::ArrayOf[
-                OpenAI::Internal::Type::FileInput
-              ],
-              OpenAI::Internal::Type::Converter
-            )
+          StringArray = T.let(
+            OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::FileInput],
+            OpenAI::Internal::Type::Converter
+          )
+
         end
+
       end
+
     end
+
   end
 end

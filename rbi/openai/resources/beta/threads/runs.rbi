@@ -2,10 +2,14 @@
 
 module OpenAI
   module Resources
+
     class Beta
+
       class Threads
+
         # Build Assistants that can call models and use tools.
         class Runs
+
           # Build Assistants that can call models and use tools.
           sig { returns(OpenAI::Resources::Beta::Threads::Runs::Steps) }
           attr_reader :steps
@@ -14,19 +18,15 @@ module OpenAI
           # counterpart.
           #
           # Create a run.
-          sig do
+          sig {
             params(
               thread_id: String,
               assistant_id: String,
-              include:
-                T::Array[OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol],
+              include: T::Array[OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol],
               additional_instructions: T.nilable(String),
-              additional_messages:
-                T.nilable(
-                  T::Array[
-                    OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::OrHash
-                  ]
-                ),
+              additional_messages: T.nilable(
+                T::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::OrHash]
+              ),
               instructions: T.nilable(String),
               max_completion_tokens: T.nilable(Integer),
               max_prompt_tokens: T.nilable(Integer),
@@ -34,42 +34,37 @@ module OpenAI
               model: T.nilable(T.any(String, OpenAI::ChatModel::OrSymbol)),
               parallel_tool_calls: T::Boolean,
               reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
-              response_format:
-                T.nilable(
-                  T.any(
-                    Symbol,
-                    OpenAI::ResponseFormatText::OrHash,
-                    OpenAI::ResponseFormatJSONObject::OrHash,
-                    OpenAI::ResponseFormatJSONSchema::OrHash
-                  )
-                ),
+              response_format: T.nilable(
+                T.any(
+                  Symbol,
+                  OpenAI::ResponseFormatText::OrHash,
+                  OpenAI::ResponseFormatJSONObject::OrHash,
+                  OpenAI::ResponseFormatJSONSchema::OrHash
+                )
+              ),
               temperature: T.nilable(Float),
-              tool_choice:
-                T.nilable(
+              tool_choice: T.nilable(
+                T.any(
+                  OpenAI::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
+                  OpenAI::Beta::AssistantToolChoice::OrHash
+                )
+              ),
+              tools: T.nilable(
+                T::Array[
                   T.any(
-                    OpenAI::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
-                    OpenAI::Beta::AssistantToolChoice::OrHash
+                    OpenAI::Beta::CodeInterpreterTool::OrHash,
+                    OpenAI::Beta::FileSearchTool::OrHash,
+                    OpenAI::Beta::FunctionTool::OrHash
                   )
-                ),
-              tools:
-                T.nilable(
-                  T::Array[
-                    T.any(
-                      OpenAI::Beta::CodeInterpreterTool::OrHash,
-                      OpenAI::Beta::FileSearchTool::OrHash,
-                      OpenAI::Beta::FunctionTool::OrHash
-                    )
-                  ]
-                ),
+                ]
+              ),
               top_p: T.nilable(Float),
-              truncation_strategy:
-                T.nilable(
-                  OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::OrHash
-                ),
+              truncation_strategy: T.nilable(OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::OrHash),
               stream: T.noreturn,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Beta::Threads::Run)
-          end
+            )
+              .returns(OpenAI::Beta::Threads::Run)
+          }
           def create(
             # Path param: The ID of the thread to run.
             thread_id,
@@ -190,19 +185,15 @@ module OpenAI
           # counterpart.
           #
           # Create a run.
-          sig do
+          sig {
             params(
               thread_id: String,
               assistant_id: String,
-              include:
-                T::Array[OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol],
+              include: T::Array[OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol],
               additional_instructions: T.nilable(String),
-              additional_messages:
-                T.nilable(
-                  T::Array[
-                    OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::OrHash
-                  ]
-                ),
+              additional_messages: T.nilable(
+                T::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::OrHash]
+              ),
               instructions: T.nilable(String),
               max_completion_tokens: T.nilable(Integer),
               max_prompt_tokens: T.nilable(Integer),
@@ -210,46 +201,37 @@ module OpenAI
               model: T.nilable(T.any(String, OpenAI::ChatModel::OrSymbol)),
               parallel_tool_calls: T::Boolean,
               reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
-              response_format:
-                T.nilable(
-                  T.any(
-                    Symbol,
-                    OpenAI::ResponseFormatText::OrHash,
-                    OpenAI::ResponseFormatJSONObject::OrHash,
-                    OpenAI::ResponseFormatJSONSchema::OrHash
-                  )
-                ),
+              response_format: T.nilable(
+                T.any(
+                  Symbol,
+                  OpenAI::ResponseFormatText::OrHash,
+                  OpenAI::ResponseFormatJSONObject::OrHash,
+                  OpenAI::ResponseFormatJSONSchema::OrHash
+                )
+              ),
               temperature: T.nilable(Float),
-              tool_choice:
-                T.nilable(
+              tool_choice: T.nilable(
+                T.any(
+                  OpenAI::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
+                  OpenAI::Beta::AssistantToolChoice::OrHash
+                )
+              ),
+              tools: T.nilable(
+                T::Array[
                   T.any(
-                    OpenAI::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
-                    OpenAI::Beta::AssistantToolChoice::OrHash
+                    OpenAI::Beta::CodeInterpreterTool::OrHash,
+                    OpenAI::Beta::FileSearchTool::OrHash,
+                    OpenAI::Beta::FunctionTool::OrHash
                   )
-                ),
-              tools:
-                T.nilable(
-                  T::Array[
-                    T.any(
-                      OpenAI::Beta::CodeInterpreterTool::OrHash,
-                      OpenAI::Beta::FileSearchTool::OrHash,
-                      OpenAI::Beta::FunctionTool::OrHash
-                    )
-                  ]
-                ),
+                ]
+              ),
               top_p: T.nilable(Float),
-              truncation_strategy:
-                T.nilable(
-                  OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::OrHash
-                ),
+              truncation_strategy: T.nilable(OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::OrHash),
               stream: T.noreturn,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Internal::Stream[
-                OpenAI::Beta::AssistantStreamEvent::Variants
-              ]
             )
-          end
+              .returns(OpenAI::Internal::Stream[OpenAI::Beta::AssistantStreamEvent::Variants])
+          }
           def create_stream_raw(
             # Path param: The ID of the thread to run.
             thread_id,
@@ -367,13 +349,11 @@ module OpenAI
           end
 
           # Retrieves a run.
-          sig do
-            params(
-              run_id: String,
-              thread_id: String,
-              request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Beta::Threads::Run)
-          end
+          sig {
+            params(run_id: String, thread_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+              OpenAI::Beta::Threads::Run
+            )
+          }
           def retrieve(
             # The ID of the run to retrieve.
             run_id,
@@ -385,14 +365,15 @@ module OpenAI
           end
 
           # Modifies a run.
-          sig do
+          sig {
             params(
               run_id: String,
               thread_id: String,
               metadata: T.nilable(T::Hash[Symbol, String]),
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Beta::Threads::Run)
-          end
+            )
+              .returns(OpenAI::Beta::Threads::Run)
+          }
           def update(
             # Path param: The ID of the run to modify.
             run_id,
@@ -411,7 +392,7 @@ module OpenAI
           end
 
           # Returns a list of runs belonging to a thread.
-          sig do
+          sig {
             params(
               thread_id: String,
               after: String,
@@ -419,8 +400,9 @@ module OpenAI
               limit: Integer,
               order: OpenAI::Beta::Threads::RunListParams::Order::OrSymbol,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Internal::CursorPage[OpenAI::Beta::Threads::Run])
-          end
+            )
+              .returns(OpenAI::Internal::CursorPage[OpenAI::Beta::Threads::Run])
+          }
           def list(
             # The ID of the thread the run belongs to.
             thread_id,
@@ -445,13 +427,11 @@ module OpenAI
           end
 
           # Cancels a run that is `in_progress`.
-          sig do
-            params(
-              run_id: String,
-              thread_id: String,
-              request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Beta::Threads::Run)
-          end
+          sig {
+            params(run_id: String, thread_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+              OpenAI::Beta::Threads::Run
+            )
+          }
           def cancel(
             # The ID of the run to cancel.
             run_id,
@@ -468,18 +448,16 @@ module OpenAI
           # `submit_tool_outputs`, this endpoint can be used to submit the outputs from the
           # tool calls once they're all completed. All outputs must be submitted in a single
           # request.
-          sig do
+          sig {
             params(
               run_id: String,
               thread_id: String,
-              tool_outputs:
-                T::Array[
-                  OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput::OrHash
-                ],
+              tool_outputs: T::Array[OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput::OrHash],
               stream: T.noreturn,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Beta::Threads::Run)
-          end
+            )
+              .returns(OpenAI::Beta::Threads::Run)
+          }
           def submit_tool_outputs(
             # Path param: The ID of the run that requires the tool output submission.
             run_id,
@@ -504,22 +482,16 @@ module OpenAI
           # `submit_tool_outputs`, this endpoint can be used to submit the outputs from the
           # tool calls once they're all completed. All outputs must be submitted in a single
           # request.
-          sig do
+          sig {
             params(
               run_id: String,
               thread_id: String,
-              tool_outputs:
-                T::Array[
-                  OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput::OrHash
-                ],
+              tool_outputs: T::Array[OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput::OrHash],
               stream: T.noreturn,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Internal::Stream[
-                OpenAI::Beta::AssistantStreamEvent::Variants
-              ]
             )
-          end
+              .returns(OpenAI::Internal::Stream[OpenAI::Beta::AssistantStreamEvent::Variants])
+          }
           def submit_tool_outputs_stream_raw(
             # Path param: The ID of the run that requires the tool output submission.
             run_id,
@@ -542,7 +514,10 @@ module OpenAI
           def self.new(client:)
           end
         end
+
       end
+
     end
+
   end
 end

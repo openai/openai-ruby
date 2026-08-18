@@ -2,30 +2,30 @@
 
 module OpenAI
   module Models
+
     module Graders
+
       # A single content item: input text, output text, input image, or input audio.
       module GraderInputItem
         extend OpenAI::Internal::Type::Union
 
-        Variants =
-          T.type_alias do
-            T.any(
-              String,
-              OpenAI::Responses::ResponseInputText,
-              OpenAI::Graders::GraderInputItem::OutputText,
-              OpenAI::Graders::GraderInputItem::InputImage,
-              OpenAI::Responses::ResponseInputAudio
-            )
-          end
+        Variants = T.type_alias do
+          T.any(
+            String,
+            OpenAI::Responses::ResponseInputText,
+            OpenAI::Graders::GraderInputItem::OutputText,
+            OpenAI::Graders::GraderInputItem::InputImage,
+            OpenAI::Responses::ResponseInputAudio
+          )
+        end
 
         class OutputText < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Graders::GraderInputItem::OutputText,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Graders::GraderInputItem::OutputText,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The text output from the model.
           sig { returns(String) }
@@ -36,28 +36,43 @@ module OpenAI
           attr_accessor :type
 
           # A text output from the model.
-          sig { params(text: String, type: Symbol).returns(T.attached_class) }
+          sig do
+            params(
+
+              text: String,
+
+              type: Symbol
+            )
+              .returns(T.attached_class)
+          end
           def self.new(
+
             # The text output from the model.
             text:,
+
             # The type of the output text. Always `output_text`.
+
             type: :output_text
           )
           end
 
-          sig { override.returns({ text: String, type: Symbol }) }
+          sig do
+            override.returns(
+              {text: String, type: Symbol}
+            )
+          end
           def to_hash
           end
+
         end
 
         class InputImage < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Graders::GraderInputItem::InputImage,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Graders::GraderInputItem::InputImage,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The URL of the image input.
           sig { returns(String) }
@@ -77,36 +92,48 @@ module OpenAI
 
           # An image input block used within EvalItem content arrays.
           sig do
-            params(image_url: String, detail: String, type: Symbol).returns(
-              T.attached_class
+            params(
+
+              image_url: String,
+
+              detail: String,
+
+              type: Symbol
             )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The URL of the image input.
             image_url:,
+
             # The detail level of the image to be sent to the model. One of `high`, `low`, or
             # `auto`. Defaults to `auto`.
             detail: nil,
+
             # The type of the image input. Always `input_image`.
+
             type: :input_image
           )
           end
 
           sig do
             override.returns(
-              { image_url: String, type: Symbol, detail: String }
+              {image_url: String, type: Symbol, detail: String}
             )
           end
           def to_hash
           end
+
         end
 
-        sig do
-          override.returns(T::Array[OpenAI::Graders::GraderInputItem::Variants])
-        end
+        sig { override.returns(T::Array[OpenAI::Graders::GraderInputItem::Variants]) }
         def self.variants
         end
+
       end
+
     end
+
   end
 end

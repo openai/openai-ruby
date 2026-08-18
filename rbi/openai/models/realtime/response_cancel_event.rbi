@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class ResponseCancelEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::ResponseCancelEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::ResponseCancelEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The event type, must be `response.cancel`.
         sig { returns(Symbol) }
@@ -37,29 +39,42 @@ module OpenAI
         # call `response.cancel` even if no response is in progress, an error will be
         # returned the session will remain unaffected.
         sig do
-          params(event_id: String, response_id: String, type: Symbol).returns(
-            T.attached_class
+          params(
+
+            event_id: String,
+
+            response_id: String,
+
+            type: Symbol
           )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Optional client-generated ID used to identify this event.
           event_id: nil,
+
           # A specific response ID to cancel - if not provided, will cancel an in-progress
           # response in the default conversation.
           response_id: nil,
+
           # The event type, must be `response.cancel`.
+
           type: :"response.cancel"
         )
         end
 
         sig do
           override.returns(
-            { type: Symbol, event_id: String, response_id: String }
+            {type: Symbol, event_id: String, response_id: String}
           )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

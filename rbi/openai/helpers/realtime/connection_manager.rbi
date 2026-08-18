@@ -13,7 +13,8 @@ module OpenAI
             transport: T.untyped,
             request_options: T.nilable(OpenAI::RequestOptions::OrHash),
             transport_options: T::Hash[Symbol, T.untyped]
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
           client:,
@@ -28,12 +29,12 @@ module OpenAI
         # @api private
         sig do
           params(
-            block:
-              T
-                .proc
-                .params(connection: OpenAI::Realtime::Connection)
-                .returns(T.untyped)
-          ).returns(T.untyped)
+            block: T
+              .proc
+              .params(connection: OpenAI::Realtime::Connection)
+              .returns(T.untyped)
+          )
+            .returns(T.untyped)
         end
         def open(&block)
         end

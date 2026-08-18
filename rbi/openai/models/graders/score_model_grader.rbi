@@ -2,14 +2,19 @@
 
 module OpenAI
   module Models
+
     ScoreModelGrader = Graders::ScoreModelGrader
 
     module Graders
+
       class ScoreModelGrader < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(OpenAI::Graders::ScoreModelGrader, OpenAI::Internal::AnyHash)
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Graders::ScoreModelGrader,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The input messages evaluated by the grader. Supports text, output text, input
         # image, and input audio content blocks, and may include template strings.
@@ -36,44 +41,50 @@ module OpenAI
         attr_writer :range
 
         # The sampling parameters for the model.
-        sig do
-          returns(T.nilable(OpenAI::Graders::ScoreModelGrader::SamplingParams))
-        end
+        sig { returns(T.nilable(OpenAI::Graders::ScoreModelGrader::SamplingParams)) }
         attr_reader :sampling_params
 
-        sig do
-          params(
-            sampling_params:
-              OpenAI::Graders::ScoreModelGrader::SamplingParams::OrHash
-          ).void
-        end
+        sig { params(sampling_params: OpenAI::Graders::ScoreModelGrader::SamplingParams::OrHash).void }
         attr_writer :sampling_params
 
         # A ScoreModelGrader object that uses a model to assign a score to the input.
         sig do
           params(
+
             input: T::Array[OpenAI::Graders::ScoreModelGrader::Input::OrHash],
+
             model: String,
+
             name: String,
+
             range: T::Array[Float],
-            sampling_params:
-              OpenAI::Graders::ScoreModelGrader::SamplingParams::OrHash,
+
+            sampling_params: OpenAI::Graders::ScoreModelGrader::SamplingParams::OrHash,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The input messages evaluated by the grader. Supports text, output text, input
           # image, and input audio content blocks, and may include template strings.
           input:,
+
           # The model to use for the evaluation.
           model:,
+
           # The name of the grader.
           name:,
+
           # The range of the score. Defaults to `[0, 1]`.
           range: nil,
+
           # The sampling parameters for the model.
           sampling_params: nil,
+
           # The object type, which is always `score_model`.
+
           type: :score_model
         )
         end
@@ -94,17 +105,16 @@ module OpenAI
         end
 
         class Input < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Graders::ScoreModelGrader::Input,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Graders::ScoreModelGrader::Input,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # Inputs to the model - can contain template strings. Supports text, output text,
           # input images, and input audio, either as a single item or an array of items.
-          sig do
+          sig {
             returns(
               T.any(
                 String,
@@ -123,31 +133,19 @@ module OpenAI
                 ]
               )
             )
-          end
+          }
           attr_accessor :content
 
           # The role of the message input. One of `user`, `assistant`, `system`, or
           # `developer`.
-          sig do
-            returns(OpenAI::Graders::ScoreModelGrader::Input::Role::OrSymbol)
-          end
+          sig { returns(OpenAI::Graders::ScoreModelGrader::Input::Role::OrSymbol) }
           attr_accessor :role
 
           # The type of the message input. Always `message`.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Graders::ScoreModelGrader::Input::Type::OrSymbol
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Graders::ScoreModelGrader::Input::Type::OrSymbol)) }
           attr_reader :type
 
-          sig do
-            params(
-              type: OpenAI::Graders::ScoreModelGrader::Input::Type::OrSymbol
-            ).void
-          end
+          sig { params(type: OpenAI::Graders::ScoreModelGrader::Input::Type::OrSymbol).void }
           attr_writer :type
 
           # A message input to the model with a role indicating instruction following
@@ -157,35 +155,42 @@ module OpenAI
           # interactions.
           sig do
             params(
-              content:
-                T.any(
-                  String,
-                  OpenAI::Responses::ResponseInputText::OrHash,
-                  OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText::OrHash,
-                  OpenAI::Graders::ScoreModelGrader::Input::Content::InputImage::OrHash,
-                  OpenAI::Responses::ResponseInputAudio::OrHash,
-                  T::Array[
-                    T.any(
-                      String,
-                      OpenAI::Responses::ResponseInputText::OrHash,
-                      OpenAI::Graders::GraderInputItem::OutputText::OrHash,
-                      OpenAI::Graders::GraderInputItem::InputImage::OrHash,
-                      OpenAI::Responses::ResponseInputAudio::OrHash
-                    )
-                  ]
-                ),
+
+              content: T.any(
+                String,
+                OpenAI::Responses::ResponseInputText::OrHash,
+                OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText::OrHash,
+                OpenAI::Graders::ScoreModelGrader::Input::Content::InputImage::OrHash,
+                OpenAI::Responses::ResponseInputAudio::OrHash,
+                T::Array[
+                  T.any(
+                    String,
+                    OpenAI::Responses::ResponseInputText::OrHash,
+                    OpenAI::Graders::GraderInputItem::OutputText::OrHash,
+                    OpenAI::Graders::GraderInputItem::InputImage::OrHash,
+                    OpenAI::Responses::ResponseInputAudio::OrHash
+                  )
+                ]
+              ),
+
               role: OpenAI::Graders::ScoreModelGrader::Input::Role::OrSymbol,
+
               type: OpenAI::Graders::ScoreModelGrader::Input::Type::OrSymbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # Inputs to the model - can contain template strings. Supports text, output text,
             # input images, and input audio, either as a single item or an array of items.
             content:,
+
             # The role of the message input. One of `user`, `assistant`, `system`, or
             # `developer`.
             role:,
+
             # The type of the message input. Always `message`.
+
             type: nil
           )
           end
@@ -193,23 +198,22 @@ module OpenAI
           sig do
             override.returns(
               {
-                content:
-                  T.any(
-                    String,
-                    OpenAI::Responses::ResponseInputText,
-                    OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText,
-                    OpenAI::Graders::ScoreModelGrader::Input::Content::InputImage,
-                    OpenAI::Responses::ResponseInputAudio,
-                    T::Array[
-                      T.any(
-                        String,
-                        OpenAI::Responses::ResponseInputText,
-                        OpenAI::Graders::GraderInputItem::OutputText,
-                        OpenAI::Graders::GraderInputItem::InputImage,
-                        OpenAI::Responses::ResponseInputAudio
-                      )
-                    ]
-                  ),
+                content: T.any(
+                  String,
+                  OpenAI::Responses::ResponseInputText,
+                  OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText,
+                  OpenAI::Graders::ScoreModelGrader::Input::Content::InputImage,
+                  OpenAI::Responses::ResponseInputAudio,
+                  T::Array[
+                    T.any(
+                      String,
+                      OpenAI::Responses::ResponseInputText,
+                      OpenAI::Graders::GraderInputItem::OutputText,
+                      OpenAI::Graders::GraderInputItem::InputImage,
+                      OpenAI::Responses::ResponseInputAudio
+                    )
+                  ]
+                ),
                 role: OpenAI::Graders::ScoreModelGrader::Input::Role::OrSymbol,
                 type: OpenAI::Graders::ScoreModelGrader::Input::Type::OrSymbol
               }
@@ -223,26 +227,24 @@ module OpenAI
           module Content
             extend OpenAI::Internal::Type::Union
 
-            Variants =
-              T.type_alias do
-                T.any(
-                  String,
-                  OpenAI::Responses::ResponseInputText,
-                  OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText,
-                  OpenAI::Graders::ScoreModelGrader::Input::Content::InputImage,
-                  OpenAI::Responses::ResponseInputAudio,
-                  T::Array[OpenAI::Graders::GraderInputItem::Variants]
-                )
-              end
+            Variants = T.type_alias {
+              T.any(
+                String,
+                OpenAI::Responses::ResponseInputText,
+                OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText,
+                OpenAI::Graders::ScoreModelGrader::Input::Content::InputImage,
+                OpenAI::Responses::ResponseInputAudio,
+                T::Array[OpenAI::Graders::GraderInputItem::Variants]
+              )
+            }
 
             class OutputText < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # The text output from the model.
               sig { returns(String) }
@@ -254,29 +256,42 @@ module OpenAI
 
               # A text output from the model.
               sig do
-                params(text: String, type: Symbol).returns(T.attached_class)
+                params(
+
+                  text: String,
+
+                  type: Symbol
+                )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 # The text output from the model.
                 text:,
+
                 # The type of the output text. Always `output_text`.
+
                 type: :output_text
               )
               end
 
-              sig { override.returns({ text: String, type: Symbol }) }
+              sig do
+                override.returns(
+                  {text: String, type: Symbol}
+                )
+              end
               def to_hash
               end
+
             end
 
             class InputImage < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Graders::ScoreModelGrader::Input::Content::InputImage,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Graders::ScoreModelGrader::Input::Content::InputImage,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # The URL of the image input.
               sig { returns(String) }
@@ -296,39 +311,45 @@ module OpenAI
 
               # An image input block used within EvalItem content arrays.
               sig do
-                params(image_url: String, detail: String, type: Symbol).returns(
-                  T.attached_class
+                params(
+
+                  image_url: String,
+
+                  detail: String,
+
+                  type: Symbol
                 )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 # The URL of the image input.
                 image_url:,
+
                 # The detail level of the image to be sent to the model. One of `high`, `low`, or
                 # `auto`. Defaults to `auto`.
                 detail: nil,
+
                 # The type of the image input. Always `input_image`.
+
                 type: :input_image
               )
               end
 
               sig do
                 override.returns(
-                  { image_url: String, type: Symbol, detail: String }
+                  {image_url: String, type: Symbol, detail: String}
                 )
               end
               def to_hash
               end
+
             end
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Graders::ScoreModelGrader::Input::Content::Variants
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Graders::ScoreModelGrader::Input::Content::Variants]) }
             def self.variants
             end
+
           end
 
           # The role of the message input. One of `user`, `assistant`, `system`, or
@@ -336,40 +357,15 @@ module OpenAI
           module Role
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(Symbol, OpenAI::Graders::ScoreModelGrader::Input::Role)
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Graders::ScoreModelGrader::Input::Role) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            USER =
-              T.let(
-                :user,
-                OpenAI::Graders::ScoreModelGrader::Input::Role::TaggedSymbol
-              )
-            ASSISTANT =
-              T.let(
-                :assistant,
-                OpenAI::Graders::ScoreModelGrader::Input::Role::TaggedSymbol
-              )
-            SYSTEM =
-              T.let(
-                :system,
-                OpenAI::Graders::ScoreModelGrader::Input::Role::TaggedSymbol
-              )
-            DEVELOPER =
-              T.let(
-                :developer,
-                OpenAI::Graders::ScoreModelGrader::Input::Role::TaggedSymbol
-              )
+            USER = T.let(:user, OpenAI::Graders::ScoreModelGrader::Input::Role::TaggedSymbol)
+            ASSISTANT = T.let(:assistant, OpenAI::Graders::ScoreModelGrader::Input::Role::TaggedSymbol)
+            SYSTEM = T.let(:system, OpenAI::Graders::ScoreModelGrader::Input::Role::TaggedSymbol)
+            DEVELOPER = T.let(:developer, OpenAI::Graders::ScoreModelGrader::Input::Role::TaggedSymbol)
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Graders::ScoreModelGrader::Input::Role::TaggedSymbol
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Graders::ScoreModelGrader::Input::Role::TaggedSymbol]) }
             def self.values
             end
           end
@@ -378,38 +374,24 @@ module OpenAI
           module Type
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(Symbol, OpenAI::Graders::ScoreModelGrader::Input::Type)
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Graders::ScoreModelGrader::Input::Type) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            MESSAGE =
-              T.let(
-                :message,
-                OpenAI::Graders::ScoreModelGrader::Input::Type::TaggedSymbol
-              )
+            MESSAGE = T.let(:message, OpenAI::Graders::ScoreModelGrader::Input::Type::TaggedSymbol)
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Graders::ScoreModelGrader::Input::Type::TaggedSymbol
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Graders::ScoreModelGrader::Input::Type::TaggedSymbol]) }
             def self.values
             end
           end
         end
 
         class SamplingParams < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Graders::ScoreModelGrader::SamplingParams,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Graders::ScoreModelGrader::SamplingParams,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The maximum number of tokens the grader model may generate in its response.
           sig { returns(T.nilable(Integer)) }
@@ -439,16 +421,24 @@ module OpenAI
           # The sampling parameters for the model.
           sig do
             params(
+
               max_completions_tokens: T.nilable(Integer),
+
               reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
+
               seed: T.nilable(Integer),
+
               temperature: T.nilable(Float),
+
               top_p: T.nilable(Float)
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The maximum number of tokens the grader model may generate in its response.
             max_completions_tokens: nil,
+
             # Constrains effort on reasoning for reasoning models. Currently supported values
             # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
             # reasoning effort can result in faster responses and fewer tokens used on
@@ -456,11 +446,15 @@ module OpenAI
             # [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
             # model-specific support.
             reasoning_effort: nil,
+
             # A seed value to initialize the randomness, during sampling.
             seed: nil,
+
             # A higher temperature increases randomness in the outputs.
             temperature: nil,
+
             # An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
+
             top_p: nil
           )
           end
@@ -478,8 +472,12 @@ module OpenAI
           end
           def to_hash
           end
+
         end
+
       end
+
     end
+
   end
 end

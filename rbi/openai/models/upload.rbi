@@ -2,8 +2,15 @@
 
 module OpenAI
   module Models
+
     class Upload < OpenAI::Internal::Type::BaseModel
-      OrHash = T.type_alias { T.any(OpenAI::Upload, OpenAI::Internal::AnyHash) }
+
+      OrHash = T.type_alias do
+        T.any(
+          OpenAI::Upload,
+          OpenAI::Internal::AnyHash
+        )
+      end
 
       # The Upload unique identifier, which can be referenced in API endpoints.
       sig { returns(String) }
@@ -49,37 +56,57 @@ module OpenAI
       # The Upload object can accept byte chunks in the form of Parts.
       sig do
         params(
+
           id: String,
+
           bytes: Integer,
+
           created_at: Integer,
+
           expires_at: Integer,
+
           filename: String,
+
           purpose: String,
+
           status: OpenAI::Upload::Status::OrSymbol,
+
           file: T.nilable(OpenAI::FileObject::OrHash),
+
           object: Symbol
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(
+
         # The Upload unique identifier, which can be referenced in API endpoints.
         id:,
+
         # The intended number of bytes to be uploaded.
         bytes:,
+
         # The Unix timestamp (in seconds) for when the Upload was created.
         created_at:,
+
         # The Unix timestamp (in seconds) for when the Upload will expire.
         expires_at:,
+
         # The name of the file to be uploaded.
         filename:,
+
         # The intended purpose of the file.
         # [Please refer here](https://platform.openai.com/docs/api-reference/files/object#files/object-purpose)
         # for acceptable values.
         purpose:,
+
         # The status of the Upload.
         status:,
+
         # The `File` object represents a document that has been uploaded to OpenAI.
         file: nil,
+
         # The object type, which is always "upload".
+
         object: :upload
       )
       end
@@ -118,6 +145,8 @@ module OpenAI
         def self.values
         end
       end
+
     end
+
   end
 end

@@ -2,20 +2,24 @@
 
 module OpenAI
   module Models
+
     module Admin
+
       module Organization
+
         module Projects
+
           class UserCreateParams < OpenAI::Internal::Type::BaseModel
+
             extend OpenAI::Internal::Type::RequestParameters::Converter
             include OpenAI::Internal::Type::RequestParameters
 
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Admin::Organization::Projects::UserCreateParams,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Admin::Organization::Projects::UserCreateParams,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             sig { returns(String) }
             attr_accessor :project_id
@@ -34,21 +38,32 @@ module OpenAI
 
             sig do
               params(
+
                 project_id: String,
+
                 role: String,
+
                 email: T.nilable(String),
+
                 user_id: T.nilable(String),
+
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               project_id:,
+
               # `owner` or `member`
               role:,
+
               # Email of the user to add.
               email: nil,
+
               # The ID of the user.
               user_id: nil,
+
               request_options: {}
             )
             end
@@ -66,9 +81,14 @@ module OpenAI
             end
             def to_hash
             end
+
           end
+
         end
+
       end
+
     end
+
   end
 end

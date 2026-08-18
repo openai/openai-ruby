@@ -2,19 +2,21 @@
 
 module OpenAI
   module Resources
+
     class Admin
+
       class Organization
+
         class Projects
+
           class DataRetention
+
             # Retrieves project data retention controls.
-            sig do
-              params(
-                project_id: String,
-                request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
+            sig {
+              params(project_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
                 OpenAI::Admin::Organization::Projects::ProjectDataRetention
               )
-            end
+            }
             def retrieve(
               # The ID of the project to inspect.
               project_id,
@@ -23,16 +25,14 @@ module OpenAI
             end
 
             # Updates project data retention controls.
-            sig do
+            sig {
               params(
                 project_id: String,
-                retention_type:
-                  OpenAI::Admin::Organization::Projects::DataRetentionUpdateParams::RetentionType::OrSymbol,
+                retention_type: OpenAI::Admin::Organization::Projects::DataRetentionUpdateParams::RetentionType::OrSymbol,
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
-                OpenAI::Admin::Organization::Projects::ProjectDataRetention
               )
-            end
+                .returns(OpenAI::Admin::Organization::Projects::ProjectDataRetention)
+            }
             def update(
               # The ID of the project to update.
               project_id,
@@ -47,8 +47,12 @@ module OpenAI
             def self.new(client:)
             end
           end
+
         end
+
       end
+
     end
+
   end
 end

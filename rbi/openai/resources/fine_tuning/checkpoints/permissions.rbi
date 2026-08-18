@@ -2,25 +2,26 @@
 
 module OpenAI
   module Resources
+
     class FineTuning
+
       class Checkpoints
+
         # Manage fine-tuning jobs to tailor a model to your specific training data.
         class Permissions
+
           # **NOTE:** Calling this endpoint requires an [admin API key](../admin-api-keys).
           #
           # This enables organization owners to share fine-tuned models with other projects
           # in their organization.
-          sig do
+          sig {
             params(
               fine_tuned_model_checkpoint: String,
               project_ids: T::Array[String],
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Internal::Page[
-                OpenAI::Models::FineTuning::Checkpoints::PermissionCreateResponse
-              ]
             )
-          end
+              .returns(OpenAI::Internal::Page[OpenAI::Models::FineTuning::Checkpoints::PermissionCreateResponse])
+          }
           def create(
             # The ID of the fine-tuned model checkpoint to create a permission for.
             fine_tuned_model_checkpoint,
@@ -34,19 +35,17 @@ module OpenAI
           #
           # Organization owners can use this endpoint to view all permissions for a
           # fine-tuned model checkpoint.
-          sig do
+          sig {
             params(
               fine_tuned_model_checkpoint: String,
               after: String,
               limit: Integer,
-              order:
-                OpenAI::FineTuning::Checkpoints::PermissionRetrieveParams::Order::OrSymbol,
+              order: OpenAI::FineTuning::Checkpoints::PermissionRetrieveParams::Order::OrSymbol,
               project_id: String,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse
             )
-          end
+              .returns(OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse)
+          }
           def retrieve(
             # The ID of the fine-tuned model checkpoint to get permissions for.
             fine_tuned_model_checkpoint,
@@ -66,21 +65,21 @@ module OpenAI
           #
           # Organization owners can use this endpoint to view all permissions for a
           # fine-tuned model checkpoint.
-          sig do
+          sig {
             params(
               fine_tuned_model_checkpoint: String,
               after: String,
               limit: Integer,
-              order:
-                OpenAI::FineTuning::Checkpoints::PermissionListParams::Order::OrSymbol,
+              order: OpenAI::FineTuning::Checkpoints::PermissionListParams::Order::OrSymbol,
               project_id: String,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Internal::ConversationCursorPage[
-                OpenAI::Models::FineTuning::Checkpoints::PermissionListResponse
-              ]
             )
-          end
+              .returns(
+                OpenAI::Internal::ConversationCursorPage[
+                  OpenAI::Models::FineTuning::Checkpoints::PermissionListResponse
+                ]
+              )
+          }
           def list(
             # The ID of the fine-tuned model checkpoint to get permissions for.
             fine_tuned_model_checkpoint,
@@ -100,15 +99,14 @@ module OpenAI
           #
           # Organization owners can use this endpoint to delete a permission for a
           # fine-tuned model checkpoint.
-          sig do
+          sig {
             params(
               permission_id: String,
               fine_tuned_model_checkpoint: String,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Models::FineTuning::Checkpoints::PermissionDeleteResponse
             )
-          end
+              .returns(OpenAI::Models::FineTuning::Checkpoints::PermissionDeleteResponse)
+          }
           def delete(
             # The ID of the fine-tuned model checkpoint permission to delete.
             permission_id,
@@ -123,7 +121,10 @@ module OpenAI
           def self.new(client:)
           end
         end
+
       end
+
     end
+
   end
 end

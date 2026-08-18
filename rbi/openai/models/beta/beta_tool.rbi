@@ -2,40 +2,43 @@
 
 module OpenAI
   module Models
+
     BetaTool = Beta::BetaTool
 
     module Beta
+
       # A tool that can be used to generate a response.
       module BetaTool
         extend OpenAI::Internal::Type::Union
 
-        Variants =
-          T.type_alias do
-            T.any(
-              OpenAI::Beta::BetaFunctionTool,
-              OpenAI::Beta::BetaFileSearchTool,
-              OpenAI::Beta::BetaComputerTool,
-              OpenAI::Beta::BetaComputerUsePreviewTool,
-              OpenAI::Beta::BetaTool::Mcp,
-              OpenAI::Beta::BetaTool::CodeInterpreter,
-              OpenAI::Beta::BetaTool::ProgrammaticToolCalling,
-              OpenAI::Beta::BetaTool::ImageGeneration,
-              OpenAI::Beta::BetaTool::LocalShell,
-              OpenAI::Beta::BetaFunctionShellTool,
-              OpenAI::Beta::BetaCustomTool,
-              OpenAI::Beta::BetaNamespaceTool,
-              OpenAI::Beta::BetaToolSearchTool,
-              OpenAI::Beta::BetaApplyPatchTool,
-              OpenAI::Beta::BetaWebSearchTool,
-              OpenAI::Beta::BetaWebSearchPreviewTool
-            )
-          end
+        Variants = T.type_alias do
+          T.any(
+            OpenAI::Beta::BetaFunctionTool,
+            OpenAI::Beta::BetaFileSearchTool,
+            OpenAI::Beta::BetaComputerTool,
+            OpenAI::Beta::BetaComputerUsePreviewTool,
+            OpenAI::Beta::BetaTool::Mcp,
+            OpenAI::Beta::BetaTool::CodeInterpreter,
+            OpenAI::Beta::BetaTool::ProgrammaticToolCalling,
+            OpenAI::Beta::BetaTool::ImageGeneration,
+            OpenAI::Beta::BetaTool::LocalShell,
+            OpenAI::Beta::BetaFunctionShellTool,
+            OpenAI::Beta::BetaCustomTool,
+            OpenAI::Beta::BetaNamespaceTool,
+            OpenAI::Beta::BetaToolSearchTool,
+            OpenAI::Beta::BetaApplyPatchTool,
+            OpenAI::Beta::BetaWebSearchTool,
+            OpenAI::Beta::BetaWebSearchPreviewTool
+          )
+        end
 
         class Mcp < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(OpenAI::Beta::BetaTool::Mcp, OpenAI::Internal::AnyHash)
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::BetaTool::Mcp,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # A label for this MCP server, used to identify it in tool calls.
           sig { returns(String) }
@@ -46,26 +49,11 @@ module OpenAI
           attr_accessor :type
 
           # The tool invocation context(s).
-          sig do
-            returns(
-              T.nilable(
-                T::Array[OpenAI::Beta::BetaTool::Mcp::AllowedCaller::OrSymbol]
-              )
-            )
-          end
+          sig { returns(T.nilable(T::Array[OpenAI::Beta::BetaTool::Mcp::AllowedCaller::OrSymbol])) }
           attr_accessor :allowed_callers
 
           # List of allowed tool names or a filter object.
-          sig do
-            returns(
-              T.nilable(
-                T.any(
-                  T::Array[String],
-                  OpenAI::Beta::BetaTool::Mcp::AllowedTools::McpToolFilter
-                )
-              )
-            )
-          end
+          sig { returns(T.nilable(T.any(T::Array[String], OpenAI::Beta::BetaTool::Mcp::AllowedTools::McpToolFilter))) }
           attr_accessor :allowed_tools
 
           # An OAuth access token that can be used with a remote MCP server, either with a
@@ -92,18 +80,10 @@ module OpenAI
           # - Outlook Calendar: `connector_outlookcalendar`
           # - Outlook Email: `connector_outlookemail`
           # - SharePoint: `connector_sharepoint`
-          sig do
-            returns(
-              T.nilable(OpenAI::Beta::BetaTool::Mcp::ConnectorID::OrSymbol)
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Beta::BetaTool::Mcp::ConnectorID::OrSymbol)) }
           attr_reader :connector_id
 
-          sig do
-            params(
-              connector_id: OpenAI::Beta::BetaTool::Mcp::ConnectorID::OrSymbol
-            ).void
-          end
+          sig { params(connector_id: OpenAI::Beta::BetaTool::Mcp::ConnectorID::OrSymbol).void }
           attr_writer :connector_id
 
           # Whether this MCP tool is deferred and discovered via tool search.
@@ -119,7 +99,7 @@ module OpenAI
           attr_accessor :headers
 
           # Specify which of the MCP server's tools require approval.
-          sig do
+          sig {
             returns(
               T.nilable(
                 T.any(
@@ -128,7 +108,7 @@ module OpenAI
                 )
               )
             )
-          end
+          }
           attr_accessor :require_approval
 
           # Optional description of the MCP server, used to provide more context.
@@ -159,46 +139,56 @@ module OpenAI
           # [Learn more about MCP](https://platform.openai.com/docs/guides/tools-remote-mcp).
           sig do
             params(
+
               server_label: String,
-              allowed_callers:
-                T.nilable(
-                  T::Array[OpenAI::Beta::BetaTool::Mcp::AllowedCaller::OrSymbol]
-                ),
-              allowed_tools:
-                T.nilable(
-                  T.any(
-                    T::Array[String],
-                    OpenAI::Beta::BetaTool::Mcp::AllowedTools::McpToolFilter::OrHash
-                  )
-                ),
+
+              allowed_callers: T.nilable(T::Array[OpenAI::Beta::BetaTool::Mcp::AllowedCaller::OrSymbol]),
+
+              allowed_tools: T.nilable(
+                T.any(T::Array[String], OpenAI::Beta::BetaTool::Mcp::AllowedTools::McpToolFilter::OrHash)
+              ),
+
               authorization: String,
+
               connector_id: OpenAI::Beta::BetaTool::Mcp::ConnectorID::OrSymbol,
+
               defer_loading: T::Boolean,
+
               headers: T.nilable(T::Hash[Symbol, String]),
-              require_approval:
-                T.nilable(
-                  T.any(
-                    OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::OrHash,
-                    OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalSetting::OrSymbol
-                  )
-                ),
+
+              require_approval: T.nilable(
+                T.any(
+                  OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::OrHash,
+                  OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalSetting::OrSymbol
+                )
+              ),
+
               server_description: String,
+
               server_url: String,
+
               tunnel_id: String,
+
               type: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # A label for this MCP server, used to identify it in tool calls.
             server_label:,
+
             # The tool invocation context(s).
             allowed_callers: nil,
+
             # List of allowed tool names or a filter object.
             allowed_tools: nil,
+
             # An OAuth access token that can be used with a remote MCP server, either with a
             # custom MCP server URL or a service connector. Your application must handle the
             # OAuth authorization flow and provide the token here.
             authorization: nil,
+
             # Identifier for service connectors, like those available in ChatGPT. One of
             # `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more about
             # service connectors
@@ -215,22 +205,30 @@ module OpenAI
             # - Outlook Email: `connector_outlookemail`
             # - SharePoint: `connector_sharepoint`
             connector_id: nil,
+
             # Whether this MCP tool is deferred and discovered via tool search.
             defer_loading: nil,
+
             # Optional HTTP headers to send to the MCP server. Use for authentication or other
             # purposes.
             headers: nil,
+
             # Specify which of the MCP server's tools require approval.
             require_approval: nil,
+
             # Optional description of the MCP server, used to provide more context.
             server_description: nil,
+
             # The URL for the MCP server. One of `server_url`, `connector_id`, or `tunnel_id`
             # must be provided.
             server_url: nil,
+
             # The Secure MCP Tunnel ID to use instead of a direct server URL. One of
             # `server_url`, `connector_id`, or `tunnel_id` must be provided.
             tunnel_id: nil,
+
             # The type of the MCP tool. Always `mcp`.
+
             type: :mcp
           )
           end
@@ -240,31 +238,20 @@ module OpenAI
               {
                 server_label: String,
                 type: Symbol,
-                allowed_callers:
-                  T.nilable(
-                    T::Array[
-                      OpenAI::Beta::BetaTool::Mcp::AllowedCaller::OrSymbol
-                    ]
-                  ),
-                allowed_tools:
-                  T.nilable(
-                    T.any(
-                      T::Array[String],
-                      OpenAI::Beta::BetaTool::Mcp::AllowedTools::McpToolFilter
-                    )
-                  ),
+                allowed_callers: T.nilable(T::Array[OpenAI::Beta::BetaTool::Mcp::AllowedCaller::OrSymbol]),
+                allowed_tools: T.nilable(
+                  T.any(T::Array[String], OpenAI::Beta::BetaTool::Mcp::AllowedTools::McpToolFilter)
+                ),
                 authorization: String,
-                connector_id:
-                  OpenAI::Beta::BetaTool::Mcp::ConnectorID::OrSymbol,
+                connector_id: OpenAI::Beta::BetaTool::Mcp::ConnectorID::OrSymbol,
                 defer_loading: T::Boolean,
                 headers: T.nilable(T::Hash[Symbol, String]),
-                require_approval:
-                  T.nilable(
-                    T.any(
-                      OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter,
-                      OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalSetting::OrSymbol
-                    )
-                  ),
+                require_approval: T.nilable(
+                  T.any(
+                    OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter,
+                    OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalSetting::OrSymbol
+                  )
+                ),
                 server_description: String,
                 server_url: String,
                 tunnel_id: String
@@ -277,30 +264,13 @@ module OpenAI
           module AllowedCaller
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(Symbol, OpenAI::Beta::BetaTool::Mcp::AllowedCaller)
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::BetaTool::Mcp::AllowedCaller) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            DIRECT =
-              T.let(
-                :direct,
-                OpenAI::Beta::BetaTool::Mcp::AllowedCaller::TaggedSymbol
-              )
-            PROGRAMMATIC =
-              T.let(
-                :programmatic,
-                OpenAI::Beta::BetaTool::Mcp::AllowedCaller::TaggedSymbol
-              )
+            DIRECT = T.let(:direct, OpenAI::Beta::BetaTool::Mcp::AllowedCaller::TaggedSymbol)
+            PROGRAMMATIC = T.let(:programmatic, OpenAI::Beta::BetaTool::Mcp::AllowedCaller::TaggedSymbol)
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Beta::BetaTool::Mcp::AllowedCaller::TaggedSymbol
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Beta::BetaTool::Mcp::AllowedCaller::TaggedSymbol]) }
             def self.values
             end
           end
@@ -309,22 +279,17 @@ module OpenAI
           module AllowedTools
             extend OpenAI::Internal::Type::Union
 
-            Variants =
-              T.type_alias do
-                T.any(
-                  T::Array[String],
-                  OpenAI::Beta::BetaTool::Mcp::AllowedTools::McpToolFilter
-                )
-              end
+            Variants = T.type_alias {
+              T.any(T::Array[String], OpenAI::Beta::BetaTool::Mcp::AllowedTools::McpToolFilter)
+            }
 
             class McpToolFilter < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Beta::BetaTool::Mcp::AllowedTools::McpToolFilter,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::BetaTool::Mcp::AllowedTools::McpToolFilter,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # Indicates whether or not a tool modifies data or is read-only. If an MCP server
               # is
@@ -346,43 +311,46 @@ module OpenAI
               # A filter object to specify which tools are allowed.
               sig do
                 params(
+
                   read_only: T::Boolean,
+
                   tool_names: T::Array[String]
-                ).returns(T.attached_class)
+                )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 # Indicates whether or not a tool modifies data or is read-only. If an MCP server
                 # is
                 # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
                 # it will match this filter.
                 read_only: nil,
+
                 # List of allowed tool names.
+
                 tool_names: nil
               )
               end
 
               sig do
                 override.returns(
-                  { read_only: T::Boolean, tool_names: T::Array[String] }
+                  {read_only: T::Boolean, tool_names: T::Array[String]}
                 )
               end
               def to_hash
               end
+
             end
 
-            sig do
-              override.returns(
-                T::Array[OpenAI::Beta::BetaTool::Mcp::AllowedTools::Variants]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Beta::BetaTool::Mcp::AllowedTools::Variants]) }
             def self.variants
             end
 
-            StringArray =
-              T.let(
-                OpenAI::Internal::Type::ArrayOf[String],
-                OpenAI::Internal::Type::Converter
-              )
+            StringArray = T.let(
+              OpenAI::Internal::Type::ArrayOf[String],
+              OpenAI::Internal::Type::Converter
+            )
+
           end
 
           # Identifier for service connectors, like those available in ChatGPT. One of
@@ -403,58 +371,34 @@ module OpenAI
           module ConnectorID
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(Symbol, OpenAI::Beta::BetaTool::Mcp::ConnectorID)
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::BetaTool::Mcp::ConnectorID) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            CONNECTOR_DROPBOX =
-              T.let(
-                :connector_dropbox,
-                OpenAI::Beta::BetaTool::Mcp::ConnectorID::TaggedSymbol
-              )
-            CONNECTOR_GMAIL =
-              T.let(
-                :connector_gmail,
-                OpenAI::Beta::BetaTool::Mcp::ConnectorID::TaggedSymbol
-              )
-            CONNECTOR_GOOGLECALENDAR =
-              T.let(
-                :connector_googlecalendar,
-                OpenAI::Beta::BetaTool::Mcp::ConnectorID::TaggedSymbol
-              )
-            CONNECTOR_GOOGLEDRIVE =
-              T.let(
-                :connector_googledrive,
-                OpenAI::Beta::BetaTool::Mcp::ConnectorID::TaggedSymbol
-              )
-            CONNECTOR_MICROSOFTTEAMS =
-              T.let(
-                :connector_microsoftteams,
-                OpenAI::Beta::BetaTool::Mcp::ConnectorID::TaggedSymbol
-              )
-            CONNECTOR_OUTLOOKCALENDAR =
-              T.let(
-                :connector_outlookcalendar,
-                OpenAI::Beta::BetaTool::Mcp::ConnectorID::TaggedSymbol
-              )
-            CONNECTOR_OUTLOOKEMAIL =
-              T.let(
-                :connector_outlookemail,
-                OpenAI::Beta::BetaTool::Mcp::ConnectorID::TaggedSymbol
-              )
-            CONNECTOR_SHAREPOINT =
-              T.let(
-                :connector_sharepoint,
-                OpenAI::Beta::BetaTool::Mcp::ConnectorID::TaggedSymbol
-              )
+            CONNECTOR_DROPBOX = T.let(:connector_dropbox, OpenAI::Beta::BetaTool::Mcp::ConnectorID::TaggedSymbol)
+            CONNECTOR_GMAIL = T.let(:connector_gmail, OpenAI::Beta::BetaTool::Mcp::ConnectorID::TaggedSymbol)
+            CONNECTOR_GOOGLECALENDAR = T.let(
+              :connector_googlecalendar,
+              OpenAI::Beta::BetaTool::Mcp::ConnectorID::TaggedSymbol
+            )
+            CONNECTOR_GOOGLEDRIVE = T.let(
+              :connector_googledrive,
+              OpenAI::Beta::BetaTool::Mcp::ConnectorID::TaggedSymbol
+            )
+            CONNECTOR_MICROSOFTTEAMS = T.let(
+              :connector_microsoftteams,
+              OpenAI::Beta::BetaTool::Mcp::ConnectorID::TaggedSymbol
+            )
+            CONNECTOR_OUTLOOKCALENDAR = T.let(
+              :connector_outlookcalendar,
+              OpenAI::Beta::BetaTool::Mcp::ConnectorID::TaggedSymbol
+            )
+            CONNECTOR_OUTLOOKEMAIL = T.let(
+              :connector_outlookemail,
+              OpenAI::Beta::BetaTool::Mcp::ConnectorID::TaggedSymbol
+            )
+            CONNECTOR_SHAREPOINT = T.let(:connector_sharepoint, OpenAI::Beta::BetaTool::Mcp::ConnectorID::TaggedSymbol)
 
-            sig do
-              override.returns(
-                T::Array[OpenAI::Beta::BetaTool::Mcp::ConnectorID::TaggedSymbol]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Beta::BetaTool::Mcp::ConnectorID::TaggedSymbol]) }
             def self.values
             end
           end
@@ -463,73 +407,57 @@ module OpenAI
           module RequireApproval
             extend OpenAI::Internal::Type::Union
 
-            Variants =
-              T.type_alias do
-                T.any(
-                  OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter,
-                  OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalSetting::TaggedSymbol
-                )
-              end
+            Variants = T.type_alias {
+              T.any(
+                OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter,
+                OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalSetting::TaggedSymbol
+              )
+            }
 
             class McpToolApprovalFilter < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
-
-              # A filter object to specify which tools are allowed.
-              sig do
-                returns(
-                  T.nilable(
-                    OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Always
-                  )
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter,
+                  OpenAI::Internal::AnyHash
                 )
               end
+
+              # A filter object to specify which tools are allowed.
+              sig { returns(T.nilable(OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Always)) }
               attr_reader :always
 
-              sig do
-                params(
-                  always:
-                    OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Always::OrHash
-                ).void
-              end
+              sig {
+                params(always: OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Always::OrHash).void
+              }
               attr_writer :always
 
               # A filter object to specify which tools are allowed.
-              sig do
-                returns(
-                  T.nilable(
-                    OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Never
-                  )
-                )
-              end
+              sig { returns(T.nilable(OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Never)) }
               attr_reader :never
 
-              sig do
-                params(
-                  never:
-                    OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Never::OrHash
-                ).void
-              end
+              sig {
+                params(never: OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Never::OrHash).void
+              }
               attr_writer :never
 
               # Specify which of the MCP server's tools require approval. Can be `always`,
               # `never`, or a filter object associated with tools that require approval.
               sig do
                 params(
-                  always:
-                    OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Always::OrHash,
-                  never:
-                    OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Never::OrHash
-                ).returns(T.attached_class)
+
+                  always: OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Always::OrHash,
+
+                  never: OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Never::OrHash
+                )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 # A filter object to specify which tools are allowed.
                 always: nil,
+
                 # A filter object to specify which tools are allowed.
+
                 never: nil
               )
               end
@@ -537,10 +465,8 @@ module OpenAI
               sig do
                 override.returns(
                   {
-                    always:
-                      OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Always,
-                    never:
-                      OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Never
+                    always: OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Always,
+                    never: OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Never
                   }
                 )
               end
@@ -548,13 +474,12 @@ module OpenAI
               end
 
               class Always < OpenAI::Internal::Type::BaseModel
-                OrHash =
-                  T.type_alias do
-                    T.any(
-                      OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Always,
-                      OpenAI::Internal::AnyHash
-                    )
-                  end
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Always,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
                 # Indicates whether or not a tool modifies data or is read-only. If an MCP server
                 # is
@@ -576,38 +501,44 @@ module OpenAI
                 # A filter object to specify which tools are allowed.
                 sig do
                   params(
+
                     read_only: T::Boolean,
+
                     tool_names: T::Array[String]
-                  ).returns(T.attached_class)
+                  )
+                    .returns(T.attached_class)
                 end
                 def self.new(
+
                   # Indicates whether or not a tool modifies data or is read-only. If an MCP server
                   # is
                   # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
                   # it will match this filter.
                   read_only: nil,
+
                   # List of allowed tool names.
+
                   tool_names: nil
                 )
                 end
 
                 sig do
                   override.returns(
-                    { read_only: T::Boolean, tool_names: T::Array[String] }
+                    {read_only: T::Boolean, tool_names: T::Array[String]}
                   )
                 end
                 def to_hash
                 end
+
               end
 
               class Never < OpenAI::Internal::Type::BaseModel
-                OrHash =
-                  T.type_alias do
-                    T.any(
-                      OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Never,
-                      OpenAI::Internal::AnyHash
-                    )
-                  end
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Never,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
                 # Indicates whether or not a tool modifies data or is read-only. If an MCP server
                 # is
@@ -629,28 +560,35 @@ module OpenAI
                 # A filter object to specify which tools are allowed.
                 sig do
                   params(
+
                     read_only: T::Boolean,
+
                     tool_names: T::Array[String]
-                  ).returns(T.attached_class)
+                  )
+                    .returns(T.attached_class)
                 end
                 def self.new(
+
                   # Indicates whether or not a tool modifies data or is read-only. If an MCP server
                   # is
                   # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
                   # it will match this filter.
                   read_only: nil,
+
                   # List of allowed tool names.
+
                   tool_names: nil
                 )
                 end
 
                 sig do
                   override.returns(
-                    { read_only: T::Boolean, tool_names: T::Array[String] }
+                    {read_only: T::Boolean, tool_names: T::Array[String]}
                   )
                 end
                 def to_hash
                 end
+
               end
             end
 
@@ -660,67 +598,45 @@ module OpenAI
             module McpToolApprovalSetting
               extend OpenAI::Internal::Type::Enum
 
-              TaggedSymbol =
-                T.type_alias do
-                  T.all(
-                    Symbol,
-                    OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalSetting
-                  )
-                end
+              TaggedSymbol = T.type_alias {
+                T.all(Symbol, OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalSetting)
+              }
               OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-              ALWAYS =
-                T.let(
-                  :always,
-                  OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalSetting::TaggedSymbol
-                )
-              NEVER =
-                T.let(
-                  :never,
-                  OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalSetting::TaggedSymbol
-                )
+              ALWAYS = T.let(
+                :always,
+                OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalSetting::TaggedSymbol
+              )
+              NEVER = T.let(:never, OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalSetting::TaggedSymbol)
 
-              sig do
+              sig {
                 override.returns(
-                  T::Array[
-                    OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalSetting::TaggedSymbol
-                  ]
+                  T::Array[OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalSetting::TaggedSymbol]
                 )
-              end
+              }
               def self.values
               end
             end
 
-            sig do
-              override.returns(
-                T::Array[OpenAI::Beta::BetaTool::Mcp::RequireApproval::Variants]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Beta::BetaTool::Mcp::RequireApproval::Variants]) }
             def self.variants
             end
+
           end
         end
 
         class CodeInterpreter < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Beta::BetaTool::CodeInterpreter,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::BetaTool::CodeInterpreter,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The code interpreter container. Can be a container ID or an object that
           # specifies uploaded file IDs to make available to your code, along with an
           # optional `memory_limit` setting.
-          sig do
-            returns(
-              T.any(
-                String,
-                OpenAI::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto
-              )
-            )
-          end
+          sig { returns(T.any(String, OpenAI::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto)) }
           attr_accessor :container
 
           # The type of the code interpreter tool. Always `code_interpreter`.
@@ -728,42 +644,36 @@ module OpenAI
           attr_accessor :type
 
           # The tool invocation context(s).
-          sig do
-            returns(
-              T.nilable(
-                T::Array[
-                  OpenAI::Beta::BetaTool::CodeInterpreter::AllowedCaller::OrSymbol
-                ]
-              )
-            )
-          end
+          sig { returns(T.nilable(T::Array[OpenAI::Beta::BetaTool::CodeInterpreter::AllowedCaller::OrSymbol])) }
           attr_accessor :allowed_callers
 
           # A tool that runs Python code to help generate a response to a prompt.
           sig do
             params(
-              container:
-                T.any(
-                  String,
-                  OpenAI::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::OrHash
-                ),
-              allowed_callers:
-                T.nilable(
-                  T::Array[
-                    OpenAI::Beta::BetaTool::CodeInterpreter::AllowedCaller::OrSymbol
-                  ]
-                ),
+
+              container: T.any(
+                String,
+                OpenAI::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::OrHash
+              ),
+
+              allowed_callers: T.nilable(T::Array[OpenAI::Beta::BetaTool::CodeInterpreter::AllowedCaller::OrSymbol]),
+
               type: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The code interpreter container. Can be a container ID or an object that
             # specifies uploaded file IDs to make available to your code, along with an
             # optional `memory_limit` setting.
             container:,
+
             # The tool invocation context(s).
             allowed_callers: nil,
+
             # The type of the code interpreter tool. Always `code_interpreter`.
+
             type: :code_interpreter
           )
           end
@@ -771,18 +681,9 @@ module OpenAI
           sig do
             override.returns(
               {
-                container:
-                  T.any(
-                    String,
-                    OpenAI::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto
-                  ),
+                container: T.any(String, OpenAI::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto),
                 type: Symbol,
-                allowed_callers:
-                  T.nilable(
-                    T::Array[
-                      OpenAI::Beta::BetaTool::CodeInterpreter::AllowedCaller::OrSymbol
-                    ]
-                  )
+                allowed_callers: T.nilable(T::Array[OpenAI::Beta::BetaTool::CodeInterpreter::AllowedCaller::OrSymbol])
               }
             )
           end
@@ -795,22 +696,17 @@ module OpenAI
           module Container
             extend OpenAI::Internal::Type::Union
 
-            Variants =
-              T.type_alias do
-                T.any(
-                  String,
-                  OpenAI::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto
-                )
-              end
+            Variants = T.type_alias {
+              T.any(String, OpenAI::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto)
+            }
 
             class CodeInterpreterToolAuto < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # Always `auto`.
               sig { returns(Symbol) }
@@ -824,17 +720,17 @@ module OpenAI
               attr_writer :file_ids
 
               # The memory limit for the code interpreter container.
-              sig do
+              sig {
                 returns(
                   T.nilable(
                     OpenAI::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::OrSymbol
                   )
                 )
-              end
+              }
               attr_accessor :memory_limit
 
               # Network access policy for the container.
-              sig do
+              sig {
                 returns(
                   T.nilable(
                     T.any(
@@ -843,45 +739,53 @@ module OpenAI
                     )
                   )
                 )
-              end
+              }
               attr_reader :network_policy
 
-              sig do
+              sig {
                 params(
-                  network_policy:
-                    T.any(
-                      OpenAI::Beta::BetaContainerNetworkPolicyDisabled::OrHash,
-                      OpenAI::Beta::BetaContainerNetworkPolicyAllowlist::OrHash
-                    )
-                ).void
-              end
+                  network_policy: T.any(
+                    OpenAI::Beta::BetaContainerNetworkPolicyDisabled::OrHash,
+                    OpenAI::Beta::BetaContainerNetworkPolicyAllowlist::OrHash
+                  )
+                )
+                  .void
+              }
               attr_writer :network_policy
 
               # Configuration for a code interpreter container. Optionally specify the IDs of
               # the files to run the code on.
               sig do
                 params(
+
                   file_ids: T::Array[String],
-                  memory_limit:
-                    T.nilable(
-                      OpenAI::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::OrSymbol
-                    ),
-                  network_policy:
-                    T.any(
-                      OpenAI::Beta::BetaContainerNetworkPolicyDisabled::OrHash,
-                      OpenAI::Beta::BetaContainerNetworkPolicyAllowlist::OrHash
-                    ),
+
+                  memory_limit: T.nilable(
+                    OpenAI::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::OrSymbol
+                  ),
+
+                  network_policy: T.any(
+                    OpenAI::Beta::BetaContainerNetworkPolicyDisabled::OrHash,
+                    OpenAI::Beta::BetaContainerNetworkPolicyAllowlist::OrHash
+                  ),
+
                   type: Symbol
-                ).returns(T.attached_class)
+                )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 # An optional list of uploaded files to make available to your code.
                 file_ids: nil,
+
                 # The memory limit for the code interpreter container.
                 memory_limit: nil,
+
                 # Network access policy for the container.
                 network_policy: nil,
+
                 # Always `auto`.
+
                 type: :auto
               )
               end
@@ -891,15 +795,13 @@ module OpenAI
                   {
                     type: Symbol,
                     file_ids: T::Array[String],
-                    memory_limit:
-                      T.nilable(
-                        OpenAI::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::OrSymbol
-                      ),
-                    network_policy:
-                      T.any(
-                        OpenAI::Beta::BetaContainerNetworkPolicyDisabled,
-                        OpenAI::Beta::BetaContainerNetworkPolicyAllowlist
-                      )
+                    memory_limit: T.nilable(
+                      OpenAI::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::OrSymbol
+                    ),
+                    network_policy: T.any(
+                      OpenAI::Beta::BetaContainerNetworkPolicyDisabled,
+                      OpenAI::Beta::BetaContainerNetworkPolicyAllowlist
+                    )
                   }
                 )
               end
@@ -910,43 +812,38 @@ module OpenAI
               module MemoryLimit
                 extend OpenAI::Internal::Type::Enum
 
-                TaggedSymbol =
-                  T.type_alias do
-                    T.all(
-                      Symbol,
-                      OpenAI::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit
-                    )
-                  end
+                TaggedSymbol = T.type_alias {
+                  T.all(
+                    Symbol,
+                    OpenAI::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit
+                  )
+                }
                 OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-                MEMORY_LIMIT_1G =
-                  T.let(
-                    :"1g",
-                    OpenAI::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::TaggedSymbol
-                  )
-                MEMORY_LIMIT_4G =
-                  T.let(
-                    :"4g",
-                    OpenAI::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::TaggedSymbol
-                  )
-                MEMORY_LIMIT_16G =
-                  T.let(
-                    :"16g",
-                    OpenAI::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::TaggedSymbol
-                  )
-                MEMORY_LIMIT_64G =
-                  T.let(
-                    :"64g",
-                    OpenAI::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::TaggedSymbol
-                  )
+                MEMORY_LIMIT_1G = T.let(
+                  :"1g",
+                  OpenAI::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::TaggedSymbol
+                )
+                MEMORY_LIMIT_4G = T.let(
+                  :"4g",
+                  OpenAI::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::TaggedSymbol
+                )
+                MEMORY_LIMIT_16G = T.let(
+                  :"16g",
+                  OpenAI::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::TaggedSymbol
+                )
+                MEMORY_LIMIT_64G = T.let(
+                  :"64g",
+                  OpenAI::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::TaggedSymbol
+                )
 
-                sig do
+                sig {
                   override.returns(
                     T::Array[
                       OpenAI::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::TaggedSymbol
                     ]
                   )
-                end
+                }
                 def self.values
                 end
               end
@@ -955,125 +852,101 @@ module OpenAI
               module NetworkPolicy
                 extend OpenAI::Internal::Type::Union
 
-                Variants =
-                  T.type_alias do
-                    T.any(
-                      OpenAI::Beta::BetaContainerNetworkPolicyDisabled,
-                      OpenAI::Beta::BetaContainerNetworkPolicyAllowlist
-                    )
-                  end
+                Variants = T.type_alias {
+                  T.any(
+                    OpenAI::Beta::BetaContainerNetworkPolicyDisabled,
+                    OpenAI::Beta::BetaContainerNetworkPolicyAllowlist
+                  )
+                }
 
-                sig do
+                sig {
                   override.returns(
                     T::Array[
                       OpenAI::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::NetworkPolicy::Variants
                     ]
                   )
-                end
+                }
                 def self.variants
                 end
+
               end
             end
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Beta::BetaTool::CodeInterpreter::Container::Variants
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Beta::BetaTool::CodeInterpreter::Container::Variants]) }
             def self.variants
             end
+
           end
 
           module AllowedCaller
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Beta::BetaTool::CodeInterpreter::AllowedCaller
-                )
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::BetaTool::CodeInterpreter::AllowedCaller) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            DIRECT =
-              T.let(
-                :direct,
-                OpenAI::Beta::BetaTool::CodeInterpreter::AllowedCaller::TaggedSymbol
-              )
-            PROGRAMMATIC =
-              T.let(
-                :programmatic,
-                OpenAI::Beta::BetaTool::CodeInterpreter::AllowedCaller::TaggedSymbol
-              )
+            DIRECT = T.let(:direct, OpenAI::Beta::BetaTool::CodeInterpreter::AllowedCaller::TaggedSymbol)
+            PROGRAMMATIC = T.let(:programmatic, OpenAI::Beta::BetaTool::CodeInterpreter::AllowedCaller::TaggedSymbol)
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Beta::BetaTool::CodeInterpreter::AllowedCaller::TaggedSymbol
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Beta::BetaTool::CodeInterpreter::AllowedCaller::TaggedSymbol]) }
             def self.values
             end
           end
         end
 
         class ProgrammaticToolCalling < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Beta::BetaTool::ProgrammaticToolCalling,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::BetaTool::ProgrammaticToolCalling,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The type of the tool. Always `programmatic_tool_calling`.
           sig { returns(Symbol) }
           attr_accessor :type
 
-          sig { params(type: Symbol).returns(T.attached_class) }
+          sig do
+            params(
+
+              type: Symbol
+            )
+              .returns(T.attached_class)
+          end
           def self.new(
+
             # The type of the tool. Always `programmatic_tool_calling`.
+
             type: :programmatic_tool_calling
           )
           end
 
-          sig { override.returns({ type: Symbol }) }
+          sig do
+            override.returns(
+              {type: Symbol}
+            )
+          end
           def to_hash
           end
+
         end
 
         class ImageGeneration < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Beta::BetaTool::ImageGeneration,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::BetaTool::ImageGeneration,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The type of the image generation tool. Always `image_generation`.
           sig { returns(Symbol) }
           attr_accessor :type
 
           # Whether to generate a new image or edit an existing image. Default: `auto`.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Beta::BetaTool::ImageGeneration::Action::OrSymbol
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Beta::BetaTool::ImageGeneration::Action::OrSymbol)) }
           attr_reader :action
 
-          sig do
-            params(
-              action: OpenAI::Beta::BetaTool::ImageGeneration::Action::OrSymbol
-            ).void
-          end
+          sig { params(action: OpenAI::Beta::BetaTool::ImageGeneration::Action::OrSymbol).void }
           attr_writer :action
 
           # Allows to set transparency for the background of the generated image(s). This
@@ -1088,93 +961,39 @@ module OpenAI
           #
           # If `transparent`, the output format needs to support transparency, so it should
           # be set to either `png` (default value) or `webp`.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Beta::BetaTool::ImageGeneration::Background::OrSymbol
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Beta::BetaTool::ImageGeneration::Background::OrSymbol)) }
           attr_reader :background
 
-          sig do
-            params(
-              background:
-                OpenAI::Beta::BetaTool::ImageGeneration::Background::OrSymbol
-            ).void
-          end
+          sig { params(background: OpenAI::Beta::BetaTool::ImageGeneration::Background::OrSymbol).void }
           attr_writer :background
 
           # Control how much effort the model will exert to match the style and features,
           # especially facial features, of input images. This parameter is only supported
           # for `gpt-image-1` and `gpt-image-1.5` and later models, unsupported for
           # `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Beta::BetaTool::ImageGeneration::InputFidelity::OrSymbol
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Beta::BetaTool::ImageGeneration::InputFidelity::OrSymbol)) }
           attr_accessor :input_fidelity
 
           # Optional mask for inpainting. Contains `image_url` (string, optional) and
           # `file_id` (string, optional).
-          sig do
-            returns(
-              T.nilable(OpenAI::Beta::BetaTool::ImageGeneration::InputImageMask)
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Beta::BetaTool::ImageGeneration::InputImageMask)) }
           attr_reader :input_image_mask
 
-          sig do
-            params(
-              input_image_mask:
-                OpenAI::Beta::BetaTool::ImageGeneration::InputImageMask::OrHash
-            ).void
-          end
+          sig { params(input_image_mask: OpenAI::Beta::BetaTool::ImageGeneration::InputImageMask::OrHash).void }
           attr_writer :input_image_mask
 
           # The image generation model to use. Default: `gpt-image-1`.
-          sig do
-            returns(
-              T.nilable(
-                T.any(
-                  String,
-                  OpenAI::Beta::BetaTool::ImageGeneration::Model::OrSymbol
-                )
-              )
-            )
-          end
+          sig { returns(T.nilable(T.any(String, OpenAI::Beta::BetaTool::ImageGeneration::Model::OrSymbol))) }
           attr_reader :model
 
-          sig do
-            params(
-              model:
-                T.any(
-                  String,
-                  OpenAI::Beta::BetaTool::ImageGeneration::Model::OrSymbol
-                )
-            ).void
-          end
+          sig { params(model: T.any(String, OpenAI::Beta::BetaTool::ImageGeneration::Model::OrSymbol)).void }
           attr_writer :model
 
           # Moderation level for the generated image. Default: `auto`.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Beta::BetaTool::ImageGeneration::Moderation::OrSymbol
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Beta::BetaTool::ImageGeneration::Moderation::OrSymbol)) }
           attr_reader :moderation
 
-          sig do
-            params(
-              moderation:
-                OpenAI::Beta::BetaTool::ImageGeneration::Moderation::OrSymbol
-            ).void
-          end
+          sig { params(moderation: OpenAI::Beta::BetaTool::ImageGeneration::Moderation::OrSymbol).void }
           attr_writer :moderation
 
           # Compression level for the output image. Default: 100.
@@ -1186,21 +1005,10 @@ module OpenAI
 
           # The output format of the generated image. One of `png`, `webp`, or `jpeg`.
           # Default: `png`.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Beta::BetaTool::ImageGeneration::OutputFormat::OrSymbol
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Beta::BetaTool::ImageGeneration::OutputFormat::OrSymbol)) }
           attr_reader :output_format
 
-          sig do
-            params(
-              output_format:
-                OpenAI::Beta::BetaTool::ImageGeneration::OutputFormat::OrSymbol
-            ).void
-          end
+          sig { params(output_format: OpenAI::Beta::BetaTool::ImageGeneration::OutputFormat::OrSymbol).void }
           attr_writer :output_format
 
           # Number of partial images to generate in streaming mode, from 0 (default value)
@@ -1213,21 +1021,10 @@ module OpenAI
 
           # The quality of the generated image. One of `low`, `medium`, `high`, or `auto`.
           # Default: `auto`.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Beta::BetaTool::ImageGeneration::Quality::OrSymbol
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Beta::BetaTool::ImageGeneration::Quality::OrSymbol)) }
           attr_reader :quality
 
-          sig do
-            params(
-              quality:
-                OpenAI::Beta::BetaTool::ImageGeneration::Quality::OrSymbol
-            ).void
-          end
+          sig { params(quality: OpenAI::Beta::BetaTool::ImageGeneration::Quality::OrSymbol).void }
           attr_writer :quality
 
           # The size of the generated images. For `gpt-image-2` and
@@ -1241,65 +1038,47 @@ module OpenAI
           # automatic sizing. For `dall-e-2`, use one of `256x256`, `512x512`, or
           # `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or
           # `1024x1792`.
-          sig do
-            returns(
-              T.nilable(
-                T.any(
-                  String,
-                  OpenAI::Beta::BetaTool::ImageGeneration::Size::OrSymbol
-                )
-              )
-            )
-          end
+          sig { returns(T.nilable(T.any(String, OpenAI::Beta::BetaTool::ImageGeneration::Size::OrSymbol))) }
           attr_reader :size
 
-          sig do
-            params(
-              size:
-                T.any(
-                  String,
-                  OpenAI::Beta::BetaTool::ImageGeneration::Size::OrSymbol
-                )
-            ).void
-          end
+          sig { params(size: T.any(String, OpenAI::Beta::BetaTool::ImageGeneration::Size::OrSymbol)).void }
           attr_writer :size
 
           # A tool that generates images using the GPT image models.
           sig do
             params(
+
               action: OpenAI::Beta::BetaTool::ImageGeneration::Action::OrSymbol,
-              background:
-                OpenAI::Beta::BetaTool::ImageGeneration::Background::OrSymbol,
-              input_fidelity:
-                T.nilable(
-                  OpenAI::Beta::BetaTool::ImageGeneration::InputFidelity::OrSymbol
-                ),
-              input_image_mask:
-                OpenAI::Beta::BetaTool::ImageGeneration::InputImageMask::OrHash,
-              model:
-                T.any(
-                  String,
-                  OpenAI::Beta::BetaTool::ImageGeneration::Model::OrSymbol
-                ),
-              moderation:
-                OpenAI::Beta::BetaTool::ImageGeneration::Moderation::OrSymbol,
+
+              background: OpenAI::Beta::BetaTool::ImageGeneration::Background::OrSymbol,
+
+              input_fidelity: T.nilable(OpenAI::Beta::BetaTool::ImageGeneration::InputFidelity::OrSymbol),
+
+              input_image_mask: OpenAI::Beta::BetaTool::ImageGeneration::InputImageMask::OrHash,
+
+              model: T.any(String, OpenAI::Beta::BetaTool::ImageGeneration::Model::OrSymbol),
+
+              moderation: OpenAI::Beta::BetaTool::ImageGeneration::Moderation::OrSymbol,
+
               output_compression: Integer,
-              output_format:
-                OpenAI::Beta::BetaTool::ImageGeneration::OutputFormat::OrSymbol,
+
+              output_format: OpenAI::Beta::BetaTool::ImageGeneration::OutputFormat::OrSymbol,
+
               partial_images: Integer,
-              quality:
-                OpenAI::Beta::BetaTool::ImageGeneration::Quality::OrSymbol,
-              size:
-                T.any(
-                  String,
-                  OpenAI::Beta::BetaTool::ImageGeneration::Size::OrSymbol
-                ),
+
+              quality: OpenAI::Beta::BetaTool::ImageGeneration::Quality::OrSymbol,
+
+              size: T.any(String, OpenAI::Beta::BetaTool::ImageGeneration::Size::OrSymbol),
+
               type: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # Whether to generate a new image or edit an existing image. Default: `auto`.
             action: nil,
+
             # Allows to set transparency for the background of the generated image(s). This
             # parameter is only supported for GPT image models that support transparent
             # backgrounds. Must be one of `transparent`, `opaque`, or `auto` (default value).
@@ -1313,29 +1092,38 @@ module OpenAI
             # If `transparent`, the output format needs to support transparency, so it should
             # be set to either `png` (default value) or `webp`.
             background: nil,
+
             # Control how much effort the model will exert to match the style and features,
             # especially facial features, of input images. This parameter is only supported
             # for `gpt-image-1` and `gpt-image-1.5` and later models, unsupported for
             # `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.
             input_fidelity: nil,
+
             # Optional mask for inpainting. Contains `image_url` (string, optional) and
             # `file_id` (string, optional).
             input_image_mask: nil,
+
             # The image generation model to use. Default: `gpt-image-1`.
             model: nil,
+
             # Moderation level for the generated image. Default: `auto`.
             moderation: nil,
+
             # Compression level for the output image. Default: 100.
             output_compression: nil,
+
             # The output format of the generated image. One of `png`, `webp`, or `jpeg`.
             # Default: `png`.
             output_format: nil,
+
             # Number of partial images to generate in streaming mode, from 0 (default value)
             # to 3.
             partial_images: nil,
+
             # The quality of the generated image. One of `low`, `medium`, `high`, or `auto`.
             # Default: `auto`.
             quality: nil,
+
             # The size of the generated images. For `gpt-image-2` and
             # `gpt-image-2-2026-04-21`, arbitrary resolutions are supported as `WIDTHxHEIGHT`
             # strings, for example `1536x864`. Width and height must both be divisible by 16
@@ -1348,7 +1136,9 @@ module OpenAI
             # `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or
             # `1024x1792`.
             size: nil,
+
             # The type of the image generation tool. Always `image_generation`.
+
             type: :image_generation
           )
           end
@@ -1357,34 +1147,17 @@ module OpenAI
             override.returns(
               {
                 type: Symbol,
-                action:
-                  OpenAI::Beta::BetaTool::ImageGeneration::Action::OrSymbol,
-                background:
-                  OpenAI::Beta::BetaTool::ImageGeneration::Background::OrSymbol,
-                input_fidelity:
-                  T.nilable(
-                    OpenAI::Beta::BetaTool::ImageGeneration::InputFidelity::OrSymbol
-                  ),
-                input_image_mask:
-                  OpenAI::Beta::BetaTool::ImageGeneration::InputImageMask,
-                model:
-                  T.any(
-                    String,
-                    OpenAI::Beta::BetaTool::ImageGeneration::Model::OrSymbol
-                  ),
-                moderation:
-                  OpenAI::Beta::BetaTool::ImageGeneration::Moderation::OrSymbol,
+                action: OpenAI::Beta::BetaTool::ImageGeneration::Action::OrSymbol,
+                background: OpenAI::Beta::BetaTool::ImageGeneration::Background::OrSymbol,
+                input_fidelity: T.nilable(OpenAI::Beta::BetaTool::ImageGeneration::InputFidelity::OrSymbol),
+                input_image_mask: OpenAI::Beta::BetaTool::ImageGeneration::InputImageMask,
+                model: T.any(String, OpenAI::Beta::BetaTool::ImageGeneration::Model::OrSymbol),
+                moderation: OpenAI::Beta::BetaTool::ImageGeneration::Moderation::OrSymbol,
                 output_compression: Integer,
-                output_format:
-                  OpenAI::Beta::BetaTool::ImageGeneration::OutputFormat::OrSymbol,
+                output_format: OpenAI::Beta::BetaTool::ImageGeneration::OutputFormat::OrSymbol,
                 partial_images: Integer,
-                quality:
-                  OpenAI::Beta::BetaTool::ImageGeneration::Quality::OrSymbol,
-                size:
-                  T.any(
-                    String,
-                    OpenAI::Beta::BetaTool::ImageGeneration::Size::OrSymbol
-                  )
+                quality: OpenAI::Beta::BetaTool::ImageGeneration::Quality::OrSymbol,
+                size: T.any(String, OpenAI::Beta::BetaTool::ImageGeneration::Size::OrSymbol)
               }
             )
           end
@@ -1395,35 +1168,14 @@ module OpenAI
           module Action
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(Symbol, OpenAI::Beta::BetaTool::ImageGeneration::Action)
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::BetaTool::ImageGeneration::Action) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            GENERATE =
-              T.let(
-                :generate,
-                OpenAI::Beta::BetaTool::ImageGeneration::Action::TaggedSymbol
-              )
-            EDIT =
-              T.let(
-                :edit,
-                OpenAI::Beta::BetaTool::ImageGeneration::Action::TaggedSymbol
-              )
-            AUTO =
-              T.let(
-                :auto,
-                OpenAI::Beta::BetaTool::ImageGeneration::Action::TaggedSymbol
-              )
+            GENERATE = T.let(:generate, OpenAI::Beta::BetaTool::ImageGeneration::Action::TaggedSymbol)
+            EDIT = T.let(:edit, OpenAI::Beta::BetaTool::ImageGeneration::Action::TaggedSymbol)
+            AUTO = T.let(:auto, OpenAI::Beta::BetaTool::ImageGeneration::Action::TaggedSymbol)
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Beta::BetaTool::ImageGeneration::Action::TaggedSymbol
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Beta::BetaTool::ImageGeneration::Action::TaggedSymbol]) }
             def self.values
             end
           end
@@ -1443,38 +1195,14 @@ module OpenAI
           module Background
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Beta::BetaTool::ImageGeneration::Background
-                )
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::BetaTool::ImageGeneration::Background) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            TRANSPARENT =
-              T.let(
-                :transparent,
-                OpenAI::Beta::BetaTool::ImageGeneration::Background::TaggedSymbol
-              )
-            OPAQUE =
-              T.let(
-                :opaque,
-                OpenAI::Beta::BetaTool::ImageGeneration::Background::TaggedSymbol
-              )
-            AUTO =
-              T.let(
-                :auto,
-                OpenAI::Beta::BetaTool::ImageGeneration::Background::TaggedSymbol
-              )
+            TRANSPARENT = T.let(:transparent, OpenAI::Beta::BetaTool::ImageGeneration::Background::TaggedSymbol)
+            OPAQUE = T.let(:opaque, OpenAI::Beta::BetaTool::ImageGeneration::Background::TaggedSymbol)
+            AUTO = T.let(:auto, OpenAI::Beta::BetaTool::ImageGeneration::Background::TaggedSymbol)
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Beta::BetaTool::ImageGeneration::Background::TaggedSymbol
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Beta::BetaTool::ImageGeneration::Background::TaggedSymbol]) }
             def self.values
             end
           end
@@ -1486,45 +1214,24 @@ module OpenAI
           module InputFidelity
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Beta::BetaTool::ImageGeneration::InputFidelity
-                )
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::BetaTool::ImageGeneration::InputFidelity) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            HIGH =
-              T.let(
-                :high,
-                OpenAI::Beta::BetaTool::ImageGeneration::InputFidelity::TaggedSymbol
-              )
-            LOW =
-              T.let(
-                :low,
-                OpenAI::Beta::BetaTool::ImageGeneration::InputFidelity::TaggedSymbol
-              )
+            HIGH = T.let(:high, OpenAI::Beta::BetaTool::ImageGeneration::InputFidelity::TaggedSymbol)
+            LOW = T.let(:low, OpenAI::Beta::BetaTool::ImageGeneration::InputFidelity::TaggedSymbol)
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Beta::BetaTool::ImageGeneration::InputFidelity::TaggedSymbol
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Beta::BetaTool::ImageGeneration::InputFidelity::TaggedSymbol]) }
             def self.values
             end
           end
 
           class InputImageMask < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Beta::BetaTool::ImageGeneration::InputImageMask,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaTool::ImageGeneration::InputImageMask,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # File ID for the mask image.
             sig { returns(T.nilable(String)) }
@@ -1543,114 +1250,77 @@ module OpenAI
             # Optional mask for inpainting. Contains `image_url` (string, optional) and
             # `file_id` (string, optional).
             sig do
-              params(file_id: String, image_url: String).returns(
-                T.attached_class
+              params(
+
+                file_id: String,
+
+                image_url: String
               )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # File ID for the mask image.
               file_id: nil,
+
               # Base64-encoded mask image.
+
               image_url: nil
             )
             end
 
-            sig { override.returns({ file_id: String, image_url: String }) }
+            sig do
+              override.returns(
+                {file_id: String, image_url: String}
+              )
+            end
             def to_hash
             end
+
           end
 
           # The image generation model to use. Default: `gpt-image-1`.
           module Model
             extend OpenAI::Internal::Type::Union
 
-            Variants =
-              T.type_alias do
-                T.any(
-                  String,
-                  OpenAI::Beta::BetaTool::ImageGeneration::Model::TaggedSymbol
-                )
-              end
+            Variants = T.type_alias { T.any(String, OpenAI::Beta::BetaTool::ImageGeneration::Model::TaggedSymbol) }
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Beta::BetaTool::ImageGeneration::Model::Variants
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Beta::BetaTool::ImageGeneration::Model::Variants]) }
             def self.variants
             end
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(Symbol, OpenAI::Beta::BetaTool::ImageGeneration::Model)
-              end
+            TaggedSymbol = T.type_alias do
+              T.all(Symbol, OpenAI::Beta::BetaTool::ImageGeneration::Model)
+            end
+
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            GPT_IMAGE_1 =
-              T.let(
-                :"gpt-image-1",
-                OpenAI::Beta::BetaTool::ImageGeneration::Model::TaggedSymbol
-              )
-            GPT_IMAGE_1_MINI =
-              T.let(
-                :"gpt-image-1-mini",
-                OpenAI::Beta::BetaTool::ImageGeneration::Model::TaggedSymbol
-              )
-            GPT_IMAGE_2 =
-              T.let(
-                :"gpt-image-2",
-                OpenAI::Beta::BetaTool::ImageGeneration::Model::TaggedSymbol
-              )
-            GPT_IMAGE_2_2026_04_21 =
-              T.let(
-                :"gpt-image-2-2026-04-21",
-                OpenAI::Beta::BetaTool::ImageGeneration::Model::TaggedSymbol
-              )
-            GPT_IMAGE_1_5 =
-              T.let(
-                :"gpt-image-1.5",
-                OpenAI::Beta::BetaTool::ImageGeneration::Model::TaggedSymbol
-              )
-            CHATGPT_IMAGE_LATEST =
-              T.let(
-                :"chatgpt-image-latest",
-                OpenAI::Beta::BetaTool::ImageGeneration::Model::TaggedSymbol
-              )
+            GPT_IMAGE_1 = T.let(:"gpt-image-1", OpenAI::Beta::BetaTool::ImageGeneration::Model::TaggedSymbol)
+            GPT_IMAGE_1_MINI = T.let(:"gpt-image-1-mini", OpenAI::Beta::BetaTool::ImageGeneration::Model::TaggedSymbol)
+            GPT_IMAGE_2 = T.let(:"gpt-image-2", OpenAI::Beta::BetaTool::ImageGeneration::Model::TaggedSymbol)
+            GPT_IMAGE_2_2026_04_21 = T.let(
+              :"gpt-image-2-2026-04-21",
+              OpenAI::Beta::BetaTool::ImageGeneration::Model::TaggedSymbol
+            )
+            GPT_IMAGE_1_5 = T.let(:"gpt-image-1.5", OpenAI::Beta::BetaTool::ImageGeneration::Model::TaggedSymbol)
+            CHATGPT_IMAGE_LATEST = T.let(
+              :"chatgpt-image-latest",
+              OpenAI::Beta::BetaTool::ImageGeneration::Model::TaggedSymbol
+            )
+
           end
 
           # Moderation level for the generated image. Default: `auto`.
           module Moderation
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Beta::BetaTool::ImageGeneration::Moderation
-                )
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::BetaTool::ImageGeneration::Moderation) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            AUTO =
-              T.let(
-                :auto,
-                OpenAI::Beta::BetaTool::ImageGeneration::Moderation::TaggedSymbol
-              )
-            LOW =
-              T.let(
-                :low,
-                OpenAI::Beta::BetaTool::ImageGeneration::Moderation::TaggedSymbol
-              )
+            AUTO = T.let(:auto, OpenAI::Beta::BetaTool::ImageGeneration::Moderation::TaggedSymbol)
+            LOW = T.let(:low, OpenAI::Beta::BetaTool::ImageGeneration::Moderation::TaggedSymbol)
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Beta::BetaTool::ImageGeneration::Moderation::TaggedSymbol
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Beta::BetaTool::ImageGeneration::Moderation::TaggedSymbol]) }
             def self.values
             end
           end
@@ -1660,38 +1330,14 @@ module OpenAI
           module OutputFormat
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Beta::BetaTool::ImageGeneration::OutputFormat
-                )
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::BetaTool::ImageGeneration::OutputFormat) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            PNG =
-              T.let(
-                :png,
-                OpenAI::Beta::BetaTool::ImageGeneration::OutputFormat::TaggedSymbol
-              )
-            WEBP =
-              T.let(
-                :webp,
-                OpenAI::Beta::BetaTool::ImageGeneration::OutputFormat::TaggedSymbol
-              )
-            JPEG =
-              T.let(
-                :jpeg,
-                OpenAI::Beta::BetaTool::ImageGeneration::OutputFormat::TaggedSymbol
-              )
+            PNG = T.let(:png, OpenAI::Beta::BetaTool::ImageGeneration::OutputFormat::TaggedSymbol)
+            WEBP = T.let(:webp, OpenAI::Beta::BetaTool::ImageGeneration::OutputFormat::TaggedSymbol)
+            JPEG = T.let(:jpeg, OpenAI::Beta::BetaTool::ImageGeneration::OutputFormat::TaggedSymbol)
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Beta::BetaTool::ImageGeneration::OutputFormat::TaggedSymbol
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Beta::BetaTool::ImageGeneration::OutputFormat::TaggedSymbol]) }
             def self.values
             end
           end
@@ -1701,40 +1347,15 @@ module OpenAI
           module Quality
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(Symbol, OpenAI::Beta::BetaTool::ImageGeneration::Quality)
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::BetaTool::ImageGeneration::Quality) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            LOW =
-              T.let(
-                :low,
-                OpenAI::Beta::BetaTool::ImageGeneration::Quality::TaggedSymbol
-              )
-            MEDIUM =
-              T.let(
-                :medium,
-                OpenAI::Beta::BetaTool::ImageGeneration::Quality::TaggedSymbol
-              )
-            HIGH =
-              T.let(
-                :high,
-                OpenAI::Beta::BetaTool::ImageGeneration::Quality::TaggedSymbol
-              )
-            AUTO =
-              T.let(
-                :auto,
-                OpenAI::Beta::BetaTool::ImageGeneration::Quality::TaggedSymbol
-              )
+            LOW = T.let(:low, OpenAI::Beta::BetaTool::ImageGeneration::Quality::TaggedSymbol)
+            MEDIUM = T.let(:medium, OpenAI::Beta::BetaTool::ImageGeneration::Quality::TaggedSymbol)
+            HIGH = T.let(:high, OpenAI::Beta::BetaTool::ImageGeneration::Quality::TaggedSymbol)
+            AUTO = T.let(:auto, OpenAI::Beta::BetaTool::ImageGeneration::Quality::TaggedSymbol)
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Beta::BetaTool::ImageGeneration::Quality::TaggedSymbol
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Beta::BetaTool::ImageGeneration::Quality::TaggedSymbol]) }
             def self.values
             end
           end
@@ -1753,83 +1374,71 @@ module OpenAI
           module Size
             extend OpenAI::Internal::Type::Union
 
-            Variants =
-              T.type_alias do
-                T.any(
-                  String,
-                  OpenAI::Beta::BetaTool::ImageGeneration::Size::TaggedSymbol
-                )
-              end
+            Variants = T.type_alias { T.any(String, OpenAI::Beta::BetaTool::ImageGeneration::Size::TaggedSymbol) }
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Beta::BetaTool::ImageGeneration::Size::Variants
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Beta::BetaTool::ImageGeneration::Size::Variants]) }
             def self.variants
             end
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(Symbol, OpenAI::Beta::BetaTool::ImageGeneration::Size)
-              end
+            TaggedSymbol = T.type_alias do
+              T.all(Symbol, OpenAI::Beta::BetaTool::ImageGeneration::Size)
+            end
+
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            SIZE_1024X1024 =
-              T.let(
-                :"1024x1024",
-                OpenAI::Beta::BetaTool::ImageGeneration::Size::TaggedSymbol
-              )
-            SIZE_1024X1536 =
-              T.let(
-                :"1024x1536",
-                OpenAI::Beta::BetaTool::ImageGeneration::Size::TaggedSymbol
-              )
-            SIZE_1536X1024 =
-              T.let(
-                :"1536x1024",
-                OpenAI::Beta::BetaTool::ImageGeneration::Size::TaggedSymbol
-              )
-            AUTO =
-              T.let(
-                :auto,
-                OpenAI::Beta::BetaTool::ImageGeneration::Size::TaggedSymbol
-              )
+            SIZE_1024X1024 = T.let(:"1024x1024", OpenAI::Beta::BetaTool::ImageGeneration::Size::TaggedSymbol)
+            SIZE_1024X1536 = T.let(:"1024x1536", OpenAI::Beta::BetaTool::ImageGeneration::Size::TaggedSymbol)
+            SIZE_1536X1024 = T.let(:"1536x1024", OpenAI::Beta::BetaTool::ImageGeneration::Size::TaggedSymbol)
+            AUTO = T.let(:auto, OpenAI::Beta::BetaTool::ImageGeneration::Size::TaggedSymbol)
+
           end
         end
 
         class LocalShell < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Beta::BetaTool::LocalShell,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::BetaTool::LocalShell,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The type of the local shell tool. Always `local_shell`.
           sig { returns(Symbol) }
           attr_accessor :type
 
           # A tool that allows the model to execute shell commands in a local environment.
-          sig { params(type: Symbol).returns(T.attached_class) }
+          sig do
+            params(
+
+              type: Symbol
+            )
+              .returns(T.attached_class)
+          end
           def self.new(
+
             # The type of the local shell tool. Always `local_shell`.
+
             type: :local_shell
           )
           end
 
-          sig { override.returns({ type: Symbol }) }
+          sig do
+            override.returns(
+              {type: Symbol}
+            )
+          end
           def to_hash
           end
+
         end
 
         sig { override.returns(T::Array[OpenAI::Beta::BetaTool::Variants]) }
         def self.variants
         end
+
       end
+
     end
+
   end
 end

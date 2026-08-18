@@ -2,7 +2,9 @@
 
 module OpenAI
   module Resources
+
     class FineTuning
+
       sig { returns(OpenAI::Resources::FineTuning::Methods) }
       attr_reader :methods_
 
@@ -21,5 +23,6 @@ module OpenAI
       def self.new(client:)
       end
     end
+
   end
 end

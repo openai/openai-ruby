@@ -2,22 +2,27 @@
 
 module OpenAI
   module Resources
+
     class Admin
+
       class Organization
+
         class Projects
+
           class Groups
+
             class Roles
+
               # Assigns a project role to a group within a project.
-              sig do
+              sig {
                 params(
                   group_id: String,
                   project_id: String,
                   role_id: String,
                   request_options: OpenAI::RequestOptions::OrHash
-                ).returns(
-                  OpenAI::Models::Admin::Organization::Projects::Groups::RoleCreateResponse
                 )
-              end
+                  .returns(OpenAI::Models::Admin::Organization::Projects::Groups::RoleCreateResponse)
+              }
               def create(
                 # Path param: The ID of the group that should receive the project role.
                 group_id,
@@ -30,16 +35,15 @@ module OpenAI
               end
 
               # Retrieves a project role assigned to a group.
-              sig do
+              sig {
                 params(
                   role_id: String,
                   project_id: String,
                   group_id: String,
                   request_options: OpenAI::RequestOptions::OrHash
-                ).returns(
-                  OpenAI::Models::Admin::Organization::Projects::Groups::RoleRetrieveResponse
                 )
-              end
+                  .returns(OpenAI::Models::Admin::Organization::Projects::Groups::RoleRetrieveResponse)
+              }
               def retrieve(
                 # The ID of the project role to retrieve for the group.
                 role_id,
@@ -52,21 +56,21 @@ module OpenAI
               end
 
               # Lists the project roles assigned to a group within a project.
-              sig do
+              sig {
                 params(
                   group_id: String,
                   project_id: String,
                   after: String,
                   limit: Integer,
-                  order:
-                    OpenAI::Admin::Organization::Projects::Groups::RoleListParams::Order::OrSymbol,
+                  order: OpenAI::Admin::Organization::Projects::Groups::RoleListParams::Order::OrSymbol,
                   request_options: OpenAI::RequestOptions::OrHash
-                ).returns(
-                  OpenAI::Internal::NextCursorPage[
-                    OpenAI::Models::Admin::Organization::Projects::Groups::RoleListResponse
-                  ]
                 )
-              end
+                  .returns(
+                    OpenAI::Internal::NextCursorPage[
+                      OpenAI::Models::Admin::Organization::Projects::Groups::RoleListResponse
+                    ]
+                  )
+              }
               def list(
                 # Path param: The ID of the group to inspect.
                 group_id,
@@ -84,16 +88,15 @@ module OpenAI
               end
 
               # Unassigns a project role from a group within a project.
-              sig do
+              sig {
                 params(
                   role_id: String,
                   project_id: String,
                   group_id: String,
                   request_options: OpenAI::RequestOptions::OrHash
-                ).returns(
-                  OpenAI::Models::Admin::Organization::Projects::Groups::RoleDeleteResponse
                 )
-              end
+                  .returns(OpenAI::Models::Admin::Organization::Projects::Groups::RoleDeleteResponse)
+              }
               def delete(
                 # The ID of the project role to remove from the group.
                 role_id,
@@ -110,9 +113,14 @@ module OpenAI
               def self.new(client:)
               end
             end
+
           end
+
         end
+
       end
+
     end
+
   end
 end

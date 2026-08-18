@@ -2,12 +2,17 @@
 
 module OpenAI
   module Models
+
     module Responses
+
       class NamespaceTool < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(OpenAI::Responses::NamespaceTool, OpenAI::Internal::AnyHash)
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Responses::NamespaceTool,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # A description of the namespace shown to the model.
         sig { returns(String) }
@@ -18,16 +23,9 @@ module OpenAI
         attr_accessor :name
 
         # The function/custom tools available inside this namespace.
-        sig do
-          returns(
-            T::Array[
-              T.any(
-                OpenAI::Responses::NamespaceTool::Tool::Function,
-                OpenAI::Responses::CustomTool
-              )
-            ]
-          )
-        end
+        sig {
+          returns(T::Array[T.any(OpenAI::Responses::NamespaceTool::Tool::Function, OpenAI::Responses::CustomTool)])
+        }
         attr_accessor :tools
 
         # The type of the tool. Always `namespace`.
@@ -37,26 +35,32 @@ module OpenAI
         # Groups function/custom tools under a shared namespace.
         sig do
           params(
+
             description: String,
+
             name: String,
-            tools:
-              T::Array[
-                T.any(
-                  OpenAI::Responses::NamespaceTool::Tool::Function::OrHash,
-                  OpenAI::Responses::CustomTool::OrHash
-                )
-              ],
+
+            tools: T::Array[
+              T.any(OpenAI::Responses::NamespaceTool::Tool::Function::OrHash, OpenAI::Responses::CustomTool::OrHash)
+            ],
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # A description of the namespace shown to the model.
           description:,
+
           # The namespace name used in tool calls (for example, `crm`).
           name:,
+
           # The function/custom tools available inside this namespace.
           tools:,
+
           # The type of the tool. Always `namespace`.
+
           type: :namespace
         )
         end
@@ -66,13 +70,7 @@ module OpenAI
             {
               description: String,
               name: String,
-              tools:
-                T::Array[
-                  T.any(
-                    OpenAI::Responses::NamespaceTool::Tool::Function,
-                    OpenAI::Responses::CustomTool
-                  )
-                ],
+              tools: T::Array[T.any(OpenAI::Responses::NamespaceTool::Tool::Function, OpenAI::Responses::CustomTool)],
               type: Symbol
             }
           )
@@ -84,22 +82,17 @@ module OpenAI
         module Tool
           extend OpenAI::Internal::Type::Union
 
-          Variants =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::NamespaceTool::Tool::Function,
-                OpenAI::Responses::CustomTool
-              )
-            end
+          Variants = T.type_alias {
+            T.any(OpenAI::Responses::NamespaceTool::Tool::Function, OpenAI::Responses::CustomTool)
+          }
 
           class Function < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Responses::NamespaceTool::Tool::Function,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::NamespaceTool::Tool::Function,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             sig { returns(String) }
             attr_accessor :name
@@ -108,15 +101,9 @@ module OpenAI
             attr_accessor :type
 
             # The tool invocation context(s).
-            sig do
-              returns(
-                T.nilable(
-                  T::Array[
-                    OpenAI::Responses::NamespaceTool::Tool::Function::AllowedCaller::OrSymbol
-                  ]
-                )
-              )
-            end
+            sig {
+              returns(T.nilable(T::Array[OpenAI::Responses::NamespaceTool::Tool::Function::AllowedCaller::OrSymbol]))
+            }
             attr_accessor :allowed_callers
 
             # Whether this function should be deferred and discovered via tool search.
@@ -145,36 +132,50 @@ module OpenAI
 
             sig do
               params(
+
                 name: String,
-                allowed_callers:
-                  T.nilable(
-                    T::Array[
-                      OpenAI::Responses::NamespaceTool::Tool::Function::AllowedCaller::OrSymbol
-                    ]
-                  ),
+
+                allowed_callers: T.nilable(
+                  T::Array[OpenAI::Responses::NamespaceTool::Tool::Function::AllowedCaller::OrSymbol]
+                ),
+
                 defer_loading: T::Boolean,
+
                 description: T.nilable(String),
+
                 output_schema: T.nilable(T::Hash[Symbol, T.anything]),
+
                 parameters: T.nilable(T.anything),
+
                 strict: T.nilable(T::Boolean),
+
                 type: Symbol
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               name:,
+
               # The tool invocation context(s).
               allowed_callers: nil,
+
               # Whether this function should be deferred and discovered via tool search.
               defer_loading: nil,
+
               description: nil,
+
               # A JSON Schema describing the JSON value encoded in string outputs for this
               # function tool. This does not describe content-array outputs.
               output_schema: nil,
+
               parameters: nil,
+
               # Whether to enforce strict parameter validation. If omitted, Responses attempts
               # to use strict validation when the schema is compatible, and falls back to
               # non-strict validation otherwise.
               strict: nil,
+
               type: :function
             )
             end
@@ -184,12 +185,9 @@ module OpenAI
                 {
                   name: String,
                   type: Symbol,
-                  allowed_callers:
-                    T.nilable(
-                      T::Array[
-                        OpenAI::Responses::NamespaceTool::Tool::Function::AllowedCaller::OrSymbol
-                      ]
-                    ),
+                  allowed_callers: T.nilable(
+                    T::Array[OpenAI::Responses::NamespaceTool::Tool::Function::AllowedCaller::OrSymbol]
+                  ),
                   defer_loading: T::Boolean,
                   description: T.nilable(String),
                   output_schema: T.nilable(T::Hash[Symbol, T.anything]),
@@ -204,47 +202,36 @@ module OpenAI
             module AllowedCaller
               extend OpenAI::Internal::Type::Enum
 
-              TaggedSymbol =
-                T.type_alias do
-                  T.all(
-                    Symbol,
-                    OpenAI::Responses::NamespaceTool::Tool::Function::AllowedCaller
-                  )
-                end
+              TaggedSymbol = T.type_alias {
+                T.all(Symbol, OpenAI::Responses::NamespaceTool::Tool::Function::AllowedCaller)
+              }
               OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-              DIRECT =
-                T.let(
-                  :direct,
-                  OpenAI::Responses::NamespaceTool::Tool::Function::AllowedCaller::TaggedSymbol
-                )
-              PROGRAMMATIC =
-                T.let(
-                  :programmatic,
-                  OpenAI::Responses::NamespaceTool::Tool::Function::AllowedCaller::TaggedSymbol
-                )
+              DIRECT = T.let(:direct, OpenAI::Responses::NamespaceTool::Tool::Function::AllowedCaller::TaggedSymbol)
+              PROGRAMMATIC = T.let(
+                :programmatic,
+                OpenAI::Responses::NamespaceTool::Tool::Function::AllowedCaller::TaggedSymbol
+              )
 
-              sig do
+              sig {
                 override.returns(
-                  T::Array[
-                    OpenAI::Responses::NamespaceTool::Tool::Function::AllowedCaller::TaggedSymbol
-                  ]
+                  T::Array[OpenAI::Responses::NamespaceTool::Tool::Function::AllowedCaller::TaggedSymbol]
                 )
-              end
+              }
               def self.values
               end
             end
           end
 
-          sig do
-            override.returns(
-              T::Array[OpenAI::Responses::NamespaceTool::Tool::Variants]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Responses::NamespaceTool::Tool::Variants]) }
           def self.variants
           end
+
         end
+
       end
+
     end
+
   end
 end

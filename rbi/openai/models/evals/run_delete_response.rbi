@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Evals
+
       class RunDeleteResponse < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Models::Evals::RunDeleteResponse,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Models::Evals::RunDeleteResponse,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         sig { returns(T.nilable(T::Boolean)) }
         attr_reader :deleted
@@ -31,21 +33,37 @@ module OpenAI
         attr_writer :run_id
 
         sig do
-          params(deleted: T::Boolean, object: String, run_id: String).returns(
-            T.attached_class
+          params(
+
+            deleted: T::Boolean,
+
+            object: String,
+
+            run_id: String
           )
+            .returns(T.attached_class)
         end
-        def self.new(deleted: nil, object: nil, run_id: nil)
+        def self.new(
+
+          deleted: nil,
+
+          object: nil,
+
+          run_id: nil
+        )
         end
 
         sig do
           override.returns(
-            { deleted: T::Boolean, object: String, run_id: String }
+            {deleted: T::Boolean, object: String, run_id: String}
           )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

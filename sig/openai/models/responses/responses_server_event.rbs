@@ -1842,8 +1842,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.output_text.annotation.added",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.output_text.annotation.added"
           ) -> void
 
           def to_hash: -> {

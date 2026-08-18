@@ -3,7 +3,7 @@ module OpenAI
     class WorkloadIdentityAuth
       def get_token: (?deadline: Float?) -> String
 
-      def invalidate_token: () -> void
+      def invalidate_token: -> void
     end
   end
 end

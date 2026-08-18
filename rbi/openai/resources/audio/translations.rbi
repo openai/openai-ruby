@@ -2,21 +2,24 @@
 
 module OpenAI
   module Resources
+
     class Audio
+
       # Turn audio into text or text into audio.
       class Translations
+
         # Translates audio into English.
-        sig do
+        sig {
           params(
             file: OpenAI::Internal::FileInput,
             model: T.any(String, OpenAI::AudioModel::OrSymbol),
             prompt: String,
-            response_format:
-              OpenAI::Audio::TranslationCreateParams::ResponseFormat::OrSymbol,
+            response_format: OpenAI::Audio::TranslationCreateParams::ResponseFormat::OrSymbol,
             temperature: Float,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Models::Audio::TranslationCreateResponse::Variants)
-        end
+          )
+            .returns(OpenAI::Models::Audio::TranslationCreateResponse::Variants)
+        }
         def create(
           # The audio file object (not file name) translate, in one of these formats: flac,
           # mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm. The request must include enough
@@ -53,6 +56,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

@@ -2,8 +2,11 @@
 
 module OpenAI
   module Resources
+
     class Realtime
+
       class ClientSecrets
+
         # Create a Realtime client secret with an associated session configuration.
         #
         # Client secrets are short-lived tokens that can be passed to a client app, such
@@ -19,18 +22,17 @@ module OpenAI
         #
         # Returns the created client secret and the effective session object. The client
         # secret is a string that looks like `ek_1234`.
-        sig do
+        sig {
           params(
-            expires_after:
-              OpenAI::Realtime::ClientSecretCreateParams::ExpiresAfter::OrHash,
-            session:
-              T.any(
-                OpenAI::Realtime::RealtimeSessionCreateRequest::OrHash,
-                OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::OrHash
-              ),
+            expires_after: OpenAI::Realtime::ClientSecretCreateParams::ExpiresAfter::OrHash,
+            session: T.any(
+              OpenAI::Realtime::RealtimeSessionCreateRequest::OrHash,
+              OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::OrHash
+            ),
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Models::Realtime::ClientSecretCreateResponse)
-        end
+          )
+            .returns(OpenAI::Models::Realtime::ClientSecretCreateResponse)
+        }
         def create(
           # Configuration for the client secret expiration. Expiration refers to the time
           # after which a client secret will no longer be valid for creating sessions. The
@@ -49,6 +51,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

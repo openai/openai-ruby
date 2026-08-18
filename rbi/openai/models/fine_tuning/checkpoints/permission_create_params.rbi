@@ -2,19 +2,22 @@
 
 module OpenAI
   module Models
+
     module FineTuning
+
       module Checkpoints
+
         class PermissionCreateParams < OpenAI::Internal::Type::BaseModel
+
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::FineTuning::Checkpoints::PermissionCreateParams,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::FineTuning::Checkpoints::PermissionCreateParams,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           sig { returns(String) }
           attr_accessor :fine_tuned_model_checkpoint
@@ -25,15 +28,22 @@ module OpenAI
 
           sig do
             params(
+
               fine_tuned_model_checkpoint: String,
+
               project_ids: T::Array[String],
+
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             fine_tuned_model_checkpoint:,
+
             # The project identifiers to grant access to.
             project_ids:,
+
             request_options: {}
           )
           end
@@ -49,8 +59,12 @@ module OpenAI
           end
           def to_hash
           end
+
         end
+
       end
+
     end
+
   end
 end

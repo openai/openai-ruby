@@ -9,19 +9,17 @@ module OpenAI
 
         abstract!
 
-        KnownField =
-          T.type_alias do
-            {
-              mode: T.nilable(Symbol),
-              required: T::Boolean,
-              nilable: T::Boolean
-            }
-          end
+        KnownField = T.type_alias do
+          {
+            mode: T.nilable(Symbol),
+            required: T::Boolean,
+            nilable: T::Boolean
+          }
+        end
 
-        OrHash =
-          T.type_alias do
-            T.any(OpenAI::Internal::Type::BaseModel, OpenAI::Internal::AnyHash)
-          end
+        OrHash = T.type_alias do
+          T.any(OpenAI::Internal::Type::BaseModel, OpenAI::Internal::AnyHash)
+        end
 
         class << self
           # @api private
@@ -29,8 +27,10 @@ module OpenAI
           # Assumes superclass fields are totally defined before fields are accessed /
           # defined on subclasses.
           sig { params(child: OpenAI::Internal::Type::BaseModel).void }
-          def inherited(child) # rubocop:disable Lint/MissingSuper -- RBI declarations cannot contain executable bodies.
+          # rubocop:disable Lint/MissingSuper -- RBI declarations cannot contain executable bodies.
+          def inherited(child)
           end
+          # rubocop:enable Lint/MissingSuper
 
           # @api private
           sig do
@@ -40,8 +40,7 @@ module OpenAI
                 T.all(
                   OpenAI::Internal::Type::BaseModel::KnownField,
                   {
-                    type_fn:
-                      T.proc.returns(OpenAI::Internal::Type::Converter::Input)
+                    type_fn: T.proc.returns(OpenAI::Internal::Type::Converter::Input)
                   }
                 )
               ]
@@ -57,7 +56,7 @@ module OpenAI
                 Symbol,
                 T.all(
                   OpenAI::Internal::Type::BaseModel::KnownField,
-                  { type: OpenAI::Internal::Type::Converter::Input }
+                  {type: OpenAI::Internal::Type::Converter::Input}
                 )
               ]
             )
@@ -70,29 +69,26 @@ module OpenAI
             params(
               name_sym: Symbol,
               required: T::Boolean,
-              type_info:
-                T.any(
-                  {
-                    const:
-                      T.nilable(
-                        T.any(NilClass, T::Boolean, Integer, Float, Symbol)
-                      ),
-                    enum:
-                      T.nilable(
-                        T.proc.returns(OpenAI::Internal::Type::Converter::Input)
-                      ),
-                    union:
-                      T.nilable(
-                        T.proc.returns(OpenAI::Internal::Type::Converter::Input)
-                      ),
-                    api_name: Symbol,
-                    nil?: T::Boolean
-                  },
-                  T.proc.returns(OpenAI::Internal::Type::Converter::Input),
-                  OpenAI::Internal::Type::Converter::Input
-                ),
+              type_info: T.any(
+                {
+                  const: T.nilable(
+                    T.any(NilClass, T::Boolean, Integer, Float, Symbol)
+                  ),
+                  enum: T.nilable(
+                    T.proc.returns(OpenAI::Internal::Type::Converter::Input)
+                  ),
+                  union: T.nilable(
+                    T.proc.returns(OpenAI::Internal::Type::Converter::Input)
+                  ),
+                  api_name: Symbol,
+                  nil?: T::Boolean
+                },
+                T.proc.returns(OpenAI::Internal::Type::Converter::Input),
+                OpenAI::Internal::Type::Converter::Input
+              ),
               spec: OpenAI::Internal::AnyHash
-            ).void
+            )
+              .void
           end
           private def add_field(name_sym, required:, type_info:, spec:)
           end
@@ -101,14 +97,14 @@ module OpenAI
           sig do
             params(
               name_sym: Symbol,
-              type_info:
-                T.any(
-                  OpenAI::Internal::AnyHash,
-                  T.proc.returns(OpenAI::Internal::Type::Converter::Input),
-                  OpenAI::Internal::Type::Converter::Input
-                ),
+              type_info: T.any(
+                OpenAI::Internal::AnyHash,
+                T.proc.returns(OpenAI::Internal::Type::Converter::Input),
+                OpenAI::Internal::Type::Converter::Input
+              ),
               spec: OpenAI::Internal::AnyHash
-            ).void
+            )
+              .void
           end
           def required(name_sym, type_info, spec = {})
           end
@@ -117,14 +113,14 @@ module OpenAI
           sig do
             params(
               name_sym: Symbol,
-              type_info:
-                T.any(
-                  OpenAI::Internal::AnyHash,
-                  T.proc.returns(OpenAI::Internal::Type::Converter::Input),
-                  OpenAI::Internal::Type::Converter::Input
-                ),
+              type_info: T.any(
+                OpenAI::Internal::AnyHash,
+                T.proc.returns(OpenAI::Internal::Type::Converter::Input),
+                OpenAI::Internal::Type::Converter::Input
+              ),
               spec: OpenAI::Internal::AnyHash
-            ).void
+            )
+              .void
           end
           def optional(name_sym, type_info, spec = {})
           end
@@ -184,12 +180,11 @@ module OpenAI
           sig do
             override
               .params(
-                value:
-                  T.any(
-                    OpenAI::Internal::Type::BaseModel,
-                    T::Hash[T.anything, T.anything],
-                    T.anything
-                  ),
+                value: T.any(
+                  OpenAI::Internal::Type::BaseModel,
+                  T::Hash[T.anything, T.anything],
+                  T.anything
+                ),
                 state: OpenAI::Internal::Type::Converter::CoerceState
               )
               .returns(T.any(T.attached_class, T.anything))
@@ -221,7 +216,8 @@ module OpenAI
             params(
               model: OpenAI::Internal::Type::BaseModel,
               convert: T::Boolean
-            ).returns(OpenAI::Internal::AnyHash)
+            )
+              .returns(OpenAI::Internal::AnyHash)
           end
           def recursively_to_h(model, convert:)
           end
@@ -291,12 +287,12 @@ module OpenAI
         # Create a new instance of a model.
         sig do
           params(
-            data:
-              T.any(
-                T::Hash[Symbol, T.anything],
-                OpenAI::Internal::Type::BaseModel
-              )
-          ).returns(T.attached_class)
+            data: T.any(
+              T::Hash[Symbol, T.anything],
+              OpenAI::Internal::Type::BaseModel
+            )
+          )
+            .returns(T.attached_class)
         end
         def self.new(data = {})
         end

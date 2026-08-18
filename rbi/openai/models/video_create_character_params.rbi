@@ -2,14 +2,18 @@
 
 module OpenAI
   module Models
+
     class VideoCreateCharacterParams < OpenAI::Internal::Type::BaseModel
+
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      OrHash =
-        T.type_alias do
-          T.any(OpenAI::VideoCreateCharacterParams, OpenAI::Internal::AnyHash)
-        end
+      OrHash = T.type_alias do
+        T.any(
+          OpenAI::VideoCreateCharacterParams,
+          OpenAI::Internal::AnyHash
+        )
+      end
 
       # Display name for this API character.
       sig { returns(String) }
@@ -25,35 +29,40 @@ module OpenAI
 
       sig do
         params(
+
           name: String,
+
           video: OpenAI::Internal::FileInput,
+
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(
+
         # Display name for this API character.
         name:,
+
         # Video file used to create a character.
         #
         # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
         # metadata. Use `OpenAI::FilePart` when you need to override the filename or
         # content type.
         video:,
+
         request_options: {}
       )
       end
 
       sig do
         override.returns(
-          {
-            name: String,
-            video: OpenAI::Internal::FileInput,
-            request_options: OpenAI::RequestOptions
-          }
+          {name: String, video: OpenAI::Internal::FileInput, request_options: OpenAI::RequestOptions}
         )
       end
       def to_hash
       end
+
     end
+
   end
 end

@@ -2,18 +2,19 @@
 
 module OpenAI
   module Models
-    BetaResponseComputerToolCallOutputItem =
-      Beta::BetaResponseComputerToolCallOutputItem
+
+    BetaResponseComputerToolCallOutputItem = Beta::BetaResponseComputerToolCallOutputItem
 
     module Beta
+
       class BetaResponseComputerToolCallOutputItem < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Beta::BetaResponseComputerToolCallOutputItem,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Beta::BetaResponseComputerToolCallOutputItem,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The unique ID of the computer call tool output.
         sig { returns(String) }
@@ -24,26 +25,15 @@ module OpenAI
         attr_accessor :call_id
 
         # A computer screenshot image used with the computer use tool.
-        sig do
-          returns(OpenAI::Beta::BetaResponseComputerToolCallOutputScreenshot)
-        end
+        sig { returns(OpenAI::Beta::BetaResponseComputerToolCallOutputScreenshot) }
         attr_reader :output
 
-        sig do
-          params(
-            output:
-              OpenAI::Beta::BetaResponseComputerToolCallOutputScreenshot::OrHash
-          ).void
-        end
+        sig { params(output: OpenAI::Beta::BetaResponseComputerToolCallOutputScreenshot::OrHash).void }
         attr_writer :output
 
         # The status of the message input. One of `in_progress`, `completed`, or
         # `incomplete`. Populated when input items are returned via API.
-        sig do
-          returns(
-            OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Status::TaggedSymbol
-          )
-        end
+        sig { returns(OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Status::TaggedSymbol) }
         attr_accessor :status
 
         # The type of the computer tool call output. Always `computer_call_output`.
@@ -52,45 +42,26 @@ module OpenAI
 
         # The safety checks reported by the API that have been acknowledged by the
         # developer.
-        sig do
-          returns(
-            T.nilable(
-              T::Array[
-                OpenAI::Beta::BetaResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck
-              ]
-            )
-          )
-        end
+        sig {
+          returns(T.nilable(T::Array[OpenAI::Beta::BetaResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck]))
+        }
         attr_reader :acknowledged_safety_checks
 
-        sig do
+        sig {
           params(
-            acknowledged_safety_checks:
-              T::Array[
-                OpenAI::Beta::BetaResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck::OrHash
-              ]
-          ).void
-        end
+            acknowledged_safety_checks: T::Array[
+              OpenAI::Beta::BetaResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck::OrHash
+            ]
+          )
+            .void
+        }
         attr_writer :acknowledged_safety_checks
 
         # The agent that produced this item.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Agent
-            )
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Agent)) }
         attr_reader :agent
 
-        sig do
-          params(
-            agent:
-              T.nilable(
-                OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Agent::OrHash
-              )
-          ).void
-        end
+        sig { params(agent: T.nilable(OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Agent::OrHash)).void }
         attr_writer :agent
 
         # The identifier of the actor that created the item.
@@ -102,42 +73,54 @@ module OpenAI
 
         sig do
           params(
+
             id: String,
+
             call_id: String,
-            output:
-              OpenAI::Beta::BetaResponseComputerToolCallOutputScreenshot::OrHash,
-            status:
-              OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Status::OrSymbol,
-            acknowledged_safety_checks:
-              T::Array[
-                OpenAI::Beta::BetaResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck::OrHash
-              ],
-            agent:
-              T.nilable(
-                OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Agent::OrHash
-              ),
+
+            output: OpenAI::Beta::BetaResponseComputerToolCallOutputScreenshot::OrHash,
+
+            status: OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Status::OrSymbol,
+
+            acknowledged_safety_checks: T::Array[
+              OpenAI::Beta::BetaResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck::OrHash
+            ],
+
+            agent: T.nilable(OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Agent::OrHash),
+
             created_by: String,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The unique ID of the computer call tool output.
           id:,
+
           # The ID of the computer tool call that produced the output.
           call_id:,
+
           # A computer screenshot image used with the computer use tool.
           output:,
+
           # The status of the message input. One of `in_progress`, `completed`, or
           # `incomplete`. Populated when input items are returned via API.
           status:,
+
           # The safety checks reported by the API that have been acknowledged by the
           # developer.
           acknowledged_safety_checks: nil,
+
           # The agent that produced this item.
           agent: nil,
+
           # The identifier of the actor that created the item.
           created_by: nil,
+
           # The type of the computer tool call output. Always `computer_call_output`.
+
           type: :computer_call_output
         )
         end
@@ -147,19 +130,13 @@ module OpenAI
             {
               id: String,
               call_id: String,
-              output:
-                OpenAI::Beta::BetaResponseComputerToolCallOutputScreenshot,
-              status:
-                OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Status::TaggedSymbol,
+              output: OpenAI::Beta::BetaResponseComputerToolCallOutputScreenshot,
+              status: OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Status::TaggedSymbol,
               type: Symbol,
-              acknowledged_safety_checks:
-                T::Array[
-                  OpenAI::Beta::BetaResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck
-                ],
-              agent:
-                T.nilable(
-                  OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Agent
-                ),
+              acknowledged_safety_checks: T::Array[
+                OpenAI::Beta::BetaResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck
+              ],
+              agent: T.nilable(OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Agent),
               created_by: String
             }
           )
@@ -172,55 +149,28 @@ module OpenAI
         module Status
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(
-                Symbol,
-                OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Status
-              )
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Status) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          COMPLETED =
-            T.let(
-              :completed,
-              OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Status::TaggedSymbol
-            )
-          INCOMPLETE =
-            T.let(
-              :incomplete,
-              OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Status::TaggedSymbol
-            )
-          FAILED =
-            T.let(
-              :failed,
-              OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Status::TaggedSymbol
-            )
-          IN_PROGRESS =
-            T.let(
-              :in_progress,
-              OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Status::TaggedSymbol
-            )
+          COMPLETED = T.let(:completed, OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Status::TaggedSymbol)
+          INCOMPLETE = T.let(:incomplete, OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Status::TaggedSymbol)
+          FAILED = T.let(:failed, OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Status::TaggedSymbol)
+          IN_PROGRESS = T.let(:in_progress, OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Status::TaggedSymbol)
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Status::TaggedSymbol
-              ]
-            )
-          end
+          sig {
+            override.returns(T::Array[OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Status::TaggedSymbol])
+          }
           def self.values
           end
         end
 
         class AcknowledgedSafetyCheck < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Beta::BetaResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::BetaResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The ID of the pending safety check.
           sig { returns(String) }
@@ -237,60 +187,80 @@ module OpenAI
           # A pending safety check for the computer call.
           sig do
             params(
+
               id: String,
+
               code: T.nilable(String),
+
               message: T.nilable(String)
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The ID of the pending safety check.
             id:,
+
             # The type of the pending safety check.
             code: nil,
+
             # Details about the pending safety check.
+
             message: nil
           )
           end
 
           sig do
             override.returns(
-              {
-                id: String,
-                code: T.nilable(String),
-                message: T.nilable(String)
-              }
+              {id: String, code: T.nilable(String), message: T.nilable(String)}
             )
           end
           def to_hash
           end
+
         end
 
         class Agent < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Agent,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Agent,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The canonical name of the agent that produced this item.
           sig { returns(String) }
           attr_accessor :agent_name
 
           # The agent that produced this item.
-          sig { params(agent_name: String).returns(T.attached_class) }
+          sig do
+            params(
+
+              agent_name: String
+            )
+              .returns(T.attached_class)
+          end
           def self.new(
+
             # The canonical name of the agent that produced this item.
+
             agent_name:
           )
           end
 
-          sig { override.returns({ agent_name: String }) }
+          sig do
+            override.returns(
+              {agent_name: String}
+            )
+          end
           def to_hash
           end
+
         end
+
       end
+
     end
+
   end
 end

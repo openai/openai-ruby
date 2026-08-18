@@ -2,8 +2,15 @@
 
 module OpenAI
   module Models
+
     class Video < OpenAI::Internal::Type::BaseModel
-      OrHash = T.type_alias { T.any(OpenAI::Video, OpenAI::Internal::AnyHash) }
+
+      OrHash = T.type_alias do
+        T.any(
+          OpenAI::Video,
+          OpenAI::Internal::AnyHash
+        )
+      end
 
       # Unique identifier for the video job.
       sig { returns(String) }
@@ -64,48 +71,76 @@ module OpenAI
       # Structured information describing a generated video job.
       sig do
         params(
+
           id: String,
+
           completed_at: T.nilable(Integer),
+
           created_at: Integer,
+
           error: T.nilable(OpenAI::VideoCreateError::OrHash),
+
           expires_at: T.nilable(Integer),
+
           model: T.any(String, OpenAI::VideoModel::OrSymbol),
+
           progress: Integer,
+
           prompt: T.nilable(String),
+
           remixed_from_video_id: T.nilable(String),
+
           seconds: T.any(String, OpenAI::VideoSeconds::OrSymbol),
+
           size: OpenAI::VideoSize::OrSymbol,
+
           status: OpenAI::Video::Status::OrSymbol,
+
           object: Symbol
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(
+
         # Unique identifier for the video job.
         id:,
+
         # Unix timestamp (seconds) for when the job completed, if finished.
         completed_at:,
+
         # Unix timestamp (seconds) for when the job was created.
         created_at:,
+
         # Error payload that explains why generation failed, if applicable.
         error:,
+
         # Unix timestamp (seconds) for when the downloadable assets expire, if set.
         expires_at:,
+
         # The video generation model that produced the job.
         model:,
+
         # Approximate completion percentage for the generation task.
         progress:,
+
         # The prompt that was used to generate the video.
         prompt:,
+
         # Identifier of the source video if this video is a remix.
         remixed_from_video_id:,
+
         # Duration of the generated clip in seconds. For extensions, this is the stitched
         # total duration.
         seconds:,
+
         # The resolution of the generated video.
         size:,
+
         # Current lifecycle status of the video job.
         status:,
+
         # The object type, which is always `video`.
+
         object: :video
       )
       end
@@ -137,12 +172,12 @@ module OpenAI
       module Seconds
         extend OpenAI::Internal::Type::Union
 
-        Variants =
-          T.type_alias { T.any(String, OpenAI::VideoSeconds::TaggedSymbol) }
+        Variants = T.type_alias { T.any(String, OpenAI::VideoSeconds::TaggedSymbol) }
 
         sig { override.returns(T::Array[OpenAI::Video::Seconds::Variants]) }
         def self.variants
         end
+
       end
 
       # Current lifecycle status of the video job.
@@ -161,6 +196,8 @@ module OpenAI
         def self.values
         end
       end
+
     end
+
   end
 end

@@ -6,9 +6,9 @@ module OpenAI
     module ClientOptions
       # @api private
       class ResolvedHeaders < Hash
-        K = type_member { { fixed: String } }
-        V = type_member { { fixed: T.nilable(String) } }
-        Elem = type_member { { fixed: [String, T.nilable(String)] } }
+        K = type_member { {fixed: String} }
+        V = type_member { {fixed: T.nilable(String)} }
+        Elem = type_member { {fixed: [String, T.nilable(String)]} }
       end
 
       class << self
@@ -22,7 +22,8 @@ module OpenAI
           params(
             defaults: T::Hash[Symbol, T.untyped],
             overrides: T::Hash[Symbol, T.untyped]
-          ).returns(T::Hash[Symbol, T.untyped])
+          )
+            .returns(T::Hash[Symbol, T.untyped])
         end
         def copy(defaults, overrides)
         end

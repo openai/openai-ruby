@@ -2,7 +2,9 @@
 
 module OpenAI
   module Resources
+
     class Realtime
+
       sig { returns(OpenAI::Resources::Realtime::ClientSecrets) }
       attr_reader :client_secrets
 
@@ -14,5 +16,6 @@ module OpenAI
       def self.new(client:)
       end
     end
+
   end
 end

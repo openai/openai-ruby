@@ -2,16 +2,13 @@
 
 module OpenAI
   module Resources
+
     # List and describe the various models available in the API.
     class Models
+
       # Retrieves a model instance, providing basic information about the model such as
       # the owner and permissioning.
-      sig do
-        params(
-          model: String,
-          request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::Model)
-      end
+      sig { params(model: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::Model) }
       def retrieve(
         # The ID of the model to use for this request
         model,
@@ -21,22 +18,13 @@ module OpenAI
 
       # Lists the currently available models, and provides basic information about each
       # one such as the owner and availability.
-      sig do
-        params(request_options: OpenAI::RequestOptions::OrHash).returns(
-          OpenAI::Internal::Page[OpenAI::Model]
-        )
-      end
+      sig { params(request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::Internal::Page[OpenAI::Model]) }
       def list(request_options: {})
       end
 
       # Delete a fine-tuned model. You must have the Owner role in your organization to
       # delete a model.
-      sig do
-        params(
-          model: String,
-          request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::ModelDeleted)
-      end
+      sig { params(model: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::ModelDeleted) }
       def delete(
         # The model to delete
         model,
@@ -49,5 +37,6 @@ module OpenAI
       def self.new(client:)
       end
     end
+
   end
 end

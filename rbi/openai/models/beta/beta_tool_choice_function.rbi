@@ -2,17 +2,19 @@
 
 module OpenAI
   module Models
+
     BetaToolChoiceFunction = Beta::BetaToolChoiceFunction
 
     module Beta
+
       class BetaToolChoiceFunction < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Beta::BetaToolChoiceFunction,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Beta::BetaToolChoiceFunction,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The name of the function to call.
         sig { returns(String) }
@@ -23,19 +25,37 @@ module OpenAI
         attr_accessor :type
 
         # Use this option to force the model to call a specific function.
-        sig { params(name: String, type: Symbol).returns(T.attached_class) }
+        sig do
+          params(
+
+            name: String,
+
+            type: Symbol
+          )
+            .returns(T.attached_class)
+        end
         def self.new(
+
           # The name of the function to call.
           name:,
+
           # For function calling, the type is always `function`.
+
           type: :function
         )
         end
 
-        sig { override.returns({ name: String, type: Symbol }) }
+        sig do
+          override.returns(
+            {name: String, type: Symbol}
+          )
+        end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

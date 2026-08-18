@@ -17,7 +17,7 @@ module OpenAI
     ) {
       (
         OpenAI::Internal::Transport::BaseClient::request_input request,
-        ^() -> void mark_handshake_completed
+        ^-> void mark_handshake_completed
       ) -> top
     } -> top
   end
@@ -25,6 +25,7 @@ module OpenAI
   module Errors
     class RealtimeConnectionError < OpenAI::Errors::Error
       attr_reader url: URI::Generic
+
       # @api private
       attr_reader http_status: Integer?
       def cause: -> Exception?
@@ -43,10 +44,7 @@ module OpenAI
       def cause: -> StandardError?
 
       # @api private
-      def initialize: (
-        data: String,
-        ?cause: StandardError?
-      ) -> void
+      def initialize: (data: String, ?cause: StandardError?) -> void
     end
   end
 
@@ -58,14 +56,18 @@ module OpenAI
         ?request_options: OpenAI::request_opts?,
         ?transport: untyped?,
         ?transport_options: ::Hash[Symbol, untyped]
-      ) { (OpenAI::Realtime::Connection connection) -> top } -> top
+      ) {
+        (OpenAI::Realtime::Connection connection) -> top
+      } -> top
 
       def connect_transcription: (
         ?websocket_base_url: String?,
         ?request_options: OpenAI::request_opts?,
         ?transport: untyped?,
         ?transport_options: ::Hash[Symbol, untyped]
-      ) { (OpenAI::Realtime::Connection connection) -> top } -> top
+      ) {
+        (OpenAI::Realtime::Connection connection) -> top
+      } -> top
     end
   end
 end

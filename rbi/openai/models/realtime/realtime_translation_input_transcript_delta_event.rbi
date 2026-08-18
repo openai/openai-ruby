@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class RealtimeTranslationInputTranscriptDeltaEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::RealtimeTranslationInputTranscriptDeltaEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::RealtimeTranslationInputTranscriptDeltaEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # Append-only source-language transcript text.
         sig { returns(String) }
@@ -38,40 +40,48 @@ module OpenAI
         # unconditional spaces between deltas.
         sig do
           params(
+
             delta: String,
+
             event_id: String,
+
             elapsed_ms: T.nilable(Integer),
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Append-only source-language transcript text.
           delta:,
+
           # The unique ID of the server event.
           event_id:,
+
           # Timing metadata for stream alignment, derived from the translation frame when
           # available. It advances in 200 ms increments, but multiple transcript deltas may
           # share the same `elapsed_ms`. Treat it as alignment metadata, not a unique
           # transcript-delta identifier.
           elapsed_ms: nil,
+
           # The event type, must be `session.input_transcript.delta`.
+
           type: :"session.input_transcript.delta"
         )
         end
 
         sig do
           override.returns(
-            {
-              delta: String,
-              event_id: String,
-              type: Symbol,
-              elapsed_ms: T.nilable(Integer)
-            }
+            {delta: String, event_id: String, type: Symbol, elapsed_ms: T.nilable(Integer)}
           )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

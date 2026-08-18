@@ -2,11 +2,15 @@
 
 module OpenAI
   module Models
+
     class VideoDeleteResponse < OpenAI::Internal::Type::BaseModel
-      OrHash =
-        T.type_alias do
-          T.any(OpenAI::Models::VideoDeleteResponse, OpenAI::Internal::AnyHash)
-        end
+
+      OrHash = T.type_alias do
+        T.any(
+          OpenAI::Models::VideoDeleteResponse,
+          OpenAI::Internal::AnyHash
+        )
+      end
 
       # Identifier of the deleted video.
       sig { returns(String) }
@@ -22,25 +26,39 @@ module OpenAI
 
       # Confirmation payload returned after deleting a video.
       sig do
-        params(id: String, deleted: T::Boolean, object: Symbol).returns(
-          T.attached_class
+        params(
+
+          id: String,
+
+          deleted: T::Boolean,
+
+          object: Symbol
         )
+          .returns(T.attached_class)
       end
       def self.new(
+
         # Identifier of the deleted video.
         id:,
+
         # Indicates that the video resource was deleted.
         deleted:,
+
         # The object type that signals the deletion response.
+
         object: :"video.deleted"
       )
       end
 
       sig do
-        override.returns({ id: String, deleted: T::Boolean, object: Symbol })
+        override.returns(
+          {id: String, deleted: T::Boolean, object: Symbol}
+        )
       end
       def to_hash
       end
+
     end
+
   end
 end

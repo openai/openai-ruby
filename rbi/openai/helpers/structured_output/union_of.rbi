@@ -11,9 +11,9 @@ module OpenAI
 
         sig do
           params(
-            variants:
-              OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::Input
-          ).returns(T.attached_class)
+            variants: OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::Input
+          )
+            .returns(T.attached_class)
         end
         def self.[](*variants)
         end

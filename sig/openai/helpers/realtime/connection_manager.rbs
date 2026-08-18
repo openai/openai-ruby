@@ -13,9 +13,7 @@ module OpenAI
         ) -> void
 
         # @api private
-        def open: {
-          (OpenAI::Realtime::Connection connection) -> top
-        } -> top
+        def open: { (OpenAI::Realtime::Connection connection) -> top } -> top
       end
     end
   end

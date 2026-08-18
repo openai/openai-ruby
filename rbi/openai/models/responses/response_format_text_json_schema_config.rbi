@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Responses
+
       class ResponseFormatTextJSONSchemaConfig < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Responses::ResponseFormatTextJSONSchemaConfig,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Responses::ResponseFormatTextJSONSchemaConfig,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores
         # and dashes, with a maximum length of 64.
@@ -47,30 +49,42 @@ module OpenAI
         # [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
         sig do
           params(
+
             name: String,
+
             schema: T::Hash[Symbol, T.anything],
+
             description: String,
+
             strict: T.nilable(T::Boolean),
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores
           # and dashes, with a maximum length of 64.
           name:,
+
           # The schema for the response format, described as a JSON Schema object. Learn how
           # to build JSON schemas [here](https://json-schema.org/).
           schema:,
+
           # A description of what the response format is for, used by the model to determine
           # how to respond in the format.
           description: nil,
+
           # Whether to enable strict schema adherence when generating the output. If set to
           # true, the model will always follow the exact schema defined in the `schema`
           # field. Only a subset of JSON Schema is supported when `strict` is `true`. To
           # learn more, read the
           # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
           strict: nil,
+
           # The type of response format being defined. Always `json_schema`.
+
           type: :json_schema
         )
         end
@@ -88,7 +102,10 @@ module OpenAI
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

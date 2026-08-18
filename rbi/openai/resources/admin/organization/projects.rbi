@@ -2,95 +2,60 @@
 
 module OpenAI
   module Resources
+
     class Admin
+
       class Organization
+
         class Projects
-          sig do
-            returns(OpenAI::Resources::Admin::Organization::Projects::Users)
-          end
+
+          sig { returns(OpenAI::Resources::Admin::Organization::Projects::Users) }
           attr_reader :users
 
-          sig do
-            returns(
-              OpenAI::Resources::Admin::Organization::Projects::ServiceAccounts
-            )
-          end
+          sig { returns(OpenAI::Resources::Admin::Organization::Projects::ServiceAccounts) }
           attr_reader :service_accounts
 
-          sig do
-            returns(OpenAI::Resources::Admin::Organization::Projects::APIKeys)
-          end
+          sig { returns(OpenAI::Resources::Admin::Organization::Projects::APIKeys) }
           attr_reader :api_keys
 
-          sig do
-            returns(
-              OpenAI::Resources::Admin::Organization::Projects::RateLimits
-            )
-          end
+          sig { returns(OpenAI::Resources::Admin::Organization::Projects::RateLimits) }
           attr_reader :rate_limits
 
-          sig do
-            returns(
-              OpenAI::Resources::Admin::Organization::Projects::ModelPermissions
-            )
-          end
+          sig { returns(OpenAI::Resources::Admin::Organization::Projects::ModelPermissions) }
           attr_reader :model_permissions
 
-          sig do
-            returns(
-              OpenAI::Resources::Admin::Organization::Projects::HostedToolPermissions
-            )
-          end
+          sig { returns(OpenAI::Resources::Admin::Organization::Projects::HostedToolPermissions) }
           attr_reader :hosted_tool_permissions
 
-          sig do
-            returns(OpenAI::Resources::Admin::Organization::Projects::Groups)
-          end
+          sig { returns(OpenAI::Resources::Admin::Organization::Projects::Groups) }
           attr_reader :groups
 
-          sig do
-            returns(OpenAI::Resources::Admin::Organization::Projects::Roles)
-          end
+          sig { returns(OpenAI::Resources::Admin::Organization::Projects::Roles) }
           attr_reader :roles
 
-          sig do
-            returns(
-              OpenAI::Resources::Admin::Organization::Projects::DataRetention
-            )
-          end
+          sig { returns(OpenAI::Resources::Admin::Organization::Projects::DataRetention) }
           attr_reader :data_retention
 
-          sig do
-            returns(
-              OpenAI::Resources::Admin::Organization::Projects::SpendLimit
-            )
-          end
+          sig { returns(OpenAI::Resources::Admin::Organization::Projects::SpendLimit) }
           attr_reader :spend_limit
 
-          sig do
-            returns(
-              OpenAI::Resources::Admin::Organization::Projects::SpendAlerts
-            )
-          end
+          sig { returns(OpenAI::Resources::Admin::Organization::Projects::SpendAlerts) }
           attr_reader :spend_alerts
 
-          sig do
-            returns(
-              OpenAI::Resources::Admin::Organization::Projects::Certificates
-            )
-          end
+          sig { returns(OpenAI::Resources::Admin::Organization::Projects::Certificates) }
           attr_reader :certificates
 
           # Create a new project in the organization. Projects can be created and archived,
           # but cannot be deleted.
-          sig do
+          sig {
             params(
               name: String,
               external_key_id: T.nilable(String),
               geography: T.nilable(String),
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Admin::Organization::Project)
-          end
+            )
+              .returns(OpenAI::Admin::Organization::Project)
+          }
           def create(
             # The friendly name of the project, this name appears in reports.
             name:,
@@ -106,12 +71,11 @@ module OpenAI
           end
 
           # Retrieves a project.
-          sig do
-            params(
-              project_id: String,
-              request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Admin::Organization::Project)
-          end
+          sig {
+            params(project_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+              OpenAI::Admin::Organization::Project
+            )
+          }
           def retrieve(
             # The ID of the project.
             project_id,
@@ -120,15 +84,16 @@ module OpenAI
           end
 
           # Modifies a project in the organization.
-          sig do
+          sig {
             params(
               project_id: String,
               external_key_id: T.nilable(String),
               geography: T.nilable(String),
               name: T.nilable(String),
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Admin::Organization::Project)
-          end
+            )
+              .returns(OpenAI::Admin::Organization::Project)
+          }
           def update(
             # The ID of the project.
             project_id,
@@ -143,18 +108,15 @@ module OpenAI
           end
 
           # Returns a list of projects.
-          sig do
+          sig {
             params(
               after: String,
               include_archived: T::Boolean,
               limit: Integer,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Internal::ConversationCursorPage[
-                OpenAI::Admin::Organization::Project
-              ]
             )
-          end
+              .returns(OpenAI::Internal::ConversationCursorPage[OpenAI::Admin::Organization::Project])
+          }
           def list(
             # A cursor for use in pagination. `after` is an object ID that defines your place
             # in the list. For instance, if you make a list request and receive 100 objects,
@@ -173,12 +135,11 @@ module OpenAI
 
           # Archives a project in the organization. Archived projects cannot be used or
           # updated.
-          sig do
-            params(
-              project_id: String,
-              request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Admin::Organization::Project)
-          end
+          sig {
+            params(project_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+              OpenAI::Admin::Organization::Project
+            )
+          }
           def archive(
             # The ID of the project.
             project_id,
@@ -191,7 +152,10 @@ module OpenAI
           def self.new(client:)
           end
         end
+
       end
+
     end
+
   end
 end

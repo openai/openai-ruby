@@ -2,18 +2,19 @@
 
 module OpenAI
   module Models
-    ChatCompletionFunctionMessageParam =
-      Chat::ChatCompletionFunctionMessageParam
+
+    ChatCompletionFunctionMessageParam = Chat::ChatCompletionFunctionMessageParam
 
     module Chat
+
       class ChatCompletionFunctionMessageParam < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Chat::ChatCompletionFunctionMessageParam,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Chat::ChatCompletionFunctionMessageParam,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The contents of the function message.
         sig { returns(T.nilable(String)) }
@@ -29,29 +30,40 @@ module OpenAI
 
         sig do
           params(
+
             content: T.nilable(String),
+
             name: String,
+
             role: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The contents of the function message.
           content:,
+
           # The name of the function to call.
           name:,
+
           # The role of the messages author, in this case `function`.
+
           role: :function
         )
         end
 
         sig do
           override.returns(
-            { content: T.nilable(String), name: String, role: Symbol }
+            {content: T.nilable(String), name: String, role: Symbol}
           )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

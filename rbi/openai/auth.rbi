@@ -40,7 +40,8 @@ module OpenAI
           service_account_id: T.nilable(T.any(String, Symbol)),
           client_id: T.nilable(T.any(String, Symbol)),
           refresh_buffer_seconds: Integer
-        ).void
+        )
+          .void
       end
       def initialize(
         provider:,

@@ -2,17 +2,19 @@
 
 module OpenAI
   module Resources
+
     class Containers
+
       class Files
+
         class Content
+
           # Retrieve Container File Content
-          sig do
-            params(
-              file_id: String,
-              container_id: String,
-              request_options: OpenAI::RequestOptions::OrHash
-            ).returns(StringIO)
-          end
+          sig {
+            params(file_id: String, container_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+              StringIO
+            )
+          }
           def retrieve(file_id, container_id:, request_options: {})
           end
 
@@ -21,7 +23,10 @@ module OpenAI
           def self.new(client:)
           end
         end
+
       end
+
     end
+
   end
 end

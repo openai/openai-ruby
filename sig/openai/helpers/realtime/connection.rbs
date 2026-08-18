@@ -27,10 +27,15 @@ module OpenAI
           } -> self
         def receive: -> OpenAI::Models::Realtime::connection_server_event?
         def receive_raw: -> String?
-        def parse_event: (String data) -> OpenAI::Models::Realtime::connection_server_event
-        def send_event: (OpenAI::Models::Realtime::connection_client_event event) -> nil
+        def parse_event: (
+          String data
+        ) -> OpenAI::Models::Realtime::connection_server_event
+        def send_event: (
+          OpenAI::Models::Realtime::connection_client_event event
+        ) -> nil
         def send_raw: (String data) -> nil
         def close: (?code: Integer, ?reason: String) -> nil
+
         # @api private
         def abort: -> nil
         def closed?: -> bool

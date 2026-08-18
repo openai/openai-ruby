@@ -2,25 +2,30 @@
 
 module OpenAI
   module Resources
+
     class Admin
+
       class Organization
+
         class Projects
+
           class Certificates
+
             # List certificates for this project.
-            sig do
+            sig {
               params(
                 project_id: String,
                 after: String,
                 limit: Integer,
-                order:
-                  OpenAI::Admin::Organization::Projects::CertificateListParams::Order::OrSymbol,
+                order: OpenAI::Admin::Organization::Projects::CertificateListParams::Order::OrSymbol,
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
-                OpenAI::Internal::ConversationCursorPage[
-                  OpenAI::Models::Admin::Organization::Projects::CertificateListResponse
-                ]
               )
-            end
+                .returns(
+                  OpenAI::Internal::ConversationCursorPage[
+                    OpenAI::Models::Admin::Organization::Projects::CertificateListResponse
+                  ]
+                )
+            }
             def list(
               # The ID of the project.
               project_id,
@@ -42,17 +47,16 @@ module OpenAI
             # Activate certificates at the project level.
             #
             # You can atomically and idempotently activate up to 10 certificates at a time.
-            sig do
+            sig {
               params(
                 project_id: String,
                 certificate_ids: T::Array[String],
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
-                OpenAI::Internal::Page[
-                  OpenAI::Models::Admin::Organization::Projects::CertificateActivateResponse
-                ]
               )
-            end
+                .returns(
+                  OpenAI::Internal::Page[OpenAI::Models::Admin::Organization::Projects::CertificateActivateResponse]
+                )
+            }
             def activate(
               # The ID of the project.
               project_id,
@@ -63,17 +67,16 @@ module OpenAI
 
             # Deactivate certificates at the project level. You can atomically and
             # idempotently deactivate up to 10 certificates at a time.
-            sig do
+            sig {
               params(
                 project_id: String,
                 certificate_ids: T::Array[String],
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
-                OpenAI::Internal::Page[
-                  OpenAI::Models::Admin::Organization::Projects::CertificateDeactivateResponse
-                ]
               )
-            end
+                .returns(
+                  OpenAI::Internal::Page[OpenAI::Models::Admin::Organization::Projects::CertificateDeactivateResponse]
+                )
+            }
             def deactivate(
               # The ID of the project.
               project_id,
@@ -87,8 +90,12 @@ module OpenAI
             def self.new(client:)
             end
           end
+
         end
+
       end
+
     end
+
   end
 end

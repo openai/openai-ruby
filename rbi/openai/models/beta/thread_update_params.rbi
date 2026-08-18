@@ -2,15 +2,20 @@
 
 module OpenAI
   module Models
+
     module Beta
+
       class ThreadUpdateParams < OpenAI::Internal::Type::BaseModel
+
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        OrHash =
-          T.type_alias do
-            T.any(OpenAI::Beta::ThreadUpdateParams, OpenAI::Internal::AnyHash)
-          end
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Beta::ThreadUpdateParams,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         sig { returns(String) }
         attr_accessor :thread_id
@@ -28,32 +33,29 @@ module OpenAI
         # thread. The resources are specific to the type of tool. For example, the
         # `code_interpreter` tool requires a list of file IDs, while the `file_search`
         # tool requires a list of vector store IDs.
-        sig do
-          returns(T.nilable(OpenAI::Beta::ThreadUpdateParams::ToolResources))
-        end
+        sig { returns(T.nilable(OpenAI::Beta::ThreadUpdateParams::ToolResources)) }
         attr_reader :tool_resources
 
-        sig do
-          params(
-            tool_resources:
-              T.nilable(OpenAI::Beta::ThreadUpdateParams::ToolResources::OrHash)
-          ).void
-        end
+        sig { params(tool_resources: T.nilable(OpenAI::Beta::ThreadUpdateParams::ToolResources::OrHash)).void }
         attr_writer :tool_resources
 
         sig do
           params(
+
             thread_id: String,
+
             metadata: T.nilable(T::Hash[Symbol, String]),
-            tool_resources:
-              T.nilable(
-                OpenAI::Beta::ThreadUpdateParams::ToolResources::OrHash
-              ),
+
+            tool_resources: T.nilable(OpenAI::Beta::ThreadUpdateParams::ToolResources::OrHash),
+
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           thread_id:,
+
           # Set of 16 key-value pairs that can be attached to an object. This can be useful
           # for storing additional information about the object in a structured format, and
           # querying for objects via API or the dashboard.
@@ -61,11 +63,13 @@ module OpenAI
           # Keys are strings with a maximum length of 64 characters. Values are strings with
           # a maximum length of 512 characters.
           metadata: nil,
+
           # A set of resources that are made available to the assistant's tools in this
           # thread. The resources are specific to the type of tool. For example, the
           # `code_interpreter` tool requires a list of file IDs, while the `file_search`
           # tool requires a list of vector store IDs.
           tool_resources: nil,
+
           request_options: {}
         )
         end
@@ -75,8 +79,7 @@ module OpenAI
             {
               thread_id: String,
               metadata: T.nilable(T::Hash[Symbol, String]),
-              tool_resources:
-                T.nilable(OpenAI::Beta::ThreadUpdateParams::ToolResources),
+              tool_resources: T.nilable(OpenAI::Beta::ThreadUpdateParams::ToolResources),
               request_options: OpenAI::RequestOptions
             }
           )
@@ -85,46 +88,25 @@ module OpenAI
         end
 
         class ToolResources < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Beta::ThreadUpdateParams::ToolResources,
-                OpenAI::Internal::AnyHash
-              )
-            end
-
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter
-              )
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::ThreadUpdateParams::ToolResources,
+              OpenAI::Internal::AnyHash
             )
           end
+
+          sig { returns(T.nilable(OpenAI::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter)) }
           attr_reader :code_interpreter
 
-          sig do
-            params(
-              code_interpreter:
-                OpenAI::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter::OrHash
-            ).void
-          end
+          sig {
+            params(code_interpreter: OpenAI::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter::OrHash).void
+          }
           attr_writer :code_interpreter
 
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Beta::ThreadUpdateParams::ToolResources::FileSearch
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Beta::ThreadUpdateParams::ToolResources::FileSearch)) }
           attr_reader :file_search
 
-          sig do
-            params(
-              file_search:
-                OpenAI::Beta::ThreadUpdateParams::ToolResources::FileSearch::OrHash
-            ).void
-          end
+          sig { params(file_search: OpenAI::Beta::ThreadUpdateParams::ToolResources::FileSearch::OrHash).void }
           attr_writer :file_search
 
           # A set of resources that are made available to the assistant's tools in this
@@ -133,22 +115,26 @@ module OpenAI
           # tool requires a list of vector store IDs.
           sig do
             params(
-              code_interpreter:
-                OpenAI::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter::OrHash,
-              file_search:
-                OpenAI::Beta::ThreadUpdateParams::ToolResources::FileSearch::OrHash
-            ).returns(T.attached_class)
+
+              code_interpreter: OpenAI::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter::OrHash,
+
+              file_search: OpenAI::Beta::ThreadUpdateParams::ToolResources::FileSearch::OrHash
+            )
+              .returns(T.attached_class)
           end
-          def self.new(code_interpreter: nil, file_search: nil)
+          def self.new(
+
+            code_interpreter: nil,
+
+            file_search: nil
+          )
           end
 
           sig do
             override.returns(
               {
-                code_interpreter:
-                  OpenAI::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter,
-                file_search:
-                  OpenAI::Beta::ThreadUpdateParams::ToolResources::FileSearch
+                code_interpreter: OpenAI::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter,
+                file_search: OpenAI::Beta::ThreadUpdateParams::ToolResources::FileSearch
               }
             )
           end
@@ -156,13 +142,12 @@ module OpenAI
           end
 
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
             # available to the `code_interpreter` tool. There can be a maximum of 20 files
@@ -173,28 +158,40 @@ module OpenAI
             sig { params(file_ids: T::Array[String]).void }
             attr_writer :file_ids
 
-            sig { params(file_ids: T::Array[String]).returns(T.attached_class) }
+            sig do
+              params(
+
+                file_ids: T::Array[String]
+              )
+                .returns(T.attached_class)
+            end
             def self.new(
+
               # A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
               # available to the `code_interpreter` tool. There can be a maximum of 20 files
               # associated with the tool.
+
               file_ids: nil
             )
             end
 
-            sig { override.returns({ file_ids: T::Array[String] }) }
+            sig do
+              override.returns(
+                {file_ids: T::Array[String]}
+              )
+            end
             def to_hash
             end
+
           end
 
           class FileSearch < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Beta::ThreadUpdateParams::ToolResources::FileSearch,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::ThreadUpdateParams::ToolResources::FileSearch,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # The
             # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
@@ -207,25 +204,37 @@ module OpenAI
             attr_writer :vector_store_ids
 
             sig do
-              params(vector_store_ids: T::Array[String]).returns(
-                T.attached_class
+              params(
+
+                vector_store_ids: T::Array[String]
               )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # The
               # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
               # attached to this thread. There can be a maximum of 1 vector store attached to
               # the thread.
+
               vector_store_ids: nil
             )
             end
 
-            sig { override.returns({ vector_store_ids: T::Array[String] }) }
+            sig do
+              override.returns(
+                {vector_store_ids: T::Array[String]}
+              )
+            end
             def to_hash
             end
+
           end
         end
+
       end
+
     end
+
   end
 end

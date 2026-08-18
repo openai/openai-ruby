@@ -169,7 +169,8 @@ module OpenAI
         logger: T.untyped,
         log_level: T.nilable(T.any(Symbol, String)),
         on_retry: T.nilable(T.proc.params(event: OpenAI::RetryEvent).void)
-      ).returns(T.self_type)
+      )
+        .returns(T.self_type)
     end
     def with_options(
       api_key: T.unsafe(nil),
@@ -196,11 +197,15 @@ module OpenAI
     # Creates and returns a new client for interacting with the API.
     sig do
       params(
+
         api_key: T.nilable(String),
+
         admin_api_key: T.nilable(String),
         workload_identity: T.nilable(OpenAI::Auth::WorkloadIdentity),
         organization: T.nilable(String),
+
         project: T.nilable(String),
+
         webhook_secret: T.nilable(String),
         provider: T.nilable(OpenAI::Provider),
         base_url: T.nilable(String),
@@ -214,18 +219,23 @@ module OpenAI
         logger: T.untyped,
         log_level: T.nilable(T.any(Symbol, String)),
         on_retry: T.nilable(T.proc.params(event: OpenAI::RetryEvent).void)
-      ).returns(T.attached_class)
+      )
+        .returns(T.attached_class)
     end
     def self.new(
+
       # Defaults to `ENV["OPENAI_API_KEY"]`
       api_key: ENV["OPENAI_API_KEY"],
+
       # Defaults to `ENV["OPENAI_ADMIN_KEY"]`
       admin_api_key: ENV["OPENAI_ADMIN_KEY"],
       workload_identity: nil,
       # Defaults to `ENV["OPENAI_ORG_ID"]`
       organization: ENV["OPENAI_ORG_ID"],
+
       # Defaults to `ENV["OPENAI_PROJECT_ID"]`
       project: ENV["OPENAI_PROJECT_ID"],
+
       # Defaults to `ENV["OPENAI_WEBHOOK_SECRET"]`
       webhook_secret: ENV["OPENAI_WEBHOOK_SECRET"],
       provider: nil,

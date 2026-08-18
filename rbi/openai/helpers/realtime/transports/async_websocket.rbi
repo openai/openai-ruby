@@ -7,9 +7,9 @@ module OpenAI
         class AsyncWebSocket
           sig do
             params(
-              tls_configurator:
-                T.nilable(T.proc.params(context: OpenSSL::SSL::SSLContext).void)
-            ).void
+              tls_configurator: T.nilable(T.proc.params(context: OpenSSL::SSL::SSLContext).void)
+            )
+              .void
           end
           def initialize(&tls_configurator)
           end
@@ -58,7 +58,8 @@ module OpenAI
               timeout: T.nilable(Float),
               endpoint_options: T.untyped,
               block: T.proc.params(socket: Socket).returns(T.untyped)
-            ).returns(T.untyped)
+            )
+              .returns(T.untyped)
           end
           def open(url:, headers:, timeout:, **endpoint_options, &block)
           end

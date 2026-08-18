@@ -2,8 +2,11 @@
 
 module OpenAI
   module Resources
+
     class Admin
+
       class Organization
+
         # List user actions and configuration changes within this organization.
         sig { returns(OpenAI::Resources::Admin::Organization::AuditLogs) }
         attr_reader :audit_logs
@@ -46,6 +49,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

@@ -2,24 +2,21 @@
 
 module OpenAI
   module Models
-    module Admin
-      module Organization
-        class UsageCostsResponse < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Models::Admin::Organization::UsageCostsResponse,
-                OpenAI::Internal::AnyHash
-              )
-            end
 
-          sig do
-            returns(
-              T::Array[
-                OpenAI::Models::Admin::Organization::UsageCostsResponse::Data
-              ]
+    module Admin
+
+      module Organization
+
+        class UsageCostsResponse < OpenAI::Internal::Type::BaseModel
+
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Models::Admin::Organization::UsageCostsResponse,
+              OpenAI::Internal::AnyHash
             )
           end
+
+          sig { returns(T::Array[OpenAI::Models::Admin::Organization::UsageCostsResponse::Data]) }
           attr_accessor :data
 
           sig { returns(T::Boolean) }
@@ -33,25 +30,33 @@ module OpenAI
 
           sig do
             params(
-              data:
-                T::Array[
-                  OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::OrHash
-                ],
+
+              data: T::Array[OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::OrHash],
+
               has_more: T::Boolean,
+
               next_page: T.nilable(String),
+
               object: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
-          def self.new(data:, has_more:, next_page:, object: :page)
+          def self.new(
+
+            data:,
+
+            has_more:,
+
+            next_page:,
+
+            object: :page
+          )
           end
 
           sig do
             override.returns(
               {
-                data:
-                  T::Array[
-                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data
-                  ],
+                data: T::Array[OpenAI::Models::Admin::Organization::UsageCostsResponse::Data],
                 has_more: T::Boolean,
                 next_page: T.nilable(String),
                 object: Symbol
@@ -62,13 +67,12 @@ module OpenAI
           end
 
           class Data < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Models::Admin::Organization::UsageCostsResponse::Data,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Models::Admin::Organization::UsageCostsResponse::Data,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             sig { returns(Integer) }
             attr_accessor :end_time
@@ -76,13 +80,7 @@ module OpenAI
             sig { returns(Symbol) }
             attr_accessor :object
 
-            sig do
-              returns(
-                T::Array[
-                  OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::Variants
-                ]
-              )
-            end
+            sig { returns(T::Array[OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::Variants]) }
             attr_accessor :results
 
             sig { returns(Integer) }
@@ -90,28 +88,41 @@ module OpenAI
 
             sig do
               params(
+
                 end_time: Integer,
-                results:
-                  T::Array[
-                    T.any(
-                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageCompletionsResult::OrHash,
-                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageEmbeddingsResult::OrHash,
-                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageModerationsResult::OrHash,
-                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageImagesResult::OrHash,
-                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageAudioSpeechesResult::OrHash,
-                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageAudioTranscriptionsResult::OrHash,
-                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageVectorStoresResult::OrHash,
-                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageCodeInterpreterSessionsResult::OrHash,
-                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageFileSearchesResult::OrHash,
-                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageWebSearchesResult::OrHash,
-                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationCostsResult::OrHash
-                    )
-                  ],
+
+                results: T::Array[
+                  T.any(
+                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageCompletionsResult::OrHash,
+                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageEmbeddingsResult::OrHash,
+                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageModerationsResult::OrHash,
+                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageImagesResult::OrHash,
+                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageAudioSpeechesResult::OrHash,
+                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageAudioTranscriptionsResult::OrHash,
+                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageVectorStoresResult::OrHash,
+                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageCodeInterpreterSessionsResult::OrHash,
+                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageFileSearchesResult::OrHash,
+                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageWebSearchesResult::OrHash,
+                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationCostsResult::OrHash
+                  )
+                ],
+
                 start_time: Integer,
+
                 object: Symbol
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
-            def self.new(end_time:, results:, start_time:, object: :bucket)
+            def self.new(
+
+              end_time:,
+
+              results:,
+
+              start_time:,
+
+              object: :bucket
+            )
             end
 
             sig do
@@ -119,10 +130,7 @@ module OpenAI
                 {
                   end_time: Integer,
                   object: Symbol,
-                  results:
-                    T::Array[
-                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::Variants
-                    ],
+                  results: T::Array[OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::Variants],
                   start_time: Integer
                 }
               )
@@ -134,31 +142,29 @@ module OpenAI
             module Result
               extend OpenAI::Internal::Type::Union
 
-              Variants =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageCompletionsResult,
-                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageEmbeddingsResult,
-                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageModerationsResult,
-                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageImagesResult,
-                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageAudioSpeechesResult,
-                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageAudioTranscriptionsResult,
-                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageVectorStoresResult,
-                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageCodeInterpreterSessionsResult,
-                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageFileSearchesResult,
-                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageWebSearchesResult,
-                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationCostsResult
-                  )
-                end
+              Variants = T.type_alias {
+                T.any(
+                  OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageCompletionsResult,
+                  OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageEmbeddingsResult,
+                  OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageModerationsResult,
+                  OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageImagesResult,
+                  OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageAudioSpeechesResult,
+                  OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageAudioTranscriptionsResult,
+                  OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageVectorStoresResult,
+                  OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageCodeInterpreterSessionsResult,
+                  OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageFileSearchesResult,
+                  OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageWebSearchesResult,
+                  OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationCostsResult
+                )
+              }
 
               class OrganizationUsageCompletionsResult < OpenAI::Internal::Type::BaseModel
-                OrHash =
-                  T.type_alias do
-                    T.any(
-                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageCompletionsResult,
-                      OpenAI::Internal::AnyHash
-                    )
-                  end
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageCompletionsResult,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
                 # The aggregated number of input tokens used, including cached and cache-write
                 # tokens. This includes text, audio, and image tokens. For customers subscribed to
@@ -299,86 +305,131 @@ module OpenAI
                 # The aggregated completions usage details of the specific time bucket.
                 sig do
                   params(
+
                     input_tokens: Integer,
+
                     num_model_requests: Integer,
+
                     output_tokens: Integer,
+
                     api_key_id: T.nilable(String),
+
                     batch: T.nilable(T::Boolean),
+
                     input_audio_tokens: Integer,
+
                     input_cache_write_tokens: Integer,
+
                     input_cached_audio_tokens: Integer,
+
                     input_cached_image_tokens: Integer,
+
                     input_cached_text_tokens: Integer,
+
                     input_cached_tokens: Integer,
+
                     input_image_tokens: Integer,
+
                     input_text_tokens: Integer,
+
                     input_uncached_tokens: Integer,
+
                     model: T.nilable(String),
+
                     output_audio_tokens: Integer,
+
                     output_image_tokens: Integer,
+
                     output_text_tokens: Integer,
+
                     project_id: T.nilable(String),
+
                     service_tier: T.nilable(String),
+
                     user_id: T.nilable(String),
+
                     object: Symbol
-                  ).returns(T.attached_class)
+                  )
+                    .returns(T.attached_class)
                 end
                 def self.new(
+
                   # The aggregated number of input tokens used, including cached and cache-write
                   # tokens. This includes text, audio, and image tokens. For customers subscribed to
                   # Scale Tier, this includes Scale Tier tokens.
                   input_tokens:,
+
                   # The count of requests made to the model.
                   num_model_requests:,
+
                   # The aggregated number of output tokens used across text, audio, and image
                   # outputs. For customers subscribed to Scale Tier, this includes Scale Tier
                   # tokens.
                   output_tokens:,
+
                   # When `group_by=api_key_id`, this field provides the API key ID of the grouped
                   # usage result.
                   api_key_id: nil,
+
                   # When `group_by=batch`, this field tells whether the grouped usage result is
                   # batch or not.
                   batch: nil,
+
                   # The aggregated number of uncached audio input tokens used.
                   input_audio_tokens: nil,
+
                   # The aggregated number of input tokens written to the cache.
                   input_cache_write_tokens: nil,
+
                   # The aggregated number of cached audio input tokens used.
                   input_cached_audio_tokens: nil,
+
                   # The aggregated number of cached image input tokens used.
                   input_cached_image_tokens: nil,
+
                   # The aggregated number of cached text input tokens used.
                   input_cached_text_tokens: nil,
+
                   # The aggregated number of cached input tokens used across text, audio, and image
                   # inputs. For customers subscribed to Scale Tier, this includes Scale Tier tokens.
                   input_cached_tokens: nil,
+
                   # The aggregated number of uncached image input tokens used.
                   input_image_tokens: nil,
+
                   # The aggregated number of uncached text input tokens used, excluding cache-write
                   # tokens.
                   input_text_tokens: nil,
+
                   # The aggregated number of uncached input tokens used across text, audio, and
                   # image inputs, excluding cache-write tokens.
                   input_uncached_tokens: nil,
+
                   # When `group_by=model`, this field provides the model name of the grouped usage
                   # result.
                   model: nil,
+
                   # The aggregated number of audio output tokens used.
                   output_audio_tokens: nil,
+
                   # The aggregated number of image output tokens used.
                   output_image_tokens: nil,
+
                   # The aggregated number of text output tokens used.
                   output_text_tokens: nil,
+
                   # When `group_by=project_id`, this field provides the project ID of the grouped
                   # usage result.
                   project_id: nil,
+
                   # When `group_by=service_tier`, this field provides the service tier of the
                   # grouped usage result.
                   service_tier: nil,
+
                   # When `group_by=user_id`, this field provides the user ID of the grouped usage
                   # result.
                   user_id: nil,
+
                   object: :"organization.usage.completions.result"
                 )
                 end
@@ -413,16 +464,16 @@ module OpenAI
                 end
                 def to_hash
                 end
+
               end
 
               class OrganizationUsageEmbeddingsResult < OpenAI::Internal::Type::BaseModel
-                OrHash =
-                  T.type_alias do
-                    T.any(
-                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageEmbeddingsResult,
-                      OpenAI::Internal::AnyHash
-                    )
-                  end
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageEmbeddingsResult,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
                 # The aggregated number of input tokens used.
                 sig { returns(Integer) }
@@ -458,32 +509,47 @@ module OpenAI
                 # The aggregated embeddings usage details of the specific time bucket.
                 sig do
                   params(
+
                     input_tokens: Integer,
+
                     num_model_requests: Integer,
+
                     api_key_id: T.nilable(String),
+
                     model: T.nilable(String),
+
                     project_id: T.nilable(String),
+
                     user_id: T.nilable(String),
+
                     object: Symbol
-                  ).returns(T.attached_class)
+                  )
+                    .returns(T.attached_class)
                 end
                 def self.new(
+
                   # The aggregated number of input tokens used.
                   input_tokens:,
+
                   # The count of requests made to the model.
                   num_model_requests:,
+
                   # When `group_by=api_key_id`, this field provides the API key ID of the grouped
                   # usage result.
                   api_key_id: nil,
+
                   # When `group_by=model`, this field provides the model name of the grouped usage
                   # result.
                   model: nil,
+
                   # When `group_by=project_id`, this field provides the project ID of the grouped
                   # usage result.
                   project_id: nil,
+
                   # When `group_by=user_id`, this field provides the user ID of the grouped usage
                   # result.
                   user_id: nil,
+
                   object: :"organization.usage.embeddings.result"
                 )
                 end
@@ -503,16 +569,16 @@ module OpenAI
                 end
                 def to_hash
                 end
+
               end
 
               class OrganizationUsageModerationsResult < OpenAI::Internal::Type::BaseModel
-                OrHash =
-                  T.type_alias do
-                    T.any(
-                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageModerationsResult,
-                      OpenAI::Internal::AnyHash
-                    )
-                  end
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageModerationsResult,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
                 # The aggregated number of input tokens used.
                 sig { returns(Integer) }
@@ -548,32 +614,47 @@ module OpenAI
                 # The aggregated moderations usage details of the specific time bucket.
                 sig do
                   params(
+
                     input_tokens: Integer,
+
                     num_model_requests: Integer,
+
                     api_key_id: T.nilable(String),
+
                     model: T.nilable(String),
+
                     project_id: T.nilable(String),
+
                     user_id: T.nilable(String),
+
                     object: Symbol
-                  ).returns(T.attached_class)
+                  )
+                    .returns(T.attached_class)
                 end
                 def self.new(
+
                   # The aggregated number of input tokens used.
                   input_tokens:,
+
                   # The count of requests made to the model.
                   num_model_requests:,
+
                   # When `group_by=api_key_id`, this field provides the API key ID of the grouped
                   # usage result.
                   api_key_id: nil,
+
                   # When `group_by=model`, this field provides the model name of the grouped usage
                   # result.
                   model: nil,
+
                   # When `group_by=project_id`, this field provides the project ID of the grouped
                   # usage result.
                   project_id: nil,
+
                   # When `group_by=user_id`, this field provides the user ID of the grouped usage
                   # result.
                   user_id: nil,
+
                   object: :"organization.usage.moderations.result"
                 )
                 end
@@ -593,16 +674,16 @@ module OpenAI
                 end
                 def to_hash
                 end
+
               end
 
               class OrganizationUsageImagesResult < OpenAI::Internal::Type::BaseModel
-                OrHash =
-                  T.type_alias do
-                    T.any(
-                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageImagesResult,
-                      OpenAI::Internal::AnyHash
-                    )
-                  end
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageImagesResult,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
                 # The number of images processed.
                 sig { returns(Integer) }
@@ -648,40 +729,59 @@ module OpenAI
                 # The aggregated images usage details of the specific time bucket.
                 sig do
                   params(
+
                     images: Integer,
+
                     num_model_requests: Integer,
+
                     api_key_id: T.nilable(String),
+
                     model: T.nilable(String),
+
                     project_id: T.nilable(String),
+
                     size: T.nilable(String),
+
                     source: T.nilable(String),
+
                     user_id: T.nilable(String),
+
                     object: Symbol
-                  ).returns(T.attached_class)
+                  )
+                    .returns(T.attached_class)
                 end
                 def self.new(
+
                   # The number of images processed.
                   images:,
+
                   # The count of requests made to the model.
                   num_model_requests:,
+
                   # When `group_by=api_key_id`, this field provides the API key ID of the grouped
                   # usage result.
                   api_key_id: nil,
+
                   # When `group_by=model`, this field provides the model name of the grouped usage
                   # result.
                   model: nil,
+
                   # When `group_by=project_id`, this field provides the project ID of the grouped
                   # usage result.
                   project_id: nil,
+
                   # When `group_by=size`, this field provides the image size of the grouped usage
                   # result.
                   size: nil,
+
                   # When `group_by=source`, this field provides the source of the grouped usage
                   # result, possible values are `image.generation`, `image.edit`, `image.variation`.
                   source: nil,
+
                   # When `group_by=user_id`, this field provides the user ID of the grouped usage
                   # result.
                   user_id: nil,
+
                   object: :"organization.usage.images.result"
                 )
                 end
@@ -703,16 +803,16 @@ module OpenAI
                 end
                 def to_hash
                 end
+
               end
 
               class OrganizationUsageAudioSpeechesResult < OpenAI::Internal::Type::BaseModel
-                OrHash =
-                  T.type_alias do
-                    T.any(
-                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageAudioSpeechesResult,
-                      OpenAI::Internal::AnyHash
-                    )
-                  end
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageAudioSpeechesResult,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
                 # The number of characters processed.
                 sig { returns(Integer) }
@@ -748,32 +848,47 @@ module OpenAI
                 # The aggregated audio speeches usage details of the specific time bucket.
                 sig do
                   params(
+
                     characters: Integer,
+
                     num_model_requests: Integer,
+
                     api_key_id: T.nilable(String),
+
                     model: T.nilable(String),
+
                     project_id: T.nilable(String),
+
                     user_id: T.nilable(String),
+
                     object: Symbol
-                  ).returns(T.attached_class)
+                  )
+                    .returns(T.attached_class)
                 end
                 def self.new(
+
                   # The number of characters processed.
                   characters:,
+
                   # The count of requests made to the model.
                   num_model_requests:,
+
                   # When `group_by=api_key_id`, this field provides the API key ID of the grouped
                   # usage result.
                   api_key_id: nil,
+
                   # When `group_by=model`, this field provides the model name of the grouped usage
                   # result.
                   model: nil,
+
                   # When `group_by=project_id`, this field provides the project ID of the grouped
                   # usage result.
                   project_id: nil,
+
                   # When `group_by=user_id`, this field provides the user ID of the grouped usage
                   # result.
                   user_id: nil,
+
                   object: :"organization.usage.audio_speeches.result"
                 )
                 end
@@ -793,16 +908,16 @@ module OpenAI
                 end
                 def to_hash
                 end
+
               end
 
               class OrganizationUsageAudioTranscriptionsResult < OpenAI::Internal::Type::BaseModel
-                OrHash =
-                  T.type_alias do
-                    T.any(
-                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageAudioTranscriptionsResult,
-                      OpenAI::Internal::AnyHash
-                    )
-                  end
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageAudioTranscriptionsResult,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
                 # The count of requests made to the model.
                 sig { returns(Integer) }
@@ -838,32 +953,47 @@ module OpenAI
                 # The aggregated audio transcriptions usage details of the specific time bucket.
                 sig do
                   params(
+
                     num_model_requests: Integer,
+
                     seconds: Integer,
+
                     api_key_id: T.nilable(String),
+
                     model: T.nilable(String),
+
                     project_id: T.nilable(String),
+
                     user_id: T.nilable(String),
+
                     object: Symbol
-                  ).returns(T.attached_class)
+                  )
+                    .returns(T.attached_class)
                 end
                 def self.new(
+
                   # The count of requests made to the model.
                   num_model_requests:,
+
                   # The number of seconds processed.
                   seconds:,
+
                   # When `group_by=api_key_id`, this field provides the API key ID of the grouped
                   # usage result.
                   api_key_id: nil,
+
                   # When `group_by=model`, this field provides the model name of the grouped usage
                   # result.
                   model: nil,
+
                   # When `group_by=project_id`, this field provides the project ID of the grouped
                   # usage result.
                   project_id: nil,
+
                   # When `group_by=user_id`, this field provides the user ID of the grouped usage
                   # result.
                   user_id: nil,
+
                   object: :"organization.usage.audio_transcriptions.result"
                 )
                 end
@@ -883,16 +1013,16 @@ module OpenAI
                 end
                 def to_hash
                 end
+
               end
 
               class OrganizationUsageVectorStoresResult < OpenAI::Internal::Type::BaseModel
-                OrHash =
-                  T.type_alias do
-                    T.any(
-                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageVectorStoresResult,
-                      OpenAI::Internal::AnyHash
-                    )
-                  end
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageVectorStoresResult,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
                 sig { returns(Symbol) }
                 attr_accessor :object
@@ -909,42 +1039,45 @@ module OpenAI
                 # The aggregated vector stores usage details of the specific time bucket.
                 sig do
                   params(
+
                     usage_bytes: Integer,
+
                     project_id: T.nilable(String),
+
                     object: Symbol
-                  ).returns(T.attached_class)
+                  )
+                    .returns(T.attached_class)
                 end
                 def self.new(
+
                   # The vector stores usage in bytes.
                   usage_bytes:,
+
                   # When `group_by=project_id`, this field provides the project ID of the grouped
                   # usage result.
                   project_id: nil,
+
                   object: :"organization.usage.vector_stores.result"
                 )
                 end
 
                 sig do
                   override.returns(
-                    {
-                      object: Symbol,
-                      usage_bytes: Integer,
-                      project_id: T.nilable(String)
-                    }
+                    {object: Symbol, usage_bytes: Integer, project_id: T.nilable(String)}
                   )
                 end
                 def to_hash
                 end
+
               end
 
               class OrganizationUsageCodeInterpreterSessionsResult < OpenAI::Internal::Type::BaseModel
-                OrHash =
-                  T.type_alias do
-                    T.any(
-                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageCodeInterpreterSessionsResult,
-                      OpenAI::Internal::AnyHash
-                    )
-                  end
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageCodeInterpreterSessionsResult,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
                 # The number of code interpreter sessions.
                 sig { returns(Integer) }
@@ -962,42 +1095,45 @@ module OpenAI
                 # bucket.
                 sig do
                   params(
+
                     num_sessions: Integer,
+
                     project_id: T.nilable(String),
+
                     object: Symbol
-                  ).returns(T.attached_class)
+                  )
+                    .returns(T.attached_class)
                 end
                 def self.new(
+
                   # The number of code interpreter sessions.
                   num_sessions:,
+
                   # When `group_by=project_id`, this field provides the project ID of the grouped
                   # usage result.
                   project_id: nil,
+
                   object: :"organization.usage.code_interpreter_sessions.result"
                 )
                 end
 
                 sig do
                   override.returns(
-                    {
-                      num_sessions: Integer,
-                      object: Symbol,
-                      project_id: T.nilable(String)
-                    }
+                    {num_sessions: Integer, object: Symbol, project_id: T.nilable(String)}
                   )
                 end
                 def to_hash
                 end
+
               end
 
               class OrganizationUsageFileSearchesResult < OpenAI::Internal::Type::BaseModel
-                OrHash =
-                  T.type_alias do
-                    T.any(
-                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageFileSearchesResult,
-                      OpenAI::Internal::AnyHash
-                    )
-                  end
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageFileSearchesResult,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
                 # The count of file search calls.
                 sig { returns(Integer) }
@@ -1029,29 +1165,42 @@ module OpenAI
                 # The aggregated file search calls usage details of the specific time bucket.
                 sig do
                   params(
+
                     num_requests: Integer,
+
                     api_key_id: T.nilable(String),
+
                     project_id: T.nilable(String),
+
                     user_id: T.nilable(String),
+
                     vector_store_id: T.nilable(String),
+
                     object: Symbol
-                  ).returns(T.attached_class)
+                  )
+                    .returns(T.attached_class)
                 end
                 def self.new(
+
                   # The count of file search calls.
                   num_requests:,
+
                   # When `group_by=api_key_id`, this field provides the API key ID of the grouped
                   # usage result.
                   api_key_id: nil,
+
                   # When `group_by=project_id`, this field provides the project ID of the grouped
                   # usage result.
                   project_id: nil,
+
                   # When `group_by=user_id`, this field provides the user ID of the grouped usage
                   # result.
                   user_id: nil,
+
                   # When `group_by=vector_store_id`, this field provides the vector store ID of the
                   # grouped usage result.
                   vector_store_id: nil,
+
                   object: :"organization.usage.file_searches.result"
                 )
                 end
@@ -1070,16 +1219,16 @@ module OpenAI
                 end
                 def to_hash
                 end
+
               end
 
               class OrganizationUsageWebSearchesResult < OpenAI::Internal::Type::BaseModel
-                OrHash =
-                  T.type_alias do
-                    T.any(
-                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageWebSearchesResult,
-                      OpenAI::Internal::AnyHash
-                    )
-                  end
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageWebSearchesResult,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
                 # The count of model requests.
                 sig { returns(Integer) }
@@ -1120,36 +1269,53 @@ module OpenAI
                 # The aggregated web search calls usage details of the specific time bucket.
                 sig do
                   params(
+
                     num_model_requests: Integer,
+
                     num_requests: Integer,
+
                     api_key_id: T.nilable(String),
+
                     context_level: T.nilable(String),
+
                     model: T.nilable(String),
+
                     project_id: T.nilable(String),
+
                     user_id: T.nilable(String),
+
                     object: Symbol
-                  ).returns(T.attached_class)
+                  )
+                    .returns(T.attached_class)
                 end
                 def self.new(
+
                   # The count of model requests.
                   num_model_requests:,
+
                   # The count of web search calls.
                   num_requests:,
+
                   # When `group_by=api_key_id`, this field provides the API key ID of the grouped
                   # usage result.
                   api_key_id: nil,
+
                   # When `group_by=context_level`, this field provides the search context size of
                   # the grouped usage result.
                   context_level: nil,
+
                   # When `group_by=model`, this field provides the model name of the grouped usage
                   # result.
                   model: nil,
+
                   # When `group_by=project_id`, this field provides the project ID of the grouped
                   # usage result.
                   project_id: nil,
+
                   # When `group_by=user_id`, this field provides the user ID of the grouped usage
                   # result.
                   user_id: nil,
+
                   object: :"organization.usage.web_searches.result"
                 )
                 end
@@ -1170,36 +1336,36 @@ module OpenAI
                 end
                 def to_hash
                 end
+
               end
 
               class OrganizationCostsResult < OpenAI::Internal::Type::BaseModel
-                OrHash =
-                  T.type_alias do
-                    T.any(
-                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationCostsResult,
-                      OpenAI::Internal::AnyHash
-                    )
-                  end
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationCostsResult,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
                 sig { returns(Symbol) }
                 attr_accessor :object
 
                 # The monetary value in its associated currency.
-                sig do
+                sig {
                   returns(
                     T.nilable(
                       OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationCostsResult::Amount
                     )
                   )
-                end
+                }
                 attr_reader :amount
 
-                sig do
+                sig {
                   params(
-                    amount:
-                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationCostsResult::Amount::OrHash
-                  ).void
-                end
+                    amount: OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationCostsResult::Amount::OrHash
+                  )
+                    .void
+                }
                 attr_writer :amount
 
                 # When `group_by=api_key_id`, this field provides the API Key ID of the grouped
@@ -1225,30 +1391,42 @@ module OpenAI
                 # The aggregated costs details of the specific time bucket.
                 sig do
                   params(
-                    amount:
-                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationCostsResult::Amount::OrHash,
+
+                    amount: OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationCostsResult::Amount::OrHash,
+
                     api_key_id: T.nilable(String),
+
                     line_item: T.nilable(String),
+
                     project_id: T.nilable(String),
+
                     quantity: T.nilable(Float),
+
                     object: Symbol
-                  ).returns(T.attached_class)
+                  )
+                    .returns(T.attached_class)
                 end
                 def self.new(
+
                   # The monetary value in its associated currency.
                   amount: nil,
+
                   # When `group_by=api_key_id`, this field provides the API Key ID of the grouped
                   # costs result.
                   api_key_id: nil,
+
                   # When `group_by=line_item`, this field provides the line item of the grouped
                   # costs result.
                   line_item: nil,
+
                   # When `group_by=project_id`, this field provides the project ID of the grouped
                   # costs result.
                   project_id: nil,
+
                   # When `group_by=line_item`, this field provides the quantity of the grouped costs
                   # result.
                   quantity: nil,
+
                   object: :"organization.costs.result"
                 )
                 end
@@ -1257,8 +1435,7 @@ module OpenAI
                   override.returns(
                     {
                       object: Symbol,
-                      amount:
-                        OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationCostsResult::Amount,
+                      amount: OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationCostsResult::Amount,
                       api_key_id: T.nilable(String),
                       line_item: T.nilable(String),
                       project_id: T.nilable(String),
@@ -1270,13 +1447,12 @@ module OpenAI
                 end
 
                 class Amount < OpenAI::Internal::Type::BaseModel
-                  OrHash =
-                    T.type_alias do
-                      T.any(
-                        OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationCostsResult::Amount,
-                        OpenAI::Internal::AnyHash
-                      )
-                    end
+                  OrHash = T.type_alias do
+                    T.any(
+                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationCostsResult::Amount,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
 
                   # Lowercase ISO-4217 currency e.g. "usd"
                   sig { returns(T.nilable(String)) }
@@ -1294,37 +1470,52 @@ module OpenAI
 
                   # The monetary value in its associated currency.
                   sig do
-                    params(currency: String, value: Float).returns(
-                      T.attached_class
+                    params(
+
+                      currency: String,
+
+                      value: Float
                     )
+                      .returns(T.attached_class)
                   end
                   def self.new(
+
                     # Lowercase ISO-4217 currency e.g. "usd"
                     currency: nil,
+
                     # The numeric value of the cost.
+
                     value: nil
                   )
                   end
 
-                  sig { override.returns({ currency: String, value: Float }) }
+                  sig do
+                    override.returns(
+                      {currency: String, value: Float}
+                    )
+                  end
                   def to_hash
                   end
+
                 end
               end
 
-              sig do
+              sig {
                 override.returns(
-                  T::Array[
-                    OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::Variants
-                  ]
+                  T::Array[OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::Variants]
                 )
-              end
+              }
               def self.variants
               end
+
             end
           end
+
         end
+
       end
+
     end
+
   end
 end

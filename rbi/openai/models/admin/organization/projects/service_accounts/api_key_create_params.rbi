@@ -2,21 +2,26 @@
 
 module OpenAI
   module Models
+
     module Admin
+
       module Organization
+
         module Projects
+
           module ServiceAccounts
+
             class APIKeyCreateParams < OpenAI::Internal::Type::BaseModel
+
               extend OpenAI::Internal::Type::RequestParameters::Converter
               include OpenAI::Internal::Type::RequestParameters
 
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Admin::Organization::Projects::ServiceAccounts::APIKeyCreateParams,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Admin::Organization::Projects::ServiceAccounts::APIKeyCreateParams,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # The ID of the project.
               sig { returns(String) }
@@ -42,22 +47,33 @@ module OpenAI
 
               sig do
                 params(
+
                   project_id: String,
+
                   service_account_id: String,
+
                   name: String,
+
                   scopes: T::Array[String],
+
                   request_options: OpenAI::RequestOptions::OrHash
-                ).returns(T.attached_class)
+                )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 # The ID of the project.
                 project_id:,
+
                 # The ID of the service account.
                 service_account_id:,
+
                 # API key name.
                 name: nil,
+
                 # API key scopes.
                 scopes: nil,
+
                 request_options: {}
               )
               end
@@ -75,10 +91,16 @@ module OpenAI
               end
               def to_hash
               end
+
             end
+
           end
+
         end
+
       end
+
     end
+
   end
 end

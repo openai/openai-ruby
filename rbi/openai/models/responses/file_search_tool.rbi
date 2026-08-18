@@ -2,12 +2,17 @@
 
 module OpenAI
   module Models
+
     module Responses
+
       class FileSearchTool < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(OpenAI::Responses::FileSearchTool, OpenAI::Internal::AnyHash)
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Responses::FileSearchTool,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The type of the file search tool. Always `file_search`.
         sig { returns(Symbol) }
@@ -18,11 +23,7 @@ module OpenAI
         attr_accessor :vector_store_ids
 
         # A filter to apply.
-        sig do
-          returns(
-            T.nilable(T.any(OpenAI::ComparisonFilter, OpenAI::CompoundFilter))
-          )
-        end
+        sig { returns(T.nilable(T.any(OpenAI::ComparisonFilter, OpenAI::CompoundFilter))) }
         attr_accessor :filters
 
         # The maximum number of results to return. This number should be between 1 and 50
@@ -34,17 +35,10 @@ module OpenAI
         attr_writer :max_num_results
 
         # Ranking options for search.
-        sig do
-          returns(T.nilable(OpenAI::Responses::FileSearchTool::RankingOptions))
-        end
+        sig { returns(T.nilable(OpenAI::Responses::FileSearchTool::RankingOptions)) }
         attr_reader :ranking_options
 
-        sig do
-          params(
-            ranking_options:
-              OpenAI::Responses::FileSearchTool::RankingOptions::OrHash
-          ).void
-        end
+        sig { params(ranking_options: OpenAI::Responses::FileSearchTool::RankingOptions::OrHash).void }
         attr_writer :ranking_options
 
         # A tool that searches for relevant content from uploaded files. Learn more about
@@ -52,31 +46,36 @@ module OpenAI
         # [file search tool](https://platform.openai.com/docs/guides/tools-file-search).
         sig do
           params(
+
             vector_store_ids: T::Array[String],
-            filters:
-              T.nilable(
-                T.any(
-                  OpenAI::ComparisonFilter::OrHash,
-                  OpenAI::CompoundFilter::OrHash
-                )
-              ),
+
+            filters: T.nilable(T.any(OpenAI::ComparisonFilter::OrHash, OpenAI::CompoundFilter::OrHash)),
+
             max_num_results: Integer,
-            ranking_options:
-              OpenAI::Responses::FileSearchTool::RankingOptions::OrHash,
+
+            ranking_options: OpenAI::Responses::FileSearchTool::RankingOptions::OrHash,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The IDs of the vector stores to search.
           vector_store_ids:,
+
           # A filter to apply.
           filters: nil,
+
           # The maximum number of results to return. This number should be between 1 and 50
           # inclusive.
           max_num_results: nil,
+
           # Ranking options for search.
           ranking_options: nil,
+
           # The type of the file search tool. Always `file_search`.
+
           type: :file_search
         )
         end
@@ -86,10 +85,7 @@ module OpenAI
             {
               type: Symbol,
               vector_store_ids: T::Array[String],
-              filters:
-                T.nilable(
-                  T.any(OpenAI::ComparisonFilter, OpenAI::CompoundFilter)
-                ),
+              filters: T.nilable(T.any(OpenAI::ComparisonFilter, OpenAI::CompoundFilter)),
               max_num_results: Integer,
               ranking_options: OpenAI::Responses::FileSearchTool::RankingOptions
             }
@@ -102,64 +98,35 @@ module OpenAI
         module Filters
           extend OpenAI::Internal::Type::Union
 
-          Variants =
-            T.type_alias do
-              T.any(OpenAI::ComparisonFilter, OpenAI::CompoundFilter)
-            end
+          Variants = T.type_alias { T.any(OpenAI::ComparisonFilter, OpenAI::CompoundFilter) }
 
-          sig do
-            override.returns(
-              T::Array[OpenAI::Responses::FileSearchTool::Filters::Variants]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Responses::FileSearchTool::Filters::Variants]) }
           def self.variants
           end
+
         end
 
         class RankingOptions < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::FileSearchTool::RankingOptions,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::FileSearchTool::RankingOptions,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # Weights that control how reciprocal rank fusion balances semantic embedding
           # matches versus sparse keyword matches when hybrid search is enabled.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch)) }
           attr_reader :hybrid_search
 
-          sig do
-            params(
-              hybrid_search:
-                OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch::OrHash
-            ).void
-          end
+          sig { params(hybrid_search: OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch::OrHash).void }
           attr_writer :hybrid_search
 
           # The ranker to use for the file search.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol)) }
           attr_reader :ranker
 
-          sig do
-            params(
-              ranker:
-                OpenAI::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol
-            ).void
-          end
+          sig { params(ranker: OpenAI::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol).void }
           attr_writer :ranker
 
           # The score threshold for the file search, a number between 0 and 1. Numbers
@@ -174,22 +141,28 @@ module OpenAI
           # Ranking options for search.
           sig do
             params(
-              hybrid_search:
-                OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch::OrHash,
-              ranker:
-                OpenAI::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol,
+
+              hybrid_search: OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch::OrHash,
+
+              ranker: OpenAI::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol,
+
               score_threshold: Float
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # Weights that control how reciprocal rank fusion balances semantic embedding
             # matches versus sparse keyword matches when hybrid search is enabled.
             hybrid_search: nil,
+
             # The ranker to use for the file search.
             ranker: nil,
+
             # The score threshold for the file search, a number between 0 and 1. Numbers
             # closer to 1 will attempt to return only the most relevant results, but may
             # return fewer results.
+
             score_threshold: nil
           )
           end
@@ -197,10 +170,8 @@ module OpenAI
           sig do
             override.returns(
               {
-                hybrid_search:
-                  OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch,
-                ranker:
-                  OpenAI::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol,
+                hybrid_search: OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch,
+                ranker: OpenAI::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol,
                 score_threshold: Float
               }
             )
@@ -209,13 +180,12 @@ module OpenAI
           end
 
           class HybridSearch < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # The weight of the embedding in the reciprocal ranking fusion.
             sig { returns(Float) }
@@ -228,61 +198,57 @@ module OpenAI
             # Weights that control how reciprocal rank fusion balances semantic embedding
             # matches versus sparse keyword matches when hybrid search is enabled.
             sig do
-              params(embedding_weight: Float, text_weight: Float).returns(
-                T.attached_class
+              params(
+
+                embedding_weight: Float,
+
+                text_weight: Float
               )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # The weight of the embedding in the reciprocal ranking fusion.
               embedding_weight:,
+
               # The weight of the text in the reciprocal ranking fusion.
+
               text_weight:
             )
             end
 
             sig do
-              override.returns({ embedding_weight: Float, text_weight: Float })
+              override.returns(
+                {embedding_weight: Float, text_weight: Float}
+              )
             end
             def to_hash
             end
+
           end
 
           # The ranker to use for the file search.
           module Ranker
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Responses::FileSearchTool::RankingOptions::Ranker
-                )
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::FileSearchTool::RankingOptions::Ranker) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            AUTO =
-              T.let(
-                :auto,
-                OpenAI::Responses::FileSearchTool::RankingOptions::Ranker::TaggedSymbol
-              )
-            DEFAULT_2024_11_15 =
-              T.let(
-                :"default-2024-11-15",
-                OpenAI::Responses::FileSearchTool::RankingOptions::Ranker::TaggedSymbol
-              )
+            AUTO = T.let(:auto, OpenAI::Responses::FileSearchTool::RankingOptions::Ranker::TaggedSymbol)
+            DEFAULT_2024_11_15 = T.let(
+              :"default-2024-11-15",
+              OpenAI::Responses::FileSearchTool::RankingOptions::Ranker::TaggedSymbol
+            )
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::FileSearchTool::RankingOptions::Ranker::TaggedSymbol
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Responses::FileSearchTool::RankingOptions::Ranker::TaggedSymbol]) }
             def self.values
             end
           end
         end
+
       end
+
     end
+
   end
 end

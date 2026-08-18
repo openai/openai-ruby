@@ -2,14 +2,19 @@
 
 module OpenAI
   module Models
+
     BetaSkillReference = Beta::BetaSkillReference
 
     module Beta
+
       class BetaSkillReference < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(OpenAI::Beta::BetaSkillReference, OpenAI::Internal::AnyHash)
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Beta::BetaSkillReference,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The ID of the referenced skill.
         sig { returns(String) }
@@ -27,26 +32,41 @@ module OpenAI
         attr_writer :version
 
         sig do
-          params(skill_id: String, version: String, type: Symbol).returns(
-            T.attached_class
+          params(
+
+            skill_id: String,
+
+            version: String,
+
+            type: Symbol
           )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The ID of the referenced skill.
           skill_id:,
+
           # Optional skill version. Use a positive integer or 'latest'. Omit for default.
           version: nil,
+
           # References a skill created with the /v1/skills endpoint.
+
           type: :skill_reference
         )
         end
 
         sig do
-          override.returns({ skill_id: String, type: Symbol, version: String })
+          override.returns(
+            {skill_id: String, type: Symbol, version: String}
+          )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

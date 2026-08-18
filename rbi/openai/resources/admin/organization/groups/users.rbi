@@ -2,20 +2,21 @@
 
 module OpenAI
   module Resources
+
     class Admin
+
       class Organization
+
         class Groups
+
           class Users
+
             # Adds a user to a group.
-            sig do
-              params(
-                group_id: String,
-                user_id: String,
-                request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
+            sig {
+              params(group_id: String, user_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
                 OpenAI::Models::Admin::Organization::Groups::UserCreateResponse
               )
-            end
+            }
             def create(
               # The ID of the group to update.
               group_id,
@@ -26,15 +27,11 @@ module OpenAI
             end
 
             # Retrieves a user in a group.
-            sig do
-              params(
-                user_id: String,
-                group_id: String,
-                request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
+            sig {
+              params(user_id: String, group_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
                 OpenAI::Models::Admin::Organization::Groups::UserRetrieveResponse
               )
-            end
+            }
             def retrieve(
               # The ID of the user to retrieve from the group.
               user_id,
@@ -45,20 +42,16 @@ module OpenAI
             end
 
             # Lists the users assigned to a group.
-            sig do
+            sig {
               params(
                 group_id: String,
                 after: String,
                 limit: Integer,
-                order:
-                  OpenAI::Admin::Organization::Groups::UserListParams::Order::OrSymbol,
+                order: OpenAI::Admin::Organization::Groups::UserListParams::Order::OrSymbol,
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
-                OpenAI::Internal::NextCursorPage[
-                  OpenAI::Admin::Organization::Groups::OrganizationGroupUser
-                ]
               )
-            end
+                .returns(OpenAI::Internal::NextCursorPage[OpenAI::Admin::Organization::Groups::OrganizationGroupUser])
+            }
             def list(
               # The ID of the group to inspect.
               group_id,
@@ -75,15 +68,11 @@ module OpenAI
             end
 
             # Removes a user from a group.
-            sig do
-              params(
-                user_id: String,
-                group_id: String,
-                request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
+            sig {
+              params(user_id: String, group_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
                 OpenAI::Models::Admin::Organization::Groups::UserDeleteResponse
               )
-            end
+            }
             def delete(
               # The ID of the user to remove from the group.
               user_id,
@@ -98,8 +87,12 @@ module OpenAI
             def self.new(client:)
             end
           end
+
         end
+
       end
+
     end
+
   end
 end

@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module FineTuning
+
       class ReinforcementHyperparameters < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::FineTuning::ReinforcementHyperparameters,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::FineTuning::ReinforcementHyperparameters,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # Number of examples in each batch. A larger batch size means that model
         # parameters are updated less frequently, but with lower variance.
@@ -58,53 +60,59 @@ module OpenAI
         attr_writer :n_epochs
 
         # Level of reasoning effort.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::FineTuning::ReinforcementHyperparameters::ReasoningEffort::OrSymbol
-            )
-          )
-        end
+        sig { returns(T.nilable(OpenAI::FineTuning::ReinforcementHyperparameters::ReasoningEffort::OrSymbol)) }
         attr_reader :reasoning_effort
 
-        sig do
-          params(
-            reasoning_effort:
-              OpenAI::FineTuning::ReinforcementHyperparameters::ReasoningEffort::OrSymbol
-          ).void
-        end
+        sig {
+          params(reasoning_effort: OpenAI::FineTuning::ReinforcementHyperparameters::ReasoningEffort::OrSymbol).void
+        }
         attr_writer :reasoning_effort
 
         # The hyperparameters used for the reinforcement fine-tuning job.
         sig do
           params(
+
             batch_size: T.any(Symbol, Integer),
+
             compute_multiplier: T.any(Symbol, Float),
+
             eval_interval: T.any(Symbol, Integer),
+
             eval_samples: T.any(Symbol, Integer),
+
             learning_rate_multiplier: T.any(Symbol, Float),
+
             n_epochs: T.any(Symbol, Integer),
-            reasoning_effort:
-              OpenAI::FineTuning::ReinforcementHyperparameters::ReasoningEffort::OrSymbol
-          ).returns(T.attached_class)
+
+            reasoning_effort: OpenAI::FineTuning::ReinforcementHyperparameters::ReasoningEffort::OrSymbol
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Number of examples in each batch. A larger batch size means that model
           # parameters are updated less frequently, but with lower variance.
           batch_size: nil,
+
           # Multiplier on amount of compute used for exploring search space during training.
           compute_multiplier: nil,
+
           # The number of training steps between evaluation runs.
           eval_interval: nil,
+
           # Number of evaluation samples to generate per training step.
           eval_samples: nil,
+
           # Scaling factor for the learning rate. A smaller learning rate may be useful to
           # avoid overfitting.
           learning_rate_multiplier: nil,
+
           # The number of epochs to train the model for. An epoch refers to one full cycle
           # through the training dataset.
           n_epochs: nil,
+
           # Level of reasoning effort.
+
           reasoning_effort: nil
         )
         end
@@ -118,8 +126,7 @@ module OpenAI
               eval_samples: T.any(Symbol, Integer),
               learning_rate_multiplier: T.any(Symbol, Float),
               n_epochs: T.any(Symbol, Integer),
-              reasoning_effort:
-                OpenAI::FineTuning::ReinforcementHyperparameters::ReasoningEffort::OrSymbol
+              reasoning_effort: OpenAI::FineTuning::ReinforcementHyperparameters::ReasoningEffort::OrSymbol
             }
           )
         end
@@ -133,15 +140,10 @@ module OpenAI
 
           Variants = T.type_alias { T.any(Symbol, Integer) }
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::FineTuning::ReinforcementHyperparameters::BatchSize::Variants
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::FineTuning::ReinforcementHyperparameters::BatchSize::Variants]) }
           def self.variants
           end
+
         end
 
         # Multiplier on amount of compute used for exploring search space during training.
@@ -150,15 +152,12 @@ module OpenAI
 
           Variants = T.type_alias { T.any(Symbol, Float) }
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::FineTuning::ReinforcementHyperparameters::ComputeMultiplier::Variants
-              ]
-            )
-          end
+          sig {
+            override.returns(T::Array[OpenAI::FineTuning::ReinforcementHyperparameters::ComputeMultiplier::Variants])
+          }
           def self.variants
           end
+
         end
 
         # The number of training steps between evaluation runs.
@@ -167,15 +166,10 @@ module OpenAI
 
           Variants = T.type_alias { T.any(Symbol, Integer) }
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::FineTuning::ReinforcementHyperparameters::EvalInterval::Variants
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::FineTuning::ReinforcementHyperparameters::EvalInterval::Variants]) }
           def self.variants
           end
+
         end
 
         # Number of evaluation samples to generate per training step.
@@ -184,15 +178,10 @@ module OpenAI
 
           Variants = T.type_alias { T.any(Symbol, Integer) }
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::FineTuning::ReinforcementHyperparameters::EvalSamples::Variants
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::FineTuning::ReinforcementHyperparameters::EvalSamples::Variants]) }
           def self.variants
           end
+
         end
 
         # Scaling factor for the learning rate. A smaller learning rate may be useful to
@@ -202,15 +191,14 @@ module OpenAI
 
           Variants = T.type_alias { T.any(Symbol, Float) }
 
-          sig do
+          sig {
             override.returns(
-              T::Array[
-                OpenAI::FineTuning::ReinforcementHyperparameters::LearningRateMultiplier::Variants
-              ]
+              T::Array[OpenAI::FineTuning::ReinforcementHyperparameters::LearningRateMultiplier::Variants]
             )
-          end
+          }
           def self.variants
           end
+
         end
 
         # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -220,62 +208,36 @@ module OpenAI
 
           Variants = T.type_alias { T.any(Symbol, Integer) }
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::FineTuning::ReinforcementHyperparameters::NEpochs::Variants
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::FineTuning::ReinforcementHyperparameters::NEpochs::Variants]) }
           def self.variants
           end
+
         end
 
         # Level of reasoning effort.
         module ReasoningEffort
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(
-                Symbol,
-                OpenAI::FineTuning::ReinforcementHyperparameters::ReasoningEffort
-              )
-            end
+          TaggedSymbol = T.type_alias {
+            T.all(Symbol, OpenAI::FineTuning::ReinforcementHyperparameters::ReasoningEffort)
+          }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          DEFAULT =
-            T.let(
-              :default,
-              OpenAI::FineTuning::ReinforcementHyperparameters::ReasoningEffort::TaggedSymbol
-            )
-          LOW =
-            T.let(
-              :low,
-              OpenAI::FineTuning::ReinforcementHyperparameters::ReasoningEffort::TaggedSymbol
-            )
-          MEDIUM =
-            T.let(
-              :medium,
-              OpenAI::FineTuning::ReinforcementHyperparameters::ReasoningEffort::TaggedSymbol
-            )
-          HIGH =
-            T.let(
-              :high,
-              OpenAI::FineTuning::ReinforcementHyperparameters::ReasoningEffort::TaggedSymbol
-            )
+          DEFAULT = T.let(:default, OpenAI::FineTuning::ReinforcementHyperparameters::ReasoningEffort::TaggedSymbol)
+          LOW = T.let(:low, OpenAI::FineTuning::ReinforcementHyperparameters::ReasoningEffort::TaggedSymbol)
+          MEDIUM = T.let(:medium, OpenAI::FineTuning::ReinforcementHyperparameters::ReasoningEffort::TaggedSymbol)
+          HIGH = T.let(:high, OpenAI::FineTuning::ReinforcementHyperparameters::ReasoningEffort::TaggedSymbol)
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::FineTuning::ReinforcementHyperparameters::ReasoningEffort::TaggedSymbol
-              ]
-            )
-          end
+          sig {
+            override.returns(T::Array[OpenAI::FineTuning::ReinforcementHyperparameters::ReasoningEffort::TaggedSymbol])
+          }
           def self.values
           end
         end
+
       end
+
     end
+
   end
 end

@@ -2,23 +2,28 @@
 
 module OpenAI
   module Resources
+
     class Admin
+
       class Organization
+
         class Projects
+
           class ServiceAccounts
+
             class APIKeys
+
               # Creates an API key for a service account in the project.
-              sig do
+              sig {
                 params(
                   service_account_id: String,
                   project_id: String,
                   name: String,
                   scopes: T::Array[String],
                   request_options: OpenAI::RequestOptions::OrHash
-                ).returns(
-                  OpenAI::Models::Admin::Organization::Projects::ServiceAccounts::APIKeyCreateResponse
                 )
-              end
+                  .returns(OpenAI::Models::Admin::Organization::Projects::ServiceAccounts::APIKeyCreateResponse)
+              }
               def create(
                 # Path param: The ID of the service account.
                 service_account_id,
@@ -37,9 +42,14 @@ module OpenAI
               def self.new(client:)
               end
             end
+
           end
+
         end
+
       end
+
     end
+
   end
 end

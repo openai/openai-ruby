@@ -2,34 +2,37 @@
 
 module OpenAI
   module Resources
+
     class Webhooks
+
       # Validates that the given payload was sent by OpenAI and parses the payload.
-      sig do
+      sig {
         params(
           payload: String,
           headers: T.nilable(T::Hash[T.any(String, Symbol), String]),
           webhook_secret: T.nilable(String)
-        ).returns(
-          T.any(
-            OpenAI::Webhooks::BatchCancelledWebhookEvent,
-            OpenAI::Webhooks::BatchCompletedWebhookEvent,
-            OpenAI::Webhooks::BatchExpiredWebhookEvent,
-            OpenAI::Webhooks::BatchFailedWebhookEvent,
-            OpenAI::Webhooks::EvalRunCanceledWebhookEvent,
-            OpenAI::Webhooks::EvalRunFailedWebhookEvent,
-            OpenAI::Webhooks::EvalRunSucceededWebhookEvent,
-            OpenAI::Webhooks::FineTuningJobCancelledWebhookEvent,
-            OpenAI::Webhooks::FineTuningJobFailedWebhookEvent,
-            OpenAI::Webhooks::FineTuningJobSucceededWebhookEvent,
-            OpenAI::Webhooks::LiveCallIncomingWebhookEvent,
-            OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent,
-            OpenAI::Webhooks::ResponseCancelledWebhookEvent,
-            OpenAI::Webhooks::ResponseCompletedWebhookEvent,
-            OpenAI::Webhooks::ResponseFailedWebhookEvent,
-            OpenAI::Webhooks::ResponseIncompleteWebhookEvent
-          )
         )
-      end
+          .returns(
+            T.any(
+              OpenAI::Webhooks::BatchCancelledWebhookEvent,
+              OpenAI::Webhooks::BatchCompletedWebhookEvent,
+              OpenAI::Webhooks::BatchExpiredWebhookEvent,
+              OpenAI::Webhooks::BatchFailedWebhookEvent,
+              OpenAI::Webhooks::EvalRunCanceledWebhookEvent,
+              OpenAI::Webhooks::EvalRunFailedWebhookEvent,
+              OpenAI::Webhooks::EvalRunSucceededWebhookEvent,
+              OpenAI::Webhooks::FineTuningJobCancelledWebhookEvent,
+              OpenAI::Webhooks::FineTuningJobFailedWebhookEvent,
+              OpenAI::Webhooks::FineTuningJobSucceededWebhookEvent,
+              OpenAI::Webhooks::LiveCallIncomingWebhookEvent,
+              OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent,
+              OpenAI::Webhooks::ResponseCancelledWebhookEvent,
+              OpenAI::Webhooks::ResponseCompletedWebhookEvent,
+              OpenAI::Webhooks::ResponseFailedWebhookEvent,
+              OpenAI::Webhooks::ResponseIncompleteWebhookEvent
+            )
+          )
+      }
       def unwrap(
         # The raw webhook payload as a string
         payload,
@@ -41,14 +44,15 @@ module OpenAI
       end
 
       # Validates whether or not the webhook payload was sent by OpenAI.
-      sig do
+      sig {
         params(
           payload: String,
           headers: T::Hash[T.any(String, Symbol), String],
           webhook_secret: T.nilable(String),
           tolerance: Integer
-        ).void
-      end
+        )
+          .void
+      }
       def verify_signature(
         # The webhook payload as a string
         payload,
@@ -66,5 +70,6 @@ module OpenAI
       def self.new(client:)
       end
     end
+
   end
 end

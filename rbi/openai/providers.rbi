@@ -8,9 +8,11 @@ module OpenAI
           endpoint: T.nilable(String),
           api_key: T.nilable(String),
           token_provider: T.nilable(T.proc.returns(String))
-        ).returns(OpenAI::Provider)
+        )
+          .returns(OpenAI::Provider)
       end
-      def azure(endpoint: nil, api_key: nil, token_provider: nil); end
+      def azure(endpoint: nil, api_key: nil, token_provider: nil)
+      end
 
       sig do
         params(
@@ -24,7 +26,8 @@ module OpenAI
           session_token: T.nilable(String),
           profile: T.nilable(String),
           credentials_provider: T.untyped
-        ).returns(OpenAI::Provider)
+        )
+          .returns(OpenAI::Provider)
       end
       def bedrock(
         endpoint: nil,

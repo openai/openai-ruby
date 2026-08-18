@@ -6,7 +6,11 @@ module OpenAI
       module ConnectionResources
         class Base
           # @api private
-          sig { params(connection: OpenAI::Realtime::Connection).returns(T.attached_class) }
+          sig do
+            params(connection: OpenAI::Realtime::Connection).returns(
+              T.attached_class
+            )
+          end
           def self.new(connection)
           end
         end
@@ -22,7 +26,13 @@ module OpenAI
           def create(**params)
           end
 
-          sig { params(response_id: T.nilable(String), event_id: T.nilable(String)).void }
+          sig do
+            params(
+              response_id: T.nilable(String),
+              event_id: T.nilable(String)
+            )
+              .void
+          end
           def cancel(response_id: nil, event_id: nil)
           end
         end
@@ -47,11 +57,18 @@ module OpenAI
 
         class Conversation < Base
           # @api private
-          sig { params(connection: OpenAI::Realtime::Connection).returns(T.attached_class) }
+          sig do
+            params(connection: OpenAI::Realtime::Connection).returns(
+              T.attached_class
+            )
+          end
           def self.new(connection)
           end
 
-          sig { returns(OpenAI::Realtime::ConnectionResources::ConversationItems) }
+          sig do
+            returns(OpenAI::Realtime::ConnectionResources::ConversationItems)
+          end
+
           attr_reader :items
         end
 

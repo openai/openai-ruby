@@ -2,18 +2,20 @@
 
 module OpenAI
   module Models
+
     module Containers
+
       class FileCreateParams < OpenAI::Internal::Type::BaseModel
+
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Containers::FileCreateParams,
-              OpenAI::Internal::AnyHash
-            )
-          end
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Containers::FileCreateParams,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         sig { returns(String) }
         attr_accessor :container_id
@@ -38,22 +40,31 @@ module OpenAI
 
         sig do
           params(
+
             container_id: String,
+
             file: OpenAI::Internal::FileInput,
+
             file_id: String,
+
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           container_id:,
+
           # The File object (not file name) to be uploaded.
           #
           # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
           # metadata. Use `OpenAI::FilePart` when you need to override the filename or
           # content type.
           file: nil,
+
           # Name of the file to create.
           file_id: nil,
+
           request_options: {}
         )
         end
@@ -70,7 +81,10 @@ module OpenAI
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

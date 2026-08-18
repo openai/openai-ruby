@@ -2,19 +2,22 @@
 
 module OpenAI
   module Models
+
     module Beta
+
       module ChatKit
+
         class ThreadListParams < OpenAI::Internal::Type::BaseModel
+
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Beta::ChatKit::ThreadListParams,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::ChatKit::ThreadListParams,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # List items created after this thread item ID. Defaults to null for the first
           # page.
@@ -40,20 +43,10 @@ module OpenAI
           attr_writer :limit
 
           # Sort order for results by creation time. Defaults to `desc`.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Beta::ChatKit::ThreadListParams::Order::OrSymbol
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Beta::ChatKit::ThreadListParams::Order::OrSymbol)) }
           attr_reader :order
 
-          sig do
-            params(
-              order: OpenAI::Beta::ChatKit::ThreadListParams::Order::OrSymbol
-            ).void
-          end
+          sig { params(order: OpenAI::Beta::ChatKit::ThreadListParams::Order::OrSymbol).void }
           attr_writer :order
 
           # Filter threads that belong to this user identifier. Defaults to null to return
@@ -66,28 +59,41 @@ module OpenAI
 
           sig do
             params(
+
               after: String,
+
               before: String,
+
               limit: Integer,
+
               order: OpenAI::Beta::ChatKit::ThreadListParams::Order::OrSymbol,
+
               user: String,
+
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # List items created after this thread item ID. Defaults to null for the first
             # page.
             after: nil,
+
             # List items created before this thread item ID. Defaults to null for the newest
             # results.
             before: nil,
+
             # Maximum number of thread items to return. Defaults to 20.
             limit: nil,
+
             # Sort order for results by creation time. Defaults to `desc`.
             order: nil,
+
             # Filter threads that belong to this user identifier. Defaults to null to return
             # all users.
             user: nil,
+
             request_options: {}
           )
           end
@@ -111,35 +117,22 @@ module OpenAI
           module Order
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(Symbol, OpenAI::Beta::ChatKit::ThreadListParams::Order)
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::ChatKit::ThreadListParams::Order) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            ASC =
-              T.let(
-                :asc,
-                OpenAI::Beta::ChatKit::ThreadListParams::Order::TaggedSymbol
-              )
-            DESC =
-              T.let(
-                :desc,
-                OpenAI::Beta::ChatKit::ThreadListParams::Order::TaggedSymbol
-              )
+            ASC = T.let(:asc, OpenAI::Beta::ChatKit::ThreadListParams::Order::TaggedSymbol)
+            DESC = T.let(:desc, OpenAI::Beta::ChatKit::ThreadListParams::Order::TaggedSymbol)
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Beta::ChatKit::ThreadListParams::Order::TaggedSymbol
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Beta::ChatKit::ThreadListParams::Order::TaggedSymbol]) }
             def self.values
             end
           end
+
         end
+
       end
+
     end
+
   end
 end

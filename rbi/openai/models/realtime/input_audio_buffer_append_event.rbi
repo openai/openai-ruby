@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class InputAudioBufferAppendEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::InputAudioBufferAppendEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::InputAudioBufferAppendEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # Base64-encoded audio bytes. This must be in the format specified by the
         # `input_audio_format` field in the session configuration.
@@ -44,27 +46,42 @@ module OpenAI
         # to be more responsive. Unlike most other client events, the server will not send
         # a confirmation response to this event.
         sig do
-          params(audio: String, event_id: String, type: Symbol).returns(
-            T.attached_class
+          params(
+
+            audio: String,
+
+            event_id: String,
+
+            type: Symbol
           )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Base64-encoded audio bytes. This must be in the format specified by the
           # `input_audio_format` field in the session configuration.
           audio:,
+
           # Optional client-generated ID used to identify this event.
           event_id: nil,
+
           # The event type, must be `input_audio_buffer.append`.
+
           type: :"input_audio_buffer.append"
         )
         end
 
         sig do
-          override.returns({ audio: String, type: Symbol, event_id: String })
+          override.returns(
+            {audio: String, type: Symbol, event_id: String}
+          )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

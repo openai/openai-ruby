@@ -2,7 +2,9 @@
 
 module OpenAI
   module Models
+
     module Responses
+
       # An object specifying the format that the model must output.
       #
       # Configuring `{ "type": "json_schema" }` enables Structured Outputs, which
@@ -19,23 +21,21 @@ module OpenAI
       module ResponseFormatTextConfig
         extend OpenAI::Internal::Type::Union
 
-        Variants =
-          T.type_alias do
-            T.any(
-              OpenAI::ResponseFormatText,
-              OpenAI::Responses::ResponseFormatTextJSONSchemaConfig,
-              OpenAI::ResponseFormatJSONObject
-            )
-          end
-
-        sig do
-          override.returns(
-            T::Array[OpenAI::Responses::ResponseFormatTextConfig::Variants]
+        Variants = T.type_alias do
+          T.any(
+            OpenAI::ResponseFormatText,
+            OpenAI::Responses::ResponseFormatTextJSONSchemaConfig,
+            OpenAI::ResponseFormatJSONObject
           )
         end
+
+        sig { override.returns(T::Array[OpenAI::Responses::ResponseFormatTextConfig::Variants]) }
         def self.variants
         end
+
       end
+
     end
+
   end
 end

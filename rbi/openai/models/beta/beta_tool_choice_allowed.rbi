@@ -2,17 +2,19 @@
 
 module OpenAI
   module Models
+
     BetaToolChoiceAllowed = Beta::BetaToolChoiceAllowed
 
     module Beta
+
       class BetaToolChoiceAllowed < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Beta::BetaToolChoiceAllowed,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Beta::BetaToolChoiceAllowed,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # Constrains the tools available to the model to a pre-defined set.
         #
@@ -44,12 +46,17 @@ module OpenAI
         # Constrains the tools available to the model to a pre-defined set.
         sig do
           params(
+
             mode: OpenAI::Beta::BetaToolChoiceAllowed::Mode::OrSymbol,
+
             tools: T::Array[T::Hash[Symbol, T.anything]],
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Constrains the tools available to the model to a pre-defined set.
           #
           # `auto` allows the model to pick from among the allowed tools and generate a
@@ -57,6 +64,7 @@ module OpenAI
           #
           # `required` requires the model to call one or more of the allowed tools.
           mode:,
+
           # A list of tool definitions that the model should be allowed to call.
           #
           # For the Responses API, the list of tool definitions might look like:
@@ -69,7 +77,9 @@ module OpenAI
           # ]
           # ```
           tools:,
+
           # Allowed tool configuration type. Always `allowed_tools`.
+
           type: :allowed_tools
         )
         end
@@ -95,32 +105,20 @@ module OpenAI
         module Mode
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(Symbol, OpenAI::Beta::BetaToolChoiceAllowed::Mode)
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::BetaToolChoiceAllowed::Mode) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          AUTO =
-            T.let(
-              :auto,
-              OpenAI::Beta::BetaToolChoiceAllowed::Mode::TaggedSymbol
-            )
-          REQUIRED =
-            T.let(
-              :required,
-              OpenAI::Beta::BetaToolChoiceAllowed::Mode::TaggedSymbol
-            )
+          AUTO = T.let(:auto, OpenAI::Beta::BetaToolChoiceAllowed::Mode::TaggedSymbol)
+          REQUIRED = T.let(:required, OpenAI::Beta::BetaToolChoiceAllowed::Mode::TaggedSymbol)
 
-          sig do
-            override.returns(
-              T::Array[OpenAI::Beta::BetaToolChoiceAllowed::Mode::TaggedSymbol]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Beta::BetaToolChoiceAllowed::Mode::TaggedSymbol]) }
           def self.values
           end
         end
+
       end
+
     end
+
   end
 end

@@ -2,18 +2,20 @@
 
 module OpenAI
   module Models
+
     module Responses
+
       class ResponseOutputText < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Responses::ResponseOutputText,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Responses::ResponseOutputText,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The annotations of the text output.
-        sig do
+        sig {
           returns(
             T::Array[
               T.any(
@@ -24,7 +26,7 @@ module OpenAI
               )
             ]
           )
-        end
+        }
         attr_accessor :annotations
 
         # The text output from the model.
@@ -39,46 +41,45 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
-        sig do
-          returns(
-            T.nilable(T::Array[OpenAI::Responses::ResponseOutputText::Logprob])
-          )
-        end
+        sig { returns(T.nilable(T::Array[OpenAI::Responses::ResponseOutputText::Logprob])) }
         attr_reader :logprobs
 
-        sig do
-          params(
-            logprobs:
-              T::Array[OpenAI::Responses::ResponseOutputText::Logprob::OrHash]
-          ).void
-        end
+        sig { params(logprobs: T::Array[OpenAI::Responses::ResponseOutputText::Logprob::OrHash]).void }
         attr_writer :logprobs
 
         # A text output from the model.
         sig do
           params(
-            annotations:
-              T::Array[
-                T.any(
-                  OpenAI::Responses::ResponseOutputText::Annotation::FileCitation::OrHash,
-                  OpenAI::Responses::ResponseOutputText::Annotation::URLCitation::OrHash,
-                  OpenAI::Responses::ResponseOutputText::Annotation::ContainerFileCitation::OrHash,
-                  OpenAI::Responses::ResponseOutputText::Annotation::FilePath::OrHash
-                )
-              ],
+
+            annotations: T::Array[
+              T.any(
+                OpenAI::Responses::ResponseOutputText::Annotation::FileCitation::OrHash,
+                OpenAI::Responses::ResponseOutputText::Annotation::URLCitation::OrHash,
+                OpenAI::Responses::ResponseOutputText::Annotation::ContainerFileCitation::OrHash,
+                OpenAI::Responses::ResponseOutputText::Annotation::FilePath::OrHash
+              )
+            ],
+
             text: String,
-            logprobs:
-              T::Array[OpenAI::Responses::ResponseOutputText::Logprob::OrHash],
+
+            logprobs: T::Array[OpenAI::Responses::ResponseOutputText::Logprob::OrHash],
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The annotations of the text output.
           annotations:,
+
           # The text output from the model.
           text:,
+
           logprobs: nil,
+
           # The type of the output text. Always `output_text`.
+
           type: :output_text
         )
         end
@@ -86,15 +87,14 @@ module OpenAI
         sig do
           override.returns(
             {
-              annotations:
-                T::Array[
-                  T.any(
-                    OpenAI::Responses::ResponseOutputText::Annotation::FileCitation,
-                    OpenAI::Responses::ResponseOutputText::Annotation::URLCitation,
-                    OpenAI::Responses::ResponseOutputText::Annotation::ContainerFileCitation,
-                    OpenAI::Responses::ResponseOutputText::Annotation::FilePath
-                  )
-                ],
+              annotations: T::Array[
+                T.any(
+                  OpenAI::Responses::ResponseOutputText::Annotation::FileCitation,
+                  OpenAI::Responses::ResponseOutputText::Annotation::URLCitation,
+                  OpenAI::Responses::ResponseOutputText::Annotation::ContainerFileCitation,
+                  OpenAI::Responses::ResponseOutputText::Annotation::FilePath
+                )
+              ],
               text: String,
               type: Symbol,
               logprobs: T::Array[OpenAI::Responses::ResponseOutputText::Logprob]
@@ -108,24 +108,22 @@ module OpenAI
         module Annotation
           extend OpenAI::Internal::Type::Union
 
-          Variants =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseOutputText::Annotation::FileCitation,
-                OpenAI::Responses::ResponseOutputText::Annotation::URLCitation,
-                OpenAI::Responses::ResponseOutputText::Annotation::ContainerFileCitation,
-                OpenAI::Responses::ResponseOutputText::Annotation::FilePath
-              )
-            end
+          Variants = T.type_alias {
+            T.any(
+              OpenAI::Responses::ResponseOutputText::Annotation::FileCitation,
+              OpenAI::Responses::ResponseOutputText::Annotation::URLCitation,
+              OpenAI::Responses::ResponseOutputText::Annotation::ContainerFileCitation,
+              OpenAI::Responses::ResponseOutputText::Annotation::FilePath
+            )
+          }
 
           class FileCitation < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Responses::ResponseOutputText::Annotation::FileCitation,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseOutputText::Annotation::FileCitation,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # The ID of the file.
             sig { returns(String) }
@@ -146,46 +144,51 @@ module OpenAI
             # A citation to a file.
             sig do
               params(
+
                 file_id: String,
+
                 filename: String,
+
                 index: Integer,
+
                 type: Symbol
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # The ID of the file.
               file_id:,
+
               # The filename of the file cited.
               filename:,
+
               # The index of the file in the list of files.
               index:,
+
               # The type of the file citation. Always `file_citation`.
+
               type: :file_citation
             )
             end
 
             sig do
               override.returns(
-                {
-                  file_id: String,
-                  filename: String,
-                  index: Integer,
-                  type: Symbol
-                }
+                {file_id: String, filename: String, index: Integer, type: Symbol}
               )
             end
             def to_hash
             end
+
           end
 
           class URLCitation < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Responses::ResponseOutputText::Annotation::URLCitation,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseOutputText::Annotation::URLCitation,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # The index of the last character of the URL citation in the message.
             sig { returns(Integer) }
@@ -210,50 +213,56 @@ module OpenAI
             # A citation for a web resource used to generate a model response.
             sig do
               params(
+
                 end_index: Integer,
+
                 start_index: Integer,
+
                 title: String,
+
                 url: String,
+
                 type: Symbol
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # The index of the last character of the URL citation in the message.
               end_index:,
+
               # The index of the first character of the URL citation in the message.
               start_index:,
+
               # The title of the web resource.
               title:,
+
               # The URL of the web resource.
               url:,
+
               # The type of the URL citation. Always `url_citation`.
+
               type: :url_citation
             )
             end
 
             sig do
               override.returns(
-                {
-                  end_index: Integer,
-                  start_index: Integer,
-                  title: String,
-                  type: Symbol,
-                  url: String
-                }
+                {end_index: Integer, start_index: Integer, title: String, type: Symbol, url: String}
               )
             end
             def to_hash
             end
+
           end
 
           class ContainerFileCitation < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Responses::ResponseOutputText::Annotation::ContainerFileCitation,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseOutputText::Annotation::ContainerFileCitation,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # The ID of the container file.
             sig { returns(String) }
@@ -282,26 +291,40 @@ module OpenAI
             # A citation for a container file used to generate a model response.
             sig do
               params(
+
                 container_id: String,
+
                 end_index: Integer,
+
                 file_id: String,
+
                 filename: String,
+
                 start_index: Integer,
+
                 type: Symbol
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # The ID of the container file.
               container_id:,
+
               # The index of the last character of the container file citation in the message.
               end_index:,
+
               # The ID of the file.
               file_id:,
+
               # The filename of the container file cited.
               filename:,
+
               # The index of the first character of the container file citation in the message.
               start_index:,
+
               # The type of the container file citation. Always `container_file_citation`.
+
               type: :container_file_citation
             )
             end
@@ -320,16 +343,16 @@ module OpenAI
             end
             def to_hash
             end
+
           end
 
           class FilePath < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Responses::ResponseOutputText::Annotation::FilePath,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseOutputText::Annotation::FilePath,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # The ID of the file.
             sig { returns(String) }
@@ -345,48 +368,53 @@ module OpenAI
 
             # A path to a file.
             sig do
-              params(file_id: String, index: Integer, type: Symbol).returns(
-                T.attached_class
+              params(
+
+                file_id: String,
+
+                index: Integer,
+
+                type: Symbol
               )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # The ID of the file.
               file_id:,
+
               # The index of the file in the list of files.
               index:,
+
               # The type of the file path. Always `file_path`.
+
               type: :file_path
             )
             end
 
             sig do
               override.returns(
-                { file_id: String, index: Integer, type: Symbol }
+                {file_id: String, index: Integer, type: Symbol}
               )
             end
             def to_hash
             end
+
           end
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Responses::ResponseOutputText::Annotation::Variants
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Responses::ResponseOutputText::Annotation::Variants]) }
           def self.variants
           end
+
         end
 
         class Logprob < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseOutputText::Logprob,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseOutputText::Logprob,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           sig { returns(String) }
           attr_accessor :token
@@ -397,28 +425,33 @@ module OpenAI
           sig { returns(Float) }
           attr_accessor :logprob
 
-          sig do
-            returns(
-              T::Array[
-                OpenAI::Responses::ResponseOutputText::Logprob::TopLogprob
-              ]
-            )
-          end
+          sig { returns(T::Array[OpenAI::Responses::ResponseOutputText::Logprob::TopLogprob]) }
           attr_accessor :top_logprobs
 
           # The log probability of a token.
           sig do
             params(
+
               token: String,
+
               bytes: T::Array[Integer],
+
               logprob: Float,
-              top_logprobs:
-                T::Array[
-                  OpenAI::Responses::ResponseOutputText::Logprob::TopLogprob::OrHash
-                ]
-            ).returns(T.attached_class)
+
+              top_logprobs: T::Array[OpenAI::Responses::ResponseOutputText::Logprob::TopLogprob::OrHash]
+            )
+              .returns(T.attached_class)
           end
-          def self.new(token:, bytes:, logprob:, top_logprobs:)
+          def self.new(
+
+            token:,
+
+            bytes:,
+
+            logprob:,
+
+            top_logprobs:
+          )
           end
 
           sig do
@@ -427,10 +460,7 @@ module OpenAI
                 token: String,
                 bytes: T::Array[Integer],
                 logprob: Float,
-                top_logprobs:
-                  T::Array[
-                    OpenAI::Responses::ResponseOutputText::Logprob::TopLogprob
-                  ]
+                top_logprobs: T::Array[OpenAI::Responses::ResponseOutputText::Logprob::TopLogprob]
               }
             )
           end
@@ -438,13 +468,12 @@ module OpenAI
           end
 
           class TopLogprob < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Responses::ResponseOutputText::Logprob::TopLogprob,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseOutputText::Logprob::TopLogprob,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             sig { returns(String) }
             attr_accessor :token
@@ -458,24 +487,39 @@ module OpenAI
             # The top log probability of a token.
             sig do
               params(
+
                 token: String,
+
                 bytes: T::Array[Integer],
+
                 logprob: Float
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
-            def self.new(token:, bytes:, logprob:)
+            def self.new(
+
+              token:,
+
+              bytes:,
+
+              logprob:
+            )
             end
 
             sig do
               override.returns(
-                { token: String, bytes: T::Array[Integer], logprob: Float }
+                {token: String, bytes: T::Array[Integer], logprob: Float}
               )
             end
             def to_hash
             end
+
           end
         end
+
       end
+
     end
+
   end
 end

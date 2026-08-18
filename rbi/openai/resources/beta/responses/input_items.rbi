@@ -2,29 +2,26 @@
 
 module OpenAI
   module Resources
+
     class Beta
+
       class Responses
+
         class InputItems
+
           # Returns a list of input items for a given response.
-          sig do
+          sig {
             params(
               response_id: String,
               after: String,
               include: T::Array[OpenAI::Beta::BetaResponseIncludable::OrSymbol],
               limit: Integer,
-              order:
-                OpenAI::Beta::Responses::InputItemListParams::Order::OrSymbol,
-              betas:
-                T::Array[
-                  OpenAI::Beta::Responses::InputItemListParams::Beta::OrSymbol
-                ],
+              order: OpenAI::Beta::Responses::InputItemListParams::Order::OrSymbol,
+              betas: T::Array[OpenAI::Beta::Responses::InputItemListParams::Beta::OrSymbol],
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Internal::CursorPage[
-                OpenAI::Beta::BetaResponseItem::Variants
-              ]
             )
-          end
+              .returns(OpenAI::Internal::CursorPage[OpenAI::Beta::BetaResponseItem::Variants])
+          }
           def list(
             # Path param: The ID of the response to retrieve input items for.
             response_id,
@@ -52,7 +49,10 @@ module OpenAI
           def self.new(client:)
           end
         end
+
       end
+
     end
+
   end
 end

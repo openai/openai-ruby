@@ -2,7 +2,9 @@
 
 module OpenAI
   module Resources
+
     class Responses
+
       sig { returns(OpenAI::Resources::Responses::InputItems) }
       attr_reader :input_items
 
@@ -25,108 +27,71 @@ module OpenAI
       sig do
         params(
           background: T.nilable(T::Boolean),
-          context_management:
-            T.nilable(
-              T::Array[
-                OpenAI::Responses::ResponseCreateParams::ContextManagement::OrHash
-              ]
-            ),
-          conversation:
-            T.nilable(
-              T.any(
-                String,
-                OpenAI::Responses::ResponseConversationParam::OrHash
-              )
-            ),
-          include:
-            T.nilable(
-              T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
-            ),
+          context_management: T.nilable(T::Array[OpenAI::Responses::ResponseCreateParams::ContextManagement::OrHash]),
+          conversation: T.nilable(T.any(String, OpenAI::Responses::ResponseConversationParam::OrHash)),
+          include: T.nilable(T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]),
           input: OpenAI::Responses::ResponseCreateParams::Input::Variants,
           instructions: T.nilable(String),
           max_output_tokens: T.nilable(Integer),
           max_tool_calls: T.nilable(Integer),
           metadata: T.nilable(T::Hash[Symbol, String]),
-          model:
-            T.any(
-              String,
-              OpenAI::ChatModel::OrSymbol,
-              OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
-            ),
-          moderation:
-            T.nilable(
-              OpenAI::Responses::ResponseCreateParams::Moderation::OrHash
-            ),
+          model: T.any(String, OpenAI::ChatModel::OrSymbol, OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol),
+          moderation: T.nilable(OpenAI::Responses::ResponseCreateParams::Moderation::OrHash),
           parallel_tool_calls: T.nilable(T::Boolean),
           previous_response_id: T.nilable(String),
           prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
           prompt_cache_key: T.nilable(String),
-          prompt_cache_options:
-            OpenAI::Responses::ResponseCreateParams::PromptCacheOptions::OrHash,
-          prompt_cache_retention:
-            T.nilable(
-              OpenAI::Responses::ResponseCreateParams::PromptCacheRetention::OrSymbol
-            ),
+          prompt_cache_options: OpenAI::Responses::ResponseCreateParams::PromptCacheOptions::OrHash,
+          prompt_cache_retention: T.nilable(OpenAI::Responses::ResponseCreateParams::PromptCacheRetention::OrSymbol),
           reasoning: T.nilable(OpenAI::Reasoning::OrHash),
           safety_identifier: T.nilable(String),
-          service_tier:
-            T.nilable(
-              OpenAI::Responses::ResponseCreateParams::ServiceTier::OrSymbol
-            ),
+          service_tier: T.nilable(OpenAI::Responses::ResponseCreateParams::ServiceTier::OrSymbol),
           store: T.nilable(T::Boolean),
-          stream_options:
-            T.nilable(
-              OpenAI::Responses::ResponseCreateParams::StreamOptions::OrHash
-            ),
+          stream_options: T.nilable(OpenAI::Responses::ResponseCreateParams::StreamOptions::OrHash),
           temperature: T.nilable(Float),
-          text:
+          text: T.any(
+            OpenAI::Responses::ResponseTextConfig::OrHash,
+            OpenAI::StructuredOutput::JsonSchemaConverter
+          ),
+          tool_choice: T.any(
+            OpenAI::Responses::ToolChoiceOptions::OrSymbol,
+            OpenAI::Responses::ToolChoiceAllowed::OrHash,
+            OpenAI::Responses::ToolChoiceTypes::OrHash,
+            OpenAI::Responses::ToolChoiceFunction::OrHash,
+            OpenAI::Responses::ToolChoiceMcp::OrHash,
+            OpenAI::Responses::ToolChoiceCustom::OrHash,
+            OpenAI::Responses::ResponseCreateParams::ToolChoice::SpecificProgrammaticToolCallingParam::OrHash,
+            OpenAI::Responses::ToolChoiceApplyPatch::OrHash,
+            OpenAI::Responses::ToolChoiceShell::OrHash
+          ),
+          tools: T::Array[
             T.any(
-              OpenAI::Responses::ResponseTextConfig::OrHash,
-              OpenAI::StructuredOutput::JsonSchemaConverter
-            ),
-          tool_choice:
-            T.any(
-              OpenAI::Responses::ToolChoiceOptions::OrSymbol,
-              OpenAI::Responses::ToolChoiceAllowed::OrHash,
-              OpenAI::Responses::ToolChoiceTypes::OrHash,
-              OpenAI::Responses::ToolChoiceFunction::OrHash,
-              OpenAI::Responses::ToolChoiceMcp::OrHash,
-              OpenAI::Responses::ToolChoiceCustom::OrHash,
-              OpenAI::Responses::ResponseCreateParams::ToolChoice::SpecificProgrammaticToolCallingParam::OrHash,
-              OpenAI::Responses::ToolChoiceApplyPatch::OrHash,
-              OpenAI::Responses::ToolChoiceShell::OrHash
-            ),
-          tools:
-            T::Array[
-              T.any(
-                OpenAI::Responses::FunctionTool::OrHash,
-                OpenAI::Responses::FileSearchTool::OrHash,
-                OpenAI::Responses::ComputerTool::OrHash,
-                OpenAI::Responses::ComputerUsePreviewTool::OrHash,
-                OpenAI::Responses::Tool::Mcp::OrHash,
-                OpenAI::Responses::Tool::CodeInterpreter::OrHash,
-                OpenAI::Responses::Tool::ProgrammaticToolCalling::OrHash,
-                OpenAI::Responses::Tool::ImageGeneration::OrHash,
-                OpenAI::Responses::Tool::LocalShell::OrHash,
-                OpenAI::Responses::FunctionShellTool::OrHash,
-                OpenAI::Responses::CustomTool::OrHash,
-                OpenAI::Responses::NamespaceTool::OrHash,
-                OpenAI::Responses::ToolSearchTool::OrHash,
-                OpenAI::Responses::ApplyPatchTool::OrHash,
-                OpenAI::Responses::WebSearchTool::OrHash,
-                OpenAI::Responses::WebSearchPreviewTool::OrHash
-              )
-            ],
+              OpenAI::Responses::FunctionTool::OrHash,
+              OpenAI::Responses::FileSearchTool::OrHash,
+              OpenAI::Responses::ComputerTool::OrHash,
+              OpenAI::Responses::ComputerUsePreviewTool::OrHash,
+              OpenAI::Responses::Tool::Mcp::OrHash,
+              OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+              OpenAI::Responses::Tool::ProgrammaticToolCalling::OrHash,
+              OpenAI::Responses::Tool::ImageGeneration::OrHash,
+              OpenAI::Responses::Tool::LocalShell::OrHash,
+              OpenAI::Responses::FunctionShellTool::OrHash,
+              OpenAI::Responses::CustomTool::OrHash,
+              OpenAI::Responses::NamespaceTool::OrHash,
+              OpenAI::Responses::ToolSearchTool::OrHash,
+              OpenAI::Responses::ApplyPatchTool::OrHash,
+              OpenAI::Responses::WebSearchTool::OrHash,
+              OpenAI::Responses::WebSearchPreviewTool::OrHash
+            )
+          ],
           top_logprobs: T.nilable(Integer),
           top_p: T.nilable(Float),
-          truncation:
-            T.nilable(
-              OpenAI::Responses::ResponseCreateParams::Truncation::OrSymbol
-            ),
+          truncation: T.nilable(OpenAI::Responses::ResponseCreateParams::Truncation::OrSymbol),
           user: String,
           stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::Responses::Response)
+        )
+          .returns(OpenAI::Responses::Response)
       end
       def create(
         # Whether to run the model response in the background.
@@ -363,114 +328,77 @@ module OpenAI
       sig do
         params(
           background: T.nilable(T::Boolean),
-          context_management:
-            T.nilable(
-              T::Array[
-                OpenAI::Responses::ResponseCreateParams::ContextManagement::OrHash
-              ]
-            ),
-          conversation:
-            T.nilable(
-              T.any(
-                String,
-                OpenAI::Responses::ResponseConversationParam::OrHash
-              )
-            ),
-          include:
-            T.nilable(
-              T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
-            ),
+          context_management: T.nilable(T::Array[OpenAI::Responses::ResponseCreateParams::ContextManagement::OrHash]),
+          conversation: T.nilable(T.any(String, OpenAI::Responses::ResponseConversationParam::OrHash)),
+          include: T.nilable(T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]),
           input: OpenAI::Responses::ResponseCreateParams::Input::Variants,
           instructions: T.nilable(String),
           max_output_tokens: T.nilable(Integer),
           max_tool_calls: T.nilable(Integer),
           metadata: T.nilable(T::Hash[Symbol, String]),
-          model:
-            T.any(
-              String,
-              OpenAI::ChatModel::OrSymbol,
-              OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
-            ),
-          moderation:
-            T.nilable(
-              OpenAI::Responses::ResponseCreateParams::Moderation::OrHash
-            ),
+          model: T.any(String, OpenAI::ChatModel::OrSymbol, OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol),
+          moderation: T.nilable(OpenAI::Responses::ResponseCreateParams::Moderation::OrHash),
           parallel_tool_calls: T.nilable(T::Boolean),
           previous_response_id: T.nilable(String),
           prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
           prompt_cache_key: T.nilable(String),
-          prompt_cache_options:
-            OpenAI::Responses::ResponseCreateParams::PromptCacheOptions::OrHash,
-          prompt_cache_retention:
-            T.nilable(
-              OpenAI::Responses::ResponseCreateParams::PromptCacheRetention::OrSymbol
-            ),
+          prompt_cache_options: OpenAI::Responses::ResponseCreateParams::PromptCacheOptions::OrHash,
+          prompt_cache_retention: T.nilable(OpenAI::Responses::ResponseCreateParams::PromptCacheRetention::OrSymbol),
           reasoning: T.nilable(OpenAI::Reasoning::OrHash),
           safety_identifier: T.nilable(String),
-          service_tier:
-            T.nilable(
-              OpenAI::Responses::ResponseCreateParams::ServiceTier::OrSymbol
-            ),
+          service_tier: T.nilable(OpenAI::Responses::ResponseCreateParams::ServiceTier::OrSymbol),
           store: T.nilable(T::Boolean),
-          stream_options:
-            T.nilable(
-              OpenAI::Responses::ResponseCreateParams::StreamOptions::OrHash
-            ),
+          stream_options: T.nilable(OpenAI::Responses::ResponseCreateParams::StreamOptions::OrHash),
           temperature: T.nilable(Float),
-          text:
-            T.nilable(
-              T.any(
-                OpenAI::Responses::ResponseTextConfig::OrHash,
-                OpenAI::StructuredOutput::JsonSchemaConverter
-              )
-            ),
-          tool_choice:
+          text: T.nilable(
             T.any(
-              OpenAI::Responses::ToolChoiceOptions::OrSymbol,
-              OpenAI::Responses::ToolChoiceAllowed::OrHash,
-              OpenAI::Responses::ToolChoiceTypes::OrHash,
-              OpenAI::Responses::ToolChoiceFunction::OrHash,
-              OpenAI::Responses::ToolChoiceMcp::OrHash,
-              OpenAI::Responses::ToolChoiceCustom::OrHash,
-              OpenAI::Responses::ResponseCreateParams::ToolChoice::SpecificProgrammaticToolCallingParam::OrHash,
-              OpenAI::Responses::ToolChoiceApplyPatch::OrHash,
-              OpenAI::Responses::ToolChoiceShell::OrHash
-            ),
-          tools:
-            T::Array[
-              T.any(
-                OpenAI::Responses::FunctionTool::OrHash,
-                OpenAI::Responses::FileSearchTool::OrHash,
-                OpenAI::Responses::ComputerTool::OrHash,
-                OpenAI::Responses::ComputerUsePreviewTool::OrHash,
-                OpenAI::Responses::Tool::Mcp::OrHash,
-                OpenAI::Responses::Tool::CodeInterpreter::OrHash,
-                OpenAI::Responses::Tool::ProgrammaticToolCalling::OrHash,
-                OpenAI::Responses::Tool::ImageGeneration::OrHash,
-                OpenAI::Responses::Tool::LocalShell::OrHash,
-                OpenAI::Responses::FunctionShellTool::OrHash,
-                OpenAI::Responses::CustomTool::OrHash,
-                OpenAI::Responses::NamespaceTool::OrHash,
-                OpenAI::Responses::ToolSearchTool::OrHash,
-                OpenAI::Responses::ApplyPatchTool::OrHash,
-                OpenAI::Responses::WebSearchTool::OrHash,
-                OpenAI::Responses::WebSearchPreviewTool::OrHash
-              )
-            ],
+              OpenAI::Responses::ResponseTextConfig::OrHash,
+              OpenAI::StructuredOutput::JsonSchemaConverter
+            )
+          ),
+          tool_choice: T.any(
+            OpenAI::Responses::ToolChoiceOptions::OrSymbol,
+            OpenAI::Responses::ToolChoiceAllowed::OrHash,
+            OpenAI::Responses::ToolChoiceTypes::OrHash,
+            OpenAI::Responses::ToolChoiceFunction::OrHash,
+            OpenAI::Responses::ToolChoiceMcp::OrHash,
+            OpenAI::Responses::ToolChoiceCustom::OrHash,
+            OpenAI::Responses::ResponseCreateParams::ToolChoice::SpecificProgrammaticToolCallingParam::OrHash,
+            OpenAI::Responses::ToolChoiceApplyPatch::OrHash,
+            OpenAI::Responses::ToolChoiceShell::OrHash
+          ),
+          tools: T::Array[
+            T.any(
+              OpenAI::Responses::FunctionTool::OrHash,
+              OpenAI::Responses::FileSearchTool::OrHash,
+              OpenAI::Responses::ComputerTool::OrHash,
+              OpenAI::Responses::ComputerUsePreviewTool::OrHash,
+              OpenAI::Responses::Tool::Mcp::OrHash,
+              OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+              OpenAI::Responses::Tool::ProgrammaticToolCalling::OrHash,
+              OpenAI::Responses::Tool::ImageGeneration::OrHash,
+              OpenAI::Responses::Tool::LocalShell::OrHash,
+              OpenAI::Responses::FunctionShellTool::OrHash,
+              OpenAI::Responses::CustomTool::OrHash,
+              OpenAI::Responses::NamespaceTool::OrHash,
+              OpenAI::Responses::ToolSearchTool::OrHash,
+              OpenAI::Responses::ApplyPatchTool::OrHash,
+              OpenAI::Responses::WebSearchTool::OrHash,
+              OpenAI::Responses::WebSearchPreviewTool::OrHash
+            )
+          ],
           top_logprobs: T.nilable(Integer),
           top_p: T.nilable(Float),
-          truncation:
-            T.nilable(
-              OpenAI::Responses::ResponseCreateParams::Truncation::OrSymbol
-            ),
+          truncation: T.nilable(OpenAI::Responses::ResponseCreateParams::Truncation::OrSymbol),
           user: String,
           stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(
-          OpenAI::Internal::Stream[
-            OpenAI::Responses::ResponseStreamEvent::Variants
-          ]
         )
+          .returns(
+            OpenAI::Internal::Stream[
+              OpenAI::Responses::ResponseStreamEvent::Variants
+            ]
+          )
       end
       def stream_raw(
         # Whether to run the model response in the background.
@@ -707,76 +635,69 @@ module OpenAI
       sig do
         params(
           background: T.nilable(T::Boolean),
-          include:
-            T.nilable(
-              T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
-            ),
-          input:
-            T.nilable(OpenAI::Responses::ResponseCreateParams::Input::Variants),
+          include: T.nilable(
+            T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
+          ),
+          input: T.nilable(OpenAI::Responses::ResponseCreateParams::Input::Variants),
           instructions: T.nilable(String),
           max_output_tokens: T.nilable(Integer),
           max_tool_calls: T.nilable(Integer),
           metadata: T.nilable(T::Hash[Symbol, String]),
-          model:
-            T.nilable(
-              T.any(
-                String,
-                OpenAI::ChatModel::OrSymbol,
-                OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
-              )
-            ),
+          model: T.nilable(
+            T.any(
+              String,
+              OpenAI::ChatModel::OrSymbol,
+              OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
+            )
+          ),
           parallel_tool_calls: T.nilable(T::Boolean),
           previous_response_id: T.nilable(String),
           prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
           prompt_cache_key: String,
           reasoning: T.nilable(OpenAI::Reasoning::OrHash),
           safety_identifier: String,
-          service_tier:
-            T.nilable(
-              OpenAI::Responses::ResponseCreateParams::ServiceTier::OrSymbol
-            ),
+          service_tier: T.nilable(
+            OpenAI::Responses::ResponseCreateParams::ServiceTier::OrSymbol
+          ),
           store: T.nilable(T::Boolean),
           temperature: T.nilable(Float),
-          text:
-            T.nilable(
-              T.any(
-                OpenAI::Responses::ResponseTextConfig::OrHash,
-                OpenAI::StructuredOutput::JsonSchemaConverter
-              )
-            ),
-          tool_choice:
+          text: T.nilable(
             T.any(
-              OpenAI::Responses::ToolChoiceOptions::OrSymbol,
-              OpenAI::Responses::ToolChoiceAllowed::OrHash,
-              OpenAI::Responses::ToolChoiceTypes::OrHash,
-              OpenAI::Responses::ToolChoiceFunction::OrHash,
-              OpenAI::Responses::ToolChoiceMcp::OrHash
-            ),
-          tools:
-            T.nilable(
-              T::Array[
-                T.any(
-                  OpenAI::StructuredOutput::JsonSchemaConverter,
-                  OpenAI::Responses::FunctionTool::OrHash,
-                  OpenAI::Responses::FileSearchTool::OrHash,
-                  OpenAI::Responses::ComputerTool::OrHash,
-                  OpenAI::Responses::Tool::Mcp::OrHash,
-                  OpenAI::Responses::Tool::CodeInterpreter::OrHash,
-                  OpenAI::Responses::Tool::ImageGeneration::OrHash,
-                  OpenAI::Responses::Tool::LocalShell::OrHash,
-                  OpenAI::Responses::WebSearchTool::OrHash
-                )
-              ]
-            ),
+              OpenAI::Responses::ResponseTextConfig::OrHash,
+              OpenAI::StructuredOutput::JsonSchemaConverter
+            )
+          ),
+          tool_choice: T.any(
+            OpenAI::Responses::ToolChoiceOptions::OrSymbol,
+            OpenAI::Responses::ToolChoiceAllowed::OrHash,
+            OpenAI::Responses::ToolChoiceTypes::OrHash,
+            OpenAI::Responses::ToolChoiceFunction::OrHash,
+            OpenAI::Responses::ToolChoiceMcp::OrHash
+          ),
+          tools: T.nilable(
+            T::Array[
+              T.any(
+                OpenAI::StructuredOutput::JsonSchemaConverter,
+                OpenAI::Responses::FunctionTool::OrHash,
+                OpenAI::Responses::FileSearchTool::OrHash,
+                OpenAI::Responses::ComputerTool::OrHash,
+                OpenAI::Responses::Tool::Mcp::OrHash,
+                OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                OpenAI::Responses::Tool::ImageGeneration::OrHash,
+                OpenAI::Responses::Tool::LocalShell::OrHash,
+                OpenAI::Responses::WebSearchTool::OrHash
+              )
+            ]
+          ),
           top_logprobs: T.nilable(Integer),
           top_p: T.nilable(Float),
-          truncation:
-            T.nilable(
-              OpenAI::Responses::ResponseCreateParams::Truncation::OrSymbol
-            ),
+          truncation: T.nilable(
+            OpenAI::Responses::ResponseCreateParams::Truncation::OrSymbol
+          ),
           user: String,
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::Streaming::ResponseStream)
+        )
+          .returns(OpenAI::Streaming::ResponseStream)
       end
       def stream(
         # Whether to run the model response in the background.
@@ -957,7 +878,8 @@ module OpenAI
           starting_after: Integer,
           stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::Responses::Response)
+        )
+          .returns(OpenAI::Responses::Response)
       end
       def retrieve(
         # The ID of the response to retrieve.
@@ -992,11 +914,12 @@ module OpenAI
           starting_after: Integer,
           stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(
-          OpenAI::Internal::Stream[
-            OpenAI::Responses::ResponseStreamEvent::Variants
-          ]
         )
+          .returns(
+            OpenAI::Internal::Stream[
+              OpenAI::Responses::ResponseStreamEvent::Variants
+            ]
+          )
       end
       def retrieve_streaming(
         # The ID of the response to retrieve.
@@ -1021,12 +944,7 @@ module OpenAI
       end
 
       # Deletes a model response with the given ID.
-      sig do
-        params(
-          response_id: String,
-          request_options: OpenAI::RequestOptions::OrHash
-        ).void
-      end
+      sig { params(response_id: String, request_options: OpenAI::RequestOptions::OrHash).void }
       def delete(
         # The ID of the response to delete.
         response_id,
@@ -1041,7 +959,8 @@ module OpenAI
         params(
           response_id: String,
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::Responses::Response)
+        )
+          .returns(OpenAI::Responses::Response)
       end
       def cancel(
         # The ID of the response to cancel.
@@ -1058,34 +977,17 @@ module OpenAI
       # [Compaction (advanced)](https://platform.openai.com/docs/guides/conversation-state#compaction-advanced).
       sig do
         params(
-          model:
-            T.nilable(
-              T.any(
-                OpenAI::Responses::ResponseCompactParams::Model::OrSymbol,
-                String
-              )
-            ),
-          input:
-            T.nilable(
-              OpenAI::Responses::ResponseCompactParams::Input::Variants
-            ),
+          model: T.nilable(T.any(OpenAI::Responses::ResponseCompactParams::Model::OrSymbol, String)),
+          input: T.nilable(OpenAI::Responses::ResponseCompactParams::Input::Variants),
           instructions: T.nilable(String),
           previous_response_id: T.nilable(String),
           prompt_cache_key: T.nilable(String),
-          prompt_cache_options:
-            T.nilable(
-              OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::OrHash
-            ),
-          prompt_cache_retention:
-            T.nilable(
-              OpenAI::Responses::ResponseCompactParams::PromptCacheRetention::OrSymbol
-            ),
-          service_tier:
-            T.nilable(
-              OpenAI::Responses::ResponseCompactParams::ServiceTier::OrSymbol
-            ),
+          prompt_cache_options: T.nilable(OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::OrHash),
+          prompt_cache_retention: T.nilable(OpenAI::Responses::ResponseCompactParams::PromptCacheRetention::OrSymbol),
+          service_tier: T.nilable(OpenAI::Responses::ResponseCompactParams::ServiceTier::OrSymbol),
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::Responses::CompactedResponse)
+        )
+          .returns(OpenAI::Responses::CompactedResponse)
       end
       def compact(
         # Model ID used to generate the response, like `gpt-5` or `o3`. OpenAI offers a
@@ -1145,5 +1047,6 @@ module OpenAI
       def self.new(client:)
       end
     end
+
   end
 end

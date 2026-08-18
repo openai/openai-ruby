@@ -2,79 +2,66 @@
 
 module OpenAI
   module Resources
+
     class Responses
+
       class InputTokens
+
         # Returns input token counts of the request.
         #
         # Returns an object with `object` set to `response.input_tokens` and an
         # `input_tokens` count.
-        sig do
+        sig {
           params(
-            conversation:
-              T.nilable(
-                T.any(
-                  String,
-                  OpenAI::Responses::ResponseConversationParam::OrHash
-                )
-              ),
-            input:
-              T.nilable(
-                OpenAI::Responses::InputTokenCountParams::Input::Variants
-              ),
+            conversation: T.nilable(T.any(String, OpenAI::Responses::ResponseConversationParam::OrHash)),
+            input: T.nilable(OpenAI::Responses::InputTokenCountParams::Input::Variants),
             instructions: T.nilable(String),
             model: T.nilable(String),
             parallel_tool_calls: T.nilable(T::Boolean),
-            personality:
-              T.any(
-                String,
-                OpenAI::Responses::InputTokenCountParams::Personality::OrSymbol
-              ),
+            personality: T.any(String, OpenAI::Responses::InputTokenCountParams::Personality::OrSymbol),
             previous_response_id: T.nilable(String),
             reasoning: T.nilable(OpenAI::Reasoning::OrHash),
-            text:
-              T.nilable(OpenAI::Responses::InputTokenCountParams::Text::OrHash),
-            tool_choice:
-              T.nilable(
+            text: T.nilable(OpenAI::Responses::InputTokenCountParams::Text::OrHash),
+            tool_choice: T.nilable(
+              T.any(
+                OpenAI::Responses::ToolChoiceOptions::OrSymbol,
+                OpenAI::Responses::ToolChoiceAllowed::OrHash,
+                OpenAI::Responses::ToolChoiceTypes::OrHash,
+                OpenAI::Responses::ToolChoiceFunction::OrHash,
+                OpenAI::Responses::ToolChoiceMcp::OrHash,
+                OpenAI::Responses::ToolChoiceCustom::OrHash,
+                OpenAI::Responses::InputTokenCountParams::ToolChoice::SpecificProgrammaticToolCallingParam::OrHash,
+                OpenAI::Responses::ToolChoiceApplyPatch::OrHash,
+                OpenAI::Responses::ToolChoiceShell::OrHash
+              )
+            ),
+            tools: T.nilable(
+              T::Array[
                 T.any(
-                  OpenAI::Responses::ToolChoiceOptions::OrSymbol,
-                  OpenAI::Responses::ToolChoiceAllowed::OrHash,
-                  OpenAI::Responses::ToolChoiceTypes::OrHash,
-                  OpenAI::Responses::ToolChoiceFunction::OrHash,
-                  OpenAI::Responses::ToolChoiceMcp::OrHash,
-                  OpenAI::Responses::ToolChoiceCustom::OrHash,
-                  OpenAI::Responses::InputTokenCountParams::ToolChoice::SpecificProgrammaticToolCallingParam::OrHash,
-                  OpenAI::Responses::ToolChoiceApplyPatch::OrHash,
-                  OpenAI::Responses::ToolChoiceShell::OrHash
+                  OpenAI::Responses::FunctionTool::OrHash,
+                  OpenAI::Responses::FileSearchTool::OrHash,
+                  OpenAI::Responses::ComputerTool::OrHash,
+                  OpenAI::Responses::ComputerUsePreviewTool::OrHash,
+                  OpenAI::Responses::Tool::Mcp::OrHash,
+                  OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                  OpenAI::Responses::Tool::ProgrammaticToolCalling::OrHash,
+                  OpenAI::Responses::Tool::ImageGeneration::OrHash,
+                  OpenAI::Responses::Tool::LocalShell::OrHash,
+                  OpenAI::Responses::FunctionShellTool::OrHash,
+                  OpenAI::Responses::CustomTool::OrHash,
+                  OpenAI::Responses::NamespaceTool::OrHash,
+                  OpenAI::Responses::ToolSearchTool::OrHash,
+                  OpenAI::Responses::ApplyPatchTool::OrHash,
+                  OpenAI::Responses::WebSearchTool::OrHash,
+                  OpenAI::Responses::WebSearchPreviewTool::OrHash
                 )
-              ),
-            tools:
-              T.nilable(
-                T::Array[
-                  T.any(
-                    OpenAI::Responses::FunctionTool::OrHash,
-                    OpenAI::Responses::FileSearchTool::OrHash,
-                    OpenAI::Responses::ComputerTool::OrHash,
-                    OpenAI::Responses::ComputerUsePreviewTool::OrHash,
-                    OpenAI::Responses::Tool::Mcp::OrHash,
-                    OpenAI::Responses::Tool::CodeInterpreter::OrHash,
-                    OpenAI::Responses::Tool::ProgrammaticToolCalling::OrHash,
-                    OpenAI::Responses::Tool::ImageGeneration::OrHash,
-                    OpenAI::Responses::Tool::LocalShell::OrHash,
-                    OpenAI::Responses::FunctionShellTool::OrHash,
-                    OpenAI::Responses::CustomTool::OrHash,
-                    OpenAI::Responses::NamespaceTool::OrHash,
-                    OpenAI::Responses::ToolSearchTool::OrHash,
-                    OpenAI::Responses::ApplyPatchTool::OrHash,
-                    OpenAI::Responses::WebSearchTool::OrHash,
-                    OpenAI::Responses::WebSearchPreviewTool::OrHash
-                  )
-                ]
-              ),
-            truncation:
-              OpenAI::Responses::InputTokenCountParams::Truncation::OrSymbol,
+              ]
+            ),
+            truncation: OpenAI::Responses::InputTokenCountParams::Truncation::OrSymbol,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Models::Responses::InputTokenCountResponse)
-        end
+          )
+            .returns(OpenAI::Models::Responses::InputTokenCountResponse)
+        }
         def count(
           # The conversation that this response belongs to. Items from this conversation are
           # prepended to `input_items` for this response request. Input items and output
@@ -134,6 +121,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

@@ -2,22 +2,25 @@
 
 module OpenAI
   module Models
+
     module FineTuning
+
       module Alpha
+
         class GraderValidateParams < OpenAI::Internal::Type::BaseModel
+
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::FineTuning::Alpha::GraderValidateParams,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::FineTuning::Alpha::GraderValidateParams,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The grader used for the fine-tuning job.
-          sig do
+          sig {
             returns(
               T.any(
                 OpenAI::Graders::StringCheckGrader,
@@ -27,25 +30,29 @@ module OpenAI
                 OpenAI::Graders::MultiGrader
               )
             )
-          end
+          }
           attr_accessor :grader
 
           sig do
             params(
-              grader:
-                T.any(
-                  OpenAI::Graders::StringCheckGrader::OrHash,
-                  OpenAI::Graders::TextSimilarityGrader::OrHash,
-                  OpenAI::Graders::PythonGrader::OrHash,
-                  OpenAI::Graders::ScoreModelGrader::OrHash,
-                  OpenAI::Graders::MultiGrader::OrHash
-                ),
+
+              grader: T.any(
+                OpenAI::Graders::StringCheckGrader::OrHash,
+                OpenAI::Graders::TextSimilarityGrader::OrHash,
+                OpenAI::Graders::PythonGrader::OrHash,
+                OpenAI::Graders::ScoreModelGrader::OrHash,
+                OpenAI::Graders::MultiGrader::OrHash
+              ),
+
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The grader used for the fine-tuning job.
             grader:,
+
             request_options: {}
           )
           end
@@ -53,14 +60,13 @@ module OpenAI
           sig do
             override.returns(
               {
-                grader:
-                  T.any(
-                    OpenAI::Graders::StringCheckGrader,
-                    OpenAI::Graders::TextSimilarityGrader,
-                    OpenAI::Graders::PythonGrader,
-                    OpenAI::Graders::ScoreModelGrader,
-                    OpenAI::Graders::MultiGrader
-                  ),
+                grader: T.any(
+                  OpenAI::Graders::StringCheckGrader,
+                  OpenAI::Graders::TextSimilarityGrader,
+                  OpenAI::Graders::PythonGrader,
+                  OpenAI::Graders::ScoreModelGrader,
+                  OpenAI::Graders::MultiGrader
+                ),
                 request_options: OpenAI::RequestOptions
               }
             )
@@ -72,29 +78,27 @@ module OpenAI
           module Grader
             extend OpenAI::Internal::Type::Union
 
-            Variants =
-              T.type_alias do
-                T.any(
-                  OpenAI::Graders::StringCheckGrader,
-                  OpenAI::Graders::TextSimilarityGrader,
-                  OpenAI::Graders::PythonGrader,
-                  OpenAI::Graders::ScoreModelGrader,
-                  OpenAI::Graders::MultiGrader
-                )
-              end
-
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::FineTuning::Alpha::GraderValidateParams::Grader::Variants
-                ]
+            Variants = T.type_alias {
+              T.any(
+                OpenAI::Graders::StringCheckGrader,
+                OpenAI::Graders::TextSimilarityGrader,
+                OpenAI::Graders::PythonGrader,
+                OpenAI::Graders::ScoreModelGrader,
+                OpenAI::Graders::MultiGrader
               )
-            end
+            }
+
+            sig { override.returns(T::Array[OpenAI::FineTuning::Alpha::GraderValidateParams::Grader::Variants]) }
             def self.variants
             end
+
           end
+
         end
+
       end
+
     end
+
   end
 end

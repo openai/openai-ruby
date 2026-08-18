@@ -2,6 +2,7 @@
 
 module OpenAI
   module Models
+
     # The intended purpose of the uploaded file. One of:
     #
     # - `assistants`: Used in the Assistants API
@@ -27,5 +28,6 @@ module OpenAI
       def self.values
       end
     end
+
   end
 end

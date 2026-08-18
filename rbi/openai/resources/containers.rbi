@@ -2,32 +2,28 @@
 
 module OpenAI
   module Resources
+
     class Containers
+
       sig { returns(OpenAI::Resources::Containers::Files) }
       attr_reader :files
 
       # Create Container
-      sig do
+      sig {
         params(
           name: String,
           expires_after: OpenAI::ContainerCreateParams::ExpiresAfter::OrHash,
           file_ids: T::Array[String],
           memory_limit: OpenAI::ContainerCreateParams::MemoryLimit::OrSymbol,
-          network_policy:
-            T.any(
-              OpenAI::Responses::ContainerNetworkPolicyDisabled::OrHash,
-              OpenAI::Responses::ContainerNetworkPolicyAllowlist::OrHash
-            ),
-          skills:
-            T::Array[
-              T.any(
-                OpenAI::Responses::SkillReference::OrHash,
-                OpenAI::Responses::InlineSkill::OrHash
-              )
-            ],
+          network_policy: T.any(
+            OpenAI::Responses::ContainerNetworkPolicyDisabled::OrHash,
+            OpenAI::Responses::ContainerNetworkPolicyAllowlist::OrHash
+          ),
+          skills: T::Array[T.any(OpenAI::Responses::SkillReference::OrHash, OpenAI::Responses::InlineSkill::OrHash)],
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::Models::ContainerCreateResponse)
-      end
+        )
+          .returns(OpenAI::Models::ContainerCreateResponse)
+      }
       def create(
         # Name of the container to create.
         name:,
@@ -46,27 +42,25 @@ module OpenAI
       end
 
       # Retrieve Container
-      sig do
-        params(
-          container_id: String,
-          request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::Models::ContainerRetrieveResponse)
-      end
+      sig {
+        params(container_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+          OpenAI::Models::ContainerRetrieveResponse
+        )
+      }
       def retrieve(container_id, request_options: {})
       end
 
       # List Containers
-      sig do
+      sig {
         params(
           after: String,
           limit: Integer,
           name: String,
           order: OpenAI::ContainerListParams::Order::OrSymbol,
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(
-          OpenAI::Internal::CursorPage[OpenAI::Models::ContainerListResponse]
         )
-      end
+          .returns(OpenAI::Internal::CursorPage[OpenAI::Models::ContainerListResponse])
+      }
       def list(
         # A cursor for use in pagination. `after` is an object ID that defines your place
         # in the list. For instance, if you make a list request and receive 100 objects,
@@ -86,12 +80,7 @@ module OpenAI
       end
 
       # Delete Container
-      sig do
-        params(
-          container_id: String,
-          request_options: OpenAI::RequestOptions::OrHash
-        ).void
-      end
+      sig { params(container_id: String, request_options: OpenAI::RequestOptions::OrHash).void }
       def delete(
         # The ID of the container to delete.
         container_id,
@@ -104,5 +93,6 @@ module OpenAI
       def self.new(client:)
       end
     end
+
   end
 end

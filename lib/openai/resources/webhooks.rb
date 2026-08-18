@@ -80,7 +80,6 @@ module OpenAI
         end
 
         now = Time.now.to_i
-
         if now - timestamp_seconds > tolerance
           raise OpenAI::Errors::InvalidWebhookSignatureError, "Webhook timestamp is too old"
         end
@@ -93,11 +92,7 @@ module OpenAI
         # The signature header can have multiple values, separated by spaces.
         # Each value is in the format v1,<base64>. We should accept if any match.
         signatures = signature_header.split.map do |part|
-          if part.start_with?("v1,")
-            part[3..]
-          else
-            part
-          end
+          part.start_with?("v1,") ? part[3..] : part
         end
 
         # Decode the secret if it starts with whsec_

@@ -18,7 +18,8 @@ module OpenAI
       params(
         request: OpenAI::HTTPClient::Request,
         blk: T.proc.params(arg0: String).void
-      ).returns([Net::HTTPGenericRequest, T.proc.void])
+      )
+        .returns([Net::HTTPGenericRequest, T.proc.void])
     end
     private def build_request(request, &blk)
     end
@@ -28,12 +29,20 @@ module OpenAI
         url: URI::Generic,
         deadline: T.nilable(Float),
         blk: T.proc.params(arg0: Net::HTTP).void
-      ).void
+      )
+        .void
     end
     private def with_pool(url, deadline:, &blk)
     end
 
-    sig { params(connection: Net::HTTP, url: URI::Generic, deadline: T.nilable(Float)).void }
+    sig do
+      params(
+        connection: Net::HTTP,
+        url: URI::Generic,
+        deadline: T.nilable(Float)
+      )
+        .void
+    end
     private def configure_connection(connection, url, deadline:)
     end
 
@@ -57,7 +66,8 @@ module OpenAI
       params(
         size: Integer,
         connection_configurator: T.nilable(T.proc.params(http: Net::HTTP).void)
-      ).returns(T.attached_class)
+      )
+        .returns(T.attached_class)
     end
     def self.new(
       size: OpenAI::NetHTTPClient::DEFAULT_MAX_CONNECTIONS,

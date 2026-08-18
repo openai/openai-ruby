@@ -1,6 +1,7 @@
 # typed: strong
 
 module OpenAI
+
   Admin = OpenAI::Models::Admin
 
   AllModels = OpenAI::Models::AllModels
@@ -59,8 +60,7 @@ module OpenAI
 
   ContentProvenanceCheck = OpenAI::Models::ContentProvenanceCheck
 
-  ContentProvenanceCheckCreateParams =
-    OpenAI::Models::ContentProvenanceCheckCreateParams
+  ContentProvenanceCheckCreateParams = OpenAI::Models::ContentProvenanceCheckCreateParams
 
   Conversations = OpenAI::Models::Conversations
 
@@ -90,8 +90,7 @@ module OpenAI
 
   Evals = OpenAI::Models::Evals
 
-  EvalStoredCompletionsDataSourceConfig =
-    OpenAI::Models::EvalStoredCompletionsDataSourceConfig
+  EvalStoredCompletionsDataSourceConfig = OpenAI::Models::EvalStoredCompletionsDataSourceConfig
 
   EvalUpdateParams = OpenAI::Models::EvalUpdateParams
 
@@ -121,8 +120,7 @@ module OpenAI
 
   FunctionDefinition = OpenAI::Models::FunctionDefinition
 
-  FunctionParameters =
-    T.let(OpenAI::Models::FunctionParameters, OpenAI::Internal::Type::Converter)
+  FunctionParameters = T.let(OpenAI::Models::FunctionParameters, OpenAI::Internal::Type::Converter)
 
   Graders = OpenAI::Models::Graders
 
@@ -178,8 +176,7 @@ module OpenAI
 
   OAuthErrorCode = OpenAI::Models::OAuthErrorCode
 
-  OtherFileChunkingStrategyObject =
-    OpenAI::Models::OtherFileChunkingStrategyObject
+  OtherFileChunkingStrategyObject = OpenAI::Models::OtherFileChunkingStrategyObject
 
   Realtime = OpenAI::Models::Realtime
 
@@ -219,11 +216,9 @@ module OpenAI
 
   StaticFileChunkingStrategy = OpenAI::Models::StaticFileChunkingStrategy
 
-  StaticFileChunkingStrategyObject =
-    OpenAI::Models::StaticFileChunkingStrategyObject
+  StaticFileChunkingStrategyObject = OpenAI::Models::StaticFileChunkingStrategyObject
 
-  StaticFileChunkingStrategyObjectParam =
-    OpenAI::Models::StaticFileChunkingStrategyObjectParam
+  StaticFileChunkingStrategyObjectParam = OpenAI::Models::StaticFileChunkingStrategyObjectParam
 
   Upload = OpenAI::Models::Upload
 
@@ -284,4 +279,5 @@ module OpenAI
   VideoSize = OpenAI::Models::VideoSize
 
   Webhooks = OpenAI::Models::Webhooks
+
 end
