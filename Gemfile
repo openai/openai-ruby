@@ -12,7 +12,6 @@ group :development do
   gem "steep"
   gem "syntax_tree"
   gem "syntax_tree-rbs", github: "ruby-syntax-tree/syntax_tree-rbs", branch: "main"
-  gem "tapioca"
 end
 
 group :development, :test do
