@@ -271,9 +271,7 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     error = assert_raises(RuntimeError) do
       stream = @client.responses.stream(**basic_params, text: WeatherModel)
       # Consume the stream to trigger the error.
-      # rubocop:disable Lint/EmptyBlock
-      stream.each { |_event| }
-      # rubocop:enable Lint/EmptyBlock
+      stream.each { |_event| next }
     end
 
     assert_match(/Failed to parse structured text as JSON/, error.message)
