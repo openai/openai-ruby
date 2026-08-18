@@ -476,7 +476,6 @@ module OpenAI
         def accumulate_delta(acc, delta)
           return acc if delta.nil?
 
-          # rubocop:disable Metrics/BlockLength
           delta.each do |key, delta_value|
             key = key.to_sym if key.is_a?(String)
 
