@@ -17,7 +17,8 @@ module OpenAI
           identity_provider_id: T.nilable(T.any(String, Symbol)),
           service_account_id: T.nilable(T.any(String, Symbol)),
           refresh_buffer_seconds: Integer
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(
         identity_provider_id: ENV["IDENTITY_PROVIDER_ID"],

@@ -6,15 +6,15 @@ module OpenAI
     class WorkloadIdentityRequestPolicy
       sig do
         params(
-          config:
-            T.nilable(
-              T.any(
-                OpenAI::Auth::WorkloadIdentity,
-                OpenAI::Auth::X509WorkloadIdentity
-              )
-            ),
+          config: T.nilable(
+            T.any(
+              OpenAI::Auth::WorkloadIdentity,
+              OpenAI::Auth::X509WorkloadIdentity
+            )
+          ),
           base_url: T.any(String, URI::Generic)
-        ).returns(T.nilable(OpenAI::Auth::WorkloadIdentityRequestPolicy))
+        )
+          .returns(T.nilable(OpenAI::Auth::WorkloadIdentityRequestPolicy))
       end
       def self.build(config, base_url:)
       end
@@ -30,7 +30,8 @@ module OpenAI
           request: OpenAI::Internal::Transport::BaseClient::RequestInput,
           bearer_auth: T::Boolean,
           expected_authorization: T.nilable(String)
-        ).returns(OpenAI::Internal::Transport::BaseClient::RequestInput)
+        )
+          .returns(OpenAI::Internal::Transport::BaseClient::RequestInput)
       end
       def decorate_request(request, bearer_auth:, expected_authorization:)
       end
@@ -38,7 +39,8 @@ module OpenAI
       sig do
         params(
           request: OpenAI::Internal::Transport::BaseClient::RequestInput
-        ).returns(T::Boolean)
+        )
+          .returns(T::Boolean)
       end
       def authenticated?(request)
       end
@@ -46,7 +48,8 @@ module OpenAI
       sig do
         params(
           request: OpenAI::Internal::Transport::BaseClient::RequestInput
-        ).void
+        )
+          .void
       end
       def validate_before_token!(request)
       end
@@ -55,7 +58,8 @@ module OpenAI
         params(
           request: OpenAI::Internal::Transport::BaseClient::RequestInput,
           token: String
-        ).returns(OpenAI::Internal::Transport::BaseClient::RequestInput)
+        )
+          .returns(OpenAI::Internal::Transport::BaseClient::RequestInput)
       end
       def authorize(request, token)
       end
@@ -64,7 +68,8 @@ module OpenAI
         params(
           request: OpenAI::Internal::Transport::BaseClient::RequestInput,
           original_headers: T::Hash[String, String]
-        ).void
+        )
+          .void
       end
       def validate_prepared!(request, original_headers:)
       end

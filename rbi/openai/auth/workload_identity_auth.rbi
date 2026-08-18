@@ -4,29 +4,28 @@ module OpenAI
   module Auth
     # @api private
     class WorkloadIdentityAuth
-      DEFAULT_TOKEN_EXCHANGE_URL =
-        T.let("https://auth.openai.com/oauth/token", String)
+      DEFAULT_TOKEN_EXCHANGE_URL = T.let("https://auth.openai.com/oauth/token", String)
 
       sig do
         params(
-          config:
-            T.any(
-              OpenAI::Auth::WorkloadIdentity,
-              OpenAI::Auth::X509WorkloadIdentity
-            ),
+          config: T.any(
+            OpenAI::Auth::WorkloadIdentity,
+            OpenAI::Auth::X509WorkloadIdentity
+          ),
           organization_id: T.nilable(String),
           token_exchange_url: String,
           http_client: T.untyped,
           sleeper: T.proc.params(delay: Float).void,
           monotonic_clock: T.proc.returns(Float)
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(
         config,
         organization_id,
         token_exchange_url: OpenAI::Auth::WorkloadIdentityAuth::DEFAULT_TOKEN_EXCHANGE_URL,
         http_client: nil,
-        sleeper: ->(delay) { sleep(delay) },
+        sleeper: -> (delay) { sleep(delay) },
         monotonic_clock: -> { OpenAI::Internal::Util.monotonic_secs }
       )
       end

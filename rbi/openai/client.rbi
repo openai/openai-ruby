@@ -209,7 +209,8 @@ module OpenAI
       params(
         context: OpenAI::Internal::AnyHash,
         blk: T.proc.returns(OpenAI::HTTPClient::Response)
-      ).returns(OpenAI::HTTPClient::Response)
+      )
+        .returns(OpenAI::HTTPClient::Response)
     end
     private def with_workload_identity_401_invalidation(context, &blk)
     end
@@ -219,13 +220,12 @@ module OpenAI
       params(
         api_key: T.nilable(String),
         admin_api_key: T.nilable(String),
-        workload_identity:
-          T.nilable(
-            T.any(
-              OpenAI::Auth::WorkloadIdentity,
-              OpenAI::Auth::X509WorkloadIdentity
-            )
-          ),
+        workload_identity: T.nilable(
+          T.any(
+            OpenAI::Auth::WorkloadIdentity,
+            OpenAI::Auth::X509WorkloadIdentity
+          )
+        ),
         organization: T.nilable(String),
         project: T.nilable(String),
         webhook_secret: T.nilable(String),
@@ -273,13 +273,12 @@ module OpenAI
         api_key: T.nilable(String),
 
         admin_api_key: T.nilable(String),
-        workload_identity:
-          T.nilable(
-            T.any(
-              OpenAI::Auth::WorkloadIdentity,
-              OpenAI::Auth::X509WorkloadIdentity
-            )
-          ),
+        workload_identity: T.nilable(
+          T.any(
+            OpenAI::Auth::WorkloadIdentity,
+            OpenAI::Auth::X509WorkloadIdentity
+          )
+        ),
         organization: T.nilable(String),
 
         project: T.nilable(String),
