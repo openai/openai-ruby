@@ -29,6 +29,11 @@ module OpenAI
               OpenAI::Responses::ResponsesServerEvent::ResponseFileSearchCallWsSearching,
               OpenAI::Responses::ResponsesServerEvent::ResponseFunctionCallArgumentsWsDelta,
               OpenAI::Responses::ResponsesServerEvent::ResponseFunctionCallArgumentsWsDone,
+              OpenAI::Responses::ResponsesServerEvent::ResponseShellCallCommandWsAdded,
+              OpenAI::Responses::ResponsesServerEvent::ResponseShellCallCommandWsDelta,
+              OpenAI::Responses::ResponsesServerEvent::ResponseShellCallCommandWsDone,
+              OpenAI::Responses::ResponsesServerEvent::ResponseShellCallOutputContentWsDelta,
+              OpenAI::Responses::ResponsesServerEvent::ResponseShellCallOutputContentWsDone,
               OpenAI::Responses::ResponsesServerEvent::ResponseInWsProgress,
               OpenAI::Responses::ResponsesServerEvent::ResponseWsFailed,
               OpenAI::Responses::ResponsesServerEvent::ResponseWsIncomplete,
@@ -88,8 +93,8 @@ module OpenAI
             params(
               delta: String,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -97,11 +102,11 @@ module OpenAI
             delta:,
             # A sequence number for this chunk of the stream response.
             sequence_number:,
-            # The type of the event. Always `response.audio.delta`.
-            type: :"response.audio.delta",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.audio.delta`.
+            type: :"response.audio.delta"
           )
           end
 
@@ -140,18 +145,18 @@ module OpenAI
           sig do
             params(
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
             # The sequence number of the delta.
             sequence_number:,
-            # The type of the event. Always `response.audio.done`.
-            type: :"response.audio.done",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.audio.done`.
+            type: :"response.audio.done"
           )
           end
 
@@ -186,8 +191,8 @@ module OpenAI
             params(
               delta: String,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -195,11 +200,11 @@ module OpenAI
             delta:,
             # The sequence number of this event.
             sequence_number:,
-            # The type of the event. Always `response.audio.transcript.delta`.
-            type: :"response.audio.transcript.delta",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.audio.transcript.delta`.
+            type: :"response.audio.transcript.delta"
           )
           end
 
@@ -238,18 +243,18 @@ module OpenAI
           sig do
             params(
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
             # The sequence number of this event.
             sequence_number:,
-            # The type of the event. Always `response.audio.transcript.done`.
-            type: :"response.audio.transcript.done",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.audio.transcript.done`.
+            type: :"response.audio.transcript.done"
           )
           end
 
@@ -286,8 +291,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -300,11 +305,11 @@ module OpenAI
             output_index:,
             # The sequence number of this event, used to order streaming events.
             sequence_number:,
-            # The type of the event. Always `response.code_interpreter_call_code.delta`.
-            type: :"response.code_interpreter_call_code.delta",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.code_interpreter_call_code.delta`.
+            type: :"response.code_interpreter_call_code.delta"
           )
           end
 
@@ -348,8 +353,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -361,11 +366,11 @@ module OpenAI
             output_index:,
             # The sequence number of this event, used to order streaming events.
             sequence_number:,
-            # The type of the event. Always `response.code_interpreter_call_code.done`.
-            type: :"response.code_interpreter_call_code.done",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.code_interpreter_call_code.done`.
+            type: :"response.code_interpreter_call_code.done"
           )
           end
 
@@ -408,8 +413,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -420,11 +425,11 @@ module OpenAI
             output_index:,
             # The sequence number of this event, used to order streaming events.
             sequence_number:,
-            # The type of the event. Always `response.code_interpreter_call.completed`.
-            type: :"response.code_interpreter_call.completed",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.code_interpreter_call.completed`.
+            type: :"response.code_interpreter_call.completed"
           )
           end
 
@@ -466,8 +471,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -478,11 +483,11 @@ module OpenAI
             output_index:,
             # The sequence number of this event, used to order streaming events.
             sequence_number:,
-            # The type of the event. Always `response.code_interpreter_call.in_progress`.
-            type: :"response.code_interpreter_call.in_progress",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.code_interpreter_call.in_progress`.
+            type: :"response.code_interpreter_call.in_progress"
           )
           end
 
@@ -524,8 +529,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -536,11 +541,11 @@ module OpenAI
             output_index:,
             # The sequence number of this event, used to order streaming events.
             sequence_number:,
-            # The type of the event. Always `response.code_interpreter_call.interpreting`.
-            type: :"response.code_interpreter_call.interpreting",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.code_interpreter_call.interpreting`.
+            type: :"response.code_interpreter_call.interpreting"
           )
           end
 
@@ -581,8 +586,8 @@ module OpenAI
             params(
               response: OpenAI::Responses::Response::OrHash,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -590,11 +595,11 @@ module OpenAI
             response:,
             # The sequence number for this event.
             sequence_number:,
-            # The type of the event. Always `response.completed`.
-            type: :"response.completed",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.completed`.
+            type: :"response.completed"
           )
           end
 
@@ -642,8 +647,8 @@ module OpenAI
                   OpenAI::Responses::ResponseContentPartAddedEvent::Part::ReasoningText::OrHash
                 ),
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -657,11 +662,11 @@ module OpenAI
             part:,
             # The sequence number of this event.
             sequence_number:,
-            # The type of the event. Always `response.content_part.added`.
-            type: :"response.content_part.added",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.content_part.added`.
+            type: :"response.content_part.added"
           )
           end
 
@@ -713,8 +718,8 @@ module OpenAI
                   OpenAI::Responses::ResponseContentPartDoneEvent::Part::ReasoningText::OrHash
                 ),
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -728,11 +733,11 @@ module OpenAI
             part:,
             # The sequence number of this event.
             sequence_number:,
-            # The type of the event. Always `response.content_part.done`.
-            type: :"response.content_part.done",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.content_part.done`.
+            type: :"response.content_part.done"
           )
           end
 
@@ -776,8 +781,8 @@ module OpenAI
             params(
               response: OpenAI::Responses::Response::OrHash,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -785,11 +790,11 @@ module OpenAI
             response:,
             # The sequence number for this event.
             sequence_number:,
-            # The type of the event. Always `response.created`.
-            type: :"response.created",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.created`.
+            type: :"response.created"
           )
           end
 
@@ -830,8 +835,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -841,11 +846,11 @@ module OpenAI
             output_index:,
             # The sequence number of this event.
             sequence_number:,
-            # The type of the event. Always `response.file_search_call.completed`.
-            type: :"response.file_search_call.completed",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.file_search_call.completed`.
+            type: :"response.file_search_call.completed"
           )
           end
 
@@ -887,8 +892,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -898,11 +903,11 @@ module OpenAI
             output_index:,
             # The sequence number of this event.
             sequence_number:,
-            # The type of the event. Always `response.file_search_call.in_progress`.
-            type: :"response.file_search_call.in_progress",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.file_search_call.in_progress`.
+            type: :"response.file_search_call.in_progress"
           )
           end
 
@@ -944,8 +949,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -955,11 +960,11 @@ module OpenAI
             output_index:,
             # The sequence number of this event.
             sequence_number:,
-            # The type of the event. Always `response.file_search_call.searching`.
-            type: :"response.file_search_call.searching",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.file_search_call.searching`.
+            type: :"response.file_search_call.searching"
           )
           end
 
@@ -1002,8 +1007,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1015,11 +1020,11 @@ module OpenAI
             output_index:,
             # The sequence number of this event.
             sequence_number:,
-            # The type of the event. Always `response.function_call_arguments.delta`.
-            type: :"response.function_call_arguments.delta",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.function_call_arguments.delta`.
+            type: :"response.function_call_arguments.delta"
           )
           end
 
@@ -1064,8 +1069,8 @@ module OpenAI
               name: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1079,10 +1084,10 @@ module OpenAI
             output_index:,
             # The sequence number of this event.
             sequence_number:,
-            type: :"response.function_call_arguments.done",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            type: :"response.function_call_arguments.done"
           )
           end
 
@@ -1092,6 +1097,331 @@ module OpenAI
                 arguments: String,
                 item_id: String,
                 name: String,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: String
+              }
+            )
+          end
+          def to_hash
+          end
+        end
+
+        class ResponseShellCallCommandWsAdded < OpenAI::Models::Responses::ResponseShellCallCommandAddedEvent
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponsesServerEvent::ResponseShellCallCommandWsAdded,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
+          sig { returns(T.nilable(String)) }
+          attr_reader :stream_id
+
+          sig { params(stream_id: String).void }
+          attr_writer :stream_id
+
+          # A streaming event that indicated a shell command was added to a tool call.
+          sig do
+            params(
+              command: String,
+              command_index: Integer,
+              output_index: Integer,
+              sequence_number: Integer,
+              stream_id: String,
+              type: Symbol
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # The shell command that was added.
+            command:,
+            # The index of the shell command that was added.
+            command_index:,
+            # The index of the output item that was updated.
+            output_index:,
+            # The sequence number of the event that was emitted.
+            sequence_number:,
+            # The WebSocket lane that emitted this event. This field is present when the
+            # originating `response.create` event supplied a `stream_id`.
+            stream_id: nil,
+            # The type of the event, always `response.shell_call_command.added`.
+            type: :"response.shell_call_command.added"
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                command: String,
+                command_index: Integer,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: String
+              }
+            )
+          end
+          def to_hash
+          end
+        end
+
+        class ResponseShellCallCommandWsDelta < OpenAI::Models::Responses::ResponseShellCallCommandDeltaEvent
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponsesServerEvent::ResponseShellCallCommandWsDelta,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
+          sig { returns(T.nilable(String)) }
+          attr_reader :stream_id
+
+          sig { params(stream_id: String).void }
+          attr_writer :stream_id
+
+          # A streaming event that indicated a shell command was incrementally updated.
+          sig do
+            params(
+              command_index: Integer,
+              delta: String,
+              output_index: Integer,
+              sequence_number: Integer,
+              obfuscation: String,
+              stream_id: String,
+              type: Symbol
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # The index of the shell command that was updated.
+            command_index:,
+            # The shell command delta that was appended.
+            delta:,
+            # The index of the output item that was updated.
+            output_index:,
+            # The sequence number of the event that was emitted.
+            sequence_number:,
+            # An obfuscation string that was added to pad the event payload.
+            obfuscation: nil,
+            # The WebSocket lane that emitted this event. This field is present when the
+            # originating `response.create` event supplied a `stream_id`.
+            stream_id: nil,
+            # The type of the event, always `response.shell_call_command.delta`.
+            type: :"response.shell_call_command.delta"
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                command_index: Integer,
+                delta: String,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                obfuscation: String,
+                stream_id: String
+              }
+            )
+          end
+          def to_hash
+          end
+        end
+
+        class ResponseShellCallCommandWsDone < OpenAI::Models::Responses::ResponseShellCallCommandDoneEvent
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponsesServerEvent::ResponseShellCallCommandWsDone,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
+          sig { returns(T.nilable(String)) }
+          attr_reader :stream_id
+
+          sig { params(stream_id: String).void }
+          attr_writer :stream_id
+
+          # A streaming event that indicated a shell command was completed.
+          sig do
+            params(
+              command: String,
+              command_index: Integer,
+              output_index: Integer,
+              sequence_number: Integer,
+              stream_id: String,
+              type: Symbol
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # The final shell command that was emitted.
+            command:,
+            # The index of the shell command that was completed.
+            command_index:,
+            # The index of the output item that was updated.
+            output_index:,
+            # The sequence number of the event that was emitted.
+            sequence_number:,
+            # The WebSocket lane that emitted this event. This field is present when the
+            # originating `response.create` event supplied a `stream_id`.
+            stream_id: nil,
+            # The type of the event, always `response.shell_call_command.done`.
+            type: :"response.shell_call_command.done"
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                command: String,
+                command_index: Integer,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: String
+              }
+            )
+          end
+          def to_hash
+          end
+        end
+
+        class ResponseShellCallOutputContentWsDelta < OpenAI::Models::Responses::ResponseShellCallOutputContentDeltaEvent
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponsesServerEvent::ResponseShellCallOutputContentWsDelta,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
+          sig { returns(T.nilable(String)) }
+          attr_reader :stream_id
+
+          sig { params(stream_id: String).void }
+          attr_writer :stream_id
+
+          # A streaming event that indicated shell call output was incrementally added.
+          sig do
+            params(
+              command_index: Integer,
+              delta:
+                OpenAI::Responses::ResponseShellCallOutputContentDeltaEvent::Delta::OrHash,
+              item_id: String,
+              output_index: Integer,
+              sequence_number: Integer,
+              stream_id: String,
+              type: Symbol
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # The index of the shell command that produced output.
+            command_index:,
+            # The stdout/stderr delta that was emitted.
+            delta:,
+            # The ID of the output item that was updated.
+            item_id:,
+            # The index of the output item that was updated.
+            output_index:,
+            # The sequence number of the event that was emitted.
+            sequence_number:,
+            # The WebSocket lane that emitted this event. This field is present when the
+            # originating `response.create` event supplied a `stream_id`.
+            stream_id: nil,
+            # The type of the event, always `response.shell_call_output_content.delta`.
+            type: :"response.shell_call_output_content.delta"
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                command_index: Integer,
+                delta:
+                  OpenAI::Responses::ResponseShellCallOutputContentDeltaEvent::Delta,
+                item_id: String,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: String
+              }
+            )
+          end
+          def to_hash
+          end
+        end
+
+        class ResponseShellCallOutputContentWsDone < OpenAI::Models::Responses::ResponseShellCallOutputContentDoneEvent
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponsesServerEvent::ResponseShellCallOutputContentWsDone,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
+          sig { returns(T.nilable(String)) }
+          attr_reader :stream_id
+
+          sig { params(stream_id: String).void }
+          attr_writer :stream_id
+
+          # A streaming event that indicated shell call output was completed.
+          sig do
+            params(
+              command_index: Integer,
+              item_id: String,
+              output:
+                T::Array[
+                  OpenAI::Responses::ResponseShellCallOutputContentDoneEvent::Output::OrHash
+                ],
+              output_index: Integer,
+              sequence_number: Integer,
+              stream_id: String,
+              type: Symbol
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # The index of the shell command that produced output.
+            command_index:,
+            # The ID of the output item that was updated.
+            item_id:,
+            # The output contents emitted for the shell command.
+            output:,
+            # The index of the output item that was updated.
+            output_index:,
+            # The sequence number of the event that was emitted.
+            sequence_number:,
+            # The WebSocket lane that emitted this event. This field is present when the
+            # originating `response.create` event supplied a `stream_id`.
+            stream_id: nil,
+            # The type of the event, always `response.shell_call_output_content.done`.
+            type: :"response.shell_call_output_content.done"
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                command_index: Integer,
+                item_id: String,
+                output:
+                  T::Array[
+                    OpenAI::Responses::ResponseShellCallOutputContentDoneEvent::Output
+                  ],
                 output_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
@@ -1125,8 +1455,8 @@ module OpenAI
             params(
               response: OpenAI::Responses::Response::OrHash,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1134,11 +1464,11 @@ module OpenAI
             response:,
             # The sequence number of this event.
             sequence_number:,
-            # The type of the event. Always `response.in_progress`.
-            type: :"response.in_progress",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.in_progress`.
+            type: :"response.in_progress"
           )
           end
 
@@ -1178,8 +1508,8 @@ module OpenAI
             params(
               response: OpenAI::Responses::Response::OrHash,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1187,11 +1517,11 @@ module OpenAI
             response:,
             # The sequence number of this event.
             sequence_number:,
-            # The type of the event. Always `response.failed`.
-            type: :"response.failed",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.failed`.
+            type: :"response.failed"
           )
           end
 
@@ -1231,8 +1561,8 @@ module OpenAI
             params(
               response: OpenAI::Responses::Response::OrHash,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1240,11 +1570,11 @@ module OpenAI
             response:,
             # The sequence number of this event.
             sequence_number:,
-            # The type of the event. Always `response.incomplete`.
-            type: :"response.incomplete",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.incomplete`.
+            type: :"response.incomplete"
           )
           end
 
@@ -1315,8 +1645,8 @@ module OpenAI
                 ),
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1329,11 +1659,11 @@ module OpenAI
             output_index:,
             # The sequence number of this event.
             sequence_number:,
-            # The type of the event. Always `response.output_item.added`.
-            type: :"response.output_item.added",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.output_item.added`.
+            type: :"response.output_item.added"
           )
           end
 
@@ -1405,8 +1735,8 @@ module OpenAI
                 ),
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1416,11 +1746,11 @@ module OpenAI
             output_index:,
             # The sequence number of this event.
             sequence_number:,
-            # The type of the event. Always `response.output_item.done`.
-            type: :"response.output_item.done",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.output_item.done`.
+            type: :"response.output_item.done"
           )
           end
 
@@ -1465,8 +1795,8 @@ module OpenAI
                 OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent::Part::OrHash,
               sequence_number: Integer,
               summary_index: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1480,11 +1810,11 @@ module OpenAI
             sequence_number:,
             # The index of the summary part within the reasoning summary.
             summary_index:,
-            # The type of the event. Always `response.reasoning_summary_part.added`.
-            type: :"response.reasoning_summary_part.added",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.reasoning_summary_part.added`.
+            type: :"response.reasoning_summary_part.added"
           )
           end
 
@@ -1534,8 +1864,8 @@ module OpenAI
               summary_index: Integer,
               status:
                 OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status::OrSymbol,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1552,11 +1882,11 @@ module OpenAI
             # The completion status of the summary part. Omitted when the part completed
             # normally and set to `incomplete` when generation was interrupted.
             status: nil,
-            # The type of the event. Always `response.reasoning_summary_part.done`.
-            type: :"response.reasoning_summary_part.done",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.reasoning_summary_part.done`.
+            type: :"response.reasoning_summary_part.done"
           )
           end
 
@@ -1605,8 +1935,8 @@ module OpenAI
               output_index: Integer,
               sequence_number: Integer,
               summary_index: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1620,11 +1950,11 @@ module OpenAI
             sequence_number:,
             # The index of the summary part within the reasoning summary.
             summary_index:,
-            # The type of the event. Always `response.reasoning_summary_text.delta`.
-            type: :"response.reasoning_summary_text.delta",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.reasoning_summary_text.delta`.
+            type: :"response.reasoning_summary_text.delta"
           )
           end
 
@@ -1670,8 +2000,8 @@ module OpenAI
               sequence_number: Integer,
               summary_index: Integer,
               text: String,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1685,11 +2015,11 @@ module OpenAI
             summary_index:,
             # The full text of the completed reasoning summary.
             text:,
-            # The type of the event. Always `response.reasoning_summary_text.done`.
-            type: :"response.reasoning_summary_text.done",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.reasoning_summary_text.done`.
+            type: :"response.reasoning_summary_text.done"
           )
           end
 
@@ -1735,8 +2065,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1750,11 +2080,11 @@ module OpenAI
             output_index:,
             # The sequence number of this event.
             sequence_number:,
-            # The type of the event. Always `response.reasoning_text.delta`.
-            type: :"response.reasoning_text.delta",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.reasoning_text.delta`.
+            type: :"response.reasoning_text.delta"
           )
           end
 
@@ -1800,8 +2130,8 @@ module OpenAI
               output_index: Integer,
               sequence_number: Integer,
               text: String,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1815,11 +2145,11 @@ module OpenAI
             sequence_number:,
             # The full text of the completed reasoning content.
             text:,
-            # The type of the event. Always `response.reasoning_text.done`.
-            type: :"response.reasoning_text.done",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.reasoning_text.done`.
+            type: :"response.reasoning_text.done"
           )
           end
 
@@ -1865,8 +2195,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1880,11 +2210,11 @@ module OpenAI
             output_index:,
             # The sequence number of this event.
             sequence_number:,
-            # The type of the event. Always `response.refusal.delta`.
-            type: :"response.refusal.delta",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.refusal.delta`.
+            type: :"response.refusal.delta"
           )
           end
 
@@ -1930,8 +2260,8 @@ module OpenAI
               output_index: Integer,
               refusal: String,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1945,11 +2275,11 @@ module OpenAI
             refusal:,
             # The sequence number of this event.
             sequence_number:,
-            # The type of the event. Always `response.refusal.done`.
-            type: :"response.refusal.done",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.refusal.done`.
+            type: :"response.refusal.done"
           )
           end
 
@@ -1999,8 +2329,8 @@ module OpenAI
                 ],
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2016,11 +2346,11 @@ module OpenAI
             output_index:,
             # The sequence number for this event.
             sequence_number:,
-            # The type of the event. Always `response.output_text.delta`.
-            type: :"response.output_text.delta",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.output_text.delta`.
+            type: :"response.output_text.delta"
           )
           end
 
@@ -2072,8 +2402,8 @@ module OpenAI
               output_index: Integer,
               sequence_number: Integer,
               text: String,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2089,11 +2419,11 @@ module OpenAI
             sequence_number:,
             # The text content that is finalized.
             text:,
-            # The type of the event. Always `response.output_text.done`.
-            type: :"response.output_text.done",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.output_text.done`.
+            type: :"response.output_text.done"
           )
           end
 
@@ -2139,8 +2469,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2150,11 +2480,11 @@ module OpenAI
             output_index:,
             # The sequence number of the web search call being processed.
             sequence_number:,
-            # The type of the event. Always `response.web_search_call.completed`.
-            type: :"response.web_search_call.completed",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.web_search_call.completed`.
+            type: :"response.web_search_call.completed"
           )
           end
 
@@ -2196,8 +2526,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2207,11 +2537,11 @@ module OpenAI
             output_index:,
             # The sequence number of the web search call being processed.
             sequence_number:,
-            # The type of the event. Always `response.web_search_call.in_progress`.
-            type: :"response.web_search_call.in_progress",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.web_search_call.in_progress`.
+            type: :"response.web_search_call.in_progress"
           )
           end
 
@@ -2253,8 +2583,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2264,11 +2594,11 @@ module OpenAI
             output_index:,
             # The sequence number of the web search call being processed.
             sequence_number:,
-            # The type of the event. Always `response.web_search_call.searching`.
-            type: :"response.web_search_call.searching",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.web_search_call.searching`.
+            type: :"response.web_search_call.searching"
           )
           end
 
@@ -2311,8 +2641,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2322,11 +2652,11 @@ module OpenAI
             output_index:,
             # The sequence number of this event.
             sequence_number:,
-            # The type of the event. Always 'response.image_generation_call.completed'.
-            type: :"response.image_generation_call.completed",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always 'response.image_generation_call.completed'.
+            type: :"response.image_generation_call.completed"
           )
           end
 
@@ -2369,8 +2699,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2380,11 +2710,11 @@ module OpenAI
             output_index:,
             # The sequence number of the image generation item being processed.
             sequence_number:,
-            # The type of the event. Always 'response.image_generation_call.generating'.
-            type: :"response.image_generation_call.generating",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always 'response.image_generation_call.generating'.
+            type: :"response.image_generation_call.generating"
           )
           end
 
@@ -2426,8 +2756,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2437,11 +2767,11 @@ module OpenAI
             output_index:,
             # The sequence number of the image generation item being processed.
             sequence_number:,
-            # The type of the event. Always 'response.image_generation_call.in_progress'.
-            type: :"response.image_generation_call.in_progress",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always 'response.image_generation_call.in_progress'.
+            type: :"response.image_generation_call.in_progress"
           )
           end
 
@@ -2485,8 +2815,12 @@ module OpenAI
               partial_image_b64: String,
               partial_image_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              background: String,
+              output_format: String,
+              quality: String,
+              size: String,
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2501,11 +2835,19 @@ module OpenAI
             partial_image_index:,
             # The sequence number of the image generation item being processed.
             sequence_number:,
-            # The type of the event. Always 'response.image_generation_call.partial_image'.
-            type: :"response.image_generation_call.partial_image",
+            # The background setting that was used.
+            background: nil,
+            # The output format that was used.
+            output_format: nil,
+            # The image quality that was used.
+            quality: nil,
+            # The image size that was used.
+            size: nil,
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always 'response.image_generation_call.partial_image'.
+            type: :"response.image_generation_call.partial_image"
           )
           end
 
@@ -2518,6 +2860,10 @@ module OpenAI
                 partial_image_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
+                background: String,
+                output_format: String,
+                quality: String,
+                size: String,
                 stream_id: String
               }
             )
@@ -2551,8 +2897,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2565,11 +2911,11 @@ module OpenAI
             output_index:,
             # The sequence number of this event.
             sequence_number:,
-            # The type of the event. Always 'response.mcp_call_arguments.delta'.
-            type: :"response.mcp_call_arguments.delta",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always 'response.mcp_call_arguments.delta'.
+            type: :"response.mcp_call_arguments.delta"
           )
           end
 
@@ -2613,8 +2959,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2626,11 +2972,11 @@ module OpenAI
             output_index:,
             # The sequence number of this event.
             sequence_number:,
-            # The type of the event. Always 'response.mcp_call_arguments.done'.
-            type: :"response.mcp_call_arguments.done",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always 'response.mcp_call_arguments.done'.
+            type: :"response.mcp_call_arguments.done"
           )
           end
 
@@ -2673,8 +3019,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2684,11 +3030,11 @@ module OpenAI
             output_index:,
             # The sequence number of this event.
             sequence_number:,
-            # The type of the event. Always 'response.mcp_call.completed'.
-            type: :"response.mcp_call.completed",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always 'response.mcp_call.completed'.
+            type: :"response.mcp_call.completed"
           )
           end
 
@@ -2730,8 +3076,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2741,11 +3087,11 @@ module OpenAI
             output_index:,
             # The sequence number of this event.
             sequence_number:,
-            # The type of the event. Always 'response.mcp_call.failed'.
-            type: :"response.mcp_call.failed",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always 'response.mcp_call.failed'.
+            type: :"response.mcp_call.failed"
           )
           end
 
@@ -2787,8 +3133,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2798,11 +3144,11 @@ module OpenAI
             output_index:,
             # The sequence number of this event.
             sequence_number:,
-            # The type of the event. Always 'response.mcp_call.in_progress'.
-            type: :"response.mcp_call.in_progress",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always 'response.mcp_call.in_progress'.
+            type: :"response.mcp_call.in_progress"
           )
           end
 
@@ -2844,8 +3190,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2855,11 +3201,11 @@ module OpenAI
             output_index:,
             # The sequence number of this event.
             sequence_number:,
-            # The type of the event. Always 'response.mcp_list_tools.completed'.
-            type: :"response.mcp_list_tools.completed",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always 'response.mcp_list_tools.completed'.
+            type: :"response.mcp_list_tools.completed"
           )
           end
 
@@ -2901,8 +3247,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2912,11 +3258,11 @@ module OpenAI
             output_index:,
             # The sequence number of this event.
             sequence_number:,
-            # The type of the event. Always 'response.mcp_list_tools.failed'.
-            type: :"response.mcp_list_tools.failed",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always 'response.mcp_list_tools.failed'.
+            type: :"response.mcp_list_tools.failed"
           )
           end
 
@@ -2959,8 +3305,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2970,11 +3316,11 @@ module OpenAI
             output_index:,
             # The sequence number of this event.
             sequence_number:,
-            # The type of the event. Always 'response.mcp_list_tools.in_progress'.
-            type: :"response.mcp_list_tools.in_progress",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always 'response.mcp_list_tools.in_progress'.
+            type: :"response.mcp_list_tools.in_progress"
           )
           end
 
@@ -3027,8 +3373,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -3044,11 +3390,11 @@ module OpenAI
             output_index:,
             # The sequence number of this event.
             sequence_number:,
-            # The type of the event. Always 'response.output_text.annotation.added'.
-            type: :"response.output_text.annotation.added",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always 'response.output_text.annotation.added'.
+            type: :"response.output_text.annotation.added"
           )
           end
 
@@ -3095,8 +3441,8 @@ module OpenAI
             params(
               response: OpenAI::Responses::Response::OrHash,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -3104,11 +3450,11 @@ module OpenAI
             response:,
             # The sequence number for this event.
             sequence_number:,
-            # The type of the event. Always 'response.queued'.
-            type: :"response.queued",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always 'response.queued'.
+            type: :"response.queued"
           )
           end
 
@@ -3150,8 +3496,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -3163,11 +3509,11 @@ module OpenAI
             output_index:,
             # The sequence number of this event.
             sequence_number:,
-            # The event type identifier.
-            type: :"response.custom_tool_call_input.delta",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The event type identifier.
+            type: :"response.custom_tool_call_input.delta"
           )
           end
 
@@ -3211,8 +3557,8 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -3224,11 +3570,11 @@ module OpenAI
             output_index:,
             # The sequence number of this event.
             sequence_number:,
-            # The event type identifier.
-            type: :"response.custom_tool_call_input.done",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The event type identifier.
+            type: :"response.custom_tool_call_input.done"
           )
           end
 

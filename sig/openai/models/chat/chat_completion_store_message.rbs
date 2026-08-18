@@ -5,7 +5,14 @@ module OpenAI
     module Chat
       type chat_completion_store_message =
         {
+          content: String?,
+          refusal: String?,
           id: String,
+          role: :assistant,
+          annotations: ::Array[OpenAI::Chat::ChatCompletionMessage::Annotation],
+          audio: OpenAI::Chat::ChatCompletionAudio?,
+          function_call: OpenAI::Chat::ChatCompletionMessage::FunctionCall,
+          tool_calls: ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call],
           content_parts: ::Array[OpenAI::Models::Chat::ChatCompletionStoreMessage::content_part]?
         }
 
@@ -21,12 +28,26 @@ module OpenAI
         ) -> ::Array[OpenAI::Models::Chat::ChatCompletionStoreMessage::content_part]?
 
         def initialize: (
+          content: String?,
+          refusal: String?,
           id: String,
-          ?content_parts: ::Array[OpenAI::Models::Chat::ChatCompletionStoreMessage::content_part]?
+          ?annotations: ::Array[OpenAI::Chat::ChatCompletionMessage::Annotation],
+          ?audio: OpenAI::Chat::ChatCompletionAudio?,
+          ?function_call: OpenAI::Chat::ChatCompletionMessage::FunctionCall,
+          ?tool_calls: ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call],
+          ?content_parts: ::Array[OpenAI::Models::Chat::ChatCompletionStoreMessage::content_part]?,
+          ?role: :assistant
         ) -> void
 
         def to_hash: -> {
+          content: String?,
+          refusal: String?,
           id: String,
+          role: :assistant,
+          annotations: ::Array[OpenAI::Chat::ChatCompletionMessage::Annotation],
+          audio: OpenAI::Chat::ChatCompletionAudio?,
+          function_call: OpenAI::Chat::ChatCompletionMessage::FunctionCall,
+          tool_calls: ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call],
           content_parts: ::Array[OpenAI::Models::Chat::ChatCompletionStoreMessage::content_part]?
         }
 

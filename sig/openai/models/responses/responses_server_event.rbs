@@ -21,6 +21,11 @@ module OpenAI
         | OpenAI::Responses::ResponsesServerEvent::ResponseFileSearchCallWsSearching
         | OpenAI::Responses::ResponsesServerEvent::ResponseFunctionCallArgumentsWsDelta
         | OpenAI::Responses::ResponsesServerEvent::ResponseFunctionCallArgumentsWsDone
+        | OpenAI::Responses::ResponsesServerEvent::ResponseShellCallCommandWsAdded
+        | OpenAI::Responses::ResponsesServerEvent::ResponseShellCallCommandWsDelta
+        | OpenAI::Responses::ResponsesServerEvent::ResponseShellCallCommandWsDone
+        | OpenAI::Responses::ResponsesServerEvent::ResponseShellCallOutputContentWsDelta
+        | OpenAI::Responses::ResponsesServerEvent::ResponseShellCallOutputContentWsDone
         | OpenAI::Responses::ResponsesServerEvent::ResponseInWsProgress
         | OpenAI::Responses::ResponsesServerEvent::ResponseWsFailed
         | OpenAI::Responses::ResponsesServerEvent::ResponseWsIncomplete
@@ -75,8 +80,8 @@ module OpenAI
           def initialize: (
             delta: String,
             sequence_number: Integer,
-            ?type: :"response.audio.delta",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.audio.delta"
           ) -> void
 
           def to_hash: -> {
@@ -101,8 +106,8 @@ module OpenAI
 
           def initialize: (
             sequence_number: Integer,
-            ?type: :"response.audio.done",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.audio.done"
           ) -> void
 
           def to_hash: -> {
@@ -128,8 +133,8 @@ module OpenAI
           def initialize: (
             delta: String,
             sequence_number: Integer,
-            ?type: :"response.audio.transcript.delta",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.audio.transcript.delta"
           ) -> void
 
           def to_hash: -> {
@@ -154,8 +159,8 @@ module OpenAI
 
           def initialize: (
             sequence_number: Integer,
-            ?type: :"response.audio.transcript.done",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.audio.transcript.done"
           ) -> void
 
           def to_hash: -> {
@@ -185,8 +190,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.code_interpreter_call_code.delta",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.code_interpreter_call_code.delta"
           ) -> void
 
           def to_hash: -> {
@@ -219,8 +224,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.code_interpreter_call_code.done",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.code_interpreter_call_code.done"
           ) -> void
 
           def to_hash: -> {
@@ -251,8 +256,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.code_interpreter_call.completed",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.code_interpreter_call.completed"
           ) -> void
 
           def to_hash: -> {
@@ -282,8 +287,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.code_interpreter_call.in_progress",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.code_interpreter_call.in_progress"
           ) -> void
 
           def to_hash: -> {
@@ -313,8 +318,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.code_interpreter_call.interpreting",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.code_interpreter_call.interpreting"
           ) -> void
 
           def to_hash: -> {
@@ -342,8 +347,8 @@ module OpenAI
           def initialize: (
             response: OpenAI::Responses::Response,
             sequence_number: Integer,
-            ?type: :"response.completed",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.completed"
           ) -> void
 
           def to_hash: -> {
@@ -376,8 +381,8 @@ module OpenAI
             output_index: Integer,
             part: OpenAI::Models::Responses::ResponseContentPartAddedEvent::part,
             sequence_number: Integer,
-            ?type: :"response.content_part.added",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.content_part.added"
           ) -> void
 
           def to_hash: -> {
@@ -413,8 +418,8 @@ module OpenAI
             output_index: Integer,
             part: OpenAI::Models::Responses::ResponseContentPartDoneEvent::part,
             sequence_number: Integer,
-            ?type: :"response.content_part.done",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.content_part.done"
           ) -> void
 
           def to_hash: -> {
@@ -444,8 +449,8 @@ module OpenAI
           def initialize: (
             response: OpenAI::Responses::Response,
             sequence_number: Integer,
-            ?type: :"response.created",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.created"
           ) -> void
 
           def to_hash: -> {
@@ -474,8 +479,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.file_search_call.completed",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.file_search_call.completed"
           ) -> void
 
           def to_hash: -> {
@@ -505,8 +510,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.file_search_call.in_progress",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.file_search_call.in_progress"
           ) -> void
 
           def to_hash: -> {
@@ -536,8 +541,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.file_search_call.searching",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.file_search_call.searching"
           ) -> void
 
           def to_hash: -> {
@@ -569,8 +574,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.function_call_arguments.delta",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.function_call_arguments.delta"
           ) -> void
 
           def to_hash: -> {
@@ -605,8 +610,8 @@ module OpenAI
             name: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.function_call_arguments.done",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.function_call_arguments.done"
           ) -> void
 
           def to_hash: -> {
@@ -616,6 +621,185 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             type: :"response.function_call_arguments.done",
+            stream_id: String
+          }
+        end
+
+        type response_shell_call_command_ws_added =
+          {
+            command: String,
+            command_index: Integer,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.shell_call_command.added",
+            stream_id: String
+          }
+
+        class ResponseShellCallCommandWsAdded < OpenAI::Models::Responses::ResponseShellCallCommandAddedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            command: String,
+            command_index: Integer,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?stream_id: String,
+            ?type: :"response.shell_call_command.added"
+          ) -> void
+
+          def to_hash: -> {
+            command: String,
+            command_index: Integer,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.shell_call_command.added",
+            stream_id: String
+          }
+        end
+
+        type response_shell_call_command_ws_delta =
+          {
+            command_index: Integer,
+            delta: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.shell_call_command.delta",
+            obfuscation: String,
+            stream_id: String
+          }
+
+        class ResponseShellCallCommandWsDelta < OpenAI::Models::Responses::ResponseShellCallCommandDeltaEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            command_index: Integer,
+            delta: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?obfuscation: String,
+            ?stream_id: String,
+            ?type: :"response.shell_call_command.delta"
+          ) -> void
+
+          def to_hash: -> {
+            command_index: Integer,
+            delta: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.shell_call_command.delta",
+            obfuscation: String,
+            stream_id: String
+          }
+        end
+
+        type response_shell_call_command_ws_done =
+          {
+            command: String,
+            command_index: Integer,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.shell_call_command.done",
+            stream_id: String
+          }
+
+        class ResponseShellCallCommandWsDone < OpenAI::Models::Responses::ResponseShellCallCommandDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            command: String,
+            command_index: Integer,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?stream_id: String,
+            ?type: :"response.shell_call_command.done"
+          ) -> void
+
+          def to_hash: -> {
+            command: String,
+            command_index: Integer,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.shell_call_command.done",
+            stream_id: String
+          }
+        end
+
+        type response_shell_call_output_content_ws_delta =
+          {
+            command_index: Integer,
+            delta: OpenAI::Responses::ResponseShellCallOutputContentDeltaEvent::Delta,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.shell_call_output_content.delta",
+            stream_id: String
+          }
+
+        class ResponseShellCallOutputContentWsDelta < OpenAI::Models::Responses::ResponseShellCallOutputContentDeltaEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            command_index: Integer,
+            delta: OpenAI::Responses::ResponseShellCallOutputContentDeltaEvent::Delta,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?stream_id: String,
+            ?type: :"response.shell_call_output_content.delta"
+          ) -> void
+
+          def to_hash: -> {
+            command_index: Integer,
+            delta: OpenAI::Responses::ResponseShellCallOutputContentDeltaEvent::Delta,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.shell_call_output_content.delta",
+            stream_id: String
+          }
+        end
+
+        type response_shell_call_output_content_ws_done =
+          {
+            command_index: Integer,
+            item_id: String,
+            output: ::Array[OpenAI::Responses::ResponseShellCallOutputContentDoneEvent::Output],
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.shell_call_output_content.done",
+            stream_id: String
+          }
+
+        class ResponseShellCallOutputContentWsDone < OpenAI::Models::Responses::ResponseShellCallOutputContentDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            command_index: Integer,
+            item_id: String,
+            output: ::Array[OpenAI::Responses::ResponseShellCallOutputContentDoneEvent::Output],
+            output_index: Integer,
+            sequence_number: Integer,
+            ?stream_id: String,
+            ?type: :"response.shell_call_output_content.done"
+          ) -> void
+
+          def to_hash: -> {
+            command_index: Integer,
+            item_id: String,
+            output: ::Array[OpenAI::Responses::ResponseShellCallOutputContentDoneEvent::Output],
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.shell_call_output_content.done",
             stream_id: String
           }
         end
@@ -636,8 +820,8 @@ module OpenAI
           def initialize: (
             response: OpenAI::Responses::Response,
             sequence_number: Integer,
-            ?type: :"response.in_progress",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.in_progress"
           ) -> void
 
           def to_hash: -> {
@@ -664,8 +848,8 @@ module OpenAI
           def initialize: (
             response: OpenAI::Responses::Response,
             sequence_number: Integer,
-            ?type: :"response.failed",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.failed"
           ) -> void
 
           def to_hash: -> {
@@ -692,8 +876,8 @@ module OpenAI
           def initialize: (
             response: OpenAI::Responses::Response,
             sequence_number: Integer,
-            ?type: :"response.incomplete",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.incomplete"
           ) -> void
 
           def to_hash: -> {
@@ -722,8 +906,8 @@ module OpenAI
             item: OpenAI::Models::Responses::response_output_item,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.output_item.added",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.output_item.added"
           ) -> void
 
           def to_hash: -> {
@@ -753,8 +937,8 @@ module OpenAI
             item: OpenAI::Models::Responses::response_output_item,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.output_item.done",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.output_item.done"
           ) -> void
 
           def to_hash: -> {
@@ -788,8 +972,8 @@ module OpenAI
             part: OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent::Part,
             sequence_number: Integer,
             summary_index: Integer,
-            ?type: :"response.reasoning_summary_part.added",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.reasoning_summary_part.added"
           ) -> void
 
           def to_hash: -> {
@@ -827,8 +1011,8 @@ module OpenAI
             sequence_number: Integer,
             summary_index: Integer,
             ?status: OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent::status,
-            ?type: :"response.reasoning_summary_part.done",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.reasoning_summary_part.done"
           ) -> void
 
           def to_hash: -> {
@@ -865,8 +1049,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             summary_index: Integer,
-            ?type: :"response.reasoning_summary_text.delta",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.reasoning_summary_text.delta"
           ) -> void
 
           def to_hash: -> {
@@ -902,8 +1086,8 @@ module OpenAI
             sequence_number: Integer,
             summary_index: Integer,
             text: String,
-            ?type: :"response.reasoning_summary_text.done",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.reasoning_summary_text.done"
           ) -> void
 
           def to_hash: -> {
@@ -939,8 +1123,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.reasoning_text.delta",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.reasoning_text.delta"
           ) -> void
 
           def to_hash: -> {
@@ -976,8 +1160,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             text: String,
-            ?type: :"response.reasoning_text.done",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.reasoning_text.done"
           ) -> void
 
           def to_hash: -> {
@@ -1013,8 +1197,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.refusal.delta",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.refusal.delta"
           ) -> void
 
           def to_hash: -> {
@@ -1050,8 +1234,8 @@ module OpenAI
             output_index: Integer,
             refusal: String,
             sequence_number: Integer,
-            ?type: :"response.refusal.done",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.refusal.done"
           ) -> void
 
           def to_hash: -> {
@@ -1089,8 +1273,8 @@ module OpenAI
             logprobs: ::Array[OpenAI::Responses::ResponseTextDeltaEvent::Logprob],
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.output_text.delta",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.output_text.delta"
           ) -> void
 
           def to_hash: -> {
@@ -1129,8 +1313,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             text: String,
-            ?type: :"response.output_text.done",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.output_text.done"
           ) -> void
 
           def to_hash: -> {
@@ -1163,8 +1347,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.web_search_call.completed",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.web_search_call.completed"
           ) -> void
 
           def to_hash: -> {
@@ -1194,8 +1378,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.web_search_call.in_progress",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.web_search_call.in_progress"
           ) -> void
 
           def to_hash: -> {
@@ -1225,8 +1409,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.web_search_call.searching",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.web_search_call.searching"
           ) -> void
 
           def to_hash: -> {
@@ -1256,8 +1440,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.image_generation_call.completed",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.image_generation_call.completed"
           ) -> void
 
           def to_hash: -> {
@@ -1287,8 +1471,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.image_generation_call.generating",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.image_generation_call.generating"
           ) -> void
 
           def to_hash: -> {
@@ -1318,8 +1502,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.image_generation_call.in_progress",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.image_generation_call.in_progress"
           ) -> void
 
           def to_hash: -> {
@@ -1339,6 +1523,10 @@ module OpenAI
             partial_image_index: Integer,
             sequence_number: Integer,
             type: :"response.image_generation_call.partial_image",
+            background: String,
+            output_format: String,
+            quality: String,
+            size: String,
             stream_id: String
           }
 
@@ -1353,8 +1541,12 @@ module OpenAI
             partial_image_b64: String,
             partial_image_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.image_generation_call.partial_image",
-            ?stream_id: String
+            ?background: String,
+            ?output_format: String,
+            ?quality: String,
+            ?size: String,
+            ?stream_id: String,
+            ?type: :"response.image_generation_call.partial_image"
           ) -> void
 
           def to_hash: -> {
@@ -1364,6 +1556,10 @@ module OpenAI
             partial_image_index: Integer,
             sequence_number: Integer,
             type: :"response.image_generation_call.partial_image",
+            background: String,
+            output_format: String,
+            quality: String,
+            size: String,
             stream_id: String
           }
         end
@@ -1388,8 +1584,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.mcp_call_arguments.delta",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.mcp_call_arguments.delta"
           ) -> void
 
           def to_hash: -> {
@@ -1422,8 +1618,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.mcp_call_arguments.done",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.mcp_call_arguments.done"
           ) -> void
 
           def to_hash: -> {
@@ -1454,8 +1650,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.mcp_call.completed",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.mcp_call.completed"
           ) -> void
 
           def to_hash: -> {
@@ -1485,8 +1681,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.mcp_call.failed",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.mcp_call.failed"
           ) -> void
 
           def to_hash: -> {
@@ -1516,8 +1712,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.mcp_call.in_progress",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.mcp_call.in_progress"
           ) -> void
 
           def to_hash: -> {
@@ -1547,8 +1743,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.mcp_list_tools.completed",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.mcp_list_tools.completed"
           ) -> void
 
           def to_hash: -> {
@@ -1578,8 +1774,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.mcp_list_tools.failed",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.mcp_list_tools.failed"
           ) -> void
 
           def to_hash: -> {
@@ -1609,8 +1805,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.mcp_list_tools.in_progress",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.mcp_list_tools.in_progress"
           ) -> void
 
           def to_hash: -> {
@@ -1678,8 +1874,8 @@ module OpenAI
           def initialize: (
             response: OpenAI::Responses::Response,
             sequence_number: Integer,
-            ?type: :"response.queued",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.queued"
           ) -> void
 
           def to_hash: -> {
@@ -1710,8 +1906,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.custom_tool_call_input.delta",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.custom_tool_call_input.delta"
           ) -> void
 
           def to_hash: -> {
@@ -1744,8 +1940,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            ?type: :"response.custom_tool_call_input.done",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.custom_tool_call_input.done"
           ) -> void
 
           def to_hash: -> {

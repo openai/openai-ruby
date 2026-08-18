@@ -33,6 +33,11 @@ module OpenAI
               OpenAI::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallWsSearching,
               OpenAI::Beta::BetaResponsesServerEvent::BetaResponseFunctionCallArgumentsWsDelta,
               OpenAI::Beta::BetaResponsesServerEvent::BetaResponseFunctionCallArgumentsWsDone,
+              OpenAI::Beta::BetaResponsesServerEvent::BetaResponseShellCallCommandWsAdded,
+              OpenAI::Beta::BetaResponsesServerEvent::BetaResponseShellCallCommandWsDelta,
+              OpenAI::Beta::BetaResponsesServerEvent::BetaResponseShellCallCommandWsDone,
+              OpenAI::Beta::BetaResponsesServerEvent::BetaResponseShellCallOutputContentWsDelta,
+              OpenAI::Beta::BetaResponsesServerEvent::BetaResponseShellCallOutputContentWsDone,
               OpenAI::Beta::BetaResponsesServerEvent::BetaResponseInWsProgress,
               OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsFailed,
               OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsIncomplete,
@@ -96,8 +101,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseAudioDeltaEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -107,11 +112,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.audio.delta`.
-            type: :"response.audio.delta",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.audio.delta`.
+            type: :"response.audio.delta"
           )
           end
 
@@ -156,8 +161,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseAudioDoneEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -165,11 +170,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.audio.done`.
-            type: :"response.audio.done",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.audio.done`.
+            type: :"response.audio.done"
           )
           end
 
@@ -214,8 +219,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseAudioTranscriptDeltaEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -225,11 +230,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.audio.transcript.delta`.
-            type: :"response.audio.transcript.delta",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.audio.transcript.delta`.
+            type: :"response.audio.transcript.delta"
           )
           end
 
@@ -276,8 +281,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseAudioTranscriptDoneEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -285,11 +290,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.audio.transcript.done`.
-            type: :"response.audio.transcript.done",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.audio.transcript.done`.
+            type: :"response.audio.transcript.done"
           )
           end
 
@@ -338,8 +343,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseCodeInterpreterCallCodeDeltaEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -354,11 +359,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.code_interpreter_call_code.delta`.
-            type: :"response.code_interpreter_call_code.delta",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.code_interpreter_call_code.delta`.
+            type: :"response.code_interpreter_call_code.delta"
           )
           end
 
@@ -410,8 +415,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseCodeInterpreterCallCodeDoneEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -425,11 +430,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.code_interpreter_call_code.done`.
-            type: :"response.code_interpreter_call_code.done",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.code_interpreter_call_code.done`.
+            type: :"response.code_interpreter_call_code.done"
           )
           end
 
@@ -480,8 +485,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseCodeInterpreterCallCompletedEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -494,11 +499,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.code_interpreter_call.completed`.
-            type: :"response.code_interpreter_call.completed",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.code_interpreter_call.completed`.
+            type: :"response.code_interpreter_call.completed"
           )
           end
 
@@ -548,8 +553,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseCodeInterpreterCallInProgressEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -562,11 +567,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.code_interpreter_call.in_progress`.
-            type: :"response.code_interpreter_call.in_progress",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.code_interpreter_call.in_progress`.
+            type: :"response.code_interpreter_call.in_progress"
           )
           end
 
@@ -616,8 +621,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseCodeInterpreterCallInterpretingEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -630,11 +635,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.code_interpreter_call.interpreting`.
-            type: :"response.code_interpreter_call.interpreting",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.code_interpreter_call.interpreting`.
+            type: :"response.code_interpreter_call.interpreting"
           )
           end
 
@@ -683,8 +688,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseCompletedEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -694,11 +699,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.completed`.
-            type: :"response.completed",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.completed`.
+            type: :"response.completed"
           )
           end
 
@@ -752,8 +757,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseContentPartAddedEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -769,11 +774,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.content_part.added`.
-            type: :"response.content_part.added",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.content_part.added`.
+            type: :"response.content_part.added"
           )
           end
 
@@ -833,8 +838,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseContentPartDoneEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -850,11 +855,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.content_part.done`.
-            type: :"response.content_part.done",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.content_part.done`.
+            type: :"response.content_part.done"
           )
           end
 
@@ -906,8 +911,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseCreatedEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -917,11 +922,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.created`.
-            type: :"response.created",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.created`.
+            type: :"response.created"
           )
           end
 
@@ -967,8 +972,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseFileSearchCallCompletedEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -980,11 +985,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.file_search_call.completed`.
-            type: :"response.file_search_call.completed",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.file_search_call.completed`.
+            type: :"response.file_search_call.completed"
           )
           end
 
@@ -1034,8 +1039,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseFileSearchCallInProgressEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1047,11 +1052,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.file_search_call.in_progress`.
-            type: :"response.file_search_call.in_progress",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.file_search_call.in_progress`.
+            type: :"response.file_search_call.in_progress"
           )
           end
 
@@ -1101,8 +1106,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseFileSearchCallSearchingEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1114,11 +1119,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.file_search_call.searching`.
-            type: :"response.file_search_call.searching",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.file_search_call.searching`.
+            type: :"response.file_search_call.searching"
           )
           end
 
@@ -1169,8 +1174,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseFunctionCallArgumentsDeltaEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1184,11 +1189,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.function_call_arguments.delta`.
-            type: :"response.function_call_arguments.delta",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.function_call_arguments.delta`.
+            type: :"response.function_call_arguments.delta"
           )
           end
 
@@ -1241,8 +1246,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1258,10 +1263,10 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            type: :"response.function_call_arguments.done",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            type: :"response.function_call_arguments.done"
           )
           end
 
@@ -1278,6 +1283,361 @@ module OpenAI
                   T.nilable(
                     OpenAI::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent
                   ),
+                stream_id: String
+              }
+            )
+          end
+          def to_hash
+          end
+        end
+
+        class BetaResponseShellCallCommandWsAdded < OpenAI::Models::Beta::BetaResponseShellCallCommandAddedEvent
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaResponsesServerEvent::BetaResponseShellCallCommandWsAdded,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
+          sig { returns(T.nilable(String)) }
+          attr_reader :stream_id
+
+          sig { params(stream_id: String).void }
+          attr_writer :stream_id
+
+          # A streaming event that indicated a shell command was added to a tool call.
+          sig do
+            params(
+              command: String,
+              command_index: Integer,
+              output_index: Integer,
+              sequence_number: Integer,
+              agent:
+                OpenAI::Beta::BetaResponseShellCallCommandAddedEvent::Agent::OrHash,
+              stream_id: String,
+              type: Symbol
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # The shell command that was added.
+            command:,
+            # The index of the shell command that was added.
+            command_index:,
+            # The index of the output item that was updated.
+            output_index:,
+            # The sequence number of the event that was emitted.
+            sequence_number:,
+            # The agent that owns this multi-agent streaming event.
+            agent: nil,
+            # The WebSocket lane that emitted this event. This field is present when the
+            # originating `response.create` event supplied a `stream_id`.
+            stream_id: nil,
+            # The type of the event, always `response.shell_call_command.added`.
+            type: :"response.shell_call_command.added"
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                command: String,
+                command_index: Integer,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                agent:
+                  OpenAI::Beta::BetaResponseShellCallCommandAddedEvent::Agent,
+                stream_id: String
+              }
+            )
+          end
+          def to_hash
+          end
+        end
+
+        class BetaResponseShellCallCommandWsDelta < OpenAI::Models::Beta::BetaResponseShellCallCommandDeltaEvent
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaResponsesServerEvent::BetaResponseShellCallCommandWsDelta,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
+          sig { returns(T.nilable(String)) }
+          attr_reader :stream_id
+
+          sig { params(stream_id: String).void }
+          attr_writer :stream_id
+
+          # A streaming event that indicated a shell command was incrementally updated.
+          sig do
+            params(
+              command_index: Integer,
+              delta: String,
+              output_index: Integer,
+              sequence_number: Integer,
+              agent:
+                OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent::Agent::OrHash,
+              obfuscation: String,
+              stream_id: String,
+              type: Symbol
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # The index of the shell command that was updated.
+            command_index:,
+            # The shell command delta that was appended.
+            delta:,
+            # The index of the output item that was updated.
+            output_index:,
+            # The sequence number of the event that was emitted.
+            sequence_number:,
+            # The agent that owns this multi-agent streaming event.
+            agent: nil,
+            # An obfuscation string that was added to pad the event payload.
+            obfuscation: nil,
+            # The WebSocket lane that emitted this event. This field is present when the
+            # originating `response.create` event supplied a `stream_id`.
+            stream_id: nil,
+            # The type of the event, always `response.shell_call_command.delta`.
+            type: :"response.shell_call_command.delta"
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                command_index: Integer,
+                delta: String,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                agent:
+                  OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent::Agent,
+                obfuscation: String,
+                stream_id: String
+              }
+            )
+          end
+          def to_hash
+          end
+        end
+
+        class BetaResponseShellCallCommandWsDone < OpenAI::Models::Beta::BetaResponseShellCallCommandDoneEvent
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaResponsesServerEvent::BetaResponseShellCallCommandWsDone,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
+          sig { returns(T.nilable(String)) }
+          attr_reader :stream_id
+
+          sig { params(stream_id: String).void }
+          attr_writer :stream_id
+
+          # A streaming event that indicated a shell command was completed.
+          sig do
+            params(
+              command: String,
+              command_index: Integer,
+              output_index: Integer,
+              sequence_number: Integer,
+              agent:
+                OpenAI::Beta::BetaResponseShellCallCommandDoneEvent::Agent::OrHash,
+              stream_id: String,
+              type: Symbol
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # The final shell command that was emitted.
+            command:,
+            # The index of the shell command that was completed.
+            command_index:,
+            # The index of the output item that was updated.
+            output_index:,
+            # The sequence number of the event that was emitted.
+            sequence_number:,
+            # The agent that owns this multi-agent streaming event.
+            agent: nil,
+            # The WebSocket lane that emitted this event. This field is present when the
+            # originating `response.create` event supplied a `stream_id`.
+            stream_id: nil,
+            # The type of the event, always `response.shell_call_command.done`.
+            type: :"response.shell_call_command.done"
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                command: String,
+                command_index: Integer,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                agent:
+                  OpenAI::Beta::BetaResponseShellCallCommandDoneEvent::Agent,
+                stream_id: String
+              }
+            )
+          end
+          def to_hash
+          end
+        end
+
+        class BetaResponseShellCallOutputContentWsDelta < OpenAI::Models::Beta::BetaResponseShellCallOutputContentDeltaEvent
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaResponsesServerEvent::BetaResponseShellCallOutputContentWsDelta,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
+          sig { returns(T.nilable(String)) }
+          attr_reader :stream_id
+
+          sig { params(stream_id: String).void }
+          attr_writer :stream_id
+
+          # A streaming event that indicated shell call output was incrementally added.
+          sig do
+            params(
+              command_index: Integer,
+              delta:
+                OpenAI::Beta::BetaResponseShellCallOutputContentDeltaEvent::Delta::OrHash,
+              item_id: String,
+              output_index: Integer,
+              sequence_number: Integer,
+              agent:
+                OpenAI::Beta::BetaResponseShellCallOutputContentDeltaEvent::Agent::OrHash,
+              stream_id: String,
+              type: Symbol
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # The index of the shell command that produced output.
+            command_index:,
+            # The stdout/stderr delta that was emitted.
+            delta:,
+            # The ID of the output item that was updated.
+            item_id:,
+            # The index of the output item that was updated.
+            output_index:,
+            # The sequence number of the event that was emitted.
+            sequence_number:,
+            # The agent that owns this multi-agent streaming event.
+            agent: nil,
+            # The WebSocket lane that emitted this event. This field is present when the
+            # originating `response.create` event supplied a `stream_id`.
+            stream_id: nil,
+            # The type of the event, always `response.shell_call_output_content.delta`.
+            type: :"response.shell_call_output_content.delta"
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                command_index: Integer,
+                delta:
+                  OpenAI::Beta::BetaResponseShellCallOutputContentDeltaEvent::Delta,
+                item_id: String,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                agent:
+                  OpenAI::Beta::BetaResponseShellCallOutputContentDeltaEvent::Agent,
+                stream_id: String
+              }
+            )
+          end
+          def to_hash
+          end
+        end
+
+        class BetaResponseShellCallOutputContentWsDone < OpenAI::Models::Beta::BetaResponseShellCallOutputContentDoneEvent
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaResponsesServerEvent::BetaResponseShellCallOutputContentWsDone,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
+          sig { returns(T.nilable(String)) }
+          attr_reader :stream_id
+
+          sig { params(stream_id: String).void }
+          attr_writer :stream_id
+
+          # A streaming event that indicated shell call output was completed.
+          sig do
+            params(
+              command_index: Integer,
+              item_id: String,
+              output:
+                T::Array[
+                  OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Output::OrHash
+                ],
+              output_index: Integer,
+              sequence_number: Integer,
+              agent:
+                OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Agent::OrHash,
+              stream_id: String,
+              type: Symbol
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # The index of the shell command that produced output.
+            command_index:,
+            # The ID of the output item that was updated.
+            item_id:,
+            # The output contents emitted for the shell command.
+            output:,
+            # The index of the output item that was updated.
+            output_index:,
+            # The sequence number of the event that was emitted.
+            sequence_number:,
+            # The agent that owns this multi-agent streaming event.
+            agent: nil,
+            # The WebSocket lane that emitted this event. This field is present when the
+            # originating `response.create` event supplied a `stream_id`.
+            stream_id: nil,
+            # The type of the event, always `response.shell_call_output_content.done`.
+            type: :"response.shell_call_output_content.done"
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                command_index: Integer,
+                item_id: String,
+                output:
+                  T::Array[
+                    OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Output
+                  ],
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                agent:
+                  OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Agent,
                 stream_id: String
               }
             )
@@ -1312,8 +1672,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseInProgressEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1323,11 +1683,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.in_progress`.
-            type: :"response.in_progress",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.in_progress`.
+            type: :"response.in_progress"
           )
           end
 
@@ -1371,8 +1731,8 @@ module OpenAI
               sequence_number: Integer,
               agent:
                 T.nilable(OpenAI::Beta::BetaResponseFailedEvent::Agent::OrHash),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1382,11 +1742,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.failed`.
-            type: :"response.failed",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.failed`.
+            type: :"response.failed"
           )
           end
 
@@ -1431,8 +1791,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseIncompleteEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1442,11 +1802,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.incomplete`.
-            type: :"response.incomplete",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.incomplete`.
+            type: :"response.incomplete"
           )
           end
 
@@ -1526,8 +1886,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseOutputItemAddedEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1542,11 +1902,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.output_item.added`.
-            type: :"response.output_item.added",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.output_item.added`.
+            type: :"response.output_item.added"
           )
           end
 
@@ -1629,8 +1989,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseOutputItemDoneEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1642,11 +2002,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.output_item.done`.
-            type: :"response.output_item.done",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.output_item.done`.
+            type: :"response.output_item.done"
           )
           end
 
@@ -1699,8 +2059,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseReasoningSummaryPartAddedEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1716,11 +2076,11 @@ module OpenAI
             summary_index:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.reasoning_summary_part.added`.
-            type: :"response.reasoning_summary_part.added",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.reasoning_summary_part.added`.
+            type: :"response.reasoning_summary_part.added"
           )
           end
 
@@ -1778,8 +2138,8 @@ module OpenAI
                 ),
               status:
                 OpenAI::Beta::BetaResponseReasoningSummaryPartDoneEvent::Status::OrSymbol,
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1798,11 +2158,11 @@ module OpenAI
             # The completion status of the summary part. Omitted when the part completed
             # normally and set to `incomplete` when generation was interrupted.
             status: nil,
-            # The type of the event. Always `response.reasoning_summary_part.done`.
-            type: :"response.reasoning_summary_part.done",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.reasoning_summary_part.done`.
+            type: :"response.reasoning_summary_part.done"
           )
           end
 
@@ -1859,8 +2219,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseReasoningSummaryTextDeltaEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1876,11 +2236,11 @@ module OpenAI
             summary_index:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.reasoning_summary_text.delta`.
-            type: :"response.reasoning_summary_text.delta",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.reasoning_summary_text.delta`.
+            type: :"response.reasoning_summary_text.delta"
           )
           end
 
@@ -1934,8 +2294,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseReasoningSummaryTextDoneEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -1951,11 +2311,11 @@ module OpenAI
             text:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.reasoning_summary_text.done`.
-            type: :"response.reasoning_summary_text.done",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.reasoning_summary_text.done`.
+            type: :"response.reasoning_summary_text.done"
           )
           end
 
@@ -2009,8 +2369,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseReasoningTextDeltaEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2026,11 +2386,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.reasoning_text.delta`.
-            type: :"response.reasoning_text.delta",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.reasoning_text.delta`.
+            type: :"response.reasoning_text.delta"
           )
           end
 
@@ -2084,8 +2444,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseReasoningTextDoneEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2101,11 +2461,11 @@ module OpenAI
             text:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.reasoning_text.done`.
-            type: :"response.reasoning_text.done",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.reasoning_text.done`.
+            type: :"response.reasoning_text.done"
           )
           end
 
@@ -2159,8 +2519,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseRefusalDeltaEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2176,11 +2536,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.refusal.delta`.
-            type: :"response.refusal.delta",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.refusal.delta`.
+            type: :"response.refusal.delta"
           )
           end
 
@@ -2232,8 +2592,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseRefusalDoneEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2249,11 +2609,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.refusal.done`.
-            type: :"response.refusal.done",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.refusal.done`.
+            type: :"response.refusal.done"
           )
           end
 
@@ -2309,8 +2669,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseTextDeltaEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2328,11 +2688,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.output_text.delta`.
-            type: :"response.output_text.delta",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.output_text.delta`.
+            type: :"response.output_text.delta"
           )
           end
 
@@ -2390,8 +2750,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseTextDoneEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2409,11 +2769,11 @@ module OpenAI
             text:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.output_text.done`.
-            type: :"response.output_text.done",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.output_text.done`.
+            type: :"response.output_text.done"
           )
           end
 
@@ -2465,8 +2825,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseWebSearchCallCompletedEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2478,11 +2838,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.web_search_call.completed`.
-            type: :"response.web_search_call.completed",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.web_search_call.completed`.
+            type: :"response.web_search_call.completed"
           )
           end
 
@@ -2532,8 +2892,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseWebSearchCallInProgressEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2545,11 +2905,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.web_search_call.in_progress`.
-            type: :"response.web_search_call.in_progress",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.web_search_call.in_progress`.
+            type: :"response.web_search_call.in_progress"
           )
           end
 
@@ -2599,8 +2959,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseWebSearchCallSearchingEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2612,11 +2972,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always `response.web_search_call.searching`.
-            type: :"response.web_search_call.searching",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always `response.web_search_call.searching`.
+            type: :"response.web_search_call.searching"
           )
           end
 
@@ -2667,8 +3027,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseImageGenCallCompletedEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2680,11 +3040,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always 'response.image_generation_call.completed'.
-            type: :"response.image_generation_call.completed",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always 'response.image_generation_call.completed'.
+            type: :"response.image_generation_call.completed"
           )
           end
 
@@ -2735,8 +3095,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseImageGenCallGeneratingEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2748,11 +3108,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always 'response.image_generation_call.generating'.
-            type: :"response.image_generation_call.generating",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always 'response.image_generation_call.generating'.
+            type: :"response.image_generation_call.generating"
           )
           end
 
@@ -2802,8 +3162,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseImageGenCallInProgressEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2815,11 +3175,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always 'response.image_generation_call.in_progress'.
-            type: :"response.image_generation_call.in_progress",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always 'response.image_generation_call.in_progress'.
+            type: :"response.image_generation_call.in_progress"
           )
           end
 
@@ -2871,8 +3231,12 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseImageGenCallPartialImageEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              background: String,
+              output_format: String,
+              quality: String,
+              size: String,
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2889,11 +3253,19 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always 'response.image_generation_call.partial_image'.
-            type: :"response.image_generation_call.partial_image",
+            # The background setting that was used.
+            background: nil,
+            # The output format that was used.
+            output_format: nil,
+            # The image quality that was used.
+            quality: nil,
+            # The image size that was used.
+            size: nil,
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always 'response.image_generation_call.partial_image'.
+            type: :"response.image_generation_call.partial_image"
           )
           end
 
@@ -2910,6 +3282,10 @@ module OpenAI
                   T.nilable(
                     OpenAI::Beta::BetaResponseImageGenCallPartialImageEvent::Agent
                   ),
+                background: String,
+                output_format: String,
+                quality: String,
+                size: String,
                 stream_id: String
               }
             )
@@ -2947,8 +3323,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseMcpCallArgumentsDeltaEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -2963,11 +3339,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always 'response.mcp_call_arguments.delta'.
-            type: :"response.mcp_call_arguments.delta",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always 'response.mcp_call_arguments.delta'.
+            type: :"response.mcp_call_arguments.delta"
           )
           end
 
@@ -3019,8 +3395,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseMcpCallArgumentsDoneEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -3034,11 +3410,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always 'response.mcp_call_arguments.done'.
-            type: :"response.mcp_call_arguments.done",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always 'response.mcp_call_arguments.done'.
+            type: :"response.mcp_call_arguments.done"
           )
           end
 
@@ -3089,8 +3465,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseMcpCallCompletedEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -3102,11 +3478,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always 'response.mcp_call.completed'.
-            type: :"response.mcp_call.completed",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always 'response.mcp_call.completed'.
+            type: :"response.mcp_call.completed"
           )
           end
 
@@ -3156,8 +3532,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseMcpCallFailedEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -3169,11 +3545,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always 'response.mcp_call.failed'.
-            type: :"response.mcp_call.failed",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always 'response.mcp_call.failed'.
+            type: :"response.mcp_call.failed"
           )
           end
 
@@ -3223,8 +3599,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseMcpCallInProgressEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -3236,11 +3612,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always 'response.mcp_call.in_progress'.
-            type: :"response.mcp_call.in_progress",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always 'response.mcp_call.in_progress'.
+            type: :"response.mcp_call.in_progress"
           )
           end
 
@@ -3290,8 +3666,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseMcpListToolsCompletedEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -3303,11 +3679,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always 'response.mcp_list_tools.completed'.
-            type: :"response.mcp_list_tools.completed",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always 'response.mcp_list_tools.completed'.
+            type: :"response.mcp_list_tools.completed"
           )
           end
 
@@ -3357,8 +3733,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseMcpListToolsFailedEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -3370,11 +3746,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always 'response.mcp_list_tools.failed'.
-            type: :"response.mcp_list_tools.failed",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always 'response.mcp_list_tools.failed'.
+            type: :"response.mcp_list_tools.failed"
           )
           end
 
@@ -3425,8 +3801,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseMcpListToolsInProgressEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -3438,11 +3814,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always 'response.mcp_list_tools.in_progress'.
-            type: :"response.mcp_list_tools.in_progress",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always 'response.mcp_list_tools.in_progress'.
+            type: :"response.mcp_list_tools.in_progress"
           )
           end
 
@@ -3503,8 +3879,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseOutputTextAnnotationAddedEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -3522,11 +3898,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always 'response.output_text.annotation.added'.
-            type: :"response.output_text.annotation.added",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always 'response.output_text.annotation.added'.
+            type: :"response.output_text.annotation.added"
           )
           end
 
@@ -3579,8 +3955,8 @@ module OpenAI
               sequence_number: Integer,
               agent:
                 T.nilable(OpenAI::Beta::BetaResponseQueuedEvent::Agent::OrHash),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -3590,11 +3966,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The type of the event. Always 'response.queued'.
-            type: :"response.queued",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The type of the event. Always 'response.queued'.
+            type: :"response.queued"
           )
           end
 
@@ -3641,8 +4017,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseCustomToolCallInputDeltaEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -3656,11 +4032,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The event type identifier.
-            type: :"response.custom_tool_call_input.delta",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The event type identifier.
+            type: :"response.custom_tool_call_input.delta"
           )
           end
 
@@ -3712,8 +4088,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Beta::BetaResponseCustomToolCallInputDoneEvent::Agent::OrHash
                 ),
-              type: Symbol,
-              stream_id: String
+              stream_id: String,
+              type: Symbol
             ).returns(T.attached_class)
           end
           def self.new(
@@ -3727,11 +4103,11 @@ module OpenAI
             sequence_number:,
             # The agent that owns this multi-agent streaming event.
             agent: nil,
-            # The event type identifier.
-            type: :"response.custom_tool_call_input.done",
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
-            stream_id: nil
+            stream_id: nil,
+            # The event type identifier.
+            type: :"response.custom_tool_call_input.done"
           )
           end
 

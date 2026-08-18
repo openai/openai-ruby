@@ -159,6 +159,7 @@ module OpenAI
         webhook_secret: T.nilable(String),
         provider: T.nilable(OpenAI::Provider),
         base_url: T.nilable(String),
+        data_residency: T.nilable(T.any(Symbol, String)),
         default_headers: T.nilable(T::Hash[String, T.nilable(String)]),
         max_retries: Integer,
         timeout: T.nilable(Float),
@@ -179,6 +180,7 @@ module OpenAI
       webhook_secret: T.unsafe(nil),
       provider: T.unsafe(nil),
       base_url: T.unsafe(nil),
+      data_residency: T.unsafe(nil),
       default_headers: T.unsafe(nil),
       max_retries: T.unsafe(nil),
       timeout: T.unsafe(nil),
@@ -202,6 +204,7 @@ module OpenAI
         webhook_secret: T.nilable(String),
         provider: T.nilable(OpenAI::Provider),
         base_url: T.nilable(String),
+        data_residency: T.nilable(T.any(Symbol, String)),
         default_headers: T.nilable(T::Hash[String, T.nilable(String)]),
         max_retries: Integer,
         timeout: T.nilable(Float),
@@ -229,6 +232,7 @@ module OpenAI
       # Override the default base URL for the API, e.g.,
       # `"https://api.example.com/v2/"`. Defaults to `ENV["OPENAI_BASE_URL"]`
       base_url: ENV["OPENAI_BASE_URL"],
+      data_residency: nil,
       # Extra headers to send with every request. Explicit values override
       # `ENV["OPENAI_CUSTOM_HEADERS"]`.
       default_headers: nil,

@@ -1,0 +1,63 @@
+module OpenAI
+  module Models
+    class BetaResponseShellCallCommandAddedEvent = Beta::BetaResponseShellCallCommandAddedEvent
+
+    module Beta
+      type beta_response_shell_call_command_added_event =
+        {
+          command: String,
+          command_index: Integer,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.shell_call_command.added",
+          agent: OpenAI::Beta::BetaResponseShellCallCommandAddedEvent::Agent
+        }
+
+      class BetaResponseShellCallCommandAddedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor command: String
+
+        attr_accessor command_index: Integer
+
+        attr_accessor output_index: Integer
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor type: :"response.shell_call_command.added"
+
+        attr_reader agent: OpenAI::Beta::BetaResponseShellCallCommandAddedEvent::Agent?
+
+        def agent=: (
+          OpenAI::Beta::BetaResponseShellCallCommandAddedEvent::Agent
+        ) -> OpenAI::Beta::BetaResponseShellCallCommandAddedEvent::Agent
+
+        def initialize: (
+          command: String,
+          command_index: Integer,
+          output_index: Integer,
+          sequence_number: Integer,
+          ?agent: OpenAI::Beta::BetaResponseShellCallCommandAddedEvent::Agent,
+          ?type: :"response.shell_call_command.added"
+        ) -> void
+
+        def to_hash: -> {
+          command: String,
+          command_index: Integer,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.shell_call_command.added",
+          agent: OpenAI::Beta::BetaResponseShellCallCommandAddedEvent::Agent
+        }
+
+        type agent = { agent_name: String }
+
+        class Agent < OpenAI::Internal::Type::BaseModel
+          attr_accessor agent_name: String
+
+          def initialize: (agent_name: String) -> void
+
+          def to_hash: -> { agent_name: String }
+        end
+      end
+    end
+  end
+end

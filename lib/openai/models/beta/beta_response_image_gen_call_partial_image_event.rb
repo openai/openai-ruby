@@ -47,7 +47,31 @@ module OpenAI
         #   @return [OpenAI::Models::Beta::BetaResponseImageGenCallPartialImageEvent::Agent, nil]
         optional :agent, -> { OpenAI::Beta::BetaResponseImageGenCallPartialImageEvent::Agent }, nil?: true
 
-        # @!method initialize(item_id:, output_index:, partial_image_b64:, partial_image_index:, sequence_number:, agent: nil, type: :"response.image_generation_call.partial_image")
+        # @!attribute background
+        #   The background setting that was used.
+        #
+        #   @return [String, nil]
+        optional :background, String
+
+        # @!attribute output_format
+        #   The output format that was used.
+        #
+        #   @return [String, nil]
+        optional :output_format, String
+
+        # @!attribute quality
+        #   The image quality that was used.
+        #
+        #   @return [String, nil]
+        optional :quality, String
+
+        # @!attribute size
+        #   The image size that was used.
+        #
+        #   @return [String, nil]
+        optional :size, String
+
+        # @!method initialize(item_id:, output_index:, partial_image_b64:, partial_image_index:, sequence_number:, agent: nil, background: nil, output_format: nil, quality: nil, size: nil, type: :"response.image_generation_call.partial_image")
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Beta::BetaResponseImageGenCallPartialImageEvent} for more
         #   details.
@@ -65,6 +89,14 @@ module OpenAI
         #   @param sequence_number [Integer] The sequence number of the image generation item being processed.
         #
         #   @param agent [OpenAI::Models::Beta::BetaResponseImageGenCallPartialImageEvent::Agent, nil] The agent that owns this multi-agent streaming event.
+        #
+        #   @param background [String] The background setting that was used.
+        #
+        #   @param output_format [String] The output format that was used.
+        #
+        #   @param quality [String] The image quality that was used.
+        #
+        #   @param size [String] The image size that was used.
         #
         #   @param type [Symbol, :"response.image_generation_call.partial_image"] The type of the event. Always 'response.image_generation_call.partial_image'.
 

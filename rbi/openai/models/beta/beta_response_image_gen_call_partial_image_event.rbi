@@ -60,6 +60,34 @@ module OpenAI
         end
         attr_writer :agent
 
+        # The background setting that was used.
+        sig { returns(T.nilable(String)) }
+        attr_reader :background
+
+        sig { params(background: String).void }
+        attr_writer :background
+
+        # The output format that was used.
+        sig { returns(T.nilable(String)) }
+        attr_reader :output_format
+
+        sig { params(output_format: String).void }
+        attr_writer :output_format
+
+        # The image quality that was used.
+        sig { returns(T.nilable(String)) }
+        attr_reader :quality
+
+        sig { params(quality: String).void }
+        attr_writer :quality
+
+        # The image size that was used.
+        sig { returns(T.nilable(String)) }
+        attr_reader :size
+
+        sig { params(size: String).void }
+        attr_writer :size
+
         # Emitted when a partial image is available during image generation streaming.
         sig do
           params(
@@ -72,6 +100,10 @@ module OpenAI
               T.nilable(
                 OpenAI::Beta::BetaResponseImageGenCallPartialImageEvent::Agent::OrHash
               ),
+            background: String,
+            output_format: String,
+            quality: String,
+            size: String,
             type: Symbol
           ).returns(T.attached_class)
         end
@@ -89,6 +121,14 @@ module OpenAI
           sequence_number:,
           # The agent that owns this multi-agent streaming event.
           agent: nil,
+          # The background setting that was used.
+          background: nil,
+          # The output format that was used.
+          output_format: nil,
+          # The image quality that was used.
+          quality: nil,
+          # The image size that was used.
+          size: nil,
           # The type of the event. Always 'response.image_generation_call.partial_image'.
           type: :"response.image_generation_call.partial_image"
         )
@@ -106,7 +146,11 @@ module OpenAI
               agent:
                 T.nilable(
                   OpenAI::Beta::BetaResponseImageGenCallPartialImageEvent::Agent
-                )
+                ),
+              background: String,
+              output_format: String,
+              quality: String,
+              size: String
             }
           )
         end

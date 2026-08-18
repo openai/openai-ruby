@@ -1,0 +1,113 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_shell_call_output_content_done_event =
+        {
+          command_index: Integer,
+          item_id: String,
+          output: ::Array[OpenAI::Responses::ResponseShellCallOutputContentDoneEvent::Output],
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.shell_call_output_content.done"
+        }
+
+      class ResponseShellCallOutputContentDoneEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor command_index: Integer
+
+        attr_accessor item_id: String
+
+        attr_accessor output: ::Array[OpenAI::Responses::ResponseShellCallOutputContentDoneEvent::Output]
+
+        attr_accessor output_index: Integer
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor type: :"response.shell_call_output_content.done"
+
+        def initialize: (
+          command_index: Integer,
+          item_id: String,
+          output: ::Array[OpenAI::Responses::ResponseShellCallOutputContentDoneEvent::Output],
+          output_index: Integer,
+          sequence_number: Integer,
+          ?type: :"response.shell_call_output_content.done"
+        ) -> void
+
+        def to_hash: -> {
+          command_index: Integer,
+          item_id: String,
+          output: ::Array[OpenAI::Responses::ResponseShellCallOutputContentDoneEvent::Output],
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.shell_call_output_content.done"
+        }
+
+        type output =
+          {
+            outcome: OpenAI::Models::Responses::ResponseShellCallOutputContentDoneEvent::Output::outcome,
+            stderr: String,
+            stdout: String,
+            created_by: String
+          }
+
+        class Output < OpenAI::Internal::Type::BaseModel
+          attr_accessor outcome: OpenAI::Models::Responses::ResponseShellCallOutputContentDoneEvent::Output::outcome
+
+          attr_accessor stderr: String
+
+          attr_accessor stdout: String
+
+          attr_reader created_by: String?
+
+          def created_by=: (String) -> String
+
+          def initialize: (
+            outcome: OpenAI::Models::Responses::ResponseShellCallOutputContentDoneEvent::Output::outcome,
+            stderr: String,
+            stdout: String,
+            ?created_by: String
+          ) -> void
+
+          def to_hash: -> {
+            outcome: OpenAI::Models::Responses::ResponseShellCallOutputContentDoneEvent::Output::outcome,
+            stderr: String,
+            stdout: String,
+            created_by: String
+          }
+
+          type outcome =
+            OpenAI::Responses::ResponseShellCallOutputContentDoneEvent::Output::Outcome::Timeout
+            | OpenAI::Responses::ResponseShellCallOutputContentDoneEvent::Output::Outcome::Exit
+
+          module Outcome
+            extend OpenAI::Internal::Type::Union
+
+            type timeout = { type: :timeout }
+
+            class Timeout < OpenAI::Internal::Type::BaseModel
+              attr_accessor type: :timeout
+
+              def initialize: (?type: :timeout) -> void
+
+              def to_hash: -> { type: :timeout }
+            end
+
+            type exit_ = { exit_code: Integer, type: :exit }
+
+            class Exit < OpenAI::Internal::Type::BaseModel
+              attr_accessor exit_code: Integer
+
+              attr_accessor type: :exit
+
+              def initialize: (exit_code: Integer, ?type: :exit) -> void
+
+              def to_hash: -> { exit_code: Integer, type: :exit }
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseShellCallOutputContentDoneEvent::Output::outcome]
+          end
+        end
+      end
+    end
+  end
+end

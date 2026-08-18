@@ -10,6 +10,7 @@ module OpenAI
           created: Integer,
           model: String,
           object: :"chat.completion",
+          metadata: OpenAI::Models::metadata?,
           moderation: OpenAI::Chat::ChatCompletion::Moderation?,
           service_tier: OpenAI::Models::Chat::ChatCompletion::service_tier?,
           system_fingerprint: String,
@@ -26,6 +27,8 @@ module OpenAI
         attr_accessor model: String
 
         attr_accessor object: :"chat.completion"
+
+        attr_accessor metadata: OpenAI::Models::metadata?
 
         attr_accessor moderation: OpenAI::Chat::ChatCompletion::Moderation?
 
@@ -44,6 +47,7 @@ module OpenAI
           choices: ::Array[OpenAI::Chat::ChatCompletion::Choice],
           created: Integer,
           model: String,
+          ?metadata: OpenAI::Models::metadata?,
           ?moderation: OpenAI::Chat::ChatCompletion::Moderation?,
           ?service_tier: OpenAI::Models::Chat::ChatCompletion::service_tier?,
           ?system_fingerprint: String,
@@ -57,6 +61,7 @@ module OpenAI
           created: Integer,
           model: String,
           object: :"chat.completion",
+          metadata: OpenAI::Models::metadata?,
           moderation: OpenAI::Chat::ChatCompletion::Moderation?,
           service_tier: OpenAI::Models::Chat::ChatCompletion::service_tier?,
           system_fingerprint: String,

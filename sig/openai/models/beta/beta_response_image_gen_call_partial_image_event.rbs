@@ -11,7 +11,11 @@ module OpenAI
           partial_image_index: Integer,
           sequence_number: Integer,
           type: :"response.image_generation_call.partial_image",
-          agent: OpenAI::Beta::BetaResponseImageGenCallPartialImageEvent::Agent?
+          agent: OpenAI::Beta::BetaResponseImageGenCallPartialImageEvent::Agent?,
+          background: String,
+          output_format: String,
+          quality: String,
+          size: String
         }
 
       class BetaResponseImageGenCallPartialImageEvent < OpenAI::Internal::Type::BaseModel
@@ -29,6 +33,22 @@ module OpenAI
 
         attr_accessor agent: OpenAI::Beta::BetaResponseImageGenCallPartialImageEvent::Agent?
 
+        attr_reader background: String?
+
+        def background=: (String) -> String
+
+        attr_reader output_format: String?
+
+        def output_format=: (String) -> String
+
+        attr_reader quality: String?
+
+        def quality=: (String) -> String
+
+        attr_reader size: String?
+
+        def size=: (String) -> String
+
         def initialize: (
           item_id: String,
           output_index: Integer,
@@ -36,6 +56,10 @@ module OpenAI
           partial_image_index: Integer,
           sequence_number: Integer,
           ?agent: OpenAI::Beta::BetaResponseImageGenCallPartialImageEvent::Agent?,
+          ?background: String,
+          ?output_format: String,
+          ?quality: String,
+          ?size: String,
           ?type: :"response.image_generation_call.partial_image"
         ) -> void
 
@@ -46,7 +70,11 @@ module OpenAI
           partial_image_index: Integer,
           sequence_number: Integer,
           type: :"response.image_generation_call.partial_image",
-          agent: OpenAI::Beta::BetaResponseImageGenCallPartialImageEvent::Agent?
+          agent: OpenAI::Beta::BetaResponseImageGenCallPartialImageEvent::Agent?,
+          background: String,
+          output_format: String,
+          quality: String,
+          size: String
         }
 
         type agent = { agent_name: String }

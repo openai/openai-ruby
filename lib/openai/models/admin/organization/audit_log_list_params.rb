@@ -286,6 +286,7 @@ module OpenAI
             TENANT_RESOURCE_ROLE_ASSIGNMENT_DELETED = :"tenant.resource_role_assignment.deleted"
             TENANT_RESOURCE_ACCESS_UPDATED = :"tenant.resource_access.updated"
             TENANT_RESOURCE_ACCESS_DELETED = :"tenant.resource_access.deleted"
+            TENANT_ADS_ACCOUNT_ONBOARDING_REDEMPTION = :"tenant.ads_account.onboarding.redemption"
             TENANT_SESSION_POLICY_CREATED = :"tenant.session_policy.created"
             TENANT_SESSION_POLICY_UPDATED = :"tenant.session_policy.updated"
             TENANT_SESSION_POLICY_DELETED = :"tenant.session_policy.deleted"

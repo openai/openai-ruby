@@ -5,8 +5,15 @@ module OpenAI
     module Beta
       type beta_response_custom_tool_call_item =
         {
+          call_id: String,
+          input: String,
+          name: String,
           id: String,
           status: OpenAI::Models::Beta::BetaResponseCustomToolCallItem::status,
+          type: :custom_tool_call,
+          agent: OpenAI::Beta::BetaResponseCustomToolCall::Agent?,
+          caller_: OpenAI::Models::Beta::BetaResponseCustomToolCall::caller_?,
+          namespace: String,
           created_by: String
         }
 
@@ -26,14 +33,28 @@ module OpenAI
         def created_by=: (String _) -> String
 
         def initialize: (
+          call_id: String,
+          input: String,
+          name: String,
           id: String,
           status: OpenAI::Models::Beta::BetaResponseCustomToolCallItem::status,
-          ?created_by: String
+          ?agent: OpenAI::Beta::BetaResponseCustomToolCall::Agent?,
+          ?caller_: OpenAI::Models::Beta::BetaResponseCustomToolCall::caller_?,
+          ?namespace: String,
+          ?created_by: String,
+          ?type: :custom_tool_call
         ) -> void
 
         def to_hash: -> {
+          call_id: String,
+          input: String,
+          name: String,
           id: String,
           status: OpenAI::Models::Beta::BetaResponseCustomToolCallItem::status,
+          type: :custom_tool_call,
+          agent: OpenAI::Beta::BetaResponseCustomToolCall::Agent?,
+          caller_: OpenAI::Models::Beta::BetaResponseCustomToolCall::caller_?,
+          namespace: String,
           created_by: String
         }
 
