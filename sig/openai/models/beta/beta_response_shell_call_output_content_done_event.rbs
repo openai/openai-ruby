@@ -1,0 +1,134 @@
+module OpenAI
+  module Models
+    class BetaResponseShellCallOutputContentDoneEvent = Beta::BetaResponseShellCallOutputContentDoneEvent
+
+    module Beta
+      type beta_response_shell_call_output_content_done_event =
+        {
+          command_index: Integer,
+          item_id: String,
+          output: ::Array[OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Output],
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.shell_call_output_content.done",
+          agent: OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Agent
+        }
+
+      class BetaResponseShellCallOutputContentDoneEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor command_index: Integer
+
+        attr_accessor item_id: String
+
+        attr_accessor output: ::Array[OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Output]
+
+        attr_accessor output_index: Integer
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor type: :"response.shell_call_output_content.done"
+
+        attr_reader agent: OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Agent?
+
+        def agent=: (
+          OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Agent
+        ) -> OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Agent
+
+        def initialize: (
+          command_index: Integer,
+          item_id: String,
+          output: ::Array[OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Output],
+          output_index: Integer,
+          sequence_number: Integer,
+          ?agent: OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Agent,
+          ?type: :"response.shell_call_output_content.done"
+        ) -> void
+
+        def to_hash: -> {
+          command_index: Integer,
+          item_id: String,
+          output: ::Array[OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Output],
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.shell_call_output_content.done",
+          agent: OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Agent
+        }
+
+        type output =
+          {
+            outcome: OpenAI::Models::Beta::BetaResponseShellCallOutputContentDoneEvent::Output::outcome,
+            stderr: String,
+            stdout: String,
+            created_by: String
+          }
+
+        class Output < OpenAI::Internal::Type::BaseModel
+          attr_accessor outcome: OpenAI::Models::Beta::BetaResponseShellCallOutputContentDoneEvent::Output::outcome
+
+          attr_accessor stderr: String
+
+          attr_accessor stdout: String
+
+          attr_reader created_by: String?
+
+          def created_by=: (String) -> String
+
+          def initialize: (
+            outcome: OpenAI::Models::Beta::BetaResponseShellCallOutputContentDoneEvent::Output::outcome,
+            stderr: String,
+            stdout: String,
+            ?created_by: String
+          ) -> void
+
+          def to_hash: -> {
+            outcome: OpenAI::Models::Beta::BetaResponseShellCallOutputContentDoneEvent::Output::outcome,
+            stderr: String,
+            stdout: String,
+            created_by: String
+          }
+
+          type outcome =
+            OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Output::Outcome::Timeout
+            | OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Output::Outcome::Exit
+
+          module Outcome
+            extend OpenAI::Internal::Type::Union
+
+            type timeout = { type: :timeout }
+
+            class Timeout < OpenAI::Internal::Type::BaseModel
+              attr_accessor type: :timeout
+
+              def initialize: (?type: :timeout) -> void
+
+              def to_hash: -> { type: :timeout }
+            end
+
+            type exit_ = { exit_code: Integer, type: :exit }
+
+            class Exit < OpenAI::Internal::Type::BaseModel
+              attr_accessor exit_code: Integer
+
+              attr_accessor type: :exit
+
+              def initialize: (exit_code: Integer, ?type: :exit) -> void
+
+              def to_hash: -> { exit_code: Integer, type: :exit }
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseShellCallOutputContentDoneEvent::Output::outcome]
+          end
+        end
+
+        type agent = { agent_name: String }
+
+        class Agent < OpenAI::Internal::Type::BaseModel
+          attr_accessor agent_name: String
+
+          def initialize: (agent_name: String) -> void
+
+          def to_hash: -> { agent_name: String }
+        end
+      end
+    end
+  end
+end

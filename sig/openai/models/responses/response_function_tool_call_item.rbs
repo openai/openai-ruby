@@ -3,8 +3,14 @@ module OpenAI
     module Responses
       type response_function_tool_call_item =
         {
+          arguments: String,
+          call_id: String,
+          name: String,
           id: String,
           status: OpenAI::Models::Responses::ResponseFunctionToolCallItem::status,
+          type: :function_call,
+          caller_: OpenAI::Models::Responses::ResponseFunctionToolCall::caller_?,
+          namespace: String,
           created_by: String
         }
 
@@ -24,14 +30,26 @@ module OpenAI
         def created_by=: (String _) -> String
 
         def initialize: (
+          arguments: String,
+          call_id: String,
+          name: String,
           id: String,
           status: OpenAI::Models::Responses::ResponseFunctionToolCallItem::status,
-          ?created_by: String
+          ?caller_: OpenAI::Models::Responses::ResponseFunctionToolCall::caller_?,
+          ?namespace: String,
+          ?created_by: String,
+          ?type: :function_call
         ) -> void
 
         def to_hash: -> {
+          arguments: String,
+          call_id: String,
+          name: String,
           id: String,
           status: OpenAI::Models::Responses::ResponseFunctionToolCallItem::status,
+          type: :function_call,
+          caller_: OpenAI::Models::Responses::ResponseFunctionToolCall::caller_?,
+          namespace: String,
           created_by: String
         }
 

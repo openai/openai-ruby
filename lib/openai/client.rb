@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "helpers/data_residency"
+
 module OpenAI
   class Client < OpenAI::Internal::Transport::BaseClient
     # Default max number of retries to attempt after a failed retryable request.
@@ -268,6 +270,10 @@ module OpenAI
     # @param base_url [String, nil] Override the default base URL for the API, e.g.,
     # `"https://api.example.com/v2/"`. Defaults to `ENV["OPENAI_BASE_URL"]`
     #
+    # @param data_residency [Symbol, String, nil] Select `global`, `us`, `eu`, or
+    #   `ae`. Mutually exclusive with an explicit `base_url` or `provider`.
+    #   This selects an endpoint; project and model eligibility still apply.
+    #
     # @param default_headers [Hash{String=>String, nil}, nil] Extra headers to send
     #   with every request. Explicit values override `ENV["OPENAI_CUSTOM_HEADERS"]`.
     #
@@ -297,6 +303,7 @@ module OpenAI
       webhook_secret: OpenAI::Internal::OMIT,
       provider: nil,
       base_url: OpenAI::Internal::OMIT,
+      data_residency: nil,
       default_headers: nil,
       max_retries: self.class::DEFAULT_MAX_RETRIES,
       timeout: self.class::DEFAULT_TIMEOUT_IN_SECONDS,
@@ -307,6 +314,9 @@ module OpenAI
       log_level: nil,
       on_retry: nil
     )
+      base_url = OpenAI::Internal::ClientOptions.resolve_data_residency(
+        data_residency, base_url: base_url, provider: provider
+      )
       provider_runtime = nil
       unless provider.nil?
         provider_name = OpenAI::Internal::Provider.name(provider)

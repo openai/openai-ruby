@@ -94,40 +94,106 @@ module OpenAI
       module TestingCriterion
         extend OpenAI::Internal::Type::Union
 
-        type eval_grader_text_similarity = { pass_threshold: Float }
+        type eval_grader_text_similarity =
+          {
+            evaluation_metric: OpenAI::Models::Graders::TextSimilarityGrader::evaluation_metric,
+            input: String,
+            name: String,
+            reference: String,
+            pass_threshold: Float,
+            type: :text_similarity
+          }
 
         class EvalGraderTextSimilarity < OpenAI::Models::Graders::TextSimilarityGrader
           def pass_threshold: -> Float
 
           def pass_threshold=: (Float _) -> Float
 
-          def initialize: (pass_threshold: Float) -> void
+          def initialize: (
+            evaluation_metric: OpenAI::Models::Graders::TextSimilarityGrader::evaluation_metric,
+            input: String,
+            name: String,
+            reference: String,
+            pass_threshold: Float,
+            ?type: :text_similarity
+          ) -> void
 
-          def to_hash: -> { pass_threshold: Float }
+          def to_hash: -> {
+            evaluation_metric: OpenAI::Models::Graders::TextSimilarityGrader::evaluation_metric,
+            input: String,
+            name: String,
+            reference: String,
+            pass_threshold: Float,
+            type: :text_similarity
+          }
         end
 
-        type eval_grader_python = { pass_threshold: Float }
+        type eval_grader_python =
+          {
+            name: String,
+            source: String,
+            type: :python,
+            image_tag: String,
+            pass_threshold: Float
+          }
 
         class EvalGraderPython < OpenAI::Models::Graders::PythonGrader
           def pass_threshold: -> Float?
 
           def pass_threshold=: (Float _) -> Float
 
-          def initialize: (?pass_threshold: Float) -> void
+          def initialize: (
+            name: String,
+            source: String,
+            ?image_tag: String,
+            ?pass_threshold: Float,
+            ?type: :python
+          ) -> void
 
-          def to_hash: -> { pass_threshold: Float }
+          def to_hash: -> {
+            name: String,
+            source: String,
+            type: :python,
+            image_tag: String,
+            pass_threshold: Float
+          }
         end
 
-        type eval_grader_score_model = { pass_threshold: Float }
+        type eval_grader_score_model =
+          {
+            input: ::Array[OpenAI::Graders::ScoreModelGrader::Input],
+            model: String,
+            name: String,
+            type: :score_model,
+            range: ::Array[Float],
+            sampling_params: OpenAI::Graders::ScoreModelGrader::SamplingParams,
+            pass_threshold: Float
+          }
 
         class EvalGraderScoreModel < OpenAI::Models::Graders::ScoreModelGrader
           def pass_threshold: -> Float?
 
           def pass_threshold=: (Float _) -> Float
 
-          def initialize: (?pass_threshold: Float) -> void
+          def initialize: (
+            input: ::Array[OpenAI::Graders::ScoreModelGrader::Input],
+            model: String,
+            name: String,
+            ?range: ::Array[Float],
+            ?sampling_params: OpenAI::Graders::ScoreModelGrader::SamplingParams,
+            ?pass_threshold: Float,
+            ?type: :score_model
+          ) -> void
 
-          def to_hash: -> { pass_threshold: Float }
+          def to_hash: -> {
+            input: ::Array[OpenAI::Graders::ScoreModelGrader::Input],
+            model: String,
+            name: String,
+            type: :score_model,
+            range: ::Array[Float],
+            sampling_params: OpenAI::Graders::ScoreModelGrader::SamplingParams,
+            pass_threshold: Float
+          }
         end
 
         def self?.variants: -> ::Array[OpenAI::Models::EvalListResponse::testing_criterion]

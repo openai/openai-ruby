@@ -87,7 +87,8 @@ class OpenAI::Test::ClientOptionsTest < Minitest::Test
     constructor_options = OpenAI::Client.instance_method(:initialize).parameters.filter_map do |kind, name|
       name if [:key, :keyreq].include?(kind)
     end
-    assert_equal(constructor_options.sort, client.instance_variable_get(:@copy_options).keys.sort)
+    # Residency is normalized into base_url, never retained as competing state.
+    assert_equal((constructor_options - [:data_residency]).sort, client.instance_variable_get(:@copy_options).keys.sort)
   end
 
   def test_copy_preserves_subclass_request_behavior

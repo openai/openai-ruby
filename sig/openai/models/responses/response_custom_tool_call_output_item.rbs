@@ -3,8 +3,12 @@ module OpenAI
     module Responses
       type response_custom_tool_call_output_item =
         {
+          call_id: String,
+          output: OpenAI::Models::Responses::ResponseCustomToolCallOutput::output,
           id: String,
           status: OpenAI::Models::Responses::ResponseCustomToolCallOutputItem::status,
+          type: :custom_tool_call_output,
+          caller_: OpenAI::Models::Responses::ResponseCustomToolCallOutput::caller_?,
           created_by: String
         }
 
@@ -24,14 +28,22 @@ module OpenAI
         def created_by=: (String _) -> String
 
         def initialize: (
+          call_id: String,
+          output: OpenAI::Models::Responses::ResponseCustomToolCallOutput::output,
           id: String,
           status: OpenAI::Models::Responses::ResponseCustomToolCallOutputItem::status,
-          ?created_by: String
+          ?caller_: OpenAI::Models::Responses::ResponseCustomToolCallOutput::caller_?,
+          ?created_by: String,
+          ?type: :custom_tool_call_output
         ) -> void
 
         def to_hash: -> {
+          call_id: String,
+          output: OpenAI::Models::Responses::ResponseCustomToolCallOutput::output,
           id: String,
           status: OpenAI::Models::Responses::ResponseCustomToolCallOutputItem::status,
+          type: :custom_tool_call_output,
+          caller_: OpenAI::Models::Responses::ResponseCustomToolCallOutput::caller_?,
           created_by: String
         }
 

@@ -815,14 +815,47 @@ module OpenAI
           attr_accessor :pass_threshold
 
           # A TextSimilarityGrader object which grades text based on similarity metrics.
-          sig { params(pass_threshold: Float).returns(T.attached_class) }
+          sig do
+            params(
+              evaluation_metric:
+                OpenAI::Graders::TextSimilarityGrader::EvaluationMetric::OrSymbol,
+              input: String,
+              name: String,
+              reference: String,
+              pass_threshold: Float,
+              type: Symbol
+            ).returns(T.attached_class)
+          end
           def self.new(
+            # The evaluation metric to use. One of `cosine`, `fuzzy_match`, `bleu`, `gleu`,
+            # `meteor`, `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.
+            evaluation_metric:,
+            # The text being graded.
+            input:,
+            # The name of the grader.
+            name:,
+            # The text being graded against.
+            reference:,
             # The threshold for the score.
-            pass_threshold:
+            pass_threshold:,
+            # The type of grader.
+            type: :text_similarity
           )
           end
 
-          sig { override.returns({ pass_threshold: Float }) }
+          sig do
+            override.returns(
+              {
+                evaluation_metric:
+                  OpenAI::Graders::TextSimilarityGrader::EvaluationMetric::OrSymbol,
+                input: String,
+                name: String,
+                reference: String,
+                pass_threshold: Float,
+                type: Symbol
+              }
+            )
+          end
           def to_hash
           end
         end
@@ -844,14 +877,40 @@ module OpenAI
           attr_writer :pass_threshold
 
           # A PythonGrader object that runs a python script on the input.
-          sig { params(pass_threshold: Float).returns(T.attached_class) }
+          sig do
+            params(
+              name: String,
+              source: String,
+              image_tag: String,
+              pass_threshold: Float,
+              type: Symbol
+            ).returns(T.attached_class)
+          end
           def self.new(
+            # The name of the grader.
+            name:,
+            # The source code of the python script.
+            source:,
+            # The image tag to use for the python script.
+            image_tag: nil,
             # The threshold for the score.
-            pass_threshold: nil
+            pass_threshold: nil,
+            # The object type, which is always `python`.
+            type: :python
           )
           end
 
-          sig { override.returns({ pass_threshold: Float }) }
+          sig do
+            override.returns(
+              {
+                name: String,
+                source: String,
+                type: Symbol,
+                image_tag: String,
+                pass_threshold: Float
+              }
+            )
+          end
           def to_hash
           end
         end
@@ -873,14 +932,51 @@ module OpenAI
           attr_writer :pass_threshold
 
           # A ScoreModelGrader object that uses a model to assign a score to the input.
-          sig { params(pass_threshold: Float).returns(T.attached_class) }
+          sig do
+            params(
+              input: T::Array[OpenAI::Graders::ScoreModelGrader::Input::OrHash],
+              model: String,
+              name: String,
+              range: T::Array[Float],
+              sampling_params:
+                OpenAI::Graders::ScoreModelGrader::SamplingParams::OrHash,
+              pass_threshold: Float,
+              type: Symbol
+            ).returns(T.attached_class)
+          end
           def self.new(
+            # The input messages evaluated by the grader. Supports text, output text, input
+            # image, and input audio content blocks, and may include template strings.
+            input:,
+            # The model to use for the evaluation.
+            model:,
+            # The name of the grader.
+            name:,
+            # The range of the score. Defaults to `[0, 1]`.
+            range: nil,
+            # The sampling parameters for the model.
+            sampling_params: nil,
             # The threshold for the score.
-            pass_threshold: nil
+            pass_threshold: nil,
+            # The object type, which is always `score_model`.
+            type: :score_model
           )
           end
 
-          sig { override.returns({ pass_threshold: Float }) }
+          sig do
+            override.returns(
+              {
+                input: T::Array[OpenAI::Graders::ScoreModelGrader::Input],
+                model: String,
+                name: String,
+                type: Symbol,
+                range: T::Array[Float],
+                sampling_params:
+                  OpenAI::Graders::ScoreModelGrader::SamplingParams,
+                pass_threshold: Float
+              }
+            )
+          end
           def to_hash
           end
         end

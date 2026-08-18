@@ -26,6 +26,16 @@ module OpenAI
 
         # @api private
         def copy(defaults, overrides)
+          overrides = overrides.dup
+          data_residency = overrides.delete(:data_residency)
+          unless data_residency.nil?
+            overrides[:base_url] = resolve_data_residency(
+              data_residency,
+              base_url: overrides.fetch(:base_url, OpenAI::Internal::OMIT),
+              provider: overrides.fetch(:provider, defaults[:provider])
+            )
+          end
+
           unknown = overrides.keys - defaults.keys
           unless unknown.empty?
             raise ArgumentError, "Unknown client option#{unknown.one? ? '' : 's'}: #{unknown.join(', ')}"

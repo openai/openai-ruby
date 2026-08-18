@@ -174,10 +174,24 @@ module OpenAI
           #   @return [Float]
           required :pass_threshold, Float
 
-          # @!method initialize(pass_threshold:)
+          # @!method initialize(evaluation_metric:, input:, name:, reference:, pass_threshold:, type: :text_similarity)
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderTextSimilarity}
+          #   for more details.
+          #
           #   A TextSimilarityGrader object which grades text based on similarity metrics.
           #
+          #   @param evaluation_metric [Symbol, OpenAI::Models::Graders::TextSimilarityGrader::EvaluationMetric] The evaluation metric to use. One of `cosine`, `fuzzy_match`, `bleu`,
+          #
+          #   @param input [String] The text being graded.
+          #
+          #   @param name [String] The name of the grader.
+          #
+          #   @param reference [String] The text being graded against.
+          #
           #   @param pass_threshold [Float] The threshold for the score.
+          #
+          #   @param type [Symbol, :text_similarity] The type of grader.
         end
 
         class EvalGraderPython < OpenAI::Models::Graders::PythonGrader
@@ -187,10 +201,18 @@ module OpenAI
           #   @return [Float, nil]
           optional :pass_threshold, Float
 
-          # @!method initialize(pass_threshold: nil)
+          # @!method initialize(name:, source:, image_tag: nil, pass_threshold: nil, type: :python)
           #   A PythonGrader object that runs a python script on the input.
           #
+          #   @param name [String] The name of the grader.
+          #
+          #   @param source [String] The source code of the python script.
+          #
+          #   @param image_tag [String] The image tag to use for the python script.
+          #
           #   @param pass_threshold [Float] The threshold for the score.
+          #
+          #   @param type [Symbol, :python] The object type, which is always `python`.
         end
 
         class EvalGraderScoreModel < OpenAI::Models::Graders::ScoreModelGrader
@@ -200,10 +222,26 @@ module OpenAI
           #   @return [Float, nil]
           optional :pass_threshold, Float
 
-          # @!method initialize(pass_threshold: nil)
+          # @!method initialize(input:, model:, name:, range: nil, sampling_params: nil, pass_threshold: nil, type: :score_model)
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderScoreModel} for
+          #   more details.
+          #
           #   A ScoreModelGrader object that uses a model to assign a score to the input.
           #
+          #   @param input [Array<OpenAI::Models::Graders::ScoreModelGrader::Input>] The input messages evaluated by the grader. Supports text, output text, input im
+          #
+          #   @param model [String] The model to use for the evaluation.
+          #
+          #   @param name [String] The name of the grader.
+          #
+          #   @param range [Array<Float>] The range of the score. Defaults to `[0, 1]`.
+          #
+          #   @param sampling_params [OpenAI::Models::Graders::ScoreModelGrader::SamplingParams] The sampling parameters for the model.
+          #
           #   @param pass_threshold [Float] The threshold for the score.
+          #
+          #   @param type [Symbol, :score_model] The object type, which is always `score_model`.
         end
 
         # @!method self.variants

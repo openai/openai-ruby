@@ -25,6 +25,11 @@ module OpenAI
         | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallWsSearching
         | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseFunctionCallArgumentsWsDelta
         | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseFunctionCallArgumentsWsDone
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseShellCallCommandWsAdded
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseShellCallCommandWsDelta
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseShellCallCommandWsDone
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseShellCallOutputContentWsDelta
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseShellCallOutputContentWsDone
         | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseInWsProgress
         | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsFailed
         | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsIncomplete
@@ -81,8 +86,8 @@ module OpenAI
             delta: String,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseAudioDeltaEvent::Agent?,
-            ?type: :"response.audio.delta",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.audio.delta"
           ) -> void
 
           def to_hash: -> {
@@ -110,8 +115,8 @@ module OpenAI
           def initialize: (
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseAudioDoneEvent::Agent?,
-            ?type: :"response.audio.done",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.audio.done"
           ) -> void
 
           def to_hash: -> {
@@ -140,8 +145,8 @@ module OpenAI
             delta: String,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseAudioTranscriptDeltaEvent::Agent?,
-            ?type: :"response.audio.transcript.delta",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.audio.transcript.delta"
           ) -> void
 
           def to_hash: -> {
@@ -169,8 +174,8 @@ module OpenAI
           def initialize: (
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseAudioTranscriptDoneEvent::Agent?,
-            ?type: :"response.audio.transcript.done",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.audio.transcript.done"
           ) -> void
 
           def to_hash: -> {
@@ -203,8 +208,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseCodeInterpreterCallCodeDeltaEvent::Agent?,
-            ?type: :"response.code_interpreter_call_code.delta",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.code_interpreter_call_code.delta"
           ) -> void
 
           def to_hash: -> {
@@ -240,8 +245,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseCodeInterpreterCallCodeDoneEvent::Agent?,
-            ?type: :"response.code_interpreter_call_code.done",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.code_interpreter_call_code.done"
           ) -> void
 
           def to_hash: -> {
@@ -275,8 +280,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseCodeInterpreterCallCompletedEvent::Agent?,
-            ?type: :"response.code_interpreter_call.completed",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.code_interpreter_call.completed"
           ) -> void
 
           def to_hash: -> {
@@ -309,8 +314,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseCodeInterpreterCallInProgressEvent::Agent?,
-            ?type: :"response.code_interpreter_call.in_progress",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.code_interpreter_call.in_progress"
           ) -> void
 
           def to_hash: -> {
@@ -343,8 +348,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseCodeInterpreterCallInterpretingEvent::Agent?,
-            ?type: :"response.code_interpreter_call.interpreting",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.code_interpreter_call.interpreting"
           ) -> void
 
           def to_hash: -> {
@@ -375,8 +380,8 @@ module OpenAI
             response: OpenAI::Beta::BetaResponse,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseCompletedEvent::Agent?,
-            ?type: :"response.completed",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.completed"
           ) -> void
 
           def to_hash: -> {
@@ -412,8 +417,8 @@ module OpenAI
             part: OpenAI::Models::Beta::BetaResponseContentPartAddedEvent::part,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseContentPartAddedEvent::Agent?,
-            ?type: :"response.content_part.added",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.content_part.added"
           ) -> void
 
           def to_hash: -> {
@@ -452,8 +457,8 @@ module OpenAI
             part: OpenAI::Models::Beta::BetaResponseContentPartDoneEvent::part,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseContentPartDoneEvent::Agent?,
-            ?type: :"response.content_part.done",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.content_part.done"
           ) -> void
 
           def to_hash: -> {
@@ -486,8 +491,8 @@ module OpenAI
             response: OpenAI::Beta::BetaResponse,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseCreatedEvent::Agent?,
-            ?type: :"response.created",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.created"
           ) -> void
 
           def to_hash: -> {
@@ -519,8 +524,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseFileSearchCallCompletedEvent::Agent?,
-            ?type: :"response.file_search_call.completed",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.file_search_call.completed"
           ) -> void
 
           def to_hash: -> {
@@ -553,8 +558,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseFileSearchCallInProgressEvent::Agent?,
-            ?type: :"response.file_search_call.in_progress",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.file_search_call.in_progress"
           ) -> void
 
           def to_hash: -> {
@@ -587,8 +592,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseFileSearchCallSearchingEvent::Agent?,
-            ?type: :"response.file_search_call.searching",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.file_search_call.searching"
           ) -> void
 
           def to_hash: -> {
@@ -623,8 +628,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseFunctionCallArgumentsDeltaEvent::Agent?,
-            ?type: :"response.function_call_arguments.delta",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.function_call_arguments.delta"
           ) -> void
 
           def to_hash: -> {
@@ -662,8 +667,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent?,
-            ?type: :"response.function_call_arguments.done",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.function_call_arguments.done"
           ) -> void
 
           def to_hash: -> {
@@ -674,6 +679,200 @@ module OpenAI
             sequence_number: Integer,
             type: :"response.function_call_arguments.done",
             agent: OpenAI::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent?,
+            stream_id: String
+          }
+        end
+
+        type beta_response_shell_call_command_ws_added =
+          {
+            command: String,
+            command_index: Integer,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.shell_call_command.added",
+            agent: OpenAI::Beta::BetaResponseShellCallCommandAddedEvent::Agent,
+            stream_id: String
+          }
+
+        class BetaResponseShellCallCommandWsAdded < OpenAI::Models::Beta::BetaResponseShellCallCommandAddedEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            command: String,
+            command_index: Integer,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?agent: OpenAI::Beta::BetaResponseShellCallCommandAddedEvent::Agent,
+            ?stream_id: String,
+            ?type: :"response.shell_call_command.added"
+          ) -> void
+
+          def to_hash: -> {
+            command: String,
+            command_index: Integer,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.shell_call_command.added",
+            agent: OpenAI::Beta::BetaResponseShellCallCommandAddedEvent::Agent,
+            stream_id: String
+          }
+        end
+
+        type beta_response_shell_call_command_ws_delta =
+          {
+            command_index: Integer,
+            delta: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.shell_call_command.delta",
+            agent: OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent::Agent,
+            obfuscation: String,
+            stream_id: String
+          }
+
+        class BetaResponseShellCallCommandWsDelta < OpenAI::Models::Beta::BetaResponseShellCallCommandDeltaEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            command_index: Integer,
+            delta: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?agent: OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent::Agent,
+            ?obfuscation: String,
+            ?stream_id: String,
+            ?type: :"response.shell_call_command.delta"
+          ) -> void
+
+          def to_hash: -> {
+            command_index: Integer,
+            delta: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.shell_call_command.delta",
+            agent: OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent::Agent,
+            obfuscation: String,
+            stream_id: String
+          }
+        end
+
+        type beta_response_shell_call_command_ws_done =
+          {
+            command: String,
+            command_index: Integer,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.shell_call_command.done",
+            agent: OpenAI::Beta::BetaResponseShellCallCommandDoneEvent::Agent,
+            stream_id: String
+          }
+
+        class BetaResponseShellCallCommandWsDone < OpenAI::Models::Beta::BetaResponseShellCallCommandDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            command: String,
+            command_index: Integer,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?agent: OpenAI::Beta::BetaResponseShellCallCommandDoneEvent::Agent,
+            ?stream_id: String,
+            ?type: :"response.shell_call_command.done"
+          ) -> void
+
+          def to_hash: -> {
+            command: String,
+            command_index: Integer,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.shell_call_command.done",
+            agent: OpenAI::Beta::BetaResponseShellCallCommandDoneEvent::Agent,
+            stream_id: String
+          }
+        end
+
+        type beta_response_shell_call_output_content_ws_delta =
+          {
+            command_index: Integer,
+            delta: OpenAI::Beta::BetaResponseShellCallOutputContentDeltaEvent::Delta,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.shell_call_output_content.delta",
+            agent: OpenAI::Beta::BetaResponseShellCallOutputContentDeltaEvent::Agent,
+            stream_id: String
+          }
+
+        class BetaResponseShellCallOutputContentWsDelta < OpenAI::Models::Beta::BetaResponseShellCallOutputContentDeltaEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            command_index: Integer,
+            delta: OpenAI::Beta::BetaResponseShellCallOutputContentDeltaEvent::Delta,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?agent: OpenAI::Beta::BetaResponseShellCallOutputContentDeltaEvent::Agent,
+            ?stream_id: String,
+            ?type: :"response.shell_call_output_content.delta"
+          ) -> void
+
+          def to_hash: -> {
+            command_index: Integer,
+            delta: OpenAI::Beta::BetaResponseShellCallOutputContentDeltaEvent::Delta,
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.shell_call_output_content.delta",
+            agent: OpenAI::Beta::BetaResponseShellCallOutputContentDeltaEvent::Agent,
+            stream_id: String
+          }
+        end
+
+        type beta_response_shell_call_output_content_ws_done =
+          {
+            command_index: Integer,
+            item_id: String,
+            output: ::Array[OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Output],
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.shell_call_output_content.done",
+            agent: OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Agent,
+            stream_id: String
+          }
+
+        class BetaResponseShellCallOutputContentWsDone < OpenAI::Models::Beta::BetaResponseShellCallOutputContentDoneEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            command_index: Integer,
+            item_id: String,
+            output: ::Array[OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Output],
+            output_index: Integer,
+            sequence_number: Integer,
+            ?agent: OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Agent,
+            ?stream_id: String,
+            ?type: :"response.shell_call_output_content.done"
+          ) -> void
+
+          def to_hash: -> {
+            command_index: Integer,
+            item_id: String,
+            output: ::Array[OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Output],
+            output_index: Integer,
+            sequence_number: Integer,
+            type: :"response.shell_call_output_content.done",
+            agent: OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Agent,
             stream_id: String
           }
         end
@@ -696,8 +895,8 @@ module OpenAI
             response: OpenAI::Beta::BetaResponse,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseInProgressEvent::Agent?,
-            ?type: :"response.in_progress",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.in_progress"
           ) -> void
 
           def to_hash: -> {
@@ -727,8 +926,8 @@ module OpenAI
             response: OpenAI::Beta::BetaResponse,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseFailedEvent::Agent?,
-            ?type: :"response.failed",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.failed"
           ) -> void
 
           def to_hash: -> {
@@ -758,8 +957,8 @@ module OpenAI
             response: OpenAI::Beta::BetaResponse,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseIncompleteEvent::Agent?,
-            ?type: :"response.incomplete",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.incomplete"
           ) -> void
 
           def to_hash: -> {
@@ -791,8 +990,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseOutputItemAddedEvent::Agent?,
-            ?type: :"response.output_item.added",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.output_item.added"
           ) -> void
 
           def to_hash: -> {
@@ -825,8 +1024,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseOutputItemDoneEvent::Agent?,
-            ?type: :"response.output_item.done",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.output_item.done"
           ) -> void
 
           def to_hash: -> {
@@ -863,8 +1062,8 @@ module OpenAI
             sequence_number: Integer,
             summary_index: Integer,
             ?agent: OpenAI::Beta::BetaResponseReasoningSummaryPartAddedEvent::Agent?,
-            ?type: :"response.reasoning_summary_part.added",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.reasoning_summary_part.added"
           ) -> void
 
           def to_hash: -> {
@@ -905,8 +1104,8 @@ module OpenAI
             summary_index: Integer,
             ?agent: OpenAI::Beta::BetaResponseReasoningSummaryPartDoneEvent::Agent?,
             ?status: OpenAI::Models::Beta::BetaResponseReasoningSummaryPartDoneEvent::status,
-            ?type: :"response.reasoning_summary_part.done",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.reasoning_summary_part.done"
           ) -> void
 
           def to_hash: -> {
@@ -946,8 +1145,8 @@ module OpenAI
             sequence_number: Integer,
             summary_index: Integer,
             ?agent: OpenAI::Beta::BetaResponseReasoningSummaryTextDeltaEvent::Agent?,
-            ?type: :"response.reasoning_summary_text.delta",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.reasoning_summary_text.delta"
           ) -> void
 
           def to_hash: -> {
@@ -986,8 +1185,8 @@ module OpenAI
             summary_index: Integer,
             text: String,
             ?agent: OpenAI::Beta::BetaResponseReasoningSummaryTextDoneEvent::Agent?,
-            ?type: :"response.reasoning_summary_text.done",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.reasoning_summary_text.done"
           ) -> void
 
           def to_hash: -> {
@@ -1026,8 +1225,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseReasoningTextDeltaEvent::Agent?,
-            ?type: :"response.reasoning_text.delta",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.reasoning_text.delta"
           ) -> void
 
           def to_hash: -> {
@@ -1066,8 +1265,8 @@ module OpenAI
             sequence_number: Integer,
             text: String,
             ?agent: OpenAI::Beta::BetaResponseReasoningTextDoneEvent::Agent?,
-            ?type: :"response.reasoning_text.done",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.reasoning_text.done"
           ) -> void
 
           def to_hash: -> {
@@ -1106,8 +1305,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseRefusalDeltaEvent::Agent?,
-            ?type: :"response.refusal.delta",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.refusal.delta"
           ) -> void
 
           def to_hash: -> {
@@ -1146,8 +1345,8 @@ module OpenAI
             refusal: String,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseRefusalDoneEvent::Agent?,
-            ?type: :"response.refusal.done",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.refusal.done"
           ) -> void
 
           def to_hash: -> {
@@ -1188,8 +1387,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseTextDeltaEvent::Agent?,
-            ?type: :"response.output_text.delta",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.output_text.delta"
           ) -> void
 
           def to_hash: -> {
@@ -1231,8 +1430,8 @@ module OpenAI
             sequence_number: Integer,
             text: String,
             ?agent: OpenAI::Beta::BetaResponseTextDoneEvent::Agent?,
-            ?type: :"response.output_text.done",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.output_text.done"
           ) -> void
 
           def to_hash: -> {
@@ -1268,8 +1467,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseWebSearchCallCompletedEvent::Agent?,
-            ?type: :"response.web_search_call.completed",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.web_search_call.completed"
           ) -> void
 
           def to_hash: -> {
@@ -1302,8 +1501,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseWebSearchCallInProgressEvent::Agent?,
-            ?type: :"response.web_search_call.in_progress",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.web_search_call.in_progress"
           ) -> void
 
           def to_hash: -> {
@@ -1336,8 +1535,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseWebSearchCallSearchingEvent::Agent?,
-            ?type: :"response.web_search_call.searching",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.web_search_call.searching"
           ) -> void
 
           def to_hash: -> {
@@ -1370,8 +1569,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseImageGenCallCompletedEvent::Agent?,
-            ?type: :"response.image_generation_call.completed",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.image_generation_call.completed"
           ) -> void
 
           def to_hash: -> {
@@ -1404,8 +1603,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseImageGenCallGeneratingEvent::Agent?,
-            ?type: :"response.image_generation_call.generating",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.image_generation_call.generating"
           ) -> void
 
           def to_hash: -> {
@@ -1438,8 +1637,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseImageGenCallInProgressEvent::Agent?,
-            ?type: :"response.image_generation_call.in_progress",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.image_generation_call.in_progress"
           ) -> void
 
           def to_hash: -> {
@@ -1461,6 +1660,10 @@ module OpenAI
             sequence_number: Integer,
             type: :"response.image_generation_call.partial_image",
             agent: OpenAI::Beta::BetaResponseImageGenCallPartialImageEvent::Agent?,
+            background: String,
+            output_format: String,
+            quality: String,
+            size: String,
             stream_id: String
           }
 
@@ -1476,8 +1679,12 @@ module OpenAI
             partial_image_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseImageGenCallPartialImageEvent::Agent?,
-            ?type: :"response.image_generation_call.partial_image",
-            ?stream_id: String
+            ?background: String,
+            ?output_format: String,
+            ?quality: String,
+            ?size: String,
+            ?stream_id: String,
+            ?type: :"response.image_generation_call.partial_image"
           ) -> void
 
           def to_hash: -> {
@@ -1488,6 +1695,10 @@ module OpenAI
             sequence_number: Integer,
             type: :"response.image_generation_call.partial_image",
             agent: OpenAI::Beta::BetaResponseImageGenCallPartialImageEvent::Agent?,
+            background: String,
+            output_format: String,
+            quality: String,
+            size: String,
             stream_id: String
           }
         end
@@ -1514,8 +1725,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseMcpCallArgumentsDeltaEvent::Agent?,
-            ?type: :"response.mcp_call_arguments.delta",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.mcp_call_arguments.delta"
           ) -> void
 
           def to_hash: -> {
@@ -1551,8 +1762,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseMcpCallArgumentsDoneEvent::Agent?,
-            ?type: :"response.mcp_call_arguments.done",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.mcp_call_arguments.done"
           ) -> void
 
           def to_hash: -> {
@@ -1586,8 +1797,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseMcpCallCompletedEvent::Agent?,
-            ?type: :"response.mcp_call.completed",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.mcp_call.completed"
           ) -> void
 
           def to_hash: -> {
@@ -1620,8 +1831,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseMcpCallFailedEvent::Agent?,
-            ?type: :"response.mcp_call.failed",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.mcp_call.failed"
           ) -> void
 
           def to_hash: -> {
@@ -1654,8 +1865,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseMcpCallInProgressEvent::Agent?,
-            ?type: :"response.mcp_call.in_progress",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.mcp_call.in_progress"
           ) -> void
 
           def to_hash: -> {
@@ -1688,8 +1899,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseMcpListToolsCompletedEvent::Agent?,
-            ?type: :"response.mcp_list_tools.completed",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.mcp_list_tools.completed"
           ) -> void
 
           def to_hash: -> {
@@ -1722,8 +1933,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseMcpListToolsFailedEvent::Agent?,
-            ?type: :"response.mcp_list_tools.failed",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.mcp_list_tools.failed"
           ) -> void
 
           def to_hash: -> {
@@ -1756,8 +1967,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseMcpListToolsInProgressEvent::Agent?,
-            ?type: :"response.mcp_list_tools.in_progress",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.mcp_list_tools.in_progress"
           ) -> void
 
           def to_hash: -> {
@@ -1831,8 +2042,8 @@ module OpenAI
             response: OpenAI::Beta::BetaResponse,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseQueuedEvent::Agent?,
-            ?type: :"response.queued",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.queued"
           ) -> void
 
           def to_hash: -> {
@@ -1866,8 +2077,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseCustomToolCallInputDeltaEvent::Agent?,
-            ?type: :"response.custom_tool_call_input.delta",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.custom_tool_call_input.delta"
           ) -> void
 
           def to_hash: -> {
@@ -1903,8 +2114,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseCustomToolCallInputDoneEvent::Agent?,
-            ?type: :"response.custom_tool_call_input.done",
-            ?stream_id: String
+            ?stream_id: String,
+            ?type: :"response.custom_tool_call_input.done"
           ) -> void
 
           def to_hash: -> {

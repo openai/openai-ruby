@@ -1,0 +1,49 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_shell_call_command_delta_event =
+        {
+          command_index: Integer,
+          delta: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.shell_call_command.delta",
+          obfuscation: String
+        }
+
+      class ResponseShellCallCommandDeltaEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor command_index: Integer
+
+        attr_accessor delta: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor type: :"response.shell_call_command.delta"
+
+        attr_reader obfuscation: String?
+
+        def obfuscation=: (String) -> String
+
+        def initialize: (
+          command_index: Integer,
+          delta: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          ?obfuscation: String,
+          ?type: :"response.shell_call_command.delta"
+        ) -> void
+
+        def to_hash: -> {
+          command_index: Integer,
+          delta: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.shell_call_command.delta",
+          obfuscation: String
+        }
+      end
+    end
+  end
+end

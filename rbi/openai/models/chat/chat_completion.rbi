@@ -32,6 +32,15 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :object
 
+        # Set of 16 key-value pairs that can be attached to an object. This can be useful
+        # for storing additional information about the object in a structured format, and
+        # querying for objects via API or the dashboard.
+        #
+        # Keys are strings with a maximum length of 64 characters. Values are strings with
+        # a maximum length of 512 characters.
+        sig { returns(T.nilable(T::Hash[Symbol, String])) }
+        attr_accessor :metadata
+
         # Moderation results for the request input and generated output, if moderated
         # completions were requested.
         sig { returns(T.nilable(OpenAI::Chat::ChatCompletion::Moderation)) }
@@ -97,6 +106,7 @@ module OpenAI
             choices: T::Array[OpenAI::Chat::ChatCompletion::Choice::OrHash],
             created: Integer,
             model: String,
+            metadata: T.nilable(T::Hash[Symbol, String]),
             moderation:
               T.nilable(OpenAI::Chat::ChatCompletion::Moderation::OrHash),
             service_tier:
@@ -116,6 +126,13 @@ module OpenAI
           created:,
           # The model used for the chat completion.
           model:,
+          # Set of 16 key-value pairs that can be attached to an object. This can be useful
+          # for storing additional information about the object in a structured format, and
+          # querying for objects via API or the dashboard.
+          #
+          # Keys are strings with a maximum length of 64 characters. Values are strings with
+          # a maximum length of 512 characters.
+          metadata: nil,
           # Moderation results for the request input and generated output, if moderated
           # completions were requested.
           moderation: nil,
@@ -160,6 +177,7 @@ module OpenAI
               created: Integer,
               model: String,
               object: Symbol,
+              metadata: T.nilable(T::Hash[Symbol, String]),
               moderation: T.nilable(OpenAI::Chat::ChatCompletion::Moderation),
               service_tier:
                 T.nilable(

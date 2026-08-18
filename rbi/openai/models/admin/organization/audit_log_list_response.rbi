@@ -2063,6 +2063,11 @@ module OpenAI
                 :"tenant.resource_access.deleted",
                 OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
               )
+            TENANT_ADS_ACCOUNT_ONBOARDING_REDEMPTION =
+              T.let(
+                :"tenant.ads_account.onboarding.redemption",
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+              )
             TENANT_SESSION_POLICY_CREATED =
               T.let(
                 :"tenant.session_policy.created",

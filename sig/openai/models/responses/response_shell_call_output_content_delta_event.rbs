@@ -1,0 +1,63 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_shell_call_output_content_delta_event =
+        {
+          command_index: Integer,
+          delta: OpenAI::Responses::ResponseShellCallOutputContentDeltaEvent::Delta,
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.shell_call_output_content.delta"
+        }
+
+      class ResponseShellCallOutputContentDeltaEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor command_index: Integer
+
+        attr_accessor delta: OpenAI::Responses::ResponseShellCallOutputContentDeltaEvent::Delta
+
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor type: :"response.shell_call_output_content.delta"
+
+        def initialize: (
+          command_index: Integer,
+          delta: OpenAI::Responses::ResponseShellCallOutputContentDeltaEvent::Delta,
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          ?type: :"response.shell_call_output_content.delta"
+        ) -> void
+
+        def to_hash: -> {
+          command_index: Integer,
+          delta: OpenAI::Responses::ResponseShellCallOutputContentDeltaEvent::Delta,
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.shell_call_output_content.delta"
+        }
+
+        type delta = { stderr: String, stdout: String }
+
+        class Delta < OpenAI::Internal::Type::BaseModel
+          attr_reader stderr: String?
+
+          def stderr=: (String) -> String
+
+          attr_reader stdout: String?
+
+          def stdout=: (String) -> String
+
+          def initialize: (?stderr: String, ?stdout: String) -> void
+
+          def to_hash: -> { stderr: String, stdout: String }
+        end
+      end
+    end
+  end
+end
