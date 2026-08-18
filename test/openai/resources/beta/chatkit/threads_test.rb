@@ -95,62 +95,12 @@ class OpenAI::Test::Resources::Beta::ChatKit::ThreadsTest < OpenAI::Test::Resour
     assert_pattern do
       case row
       in (
-        {
-          type: :"chatkit.user_message",
-          id: String,
-          attachments: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::ChatKit::ChatKitAttachment]),
-          content: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::Content]),
-          created_at: Integer,
-          inference_options: OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions | nil,
-          object: Symbol,
-          thread_id: String
-        } |
-        {
-          type: :"chatkit.assistant_message",
-          id: String,
-          content: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::ChatKit::ChatKitResponseOutputText]),
-          created_at: Integer,
-          object: Symbol,
-          thread_id: String
-        } |
-        {
-          type: :"chatkit.widget",
-          id: String,
-          created_at: Integer,
-          object: Symbol,
-          thread_id: String,
-          widget: String
-        } |
-        {
-          type: :"chatkit.client_tool_call",
-          id: String,
-          arguments: String,
-          call_id: String,
-          created_at: Integer,
-          name: String,
-          object: Symbol,
-          output: String | nil,
-          status: OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitClientToolCall::Status,
-          thread_id: String
-        } |
-        {
-          type: :"chatkit.task",
-          id: String,
-          created_at: Integer,
-          heading: String | nil,
-          object: Symbol,
-          summary: String | nil,
-          task_type: OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTask::TaskType,
-          thread_id: String
-        } |
-        {
-          type: :"chatkit.task_group",
-          id: String,
-          created_at: Integer,
-          object: Symbol,
-          tasks: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task]),
-          thread_id: String
-        }
+        {type: :"chatkit.user_message", id: String, attachments: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::ChatKit::ChatKitAttachment]), content: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::Content]), created_at: Integer, inference_options: OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions | nil, object: Symbol, thread_id: String} |
+        {type: :"chatkit.assistant_message", id: String, content: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::ChatKit::ChatKitResponseOutputText]), created_at: Integer, object: Symbol, thread_id: String} |
+        {type: :"chatkit.widget", id: String, created_at: Integer, object: Symbol, thread_id: String, widget: String} |
+        {type: :"chatkit.client_tool_call", id: String, arguments: String, call_id: String, created_at: Integer, name: String, object: Symbol, output: String | nil, status: OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitClientToolCall::Status, thread_id: String} |
+        {type: :"chatkit.task", id: String, created_at: Integer, heading: String | nil, object: Symbol, summary: String | nil, task_type: OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTask::TaskType, thread_id: String} |
+        {type: :"chatkit.task_group", id: String, created_at: Integer, object: Symbol, tasks: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task]), thread_id: String}
       )
         nil
       end

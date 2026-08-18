@@ -1624,7 +1624,7 @@ module OpenAI
 
         type response_output_text_annotation_ws_added =
           {
-            annotation: top,
+            annotation: OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent::annotation?,
             annotation_index: Integer,
             content_index: Integer,
             item_id: String,
@@ -1640,7 +1640,7 @@ module OpenAI
           def stream_id=: (String _) -> String
 
           def initialize: (
-            annotation: top,
+            annotation: OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent::annotation?,
             annotation_index: Integer,
             content_index: Integer,
             item_id: String,
@@ -1651,7 +1651,7 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            annotation: top,
+            annotation: OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent::annotation?,
             annotation_index: Integer,
             content_index: Integer,
             item_id: String,
