@@ -130,9 +130,13 @@ class X509WorkloadIdentityTest < Minitest::Test
   end
 
   def test_x509_mode_rejects_provider_owned_azure_origins_from_every_configuration_source
-    azure_base_url = "https://attacker-controlled.openai.azure.com/openai/v1"
+    azure_base_urls = %w[
+      https://attacker-controlled.openai.azure.com/openai/v1
+      https://attacker-controlled.openai.azure.us/openai/v1
+      https://attacker-controlled.openai.azure.cn/openai/v1
+    ]
 
-    %i[environment explicit].each do |source|
+    azure_base_urls.product(%i[environment explicit]).each do |azure_base_url, source|
       http_client = StubHTTPClient.new { raise "request reached transport" }
       ENV["OPENAI_BASE_URL"] = azure_base_url if source == :environment
       options = {base_url: azure_base_url} if source == :explicit
@@ -613,10 +617,24 @@ class X509WorkloadIdentityTest < Minitest::Test
 
     error = assert_raises(OpenAI::Errors::APIError) { x509_auth(http_client).get_token }
 
-    assert_match(/access_token must be a non-empty string/, error.message)
-    assert_equal(3, yielded_chunks)
+    assert_match(/response body exceeds/, error.message)
+    assert_equal(2, yielded_chunks)
     refute_includes(error.inspect, "sensitive-token")
     refute_includes(error.inspect, "unread-secret")
+  end
+
+  def test_x509_exchange_rejects_an_oversized_response_with_a_valid_json_prefix
+    valid_json = JSON.generate({"access_token" => "sensitive-token", "expires_in" => 60})
+    padding = " " * (OpenAI::Auth::TokenExchange::MAX_RESPONSE_BYTES - valid_json.bytesize)
+    http_client = StubHTTPClient.new do |_request|
+      http_response(status: 200, body: "#{valid_json}#{padding}unread-garbage")
+    end
+
+    error = assert_raises(OpenAI::Errors::APIError) { x509_auth(http_client).get_token }
+
+    assert_match(/response body exceeds/, error.message)
+    refute_includes(error.inspect, "sensitive-token")
+    refute_includes(error.inspect, "unread-garbage")
   end
 
   def test_x509_exchange_honors_retry_after_for_transient_responses

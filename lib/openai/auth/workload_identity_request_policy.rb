@@ -8,7 +8,7 @@ module OpenAI
     class WorkloadIdentityRequestPolicy
       AUTHENTICATED = :openai_workload_identity_authenticated
       HTTP_SCHEMES = %w[http https].freeze
-      PROVIDER_OWNED_HOST_SUFFIXES = %w[openai.azure.com].freeze
+      PROVIDER_OWNED_HOST_SUFFIXES = %w[openai.azure.com openai.azure.us openai.azure.cn].freeze
       private_constant :AUTHENTICATED, :HTTP_SCHEMES, :PROVIDER_OWNED_HOST_SUFFIXES
 
       # Selects the request policy once at client construction.

@@ -259,6 +259,36 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
     waiter&.kill if waiter&.alive?
   end
 
+  def test_longer_deadline_waiter_refreshes_after_short_deadline_leader_times_out
+    started = Queue.new
+    release = Queue.new
+    http_client = StubHTTPClient.new do |_request|
+      if http_client.requests.length == 1
+        started << true
+        release.pop
+      end
+      http_response(status: 200, body: {"access_token" => "winner-token", "expires_in" => 60})
+    end
+    auth = x509_auth(http_client)
+    deadline = OpenAI::Internal::Util.monotonic_secs + 0.05
+    leader = Thread.new { auth.get_token(deadline: deadline) }
+    leader.report_on_exception = false
+    started.pop
+    waiter = Thread.new { auth.get_token(deadline: OpenAI::Internal::Util.monotonic_secs + 2) }
+    waiter.report_on_exception = false
+    Timeout.timeout(1) { Thread.pass until waiter.status == "sleep" }
+    sleep(0.06)
+    release << true
+
+    assert_raises(Timeout::Error) { leader.value }
+    assert_equal("winner-token", waiter.value)
+    assert_equal(2, http_client.requests.length)
+  ensure
+    release << true if release
+    leader&.kill if leader&.alive?
+    waiter&.kill if waiter&.alive?
+  end
+
   def test_api_retry_does_not_resend_a_bearer_invalidated_during_backoff
     retry_scheduled = Queue.new
     continue_retry = Queue.new

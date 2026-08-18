@@ -619,13 +619,17 @@ class WorkloadIdentityTest < Minitest::Test
   end
 
   def test_workload_identity_rejects_provider_owned_azure_origins_from_every_configuration_source
-    azure_base_url = "https://attacker-controlled.openai.azure.com/openai/v1"
+    azure_base_urls = %w[
+      https://attacker-controlled.openai.azure.com/openai/v1
+      https://attacker-controlled.openai.azure.us/openai/v1
+      https://attacker-controlled.openai.azure.cn/openai/v1
+    ]
     providers = [
       OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(token_path: @token_path),
       IDTokenProvider.new
     ]
 
-    providers.product(%i[environment explicit]).each do |provider, source|
+    providers.product(azure_base_urls, %i[environment explicit]).each do |provider, azure_base_url, source|
       ENV["OPENAI_BASE_URL"] = azure_base_url if source == :environment
       options = {base_url: azure_base_url} if source == :explicit
       config = OpenAI::Auth::WorkloadIdentity.new(

@@ -87,7 +87,7 @@ module OpenAI
               end
             rescue StandardError => e
               @mutex.synchronize do
-                @retry_failed_refresh = e.is_a?(OpenAI::Errors::APIError)
+                @retry_failed_refresh = e.is_a?(OpenAI::Errors::APIError) || e.is_a?(Timeout::Error)
               end
               raise
             ensure

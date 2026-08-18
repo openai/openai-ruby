@@ -191,9 +191,11 @@ module OpenAI
           body = String.new(capacity: [MAX_RESPONSE_BYTES, 4096].min)
           response.body.each do |chunk|
             remaining = MAX_RESPONSE_BYTES - body.bytesize
-            break unless remaining.positive?
+            if chunk.bytesize > remaining
+              raise invalid_token_response("response body exceeds #{MAX_RESPONSE_BYTES} bytes")
+            end
 
-            body << chunk.byteslice(0, remaining)
+            body << chunk
           end
           body
         ensure
