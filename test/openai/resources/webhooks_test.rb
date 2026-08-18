@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative "../test_helper"
-require "base64"
 require "openssl"
 require "stringio"
 
@@ -72,12 +71,29 @@ class OpenAI::Test::Resources::WebhooksTest < OpenAI::Test::ResourceTest
   end
 
   def test_unwrap_accepts_base64_encoded_webhook_secrets
-    signing_key = "binary\x00webhook secret"
-    webhook_secret = "whsec_#{Base64.strict_encode64(signing_key)}"
+    signing_key = "binary\x00\xFF\x80webhook secret".b
+    webhook_secret = "whsec_YmluYXJ5AP+Ad2ViaG9vayBzZWNyZXQ="
 
     event = @webhook_service.unwrap(@test_payload, signed_headers(signing_key), webhook_secret)
 
     assert_equal("evt_685c059ae3a481909bdc86819b066fb6", event.id)
+  end
+
+  def test_unwrap_accepts_padded_base64_encoded_webhook_secrets
+    signing_key = "f"
+    webhook_secret = "whsec_Zg=="
+
+    event = @webhook_service.unwrap(@test_payload, signed_headers(signing_key), webhook_secret)
+
+    assert_equal("evt_685c059ae3a481909bdc86819b066fb6", event.id)
+  end
+
+  def test_unwrap_rejects_malformed_base64_padding
+    %w[whsec_Zg= whsec_Zg=== whsec_Zg whsec_Zm9v=].each do |webhook_secret|
+      assert_raises(ArgumentError, "expected #{webhook_secret.inspect} to be rejected") do
+        @webhook_service.unwrap(@test_payload, signed_headers("f"), webhook_secret)
+      end
+    end
   end
 
   def test_verify_signature_with_missing_headers
@@ -262,12 +278,16 @@ class OpenAI::Test::Resources::WebhooksTest < OpenAI::Test::ResourceTest
 
   def signed_headers(signing_key)
     signed_payload = "#{@webhook_id}.#{@fixed_timestamp}.#{@test_payload}"
-    signature = Base64.strict_encode64(OpenSSL::HMAC.digest("sha256", signing_key, signed_payload))
+    signature = encode64(OpenSSL::HMAC.digest("sha256", signing_key, signed_payload))
 
     {
       "webhook-signature" => "v1,#{signature}",
       "webhook-timestamp" => @fixed_timestamp,
       "webhook-id" => @webhook_id
     }
+  end
+
+  def encode64(bytes)
+    [bytes].pack("m0")
   end
 end

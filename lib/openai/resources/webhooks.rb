@@ -97,7 +97,7 @@ module OpenAI
 
         # Decode the secret if it starts with whsec_
         decoded_secret = if webhook_secret.start_with?("whsec_")
-          Base64.strict_decode64(webhook_secret[6..])
+          webhook_secret[6..].unpack1("m0")
         else
           webhook_secret
         end
@@ -108,11 +108,7 @@ module OpenAI
         signed_payload = "#{webhook_id}.#{timestamp_header}.#{payload}"
 
         # Compute HMAC-SHA256 signature
-        expected_signature = Base64
-          .encode64(
-            OpenSSL::HMAC.digest("sha256", decoded_secret, signed_payload)
-          )
-          .strip
+        expected_signature = [OpenSSL::HMAC.digest("sha256", decoded_secret, signed_payload)].pack("m0")
 
         # Accept if any signature matches using timing-safe comparison
         return if signatures.any? { |signature| OpenSSL.secure_compare(expected_signature, signature) }

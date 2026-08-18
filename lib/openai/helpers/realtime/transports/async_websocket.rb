@@ -276,7 +276,7 @@ module OpenAI
 
           user = URI::RFC2396_PARSER.unescape(proxy.user)
           password = URI::RFC2396_PARSER.unescape(proxy.password.to_s)
-          {"proxy-authorization" => "Basic #{Base64.strict_encode64("#{user}:#{password}")}"}
+          {"proxy-authorization" => "Basic #{["#{user}:#{password}"].pack("m0")}"}
         end
 
         private def trace_safe_headers(headers)
