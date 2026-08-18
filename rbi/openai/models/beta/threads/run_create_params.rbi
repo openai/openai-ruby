@@ -2,19 +2,22 @@
 
 module OpenAI
   module Models
+
     module Beta
+
       module Threads
+
         class RunCreateParams < OpenAI::Internal::Type::BaseModel
+
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Beta::Threads::RunCreateParams,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::Threads::RunCreateParams,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           sig { returns(String) }
           attr_accessor :thread_id
@@ -32,21 +35,10 @@ module OpenAI
           # See the
           # [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
           # for more information.
-          sig do
-            returns(
-              T.nilable(
-                T::Array[OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol]
-              )
-            )
-          end
+          sig { returns(T.nilable(T::Array[OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol])) }
           attr_reader :include
 
-          sig do
-            params(
-              include:
-                T::Array[OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol]
-            ).void
-          end
+          sig { params(include: T::Array[OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol]).void }
           attr_writer :include
 
           # Appends additional instructions at the end of the instructions for the run. This
@@ -56,15 +48,7 @@ module OpenAI
           attr_accessor :additional_instructions
 
           # Adds additional messages to the thread before creating the run.
-          sig do
-            returns(
-              T.nilable(
-                T::Array[
-                  OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage
-                ]
-              )
-            )
-          end
+          sig { returns(T.nilable(T::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage])) }
           attr_accessor :additional_messages
 
           # Overrides the
@@ -143,7 +127,7 @@ module OpenAI
           # the message content may be partially cut off if `finish_reason="length"`, which
           # indicates the generation exceeded `max_tokens` or the conversation exceeded the
           # max context length.
-          sig do
+          sig {
             returns(
               T.nilable(
                 T.any(
@@ -154,7 +138,7 @@ module OpenAI
                 )
               )
             )
-          end
+          }
           attr_accessor :response_format
 
           # What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
@@ -170,33 +154,26 @@ module OpenAI
           # to the user. Specifying a particular tool like `{"type": "file_search"}` or
           # `{"type": "function", "function": {"name": "my_function"}}` forces the model to
           # call that tool.
-          sig do
+          sig {
             returns(
               T.nilable(
-                T.any(
-                  OpenAI::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
-                  OpenAI::Beta::AssistantToolChoice
-                )
+                T.any(OpenAI::Beta::AssistantToolChoiceOption::Auto::OrSymbol, OpenAI::Beta::AssistantToolChoice)
               )
             )
-          end
+          }
           attr_accessor :tool_choice
 
           # Override the tools the assistant can use for this run. This is useful for
           # modifying the behavior on a per-run basis.
-          sig do
+          sig {
             returns(
               T.nilable(
                 T::Array[
-                  T.any(
-                    OpenAI::Beta::CodeInterpreterTool,
-                    OpenAI::Beta::FileSearchTool,
-                    OpenAI::Beta::FunctionTool
-                  )
+                  T.any(OpenAI::Beta::CodeInterpreterTool, OpenAI::Beta::FileSearchTool, OpenAI::Beta::FunctionTool)
                 ]
               )
             )
-          end
+          }
           attr_accessor :tools
 
           # An alternative to sampling with temperature, called nucleus sampling, where the
@@ -209,86 +186,89 @@ module OpenAI
 
           # Controls for how a thread will be truncated prior to the run. Use this to
           # control the initial context window of the run.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy)) }
           attr_reader :truncation_strategy
 
-          sig do
-            params(
-              truncation_strategy:
-                T.nilable(
-                  OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::OrHash
-                )
-            ).void
-          end
+          sig {
+            params(truncation_strategy: T.nilable(OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::OrHash))
+              .void
+          }
           attr_writer :truncation_strategy
 
           sig do
             params(
+
               thread_id: String,
+
               assistant_id: String,
-              include:
-                T::Array[OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol],
+
+              include: T::Array[OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol],
+
               additional_instructions: T.nilable(String),
-              additional_messages:
-                T.nilable(
-                  T::Array[
-                    OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::OrHash
-                  ]
-                ),
+
+              additional_messages: T.nilable(
+                T::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::OrHash]
+              ),
+
               instructions: T.nilable(String),
+
               max_completion_tokens: T.nilable(Integer),
+
               max_prompt_tokens: T.nilable(Integer),
+
               metadata: T.nilable(T::Hash[Symbol, String]),
+
               model: T.nilable(T.any(String, OpenAI::ChatModel::OrSymbol)),
+
               parallel_tool_calls: T::Boolean,
+
               reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
-              response_format:
-                T.nilable(
-                  T.any(
-                    Symbol,
-                    OpenAI::ResponseFormatText::OrHash,
-                    OpenAI::ResponseFormatJSONObject::OrHash,
-                    OpenAI::ResponseFormatJSONSchema::OrHash
-                  )
-                ),
+
+              response_format: T.nilable(
+                T.any(
+                  Symbol,
+                  OpenAI::ResponseFormatText::OrHash,
+                  OpenAI::ResponseFormatJSONObject::OrHash,
+                  OpenAI::ResponseFormatJSONSchema::OrHash
+                )
+              ),
+
               temperature: T.nilable(Float),
-              tool_choice:
-                T.nilable(
+
+              tool_choice: T.nilable(
+                T.any(
+                  OpenAI::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
+                  OpenAI::Beta::AssistantToolChoice::OrHash
+                )
+              ),
+
+              tools: T.nilable(
+                T::Array[
                   T.any(
-                    OpenAI::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
-                    OpenAI::Beta::AssistantToolChoice::OrHash
+                    OpenAI::Beta::CodeInterpreterTool::OrHash,
+                    OpenAI::Beta::FileSearchTool::OrHash,
+                    OpenAI::Beta::FunctionTool::OrHash
                   )
-                ),
-              tools:
-                T.nilable(
-                  T::Array[
-                    T.any(
-                      OpenAI::Beta::CodeInterpreterTool::OrHash,
-                      OpenAI::Beta::FileSearchTool::OrHash,
-                      OpenAI::Beta::FunctionTool::OrHash
-                    )
-                  ]
-                ),
+                ]
+              ),
+
               top_p: T.nilable(Float),
-              truncation_strategy:
-                T.nilable(
-                  OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::OrHash
-                ),
+
+              truncation_strategy: T.nilable(OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::OrHash),
+
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             thread_id:,
+
             # The ID of the
             # [assistant](https://platform.openai.com/docs/api-reference/assistants) to use to
             # execute this run.
             assistant_id:,
+
             # A list of additional fields to include in the response. Currently the only
             # supported value is `step_details.tool_calls[*].file_search.results[*].content`
             # to fetch the file search result content.
@@ -297,28 +277,34 @@ module OpenAI
             # [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
             # for more information.
             include: nil,
+
             # Appends additional instructions at the end of the instructions for the run. This
             # is useful for modifying the behavior on a per-run basis without overriding other
             # instructions.
             additional_instructions: nil,
+
             # Adds additional messages to the thread before creating the run.
             additional_messages: nil,
+
             # Overrides the
             # [instructions](https://platform.openai.com/docs/api-reference/assistants/createAssistant)
             # of the assistant. This is useful for modifying the behavior on a per-run basis.
             instructions: nil,
+
             # The maximum number of completion tokens that may be used over the course of the
             # run. The run will make a best effort to use only the number of completion tokens
             # specified, across multiple turns of the run. If the run exceeds the number of
             # completion tokens specified, the run will end with status `incomplete`. See
             # `incomplete_details` for more info.
             max_completion_tokens: nil,
+
             # The maximum number of prompt tokens that may be used over the course of the run.
             # The run will make a best effort to use only the number of prompt tokens
             # specified, across multiple turns of the run. If the run exceeds the number of
             # prompt tokens specified, the run will end with status `incomplete`. See
             # `incomplete_details` for more info.
             max_prompt_tokens: nil,
+
             # Set of 16 key-value pairs that can be attached to an object. This can be useful
             # for storing additional information about the object in a structured format, and
             # querying for objects via API or the dashboard.
@@ -326,15 +312,18 @@ module OpenAI
             # Keys are strings with a maximum length of 64 characters. Values are strings with
             # a maximum length of 512 characters.
             metadata: nil,
+
             # The ID of the [Model](https://platform.openai.com/docs/api-reference/models) to
             # be used to execute this run. If a value is provided here, it will override the
             # model associated with the assistant. If not, the model associated with the
             # assistant will be used.
             model: nil,
+
             # Whether to enable
             # [parallel function calling](https://platform.openai.com/docs/guides/function-calling#configuring-parallel-function-calling)
             # during tool use.
             parallel_tool_calls: nil,
+
             # Constrains effort on reasoning for reasoning models. Currently supported values
             # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
             # reasoning effort can result in faster responses and fewer tokens used on
@@ -342,6 +331,7 @@ module OpenAI
             # [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
             # model-specific support.
             reasoning_effort: nil,
+
             # Specifies the format that the model must output. Compatible with
             # [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
             # [GPT-4 Turbo](https://platform.openai.com/docs/models#gpt-4-turbo-and-gpt-4),
@@ -363,10 +353,12 @@ module OpenAI
             # indicates the generation exceeded `max_tokens` or the conversation exceeded the
             # max context length.
             response_format: nil,
+
             # What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
             # make the output more random, while lower values like 0.2 will make it more
             # focused and deterministic.
             temperature: nil,
+
             # Controls which (if any) tool is called by the model. `none` means the model will
             # not call any tools and instead generates a message. `auto` is the default value
             # and means the model can pick between generating a message or calling one or more
@@ -375,18 +367,22 @@ module OpenAI
             # `{"type": "function", "function": {"name": "my_function"}}` forces the model to
             # call that tool.
             tool_choice: nil,
+
             # Override the tools the assistant can use for this run. This is useful for
             # modifying the behavior on a per-run basis.
             tools: nil,
+
             # An alternative to sampling with temperature, called nucleus sampling, where the
             # model considers the results of the tokens with top_p probability mass. So 0.1
             # means only the tokens comprising the top 10% probability mass are considered.
             #
             # We generally recommend altering this or temperature but not both.
             top_p: nil,
+
             # Controls for how a thread will be truncated prior to the run. Use this to
             # control the initial context window of the run.
             truncation_strategy: nil,
+
             request_options: {}
           )
           end
@@ -396,17 +392,9 @@ module OpenAI
               {
                 thread_id: String,
                 assistant_id: String,
-                include:
-                  T::Array[
-                    OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol
-                  ],
+                include: T::Array[OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol],
                 additional_instructions: T.nilable(String),
-                additional_messages:
-                  T.nilable(
-                    T::Array[
-                      OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage
-                    ]
-                  ),
+                additional_messages: T.nilable(T::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage]),
                 instructions: T.nilable(String),
                 max_completion_tokens: T.nilable(Integer),
                 max_prompt_tokens: T.nilable(Integer),
@@ -414,38 +402,25 @@ module OpenAI
                 model: T.nilable(T.any(String, OpenAI::ChatModel::OrSymbol)),
                 parallel_tool_calls: T::Boolean,
                 reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
-                response_format:
-                  T.nilable(
-                    T.any(
-                      Symbol,
-                      OpenAI::ResponseFormatText,
-                      OpenAI::ResponseFormatJSONObject,
-                      OpenAI::ResponseFormatJSONSchema
-                    )
-                  ),
+                response_format: T.nilable(
+                  T.any(
+                    Symbol,
+                    OpenAI::ResponseFormatText,
+                    OpenAI::ResponseFormatJSONObject,
+                    OpenAI::ResponseFormatJSONSchema
+                  )
+                ),
                 temperature: T.nilable(Float),
-                tool_choice:
-                  T.nilable(
-                    T.any(
-                      OpenAI::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
-                      OpenAI::Beta::AssistantToolChoice
-                    )
-                  ),
-                tools:
-                  T.nilable(
-                    T::Array[
-                      T.any(
-                        OpenAI::Beta::CodeInterpreterTool,
-                        OpenAI::Beta::FileSearchTool,
-                        OpenAI::Beta::FunctionTool
-                      )
-                    ]
-                  ),
+                tool_choice: T.nilable(
+                  T.any(OpenAI::Beta::AssistantToolChoiceOption::Auto::OrSymbol, OpenAI::Beta::AssistantToolChoice)
+                ),
+                tools: T.nilable(
+                  T::Array[
+                    T.any(OpenAI::Beta::CodeInterpreterTool, OpenAI::Beta::FileSearchTool, OpenAI::Beta::FunctionTool)
+                  ]
+                ),
                 top_p: T.nilable(Float),
-                truncation_strategy:
-                  T.nilable(
-                    OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy
-                  ),
+                truncation_strategy: T.nilable(OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy),
                 request_options: OpenAI::RequestOptions
               }
             )
@@ -454,20 +429,15 @@ module OpenAI
           end
 
           class AdditionalMessage < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage,
-                  OpenAI::Internal::AnyHash
-                )
-              end
-
-            # The text contents of the message.
-            sig do
-              returns(
-                OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Content::Variants
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage,
+                OpenAI::Internal::AnyHash
               )
             end
+
+            # The text contents of the message.
+            sig { returns(OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Content::Variants) }
             attr_accessor :content
 
             # The role of the entity that is creating the message. Allowed values include:
@@ -476,23 +446,11 @@ module OpenAI
             #   most cases to represent user-generated messages.
             # - `assistant`: Indicates the message is generated by the assistant. Use this
             #   value to insert messages from the assistant into the conversation.
-            sig do
-              returns(
-                OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Role::OrSymbol
-              )
-            end
+            sig { returns(OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Role::OrSymbol) }
             attr_accessor :role
 
             # A list of files attached to the message, and the tools they should be added to.
-            sig do
-              returns(
-                T.nilable(
-                  T::Array[
-                    OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment
-                  ]
-                )
-              )
-            end
+            sig { returns(T.nilable(T::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment])) }
             attr_accessor :attachments
 
             # Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -506,22 +464,24 @@ module OpenAI
 
             sig do
               params(
-                content:
-                  OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Content::Variants,
-                role:
-                  OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Role::OrSymbol,
-                attachments:
-                  T.nilable(
-                    T::Array[
-                      OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::OrHash
-                    ]
-                  ),
+
+                content: OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Content::Variants,
+
+                role: OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Role::OrSymbol,
+
+                attachments: T.nilable(
+                  T::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::OrHash]
+                ),
+
                 metadata: T.nilable(T::Hash[Symbol, String])
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # The text contents of the message.
               content:,
+
               # The role of the entity that is creating the message. Allowed values include:
               #
               # - `user`: Indicates the message is sent by an actual user and should be used in
@@ -529,14 +489,17 @@ module OpenAI
               # - `assistant`: Indicates the message is generated by the assistant. Use this
               #   value to insert messages from the assistant into the conversation.
               role:,
+
               # A list of files attached to the message, and the tools they should be added to.
               attachments: nil,
+
               # Set of 16 key-value pairs that can be attached to an object. This can be useful
               # for storing additional information about the object in a structured format, and
               # querying for objects via API or the dashboard.
               #
               # Keys are strings with a maximum length of 64 characters. Values are strings with
               # a maximum length of 512 characters.
+
               metadata: nil
             )
             end
@@ -544,16 +507,11 @@ module OpenAI
             sig do
               override.returns(
                 {
-                  content:
-                    OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Content::Variants,
-                  role:
-                    OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Role::OrSymbol,
-                  attachments:
-                    T.nilable(
-                      T::Array[
-                        OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment
-                      ]
-                    ),
+                  content: OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Content::Variants,
+                  role: OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Role::OrSymbol,
+                  attachments: T.nilable(
+                    T::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment]
+                  ),
                   metadata: T.nilable(T::Hash[Symbol, String])
                 }
               )
@@ -565,33 +523,21 @@ module OpenAI
             module Content
               extend OpenAI::Internal::Type::Union
 
-              Variants =
-                T.type_alias do
-                  T.any(
-                    String,
-                    T::Array[
-                      OpenAI::Beta::Threads::MessageContentPartParam::Variants
-                    ]
-                  )
-                end
+              Variants = T.type_alias {
+                T.any(String, T::Array[OpenAI::Beta::Threads::MessageContentPartParam::Variants])
+              }
 
-              sig do
-                override.returns(
-                  T::Array[
-                    OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Content::Variants
-                  ]
-                )
-              end
+              sig {
+                override.returns(T::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Content::Variants])
+              }
               def self.variants
               end
 
-              MessageContentPartParamArray =
-                T.let(
-                  OpenAI::Internal::Type::ArrayOf[
-                    union: OpenAI::Beta::Threads::MessageContentPartParam
-                  ],
-                  OpenAI::Internal::Type::Converter
-                )
+              MessageContentPartParamArray = T.let(
+                OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::MessageContentPartParam],
+                OpenAI::Internal::Type::Converter
+              )
+
             end
 
             # The role of the entity that is creating the message. Allowed values include:
@@ -603,45 +549,33 @@ module OpenAI
             module Role
               extend OpenAI::Internal::Type::Enum
 
-              TaggedSymbol =
-                T.type_alias do
-                  T.all(
-                    Symbol,
-                    OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Role
-                  )
-                end
+              TaggedSymbol = T.type_alias {
+                T.all(Symbol, OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Role)
+              }
               OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-              USER =
-                T.let(
-                  :user,
-                  OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Role::TaggedSymbol
-                )
-              ASSISTANT =
-                T.let(
-                  :assistant,
-                  OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Role::TaggedSymbol
-                )
+              USER = T.let(:user, OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Role::TaggedSymbol)
+              ASSISTANT = T.let(
+                :assistant,
+                OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Role::TaggedSymbol
+              )
 
-              sig do
+              sig {
                 override.returns(
-                  T::Array[
-                    OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Role::TaggedSymbol
-                  ]
+                  T::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Role::TaggedSymbol]
                 )
-              end
+              }
               def self.values
               end
             end
 
             class Attachment < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # The ID of the file to attach to the message.
               sig { returns(T.nilable(String)) }
@@ -651,7 +585,7 @@ module OpenAI
               attr_writer :file_id
 
               # The tools to add this file to.
-              sig do
+              sig {
                 returns(
                   T.nilable(
                     T::Array[
@@ -662,38 +596,43 @@ module OpenAI
                     ]
                   )
                 )
-              end
+              }
               attr_reader :tools
 
-              sig do
+              sig {
                 params(
-                  tools:
-                    T::Array[
-                      T.any(
-                        OpenAI::Beta::CodeInterpreterTool::OrHash,
-                        OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch::OrHash
-                      )
-                    ]
-                ).void
-              end
+                  tools: T::Array[
+                    T.any(
+                      OpenAI::Beta::CodeInterpreterTool::OrHash,
+                      OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch::OrHash
+                    )
+                  ]
+                )
+                  .void
+              }
               attr_writer :tools
 
               sig do
                 params(
+
                   file_id: String,
-                  tools:
-                    T::Array[
-                      T.any(
-                        OpenAI::Beta::CodeInterpreterTool::OrHash,
-                        OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch::OrHash
-                      )
-                    ]
-                ).returns(T.attached_class)
+
+                  tools: T::Array[
+                    T.any(
+                      OpenAI::Beta::CodeInterpreterTool::OrHash,
+                      OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch::OrHash
+                    )
+                  ]
+                )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 # The ID of the file to attach to the message.
                 file_id: nil,
+
                 # The tools to add this file to.
+
                 tools: nil
               )
               end
@@ -702,13 +641,12 @@ module OpenAI
                 override.returns(
                   {
                     file_id: String,
-                    tools:
-                      T::Array[
-                        T.any(
-                          OpenAI::Beta::CodeInterpreterTool,
-                          OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch
-                        )
-                      ]
+                    tools: T::Array[
+                      T.any(
+                        OpenAI::Beta::CodeInterpreterTool,
+                        OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch
+                      )
+                    ]
                   }
                 )
               end
@@ -718,48 +656,58 @@ module OpenAI
               module Tool
                 extend OpenAI::Internal::Type::Union
 
-                Variants =
-                  T.type_alias do
-                    T.any(
-                      OpenAI::Beta::CodeInterpreterTool,
-                      OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch
-                    )
-                  end
+                Variants = T.type_alias {
+                  T.any(
+                    OpenAI::Beta::CodeInterpreterTool,
+                    OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch
+                  )
+                }
 
                 class FileSearch < OpenAI::Internal::Type::BaseModel
-                  OrHash =
-                    T.type_alias do
-                      T.any(
-                        OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch,
-                        OpenAI::Internal::AnyHash
-                      )
-                    end
+                  OrHash = T.type_alias do
+                    T.any(
+                      OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
 
                   # The type of tool being defined: `file_search`
                   sig { returns(Symbol) }
                   attr_accessor :type
 
-                  sig { params(type: Symbol).returns(T.attached_class) }
+                  sig do
+                    params(
+
+                      type: Symbol
+                    )
+                      .returns(T.attached_class)
+                  end
                   def self.new(
+
                     # The type of tool being defined: `file_search`
+
                     type: :file_search
                   )
                   end
 
-                  sig { override.returns({ type: Symbol }) }
+                  sig do
+                    override.returns(
+                      {type: Symbol}
+                    )
+                  end
                   def to_hash
                   end
+
                 end
 
-                sig do
+                sig {
                   override.returns(
-                    T::Array[
-                      OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::Variants
-                    ]
+                    T::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::Variants]
                   )
-                end
+                }
                 def self.variants
                 end
+
               end
             end
           end
@@ -771,38 +719,27 @@ module OpenAI
           module Model
             extend OpenAI::Internal::Type::Union
 
-            Variants =
-              T.type_alias { T.any(String, OpenAI::ChatModel::TaggedSymbol) }
+            Variants = T.type_alias { T.any(String, OpenAI::ChatModel::TaggedSymbol) }
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Beta::Threads::RunCreateParams::Model::Variants
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Beta::Threads::RunCreateParams::Model::Variants]) }
             def self.variants
             end
+
           end
 
           class TruncationStrategy < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # The truncation strategy to use for the thread. The default is `auto`. If set to
             # `last_messages`, the thread will be truncated to the n most recent messages in
             # the thread. When set to `auto`, messages in the middle of the thread will be
             # dropped to fit the context length of the model, `max_prompt_tokens`.
-            sig do
-              returns(
-                OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::Type::OrSymbol
-              )
-            end
+            sig { returns(OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::Type::OrSymbol) }
             attr_accessor :type
 
             # The number of most recent messages from the thread when constructing the context
@@ -814,19 +751,24 @@ module OpenAI
             # control the initial context window of the run.
             sig do
               params(
-                type:
-                  OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::Type::OrSymbol,
+
+                type: OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::Type::OrSymbol,
+
                 last_messages: T.nilable(Integer)
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # The truncation strategy to use for the thread. The default is `auto`. If set to
               # `last_messages`, the thread will be truncated to the n most recent messages in
               # the thread. When set to `auto`, messages in the middle of the thread will be
               # dropped to fit the context length of the model, `max_prompt_tokens`.
               type:,
+
               # The number of most recent messages from the thread when constructing the context
               # for the run.
+
               last_messages: nil
             )
             end
@@ -834,8 +776,7 @@ module OpenAI
             sig do
               override.returns(
                 {
-                  type:
-                    OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::Type::OrSymbol,
+                  type: OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::Type::OrSymbol,
                   last_messages: T.nilable(Integer)
                 }
               )
@@ -850,39 +791,32 @@ module OpenAI
             module Type
               extend OpenAI::Internal::Type::Enum
 
-              TaggedSymbol =
-                T.type_alias do
-                  T.all(
-                    Symbol,
-                    OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::Type
-                  )
-                end
+              TaggedSymbol = T.type_alias {
+                T.all(Symbol, OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::Type)
+              }
               OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-              AUTO =
-                T.let(
-                  :auto,
-                  OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::Type::TaggedSymbol
-                )
-              LAST_MESSAGES =
-                T.let(
-                  :last_messages,
-                  OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::Type::TaggedSymbol
-                )
+              AUTO = T.let(:auto, OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::Type::TaggedSymbol)
+              LAST_MESSAGES = T.let(
+                :last_messages,
+                OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::Type::TaggedSymbol
+              )
 
-              sig do
+              sig {
                 override.returns(
-                  T::Array[
-                    OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::Type::TaggedSymbol
-                  ]
+                  T::Array[OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::Type::TaggedSymbol]
                 )
-              end
+              }
               def self.values
               end
             end
           end
+
         end
+
       end
+
     end
+
   end
 end

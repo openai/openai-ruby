@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class ConversationItemInputAudioTranscriptionDeltaEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::ConversationItemInputAudioTranscriptionDeltaEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::ConversationItemInputAudioTranscriptionDeltaEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The unique ID of the server event.
         sig { returns(String) }
@@ -44,33 +46,42 @@ module OpenAI
         # array corresponds a log probability of which token would be selected for this
         # chunk of transcription. This can help to identify if it was possible there were
         # multiple valid options for a given chunk of transcription.
-        sig do
-          returns(T.nilable(T::Array[OpenAI::Realtime::LogProbProperties]))
-        end
+        sig { returns(T.nilable(T::Array[OpenAI::Realtime::LogProbProperties])) }
         attr_accessor :logprobs
 
         # Returned when the text value of an input audio transcription content part is
         # updated with incremental transcription results.
         sig do
           params(
+
             event_id: String,
+
             item_id: String,
+
             content_index: Integer,
+
             delta: String,
-            logprobs:
-              T.nilable(T::Array[OpenAI::Realtime::LogProbProperties::OrHash]),
+
+            logprobs: T.nilable(T::Array[OpenAI::Realtime::LogProbProperties::OrHash]),
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The unique ID of the server event.
           event_id:,
+
           # The ID of the item containing the audio that is being transcribed.
           item_id:,
+
           # The index of the content part in the item's content array.
           content_index: nil,
+
           # The text delta.
           delta: nil,
+
           # The log probabilities of the transcription. These can be enabled by
           # configurating the session with
           # `"include": ["item.input_audio_transcription.logprobs"]`. Each entry in the
@@ -78,7 +89,9 @@ module OpenAI
           # chunk of transcription. This can help to identify if it was possible there were
           # multiple valid options for a given chunk of transcription.
           logprobs: nil,
+
           # The event type, must be `conversation.item.input_audio_transcription.delta`.
+
           type: :"conversation.item.input_audio_transcription.delta"
         )
         end
@@ -97,7 +110,10 @@ module OpenAI
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

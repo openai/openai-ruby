@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class RealtimeTruncationRetentionRatio < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::RealtimeTruncationRetentionRatio,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::RealtimeTruncationRetentionRatio,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # Fraction of post-instruction conversation tokens to retain (`0.0` - `1.0`) when
         # the conversation exceeds the input token limit. Setting this to `0.8` means that
@@ -25,21 +27,10 @@ module OpenAI
 
         # Optional custom token limits for this truncation strategy. If not provided, the
         # model's default token limits will be used.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::Realtime::RealtimeTruncationRetentionRatio::TokenLimits
-            )
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Realtime::RealtimeTruncationRetentionRatio::TokenLimits)) }
         attr_reader :token_limits
 
-        sig do
-          params(
-            token_limits:
-              OpenAI::Realtime::RealtimeTruncationRetentionRatio::TokenLimits::OrHash
-          ).void
-        end
+        sig { params(token_limits: OpenAI::Realtime::RealtimeTruncationRetentionRatio::TokenLimits::OrHash).void }
         attr_writer :token_limits
 
         # Retain a fraction of the conversation tokens when the conversation exceeds the
@@ -47,22 +38,29 @@ module OpenAI
         # turns, which can help improve cached token usage.
         sig do
           params(
+
             retention_ratio: Float,
-            token_limits:
-              OpenAI::Realtime::RealtimeTruncationRetentionRatio::TokenLimits::OrHash,
+
+            token_limits: OpenAI::Realtime::RealtimeTruncationRetentionRatio::TokenLimits::OrHash,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Fraction of post-instruction conversation tokens to retain (`0.0` - `1.0`) when
           # the conversation exceeds the input token limit. Setting this to `0.8` means that
           # messages will be dropped until 80% of the maximum allowed tokens are used. This
           # helps reduce the frequency of truncations and improve cache rates.
           retention_ratio:,
+
           # Optional custom token limits for this truncation strategy. If not provided, the
           # model's default token limits will be used.
           token_limits: nil,
+
           # Use retention ratio truncation.
+
           type: :retention_ratio
         )
         end
@@ -72,8 +70,7 @@ module OpenAI
             {
               retention_ratio: Float,
               type: Symbol,
-              token_limits:
-                OpenAI::Realtime::RealtimeTruncationRetentionRatio::TokenLimits
+              token_limits: OpenAI::Realtime::RealtimeTruncationRetentionRatio::TokenLimits
             }
           )
         end
@@ -81,13 +78,12 @@ module OpenAI
         end
 
         class TokenLimits < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Realtime::RealtimeTruncationRetentionRatio::TokenLimits,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Realtime::RealtimeTruncationRetentionRatio::TokenLimits,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # Maximum tokens allowed in the conversation after instructions (which including
           # tool definitions). For example, setting this to 5,000 would mean that truncation
@@ -102,22 +98,38 @@ module OpenAI
 
           # Optional custom token limits for this truncation strategy. If not provided, the
           # model's default token limits will be used.
-          sig { params(post_instructions: Integer).returns(T.attached_class) }
+          sig do
+            params(
+
+              post_instructions: Integer
+            )
+              .returns(T.attached_class)
+          end
           def self.new(
+
             # Maximum tokens allowed in the conversation after instructions (which including
             # tool definitions). For example, setting this to 5,000 would mean that truncation
             # would occur when the conversation exceeds 5,000 tokens after instructions. This
             # cannot be higher than the model's context window size minus the maximum output
             # tokens.
+
             post_instructions: nil
           )
           end
 
-          sig { override.returns({ post_instructions: Integer }) }
+          sig do
+            override.returns(
+              {post_instructions: Integer}
+            )
+          end
           def to_hash
           end
+
         end
+
       end
+
     end
+
   end
 end

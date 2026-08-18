@@ -2,22 +2,24 @@
 
 module OpenAI
   module Resources
+
     class Admin
+
       class Organization
+
         class SpendAlerts
+
           # Creates an organization spend alert.
-          sig do
+          sig {
             params(
-              currency:
-                OpenAI::Admin::Organization::SpendAlertCreateParams::Currency::OrSymbol,
-              interval:
-                OpenAI::Admin::Organization::SpendAlertCreateParams::Interval::OrSymbol,
-              notification_channel:
-                OpenAI::Admin::Organization::SpendAlertCreateParams::NotificationChannel::OrHash,
+              currency: OpenAI::Admin::Organization::SpendAlertCreateParams::Currency::OrSymbol,
+              interval: OpenAI::Admin::Organization::SpendAlertCreateParams::Interval::OrSymbol,
+              notification_channel: OpenAI::Admin::Organization::SpendAlertCreateParams::NotificationChannel::OrHash,
               threshold_amount: Integer,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Admin::Organization::OrganizationSpendAlert)
-          end
+            )
+              .returns(OpenAI::Admin::Organization::OrganizationSpendAlert)
+          }
           def create(
             # The currency for the threshold amount.
             currency:,
@@ -32,12 +34,11 @@ module OpenAI
           end
 
           # Retrieves an organization spend alert.
-          sig do
-            params(
-              alert_id: String,
-              request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Admin::Organization::OrganizationSpendAlert)
-          end
+          sig {
+            params(alert_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+              OpenAI::Admin::Organization::OrganizationSpendAlert
+            )
+          }
           def retrieve(
             # The ID of the spend alert to retrieve.
             alert_id,
@@ -46,19 +47,17 @@ module OpenAI
           end
 
           # Updates an organization spend alert.
-          sig do
+          sig {
             params(
               alert_id: String,
-              currency:
-                OpenAI::Admin::Organization::SpendAlertUpdateParams::Currency::OrSymbol,
-              interval:
-                OpenAI::Admin::Organization::SpendAlertUpdateParams::Interval::OrSymbol,
-              notification_channel:
-                OpenAI::Admin::Organization::SpendAlertUpdateParams::NotificationChannel::OrHash,
+              currency: OpenAI::Admin::Organization::SpendAlertUpdateParams::Currency::OrSymbol,
+              interval: OpenAI::Admin::Organization::SpendAlertUpdateParams::Interval::OrSymbol,
+              notification_channel: OpenAI::Admin::Organization::SpendAlertUpdateParams::NotificationChannel::OrHash,
               threshold_amount: Integer,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Admin::Organization::OrganizationSpendAlert)
-          end
+            )
+              .returns(OpenAI::Admin::Organization::OrganizationSpendAlert)
+          }
           def update(
             # The ID of the spend alert to update.
             alert_id,
@@ -75,20 +74,16 @@ module OpenAI
           end
 
           # Lists organization spend alerts.
-          sig do
+          sig {
             params(
               after: String,
               before: String,
               limit: Integer,
-              order:
-                OpenAI::Admin::Organization::SpendAlertListParams::Order::OrSymbol,
+              order: OpenAI::Admin::Organization::SpendAlertListParams::Order::OrSymbol,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Internal::ConversationCursorPage[
-                OpenAI::Admin::Organization::OrganizationSpendAlert
-              ]
             )
-          end
+              .returns(OpenAI::Internal::ConversationCursorPage[OpenAI::Admin::Organization::OrganizationSpendAlert])
+          }
           def list(
             # Cursor for pagination. Provide the ID of the last spend alert from the previous
             # response to fetch the next page.
@@ -105,14 +100,11 @@ module OpenAI
           end
 
           # Deletes an organization spend alert.
-          sig do
-            params(
-              alert_id: String,
-              request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
+          sig {
+            params(alert_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
               OpenAI::Admin::Organization::OrganizationSpendAlertDeleted
             )
-          end
+          }
           def delete(
             # The ID of the spend alert to delete.
             alert_id,
@@ -125,7 +117,10 @@ module OpenAI
           def self.new(client:)
           end
         end
+
       end
+
     end
+
   end
 end

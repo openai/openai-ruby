@@ -2,54 +2,57 @@
 
 module OpenAI
   module Resources
+
     class Conversations
+
       # Manage conversations and conversation items.
       class Items
+
         # Create items in a conversation with the given ID.
-        sig do
+        sig {
           params(
             conversation_id: String,
-            items:
-              T::Array[
-                T.any(
-                  OpenAI::Responses::EasyInputMessage::OrHash,
-                  OpenAI::Responses::ResponseInputItem::Message::OrHash,
-                  OpenAI::Responses::ResponseOutputMessage::OrHash,
-                  OpenAI::Responses::ResponseFileSearchToolCall::OrHash,
-                  OpenAI::Responses::ResponseComputerToolCall::OrHash,
-                  OpenAI::Responses::ResponseInputItem::ComputerCallOutput::OrHash,
-                  OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
-                  OpenAI::Responses::ResponseFunctionToolCall::OrHash,
-                  OpenAI::Responses::ResponseInputItem::FunctionCallOutput::OrHash,
-                  OpenAI::Responses::ResponseInputItem::ToolSearchCall::OrHash,
-                  OpenAI::Responses::ResponseToolSearchOutputItemParam::OrHash,
-                  OpenAI::Responses::ResponseInputItem::AdditionalTools::OrHash,
-                  OpenAI::Responses::ResponseReasoningItem::OrHash,
-                  OpenAI::Responses::ResponseCompactionItemParam::OrHash,
-                  OpenAI::Responses::ResponseInputItem::ImageGenerationCall::OrHash,
-                  OpenAI::Responses::ResponseCodeInterpreterToolCall::OrHash,
-                  OpenAI::Responses::ResponseInputItem::LocalShellCall::OrHash,
-                  OpenAI::Responses::ResponseInputItem::LocalShellCallOutput::OrHash,
-                  OpenAI::Responses::ResponseInputItem::ShellCall::OrHash,
-                  OpenAI::Responses::ResponseInputItem::ShellCallOutput::OrHash,
-                  OpenAI::Responses::ResponseInputItem::ApplyPatchCall::OrHash,
-                  OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::OrHash,
-                  OpenAI::Responses::ResponseInputItem::McpListTools::OrHash,
-                  OpenAI::Responses::ResponseInputItem::McpApprovalRequest::OrHash,
-                  OpenAI::Responses::ResponseInputItem::McpApprovalResponse::OrHash,
-                  OpenAI::Responses::ResponseInputItem::McpCall::OrHash,
-                  OpenAI::Responses::ResponseCustomToolCallOutput::OrHash,
-                  OpenAI::Responses::ResponseCustomToolCall::OrHash,
-                  OpenAI::Responses::ResponseInputItem::CompactionTrigger::OrHash,
-                  OpenAI::Responses::ResponseInputItem::ItemReference::OrHash,
-                  OpenAI::Responses::ResponseInputItem::Program::OrHash,
-                  OpenAI::Responses::ResponseInputItem::ProgramOutput::OrHash
-                )
-              ],
+            items: T::Array[
+              T.any(
+                OpenAI::Responses::EasyInputMessage::OrHash,
+                OpenAI::Responses::ResponseInputItem::Message::OrHash,
+                OpenAI::Responses::ResponseOutputMessage::OrHash,
+                OpenAI::Responses::ResponseFileSearchToolCall::OrHash,
+                OpenAI::Responses::ResponseComputerToolCall::OrHash,
+                OpenAI::Responses::ResponseInputItem::ComputerCallOutput::OrHash,
+                OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
+                OpenAI::Responses::ResponseFunctionToolCall::OrHash,
+                OpenAI::Responses::ResponseInputItem::FunctionCallOutput::OrHash,
+                OpenAI::Responses::ResponseInputItem::ToolSearchCall::OrHash,
+                OpenAI::Responses::ResponseToolSearchOutputItemParam::OrHash,
+                OpenAI::Responses::ResponseInputItem::AdditionalTools::OrHash,
+                OpenAI::Responses::ResponseReasoningItem::OrHash,
+                OpenAI::Responses::ResponseCompactionItemParam::OrHash,
+                OpenAI::Responses::ResponseInputItem::ImageGenerationCall::OrHash,
+                OpenAI::Responses::ResponseCodeInterpreterToolCall::OrHash,
+                OpenAI::Responses::ResponseInputItem::LocalShellCall::OrHash,
+                OpenAI::Responses::ResponseInputItem::LocalShellCallOutput::OrHash,
+                OpenAI::Responses::ResponseInputItem::ShellCall::OrHash,
+                OpenAI::Responses::ResponseInputItem::ShellCallOutput::OrHash,
+                OpenAI::Responses::ResponseInputItem::ApplyPatchCall::OrHash,
+                OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::OrHash,
+                OpenAI::Responses::ResponseInputItem::McpListTools::OrHash,
+                OpenAI::Responses::ResponseInputItem::McpApprovalRequest::OrHash,
+                OpenAI::Responses::ResponseInputItem::McpApprovalResponse::OrHash,
+                OpenAI::Responses::ResponseInputItem::McpCall::OrHash,
+                OpenAI::Responses::ResponseCustomToolCallOutput::OrHash,
+                OpenAI::Responses::ResponseCustomToolCall::OrHash,
+                OpenAI::Responses::ResponseInputItem::CompactionTrigger::OrHash,
+                OpenAI::Responses::ResponseInputItem::ItemReference::OrHash,
+                OpenAI::Responses::ResponseInputItem::Program::OrHash,
+                OpenAI::Responses::ResponseInputItem::ProgramOutput::OrHash
+              )
+            ],
             include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Conversations::ConversationItemList)
-        end
+          )
+            .returns(OpenAI::Conversations::ConversationItemList)
+        }
         def create(
           # Path param: The ID of the conversation to add the item to.
           conversation_id,
@@ -66,14 +69,15 @@ module OpenAI
         end
 
         # Get a single item from a conversation with the given IDs.
-        sig do
+        sig {
           params(
             item_id: String,
             conversation_id: String,
             include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Conversations::ConversationItem::Variants)
-        end
+          )
+            .returns(OpenAI::Conversations::ConversationItem::Variants)
+        }
         def retrieve(
           # Path param: The ID of the item to retrieve.
           item_id,
@@ -89,7 +93,7 @@ module OpenAI
         end
 
         # List all items for a conversation with the given ID.
-        sig do
+        sig {
           params(
             conversation_id: String,
             after: String,
@@ -97,12 +101,9 @@ module OpenAI
             limit: Integer,
             order: OpenAI::Conversations::ItemListParams::Order::OrSymbol,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(
-            OpenAI::Internal::ConversationCursorPage[
-              OpenAI::Conversations::ConversationItem::Variants
-            ]
           )
-        end
+            .returns(OpenAI::Internal::ConversationCursorPage[OpenAI::Conversations::ConversationItem::Variants])
+        }
         def list(
           # The ID of the conversation to list items for.
           conversation_id,
@@ -140,13 +141,11 @@ module OpenAI
         end
 
         # Delete an item from a conversation with the given IDs.
-        sig do
-          params(
-            item_id: String,
-            conversation_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Conversations::Conversation)
-        end
+        sig {
+          params(item_id: String, conversation_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+            OpenAI::Conversations::Conversation
+          )
+        }
         def delete(
           # The ID of the item to delete.
           item_id,
@@ -161,6 +160,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

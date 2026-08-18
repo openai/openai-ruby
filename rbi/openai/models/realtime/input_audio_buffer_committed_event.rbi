@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class InputAudioBufferCommittedEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::InputAudioBufferCommittedEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::InputAudioBufferCommittedEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The unique ID of the server event.
         sig { returns(String) }
@@ -35,38 +37,46 @@ module OpenAI
         # also be sent to the client.
         sig do
           params(
+
             event_id: String,
+
             item_id: String,
+
             previous_item_id: T.nilable(String),
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The unique ID of the server event.
           event_id:,
+
           # The ID of the user message item that will be created.
           item_id:,
+
           # The ID of the preceding item after which the new item will be inserted. Can be
           # `null` if the item has no predecessor.
           previous_item_id: nil,
+
           # The event type, must be `input_audio_buffer.committed`.
+
           type: :"input_audio_buffer.committed"
         )
         end
 
         sig do
           override.returns(
-            {
-              event_id: String,
-              item_id: String,
-              type: Symbol,
-              previous_item_id: T.nilable(String)
-            }
+            {event_id: String, item_id: String, type: Symbol, previous_item_id: T.nilable(String)}
           )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class ConversationItemInputAudioTranscriptionCompletedEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The index of the content part containing the audio.
         sig { returns(Integer) }
@@ -34,34 +36,26 @@ module OpenAI
 
         # Usage statistics for the transcription, this is billed according to the ASR
         # model's pricing rather than the realtime model's pricing.
-        sig do
+        sig {
           returns(
             T.any(
               OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens,
               OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageDuration
             )
           )
-        end
+        }
         attr_accessor :usage
 
         # The languages detected in the audio. Returned by `gpt-transcribe`. An empty
         # array indicates that no language could be reliably detected.
-        sig do
-          returns(T.nilable(T::Array[OpenAI::Audio::TranscriptionLanguage]))
-        end
+        sig { returns(T.nilable(T::Array[OpenAI::Audio::TranscriptionLanguage])) }
         attr_reader :languages
 
-        sig do
-          params(
-            languages: T::Array[OpenAI::Audio::TranscriptionLanguage::OrHash]
-          ).void
-        end
+        sig { params(languages: T::Array[OpenAI::Audio::TranscriptionLanguage::OrHash]).void }
         attr_writer :languages
 
         # The log probabilities of the transcription.
-        sig do
-          returns(T.nilable(T::Array[OpenAI::Realtime::LogProbProperties]))
-        end
+        sig { returns(T.nilable(T::Array[OpenAI::Realtime::LogProbProperties])) }
         attr_accessor :logprobs
 
         # This event is the output of audio transcription for user audio written to the
@@ -76,39 +70,55 @@ module OpenAI
         # treated as a rough guide.
         sig do
           params(
+
             content_index: Integer,
+
             event_id: String,
+
             item_id: String,
+
             transcript: String,
-            usage:
-              T.any(
-                OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::OrHash,
-                OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageDuration::OrHash
-              ),
+
+            usage: T.any(
+              OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::OrHash,
+              OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageDuration::OrHash
+            ),
+
             languages: T::Array[OpenAI::Audio::TranscriptionLanguage::OrHash],
-            logprobs:
-              T.nilable(T::Array[OpenAI::Realtime::LogProbProperties::OrHash]),
+
+            logprobs: T.nilable(T::Array[OpenAI::Realtime::LogProbProperties::OrHash]),
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The index of the content part containing the audio.
           content_index:,
+
           # The unique ID of the server event.
           event_id:,
+
           # The ID of the item containing the audio that is being transcribed.
           item_id:,
+
           # The transcribed text.
           transcript:,
+
           # Usage statistics for the transcription, this is billed according to the ASR
           # model's pricing rather than the realtime model's pricing.
           usage:,
+
           # The languages detected in the audio. Returned by `gpt-transcribe`. An empty
           # array indicates that no language could be reliably detected.
           languages: nil,
+
           # The log probabilities of the transcription.
           logprobs: nil,
+
           # The event type, must be `conversation.item.input_audio_transcription.completed`.
+
           type: :"conversation.item.input_audio_transcription.completed"
         )
         end
@@ -121,11 +131,10 @@ module OpenAI
               item_id: String,
               transcript: String,
               type: Symbol,
-              usage:
-                T.any(
-                  OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens,
-                  OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageDuration
-                ),
+              usage: T.any(
+                OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens,
+                OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageDuration
+              ),
               languages: T::Array[OpenAI::Audio::TranscriptionLanguage],
               logprobs: T.nilable(T::Array[OpenAI::Realtime::LogProbProperties])
             }
@@ -139,22 +148,20 @@ module OpenAI
         module Usage
           extend OpenAI::Internal::Type::Union
 
-          Variants =
-            T.type_alias do
-              T.any(
-                OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens,
-                OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageDuration
-              )
-            end
+          Variants = T.type_alias {
+            T.any(
+              OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens,
+              OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageDuration
+            )
+          }
 
           class TranscriptTextUsageTokens < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # Number of input tokens billed for this request.
             sig { returns(Integer) }
@@ -173,44 +180,55 @@ module OpenAI
             attr_accessor :type
 
             # Details about the input tokens billed for this request.
-            sig do
+            sig {
               returns(
                 T.nilable(
                   OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails
                 )
               )
-            end
+            }
             attr_reader :input_token_details
 
-            sig do
+            sig {
               params(
-                input_token_details:
-                  OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails::OrHash
-              ).void
-            end
+                input_token_details: OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails::OrHash
+              )
+                .void
+            }
             attr_writer :input_token_details
 
             # Usage statistics for models billed by token usage.
             sig do
               params(
+
                 input_tokens: Integer,
+
                 output_tokens: Integer,
+
                 total_tokens: Integer,
-                input_token_details:
-                  OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails::OrHash,
+
+                input_token_details: OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails::OrHash,
+
                 type: Symbol
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # Number of input tokens billed for this request.
               input_tokens:,
+
               # Number of output tokens generated.
               output_tokens:,
+
               # Total number of tokens used (input + output).
               total_tokens:,
+
               # Details about the input tokens billed for this request.
               input_token_details: nil,
+
               # The type of the usage object. Always `tokens` for this variant.
+
               type: :tokens
             )
             end
@@ -222,8 +240,7 @@ module OpenAI
                   output_tokens: Integer,
                   total_tokens: Integer,
                   type: Symbol,
-                  input_token_details:
-                    OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails
+                  input_token_details: OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails
                 }
               )
             end
@@ -231,13 +248,12 @@ module OpenAI
             end
 
             class InputTokenDetails < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # Number of audio tokens billed for this request.
               sig { returns(T.nilable(Integer)) }
@@ -255,36 +271,43 @@ module OpenAI
 
               # Details about the input tokens billed for this request.
               sig do
-                params(audio_tokens: Integer, text_tokens: Integer).returns(
-                  T.attached_class
+                params(
+
+                  audio_tokens: Integer,
+
+                  text_tokens: Integer
                 )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 # Number of audio tokens billed for this request.
                 audio_tokens: nil,
+
                 # Number of text tokens billed for this request.
+
                 text_tokens: nil
               )
               end
 
               sig do
                 override.returns(
-                  { audio_tokens: Integer, text_tokens: Integer }
+                  {audio_tokens: Integer, text_tokens: Integer}
                 )
               end
               def to_hash
               end
+
             end
           end
 
           class TranscriptTextUsageDuration < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageDuration,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageDuration,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # Duration of the input audio in seconds.
             sig { returns(Float) }
@@ -296,32 +319,48 @@ module OpenAI
 
             # Usage statistics for models billed by audio input duration.
             sig do
-              params(seconds: Float, type: Symbol).returns(T.attached_class)
+              params(
+
+                seconds: Float,
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # Duration of the input audio in seconds.
               seconds:,
+
               # The type of the usage object. Always `duration` for this variant.
+
               type: :duration
             )
             end
 
-            sig { override.returns({ seconds: Float, type: Symbol }) }
+            sig do
+              override.returns(
+                {seconds: Float, type: Symbol}
+              )
+            end
             def to_hash
             end
+
           end
 
-          sig do
+          sig {
             override.returns(
-              T::Array[
-                OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::Variants
-              ]
+              T::Array[OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::Variants]
             )
-          end
+          }
           def self.variants
           end
+
         end
+
       end
+
     end
+
   end
 end

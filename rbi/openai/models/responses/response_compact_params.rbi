@@ -2,42 +2,31 @@
 
 module OpenAI
   module Models
+
     module Responses
+
       class ResponseCompactParams < OpenAI::Internal::Type::BaseModel
+
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Responses::ResponseCompactParams,
-              OpenAI::Internal::AnyHash
-            )
-          end
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Responses::ResponseCompactParams,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # Model ID used to generate the response, like `gpt-5` or `o3`. OpenAI offers a
         # wide range of models with different capabilities, performance characteristics,
         # and price points. Refer to the
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
         # available models.
-        sig do
-          returns(
-            T.nilable(
-              T.any(
-                OpenAI::Responses::ResponseCompactParams::Model::OrSymbol,
-                String
-              )
-            )
-          )
-        end
+        sig { returns(T.nilable(T.any(OpenAI::Responses::ResponseCompactParams::Model::OrSymbol, String))) }
         attr_accessor :model
 
         # Text, image, or file inputs to the model, used to generate a response
-        sig do
-          returns(
-            T.nilable(OpenAI::Responses::ResponseCompactParams::Input::Variants)
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Responses::ResponseCompactParams::Input::Variants)) }
         attr_accessor :input
 
         # A system (or developer) message inserted into the model's context. When used
@@ -67,33 +56,17 @@ module OpenAI
         # `ttl` defaults to `30m`, which is currently the only supported value. See the
         # [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
         # for current details.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::Responses::ResponseCompactParams::PromptCacheOptions
-            )
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Responses::ResponseCompactParams::PromptCacheOptions)) }
         attr_reader :prompt_cache_options
 
-        sig do
-          params(
-            prompt_cache_options:
-              T.nilable(
-                OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::OrHash
-              )
-          ).void
-        end
+        sig {
+          params(prompt_cache_options: T.nilable(OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::OrHash))
+            .void
+        }
         attr_writer :prompt_cache_options
 
         # How long to retain a prompt cache entry created by this request.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::Responses::ResponseCompactParams::PromptCacheRetention::OrSymbol
-            )
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Responses::ResponseCompactParams::PromptCacheRetention::OrSymbol)) }
         attr_accessor :prompt_cache_retention
 
         # Specifies the processing type used for serving the request. - If set to 'auto',
@@ -111,67 +84,59 @@ module OpenAI
         # response body will include the `service_tier` value based on the processing mode
         # actually used to serve the request. This response value may be different from
         # the value set in the parameter.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::Responses::ResponseCompactParams::ServiceTier::OrSymbol
-            )
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Responses::ResponseCompactParams::ServiceTier::OrSymbol)) }
         attr_accessor :service_tier
 
         sig do
           params(
-            model:
-              T.nilable(
-                T.any(
-                  OpenAI::Responses::ResponseCompactParams::Model::OrSymbol,
-                  String
-                )
-              ),
-            input:
-              T.nilable(
-                OpenAI::Responses::ResponseCompactParams::Input::Variants
-              ),
+
+            model: T.nilable(T.any(OpenAI::Responses::ResponseCompactParams::Model::OrSymbol, String)),
+
+            input: T.nilable(OpenAI::Responses::ResponseCompactParams::Input::Variants),
+
             instructions: T.nilable(String),
+
             previous_response_id: T.nilable(String),
+
             prompt_cache_key: T.nilable(String),
-            prompt_cache_options:
-              T.nilable(
-                OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::OrHash
-              ),
-            prompt_cache_retention:
-              T.nilable(
-                OpenAI::Responses::ResponseCompactParams::PromptCacheRetention::OrSymbol
-              ),
-            service_tier:
-              T.nilable(
-                OpenAI::Responses::ResponseCompactParams::ServiceTier::OrSymbol
-              ),
+
+            prompt_cache_options: T.nilable(OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::OrHash),
+
+            prompt_cache_retention: T.nilable(OpenAI::Responses::ResponseCompactParams::PromptCacheRetention::OrSymbol),
+
+            service_tier: T.nilable(OpenAI::Responses::ResponseCompactParams::ServiceTier::OrSymbol),
+
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Model ID used to generate the response, like `gpt-5` or `o3`. OpenAI offers a
           # wide range of models with different capabilities, performance characteristics,
           # and price points. Refer to the
           # [model guide](https://platform.openai.com/docs/models) to browse and compare
           # available models.
           model:,
+
           # Text, image, or file inputs to the model, used to generate a response
           input: nil,
+
           # A system (or developer) message inserted into the model's context. When used
           # along with `previous_response_id`, the instructions from a previous response
           # will not be carried over to the next response. This makes it simple to swap out
           # system (or developer) messages in new responses.
           instructions: nil,
+
           # The unique ID of the previous response to the model. Use this to create
           # multi-turn conversations. Learn more about
           # [conversation state](https://platform.openai.com/docs/guides/conversation-state).
           # Cannot be used in conjunction with `conversation`.
           previous_response_id: nil,
+
           # A key to use when reading from or writing to the prompt cache.
           prompt_cache_key: nil,
+
           # Options for prompt caching. Supported for `gpt-5.6` and later models. By
           # default, OpenAI automatically chooses one implicit cache breakpoint. You can add
           # explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
@@ -182,8 +147,10 @@ module OpenAI
           # [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
           # for current details.
           prompt_cache_options: nil,
+
           # How long to retain a prompt cache entry created by this request.
           prompt_cache_retention: nil,
+
           # Specifies the processing type used for serving the request. - If set to 'auto',
           # then the request will be processed with the service tier configured in the
           # Project settings. Unless otherwise configured, the Project will use 'default'. -
@@ -200,6 +167,7 @@ module OpenAI
           # actually used to serve the request. This response value may be different from
           # the value set in the parameter.
           service_tier: nil,
+
           request_options: {}
         )
         end
@@ -207,32 +175,16 @@ module OpenAI
         sig do
           override.returns(
             {
-              model:
-                T.nilable(
-                  T.any(
-                    OpenAI::Responses::ResponseCompactParams::Model::OrSymbol,
-                    String
-                  )
-                ),
-              input:
-                T.nilable(
-                  OpenAI::Responses::ResponseCompactParams::Input::Variants
-                ),
+              model: T.nilable(T.any(OpenAI::Responses::ResponseCompactParams::Model::OrSymbol, String)),
+              input: T.nilable(OpenAI::Responses::ResponseCompactParams::Input::Variants),
               instructions: T.nilable(String),
               previous_response_id: T.nilable(String),
               prompt_cache_key: T.nilable(String),
-              prompt_cache_options:
-                T.nilable(
-                  OpenAI::Responses::ResponseCompactParams::PromptCacheOptions
-                ),
-              prompt_cache_retention:
-                T.nilable(
-                  OpenAI::Responses::ResponseCompactParams::PromptCacheRetention::OrSymbol
-                ),
-              service_tier:
-                T.nilable(
-                  OpenAI::Responses::ResponseCompactParams::ServiceTier::OrSymbol
-                ),
+              prompt_cache_options: T.nilable(OpenAI::Responses::ResponseCompactParams::PromptCacheOptions),
+              prompt_cache_retention: T.nilable(
+                OpenAI::Responses::ResponseCompactParams::PromptCacheRetention::OrSymbol
+              ),
+              service_tier: T.nilable(OpenAI::Responses::ResponseCompactParams::ServiceTier::OrSymbol),
               request_options: OpenAI::RequestOptions
             }
           )
@@ -248,581 +200,291 @@ module OpenAI
         module Model
           extend OpenAI::Internal::Type::Union
 
-          Variants =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol,
-                String
-              )
-            end
+          Variants = T.type_alias { T.any(OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol, String) }
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Responses::ResponseCompactParams::Model::Variants
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Responses::ResponseCompactParams::Model::Variants]) }
           def self.variants
           end
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(Symbol, OpenAI::Responses::ResponseCompactParams::Model)
-            end
+          TaggedSymbol = T.type_alias do
+            T.all(Symbol, OpenAI::Responses::ResponseCompactParams::Model)
+          end
+
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          GPT_5_6_SOL =
-            T.let(
-              :"gpt-5.6-sol",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_6_TERRA =
-            T.let(
-              :"gpt-5.6-terra",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_6_LUNA =
-            T.let(
-              :"gpt-5.6-luna",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_5 =
-            T.let(
-              :"gpt-5.5",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_5_2026_04_23 =
-            T.let(
-              :"gpt-5.5-2026-04-23",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_4 =
-            T.let(
-              :"gpt-5.4",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_4_MINI =
-            T.let(
-              :"gpt-5.4-mini",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_4_NANO =
-            T.let(
-              :"gpt-5.4-nano",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_4_MINI_2026_03_17 =
-            T.let(
-              :"gpt-5.4-mini-2026-03-17",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_4_NANO_2026_03_17 =
-            T.let(
-              :"gpt-5.4-nano-2026-03-17",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_3_CHAT_LATEST =
-            T.let(
-              :"gpt-5.3-chat-latest",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_2 =
-            T.let(
-              :"gpt-5.2",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_2_2025_12_11 =
-            T.let(
-              :"gpt-5.2-2025-12-11",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_2_CHAT_LATEST =
-            T.let(
-              :"gpt-5.2-chat-latest",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_2_PRO =
-            T.let(
-              :"gpt-5.2-pro",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_2_PRO_2025_12_11 =
-            T.let(
-              :"gpt-5.2-pro-2025-12-11",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_1 =
-            T.let(
-              :"gpt-5.1",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_1_2025_11_13 =
-            T.let(
-              :"gpt-5.1-2025-11-13",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_1_CODEX =
-            T.let(
-              :"gpt-5.1-codex",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_1_MINI =
-            T.let(
-              :"gpt-5.1-mini",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_1_CHAT_LATEST =
-            T.let(
-              :"gpt-5.1-chat-latest",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5 =
-            T.let(
-              :"gpt-5",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_MINI =
-            T.let(
-              :"gpt-5-mini",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_NANO =
-            T.let(
-              :"gpt-5-nano",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_2025_08_07 =
-            T.let(
-              :"gpt-5-2025-08-07",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_MINI_2025_08_07 =
-            T.let(
-              :"gpt-5-mini-2025-08-07",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_NANO_2025_08_07 =
-            T.let(
-              :"gpt-5-nano-2025-08-07",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_CHAT_LATEST =
-            T.let(
-              :"gpt-5-chat-latest",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4_1 =
-            T.let(
-              :"gpt-4.1",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4_1_MINI =
-            T.let(
-              :"gpt-4.1-mini",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4_1_NANO =
-            T.let(
-              :"gpt-4.1-nano",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4_1_2025_04_14 =
-            T.let(
-              :"gpt-4.1-2025-04-14",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4_1_MINI_2025_04_14 =
-            T.let(
-              :"gpt-4.1-mini-2025-04-14",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4_1_NANO_2025_04_14 =
-            T.let(
-              :"gpt-4.1-nano-2025-04-14",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          O4_MINI =
-            T.let(
-              :"o4-mini",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          O4_MINI_2025_04_16 =
-            T.let(
-              :"o4-mini-2025-04-16",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          O3 =
-            T.let(
-              :o3,
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          O3_2025_04_16 =
-            T.let(
-              :"o3-2025-04-16",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          O3_MINI =
-            T.let(
-              :"o3-mini",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          O3_MINI_2025_01_31 =
-            T.let(
-              :"o3-mini-2025-01-31",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          O1 =
-            T.let(
-              :o1,
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          O1_2024_12_17 =
-            T.let(
-              :"o1-2024-12-17",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          O1_PREVIEW =
-            T.let(
-              :"o1-preview",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          O1_PREVIEW_2024_09_12 =
-            T.let(
-              :"o1-preview-2024-09-12",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          O1_MINI =
-            T.let(
-              :"o1-mini",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          O1_MINI_2024_09_12 =
-            T.let(
-              :"o1-mini-2024-09-12",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4O =
-            T.let(
-              :"gpt-4o",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4O_2024_11_20 =
-            T.let(
-              :"gpt-4o-2024-11-20",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4O_2024_08_06 =
-            T.let(
-              :"gpt-4o-2024-08-06",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4O_2024_05_13 =
-            T.let(
-              :"gpt-4o-2024-05-13",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4O_AUDIO_PREVIEW =
-            T.let(
-              :"gpt-4o-audio-preview",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4O_AUDIO_PREVIEW_2024_10_01 =
-            T.let(
-              :"gpt-4o-audio-preview-2024-10-01",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4O_AUDIO_PREVIEW_2024_12_17 =
-            T.let(
-              :"gpt-4o-audio-preview-2024-12-17",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4O_AUDIO_PREVIEW_2025_06_03 =
-            T.let(
-              :"gpt-4o-audio-preview-2025-06-03",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4O_MINI_AUDIO_PREVIEW =
-            T.let(
-              :"gpt-4o-mini-audio-preview",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4O_MINI_AUDIO_PREVIEW_2024_12_17 =
-            T.let(
-              :"gpt-4o-mini-audio-preview-2024-12-17",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4O_SEARCH_PREVIEW =
-            T.let(
-              :"gpt-4o-search-preview",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4O_MINI_SEARCH_PREVIEW =
-            T.let(
-              :"gpt-4o-mini-search-preview",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4O_SEARCH_PREVIEW_2025_03_11 =
-            T.let(
-              :"gpt-4o-search-preview-2025-03-11",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4O_MINI_SEARCH_PREVIEW_2025_03_11 =
-            T.let(
-              :"gpt-4o-mini-search-preview-2025-03-11",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          CHATGPT_4O_LATEST =
-            T.let(
-              :"chatgpt-4o-latest",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          CODEX_MINI_LATEST =
-            T.let(
-              :"codex-mini-latest",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4O_MINI =
-            T.let(
-              :"gpt-4o-mini",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4O_MINI_2024_07_18 =
-            T.let(
-              :"gpt-4o-mini-2024-07-18",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4_TURBO =
-            T.let(
-              :"gpt-4-turbo",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4_TURBO_2024_04_09 =
-            T.let(
-              :"gpt-4-turbo-2024-04-09",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4_0125_PREVIEW =
-            T.let(
-              :"gpt-4-0125-preview",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4_TURBO_PREVIEW =
-            T.let(
-              :"gpt-4-turbo-preview",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4_1106_PREVIEW =
-            T.let(
-              :"gpt-4-1106-preview",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4_VISION_PREVIEW =
-            T.let(
-              :"gpt-4-vision-preview",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4 =
-            T.let(
-              :"gpt-4",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4_0314 =
-            T.let(
-              :"gpt-4-0314",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4_0613 =
-            T.let(
-              :"gpt-4-0613",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4_32K =
-            T.let(
-              :"gpt-4-32k",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4_32K_0314 =
-            T.let(
-              :"gpt-4-32k-0314",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_4_32K_0613 =
-            T.let(
-              :"gpt-4-32k-0613",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_3_5_TURBO =
-            T.let(
-              :"gpt-3.5-turbo",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_3_5_TURBO_16K =
-            T.let(
-              :"gpt-3.5-turbo-16k",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_3_5_TURBO_0301 =
-            T.let(
-              :"gpt-3.5-turbo-0301",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_3_5_TURBO_0613 =
-            T.let(
-              :"gpt-3.5-turbo-0613",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_3_5_TURBO_1106 =
-            T.let(
-              :"gpt-3.5-turbo-1106",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_3_5_TURBO_0125 =
-            T.let(
-              :"gpt-3.5-turbo-0125",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_3_5_TURBO_16K_0613 =
-            T.let(
-              :"gpt-3.5-turbo-16k-0613",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          O1_PRO =
-            T.let(
-              :"o1-pro",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          O1_PRO_2025_03_19 =
-            T.let(
-              :"o1-pro-2025-03-19",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          O3_PRO =
-            T.let(
-              :"o3-pro",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          O3_PRO_2025_06_10 =
-            T.let(
-              :"o3-pro-2025-06-10",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          O3_DEEP_RESEARCH =
-            T.let(
-              :"o3-deep-research",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          O3_DEEP_RESEARCH_2025_06_26 =
-            T.let(
-              :"o3-deep-research-2025-06-26",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          O4_MINI_DEEP_RESEARCH =
-            T.let(
-              :"o4-mini-deep-research",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          O4_MINI_DEEP_RESEARCH_2025_06_26 =
-            T.let(
-              :"o4-mini-deep-research-2025-06-26",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          COMPUTER_USE_PREVIEW =
-            T.let(
-              :"computer-use-preview",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          COMPUTER_USE_PREVIEW_2025_03_11 =
-            T.let(
-              :"computer-use-preview-2025-03-11",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_5_PRO =
-            T.let(
-              :"gpt-5.5-pro",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_5_PRO_2026_04_23 =
-            T.let(
-              :"gpt-5.5-pro-2026-04-23",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_CODEX =
-            T.let(
-              :"gpt-5-codex",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_PRO =
-            T.let(
-              :"gpt-5-pro",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_PRO_2025_10_06 =
-            T.let(
-              :"gpt-5-pro-2025-10-06",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_1_CODEX_MAX =
-            T.let(
-              :"gpt-5.1-codex-max",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_DAYBREAK_BLUE_LATEST =
-            T.let(
-              :"gpt-daybreak-blue-latest",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_DAYBREAK_RED_LATEST =
-            T.let(
-              :"gpt-daybreak-red-latest",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
-          GPT_5_6_CYBER =
-            T.let(
-              :"gpt-5.6-cyber",
-              OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
-            )
+          GPT_5_6_SOL = T.let(:"gpt-5.6-sol", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_5_6_TERRA = T.let(:"gpt-5.6-terra", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_5_6_LUNA = T.let(:"gpt-5.6-luna", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_5_5 = T.let(:"gpt-5.5", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_5_5_2026_04_23 = T.let(
+            :"gpt-5.5-2026-04-23",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_5_4 = T.let(:"gpt-5.4", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_5_4_MINI = T.let(:"gpt-5.4-mini", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_5_4_NANO = T.let(:"gpt-5.4-nano", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_5_4_MINI_2026_03_17 = T.let(
+            :"gpt-5.4-mini-2026-03-17",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_5_4_NANO_2026_03_17 = T.let(
+            :"gpt-5.4-nano-2026-03-17",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_5_3_CHAT_LATEST = T.let(
+            :"gpt-5.3-chat-latest",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_5_2 = T.let(:"gpt-5.2", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_5_2_2025_12_11 = T.let(
+            :"gpt-5.2-2025-12-11",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_5_2_CHAT_LATEST = T.let(
+            :"gpt-5.2-chat-latest",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_5_2_PRO = T.let(:"gpt-5.2-pro", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_5_2_PRO_2025_12_11 = T.let(
+            :"gpt-5.2-pro-2025-12-11",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_5_1 = T.let(:"gpt-5.1", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_5_1_2025_11_13 = T.let(
+            :"gpt-5.1-2025-11-13",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_5_1_CODEX = T.let(:"gpt-5.1-codex", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_5_1_MINI = T.let(:"gpt-5.1-mini", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_5_1_CHAT_LATEST = T.let(
+            :"gpt-5.1-chat-latest",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_5 = T.let(:"gpt-5", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_5_MINI = T.let(:"gpt-5-mini", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_5_NANO = T.let(:"gpt-5-nano", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_5_2025_08_07 = T.let(:"gpt-5-2025-08-07", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_5_MINI_2025_08_07 = T.let(
+            :"gpt-5-mini-2025-08-07",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_5_NANO_2025_08_07 = T.let(
+            :"gpt-5-nano-2025-08-07",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_5_CHAT_LATEST = T.let(:"gpt-5-chat-latest", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_4_1 = T.let(:"gpt-4.1", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_4_1_MINI = T.let(:"gpt-4.1-mini", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_4_1_NANO = T.let(:"gpt-4.1-nano", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_4_1_2025_04_14 = T.let(
+            :"gpt-4.1-2025-04-14",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_4_1_MINI_2025_04_14 = T.let(
+            :"gpt-4.1-mini-2025-04-14",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_4_1_NANO_2025_04_14 = T.let(
+            :"gpt-4.1-nano-2025-04-14",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          O4_MINI = T.let(:"o4-mini", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          O4_MINI_2025_04_16 = T.let(
+            :"o4-mini-2025-04-16",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          O3 = T.let(:o3, OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          O3_2025_04_16 = T.let(:"o3-2025-04-16", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          O3_MINI = T.let(:"o3-mini", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          O3_MINI_2025_01_31 = T.let(
+            :"o3-mini-2025-01-31",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          O1 = T.let(:o1, OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          O1_2024_12_17 = T.let(:"o1-2024-12-17", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          O1_PREVIEW = T.let(:"o1-preview", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          O1_PREVIEW_2024_09_12 = T.let(
+            :"o1-preview-2024-09-12",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          O1_MINI = T.let(:"o1-mini", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          O1_MINI_2024_09_12 = T.let(
+            :"o1-mini-2024-09-12",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_4O = T.let(:"gpt-4o", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_4O_2024_11_20 = T.let(:"gpt-4o-2024-11-20", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_4O_2024_08_06 = T.let(:"gpt-4o-2024-08-06", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_4O_2024_05_13 = T.let(:"gpt-4o-2024-05-13", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_4O_AUDIO_PREVIEW = T.let(
+            :"gpt-4o-audio-preview",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_4O_AUDIO_PREVIEW_2024_10_01 = T.let(
+            :"gpt-4o-audio-preview-2024-10-01",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_4O_AUDIO_PREVIEW_2024_12_17 = T.let(
+            :"gpt-4o-audio-preview-2024-12-17",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_4O_AUDIO_PREVIEW_2025_06_03 = T.let(
+            :"gpt-4o-audio-preview-2025-06-03",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_4O_MINI_AUDIO_PREVIEW = T.let(
+            :"gpt-4o-mini-audio-preview",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_4O_MINI_AUDIO_PREVIEW_2024_12_17 = T.let(
+            :"gpt-4o-mini-audio-preview-2024-12-17",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_4O_SEARCH_PREVIEW = T.let(
+            :"gpt-4o-search-preview",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_4O_MINI_SEARCH_PREVIEW = T.let(
+            :"gpt-4o-mini-search-preview",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_4O_SEARCH_PREVIEW_2025_03_11 = T.let(
+            :"gpt-4o-search-preview-2025-03-11",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_4O_MINI_SEARCH_PREVIEW_2025_03_11 = T.let(
+            :"gpt-4o-mini-search-preview-2025-03-11",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          CHATGPT_4O_LATEST = T.let(:"chatgpt-4o-latest", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          CODEX_MINI_LATEST = T.let(:"codex-mini-latest", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_4O_MINI = T.let(:"gpt-4o-mini", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_4O_MINI_2024_07_18 = T.let(
+            :"gpt-4o-mini-2024-07-18",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_4_TURBO = T.let(:"gpt-4-turbo", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_4_TURBO_2024_04_09 = T.let(
+            :"gpt-4-turbo-2024-04-09",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_4_0125_PREVIEW = T.let(
+            :"gpt-4-0125-preview",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_4_TURBO_PREVIEW = T.let(
+            :"gpt-4-turbo-preview",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_4_1106_PREVIEW = T.let(
+            :"gpt-4-1106-preview",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_4_VISION_PREVIEW = T.let(
+            :"gpt-4-vision-preview",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_4 = T.let(:"gpt-4", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_4_0314 = T.let(:"gpt-4-0314", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_4_0613 = T.let(:"gpt-4-0613", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_4_32K = T.let(:"gpt-4-32k", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_4_32K_0314 = T.let(:"gpt-4-32k-0314", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_4_32K_0613 = T.let(:"gpt-4-32k-0613", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_3_5_TURBO = T.let(:"gpt-3.5-turbo", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_3_5_TURBO_16K = T.let(:"gpt-3.5-turbo-16k", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_3_5_TURBO_0301 = T.let(
+            :"gpt-3.5-turbo-0301",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_3_5_TURBO_0613 = T.let(
+            :"gpt-3.5-turbo-0613",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_3_5_TURBO_1106 = T.let(
+            :"gpt-3.5-turbo-1106",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_3_5_TURBO_0125 = T.let(
+            :"gpt-3.5-turbo-0125",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_3_5_TURBO_16K_0613 = T.let(
+            :"gpt-3.5-turbo-16k-0613",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          O1_PRO = T.let(:"o1-pro", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          O1_PRO_2025_03_19 = T.let(:"o1-pro-2025-03-19", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          O3_PRO = T.let(:"o3-pro", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          O3_PRO_2025_06_10 = T.let(:"o3-pro-2025-06-10", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          O3_DEEP_RESEARCH = T.let(:"o3-deep-research", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          O3_DEEP_RESEARCH_2025_06_26 = T.let(
+            :"o3-deep-research-2025-06-26",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          O4_MINI_DEEP_RESEARCH = T.let(
+            :"o4-mini-deep-research",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          O4_MINI_DEEP_RESEARCH_2025_06_26 = T.let(
+            :"o4-mini-deep-research-2025-06-26",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          COMPUTER_USE_PREVIEW = T.let(
+            :"computer-use-preview",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          COMPUTER_USE_PREVIEW_2025_03_11 = T.let(
+            :"computer-use-preview-2025-03-11",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_5_5_PRO = T.let(:"gpt-5.5-pro", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_5_5_PRO_2026_04_23 = T.let(
+            :"gpt-5.5-pro-2026-04-23",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_5_CODEX = T.let(:"gpt-5-codex", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_5_PRO = T.let(:"gpt-5-pro", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_5_PRO_2025_10_06 = T.let(
+            :"gpt-5-pro-2025-10-06",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_5_1_CODEX_MAX = T.let(:"gpt-5.1-codex-max", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_DAYBREAK_BLUE_LATEST = T.let(
+            :"gpt-daybreak-blue-latest",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_DAYBREAK_RED_LATEST = T.let(
+            :"gpt-daybreak-red-latest",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_5_6_CYBER = T.let(:"gpt-5.6-cyber", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+
         end
 
         # Text, image, or file inputs to the model, used to generate a response
         module Input
           extend OpenAI::Internal::Type::Union
 
-          Variants =
-            T.type_alias do
-              T.any(
-                String,
-                T::Array[OpenAI::Responses::ResponseInputItem::Variants]
-              )
-            end
+          Variants = T.type_alias { T.any(String, T::Array[OpenAI::Responses::ResponseInputItem::Variants]) }
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Responses::ResponseCompactParams::Input::Variants
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Responses::ResponseCompactParams::Input::Variants]) }
           def self.variants
           end
 
-          ResponseInputItemArray =
-            T.let(
-              OpenAI::Internal::Type::ArrayOf[
-                union: OpenAI::Responses::ResponseInputItem
-              ],
-              OpenAI::Internal::Type::Converter
-            )
+          ResponseInputItemArray = T.let(
+            OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseInputItem],
+            OpenAI::Internal::Type::Converter
+          )
+
         end
 
         class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseCompactParams::PromptCacheOptions,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseCompactParams::PromptCacheOptions,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # Controls whether OpenAI automatically creates an implicit cache breakpoint.
           # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
@@ -830,41 +492,19 @@ module OpenAI
           # `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
           # latest four explicit breakpoints. If there are no explicit breakpoints, the
           # request does not use prompt caching.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Mode::OrSymbol
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Mode::OrSymbol)) }
           attr_reader :mode
 
-          sig do
-            params(
-              mode:
-                OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Mode::OrSymbol
-            ).void
-          end
+          sig { params(mode: OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Mode::OrSymbol).void }
           attr_writer :mode
 
           # The minimum lifetime applied to every implicit and explicit cache breakpoint
           # written by the request. Defaults to `30m`, which is currently the only supported
           # value. The backend may retain cache entries for longer.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Ttl::OrSymbol
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Ttl::OrSymbol)) }
           attr_reader :ttl
 
-          sig do
-            params(
-              ttl:
-                OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Ttl::OrSymbol
-            ).void
-          end
+          sig { params(ttl: OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Ttl::OrSymbol).void }
           attr_writer :ttl
 
           # Options for prompt caching. Supported for `gpt-5.6` and later models. By
@@ -878,13 +518,15 @@ module OpenAI
           # for current details.
           sig do
             params(
-              mode:
-                OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Mode::OrSymbol,
-              ttl:
-                OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Ttl::OrSymbol
-            ).returns(T.attached_class)
+
+              mode: OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Mode::OrSymbol,
+
+              ttl: OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Ttl::OrSymbol
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # Controls whether OpenAI automatically creates an implicit cache breakpoint.
             # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
             # and writes up to the latest three explicit breakpoints in the request. With
@@ -892,9 +534,11 @@ module OpenAI
             # latest four explicit breakpoints. If there are no explicit breakpoints, the
             # request does not use prompt caching.
             mode: nil,
+
             # The minimum lifetime applied to every implicit and explicit cache breakpoint
             # written by the request. Defaults to `30m`, which is currently the only supported
             # value. The backend may retain cache entries for longer.
+
             ttl: nil
           )
           end
@@ -902,10 +546,8 @@ module OpenAI
           sig do
             override.returns(
               {
-                mode:
-                  OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Mode::OrSymbol,
-                ttl:
-                  OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Ttl::OrSymbol
+                mode: OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Mode::OrSymbol,
+                ttl: OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Ttl::OrSymbol
               }
             )
           end
@@ -921,33 +563,25 @@ module OpenAI
           module Mode
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Mode
-                )
-              end
+            TaggedSymbol = T.type_alias {
+              T.all(Symbol, OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Mode)
+            }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            IMPLICIT =
-              T.let(
-                :implicit,
-                OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Mode::TaggedSymbol
-              )
-            EXPLICIT =
-              T.let(
-                :explicit,
-                OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Mode::TaggedSymbol
-              )
+            IMPLICIT = T.let(
+              :implicit,
+              OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Mode::TaggedSymbol
+            )
+            EXPLICIT = T.let(
+              :explicit,
+              OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Mode::TaggedSymbol
+            )
 
-            sig do
+            sig {
               override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Mode::TaggedSymbol
-                ]
+                T::Array[OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Mode::TaggedSymbol]
               )
-            end
+            }
             def self.values
             end
           end
@@ -958,28 +592,18 @@ module OpenAI
           module Ttl
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Ttl
-                )
-              end
+            TaggedSymbol = T.type_alias {
+              T.all(Symbol, OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Ttl)
+            }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            TTL_30M =
-              T.let(
-                :"30m",
-                OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Ttl::TaggedSymbol
-              )
+            TTL_30M = T.let(:"30m", OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Ttl::TaggedSymbol)
 
-            sig do
+            sig {
               override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Ttl::TaggedSymbol
-                ]
+                T::Array[OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Ttl::TaggedSymbol]
               )
-            end
+            }
             def self.values
             end
           end
@@ -989,33 +613,18 @@ module OpenAI
         module PromptCacheRetention
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(
-                Symbol,
-                OpenAI::Responses::ResponseCompactParams::PromptCacheRetention
-              )
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::ResponseCompactParams::PromptCacheRetention) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          IN_MEMORY =
-            T.let(
-              :in_memory,
-              OpenAI::Responses::ResponseCompactParams::PromptCacheRetention::TaggedSymbol
-            )
-          PROMPT_CACHE_RETENTION_24H =
-            T.let(
-              :"24h",
-              OpenAI::Responses::ResponseCompactParams::PromptCacheRetention::TaggedSymbol
-            )
+          IN_MEMORY = T.let(:in_memory, OpenAI::Responses::ResponseCompactParams::PromptCacheRetention::TaggedSymbol)
+          PROMPT_CACHE_RETENTION_24H = T.let(
+            :"24h",
+            OpenAI::Responses::ResponseCompactParams::PromptCacheRetention::TaggedSymbol
+          )
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Responses::ResponseCompactParams::PromptCacheRetention::TaggedSymbol
-              ]
-            )
-          end
+          sig {
+            override.returns(T::Array[OpenAI::Responses::ResponseCompactParams::PromptCacheRetention::TaggedSymbol])
+          }
           def self.values
           end
         end
@@ -1038,52 +647,23 @@ module OpenAI
         module ServiceTier
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(
-                Symbol,
-                OpenAI::Responses::ResponseCompactParams::ServiceTier
-              )
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::ResponseCompactParams::ServiceTier) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          AUTO =
-            T.let(
-              :auto,
-              OpenAI::Responses::ResponseCompactParams::ServiceTier::TaggedSymbol
-            )
-          DEFAULT =
-            T.let(
-              :default,
-              OpenAI::Responses::ResponseCompactParams::ServiceTier::TaggedSymbol
-            )
-          FAST =
-            T.let(
-              :fast,
-              OpenAI::Responses::ResponseCompactParams::ServiceTier::TaggedSymbol
-            )
-          FLEX =
-            T.let(
-              :flex,
-              OpenAI::Responses::ResponseCompactParams::ServiceTier::TaggedSymbol
-            )
-          PRIORITY =
-            T.let(
-              :priority,
-              OpenAI::Responses::ResponseCompactParams::ServiceTier::TaggedSymbol
-            )
+          AUTO = T.let(:auto, OpenAI::Responses::ResponseCompactParams::ServiceTier::TaggedSymbol)
+          DEFAULT = T.let(:default, OpenAI::Responses::ResponseCompactParams::ServiceTier::TaggedSymbol)
+          FAST = T.let(:fast, OpenAI::Responses::ResponseCompactParams::ServiceTier::TaggedSymbol)
+          FLEX = T.let(:flex, OpenAI::Responses::ResponseCompactParams::ServiceTier::TaggedSymbol)
+          PRIORITY = T.let(:priority, OpenAI::Responses::ResponseCompactParams::ServiceTier::TaggedSymbol)
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Responses::ResponseCompactParams::ServiceTier::TaggedSymbol
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Responses::ResponseCompactParams::ServiceTier::TaggedSymbol]) }
           def self.values
           end
         end
+
       end
+
     end
+
   end
 end

@@ -2,24 +2,24 @@
 
 module OpenAI
   module Models
+
     module Responses
+
       class ResponseReasoningItem < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Responses::ResponseReasoningItem,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Responses::ResponseReasoningItem,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The unique identifier of the reasoning content.
         sig { returns(String) }
         attr_accessor :id
 
         # Reasoning summary content.
-        sig do
-          returns(T::Array[OpenAI::Responses::ResponseReasoningItem::Summary])
-        end
+        sig { returns(T::Array[OpenAI::Responses::ResponseReasoningItem::Summary]) }
         attr_accessor :summary
 
         # The type of the object. Always `reasoning`.
@@ -27,23 +27,10 @@ module OpenAI
         attr_accessor :type
 
         # Reasoning text content.
-        sig do
-          returns(
-            T.nilable(
-              T::Array[OpenAI::Responses::ResponseReasoningItem::Content]
-            )
-          )
-        end
+        sig { returns(T.nilable(T::Array[OpenAI::Responses::ResponseReasoningItem::Content])) }
         attr_reader :content
 
-        sig do
-          params(
-            content:
-              T::Array[
-                OpenAI::Responses::ResponseReasoningItem::Content::OrHash
-              ]
-          ).void
-        end
+        sig { params(content: T::Array[OpenAI::Responses::ResponseReasoningItem::Content::OrHash]).void }
         attr_writer :content
 
         # The encrypted content of the reasoning item. This is populated by default for
@@ -59,20 +46,10 @@ module OpenAI
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         # Populated when items are returned via API.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::Responses::ResponseReasoningItem::Status::OrSymbol
-            )
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Responses::ResponseReasoningItem::Status::OrSymbol)) }
         attr_reader :status
 
-        sig do
-          params(
-            status: OpenAI::Responses::ResponseReasoningItem::Status::OrSymbol
-          ).void
-        end
+        sig { params(status: OpenAI::Responses::ResponseReasoningItem::Status::OrSymbol).void }
         attr_writer :status
 
         # A description of the chain of thought used by a reasoning model while generating
@@ -81,27 +58,32 @@ module OpenAI
         # [managing context](https://platform.openai.com/docs/guides/conversation-state).
         sig do
           params(
+
             id: String,
-            summary:
-              T::Array[
-                OpenAI::Responses::ResponseReasoningItem::Summary::OrHash
-              ],
-            content:
-              T::Array[
-                OpenAI::Responses::ResponseReasoningItem::Content::OrHash
-              ],
+
+            summary: T::Array[OpenAI::Responses::ResponseReasoningItem::Summary::OrHash],
+
+            content: T::Array[OpenAI::Responses::ResponseReasoningItem::Content::OrHash],
+
             encrypted_content: T.nilable(String),
+
             status: OpenAI::Responses::ResponseReasoningItem::Status::OrSymbol,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The unique identifier of the reasoning content.
           id:,
+
           # Reasoning summary content.
           summary:,
+
           # Reasoning text content.
           content: nil,
+
           # The encrypted content of the reasoning item. This is populated by default for
           # reasoning items returned by `POST /v1/responses` and WebSocket `response.create`
           # requests.
@@ -111,10 +93,13 @@ module OpenAI
           # `encrypted_content` in `response.output_item.added` may be incomplete. This is
           # especially important when `store` is `false` or when using Zero Data Retention.
           encrypted_content: nil,
+
           # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
           # Populated when items are returned via API.
           status: nil,
+
           # The type of the object. Always `reasoning`.
+
           type: :reasoning
         )
         end
@@ -123,11 +108,9 @@ module OpenAI
           override.returns(
             {
               id: String,
-              summary:
-                T::Array[OpenAI::Responses::ResponseReasoningItem::Summary],
+              summary: T::Array[OpenAI::Responses::ResponseReasoningItem::Summary],
               type: Symbol,
-              content:
-                T::Array[OpenAI::Responses::ResponseReasoningItem::Content],
+              content: T::Array[OpenAI::Responses::ResponseReasoningItem::Content],
               encrypted_content: T.nilable(String),
               status: OpenAI::Responses::ResponseReasoningItem::Status::OrSymbol
             }
@@ -137,13 +120,12 @@ module OpenAI
         end
 
         class Summary < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseReasoningItem::Summary,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseReasoningItem::Summary,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # A summary of the reasoning output from the model so far.
           sig { returns(String) }
@@ -154,28 +136,43 @@ module OpenAI
           attr_accessor :type
 
           # A summary text from the model.
-          sig { params(text: String, type: Symbol).returns(T.attached_class) }
+          sig do
+            params(
+
+              text: String,
+
+              type: Symbol
+            )
+              .returns(T.attached_class)
+          end
           def self.new(
+
             # A summary of the reasoning output from the model so far.
             text:,
+
             # The type of the object. Always `summary_text`.
+
             type: :summary_text
           )
           end
 
-          sig { override.returns({ text: String, type: Symbol }) }
+          sig do
+            override.returns(
+              {text: String, type: Symbol}
+            )
+          end
           def to_hash
           end
+
         end
 
         class Content < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseReasoningItem::Content,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseReasoningItem::Content,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The reasoning text from the model.
           sig { returns(String) }
@@ -186,18 +183,34 @@ module OpenAI
           attr_accessor :type
 
           # Reasoning text from the model.
-          sig { params(text: String, type: Symbol).returns(T.attached_class) }
+          sig do
+            params(
+
+              text: String,
+
+              type: Symbol
+            )
+              .returns(T.attached_class)
+          end
           def self.new(
+
             # The reasoning text from the model.
             text:,
+
             # The type of the reasoning text. Always `reasoning_text`.
+
             type: :reasoning_text
           )
           end
 
-          sig { override.returns({ text: String, type: Symbol }) }
+          sig do
+            override.returns(
+              {text: String, type: Symbol}
+            )
+          end
           def to_hash
           end
+
         end
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
@@ -205,39 +218,21 @@ module OpenAI
         module Status
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(Symbol, OpenAI::Responses::ResponseReasoningItem::Status)
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::ResponseReasoningItem::Status) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          IN_PROGRESS =
-            T.let(
-              :in_progress,
-              OpenAI::Responses::ResponseReasoningItem::Status::TaggedSymbol
-            )
-          COMPLETED =
-            T.let(
-              :completed,
-              OpenAI::Responses::ResponseReasoningItem::Status::TaggedSymbol
-            )
-          INCOMPLETE =
-            T.let(
-              :incomplete,
-              OpenAI::Responses::ResponseReasoningItem::Status::TaggedSymbol
-            )
+          IN_PROGRESS = T.let(:in_progress, OpenAI::Responses::ResponseReasoningItem::Status::TaggedSymbol)
+          COMPLETED = T.let(:completed, OpenAI::Responses::ResponseReasoningItem::Status::TaggedSymbol)
+          INCOMPLETE = T.let(:incomplete, OpenAI::Responses::ResponseReasoningItem::Status::TaggedSymbol)
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Responses::ResponseReasoningItem::Status::TaggedSymbol
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Responses::ResponseReasoningItem::Status::TaggedSymbol]) }
           def self.values
           end
         end
+
       end
+
     end
+
   end
 end

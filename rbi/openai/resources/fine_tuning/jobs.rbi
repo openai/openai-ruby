@@ -2,9 +2,12 @@
 
 module OpenAI
   module Resources
+
     class FineTuning
+
       # Manage fine-tuning jobs to tailor a model to your specific training data.
       class Jobs
+
         # Manage fine-tuning jobs to tailor a model to your specific training data.
         sig { returns(OpenAI::Resources::FineTuning::Jobs::Checkpoints) }
         attr_reader :checkpoints
@@ -16,30 +19,21 @@ module OpenAI
         # of the fine-tuned models once complete.
         #
         # [Learn more about fine-tuning](https://platform.openai.com/docs/guides/model-optimization)
-        sig do
+        sig {
           params(
-            model:
-              T.any(
-                String,
-                OpenAI::FineTuning::JobCreateParams::Model::OrSymbol
-              ),
+            model: T.any(String, OpenAI::FineTuning::JobCreateParams::Model::OrSymbol),
             training_file: String,
-            hyperparameters:
-              OpenAI::FineTuning::JobCreateParams::Hyperparameters::OrHash,
-            integrations:
-              T.nilable(
-                T::Array[
-                  OpenAI::FineTuning::JobCreateParams::Integration::OrHash
-                ]
-              ),
+            hyperparameters: OpenAI::FineTuning::JobCreateParams::Hyperparameters::OrHash,
+            integrations: T.nilable(T::Array[OpenAI::FineTuning::JobCreateParams::Integration::OrHash]),
             metadata: T.nilable(T::Hash[Symbol, String]),
             method_: OpenAI::FineTuning::JobCreateParams::Method::OrHash,
             seed: T.nilable(Integer),
             suffix: T.nilable(String),
             validation_file: T.nilable(String),
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::FineTuning::FineTuningJob)
-        end
+          )
+            .returns(OpenAI::FineTuning::FineTuningJob)
+        }
         def create(
           # The name of the model to fine-tune. You can select one of the
           # [supported models](https://platform.openai.com/docs/guides/fine-tuning#which-models-can-be-fine-tuned).
@@ -108,12 +102,11 @@ module OpenAI
         # Get info about a fine-tuning job.
         #
         # [Learn more about fine-tuning](https://platform.openai.com/docs/guides/model-optimization)
-        sig do
-          params(
-            fine_tuning_job_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::FineTuning::FineTuningJob)
-        end
+        sig {
+          params(fine_tuning_job_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+            OpenAI::FineTuning::FineTuningJob
+          )
+        }
         def retrieve(
           # The ID of the fine-tuning job.
           fine_tuning_job_id,
@@ -122,16 +115,15 @@ module OpenAI
         end
 
         # List your organization's fine-tuning jobs
-        sig do
+        sig {
           params(
             after: String,
             limit: Integer,
             metadata: T.nilable(T::Hash[Symbol, String]),
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(
-            OpenAI::Internal::CursorPage[OpenAI::FineTuning::FineTuningJob]
           )
-        end
+            .returns(OpenAI::Internal::CursorPage[OpenAI::FineTuning::FineTuningJob])
+        }
         def list(
           # Identifier for the last job from the previous pagination request.
           after: nil,
@@ -145,12 +137,11 @@ module OpenAI
         end
 
         # Immediately cancel a fine-tune job.
-        sig do
-          params(
-            fine_tuning_job_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::FineTuning::FineTuningJob)
-        end
+        sig {
+          params(fine_tuning_job_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+            OpenAI::FineTuning::FineTuningJob
+          )
+        }
         def cancel(
           # The ID of the fine-tuning job to cancel.
           fine_tuning_job_id,
@@ -159,16 +150,15 @@ module OpenAI
         end
 
         # Get status updates for a fine-tuning job.
-        sig do
+        sig {
           params(
             fine_tuning_job_id: String,
             after: String,
             limit: Integer,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(
-            OpenAI::Internal::CursorPage[OpenAI::FineTuning::FineTuningJobEvent]
           )
-        end
+            .returns(OpenAI::Internal::CursorPage[OpenAI::FineTuning::FineTuningJobEvent])
+        }
         def list_events(
           # The ID of the fine-tuning job to get events for.
           fine_tuning_job_id,
@@ -181,12 +171,11 @@ module OpenAI
         end
 
         # Pause a fine-tune job.
-        sig do
-          params(
-            fine_tuning_job_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::FineTuning::FineTuningJob)
-        end
+        sig {
+          params(fine_tuning_job_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+            OpenAI::FineTuning::FineTuningJob
+          )
+        }
         def pause(
           # The ID of the fine-tuning job to pause.
           fine_tuning_job_id,
@@ -195,12 +184,11 @@ module OpenAI
         end
 
         # Resume a fine-tune job.
-        sig do
-          params(
-            fine_tuning_job_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::FineTuning::FineTuningJob)
-        end
+        sig {
+          params(fine_tuning_job_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+            OpenAI::FineTuning::FineTuningJob
+          )
+        }
         def resume(
           # The ID of the fine-tuning job to resume.
           fine_tuning_job_id,
@@ -213,6 +201,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

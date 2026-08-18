@@ -2,9 +2,12 @@
 
 module OpenAI
   module Resources
+
     class Uploads
+
       # Use Uploads to upload large files in multiple parts.
       class Parts
+
         # Adds a
         # [Part](https://platform.openai.com/docs/api-reference/uploads/part-object) to an
         # [Upload](https://platform.openai.com/docs/api-reference/uploads/object) object.
@@ -16,13 +19,10 @@ module OpenAI
         # It is possible to add multiple Parts in parallel. You can decide the intended
         # order of the Parts when you
         # [complete the Upload](https://platform.openai.com/docs/api-reference/uploads/complete).
-        sig do
-          params(
-            upload_id: String,
-            data: OpenAI::Internal::FileInput,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Uploads::UploadPart)
-        end
+        sig {
+          params(upload_id: String, data: OpenAI::Internal::FileInput, request_options: OpenAI::RequestOptions::OrHash)
+            .returns(OpenAI::Uploads::UploadPart)
+        }
         def create(
           # The ID of the Upload.
           upload_id,
@@ -41,6 +41,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

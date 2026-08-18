@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Responses
+
       class ResponseOutputItemDoneEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Responses::ResponseOutputItemDoneEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Responses::ResponseOutputItemDoneEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The output item that was marked done.
         sig { returns(OpenAI::Responses::ResponseOutputItem::Variants) }
@@ -31,50 +33,59 @@ module OpenAI
         # Emitted when an output item is marked done.
         sig do
           params(
-            item:
-              T.any(
-                OpenAI::Responses::ResponseOutputMessage::OrHash,
-                OpenAI::Responses::ResponseFileSearchToolCall::OrHash,
-                OpenAI::Responses::ResponseFunctionToolCall::OrHash,
-                OpenAI::Responses::ResponseFunctionToolCallOutputItem::OrHash,
-                OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
-                OpenAI::Responses::ResponseComputerToolCall::OrHash,
-                OpenAI::Responses::ResponseComputerToolCallOutputItem::OrHash,
-                OpenAI::Responses::ResponseReasoningItem::OrHash,
-                OpenAI::Responses::ResponseOutputItem::Program::OrHash,
-                OpenAI::Responses::ResponseOutputItem::ProgramOutput::OrHash,
-                OpenAI::Responses::ResponseToolSearchCall::OrHash,
-                OpenAI::Responses::ResponseToolSearchOutputItem::OrHash,
-                OpenAI::Responses::ResponseOutputItem::AdditionalTools::OrHash,
-                OpenAI::Responses::ResponseCompactionItem::OrHash,
-                OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::OrHash,
-                OpenAI::Responses::ResponseCodeInterpreterToolCall::OrHash,
-                OpenAI::Responses::ResponseOutputItem::LocalShellCall::OrHash,
-                OpenAI::Responses::ResponseOutputItem::LocalShellCallOutput::OrHash,
-                OpenAI::Responses::ResponseFunctionShellToolCall::OrHash,
-                OpenAI::Responses::ResponseFunctionShellToolCallOutput::OrHash,
-                OpenAI::Responses::ResponseApplyPatchToolCall::OrHash,
-                OpenAI::Responses::ResponseApplyPatchToolCallOutput::OrHash,
-                OpenAI::Responses::ResponseOutputItem::McpCall::OrHash,
-                OpenAI::Responses::ResponseOutputItem::McpListTools::OrHash,
-                OpenAI::Responses::ResponseOutputItem::McpApprovalRequest::OrHash,
-                OpenAI::Responses::ResponseOutputItem::McpApprovalResponse::OrHash,
-                OpenAI::Responses::ResponseCustomToolCall::OrHash,
-                OpenAI::Responses::ResponseCustomToolCallOutputItem::OrHash
-              ),
+
+            item: T.any(
+              OpenAI::Responses::ResponseOutputMessage::OrHash,
+              OpenAI::Responses::ResponseFileSearchToolCall::OrHash,
+              OpenAI::Responses::ResponseFunctionToolCall::OrHash,
+              OpenAI::Responses::ResponseFunctionToolCallOutputItem::OrHash,
+              OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
+              OpenAI::Responses::ResponseComputerToolCall::OrHash,
+              OpenAI::Responses::ResponseComputerToolCallOutputItem::OrHash,
+              OpenAI::Responses::ResponseReasoningItem::OrHash,
+              OpenAI::Responses::ResponseOutputItem::Program::OrHash,
+              OpenAI::Responses::ResponseOutputItem::ProgramOutput::OrHash,
+              OpenAI::Responses::ResponseToolSearchCall::OrHash,
+              OpenAI::Responses::ResponseToolSearchOutputItem::OrHash,
+              OpenAI::Responses::ResponseOutputItem::AdditionalTools::OrHash,
+              OpenAI::Responses::ResponseCompactionItem::OrHash,
+              OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::OrHash,
+              OpenAI::Responses::ResponseCodeInterpreterToolCall::OrHash,
+              OpenAI::Responses::ResponseOutputItem::LocalShellCall::OrHash,
+              OpenAI::Responses::ResponseOutputItem::LocalShellCallOutput::OrHash,
+              OpenAI::Responses::ResponseFunctionShellToolCall::OrHash,
+              OpenAI::Responses::ResponseFunctionShellToolCallOutput::OrHash,
+              OpenAI::Responses::ResponseApplyPatchToolCall::OrHash,
+              OpenAI::Responses::ResponseApplyPatchToolCallOutput::OrHash,
+              OpenAI::Responses::ResponseOutputItem::McpCall::OrHash,
+              OpenAI::Responses::ResponseOutputItem::McpListTools::OrHash,
+              OpenAI::Responses::ResponseOutputItem::McpApprovalRequest::OrHash,
+              OpenAI::Responses::ResponseOutputItem::McpApprovalResponse::OrHash,
+              OpenAI::Responses::ResponseCustomToolCall::OrHash,
+              OpenAI::Responses::ResponseCustomToolCallOutputItem::OrHash
+            ),
+
             output_index: Integer,
+
             sequence_number: Integer,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The output item that was marked done.
           item:,
+
           # The index of the output item that was marked done.
           output_index:,
+
           # The sequence number of this event.
           sequence_number:,
+
           # The type of the event. Always `response.output_item.done`.
+
           type: :"response.output_item.done"
         )
         end
@@ -91,7 +102,10 @@ module OpenAI
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

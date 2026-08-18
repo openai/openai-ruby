@@ -2,19 +2,22 @@
 
 module OpenAI
   module Models
+
     module Chat
+
       module Completions
+
         class MessageListParams < OpenAI::Internal::Type::BaseModel
+
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Chat::Completions::MessageListParams,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Chat::Completions::MessageListParams,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           sig { returns(String) }
           attr_accessor :completion_id
@@ -35,42 +38,41 @@ module OpenAI
 
           # Sort order for messages by timestamp. Use `asc` for ascending order or `desc`
           # for descending order. Defaults to `asc`.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Chat::Completions::MessageListParams::Order::OrSymbol
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Chat::Completions::MessageListParams::Order::OrSymbol)) }
           attr_reader :order
 
-          sig do
-            params(
-              order:
-                OpenAI::Chat::Completions::MessageListParams::Order::OrSymbol
-            ).void
-          end
+          sig { params(order: OpenAI::Chat::Completions::MessageListParams::Order::OrSymbol).void }
           attr_writer :order
 
           sig do
             params(
+
               completion_id: String,
+
               after: String,
+
               limit: Integer,
-              order:
-                OpenAI::Chat::Completions::MessageListParams::Order::OrSymbol,
+
+              order: OpenAI::Chat::Completions::MessageListParams::Order::OrSymbol,
+
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             completion_id:,
+
             # Identifier for the last message from the previous pagination request.
             after: nil,
+
             # Number of messages to retrieve.
             limit: nil,
+
             # Sort order for messages by timestamp. Use `asc` for ascending order or `desc`
             # for descending order. Defaults to `asc`.
             order: nil,
+
             request_options: {}
           )
           end
@@ -81,8 +83,7 @@ module OpenAI
                 completion_id: String,
                 after: String,
                 limit: Integer,
-                order:
-                  OpenAI::Chat::Completions::MessageListParams::Order::OrSymbol,
+                order: OpenAI::Chat::Completions::MessageListParams::Order::OrSymbol,
                 request_options: OpenAI::RequestOptions
               }
             )
@@ -95,38 +96,22 @@ module OpenAI
           module Order
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Chat::Completions::MessageListParams::Order
-                )
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Chat::Completions::MessageListParams::Order) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            ASC =
-              T.let(
-                :asc,
-                OpenAI::Chat::Completions::MessageListParams::Order::TaggedSymbol
-              )
-            DESC =
-              T.let(
-                :desc,
-                OpenAI::Chat::Completions::MessageListParams::Order::TaggedSymbol
-              )
+            ASC = T.let(:asc, OpenAI::Chat::Completions::MessageListParams::Order::TaggedSymbol)
+            DESC = T.let(:desc, OpenAI::Chat::Completions::MessageListParams::Order::TaggedSymbol)
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Chat::Completions::MessageListParams::Order::TaggedSymbol
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Chat::Completions::MessageListParams::Order::TaggedSymbol]) }
             def self.values
             end
           end
+
         end
+
       end
+
     end
+
   end
 end

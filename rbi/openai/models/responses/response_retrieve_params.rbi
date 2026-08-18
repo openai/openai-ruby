@@ -2,36 +2,30 @@
 
 module OpenAI
   module Models
+
     module Responses
+
       class ResponseRetrieveParams < OpenAI::Internal::Type::BaseModel
+
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Responses::ResponseRetrieveParams,
-              OpenAI::Internal::AnyHash
-            )
-          end
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Responses::ResponseRetrieveParams,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         sig { returns(String) }
         attr_accessor :response_id
 
         # Additional fields to include in the response. See the `include` parameter for
         # Response creation above for more information.
-        sig do
-          returns(
-            T.nilable(T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol])
-          )
-        end
+        sig { returns(T.nilable(T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol])) }
         attr_reader :include
 
-        sig do
-          params(
-            include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
-          ).void
-        end
+        sig { params(include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]).void }
         attr_writer :include
 
         # When true, stream obfuscation will be enabled. Stream obfuscation adds random
@@ -55,18 +49,27 @@ module OpenAI
 
         sig do
           params(
+
             response_id: String,
+
             include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
+
             include_obfuscation: T::Boolean,
+
             starting_after: Integer,
+
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           response_id:,
+
           # Additional fields to include in the response. See the `include` parameter for
           # Response creation above for more information.
           include: nil,
+
           # When true, stream obfuscation will be enabled. Stream obfuscation adds random
           # characters to an `obfuscation` field on streaming delta events to normalize
           # payload sizes as a mitigation to certain side-channel attacks. These obfuscation
@@ -74,8 +77,10 @@ module OpenAI
           # stream. You can set `include_obfuscation` to false to optimize for bandwidth if
           # you trust the network links between your application and the OpenAI API.
           include_obfuscation: nil,
+
           # The sequence number of the event after which to start streaming.
           starting_after: nil,
+
           request_options: {}
         )
         end
@@ -84,8 +89,7 @@ module OpenAI
           override.returns(
             {
               response_id: String,
-              include:
-                T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
+              include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
               include_obfuscation: T::Boolean,
               starting_after: Integer,
               request_options: OpenAI::RequestOptions
@@ -94,7 +98,10 @@ module OpenAI
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

@@ -2,24 +2,21 @@
 
 module OpenAI
   module Models
-    module FineTuning
-      module Checkpoints
-        class PermissionRetrieveResponse < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse,
-                OpenAI::Internal::AnyHash
-              )
-            end
 
-          sig do
-            returns(
-              T::Array[
-                OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse::Data
-              ]
+    module FineTuning
+
+      module Checkpoints
+
+        class PermissionRetrieveResponse < OpenAI::Internal::Type::BaseModel
+
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse,
+              OpenAI::Internal::AnyHash
             )
           end
+
+          sig { returns(T::Array[OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse::Data]) }
           attr_accessor :data
 
           sig { returns(T::Boolean) }
@@ -36,21 +33,29 @@ module OpenAI
 
           sig do
             params(
-              data:
-                T::Array[
-                  OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse::Data::OrHash
-                ],
+
+              data: T::Array[OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse::Data::OrHash],
+
               has_more: T::Boolean,
+
               first_id: T.nilable(String),
+
               last_id: T.nilable(String),
+
               object: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             data:,
+
             has_more:,
+
             first_id: nil,
+
             last_id: nil,
+
             object: :list
           )
           end
@@ -58,10 +63,7 @@ module OpenAI
           sig do
             override.returns(
               {
-                data:
-                  T::Array[
-                    OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse::Data
-                  ],
+                data: T::Array[OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse::Data],
                 has_more: T::Boolean,
                 object: Symbol,
                 first_id: T.nilable(String),
@@ -73,13 +75,12 @@ module OpenAI
           end
 
           class Data < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse::Data,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse::Data,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # The permission identifier, which can be referenced in the API endpoints.
             sig { returns(String) }
@@ -101,39 +102,49 @@ module OpenAI
             # model checkpoint.
             sig do
               params(
+
                 id: String,
+
                 created_at: Integer,
+
                 project_id: String,
+
                 object: Symbol
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # The permission identifier, which can be referenced in the API endpoints.
               id:,
+
               # The Unix timestamp (in seconds) for when the permission was created.
               created_at:,
+
               # The project identifier that the permission is for.
               project_id:,
+
               # The object type, which is always "checkpoint.permission".
+
               object: :"checkpoint.permission"
             )
             end
 
             sig do
               override.returns(
-                {
-                  id: String,
-                  created_at: Integer,
-                  object: Symbol,
-                  project_id: String
-                }
+                {id: String, created_at: Integer, object: Symbol, project_id: String}
               )
             end
             def to_hash
             end
+
           end
+
         end
+
       end
+
     end
+
   end
 end

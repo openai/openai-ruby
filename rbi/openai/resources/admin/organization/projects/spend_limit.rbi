@@ -2,19 +2,21 @@
 
 module OpenAI
   module Resources
+
     class Admin
+
       class Organization
+
         class Projects
+
           class SpendLimit
+
             # Get a project's hard spend limit.
-            sig do
-              params(
-                project_id: String,
-                request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
+            sig {
+              params(project_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
                 OpenAI::Admin::Organization::Projects::ProjectSpendLimit
               )
-            end
+            }
             def retrieve(
               # The ID of the project whose hard spend limit is being managed.
               project_id,
@@ -23,19 +25,16 @@ module OpenAI
             end
 
             # Create or replace a project's hard spend limit.
-            sig do
+            sig {
               params(
                 project_id: String,
-                currency:
-                  OpenAI::Admin::Organization::Projects::SpendLimitUpdateParams::Currency::OrSymbol,
-                interval:
-                  OpenAI::Admin::Organization::Projects::SpendLimitUpdateParams::Interval::OrSymbol,
+                currency: OpenAI::Admin::Organization::Projects::SpendLimitUpdateParams::Currency::OrSymbol,
+                interval: OpenAI::Admin::Organization::Projects::SpendLimitUpdateParams::Interval::OrSymbol,
                 threshold_amount: Integer,
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
-                OpenAI::Admin::Organization::Projects::ProjectSpendLimit
               )
-            end
+                .returns(OpenAI::Admin::Organization::Projects::ProjectSpendLimit)
+            }
             def update(
               # The ID of the project whose hard spend limit is being managed.
               project_id,
@@ -51,14 +50,11 @@ module OpenAI
             end
 
             # Delete a project's hard spend limit.
-            sig do
-              params(
-                project_id: String,
-                request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
+            sig {
+              params(project_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
                 OpenAI::Admin::Organization::Projects::ProjectSpendLimitDeleted
               )
-            end
+            }
             def delete(
               # The ID of the project whose hard spend limit is being managed.
               project_id,
@@ -71,8 +67,12 @@ module OpenAI
             def self.new(client:)
             end
           end
+
         end
+
       end
+
     end
+
   end
 end

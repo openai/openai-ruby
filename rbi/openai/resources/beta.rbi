@@ -2,7 +2,9 @@
 
 module OpenAI
   module Resources
+
     class Beta
+
       sig { returns(OpenAI::Resources::Beta::Responses) }
       attr_reader :responses
 
@@ -22,5 +24,6 @@ module OpenAI
       def self.new(client:)
       end
     end
+
   end
 end

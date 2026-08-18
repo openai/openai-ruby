@@ -2,61 +2,46 @@
 
 module OpenAI
   module Resources
+
     class Realtime
+
       class Calls
+
         # Accept an incoming SIP call and configure the realtime session that will handle
         # it.
-        sig do
+        sig {
           params(
             call_id: String,
             audio: OpenAI::Realtime::RealtimeAudioConfig::OrHash,
-            include:
-              T::Array[
-                OpenAI::Realtime::RealtimeSessionCreateRequest::Include::OrSymbol
-              ],
+            include: T::Array[OpenAI::Realtime::RealtimeSessionCreateRequest::Include::OrSymbol],
             instructions: String,
             max_output_tokens: T.any(Integer, Symbol),
-            model:
-              T.any(
-                String,
-                OpenAI::Realtime::RealtimeSessionCreateRequest::Model::OrSymbol
-              ),
-            output_modalities:
-              T::Array[
-                OpenAI::Realtime::RealtimeSessionCreateRequest::OutputModality::OrSymbol
-              ],
+            model: T.any(String, OpenAI::Realtime::RealtimeSessionCreateRequest::Model::OrSymbol),
+            output_modalities: T::Array[OpenAI::Realtime::RealtimeSessionCreateRequest::OutputModality::OrSymbol],
             parallel_tool_calls: T::Boolean,
             prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
             reasoning: OpenAI::Realtime::RealtimeReasoning::OrHash,
-            tool_choice:
+            tool_choice: T.any(
+              OpenAI::Responses::ToolChoiceOptions::OrSymbol,
+              OpenAI::Responses::ToolChoiceFunction::OrHash,
+              OpenAI::Responses::ToolChoiceMcp::OrHash
+            ),
+            tools: T::Array[
               T.any(
-                OpenAI::Responses::ToolChoiceOptions::OrSymbol,
-                OpenAI::Responses::ToolChoiceFunction::OrHash,
-                OpenAI::Responses::ToolChoiceMcp::OrHash
-              ),
-            tools:
-              T::Array[
-                T.any(
-                  OpenAI::Realtime::RealtimeFunctionTool::OrHash,
-                  OpenAI::Realtime::RealtimeToolsConfigUnion::Mcp::OrHash
-                )
-              ],
-            tracing:
-              T.nilable(
-                T.any(
-                  Symbol,
-                  OpenAI::Realtime::RealtimeTracingConfig::TracingConfiguration::OrHash
-                )
-              ),
-            truncation:
-              T.any(
-                OpenAI::Realtime::RealtimeTruncation::RealtimeTruncationStrategy::OrSymbol,
-                OpenAI::Realtime::RealtimeTruncationRetentionRatio::OrHash
-              ),
+                OpenAI::Realtime::RealtimeFunctionTool::OrHash,
+                OpenAI::Realtime::RealtimeToolsConfigUnion::Mcp::OrHash
+              )
+            ],
+            tracing: T.nilable(T.any(Symbol, OpenAI::Realtime::RealtimeTracingConfig::TracingConfiguration::OrHash)),
+            truncation: T.any(
+              OpenAI::Realtime::RealtimeTruncation::RealtimeTruncationStrategy::OrSymbol,
+              OpenAI::Realtime::RealtimeTruncationRetentionRatio::OrHash
+            ),
             type: Symbol,
             request_options: OpenAI::RequestOptions::OrHash
-          ).void
-        end
+          )
+            .void
+        }
         def accept(
           # The identifier for the call provided in the
           # [`realtime.call.incoming`](https://platform.openai.com/docs/api-reference/webhook-events/realtime/call/incoming)
@@ -139,12 +124,7 @@ module OpenAI
         end
 
         # End an active Realtime API call, whether it was initiated over SIP or WebRTC.
-        sig do
-          params(
-            call_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).void
-        end
+        sig { params(call_id: String, request_options: OpenAI::RequestOptions::OrHash).void }
         def hangup(
           # The identifier for the call. For SIP calls, use the value provided in the
           # [`realtime.call.incoming`](https://platform.openai.com/docs/api-reference/webhook-events/realtime/call/incoming)
@@ -157,13 +137,7 @@ module OpenAI
         end
 
         # Transfer an active SIP call to a new destination using the SIP REFER verb.
-        sig do
-          params(
-            call_id: String,
-            target_uri: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).void
-        end
+        sig { params(call_id: String, target_uri: String, request_options: OpenAI::RequestOptions::OrHash).void }
         def refer(
           # The identifier for the call provided in the
           # [`realtime.call.incoming`](https://platform.openai.com/docs/api-reference/webhook-events/realtime/call/incoming)
@@ -177,13 +151,7 @@ module OpenAI
         end
 
         # Decline an incoming SIP call by returning a SIP status code to the caller.
-        sig do
-          params(
-            call_id: String,
-            status_code: Integer,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).void
-        end
+        sig { params(call_id: String, status_code: Integer, request_options: OpenAI::RequestOptions::OrHash).void }
         def reject(
           # The identifier for the call provided in the
           # [`realtime.call.incoming`](https://platform.openai.com/docs/api-reference/webhook-events/realtime/call/incoming)
@@ -201,6 +169,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

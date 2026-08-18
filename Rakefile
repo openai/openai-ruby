@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
-require "etc"
 require "pathname"
-require "securerandom"
-require "shellwords"
 require "tempfile"
 
 require "minitest/test_task"
@@ -11,6 +8,7 @@ require "rake/clean"
 require "rubocop/rake_task"
 
 require_relative "scripts/rubyfmt_policy"
+require_relative "scripts/rbs_format"
 
 tapioca = "sorbet/tapioca"
 examples = "examples"
@@ -41,21 +39,6 @@ multitask(test: [:"test:examples:inventory"]) do
   ruby(*%w[-w -e], rb, verbose: false) { fail unless _1 }
 end
 
-# Cap parallelism at the CPU count. `--max-procs=0` spawns one process per
-# 300-file batch with no upper bound; on large SDKs (thousands of files) that
-# oversubscribes CPUs and stacks up rubocop processes, exhausting memory and
-# slowing CI to the point of timing out.
-xargs = %W[xargs --no-run-if-empty --null --max-procs=#{Etc.nprocessors} --max-args=300 --]
-ruby_opt = {"RUBYOPT" => [ENV["RUBYOPT"], "--encoding=UTF-8"].compact.join(" ")}
-
-filtered = -> (ext, dirs) do
-  if ENV.key?(FILES_ENV)
-    %w[sed -E -n -e] << "/\\.#{ext}$/p" << "--" << ENV.fetch(FILES_ENV)
-  else
-    (%w[find] + dirs + %w[-type f -and -name]) << "*.#{ext}" << "-print0"
-  end
-end
-
 desc("Lint `*.rb(i)`")
 RuboCop::RakeTask.new(:"lint:rubocop") do |task|
   task.patterns = ["."]
@@ -69,9 +52,7 @@ multitask(:"lint:rubocop_directives") do
   ruby(*%w[scripts/validate-rubocop-directives])
 end
 
-Rake::Task[:"lint:rubocop"].enhance([:"lint:rubocop_directives", :"lint:rubyfmt"])
-
-norm_lines = %w[tr -- \n \0].shelljoin
+Rake::Task[:"lint:rubocop"].enhance([:"lint:rubocop_directives", :"lint:rubyfmt", :"lint:rbs_format"])
 
 ruby_paths = lambda do
   inputs = if ENV.key?(FILES_ENV)
@@ -101,63 +82,35 @@ multitask(:"lint:rubyfmt") do
   run_rubyfmt.call("--check")
 end
 
-desc("Format Ruby source with rubyfmt")
+desc("Format Ruby source and RBI signatures with rubyfmt")
 multitask(:"format:rb") do
   run_rubyfmt.call("--in-place")
 end
 
-desc("Format `*.rbi`")
-multitask(:"format:rbi") do
-  files = filtered["rbi", %w[./rbi]]
-  fmt = xargs + %w[stree write --]
-  sh(ruby_opt, "#{files.shelljoin} | #{norm_lines} | #{fmt.shelljoin}")
+desc("Format RBI signatures with rubyfmt")
+task("format:rbi": :"format:rb")
+
+rbs_paths = lambda do
+  if ENV.key?(FILES_ENV)
+    File.readlines(ENV.fetch(FILES_ENV), chomp: true).select { _1.end_with?(".rbs") }
+  else
+    Dir.glob("sig/**/*.rbs")
+  end
 end
 
-desc("Format `*.rbs`")
+desc("Check RBS signature formatting")
+multitask(:"lint:rbs_format") do
+  changed = RBSFormat.run(rbs_paths.call, check: true)
+  abort("RBS formatting differs; run ./scripts/format:\n#{changed.join("\n")}") unless changed.empty?
+end
+
+desc("Format RBS signatures with Syntax Tree")
 multitask(:"format:rbs") do
-  files = filtered["rbs", %w[./sig]]
-  inplace = /darwin|bsd/ =~ RUBY_PLATFORM ? ["-i", ""] : %w[-i]
-  uuid = SecureRandom.uuid
-
-  # `syntax_tree` has trouble with `rbs`'s class & module aliases
-
-  sed_bin = /darwin/ =~ RUBY_PLATFORM ? "/usr/bin/sed" : "sed"
-  sed = xargs + [sed_bin, "-E", *inplace, "-e"]
-  # annotate unprocessable aliases with a unique comment
-  pre = sed + ["s/(class|module) ([^ ]+) = (.+$)/# \\1 #{uuid}\\n\\2: \\3/", "--"]
-  fmt = xargs + %w[stree write --plugin=rbs --]
-  # remove the unique comment and unprocessable aliases to type aliases
-  subst = <<~SED
-    s/# (class|module) #{uuid}/\\1/
-    t l1
-    b
-
-    : l1
-    N
-    s/\\n *([^:]+): (.+)$/ \\1 = \\2/
-  SED
-  # for each line:
-  #   1. try transform the unique comment into `class | module`, if successful, branch to label `l1`.
-  #   2. at label `l1`, join previously annotated line with `class | module` information.
-  pst = sed + [subst, "--"]
-
-  success = false
-
-  # transform class aliases to type aliases, which syntax tree has no trouble with
-  sh("#{files.shelljoin} | #{norm_lines} | #{pre.shelljoin}")
-  # run syntax tree to format `*.rbs` files
-  sh(ruby_opt, "#{files.shelljoin} | #{norm_lines} | #{fmt.shelljoin}") do
-    success = _1
-  end
-  # transform type aliases back to class aliases
-  sh("#{files.shelljoin} | #{norm_lines} | #{pst.shelljoin}")
-
-  # always run post-processing to remove comment marker
-  fail unless success
+  RBSFormat.run(rbs_paths.call, check: false)
 end
 
 desc("Format everything")
-multitask(format: [:"format:rb", :"format:rbi", :"format:rbs"])
+multitask(format: [:"format:rb", :"format:rbs"])
 
 desc("Validate `*.rbs`")
 multitask(:"validate:rbs") do

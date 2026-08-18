@@ -2,26 +2,28 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class SessionUpdateEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::SessionUpdateEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::SessionUpdateEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # Update the Realtime session. Choose either a realtime session or a transcription
         # session.
-        sig do
+        sig {
           returns(
             T.any(
               OpenAI::Realtime::RealtimeSessionCreateRequest,
               OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest
             )
           )
-        end
+        }
         attr_accessor :session
 
         # The event type, must be `session.update`.
@@ -49,25 +51,32 @@ module OpenAI
         # an empty array. To clear a field like `turn_detection`, pass `null`.
         sig do
           params(
-            session:
-              T.any(
-                OpenAI::Realtime::RealtimeSessionCreateRequest::OrHash,
-                OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::OrHash
-              ),
+
+            session: T.any(
+              OpenAI::Realtime::RealtimeSessionCreateRequest::OrHash,
+              OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::OrHash
+            ),
+
             event_id: String,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Update the Realtime session. Choose either a realtime session or a transcription
           # session.
           session:,
+
           # Optional client-generated ID used to identify this event. This is an arbitrary
           # string that a client may assign. It will be passed back if there is an error
           # with the event, but the corresponding `session.updated` event will not include
           # it.
           event_id: nil,
+
           # The event type, must be `session.update`.
+
           type: :"session.update"
         )
         end
@@ -75,11 +84,10 @@ module OpenAI
         sig do
           override.returns(
             {
-              session:
-                T.any(
-                  OpenAI::Realtime::RealtimeSessionCreateRequest,
-                  OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest
-                ),
+              session: T.any(
+                OpenAI::Realtime::RealtimeSessionCreateRequest,
+                OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest
+              ),
               type: Symbol,
               event_id: String
             }
@@ -93,23 +101,22 @@ module OpenAI
         module Session
           extend OpenAI::Internal::Type::Union
 
-          Variants =
-            T.type_alias do
-              T.any(
-                OpenAI::Realtime::RealtimeSessionCreateRequest,
-                OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest
-              )
-            end
-
-          sig do
-            override.returns(
-              T::Array[OpenAI::Realtime::SessionUpdateEvent::Session::Variants]
+          Variants = T.type_alias {
+            T.any(
+              OpenAI::Realtime::RealtimeSessionCreateRequest,
+              OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest
             )
-          end
+          }
+
+          sig { override.returns(T::Array[OpenAI::Realtime::SessionUpdateEvent::Session::Variants]) }
           def self.variants
           end
+
         end
+
       end
+
     end
+
   end
 end

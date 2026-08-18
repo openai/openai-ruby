@@ -2,16 +2,18 @@
 
 module OpenAI
   module Resources
+
     # Given a prompt, the model will return one or more predicted completions, and can
     # also return the probabilities of alternative tokens at each position.
     class Completions
+
       # See {OpenAI::Resources::Completions#create_streaming} for streaming counterpart.
       #
       # Creates a completion for the provided prompt and parameters.
       #
       # Returns a completion object, or a sequence of completion objects if the request
       # is streamed.
-      sig do
+      sig {
         params(
           model: T.any(String, OpenAI::CompletionCreateParams::Model::OrSymbol),
           prompt: T.nilable(OpenAI::CompletionCreateParams::Prompt::Variants),
@@ -25,16 +27,16 @@ module OpenAI
           presence_penalty: T.nilable(Float),
           seed: T.nilable(Integer),
           stop: T.nilable(OpenAI::CompletionCreateParams::Stop::Variants),
-          stream_options:
-            T.nilable(OpenAI::Chat::ChatCompletionStreamOptions::OrHash),
+          stream_options: T.nilable(OpenAI::Chat::ChatCompletionStreamOptions::OrHash),
           suffix: T.nilable(String),
           temperature: T.nilable(Float),
           top_p: T.nilable(Float),
           user: String,
           stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::Completion)
-      end
+        )
+          .returns(OpenAI::Completion)
+      }
       def create(
         # ID of the model to use. You can use the
         # [List models](https://platform.openai.com/docs/api-reference/models/list) API to
@@ -154,7 +156,7 @@ module OpenAI
       #
       # Returns a completion object, or a sequence of completion objects if the request
       # is streamed.
-      sig do
+      sig {
         params(
           model: T.any(String, OpenAI::CompletionCreateParams::Model::OrSymbol),
           prompt: T.nilable(OpenAI::CompletionCreateParams::Prompt::Variants),
@@ -168,16 +170,16 @@ module OpenAI
           presence_penalty: T.nilable(Float),
           seed: T.nilable(Integer),
           stop: T.nilable(OpenAI::CompletionCreateParams::Stop::Variants),
-          stream_options:
-            T.nilable(OpenAI::Chat::ChatCompletionStreamOptions::OrHash),
+          stream_options: T.nilable(OpenAI::Chat::ChatCompletionStreamOptions::OrHash),
           suffix: T.nilable(String),
           temperature: T.nilable(Float),
           top_p: T.nilable(Float),
           user: String,
           stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::Internal::Stream[OpenAI::Completion])
-      end
+        )
+          .returns(OpenAI::Internal::Stream[OpenAI::Completion])
+      }
       def create_streaming(
         # ID of the model to use. You can use the
         # [List models](https://platform.openai.com/docs/api-reference/models/list) API to
@@ -296,5 +298,6 @@ module OpenAI
       def self.new(client:)
       end
     end
+
   end
 end

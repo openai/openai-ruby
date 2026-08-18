@@ -2,14 +2,19 @@
 
 module OpenAI
   module Models
+
     UploadPart = Uploads::UploadPart
 
     module Uploads
+
       class UploadPart < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(OpenAI::Uploads::UploadPart, OpenAI::Internal::AnyHash)
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Uploads::UploadPart,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The upload Part unique identifier, which can be referenced in API endpoints.
         sig { returns(String) }
@@ -30,37 +35,45 @@ module OpenAI
         # The upload Part represents a chunk of bytes we can add to an Upload object.
         sig do
           params(
+
             id: String,
+
             created_at: Integer,
+
             upload_id: String,
+
             object: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The upload Part unique identifier, which can be referenced in API endpoints.
           id:,
+
           # The Unix timestamp (in seconds) for when the Part was created.
           created_at:,
+
           # The ID of the Upload object that this Part was added to.
           upload_id:,
+
           # The object type, which is always `upload.part`.
+
           object: :"upload.part"
         )
         end
 
         sig do
           override.returns(
-            {
-              id: String,
-              created_at: Integer,
-              object: Symbol,
-              upload_id: String
-            }
+            {id: String, created_at: Integer, object: Symbol, upload_id: String}
           )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

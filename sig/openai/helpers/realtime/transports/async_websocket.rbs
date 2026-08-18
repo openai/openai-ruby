@@ -3,7 +3,9 @@ module OpenAI
     module Realtime
       module Transports
         class AsyncWebSocket
-          def initialize: () ?{ (OpenSSL::SSL::SSLContext context) -> void } -> void
+          def initialize: ?{
+            (OpenSSL::SSL::SSLContext context) -> void
+          } -> void
 
           class Socket
             # @api private
@@ -11,8 +13,10 @@ module OpenAI
             def read: -> untyped
             def write: (String message) -> void
             def close: (?code: Integer, ?reason: String) -> void
+
             # @api private
             def abort: -> void
+
             # @api private
             def aborted?: -> bool
             def closed?: -> bool

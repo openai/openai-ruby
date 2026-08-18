@@ -2,12 +2,17 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class RealtimeSession < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(OpenAI::Realtime::RealtimeSession, OpenAI::Internal::AnyHash)
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::RealtimeSession,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # Unique identifier for the session that looks like `sess_1234567890abcdef`.
         sig { returns(T.nilable(String)) }
@@ -27,33 +32,16 @@ module OpenAI
         #
         # - `item.input_audio_transcription.logprobs`: Include logprobs for input audio
         #   transcription.
-        sig do
-          returns(
-            T.nilable(
-              T::Array[OpenAI::Realtime::RealtimeSession::Include::OrSymbol]
-            )
-          )
-        end
+        sig { returns(T.nilable(T::Array[OpenAI::Realtime::RealtimeSession::Include::OrSymbol])) }
         attr_accessor :include
 
         # The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`. For
         # `pcm16`, input audio must be 16-bit PCM at a 24kHz sample rate, single channel
         # (mono), and little-endian byte order.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::Realtime::RealtimeSession::InputAudioFormat::OrSymbol
-            )
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Realtime::RealtimeSession::InputAudioFormat::OrSymbol)) }
         attr_reader :input_audio_format
 
-        sig do
-          params(
-            input_audio_format:
-              OpenAI::Realtime::RealtimeSession::InputAudioFormat::OrSymbol
-          ).void
-        end
+        sig { params(input_audio_format: OpenAI::Realtime::RealtimeSession::InputAudioFormat::OrSymbol).void }
         attr_writer :input_audio_format
 
         # Configuration for input audio noise reduction. This can be set to `null` to turn
@@ -61,21 +49,12 @@ module OpenAI
         # sent to VAD and the model. Filtering the audio can improve VAD and turn
         # detection accuracy (reducing false positives) and model performance by improving
         # perception of the input audio.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction
-            )
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction)) }
         attr_reader :input_audio_noise_reduction
 
-        sig do
-          params(
-            input_audio_noise_reduction:
-              OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction::OrHash
-          ).void
-        end
+        sig {
+          params(input_audio_noise_reduction: OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction::OrHash).void
+        }
         attr_writer :input_audio_noise_reduction
 
         # Configuration for input audio transcription, defaults to off and can be set to
@@ -89,12 +68,7 @@ module OpenAI
         sig { returns(T.nilable(OpenAI::Realtime::AudioTranscription)) }
         attr_reader :input_audio_transcription
 
-        sig do
-          params(
-            input_audio_transcription:
-              T.nilable(OpenAI::Realtime::AudioTranscription::OrHash)
-          ).void
-        end
+        sig { params(input_audio_transcription: T.nilable(OpenAI::Realtime::AudioTranscription::OrHash)).void }
         attr_writer :input_audio_transcription
 
         # The default system instructions (i.e. system message) prepended to model calls.
@@ -125,73 +99,32 @@ module OpenAI
 
         # The set of modalities the model can respond with. To disable audio, set this to
         # ["text"].
-        sig do
-          returns(
-            T.nilable(
-              T::Array[OpenAI::Realtime::RealtimeSession::Modality::OrSymbol]
-            )
-          )
-        end
+        sig { returns(T.nilable(T::Array[OpenAI::Realtime::RealtimeSession::Modality::OrSymbol])) }
         attr_reader :modalities
 
-        sig do
-          params(
-            modalities:
-              T::Array[OpenAI::Realtime::RealtimeSession::Modality::OrSymbol]
-          ).void
-        end
+        sig { params(modalities: T::Array[OpenAI::Realtime::RealtimeSession::Modality::OrSymbol]).void }
         attr_writer :modalities
 
         # The Realtime model used for this session.
-        sig do
-          returns(
-            T.nilable(
-              T.any(String, OpenAI::Realtime::RealtimeSession::Model::OrSymbol)
-            )
-          )
-        end
+        sig { returns(T.nilable(T.any(String, OpenAI::Realtime::RealtimeSession::Model::OrSymbol))) }
         attr_reader :model
 
-        sig do
-          params(
-            model:
-              T.any(String, OpenAI::Realtime::RealtimeSession::Model::OrSymbol)
-          ).void
-        end
+        sig { params(model: T.any(String, OpenAI::Realtime::RealtimeSession::Model::OrSymbol)).void }
         attr_writer :model
 
         # The object type. Always `realtime.session`.
-        sig do
-          returns(
-            T.nilable(OpenAI::Realtime::RealtimeSession::Object::OrSymbol)
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Realtime::RealtimeSession::Object::OrSymbol)) }
         attr_reader :object
 
-        sig do
-          params(
-            object: OpenAI::Realtime::RealtimeSession::Object::OrSymbol
-          ).void
-        end
+        sig { params(object: OpenAI::Realtime::RealtimeSession::Object::OrSymbol).void }
         attr_writer :object
 
         # The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
         # For `pcm16`, output audio is sampled at a rate of 24kHz.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::Realtime::RealtimeSession::OutputAudioFormat::OrSymbol
-            )
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Realtime::RealtimeSession::OutputAudioFormat::OrSymbol)) }
         attr_reader :output_audio_format
 
-        sig do
-          params(
-            output_audio_format:
-              OpenAI::Realtime::RealtimeSession::OutputAudioFormat::OrSymbol
-          ).void
-        end
+        sig { params(output_audio_format: OpenAI::Realtime::RealtimeSession::OutputAudioFormat::OrSymbol).void }
         attr_writer :output_audio_format
 
         # Reference to a prompt template and its variables.
@@ -199,11 +132,7 @@ module OpenAI
         sig { returns(T.nilable(OpenAI::Responses::ResponsePrompt)) }
         attr_reader :prompt
 
-        sig do
-          params(
-            prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash)
-          ).void
-        end
+        sig { params(prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash)).void }
         attr_writer :prompt
 
         # The speed of the model's spoken response. 1.0 is the default speed. 0.25 is the
@@ -232,16 +161,10 @@ module OpenAI
         attr_writer :tool_choice
 
         # Tools (functions) available to the model.
-        sig do
-          returns(T.nilable(T::Array[OpenAI::Realtime::RealtimeFunctionTool]))
-        end
+        sig { returns(T.nilable(T::Array[OpenAI::Realtime::RealtimeFunctionTool])) }
         attr_reader :tools
 
-        sig do
-          params(
-            tools: T::Array[OpenAI::Realtime::RealtimeFunctionTool::OrHash]
-          ).void
-        end
+        sig { params(tools: T::Array[OpenAI::Realtime::RealtimeFunctionTool::OrHash]).void }
         attr_writer :tools
 
         # Configuration options for tracing. Set to null to disable tracing. Once tracing
@@ -249,16 +172,7 @@ module OpenAI
         #
         # `auto` will create a trace for the session with default values for the workflow
         # name, group id, and metadata.
-        sig do
-          returns(
-            T.nilable(
-              T.any(
-                Symbol,
-                OpenAI::Realtime::RealtimeSession::Tracing::TracingConfiguration
-              )
-            )
-          )
-        end
+        sig { returns(T.nilable(T.any(Symbol, OpenAI::Realtime::RealtimeSession::Tracing::TracingConfiguration))) }
         attr_accessor :tracing
 
         # Configuration for turn detection, ether Server VAD or Semantic VAD. This can be
@@ -277,7 +191,7 @@ module OpenAI
         #
         # For `gpt-realtime-whisper` transcription sessions, turn detection must be set to
         # `null`; VAD is not supported.
-        sig do
+        sig {
           returns(
             T.nilable(
               T.any(
@@ -286,96 +200,95 @@ module OpenAI
               )
             )
           )
-        end
+        }
         attr_accessor :turn_detection
 
         # The voice the model uses to respond. Voice cannot be changed during the session
         # once the model has responded with audio at least once. Current voice options are
         # `alloy`, `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, and `verse`.
-        sig do
-          returns(
-            T.nilable(
-              T.any(String, OpenAI::Realtime::RealtimeSession::Voice::OrSymbol)
-            )
-          )
-        end
+        sig { returns(T.nilable(T.any(String, OpenAI::Realtime::RealtimeSession::Voice::OrSymbol))) }
         attr_reader :voice
 
-        sig do
-          params(
-            voice:
-              T.any(String, OpenAI::Realtime::RealtimeSession::Voice::OrSymbol)
-          ).void
-        end
+        sig { params(voice: T.any(String, OpenAI::Realtime::RealtimeSession::Voice::OrSymbol)).void }
         attr_writer :voice
 
         # Realtime session object for the beta interface.
         sig do
           params(
+
             id: String,
+
             expires_at: Integer,
-            include:
-              T.nilable(
-                T::Array[OpenAI::Realtime::RealtimeSession::Include::OrSymbol]
-              ),
-            input_audio_format:
-              OpenAI::Realtime::RealtimeSession::InputAudioFormat::OrSymbol,
-            input_audio_noise_reduction:
-              OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction::OrHash,
-            input_audio_transcription:
-              T.nilable(OpenAI::Realtime::AudioTranscription::OrHash),
+
+            include: T.nilable(T::Array[OpenAI::Realtime::RealtimeSession::Include::OrSymbol]),
+
+            input_audio_format: OpenAI::Realtime::RealtimeSession::InputAudioFormat::OrSymbol,
+
+            input_audio_noise_reduction: OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction::OrHash,
+
+            input_audio_transcription: T.nilable(OpenAI::Realtime::AudioTranscription::OrHash),
+
             instructions: String,
+
             max_response_output_tokens: T.any(Integer, Symbol),
-            modalities:
-              T::Array[OpenAI::Realtime::RealtimeSession::Modality::OrSymbol],
-            model:
-              T.any(String, OpenAI::Realtime::RealtimeSession::Model::OrSymbol),
+
+            modalities: T::Array[OpenAI::Realtime::RealtimeSession::Modality::OrSymbol],
+
+            model: T.any(String, OpenAI::Realtime::RealtimeSession::Model::OrSymbol),
+
             object: OpenAI::Realtime::RealtimeSession::Object::OrSymbol,
-            output_audio_format:
-              OpenAI::Realtime::RealtimeSession::OutputAudioFormat::OrSymbol,
+
+            output_audio_format: OpenAI::Realtime::RealtimeSession::OutputAudioFormat::OrSymbol,
+
             prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
+
             speed: Float,
+
             temperature: Float,
+
             tool_choice: String,
+
             tools: T::Array[OpenAI::Realtime::RealtimeFunctionTool::OrHash],
-            tracing:
-              T.nilable(
-                T.any(
-                  Symbol,
-                  OpenAI::Realtime::RealtimeSession::Tracing::TracingConfiguration::OrHash
-                )
-              ),
-            turn_detection:
-              T.nilable(
-                T.any(
-                  OpenAI::Realtime::RealtimeSession::TurnDetection::ServerVad::OrHash,
-                  OpenAI::Realtime::RealtimeSession::TurnDetection::SemanticVad::OrHash
-                )
-              ),
-            voice:
-              T.any(String, OpenAI::Realtime::RealtimeSession::Voice::OrSymbol)
-          ).returns(T.attached_class)
+
+            tracing: T.nilable(T.any(Symbol, OpenAI::Realtime::RealtimeSession::Tracing::TracingConfiguration::OrHash)),
+
+            turn_detection: T.nilable(
+              T.any(
+                OpenAI::Realtime::RealtimeSession::TurnDetection::ServerVad::OrHash,
+                OpenAI::Realtime::RealtimeSession::TurnDetection::SemanticVad::OrHash
+              )
+            ),
+
+            voice: T.any(String, OpenAI::Realtime::RealtimeSession::Voice::OrSymbol)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Unique identifier for the session that looks like `sess_1234567890abcdef`.
           id: nil,
+
           # Expiration timestamp for the session, in seconds since epoch.
           expires_at: nil,
+
           # Additional fields to include in server outputs.
           #
           # - `item.input_audio_transcription.logprobs`: Include logprobs for input audio
           #   transcription.
           include: nil,
+
           # The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`. For
           # `pcm16`, input audio must be 16-bit PCM at a 24kHz sample rate, single channel
           # (mono), and little-endian byte order.
           input_audio_format: nil,
+
           # Configuration for input audio noise reduction. This can be set to `null` to turn
           # off. Noise reduction filters audio added to the input audio buffer before it is
           # sent to VAD and the model. Filtering the audio can improve VAD and turn
           # detection accuracy (reducing false positives) and model performance by improving
           # perception of the input audio.
           input_audio_noise_reduction: nil,
+
           # Configuration for input audio transcription, defaults to off and can be set to
           # `null` to turn off once on. Input audio transcription is not native to the
           # model, since the model consumes audio directly. Transcription runs
@@ -385,6 +298,7 @@ module OpenAI
           # what the model heard. The client can optionally set the language and prompt for
           # transcription, these offer additional guidance to the transcription service.
           input_audio_transcription: nil,
+
           # The default system instructions (i.e. system message) prepended to model calls.
           # This field allows the client to guide the model on desired responses. The model
           # can be instructed on response content and format, (e.g. "be extremely succinct",
@@ -397,41 +311,53 @@ module OpenAI
           # is not set and are visible in the `session.created` event at the start of the
           # session.
           instructions: nil,
+
           # Maximum number of output tokens for a single assistant response, inclusive of
           # tool calls. Provide an integer between 1 and 4096 to limit output tokens, or
           # `inf` for the maximum available tokens for a given model. Defaults to `inf`.
           max_response_output_tokens: nil,
+
           # The set of modalities the model can respond with. To disable audio, set this to
           # ["text"].
           modalities: nil,
+
           # The Realtime model used for this session.
           model: nil,
+
           # The object type. Always `realtime.session`.
           object: nil,
+
           # The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
           # For `pcm16`, output audio is sampled at a rate of 24kHz.
           output_audio_format: nil,
+
           # Reference to a prompt template and its variables.
           # [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
           prompt: nil,
+
           # The speed of the model's spoken response. 1.0 is the default speed. 0.25 is the
           # minimum speed. 1.5 is the maximum speed. This value can only be changed in
           # between model turns, not while a response is in progress.
           speed: nil,
+
           # Sampling temperature for the model, limited to [0.6, 1.2]. For audio models a
           # temperature of 0.8 is highly recommended for best performance.
           temperature: nil,
+
           # How the model chooses tools. Options are `auto`, `none`, `required`, or specify
           # a function.
           tool_choice: nil,
+
           # Tools (functions) available to the model.
           tools: nil,
+
           # Configuration options for tracing. Set to null to disable tracing. Once tracing
           # is enabled for a session, the configuration cannot be modified.
           #
           # `auto` will create a trace for the session with default values for the workflow
           # name, group id, and metadata.
           tracing: nil,
+
           # Configuration for turn detection, ether Server VAD or Semantic VAD. This can be
           # set to `null` to turn off, in which case the client must manually trigger model
           # response.
@@ -449,9 +375,11 @@ module OpenAI
           # For `gpt-realtime-whisper` transcription sessions, turn detection must be set to
           # `null`; VAD is not supported.
           turn_detection: nil,
+
           # The voice the model uses to respond. Voice cannot be changed during the session
           # once the model has responded with audio at least once. Current voice options are
           # `alloy`, `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, and `verse`.
+
           voice: nil
         )
         end
@@ -461,52 +389,29 @@ module OpenAI
             {
               id: String,
               expires_at: Integer,
-              include:
-                T.nilable(
-                  T::Array[OpenAI::Realtime::RealtimeSession::Include::OrSymbol]
-                ),
-              input_audio_format:
-                OpenAI::Realtime::RealtimeSession::InputAudioFormat::OrSymbol,
-              input_audio_noise_reduction:
-                OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction,
-              input_audio_transcription:
-                T.nilable(OpenAI::Realtime::AudioTranscription),
+              include: T.nilable(T::Array[OpenAI::Realtime::RealtimeSession::Include::OrSymbol]),
+              input_audio_format: OpenAI::Realtime::RealtimeSession::InputAudioFormat::OrSymbol,
+              input_audio_noise_reduction: OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction,
+              input_audio_transcription: T.nilable(OpenAI::Realtime::AudioTranscription),
               instructions: String,
               max_response_output_tokens: T.any(Integer, Symbol),
-              modalities:
-                T::Array[OpenAI::Realtime::RealtimeSession::Modality::OrSymbol],
-              model:
-                T.any(
-                  String,
-                  OpenAI::Realtime::RealtimeSession::Model::OrSymbol
-                ),
+              modalities: T::Array[OpenAI::Realtime::RealtimeSession::Modality::OrSymbol],
+              model: T.any(String, OpenAI::Realtime::RealtimeSession::Model::OrSymbol),
               object: OpenAI::Realtime::RealtimeSession::Object::OrSymbol,
-              output_audio_format:
-                OpenAI::Realtime::RealtimeSession::OutputAudioFormat::OrSymbol,
+              output_audio_format: OpenAI::Realtime::RealtimeSession::OutputAudioFormat::OrSymbol,
               prompt: T.nilable(OpenAI::Responses::ResponsePrompt),
               speed: Float,
               temperature: Float,
               tool_choice: String,
               tools: T::Array[OpenAI::Realtime::RealtimeFunctionTool],
-              tracing:
-                T.nilable(
-                  T.any(
-                    Symbol,
-                    OpenAI::Realtime::RealtimeSession::Tracing::TracingConfiguration
-                  )
-                ),
-              turn_detection:
-                T.nilable(
-                  T.any(
-                    OpenAI::Realtime::RealtimeSession::TurnDetection::ServerVad,
-                    OpenAI::Realtime::RealtimeSession::TurnDetection::SemanticVad
-                  )
-                ),
-              voice:
+              tracing: T.nilable(T.any(Symbol, OpenAI::Realtime::RealtimeSession::Tracing::TracingConfiguration)),
+              turn_detection: T.nilable(
                 T.any(
-                  String,
-                  OpenAI::Realtime::RealtimeSession::Voice::OrSymbol
+                  OpenAI::Realtime::RealtimeSession::TurnDetection::ServerVad,
+                  OpenAI::Realtime::RealtimeSession::TurnDetection::SemanticVad
                 )
+              ),
+              voice: T.any(String, OpenAI::Realtime::RealtimeSession::Voice::OrSymbol)
             }
           )
         end
@@ -516,23 +421,15 @@ module OpenAI
         module Include
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(Symbol, OpenAI::Realtime::RealtimeSession::Include)
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Realtime::RealtimeSession::Include) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          ITEM_INPUT_AUDIO_TRANSCRIPTION_LOGPROBS =
-            T.let(
-              :"item.input_audio_transcription.logprobs",
-              OpenAI::Realtime::RealtimeSession::Include::TaggedSymbol
-            )
+          ITEM_INPUT_AUDIO_TRANSCRIPTION_LOGPROBS = T.let(
+            :"item.input_audio_transcription.logprobs",
+            OpenAI::Realtime::RealtimeSession::Include::TaggedSymbol
+          )
 
-          sig do
-            override.returns(
-              T::Array[OpenAI::Realtime::RealtimeSession::Include::TaggedSymbol]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Realtime::RealtimeSession::Include::TaggedSymbol]) }
           def self.values
           end
         end
@@ -543,59 +440,33 @@ module OpenAI
         module InputAudioFormat
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(Symbol, OpenAI::Realtime::RealtimeSession::InputAudioFormat)
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Realtime::RealtimeSession::InputAudioFormat) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          PCM16 =
-            T.let(
-              :pcm16,
-              OpenAI::Realtime::RealtimeSession::InputAudioFormat::TaggedSymbol
-            )
-          G711_ULAW =
-            T.let(
-              :g711_ulaw,
-              OpenAI::Realtime::RealtimeSession::InputAudioFormat::TaggedSymbol
-            )
-          G711_ALAW =
-            T.let(
-              :g711_alaw,
-              OpenAI::Realtime::RealtimeSession::InputAudioFormat::TaggedSymbol
-            )
+          PCM16 = T.let(:pcm16, OpenAI::Realtime::RealtimeSession::InputAudioFormat::TaggedSymbol)
+          G711_ULAW = T.let(:g711_ulaw, OpenAI::Realtime::RealtimeSession::InputAudioFormat::TaggedSymbol)
+          G711_ALAW = T.let(:g711_alaw, OpenAI::Realtime::RealtimeSession::InputAudioFormat::TaggedSymbol)
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Realtime::RealtimeSession::InputAudioFormat::TaggedSymbol
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Realtime::RealtimeSession::InputAudioFormat::TaggedSymbol]) }
           def self.values
           end
         end
 
         class InputAudioNoiseReduction < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # Type of noise reduction. `near_field` is for close-talking microphones such as
           # headphones, `far_field` is for far-field microphones such as laptop or
           # conference room microphones.
-          sig do
-            returns(T.nilable(OpenAI::Realtime::NoiseReductionType::OrSymbol))
-          end
+          sig { returns(T.nilable(OpenAI::Realtime::NoiseReductionType::OrSymbol)) }
           attr_reader :type
 
-          sig do
-            params(type: OpenAI::Realtime::NoiseReductionType::OrSymbol).void
-          end
+          sig { params(type: OpenAI::Realtime::NoiseReductionType::OrSymbol).void }
           attr_writer :type
 
           # Configuration for input audio noise reduction. This can be set to `null` to turn
@@ -605,24 +476,29 @@ module OpenAI
           # perception of the input audio.
           sig do
             params(
+
               type: OpenAI::Realtime::NoiseReductionType::OrSymbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # Type of noise reduction. `near_field` is for close-talking microphones such as
             # headphones, `far_field` is for far-field microphones such as laptop or
             # conference room microphones.
+
             type: nil
           )
           end
 
           sig do
             override.returns(
-              { type: OpenAI::Realtime::NoiseReductionType::OrSymbol }
+              {type: OpenAI::Realtime::NoiseReductionType::OrSymbol}
             )
           end
           def to_hash
           end
+
         end
 
         # Maximum number of output tokens for a single assistant response, inclusive of
@@ -633,44 +509,22 @@ module OpenAI
 
           Variants = T.type_alias { T.any(Integer, Symbol) }
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Realtime::RealtimeSession::MaxResponseOutputTokens::Variants
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Realtime::RealtimeSession::MaxResponseOutputTokens::Variants]) }
           def self.variants
           end
+
         end
 
         module Modality
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(Symbol, OpenAI::Realtime::RealtimeSession::Modality)
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Realtime::RealtimeSession::Modality) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          TEXT =
-            T.let(
-              :text,
-              OpenAI::Realtime::RealtimeSession::Modality::TaggedSymbol
-            )
-          AUDIO =
-            T.let(
-              :audio,
-              OpenAI::Realtime::RealtimeSession::Modality::TaggedSymbol
-            )
+          TEXT = T.let(:text, OpenAI::Realtime::RealtimeSession::Modality::TaggedSymbol)
+          AUDIO = T.let(:audio, OpenAI::Realtime::RealtimeSession::Modality::TaggedSymbol)
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Realtime::RealtimeSession::Modality::TaggedSymbol
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Realtime::RealtimeSession::Modality::TaggedSymbol]) }
           def self.values
           end
         end
@@ -679,131 +533,80 @@ module OpenAI
         module Model
           extend OpenAI::Internal::Type::Union
 
-          Variants =
-            T.type_alias do
-              T.any(
-                String,
-                OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
-              )
-            end
+          Variants = T.type_alias { T.any(String, OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol) }
 
-          sig do
-            override.returns(
-              T::Array[OpenAI::Realtime::RealtimeSession::Model::Variants]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Realtime::RealtimeSession::Model::Variants]) }
           def self.variants
           end
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(Symbol, OpenAI::Realtime::RealtimeSession::Model)
-            end
+          TaggedSymbol = T.type_alias do
+            T.all(Symbol, OpenAI::Realtime::RealtimeSession::Model)
+          end
+
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          GPT_REALTIME =
-            T.let(
-              :"gpt-realtime",
-              OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
-            )
-          GPT_REALTIME_1_5 =
-            T.let(
-              :"gpt-realtime-1.5",
-              OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
-            )
-          GPT_REALTIME_2025_08_28 =
-            T.let(
-              :"gpt-realtime-2025-08-28",
-              OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
-            )
-          GPT_4O_REALTIME_PREVIEW =
-            T.let(
-              :"gpt-4o-realtime-preview",
-              OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
-            )
-          GPT_4O_REALTIME_PREVIEW_2024_10_01 =
-            T.let(
-              :"gpt-4o-realtime-preview-2024-10-01",
-              OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
-            )
-          GPT_4O_REALTIME_PREVIEW_2024_12_17 =
-            T.let(
-              :"gpt-4o-realtime-preview-2024-12-17",
-              OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
-            )
-          GPT_4O_REALTIME_PREVIEW_2025_06_03 =
-            T.let(
-              :"gpt-4o-realtime-preview-2025-06-03",
-              OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
-            )
-          GPT_4O_MINI_REALTIME_PREVIEW =
-            T.let(
-              :"gpt-4o-mini-realtime-preview",
-              OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
-            )
-          GPT_4O_MINI_REALTIME_PREVIEW_2024_12_17 =
-            T.let(
-              :"gpt-4o-mini-realtime-preview-2024-12-17",
-              OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
-            )
-          GPT_REALTIME_MINI =
-            T.let(
-              :"gpt-realtime-mini",
-              OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
-            )
-          GPT_REALTIME_MINI_2025_10_06 =
-            T.let(
-              :"gpt-realtime-mini-2025-10-06",
-              OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
-            )
-          GPT_REALTIME_MINI_2025_12_15 =
-            T.let(
-              :"gpt-realtime-mini-2025-12-15",
-              OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
-            )
-          GPT_AUDIO_1_5 =
-            T.let(
-              :"gpt-audio-1.5",
-              OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
-            )
-          GPT_AUDIO_MINI =
-            T.let(
-              :"gpt-audio-mini",
-              OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
-            )
-          GPT_AUDIO_MINI_2025_10_06 =
-            T.let(
-              :"gpt-audio-mini-2025-10-06",
-              OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
-            )
-          GPT_AUDIO_MINI_2025_12_15 =
-            T.let(
-              :"gpt-audio-mini-2025-12-15",
-              OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
-            )
+          GPT_REALTIME = T.let(:"gpt-realtime", OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol)
+          GPT_REALTIME_1_5 = T.let(:"gpt-realtime-1.5", OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol)
+          GPT_REALTIME_2025_08_28 = T.let(
+            :"gpt-realtime-2025-08-28",
+            OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
+          )
+          GPT_4O_REALTIME_PREVIEW = T.let(
+            :"gpt-4o-realtime-preview",
+            OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
+          )
+          GPT_4O_REALTIME_PREVIEW_2024_10_01 = T.let(
+            :"gpt-4o-realtime-preview-2024-10-01",
+            OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
+          )
+          GPT_4O_REALTIME_PREVIEW_2024_12_17 = T.let(
+            :"gpt-4o-realtime-preview-2024-12-17",
+            OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
+          )
+          GPT_4O_REALTIME_PREVIEW_2025_06_03 = T.let(
+            :"gpt-4o-realtime-preview-2025-06-03",
+            OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
+          )
+          GPT_4O_MINI_REALTIME_PREVIEW = T.let(
+            :"gpt-4o-mini-realtime-preview",
+            OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
+          )
+          GPT_4O_MINI_REALTIME_PREVIEW_2024_12_17 = T.let(
+            :"gpt-4o-mini-realtime-preview-2024-12-17",
+            OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
+          )
+          GPT_REALTIME_MINI = T.let(:"gpt-realtime-mini", OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol)
+          GPT_REALTIME_MINI_2025_10_06 = T.let(
+            :"gpt-realtime-mini-2025-10-06",
+            OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
+          )
+          GPT_REALTIME_MINI_2025_12_15 = T.let(
+            :"gpt-realtime-mini-2025-12-15",
+            OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
+          )
+          GPT_AUDIO_1_5 = T.let(:"gpt-audio-1.5", OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol)
+          GPT_AUDIO_MINI = T.let(:"gpt-audio-mini", OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol)
+          GPT_AUDIO_MINI_2025_10_06 = T.let(
+            :"gpt-audio-mini-2025-10-06",
+            OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
+          )
+          GPT_AUDIO_MINI_2025_12_15 = T.let(
+            :"gpt-audio-mini-2025-12-15",
+            OpenAI::Realtime::RealtimeSession::Model::TaggedSymbol
+          )
+
         end
 
         # The object type. Always `realtime.session`.
         module Object
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(Symbol, OpenAI::Realtime::RealtimeSession::Object)
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Realtime::RealtimeSession::Object) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          REALTIME_SESSION =
-            T.let(
-              :"realtime.session",
-              OpenAI::Realtime::RealtimeSession::Object::TaggedSymbol
-            )
+          REALTIME_SESSION = T.let(:"realtime.session", OpenAI::Realtime::RealtimeSession::Object::TaggedSymbol)
 
-          sig do
-            override.returns(
-              T::Array[OpenAI::Realtime::RealtimeSession::Object::TaggedSymbol]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Realtime::RealtimeSession::Object::TaggedSymbol]) }
           def self.values
           end
         end
@@ -813,38 +616,14 @@ module OpenAI
         module OutputAudioFormat
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(
-                Symbol,
-                OpenAI::Realtime::RealtimeSession::OutputAudioFormat
-              )
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Realtime::RealtimeSession::OutputAudioFormat) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          PCM16 =
-            T.let(
-              :pcm16,
-              OpenAI::Realtime::RealtimeSession::OutputAudioFormat::TaggedSymbol
-            )
-          G711_ULAW =
-            T.let(
-              :g711_ulaw,
-              OpenAI::Realtime::RealtimeSession::OutputAudioFormat::TaggedSymbol
-            )
-          G711_ALAW =
-            T.let(
-              :g711_alaw,
-              OpenAI::Realtime::RealtimeSession::OutputAudioFormat::TaggedSymbol
-            )
+          PCM16 = T.let(:pcm16, OpenAI::Realtime::RealtimeSession::OutputAudioFormat::TaggedSymbol)
+          G711_ULAW = T.let(:g711_ulaw, OpenAI::Realtime::RealtimeSession::OutputAudioFormat::TaggedSymbol)
+          G711_ALAW = T.let(:g711_alaw, OpenAI::Realtime::RealtimeSession::OutputAudioFormat::TaggedSymbol)
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Realtime::RealtimeSession::OutputAudioFormat::TaggedSymbol
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Realtime::RealtimeSession::OutputAudioFormat::TaggedSymbol]) }
           def self.values
           end
         end
@@ -857,22 +636,15 @@ module OpenAI
         module Tracing
           extend OpenAI::Internal::Type::Union
 
-          Variants =
-            T.type_alias do
-              T.any(
-                Symbol,
-                OpenAI::Realtime::RealtimeSession::Tracing::TracingConfiguration
-              )
-            end
+          Variants = T.type_alias { T.any(Symbol, OpenAI::Realtime::RealtimeSession::Tracing::TracingConfiguration) }
 
           class TracingConfiguration < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Realtime::RealtimeSession::Tracing::TracingConfiguration,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Realtime::RealtimeSession::Tracing::TracingConfiguration,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # The group id to attach to this trace to enable filtering and grouping in the
             # traces dashboard.
@@ -901,44 +673,46 @@ module OpenAI
             # Granular configuration for tracing.
             sig do
               params(
+
                 group_id: String,
+
                 metadata: T.anything,
+
                 workflow_name: String
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # The group id to attach to this trace to enable filtering and grouping in the
               # traces dashboard.
               group_id: nil,
+
               # The arbitrary metadata to attach to this trace to enable filtering in the traces
               # dashboard.
               metadata: nil,
+
               # The name of the workflow to attach to this trace. This is used to name the trace
               # in the traces dashboard.
+
               workflow_name: nil
             )
             end
 
             sig do
               override.returns(
-                {
-                  group_id: String,
-                  metadata: T.anything,
-                  workflow_name: String
-                }
+                {group_id: String, metadata: T.anything, workflow_name: String}
               )
             end
             def to_hash
             end
+
           end
 
-          sig do
-            override.returns(
-              T::Array[OpenAI::Realtime::RealtimeSession::Tracing::Variants]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Realtime::RealtimeSession::Tracing::Variants]) }
           def self.variants
           end
+
         end
 
         # Configuration for turn detection, ether Server VAD or Semantic VAD. This can be
@@ -960,22 +734,20 @@ module OpenAI
         module TurnDetection
           extend OpenAI::Internal::Type::Union
 
-          Variants =
-            T.type_alias do
-              T.any(
-                OpenAI::Realtime::RealtimeSession::TurnDetection::ServerVad,
-                OpenAI::Realtime::RealtimeSession::TurnDetection::SemanticVad
-              )
-            end
+          Variants = T.type_alias {
+            T.any(
+              OpenAI::Realtime::RealtimeSession::TurnDetection::ServerVad,
+              OpenAI::Realtime::RealtimeSession::TurnDetection::SemanticVad
+            )
+          }
 
           class ServerVad < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Realtime::RealtimeSession::TurnDetection::ServerVad,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Realtime::RealtimeSession::TurnDetection::ServerVad,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # Type of turn detection, `server_vad` to turn on simple Server VAD.
             sig { returns(Symbol) }
@@ -1051,16 +823,25 @@ module OpenAI
             # detected and off after a period of silence.
             sig do
               params(
+
                 create_response: T::Boolean,
+
                 idle_timeout_ms: T.nilable(Integer),
+
                 interrupt_response: T::Boolean,
+
                 prefix_padding_ms: Integer,
+
                 silence_duration_ms: Integer,
+
                 threshold: Float,
+
                 type: Symbol
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # Whether or not to automatically generate a response when a VAD stop event
               # occurs. If `interrupt_response` is set to `false` this may fail to create a
               # response if the model is already responding.
@@ -1068,6 +849,7 @@ module OpenAI
               # If both `create_response` and `interrupt_response` are set to `false`, the model
               # will never respond automatically but VAD events will still be emitted.
               create_response: nil,
+
               # Optional timeout after which a model response will be triggered automatically.
               # This is useful for situations in which a long pause from the user is unexpected,
               # such as a phone call. The model will effectively prompt the user to continue the
@@ -1081,6 +863,7 @@ module OpenAI
               # Response) will be emitted when the timeout is reached. Idle timeout is currently
               # only supported for `server_vad` mode.
               idle_timeout_ms: nil,
+
               # Whether or not to automatically interrupt (cancel) any ongoing response with
               # output to the default conversation (i.e. `conversation` of `auto`) when a VAD
               # start event occurs. If `true` then the response will be cancelled, otherwise it
@@ -1089,18 +872,23 @@ module OpenAI
               # If both `create_response` and `interrupt_response` are set to `false`, the model
               # will never respond automatically but VAD events will still be emitted.
               interrupt_response: nil,
+
               # Used only for `server_vad` mode. Amount of audio to include before the VAD
               # detected speech (in milliseconds). Defaults to 300ms.
               prefix_padding_ms: nil,
+
               # Used only for `server_vad` mode. Duration of silence to detect speech stop (in
               # milliseconds). Defaults to 500ms. With shorter values the model will respond
               # more quickly, but may jump in on short pauses from the user.
               silence_duration_ms: nil,
+
               # Used only for `server_vad` mode. Activation threshold for VAD (0.0 to 1.0), this
               # defaults to 0.5. A higher threshold will require louder audio to activate the
               # model, and thus might perform better in noisy environments.
               threshold: nil,
+
               # Type of turn detection, `server_vad` to turn on simple Server VAD.
+
               type: :server_vad
             )
             end
@@ -1120,16 +908,16 @@ module OpenAI
             end
             def to_hash
             end
+
           end
 
           class SemanticVad < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Realtime::RealtimeSession::TurnDetection::SemanticVad,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Realtime::RealtimeSession::TurnDetection::SemanticVad,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # Type of turn detection, `semantic_vad` to turn on Semantic VAD.
             sig { returns(Symbol) }
@@ -1147,21 +935,14 @@ module OpenAI
             # will wait longer for the user to continue speaking, `high` will respond more
             # quickly. `auto` is the default and is equivalent to `medium`. `low`, `medium`,
             # and `high` have max timeouts of 8s, 4s, and 2s respectively.
-            sig do
-              returns(
-                T.nilable(
-                  OpenAI::Realtime::RealtimeSession::TurnDetection::SemanticVad::Eagerness::OrSymbol
-                )
-              )
-            end
+            sig {
+              returns(T.nilable(OpenAI::Realtime::RealtimeSession::TurnDetection::SemanticVad::Eagerness::OrSymbol))
+            }
             attr_reader :eagerness
 
-            sig do
-              params(
-                eagerness:
-                  OpenAI::Realtime::RealtimeSession::TurnDetection::SemanticVad::Eagerness::OrSymbol
-              ).void
-            end
+            sig {
+              params(eagerness: OpenAI::Realtime::RealtimeSession::TurnDetection::SemanticVad::Eagerness::OrSymbol).void
+            }
             attr_writer :eagerness
 
             # Whether or not to automatically interrupt any ongoing response with output to
@@ -1177,27 +958,36 @@ module OpenAI
             # user has finished speaking.
             sig do
               params(
+
                 create_response: T::Boolean,
-                eagerness:
-                  OpenAI::Realtime::RealtimeSession::TurnDetection::SemanticVad::Eagerness::OrSymbol,
+
+                eagerness: OpenAI::Realtime::RealtimeSession::TurnDetection::SemanticVad::Eagerness::OrSymbol,
+
                 interrupt_response: T::Boolean,
+
                 type: Symbol
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # Whether or not to automatically generate a response when a VAD stop event
               # occurs.
               create_response: nil,
+
               # Used only for `semantic_vad` mode. The eagerness of the model to respond. `low`
               # will wait longer for the user to continue speaking, `high` will respond more
               # quickly. `auto` is the default and is equivalent to `medium`. `low`, `medium`,
               # and `high` have max timeouts of 8s, 4s, and 2s respectively.
               eagerness: nil,
+
               # Whether or not to automatically interrupt any ongoing response with output to
               # the default conversation (i.e. `conversation` of `auto`) when a VAD start event
               # occurs.
               interrupt_response: nil,
+
               # Type of turn detection, `semantic_vad` to turn on Semantic VAD.
+
               type: :semantic_vad
             )
             end
@@ -1207,8 +997,7 @@ module OpenAI
                 {
                   type: Symbol,
                   create_response: T::Boolean,
-                  eagerness:
-                    OpenAI::Realtime::RealtimeSession::TurnDetection::SemanticVad::Eagerness::OrSymbol,
+                  eagerness: OpenAI::Realtime::RealtimeSession::TurnDetection::SemanticVad::Eagerness::OrSymbol,
                   interrupt_response: T::Boolean
                 }
               )
@@ -1223,57 +1012,39 @@ module OpenAI
             module Eagerness
               extend OpenAI::Internal::Type::Enum
 
-              TaggedSymbol =
-                T.type_alias do
-                  T.all(
-                    Symbol,
-                    OpenAI::Realtime::RealtimeSession::TurnDetection::SemanticVad::Eagerness
-                  )
-                end
+              TaggedSymbol = T.type_alias {
+                T.all(Symbol, OpenAI::Realtime::RealtimeSession::TurnDetection::SemanticVad::Eagerness)
+              }
               OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-              LOW =
-                T.let(
-                  :low,
-                  OpenAI::Realtime::RealtimeSession::TurnDetection::SemanticVad::Eagerness::TaggedSymbol
-                )
-              MEDIUM =
-                T.let(
-                  :medium,
-                  OpenAI::Realtime::RealtimeSession::TurnDetection::SemanticVad::Eagerness::TaggedSymbol
-                )
-              HIGH =
-                T.let(
-                  :high,
-                  OpenAI::Realtime::RealtimeSession::TurnDetection::SemanticVad::Eagerness::TaggedSymbol
-                )
-              AUTO =
-                T.let(
-                  :auto,
-                  OpenAI::Realtime::RealtimeSession::TurnDetection::SemanticVad::Eagerness::TaggedSymbol
-                )
+              LOW = T.let(:low, OpenAI::Realtime::RealtimeSession::TurnDetection::SemanticVad::Eagerness::TaggedSymbol)
+              MEDIUM = T.let(
+                :medium,
+                OpenAI::Realtime::RealtimeSession::TurnDetection::SemanticVad::Eagerness::TaggedSymbol
+              )
+              HIGH = T.let(
+                :high,
+                OpenAI::Realtime::RealtimeSession::TurnDetection::SemanticVad::Eagerness::TaggedSymbol
+              )
+              AUTO = T.let(
+                :auto,
+                OpenAI::Realtime::RealtimeSession::TurnDetection::SemanticVad::Eagerness::TaggedSymbol
+              )
 
-              sig do
+              sig {
                 override.returns(
-                  T::Array[
-                    OpenAI::Realtime::RealtimeSession::TurnDetection::SemanticVad::Eagerness::TaggedSymbol
-                  ]
+                  T::Array[OpenAI::Realtime::RealtimeSession::TurnDetection::SemanticVad::Eagerness::TaggedSymbol]
                 )
-              end
+              }
               def self.values
               end
             end
           end
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Realtime::RealtimeSession::TurnDetection::Variants
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Realtime::RealtimeSession::TurnDetection::Variants]) }
           def self.variants
           end
+
         end
 
         # The voice the model uses to respond. Voice cannot be changed during the session
@@ -1282,71 +1053,34 @@ module OpenAI
         module Voice
           extend OpenAI::Internal::Type::Union
 
-          Variants =
-            T.type_alias do
-              T.any(
-                String,
-                OpenAI::Realtime::RealtimeSession::Voice::TaggedSymbol
-              )
-            end
+          Variants = T.type_alias { T.any(String, OpenAI::Realtime::RealtimeSession::Voice::TaggedSymbol) }
 
-          sig do
-            override.returns(
-              T::Array[OpenAI::Realtime::RealtimeSession::Voice::Variants]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Realtime::RealtimeSession::Voice::Variants]) }
           def self.variants
           end
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(Symbol, OpenAI::Realtime::RealtimeSession::Voice)
-            end
+          TaggedSymbol = T.type_alias do
+            T.all(Symbol, OpenAI::Realtime::RealtimeSession::Voice)
+          end
+
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          ALLOY =
-            T.let(
-              :alloy,
-              OpenAI::Realtime::RealtimeSession::Voice::TaggedSymbol
-            )
-          ASH =
-            T.let(:ash, OpenAI::Realtime::RealtimeSession::Voice::TaggedSymbol)
-          BALLAD =
-            T.let(
-              :ballad,
-              OpenAI::Realtime::RealtimeSession::Voice::TaggedSymbol
-            )
-          CORAL =
-            T.let(
-              :coral,
-              OpenAI::Realtime::RealtimeSession::Voice::TaggedSymbol
-            )
-          ECHO =
-            T.let(:echo, OpenAI::Realtime::RealtimeSession::Voice::TaggedSymbol)
-          SAGE =
-            T.let(:sage, OpenAI::Realtime::RealtimeSession::Voice::TaggedSymbol)
-          SHIMMER =
-            T.let(
-              :shimmer,
-              OpenAI::Realtime::RealtimeSession::Voice::TaggedSymbol
-            )
-          VERSE =
-            T.let(
-              :verse,
-              OpenAI::Realtime::RealtimeSession::Voice::TaggedSymbol
-            )
-          MARIN =
-            T.let(
-              :marin,
-              OpenAI::Realtime::RealtimeSession::Voice::TaggedSymbol
-            )
-          CEDAR =
-            T.let(
-              :cedar,
-              OpenAI::Realtime::RealtimeSession::Voice::TaggedSymbol
-            )
+          ALLOY = T.let(:alloy, OpenAI::Realtime::RealtimeSession::Voice::TaggedSymbol)
+          ASH = T.let(:ash, OpenAI::Realtime::RealtimeSession::Voice::TaggedSymbol)
+          BALLAD = T.let(:ballad, OpenAI::Realtime::RealtimeSession::Voice::TaggedSymbol)
+          CORAL = T.let(:coral, OpenAI::Realtime::RealtimeSession::Voice::TaggedSymbol)
+          ECHO = T.let(:echo, OpenAI::Realtime::RealtimeSession::Voice::TaggedSymbol)
+          SAGE = T.let(:sage, OpenAI::Realtime::RealtimeSession::Voice::TaggedSymbol)
+          SHIMMER = T.let(:shimmer, OpenAI::Realtime::RealtimeSession::Voice::TaggedSymbol)
+          VERSE = T.let(:verse, OpenAI::Realtime::RealtimeSession::Voice::TaggedSymbol)
+          MARIN = T.let(:marin, OpenAI::Realtime::RealtimeSession::Voice::TaggedSymbol)
+          CEDAR = T.let(:cedar, OpenAI::Realtime::RealtimeSession::Voice::TaggedSymbol)
+
         end
+
       end
+
     end
+
   end
 end

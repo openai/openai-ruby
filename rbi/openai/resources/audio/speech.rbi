@@ -2,31 +2,32 @@
 
 module OpenAI
   module Resources
+
     class Audio
+
       # Turn audio into text or text into audio.
       class Speech
+
         # Generates audio from the input text.
         #
         # Returns the audio file content, or a stream of audio events.
-        sig do
+        sig {
           params(
             input: String,
             model: T.any(String, OpenAI::Audio::SpeechModel::OrSymbol),
-            voice:
-              T.any(
-                String,
-                OpenAI::Audio::SpeechCreateParams::Voice::OrSymbol,
-                OpenAI::Audio::SpeechCreateParams::Voice::ID::OrHash
-              ),
+            voice: T.any(
+              String,
+              OpenAI::Audio::SpeechCreateParams::Voice::OrSymbol,
+              OpenAI::Audio::SpeechCreateParams::Voice::ID::OrHash
+            ),
             instructions: String,
-            response_format:
-              OpenAI::Audio::SpeechCreateParams::ResponseFormat::OrSymbol,
+            response_format: OpenAI::Audio::SpeechCreateParams::ResponseFormat::OrSymbol,
             speed: Float,
-            stream_format:
-              OpenAI::Audio::SpeechCreateParams::StreamFormat::OrSymbol,
+            stream_format: OpenAI::Audio::SpeechCreateParams::StreamFormat::OrSymbol,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(StringIO)
-        end
+          )
+            .returns(StringIO)
+        }
         def create(
           # The text to generate audio for. The maximum length is 4096 characters.
           input:,
@@ -61,6 +62,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

@@ -2,14 +2,18 @@
 
 module OpenAI
   module Models
+
     class EmbeddingCreateParams < OpenAI::Internal::Type::BaseModel
+
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      OrHash =
-        T.type_alias do
-          T.any(OpenAI::EmbeddingCreateParams, OpenAI::Internal::AnyHash)
-        end
+      OrHash = T.type_alias do
+        T.any(
+          OpenAI::EmbeddingCreateParams,
+          OpenAI::Internal::AnyHash
+        )
+      end
 
       # Input text to embed, encoded as a string or array of tokens. To embed multiple
       # inputs in a single request, pass an array of strings or array of token arrays.
@@ -41,19 +45,10 @@ module OpenAI
 
       # The format to return the embeddings in. Can be either `float` or
       # [`base64`](https://pypi.org/project/pybase64/).
-      sig do
-        returns(
-          T.nilable(OpenAI::EmbeddingCreateParams::EncodingFormat::OrSymbol)
-        )
-      end
+      sig { returns(T.nilable(OpenAI::EmbeddingCreateParams::EncodingFormat::OrSymbol)) }
       attr_reader :encoding_format
 
-      sig do
-        params(
-          encoding_format:
-            OpenAI::EmbeddingCreateParams::EncodingFormat::OrSymbol
-        ).void
-      end
+      sig { params(encoding_format: OpenAI::EmbeddingCreateParams::EncodingFormat::OrSymbol).void }
       attr_writer :encoding_format
 
       # A unique identifier representing your end-user, which can help OpenAI to monitor
@@ -67,16 +62,23 @@ module OpenAI
 
       sig do
         params(
+
           input: OpenAI::EmbeddingCreateParams::Input::Variants,
+
           model: T.any(String, OpenAI::EmbeddingModel::OrSymbol),
+
           dimensions: Integer,
-          encoding_format:
-            OpenAI::EmbeddingCreateParams::EncodingFormat::OrSymbol,
+
+          encoding_format: OpenAI::EmbeddingCreateParams::EncodingFormat::OrSymbol,
+
           user: String,
+
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(
+
         # Input text to embed, encoded as a string or array of tokens. To embed multiple
         # inputs in a single request, pass an array of strings or array of token arrays.
         # The input must not exceed the max input tokens for the model (8192 tokens for
@@ -87,22 +89,27 @@ module OpenAI
         # models enforce a maximum of 300,000 tokens summed across all inputs in a single
         # request.
         input:,
+
         # ID of the model to use. You can use the
         # [List models](https://platform.openai.com/docs/api-reference/models/list) API to
         # see all of your available models, or see our
         # [Model overview](https://platform.openai.com/docs/models) for descriptions of
         # them.
         model:,
+
         # The number of dimensions the resulting output embeddings should have. Only
         # supported in `text-embedding-3` and later models.
         dimensions: nil,
+
         # The format to return the embeddings in. Can be either `float` or
         # [`base64`](https://pypi.org/project/pybase64/).
         encoding_format: nil,
+
         # A unique identifier representing your end-user, which can help OpenAI to monitor
         # and detect abuse.
         # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         user: nil,
+
         request_options: {}
       )
       end
@@ -113,8 +120,7 @@ module OpenAI
             input: OpenAI::EmbeddingCreateParams::Input::Variants,
             model: T.any(String, OpenAI::EmbeddingModel::OrSymbol),
             dimensions: Integer,
-            encoding_format:
-              OpenAI::EmbeddingCreateParams::EncodingFormat::OrSymbol,
+            encoding_format: OpenAI::EmbeddingCreateParams::EncodingFormat::OrSymbol,
             user: String,
             request_options: OpenAI::RequestOptions
           }
@@ -135,43 +141,27 @@ module OpenAI
       module Input
         extend OpenAI::Internal::Type::Union
 
-        Variants =
-          T.type_alias do
-            T.any(
-              String,
-              T::Array[String],
-              T::Array[Integer],
-              T::Array[T::Array[Integer]]
-            )
-          end
+        Variants = T.type_alias { T.any(String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]) }
 
-        sig do
-          override.returns(
-            T::Array[OpenAI::EmbeddingCreateParams::Input::Variants]
-          )
-        end
+        sig { override.returns(T::Array[OpenAI::EmbeddingCreateParams::Input::Variants]) }
         def self.variants
         end
 
-        StringArray =
-          T.let(
-            OpenAI::Internal::Type::ArrayOf[String],
-            OpenAI::Internal::Type::Converter
-          )
+        StringArray = T.let(
+          OpenAI::Internal::Type::ArrayOf[String],
+          OpenAI::Internal::Type::Converter
+        )
 
-        IntegerArray =
-          T.let(
-            OpenAI::Internal::Type::ArrayOf[Integer],
-            OpenAI::Internal::Type::Converter
-          )
+        IntegerArray = T.let(
+          OpenAI::Internal::Type::ArrayOf[Integer],
+          OpenAI::Internal::Type::Converter
+        )
 
-        ArrayOfToken2DArray =
-          T.let(
-            OpenAI::Internal::Type::ArrayOf[
-              OpenAI::Internal::Type::ArrayOf[Integer]
-            ],
-            OpenAI::Internal::Type::Converter
-          )
+        ArrayOfToken2DArray = T.let(
+          OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::ArrayOf[Integer]],
+          OpenAI::Internal::Type::Converter
+        )
+
       end
 
       # ID of the model to use. You can use the
@@ -182,16 +172,12 @@ module OpenAI
       module Model
         extend OpenAI::Internal::Type::Union
 
-        Variants =
-          T.type_alias { T.any(String, OpenAI::EmbeddingModel::TaggedSymbol) }
+        Variants = T.type_alias { T.any(String, OpenAI::EmbeddingModel::TaggedSymbol) }
 
-        sig do
-          override.returns(
-            T::Array[OpenAI::EmbeddingCreateParams::Model::Variants]
-          )
-        end
+        sig { override.returns(T::Array[OpenAI::EmbeddingCreateParams::Model::Variants]) }
         def self.variants
         end
+
       end
 
       # The format to return the embeddings in. Can be either `float` or
@@ -199,33 +185,18 @@ module OpenAI
       module EncodingFormat
         extend OpenAI::Internal::Type::Enum
 
-        TaggedSymbol =
-          T.type_alias do
-            T.all(Symbol, OpenAI::EmbeddingCreateParams::EncodingFormat)
-          end
+        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::EmbeddingCreateParams::EncodingFormat) }
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-        FLOAT =
-          T.let(
-            :float,
-            OpenAI::EmbeddingCreateParams::EncodingFormat::TaggedSymbol
-          )
-        BASE64 =
-          T.let(
-            :base64,
-            OpenAI::EmbeddingCreateParams::EncodingFormat::TaggedSymbol
-          )
+        FLOAT = T.let(:float, OpenAI::EmbeddingCreateParams::EncodingFormat::TaggedSymbol)
+        BASE64 = T.let(:base64, OpenAI::EmbeddingCreateParams::EncodingFormat::TaggedSymbol)
 
-        sig do
-          override.returns(
-            T::Array[
-              OpenAI::EmbeddingCreateParams::EncodingFormat::TaggedSymbol
-            ]
-          )
-        end
+        sig { override.returns(T::Array[OpenAI::EmbeddingCreateParams::EncodingFormat::TaggedSymbol]) }
         def self.values
         end
       end
+
     end
+
   end
 end

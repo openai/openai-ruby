@@ -2,12 +2,17 @@
 
 module OpenAI
   module Models
+
     module Responses
+
       class ResponseUsage < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(OpenAI::Responses::ResponseUsage, OpenAI::Internal::AnyHash)
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Responses::ResponseUsage,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The number of input tokens.
         sig { returns(Integer) }
@@ -17,12 +22,7 @@ module OpenAI
         sig { returns(OpenAI::Responses::ResponseUsage::InputTokensDetails) }
         attr_reader :input_tokens_details
 
-        sig do
-          params(
-            input_tokens_details:
-              OpenAI::Responses::ResponseUsage::InputTokensDetails::OrHash
-          ).void
-        end
+        sig { params(input_tokens_details: OpenAI::Responses::ResponseUsage::InputTokensDetails::OrHash).void }
         attr_writer :input_tokens_details
 
         # The number of output tokens.
@@ -33,12 +33,7 @@ module OpenAI
         sig { returns(OpenAI::Responses::ResponseUsage::OutputTokensDetails) }
         attr_reader :output_tokens_details
 
-        sig do
-          params(
-            output_tokens_details:
-              OpenAI::Responses::ResponseUsage::OutputTokensDetails::OrHash
-          ).void
-        end
+        sig { params(output_tokens_details: OpenAI::Responses::ResponseUsage::OutputTokensDetails::OrHash).void }
         attr_writer :output_tokens_details
 
         # The total number of tokens used.
@@ -49,25 +44,35 @@ module OpenAI
         # breakdown of output tokens, and the total tokens used.
         sig do
           params(
+
             input_tokens: Integer,
-            input_tokens_details:
-              OpenAI::Responses::ResponseUsage::InputTokensDetails::OrHash,
+
+            input_tokens_details: OpenAI::Responses::ResponseUsage::InputTokensDetails::OrHash,
+
             output_tokens: Integer,
-            output_tokens_details:
-              OpenAI::Responses::ResponseUsage::OutputTokensDetails::OrHash,
+
+            output_tokens_details: OpenAI::Responses::ResponseUsage::OutputTokensDetails::OrHash,
+
             total_tokens: Integer
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The number of input tokens.
           input_tokens:,
+
           # A detailed breakdown of the input tokens.
           input_tokens_details:,
+
           # The number of output tokens.
           output_tokens:,
+
           # A detailed breakdown of the output tokens.
           output_tokens_details:,
+
           # The total number of tokens used.
+
           total_tokens:
         )
         end
@@ -76,11 +81,9 @@ module OpenAI
           override.returns(
             {
               input_tokens: Integer,
-              input_tokens_details:
-                OpenAI::Responses::ResponseUsage::InputTokensDetails,
+              input_tokens_details: OpenAI::Responses::ResponseUsage::InputTokensDetails,
               output_tokens: Integer,
-              output_tokens_details:
-                OpenAI::Responses::ResponseUsage::OutputTokensDetails,
+              output_tokens_details: OpenAI::Responses::ResponseUsage::OutputTokensDetails,
               total_tokens: Integer
             }
           )
@@ -89,13 +92,12 @@ module OpenAI
         end
 
         class InputTokensDetails < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseUsage::InputTokensDetails,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseUsage::InputTokensDetails,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The number of input tokens that were written to the cache.
           sig { returns(Integer) }
@@ -108,54 +110,77 @@ module OpenAI
 
           # A detailed breakdown of the input tokens.
           sig do
-            params(cache_write_tokens: Integer, cached_tokens: Integer).returns(
-              T.attached_class
+            params(
+
+              cache_write_tokens: Integer,
+
+              cached_tokens: Integer
             )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The number of input tokens that were written to the cache.
             cache_write_tokens:,
+
             # The number of tokens that were retrieved from the cache.
             # [More on prompt caching](https://platform.openai.com/docs/guides/prompt-caching).
+
             cached_tokens:
           )
           end
 
           sig do
             override.returns(
-              { cache_write_tokens: Integer, cached_tokens: Integer }
+              {cache_write_tokens: Integer, cached_tokens: Integer}
             )
           end
           def to_hash
           end
+
         end
 
         class OutputTokensDetails < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseUsage::OutputTokensDetails,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseUsage::OutputTokensDetails,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The number of reasoning tokens.
           sig { returns(Integer) }
           attr_accessor :reasoning_tokens
 
           # A detailed breakdown of the output tokens.
-          sig { params(reasoning_tokens: Integer).returns(T.attached_class) }
+          sig do
+            params(
+
+              reasoning_tokens: Integer
+            )
+              .returns(T.attached_class)
+          end
           def self.new(
+
             # The number of reasoning tokens.
+
             reasoning_tokens:
           )
           end
 
-          sig { override.returns({ reasoning_tokens: Integer }) }
+          sig do
+            override.returns(
+              {reasoning_tokens: Integer}
+            )
+          end
           def to_hash
           end
+
         end
+
       end
+
     end
+
   end
 end

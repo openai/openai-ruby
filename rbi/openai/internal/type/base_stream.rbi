@@ -30,7 +30,8 @@ module OpenAI
           params(
             context: OpenAI::Internal::Logging::Context,
             response: OpenAI::HTTPClient::Response
-          ).returns(T.self_type)
+          )
+            .returns(T.self_type)
         end
         def observe(context:, response:)
         end
@@ -51,20 +52,19 @@ module OpenAI
         # @api private
         sig do
           params(
-            model:
-              T.any(T::Class[T.anything], OpenAI::Internal::Type::Converter),
+            model: T.any(T::Class[T.anything], OpenAI::Internal::Type::Converter),
             url: URI::Generic,
             response_metadata: OpenAI::ResponseMetadata,
             response: OpenAI::HTTPClient::Response,
-            unwrap:
-              T.any(
-                Symbol,
-                Integer,
-                T::Array[T.any(Symbol, Integer)],
-                T.proc.params(arg0: T.anything).returns(T.anything)
-              ),
+            unwrap: T.any(
+              Symbol,
+              Integer,
+              T::Array[T.any(Symbol, Integer)],
+              T.proc.params(arg0: T.anything).returns(T.anything)
+            ),
             stream: T::Enumerable[Message]
-          ).void
+          )
+            .void
         end
         def initialize(
           model:,

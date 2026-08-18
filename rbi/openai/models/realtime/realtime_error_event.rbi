@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class RealtimeErrorEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::RealtimeErrorEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::RealtimeErrorEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # Details of the error.
         sig { returns(OpenAI::Realtime::RealtimeError) }
@@ -32,33 +34,40 @@ module OpenAI
         # recommend to implementors to monitor and log error messages by default.
         sig do
           params(
+
             error: OpenAI::Realtime::RealtimeError::OrHash,
+
             event_id: String,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Details of the error.
           error:,
+
           # The unique ID of the server event.
           event_id:,
+
           # The event type, must be `error`.
+
           type: :error
         )
         end
 
         sig do
           override.returns(
-            {
-              error: OpenAI::Realtime::RealtimeError,
-              event_id: String,
-              type: Symbol
-            }
+            {error: OpenAI::Realtime::RealtimeError, event_id: String, type: Symbol}
           )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

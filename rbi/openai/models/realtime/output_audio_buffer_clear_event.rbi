@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class OutputAudioBufferClearEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::OutputAudioBufferClearEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::OutputAudioBufferClearEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The event type, must be `output_audio_buffer.clear`.
         sig { returns(Symbol) }
@@ -28,19 +30,37 @@ module OpenAI
         # `output_audio_buffer.cleared` event. This event should be preceded by a
         # `response.cancel` client event to stop the generation of the current response.
         # [Learn more](https://platform.openai.com/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
-        sig { params(event_id: String, type: Symbol).returns(T.attached_class) }
+        sig do
+          params(
+
+            event_id: String,
+
+            type: Symbol
+          )
+            .returns(T.attached_class)
+        end
         def self.new(
+
           # The unique ID of the client event used for error handling.
           event_id: nil,
+
           # The event type, must be `output_audio_buffer.clear`.
+
           type: :"output_audio_buffer.clear"
         )
         end
 
-        sig { override.returns({ type: Symbol, event_id: String }) }
+        sig do
+          override.returns(
+            {type: Symbol, event_id: String}
+          )
+        end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

@@ -2,29 +2,32 @@
 
 module OpenAI
   module Resources
+
     class Admin
+
       class Organization
+
         class SpendLimit
+
           # Get the organization's hard spend limit.
-          sig do
+          sig {
             params(request_options: OpenAI::RequestOptions::OrHash).returns(
               OpenAI::Admin::Organization::OrganizationSpendLimit
             )
-          end
+          }
           def retrieve(request_options: {})
           end
 
           # Create or replace the organization's hard spend limit.
-          sig do
+          sig {
             params(
-              currency:
-                OpenAI::Admin::Organization::SpendLimitUpdateParams::Currency::OrSymbol,
-              interval:
-                OpenAI::Admin::Organization::SpendLimitUpdateParams::Interval::OrSymbol,
+              currency: OpenAI::Admin::Organization::SpendLimitUpdateParams::Currency::OrSymbol,
+              interval: OpenAI::Admin::Organization::SpendLimitUpdateParams::Interval::OrSymbol,
               threshold_amount: Integer,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Admin::Organization::OrganizationSpendLimit)
-          end
+            )
+              .returns(OpenAI::Admin::Organization::OrganizationSpendLimit)
+          }
           def update(
             # The currency for the threshold amount. Currently, only `USD` is supported.
             currency:,
@@ -38,11 +41,11 @@ module OpenAI
           end
 
           # Delete the organization's hard spend limit.
-          sig do
+          sig {
             params(request_options: OpenAI::RequestOptions::OrHash).returns(
               OpenAI::Admin::Organization::OrganizationSpendLimitDeleted
             )
-          end
+          }
           def delete(request_options: {})
           end
 
@@ -51,7 +54,10 @@ module OpenAI
           def self.new(client:)
           end
         end
+
       end
+
     end
+
   end
 end

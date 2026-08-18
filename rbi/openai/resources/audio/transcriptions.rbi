@@ -2,9 +2,12 @@
 
 module OpenAI
   module Resources
+
     class Audio
+
       # Turn audio into text or text into audio.
       class Transcriptions
+
         # See {OpenAI::Resources::Audio::Transcriptions#create_streaming} for streaming
         # counterpart.
         #
@@ -12,17 +15,13 @@ module OpenAI
         #
         # Returns a transcription object in `json`, `diarized_json`, or `verbose_json`
         # format, or a stream of transcript events.
-        sig do
+        sig {
           params(
             file: OpenAI::Internal::FileInput,
             model: T.any(String, OpenAI::AudioModel::OrSymbol),
-            chunking_strategy:
-              T.nilable(
-                T.any(
-                  Symbol,
-                  OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::OrHash
-                )
-              ),
+            chunking_strategy: T.nilable(
+              T.any(Symbol, OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::OrHash)
+            ),
             include: T::Array[OpenAI::Audio::TranscriptionInclude::OrSymbol],
             keywords: T::Array[String],
             known_speaker_names: T::Array[String],
@@ -32,16 +31,12 @@ module OpenAI
             prompt: String,
             response_format: OpenAI::AudioResponseFormat::OrSymbol,
             temperature: Float,
-            timestamp_granularities:
-              T::Array[
-                OpenAI::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol
-              ],
+            timestamp_granularities: T::Array[OpenAI::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol],
             stream: T.noreturn,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(
-            OpenAI::Models::Audio::TranscriptionCreateResponse::Variants
           )
-        end
+            .returns(OpenAI::Models::Audio::TranscriptionCreateResponse::Variants)
+        }
         def create(
           # The audio file object (not file name) to transcribe, in one of these formats:
           # flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm. The request must include
@@ -131,17 +126,13 @@ module OpenAI
         #
         # Returns a transcription object in `json`, `diarized_json`, or `verbose_json`
         # format, or a stream of transcript events.
-        sig do
+        sig {
           params(
             file: OpenAI::Internal::FileInput,
             model: T.any(String, OpenAI::AudioModel::OrSymbol),
-            chunking_strategy:
-              T.nilable(
-                T.any(
-                  Symbol,
-                  OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::OrHash
-                )
-              ),
+            chunking_strategy: T.nilable(
+              T.any(Symbol, OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::OrHash)
+            ),
             include: T::Array[OpenAI::Audio::TranscriptionInclude::OrSymbol],
             keywords: T::Array[String],
             known_speaker_names: T::Array[String],
@@ -151,18 +142,12 @@ module OpenAI
             prompt: String,
             response_format: OpenAI::AudioResponseFormat::OrSymbol,
             temperature: Float,
-            timestamp_granularities:
-              T::Array[
-                OpenAI::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol
-              ],
+            timestamp_granularities: T::Array[OpenAI::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol],
             stream: T.noreturn,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(
-            OpenAI::Internal::Stream[
-              OpenAI::Audio::TranscriptionStreamEvent::Variants
-            ]
           )
-        end
+            .returns(OpenAI::Internal::Stream[OpenAI::Audio::TranscriptionStreamEvent::Variants])
+        }
         def create_streaming(
           # The audio file object (not file name) to transcribe, in one of these formats:
           # flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm. The request must include
@@ -250,6 +235,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

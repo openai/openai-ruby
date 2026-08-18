@@ -2,11 +2,15 @@
 
 module OpenAI
   module Models
+
     class ComparisonFilter < OpenAI::Internal::Type::BaseModel
-      OrHash =
-        T.type_alias do
-          T.any(OpenAI::ComparisonFilter, OpenAI::Internal::AnyHash)
-        end
+
+      OrHash = T.type_alias do
+        T.any(
+          OpenAI::ComparisonFilter,
+          OpenAI::Internal::AnyHash
+        )
+      end
 
       # The key to compare against the value.
       sig { returns(String) }
@@ -35,14 +39,20 @@ module OpenAI
       # defined comparison operation.
       sig do
         params(
+
           key: String,
+
           type: OpenAI::ComparisonFilter::Type::OrSymbol,
+
           value: OpenAI::ComparisonFilter::Value::Variants
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(
+
         # The key to compare against the value.
         key:,
+
         # Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`, `in`,
         # `nin`.
         #
@@ -55,8 +65,10 @@ module OpenAI
         # - `in`: in
         # - `nin`: not in
         type:,
+
         # The value to compare against the attribute key; supports string, number, or
         # boolean types.
+
         value:
       )
       end
@@ -87,8 +99,7 @@ module OpenAI
       module Type
         extend OpenAI::Internal::Type::Enum
 
-        TaggedSymbol =
-          T.type_alias { T.all(Symbol, OpenAI::ComparisonFilter::Type) }
+        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::ComparisonFilter::Type) }
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         EQ = T.let(:eq, OpenAI::ComparisonFilter::Type::TaggedSymbol)
@@ -100,11 +111,7 @@ module OpenAI
         IN = T.let(:in, OpenAI::ComparisonFilter::Type::TaggedSymbol)
         NIN = T.let(:nin, OpenAI::ComparisonFilter::Type::TaggedSymbol)
 
-        sig do
-          override.returns(
-            T::Array[OpenAI::ComparisonFilter::Type::TaggedSymbol]
-          )
-        end
+        sig { override.returns(T::Array[OpenAI::ComparisonFilter::Type::TaggedSymbol]) }
         def self.values
         end
       end
@@ -114,44 +121,33 @@ module OpenAI
       module Value
         extend OpenAI::Internal::Type::Union
 
-        Variants =
-          T.type_alias do
-            T.any(
-              String,
-              Float,
-              T::Boolean,
-              T::Array[OpenAI::ComparisonFilter::Value::UnionMember3::Variants]
-            )
-          end
+        Variants = T.type_alias {
+          T.any(String, Float, T::Boolean, T::Array[OpenAI::ComparisonFilter::Value::UnionMember3::Variants])
+        }
 
         module UnionMember3
           extend OpenAI::Internal::Type::Union
 
           Variants = T.type_alias { T.any(String, Float) }
 
-          sig do
-            override.returns(
-              T::Array[OpenAI::ComparisonFilter::Value::UnionMember3::Variants]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::ComparisonFilter::Value::UnionMember3::Variants]) }
           def self.variants
           end
+
         end
 
-        sig do
-          override.returns(T::Array[OpenAI::ComparisonFilter::Value::Variants])
-        end
+        sig { override.returns(T::Array[OpenAI::ComparisonFilter::Value::Variants]) }
         def self.variants
         end
 
-        UnionMember3Array =
-          T.let(
-            OpenAI::Internal::Type::ArrayOf[
-              union: OpenAI::ComparisonFilter::Value::UnionMember3
-            ],
-            OpenAI::Internal::Type::Converter
-          )
+        UnionMember3Array = T.let(
+          OpenAI::Internal::Type::ArrayOf[union: OpenAI::ComparisonFilter::Value::UnionMember3],
+          OpenAI::Internal::Type::Converter
+        )
+
       end
+
     end
+
   end
 end

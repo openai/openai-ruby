@@ -2,19 +2,22 @@
 
 module OpenAI
   module Models
+
     module Admin
+
       module Organization
+
         class CertificateListParams < OpenAI::Internal::Type::BaseModel
+
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Admin::Organization::CertificateListParams,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Admin::Organization::CertificateListParams,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # A cursor for use in pagination. `after` is an object ID that defines your place
           # in the list. For instance, if you make a list request and receive 100 objects,
@@ -36,44 +39,41 @@ module OpenAI
 
           # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
           # order and `desc` for descending order.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Admin::Organization::CertificateListParams::Order::OrSymbol
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Admin::Organization::CertificateListParams::Order::OrSymbol)) }
           attr_reader :order
 
-          sig do
-            params(
-              order:
-                OpenAI::Admin::Organization::CertificateListParams::Order::OrSymbol
-            ).void
-          end
+          sig { params(order: OpenAI::Admin::Organization::CertificateListParams::Order::OrSymbol).void }
           attr_writer :order
 
           sig do
             params(
+
               after: String,
+
               limit: Integer,
-              order:
-                OpenAI::Admin::Organization::CertificateListParams::Order::OrSymbol,
+
+              order: OpenAI::Admin::Organization::CertificateListParams::Order::OrSymbol,
+
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # A cursor for use in pagination. `after` is an object ID that defines your place
             # in the list. For instance, if you make a list request and receive 100 objects,
             # ending with obj_foo, your subsequent call can include after=obj_foo in order to
             # fetch the next page of the list.
             after: nil,
+
             # A limit on the number of objects to be returned. Limit can range between 1 and
             # 100, and the default is 20.
             limit: nil,
+
             # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
             # order and `desc` for descending order.
             order: nil,
+
             request_options: {}
           )
           end
@@ -83,8 +83,7 @@ module OpenAI
               {
                 after: String,
                 limit: Integer,
-                order:
-                  OpenAI::Admin::Organization::CertificateListParams::Order::OrSymbol,
+                order: OpenAI::Admin::Organization::CertificateListParams::Order::OrSymbol,
                 request_options: OpenAI::RequestOptions
               }
             )
@@ -97,38 +96,22 @@ module OpenAI
           module Order
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Admin::Organization::CertificateListParams::Order
-                )
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Admin::Organization::CertificateListParams::Order) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            ASC =
-              T.let(
-                :asc,
-                OpenAI::Admin::Organization::CertificateListParams::Order::TaggedSymbol
-              )
-            DESC =
-              T.let(
-                :desc,
-                OpenAI::Admin::Organization::CertificateListParams::Order::TaggedSymbol
-              )
+            ASC = T.let(:asc, OpenAI::Admin::Organization::CertificateListParams::Order::TaggedSymbol)
+            DESC = T.let(:desc, OpenAI::Admin::Organization::CertificateListParams::Order::TaggedSymbol)
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Admin::Organization::CertificateListParams::Order::TaggedSymbol
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Admin::Organization::CertificateListParams::Order::TaggedSymbol]) }
             def self.values
             end
           end
+
         end
+
       end
+
     end
+
   end
 end

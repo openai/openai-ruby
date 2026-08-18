@@ -2,77 +2,45 @@
 
 module OpenAI
   module Models
+
     module Responses
+
       class WebSearchPreviewTool < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Responses::WebSearchPreviewTool,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Responses::WebSearchPreviewTool,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The type of the web search tool. One of `web_search_preview` or
         # `web_search_preview_2025_03_11`.
         sig { returns(OpenAI::Responses::WebSearchPreviewTool::Type::OrSymbol) }
         attr_accessor :type
 
-        sig do
-          returns(
-            T.nilable(
-              T::Array[
-                OpenAI::Responses::WebSearchPreviewTool::SearchContentType::OrSymbol
-              ]
-            )
-          )
-        end
+        sig { returns(T.nilable(T::Array[OpenAI::Responses::WebSearchPreviewTool::SearchContentType::OrSymbol])) }
         attr_reader :search_content_types
 
-        sig do
-          params(
-            search_content_types:
-              T::Array[
-                OpenAI::Responses::WebSearchPreviewTool::SearchContentType::OrSymbol
-              ]
-          ).void
-        end
+        sig {
+          params(search_content_types: T::Array[OpenAI::Responses::WebSearchPreviewTool::SearchContentType::OrSymbol])
+            .void
+        }
         attr_writer :search_content_types
 
         # High level guidance for the amount of context window space to use for the
         # search. One of `low`, `medium`, or `high`. `medium` is the default.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::Responses::WebSearchPreviewTool::SearchContextSize::OrSymbol
-            )
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Responses::WebSearchPreviewTool::SearchContextSize::OrSymbol)) }
         attr_reader :search_context_size
 
-        sig do
-          params(
-            search_context_size:
-              OpenAI::Responses::WebSearchPreviewTool::SearchContextSize::OrSymbol
-          ).void
-        end
+        sig { params(search_context_size: OpenAI::Responses::WebSearchPreviewTool::SearchContextSize::OrSymbol).void }
         attr_writer :search_context_size
 
         # The user's location.
-        sig do
-          returns(
-            T.nilable(OpenAI::Responses::WebSearchPreviewTool::UserLocation)
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Responses::WebSearchPreviewTool::UserLocation)) }
         attr_reader :user_location
 
-        sig do
-          params(
-            user_location:
-              T.nilable(
-                OpenAI::Responses::WebSearchPreviewTool::UserLocation::OrHash
-              )
-          ).void
-        end
+        sig { params(user_location: T.nilable(OpenAI::Responses::WebSearchPreviewTool::UserLocation::OrHash)).void }
         attr_writer :user_location
 
         # This tool searches the web for relevant results to use in a response. Learn more
@@ -80,28 +48,31 @@ module OpenAI
         # [web search tool](https://platform.openai.com/docs/guides/tools-web-search).
         sig do
           params(
+
             type: OpenAI::Responses::WebSearchPreviewTool::Type::OrSymbol,
-            search_content_types:
-              T::Array[
-                OpenAI::Responses::WebSearchPreviewTool::SearchContentType::OrSymbol
-              ],
-            search_context_size:
-              OpenAI::Responses::WebSearchPreviewTool::SearchContextSize::OrSymbol,
-            user_location:
-              T.nilable(
-                OpenAI::Responses::WebSearchPreviewTool::UserLocation::OrHash
-              )
-          ).returns(T.attached_class)
+
+            search_content_types: T::Array[OpenAI::Responses::WebSearchPreviewTool::SearchContentType::OrSymbol],
+
+            search_context_size: OpenAI::Responses::WebSearchPreviewTool::SearchContextSize::OrSymbol,
+
+            user_location: T.nilable(OpenAI::Responses::WebSearchPreviewTool::UserLocation::OrHash)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The type of the web search tool. One of `web_search_preview` or
           # `web_search_preview_2025_03_11`.
           type:,
+
           search_content_types: nil,
+
           # High level guidance for the amount of context window space to use for the
           # search. One of `low`, `medium`, or `high`. `medium` is the default.
           search_context_size: nil,
+
           # The user's location.
+
           user_location: nil
         )
         end
@@ -110,14 +81,9 @@ module OpenAI
           override.returns(
             {
               type: OpenAI::Responses::WebSearchPreviewTool::Type::OrSymbol,
-              search_content_types:
-                T::Array[
-                  OpenAI::Responses::WebSearchPreviewTool::SearchContentType::OrSymbol
-                ],
-              search_context_size:
-                OpenAI::Responses::WebSearchPreviewTool::SearchContextSize::OrSymbol,
-              user_location:
-                T.nilable(OpenAI::Responses::WebSearchPreviewTool::UserLocation)
+              search_content_types: T::Array[OpenAI::Responses::WebSearchPreviewTool::SearchContentType::OrSymbol],
+              search_context_size: OpenAI::Responses::WebSearchPreviewTool::SearchContextSize::OrSymbol,
+              user_location: T.nilable(OpenAI::Responses::WebSearchPreviewTool::UserLocation)
             }
           )
         end
@@ -129,30 +95,16 @@ module OpenAI
         module Type
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(Symbol, OpenAI::Responses::WebSearchPreviewTool::Type)
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::WebSearchPreviewTool::Type) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          WEB_SEARCH_PREVIEW =
-            T.let(
-              :web_search_preview,
-              OpenAI::Responses::WebSearchPreviewTool::Type::TaggedSymbol
-            )
-          WEB_SEARCH_PREVIEW_2025_03_11 =
-            T.let(
-              :web_search_preview_2025_03_11,
-              OpenAI::Responses::WebSearchPreviewTool::Type::TaggedSymbol
-            )
+          WEB_SEARCH_PREVIEW = T.let(:web_search_preview, OpenAI::Responses::WebSearchPreviewTool::Type::TaggedSymbol)
+          WEB_SEARCH_PREVIEW_2025_03_11 = T.let(
+            :web_search_preview_2025_03_11,
+            OpenAI::Responses::WebSearchPreviewTool::Type::TaggedSymbol
+          )
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Responses::WebSearchPreviewTool::Type::TaggedSymbol
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Responses::WebSearchPreviewTool::Type::TaggedSymbol]) }
           def self.values
           end
         end
@@ -160,33 +112,13 @@ module OpenAI
         module SearchContentType
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(
-                Symbol,
-                OpenAI::Responses::WebSearchPreviewTool::SearchContentType
-              )
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::WebSearchPreviewTool::SearchContentType) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          TEXT =
-            T.let(
-              :text,
-              OpenAI::Responses::WebSearchPreviewTool::SearchContentType::TaggedSymbol
-            )
-          IMAGE =
-            T.let(
-              :image,
-              OpenAI::Responses::WebSearchPreviewTool::SearchContentType::TaggedSymbol
-            )
+          TEXT = T.let(:text, OpenAI::Responses::WebSearchPreviewTool::SearchContentType::TaggedSymbol)
+          IMAGE = T.let(:image, OpenAI::Responses::WebSearchPreviewTool::SearchContentType::TaggedSymbol)
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Responses::WebSearchPreviewTool::SearchContentType::TaggedSymbol
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Responses::WebSearchPreviewTool::SearchContentType::TaggedSymbol]) }
           def self.values
           end
         end
@@ -196,50 +128,25 @@ module OpenAI
         module SearchContextSize
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(
-                Symbol,
-                OpenAI::Responses::WebSearchPreviewTool::SearchContextSize
-              )
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::WebSearchPreviewTool::SearchContextSize) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          LOW =
-            T.let(
-              :low,
-              OpenAI::Responses::WebSearchPreviewTool::SearchContextSize::TaggedSymbol
-            )
-          MEDIUM =
-            T.let(
-              :medium,
-              OpenAI::Responses::WebSearchPreviewTool::SearchContextSize::TaggedSymbol
-            )
-          HIGH =
-            T.let(
-              :high,
-              OpenAI::Responses::WebSearchPreviewTool::SearchContextSize::TaggedSymbol
-            )
+          LOW = T.let(:low, OpenAI::Responses::WebSearchPreviewTool::SearchContextSize::TaggedSymbol)
+          MEDIUM = T.let(:medium, OpenAI::Responses::WebSearchPreviewTool::SearchContextSize::TaggedSymbol)
+          HIGH = T.let(:high, OpenAI::Responses::WebSearchPreviewTool::SearchContextSize::TaggedSymbol)
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Responses::WebSearchPreviewTool::SearchContextSize::TaggedSymbol
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Responses::WebSearchPreviewTool::SearchContextSize::TaggedSymbol]) }
           def self.values
           end
         end
 
         class UserLocation < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::WebSearchPreviewTool::UserLocation,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::WebSearchPreviewTool::UserLocation,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The type of location approximation. Always `approximate`.
           sig { returns(Symbol) }
@@ -266,25 +173,37 @@ module OpenAI
           # The user's location.
           sig do
             params(
+
               city: T.nilable(String),
+
               country: T.nilable(String),
+
               region: T.nilable(String),
+
               timezone: T.nilable(String),
+
               type: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # Free text input for the city of the user, e.g. `San Francisco`.
             city: nil,
+
             # The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of
             # the user, e.g. `US`.
             country: nil,
+
             # Free text input for the region of the user, e.g. `California`.
             region: nil,
+
             # The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the
             # user, e.g. `America/Los_Angeles`.
             timezone: nil,
+
             # The type of location approximation. Always `approximate`.
+
             type: :approximate
           )
           end
@@ -302,8 +221,12 @@ module OpenAI
           end
           def to_hash
           end
+
         end
+
       end
+
     end
+
   end
 end

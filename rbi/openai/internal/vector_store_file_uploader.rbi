@@ -11,7 +11,8 @@ module OpenAI
           client: OpenAI::Client,
           max_concurrency: Integer,
           request_options: T.nilable(OpenAI::RequestOptions::OrHash)
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(client:, max_concurrency:, request_options:)
       end

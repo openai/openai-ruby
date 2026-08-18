@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class RealtimeResponseCreateMcpTool < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::RealtimeResponseCreateMcpTool,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::RealtimeResponseCreateMcpTool,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # A label for this MCP server, used to identify it in tool calls.
         sig { returns(String) }
@@ -21,28 +23,17 @@ module OpenAI
         attr_accessor :type
 
         # The tool invocation context(s).
-        sig do
-          returns(
-            T.nilable(
-              T::Array[
-                OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedCaller::OrSymbol
-              ]
-            )
-          )
-        end
+        sig { returns(T.nilable(T::Array[OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedCaller::OrSymbol])) }
         attr_accessor :allowed_callers
 
         # List of allowed tool names or a filter object.
-        sig do
+        sig {
           returns(
             T.nilable(
-              T.any(
-                T::Array[String],
-                OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedTools::McpToolFilter
-              )
+              T.any(T::Array[String], OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedTools::McpToolFilter)
             )
           )
-        end
+        }
         attr_accessor :allowed_tools
 
         # An OAuth access token that can be used with a remote MCP server, either with a
@@ -69,21 +60,10 @@ module OpenAI
         # - Outlook Calendar: `connector_outlookcalendar`
         # - Outlook Email: `connector_outlookemail`
         # - SharePoint: `connector_sharepoint`
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID::OrSymbol
-            )
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID::OrSymbol)) }
         attr_reader :connector_id
 
-        sig do
-          params(
-            connector_id:
-              OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID::OrSymbol
-          ).void
-        end
+        sig { params(connector_id: OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID::OrSymbol).void }
         attr_writer :connector_id
 
         # Whether this MCP tool is deferred and discovered via tool search.
@@ -99,7 +79,7 @@ module OpenAI
         attr_accessor :headers
 
         # Specify which of the MCP server's tools require approval.
-        sig do
+        sig {
           returns(
             T.nilable(
               T.any(
@@ -108,7 +88,7 @@ module OpenAI
               )
             )
           )
-        end
+        }
         attr_accessor :require_approval
 
         # Optional description of the MCP server, used to provide more context.
@@ -139,49 +119,61 @@ module OpenAI
         # [Learn more about MCP](https://platform.openai.com/docs/guides/tools-remote-mcp).
         sig do
           params(
+
             server_label: String,
-            allowed_callers:
-              T.nilable(
-                T::Array[
-                  OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedCaller::OrSymbol
-                ]
-              ),
-            allowed_tools:
-              T.nilable(
-                T.any(
-                  T::Array[String],
-                  OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedTools::McpToolFilter::OrHash
-                )
-              ),
+
+            allowed_callers: T.nilable(
+              T::Array[OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedCaller::OrSymbol]
+            ),
+
+            allowed_tools: T.nilable(
+              T.any(
+                T::Array[String],
+                OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedTools::McpToolFilter::OrHash
+              )
+            ),
+
             authorization: String,
-            connector_id:
-              OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID::OrSymbol,
+
+            connector_id: OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID::OrSymbol,
+
             defer_loading: T::Boolean,
+
             headers: T.nilable(T::Hash[Symbol, String]),
-            require_approval:
-              T.nilable(
-                T.any(
-                  OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::OrHash,
-                  OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalSetting::OrSymbol
-                )
-              ),
+
+            require_approval: T.nilable(
+              T.any(
+                OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::OrHash,
+                OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalSetting::OrSymbol
+              )
+            ),
+
             server_description: String,
+
             server_url: String,
+
             tunnel_id: String,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # A label for this MCP server, used to identify it in tool calls.
           server_label:,
+
           # The tool invocation context(s).
           allowed_callers: nil,
+
           # List of allowed tool names or a filter object.
           allowed_tools: nil,
+
           # An OAuth access token that can be used with a remote MCP server, either with a
           # custom MCP server URL or a service connector. Your application must handle the
           # OAuth authorization flow and provide the token here.
           authorization: nil,
+
           # Identifier for service connectors, like those available in ChatGPT. One of
           # `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more about
           # service connectors
@@ -198,22 +190,30 @@ module OpenAI
           # - Outlook Email: `connector_outlookemail`
           # - SharePoint: `connector_sharepoint`
           connector_id: nil,
+
           # Whether this MCP tool is deferred and discovered via tool search.
           defer_loading: nil,
+
           # Optional HTTP headers to send to the MCP server. Use for authentication or other
           # purposes.
           headers: nil,
+
           # Specify which of the MCP server's tools require approval.
           require_approval: nil,
+
           # Optional description of the MCP server, used to provide more context.
           server_description: nil,
+
           # The URL for the MCP server. One of `server_url`, `connector_id`, or `tunnel_id`
           # must be provided.
           server_url: nil,
+
           # The Secure MCP Tunnel ID to use instead of a direct server URL. One of
           # `server_url`, `connector_id`, or `tunnel_id` must be provided.
           tunnel_id: nil,
+
           # The type of the MCP tool. Always `mcp`.
+
           type: :mcp
         )
         end
@@ -223,31 +223,22 @@ module OpenAI
             {
               server_label: String,
               type: Symbol,
-              allowed_callers:
-                T.nilable(
-                  T::Array[
-                    OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedCaller::OrSymbol
-                  ]
-                ),
-              allowed_tools:
-                T.nilable(
-                  T.any(
-                    T::Array[String],
-                    OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedTools::McpToolFilter
-                  )
-                ),
+              allowed_callers: T.nilable(
+                T::Array[OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedCaller::OrSymbol]
+              ),
+              allowed_tools: T.nilable(
+                T.any(T::Array[String], OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedTools::McpToolFilter)
+              ),
               authorization: String,
-              connector_id:
-                OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID::OrSymbol,
+              connector_id: OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID::OrSymbol,
               defer_loading: T::Boolean,
               headers: T.nilable(T::Hash[Symbol, String]),
-              require_approval:
-                T.nilable(
-                  T.any(
-                    OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter,
-                    OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalSetting::OrSymbol
-                  )
-                ),
+              require_approval: T.nilable(
+                T.any(
+                  OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter,
+                  OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalSetting::OrSymbol
+                )
+              ),
               server_description: String,
               server_url: String,
               tunnel_id: String
@@ -260,33 +251,18 @@ module OpenAI
         module AllowedCaller
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(
-                Symbol,
-                OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedCaller
-              )
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedCaller) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          DIRECT =
-            T.let(
-              :direct,
-              OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedCaller::TaggedSymbol
-            )
-          PROGRAMMATIC =
-            T.let(
-              :programmatic,
-              OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedCaller::TaggedSymbol
-            )
+          DIRECT = T.let(:direct, OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedCaller::TaggedSymbol)
+          PROGRAMMATIC = T.let(
+            :programmatic,
+            OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedCaller::TaggedSymbol
+          )
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedCaller::TaggedSymbol
-              ]
-            )
-          end
+          sig {
+            override.returns(T::Array[OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedCaller::TaggedSymbol])
+          }
           def self.values
           end
         end
@@ -295,22 +271,17 @@ module OpenAI
         module AllowedTools
           extend OpenAI::Internal::Type::Union
 
-          Variants =
-            T.type_alias do
-              T.any(
-                T::Array[String],
-                OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedTools::McpToolFilter
-              )
-            end
+          Variants = T.type_alias {
+            T.any(T::Array[String], OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedTools::McpToolFilter)
+          }
 
           class McpToolFilter < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedTools::McpToolFilter,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedTools::McpToolFilter,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # Indicates whether or not a tool modifies data or is read-only. If an MCP server
             # is
@@ -332,45 +303,46 @@ module OpenAI
             # A filter object to specify which tools are allowed.
             sig do
               params(
+
                 read_only: T::Boolean,
+
                 tool_names: T::Array[String]
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # Indicates whether or not a tool modifies data or is read-only. If an MCP server
               # is
               # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
               # it will match this filter.
               read_only: nil,
+
               # List of allowed tool names.
+
               tool_names: nil
             )
             end
 
             sig do
               override.returns(
-                { read_only: T::Boolean, tool_names: T::Array[String] }
+                {read_only: T::Boolean, tool_names: T::Array[String]}
               )
             end
             def to_hash
             end
+
           end
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedTools::Variants
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedTools::Variants]) }
           def self.variants
           end
 
-          StringArray =
-            T.let(
-              OpenAI::Internal::Type::ArrayOf[String],
-              OpenAI::Internal::Type::Converter
-            )
+          StringArray = T.let(
+            OpenAI::Internal::Type::ArrayOf[String],
+            OpenAI::Internal::Type::Converter
+          )
+
         end
 
         # Identifier for service connectors, like those available in ChatGPT. One of
@@ -391,63 +363,45 @@ module OpenAI
         module ConnectorID
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(
-                Symbol,
-                OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID
-              )
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          CONNECTOR_DROPBOX =
-            T.let(
-              :connector_dropbox,
-              OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID::TaggedSymbol
-            )
-          CONNECTOR_GMAIL =
-            T.let(
-              :connector_gmail,
-              OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID::TaggedSymbol
-            )
-          CONNECTOR_GOOGLECALENDAR =
-            T.let(
-              :connector_googlecalendar,
-              OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID::TaggedSymbol
-            )
-          CONNECTOR_GOOGLEDRIVE =
-            T.let(
-              :connector_googledrive,
-              OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID::TaggedSymbol
-            )
-          CONNECTOR_MICROSOFTTEAMS =
-            T.let(
-              :connector_microsoftteams,
-              OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID::TaggedSymbol
-            )
-          CONNECTOR_OUTLOOKCALENDAR =
-            T.let(
-              :connector_outlookcalendar,
-              OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID::TaggedSymbol
-            )
-          CONNECTOR_OUTLOOKEMAIL =
-            T.let(
-              :connector_outlookemail,
-              OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID::TaggedSymbol
-            )
-          CONNECTOR_SHAREPOINT =
-            T.let(
-              :connector_sharepoint,
-              OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID::TaggedSymbol
-            )
+          CONNECTOR_DROPBOX = T.let(
+            :connector_dropbox,
+            OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID::TaggedSymbol
+          )
+          CONNECTOR_GMAIL = T.let(
+            :connector_gmail,
+            OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID::TaggedSymbol
+          )
+          CONNECTOR_GOOGLECALENDAR = T.let(
+            :connector_googlecalendar,
+            OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID::TaggedSymbol
+          )
+          CONNECTOR_GOOGLEDRIVE = T.let(
+            :connector_googledrive,
+            OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID::TaggedSymbol
+          )
+          CONNECTOR_MICROSOFTTEAMS = T.let(
+            :connector_microsoftteams,
+            OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID::TaggedSymbol
+          )
+          CONNECTOR_OUTLOOKCALENDAR = T.let(
+            :connector_outlookcalendar,
+            OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID::TaggedSymbol
+          )
+          CONNECTOR_OUTLOOKEMAIL = T.let(
+            :connector_outlookemail,
+            OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID::TaggedSymbol
+          )
+          CONNECTOR_SHAREPOINT = T.let(
+            :connector_sharepoint,
+            OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID::TaggedSymbol
+          )
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID::TaggedSymbol
-              ]
-            )
-          end
+          sig {
+            override.returns(T::Array[OpenAI::Realtime::RealtimeResponseCreateMcpTool::ConnectorID::TaggedSymbol])
+          }
           def self.values
           end
         end
@@ -456,73 +410,75 @@ module OpenAI
         module RequireApproval
           extend OpenAI::Internal::Type::Union
 
-          Variants =
-            T.type_alias do
+          Variants = T.type_alias {
+            T.any(
+              OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter,
+              OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalSetting::TaggedSymbol
+            )
+          }
+
+          class McpToolApprovalFilter < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
               T.any(
                 OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter,
-                OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalSetting::TaggedSymbol
+                OpenAI::Internal::AnyHash
               )
             end
 
-          class McpToolApprovalFilter < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter,
-                  OpenAI::Internal::AnyHash
-                )
-              end
-
             # A filter object to specify which tools are allowed.
-            sig do
+            sig {
               returns(
                 T.nilable(
                   OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Always
                 )
               )
-            end
+            }
             attr_reader :always
 
-            sig do
+            sig {
               params(
-                always:
-                  OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Always::OrHash
-              ).void
-            end
+                always: OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Always::OrHash
+              )
+                .void
+            }
             attr_writer :always
 
             # A filter object to specify which tools are allowed.
-            sig do
+            sig {
               returns(
                 T.nilable(
                   OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Never
                 )
               )
-            end
+            }
             attr_reader :never
 
-            sig do
+            sig {
               params(
-                never:
-                  OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Never::OrHash
-              ).void
-            end
+                never: OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Never::OrHash
+              )
+                .void
+            }
             attr_writer :never
 
             # Specify which of the MCP server's tools require approval. Can be `always`,
             # `never`, or a filter object associated with tools that require approval.
             sig do
               params(
-                always:
-                  OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Always::OrHash,
-                never:
-                  OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Never::OrHash
-              ).returns(T.attached_class)
+
+                always: OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Always::OrHash,
+
+                never: OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Never::OrHash
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # A filter object to specify which tools are allowed.
               always: nil,
+
               # A filter object to specify which tools are allowed.
+
               never: nil
             )
             end
@@ -530,10 +486,8 @@ module OpenAI
             sig do
               override.returns(
                 {
-                  always:
-                    OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Always,
-                  never:
-                    OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Never
+                  always: OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Always,
+                  never: OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Never
                 }
               )
             end
@@ -541,13 +495,12 @@ module OpenAI
             end
 
             class Always < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Always,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Always,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # Indicates whether or not a tool modifies data or is read-only. If an MCP server
               # is
@@ -569,38 +522,44 @@ module OpenAI
               # A filter object to specify which tools are allowed.
               sig do
                 params(
+
                   read_only: T::Boolean,
+
                   tool_names: T::Array[String]
-                ).returns(T.attached_class)
+                )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 # Indicates whether or not a tool modifies data or is read-only. If an MCP server
                 # is
                 # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
                 # it will match this filter.
                 read_only: nil,
+
                 # List of allowed tool names.
+
                 tool_names: nil
               )
               end
 
               sig do
                 override.returns(
-                  { read_only: T::Boolean, tool_names: T::Array[String] }
+                  {read_only: T::Boolean, tool_names: T::Array[String]}
                 )
               end
               def to_hash
               end
+
             end
 
             class Never < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Never,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Never,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # Indicates whether or not a tool modifies data or is read-only. If an MCP server
               # is
@@ -622,28 +581,35 @@ module OpenAI
               # A filter object to specify which tools are allowed.
               sig do
                 params(
+
                   read_only: T::Boolean,
+
                   tool_names: T::Array[String]
-                ).returns(T.attached_class)
+                )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 # Indicates whether or not a tool modifies data or is read-only. If an MCP server
                 # is
                 # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
                 # it will match this filter.
                 read_only: nil,
+
                 # List of allowed tool names.
+
                 tool_names: nil
               )
               end
 
               sig do
                 override.returns(
-                  { read_only: T::Boolean, tool_names: T::Array[String] }
+                  {read_only: T::Boolean, tool_names: T::Array[String]}
                 )
               end
               def to_hash
               end
+
             end
           end
 
@@ -653,48 +619,42 @@ module OpenAI
           module McpToolApprovalSetting
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalSetting
-                )
-              end
+            TaggedSymbol = T.type_alias {
+              T.all(Symbol, OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalSetting)
+            }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            ALWAYS =
-              T.let(
-                :always,
-                OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalSetting::TaggedSymbol
-              )
-            NEVER =
-              T.let(
-                :never,
-                OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalSetting::TaggedSymbol
-              )
+            ALWAYS = T.let(
+              :always,
+              OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalSetting::TaggedSymbol
+            )
+            NEVER = T.let(
+              :never,
+              OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalSetting::TaggedSymbol
+            )
 
-            sig do
+            sig {
               override.returns(
                 T::Array[
                   OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalSetting::TaggedSymbol
                 ]
               )
-            end
+            }
             def self.values
             end
           end
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::Variants
-              ]
-            )
-          end
+          sig {
+            override.returns(T::Array[OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::Variants])
+          }
           def self.variants
           end
+
         end
+
       end
+
     end
+
   end
 end

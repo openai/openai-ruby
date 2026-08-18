@@ -2,19 +2,22 @@
 
 module OpenAI
   module Models
+
     module Admin
+
       module Organization
+
         class RoleUpdateParams < OpenAI::Internal::Type::BaseModel
+
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Admin::Organization::RoleUpdateParams,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Admin::Organization::RoleUpdateParams,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           sig { returns(String) }
           attr_accessor :role_id
@@ -33,21 +36,32 @@ module OpenAI
 
           sig do
             params(
+
               role_id: String,
+
               description: T.nilable(String),
+
               permissions: T.nilable(T::Array[String]),
+
               role_name: T.nilable(String),
+
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             role_id:,
+
             # New description for the role.
             description: nil,
+
             # Updated set of permissions for the role.
             permissions: nil,
+
             # New name for the role.
             role_name: nil,
+
             request_options: {}
           )
           end
@@ -65,8 +79,12 @@ module OpenAI
           end
           def to_hash
           end
+
         end
+
       end
+
     end
+
   end
 end

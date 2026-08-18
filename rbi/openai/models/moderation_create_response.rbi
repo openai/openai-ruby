@@ -2,14 +2,15 @@
 
 module OpenAI
   module Models
+
     class ModerationCreateResponse < OpenAI::Internal::Type::BaseModel
-      OrHash =
-        T.type_alias do
-          T.any(
-            OpenAI::Models::ModerationCreateResponse,
-            OpenAI::Internal::AnyHash
-          )
-        end
+
+      OrHash = T.type_alias do
+        T.any(
+          OpenAI::Models::ModerationCreateResponse,
+          OpenAI::Internal::AnyHash
+        )
+      end
 
       # The unique identifier for the moderation request.
       sig { returns(String) }
@@ -26,28 +27,38 @@ module OpenAI
       # Represents if a given text input is potentially harmful.
       sig do
         params(
+
           id: String,
+
           model: String,
+
           results: T::Array[OpenAI::Moderation::OrHash]
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(
+
         # The unique identifier for the moderation request.
         id:,
+
         # The model used to generate the moderation results.
         model:,
+
         # A list of moderation objects.
+
         results:
       )
       end
 
       sig do
         override.returns(
-          { id: String, model: String, results: T::Array[OpenAI::Moderation] }
+          {id: String, model: String, results: T::Array[OpenAI::Moderation]}
         )
       end
       def to_hash
       end
+
     end
+
   end
 end

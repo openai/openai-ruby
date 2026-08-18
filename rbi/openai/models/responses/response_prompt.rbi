@@ -2,12 +2,17 @@
 
 module OpenAI
   module Models
+
     module Responses
+
       class ResponsePrompt < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(OpenAI::Responses::ResponsePrompt, OpenAI::Internal::AnyHash)
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Responses::ResponsePrompt,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The unique identifier of the prompt template to use.
         sig { returns(String) }
@@ -16,7 +21,7 @@ module OpenAI
         # Optional map of values to substitute in for variables in your prompt. The
         # substitution values can either be strings, or other Response input types like
         # images or files.
-        sig do
+        sig {
           returns(
             T.nilable(
               T::Hash[
@@ -30,7 +35,7 @@ module OpenAI
               ]
             )
           )
-        end
+        }
         attr_accessor :variables
 
         # Optional version of the prompt template.
@@ -41,30 +46,37 @@ module OpenAI
         # [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
         sig do
           params(
+
             id: String,
-            variables:
-              T.nilable(
-                T::Hash[
-                  Symbol,
-                  T.any(
-                    String,
-                    OpenAI::Responses::ResponseInputText::OrHash,
-                    OpenAI::Responses::ResponseInputImage::OrHash,
-                    OpenAI::Responses::ResponseInputFile::OrHash
-                  )
-                ]
-              ),
+
+            variables: T.nilable(
+              T::Hash[
+                Symbol,
+                T.any(
+                  String,
+                  OpenAI::Responses::ResponseInputText::OrHash,
+                  OpenAI::Responses::ResponseInputImage::OrHash,
+                  OpenAI::Responses::ResponseInputFile::OrHash
+                )
+              ]
+            ),
+
             version: T.nilable(String)
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The unique identifier of the prompt template to use.
           id:,
+
           # Optional map of values to substitute in for variables in your prompt. The
           # substitution values can either be strings, or other Response input types like
           # images or files.
           variables: nil,
+
           # Optional version of the prompt template.
+
           version: nil
         )
         end
@@ -73,18 +85,17 @@ module OpenAI
           override.returns(
             {
               id: String,
-              variables:
-                T.nilable(
-                  T::Hash[
-                    Symbol,
-                    T.any(
-                      String,
-                      OpenAI::Responses::ResponseInputText,
-                      OpenAI::Responses::ResponseInputImage,
-                      OpenAI::Responses::ResponseInputFile
-                    )
-                  ]
-                ),
+              variables: T.nilable(
+                T::Hash[
+                  Symbol,
+                  T.any(
+                    String,
+                    OpenAI::Responses::ResponseInputText,
+                    OpenAI::Responses::ResponseInputImage,
+                    OpenAI::Responses::ResponseInputFile
+                  )
+                ]
+              ),
               version: T.nilable(String)
             }
           )
@@ -96,25 +107,24 @@ module OpenAI
         module Variable
           extend OpenAI::Internal::Type::Union
 
-          Variants =
-            T.type_alias do
-              T.any(
-                String,
-                OpenAI::Responses::ResponseInputText,
-                OpenAI::Responses::ResponseInputImage,
-                OpenAI::Responses::ResponseInputFile
-              )
-            end
-
-          sig do
-            override.returns(
-              T::Array[OpenAI::Responses::ResponsePrompt::Variable::Variants]
+          Variants = T.type_alias {
+            T.any(
+              String,
+              OpenAI::Responses::ResponseInputText,
+              OpenAI::Responses::ResponseInputImage,
+              OpenAI::Responses::ResponseInputFile
             )
-          end
+          }
+
+          sig { override.returns(T::Array[OpenAI::Responses::ResponsePrompt::Variable::Variants]) }
           def self.variants
           end
+
         end
+
       end
+
     end
+
   end
 end

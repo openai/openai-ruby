@@ -2,41 +2,34 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class ClientSecretCreateParams < OpenAI::Internal::Type::BaseModel
+
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::ClientSecretCreateParams,
-              OpenAI::Internal::AnyHash
-            )
-          end
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::ClientSecretCreateParams,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # Configuration for the client secret expiration. Expiration refers to the time
         # after which a client secret will no longer be valid for creating sessions. The
         # session itself may continue after that time once started. A secret can be used
         # to create multiple sessions until it expires.
-        sig do
-          returns(
-            T.nilable(OpenAI::Realtime::ClientSecretCreateParams::ExpiresAfter)
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Realtime::ClientSecretCreateParams::ExpiresAfter)) }
         attr_reader :expires_after
 
-        sig do
-          params(
-            expires_after:
-              OpenAI::Realtime::ClientSecretCreateParams::ExpiresAfter::OrHash
-          ).void
-        end
+        sig { params(expires_after: OpenAI::Realtime::ClientSecretCreateParams::ExpiresAfter::OrHash).void }
         attr_writer :expires_after
 
         # Session configuration to use for the client secret. Choose either a realtime
         # session or a transcription session.
-        sig do
+        sig {
           returns(
             T.nilable(
               T.any(
@@ -45,41 +38,46 @@ module OpenAI
               )
             )
           )
-        end
+        }
         attr_reader :session
 
-        sig do
+        sig {
           params(
-            session:
-              T.any(
-                OpenAI::Realtime::RealtimeSessionCreateRequest::OrHash,
-                OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::OrHash
-              )
-          ).void
-        end
+            session: T.any(
+              OpenAI::Realtime::RealtimeSessionCreateRequest::OrHash,
+              OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::OrHash
+            )
+          )
+            .void
+        }
         attr_writer :session
 
         sig do
           params(
-            expires_after:
-              OpenAI::Realtime::ClientSecretCreateParams::ExpiresAfter::OrHash,
-            session:
-              T.any(
-                OpenAI::Realtime::RealtimeSessionCreateRequest::OrHash,
-                OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::OrHash
-              ),
+
+            expires_after: OpenAI::Realtime::ClientSecretCreateParams::ExpiresAfter::OrHash,
+
+            session: T.any(
+              OpenAI::Realtime::RealtimeSessionCreateRequest::OrHash,
+              OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::OrHash
+            ),
+
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Configuration for the client secret expiration. Expiration refers to the time
           # after which a client secret will no longer be valid for creating sessions. The
           # session itself may continue after that time once started. A secret can be used
           # to create multiple sessions until it expires.
           expires_after: nil,
+
           # Session configuration to use for the client secret. Choose either a realtime
           # session or a transcription session.
           session: nil,
+
           request_options: {}
         )
         end
@@ -87,13 +85,11 @@ module OpenAI
         sig do
           override.returns(
             {
-              expires_after:
-                OpenAI::Realtime::ClientSecretCreateParams::ExpiresAfter,
-              session:
-                T.any(
-                  OpenAI::Realtime::RealtimeSessionCreateRequest,
-                  OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest
-                ),
+              expires_after: OpenAI::Realtime::ClientSecretCreateParams::ExpiresAfter,
+              session: T.any(
+                OpenAI::Realtime::RealtimeSessionCreateRequest,
+                OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest
+              ),
               request_options: OpenAI::RequestOptions
             }
           )
@@ -102,32 +98,20 @@ module OpenAI
         end
 
         class ExpiresAfter < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Realtime::ClientSecretCreateParams::ExpiresAfter,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Realtime::ClientSecretCreateParams::ExpiresAfter,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The anchor point for the client secret expiration, meaning that `seconds` will
           # be added to the `created_at` time of the client secret to produce an expiration
           # timestamp. Only `created_at` is currently supported.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Realtime::ClientSecretCreateParams::ExpiresAfter::Anchor::OrSymbol
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Realtime::ClientSecretCreateParams::ExpiresAfter::Anchor::OrSymbol)) }
           attr_reader :anchor
 
-          sig do
-            params(
-              anchor:
-                OpenAI::Realtime::ClientSecretCreateParams::ExpiresAfter::Anchor::OrSymbol
-            ).void
-          end
+          sig { params(anchor: OpenAI::Realtime::ClientSecretCreateParams::ExpiresAfter::Anchor::OrSymbol).void }
           attr_writer :anchor
 
           # The number of seconds from the anchor point to the expiration. Select a value
@@ -145,30 +129,31 @@ module OpenAI
           # to create multiple sessions until it expires.
           sig do
             params(
-              anchor:
-                OpenAI::Realtime::ClientSecretCreateParams::ExpiresAfter::Anchor::OrSymbol,
+
+              anchor: OpenAI::Realtime::ClientSecretCreateParams::ExpiresAfter::Anchor::OrSymbol,
+
               seconds: Integer
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The anchor point for the client secret expiration, meaning that `seconds` will
             # be added to the `created_at` time of the client secret to produce an expiration
             # timestamp. Only `created_at` is currently supported.
             anchor: nil,
+
             # The number of seconds from the anchor point to the expiration. Select a value
             # between `10` and `7200` (2 hours). This default to 600 seconds (10 minutes) if
             # not specified.
+
             seconds: nil
           )
           end
 
           sig do
             override.returns(
-              {
-                anchor:
-                  OpenAI::Realtime::ClientSecretCreateParams::ExpiresAfter::Anchor::OrSymbol,
-                seconds: Integer
-              }
+              {anchor: OpenAI::Realtime::ClientSecretCreateParams::ExpiresAfter::Anchor::OrSymbol, seconds: Integer}
             )
           end
           def to_hash
@@ -180,28 +165,19 @@ module OpenAI
           module Anchor
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Realtime::ClientSecretCreateParams::ExpiresAfter::Anchor
-                )
-              end
+            TaggedSymbol = T.type_alias {
+              T.all(Symbol, OpenAI::Realtime::ClientSecretCreateParams::ExpiresAfter::Anchor)
+            }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            CREATED_AT =
-              T.let(
-                :created_at,
-                OpenAI::Realtime::ClientSecretCreateParams::ExpiresAfter::Anchor::TaggedSymbol
-              )
+            CREATED_AT = T.let(
+              :created_at,
+              OpenAI::Realtime::ClientSecretCreateParams::ExpiresAfter::Anchor::TaggedSymbol
+            )
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Realtime::ClientSecretCreateParams::ExpiresAfter::Anchor::TaggedSymbol
-                ]
-              )
-            end
+            sig {
+              override.returns(T::Array[OpenAI::Realtime::ClientSecretCreateParams::ExpiresAfter::Anchor::TaggedSymbol])
+            }
             def self.values
             end
           end
@@ -212,25 +188,22 @@ module OpenAI
         module Session
           extend OpenAI::Internal::Type::Union
 
-          Variants =
-            T.type_alias do
-              T.any(
-                OpenAI::Realtime::RealtimeSessionCreateRequest,
-                OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest
-              )
-            end
-
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Realtime::ClientSecretCreateParams::Session::Variants
-              ]
+          Variants = T.type_alias {
+            T.any(
+              OpenAI::Realtime::RealtimeSessionCreateRequest,
+              OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest
             )
-          end
+          }
+
+          sig { override.returns(T::Array[OpenAI::Realtime::ClientSecretCreateParams::Session::Variants]) }
           def self.variants
           end
+
         end
+
       end
+
     end
+
   end
 end

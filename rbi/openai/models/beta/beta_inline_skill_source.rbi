@@ -2,17 +2,19 @@
 
 module OpenAI
   module Models
+
     BetaInlineSkillSource = Beta::BetaInlineSkillSource
 
     module Beta
+
       class BetaInlineSkillSource < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Beta::BetaInlineSkillSource,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Beta::BetaInlineSkillSource,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # Base64-encoded skill zip bundle.
         sig { returns(String) }
@@ -28,26 +30,41 @@ module OpenAI
 
         # Inline skill payload
         sig do
-          params(data: String, media_type: Symbol, type: Symbol).returns(
-            T.attached_class
+          params(
+
+            data: String,
+
+            media_type: Symbol,
+
+            type: Symbol
           )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Base64-encoded skill zip bundle.
           data:,
+
           # The media type of the inline skill payload. Must be `application/zip`.
           media_type: :"application/zip",
+
           # The type of the inline skill source. Must be `base64`.
+
           type: :base64
         )
         end
 
         sig do
-          override.returns({ data: String, media_type: Symbol, type: Symbol })
+          override.returns(
+            {data: String, media_type: Symbol, type: Symbol}
+          )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

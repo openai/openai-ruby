@@ -22,6 +22,7 @@ module OpenAI
             )
           )
         end
+
         attr_accessor :prepare_request
 
         sig { returns(T::Array[String]) }
@@ -29,15 +30,11 @@ module OpenAI
       end
 
       class << self
-        sig do
-          params(definition: T.untyped).returns(OpenAI::Provider)
-        end
+        sig { params(definition: T.untyped).returns(OpenAI::Provider) }
         def create(definition)
         end
 
-        sig do
-          params(provider: OpenAI::Provider).returns(String)
-        end
+        sig { params(provider: OpenAI::Provider).returns(String) }
         def name(provider)
         end
 

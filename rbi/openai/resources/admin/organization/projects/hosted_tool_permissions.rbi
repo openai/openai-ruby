@@ -2,19 +2,21 @@
 
 module OpenAI
   module Resources
+
     class Admin
+
       class Organization
+
         class Projects
+
           class HostedToolPermissions
+
             # Returns hosted tool permissions for a project.
-            sig do
-              params(
-                project_id: String,
-                request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
+            sig {
+              params(project_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
                 OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions
               )
-            end
+            }
             def retrieve(
               # The ID of the project.
               project_id,
@@ -23,34 +25,26 @@ module OpenAI
             end
 
             # Updates hosted tool permissions for a project.
-            sig do
+            sig {
               params(
                 project_id: String,
-                code_interpreter:
-                  T.nilable(
-                    OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::CodeInterpreter::OrHash
-                  ),
-                file_search:
-                  T.nilable(
-                    OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::FileSearch::OrHash
-                  ),
-                image_generation:
-                  T.nilable(
-                    OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::ImageGeneration::OrHash
-                  ),
-                mcp:
-                  T.nilable(
-                    OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::Mcp::OrHash
-                  ),
-                web_search:
-                  T.nilable(
-                    OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::WebSearch::OrHash
-                  ),
+                code_interpreter: T.nilable(
+                  OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::CodeInterpreter::OrHash
+                ),
+                file_search: T.nilable(
+                  OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::FileSearch::OrHash
+                ),
+                image_generation: T.nilable(
+                  OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::ImageGeneration::OrHash
+                ),
+                mcp: T.nilable(OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::Mcp::OrHash),
+                web_search: T.nilable(
+                  OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::WebSearch::OrHash
+                ),
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
-                OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions
               )
-            end
+                .returns(OpenAI::Admin::Organization::Projects::ProjectHostedToolPermissions)
+            }
             def update(
               # The ID of the project.
               project_id,
@@ -73,8 +67,12 @@ module OpenAI
             def self.new(client:)
             end
           end
+
         end
+
       end
+
     end
+
   end
 end

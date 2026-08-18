@@ -2,9 +2,15 @@
 
 module OpenAI
   module Models
+
     class BatchUsage < OpenAI::Internal::Type::BaseModel
-      OrHash =
-        T.type_alias { T.any(OpenAI::BatchUsage, OpenAI::Internal::AnyHash) }
+
+      OrHash = T.type_alias do
+        T.any(
+          OpenAI::BatchUsage,
+          OpenAI::Internal::AnyHash
+        )
+      end
 
       # The number of input tokens.
       sig { returns(Integer) }
@@ -14,11 +20,7 @@ module OpenAI
       sig { returns(OpenAI::BatchUsage::InputTokensDetails) }
       attr_reader :input_tokens_details
 
-      sig do
-        params(
-          input_tokens_details: OpenAI::BatchUsage::InputTokensDetails::OrHash
-        ).void
-      end
+      sig { params(input_tokens_details: OpenAI::BatchUsage::InputTokensDetails::OrHash).void }
       attr_writer :input_tokens_details
 
       # The number of output tokens.
@@ -29,11 +31,7 @@ module OpenAI
       sig { returns(OpenAI::BatchUsage::OutputTokensDetails) }
       attr_reader :output_tokens_details
 
-      sig do
-        params(
-          output_tokens_details: OpenAI::BatchUsage::OutputTokensDetails::OrHash
-        ).void
-      end
+      sig { params(output_tokens_details: OpenAI::BatchUsage::OutputTokensDetails::OrHash).void }
       attr_writer :output_tokens_details
 
       # The total number of tokens used.
@@ -45,24 +43,35 @@ module OpenAI
       # created after September 7, 2025.
       sig do
         params(
+
           input_tokens: Integer,
+
           input_tokens_details: OpenAI::BatchUsage::InputTokensDetails::OrHash,
+
           output_tokens: Integer,
-          output_tokens_details:
-            OpenAI::BatchUsage::OutputTokensDetails::OrHash,
+
+          output_tokens_details: OpenAI::BatchUsage::OutputTokensDetails::OrHash,
+
           total_tokens: Integer
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(
+
         # The number of input tokens.
         input_tokens:,
+
         # A detailed breakdown of the input tokens.
         input_tokens_details:,
+
         # The number of output tokens.
         output_tokens:,
+
         # A detailed breakdown of the output tokens.
         output_tokens_details:,
+
         # The total number of tokens used.
+
         total_tokens:
       )
       end
@@ -82,13 +91,12 @@ module OpenAI
       end
 
       class InputTokensDetails < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::BatchUsage::InputTokensDetails,
-              OpenAI::Internal::AnyHash
-            )
-          end
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::BatchUsage::InputTokensDetails,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The number of tokens that were retrieved from the cache.
         # [More on prompt caching](https://platform.openai.com/docs/guides/prompt-caching).
@@ -96,44 +104,71 @@ module OpenAI
         attr_accessor :cached_tokens
 
         # A detailed breakdown of the input tokens.
-        sig { params(cached_tokens: Integer).returns(T.attached_class) }
+        sig do
+          params(
+
+            cached_tokens: Integer
+          )
+            .returns(T.attached_class)
+        end
         def self.new(
+
           # The number of tokens that were retrieved from the cache.
           # [More on prompt caching](https://platform.openai.com/docs/guides/prompt-caching).
+
           cached_tokens:
         )
         end
 
-        sig { override.returns({ cached_tokens: Integer }) }
+        sig do
+          override.returns(
+            {cached_tokens: Integer}
+          )
+        end
         def to_hash
         end
+
       end
 
       class OutputTokensDetails < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::BatchUsage::OutputTokensDetails,
-              OpenAI::Internal::AnyHash
-            )
-          end
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::BatchUsage::OutputTokensDetails,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The number of reasoning tokens.
         sig { returns(Integer) }
         attr_accessor :reasoning_tokens
 
         # A detailed breakdown of the output tokens.
-        sig { params(reasoning_tokens: Integer).returns(T.attached_class) }
+        sig do
+          params(
+
+            reasoning_tokens: Integer
+          )
+            .returns(T.attached_class)
+        end
         def self.new(
+
           # The number of reasoning tokens.
+
           reasoning_tokens:
         )
         end
 
-        sig { override.returns({ reasoning_tokens: Integer }) }
+        sig do
+          override.returns(
+            {reasoning_tokens: Integer}
+          )
+        end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

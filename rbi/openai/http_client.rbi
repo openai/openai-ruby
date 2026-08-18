@@ -44,7 +44,8 @@ module OpenAI
         delay: Float,
         response: T.nilable(OpenAI::ResponseMetadata),
         error: T.nilable(OpenAI::Errors::APIConnectionError)
-      ).returns(T.attached_class)
+      )
+        .returns(T.attached_class)
     end
     def self.new(attempt:, max_attempts:, delay:, response:, error:)
     end
@@ -82,7 +83,8 @@ module OpenAI
           headers: T::Hash[String, String],
           body: T.anything,
           timeout: T.nilable(Float)
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(method:, url:, headers:, body:, timeout:)
       end
@@ -106,7 +108,8 @@ module OpenAI
           status: Integer,
           headers: T::Hash[String, String],
           body: T.any(String, T::Enumerable[String])
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(status:, headers:, body:)
       end

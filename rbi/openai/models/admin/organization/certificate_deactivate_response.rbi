@@ -2,16 +2,19 @@
 
 module OpenAI
   module Models
+
     module Admin
+
       module Organization
+
         class CertificateDeactivateResponse < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Models::Admin::Organization::CertificateDeactivateResponse,
-                OpenAI::Internal::AnyHash
-              )
-            end
+
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Models::Admin::Organization::CertificateDeactivateResponse,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The identifier, which can be referenced in API endpoints
           sig { returns(String) }
@@ -21,19 +24,15 @@ module OpenAI
           sig { returns(T::Boolean) }
           attr_accessor :active
 
-          sig do
-            returns(
-              OpenAI::Models::Admin::Organization::CertificateDeactivateResponse::CertificateDetails
-            )
-          end
+          sig { returns(OpenAI::Models::Admin::Organization::CertificateDeactivateResponse::CertificateDetails) }
           attr_reader :certificate_details
 
-          sig do
+          sig {
             params(
-              certificate_details:
-                OpenAI::Models::Admin::Organization::CertificateDeactivateResponse::CertificateDetails::OrHash
-            ).void
-          end
+              certificate_details: OpenAI::Models::Admin::Organization::CertificateDeactivateResponse::CertificateDetails::OrHash
+            )
+              .void
+          }
           attr_writer :certificate_details
 
           # The Unix timestamp (in seconds) of when the certificate was uploaded.
@@ -51,26 +50,39 @@ module OpenAI
           # Represents an individual certificate configured at the organization level.
           sig do
             params(
+
               id: String,
+
               active: T::Boolean,
-              certificate_details:
-                OpenAI::Models::Admin::Organization::CertificateDeactivateResponse::CertificateDetails::OrHash,
+
+              certificate_details: OpenAI::Models::Admin::Organization::CertificateDeactivateResponse::CertificateDetails::OrHash,
+
               created_at: Integer,
+
               name: T.nilable(String),
+
               object: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The identifier, which can be referenced in API endpoints
             id:,
+
             # Whether the certificate is currently active at the organization level.
             active:,
+
             certificate_details:,
+
             # The Unix timestamp (in seconds) of when the certificate was uploaded.
             created_at:,
+
             # The name of the certificate.
             name:,
+
             # The object type, which is always `organization.certificate`.
+
             object: :"organization.certificate"
           )
           end
@@ -80,8 +92,7 @@ module OpenAI
               {
                 id: String,
                 active: T::Boolean,
-                certificate_details:
-                  OpenAI::Models::Admin::Organization::CertificateDeactivateResponse::CertificateDetails,
+                certificate_details: OpenAI::Models::Admin::Organization::CertificateDeactivateResponse::CertificateDetails,
                 created_at: Integer,
                 name: T.nilable(String),
                 object: Symbol
@@ -92,13 +103,12 @@ module OpenAI
           end
 
           class CertificateDetails < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Models::Admin::Organization::CertificateDeactivateResponse::CertificateDetails,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Models::Admin::Organization::CertificateDeactivateResponse::CertificateDetails,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # The Unix timestamp (in seconds) of when the certificate expires.
             sig { returns(T.nilable(Integer)) }
@@ -115,24 +125,40 @@ module OpenAI
             attr_writer :valid_at
 
             sig do
-              params(expires_at: Integer, valid_at: Integer).returns(
-                T.attached_class
+              params(
+
+                expires_at: Integer,
+
+                valid_at: Integer
               )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # The Unix timestamp (in seconds) of when the certificate expires.
               expires_at: nil,
+
               # The Unix timestamp (in seconds) of when the certificate becomes valid.
+
               valid_at: nil
             )
             end
 
-            sig { override.returns({ expires_at: Integer, valid_at: Integer }) }
+            sig do
+              override.returns(
+                {expires_at: Integer, valid_at: Integer}
+              )
+            end
             def to_hash
             end
+
           end
+
         end
+
       end
+
     end
+
   end
 end

@@ -2,8 +2,11 @@
 
 module OpenAI
   module Resources
+
     class Beta
+
       class Responses
+
         sig { returns(OpenAI::Resources::Beta::Responses::InputItems) }
         attr_reader :input_items
 
@@ -23,109 +26,74 @@ module OpenAI
         # [web search](https://platform.openai.com/docs/guides/tools-web-search) or
         # [file search](https://platform.openai.com/docs/guides/tools-file-search) to use
         # your own data as input for the model's response.
-        sig do
+        sig {
           params(
             background: T.nilable(T::Boolean),
-            context_management:
-              T.nilable(
-                T::Array[
-                  OpenAI::Beta::ResponseCreateParams::ContextManagement::OrHash
-                ]
-              ),
-            conversation:
-              T.nilable(
-                T.any(
-                  String,
-                  OpenAI::Beta::BetaResponseConversationParam::OrHash
-                )
-              ),
-            include:
-              T.nilable(
-                T::Array[OpenAI::Beta::BetaResponseIncludable::OrSymbol]
-              ),
+            context_management: T.nilable(T::Array[OpenAI::Beta::ResponseCreateParams::ContextManagement::OrHash]),
+            conversation: T.nilable(T.any(String, OpenAI::Beta::BetaResponseConversationParam::OrHash)),
+            include: T.nilable(T::Array[OpenAI::Beta::BetaResponseIncludable::OrSymbol]),
             input: OpenAI::Beta::ResponseCreateParams::Input::Variants,
             instructions: T.nilable(String),
             max_output_tokens: T.nilable(Integer),
             max_tool_calls: T.nilable(Integer),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            model:
-              T.any(
-                OpenAI::Beta::ResponseCreateParams::Model::OrSymbol,
-                String
-              ),
-            moderation:
-              T.nilable(OpenAI::Beta::ResponseCreateParams::Moderation::OrHash),
-            multi_agent:
-              T.nilable(OpenAI::Beta::ResponseCreateParams::MultiAgent::OrHash),
+            model: T.any(OpenAI::Beta::ResponseCreateParams::Model::OrSymbol, String),
+            moderation: T.nilable(OpenAI::Beta::ResponseCreateParams::Moderation::OrHash),
+            multi_agent: T.nilable(OpenAI::Beta::ResponseCreateParams::MultiAgent::OrHash),
             parallel_tool_calls: T.nilable(T::Boolean),
             previous_response_id: T.nilable(String),
             prompt: T.nilable(OpenAI::Beta::BetaResponsePrompt::OrHash),
             prompt_cache_key: T.nilable(String),
-            prompt_cache_options:
-              OpenAI::Beta::ResponseCreateParams::PromptCacheOptions::OrHash,
-            prompt_cache_retention:
-              T.nilable(
-                OpenAI::Beta::ResponseCreateParams::PromptCacheRetention::OrSymbol
-              ),
-            reasoning:
-              T.nilable(OpenAI::Beta::ResponseCreateParams::Reasoning::OrHash),
+            prompt_cache_options: OpenAI::Beta::ResponseCreateParams::PromptCacheOptions::OrHash,
+            prompt_cache_retention: T.nilable(OpenAI::Beta::ResponseCreateParams::PromptCacheRetention::OrSymbol),
+            reasoning: T.nilable(OpenAI::Beta::ResponseCreateParams::Reasoning::OrHash),
             safety_identifier: T.nilable(String),
-            service_tier:
-              T.nilable(
-                OpenAI::Beta::ResponseCreateParams::ServiceTier::OrSymbol
-              ),
+            service_tier: T.nilable(OpenAI::Beta::ResponseCreateParams::ServiceTier::OrSymbol),
             store: T.nilable(T::Boolean),
-            stream_options:
-              T.nilable(
-                OpenAI::Beta::ResponseCreateParams::StreamOptions::OrHash
-              ),
+            stream_options: T.nilable(OpenAI::Beta::ResponseCreateParams::StreamOptions::OrHash),
             temperature: T.nilable(Float),
             text: OpenAI::Beta::BetaResponseTextConfig::OrHash,
-            tool_choice:
+            tool_choice: T.any(
+              OpenAI::Beta::BetaToolChoiceOptions::OrSymbol,
+              OpenAI::Beta::BetaToolChoiceAllowed::OrHash,
+              OpenAI::Beta::BetaToolChoiceTypes::OrHash,
+              OpenAI::Beta::BetaToolChoiceFunction::OrHash,
+              OpenAI::Beta::BetaToolChoiceMcp::OrHash,
+              OpenAI::Beta::BetaToolChoiceCustom::OrHash,
+              OpenAI::Beta::ResponseCreateParams::ToolChoice::BetaSpecificProgrammaticToolCallingParam::OrHash,
+              OpenAI::Beta::BetaToolChoiceApplyPatch::OrHash,
+              OpenAI::Beta::BetaToolChoiceShell::OrHash
+            ),
+            tools: T::Array[
               T.any(
-                OpenAI::Beta::BetaToolChoiceOptions::OrSymbol,
-                OpenAI::Beta::BetaToolChoiceAllowed::OrHash,
-                OpenAI::Beta::BetaToolChoiceTypes::OrHash,
-                OpenAI::Beta::BetaToolChoiceFunction::OrHash,
-                OpenAI::Beta::BetaToolChoiceMcp::OrHash,
-                OpenAI::Beta::BetaToolChoiceCustom::OrHash,
-                OpenAI::Beta::ResponseCreateParams::ToolChoice::BetaSpecificProgrammaticToolCallingParam::OrHash,
-                OpenAI::Beta::BetaToolChoiceApplyPatch::OrHash,
-                OpenAI::Beta::BetaToolChoiceShell::OrHash
-              ),
-            tools:
-              T::Array[
-                T.any(
-                  OpenAI::Beta::BetaFunctionTool::OrHash,
-                  OpenAI::Beta::BetaFileSearchTool::OrHash,
-                  OpenAI::Beta::BetaComputerTool::OrHash,
-                  OpenAI::Beta::BetaComputerUsePreviewTool::OrHash,
-                  OpenAI::Beta::BetaTool::Mcp::OrHash,
-                  OpenAI::Beta::BetaTool::CodeInterpreter::OrHash,
-                  OpenAI::Beta::BetaTool::ProgrammaticToolCalling::OrHash,
-                  OpenAI::Beta::BetaTool::ImageGeneration::OrHash,
-                  OpenAI::Beta::BetaTool::LocalShell::OrHash,
-                  OpenAI::Beta::BetaFunctionShellTool::OrHash,
-                  OpenAI::Beta::BetaCustomTool::OrHash,
-                  OpenAI::Beta::BetaNamespaceTool::OrHash,
-                  OpenAI::Beta::BetaToolSearchTool::OrHash,
-                  OpenAI::Beta::BetaApplyPatchTool::OrHash,
-                  OpenAI::Beta::BetaWebSearchTool::OrHash,
-                  OpenAI::Beta::BetaWebSearchPreviewTool::OrHash
-                )
-              ],
+                OpenAI::Beta::BetaFunctionTool::OrHash,
+                OpenAI::Beta::BetaFileSearchTool::OrHash,
+                OpenAI::Beta::BetaComputerTool::OrHash,
+                OpenAI::Beta::BetaComputerUsePreviewTool::OrHash,
+                OpenAI::Beta::BetaTool::Mcp::OrHash,
+                OpenAI::Beta::BetaTool::CodeInterpreter::OrHash,
+                OpenAI::Beta::BetaTool::ProgrammaticToolCalling::OrHash,
+                OpenAI::Beta::BetaTool::ImageGeneration::OrHash,
+                OpenAI::Beta::BetaTool::LocalShell::OrHash,
+                OpenAI::Beta::BetaFunctionShellTool::OrHash,
+                OpenAI::Beta::BetaCustomTool::OrHash,
+                OpenAI::Beta::BetaNamespaceTool::OrHash,
+                OpenAI::Beta::BetaToolSearchTool::OrHash,
+                OpenAI::Beta::BetaApplyPatchTool::OrHash,
+                OpenAI::Beta::BetaWebSearchTool::OrHash,
+                OpenAI::Beta::BetaWebSearchPreviewTool::OrHash
+              )
+            ],
             top_logprobs: T.nilable(Integer),
             top_p: T.nilable(Float),
-            truncation:
-              T.nilable(
-                OpenAI::Beta::ResponseCreateParams::Truncation::OrSymbol
-              ),
+            truncation: T.nilable(OpenAI::Beta::ResponseCreateParams::Truncation::OrSymbol),
             user: String,
             betas: T::Array[OpenAI::Beta::ResponseCreateParams::Beta::OrSymbol],
             stream: T.noreturn,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Beta::BetaResponse)
-        end
+          )
+            .returns(OpenAI::Beta::BetaResponse)
+        }
         def create(
           # Body param: Whether to run the model response in the background.
           # [Learn more](https://platform.openai.com/docs/guides/background).
@@ -370,113 +338,74 @@ module OpenAI
         # [web search](https://platform.openai.com/docs/guides/tools-web-search) or
         # [file search](https://platform.openai.com/docs/guides/tools-file-search) to use
         # your own data as input for the model's response.
-        sig do
+        sig {
           params(
             background: T.nilable(T::Boolean),
-            context_management:
-              T.nilable(
-                T::Array[
-                  OpenAI::Beta::ResponseCreateParams::ContextManagement::OrHash
-                ]
-              ),
-            conversation:
-              T.nilable(
-                T.any(
-                  String,
-                  OpenAI::Beta::BetaResponseConversationParam::OrHash
-                )
-              ),
-            include:
-              T.nilable(
-                T::Array[OpenAI::Beta::BetaResponseIncludable::OrSymbol]
-              ),
+            context_management: T.nilable(T::Array[OpenAI::Beta::ResponseCreateParams::ContextManagement::OrHash]),
+            conversation: T.nilable(T.any(String, OpenAI::Beta::BetaResponseConversationParam::OrHash)),
+            include: T.nilable(T::Array[OpenAI::Beta::BetaResponseIncludable::OrSymbol]),
             input: OpenAI::Beta::ResponseCreateParams::Input::Variants,
             instructions: T.nilable(String),
             max_output_tokens: T.nilable(Integer),
             max_tool_calls: T.nilable(Integer),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            model:
-              T.any(
-                OpenAI::Beta::ResponseCreateParams::Model::OrSymbol,
-                String
-              ),
-            moderation:
-              T.nilable(OpenAI::Beta::ResponseCreateParams::Moderation::OrHash),
-            multi_agent:
-              T.nilable(OpenAI::Beta::ResponseCreateParams::MultiAgent::OrHash),
+            model: T.any(OpenAI::Beta::ResponseCreateParams::Model::OrSymbol, String),
+            moderation: T.nilable(OpenAI::Beta::ResponseCreateParams::Moderation::OrHash),
+            multi_agent: T.nilable(OpenAI::Beta::ResponseCreateParams::MultiAgent::OrHash),
             parallel_tool_calls: T.nilable(T::Boolean),
             previous_response_id: T.nilable(String),
             prompt: T.nilable(OpenAI::Beta::BetaResponsePrompt::OrHash),
             prompt_cache_key: T.nilable(String),
-            prompt_cache_options:
-              OpenAI::Beta::ResponseCreateParams::PromptCacheOptions::OrHash,
-            prompt_cache_retention:
-              T.nilable(
-                OpenAI::Beta::ResponseCreateParams::PromptCacheRetention::OrSymbol
-              ),
-            reasoning:
-              T.nilable(OpenAI::Beta::ResponseCreateParams::Reasoning::OrHash),
+            prompt_cache_options: OpenAI::Beta::ResponseCreateParams::PromptCacheOptions::OrHash,
+            prompt_cache_retention: T.nilable(OpenAI::Beta::ResponseCreateParams::PromptCacheRetention::OrSymbol),
+            reasoning: T.nilable(OpenAI::Beta::ResponseCreateParams::Reasoning::OrHash),
             safety_identifier: T.nilable(String),
-            service_tier:
-              T.nilable(
-                OpenAI::Beta::ResponseCreateParams::ServiceTier::OrSymbol
-              ),
+            service_tier: T.nilable(OpenAI::Beta::ResponseCreateParams::ServiceTier::OrSymbol),
             store: T.nilable(T::Boolean),
-            stream_options:
-              T.nilable(
-                OpenAI::Beta::ResponseCreateParams::StreamOptions::OrHash
-              ),
+            stream_options: T.nilable(OpenAI::Beta::ResponseCreateParams::StreamOptions::OrHash),
             temperature: T.nilable(Float),
             text: OpenAI::Beta::BetaResponseTextConfig::OrHash,
-            tool_choice:
+            tool_choice: T.any(
+              OpenAI::Beta::BetaToolChoiceOptions::OrSymbol,
+              OpenAI::Beta::BetaToolChoiceAllowed::OrHash,
+              OpenAI::Beta::BetaToolChoiceTypes::OrHash,
+              OpenAI::Beta::BetaToolChoiceFunction::OrHash,
+              OpenAI::Beta::BetaToolChoiceMcp::OrHash,
+              OpenAI::Beta::BetaToolChoiceCustom::OrHash,
+              OpenAI::Beta::ResponseCreateParams::ToolChoice::BetaSpecificProgrammaticToolCallingParam::OrHash,
+              OpenAI::Beta::BetaToolChoiceApplyPatch::OrHash,
+              OpenAI::Beta::BetaToolChoiceShell::OrHash
+            ),
+            tools: T::Array[
               T.any(
-                OpenAI::Beta::BetaToolChoiceOptions::OrSymbol,
-                OpenAI::Beta::BetaToolChoiceAllowed::OrHash,
-                OpenAI::Beta::BetaToolChoiceTypes::OrHash,
-                OpenAI::Beta::BetaToolChoiceFunction::OrHash,
-                OpenAI::Beta::BetaToolChoiceMcp::OrHash,
-                OpenAI::Beta::BetaToolChoiceCustom::OrHash,
-                OpenAI::Beta::ResponseCreateParams::ToolChoice::BetaSpecificProgrammaticToolCallingParam::OrHash,
-                OpenAI::Beta::BetaToolChoiceApplyPatch::OrHash,
-                OpenAI::Beta::BetaToolChoiceShell::OrHash
-              ),
-            tools:
-              T::Array[
-                T.any(
-                  OpenAI::Beta::BetaFunctionTool::OrHash,
-                  OpenAI::Beta::BetaFileSearchTool::OrHash,
-                  OpenAI::Beta::BetaComputerTool::OrHash,
-                  OpenAI::Beta::BetaComputerUsePreviewTool::OrHash,
-                  OpenAI::Beta::BetaTool::Mcp::OrHash,
-                  OpenAI::Beta::BetaTool::CodeInterpreter::OrHash,
-                  OpenAI::Beta::BetaTool::ProgrammaticToolCalling::OrHash,
-                  OpenAI::Beta::BetaTool::ImageGeneration::OrHash,
-                  OpenAI::Beta::BetaTool::LocalShell::OrHash,
-                  OpenAI::Beta::BetaFunctionShellTool::OrHash,
-                  OpenAI::Beta::BetaCustomTool::OrHash,
-                  OpenAI::Beta::BetaNamespaceTool::OrHash,
-                  OpenAI::Beta::BetaToolSearchTool::OrHash,
-                  OpenAI::Beta::BetaApplyPatchTool::OrHash,
-                  OpenAI::Beta::BetaWebSearchTool::OrHash,
-                  OpenAI::Beta::BetaWebSearchPreviewTool::OrHash
-                )
-              ],
+                OpenAI::Beta::BetaFunctionTool::OrHash,
+                OpenAI::Beta::BetaFileSearchTool::OrHash,
+                OpenAI::Beta::BetaComputerTool::OrHash,
+                OpenAI::Beta::BetaComputerUsePreviewTool::OrHash,
+                OpenAI::Beta::BetaTool::Mcp::OrHash,
+                OpenAI::Beta::BetaTool::CodeInterpreter::OrHash,
+                OpenAI::Beta::BetaTool::ProgrammaticToolCalling::OrHash,
+                OpenAI::Beta::BetaTool::ImageGeneration::OrHash,
+                OpenAI::Beta::BetaTool::LocalShell::OrHash,
+                OpenAI::Beta::BetaFunctionShellTool::OrHash,
+                OpenAI::Beta::BetaCustomTool::OrHash,
+                OpenAI::Beta::BetaNamespaceTool::OrHash,
+                OpenAI::Beta::BetaToolSearchTool::OrHash,
+                OpenAI::Beta::BetaApplyPatchTool::OrHash,
+                OpenAI::Beta::BetaWebSearchTool::OrHash,
+                OpenAI::Beta::BetaWebSearchPreviewTool::OrHash
+              )
+            ],
             top_logprobs: T.nilable(Integer),
             top_p: T.nilable(Float),
-            truncation:
-              T.nilable(
-                OpenAI::Beta::ResponseCreateParams::Truncation::OrSymbol
-              ),
+            truncation: T.nilable(OpenAI::Beta::ResponseCreateParams::Truncation::OrSymbol),
             user: String,
             betas: T::Array[OpenAI::Beta::ResponseCreateParams::Beta::OrSymbol],
             stream: T.noreturn,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(
-            OpenAI::Internal::Stream[
-              OpenAI::Beta::BetaResponseStreamEvent::Variants
-            ]
           )
-        end
+            .returns(OpenAI::Internal::Stream[OpenAI::Beta::BetaResponseStreamEvent::Variants])
+        }
         def stream_raw(
           # Body param: Whether to run the model response in the background.
           # [Learn more](https://platform.openai.com/docs/guides/background).
@@ -712,18 +641,18 @@ module OpenAI
         # counterpart.
         #
         # Retrieves a model response with the given ID.
-        sig do
+        sig {
           params(
             response_id: String,
             include: T::Array[OpenAI::Beta::BetaResponseIncludable::OrSymbol],
             include_obfuscation: T::Boolean,
             starting_after: Integer,
-            betas:
-              T::Array[OpenAI::Beta::ResponseRetrieveParams::Beta::OrSymbol],
+            betas: T::Array[OpenAI::Beta::ResponseRetrieveParams::Beta::OrSymbol],
             stream: T.noreturn,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Beta::BetaResponse)
-        end
+          )
+            .returns(OpenAI::Beta::BetaResponse)
+        }
         def retrieve(
           # Path param: The ID of the response to retrieve.
           response_id,
@@ -752,22 +681,18 @@ module OpenAI
         # See {OpenAI::Resources::Beta::Responses#retrieve} for non-streaming counterpart.
         #
         # Retrieves a model response with the given ID.
-        sig do
+        sig {
           params(
             response_id: String,
             include: T::Array[OpenAI::Beta::BetaResponseIncludable::OrSymbol],
             include_obfuscation: T::Boolean,
             starting_after: Integer,
-            betas:
-              T::Array[OpenAI::Beta::ResponseRetrieveParams::Beta::OrSymbol],
+            betas: T::Array[OpenAI::Beta::ResponseRetrieveParams::Beta::OrSymbol],
             stream: T.noreturn,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(
-            OpenAI::Internal::Stream[
-              OpenAI::Beta::BetaResponseStreamEvent::Variants
-            ]
           )
-        end
+            .returns(OpenAI::Internal::Stream[OpenAI::Beta::BetaResponseStreamEvent::Variants])
+        }
         def retrieve_streaming(
           # Path param: The ID of the response to retrieve.
           response_id,
@@ -794,13 +719,14 @@ module OpenAI
         end
 
         # Deletes a model response with the given ID.
-        sig do
+        sig {
           params(
             response_id: String,
             betas: T::Array[OpenAI::Beta::ResponseDeleteParams::Beta::OrSymbol],
             request_options: OpenAI::RequestOptions::OrHash
-          ).void
-        end
+          )
+            .void
+        }
         def delete(
           # The ID of the response to delete.
           response_id,
@@ -813,13 +739,14 @@ module OpenAI
         # Cancels a model response with the given ID. Only responses created with the
         # `background` parameter set to `true` can be cancelled.
         # [Learn more](https://platform.openai.com/docs/guides/background).
-        sig do
+        sig {
           params(
             response_id: String,
             betas: T::Array[OpenAI::Beta::ResponseCancelParams::Beta::OrSymbol],
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Beta::BetaResponse)
-        end
+          )
+            .returns(OpenAI::Beta::BetaResponse)
+        }
         def cancel(
           # The ID of the response to cancel.
           response_id,
@@ -835,37 +762,21 @@ module OpenAI
         # [conversation state guide](https://platform.openai.com/docs/guides/conversation-state#managing-the-context-window).
         # For ZDR-compatible compaction details, see
         # [Compaction (advanced)](https://platform.openai.com/docs/guides/conversation-state#compaction-advanced).
-        sig do
+        sig {
           params(
-            model:
-              T.nilable(
-                T.any(
-                  OpenAI::Beta::ResponseCompactParams::Model::OrSymbol,
-                  String
-                )
-              ),
-            input:
-              T.nilable(OpenAI::Beta::ResponseCompactParams::Input::Variants),
+            model: T.nilable(T.any(OpenAI::Beta::ResponseCompactParams::Model::OrSymbol, String)),
+            input: T.nilable(OpenAI::Beta::ResponseCompactParams::Input::Variants),
             instructions: T.nilable(String),
             previous_response_id: T.nilable(String),
             prompt_cache_key: T.nilable(String),
-            prompt_cache_options:
-              T.nilable(
-                OpenAI::Beta::ResponseCompactParams::PromptCacheOptions::OrHash
-              ),
-            prompt_cache_retention:
-              T.nilable(
-                OpenAI::Beta::ResponseCompactParams::PromptCacheRetention::OrSymbol
-              ),
-            service_tier:
-              T.nilable(
-                OpenAI::Beta::ResponseCompactParams::ServiceTier::OrSymbol
-              ),
-            betas:
-              T::Array[OpenAI::Beta::ResponseCompactParams::Beta::OrSymbol],
+            prompt_cache_options: T.nilable(OpenAI::Beta::ResponseCompactParams::PromptCacheOptions::OrHash),
+            prompt_cache_retention: T.nilable(OpenAI::Beta::ResponseCompactParams::PromptCacheRetention::OrSymbol),
+            service_tier: T.nilable(OpenAI::Beta::ResponseCompactParams::ServiceTier::OrSymbol),
+            betas: T::Array[OpenAI::Beta::ResponseCompactParams::Beta::OrSymbol],
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Beta::BetaCompactedResponse)
-        end
+          )
+            .returns(OpenAI::Beta::BetaCompactedResponse)
+        }
         def compact(
           # Body param: Model ID used to generate the response, like `gpt-5` or `o3`. OpenAI
           # offers a wide range of models with different capabilities, performance
@@ -928,6 +839,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

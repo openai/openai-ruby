@@ -2,17 +2,19 @@
 
 module OpenAI
   module Models
+
     BetaResponseFileSearchToolCall = Beta::BetaResponseFileSearchToolCall
 
     module Beta
+
       class BetaResponseFileSearchToolCall < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Beta::BetaResponseFileSearchToolCall,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Beta::BetaResponseFileSearchToolCall,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The unique ID of the file search tool call.
         sig { returns(String) }
@@ -24,11 +26,7 @@ module OpenAI
 
         # The status of the file search tool call. One of `in_progress`, `searching`,
         # `incomplete` or `failed`,
-        sig do
-          returns(
-            OpenAI::Beta::BetaResponseFileSearchToolCall::Status::OrSymbol
-          )
-        end
+        sig { returns(OpenAI::Beta::BetaResponseFileSearchToolCall::Status::OrSymbol) }
         attr_accessor :status
 
         # The type of the file search tool call. Always `file_search_call`.
@@ -36,31 +34,14 @@ module OpenAI
         attr_accessor :type
 
         # The agent that produced this item.
-        sig do
-          returns(
-            T.nilable(OpenAI::Beta::BetaResponseFileSearchToolCall::Agent)
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Beta::BetaResponseFileSearchToolCall::Agent)) }
         attr_reader :agent
 
-        sig do
-          params(
-            agent:
-              T.nilable(
-                OpenAI::Beta::BetaResponseFileSearchToolCall::Agent::OrHash
-              )
-          ).void
-        end
+        sig { params(agent: T.nilable(OpenAI::Beta::BetaResponseFileSearchToolCall::Agent::OrHash)).void }
         attr_writer :agent
 
         # The results of the file search tool call.
-        sig do
-          returns(
-            T.nilable(
-              T::Array[OpenAI::Beta::BetaResponseFileSearchToolCall::Result]
-            )
-          )
-        end
+        sig { returns(T.nilable(T::Array[OpenAI::Beta::BetaResponseFileSearchToolCall::Result])) }
         attr_accessor :results
 
         # The results of a file search tool call. See the
@@ -68,36 +49,41 @@ module OpenAI
         # for more information.
         sig do
           params(
+
             id: String,
+
             queries: T::Array[String],
-            status:
-              OpenAI::Beta::BetaResponseFileSearchToolCall::Status::OrSymbol,
-            agent:
-              T.nilable(
-                OpenAI::Beta::BetaResponseFileSearchToolCall::Agent::OrHash
-              ),
-            results:
-              T.nilable(
-                T::Array[
-                  OpenAI::Beta::BetaResponseFileSearchToolCall::Result::OrHash
-                ]
-              ),
+
+            status: OpenAI::Beta::BetaResponseFileSearchToolCall::Status::OrSymbol,
+
+            agent: T.nilable(OpenAI::Beta::BetaResponseFileSearchToolCall::Agent::OrHash),
+
+            results: T.nilable(T::Array[OpenAI::Beta::BetaResponseFileSearchToolCall::Result::OrHash]),
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The unique ID of the file search tool call.
           id:,
+
           # The queries used to search for files.
           queries:,
+
           # The status of the file search tool call. One of `in_progress`, `searching`,
           # `incomplete` or `failed`,
           status:,
+
           # The agent that produced this item.
           agent: nil,
+
           # The results of the file search tool call.
           results: nil,
+
           # The type of the file search tool call. Always `file_search_call`.
+
           type: :file_search_call
         )
         end
@@ -107,15 +93,10 @@ module OpenAI
             {
               id: String,
               queries: T::Array[String],
-              status:
-                OpenAI::Beta::BetaResponseFileSearchToolCall::Status::OrSymbol,
+              status: OpenAI::Beta::BetaResponseFileSearchToolCall::Status::OrSymbol,
               type: Symbol,
-              agent:
-                T.nilable(OpenAI::Beta::BetaResponseFileSearchToolCall::Agent),
-              results:
-                T.nilable(
-                  T::Array[OpenAI::Beta::BetaResponseFileSearchToolCall::Result]
-                )
+              agent: T.nilable(OpenAI::Beta::BetaResponseFileSearchToolCall::Agent),
+              results: T.nilable(T::Array[OpenAI::Beta::BetaResponseFileSearchToolCall::Result])
             }
           )
         end
@@ -127,102 +108,76 @@ module OpenAI
         module Status
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(
-                Symbol,
-                OpenAI::Beta::BetaResponseFileSearchToolCall::Status
-              )
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::BetaResponseFileSearchToolCall::Status) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          IN_PROGRESS =
-            T.let(
-              :in_progress,
-              OpenAI::Beta::BetaResponseFileSearchToolCall::Status::TaggedSymbol
-            )
-          SEARCHING =
-            T.let(
-              :searching,
-              OpenAI::Beta::BetaResponseFileSearchToolCall::Status::TaggedSymbol
-            )
-          COMPLETED =
-            T.let(
-              :completed,
-              OpenAI::Beta::BetaResponseFileSearchToolCall::Status::TaggedSymbol
-            )
-          INCOMPLETE =
-            T.let(
-              :incomplete,
-              OpenAI::Beta::BetaResponseFileSearchToolCall::Status::TaggedSymbol
-            )
-          FAILED =
-            T.let(
-              :failed,
-              OpenAI::Beta::BetaResponseFileSearchToolCall::Status::TaggedSymbol
-            )
+          IN_PROGRESS = T.let(:in_progress, OpenAI::Beta::BetaResponseFileSearchToolCall::Status::TaggedSymbol)
+          SEARCHING = T.let(:searching, OpenAI::Beta::BetaResponseFileSearchToolCall::Status::TaggedSymbol)
+          COMPLETED = T.let(:completed, OpenAI::Beta::BetaResponseFileSearchToolCall::Status::TaggedSymbol)
+          INCOMPLETE = T.let(:incomplete, OpenAI::Beta::BetaResponseFileSearchToolCall::Status::TaggedSymbol)
+          FAILED = T.let(:failed, OpenAI::Beta::BetaResponseFileSearchToolCall::Status::TaggedSymbol)
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Beta::BetaResponseFileSearchToolCall::Status::TaggedSymbol
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Beta::BetaResponseFileSearchToolCall::Status::TaggedSymbol]) }
           def self.values
           end
         end
 
         class Agent < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Beta::BetaResponseFileSearchToolCall::Agent,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::BetaResponseFileSearchToolCall::Agent,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The canonical name of the agent that produced this item.
           sig { returns(String) }
           attr_accessor :agent_name
 
           # The agent that produced this item.
-          sig { params(agent_name: String).returns(T.attached_class) }
+          sig do
+            params(
+
+              agent_name: String
+            )
+              .returns(T.attached_class)
+          end
           def self.new(
+
             # The canonical name of the agent that produced this item.
+
             agent_name:
           )
           end
 
-          sig { override.returns({ agent_name: String }) }
+          sig do
+            override.returns(
+              {agent_name: String}
+            )
+          end
           def to_hash
           end
+
         end
 
         class Result < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Beta::BetaResponseFileSearchToolCall::Result,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::BetaResponseFileSearchToolCall::Result,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # Set of 16 key-value pairs that can be attached to an object. This can be useful
           # for storing additional information about the object in a structured format, and
           # querying for objects via API or the dashboard. Keys are strings with a maximum
           # length of 64 characters. Values are strings with a maximum length of 512
           # characters, booleans, or numbers.
-          sig do
+          sig {
             returns(
-              T.nilable(
-                T::Hash[
-                  Symbol,
-                  OpenAI::Beta::BetaResponseFileSearchToolCall::Result::Attribute::Variants
-                ]
-              )
+              T.nilable(T::Hash[Symbol, OpenAI::Beta::BetaResponseFileSearchToolCall::Result::Attribute::Variants])
             )
-          end
+          }
           attr_accessor :attributes
 
           # The unique ID of the file.
@@ -255,33 +210,41 @@ module OpenAI
 
           sig do
             params(
-              attributes:
-                T.nilable(
-                  T::Hash[
-                    Symbol,
-                    OpenAI::Beta::BetaResponseFileSearchToolCall::Result::Attribute::Variants
-                  ]
-                ),
+
+              attributes: T.nilable(
+                T::Hash[Symbol, OpenAI::Beta::BetaResponseFileSearchToolCall::Result::Attribute::Variants]
+              ),
+
               file_id: String,
+
               filename: String,
+
               score: Float,
+
               text: String
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # Set of 16 key-value pairs that can be attached to an object. This can be useful
             # for storing additional information about the object in a structured format, and
             # querying for objects via API or the dashboard. Keys are strings with a maximum
             # length of 64 characters. Values are strings with a maximum length of 512
             # characters, booleans, or numbers.
             attributes: nil,
+
             # The unique ID of the file.
             file_id: nil,
+
             # The name of the file.
             filename: nil,
+
             # The relevance score of the file - a value between 0 and 1.
             score: nil,
+
             # The text that was retrieved from the file.
+
             text: nil
           )
           end
@@ -289,13 +252,9 @@ module OpenAI
           sig do
             override.returns(
               {
-                attributes:
-                  T.nilable(
-                    T::Hash[
-                      Symbol,
-                      OpenAI::Beta::BetaResponseFileSearchToolCall::Result::Attribute::Variants
-                    ]
-                  ),
+                attributes: T.nilable(
+                  T::Hash[Symbol, OpenAI::Beta::BetaResponseFileSearchToolCall::Result::Attribute::Variants]
+                ),
                 file_id: String,
                 filename: String,
                 score: Float,
@@ -311,18 +270,18 @@ module OpenAI
 
             Variants = T.type_alias { T.any(String, Float, T::Boolean) }
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Beta::BetaResponseFileSearchToolCall::Result::Attribute::Variants
-                ]
-              )
-            end
+            sig {
+              override.returns(T::Array[OpenAI::Beta::BetaResponseFileSearchToolCall::Result::Attribute::Variants])
+            }
             def self.variants
             end
+
           end
         end
+
       end
+
     end
+
   end
 end

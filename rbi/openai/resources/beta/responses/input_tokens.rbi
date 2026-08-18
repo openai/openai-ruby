@@ -2,89 +2,69 @@
 
 module OpenAI
   module Resources
+
     class Beta
+
       class Responses
+
         class InputTokens
+
           # Returns input token counts of the request.
           #
           # Returns an object with `object` set to `response.input_tokens` and an
           # `input_tokens` count.
-          sig do
+          sig {
             params(
-              conversation:
-                T.nilable(
-                  T.any(
-                    String,
-                    OpenAI::Beta::BetaResponseConversationParam::OrHash
-                  )
-                ),
-              input:
-                T.nilable(
-                  OpenAI::Beta::Responses::InputTokenCountParams::Input::Variants
-                ),
+              conversation: T.nilable(T.any(String, OpenAI::Beta::BetaResponseConversationParam::OrHash)),
+              input: T.nilable(OpenAI::Beta::Responses::InputTokenCountParams::Input::Variants),
               instructions: T.nilable(String),
               model: T.nilable(String),
               parallel_tool_calls: T.nilable(T::Boolean),
-              personality:
-                T.any(
-                  String,
-                  OpenAI::Beta::Responses::InputTokenCountParams::Personality::OrSymbol
-                ),
+              personality: T.any(String, OpenAI::Beta::Responses::InputTokenCountParams::Personality::OrSymbol),
               previous_response_id: T.nilable(String),
-              reasoning:
-                T.nilable(
-                  OpenAI::Beta::Responses::InputTokenCountParams::Reasoning::OrHash
-                ),
-              text:
-                T.nilable(
-                  OpenAI::Beta::Responses::InputTokenCountParams::Text::OrHash
-                ),
-              tool_choice:
-                T.nilable(
-                  T.any(
-                    OpenAI::Beta::BetaToolChoiceOptions::OrSymbol,
-                    OpenAI::Beta::BetaToolChoiceAllowed::OrHash,
-                    OpenAI::Beta::BetaToolChoiceTypes::OrHash,
-                    OpenAI::Beta::BetaToolChoiceFunction::OrHash,
-                    OpenAI::Beta::BetaToolChoiceMcp::OrHash,
-                    OpenAI::Beta::BetaToolChoiceCustom::OrHash,
-                    OpenAI::Beta::Responses::InputTokenCountParams::ToolChoice::BetaSpecificProgrammaticToolCallingParam::OrHash,
-                    OpenAI::Beta::BetaToolChoiceApplyPatch::OrHash,
-                    OpenAI::Beta::BetaToolChoiceShell::OrHash
-                  )
-                ),
-              tools:
-                T.nilable(
-                  T::Array[
-                    T.any(
-                      OpenAI::Beta::BetaFunctionTool::OrHash,
-                      OpenAI::Beta::BetaFileSearchTool::OrHash,
-                      OpenAI::Beta::BetaComputerTool::OrHash,
-                      OpenAI::Beta::BetaComputerUsePreviewTool::OrHash,
-                      OpenAI::Beta::BetaTool::Mcp::OrHash,
-                      OpenAI::Beta::BetaTool::CodeInterpreter::OrHash,
-                      OpenAI::Beta::BetaTool::ProgrammaticToolCalling::OrHash,
-                      OpenAI::Beta::BetaTool::ImageGeneration::OrHash,
-                      OpenAI::Beta::BetaTool::LocalShell::OrHash,
-                      OpenAI::Beta::BetaFunctionShellTool::OrHash,
-                      OpenAI::Beta::BetaCustomTool::OrHash,
-                      OpenAI::Beta::BetaNamespaceTool::OrHash,
-                      OpenAI::Beta::BetaToolSearchTool::OrHash,
-                      OpenAI::Beta::BetaApplyPatchTool::OrHash,
-                      OpenAI::Beta::BetaWebSearchTool::OrHash,
-                      OpenAI::Beta::BetaWebSearchPreviewTool::OrHash
-                    )
-                  ]
-                ),
-              truncation:
-                OpenAI::Beta::Responses::InputTokenCountParams::Truncation::OrSymbol,
-              betas:
+              reasoning: T.nilable(OpenAI::Beta::Responses::InputTokenCountParams::Reasoning::OrHash),
+              text: T.nilable(OpenAI::Beta::Responses::InputTokenCountParams::Text::OrHash),
+              tool_choice: T.nilable(
+                T.any(
+                  OpenAI::Beta::BetaToolChoiceOptions::OrSymbol,
+                  OpenAI::Beta::BetaToolChoiceAllowed::OrHash,
+                  OpenAI::Beta::BetaToolChoiceTypes::OrHash,
+                  OpenAI::Beta::BetaToolChoiceFunction::OrHash,
+                  OpenAI::Beta::BetaToolChoiceMcp::OrHash,
+                  OpenAI::Beta::BetaToolChoiceCustom::OrHash,
+                  OpenAI::Beta::Responses::InputTokenCountParams::ToolChoice::BetaSpecificProgrammaticToolCallingParam::OrHash,
+                  OpenAI::Beta::BetaToolChoiceApplyPatch::OrHash,
+                  OpenAI::Beta::BetaToolChoiceShell::OrHash
+                )
+              ),
+              tools: T.nilable(
                 T::Array[
-                  OpenAI::Beta::Responses::InputTokenCountParams::Beta::OrSymbol
-                ],
+                  T.any(
+                    OpenAI::Beta::BetaFunctionTool::OrHash,
+                    OpenAI::Beta::BetaFileSearchTool::OrHash,
+                    OpenAI::Beta::BetaComputerTool::OrHash,
+                    OpenAI::Beta::BetaComputerUsePreviewTool::OrHash,
+                    OpenAI::Beta::BetaTool::Mcp::OrHash,
+                    OpenAI::Beta::BetaTool::CodeInterpreter::OrHash,
+                    OpenAI::Beta::BetaTool::ProgrammaticToolCalling::OrHash,
+                    OpenAI::Beta::BetaTool::ImageGeneration::OrHash,
+                    OpenAI::Beta::BetaTool::LocalShell::OrHash,
+                    OpenAI::Beta::BetaFunctionShellTool::OrHash,
+                    OpenAI::Beta::BetaCustomTool::OrHash,
+                    OpenAI::Beta::BetaNamespaceTool::OrHash,
+                    OpenAI::Beta::BetaToolSearchTool::OrHash,
+                    OpenAI::Beta::BetaApplyPatchTool::OrHash,
+                    OpenAI::Beta::BetaWebSearchTool::OrHash,
+                    OpenAI::Beta::BetaWebSearchPreviewTool::OrHash
+                  )
+                ]
+              ),
+              truncation: OpenAI::Beta::Responses::InputTokenCountParams::Truncation::OrSymbol,
+              betas: T::Array[OpenAI::Beta::Responses::InputTokenCountParams::Beta::OrSymbol],
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Models::Beta::Responses::InputTokenCountResponse)
-          end
+            )
+              .returns(OpenAI::Models::Beta::Responses::InputTokenCountResponse)
+          }
           def count(
             # Body param: The conversation that this response belongs to. Items from this
             # conversation are prepended to `input_items` for this response request. Input
@@ -148,7 +128,10 @@ module OpenAI
           def self.new(client:)
           end
         end
+
       end
+
     end
+
   end
 end

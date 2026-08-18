@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Responses
+
       class ResponseShellCallCommandDeltaEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Responses::ResponseShellCallCommandDeltaEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Responses::ResponseShellCallCommandDeltaEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The index of the shell command that was updated.
         sig { returns(Integer) }
@@ -42,26 +44,40 @@ module OpenAI
         # A streaming event that indicated a shell command was incrementally updated.
         sig do
           params(
+
             command_index: Integer,
+
             delta: String,
+
             output_index: Integer,
+
             sequence_number: Integer,
+
             obfuscation: String,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The index of the shell command that was updated.
           command_index:,
+
           # The shell command delta that was appended.
           delta:,
+
           # The index of the output item that was updated.
           output_index:,
+
           # The sequence number of the event that was emitted.
           sequence_number:,
+
           # An obfuscation string that was added to pad the event payload.
           obfuscation: nil,
+
           # The type of the event, always `response.shell_call_command.delta`.
+
           type: :"response.shell_call_command.delta"
         )
         end
@@ -80,7 +96,10 @@ module OpenAI
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

@@ -9,9 +9,15 @@ module OpenAI
         query: T::Hash[String, String],
         websocket_base_url: T.nilable(String),
         options: T.nilable(OpenAI::RequestOptions::OrHash)
-      ).returns(OpenAI::Internal::Transport::BaseClient::RequestInput)
+      )
+        .returns(OpenAI::Internal::Transport::BaseClient::RequestInput)
     end
-    def realtime_connection_request(path:, query:, websocket_base_url: nil, options: nil)
+    def realtime_connection_request(
+      path:,
+      query:,
+      websocket_base_url: nil,
+      options: nil
+    )
     end
 
     # @api private
@@ -21,17 +27,23 @@ module OpenAI
         query: T::Hash[String, String],
         websocket_base_url: T.nilable(String),
         options: T.nilable(OpenAI::RequestOptions::OrHash),
-        block:
-          T
-            .proc
-            .params(
-              request: OpenAI::Internal::Transport::BaseClient::RequestInput,
-              mark_handshake_completed: T.proc.void
-            )
-            .returns(T.untyped)
-      ).returns(T.untyped)
+        block: T
+          .proc
+          .params(
+            request: OpenAI::Internal::Transport::BaseClient::RequestInput,
+            mark_handshake_completed: T.proc.void
+          )
+          .returns(T.untyped)
+      )
+        .returns(T.untyped)
     end
-    def with_realtime_connection_request(path:, query:, websocket_base_url: nil, options: nil, &block)
+    def with_realtime_connection_request(
+      path:,
+      query:,
+      websocket_base_url: nil,
+      options: nil,
+      &block
+    )
     end
   end
 
@@ -55,7 +67,8 @@ module OpenAI
           message: T.nilable(String),
           cause: T.nilable(Exception),
           http_status: T.nilable(Integer)
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(url:, message: nil, cause: nil, http_status: nil)
       end
@@ -71,10 +84,9 @@ module OpenAI
 
       # @api private
       sig do
-        params(
-          data: String,
-          cause: T.nilable(StandardError)
-        ).returns(T.attached_class)
+        params(data: String, cause: T.nilable(StandardError)).returns(
+          T.attached_class
+        )
       end
       def self.new(data:, cause: nil)
       end
@@ -90,8 +102,12 @@ module OpenAI
           request_options: T.nilable(OpenAI::RequestOptions::OrHash),
           transport: T.untyped,
           transport_options: T::Hash[Symbol, T.untyped],
-          block: T.proc.params(connection: OpenAI::Realtime::Connection).returns(T.untyped)
-        ).returns(T.untyped)
+          block: T
+            .proc
+            .params(connection: OpenAI::Realtime::Connection)
+            .returns(T.untyped)
+        )
+          .returns(T.untyped)
       end
       def connect(
         model:,
@@ -109,8 +125,12 @@ module OpenAI
           request_options: T.nilable(OpenAI::RequestOptions::OrHash),
           transport: T.untyped,
           transport_options: T::Hash[Symbol, T.untyped],
-          block: T.proc.params(connection: OpenAI::Realtime::Connection).returns(T.untyped)
-        ).returns(T.untyped)
+          block: T
+            .proc
+            .params(connection: OpenAI::Realtime::Connection)
+            .returns(T.untyped)
+        )
+          .returns(T.untyped)
       end
       def connect_transcription(
         websocket_base_url: nil,

@@ -2,23 +2,25 @@
 
 module OpenAI
   module Models
+
     class CompletionCreateParams < OpenAI::Internal::Type::BaseModel
+
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      OrHash =
-        T.type_alias do
-          T.any(OpenAI::CompletionCreateParams, OpenAI::Internal::AnyHash)
-        end
+      OrHash = T.type_alias do
+        T.any(
+          OpenAI::CompletionCreateParams,
+          OpenAI::Internal::AnyHash
+        )
+      end
 
       # ID of the model to use. You can use the
       # [List models](https://platform.openai.com/docs/api-reference/models/list) API to
       # see all of your available models, or see our
       # [Model overview](https://platform.openai.com/docs/models) for descriptions of
       # them.
-      sig do
-        returns(T.any(String, OpenAI::CompletionCreateParams::Model::OrSymbol))
-      end
+      sig { returns(T.any(String, OpenAI::CompletionCreateParams::Model::OrSymbol)) }
       attr_accessor :model
 
       # The prompt(s) to generate completions for, encoded as a string, array of
@@ -27,9 +29,7 @@ module OpenAI
       # Note that <|endoftext|> is the document separator that the model sees during
       # training, so if a prompt is not specified the model will generate as if from the
       # beginning of a new document.
-      sig do
-        returns(T.nilable(OpenAI::CompletionCreateParams::Prompt::Variants))
-      end
+      sig { returns(T.nilable(OpenAI::CompletionCreateParams::Prompt::Variants)) }
       attr_accessor :prompt
 
       # Generates `best_of` completions server-side and returns the "best" (the one with
@@ -126,12 +126,7 @@ module OpenAI
       sig { returns(T.nilable(OpenAI::Chat::ChatCompletionStreamOptions)) }
       attr_reader :stream_options
 
-      sig do
-        params(
-          stream_options:
-            T.nilable(OpenAI::Chat::ChatCompletionStreamOptions::OrHash)
-        ).void
-      end
+      sig { params(stream_options: T.nilable(OpenAI::Chat::ChatCompletionStreamOptions::OrHash)).void }
       attr_writer :stream_options
 
       # The suffix that comes after a completion of inserted text.
@@ -167,34 +162,54 @@ module OpenAI
 
       sig do
         params(
+
           model: T.any(String, OpenAI::CompletionCreateParams::Model::OrSymbol),
+
           prompt: T.nilable(OpenAI::CompletionCreateParams::Prompt::Variants),
+
           best_of: T.nilable(Integer),
+
           echo: T.nilable(T::Boolean),
+
           frequency_penalty: T.nilable(Float),
+
           logit_bias: T.nilable(T::Hash[Symbol, Integer]),
+
           logprobs: T.nilable(Integer),
+
           max_tokens: T.nilable(Integer),
+
           n: T.nilable(Integer),
+
           presence_penalty: T.nilable(Float),
+
           seed: T.nilable(Integer),
+
           stop: T.nilable(OpenAI::CompletionCreateParams::Stop::Variants),
-          stream_options:
-            T.nilable(OpenAI::Chat::ChatCompletionStreamOptions::OrHash),
+
+          stream_options: T.nilable(OpenAI::Chat::ChatCompletionStreamOptions::OrHash),
+
           suffix: T.nilable(String),
+
           temperature: T.nilable(Float),
+
           top_p: T.nilable(Float),
+
           user: String,
+
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(
+
         # ID of the model to use. You can use the
         # [List models](https://platform.openai.com/docs/api-reference/models/list) API to
         # see all of your available models, or see our
         # [Model overview](https://platform.openai.com/docs/models) for descriptions of
         # them.
         model:,
+
         # The prompt(s) to generate completions for, encoded as a string, array of
         # strings, array of tokens, or array of token arrays.
         #
@@ -202,6 +217,7 @@ module OpenAI
         # training, so if a prompt is not specified the model will generate as if from the
         # beginning of a new document.
         prompt:,
+
         # Generates `best_of` completions server-side and returns the "best" (the one with
         # the highest log probability per token). Results cannot be streamed.
         #
@@ -212,14 +228,17 @@ module OpenAI
         # consume your token quota. Use carefully and ensure that you have reasonable
         # settings for `max_tokens` and `stop`.
         best_of: nil,
+
         # Echo back the prompt in addition to the completion
         echo: nil,
+
         # Number between -2.0 and 2.0. Positive values penalize new tokens based on their
         # existing frequency in the text so far, decreasing the model's likelihood to
         # repeat the same line verbatim.
         #
         # [See more information about frequency and presence penalties.](https://platform.openai.com/docs/guides/text-generation)
         frequency_penalty: nil,
+
         # Modify the likelihood of specified tokens appearing in the completion.
         #
         # Accepts a JSON object that maps tokens (specified by their token ID in the GPT
@@ -233,6 +252,7 @@ module OpenAI
         # As an example, you can pass `{"50256": -100}` to prevent the <|endoftext|> token
         # from being generated.
         logit_bias: nil,
+
         # Include the log probabilities on the `logprobs` most likely output tokens, as
         # well the chosen tokens. For example, if `logprobs` is 5, the API will return a
         # list of the 5 most likely tokens. The API will always return the `logprob` of
@@ -240,6 +260,7 @@ module OpenAI
         #
         # The maximum value for `logprobs` is 5.
         logprobs: nil,
+
         # The maximum number of [tokens](/tokenizer) that can be generated in the
         # completion.
         #
@@ -248,18 +269,21 @@ module OpenAI
         # [Example Python code](https://cookbook.openai.com/examples/how_to_count_tokens_with_tiktoken)
         # for counting tokens.
         max_tokens: nil,
+
         # How many completions to generate for each prompt.
         #
         # **Note:** Because this parameter generates many completions, it can quickly
         # consume your token quota. Use carefully and ensure that you have reasonable
         # settings for `max_tokens` and `stop`.
         n: nil,
+
         # Number between -2.0 and 2.0. Positive values penalize new tokens based on
         # whether they appear in the text so far, increasing the model's likelihood to
         # talk about new topics.
         #
         # [See more information about frequency and presence penalties.](https://platform.openai.com/docs/guides/text-generation)
         presence_penalty: nil,
+
         # If specified, our system will make a best effort to sample deterministically,
         # such that repeated requests with the same `seed` and parameters should return
         # the same result.
@@ -267,33 +291,40 @@ module OpenAI
         # Determinism is not guaranteed, and you should refer to the `system_fingerprint`
         # response parameter to monitor changes in the backend.
         seed: nil,
+
         # Not supported with latest reasoning models `o3` and `o4-mini`.
         #
         # Up to 4 sequences where the API will stop generating further tokens. The
         # returned text will not contain the stop sequence.
         stop: nil,
+
         # Options for streaming response. Only set this when you set `stream: true`.
         stream_options: nil,
+
         # The suffix that comes after a completion of inserted text.
         #
         # This parameter is only supported for `gpt-3.5-turbo-instruct`.
         suffix: nil,
+
         # What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
         # make the output more random, while lower values like 0.2 will make it more
         # focused and deterministic.
         #
         # We generally recommend altering this or `top_p` but not both.
         temperature: nil,
+
         # An alternative to sampling with temperature, called nucleus sampling, where the
         # model considers the results of the tokens with top_p probability mass. So 0.1
         # means only the tokens comprising the top 10% probability mass are considered.
         #
         # We generally recommend altering this or `temperature` but not both.
         top_p: nil,
+
         # A unique identifier representing your end-user, which can help OpenAI to monitor
         # and detect abuse.
         # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         user: nil,
+
         request_options: {}
       )
       end
@@ -301,8 +332,7 @@ module OpenAI
       sig do
         override.returns(
           {
-            model:
-              T.any(String, OpenAI::CompletionCreateParams::Model::OrSymbol),
+            model: T.any(String, OpenAI::CompletionCreateParams::Model::OrSymbol),
             prompt: T.nilable(OpenAI::CompletionCreateParams::Prompt::Variants),
             best_of: T.nilable(Integer),
             echo: T.nilable(T::Boolean),
@@ -314,8 +344,7 @@ module OpenAI
             presence_penalty: T.nilable(Float),
             seed: T.nilable(Integer),
             stop: T.nilable(OpenAI::CompletionCreateParams::Stop::Variants),
-            stream_options:
-              T.nilable(OpenAI::Chat::ChatCompletionStreamOptions),
+            stream_options: T.nilable(OpenAI::Chat::ChatCompletionStreamOptions),
             suffix: T.nilable(String),
             temperature: T.nilable(Float),
             top_p: T.nilable(Float),
@@ -335,38 +364,22 @@ module OpenAI
       module Model
         extend OpenAI::Internal::Type::Union
 
-        Variants =
-          T.type_alias do
-            T.any(String, OpenAI::CompletionCreateParams::Model::TaggedSymbol)
-          end
+        Variants = T.type_alias { T.any(String, OpenAI::CompletionCreateParams::Model::TaggedSymbol) }
 
-        sig do
-          override.returns(
-            T::Array[OpenAI::CompletionCreateParams::Model::Variants]
-          )
-        end
+        sig { override.returns(T::Array[OpenAI::CompletionCreateParams::Model::Variants]) }
         def self.variants
         end
 
-        TaggedSymbol =
-          T.type_alias { T.all(Symbol, OpenAI::CompletionCreateParams::Model) }
+        TaggedSymbol = T.type_alias do
+          T.all(Symbol, OpenAI::CompletionCreateParams::Model)
+        end
+
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-        GPT_3_5_TURBO_INSTRUCT =
-          T.let(
-            :"gpt-3.5-turbo-instruct",
-            OpenAI::CompletionCreateParams::Model::TaggedSymbol
-          )
-        DAVINCI_002 =
-          T.let(
-            :"davinci-002",
-            OpenAI::CompletionCreateParams::Model::TaggedSymbol
-          )
-        BABBAGE_002 =
-          T.let(
-            :"babbage-002",
-            OpenAI::CompletionCreateParams::Model::TaggedSymbol
-          )
+        GPT_3_5_TURBO_INSTRUCT = T.let(:"gpt-3.5-turbo-instruct", OpenAI::CompletionCreateParams::Model::TaggedSymbol)
+        DAVINCI_002 = T.let(:"davinci-002", OpenAI::CompletionCreateParams::Model::TaggedSymbol)
+        BABBAGE_002 = T.let(:"babbage-002", OpenAI::CompletionCreateParams::Model::TaggedSymbol)
+
       end
 
       # The prompt(s) to generate completions for, encoded as a string, array of
@@ -378,43 +391,27 @@ module OpenAI
       module Prompt
         extend OpenAI::Internal::Type::Union
 
-        Variants =
-          T.type_alias do
-            T.any(
-              String,
-              T::Array[String],
-              T::Array[Integer],
-              T::Array[T::Array[Integer]]
-            )
-          end
+        Variants = T.type_alias { T.any(String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]) }
 
-        sig do
-          override.returns(
-            T::Array[OpenAI::CompletionCreateParams::Prompt::Variants]
-          )
-        end
+        sig { override.returns(T::Array[OpenAI::CompletionCreateParams::Prompt::Variants]) }
         def self.variants
         end
 
-        StringArray =
-          T.let(
-            OpenAI::Internal::Type::ArrayOf[String],
-            OpenAI::Internal::Type::Converter
-          )
+        StringArray = T.let(
+          OpenAI::Internal::Type::ArrayOf[String],
+          OpenAI::Internal::Type::Converter
+        )
 
-        IntegerArray =
-          T.let(
-            OpenAI::Internal::Type::ArrayOf[Integer],
-            OpenAI::Internal::Type::Converter
-          )
+        IntegerArray = T.let(
+          OpenAI::Internal::Type::ArrayOf[Integer],
+          OpenAI::Internal::Type::Converter
+        )
 
-        ArrayOfToken2DArray =
-          T.let(
-            OpenAI::Internal::Type::ArrayOf[
-              OpenAI::Internal::Type::ArrayOf[Integer]
-            ],
-            OpenAI::Internal::Type::Converter
-          )
+        ArrayOfToken2DArray = T.let(
+          OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::ArrayOf[Integer]],
+          OpenAI::Internal::Type::Converter
+        )
+
       end
 
       # Not supported with latest reasoning models `o3` and `o4-mini`.
@@ -426,20 +423,18 @@ module OpenAI
 
         Variants = T.type_alias { T.nilable(T.any(String, T::Array[String])) }
 
-        sig do
-          override.returns(
-            T::Array[OpenAI::CompletionCreateParams::Stop::Variants]
-          )
-        end
+        sig { override.returns(T::Array[OpenAI::CompletionCreateParams::Stop::Variants]) }
         def self.variants
         end
 
-        StringArray =
-          T.let(
-            OpenAI::Internal::Type::ArrayOf[String],
-            OpenAI::Internal::Type::Converter
-          )
+        StringArray = T.let(
+          OpenAI::Internal::Type::ArrayOf[String],
+          OpenAI::Internal::Type::Converter
+        )
+
       end
+
     end
+
   end
 end

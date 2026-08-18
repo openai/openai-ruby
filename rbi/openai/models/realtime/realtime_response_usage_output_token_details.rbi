@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class RealtimeResponseUsageOutputTokenDetails < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::RealtimeResponseUsageOutputTokenDetails,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::RealtimeResponseUsageOutputTokenDetails,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The number of audio tokens used in the Response.
         sig { returns(T.nilable(Integer)) }
@@ -28,24 +30,36 @@ module OpenAI
 
         # Details about the output tokens used in the Response.
         sig do
-          params(audio_tokens: Integer, text_tokens: Integer).returns(
-            T.attached_class
+          params(
+
+            audio_tokens: Integer,
+
+            text_tokens: Integer
           )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The number of audio tokens used in the Response.
           audio_tokens: nil,
+
           # The number of text tokens used in the Response.
+
           text_tokens: nil
         )
         end
 
         sig do
-          override.returns({ audio_tokens: Integer, text_tokens: Integer })
+          override.returns(
+            {audio_tokens: Integer, text_tokens: Integer}
+          )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

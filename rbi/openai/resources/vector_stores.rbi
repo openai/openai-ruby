@@ -2,7 +2,9 @@
 
 module OpenAI
   module Resources
+
     class VectorStores
+
       sig { returns(OpenAI::Resources::VectorStores::Files) }
       attr_reader :files
 
@@ -10,21 +12,21 @@ module OpenAI
       attr_reader :file_batches
 
       # Create a vector store.
-      sig do
+      sig {
         params(
-          chunking_strategy:
-            T.any(
-              OpenAI::AutoFileChunkingStrategyParam::OrHash,
-              OpenAI::StaticFileChunkingStrategyObjectParam::OrHash
-            ),
+          chunking_strategy: T.any(
+            OpenAI::AutoFileChunkingStrategyParam::OrHash,
+            OpenAI::StaticFileChunkingStrategyObjectParam::OrHash
+          ),
           description: String,
           expires_after: OpenAI::VectorStoreCreateParams::ExpiresAfter::OrHash,
           file_ids: T::Array[String],
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: String,
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::VectorStore)
-      end
+        )
+          .returns(OpenAI::VectorStore)
+      }
       def create(
         # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
         # strategy. Only applicable if `file_ids` is non-empty.
@@ -52,12 +54,9 @@ module OpenAI
       end
 
       # Retrieves a vector store.
-      sig do
-        params(
-          vector_store_id: String,
-          request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::VectorStore)
-      end
+      sig {
+        params(vector_store_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::VectorStore)
+      }
       def retrieve(
         # The ID of the vector store to retrieve.
         vector_store_id,
@@ -66,16 +65,16 @@ module OpenAI
       end
 
       # Modifies a vector store.
-      sig do
+      sig {
         params(
           vector_store_id: String,
-          expires_after:
-            T.nilable(OpenAI::VectorStoreUpdateParams::ExpiresAfter::OrHash),
+          expires_after: T.nilable(OpenAI::VectorStoreUpdateParams::ExpiresAfter::OrHash),
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: T.nilable(String),
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::VectorStore)
-      end
+        )
+          .returns(OpenAI::VectorStore)
+      }
       def update(
         # The ID of the vector store to modify.
         vector_store_id,
@@ -95,15 +94,16 @@ module OpenAI
       end
 
       # Returns a list of vector stores.
-      sig do
+      sig {
         params(
           after: String,
           before: String,
           limit: Integer,
           order: OpenAI::VectorStoreListParams::Order::OrSymbol,
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::Internal::CursorPage[OpenAI::VectorStore])
-      end
+        )
+          .returns(OpenAI::Internal::CursorPage[OpenAI::VectorStore])
+      }
       def list(
         # A cursor for use in pagination. `after` is an object ID that defines your place
         # in the list. For instance, if you make a list request and receive 100 objects,
@@ -126,12 +126,11 @@ module OpenAI
       end
 
       # Delete a vector store.
-      sig do
-        params(
-          vector_store_id: String,
-          request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::VectorStoreDeleted)
-      end
+      sig {
+        params(vector_store_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+          OpenAI::VectorStoreDeleted
+        )
+      }
       def delete(
         # The ID of the vector store to delete.
         vector_store_id,
@@ -141,24 +140,18 @@ module OpenAI
 
       # Search a vector store for relevant chunks based on a query and file attributes
       # filter.
-      sig do
+      sig {
         params(
           vector_store_id: String,
           query: OpenAI::VectorStoreSearchParams::Query::Variants,
-          filters:
-            T.any(
-              OpenAI::ComparisonFilter::OrHash,
-              OpenAI::CompoundFilter::OrHash
-            ),
+          filters: T.any(OpenAI::ComparisonFilter::OrHash, OpenAI::CompoundFilter::OrHash),
           max_num_results: Integer,
-          ranking_options:
-            OpenAI::VectorStoreSearchParams::RankingOptions::OrHash,
+          ranking_options: OpenAI::VectorStoreSearchParams::RankingOptions::OrHash,
           rewrite_query: T::Boolean,
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(
-          OpenAI::Internal::Page[OpenAI::Models::VectorStoreSearchResponse]
         )
-      end
+          .returns(OpenAI::Internal::Page[OpenAI::Models::VectorStoreSearchResponse])
+      }
       def search(
         # The ID of the vector store to search.
         vector_store_id,
@@ -182,5 +175,6 @@ module OpenAI
       def self.new(client:)
       end
     end
+
   end
 end

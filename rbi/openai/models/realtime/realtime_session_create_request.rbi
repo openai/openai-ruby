@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class RealtimeSessionCreateRequest < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::RealtimeSessionCreateRequest,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::RealtimeSessionCreateRequest,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The type of session to create. Always `realtime` for the Realtime API.
         sig { returns(Symbol) }
@@ -20,34 +22,17 @@ module OpenAI
         sig { returns(T.nilable(OpenAI::Realtime::RealtimeAudioConfig)) }
         attr_reader :audio
 
-        sig do
-          params(audio: OpenAI::Realtime::RealtimeAudioConfig::OrHash).void
-        end
+        sig { params(audio: OpenAI::Realtime::RealtimeAudioConfig::OrHash).void }
         attr_writer :audio
 
         # Additional fields to include in server outputs.
         #
         # `item.input_audio_transcription.logprobs`: Include logprobs for input audio
         # transcription.
-        sig do
-          returns(
-            T.nilable(
-              T::Array[
-                OpenAI::Realtime::RealtimeSessionCreateRequest::Include::OrSymbol
-              ]
-            )
-          )
-        end
+        sig { returns(T.nilable(T::Array[OpenAI::Realtime::RealtimeSessionCreateRequest::Include::OrSymbol])) }
         attr_reader :include
 
-        sig do
-          params(
-            include:
-              T::Array[
-                OpenAI::Realtime::RealtimeSessionCreateRequest::Include::OrSymbol
-              ]
-          ).void
-        end
+        sig { params(include: T::Array[OpenAI::Realtime::RealtimeSessionCreateRequest::Include::OrSymbol]).void }
         attr_writer :include
 
         # The default system instructions (i.e. system message) prepended to model calls.
@@ -77,52 +62,23 @@ module OpenAI
         attr_writer :max_output_tokens
 
         # The Realtime model used for this session.
-        sig do
-          returns(
-            T.nilable(
-              T.any(
-                String,
-                OpenAI::Realtime::RealtimeSessionCreateRequest::Model::OrSymbol
-              )
-            )
-          )
-        end
+        sig { returns(T.nilable(T.any(String, OpenAI::Realtime::RealtimeSessionCreateRequest::Model::OrSymbol))) }
         attr_reader :model
 
-        sig do
-          params(
-            model:
-              T.any(
-                String,
-                OpenAI::Realtime::RealtimeSessionCreateRequest::Model::OrSymbol
-              )
-          ).void
-        end
+        sig { params(model: T.any(String, OpenAI::Realtime::RealtimeSessionCreateRequest::Model::OrSymbol)).void }
         attr_writer :model
 
         # The set of modalities the model can respond with. It defaults to `["audio"]`,
         # indicating that the model will respond with audio plus a transcript. `["text"]`
         # can be used to make the model respond with text only. It is not possible to
         # request both `text` and `audio` at the same time.
-        sig do
-          returns(
-            T.nilable(
-              T::Array[
-                OpenAI::Realtime::RealtimeSessionCreateRequest::OutputModality::OrSymbol
-              ]
-            )
-          )
-        end
+        sig { returns(T.nilable(T::Array[OpenAI::Realtime::RealtimeSessionCreateRequest::OutputModality::OrSymbol])) }
         attr_reader :output_modalities
 
-        sig do
-          params(
-            output_modalities:
-              T::Array[
-                OpenAI::Realtime::RealtimeSessionCreateRequest::OutputModality::OrSymbol
-              ]
-          ).void
-        end
+        sig {
+          params(output_modalities: T::Array[OpenAI::Realtime::RealtimeSessionCreateRequest::OutputModality::OrSymbol])
+            .void
+        }
         attr_writer :output_modalities
 
         # Whether the model may call multiple tools in parallel. Only supported by
@@ -138,25 +94,19 @@ module OpenAI
         sig { returns(T.nilable(OpenAI::Responses::ResponsePrompt)) }
         attr_reader :prompt
 
-        sig do
-          params(
-            prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash)
-          ).void
-        end
+        sig { params(prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash)).void }
         attr_writer :prompt
 
         # Configuration for reasoning-capable Realtime models such as `gpt-realtime-2`.
         sig { returns(T.nilable(OpenAI::Realtime::RealtimeReasoning)) }
         attr_reader :reasoning
 
-        sig do
-          params(reasoning: OpenAI::Realtime::RealtimeReasoning::OrHash).void
-        end
+        sig { params(reasoning: OpenAI::Realtime::RealtimeReasoning::OrHash).void }
         attr_writer :reasoning
 
         # How the model chooses tools. Provide one of the string modes or force a specific
         # function/MCP tool.
-        sig do
+        sig {
           returns(
             T.nilable(
               T.any(
@@ -166,47 +116,42 @@ module OpenAI
               )
             )
           )
-        end
+        }
         attr_reader :tool_choice
 
-        sig do
+        sig {
           params(
-            tool_choice:
-              T.any(
-                OpenAI::Responses::ToolChoiceOptions::OrSymbol,
-                OpenAI::Responses::ToolChoiceFunction::OrHash,
-                OpenAI::Responses::ToolChoiceMcp::OrHash
-              )
-          ).void
-        end
+            tool_choice: T.any(
+              OpenAI::Responses::ToolChoiceOptions::OrSymbol,
+              OpenAI::Responses::ToolChoiceFunction::OrHash,
+              OpenAI::Responses::ToolChoiceMcp::OrHash
+            )
+          )
+            .void
+        }
         attr_writer :tool_choice
 
         # Tools available to the model.
-        sig do
+        sig {
           returns(
             T.nilable(
-              T::Array[
-                T.any(
-                  OpenAI::Realtime::RealtimeFunctionTool,
-                  OpenAI::Realtime::RealtimeToolsConfigUnion::Mcp
-                )
-              ]
+              T::Array[T.any(OpenAI::Realtime::RealtimeFunctionTool, OpenAI::Realtime::RealtimeToolsConfigUnion::Mcp)]
             )
           )
-        end
+        }
         attr_reader :tools
 
-        sig do
+        sig {
           params(
-            tools:
-              T::Array[
-                T.any(
-                  OpenAI::Realtime::RealtimeFunctionTool::OrHash,
-                  OpenAI::Realtime::RealtimeToolsConfigUnion::Mcp::OrHash
-                )
-              ]
-          ).void
-        end
+            tools: T::Array[
+              T.any(
+                OpenAI::Realtime::RealtimeFunctionTool::OrHash,
+                OpenAI::Realtime::RealtimeToolsConfigUnion::Mcp::OrHash
+              )
+            ]
+          )
+            .void
+        }
         attr_writer :tools
 
         # Realtime API can write session traces to the
@@ -216,16 +161,7 @@ module OpenAI
         #
         # `auto` will create a trace for the session with default values for the workflow
         # name, group id, and metadata.
-        sig do
-          returns(
-            T.nilable(
-              T.any(
-                Symbol,
-                OpenAI::Realtime::RealtimeTracingConfig::TracingConfiguration
-              )
-            )
-          )
-        end
+        sig { returns(T.nilable(T.any(Symbol, OpenAI::Realtime::RealtimeTracingConfig::TracingConfiguration))) }
         attr_accessor :tracing
 
         # When the number of tokens in a conversation exceeds the model's input token
@@ -246,7 +182,7 @@ module OpenAI
         # Truncation can be disabled entirely, which means the server will never truncate
         # but would instead return an error if the conversation exceeds the model's input
         # token limit.
-        sig do
+        sig {
           returns(
             T.nilable(
               T.any(
@@ -255,78 +191,77 @@ module OpenAI
               )
             )
           )
-        end
+        }
         attr_reader :truncation
 
-        sig do
+        sig {
           params(
-            truncation:
-              T.any(
-                OpenAI::Realtime::RealtimeTruncation::RealtimeTruncationStrategy::OrSymbol,
-                OpenAI::Realtime::RealtimeTruncationRetentionRatio::OrHash
-              )
-          ).void
-        end
+            truncation: T.any(
+              OpenAI::Realtime::RealtimeTruncation::RealtimeTruncationStrategy::OrSymbol,
+              OpenAI::Realtime::RealtimeTruncationRetentionRatio::OrHash
+            )
+          )
+            .void
+        }
         attr_writer :truncation
 
         # Realtime session object configuration.
         sig do
           params(
+
             audio: OpenAI::Realtime::RealtimeAudioConfig::OrHash,
-            include:
-              T::Array[
-                OpenAI::Realtime::RealtimeSessionCreateRequest::Include::OrSymbol
-              ],
+
+            include: T::Array[OpenAI::Realtime::RealtimeSessionCreateRequest::Include::OrSymbol],
+
             instructions: String,
+
             max_output_tokens: T.any(Integer, Symbol),
-            model:
-              T.any(
-                String,
-                OpenAI::Realtime::RealtimeSessionCreateRequest::Model::OrSymbol
-              ),
-            output_modalities:
-              T::Array[
-                OpenAI::Realtime::RealtimeSessionCreateRequest::OutputModality::OrSymbol
-              ],
+
+            model: T.any(String, OpenAI::Realtime::RealtimeSessionCreateRequest::Model::OrSymbol),
+
+            output_modalities: T::Array[OpenAI::Realtime::RealtimeSessionCreateRequest::OutputModality::OrSymbol],
+
             parallel_tool_calls: T::Boolean,
+
             prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
+
             reasoning: OpenAI::Realtime::RealtimeReasoning::OrHash,
-            tool_choice:
+
+            tool_choice: T.any(
+              OpenAI::Responses::ToolChoiceOptions::OrSymbol,
+              OpenAI::Responses::ToolChoiceFunction::OrHash,
+              OpenAI::Responses::ToolChoiceMcp::OrHash
+            ),
+
+            tools: T::Array[
               T.any(
-                OpenAI::Responses::ToolChoiceOptions::OrSymbol,
-                OpenAI::Responses::ToolChoiceFunction::OrHash,
-                OpenAI::Responses::ToolChoiceMcp::OrHash
-              ),
-            tools:
-              T::Array[
-                T.any(
-                  OpenAI::Realtime::RealtimeFunctionTool::OrHash,
-                  OpenAI::Realtime::RealtimeToolsConfigUnion::Mcp::OrHash
-                )
-              ],
-            tracing:
-              T.nilable(
-                T.any(
-                  Symbol,
-                  OpenAI::Realtime::RealtimeTracingConfig::TracingConfiguration::OrHash
-                )
-              ),
-            truncation:
-              T.any(
-                OpenAI::Realtime::RealtimeTruncation::RealtimeTruncationStrategy::OrSymbol,
-                OpenAI::Realtime::RealtimeTruncationRetentionRatio::OrHash
-              ),
+                OpenAI::Realtime::RealtimeFunctionTool::OrHash,
+                OpenAI::Realtime::RealtimeToolsConfigUnion::Mcp::OrHash
+              )
+            ],
+
+            tracing: T.nilable(T.any(Symbol, OpenAI::Realtime::RealtimeTracingConfig::TracingConfiguration::OrHash)),
+
+            truncation: T.any(
+              OpenAI::Realtime::RealtimeTruncation::RealtimeTruncationStrategy::OrSymbol,
+              OpenAI::Realtime::RealtimeTruncationRetentionRatio::OrHash
+            ),
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Configuration for input and output audio.
           audio: nil,
+
           # Additional fields to include in server outputs.
           #
           # `item.input_audio_transcription.logprobs`: Include logprobs for input audio
           # transcription.
           include: nil,
+
           # The default system instructions (i.e. system message) prepended to model calls.
           # This field allows the client to guide the model on desired responses. The model
           # can be instructed on response content and format, (e.g. "be extremely succinct",
@@ -339,30 +274,39 @@ module OpenAI
           # is not set and are visible in the `session.created` event at the start of the
           # session.
           instructions: nil,
+
           # Maximum number of output tokens for a single assistant response, inclusive of
           # tool calls. Provide an integer between 1 and 4096 to limit output tokens, or
           # `inf` for the maximum available tokens for a given model. Defaults to `inf`.
           max_output_tokens: nil,
+
           # The Realtime model used for this session.
           model: nil,
+
           # The set of modalities the model can respond with. It defaults to `["audio"]`,
           # indicating that the model will respond with audio plus a transcript. `["text"]`
           # can be used to make the model respond with text only. It is not possible to
           # request both `text` and `audio` at the same time.
           output_modalities: nil,
+
           # Whether the model may call multiple tools in parallel. Only supported by
           # reasoning Realtime models such as `gpt-realtime-2`.
           parallel_tool_calls: nil,
+
           # Reference to a prompt template and its variables.
           # [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
           prompt: nil,
+
           # Configuration for reasoning-capable Realtime models such as `gpt-realtime-2`.
           reasoning: nil,
+
           # How the model chooses tools. Provide one of the string modes or force a specific
           # function/MCP tool.
           tool_choice: nil,
+
           # Tools available to the model.
           tools: nil,
+
           # Realtime API can write session traces to the
           # [Traces Dashboard](https://platform.openai.com/logs?api=traces). Set to null to
           # disable tracing. Once tracing is enabled for a session, the configuration cannot
@@ -371,6 +315,7 @@ module OpenAI
           # `auto` will create a trace for the session with default values for the workflow
           # name, group id, and metadata.
           tracing: nil,
+
           # When the number of tokens in a conversation exceeds the model's input token
           # limit, the conversation be truncated, meaning messages (starting from the
           # oldest) will not be included in the model's context. A 32k context model with
@@ -390,7 +335,9 @@ module OpenAI
           # but would instead return an error if the conversation exceeds the model's input
           # token limit.
           truncation: nil,
+
           # The type of session to create. Always `realtime` for the Realtime API.
+
           type: :realtime
         )
         end
@@ -400,49 +347,27 @@ module OpenAI
             {
               type: Symbol,
               audio: OpenAI::Realtime::RealtimeAudioConfig,
-              include:
-                T::Array[
-                  OpenAI::Realtime::RealtimeSessionCreateRequest::Include::OrSymbol
-                ],
+              include: T::Array[OpenAI::Realtime::RealtimeSessionCreateRequest::Include::OrSymbol],
               instructions: String,
               max_output_tokens: T.any(Integer, Symbol),
-              model:
-                T.any(
-                  String,
-                  OpenAI::Realtime::RealtimeSessionCreateRequest::Model::OrSymbol
-                ),
-              output_modalities:
-                T::Array[
-                  OpenAI::Realtime::RealtimeSessionCreateRequest::OutputModality::OrSymbol
-                ],
+              model: T.any(String, OpenAI::Realtime::RealtimeSessionCreateRequest::Model::OrSymbol),
+              output_modalities: T::Array[OpenAI::Realtime::RealtimeSessionCreateRequest::OutputModality::OrSymbol],
               parallel_tool_calls: T::Boolean,
               prompt: T.nilable(OpenAI::Responses::ResponsePrompt),
               reasoning: OpenAI::Realtime::RealtimeReasoning,
-              tool_choice:
-                T.any(
-                  OpenAI::Responses::ToolChoiceOptions::OrSymbol,
-                  OpenAI::Responses::ToolChoiceFunction,
-                  OpenAI::Responses::ToolChoiceMcp
-                ),
-              tools:
-                T::Array[
-                  T.any(
-                    OpenAI::Realtime::RealtimeFunctionTool,
-                    OpenAI::Realtime::RealtimeToolsConfigUnion::Mcp
-                  )
-                ],
-              tracing:
-                T.nilable(
-                  T.any(
-                    Symbol,
-                    OpenAI::Realtime::RealtimeTracingConfig::TracingConfiguration
-                  )
-                ),
-              truncation:
-                T.any(
-                  OpenAI::Realtime::RealtimeTruncation::RealtimeTruncationStrategy::OrSymbol,
-                  OpenAI::Realtime::RealtimeTruncationRetentionRatio
-                )
+              tool_choice: T.any(
+                OpenAI::Responses::ToolChoiceOptions::OrSymbol,
+                OpenAI::Responses::ToolChoiceFunction,
+                OpenAI::Responses::ToolChoiceMcp
+              ),
+              tools: T::Array[
+                T.any(OpenAI::Realtime::RealtimeFunctionTool, OpenAI::Realtime::RealtimeToolsConfigUnion::Mcp)
+              ],
+              tracing: T.nilable(T.any(Symbol, OpenAI::Realtime::RealtimeTracingConfig::TracingConfiguration)),
+              truncation: T.any(
+                OpenAI::Realtime::RealtimeTruncation::RealtimeTruncationStrategy::OrSymbol,
+                OpenAI::Realtime::RealtimeTruncationRetentionRatio
+              )
             }
           )
         end
@@ -452,28 +377,15 @@ module OpenAI
         module Include
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(
-                Symbol,
-                OpenAI::Realtime::RealtimeSessionCreateRequest::Include
-              )
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Realtime::RealtimeSessionCreateRequest::Include) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          ITEM_INPUT_AUDIO_TRANSCRIPTION_LOGPROBS =
-            T.let(
-              :"item.input_audio_transcription.logprobs",
-              OpenAI::Realtime::RealtimeSessionCreateRequest::Include::TaggedSymbol
-            )
+          ITEM_INPUT_AUDIO_TRANSCRIPTION_LOGPROBS = T.let(
+            :"item.input_audio_transcription.logprobs",
+            OpenAI::Realtime::RealtimeSessionCreateRequest::Include::TaggedSymbol
+          )
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Realtime::RealtimeSessionCreateRequest::Include::TaggedSymbol
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Realtime::RealtimeSessionCreateRequest::Include::TaggedSymbol]) }
           def self.values
           end
         end
@@ -486,179 +398,116 @@ module OpenAI
 
           Variants = T.type_alias { T.any(Integer, Symbol) }
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Realtime::RealtimeSessionCreateRequest::MaxOutputTokens::Variants
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Realtime::RealtimeSessionCreateRequest::MaxOutputTokens::Variants]) }
           def self.variants
           end
+
         end
 
         # The Realtime model used for this session.
         module Model
           extend OpenAI::Internal::Type::Union
 
-          Variants =
-            T.type_alias do
-              T.any(
-                String,
-                OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
-              )
-            end
+          Variants = T.type_alias {
+            T.any(String, OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol)
+          }
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Realtime::RealtimeSessionCreateRequest::Model::Variants
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Realtime::RealtimeSessionCreateRequest::Model::Variants]) }
           def self.variants
           end
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(
-                Symbol,
-                OpenAI::Realtime::RealtimeSessionCreateRequest::Model
-              )
-            end
+          TaggedSymbol = T.type_alias do
+            T.all(Symbol, OpenAI::Realtime::RealtimeSessionCreateRequest::Model)
+          end
+
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          GPT_REALTIME =
-            T.let(
-              :"gpt-realtime",
-              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
-            )
-          GPT_REALTIME_1_5 =
-            T.let(
-              :"gpt-realtime-1.5",
-              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
-            )
-          GPT_REALTIME_2 =
-            T.let(
-              :"gpt-realtime-2",
-              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
-            )
-          GPT_REALTIME_2_1 =
-            T.let(
-              :"gpt-realtime-2.1",
-              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
-            )
-          GPT_REALTIME_2_1_MINI =
-            T.let(
-              :"gpt-realtime-2.1-mini",
-              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
-            )
-          GPT_REALTIME_2025_08_28 =
-            T.let(
-              :"gpt-realtime-2025-08-28",
-              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
-            )
-          GPT_4O_REALTIME_PREVIEW =
-            T.let(
-              :"gpt-4o-realtime-preview",
-              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
-            )
-          GPT_4O_REALTIME_PREVIEW_2024_10_01 =
-            T.let(
-              :"gpt-4o-realtime-preview-2024-10-01",
-              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
-            )
-          GPT_4O_REALTIME_PREVIEW_2024_12_17 =
-            T.let(
-              :"gpt-4o-realtime-preview-2024-12-17",
-              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
-            )
-          GPT_4O_REALTIME_PREVIEW_2025_06_03 =
-            T.let(
-              :"gpt-4o-realtime-preview-2025-06-03",
-              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
-            )
-          GPT_4O_MINI_REALTIME_PREVIEW =
-            T.let(
-              :"gpt-4o-mini-realtime-preview",
-              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
-            )
-          GPT_4O_MINI_REALTIME_PREVIEW_2024_12_17 =
-            T.let(
-              :"gpt-4o-mini-realtime-preview-2024-12-17",
-              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
-            )
-          GPT_REALTIME_MINI =
-            T.let(
-              :"gpt-realtime-mini",
-              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
-            )
-          GPT_REALTIME_MINI_2025_10_06 =
-            T.let(
-              :"gpt-realtime-mini-2025-10-06",
-              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
-            )
-          GPT_REALTIME_MINI_2025_12_15 =
-            T.let(
-              :"gpt-realtime-mini-2025-12-15",
-              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
-            )
-          GPT_AUDIO_1_5 =
-            T.let(
-              :"gpt-audio-1.5",
-              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
-            )
-          GPT_AUDIO_MINI =
-            T.let(
-              :"gpt-audio-mini",
-              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
-            )
-          GPT_AUDIO_MINI_2025_10_06 =
-            T.let(
-              :"gpt-audio-mini-2025-10-06",
-              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
-            )
-          GPT_AUDIO_MINI_2025_12_15 =
-            T.let(
-              :"gpt-audio-mini-2025-12-15",
-              OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
-            )
+          GPT_REALTIME = T.let(:"gpt-realtime", OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol)
+          GPT_REALTIME_1_5 = T.let(
+            :"gpt-realtime-1.5",
+            OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
+          )
+          GPT_REALTIME_2 = T.let(:"gpt-realtime-2", OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol)
+          GPT_REALTIME_2_1 = T.let(
+            :"gpt-realtime-2.1",
+            OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
+          )
+          GPT_REALTIME_2_1_MINI = T.let(
+            :"gpt-realtime-2.1-mini",
+            OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
+          )
+          GPT_REALTIME_2025_08_28 = T.let(
+            :"gpt-realtime-2025-08-28",
+            OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
+          )
+          GPT_4O_REALTIME_PREVIEW = T.let(
+            :"gpt-4o-realtime-preview",
+            OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
+          )
+          GPT_4O_REALTIME_PREVIEW_2024_10_01 = T.let(
+            :"gpt-4o-realtime-preview-2024-10-01",
+            OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
+          )
+          GPT_4O_REALTIME_PREVIEW_2024_12_17 = T.let(
+            :"gpt-4o-realtime-preview-2024-12-17",
+            OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
+          )
+          GPT_4O_REALTIME_PREVIEW_2025_06_03 = T.let(
+            :"gpt-4o-realtime-preview-2025-06-03",
+            OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
+          )
+          GPT_4O_MINI_REALTIME_PREVIEW = T.let(
+            :"gpt-4o-mini-realtime-preview",
+            OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
+          )
+          GPT_4O_MINI_REALTIME_PREVIEW_2024_12_17 = T.let(
+            :"gpt-4o-mini-realtime-preview-2024-12-17",
+            OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
+          )
+          GPT_REALTIME_MINI = T.let(
+            :"gpt-realtime-mini",
+            OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
+          )
+          GPT_REALTIME_MINI_2025_10_06 = T.let(
+            :"gpt-realtime-mini-2025-10-06",
+            OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
+          )
+          GPT_REALTIME_MINI_2025_12_15 = T.let(
+            :"gpt-realtime-mini-2025-12-15",
+            OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
+          )
+          GPT_AUDIO_1_5 = T.let(:"gpt-audio-1.5", OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol)
+          GPT_AUDIO_MINI = T.let(:"gpt-audio-mini", OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol)
+          GPT_AUDIO_MINI_2025_10_06 = T.let(
+            :"gpt-audio-mini-2025-10-06",
+            OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
+          )
+          GPT_AUDIO_MINI_2025_12_15 = T.let(
+            :"gpt-audio-mini-2025-12-15",
+            OpenAI::Realtime::RealtimeSessionCreateRequest::Model::TaggedSymbol
+          )
+
         end
 
         module OutputModality
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(
-                Symbol,
-                OpenAI::Realtime::RealtimeSessionCreateRequest::OutputModality
-              )
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Realtime::RealtimeSessionCreateRequest::OutputModality) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          TEXT =
-            T.let(
-              :text,
-              OpenAI::Realtime::RealtimeSessionCreateRequest::OutputModality::TaggedSymbol
-            )
-          AUDIO =
-            T.let(
-              :audio,
-              OpenAI::Realtime::RealtimeSessionCreateRequest::OutputModality::TaggedSymbol
-            )
+          TEXT = T.let(:text, OpenAI::Realtime::RealtimeSessionCreateRequest::OutputModality::TaggedSymbol)
+          AUDIO = T.let(:audio, OpenAI::Realtime::RealtimeSessionCreateRequest::OutputModality::TaggedSymbol)
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Realtime::RealtimeSessionCreateRequest::OutputModality::TaggedSymbol
-              ]
-            )
-          end
+          sig {
+            override.returns(T::Array[OpenAI::Realtime::RealtimeSessionCreateRequest::OutputModality::TaggedSymbol])
+          }
           def self.values
           end
         end
+
       end
+
     end
+
   end
 end

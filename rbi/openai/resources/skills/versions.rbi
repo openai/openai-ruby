@@ -2,20 +2,24 @@
 
 module OpenAI
   module Resources
+
     class Skills
+
       class Versions
+
         sig { returns(OpenAI::Resources::Skills::Versions::Content) }
         attr_reader :content
 
         # Create a new immutable skill version.
-        sig do
+        sig {
           params(
             skill_id: String,
             default: T::Boolean,
             files: OpenAI::Skills::VersionCreateParams::Files::Variants,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Skills::SkillVersion)
-        end
+          )
+            .returns(OpenAI::Skills::SkillVersion)
+        }
         def create(
           # The identifier of the skill to version.
           skill_id,
@@ -32,13 +36,11 @@ module OpenAI
         end
 
         # Get a specific skill version.
-        sig do
-          params(
-            version: String,
-            skill_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Skills::SkillVersion)
-        end
+        sig {
+          params(version: String, skill_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+            OpenAI::Skills::SkillVersion
+          )
+        }
         def retrieve(
           # The version number to retrieve.
           version,
@@ -49,15 +51,16 @@ module OpenAI
         end
 
         # List skill versions for a skill.
-        sig do
+        sig {
           params(
             skill_id: String,
             after: String,
             limit: Integer,
             order: OpenAI::Skills::VersionListParams::Order::OrSymbol,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Internal::CursorPage[OpenAI::Skills::SkillVersion])
-        end
+          )
+            .returns(OpenAI::Internal::CursorPage[OpenAI::Skills::SkillVersion])
+        }
         def list(
           # The identifier of the skill.
           skill_id,
@@ -72,13 +75,11 @@ module OpenAI
         end
 
         # Delete a skill version.
-        sig do
-          params(
-            version: String,
-            skill_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Skills::DeletedSkillVersion)
-        end
+        sig {
+          params(version: String, skill_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+            OpenAI::Skills::DeletedSkillVersion
+          )
+        }
         def delete(
           # The skill version number.
           version,
@@ -93,6 +94,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

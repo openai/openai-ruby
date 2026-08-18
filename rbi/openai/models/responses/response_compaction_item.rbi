@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Responses
+
       class ResponseCompactionItem < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Responses::ResponseCompactionItem,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Responses::ResponseCompactionItem,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The unique ID of the compaction item.
         sig { returns(String) }
@@ -35,37 +37,45 @@ module OpenAI
         # [`v1/responses/compact` API](https://platform.openai.com/docs/api-reference/responses/compact).
         sig do
           params(
+
             id: String,
+
             encrypted_content: String,
+
             created_by: String,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The unique ID of the compaction item.
           id:,
+
           # The encrypted content that was produced by compaction.
           encrypted_content:,
+
           # The identifier of the actor that created the item.
           created_by: nil,
+
           # The type of the item. Always `compaction`.
+
           type: :compaction
         )
         end
 
         sig do
           override.returns(
-            {
-              id: String,
-              encrypted_content: String,
-              type: Symbol,
-              created_by: String
-            }
+            {id: String, encrypted_content: String, type: Symbol, created_by: String}
           )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

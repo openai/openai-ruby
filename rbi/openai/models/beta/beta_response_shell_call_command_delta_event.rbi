@@ -2,18 +2,19 @@
 
 module OpenAI
   module Models
-    BetaResponseShellCallCommandDeltaEvent =
-      Beta::BetaResponseShellCallCommandDeltaEvent
+
+    BetaResponseShellCallCommandDeltaEvent = Beta::BetaResponseShellCallCommandDeltaEvent
 
     module Beta
+
       class BetaResponseShellCallCommandDeltaEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The index of the shell command that was updated.
         sig { returns(Integer) }
@@ -36,21 +37,10 @@ module OpenAI
         attr_accessor :type
 
         # The agent that owns this multi-agent streaming event.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent::Agent
-            )
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent::Agent)) }
         attr_reader :agent
 
-        sig do
-          params(
-            agent:
-              OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent::Agent::OrHash
-          ).void
-        end
+        sig { params(agent: OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent::Agent::OrHash).void }
         attr_writer :agent
 
         # An obfuscation string that was added to pad the event payload.
@@ -63,30 +53,45 @@ module OpenAI
         # A streaming event that indicated a shell command was incrementally updated.
         sig do
           params(
+
             command_index: Integer,
+
             delta: String,
+
             output_index: Integer,
+
             sequence_number: Integer,
-            agent:
-              OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent::Agent::OrHash,
+
+            agent: OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent::Agent::OrHash,
+
             obfuscation: String,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The index of the shell command that was updated.
           command_index:,
+
           # The shell command delta that was appended.
           delta:,
+
           # The index of the output item that was updated.
           output_index:,
+
           # The sequence number of the event that was emitted.
           sequence_number:,
+
           # The agent that owns this multi-agent streaming event.
           agent: nil,
+
           # An obfuscation string that was added to pad the event payload.
           obfuscation: nil,
+
           # The type of the event, always `response.shell_call_command.delta`.
+
           type: :"response.shell_call_command.delta"
         )
         end
@@ -99,8 +104,7 @@ module OpenAI
               output_index: Integer,
               sequence_number: Integer,
               type: Symbol,
-              agent:
-                OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent::Agent,
+              agent: OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent::Agent,
               obfuscation: String
             }
           )
@@ -109,31 +113,46 @@ module OpenAI
         end
 
         class Agent < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent::Agent,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent::Agent,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The canonical name of the agent that produced this item.
           sig { returns(String) }
           attr_accessor :agent_name
 
           # The agent that owns this multi-agent streaming event.
-          sig { params(agent_name: String).returns(T.attached_class) }
+          sig do
+            params(
+
+              agent_name: String
+            )
+              .returns(T.attached_class)
+          end
           def self.new(
+
             # The canonical name of the agent that produced this item.
+
             agent_name:
           )
           end
 
-          sig { override.returns({ agent_name: String }) }
+          sig do
+            override.returns(
+              {agent_name: String}
+            )
+          end
           def to_hash
           end
+
         end
+
       end
+
     end
+
   end
 end

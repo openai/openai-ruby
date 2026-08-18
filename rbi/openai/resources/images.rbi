@@ -2,23 +2,23 @@
 
 module OpenAI
   module Resources
+
     # Given a prompt and/or an input image, the model will generate a new image.
     class Images
+
       # Creates a variation of a given image. This endpoint only supports `dall-e-2`.
-      sig do
+      sig {
         params(
           image: OpenAI::Internal::FileInput,
           model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
           n: T.nilable(Integer),
-          response_format:
-            T.nilable(
-              OpenAI::ImageCreateVariationParams::ResponseFormat::OrSymbol
-            ),
+          response_format: T.nilable(OpenAI::ImageCreateVariationParams::ResponseFormat::OrSymbol),
           size: T.nilable(OpenAI::ImageCreateVariationParams::Size::OrSymbol),
           user: String,
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::ImagesResponse)
-      end
+        )
+          .returns(OpenAI::ImagesResponse)
+      }
       def create_variation(
         # The image to use as the basis for the variation(s). Must be a valid PNG file,
         # less than 4MB, and square.
@@ -52,30 +52,27 @@ module OpenAI
       # Creates an edited or extended image given one or more source images and a
       # prompt. This endpoint supports GPT Image models (`gpt-image-1.5`, `gpt-image-1`,
       # `gpt-image-1-mini`, and `chatgpt-image-latest`) and `dall-e-2`.
-      sig do
+      sig {
         params(
           image: OpenAI::ImageEditParams::Image::Variants,
           prompt: String,
           background: T.nilable(OpenAI::ImageEditParams::Background::OrSymbol),
-          input_fidelity:
-            T.nilable(OpenAI::ImageEditParams::InputFidelity::OrSymbol),
+          input_fidelity: T.nilable(OpenAI::ImageEditParams::InputFidelity::OrSymbol),
           mask: OpenAI::Internal::FileInput,
           model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
           n: T.nilable(Integer),
           output_compression: T.nilable(Integer),
-          output_format:
-            T.nilable(OpenAI::ImageEditParams::OutputFormat::OrSymbol),
+          output_format: T.nilable(OpenAI::ImageEditParams::OutputFormat::OrSymbol),
           partial_images: T.nilable(Integer),
           quality: T.nilable(OpenAI::ImageEditParams::Quality::OrSymbol),
-          response_format:
-            T.nilable(OpenAI::ImageEditParams::ResponseFormat::OrSymbol),
-          size:
-            T.nilable(T.any(String, OpenAI::ImageEditParams::Size::OrSymbol)),
+          response_format: T.nilable(OpenAI::ImageEditParams::ResponseFormat::OrSymbol),
+          size: T.nilable(T.any(String, OpenAI::ImageEditParams::Size::OrSymbol)),
           user: String,
           stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::ImagesResponse)
-      end
+        )
+          .returns(OpenAI::ImagesResponse)
+      }
       def edit(
         # The image(s) to edit. Must be a supported image file or an array of images.
         #
@@ -179,32 +176,27 @@ module OpenAI
       # Creates an edited or extended image given one or more source images and a
       # prompt. This endpoint supports GPT Image models (`gpt-image-1.5`, `gpt-image-1`,
       # `gpt-image-1-mini`, and `chatgpt-image-latest`) and `dall-e-2`.
-      sig do
+      sig {
         params(
           image: OpenAI::ImageEditParams::Image::Variants,
           prompt: String,
           background: T.nilable(OpenAI::ImageEditParams::Background::OrSymbol),
-          input_fidelity:
-            T.nilable(OpenAI::ImageEditParams::InputFidelity::OrSymbol),
+          input_fidelity: T.nilable(OpenAI::ImageEditParams::InputFidelity::OrSymbol),
           mask: OpenAI::Internal::FileInput,
           model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
           n: T.nilable(Integer),
           output_compression: T.nilable(Integer),
-          output_format:
-            T.nilable(OpenAI::ImageEditParams::OutputFormat::OrSymbol),
+          output_format: T.nilable(OpenAI::ImageEditParams::OutputFormat::OrSymbol),
           partial_images: T.nilable(Integer),
           quality: T.nilable(OpenAI::ImageEditParams::Quality::OrSymbol),
-          response_format:
-            T.nilable(OpenAI::ImageEditParams::ResponseFormat::OrSymbol),
-          size:
-            T.nilable(T.any(String, OpenAI::ImageEditParams::Size::OrSymbol)),
+          response_format: T.nilable(OpenAI::ImageEditParams::ResponseFormat::OrSymbol),
+          size: T.nilable(T.any(String, OpenAI::ImageEditParams::Size::OrSymbol)),
           user: String,
           stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(
-          OpenAI::Internal::Stream[OpenAI::ImageEditStreamEvent::Variants]
         )
-      end
+          .returns(OpenAI::Internal::Stream[OpenAI::ImageEditStreamEvent::Variants])
+      }
       def edit_stream_raw(
         # The image(s) to edit. Must be a supported image file or an array of images.
         #
@@ -307,32 +299,26 @@ module OpenAI
       #
       # Creates an image given a prompt.
       # [Learn more](https://platform.openai.com/docs/guides/images).
-      sig do
+      sig {
         params(
           prompt: String,
-          background:
-            T.nilable(OpenAI::ImageGenerateParams::Background::OrSymbol),
+          background: T.nilable(OpenAI::ImageGenerateParams::Background::OrSymbol),
           model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
-          moderation:
-            T.nilable(OpenAI::ImageGenerateParams::Moderation::OrSymbol),
+          moderation: T.nilable(OpenAI::ImageGenerateParams::Moderation::OrSymbol),
           n: T.nilable(Integer),
           output_compression: T.nilable(Integer),
-          output_format:
-            T.nilable(OpenAI::ImageGenerateParams::OutputFormat::OrSymbol),
+          output_format: T.nilable(OpenAI::ImageGenerateParams::OutputFormat::OrSymbol),
           partial_images: T.nilable(Integer),
           quality: T.nilable(OpenAI::ImageGenerateParams::Quality::OrSymbol),
-          response_format:
-            T.nilable(OpenAI::ImageGenerateParams::ResponseFormat::OrSymbol),
-          size:
-            T.nilable(
-              T.any(String, OpenAI::ImageGenerateParams::Size::OrSymbol)
-            ),
+          response_format: T.nilable(OpenAI::ImageGenerateParams::ResponseFormat::OrSymbol),
+          size: T.nilable(T.any(String, OpenAI::ImageGenerateParams::Size::OrSymbol)),
           style: T.nilable(OpenAI::ImageGenerateParams::Style::OrSymbol),
           user: String,
           stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::ImagesResponse)
-      end
+        )
+          .returns(OpenAI::ImagesResponse)
+      }
       def generate(
         # A text description of the desired image(s). The maximum length is 32000
         # characters for the GPT image models, 1000 characters for `dall-e-2` and 4000
@@ -422,34 +408,26 @@ module OpenAI
       #
       # Creates an image given a prompt.
       # [Learn more](https://platform.openai.com/docs/guides/images).
-      sig do
+      sig {
         params(
           prompt: String,
-          background:
-            T.nilable(OpenAI::ImageGenerateParams::Background::OrSymbol),
+          background: T.nilable(OpenAI::ImageGenerateParams::Background::OrSymbol),
           model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
-          moderation:
-            T.nilable(OpenAI::ImageGenerateParams::Moderation::OrSymbol),
+          moderation: T.nilable(OpenAI::ImageGenerateParams::Moderation::OrSymbol),
           n: T.nilable(Integer),
           output_compression: T.nilable(Integer),
-          output_format:
-            T.nilable(OpenAI::ImageGenerateParams::OutputFormat::OrSymbol),
+          output_format: T.nilable(OpenAI::ImageGenerateParams::OutputFormat::OrSymbol),
           partial_images: T.nilable(Integer),
           quality: T.nilable(OpenAI::ImageGenerateParams::Quality::OrSymbol),
-          response_format:
-            T.nilable(OpenAI::ImageGenerateParams::ResponseFormat::OrSymbol),
-          size:
-            T.nilable(
-              T.any(String, OpenAI::ImageGenerateParams::Size::OrSymbol)
-            ),
+          response_format: T.nilable(OpenAI::ImageGenerateParams::ResponseFormat::OrSymbol),
+          size: T.nilable(T.any(String, OpenAI::ImageGenerateParams::Size::OrSymbol)),
           style: T.nilable(OpenAI::ImageGenerateParams::Style::OrSymbol),
           user: String,
           stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(
-          OpenAI::Internal::Stream[OpenAI::ImageGenStreamEvent::Variants]
         )
-      end
+          .returns(OpenAI::Internal::Stream[OpenAI::ImageGenStreamEvent::Variants])
+      }
       def generate_stream_raw(
         # A text description of the desired image(s). The maximum length is 32000
         # characters for the GPT image models, 1000 characters for `dall-e-2` and 4000
@@ -540,5 +518,6 @@ module OpenAI
       def self.new(client:)
       end
     end
+
   end
 end

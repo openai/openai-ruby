@@ -8,7 +8,7 @@ module RubyfmtPolicy
   def paths(inputs = ["."])
     return [] if inputs.empty?
 
-    RuboCopDirectiveGuard.rubocop_target_paths(inputs).reject { _1.end_with?(".rbi") }
+    RuboCopDirectiveGuard.rubocop_target_paths(inputs)
   end
 
   def violations(paths)

@@ -2,26 +2,27 @@
 
 module OpenAI
   module Resources
+
     class Admin
+
       class Organization
+
         class Projects
+
           class SpendAlerts
+
             # Creates a project spend alert.
-            sig do
+            sig {
               params(
                 project_id: String,
-                currency:
-                  OpenAI::Admin::Organization::Projects::SpendAlertCreateParams::Currency::OrSymbol,
-                interval:
-                  OpenAI::Admin::Organization::Projects::SpendAlertCreateParams::Interval::OrSymbol,
-                notification_channel:
-                  OpenAI::Admin::Organization::Projects::SpendAlertCreateParams::NotificationChannel::OrHash,
+                currency: OpenAI::Admin::Organization::Projects::SpendAlertCreateParams::Currency::OrSymbol,
+                interval: OpenAI::Admin::Organization::Projects::SpendAlertCreateParams::Interval::OrSymbol,
+                notification_channel: OpenAI::Admin::Organization::Projects::SpendAlertCreateParams::NotificationChannel::OrHash,
                 threshold_amount: Integer,
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
-                OpenAI::Admin::Organization::Projects::ProjectSpendAlert
               )
-            end
+                .returns(OpenAI::Admin::Organization::Projects::ProjectSpendAlert)
+            }
             def create(
               # The ID of the project to update.
               project_id,
@@ -38,15 +39,11 @@ module OpenAI
             end
 
             # Retrieves a project spend alert.
-            sig do
-              params(
-                alert_id: String,
-                project_id: String,
-                request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
+            sig {
+              params(alert_id: String, project_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
                 OpenAI::Admin::Organization::Projects::ProjectSpendAlert
               )
-            end
+            }
             def retrieve(
               # The ID of the spend alert to retrieve.
               alert_id,
@@ -57,22 +54,18 @@ module OpenAI
             end
 
             # Updates a project spend alert.
-            sig do
+            sig {
               params(
                 alert_id: String,
                 project_id: String,
-                currency:
-                  OpenAI::Admin::Organization::Projects::SpendAlertUpdateParams::Currency::OrSymbol,
-                interval:
-                  OpenAI::Admin::Organization::Projects::SpendAlertUpdateParams::Interval::OrSymbol,
-                notification_channel:
-                  OpenAI::Admin::Organization::Projects::SpendAlertUpdateParams::NotificationChannel::OrHash,
+                currency: OpenAI::Admin::Organization::Projects::SpendAlertUpdateParams::Currency::OrSymbol,
+                interval: OpenAI::Admin::Organization::Projects::SpendAlertUpdateParams::Interval::OrSymbol,
+                notification_channel: OpenAI::Admin::Organization::Projects::SpendAlertUpdateParams::NotificationChannel::OrHash,
                 threshold_amount: Integer,
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
-                OpenAI::Admin::Organization::Projects::ProjectSpendAlert
               )
-            end
+                .returns(OpenAI::Admin::Organization::Projects::ProjectSpendAlert)
+            }
             def update(
               # Path param: The ID of the spend alert to update.
               alert_id,
@@ -91,21 +84,19 @@ module OpenAI
             end
 
             # Lists project spend alerts.
-            sig do
+            sig {
               params(
                 project_id: String,
                 after: String,
                 before: String,
                 limit: Integer,
-                order:
-                  OpenAI::Admin::Organization::Projects::SpendAlertListParams::Order::OrSymbol,
+                order: OpenAI::Admin::Organization::Projects::SpendAlertListParams::Order::OrSymbol,
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
-                OpenAI::Internal::ConversationCursorPage[
-                  OpenAI::Admin::Organization::Projects::ProjectSpendAlert
-                ]
               )
-            end
+                .returns(
+                  OpenAI::Internal::ConversationCursorPage[OpenAI::Admin::Organization::Projects::ProjectSpendAlert]
+                )
+            }
             def list(
               # The ID of the project to inspect.
               project_id,
@@ -124,15 +115,11 @@ module OpenAI
             end
 
             # Deletes a project spend alert.
-            sig do
-              params(
-                alert_id: String,
-                project_id: String,
-                request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
+            sig {
+              params(alert_id: String, project_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
                 OpenAI::Admin::Organization::Projects::ProjectSpendAlertDeleted
               )
-            end
+            }
             def delete(
               # The ID of the spend alert to delete.
               alert_id,
@@ -147,8 +134,12 @@ module OpenAI
             def self.new(client:)
             end
           end
+
         end
+
       end
+
     end
+
   end
 end

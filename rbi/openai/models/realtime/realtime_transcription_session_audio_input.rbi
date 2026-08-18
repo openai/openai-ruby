@@ -2,18 +2,20 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class RealtimeTranscriptionSessionAudioInput < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::RealtimeTranscriptionSessionAudioInput,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::RealtimeTranscriptionSessionAudioInput,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The PCM audio format. Only a 24kHz sample rate is supported.
-        sig do
+        sig {
           returns(
             T.nilable(
               T.any(
@@ -23,19 +25,19 @@ module OpenAI
               )
             )
           )
-        end
+        }
         attr_reader :format_
 
-        sig do
+        sig {
           params(
-            format_:
-              T.any(
-                OpenAI::Realtime::RealtimeAudioFormats::AudioPCM::OrHash,
-                OpenAI::Realtime::RealtimeAudioFormats::AudioPCMU::OrHash,
-                OpenAI::Realtime::RealtimeAudioFormats::AudioPCMA::OrHash
-              )
-          ).void
-        end
+            format_: T.any(
+              OpenAI::Realtime::RealtimeAudioFormats::AudioPCM::OrHash,
+              OpenAI::Realtime::RealtimeAudioFormats::AudioPCMU::OrHash,
+              OpenAI::Realtime::RealtimeAudioFormats::AudioPCMA::OrHash
+            )
+          )
+            .void
+        }
         attr_writer :format_
 
         # Configuration for input audio noise reduction. This can be set to `null` to turn
@@ -43,21 +45,12 @@ module OpenAI
         # sent to VAD and the model. Filtering the audio can improve VAD and turn
         # detection accuracy (reducing false positives) and model performance by improving
         # perception of the input audio.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::Realtime::RealtimeTranscriptionSessionAudioInput::NoiseReduction
-            )
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Realtime::RealtimeTranscriptionSessionAudioInput::NoiseReduction)) }
         attr_reader :noise_reduction
 
-        sig do
-          params(
-            noise_reduction:
-              OpenAI::Realtime::RealtimeTranscriptionSessionAudioInput::NoiseReduction::OrHash
-          ).void
-        end
+        sig {
+          params(noise_reduction: OpenAI::Realtime::RealtimeTranscriptionSessionAudioInput::NoiseReduction::OrHash).void
+        }
         attr_writer :noise_reduction
 
         # Configuration for input audio transcription, defaults to off and can be set to
@@ -71,11 +64,7 @@ module OpenAI
         sig { returns(T.nilable(OpenAI::Realtime::AudioTranscription)) }
         attr_reader :transcription
 
-        sig do
-          params(
-            transcription: OpenAI::Realtime::AudioTranscription::OrHash
-          ).void
-        end
+        sig { params(transcription: OpenAI::Realtime::AudioTranscription::OrHash).void }
         attr_writer :transcription
 
         # Configuration for turn detection, ether Server VAD or Semantic VAD. This can be
@@ -94,7 +83,7 @@ module OpenAI
         #
         # For `gpt-realtime-whisper` transcription sessions, turn detection must be set to
         # `null`; VAD is not supported.
-        sig do
+        sig {
           returns(
             T.nilable(
               T.any(
@@ -103,38 +92,43 @@ module OpenAI
               )
             )
           )
-        end
+        }
         attr_accessor :turn_detection
 
         sig do
           params(
-            format_:
-              T.any(
-                OpenAI::Realtime::RealtimeAudioFormats::AudioPCM::OrHash,
-                OpenAI::Realtime::RealtimeAudioFormats::AudioPCMU::OrHash,
-                OpenAI::Realtime::RealtimeAudioFormats::AudioPCMA::OrHash
-              ),
-            noise_reduction:
-              OpenAI::Realtime::RealtimeTranscriptionSessionAudioInput::NoiseReduction::OrHash,
+
+            format_: T.any(
+              OpenAI::Realtime::RealtimeAudioFormats::AudioPCM::OrHash,
+              OpenAI::Realtime::RealtimeAudioFormats::AudioPCMU::OrHash,
+              OpenAI::Realtime::RealtimeAudioFormats::AudioPCMA::OrHash
+            ),
+
+            noise_reduction: OpenAI::Realtime::RealtimeTranscriptionSessionAudioInput::NoiseReduction::OrHash,
+
             transcription: OpenAI::Realtime::AudioTranscription::OrHash,
-            turn_detection:
-              T.nilable(
-                T.any(
-                  OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::ServerVad::OrHash,
-                  OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::SemanticVad::OrHash
-                )
+
+            turn_detection: T.nilable(
+              T.any(
+                OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::ServerVad::OrHash,
+                OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::SemanticVad::OrHash
               )
-          ).returns(T.attached_class)
+            )
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The PCM audio format. Only a 24kHz sample rate is supported.
           format_: nil,
+
           # Configuration for input audio noise reduction. This can be set to `null` to turn
           # off. Noise reduction filters audio added to the input audio buffer before it is
           # sent to VAD and the model. Filtering the audio can improve VAD and turn
           # detection accuracy (reducing false positives) and model performance by improving
           # perception of the input audio.
           noise_reduction: nil,
+
           # Configuration for input audio transcription, defaults to off and can be set to
           # `null` to turn off once on. Input audio transcription is not native to the
           # model, since the model consumes audio directly. Transcription runs
@@ -144,6 +138,7 @@ module OpenAI
           # what the model heard. The client can optionally set the language and prompt for
           # transcription, these offer additional guidance to the transcription service.
           transcription: nil,
+
           # Configuration for turn detection, ether Server VAD or Semantic VAD. This can be
           # set to `null` to turn off, in which case the client must manually trigger model
           # response.
@@ -160,6 +155,7 @@ module OpenAI
           #
           # For `gpt-realtime-whisper` transcription sessions, turn detection must be set to
           # `null`; VAD is not supported.
+
           turn_detection: nil
         )
         end
@@ -167,22 +163,19 @@ module OpenAI
         sig do
           override.returns(
             {
-              format_:
-                T.any(
-                  OpenAI::Realtime::RealtimeAudioFormats::AudioPCM,
-                  OpenAI::Realtime::RealtimeAudioFormats::AudioPCMU,
-                  OpenAI::Realtime::RealtimeAudioFormats::AudioPCMA
-                ),
-              noise_reduction:
-                OpenAI::Realtime::RealtimeTranscriptionSessionAudioInput::NoiseReduction,
+              format_: T.any(
+                OpenAI::Realtime::RealtimeAudioFormats::AudioPCM,
+                OpenAI::Realtime::RealtimeAudioFormats::AudioPCMU,
+                OpenAI::Realtime::RealtimeAudioFormats::AudioPCMA
+              ),
+              noise_reduction: OpenAI::Realtime::RealtimeTranscriptionSessionAudioInput::NoiseReduction,
               transcription: OpenAI::Realtime::AudioTranscription,
-              turn_detection:
-                T.nilable(
-                  T.any(
-                    OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::ServerVad,
-                    OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::SemanticVad
-                  )
+              turn_detection: T.nilable(
+                T.any(
+                  OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::ServerVad,
+                  OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::SemanticVad
                 )
+              )
             }
           )
         end
@@ -190,25 +183,20 @@ module OpenAI
         end
 
         class NoiseReduction < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Realtime::RealtimeTranscriptionSessionAudioInput::NoiseReduction,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Realtime::RealtimeTranscriptionSessionAudioInput::NoiseReduction,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # Type of noise reduction. `near_field` is for close-talking microphones such as
           # headphones, `far_field` is for far-field microphones such as laptop or
           # conference room microphones.
-          sig do
-            returns(T.nilable(OpenAI::Realtime::NoiseReductionType::OrSymbol))
-          end
+          sig { returns(T.nilable(OpenAI::Realtime::NoiseReductionType::OrSymbol)) }
           attr_reader :type
 
-          sig do
-            params(type: OpenAI::Realtime::NoiseReductionType::OrSymbol).void
-          end
+          sig { params(type: OpenAI::Realtime::NoiseReductionType::OrSymbol).void }
           attr_writer :type
 
           # Configuration for input audio noise reduction. This can be set to `null` to turn
@@ -218,26 +206,34 @@ module OpenAI
           # perception of the input audio.
           sig do
             params(
+
               type: OpenAI::Realtime::NoiseReductionType::OrSymbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # Type of noise reduction. `near_field` is for close-talking microphones such as
             # headphones, `far_field` is for far-field microphones such as laptop or
             # conference room microphones.
+
             type: nil
           )
           end
 
           sig do
             override.returns(
-              { type: OpenAI::Realtime::NoiseReductionType::OrSymbol }
+              {type: OpenAI::Realtime::NoiseReductionType::OrSymbol}
             )
           end
           def to_hash
           end
+
         end
+
       end
+
     end
+
   end
 end

@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Responses
+
       class ResponseReasoningSummaryPartDoneEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The ID of the item this summary part is associated with.
         sig { returns(String) }
@@ -21,19 +23,10 @@ module OpenAI
         attr_accessor :output_index
 
         # The completed summary part.
-        sig do
-          returns(
-            OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part
-          )
-        end
+        sig { returns(OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part) }
         attr_reader :part
 
-        sig do
-          params(
-            part:
-              OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part::OrHash
-          ).void
-        end
+        sig { params(part: OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part::OrHash).void }
         attr_writer :part
 
         # The sequence number of this event.
@@ -50,52 +43,55 @@ module OpenAI
 
         # The completion status of the summary part. Omitted when the part completed
         # normally and set to `incomplete` when generation was interrupted.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status::TaggedSymbol
-            )
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status::TaggedSymbol)) }
         attr_reader :status
 
-        sig do
-          params(
-            status:
-              OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status::OrSymbol
-          ).void
-        end
+        sig { params(status: OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status::OrSymbol).void }
         attr_writer :status
 
         # Emitted when a reasoning summary part is completed.
         sig do
           params(
+
             item_id: String,
+
             output_index: Integer,
-            part:
-              OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part::OrHash,
+
+            part: OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part::OrHash,
+
             sequence_number: Integer,
+
             summary_index: Integer,
-            status:
-              OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status::OrSymbol,
+
+            status: OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status::OrSymbol,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The ID of the item this summary part is associated with.
           item_id:,
+
           # The index of the output item this summary part is associated with.
           output_index:,
+
           # The completed summary part.
           part:,
+
           # The sequence number of this event.
           sequence_number:,
+
           # The index of the summary part within the reasoning summary.
           summary_index:,
+
           # The completion status of the summary part. Omitted when the part completed
           # normally and set to `incomplete` when generation was interrupted.
           status: nil,
+
           # The type of the event. Always `response.reasoning_summary_part.done`.
+
           type: :"response.reasoning_summary_part.done"
         )
         end
@@ -105,13 +101,11 @@ module OpenAI
             {
               item_id: String,
               output_index: Integer,
-              part:
-                OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part,
+              part: OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part,
               sequence_number: Integer,
               summary_index: Integer,
               type: Symbol,
-              status:
-                OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status::TaggedSymbol
+              status: OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status::TaggedSymbol
             }
           )
         end
@@ -119,13 +113,12 @@ module OpenAI
         end
 
         class Part < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The text of the summary part.
           sig { returns(String) }
@@ -136,18 +129,34 @@ module OpenAI
           attr_accessor :type
 
           # The completed summary part.
-          sig { params(text: String, type: Symbol).returns(T.attached_class) }
+          sig do
+            params(
+
+              text: String,
+
+              type: Symbol
+            )
+              .returns(T.attached_class)
+          end
           def self.new(
+
             # The text of the summary part.
             text:,
+
             # The type of the summary part. Always `summary_text`.
+
             type: :summary_text
           )
           end
 
-          sig { override.returns({ text: String, type: Symbol }) }
+          sig do
+            override.returns(
+              {text: String, type: Symbol}
+            )
+          end
           def to_hash
           end
+
         end
 
         # The completion status of the summary part. Omitted when the part completed
@@ -155,32 +164,26 @@ module OpenAI
         module Status
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(
-                Symbol,
-                OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status
-              )
-            end
+          TaggedSymbol = T.type_alias {
+            T.all(Symbol, OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status)
+          }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          INCOMPLETE =
-            T.let(
-              :incomplete,
-              OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status::TaggedSymbol
-            )
+          INCOMPLETE = T.let(
+            :incomplete,
+            OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status::TaggedSymbol
+          )
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status::TaggedSymbol
-              ]
-            )
-          end
+          sig {
+            override.returns(T::Array[OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status::TaggedSymbol])
+          }
           def self.values
           end
         end
+
       end
+
     end
+
   end
 end

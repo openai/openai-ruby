@@ -2,18 +2,21 @@
 
 module OpenAI
   module Resources
+
     class Admin
+
       class Organization
+
         class Projects
+
           class APIKeys
+
             # Retrieves an API key in the project.
-            sig do
-              params(
-                api_key_id: String,
-                project_id: String,
-                request_options: OpenAI::RequestOptions::OrHash
-              ).returns(OpenAI::Admin::Organization::Projects::ProjectAPIKey)
-            end
+            sig {
+              params(api_key_id: String, project_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+                OpenAI::Admin::Organization::Projects::ProjectAPIKey
+              )
+            }
             def retrieve(
               # The ID of the API key.
               api_key_id,
@@ -24,20 +27,16 @@ module OpenAI
             end
 
             # Returns a list of API keys in the project.
-            sig do
+            sig {
               params(
                 project_id: String,
                 after: String,
                 limit: Integer,
-                owner_project_access:
-                  OpenAI::Admin::Organization::Projects::APIKeyListParams::OwnerProjectAccess::OrSymbol,
+                owner_project_access: OpenAI::Admin::Organization::Projects::APIKeyListParams::OwnerProjectAccess::OrSymbol,
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
-                OpenAI::Internal::ConversationCursorPage[
-                  OpenAI::Admin::Organization::Projects::ProjectAPIKey
-                ]
               )
-            end
+                .returns(OpenAI::Internal::ConversationCursorPage[OpenAI::Admin::Organization::Projects::ProjectAPIKey])
+            }
             def list(
               # The ID of the project.
               project_id,
@@ -63,15 +62,11 @@ module OpenAI
             #
             # Returns confirmation of the key deletion, or an error if the key belonged to a
             # service account.
-            sig do
-              params(
-                api_key_id: String,
-                project_id: String,
-                request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
+            sig {
+              params(api_key_id: String, project_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
                 OpenAI::Models::Admin::Organization::Projects::APIKeyDeleteResponse
               )
-            end
+            }
             def delete(
               # The ID of the API key.
               api_key_id,
@@ -86,8 +81,12 @@ module OpenAI
             def self.new(client:)
             end
           end
+
         end
+
       end
+
     end
+
   end
 end

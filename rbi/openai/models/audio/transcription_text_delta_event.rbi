@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Audio
+
       class TranscriptionTextDeltaEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Audio::TranscriptionTextDeltaEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Audio::TranscriptionTextDeltaEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The text delta that was additionally transcribed.
         sig { returns(String) }
@@ -23,23 +25,10 @@ module OpenAI
         # The log probabilities of the delta. Only included if you
         # [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
         # with the `include[]` parameter set to `logprobs`.
-        sig do
-          returns(
-            T.nilable(
-              T::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob]
-            )
-          )
-        end
+        sig { returns(T.nilable(T::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob])) }
         attr_reader :logprobs
 
-        sig do
-          params(
-            logprobs:
-              T::Array[
-                OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob::OrHash
-              ]
-          ).void
-        end
+        sig { params(logprobs: T::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob::OrHash]).void }
         attr_writer :logprobs
 
         # Identifier of the diarized segment that this delta belongs to. Only present when
@@ -56,26 +45,33 @@ module OpenAI
         # with the `Stream` parameter set to `true`.
         sig do
           params(
+
             delta: String,
-            logprobs:
-              T::Array[
-                OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob::OrHash
-              ],
+
+            logprobs: T::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob::OrHash],
+
             segment_id: String,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The text delta that was additionally transcribed.
           delta:,
+
           # The log probabilities of the delta. Only included if you
           # [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
           # with the `include[]` parameter set to `logprobs`.
           logprobs: nil,
+
           # Identifier of the diarized segment that this delta belongs to. Only present when
           # using `gpt-4o-transcribe-diarize`.
           segment_id: nil,
+
           # The type of the event. Always `transcript.text.delta`.
+
           type: :"transcript.text.delta"
         )
         end
@@ -85,8 +81,7 @@ module OpenAI
             {
               delta: String,
               type: Symbol,
-              logprobs:
-                T::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob],
+              logprobs: T::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob],
               segment_id: String
             }
           )
@@ -95,13 +90,12 @@ module OpenAI
         end
 
         class Logprob < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The token that was used to generate the log probability.
           sig { returns(T.nilable(String)) }
@@ -126,30 +120,42 @@ module OpenAI
 
           sig do
             params(
+
               token: String,
+
               bytes: T::Array[Integer],
+
               logprob: Float
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The token that was used to generate the log probability.
             token: nil,
+
             # The bytes that were used to generate the log probability.
             bytes: nil,
+
             # The log probability of the token.
+
             logprob: nil
           )
           end
 
           sig do
             override.returns(
-              { token: String, bytes: T::Array[Integer], logprob: Float }
+              {token: String, bytes: T::Array[Integer], logprob: Float}
             )
           end
           def to_hash
           end
+
         end
+
       end
+
     end
+
   end
 end

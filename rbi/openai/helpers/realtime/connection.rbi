@@ -6,23 +6,21 @@ module OpenAI
       class Connection
         include Enumerable
 
-        ServerEvent =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::RealtimeServerEvent::Variants,
-              OpenAI::Realtime::UnknownServerEvent
-            )
-          end
+        ServerEvent = T.type_alias do
+          T.any(
+            OpenAI::Realtime::RealtimeServerEvent::Variants,
+            OpenAI::Realtime::UnknownServerEvent
+          )
+        end
 
-        ClientEvent =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::RealtimeClientEvent::Variants,
-              OpenAI::Internal::AnyHash
-            )
-          end
+        ClientEvent = T.type_alias do
+          T.any(
+            OpenAI::Realtime::RealtimeClientEvent::Variants,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
-        Elem = type_member { { fixed: ServerEvent } }
+        Elem = type_member { {fixed: ServerEvent} }
 
         sig { returns(URI::Generic) }
         attr_reader :url
@@ -40,14 +38,19 @@ module OpenAI
         attr_reader :input_audio_buffer
 
         # @api private
-        sig { params(socket: T.untyped, url: URI::Generic).returns(T.attached_class) }
+        sig do
+          params(socket: T.untyped, url: URI::Generic).returns(T.attached_class)
+        end
         def self.new(socket:, url:)
         end
 
         sig do
-          params(block: T.nilable(T.proc.params(event: ServerEvent).void)).returns(
-            T.any(OpenAI::Realtime::Connection, T::Enumerator[ServerEvent])
+          params(
+            block: T.nilable(T.proc.params(event: ServerEvent).void)
           )
+            .returns(
+              T.any(OpenAI::Realtime::Connection, T::Enumerator[ServerEvent])
+            )
         end
         def each(&block)
         end

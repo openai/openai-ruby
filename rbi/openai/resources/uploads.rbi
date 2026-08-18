@@ -2,8 +2,10 @@
 
 module OpenAI
   module Resources
+
     # Use Uploads to upload large files in multiple parts.
     class Uploads
+
       # Use Uploads to upload large files in multiple parts.
       sig { returns(OpenAI::Resources::Uploads::Parts) }
       attr_reader :parts
@@ -29,7 +31,7 @@ module OpenAI
       # [creating a File](https://platform.openai.com/docs/api-reference/files/create).
       #
       # Returns the Upload object with status `pending`.
-      sig do
+      sig {
         params(
           bytes: Integer,
           filename: String,
@@ -37,8 +39,9 @@ module OpenAI
           purpose: OpenAI::FilePurpose::OrSymbol,
           expires_after: OpenAI::UploadCreateParams::ExpiresAfter::OrHash,
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::Upload)
-      end
+        )
+          .returns(OpenAI::Upload)
+      }
       def create(
         # The number of bytes in the file you are uploading.
         bytes:,
@@ -64,12 +67,7 @@ module OpenAI
       # Cancels the Upload. No Parts may be added after an Upload is cancelled.
       #
       # Returns the Upload object with status `cancelled`.
-      sig do
-        params(
-          upload_id: String,
-          request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::Upload)
-      end
+      sig { params(upload_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::Upload) }
       def cancel(
         # The ID of the Upload.
         upload_id,
@@ -92,14 +90,15 @@ module OpenAI
       # an Upload is completed. Returns the Upload object with status `completed`,
       # including an additional `file` property containing the created usable File
       # object.
-      sig do
+      sig {
         params(
           upload_id: String,
           part_ids: T::Array[String],
           md5: String,
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::Upload)
-      end
+        )
+          .returns(OpenAI::Upload)
+      }
       def complete(
         # The ID of the Upload.
         upload_id,
@@ -117,5 +116,6 @@ module OpenAI
       def self.new(client:)
       end
     end
+
   end
 end

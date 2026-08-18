@@ -22,11 +22,9 @@ module OpenAI
 
       # @api private
       sig do
-        params(
-          operation: String,
-          timeout: Float,
-          resource: T.anything
-        ).returns(T.attached_class)
+        params(operation: String, timeout: Float, resource: T.anything).returns(
+          T.attached_class
+        )
       end
       def self.new(operation:, timeout:, resource:)
       end
@@ -45,7 +43,8 @@ module OpenAI
           target: T.anything,
           value: T.anything,
           cause: T.nilable(StandardError)
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(on:, method:, target:, value:, cause: nil)
       end
@@ -90,7 +89,8 @@ module OpenAI
           request: NilClass,
           response: NilClass,
           message: T.nilable(String)
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(
         url:,
@@ -130,7 +130,8 @@ module OpenAI
           request: NilClass,
           response: NilClass,
           message: T.nilable(String)
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(
         url:,
@@ -155,7 +156,8 @@ module OpenAI
           request: NilClass,
           response: NilClass,
           message: T.nilable(String)
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(
         url:,
@@ -180,7 +182,8 @@ module OpenAI
           request: NilClass,
           response: NilClass,
           message: T.nilable(String)
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.for(
         url:,
@@ -215,7 +218,8 @@ module OpenAI
           request: NilClass,
           response: NilClass,
           message: T.nilable(String)
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(
         url:,

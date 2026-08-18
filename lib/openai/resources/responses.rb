@@ -334,7 +334,6 @@ module OpenAI
         end
 
         parsed.store(:stream, true)
-
         @client.request(
           method: :post,
           path: "responses",

@@ -7,27 +7,27 @@ module OpenAI
         include OpenAI::Internal::Type::BaseStream
 
         # Define the type union for streaming events that can be yielded
-        ResponseStreamEvent =
-          T.type_alias do
-            T.any(
-              OpenAI::Streaming::ResponseTextDeltaEvent,
-              OpenAI::Streaming::ResponseTextDoneEvent,
-              OpenAI::Streaming::ResponseCompletedEvent,
-              OpenAI::Streaming::ResponseFunctionCallArgumentsDeltaEvent,
-              # Pass through other raw events
-              OpenAI::Models::Responses::ResponseStreamEvent::Variants
-            )
-          end
+        ResponseStreamEvent = T.type_alias do
+          T.any(
+            OpenAI::Streaming::ResponseTextDeltaEvent,
+            OpenAI::Streaming::ResponseTextDoneEvent,
+            OpenAI::Streaming::ResponseCompletedEvent,
+            OpenAI::Streaming::ResponseFunctionCallArgumentsDeltaEvent,
+            # Pass through other raw events
+            OpenAI::Models::Responses::ResponseStreamEvent::Variants
+          )
+        end
 
-        Message = type_member { { fixed: ResponseStreamEvent } }
-        Elem = type_member { { fixed: ResponseStreamEvent } }
+        Message = type_member { {fixed: ResponseStreamEvent} }
+        Elem = type_member { {fixed: ResponseStreamEvent} }
 
         sig do
           params(
             raw_stream: T.untyped,
             text_format: T.untyped,
             starting_after: T.nilable(Integer)
-          ).void
+          )
+            .void
         end
         def initialize(raw_stream:, text_format:, starting_after:)
         end
@@ -56,7 +56,8 @@ module OpenAI
         sig do
           params(
             block: T.nilable(T.proc.params(event: ResponseStreamEvent).void)
-          ).returns(T.any(T.self_type, T::Enumerator[ResponseStreamEvent]))
+          )
+            .returns(T.any(T.self_type, T::Enumerator[ResponseStreamEvent]))
         end
         def each(&block)
         end
@@ -84,7 +85,8 @@ module OpenAI
           params(
             event: T.untyped,
             current_snapshot: T.nilable(OpenAI::Models::Responses::Response)
-          ).returns(OpenAI::Models::Responses::Response)
+          )
+            .returns(OpenAI::Models::Responses::Response)
         end
         def accumulate_event(event:, current_snapshot:)
         end

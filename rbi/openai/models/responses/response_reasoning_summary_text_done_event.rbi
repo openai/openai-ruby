@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Responses
+
       class ResponseReasoningSummaryTextDoneEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Responses::ResponseReasoningSummaryTextDoneEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Responses::ResponseReasoningSummaryTextDoneEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The ID of the item this summary text is associated with.
         sig { returns(String) }
@@ -39,26 +41,40 @@ module OpenAI
         # Emitted when a reasoning summary text is completed.
         sig do
           params(
+
             item_id: String,
+
             output_index: Integer,
+
             sequence_number: Integer,
+
             summary_index: Integer,
+
             text: String,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The ID of the item this summary text is associated with.
           item_id:,
+
           # The index of the output item this summary text is associated with.
           output_index:,
+
           # The sequence number of this event.
           sequence_number:,
+
           # The index of the summary part within the reasoning summary.
           summary_index:,
+
           # The full text of the completed reasoning summary.
           text:,
+
           # The type of the event. Always `response.reasoning_summary_text.done`.
+
           type: :"response.reasoning_summary_text.done"
         )
         end
@@ -77,7 +93,10 @@ module OpenAI
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

@@ -2,8 +2,11 @@
 
 module OpenAI
   module Resources
+
     class Containers
+
       class Files
+
         sig { returns(OpenAI::Resources::Containers::Files::Content) }
         attr_reader :content
 
@@ -11,14 +14,15 @@ module OpenAI
         #
         # You can send either a multipart/form-data request with the raw file content, or
         # a JSON request with a file ID.
-        sig do
+        sig {
           params(
             container_id: String,
             file: OpenAI::Internal::FileInput,
             file_id: String,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Models::Containers::FileCreateResponse)
-        end
+          )
+            .returns(OpenAI::Models::Containers::FileCreateResponse)
+        }
         def create(
           container_id,
           # The File object (not file name) to be uploaded.
@@ -34,30 +38,25 @@ module OpenAI
         end
 
         # Retrieve Container File
-        sig do
-          params(
-            file_id: String,
-            container_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Models::Containers::FileRetrieveResponse)
-        end
+        sig {
+          params(file_id: String, container_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+            OpenAI::Models::Containers::FileRetrieveResponse
+          )
+        }
         def retrieve(file_id, container_id:, request_options: {})
         end
 
         # List Container files
-        sig do
+        sig {
           params(
             container_id: String,
             after: String,
             limit: Integer,
             order: OpenAI::Containers::FileListParams::Order::OrSymbol,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(
-            OpenAI::Internal::CursorPage[
-              OpenAI::Models::Containers::FileListResponse
-            ]
           )
-        end
+            .returns(OpenAI::Internal::CursorPage[OpenAI::Models::Containers::FileListResponse])
+        }
         def list(
           container_id,
           # A cursor for use in pagination. `after` is an object ID that defines your place
@@ -76,13 +75,7 @@ module OpenAI
         end
 
         # Delete Container File
-        sig do
-          params(
-            file_id: String,
-            container_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).void
-        end
+        sig { params(file_id: String, container_id: String, request_options: OpenAI::RequestOptions::OrHash).void }
         def delete(file_id, container_id:, request_options: {})
         end
 
@@ -91,6 +84,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

@@ -2,7 +2,9 @@
 
 module OpenAI
   module Resources
+
     class Skills
+
       sig { returns(OpenAI::Resources::Skills::Content) }
       attr_reader :content
 
@@ -10,12 +12,10 @@ module OpenAI
       attr_reader :versions
 
       # Create a new skill.
-      sig do
-        params(
-          files: OpenAI::SkillCreateParams::Files::Variants,
-          request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::Skill)
-      end
+      sig {
+        params(files: OpenAI::SkillCreateParams::Files::Variants, request_options: OpenAI::RequestOptions::OrHash)
+          .returns(OpenAI::Skill)
+      }
       def create(
         # Skill files to upload (directory upload) or a single zip file.
         #
@@ -28,12 +28,7 @@ module OpenAI
       end
 
       # Get a skill by its ID.
-      sig do
-        params(
-          skill_id: String,
-          request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::Skill)
-      end
+      sig { params(skill_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::Skill) }
       def retrieve(
         # The identifier of the skill to retrieve.
         skill_id,
@@ -42,13 +37,11 @@ module OpenAI
       end
 
       # Update the default version pointer for a skill.
-      sig do
-        params(
-          skill_id: String,
-          default_version: String,
-          request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::Skill)
-      end
+      sig {
+        params(skill_id: String, default_version: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+          OpenAI::Skill
+        )
+      }
       def update(
         # The identifier of the skill.
         skill_id,
@@ -59,14 +52,15 @@ module OpenAI
       end
 
       # List all skills for the current project.
-      sig do
+      sig {
         params(
           after: String,
           limit: Integer,
           order: OpenAI::SkillListParams::Order::OrSymbol,
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::Internal::CursorPage[OpenAI::Skill])
-      end
+        )
+          .returns(OpenAI::Internal::CursorPage[OpenAI::Skill])
+      }
       def list(
         # Identifier for the last item from the previous pagination request
         after: nil,
@@ -80,12 +74,7 @@ module OpenAI
       end
 
       # Delete a skill by its ID.
-      sig do
-        params(
-          skill_id: String,
-          request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::DeletedSkill)
-      end
+      sig { params(skill_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::DeletedSkill) }
       def delete(
         # The identifier of the skill to delete.
         skill_id,
@@ -98,5 +87,6 @@ module OpenAI
       def self.new(client:)
       end
     end
+
   end
 end

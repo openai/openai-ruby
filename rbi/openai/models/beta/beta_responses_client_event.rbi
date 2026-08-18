@@ -2,29 +2,29 @@
 
 module OpenAI
   module Models
+
     BetaResponsesClientEvent = Beta::BetaResponsesClientEvent
 
     module Beta
+
       # Client events accepted by the Responses WebSocket server.
       module BetaResponsesClientEvent
         extend OpenAI::Internal::Type::Union
 
-        Variants =
-          T.type_alias do
-            T.any(
-              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate,
-              OpenAI::Beta::BetaResponseInjectEvent
-            )
-          end
+        Variants = T.type_alias do
+          T.any(
+            OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate,
+            OpenAI::Beta::BetaResponseInjectEvent
+          )
+        end
 
         class ResponseCreate < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The type of the client event. Always `response.create`.
           sig { returns(Symbol) }
@@ -36,28 +36,16 @@ module OpenAI
           attr_accessor :background
 
           # Context management configuration for this request.
-          sig do
-            returns(
-              T.nilable(
-                T::Array[
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ContextManagement
-                ]
-              )
-            )
-          end
+          sig {
+            returns(T.nilable(T::Array[OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ContextManagement]))
+          }
           attr_accessor :context_management
 
           # The conversation that this response belongs to. Items from this conversation are
           # prepended to `input_items` for this response request. Input items and output
           # items from this response are automatically added to this conversation after this
           # response completes.
-          sig do
-            returns(
-              T.nilable(
-                T.any(String, OpenAI::Beta::BetaResponseConversationParam)
-              )
-            )
-          end
+          sig { returns(T.nilable(T.any(String, OpenAI::Beta::BetaResponseConversationParam))) }
           attr_accessor :conversation
 
           # Specify additional output data to include in the model response. Currently
@@ -78,13 +66,7 @@ module OpenAI
           #   multi-turn conversations when using the Responses API statelessly (like when
           #   the `store` parameter is set to `false`, or when an organization is enrolled
           #   in the zero data retention program).
-          sig do
-            returns(
-              T.nilable(
-                T::Array[OpenAI::Beta::BetaResponseIncludable::OrSymbol]
-              )
-            )
-          end
+          sig { returns(T.nilable(T::Array[OpenAI::Beta::BetaResponseIncludable::OrSymbol])) }
           attr_accessor :include
 
           # Text, image, or file inputs to the model, used to generate a response.
@@ -96,21 +78,10 @@ module OpenAI
           # - [File inputs](https://platform.openai.com/docs/guides/pdf-files)
           # - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
           # - [Function calling](https://platform.openai.com/docs/guides/function-calling)
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Input::Variants
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Input::Variants)) }
           attr_reader :input
 
-          sig do
-            params(
-              input:
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Input::Variants
-            ).void
-          end
+          sig { params(input: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Input::Variants).void }
           attr_writer :input
 
           # A system (or developer) message inserted into the model's context.
@@ -148,67 +119,34 @@ module OpenAI
           # and price points. Refer to the
           # [model guide](https://platform.openai.com/docs/models) to browse and compare
           # available models.
-          sig do
-            returns(
-              T.nilable(
-                T.any(
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::OrSymbol,
-                  String
-                )
-              )
-            )
-          end
+          sig {
+            returns(T.nilable(T.any(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::OrSymbol, String)))
+          }
           attr_reader :model
 
-          sig do
-            params(
-              model:
-                T.any(
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::OrSymbol,
-                  String
-                )
-            ).void
-          end
+          sig {
+            params(model: T.any(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::OrSymbol, String)).void
+          }
           attr_writer :model
 
           # Configuration for running moderation on the input and output of this response.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation)) }
           attr_reader :moderation
 
-          sig do
-            params(
-              moderation:
-                T.nilable(
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::OrHash
-                )
-            ).void
-          end
+          sig {
+            params(moderation: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::OrHash))
+              .void
+          }
           attr_writer :moderation
 
           # Configuration for server-hosted multi-agent execution.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::MultiAgent
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::MultiAgent)) }
           attr_reader :multi_agent
 
-          sig do
-            params(
-              multi_agent:
-                T.nilable(
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::MultiAgent::OrHash
-                )
-            ).void
-          end
+          sig {
+            params(multi_agent: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::MultiAgent::OrHash))
+              .void
+          }
           attr_writer :multi_agent
 
           # Whether to allow the model to run tool calls in parallel.
@@ -227,11 +165,7 @@ module OpenAI
           sig { returns(T.nilable(OpenAI::Beta::BetaResponsePrompt)) }
           attr_reader :prompt
 
-          sig do
-            params(
-              prompt: T.nilable(OpenAI::Beta::BetaResponsePrompt::OrHash)
-            ).void
-          end
+          sig { params(prompt: T.nilable(OpenAI::Beta::BetaResponsePrompt::OrHash)).void }
           attr_writer :prompt
 
           # Used by OpenAI to cache responses for similar requests to optimize your cache
@@ -249,21 +183,15 @@ module OpenAI
           # `ttl` defaults to `30m`, which is currently the only supported value. See the
           # [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
           # for current details.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions)) }
           attr_reader :prompt_cache_options
 
-          sig do
+          sig {
             params(
-              prompt_cache_options:
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::OrHash
-            ).void
-          end
+              prompt_cache_options: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::OrHash
+            )
+              .void
+          }
           attr_writer :prompt_cache_options
 
           # Deprecated. Use `prompt_cache_options.ttl` instead.
@@ -283,36 +211,21 @@ module OpenAI
           # - Organizations without ZDR enabled default to `24h`.
           # - Organizations with ZDR enabled default to `in_memory` when
           #   `prompt_cache_retention` is not specified.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheRetention::OrSymbol
-              )
-            )
-          end
+          sig {
+            returns(T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheRetention::OrSymbol))
+          }
           attr_accessor :prompt_cache_retention
 
           # **gpt-5 and o-series models only**
           #
           # Configuration options for
           # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning)) }
           attr_reader :reasoning
 
-          sig do
-            params(
-              reasoning:
-                T.nilable(
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::OrHash
-                )
-            ).void
-          end
+          sig {
+            params(reasoning: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::OrHash)).void
+          }
           attr_writer :reasoning
 
           # A stable identifier used to help detect users of your application that may be
@@ -348,13 +261,7 @@ module OpenAI
           # `service_tier` value based on the processing mode actually used to serve the
           # request. This response value may be different from the value set in the
           # parameter.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier::OrSymbol
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier::OrSymbol)) }
           attr_accessor :service_tier
 
           # Whether to store the generated model response for later retrieval via API.
@@ -382,23 +289,15 @@ module OpenAI
           attr_writer :stream_id
 
           # Options for streaming responses. Only set this when you set `stream: true`.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::StreamOptions
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::StreamOptions)) }
           attr_reader :stream_options
 
-          sig do
+          sig {
             params(
-              stream_options:
-                T.nilable(
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::StreamOptions::OrHash
-                )
-            ).void
-          end
+              stream_options: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::StreamOptions::OrHash)
+            )
+              .void
+          }
           attr_writer :stream_options
 
           # What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
@@ -416,15 +315,13 @@ module OpenAI
           sig { returns(T.nilable(OpenAI::Beta::BetaResponseTextConfig)) }
           attr_reader :text
 
-          sig do
-            params(text: OpenAI::Beta::BetaResponseTextConfig::OrHash).void
-          end
+          sig { params(text: OpenAI::Beta::BetaResponseTextConfig::OrHash).void }
           attr_writer :text
 
           # How the model should select which tool (or tools) to use when generating a
           # response. See the `tools` parameter to see how to specify which tools the model
           # can call.
-          sig do
+          sig {
             returns(
               T.nilable(
                 T.any(
@@ -440,25 +337,25 @@ module OpenAI
                 )
               )
             )
-          end
+          }
           attr_reader :tool_choice
 
-          sig do
+          sig {
             params(
-              tool_choice:
-                T.any(
-                  OpenAI::Beta::BetaToolChoiceOptions::OrSymbol,
-                  OpenAI::Beta::BetaToolChoiceAllowed::OrHash,
-                  OpenAI::Beta::BetaToolChoiceTypes::OrHash,
-                  OpenAI::Beta::BetaToolChoiceFunction::OrHash,
-                  OpenAI::Beta::BetaToolChoiceMcp::OrHash,
-                  OpenAI::Beta::BetaToolChoiceCustom::OrHash,
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ToolChoice::BetaSpecificProgrammaticToolCallingParam::OrHash,
-                  OpenAI::Beta::BetaToolChoiceApplyPatch::OrHash,
-                  OpenAI::Beta::BetaToolChoiceShell::OrHash
-                )
-            ).void
-          end
+              tool_choice: T.any(
+                OpenAI::Beta::BetaToolChoiceOptions::OrSymbol,
+                OpenAI::Beta::BetaToolChoiceAllowed::OrHash,
+                OpenAI::Beta::BetaToolChoiceTypes::OrHash,
+                OpenAI::Beta::BetaToolChoiceFunction::OrHash,
+                OpenAI::Beta::BetaToolChoiceMcp::OrHash,
+                OpenAI::Beta::BetaToolChoiceCustom::OrHash,
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ToolChoice::BetaSpecificProgrammaticToolCallingParam::OrHash,
+                OpenAI::Beta::BetaToolChoiceApplyPatch::OrHash,
+                OpenAI::Beta::BetaToolChoiceShell::OrHash
+              )
+            )
+              .void
+          }
           attr_writer :tool_choice
 
           # An array of tools the model may call while generating a response. You can
@@ -480,7 +377,7 @@ module OpenAI
           #   Learn more about
           #   [function calling](https://platform.openai.com/docs/guides/function-calling).
           #   You can also use custom tools to call your own code.
-          sig do
+          sig {
             returns(
               T.nilable(
                 T::Array[
@@ -505,34 +402,34 @@ module OpenAI
                 ]
               )
             )
-          end
+          }
           attr_reader :tools
 
-          sig do
+          sig {
             params(
-              tools:
-                T::Array[
-                  T.any(
-                    OpenAI::Beta::BetaFunctionTool::OrHash,
-                    OpenAI::Beta::BetaFileSearchTool::OrHash,
-                    OpenAI::Beta::BetaComputerTool::OrHash,
-                    OpenAI::Beta::BetaComputerUsePreviewTool::OrHash,
-                    OpenAI::Beta::BetaTool::Mcp::OrHash,
-                    OpenAI::Beta::BetaTool::CodeInterpreter::OrHash,
-                    OpenAI::Beta::BetaTool::ProgrammaticToolCalling::OrHash,
-                    OpenAI::Beta::BetaTool::ImageGeneration::OrHash,
-                    OpenAI::Beta::BetaTool::LocalShell::OrHash,
-                    OpenAI::Beta::BetaFunctionShellTool::OrHash,
-                    OpenAI::Beta::BetaCustomTool::OrHash,
-                    OpenAI::Beta::BetaNamespaceTool::OrHash,
-                    OpenAI::Beta::BetaToolSearchTool::OrHash,
-                    OpenAI::Beta::BetaApplyPatchTool::OrHash,
-                    OpenAI::Beta::BetaWebSearchTool::OrHash,
-                    OpenAI::Beta::BetaWebSearchPreviewTool::OrHash
-                  )
-                ]
-            ).void
-          end
+              tools: T::Array[
+                T.any(
+                  OpenAI::Beta::BetaFunctionTool::OrHash,
+                  OpenAI::Beta::BetaFileSearchTool::OrHash,
+                  OpenAI::Beta::BetaComputerTool::OrHash,
+                  OpenAI::Beta::BetaComputerUsePreviewTool::OrHash,
+                  OpenAI::Beta::BetaTool::Mcp::OrHash,
+                  OpenAI::Beta::BetaTool::CodeInterpreter::OrHash,
+                  OpenAI::Beta::BetaTool::ProgrammaticToolCalling::OrHash,
+                  OpenAI::Beta::BetaTool::ImageGeneration::OrHash,
+                  OpenAI::Beta::BetaTool::LocalShell::OrHash,
+                  OpenAI::Beta::BetaFunctionShellTool::OrHash,
+                  OpenAI::Beta::BetaCustomTool::OrHash,
+                  OpenAI::Beta::BetaNamespaceTool::OrHash,
+                  OpenAI::Beta::BetaToolSearchTool::OrHash,
+                  OpenAI::Beta::BetaApplyPatchTool::OrHash,
+                  OpenAI::Beta::BetaWebSearchTool::OrHash,
+                  OpenAI::Beta::BetaWebSearchPreviewTool::OrHash
+                )
+              ]
+            )
+              .void
+          }
           attr_writer :tools
 
           # An integer between 0 and 20 specifying the maximum number of most likely tokens
@@ -556,13 +453,7 @@ module OpenAI
           #   items from the beginning of the conversation.
           # - `disabled` (default): If the input size will exceed the context window size
           #   for a model, the request will fail with a 400 error.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Truncation::OrSymbol
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Truncation::OrSymbol)) }
           attr_accessor :truncation
 
           # This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use
@@ -587,125 +478,125 @@ module OpenAI
           # - `stream_id` is WebSocket-only and is not part of `POST /v1/responses`.
           sig do
             params(
+
               background: T.nilable(T::Boolean),
-              context_management:
-                T.nilable(
-                  T::Array[
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ContextManagement::OrHash
-                  ]
-                ),
-              conversation:
-                T.nilable(
-                  T.any(
-                    String,
-                    OpenAI::Beta::BetaResponseConversationParam::OrHash
-                  )
-                ),
-              include:
-                T.nilable(
-                  T::Array[OpenAI::Beta::BetaResponseIncludable::OrSymbol]
-                ),
-              input:
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Input::Variants,
+
+              context_management: T.nilable(
+                T::Array[OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ContextManagement::OrHash]
+              ),
+
+              conversation: T.nilable(T.any(String, OpenAI::Beta::BetaResponseConversationParam::OrHash)),
+
+              include: T.nilable(T::Array[OpenAI::Beta::BetaResponseIncludable::OrSymbol]),
+
+              input: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Input::Variants,
+
               instructions: T.nilable(String),
+
               max_output_tokens: T.nilable(Integer),
+
               max_tool_calls: T.nilable(Integer),
+
               metadata: T.nilable(T::Hash[Symbol, String]),
-              model:
-                T.any(
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::OrSymbol,
-                  String
-                ),
-              moderation:
-                T.nilable(
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::OrHash
-                ),
-              multi_agent:
-                T.nilable(
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::MultiAgent::OrHash
-                ),
+
+              model: T.any(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::OrSymbol, String),
+
+              moderation: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::OrHash),
+
+              multi_agent: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::MultiAgent::OrHash),
+
               parallel_tool_calls: T.nilable(T::Boolean),
+
               previous_response_id: T.nilable(String),
+
               prompt: T.nilable(OpenAI::Beta::BetaResponsePrompt::OrHash),
+
               prompt_cache_key: T.nilable(String),
-              prompt_cache_options:
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::OrHash,
-              prompt_cache_retention:
-                T.nilable(
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheRetention::OrSymbol
-                ),
-              reasoning:
-                T.nilable(
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::OrHash
-                ),
+
+              prompt_cache_options: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::OrHash,
+
+              prompt_cache_retention: T.nilable(
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheRetention::OrSymbol
+              ),
+
+              reasoning: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::OrHash),
+
               safety_identifier: T.nilable(String),
-              service_tier:
-                T.nilable(
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier::OrSymbol
-                ),
+
+              service_tier: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier::OrSymbol),
+
               store: T.nilable(T::Boolean),
+
               stream: T.nilable(T::Boolean),
+
               stream_id: String,
-              stream_options:
-                T.nilable(
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::StreamOptions::OrHash
-                ),
+
+              stream_options: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::StreamOptions::OrHash),
+
               temperature: T.nilable(Float),
+
               text: OpenAI::Beta::BetaResponseTextConfig::OrHash,
-              tool_choice:
+
+              tool_choice: T.any(
+                OpenAI::Beta::BetaToolChoiceOptions::OrSymbol,
+                OpenAI::Beta::BetaToolChoiceAllowed::OrHash,
+                OpenAI::Beta::BetaToolChoiceTypes::OrHash,
+                OpenAI::Beta::BetaToolChoiceFunction::OrHash,
+                OpenAI::Beta::BetaToolChoiceMcp::OrHash,
+                OpenAI::Beta::BetaToolChoiceCustom::OrHash,
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ToolChoice::BetaSpecificProgrammaticToolCallingParam::OrHash,
+                OpenAI::Beta::BetaToolChoiceApplyPatch::OrHash,
+                OpenAI::Beta::BetaToolChoiceShell::OrHash
+              ),
+
+              tools: T::Array[
                 T.any(
-                  OpenAI::Beta::BetaToolChoiceOptions::OrSymbol,
-                  OpenAI::Beta::BetaToolChoiceAllowed::OrHash,
-                  OpenAI::Beta::BetaToolChoiceTypes::OrHash,
-                  OpenAI::Beta::BetaToolChoiceFunction::OrHash,
-                  OpenAI::Beta::BetaToolChoiceMcp::OrHash,
-                  OpenAI::Beta::BetaToolChoiceCustom::OrHash,
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ToolChoice::BetaSpecificProgrammaticToolCallingParam::OrHash,
-                  OpenAI::Beta::BetaToolChoiceApplyPatch::OrHash,
-                  OpenAI::Beta::BetaToolChoiceShell::OrHash
-                ),
-              tools:
-                T::Array[
-                  T.any(
-                    OpenAI::Beta::BetaFunctionTool::OrHash,
-                    OpenAI::Beta::BetaFileSearchTool::OrHash,
-                    OpenAI::Beta::BetaComputerTool::OrHash,
-                    OpenAI::Beta::BetaComputerUsePreviewTool::OrHash,
-                    OpenAI::Beta::BetaTool::Mcp::OrHash,
-                    OpenAI::Beta::BetaTool::CodeInterpreter::OrHash,
-                    OpenAI::Beta::BetaTool::ProgrammaticToolCalling::OrHash,
-                    OpenAI::Beta::BetaTool::ImageGeneration::OrHash,
-                    OpenAI::Beta::BetaTool::LocalShell::OrHash,
-                    OpenAI::Beta::BetaFunctionShellTool::OrHash,
-                    OpenAI::Beta::BetaCustomTool::OrHash,
-                    OpenAI::Beta::BetaNamespaceTool::OrHash,
-                    OpenAI::Beta::BetaToolSearchTool::OrHash,
-                    OpenAI::Beta::BetaApplyPatchTool::OrHash,
-                    OpenAI::Beta::BetaWebSearchTool::OrHash,
-                    OpenAI::Beta::BetaWebSearchPreviewTool::OrHash
-                  )
-                ],
+                  OpenAI::Beta::BetaFunctionTool::OrHash,
+                  OpenAI::Beta::BetaFileSearchTool::OrHash,
+                  OpenAI::Beta::BetaComputerTool::OrHash,
+                  OpenAI::Beta::BetaComputerUsePreviewTool::OrHash,
+                  OpenAI::Beta::BetaTool::Mcp::OrHash,
+                  OpenAI::Beta::BetaTool::CodeInterpreter::OrHash,
+                  OpenAI::Beta::BetaTool::ProgrammaticToolCalling::OrHash,
+                  OpenAI::Beta::BetaTool::ImageGeneration::OrHash,
+                  OpenAI::Beta::BetaTool::LocalShell::OrHash,
+                  OpenAI::Beta::BetaFunctionShellTool::OrHash,
+                  OpenAI::Beta::BetaCustomTool::OrHash,
+                  OpenAI::Beta::BetaNamespaceTool::OrHash,
+                  OpenAI::Beta::BetaToolSearchTool::OrHash,
+                  OpenAI::Beta::BetaApplyPatchTool::OrHash,
+                  OpenAI::Beta::BetaWebSearchTool::OrHash,
+                  OpenAI::Beta::BetaWebSearchPreviewTool::OrHash
+                )
+              ],
+
               top_logprobs: T.nilable(Integer),
+
               top_p: T.nilable(Float),
-              truncation:
-                T.nilable(
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Truncation::OrSymbol
-                ),
+
+              truncation: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Truncation::OrSymbol),
+
               user: String,
+
               type: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # Whether to run the model response in the background.
             # [Learn more](https://platform.openai.com/docs/guides/background).
             background: nil,
+
             # Context management configuration for this request.
             context_management: nil,
+
             # The conversation that this response belongs to. Items from this conversation are
             # prepended to `input_items` for this response request. Input items and output
             # items from this response are automatically added to this conversation after this
             # response completes.
             conversation: nil,
+
             # Specify additional output data to include in the model response. Currently
             # supported values are:
             #
@@ -725,6 +616,7 @@ module OpenAI
             #   the `store` parameter is set to `false`, or when an organization is enrolled
             #   in the zero data retention program).
             include: nil,
+
             # Text, image, or file inputs to the model, used to generate a response.
             #
             # Learn more:
@@ -735,21 +627,25 @@ module OpenAI
             # - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
             # - [Function calling](https://platform.openai.com/docs/guides/function-calling)
             input: nil,
+
             # A system (or developer) message inserted into the model's context.
             #
             # When using along with `previous_response_id`, the instructions from a previous
             # response will not be carried over to the next response. This makes it simple to
             # swap out system (or developer) messages in new responses.
             instructions: nil,
+
             # An upper bound for the number of tokens that can be generated for a response,
             # including visible output tokens and
             # [reasoning tokens](https://platform.openai.com/docs/guides/reasoning).
             max_output_tokens: nil,
+
             # The maximum number of total calls to built-in tools that can be processed in a
             # response. This maximum number applies across all built-in tool calls, not per
             # individual tool. Any further attempts to call a tool by the model will be
             # ignored.
             max_tool_calls: nil,
+
             # Set of 16 key-value pairs that can be attached to an object. This can be useful
             # for storing additional information about the object in a structured format, and
             # querying for objects via API or the dashboard.
@@ -757,30 +653,38 @@ module OpenAI
             # Keys are strings with a maximum length of 64 characters. Values are strings with
             # a maximum length of 512 characters.
             metadata: nil,
+
             # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
             # wide range of models with different capabilities, performance characteristics,
             # and price points. Refer to the
             # [model guide](https://platform.openai.com/docs/models) to browse and compare
             # available models.
             model: nil,
+
             # Configuration for running moderation on the input and output of this response.
             moderation: nil,
+
             # Configuration for server-hosted multi-agent execution.
             multi_agent: nil,
+
             # Whether to allow the model to run tool calls in parallel.
             parallel_tool_calls: nil,
+
             # The unique ID of the previous response to the model. Use this to create
             # multi-turn conversations. Learn more about
             # [conversation state](https://platform.openai.com/docs/guides/conversation-state).
             # Cannot be used in conjunction with `conversation`.
             previous_response_id: nil,
+
             # Reference to a prompt template and its variables.
             # [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
             prompt: nil,
+
             # Used by OpenAI to cache responses for similar requests to optimize your cache
             # hit rates. Replaces the `user` field.
             # [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
             prompt_cache_key: nil,
+
             # Options for prompt caching. Supported for `gpt-5.6` and later models. By
             # default, OpenAI automatically chooses one implicit cache breakpoint. You can add
             # explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
@@ -791,6 +695,7 @@ module OpenAI
             # [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
             # for current details.
             prompt_cache_options: nil,
+
             # Deprecated. Use `prompt_cache_options.ttl` instead.
             #
             # The retention policy for the prompt cache. Set to `24h` to enable extended
@@ -809,11 +714,13 @@ module OpenAI
             # - Organizations with ZDR enabled default to `in_memory` when
             #   `prompt_cache_retention` is not specified.
             prompt_cache_retention: nil,
+
             # **gpt-5 and o-series models only**
             #
             # Configuration options for
             # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
             reasoning: nil,
+
             # A stable identifier used to help detect users of your application that may be
             # violating OpenAI's usage policies. The IDs should be a string that uniquely
             # identifies each user, with a maximum length of 64 characters. We recommend
@@ -821,6 +728,7 @@ module OpenAI
             # identifying information.
             # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
             safety_identifier: nil,
+
             # Specifies the processing type used for serving the request.
             #
             # - If set to 'auto', then the request will be processed with the service tier
@@ -846,8 +754,10 @@ module OpenAI
             # request. This response value may be different from the value set in the
             # parameter.
             service_tier: nil,
+
             # Whether to store the generated model response for later retrieval via API.
             store: nil,
+
             # If set to true, the model response data will be streamed to the client as it is
             # generated using
             # [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format).
@@ -855,29 +765,35 @@ module OpenAI
             # [Streaming section below](https://platform.openai.com/docs/api-reference/responses-streaming)
             # for more information.
             stream: nil,
+
             # The WebSocket lane for this response. Requests with the same `stream_id` are
             # processed FIFO, and events for the response echo the same `stream_id`.
             #
             # `stream_id` controls routing; `previous_response_id` controls conversation
             # lineage, so a new lane can fork from a response created on another lane.
             stream_id: nil,
+
             # Options for streaming responses. Only set this when you set `stream: true`.
             stream_options: nil,
+
             # What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
             # make the output more random, while lower values like 0.2 will make it more
             # focused and deterministic. We generally recommend altering this or `top_p` but
             # not both.
             temperature: nil,
+
             # Configuration options for a text response from the model. Can be plain text or
             # structured JSON data. Learn more:
             #
             # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
             # - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
             text: nil,
+
             # How the model should select which tool (or tools) to use when generating a
             # response. See the `tools` parameter to see how to specify which tools the model
             # can call.
             tool_choice: nil,
+
             # An array of tools the model may call while generating a response. You can
             # specify which tool to use by setting the `tool_choice` parameter.
             #
@@ -898,16 +814,19 @@ module OpenAI
             #   [function calling](https://platform.openai.com/docs/guides/function-calling).
             #   You can also use custom tools to call your own code.
             tools: nil,
+
             # An integer between 0 and 20 specifying the maximum number of most likely tokens
             # to return at each token position, each with an associated log probability. In
             # some cases, the number of returned tokens may be fewer than requested.
             top_logprobs: nil,
+
             # An alternative to sampling with temperature, called nucleus sampling, where the
             # model considers the results of the tokens with top_p probability mass. So 0.1
             # means only the tokens comprising the top 10% probability mass are considered.
             #
             # We generally recommend altering this or `temperature` but not both.
             top_p: nil,
+
             # The truncation strategy to use for the model response.
             #
             # - `auto`: If the input to this Response exceeds the model's context window size,
@@ -916,13 +835,16 @@ module OpenAI
             # - `disabled` (default): If the input size will exceed the context window size
             #   for a model, the request will fail with a 400 error.
             truncation: nil,
+
             # This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use
             # `prompt_cache_key` instead to maintain caching optimizations. A stable
             # identifier for your end-users. Used to boost cache hit rates by better bucketing
             # similar requests and to help OpenAI detect and prevent abuse.
             # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
             user: nil,
+
             # The type of the client event. Always `response.create`.
+
             type: :"response.create"
           )
           end
@@ -932,106 +854,70 @@ module OpenAI
               {
                 type: Symbol,
                 background: T.nilable(T::Boolean),
-                context_management:
-                  T.nilable(
-                    T::Array[
-                      OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ContextManagement
-                    ]
-                  ),
-                conversation:
-                  T.nilable(
-                    T.any(String, OpenAI::Beta::BetaResponseConversationParam)
-                  ),
-                include:
-                  T.nilable(
-                    T::Array[OpenAI::Beta::BetaResponseIncludable::OrSymbol]
-                  ),
-                input:
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Input::Variants,
+                context_management: T.nilable(
+                  T::Array[OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ContextManagement]
+                ),
+                conversation: T.nilable(T.any(String, OpenAI::Beta::BetaResponseConversationParam)),
+                include: T.nilable(T::Array[OpenAI::Beta::BetaResponseIncludable::OrSymbol]),
+                input: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Input::Variants,
                 instructions: T.nilable(String),
                 max_output_tokens: T.nilable(Integer),
                 max_tool_calls: T.nilable(Integer),
                 metadata: T.nilable(T::Hash[Symbol, String]),
-                model:
-                  T.any(
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::OrSymbol,
-                    String
-                  ),
-                moderation:
-                  T.nilable(
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation
-                  ),
-                multi_agent:
-                  T.nilable(
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::MultiAgent
-                  ),
+                model: T.any(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::OrSymbol, String),
+                moderation: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation),
+                multi_agent: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::MultiAgent),
                 parallel_tool_calls: T.nilable(T::Boolean),
                 previous_response_id: T.nilable(String),
                 prompt: T.nilable(OpenAI::Beta::BetaResponsePrompt),
                 prompt_cache_key: T.nilable(String),
-                prompt_cache_options:
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions,
-                prompt_cache_retention:
-                  T.nilable(
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheRetention::OrSymbol
-                  ),
-                reasoning:
-                  T.nilable(
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning
-                  ),
+                prompt_cache_options: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions,
+                prompt_cache_retention: T.nilable(
+                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheRetention::OrSymbol
+                ),
+                reasoning: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning),
                 safety_identifier: T.nilable(String),
-                service_tier:
-                  T.nilable(
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier::OrSymbol
-                  ),
+                service_tier: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier::OrSymbol),
                 store: T.nilable(T::Boolean),
                 stream: T.nilable(T::Boolean),
                 stream_id: String,
-                stream_options:
-                  T.nilable(
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::StreamOptions
-                  ),
+                stream_options: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::StreamOptions),
                 temperature: T.nilable(Float),
                 text: OpenAI::Beta::BetaResponseTextConfig,
-                tool_choice:
+                tool_choice: T.any(
+                  OpenAI::Beta::BetaToolChoiceOptions::OrSymbol,
+                  OpenAI::Beta::BetaToolChoiceAllowed,
+                  OpenAI::Beta::BetaToolChoiceTypes,
+                  OpenAI::Beta::BetaToolChoiceFunction,
+                  OpenAI::Beta::BetaToolChoiceMcp,
+                  OpenAI::Beta::BetaToolChoiceCustom,
+                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ToolChoice::BetaSpecificProgrammaticToolCallingParam,
+                  OpenAI::Beta::BetaToolChoiceApplyPatch,
+                  OpenAI::Beta::BetaToolChoiceShell
+                ),
+                tools: T::Array[
                   T.any(
-                    OpenAI::Beta::BetaToolChoiceOptions::OrSymbol,
-                    OpenAI::Beta::BetaToolChoiceAllowed,
-                    OpenAI::Beta::BetaToolChoiceTypes,
-                    OpenAI::Beta::BetaToolChoiceFunction,
-                    OpenAI::Beta::BetaToolChoiceMcp,
-                    OpenAI::Beta::BetaToolChoiceCustom,
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ToolChoice::BetaSpecificProgrammaticToolCallingParam,
-                    OpenAI::Beta::BetaToolChoiceApplyPatch,
-                    OpenAI::Beta::BetaToolChoiceShell
-                  ),
-                tools:
-                  T::Array[
-                    T.any(
-                      OpenAI::Beta::BetaFunctionTool,
-                      OpenAI::Beta::BetaFileSearchTool,
-                      OpenAI::Beta::BetaComputerTool,
-                      OpenAI::Beta::BetaComputerUsePreviewTool,
-                      OpenAI::Beta::BetaTool::Mcp,
-                      OpenAI::Beta::BetaTool::CodeInterpreter,
-                      OpenAI::Beta::BetaTool::ProgrammaticToolCalling,
-                      OpenAI::Beta::BetaTool::ImageGeneration,
-                      OpenAI::Beta::BetaTool::LocalShell,
-                      OpenAI::Beta::BetaFunctionShellTool,
-                      OpenAI::Beta::BetaCustomTool,
-                      OpenAI::Beta::BetaNamespaceTool,
-                      OpenAI::Beta::BetaToolSearchTool,
-                      OpenAI::Beta::BetaApplyPatchTool,
-                      OpenAI::Beta::BetaWebSearchTool,
-                      OpenAI::Beta::BetaWebSearchPreviewTool
-                    )
-                  ],
+                    OpenAI::Beta::BetaFunctionTool,
+                    OpenAI::Beta::BetaFileSearchTool,
+                    OpenAI::Beta::BetaComputerTool,
+                    OpenAI::Beta::BetaComputerUsePreviewTool,
+                    OpenAI::Beta::BetaTool::Mcp,
+                    OpenAI::Beta::BetaTool::CodeInterpreter,
+                    OpenAI::Beta::BetaTool::ProgrammaticToolCalling,
+                    OpenAI::Beta::BetaTool::ImageGeneration,
+                    OpenAI::Beta::BetaTool::LocalShell,
+                    OpenAI::Beta::BetaFunctionShellTool,
+                    OpenAI::Beta::BetaCustomTool,
+                    OpenAI::Beta::BetaNamespaceTool,
+                    OpenAI::Beta::BetaToolSearchTool,
+                    OpenAI::Beta::BetaApplyPatchTool,
+                    OpenAI::Beta::BetaWebSearchTool,
+                    OpenAI::Beta::BetaWebSearchPreviewTool
+                  )
+                ],
                 top_logprobs: T.nilable(Integer),
                 top_p: T.nilable(Float),
-                truncation:
-                  T.nilable(
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Truncation::OrSymbol
-                  ),
+                truncation: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Truncation::OrSymbol),
                 user: String
               }
             )
@@ -1040,13 +926,12 @@ module OpenAI
           end
 
           class ContextManagement < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ContextManagement,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ContextManagement,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # The context management entry type. Currently only 'compaction' is supported.
             sig { returns(String) }
@@ -1058,25 +943,32 @@ module OpenAI
 
             sig do
               params(
+
                 type: String,
+
                 compact_threshold: T.nilable(Integer)
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # The context management entry type. Currently only 'compaction' is supported.
               type:,
+
               # Token threshold at which compaction should be triggered for this entry.
+
               compact_threshold: nil
             )
             end
 
             sig do
               override.returns(
-                { type: String, compact_threshold: T.nilable(Integer) }
+                {type: String, compact_threshold: T.nilable(Integer)}
               )
             end
             def to_hash
             end
+
           end
 
           # The conversation that this response belongs to. Items from this conversation are
@@ -1086,20 +978,14 @@ module OpenAI
           module Conversation
             extend OpenAI::Internal::Type::Union
 
-            Variants =
-              T.type_alias do
-                T.any(String, OpenAI::Beta::BetaResponseConversationParam)
-              end
+            Variants = T.type_alias { T.any(String, OpenAI::Beta::BetaResponseConversationParam) }
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Conversation::Variants
-                ]
-              )
-            end
+            sig {
+              override.returns(T::Array[OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Conversation::Variants])
+            }
             def self.variants
             end
+
           end
 
           # Text, image, or file inputs to the model, used to generate a response.
@@ -1114,23 +1000,12 @@ module OpenAI
           module Input
             extend OpenAI::Internal::Type::Union
 
-            Variants =
-              T.type_alias do
-                T.any(
-                  String,
-                  T::Array[OpenAI::Beta::BetaResponseInputItem::Variants]
-                )
-              end
+            Variants = T.type_alias { T.any(String, T::Array[OpenAI::Beta::BetaResponseInputItem::Variants]) }
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Input::Variants
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Input::Variants]) }
             def self.variants
             end
+
           end
 
           # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
@@ -1141,553 +1016,387 @@ module OpenAI
           module Model
             extend OpenAI::Internal::Type::Union
 
-            Variants =
-              T.type_alias do
-                T.any(
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol,
-                  String
-                )
-              end
+            Variants = T.type_alias {
+              T.any(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol, String)
+            }
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::Variants
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::Variants]) }
             def self.variants
             end
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model
-                )
-              end
+            TaggedSymbol = T.type_alias do
+              T.all(Symbol, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model)
+            end
+
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            GPT_5_6_SOL =
-              T.let(
-                :"gpt-5.6-sol",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_6_TERRA =
-              T.let(
-                :"gpt-5.6-terra",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_6_LUNA =
-              T.let(
-                :"gpt-5.6-luna",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_5 =
-              T.let(
-                :"gpt-5.5",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_5_2026_04_23 =
-              T.let(
-                :"gpt-5.5-2026-04-23",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_4 =
-              T.let(
-                :"gpt-5.4",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_4_MINI =
-              T.let(
-                :"gpt-5.4-mini",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_4_NANO =
-              T.let(
-                :"gpt-5.4-nano",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_4_MINI_2026_03_17 =
-              T.let(
-                :"gpt-5.4-mini-2026-03-17",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_4_NANO_2026_03_17 =
-              T.let(
-                :"gpt-5.4-nano-2026-03-17",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_3_CHAT_LATEST =
-              T.let(
-                :"gpt-5.3-chat-latest",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_2 =
-              T.let(
-                :"gpt-5.2",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_2_2025_12_11 =
-              T.let(
-                :"gpt-5.2-2025-12-11",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_2_CHAT_LATEST =
-              T.let(
-                :"gpt-5.2-chat-latest",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_2_PRO =
-              T.let(
-                :"gpt-5.2-pro",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_2_PRO_2025_12_11 =
-              T.let(
-                :"gpt-5.2-pro-2025-12-11",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_1 =
-              T.let(
-                :"gpt-5.1",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_1_2025_11_13 =
-              T.let(
-                :"gpt-5.1-2025-11-13",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_1_CODEX =
-              T.let(
-                :"gpt-5.1-codex",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_1_MINI =
-              T.let(
-                :"gpt-5.1-mini",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_1_CHAT_LATEST =
-              T.let(
-                :"gpt-5.1-chat-latest",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5 =
-              T.let(
-                :"gpt-5",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_MINI =
-              T.let(
-                :"gpt-5-mini",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_NANO =
-              T.let(
-                :"gpt-5-nano",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_2025_08_07 =
-              T.let(
-                :"gpt-5-2025-08-07",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_MINI_2025_08_07 =
-              T.let(
-                :"gpt-5-mini-2025-08-07",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_NANO_2025_08_07 =
-              T.let(
-                :"gpt-5-nano-2025-08-07",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_CHAT_LATEST =
-              T.let(
-                :"gpt-5-chat-latest",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4_1 =
-              T.let(
-                :"gpt-4.1",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4_1_MINI =
-              T.let(
-                :"gpt-4.1-mini",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4_1_NANO =
-              T.let(
-                :"gpt-4.1-nano",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4_1_2025_04_14 =
-              T.let(
-                :"gpt-4.1-2025-04-14",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4_1_MINI_2025_04_14 =
-              T.let(
-                :"gpt-4.1-mini-2025-04-14",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4_1_NANO_2025_04_14 =
-              T.let(
-                :"gpt-4.1-nano-2025-04-14",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            O4_MINI =
-              T.let(
-                :"o4-mini",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            O4_MINI_2025_04_16 =
-              T.let(
-                :"o4-mini-2025-04-16",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            O3 =
-              T.let(
-                :o3,
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            O3_2025_04_16 =
-              T.let(
-                :"o3-2025-04-16",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            O3_MINI =
-              T.let(
-                :"o3-mini",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            O3_MINI_2025_01_31 =
-              T.let(
-                :"o3-mini-2025-01-31",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            O1 =
-              T.let(
-                :o1,
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            O1_2024_12_17 =
-              T.let(
-                :"o1-2024-12-17",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            O1_PREVIEW =
-              T.let(
-                :"o1-preview",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            O1_PREVIEW_2024_09_12 =
-              T.let(
-                :"o1-preview-2024-09-12",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            O1_MINI =
-              T.let(
-                :"o1-mini",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            O1_MINI_2024_09_12 =
-              T.let(
-                :"o1-mini-2024-09-12",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4O =
-              T.let(
-                :"gpt-4o",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4O_2024_11_20 =
-              T.let(
-                :"gpt-4o-2024-11-20",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4O_2024_08_06 =
-              T.let(
-                :"gpt-4o-2024-08-06",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4O_2024_05_13 =
-              T.let(
-                :"gpt-4o-2024-05-13",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4O_AUDIO_PREVIEW =
-              T.let(
-                :"gpt-4o-audio-preview",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4O_AUDIO_PREVIEW_2024_10_01 =
-              T.let(
-                :"gpt-4o-audio-preview-2024-10-01",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4O_AUDIO_PREVIEW_2024_12_17 =
-              T.let(
-                :"gpt-4o-audio-preview-2024-12-17",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4O_AUDIO_PREVIEW_2025_06_03 =
-              T.let(
-                :"gpt-4o-audio-preview-2025-06-03",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4O_MINI_AUDIO_PREVIEW =
-              T.let(
-                :"gpt-4o-mini-audio-preview",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4O_MINI_AUDIO_PREVIEW_2024_12_17 =
-              T.let(
-                :"gpt-4o-mini-audio-preview-2024-12-17",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4O_SEARCH_PREVIEW =
-              T.let(
-                :"gpt-4o-search-preview",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4O_MINI_SEARCH_PREVIEW =
-              T.let(
-                :"gpt-4o-mini-search-preview",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4O_SEARCH_PREVIEW_2025_03_11 =
-              T.let(
-                :"gpt-4o-search-preview-2025-03-11",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4O_MINI_SEARCH_PREVIEW_2025_03_11 =
-              T.let(
-                :"gpt-4o-mini-search-preview-2025-03-11",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            CHATGPT_4O_LATEST =
-              T.let(
-                :"chatgpt-4o-latest",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            CODEX_MINI_LATEST =
-              T.let(
-                :"codex-mini-latest",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4O_MINI =
-              T.let(
-                :"gpt-4o-mini",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4O_MINI_2024_07_18 =
-              T.let(
-                :"gpt-4o-mini-2024-07-18",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4_TURBO =
-              T.let(
-                :"gpt-4-turbo",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4_TURBO_2024_04_09 =
-              T.let(
-                :"gpt-4-turbo-2024-04-09",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4_0125_PREVIEW =
-              T.let(
-                :"gpt-4-0125-preview",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4_TURBO_PREVIEW =
-              T.let(
-                :"gpt-4-turbo-preview",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4_1106_PREVIEW =
-              T.let(
-                :"gpt-4-1106-preview",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4_VISION_PREVIEW =
-              T.let(
-                :"gpt-4-vision-preview",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4 =
-              T.let(
-                :"gpt-4",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4_0314 =
-              T.let(
-                :"gpt-4-0314",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4_0613 =
-              T.let(
-                :"gpt-4-0613",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4_32K =
-              T.let(
-                :"gpt-4-32k",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4_32K_0314 =
-              T.let(
-                :"gpt-4-32k-0314",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_4_32K_0613 =
-              T.let(
-                :"gpt-4-32k-0613",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_3_5_TURBO =
-              T.let(
-                :"gpt-3.5-turbo",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_3_5_TURBO_16K =
-              T.let(
-                :"gpt-3.5-turbo-16k",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_3_5_TURBO_0301 =
-              T.let(
-                :"gpt-3.5-turbo-0301",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_3_5_TURBO_0613 =
-              T.let(
-                :"gpt-3.5-turbo-0613",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_3_5_TURBO_1106 =
-              T.let(
-                :"gpt-3.5-turbo-1106",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_3_5_TURBO_0125 =
-              T.let(
-                :"gpt-3.5-turbo-0125",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_3_5_TURBO_16K_0613 =
-              T.let(
-                :"gpt-3.5-turbo-16k-0613",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            O1_PRO =
-              T.let(
-                :"o1-pro",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            O1_PRO_2025_03_19 =
-              T.let(
-                :"o1-pro-2025-03-19",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            O3_PRO =
-              T.let(
-                :"o3-pro",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            O3_PRO_2025_06_10 =
-              T.let(
-                :"o3-pro-2025-06-10",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            O3_DEEP_RESEARCH =
-              T.let(
-                :"o3-deep-research",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            O3_DEEP_RESEARCH_2025_06_26 =
-              T.let(
-                :"o3-deep-research-2025-06-26",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            O4_MINI_DEEP_RESEARCH =
-              T.let(
-                :"o4-mini-deep-research",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            O4_MINI_DEEP_RESEARCH_2025_06_26 =
-              T.let(
-                :"o4-mini-deep-research-2025-06-26",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            COMPUTER_USE_PREVIEW =
-              T.let(
-                :"computer-use-preview",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            COMPUTER_USE_PREVIEW_2025_03_11 =
-              T.let(
-                :"computer-use-preview-2025-03-11",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_5_PRO =
-              T.let(
-                :"gpt-5.5-pro",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_5_PRO_2026_04_23 =
-              T.let(
-                :"gpt-5.5-pro-2026-04-23",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_CODEX =
-              T.let(
-                :"gpt-5-codex",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_PRO =
-              T.let(
-                :"gpt-5-pro",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_PRO_2025_10_06 =
-              T.let(
-                :"gpt-5-pro-2025-10-06",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_1_CODEX_MAX =
-              T.let(
-                :"gpt-5.1-codex-max",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_DAYBREAK_BLUE_LATEST =
-              T.let(
-                :"gpt-daybreak-blue-latest",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_DAYBREAK_RED_LATEST =
-              T.let(
-                :"gpt-daybreak-red-latest",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
-            GPT_5_6_CYBER =
-              T.let(
-                :"gpt-5.6-cyber",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-              )
+            GPT_5_6_SOL = T.let(
+              :"gpt-5.6-sol",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_5_6_TERRA = T.let(
+              :"gpt-5.6-terra",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_5_6_LUNA = T.let(
+              :"gpt-5.6-luna",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_5_5 = T.let(:"gpt-5.5", OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol)
+            GPT_5_5_2026_04_23 = T.let(
+              :"gpt-5.5-2026-04-23",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_5_4 = T.let(:"gpt-5.4", OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol)
+            GPT_5_4_MINI = T.let(
+              :"gpt-5.4-mini",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_5_4_NANO = T.let(
+              :"gpt-5.4-nano",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_5_4_MINI_2026_03_17 = T.let(
+              :"gpt-5.4-mini-2026-03-17",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_5_4_NANO_2026_03_17 = T.let(
+              :"gpt-5.4-nano-2026-03-17",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_5_3_CHAT_LATEST = T.let(
+              :"gpt-5.3-chat-latest",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_5_2 = T.let(:"gpt-5.2", OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol)
+            GPT_5_2_2025_12_11 = T.let(
+              :"gpt-5.2-2025-12-11",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_5_2_CHAT_LATEST = T.let(
+              :"gpt-5.2-chat-latest",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_5_2_PRO = T.let(
+              :"gpt-5.2-pro",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_5_2_PRO_2025_12_11 = T.let(
+              :"gpt-5.2-pro-2025-12-11",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_5_1 = T.let(:"gpt-5.1", OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol)
+            GPT_5_1_2025_11_13 = T.let(
+              :"gpt-5.1-2025-11-13",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_5_1_CODEX = T.let(
+              :"gpt-5.1-codex",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_5_1_MINI = T.let(
+              :"gpt-5.1-mini",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_5_1_CHAT_LATEST = T.let(
+              :"gpt-5.1-chat-latest",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_5 = T.let(:"gpt-5", OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol)
+            GPT_5_MINI = T.let(
+              :"gpt-5-mini",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_5_NANO = T.let(
+              :"gpt-5-nano",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_5_2025_08_07 = T.let(
+              :"gpt-5-2025-08-07",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_5_MINI_2025_08_07 = T.let(
+              :"gpt-5-mini-2025-08-07",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_5_NANO_2025_08_07 = T.let(
+              :"gpt-5-nano-2025-08-07",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_5_CHAT_LATEST = T.let(
+              :"gpt-5-chat-latest",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4_1 = T.let(:"gpt-4.1", OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol)
+            GPT_4_1_MINI = T.let(
+              :"gpt-4.1-mini",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4_1_NANO = T.let(
+              :"gpt-4.1-nano",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4_1_2025_04_14 = T.let(
+              :"gpt-4.1-2025-04-14",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4_1_MINI_2025_04_14 = T.let(
+              :"gpt-4.1-mini-2025-04-14",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4_1_NANO_2025_04_14 = T.let(
+              :"gpt-4.1-nano-2025-04-14",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            O4_MINI = T.let(:"o4-mini", OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol)
+            O4_MINI_2025_04_16 = T.let(
+              :"o4-mini-2025-04-16",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            O3 = T.let(:o3, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol)
+            O3_2025_04_16 = T.let(
+              :"o3-2025-04-16",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            O3_MINI = T.let(:"o3-mini", OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol)
+            O3_MINI_2025_01_31 = T.let(
+              :"o3-mini-2025-01-31",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            O1 = T.let(:o1, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol)
+            O1_2024_12_17 = T.let(
+              :"o1-2024-12-17",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            O1_PREVIEW = T.let(
+              :"o1-preview",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            O1_PREVIEW_2024_09_12 = T.let(
+              :"o1-preview-2024-09-12",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            O1_MINI = T.let(:"o1-mini", OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol)
+            O1_MINI_2024_09_12 = T.let(
+              :"o1-mini-2024-09-12",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4O = T.let(:"gpt-4o", OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol)
+            GPT_4O_2024_11_20 = T.let(
+              :"gpt-4o-2024-11-20",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4O_2024_08_06 = T.let(
+              :"gpt-4o-2024-08-06",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4O_2024_05_13 = T.let(
+              :"gpt-4o-2024-05-13",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4O_AUDIO_PREVIEW = T.let(
+              :"gpt-4o-audio-preview",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4O_AUDIO_PREVIEW_2024_10_01 = T.let(
+              :"gpt-4o-audio-preview-2024-10-01",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4O_AUDIO_PREVIEW_2024_12_17 = T.let(
+              :"gpt-4o-audio-preview-2024-12-17",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4O_AUDIO_PREVIEW_2025_06_03 = T.let(
+              :"gpt-4o-audio-preview-2025-06-03",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4O_MINI_AUDIO_PREVIEW = T.let(
+              :"gpt-4o-mini-audio-preview",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4O_MINI_AUDIO_PREVIEW_2024_12_17 = T.let(
+              :"gpt-4o-mini-audio-preview-2024-12-17",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4O_SEARCH_PREVIEW = T.let(
+              :"gpt-4o-search-preview",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4O_MINI_SEARCH_PREVIEW = T.let(
+              :"gpt-4o-mini-search-preview",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4O_SEARCH_PREVIEW_2025_03_11 = T.let(
+              :"gpt-4o-search-preview-2025-03-11",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4O_MINI_SEARCH_PREVIEW_2025_03_11 = T.let(
+              :"gpt-4o-mini-search-preview-2025-03-11",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            CHATGPT_4O_LATEST = T.let(
+              :"chatgpt-4o-latest",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            CODEX_MINI_LATEST = T.let(
+              :"codex-mini-latest",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4O_MINI = T.let(
+              :"gpt-4o-mini",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4O_MINI_2024_07_18 = T.let(
+              :"gpt-4o-mini-2024-07-18",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4_TURBO = T.let(
+              :"gpt-4-turbo",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4_TURBO_2024_04_09 = T.let(
+              :"gpt-4-turbo-2024-04-09",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4_0125_PREVIEW = T.let(
+              :"gpt-4-0125-preview",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4_TURBO_PREVIEW = T.let(
+              :"gpt-4-turbo-preview",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4_1106_PREVIEW = T.let(
+              :"gpt-4-1106-preview",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4_VISION_PREVIEW = T.let(
+              :"gpt-4-vision-preview",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4 = T.let(:"gpt-4", OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol)
+            GPT_4_0314 = T.let(
+              :"gpt-4-0314",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4_0613 = T.let(
+              :"gpt-4-0613",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4_32K = T.let(:"gpt-4-32k", OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol)
+            GPT_4_32K_0314 = T.let(
+              :"gpt-4-32k-0314",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_4_32K_0613 = T.let(
+              :"gpt-4-32k-0613",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_3_5_TURBO = T.let(
+              :"gpt-3.5-turbo",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_3_5_TURBO_16K = T.let(
+              :"gpt-3.5-turbo-16k",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_3_5_TURBO_0301 = T.let(
+              :"gpt-3.5-turbo-0301",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_3_5_TURBO_0613 = T.let(
+              :"gpt-3.5-turbo-0613",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_3_5_TURBO_1106 = T.let(
+              :"gpt-3.5-turbo-1106",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_3_5_TURBO_0125 = T.let(
+              :"gpt-3.5-turbo-0125",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_3_5_TURBO_16K_0613 = T.let(
+              :"gpt-3.5-turbo-16k-0613",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            O1_PRO = T.let(:"o1-pro", OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol)
+            O1_PRO_2025_03_19 = T.let(
+              :"o1-pro-2025-03-19",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            O3_PRO = T.let(:"o3-pro", OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol)
+            O3_PRO_2025_06_10 = T.let(
+              :"o3-pro-2025-06-10",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            O3_DEEP_RESEARCH = T.let(
+              :"o3-deep-research",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            O3_DEEP_RESEARCH_2025_06_26 = T.let(
+              :"o3-deep-research-2025-06-26",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            O4_MINI_DEEP_RESEARCH = T.let(
+              :"o4-mini-deep-research",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            O4_MINI_DEEP_RESEARCH_2025_06_26 = T.let(
+              :"o4-mini-deep-research-2025-06-26",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            COMPUTER_USE_PREVIEW = T.let(
+              :"computer-use-preview",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            COMPUTER_USE_PREVIEW_2025_03_11 = T.let(
+              :"computer-use-preview-2025-03-11",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_5_5_PRO = T.let(
+              :"gpt-5.5-pro",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_5_5_PRO_2026_04_23 = T.let(
+              :"gpt-5.5-pro-2026-04-23",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_5_CODEX = T.let(
+              :"gpt-5-codex",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_5_PRO = T.let(:"gpt-5-pro", OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol)
+            GPT_5_PRO_2025_10_06 = T.let(
+              :"gpt-5-pro-2025-10-06",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_5_1_CODEX_MAX = T.let(
+              :"gpt-5.1-codex-max",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_DAYBREAK_BLUE_LATEST = T.let(
+              :"gpt-daybreak-blue-latest",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_DAYBREAK_RED_LATEST = T.let(
+              :"gpt-daybreak-red-latest",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_5_6_CYBER = T.let(
+              :"gpt-5.6-cyber",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+
           end
 
           class Moderation < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # The moderation model to use for moderated completions, e.g.
             # 'omni-moderation-latest'.
@@ -1695,40 +1404,35 @@ module OpenAI
             attr_accessor :model
 
             # The policy to apply to moderated response input and output.
-            sig do
-              returns(
-                T.nilable(
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy
-                )
-              )
-            end
+            sig { returns(T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy)) }
             attr_reader :policy
 
-            sig do
+            sig {
               params(
-                policy:
-                  T.nilable(
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::OrHash
-                  )
-              ).void
-            end
+                policy: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::OrHash)
+              )
+                .void
+            }
             attr_writer :policy
 
             # Configuration for running moderation on the input and output of this response.
             sig do
               params(
+
                 model: String,
-                policy:
-                  T.nilable(
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::OrHash
-                  )
-              ).returns(T.attached_class)
+
+                policy: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::OrHash)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # The moderation model to use for moderated completions, e.g.
               # 'omni-moderation-latest'.
               model:,
+
               # The policy to apply to moderated response input and output.
+
               policy: nil
             )
             end
@@ -1737,10 +1441,7 @@ module OpenAI
               override.returns(
                 {
                   model: String,
-                  policy:
-                    T.nilable(
-                      OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy
-                    )
+                  policy: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy)
                 }
               )
             end
@@ -1748,71 +1449,66 @@ module OpenAI
             end
 
             class Policy < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
-
-              # The moderation policy for the response input.
-              sig do
-                returns(
-                  T.nilable(
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input
-                  )
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy,
+                  OpenAI::Internal::AnyHash
                 )
               end
+
+              # The moderation policy for the response input.
+              sig {
+                returns(T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input))
+              }
               attr_reader :input
 
-              sig do
+              sig {
                 params(
-                  input:
-                    T.nilable(
-                      OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::OrHash
-                    )
-                ).void
-              end
+                  input: T.nilable(
+                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::OrHash
+                  )
+                )
+                  .void
+              }
               attr_writer :input
 
               # The moderation policy for the response output.
-              sig do
-                returns(
-                  T.nilable(
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output
-                  )
-                )
-              end
+              sig {
+                returns(T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output))
+              }
               attr_reader :output
 
-              sig do
+              sig {
                 params(
-                  output:
-                    T.nilable(
-                      OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::OrHash
-                    )
-                ).void
-              end
+                  output: T.nilable(
+                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::OrHash
+                  )
+                )
+                  .void
+              }
               attr_writer :output
 
               # The policy to apply to moderated response input and output.
               sig do
                 params(
-                  input:
-                    T.nilable(
-                      OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::OrHash
-                    ),
-                  output:
-                    T.nilable(
-                      OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::OrHash
-                    )
-                ).returns(T.attached_class)
+
+                  input: T.nilable(
+                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::OrHash
+                  ),
+
+                  output: T.nilable(
+                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::OrHash
+                  )
+                )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 # The moderation policy for the response input.
                 input: nil,
+
                 # The moderation policy for the response output.
+
                 output: nil
               )
               end
@@ -1820,14 +1516,10 @@ module OpenAI
               sig do
                 override.returns(
                   {
-                    input:
-                      T.nilable(
-                        OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input
-                      ),
-                    output:
-                      T.nilable(
-                        OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output
-                      )
+                    input: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input),
+                    output: T.nilable(
+                      OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output
+                    )
                   }
                 )
               end
@@ -1835,36 +1527,38 @@ module OpenAI
               end
 
               class Input < OpenAI::Internal::Type::BaseModel
-                OrHash =
-                  T.type_alias do
-                    T.any(
-                      OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input,
-                      OpenAI::Internal::AnyHash
-                    )
-                  end
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
-                sig do
+                sig {
                   returns(
                     OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::Mode::OrSymbol
                   )
-                end
+                }
                 attr_accessor :mode
 
                 # The moderation policy for the response input.
                 sig do
                   params(
-                    mode:
-                      OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::Mode::OrSymbol
-                  ).returns(T.attached_class)
+
+                    mode: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::Mode::OrSymbol
+                  )
+                    .returns(T.attached_class)
                 end
-                def self.new(mode:)
+                def self.new(
+
+                  mode:
+                )
                 end
 
                 sig do
                   override.returns(
                     {
-                      mode:
-                        OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::Mode::OrSymbol
+                      mode: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::Mode::OrSymbol
                     }
                   )
                 end
@@ -1874,69 +1568,68 @@ module OpenAI
                 module Mode
                   extend OpenAI::Internal::Type::Enum
 
-                  TaggedSymbol =
-                    T.type_alias do
-                      T.all(
-                        Symbol,
-                        OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::Mode
-                      )
-                    end
+                  TaggedSymbol = T.type_alias {
+                    T.all(
+                      Symbol,
+                      OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::Mode
+                    )
+                  }
                   OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-                  SCORE =
-                    T.let(
-                      :score,
-                      OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::Mode::TaggedSymbol
-                    )
-                  BLOCK =
-                    T.let(
-                      :block,
-                      OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::Mode::TaggedSymbol
-                    )
+                  SCORE = T.let(
+                    :score,
+                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::Mode::TaggedSymbol
+                  )
+                  BLOCK = T.let(
+                    :block,
+                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::Mode::TaggedSymbol
+                  )
 
-                  sig do
+                  sig {
                     override.returns(
                       T::Array[
                         OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::Mode::TaggedSymbol
                       ]
                     )
-                  end
+                  }
                   def self.values
                   end
                 end
               end
 
               class Output < OpenAI::Internal::Type::BaseModel
-                OrHash =
-                  T.type_alias do
-                    T.any(
-                      OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output,
-                      OpenAI::Internal::AnyHash
-                    )
-                  end
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
-                sig do
+                sig {
                   returns(
                     OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::Mode::OrSymbol
                   )
-                end
+                }
                 attr_accessor :mode
 
                 # The moderation policy for the response output.
                 sig do
                   params(
-                    mode:
-                      OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::Mode::OrSymbol
-                  ).returns(T.attached_class)
+
+                    mode: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::Mode::OrSymbol
+                  )
+                    .returns(T.attached_class)
                 end
-                def self.new(mode:)
+                def self.new(
+
+                  mode:
+                )
                 end
 
                 sig do
                   override.returns(
                     {
-                      mode:
-                        OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::Mode::OrSymbol
+                      mode: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::Mode::OrSymbol
                     }
                   )
                 end
@@ -1946,33 +1639,30 @@ module OpenAI
                 module Mode
                   extend OpenAI::Internal::Type::Enum
 
-                  TaggedSymbol =
-                    T.type_alias do
-                      T.all(
-                        Symbol,
-                        OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::Mode
-                      )
-                    end
+                  TaggedSymbol = T.type_alias {
+                    T.all(
+                      Symbol,
+                      OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::Mode
+                    )
+                  }
                   OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-                  SCORE =
-                    T.let(
-                      :score,
-                      OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::Mode::TaggedSymbol
-                    )
-                  BLOCK =
-                    T.let(
-                      :block,
-                      OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::Mode::TaggedSymbol
-                    )
+                  SCORE = T.let(
+                    :score,
+                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::Mode::TaggedSymbol
+                  )
+                  BLOCK = T.let(
+                    :block,
+                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::Mode::TaggedSymbol
+                  )
 
-                  sig do
+                  sig {
                     override.returns(
                       T::Array[
                         OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::Mode::TaggedSymbol
                       ]
                     )
-                  end
+                  }
                   def self.values
                   end
                 end
@@ -1981,13 +1671,12 @@ module OpenAI
           end
 
           class MultiAgent < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::MultiAgent,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::MultiAgent,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # Whether to enable server-hosted multi-agent execution for this response.
             sig { returns(T::Boolean) }
@@ -2008,40 +1697,46 @@ module OpenAI
             # Configuration for server-hosted multi-agent execution.
             sig do
               params(
+
                 enabled: T::Boolean,
+
                 max_concurrent_subagents: Integer
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # Whether to enable server-hosted multi-agent execution for this response.
               enabled:,
+
               # `max_concurrent_subagents` sets the maximum number of subagents that can be
               # active simultaneously across the entire agent tree. It includes all
               # descendants—children, grandchildren, and deeper subagents—but excludes the root
               # agent. The API does not impose a fixed upper bound on this setting. The default
               # is `3`, which is recommended for most workloads. Multi-agent runs also have no
               # fixed limit on tree depth or the total number of subagents created during a run.
+
               max_concurrent_subagents: nil
             )
             end
 
             sig do
               override.returns(
-                { enabled: T::Boolean, max_concurrent_subagents: Integer }
+                {enabled: T::Boolean, max_concurrent_subagents: Integer}
               )
             end
             def to_hash
             end
+
           end
 
           class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # Controls whether OpenAI automatically creates an implicit cache breakpoint.
             # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
@@ -2049,41 +1744,33 @@ module OpenAI
             # `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
             # latest four explicit breakpoints. If there are no explicit breakpoints, the
             # request does not use prompt caching.
-            sig do
+            sig {
               returns(
-                T.nilable(
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode::OrSymbol
-                )
+                T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode::OrSymbol)
               )
-            end
+            }
             attr_reader :mode
 
-            sig do
-              params(
-                mode:
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode::OrSymbol
-              ).void
-            end
+            sig {
+              params(mode: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode::OrSymbol)
+                .void
+            }
             attr_writer :mode
 
             # The minimum lifetime applied to every implicit and explicit cache breakpoint
             # written by the request. Defaults to `30m`, which is currently the only supported
             # value. The backend may retain cache entries for longer.
-            sig do
+            sig {
               returns(
-                T.nilable(
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl::OrSymbol
-                )
+                T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl::OrSymbol)
               )
-            end
+            }
             attr_reader :ttl
 
-            sig do
-              params(
-                ttl:
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl::OrSymbol
-              ).void
-            end
+            sig {
+              params(ttl: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl::OrSymbol)
+                .void
+            }
             attr_writer :ttl
 
             # Options for prompt caching. Supported for `gpt-5.6` and later models. By
@@ -2097,13 +1784,15 @@ module OpenAI
             # for current details.
             sig do
               params(
-                mode:
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode::OrSymbol,
-                ttl:
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl::OrSymbol
-              ).returns(T.attached_class)
+
+                mode: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode::OrSymbol,
+
+                ttl: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl::OrSymbol
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # Controls whether OpenAI automatically creates an implicit cache breakpoint.
               # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
               # and writes up to the latest three explicit breakpoints in the request. With
@@ -2111,9 +1800,11 @@ module OpenAI
               # latest four explicit breakpoints. If there are no explicit breakpoints, the
               # request does not use prompt caching.
               mode: nil,
+
               # The minimum lifetime applied to every implicit and explicit cache breakpoint
               # written by the request. Defaults to `30m`, which is currently the only supported
               # value. The backend may retain cache entries for longer.
+
               ttl: nil
             )
             end
@@ -2121,10 +1812,8 @@ module OpenAI
             sig do
               override.returns(
                 {
-                  mode:
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode::OrSymbol,
-                  ttl:
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl::OrSymbol
+                  mode: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode::OrSymbol,
+                  ttl: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl::OrSymbol
                 }
               )
             end
@@ -2140,33 +1829,27 @@ module OpenAI
             module Mode
               extend OpenAI::Internal::Type::Enum
 
-              TaggedSymbol =
-                T.type_alias do
-                  T.all(
-                    Symbol,
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode
-                  )
-                end
+              TaggedSymbol = T.type_alias {
+                T.all(Symbol, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode)
+              }
               OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-              IMPLICIT =
-                T.let(
-                  :implicit,
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode::TaggedSymbol
-                )
-              EXPLICIT =
-                T.let(
-                  :explicit,
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode::TaggedSymbol
-                )
+              IMPLICIT = T.let(
+                :implicit,
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode::TaggedSymbol
+              )
+              EXPLICIT = T.let(
+                :explicit,
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode::TaggedSymbol
+              )
 
-              sig do
+              sig {
                 override.returns(
                   T::Array[
                     OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode::TaggedSymbol
                   ]
                 )
-              end
+              }
               def self.values
               end
             end
@@ -2177,28 +1860,23 @@ module OpenAI
             module Ttl
               extend OpenAI::Internal::Type::Enum
 
-              TaggedSymbol =
-                T.type_alias do
-                  T.all(
-                    Symbol,
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl
-                  )
-                end
+              TaggedSymbol = T.type_alias {
+                T.all(Symbol, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl)
+              }
               OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-              TTL_30M =
-                T.let(
-                  :"30m",
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl::TaggedSymbol
-                )
+              TTL_30M = T.let(
+                :"30m",
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl::TaggedSymbol
+              )
 
-              sig do
+              sig {
                 override.returns(
                   T::Array[
                     OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl::TaggedSymbol
                   ]
                 )
-              end
+              }
               def self.values
               end
             end
@@ -2224,45 +1902,36 @@ module OpenAI
           module PromptCacheRetention
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheRetention
-                )
-              end
+            TaggedSymbol = T.type_alias {
+              T.all(Symbol, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheRetention)
+            }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            IN_MEMORY =
-              T.let(
-                :in_memory,
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheRetention::TaggedSymbol
-              )
-            PROMPT_CACHE_RETENTION_24H =
-              T.let(
-                :"24h",
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheRetention::TaggedSymbol
-              )
+            IN_MEMORY = T.let(
+              :in_memory,
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheRetention::TaggedSymbol
+            )
+            PROMPT_CACHE_RETENTION_24H = T.let(
+              :"24h",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheRetention::TaggedSymbol
+            )
 
-            sig do
+            sig {
               override.returns(
-                T::Array[
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheRetention::TaggedSymbol
-                ]
+                T::Array[OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheRetention::TaggedSymbol]
               )
-            end
+            }
             def self.values
             end
           end
 
           class Reasoning < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # Controls which reasoning items are rendered back to the model on later turns. If
             # omitted or set to `auto`, the model determines the context mode. The `gpt-5.6`
@@ -2270,13 +1939,9 @@ module OpenAI
             #
             # When returned on a response, this is the effective reasoning context mode used
             # for the response.
-            sig do
-              returns(
-                T.nilable(
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Context::OrSymbol
-                )
-              )
-            end
+            sig {
+              returns(T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Context::OrSymbol))
+            }
             attr_accessor :context
 
             # Constrains effort on reasoning for reasoning models. Currently supported values
@@ -2285,13 +1950,9 @@ module OpenAI
             # reasoning in a response. Not all reasoning models support every value. See the
             # [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
             # model-specific support.
-            sig do
-              returns(
-                T.nilable(
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Effort::OrSymbol
-                )
-              )
-            end
+            sig {
+              returns(T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Effort::OrSymbol))
+            }
             attr_accessor :effort
 
             # **Deprecated:** use `summary` instead.
@@ -2299,39 +1960,31 @@ module OpenAI
             # A summary of the reasoning performed by the model. This can be useful for
             # debugging and understanding the model's reasoning process. One of `auto`,
             # `concise`, or `detailed`.
-            sig do
+            sig {
               returns(
-                T.nilable(
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::GenerateSummary::OrSymbol
-                )
+                T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::GenerateSummary::OrSymbol)
               )
-            end
+            }
             attr_accessor :generate_summary
 
             # Controls the reasoning execution mode for the request.
             #
             # When returned on a response, this is the effective execution mode.
-            sig do
+            sig {
               returns(
                 T.nilable(
-                  T.any(
-                    String,
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Mode::OrSymbol
-                  )
+                  T.any(String, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Mode::OrSymbol)
                 )
               )
-            end
+            }
             attr_reader :mode
 
-            sig do
+            sig {
               params(
-                mode:
-                  T.any(
-                    String,
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Mode::OrSymbol
-                  )
-              ).void
-            end
+                mode: T.any(String, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Mode::OrSymbol)
+              )
+                .void
+            }
             attr_writer :mode
 
             # A summary of the reasoning performed by the model. This can be useful for
@@ -2340,13 +1993,9 @@ module OpenAI
             #
             # `concise` is supported for `computer-use-preview` models and all reasoning
             # models after `gpt-5`.
-            sig do
-              returns(
-                T.nilable(
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Summary::OrSymbol
-                )
-              )
-            end
+            sig {
+              returns(T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Summary::OrSymbol))
+            }
             attr_accessor :summary
 
             # **gpt-5 and o-series models only**
@@ -2355,30 +2004,23 @@ module OpenAI
             # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
             sig do
               params(
-                context:
-                  T.nilable(
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Context::OrSymbol
-                  ),
-                effort:
-                  T.nilable(
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Effort::OrSymbol
-                  ),
-                generate_summary:
-                  T.nilable(
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::GenerateSummary::OrSymbol
-                  ),
-                mode:
-                  T.any(
-                    String,
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Mode::OrSymbol
-                  ),
-                summary:
-                  T.nilable(
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Summary::OrSymbol
-                  )
-              ).returns(T.attached_class)
+
+                context: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Context::OrSymbol),
+
+                effort: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Effort::OrSymbol),
+
+                generate_summary: T.nilable(
+                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::GenerateSummary::OrSymbol
+                ),
+
+                mode: T.any(String, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Mode::OrSymbol),
+
+                summary: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Summary::OrSymbol)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # Controls which reasoning items are rendered back to the model on later turns. If
               # omitted or set to `auto`, the model determines the context mode. The `gpt-5.6`
               # model family defaults to `all_turns`; earlier models default to `current_turn`.
@@ -2386,6 +2028,7 @@ module OpenAI
               # When returned on a response, this is the effective reasoning context mode used
               # for the response.
               context: nil,
+
               # Constrains effort on reasoning for reasoning models. Currently supported values
               # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
               # reasoning effort can result in faster responses and fewer tokens used on
@@ -2393,22 +2036,26 @@ module OpenAI
               # [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
               # model-specific support.
               effort: nil,
+
               # **Deprecated:** use `summary` instead.
               #
               # A summary of the reasoning performed by the model. This can be useful for
               # debugging and understanding the model's reasoning process. One of `auto`,
               # `concise`, or `detailed`.
               generate_summary: nil,
+
               # Controls the reasoning execution mode for the request.
               #
               # When returned on a response, this is the effective execution mode.
               mode: nil,
+
               # A summary of the reasoning performed by the model. This can be useful for
               # debugging and understanding the model's reasoning process. One of `auto`,
               # `concise`, or `detailed`.
               #
               # `concise` is supported for `computer-use-preview` models and all reasoning
               # models after `gpt-5`.
+
               summary: nil
             )
             end
@@ -2416,27 +2063,17 @@ module OpenAI
             sig do
               override.returns(
                 {
-                  context:
-                    T.nilable(
-                      OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Context::OrSymbol
-                    ),
-                  effort:
-                    T.nilable(
-                      OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Effort::OrSymbol
-                    ),
-                  generate_summary:
-                    T.nilable(
-                      OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::GenerateSummary::OrSymbol
-                    ),
-                  mode:
-                    T.any(
-                      String,
-                      OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Mode::OrSymbol
-                    ),
-                  summary:
-                    T.nilable(
-                      OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Summary::OrSymbol
-                    )
+                  context: T.nilable(
+                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Context::OrSymbol
+                  ),
+                  effort: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Effort::OrSymbol),
+                  generate_summary: T.nilable(
+                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::GenerateSummary::OrSymbol
+                  ),
+                  mode: T.any(String, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Mode::OrSymbol),
+                  summary: T.nilable(
+                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Summary::OrSymbol
+                  )
                 }
               )
             end
@@ -2452,38 +2089,29 @@ module OpenAI
             module Context
               extend OpenAI::Internal::Type::Enum
 
-              TaggedSymbol =
-                T.type_alias do
-                  T.all(
-                    Symbol,
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Context
-                  )
-                end
+              TaggedSymbol = T.type_alias {
+                T.all(Symbol, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Context)
+              }
               OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-              AUTO =
-                T.let(
-                  :auto,
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Context::TaggedSymbol
-                )
-              CURRENT_TURN =
-                T.let(
-                  :current_turn,
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Context::TaggedSymbol
-                )
-              ALL_TURNS =
-                T.let(
-                  :all_turns,
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Context::TaggedSymbol
-                )
+              AUTO = T.let(
+                :auto,
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Context::TaggedSymbol
+              )
+              CURRENT_TURN = T.let(
+                :current_turn,
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Context::TaggedSymbol
+              )
+              ALL_TURNS = T.let(
+                :all_turns,
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Context::TaggedSymbol
+              )
 
-              sig do
+              sig {
                 override.returns(
-                  T::Array[
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Context::TaggedSymbol
-                  ]
+                  T::Array[OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Context::TaggedSymbol]
                 )
-              end
+              }
               def self.values
               end
             end
@@ -2497,58 +2125,39 @@ module OpenAI
             module Effort
               extend OpenAI::Internal::Type::Enum
 
-              TaggedSymbol =
-                T.type_alias do
-                  T.all(
-                    Symbol,
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Effort
-                  )
-                end
+              TaggedSymbol = T.type_alias {
+                T.all(Symbol, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Effort)
+              }
               OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-              NONE =
-                T.let(
-                  :none,
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Effort::TaggedSymbol
-                )
-              MINIMAL =
-                T.let(
-                  :minimal,
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Effort::TaggedSymbol
-                )
-              LOW =
-                T.let(
-                  :low,
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Effort::TaggedSymbol
-                )
-              MEDIUM =
-                T.let(
-                  :medium,
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Effort::TaggedSymbol
-                )
-              HIGH =
-                T.let(
-                  :high,
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Effort::TaggedSymbol
-                )
-              XHIGH =
-                T.let(
-                  :xhigh,
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Effort::TaggedSymbol
-                )
-              MAX =
-                T.let(
-                  :max,
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Effort::TaggedSymbol
-                )
+              NONE = T.let(
+                :none,
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Effort::TaggedSymbol
+              )
+              MINIMAL = T.let(
+                :minimal,
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Effort::TaggedSymbol
+              )
+              LOW = T.let(:low, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Effort::TaggedSymbol)
+              MEDIUM = T.let(
+                :medium,
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Effort::TaggedSymbol
+              )
+              HIGH = T.let(
+                :high,
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Effort::TaggedSymbol
+              )
+              XHIGH = T.let(
+                :xhigh,
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Effort::TaggedSymbol
+              )
+              MAX = T.let(:max, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Effort::TaggedSymbol)
 
-              sig do
+              sig {
                 override.returns(
-                  T::Array[
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Effort::TaggedSymbol
-                  ]
+                  T::Array[OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Effort::TaggedSymbol]
                 )
-              end
+              }
               def self.values
               end
             end
@@ -2561,38 +2170,31 @@ module OpenAI
             module GenerateSummary
               extend OpenAI::Internal::Type::Enum
 
-              TaggedSymbol =
-                T.type_alias do
-                  T.all(
-                    Symbol,
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::GenerateSummary
-                  )
-                end
+              TaggedSymbol = T.type_alias {
+                T.all(Symbol, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::GenerateSummary)
+              }
               OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-              AUTO =
-                T.let(
-                  :auto,
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::GenerateSummary::TaggedSymbol
-                )
-              CONCISE =
-                T.let(
-                  :concise,
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::GenerateSummary::TaggedSymbol
-                )
-              DETAILED =
-                T.let(
-                  :detailed,
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::GenerateSummary::TaggedSymbol
-                )
+              AUTO = T.let(
+                :auto,
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::GenerateSummary::TaggedSymbol
+              )
+              CONCISE = T.let(
+                :concise,
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::GenerateSummary::TaggedSymbol
+              )
+              DETAILED = T.let(
+                :detailed,
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::GenerateSummary::TaggedSymbol
+              )
 
-              sig do
+              sig {
                 override.returns(
                   T::Array[
                     OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::GenerateSummary::TaggedSymbol
                   ]
                 )
-              end
+              }
               def self.values
               end
             end
@@ -2603,43 +2205,30 @@ module OpenAI
             module Mode
               extend OpenAI::Internal::Type::Union
 
-              Variants =
-                T.type_alias do
-                  T.any(
-                    String,
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Mode::TaggedSymbol
-                  )
-                end
+              Variants = T.type_alias {
+                T.any(String, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Mode::TaggedSymbol)
+              }
 
-              sig do
+              sig {
                 override.returns(
-                  T::Array[
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Mode::Variants
-                  ]
+                  T::Array[OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Mode::Variants]
                 )
-              end
+              }
               def self.variants
               end
 
-              TaggedSymbol =
-                T.type_alias do
-                  T.all(
-                    Symbol,
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Mode
-                  )
-                end
+              TaggedSymbol = T.type_alias do
+                T.all(Symbol, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Mode)
+              end
+
               OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-              STANDARD =
-                T.let(
-                  :standard,
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Mode::TaggedSymbol
-                )
-              PRO =
-                T.let(
-                  :pro,
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Mode::TaggedSymbol
-                )
+              STANDARD = T.let(
+                :standard,
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Mode::TaggedSymbol
+              )
+              PRO = T.let(:pro, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Mode::TaggedSymbol)
+
             end
 
             # A summary of the reasoning performed by the model. This can be useful for
@@ -2651,38 +2240,29 @@ module OpenAI
             module Summary
               extend OpenAI::Internal::Type::Enum
 
-              TaggedSymbol =
-                T.type_alias do
-                  T.all(
-                    Symbol,
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Summary
-                  )
-                end
+              TaggedSymbol = T.type_alias {
+                T.all(Symbol, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Summary)
+              }
               OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-              AUTO =
-                T.let(
-                  :auto,
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Summary::TaggedSymbol
-                )
-              CONCISE =
-                T.let(
-                  :concise,
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Summary::TaggedSymbol
-                )
-              DETAILED =
-                T.let(
-                  :detailed,
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Summary::TaggedSymbol
-                )
+              AUTO = T.let(
+                :auto,
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Summary::TaggedSymbol
+              )
+              CONCISE = T.let(
+                :concise,
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Summary::TaggedSymbol
+              )
+              DETAILED = T.let(
+                :detailed,
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Summary::TaggedSymbol
+              )
 
-              sig do
+              sig {
                 override.returns(
-                  T::Array[
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Summary::TaggedSymbol
-                  ]
+                  T::Array[OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Summary::TaggedSymbol]
                 )
-              end
+              }
               def self.values
               end
             end
@@ -2715,70 +2295,41 @@ module OpenAI
           module ServiceTier
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier
-                )
-              end
+            TaggedSymbol = T.type_alias {
+              T.all(Symbol, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier)
+            }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            AUTO =
-              T.let(
-                :auto,
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier::TaggedSymbol
-              )
-            DEFAULT =
-              T.let(
-                :default,
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier::TaggedSymbol
-              )
-            FLEX =
-              T.let(
-                :flex,
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier::TaggedSymbol
-              )
-            SCALE =
-              T.let(
-                :scale,
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier::TaggedSymbol
-              )
-            PRIORITY =
-              T.let(
-                :priority,
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier::TaggedSymbol
-              )
-            FAST =
-              T.let(
-                :fast,
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier::TaggedSymbol
-              )
-            ULTRAFAST =
-              T.let(
-                :ultrafast,
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier::TaggedSymbol
-              )
+            AUTO = T.let(:auto, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier::TaggedSymbol)
+            DEFAULT = T.let(:default, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier::TaggedSymbol)
+            FLEX = T.let(:flex, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier::TaggedSymbol)
+            SCALE = T.let(:scale, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier::TaggedSymbol)
+            PRIORITY = T.let(
+              :priority,
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier::TaggedSymbol
+            )
+            FAST = T.let(:fast, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier::TaggedSymbol)
+            ULTRAFAST = T.let(
+              :ultrafast,
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier::TaggedSymbol
+            )
 
-            sig do
+            sig {
               override.returns(
-                T::Array[
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier::TaggedSymbol
-                ]
+                T::Array[OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier::TaggedSymbol]
               )
-            end
+            }
             def self.values
             end
           end
 
           class StreamOptions < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::StreamOptions,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::StreamOptions,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # When true, stream obfuscation will be enabled. Stream obfuscation adds random
             # characters to an `obfuscation` field on streaming delta events to normalize
@@ -2794,22 +2345,33 @@ module OpenAI
 
             # Options for streaming responses. Only set this when you set `stream: true`.
             sig do
-              params(include_obfuscation: T::Boolean).returns(T.attached_class)
+              params(
+
+                include_obfuscation: T::Boolean
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # When true, stream obfuscation will be enabled. Stream obfuscation adds random
               # characters to an `obfuscation` field on streaming delta events to normalize
               # payload sizes as a mitigation to certain side-channel attacks. These obfuscation
               # fields are included by default, but add a small amount of overhead to the data
               # stream. You can set `include_obfuscation` to false to optimize for bandwidth if
               # you trust the network links between your application and the OpenAI API.
+
               include_obfuscation: nil
             )
             end
 
-            sig { override.returns({ include_obfuscation: T::Boolean }) }
+            sig do
+              override.returns(
+                {include_obfuscation: T::Boolean}
+              )
+            end
             def to_hash
             end
+
           end
 
           # How the model should select which tool (or tools) to use when generating a
@@ -2818,55 +2380,63 @@ module OpenAI
           module ToolChoice
             extend OpenAI::Internal::Type::Union
 
-            Variants =
-              T.type_alias do
-                T.any(
-                  OpenAI::Beta::BetaToolChoiceOptions::TaggedSymbol,
-                  OpenAI::Beta::BetaToolChoiceAllowed,
-                  OpenAI::Beta::BetaToolChoiceTypes,
-                  OpenAI::Beta::BetaToolChoiceFunction,
-                  OpenAI::Beta::BetaToolChoiceMcp,
-                  OpenAI::Beta::BetaToolChoiceCustom,
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ToolChoice::BetaSpecificProgrammaticToolCallingParam,
-                  OpenAI::Beta::BetaToolChoiceApplyPatch,
-                  OpenAI::Beta::BetaToolChoiceShell
-                )
-              end
+            Variants = T.type_alias {
+              T.any(
+                OpenAI::Beta::BetaToolChoiceOptions::TaggedSymbol,
+                OpenAI::Beta::BetaToolChoiceAllowed,
+                OpenAI::Beta::BetaToolChoiceTypes,
+                OpenAI::Beta::BetaToolChoiceFunction,
+                OpenAI::Beta::BetaToolChoiceMcp,
+                OpenAI::Beta::BetaToolChoiceCustom,
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ToolChoice::BetaSpecificProgrammaticToolCallingParam,
+                OpenAI::Beta::BetaToolChoiceApplyPatch,
+                OpenAI::Beta::BetaToolChoiceShell
+              )
+            }
 
             class BetaSpecificProgrammaticToolCallingParam < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ToolChoice::BetaSpecificProgrammaticToolCallingParam,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ToolChoice::BetaSpecificProgrammaticToolCallingParam,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # The tool to call. Always `programmatic_tool_calling`.
               sig { returns(Symbol) }
               attr_accessor :type
 
-              sig { params(type: Symbol).returns(T.attached_class) }
+              sig do
+                params(
+
+                  type: Symbol
+                )
+                  .returns(T.attached_class)
+              end
               def self.new(
+
                 # The tool to call. Always `programmatic_tool_calling`.
+
                 type: :programmatic_tool_calling
               )
               end
 
-              sig { override.returns({ type: Symbol }) }
+              sig do
+                override.returns(
+                  {type: Symbol}
+                )
+              end
               def to_hash
               end
+
             end
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ToolChoice::Variants
-                ]
-              )
-            end
+            sig {
+              override.returns(T::Array[OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ToolChoice::Variants])
+            }
             def self.variants
             end
+
           end
 
           # The truncation strategy to use for the model response.
@@ -2879,46 +2449,34 @@ module OpenAI
           module Truncation
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Truncation
-                )
-              end
+            TaggedSymbol = T.type_alias {
+              T.all(Symbol, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Truncation)
+            }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            AUTO =
-              T.let(
-                :auto,
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Truncation::TaggedSymbol
-              )
-            DISABLED =
-              T.let(
-                :disabled,
-                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Truncation::TaggedSymbol
-              )
+            AUTO = T.let(:auto, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Truncation::TaggedSymbol)
+            DISABLED = T.let(
+              :disabled,
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Truncation::TaggedSymbol
+            )
 
-            sig do
+            sig {
               override.returns(
-                T::Array[
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Truncation::TaggedSymbol
-                ]
+                T::Array[OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Truncation::TaggedSymbol]
               )
-            end
+            }
             def self.values
             end
           end
         end
 
-        sig do
-          override.returns(
-            T::Array[OpenAI::Beta::BetaResponsesClientEvent::Variants]
-          )
-        end
+        sig { override.returns(T::Array[OpenAI::Beta::BetaResponsesClientEvent::Variants]) }
         def self.variants
         end
+
       end
+
     end
+
   end
 end

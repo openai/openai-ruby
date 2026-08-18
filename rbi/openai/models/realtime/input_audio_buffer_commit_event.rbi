@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class InputAudioBufferCommitEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::InputAudioBufferCommitEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::InputAudioBufferCommitEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The event type, must be `input_audio_buffer.commit`.
         sig { returns(Symbol) }
@@ -31,19 +33,37 @@ module OpenAI
         # Committing the input audio buffer will trigger input audio transcription (if
         # enabled in session configuration), but it will not create a response from the
         # model. The server will respond with an `input_audio_buffer.committed` event.
-        sig { params(event_id: String, type: Symbol).returns(T.attached_class) }
+        sig do
+          params(
+
+            event_id: String,
+
+            type: Symbol
+          )
+            .returns(T.attached_class)
+        end
         def self.new(
+
           # Optional client-generated ID used to identify this event.
           event_id: nil,
+
           # The event type, must be `input_audio_buffer.commit`.
+
           type: :"input_audio_buffer.commit"
         )
         end
 
-        sig { override.returns({ type: Symbol, event_id: String }) }
+        sig do
+          override.returns(
+            {type: Symbol, event_id: String}
+          )
+        end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

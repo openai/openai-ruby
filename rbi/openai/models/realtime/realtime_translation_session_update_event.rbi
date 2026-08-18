@@ -2,29 +2,24 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class RealtimeTranslationSessionUpdateEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::RealtimeTranslationSessionUpdateEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::RealtimeTranslationSessionUpdateEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # Translation session fields to update. The session `type` and `model` are set at
         # creation and cannot be changed with `session.update`.
-        sig do
-          returns(OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest)
-        end
+        sig { returns(OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest) }
         attr_reader :session
 
-        sig do
-          params(
-            session:
-              OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::OrHash
-          ).void
-        end
+        sig { params(session: OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::OrHash).void }
         attr_writer :session
 
         # The event type, must be `session.update`.
@@ -43,36 +38,41 @@ module OpenAI
         # `audio.input.transcription`, and `audio.input.noise_reduction`.
         sig do
           params(
-            session:
-              OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::OrHash,
+
+            session: OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::OrHash,
+
             event_id: String,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Translation session fields to update. The session `type` and `model` are set at
           # creation and cannot be changed with `session.update`.
           session:,
+
           # Optional client-generated ID used to identify this event.
           event_id: nil,
+
           # The event type, must be `session.update`.
+
           type: :"session.update"
         )
         end
 
         sig do
           override.returns(
-            {
-              session:
-                OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest,
-              type: Symbol,
-              event_id: String
-            }
+            {session: OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest, type: Symbol, event_id: String}
           )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

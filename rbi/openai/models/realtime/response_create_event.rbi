@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class ResponseCreateEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::ResponseCreateEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::ResponseCreateEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The event type, must be `response.create`.
         sig { returns(Symbol) }
@@ -24,16 +26,10 @@ module OpenAI
         attr_writer :event_id
 
         # Create a new Realtime response with these parameters
-        sig do
-          returns(T.nilable(OpenAI::Realtime::RealtimeResponseCreateParams))
-        end
+        sig { returns(T.nilable(OpenAI::Realtime::RealtimeResponseCreateParams)) }
         attr_reader :response
 
-        sig do
-          params(
-            response: OpenAI::Realtime::RealtimeResponseCreateParams::OrHash
-          ).void
-        end
+        sig { params(response: OpenAI::Realtime::RealtimeResponseCreateParams::OrHash).void }
         attr_writer :response
 
         # This event instructs the server to create a Response, which means triggering
@@ -64,33 +60,40 @@ module OpenAI
         # Items.
         sig do
           params(
+
             event_id: String,
+
             response: OpenAI::Realtime::RealtimeResponseCreateParams::OrHash,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Optional client-generated ID used to identify this event.
           event_id: nil,
+
           # Create a new Realtime response with these parameters
           response: nil,
+
           # The event type, must be `response.create`.
+
           type: :"response.create"
         )
         end
 
         sig do
           override.returns(
-            {
-              type: Symbol,
-              event_id: String,
-              response: OpenAI::Realtime::RealtimeResponseCreateParams
-            }
+            {type: Symbol, event_id: String, response: OpenAI::Realtime::RealtimeResponseCreateParams}
           )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

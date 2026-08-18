@@ -2,14 +2,15 @@
 
 module OpenAI
   module Models
+
     class ContainerListResponse < OpenAI::Internal::Type::BaseModel
-      OrHash =
-        T.type_alias do
-          T.any(
-            OpenAI::Models::ContainerListResponse,
-            OpenAI::Internal::AnyHash
-          )
-        end
+
+      OrHash = T.type_alias do
+        T.any(
+          OpenAI::Models::ContainerListResponse,
+          OpenAI::Internal::AnyHash
+        )
+      end
 
       # Unique identifier for the container.
       sig { returns(String) }
@@ -34,17 +35,10 @@ module OpenAI
       # The container will expire after this time period. The anchor is the reference
       # point for the expiration. The minutes is the number of minutes after the anchor
       # before the container expires.
-      sig do
-        returns(T.nilable(OpenAI::Models::ContainerListResponse::ExpiresAfter))
-      end
+      sig { returns(T.nilable(OpenAI::Models::ContainerListResponse::ExpiresAfter)) }
       attr_reader :expires_after
 
-      sig do
-        params(
-          expires_after:
-            OpenAI::Models::ContainerListResponse::ExpiresAfter::OrHash
-        ).void
-      end
+      sig { params(expires_after: OpenAI::Models::ContainerListResponse::ExpiresAfter::OrHash).void }
       attr_writer :expires_after
 
       # Unix timestamp (in seconds) when the container was last active.
@@ -55,73 +49,72 @@ module OpenAI
       attr_writer :last_active_at
 
       # The memory limit configured for the container.
-      sig do
-        returns(
-          T.nilable(
-            OpenAI::Models::ContainerListResponse::MemoryLimit::TaggedSymbol
-          )
-        )
-      end
+      sig { returns(T.nilable(OpenAI::Models::ContainerListResponse::MemoryLimit::TaggedSymbol)) }
       attr_reader :memory_limit
 
-      sig do
-        params(
-          memory_limit:
-            OpenAI::Models::ContainerListResponse::MemoryLimit::OrSymbol
-        ).void
-      end
+      sig { params(memory_limit: OpenAI::Models::ContainerListResponse::MemoryLimit::OrSymbol).void }
       attr_writer :memory_limit
 
       # Network access policy for the container.
-      sig do
-        returns(T.nilable(OpenAI::Models::ContainerListResponse::NetworkPolicy))
-      end
+      sig { returns(T.nilable(OpenAI::Models::ContainerListResponse::NetworkPolicy)) }
       attr_reader :network_policy
 
-      sig do
-        params(
-          network_policy:
-            OpenAI::Models::ContainerListResponse::NetworkPolicy::OrHash
-        ).void
-      end
+      sig { params(network_policy: OpenAI::Models::ContainerListResponse::NetworkPolicy::OrHash).void }
       attr_writer :network_policy
 
       sig do
         params(
+
           id: String,
+
           created_at: Integer,
+
           name: String,
+
           object: String,
+
           status: String,
-          expires_after:
-            OpenAI::Models::ContainerListResponse::ExpiresAfter::OrHash,
+
+          expires_after: OpenAI::Models::ContainerListResponse::ExpiresAfter::OrHash,
+
           last_active_at: Integer,
-          memory_limit:
-            OpenAI::Models::ContainerListResponse::MemoryLimit::OrSymbol,
-          network_policy:
-            OpenAI::Models::ContainerListResponse::NetworkPolicy::OrHash
-        ).returns(T.attached_class)
+
+          memory_limit: OpenAI::Models::ContainerListResponse::MemoryLimit::OrSymbol,
+
+          network_policy: OpenAI::Models::ContainerListResponse::NetworkPolicy::OrHash
+        )
+          .returns(T.attached_class)
       end
       def self.new(
+
         # Unique identifier for the container.
         id:,
+
         # Unix timestamp (in seconds) when the container was created.
         created_at:,
+
         # Name of the container.
         name:,
+
         # The type of this object.
         object:,
+
         # Status of the container (e.g., active, deleted).
         status:,
+
         # The container will expire after this time period. The anchor is the reference
         # point for the expiration. The minutes is the number of minutes after the anchor
         # before the container expires.
         expires_after: nil,
+
         # Unix timestamp (in seconds) when the container was last active.
         last_active_at: nil,
+
         # The memory limit configured for the container.
         memory_limit: nil,
+
         # Network access policy for the container.
+
         network_policy: nil
       )
       end
@@ -136,8 +129,7 @@ module OpenAI
             status: String,
             expires_after: OpenAI::Models::ContainerListResponse::ExpiresAfter,
             last_active_at: Integer,
-            memory_limit:
-              OpenAI::Models::ContainerListResponse::MemoryLimit::TaggedSymbol,
+            memory_limit: OpenAI::Models::ContainerListResponse::MemoryLimit::TaggedSymbol,
             network_policy: OpenAI::Models::ContainerListResponse::NetworkPolicy
           }
         )
@@ -146,30 +138,18 @@ module OpenAI
       end
 
       class ExpiresAfter < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Models::ContainerListResponse::ExpiresAfter,
-              OpenAI::Internal::AnyHash
-            )
-          end
-
-        # The reference point for the expiration.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::Models::ContainerListResponse::ExpiresAfter::Anchor::TaggedSymbol
-            )
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Models::ContainerListResponse::ExpiresAfter,
+            OpenAI::Internal::AnyHash
           )
         end
+
+        # The reference point for the expiration.
+        sig { returns(T.nilable(OpenAI::Models::ContainerListResponse::ExpiresAfter::Anchor::TaggedSymbol)) }
         attr_reader :anchor
 
-        sig do
-          params(
-            anchor:
-              OpenAI::Models::ContainerListResponse::ExpiresAfter::Anchor::OrSymbol
-          ).void
-        end
+        sig { params(anchor: OpenAI::Models::ContainerListResponse::ExpiresAfter::Anchor::OrSymbol).void }
         attr_writer :anchor
 
         # The number of minutes after the anchor before the container expires.
@@ -184,26 +164,27 @@ module OpenAI
         # before the container expires.
         sig do
           params(
-            anchor:
-              OpenAI::Models::ContainerListResponse::ExpiresAfter::Anchor::OrSymbol,
+
+            anchor: OpenAI::Models::ContainerListResponse::ExpiresAfter::Anchor::OrSymbol,
+
             minutes: Integer
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The reference point for the expiration.
           anchor: nil,
+
           # The number of minutes after the anchor before the container expires.
+
           minutes: nil
         )
         end
 
         sig do
           override.returns(
-            {
-              anchor:
-                OpenAI::Models::ContainerListResponse::ExpiresAfter::Anchor::TaggedSymbol,
-              minutes: Integer
-            }
+            {anchor: OpenAI::Models::ContainerListResponse::ExpiresAfter::Anchor::TaggedSymbol, minutes: Integer}
           )
         end
         def to_hash
@@ -213,28 +194,15 @@ module OpenAI
         module Anchor
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(
-                Symbol,
-                OpenAI::Models::ContainerListResponse::ExpiresAfter::Anchor
-              )
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ContainerListResponse::ExpiresAfter::Anchor) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          LAST_ACTIVE_AT =
-            T.let(
-              :last_active_at,
-              OpenAI::Models::ContainerListResponse::ExpiresAfter::Anchor::TaggedSymbol
-            )
+          LAST_ACTIVE_AT = T.let(
+            :last_active_at,
+            OpenAI::Models::ContainerListResponse::ExpiresAfter::Anchor::TaggedSymbol
+          )
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Models::ContainerListResponse::ExpiresAfter::Anchor::TaggedSymbol
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Models::ContainerListResponse::ExpiresAfter::Anchor::TaggedSymbol]) }
           def self.values
           end
         end
@@ -244,59 +212,29 @@ module OpenAI
       module MemoryLimit
         extend OpenAI::Internal::Type::Enum
 
-        TaggedSymbol =
-          T.type_alias do
-            T.all(Symbol, OpenAI::Models::ContainerListResponse::MemoryLimit)
-          end
+        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ContainerListResponse::MemoryLimit) }
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-        MEMORY_LIMIT_1G =
-          T.let(
-            :"1g",
-            OpenAI::Models::ContainerListResponse::MemoryLimit::TaggedSymbol
-          )
-        MEMORY_LIMIT_4G =
-          T.let(
-            :"4g",
-            OpenAI::Models::ContainerListResponse::MemoryLimit::TaggedSymbol
-          )
-        MEMORY_LIMIT_16G =
-          T.let(
-            :"16g",
-            OpenAI::Models::ContainerListResponse::MemoryLimit::TaggedSymbol
-          )
-        MEMORY_LIMIT_64G =
-          T.let(
-            :"64g",
-            OpenAI::Models::ContainerListResponse::MemoryLimit::TaggedSymbol
-          )
+        MEMORY_LIMIT_1G = T.let(:"1g", OpenAI::Models::ContainerListResponse::MemoryLimit::TaggedSymbol)
+        MEMORY_LIMIT_4G = T.let(:"4g", OpenAI::Models::ContainerListResponse::MemoryLimit::TaggedSymbol)
+        MEMORY_LIMIT_16G = T.let(:"16g", OpenAI::Models::ContainerListResponse::MemoryLimit::TaggedSymbol)
+        MEMORY_LIMIT_64G = T.let(:"64g", OpenAI::Models::ContainerListResponse::MemoryLimit::TaggedSymbol)
 
-        sig do
-          override.returns(
-            T::Array[
-              OpenAI::Models::ContainerListResponse::MemoryLimit::TaggedSymbol
-            ]
-          )
-        end
+        sig { override.returns(T::Array[OpenAI::Models::ContainerListResponse::MemoryLimit::TaggedSymbol]) }
         def self.values
         end
       end
 
       class NetworkPolicy < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Models::ContainerListResponse::NetworkPolicy,
-              OpenAI::Internal::AnyHash
-            )
-          end
-
-        # The network policy mode.
-        sig do
-          returns(
-            OpenAI::Models::ContainerListResponse::NetworkPolicy::Type::TaggedSymbol
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Models::ContainerListResponse::NetworkPolicy,
+            OpenAI::Internal::AnyHash
           )
         end
+
+        # The network policy mode.
+        sig { returns(OpenAI::Models::ContainerListResponse::NetworkPolicy::Type::TaggedSymbol) }
         attr_accessor :type
 
         # Allowed outbound domains when `type` is `allowlist`.
@@ -309,15 +247,20 @@ module OpenAI
         # Network access policy for the container.
         sig do
           params(
-            type:
-              OpenAI::Models::ContainerListResponse::NetworkPolicy::Type::OrSymbol,
+
+            type: OpenAI::Models::ContainerListResponse::NetworkPolicy::Type::OrSymbol,
+
             allowed_domains: T::Array[String]
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The network policy mode.
           type:,
+
           # Allowed outbound domains when `type` is `allowlist`.
+
           allowed_domains: nil
         )
         end
@@ -325,8 +268,7 @@ module OpenAI
         sig do
           override.returns(
             {
-              type:
-                OpenAI::Models::ContainerListResponse::NetworkPolicy::Type::TaggedSymbol,
+              type: OpenAI::Models::ContainerListResponse::NetworkPolicy::Type::TaggedSymbol,
               allowed_domains: T::Array[String]
             }
           )
@@ -338,37 +280,19 @@ module OpenAI
         module Type
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(
-                Symbol,
-                OpenAI::Models::ContainerListResponse::NetworkPolicy::Type
-              )
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ContainerListResponse::NetworkPolicy::Type) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          ALLOWLIST =
-            T.let(
-              :allowlist,
-              OpenAI::Models::ContainerListResponse::NetworkPolicy::Type::TaggedSymbol
-            )
-          DISABLED =
-            T.let(
-              :disabled,
-              OpenAI::Models::ContainerListResponse::NetworkPolicy::Type::TaggedSymbol
-            )
+          ALLOWLIST = T.let(:allowlist, OpenAI::Models::ContainerListResponse::NetworkPolicy::Type::TaggedSymbol)
+          DISABLED = T.let(:disabled, OpenAI::Models::ContainerListResponse::NetworkPolicy::Type::TaggedSymbol)
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Models::ContainerListResponse::NetworkPolicy::Type::TaggedSymbol
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Models::ContainerListResponse::NetworkPolicy::Type::TaggedSymbol]) }
           def self.values
           end
         end
       end
+
     end
+
   end
 end

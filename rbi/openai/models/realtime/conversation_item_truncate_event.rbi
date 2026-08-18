@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class ConversationItemTruncateEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::ConversationItemTruncateEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::ConversationItemTruncateEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # Inclusive duration up to which audio is truncated, in milliseconds. If the
         # audio_end_ms is greater than the actual audio duration, the server will respond
@@ -51,44 +53,53 @@ module OpenAI
         # event.
         sig do
           params(
+
             audio_end_ms: Integer,
+
             content_index: Integer,
+
             item_id: String,
+
             event_id: String,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Inclusive duration up to which audio is truncated, in milliseconds. If the
           # audio_end_ms is greater than the actual audio duration, the server will respond
           # with an error.
           audio_end_ms:,
+
           # The index of the content part to truncate. Set this to `0`.
           content_index:,
+
           # The ID of the assistant message item to truncate. Only assistant message items
           # can be truncated.
           item_id:,
+
           # Optional client-generated ID used to identify this event.
           event_id: nil,
+
           # The event type, must be `conversation.item.truncate`.
+
           type: :"conversation.item.truncate"
         )
         end
 
         sig do
           override.returns(
-            {
-              audio_end_ms: Integer,
-              content_index: Integer,
-              item_id: String,
-              type: Symbol,
-              event_id: String
-            }
+            {audio_end_ms: Integer, content_index: Integer, item_id: String, type: Symbol, event_id: String}
           )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

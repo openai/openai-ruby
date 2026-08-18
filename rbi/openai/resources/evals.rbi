@@ -2,8 +2,10 @@
 
 module OpenAI
   module Resources
+
     # Manage and run evals in the OpenAI platform.
     class Evals
+
       # Manage and run evals in the OpenAI platform.
       sig { returns(OpenAI::Resources::Evals::Runs) }
       attr_reader :runs
@@ -14,29 +16,28 @@ module OpenAI
       # creating an evaluation, you can run it on different models and model parameters.
       # We support several types of graders and datasources. For more information, see
       # the [Evals guide](https://platform.openai.com/docs/guides/evals).
-      sig do
+      sig {
         params(
-          data_source_config:
+          data_source_config: T.any(
+            OpenAI::EvalCreateParams::DataSourceConfig::Custom::OrHash,
+            OpenAI::EvalCreateParams::DataSourceConfig::Logs::OrHash,
+            OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions::OrHash
+          ),
+          testing_criteria: T::Array[
             T.any(
-              OpenAI::EvalCreateParams::DataSourceConfig::Custom::OrHash,
-              OpenAI::EvalCreateParams::DataSourceConfig::Logs::OrHash,
-              OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions::OrHash
-            ),
-          testing_criteria:
-            T::Array[
-              T.any(
-                OpenAI::EvalCreateParams::TestingCriterion::LabelModel::OrHash,
-                OpenAI::Graders::StringCheckGrader::OrHash,
-                OpenAI::EvalCreateParams::TestingCriterion::TextSimilarity::OrHash,
-                OpenAI::EvalCreateParams::TestingCriterion::Python::OrHash,
-                OpenAI::EvalCreateParams::TestingCriterion::ScoreModel::OrHash
-              )
-            ],
+              OpenAI::EvalCreateParams::TestingCriterion::LabelModel::OrHash,
+              OpenAI::Graders::StringCheckGrader::OrHash,
+              OpenAI::EvalCreateParams::TestingCriterion::TextSimilarity::OrHash,
+              OpenAI::EvalCreateParams::TestingCriterion::Python::OrHash,
+              OpenAI::EvalCreateParams::TestingCriterion::ScoreModel::OrHash
+            )
+          ],
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: String,
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::Models::EvalCreateResponse)
-      end
+        )
+          .returns(OpenAI::Models::EvalCreateResponse)
+      }
       def create(
         # The configuration for the data source used for the evaluation runs. Dictates the
         # schema of the data used in the evaluation.
@@ -60,12 +61,11 @@ module OpenAI
       end
 
       # Get an evaluation by ID.
-      sig do
-        params(
-          eval_id: String,
-          request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::Models::EvalRetrieveResponse)
-      end
+      sig {
+        params(eval_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+          OpenAI::Models::EvalRetrieveResponse
+        )
+      }
       def retrieve(
         # The ID of the evaluation to retrieve.
         eval_id,
@@ -74,14 +74,15 @@ module OpenAI
       end
 
       # Update certain properties of an evaluation.
-      sig do
+      sig {
         params(
           eval_id: String,
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: String,
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::Models::EvalUpdateResponse)
-      end
+        )
+          .returns(OpenAI::Models::EvalUpdateResponse)
+      }
       def update(
         # The ID of the evaluation to update.
         eval_id,
@@ -99,17 +100,16 @@ module OpenAI
       end
 
       # List evaluations for a project.
-      sig do
+      sig {
         params(
           after: String,
           limit: Integer,
           order: OpenAI::EvalListParams::Order::OrSymbol,
           order_by: OpenAI::EvalListParams::OrderBy::OrSymbol,
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(
-          OpenAI::Internal::CursorPage[OpenAI::Models::EvalListResponse]
         )
-      end
+          .returns(OpenAI::Internal::CursorPage[OpenAI::Models::EvalListResponse])
+      }
       def list(
         # Identifier for the last eval from the previous pagination request.
         after: nil,
@@ -126,12 +126,11 @@ module OpenAI
       end
 
       # Delete an evaluation.
-      sig do
-        params(
-          eval_id: String,
-          request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::Models::EvalDeleteResponse)
-      end
+      sig {
+        params(eval_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+          OpenAI::Models::EvalDeleteResponse
+        )
+      }
       def delete(
         # The ID of the evaluation to delete.
         eval_id,
@@ -144,5 +143,6 @@ module OpenAI
       def self.new(client:)
       end
     end
+
   end
 end

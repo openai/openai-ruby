@@ -2,20 +2,22 @@
 
 module OpenAI
   module Resources
+
     class Admin
+
       class Organization
+
         class Certificates
+
           # Upload a certificate to the organization. This does **not** automatically
           # activate the certificate.
           #
           # Organizations can upload up to 50 certificates.
-          sig do
-            params(
-              certificate: String,
-              name: String,
-              request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Admin::Organization::Certificate)
-          end
+          sig {
+            params(certificate: String, name: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+              OpenAI::Admin::Organization::Certificate
+            )
+          }
           def create(
             # The certificate content in PEM format
             certificate:,
@@ -28,16 +30,14 @@ module OpenAI
           # Get a certificate that has been uploaded to the organization.
           #
           # You can get a certificate regardless of whether it is active or not.
-          sig do
+          sig {
             params(
               certificate_id: String,
-              include:
-                T::Array[
-                  OpenAI::Admin::Organization::CertificateRetrieveParams::Include::OrSymbol
-                ],
+              include: T::Array[OpenAI::Admin::Organization::CertificateRetrieveParams::Include::OrSymbol],
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Admin::Organization::Certificate)
-          end
+            )
+              .returns(OpenAI::Admin::Organization::Certificate)
+          }
           def retrieve(
             # Unique ID of the certificate to retrieve.
             certificate_id,
@@ -49,13 +49,11 @@ module OpenAI
           end
 
           # Modify a certificate. Note that only the name can be modified.
-          sig do
-            params(
-              certificate_id: String,
-              name: String,
-              request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Admin::Organization::Certificate)
-          end
+          sig {
+            params(certificate_id: String, name: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+              OpenAI::Admin::Organization::Certificate
+            )
+          }
           def update(
             # Unique ID of the certificate to modify.
             certificate_id,
@@ -66,19 +64,17 @@ module OpenAI
           end
 
           # List uploaded certificates for this organization.
-          sig do
+          sig {
             params(
               after: String,
               limit: Integer,
-              order:
-                OpenAI::Admin::Organization::CertificateListParams::Order::OrSymbol,
+              order: OpenAI::Admin::Organization::CertificateListParams::Order::OrSymbol,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Internal::ConversationCursorPage[
-                OpenAI::Models::Admin::Organization::CertificateListResponse
-              ]
             )
-          end
+              .returns(
+                OpenAI::Internal::ConversationCursorPage[OpenAI::Models::Admin::Organization::CertificateListResponse]
+              )
+          }
           def list(
             # A cursor for use in pagination. `after` is an object ID that defines your place
             # in the list. For instance, if you make a list request and receive 100 objects,
@@ -98,14 +94,11 @@ module OpenAI
           # Delete a certificate from the organization.
           #
           # The certificate must be inactive for the organization and all projects.
-          sig do
-            params(
-              certificate_id: String,
-              request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
+          sig {
+            params(certificate_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
               OpenAI::Models::Admin::Organization::CertificateDeleteResponse
             )
-          end
+          }
           def delete(
             # Unique ID of the certificate to delete.
             certificate_id,
@@ -116,32 +109,22 @@ module OpenAI
           # Activate certificates at the organization level.
           #
           # You can atomically and idempotently activate up to 10 certificates at a time.
-          sig do
-            params(
-              certificate_ids: T::Array[String],
-              request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Internal::Page[
-                OpenAI::Models::Admin::Organization::CertificateActivateResponse
-              ]
+          sig {
+            params(certificate_ids: T::Array[String], request_options: OpenAI::RequestOptions::OrHash).returns(
+              OpenAI::Internal::Page[OpenAI::Models::Admin::Organization::CertificateActivateResponse]
             )
-          end
+          }
           def activate(certificate_ids:, request_options: {})
           end
 
           # Deactivate certificates at the organization level.
           #
           # You can atomically and idempotently deactivate up to 10 certificates at a time.
-          sig do
-            params(
-              certificate_ids: T::Array[String],
-              request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Internal::Page[
-                OpenAI::Models::Admin::Organization::CertificateDeactivateResponse
-              ]
+          sig {
+            params(certificate_ids: T::Array[String], request_options: OpenAI::RequestOptions::OrHash).returns(
+              OpenAI::Internal::Page[OpenAI::Models::Admin::Organization::CertificateDeactivateResponse]
             )
-          end
+          }
           def deactivate(certificate_ids:, request_options: {})
           end
 
@@ -150,7 +133,10 @@ module OpenAI
           def self.new(client:)
           end
         end
+
       end
+
     end
+
   end
 end

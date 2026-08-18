@@ -2,17 +2,19 @@
 
 module OpenAI
   module Models
+
     BetaContainerReference = Beta::BetaContainerReference
 
     module Beta
+
       class BetaContainerReference < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Beta::BetaContainerReference,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Beta::BetaContainerReference,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The ID of the referenced container.
         sig { returns(String) }
@@ -23,20 +25,36 @@ module OpenAI
         attr_accessor :type
 
         sig do
-          params(container_id: String, type: Symbol).returns(T.attached_class)
+          params(
+
+            container_id: String,
+
+            type: Symbol
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The ID of the referenced container.
           container_id:,
+
           # References a container created with the /v1/containers endpoint
+
           type: :container_reference
         )
         end
 
-        sig { override.returns({ container_id: String, type: Symbol }) }
+        sig do
+          override.returns(
+            {container_id: String, type: Symbol}
+          )
+        end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

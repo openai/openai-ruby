@@ -14,7 +14,8 @@ module OpenAI
             data_residency: T.untyped,
             base_url: T.untyped,
             provider: T.nilable(OpenAI::Provider)
-          ).returns(T.untyped)
+          )
+            .returns(T.untyped)
         end
         def resolve_data_residency(data_residency, base_url:, provider:)
         end

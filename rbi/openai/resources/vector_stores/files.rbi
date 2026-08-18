@@ -2,30 +2,27 @@
 
 module OpenAI
   module Resources
+
     class VectorStores
+
       class Files
+
         # Create a vector store file by attaching a
         # [File](https://platform.openai.com/docs/api-reference/files) to a
         # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object).
-        sig do
+        sig {
           params(
             vector_store_id: String,
             file_id: String,
-            attributes:
-              T.nilable(
-                T::Hash[
-                  Symbol,
-                  OpenAI::VectorStores::FileCreateParams::Attribute::Variants
-                ]
-              ),
-            chunking_strategy:
-              T.any(
-                OpenAI::AutoFileChunkingStrategyParam::OrHash,
-                OpenAI::StaticFileChunkingStrategyObjectParam::OrHash
-              ),
+            attributes: T.nilable(T::Hash[Symbol, OpenAI::VectorStores::FileCreateParams::Attribute::Variants]),
+            chunking_strategy: T.any(
+              OpenAI::AutoFileChunkingStrategyParam::OrHash,
+              OpenAI::StaticFileChunkingStrategyObjectParam::OrHash
+            ),
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::VectorStores::VectorStoreFile)
-        end
+          )
+            .returns(OpenAI::VectorStores::VectorStoreFile)
+        }
         def create(
           # The ID of the vector store for which to create a File.
           vector_store_id,
@@ -53,22 +50,21 @@ module OpenAI
           params(
             vector_store_id: String,
             file_id: String,
-            attributes:
-              T.nilable(
-                T::Hash[
-                  Symbol,
-                  OpenAI::VectorStores::FileCreateParams::Attribute::Variants
-                ]
-              ),
-            chunking_strategy:
-              T.any(
-                OpenAI::AutoFileChunkingStrategyParam::OrHash,
-                OpenAI::StaticFileChunkingStrategyObjectParam::OrHash
-              ),
+            attributes: T.nilable(
+              T::Hash[
+                Symbol,
+                OpenAI::VectorStores::FileCreateParams::Attribute::Variants
+              ]
+            ),
+            chunking_strategy: T.any(
+              OpenAI::AutoFileChunkingStrategyParam::OrHash,
+              OpenAI::StaticFileChunkingStrategyObjectParam::OrHash
+            ),
             poll_interval: T.nilable(T.any(Integer, Float)),
             timeout: T.nilable(T.any(Integer, Float)),
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::VectorStores::VectorStoreFile)
+          )
+            .returns(OpenAI::VectorStores::VectorStoreFile)
         end
         def create_and_poll(
           vector_store_id,
@@ -82,13 +78,11 @@ module OpenAI
         end
 
         # Retrieves a vector store file.
-        sig do
-          params(
-            file_id: String,
-            vector_store_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::VectorStores::VectorStoreFile)
-        end
+        sig {
+          params(file_id: String, vector_store_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+            OpenAI::VectorStores::VectorStoreFile
+          )
+        }
         def retrieve(
           # The ID of the file being retrieved.
           file_id,
@@ -99,20 +93,15 @@ module OpenAI
         end
 
         # Update attributes on a vector store file.
-        sig do
+        sig {
           params(
             file_id: String,
             vector_store_id: String,
-            attributes:
-              T.nilable(
-                T::Hash[
-                  Symbol,
-                  OpenAI::VectorStores::FileUpdateParams::Attribute::Variants
-                ]
-              ),
+            attributes: T.nilable(T::Hash[Symbol, OpenAI::VectorStores::FileUpdateParams::Attribute::Variants]),
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::VectorStores::VectorStoreFile)
-        end
+          )
+            .returns(OpenAI::VectorStores::VectorStoreFile)
+        }
         def update(
           # Path param: The ID of the file to update attributes.
           file_id,
@@ -129,7 +118,7 @@ module OpenAI
         end
 
         # Returns a list of vector store files.
-        sig do
+        sig {
           params(
             vector_store_id: String,
             after: String,
@@ -138,10 +127,9 @@ module OpenAI
             limit: Integer,
             order: OpenAI::VectorStores::FileListParams::Order::OrSymbol,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(
-            OpenAI::Internal::CursorPage[OpenAI::VectorStores::VectorStoreFile]
           )
-        end
+            .returns(OpenAI::Internal::CursorPage[OpenAI::VectorStores::VectorStoreFile])
+        }
         def list(
           # The ID of the vector store that the files belong to.
           vector_store_id,
@@ -171,13 +159,11 @@ module OpenAI
         # the file itself will not be deleted. To delete the file, use the
         # [delete file](https://platform.openai.com/docs/api-reference/files/delete)
         # endpoint.
-        sig do
-          params(
-            file_id: String,
-            vector_store_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::VectorStores::VectorStoreFileDeleted)
-        end
+        sig {
+          params(file_id: String, vector_store_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+            OpenAI::VectorStores::VectorStoreFileDeleted
+          )
+        }
         def delete(
           # The ID of the file to delete.
           file_id,
@@ -195,7 +181,8 @@ module OpenAI
             poll_interval: T.nilable(T.any(Integer, Float)),
             timeout: T.nilable(T.any(Integer, Float)),
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::VectorStores::VectorStoreFile)
+          )
+            .returns(OpenAI::VectorStores::VectorStoreFile)
         end
         def poll(
           file_id,
@@ -211,20 +198,19 @@ module OpenAI
           params(
             vector_store_id: String,
             file: OpenAI::Internal::FileInput,
-            attributes:
-              T.nilable(
-                T::Hash[
-                  Symbol,
-                  OpenAI::VectorStores::FileCreateParams::Attribute::Variants
-                ]
-              ),
-            chunking_strategy:
-              T.any(
-                OpenAI::AutoFileChunkingStrategyParam::OrHash,
-                OpenAI::StaticFileChunkingStrategyObjectParam::OrHash
-              ),
+            attributes: T.nilable(
+              T::Hash[
+                Symbol,
+                OpenAI::VectorStores::FileCreateParams::Attribute::Variants
+              ]
+            ),
+            chunking_strategy: T.any(
+              OpenAI::AutoFileChunkingStrategyParam::OrHash,
+              OpenAI::StaticFileChunkingStrategyObjectParam::OrHash
+            ),
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::VectorStores::VectorStoreFile)
+          )
+            .returns(OpenAI::VectorStores::VectorStoreFile)
         end
         def upload(
           vector_store_id,
@@ -241,22 +227,21 @@ module OpenAI
           params(
             vector_store_id: String,
             file: OpenAI::Internal::FileInput,
-            attributes:
-              T.nilable(
-                T::Hash[
-                  Symbol,
-                  OpenAI::VectorStores::FileCreateParams::Attribute::Variants
-                ]
-              ),
-            chunking_strategy:
-              T.any(
-                OpenAI::AutoFileChunkingStrategyParam::OrHash,
-                OpenAI::StaticFileChunkingStrategyObjectParam::OrHash
-              ),
+            attributes: T.nilable(
+              T::Hash[
+                Symbol,
+                OpenAI::VectorStores::FileCreateParams::Attribute::Variants
+              ]
+            ),
+            chunking_strategy: T.any(
+              OpenAI::AutoFileChunkingStrategyParam::OrHash,
+              OpenAI::StaticFileChunkingStrategyObjectParam::OrHash
+            ),
             poll_interval: T.nilable(T.any(Integer, Float)),
             timeout: T.nilable(T.any(Integer, Float)),
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::VectorStores::VectorStoreFile)
+          )
+            .returns(OpenAI::VectorStores::VectorStoreFile)
         end
         def upload_and_poll(
           vector_store_id,
@@ -270,17 +255,11 @@ module OpenAI
         end
 
         # Retrieve the parsed contents of a vector store file.
-        sig do
-          params(
-            file_id: String,
-            vector_store_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(
-            OpenAI::Internal::Page[
-              OpenAI::Models::VectorStores::FileContentResponse
-            ]
+        sig {
+          params(file_id: String, vector_store_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+            OpenAI::Internal::Page[OpenAI::Models::VectorStores::FileContentResponse]
           )
-        end
+        }
         def content(
           # The ID of the file within the vector store.
           file_id,
@@ -295,6 +274,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

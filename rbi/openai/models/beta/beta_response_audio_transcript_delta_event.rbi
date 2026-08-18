@@ -2,18 +2,19 @@
 
 module OpenAI
   module Models
-    BetaResponseAudioTranscriptDeltaEvent =
-      Beta::BetaResponseAudioTranscriptDeltaEvent
+
+    BetaResponseAudioTranscriptDeltaEvent = Beta::BetaResponseAudioTranscriptDeltaEvent
 
     module Beta
+
       class BetaResponseAudioTranscriptDeltaEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Beta::BetaResponseAudioTranscriptDeltaEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Beta::BetaResponseAudioTranscriptDeltaEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The partial transcript of the audio response.
         sig { returns(String) }
@@ -28,45 +29,39 @@ module OpenAI
         attr_accessor :type
 
         # The agent that owns this multi-agent streaming event.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::Beta::BetaResponseAudioTranscriptDeltaEvent::Agent
-            )
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Beta::BetaResponseAudioTranscriptDeltaEvent::Agent)) }
         attr_reader :agent
 
-        sig do
-          params(
-            agent:
-              T.nilable(
-                OpenAI::Beta::BetaResponseAudioTranscriptDeltaEvent::Agent::OrHash
-              )
-          ).void
-        end
+        sig { params(agent: T.nilable(OpenAI::Beta::BetaResponseAudioTranscriptDeltaEvent::Agent::OrHash)).void }
         attr_writer :agent
 
         # Emitted when there is a partial transcript of audio.
         sig do
           params(
+
             delta: String,
+
             sequence_number: Integer,
-            agent:
-              T.nilable(
-                OpenAI::Beta::BetaResponseAudioTranscriptDeltaEvent::Agent::OrHash
-              ),
+
+            agent: T.nilable(OpenAI::Beta::BetaResponseAudioTranscriptDeltaEvent::Agent::OrHash),
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The partial transcript of the audio response.
           delta:,
+
           # The sequence number of this event.
           sequence_number:,
+
           # The agent that owns this multi-agent streaming event.
           agent: nil,
+
           # The type of the event. Always `response.audio.transcript.delta`.
+
           type: :"response.audio.transcript.delta"
         )
         end
@@ -77,10 +72,7 @@ module OpenAI
               delta: String,
               sequence_number: Integer,
               type: Symbol,
-              agent:
-                T.nilable(
-                  OpenAI::Beta::BetaResponseAudioTranscriptDeltaEvent::Agent
-                )
+              agent: T.nilable(OpenAI::Beta::BetaResponseAudioTranscriptDeltaEvent::Agent)
             }
           )
         end
@@ -88,31 +80,46 @@ module OpenAI
         end
 
         class Agent < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Beta::BetaResponseAudioTranscriptDeltaEvent::Agent,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::BetaResponseAudioTranscriptDeltaEvent::Agent,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The canonical name of the agent that produced this item.
           sig { returns(String) }
           attr_accessor :agent_name
 
           # The agent that owns this multi-agent streaming event.
-          sig { params(agent_name: String).returns(T.attached_class) }
+          sig do
+            params(
+
+              agent_name: String
+            )
+              .returns(T.attached_class)
+          end
           def self.new(
+
             # The canonical name of the agent that produced this item.
+
             agent_name:
           )
           end
 
-          sig { override.returns({ agent_name: String }) }
+          sig do
+            override.returns(
+              {agent_name: String}
+            )
+          end
           def to_hash
           end
+
         end
+
       end
+
     end
+
   end
 end

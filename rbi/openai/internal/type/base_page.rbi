@@ -43,7 +43,8 @@ module OpenAI
             req: OpenAI::Internal::Transport::BaseClient::RequestComponents,
             response_metadata: OpenAI::ResponseMetadata,
             page_data: T.anything
-          ).void
+          )
+            .void
         end
         def initialize(client:, req:, response_metadata:, page_data:)
         end

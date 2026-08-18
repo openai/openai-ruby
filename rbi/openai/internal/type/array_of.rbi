@@ -16,14 +16,14 @@ module OpenAI
 
         sig do
           params(
-            type_info:
-              T.any(
-                OpenAI::Internal::AnyHash,
-                T.proc.returns(OpenAI::Internal::Type::Converter::Input),
-                OpenAI::Internal::Type::Converter::Input
-              ),
+            type_info: T.any(
+              OpenAI::Internal::AnyHash,
+              T.proc.returns(OpenAI::Internal::Type::Converter::Input),
+              OpenAI::Internal::Type::Converter::Input
+            ),
             spec: OpenAI::Internal::AnyHash
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.[](type_info, spec = {})
         end
@@ -82,14 +82,14 @@ module OpenAI
         # @api private
         sig do
           params(
-            type_info:
-              T.any(
-                OpenAI::Internal::AnyHash,
-                T.proc.returns(OpenAI::Internal::Type::Converter::Input),
-                OpenAI::Internal::Type::Converter::Input
-              ),
+            type_info: T.any(
+              OpenAI::Internal::AnyHash,
+              T.proc.returns(OpenAI::Internal::Type::Converter::Input),
+              OpenAI::Internal::Type::Converter::Input
+            ),
             spec: OpenAI::Internal::AnyHash
-          ).void
+          )
+            .void
         end
         def initialize(type_info, spec = {})
         end

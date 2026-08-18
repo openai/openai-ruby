@@ -2,18 +2,20 @@
 
 module OpenAI
   module Models
+
     module Conversations
+
       class ConversationUpdateParams < OpenAI::Internal::Type::BaseModel
+
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Conversations::ConversationUpdateParams,
-              OpenAI::Internal::AnyHash
-            )
-          end
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Conversations::ConversationUpdateParams,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         sig { returns(String) }
         attr_accessor :conversation_id
@@ -29,13 +31,19 @@ module OpenAI
 
         sig do
           params(
+
             conversation_id: String,
+
             metadata: T.nilable(T::Hash[Symbol, String]),
+
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           conversation_id:,
+
           # Set of 16 key-value pairs that can be attached to an object. This can be useful
           # for storing additional information about the object in a structured format, and
           # querying for objects via API or the dashboard.
@@ -43,6 +51,7 @@ module OpenAI
           # Keys are strings with a maximum length of 64 characters. Values are strings with
           # a maximum length of 512 characters.
           metadata:,
+
           request_options: {}
         )
         end
@@ -58,7 +67,10 @@ module OpenAI
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

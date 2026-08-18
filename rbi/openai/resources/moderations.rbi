@@ -2,18 +2,21 @@
 
 module OpenAI
   module Resources
+
     # Given text and/or image inputs, classifies if those inputs are potentially
     # harmful.
     class Moderations
+
       # Classifies if text and/or image inputs are potentially harmful. Learn more in
       # the [moderation guide](https://platform.openai.com/docs/guides/moderation).
-      sig do
+      sig {
         params(
           input: OpenAI::ModerationCreateParams::Input::Variants,
           model: T.any(String, OpenAI::ModerationModel::OrSymbol),
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::Models::ModerationCreateResponse)
-      end
+        )
+          .returns(OpenAI::Models::ModerationCreateResponse)
+      }
       def create(
         # Input (or inputs) to classify. Can be a single string, an array of strings, or
         # an array of multi-modal input objects similar to other models.
@@ -32,5 +35,6 @@ module OpenAI
       def self.new(client:)
       end
     end
+
   end
 end

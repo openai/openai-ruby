@@ -2,13 +2,19 @@
 
 module OpenAI
   module Models
+
     module Beta
+
       module Threads
+
         class Run < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(OpenAI::Beta::Threads::Run, OpenAI::Internal::AnyHash)
-            end
+
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::Threads::Run,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The identifier, which can be referenced in API endpoints.
           sig { returns(String) }
@@ -42,17 +48,10 @@ module OpenAI
 
           # Details on why the run is incomplete. Will be `null` if the run is not
           # incomplete.
-          sig do
-            returns(T.nilable(OpenAI::Beta::Threads::Run::IncompleteDetails))
-          end
+          sig { returns(T.nilable(OpenAI::Beta::Threads::Run::IncompleteDetails)) }
           attr_reader :incomplete_details
 
-          sig do
-            params(
-              incomplete_details:
-                T.nilable(OpenAI::Beta::Threads::Run::IncompleteDetails::OrHash)
-            ).void
-          end
+          sig { params(incomplete_details: T.nilable(OpenAI::Beta::Threads::Run::IncompleteDetails::OrHash)).void }
           attr_writer :incomplete_details
 
           # The instructions that the
@@ -65,12 +64,7 @@ module OpenAI
           sig { returns(T.nilable(OpenAI::Beta::Threads::Run::LastError)) }
           attr_reader :last_error
 
-          sig do
-            params(
-              last_error:
-                T.nilable(OpenAI::Beta::Threads::Run::LastError::OrHash)
-            ).void
-          end
+          sig { params(last_error: T.nilable(OpenAI::Beta::Threads::Run::LastError::OrHash)).void }
           attr_writer :last_error
 
           # The maximum number of completion tokens specified to have been used over the
@@ -113,12 +107,7 @@ module OpenAI
           sig { returns(T.nilable(OpenAI::Beta::Threads::Run::RequiredAction)) }
           attr_reader :required_action
 
-          sig do
-            params(
-              required_action:
-                T.nilable(OpenAI::Beta::Threads::Run::RequiredAction::OrHash)
-            ).void
-          end
+          sig { params(required_action: T.nilable(OpenAI::Beta::Threads::Run::RequiredAction::OrHash)).void }
           attr_writer :required_action
 
           # Specifies the format that the model must output. Compatible with
@@ -141,11 +130,7 @@ module OpenAI
           # the message content may be partially cut off if `finish_reason="length"`, which
           # indicates the generation exceeded `max_tokens` or the conversation exceeded the
           # max context length.
-          sig do
-            returns(
-              T.nilable(OpenAI::Beta::AssistantResponseFormatOption::Variants)
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Beta::AssistantResponseFormatOption::Variants)) }
           attr_accessor :response_format
 
           # The Unix timestamp (in seconds) for when the run was started.
@@ -170,11 +155,7 @@ module OpenAI
           # to the user. Specifying a particular tool like `{"type": "file_search"}` or
           # `{"type": "function", "function": {"name": "my_function"}}` forces the model to
           # call that tool.
-          sig do
-            returns(
-              T.nilable(OpenAI::Beta::AssistantToolChoiceOption::Variants)
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Beta::AssistantToolChoiceOption::Variants)) }
           attr_accessor :tool_choice
 
           # The list of tools that the
@@ -185,19 +166,10 @@ module OpenAI
 
           # Controls for how a thread will be truncated prior to the run. Use this to
           # control the initial context window of the run.
-          sig do
-            returns(T.nilable(OpenAI::Beta::Threads::Run::TruncationStrategy))
-          end
+          sig { returns(T.nilable(OpenAI::Beta::Threads::Run::TruncationStrategy)) }
           attr_reader :truncation_strategy
 
-          sig do
-            params(
-              truncation_strategy:
-                T.nilable(
-                  OpenAI::Beta::Threads::Run::TruncationStrategy::OrHash
-                )
-            ).void
-          end
+          sig { params(truncation_strategy: T.nilable(OpenAI::Beta::Threads::Run::TruncationStrategy::OrHash)).void }
           attr_writer :truncation_strategy
 
           # Usage statistics related to the run. This value will be `null` if the run is not
@@ -205,11 +177,7 @@ module OpenAI
           sig { returns(T.nilable(OpenAI::Beta::Threads::Run::Usage)) }
           attr_reader :usage
 
-          sig do
-            params(
-              usage: T.nilable(OpenAI::Beta::Threads::Run::Usage::OrHash)
-            ).void
-          end
+          sig { params(usage: T.nilable(OpenAI::Beta::Threads::Run::Usage::OrHash)).void }
           attr_writer :usage
 
           # The sampling temperature used for this run. If not set, defaults to 1.
@@ -224,96 +192,126 @@ module OpenAI
           # [thread](https://platform.openai.com/docs/api-reference/threads).
           sig do
             params(
+
               id: String,
+
               assistant_id: String,
+
               cancelled_at: T.nilable(Integer),
+
               completed_at: T.nilable(Integer),
+
               created_at: Integer,
+
               expires_at: T.nilable(Integer),
+
               failed_at: T.nilable(Integer),
-              incomplete_details:
-                T.nilable(
-                  OpenAI::Beta::Threads::Run::IncompleteDetails::OrHash
-                ),
+
+              incomplete_details: T.nilable(OpenAI::Beta::Threads::Run::IncompleteDetails::OrHash),
+
               instructions: String,
-              last_error:
-                T.nilable(OpenAI::Beta::Threads::Run::LastError::OrHash),
+
+              last_error: T.nilable(OpenAI::Beta::Threads::Run::LastError::OrHash),
+
               max_completion_tokens: T.nilable(Integer),
+
               max_prompt_tokens: T.nilable(Integer),
+
               metadata: T.nilable(T::Hash[Symbol, String]),
+
               model: String,
+
               parallel_tool_calls: T::Boolean,
-              required_action:
-                T.nilable(OpenAI::Beta::Threads::Run::RequiredAction::OrHash),
-              response_format:
-                T.nilable(
-                  T.any(
-                    Symbol,
-                    OpenAI::ResponseFormatText::OrHash,
-                    OpenAI::ResponseFormatJSONObject::OrHash,
-                    OpenAI::ResponseFormatJSONSchema::OrHash
-                  )
-                ),
+
+              required_action: T.nilable(OpenAI::Beta::Threads::Run::RequiredAction::OrHash),
+
+              response_format: T.nilable(
+                T.any(
+                  Symbol,
+                  OpenAI::ResponseFormatText::OrHash,
+                  OpenAI::ResponseFormatJSONObject::OrHash,
+                  OpenAI::ResponseFormatJSONSchema::OrHash
+                )
+              ),
+
               started_at: T.nilable(Integer),
+
               status: OpenAI::Beta::Threads::RunStatus::OrSymbol,
+
               thread_id: String,
-              tool_choice:
-                T.nilable(
-                  T.any(
-                    OpenAI::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
-                    OpenAI::Beta::AssistantToolChoice::OrHash
-                  )
-                ),
-              tools:
-                T::Array[
-                  T.any(
-                    OpenAI::Beta::CodeInterpreterTool::OrHash,
-                    OpenAI::Beta::FileSearchTool::OrHash,
-                    OpenAI::Beta::FunctionTool::OrHash
-                  )
-                ],
-              truncation_strategy:
-                T.nilable(
-                  OpenAI::Beta::Threads::Run::TruncationStrategy::OrHash
-                ),
+
+              tool_choice: T.nilable(
+                T.any(
+                  OpenAI::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
+                  OpenAI::Beta::AssistantToolChoice::OrHash
+                )
+              ),
+
+              tools: T::Array[
+                T.any(
+                  OpenAI::Beta::CodeInterpreterTool::OrHash,
+                  OpenAI::Beta::FileSearchTool::OrHash,
+                  OpenAI::Beta::FunctionTool::OrHash
+                )
+              ],
+
+              truncation_strategy: T.nilable(OpenAI::Beta::Threads::Run::TruncationStrategy::OrHash),
+
               usage: T.nilable(OpenAI::Beta::Threads::Run::Usage::OrHash),
+
               temperature: T.nilable(Float),
+
               top_p: T.nilable(Float),
+
               object: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The identifier, which can be referenced in API endpoints.
             id:,
+
             # The ID of the
             # [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
             # execution of this run.
             assistant_id:,
+
             # The Unix timestamp (in seconds) for when the run was cancelled.
             cancelled_at:,
+
             # The Unix timestamp (in seconds) for when the run was completed.
             completed_at:,
+
             # The Unix timestamp (in seconds) for when the run was created.
             created_at:,
+
             # The Unix timestamp (in seconds) for when the run will expire.
             expires_at:,
+
             # The Unix timestamp (in seconds) for when the run failed.
             failed_at:,
+
             # Details on why the run is incomplete. Will be `null` if the run is not
             # incomplete.
             incomplete_details:,
+
             # The instructions that the
             # [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
             # this run.
             instructions:,
+
             # The last error associated with this run. Will be `null` if there are no errors.
             last_error:,
+
             # The maximum number of completion tokens specified to have been used over the
             # course of the run.
             max_completion_tokens:,
+
             # The maximum number of prompt tokens specified to have been used over the course
             # of the run.
             max_prompt_tokens:,
+
             # Set of 16 key-value pairs that can be attached to an object. This can be useful
             # for storing additional information about the object in a structured format, and
             # querying for objects via API or the dashboard.
@@ -321,17 +319,21 @@ module OpenAI
             # Keys are strings with a maximum length of 64 characters. Values are strings with
             # a maximum length of 512 characters.
             metadata:,
+
             # The model that the
             # [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
             # this run.
             model:,
+
             # Whether to enable
             # [parallel function calling](https://platform.openai.com/docs/guides/function-calling#configuring-parallel-function-calling)
             # during tool use.
             parallel_tool_calls:,
+
             # Details on the action required to continue the run. Will be `null` if no action
             # is required.
             required_action:,
+
             # Specifies the format that the model must output. Compatible with
             # [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
             # [GPT-4 Turbo](https://platform.openai.com/docs/models#gpt-4-turbo-and-gpt-4),
@@ -353,15 +355,19 @@ module OpenAI
             # indicates the generation exceeded `max_tokens` or the conversation exceeded the
             # max context length.
             response_format:,
+
             # The Unix timestamp (in seconds) for when the run was started.
             started_at:,
+
             # The status of the run, which can be either `queued`, `in_progress`,
             # `requires_action`, `cancelling`, `cancelled`, `failed`, `completed`,
             # `incomplete`, or `expired`.
             status:,
+
             # The ID of the [thread](https://platform.openai.com/docs/api-reference/threads)
             # that was executed on as a part of this run.
             thread_id:,
+
             # Controls which (if any) tool is called by the model. `none` means the model will
             # not call any tools and instead generates a message. `auto` is the default value
             # and means the model can pick between generating a message or calling one or more
@@ -370,21 +376,28 @@ module OpenAI
             # `{"type": "function", "function": {"name": "my_function"}}` forces the model to
             # call that tool.
             tool_choice:,
+
             # The list of tools that the
             # [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
             # this run.
             tools:,
+
             # Controls for how a thread will be truncated prior to the run. Use this to
             # control the initial context window of the run.
             truncation_strategy:,
+
             # Usage statistics related to the run. This value will be `null` if the run is not
             # in a terminal state (i.e. `in_progress`, `queued`, etc.).
             usage:,
+
             # The sampling temperature used for this run. If not set, defaults to 1.
             temperature: nil,
+
             # The nucleus sampling value used for this run. If not set, defaults to 1.
             top_p: nil,
+
             # The object type, which is always `thread.run`.
+
             object: :"thread.run"
           )
           end
@@ -399,8 +412,7 @@ module OpenAI
                 created_at: Integer,
                 expires_at: T.nilable(Integer),
                 failed_at: T.nilable(Integer),
-                incomplete_details:
-                  T.nilable(OpenAI::Beta::Threads::Run::IncompleteDetails),
+                incomplete_details: T.nilable(OpenAI::Beta::Threads::Run::IncompleteDetails),
                 instructions: String,
                 last_error: T.nilable(OpenAI::Beta::Threads::Run::LastError),
                 max_completion_tokens: T.nilable(Integer),
@@ -409,20 +421,14 @@ module OpenAI
                 model: String,
                 object: Symbol,
                 parallel_tool_calls: T::Boolean,
-                required_action:
-                  T.nilable(OpenAI::Beta::Threads::Run::RequiredAction),
-                response_format:
-                  T.nilable(
-                    OpenAI::Beta::AssistantResponseFormatOption::Variants
-                  ),
+                required_action: T.nilable(OpenAI::Beta::Threads::Run::RequiredAction),
+                response_format: T.nilable(OpenAI::Beta::AssistantResponseFormatOption::Variants),
                 started_at: T.nilable(Integer),
                 status: OpenAI::Beta::Threads::RunStatus::TaggedSymbol,
                 thread_id: String,
-                tool_choice:
-                  T.nilable(OpenAI::Beta::AssistantToolChoiceOption::Variants),
+                tool_choice: T.nilable(OpenAI::Beta::AssistantToolChoiceOption::Variants),
                 tools: T::Array[OpenAI::Beta::AssistantTool::Variants],
-                truncation_strategy:
-                  T.nilable(OpenAI::Beta::Threads::Run::TruncationStrategy),
+                truncation_strategy: T.nilable(OpenAI::Beta::Threads::Run::TruncationStrategy),
                 usage: T.nilable(OpenAI::Beta::Threads::Run::Usage),
                 temperature: T.nilable(Float),
                 top_p: T.nilable(Float)
@@ -433,54 +439,42 @@ module OpenAI
           end
 
           class IncompleteDetails < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Beta::Threads::Run::IncompleteDetails,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::Run::IncompleteDetails,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # The reason why the run is incomplete. This will point to which specific token
             # limit was reached over the course of the run.
-            sig do
-              returns(
-                T.nilable(
-                  OpenAI::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol
-                )
-              )
-            end
+            sig { returns(T.nilable(OpenAI::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol)) }
             attr_reader :reason
 
-            sig do
-              params(
-                reason:
-                  OpenAI::Beta::Threads::Run::IncompleteDetails::Reason::OrSymbol
-              ).void
-            end
+            sig { params(reason: OpenAI::Beta::Threads::Run::IncompleteDetails::Reason::OrSymbol).void }
             attr_writer :reason
 
             # Details on why the run is incomplete. Will be `null` if the run is not
             # incomplete.
             sig do
               params(
-                reason:
-                  OpenAI::Beta::Threads::Run::IncompleteDetails::Reason::OrSymbol
-              ).returns(T.attached_class)
+
+                reason: OpenAI::Beta::Threads::Run::IncompleteDetails::Reason::OrSymbol
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # The reason why the run is incomplete. This will point to which specific token
               # limit was reached over the course of the run.
+
               reason: nil
             )
             end
 
             sig do
               override.returns(
-                {
-                  reason:
-                    OpenAI::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol
-                }
+                {reason: OpenAI::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol}
               )
             end
             def to_hash
@@ -491,51 +485,34 @@ module OpenAI
             module Reason
               extend OpenAI::Internal::Type::Enum
 
-              TaggedSymbol =
-                T.type_alias do
-                  T.all(
-                    Symbol,
-                    OpenAI::Beta::Threads::Run::IncompleteDetails::Reason
-                  )
-                end
+              TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::Threads::Run::IncompleteDetails::Reason) }
               OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-              MAX_COMPLETION_TOKENS =
-                T.let(
-                  :max_completion_tokens,
-                  OpenAI::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol
-                )
-              MAX_PROMPT_TOKENS =
-                T.let(
-                  :max_prompt_tokens,
-                  OpenAI::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol
-                )
+              MAX_COMPLETION_TOKENS = T.let(
+                :max_completion_tokens,
+                OpenAI::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol
+              )
+              MAX_PROMPT_TOKENS = T.let(
+                :max_prompt_tokens,
+                OpenAI::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol
+              )
 
-              sig do
-                override.returns(
-                  T::Array[
-                    OpenAI::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol
-                  ]
-                )
-              end
+              sig { override.returns(T::Array[OpenAI::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol]) }
               def self.values
               end
             end
           end
 
           class LastError < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Beta::Threads::Run::LastError,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::Run::LastError,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # One of `server_error`, `rate_limit_exceeded`, or `invalid_prompt`.
-            sig do
-              returns(OpenAI::Beta::Threads::Run::LastError::Code::TaggedSymbol)
-            end
+            sig { returns(OpenAI::Beta::Threads::Run::LastError::Code::TaggedSymbol) }
             attr_accessor :code
 
             # A human-readable description of the error.
@@ -545,25 +522,27 @@ module OpenAI
             # The last error associated with this run. Will be `null` if there are no errors.
             sig do
               params(
+
                 code: OpenAI::Beta::Threads::Run::LastError::Code::OrSymbol,
+
                 message: String
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # One of `server_error`, `rate_limit_exceeded`, or `invalid_prompt`.
               code:,
+
               # A human-readable description of the error.
+
               message:
             )
             end
 
             sig do
               override.returns(
-                {
-                  code:
-                    OpenAI::Beta::Threads::Run::LastError::Code::TaggedSymbol,
-                  message: String
-                }
+                {code: OpenAI::Beta::Threads::Run::LastError::Code::TaggedSymbol, message: String}
               )
             end
             def to_hash
@@ -573,63 +552,37 @@ module OpenAI
             module Code
               extend OpenAI::Internal::Type::Enum
 
-              TaggedSymbol =
-                T.type_alias do
-                  T.all(Symbol, OpenAI::Beta::Threads::Run::LastError::Code)
-                end
+              TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::Threads::Run::LastError::Code) }
               OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-              SERVER_ERROR =
-                T.let(
-                  :server_error,
-                  OpenAI::Beta::Threads::Run::LastError::Code::TaggedSymbol
-                )
-              RATE_LIMIT_EXCEEDED =
-                T.let(
-                  :rate_limit_exceeded,
-                  OpenAI::Beta::Threads::Run::LastError::Code::TaggedSymbol
-                )
-              INVALID_PROMPT =
-                T.let(
-                  :invalid_prompt,
-                  OpenAI::Beta::Threads::Run::LastError::Code::TaggedSymbol
-                )
+              SERVER_ERROR = T.let(:server_error, OpenAI::Beta::Threads::Run::LastError::Code::TaggedSymbol)
+              RATE_LIMIT_EXCEEDED = T.let(
+                :rate_limit_exceeded,
+                OpenAI::Beta::Threads::Run::LastError::Code::TaggedSymbol
+              )
+              INVALID_PROMPT = T.let(:invalid_prompt, OpenAI::Beta::Threads::Run::LastError::Code::TaggedSymbol)
 
-              sig do
-                override.returns(
-                  T::Array[
-                    OpenAI::Beta::Threads::Run::LastError::Code::TaggedSymbol
-                  ]
-                )
-              end
+              sig { override.returns(T::Array[OpenAI::Beta::Threads::Run::LastError::Code::TaggedSymbol]) }
               def self.values
               end
             end
           end
 
           class RequiredAction < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Beta::Threads::Run::RequiredAction,
-                  OpenAI::Internal::AnyHash
-                )
-              end
-
-            # Details on the tool outputs needed for this run to continue.
-            sig do
-              returns(
-                OpenAI::Beta::Threads::Run::RequiredAction::SubmitToolOutputs
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::Run::RequiredAction,
+                OpenAI::Internal::AnyHash
               )
             end
+
+            # Details on the tool outputs needed for this run to continue.
+            sig { returns(OpenAI::Beta::Threads::Run::RequiredAction::SubmitToolOutputs) }
             attr_reader :submit_tool_outputs
 
-            sig do
-              params(
-                submit_tool_outputs:
-                  OpenAI::Beta::Threads::Run::RequiredAction::SubmitToolOutputs::OrHash
-              ).void
-            end
+            sig {
+              params(submit_tool_outputs: OpenAI::Beta::Threads::Run::RequiredAction::SubmitToolOutputs::OrHash).void
+            }
             attr_writer :submit_tool_outputs
 
             # For now, this is always `submit_tool_outputs`.
@@ -640,98 +593,84 @@ module OpenAI
             # is required.
             sig do
               params(
-                submit_tool_outputs:
-                  OpenAI::Beta::Threads::Run::RequiredAction::SubmitToolOutputs::OrHash,
+
+                submit_tool_outputs: OpenAI::Beta::Threads::Run::RequiredAction::SubmitToolOutputs::OrHash,
+
                 type: Symbol
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # Details on the tool outputs needed for this run to continue.
               submit_tool_outputs:,
+
               # For now, this is always `submit_tool_outputs`.
+
               type: :submit_tool_outputs
             )
             end
 
             sig do
               override.returns(
-                {
-                  submit_tool_outputs:
-                    OpenAI::Beta::Threads::Run::RequiredAction::SubmitToolOutputs,
-                  type: Symbol
-                }
+                {submit_tool_outputs: OpenAI::Beta::Threads::Run::RequiredAction::SubmitToolOutputs, type: Symbol}
               )
             end
             def to_hash
             end
 
             class SubmitToolOutputs < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Beta::Threads::Run::RequiredAction::SubmitToolOutputs,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
-
-              # A list of the relevant tool calls.
-              sig do
-                returns(
-                  T::Array[
-                    OpenAI::Beta::Threads::RequiredActionFunctionToolCall
-                  ]
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::Run::RequiredAction::SubmitToolOutputs,
+                  OpenAI::Internal::AnyHash
                 )
               end
+
+              # A list of the relevant tool calls.
+              sig { returns(T::Array[OpenAI::Beta::Threads::RequiredActionFunctionToolCall]) }
               attr_accessor :tool_calls
 
               # Details on the tool outputs needed for this run to continue.
               sig do
                 params(
-                  tool_calls:
-                    T::Array[
-                      OpenAI::Beta::Threads::RequiredActionFunctionToolCall::OrHash
-                    ]
-                ).returns(T.attached_class)
+
+                  tool_calls: T::Array[OpenAI::Beta::Threads::RequiredActionFunctionToolCall::OrHash]
+                )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 # A list of the relevant tool calls.
+
                 tool_calls:
               )
               end
 
               sig do
                 override.returns(
-                  {
-                    tool_calls:
-                      T::Array[
-                        OpenAI::Beta::Threads::RequiredActionFunctionToolCall
-                      ]
-                  }
+                  {tool_calls: T::Array[OpenAI::Beta::Threads::RequiredActionFunctionToolCall]}
                 )
               end
               def to_hash
               end
+
             end
           end
 
           class TruncationStrategy < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Beta::Threads::Run::TruncationStrategy,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::Run::TruncationStrategy,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # The truncation strategy to use for the thread. The default is `auto`. If set to
             # `last_messages`, the thread will be truncated to the n most recent messages in
             # the thread. When set to `auto`, messages in the middle of the thread will be
             # dropped to fit the context length of the model, `max_prompt_tokens`.
-            sig do
-              returns(
-                OpenAI::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol
-              )
-            end
+            sig { returns(OpenAI::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol) }
             attr_accessor :type
 
             # The number of most recent messages from the thread when constructing the context
@@ -743,19 +682,24 @@ module OpenAI
             # control the initial context window of the run.
             sig do
               params(
-                type:
-                  OpenAI::Beta::Threads::Run::TruncationStrategy::Type::OrSymbol,
+
+                type: OpenAI::Beta::Threads::Run::TruncationStrategy::Type::OrSymbol,
+
                 last_messages: T.nilable(Integer)
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # The truncation strategy to use for the thread. The default is `auto`. If set to
               # `last_messages`, the thread will be truncated to the n most recent messages in
               # the thread. When set to `auto`, messages in the middle of the thread will be
               # dropped to fit the context length of the model, `max_prompt_tokens`.
               type:,
+
               # The number of most recent messages from the thread when constructing the context
               # for the run.
+
               last_messages: nil
             )
             end
@@ -763,8 +707,7 @@ module OpenAI
             sig do
               override.returns(
                 {
-                  type:
-                    OpenAI::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol,
+                  type: OpenAI::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol,
                   last_messages: T.nilable(Integer)
                 }
               )
@@ -779,46 +722,25 @@ module OpenAI
             module Type
               extend OpenAI::Internal::Type::Enum
 
-              TaggedSymbol =
-                T.type_alias do
-                  T.all(
-                    Symbol,
-                    OpenAI::Beta::Threads::Run::TruncationStrategy::Type
-                  )
-                end
+              TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::Threads::Run::TruncationStrategy::Type) }
               OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-              AUTO =
-                T.let(
-                  :auto,
-                  OpenAI::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol
-                )
-              LAST_MESSAGES =
-                T.let(
-                  :last_messages,
-                  OpenAI::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol
-                )
+              AUTO = T.let(:auto, OpenAI::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol)
+              LAST_MESSAGES = T.let(:last_messages, OpenAI::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol)
 
-              sig do
-                override.returns(
-                  T::Array[
-                    OpenAI::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol
-                  ]
-                )
-              end
+              sig { override.returns(T::Array[OpenAI::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol]) }
               def self.values
               end
             end
           end
 
           class Usage < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Beta::Threads::Run::Usage,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::Run::Usage,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # Number of completion tokens used over the course of the run.
             sig { returns(Integer) }
@@ -836,35 +758,44 @@ module OpenAI
             # in a terminal state (i.e. `in_progress`, `queued`, etc.).
             sig do
               params(
+
                 completion_tokens: Integer,
+
                 prompt_tokens: Integer,
+
                 total_tokens: Integer
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # Number of completion tokens used over the course of the run.
               completion_tokens:,
+
               # Number of prompt tokens used over the course of the run.
               prompt_tokens:,
+
               # Total number of tokens used (prompt + completion).
+
               total_tokens:
             )
             end
 
             sig do
               override.returns(
-                {
-                  completion_tokens: Integer,
-                  prompt_tokens: Integer,
-                  total_tokens: Integer
-                }
+                {completion_tokens: Integer, prompt_tokens: Integer, total_tokens: Integer}
               )
             end
             def to_hash
             end
+
           end
+
         end
+
       end
+
     end
+
   end
 end

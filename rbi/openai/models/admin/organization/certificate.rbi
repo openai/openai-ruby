@@ -2,34 +2,30 @@
 
 module OpenAI
   module Models
+
     module Admin
+
       module Organization
+
         class Certificate < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Admin::Organization::Certificate,
-                OpenAI::Internal::AnyHash
-              )
-            end
+
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Admin::Organization::Certificate,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The identifier, which can be referenced in API endpoints
           sig { returns(String) }
           attr_accessor :id
 
-          sig do
-            returns(
-              OpenAI::Admin::Organization::Certificate::CertificateDetails
-            )
-          end
+          sig { returns(OpenAI::Admin::Organization::Certificate::CertificateDetails) }
           attr_reader :certificate_details
 
-          sig do
-            params(
-              certificate_details:
-                OpenAI::Admin::Organization::Certificate::CertificateDetails::OrHash
-            ).void
-          end
+          sig {
+            params(certificate_details: OpenAI::Admin::Organization::Certificate::CertificateDetails::OrHash).void
+          }
           attr_writer :certificate_details
 
           # The Unix timestamp (in seconds) of when the certificate was uploaded.
@@ -48,11 +44,7 @@ module OpenAI
           #   object type is `organization.certificate`.
           # - If listing, activating, or deactivating certificates for a project, the object
           #   type is `organization.project.certificate`.
-          sig do
-            returns(
-              OpenAI::Admin::Organization::Certificate::Object::TaggedSymbol
-            )
-          end
+          sig { returns(OpenAI::Admin::Organization::Certificate::Object::TaggedSymbol) }
           attr_accessor :object
 
           # Whether the certificate is currently active at the specified scope. Not returned
@@ -66,24 +58,34 @@ module OpenAI
           # Represents an individual `certificate` uploaded to the organization.
           sig do
             params(
+
               id: String,
-              certificate_details:
-                OpenAI::Admin::Organization::Certificate::CertificateDetails::OrHash,
+
+              certificate_details: OpenAI::Admin::Organization::Certificate::CertificateDetails::OrHash,
+
               created_at: Integer,
+
               name: T.nilable(String),
-              object:
-                OpenAI::Admin::Organization::Certificate::Object::OrSymbol,
+
+              object: OpenAI::Admin::Organization::Certificate::Object::OrSymbol,
+
               active: T::Boolean
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The identifier, which can be referenced in API endpoints
             id:,
+
             certificate_details:,
+
             # The Unix timestamp (in seconds) of when the certificate was uploaded.
             created_at:,
+
             # The name of the certificate.
             name:,
+
             # The object type.
             #
             # - If creating, updating, or getting a specific certificate, the object type is
@@ -93,8 +95,10 @@ module OpenAI
             # - If listing, activating, or deactivating certificates for a project, the object
             #   type is `organization.project.certificate`.
             object:,
+
             # Whether the certificate is currently active at the specified scope. Not returned
             # when getting details for a specific certificate.
+
             active: nil
           )
           end
@@ -103,12 +107,10 @@ module OpenAI
             override.returns(
               {
                 id: String,
-                certificate_details:
-                  OpenAI::Admin::Organization::Certificate::CertificateDetails,
+                certificate_details: OpenAI::Admin::Organization::Certificate::CertificateDetails,
                 created_at: Integer,
                 name: T.nilable(String),
-                object:
-                  OpenAI::Admin::Organization::Certificate::Object::TaggedSymbol,
+                object: OpenAI::Admin::Organization::Certificate::Object::TaggedSymbol,
                 active: T::Boolean
               }
             )
@@ -117,13 +119,12 @@ module OpenAI
           end
 
           class CertificateDetails < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Admin::Organization::Certificate::CertificateDetails,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Admin::Organization::Certificate::CertificateDetails,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # The content of the certificate in PEM format.
             sig { returns(T.nilable(String)) }
@@ -148,28 +149,37 @@ module OpenAI
 
             sig do
               params(
+
                 content: String,
+
                 expires_at: Integer,
+
                 valid_at: Integer
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # The content of the certificate in PEM format.
               content: nil,
+
               # The Unix timestamp (in seconds) of when the certificate expires.
               expires_at: nil,
+
               # The Unix timestamp (in seconds) of when the certificate becomes valid.
+
               valid_at: nil
             )
             end
 
             sig do
               override.returns(
-                { content: String, expires_at: Integer, valid_at: Integer }
+                {content: String, expires_at: Integer, valid_at: Integer}
               )
             end
             def to_hash
             end
+
           end
 
           # The object type.
@@ -183,40 +193,29 @@ module OpenAI
           module Object
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(Symbol, OpenAI::Admin::Organization::Certificate::Object)
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Admin::Organization::Certificate::Object) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            CERTIFICATE =
-              T.let(
-                :certificate,
-                OpenAI::Admin::Organization::Certificate::Object::TaggedSymbol
-              )
-            ORGANIZATION_CERTIFICATE =
-              T.let(
-                :"organization.certificate",
-                OpenAI::Admin::Organization::Certificate::Object::TaggedSymbol
-              )
-            ORGANIZATION_PROJECT_CERTIFICATE =
-              T.let(
-                :"organization.project.certificate",
-                OpenAI::Admin::Organization::Certificate::Object::TaggedSymbol
-              )
+            CERTIFICATE = T.let(:certificate, OpenAI::Admin::Organization::Certificate::Object::TaggedSymbol)
+            ORGANIZATION_CERTIFICATE = T.let(
+              :"organization.certificate",
+              OpenAI::Admin::Organization::Certificate::Object::TaggedSymbol
+            )
+            ORGANIZATION_PROJECT_CERTIFICATE = T.let(
+              :"organization.project.certificate",
+              OpenAI::Admin::Organization::Certificate::Object::TaggedSymbol
+            )
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Admin::Organization::Certificate::Object::TaggedSymbol
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Admin::Organization::Certificate::Object::TaggedSymbol]) }
             def self.values
             end
           end
+
         end
+
       end
+
     end
+
   end
 end

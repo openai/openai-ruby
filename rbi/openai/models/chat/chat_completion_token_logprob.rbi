@@ -2,17 +2,19 @@
 
 module OpenAI
   module Models
+
     ChatCompletionTokenLogprob = Chat::ChatCompletionTokenLogprob
 
     module Chat
+
       class ChatCompletionTokenLogprob < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Chat::ChatCompletionTokenLogprob,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Chat::ChatCompletionTokenLogprob,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The token.
         sig { returns(String) }
@@ -33,38 +35,41 @@ module OpenAI
 
         # List of the most likely tokens and their log probability, at this token
         # position. The number of entries may be fewer than the requested `top_logprobs`.
-        sig do
-          returns(
-            T::Array[OpenAI::Chat::ChatCompletionTokenLogprob::TopLogprob]
-          )
-        end
+        sig { returns(T::Array[OpenAI::Chat::ChatCompletionTokenLogprob::TopLogprob]) }
         attr_accessor :top_logprobs
 
         sig do
           params(
+
             token: String,
+
             bytes: T.nilable(T::Array[Integer]),
+
             logprob: Float,
-            top_logprobs:
-              T::Array[
-                OpenAI::Chat::ChatCompletionTokenLogprob::TopLogprob::OrHash
-              ]
-          ).returns(T.attached_class)
+
+            top_logprobs: T::Array[OpenAI::Chat::ChatCompletionTokenLogprob::TopLogprob::OrHash]
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The token.
           token:,
+
           # A list of integers representing the UTF-8 bytes representation of the token.
           # Useful in instances where characters are represented by multiple tokens and
           # their byte representations must be combined to generate the correct text
           # representation. Can be `null` if there is no bytes representation for the token.
           bytes:,
+
           # The log probability of this token, if it is within the top 20 most likely
           # tokens. Otherwise, the value `-9999.0` is used to signify that the token is very
           # unlikely.
           logprob:,
+
           # List of the most likely tokens and their log probability, at this token
           # position. The number of entries may be fewer than the requested `top_logprobs`.
+
           top_logprobs:
         )
         end
@@ -75,8 +80,7 @@ module OpenAI
               token: String,
               bytes: T.nilable(T::Array[Integer]),
               logprob: Float,
-              top_logprobs:
-                T::Array[OpenAI::Chat::ChatCompletionTokenLogprob::TopLogprob]
+              top_logprobs: T::Array[OpenAI::Chat::ChatCompletionTokenLogprob::TopLogprob]
             }
           )
         end
@@ -84,13 +88,12 @@ module OpenAI
         end
 
         class TopLogprob < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Chat::ChatCompletionTokenLogprob::TopLogprob,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Chat::ChatCompletionTokenLogprob::TopLogprob,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The token.
           sig { returns(String) }
@@ -111,39 +114,47 @@ module OpenAI
 
           sig do
             params(
+
               token: String,
+
               bytes: T.nilable(T::Array[Integer]),
+
               logprob: Float
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The token.
             token:,
+
             # A list of integers representing the UTF-8 bytes representation of the token.
             # Useful in instances where characters are represented by multiple tokens and
             # their byte representations must be combined to generate the correct text
             # representation. Can be `null` if there is no bytes representation for the token.
             bytes:,
+
             # The log probability of this token, if it is within the top 20 most likely
             # tokens. Otherwise, the value `-9999.0` is used to signify that the token is very
             # unlikely.
+
             logprob:
           )
           end
 
           sig do
             override.returns(
-              {
-                token: String,
-                bytes: T.nilable(T::Array[Integer]),
-                logprob: Float
-              }
+              {token: String, bytes: T.nilable(T::Array[Integer]), logprob: Float}
             )
           end
           def to_hash
           end
+
         end
+
       end
+
     end
+
   end
 end

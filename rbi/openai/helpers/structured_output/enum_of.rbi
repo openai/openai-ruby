@@ -15,7 +15,8 @@ module OpenAI
         sig do
           params(
             values: T.any(NilClass, T::Boolean, Integer, Float, Symbol)
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.[](*values)
         end
@@ -23,6 +24,7 @@ module OpenAI
         sig do
           returns(T::Array[T.any(NilClass, T::Boolean, Integer, Float, Symbol)])
         end
+
         attr_reader :values
       end
     end
