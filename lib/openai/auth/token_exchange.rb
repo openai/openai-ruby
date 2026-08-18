@@ -59,7 +59,8 @@ module OpenAI
 
         # @api private
         def fetch(timeout: nil)
-          request = OpenAI::HTTPClient::Request.new(
+          deadline = timeout&.then { OpenAI::Internal::Util.monotonic_secs + _1 }
+          request_options = {
             method: :post,
             url: @url,
             headers: {"accept" => "application/json", "content-type" => "application/json"},
@@ -68,12 +69,13 @@ module OpenAI
               subject_token_type: X509_SUBJECT_TOKEN_TYPE,
               identity_provider_id: @identity_provider_id,
               service_account_id: @service_account_id
-            ),
-            timeout: [timeout, TIMEOUT_SECONDS].compact.min
-          )
+            )
+          }
 
           retry_count = 0
           loop do
+            timeout = [remaining_timeout(deadline), TIMEOUT_SECONDS].compact.min
+            request = OpenAI::HTTPClient::Request.new(**request_options, timeout: timeout)
             response = @http_client.execute(request)
             unless response.is_a?(OpenAI::HTTPClient::Response)
               raise TypeError, "`http_client#execute` must return an OpenAI::HTTPClient::Response"
@@ -82,7 +84,7 @@ module OpenAI
             if retry_count < MAX_RETRIES && retryable_status?(response.status)
               headers = response.headers
               OpenAI::Internal::Util.close_fused!(response.body)
-              wait_before_retry(headers, retry_count: retry_count)
+              wait_before_retry(headers, retry_count: retry_count, deadline: deadline)
               retry_count += 1
               next
             end
@@ -91,7 +93,7 @@ module OpenAI
           rescue OpenAI::Errors::APIConnectionError
             raise if retry_count >= MAX_RETRIES
 
-            wait_before_retry({}, retry_count: retry_count)
+            wait_before_retry({}, retry_count: retry_count, deadline: deadline)
             retry_count += 1
           end
         end
@@ -171,7 +173,8 @@ module OpenAI
 
         def sanitized_error_headers(headers)
           headers.reject do |name, _|
-            OpenAI::Internal::Logging.credential_header?(name)
+            OpenAI::Internal::Logging.credential_header?(name) ||
+              OpenAI::Internal::Logging::URL_HEADER_KEY.match?(name.to_s)
           end
         end
 
@@ -201,8 +204,18 @@ module OpenAI
           status == 408 || status == 409 || status == 429 || status >= 500
         end
 
-        def wait_before_retry(headers, retry_count:)
-          @sleeper.call(retry_delay(headers, retry_count: retry_count))
+        def wait_before_retry(headers, retry_count:, deadline:)
+          delay = retry_delay(headers, retry_count: retry_count)
+          @sleeper.call([delay, remaining_timeout(deadline)].compact.min)
+        end
+
+        def remaining_timeout(deadline)
+          return if deadline.nil?
+
+          remaining = deadline - OpenAI::Internal::Util.monotonic_secs
+          return remaining if remaining.positive?
+
+          raise Timeout::Error, "request timed out during workload identity authentication"
         end
 
         def retry_delay(headers, retry_count:)

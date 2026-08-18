@@ -213,13 +213,14 @@ module OpenAI
       return super unless workload_identity_request?(request)
 
       context = request[:workload_identity_context]
-      if context.nil?
-        deadline = request[:timeout]&.then { OpenAI::Internal::Util.monotonic_secs + _1 }
-        context = {deadline: deadline, token: nil}
-        request = request.merge(workload_identity_context: context)
-      elsif retry_count.positive?
-        context[:deadline] = request[:timeout]&.then { OpenAI::Internal::Util.monotonic_secs + _1 }
-      end
+      deadline =
+        if context && retry_count.zero?
+          context.fetch(:deadline)
+        else
+          request[:timeout]&.then { OpenAI::Internal::Util.monotonic_secs + _1 }
+        end
+      context = {deadline: deadline, token: nil}
+      request = request.merge(workload_identity_context: context)
 
       begin
         with_workload_identity_401_invalidation(context) do
@@ -233,6 +234,8 @@ module OpenAI
       rescue OpenAI::Errors::AuthenticationError
         raise unless retry_count.zero? && request_replayable?(request)
 
+        context = {deadline: context.fetch(:deadline), token: nil}
+        request = request.merge(workload_identity_context: context)
         with_workload_identity_401_invalidation(context) do
           super(
             request,
@@ -252,6 +255,12 @@ module OpenAI
     rescue OpenAI::Errors::AuthenticationError
       @workload_identity_auth.invalidate_token(context.fetch(:token))
       raise
+    rescue FrozenError => e
+      raise unless e.receiver.equal?(context) || e.receiver.equal?(context[:token])
+
+      raise OpenAI::Errors::Error,
+            "Workload identity request hooks cannot modify authentication context.",
+            cause: nil
     end
 
     private def workload_identity_request?(request)
@@ -264,8 +273,9 @@ module OpenAI
     private def prepare_workload_identity_request(request)
       context = request.fetch(:workload_identity_context)
       deadline = context.fetch(:deadline)
-      token = @workload_identity_auth.get_token(deadline: deadline)
+      token = @workload_identity_auth.get_token(deadline: deadline).dup.freeze
       context[:token] = token
+      context.freeze
       authorized_request = @workload_identity_request_policy.authorize(request, token)
       request_with_remaining_timeout(authorized_request, deadline)
     rescue Timeout::Error => e

@@ -129,6 +129,80 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
     assert_operator(http_client.requests.fetch(0).timeout, :<=, 0.25)
   end
 
+  def test_x509_exchange_caps_transient_retry_waits_to_the_authentication_deadline
+    [:response, :connection].each do |failure|
+      delays = []
+      http_client = StubHTTPClient.new do |request|
+        if failure == :connection
+          raise OpenAI::Errors::APIConnectionError.new(url: request.url)
+        end
+
+        http_response(status: 429, headers: {"Retry-After" => "3"}, body: {"error" => "busy"})
+      end
+      exchange = OpenAI::Auth::TokenExchange::X509.new(
+        x509_config,
+        token_exchange_url: OpenAI::Auth::TokenExchange::DEFAULT_URL,
+        http_client: http_client,
+        sleeper: ->(delay) { delays << delay; sleep(delay) }
+      )
+
+      assert_raises(Timeout::Error) { exchange.fetch(timeout: 0.05) }
+
+      assert_equal(1, http_client.requests.length, "#{failure} retried after the deadline")
+      assert_operator(delays.fetch(0), :<=, 0.05)
+      assert_operator(http_client.requests.fetch(0).timeout, :<=, 0.05)
+    end
+  end
+
+  def test_x509_exchange_recreates_retry_requests_with_the_remaining_timeout
+    http_client = StubHTTPClient.new do |_request|
+      if http_client.requests.length == 1
+        http_response(status: 429, headers: {"Retry-After" => "0.05"}, body: {"error" => "busy"})
+      else
+        http_response(status: 200, body: {"access_token" => "token", "expires_in" => 60})
+      end
+    end
+    exchange = OpenAI::Auth::TokenExchange::X509.new(
+      x509_config,
+      token_exchange_url: OpenAI::Auth::TokenExchange::DEFAULT_URL,
+      http_client: http_client,
+      sleeper: ->(delay) { sleep(delay) }
+    )
+
+    assert_equal("token", exchange.fetch(timeout: 0.25).fetch(:id))
+
+    assert_equal(2, http_client.requests.length)
+    first_timeout, second_timeout = http_client.requests.map(&:timeout)
+    assert_operator(first_timeout, :<=, 0.25)
+    assert_operator(second_timeout, :<, first_timeout - 0.04)
+  end
+
+  def test_x509_exchange_discards_signed_url_headers_from_authentication_errors
+    [302, 403].each do |status|
+      http_client = StubHTTPClient.new do |_request|
+        http_response(
+          status: status,
+          headers: {
+            "Location" => "https://example.invalid/redirect?token=location-secret",
+            "LiNk" => "https://example.invalid/next?signature=link-secret",
+            "REFRESH" => "https://example.invalid/retry?key=refresh-secret",
+            "x-request-id" => "safe-request-id"
+          },
+          body: {"error" => "invalid_grant"}
+        )
+      end
+
+      error = assert_raises(OpenAI::Errors::APIError) { x509_auth(http_client).get_token }
+
+      assert_equal("safe-request-id", error.request_id)
+      assert_empty(error.headers.keys & %w[location link refresh])
+      %w[location-secret link-secret refresh-secret].each do |secret|
+        refute_includes(error.headers.inspect, secret)
+        refute_includes(error.inspect, secret)
+      end
+    end
+  end
+
   def test_x509_client_copy_rejects_provider_owned_origins_before_exchange
     http_client = StubHTTPClient.new { raise "client copy performed network I/O" }
     client = OpenAI::Client.new(
@@ -464,6 +538,65 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
     refute_includes(error.inspect, "hook-override")
     refute_includes(error.inspect, "hook-session")
     refute_includes(error.inspect, "hook-response-session")
+  end
+
+  def test_x509_rejects_prepare_hook_mutating_both_context_token_and_authorization
+    http_client = StubHTTPClient.new do |request|
+      if request.url.host == "mtls.auth.openai.com"
+        http_response(status: 200, body: {"access_token" => "server-issued-token", "expires_in" => 60})
+      else
+        http_response(status: 200, body: {"ok" => true})
+      end
+    end
+    client_class =
+      Class.new(OpenAI::Client) do
+        private def prepare_request(request, **context)
+          prepared = super
+          prepared.fetch(:workload_identity_context)[:token] = "hook-injected-token"
+          prepared.merge(headers: prepared.fetch(:headers).merge("authorization" => "Bearer hook-injected-token"))
+        end
+      end
+    client = client_class.new(api_key: nil, workload_identity: x509_config, http_client: http_client)
+
+    error = assert_raises(OpenAI::Errors::Error) do
+      client.request(method: :get, path: "probe", model: OpenAI::Internal::Type::Unknown)
+    end
+
+    assert_match(/authentication context|credential headers/, error.message)
+    assert_equal(1, http_client.requests.length)
+    refute_includes(error.inspect, "server-issued-token")
+    refute_includes(error.inspect, "hook-injected-token")
+    assert_nil(error.cause)
+  end
+
+  def test_x509_rejects_prepare_hook_mutating_the_selected_token_in_place
+    http_client = StubHTTPClient.new do |request|
+      if request.url.host == "mtls.auth.openai.com"
+        http_response(status: 200, body: {"access_token" => "server-issued-token", "expires_in" => 60})
+      else
+        http_response(status: 200, body: {"ok" => true})
+      end
+    end
+    client_class =
+      Class.new(OpenAI::Client) do
+        private def prepare_request(request, **context)
+          prepared = super
+          prepared.fetch(:workload_identity_context).fetch(:token).replace("hook-injected-token")
+          prepared.merge(headers: prepared.fetch(:headers).merge("authorization" => "Bearer hook-injected-token"))
+        end
+      end
+    client = client_class.new(api_key: nil, workload_identity: x509_config, http_client: http_client)
+
+    error = assert_raises(OpenAI::Errors::Error) do
+      client.request(method: :get, path: "probe", model: OpenAI::Internal::Type::Unknown)
+    end
+
+    assert_match(/authentication context/, error.message)
+    assert_equal(1, http_client.requests.length)
+    refute_includes(error.inspect, "server-issued-token")
+    refute_includes(error.inspect, "hook-injected-token")
+    assert_nil(error.cause)
+    assert_equal("server-issued-token", client.workload_identity_auth.get_token)
   end
 
   def test_x509_rejects_api_key_injected_by_a_prepare_hook
