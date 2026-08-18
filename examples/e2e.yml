@@ -49,6 +49,9 @@ examples:
   examples/mtls_custom_http_client.rb:
     status: excluded
     reason: Requires an enrolled mTLS certificate, private key, endpoint, and model.
+  examples/realtime/websocket_text.rb:
+    status: covered
+    expected_output: "[realtime] smoke test passed"
   examples/picture.rb:
     status: covered
     minimum_output_bytes: 1

@@ -1,0 +1,33 @@
+module OpenAI
+  module Models
+    module Realtime
+      module Transports
+        class AsyncWebSocket
+          def initialize: () ?{ (OpenSSL::SSL::SSLContext context) -> void } -> void
+
+          class Socket
+            # @api private
+            def initialize: (untyped connection, url: URI::Generic) -> void
+            def read: -> untyped
+            def write: (String message) -> void
+            def close: (?code: Integer, ?reason: String) -> void
+            # @api private
+            def abort: -> void
+            # @api private
+            def aborted?: -> bool
+            def closed?: -> bool
+          end
+
+          def open: (
+            url: URI::Generic,
+            headers: ::Hash[String, String],
+            timeout: Float?,
+            **untyped endpoint_options
+          ) {
+            (Socket socket) -> top
+          } -> top
+        end
+      end
+    end
+  end
+end

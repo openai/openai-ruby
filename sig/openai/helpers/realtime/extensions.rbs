@@ -1,0 +1,60 @@
+module OpenAI
+  class Client
+    # @api private
+    def realtime_connection_request: (
+      path: String,
+      query: ::Hash[String, String],
+      ?websocket_base_url: String?,
+      ?options: OpenAI::request_opts?
+    ) -> OpenAI::Internal::Transport::BaseClient::request_input
+
+    # @api private
+    def with_realtime_connection_request: (
+      path: String,
+      query: ::Hash[String, String],
+      ?websocket_base_url: String?,
+      ?options: OpenAI::request_opts?
+    ) { (OpenAI::Internal::Transport::BaseClient::request_input request) -> top } -> top
+  end
+
+  module Errors
+    class RealtimeConnectionError < OpenAI::Errors::Error
+      attr_reader url: URI::Generic
+      # @api private
+      attr_reader http_status: Integer?
+      def cause: -> Exception?
+
+      # @api private
+      def initialize: (
+        url: URI::Generic,
+        ?message: String?,
+        ?cause: Exception?,
+        ?http_status: Integer?
+      ) -> void
+    end
+
+    class RealtimeProtocolError < OpenAI::Errors::Error
+      attr_reader data: String
+      def cause: -> StandardError?
+
+      # @api private
+      def initialize: (
+        data: String,
+        ?message: String?,
+        ?cause: StandardError?
+      ) -> void
+    end
+  end
+
+  module Resources
+    class Realtime
+      def connect: (
+        model: String,
+        ?websocket_base_url: String?,
+        ?request_options: OpenAI::request_opts?,
+        ?transport: untyped?,
+        ?transport_options: ::Hash[Symbol, untyped]
+      ) { (OpenAI::Realtime::Connection connection) -> top } -> top
+    end
+  end
+end

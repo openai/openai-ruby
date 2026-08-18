@@ -1,0 +1,39 @@
+module OpenAI
+  module Models
+    module Realtime
+      type connection_server_event =
+        OpenAI::Models::Realtime::realtime_server_event
+        | OpenAI::Realtime::UnknownServerEvent
+
+      type connection_client_event =
+        OpenAI::Models::Realtime::realtime_client_event
+        | ::Hash[Symbol | String, untyped]
+
+      class Connection
+        include Enumerable[OpenAI::Models::Realtime::connection_server_event]
+
+        attr_reader url: URI::Generic
+        attr_reader session: OpenAI::Realtime::ConnectionResources::Session
+        attr_reader response: OpenAI::Realtime::ConnectionResources::Response
+        attr_reader conversation: OpenAI::Realtime::ConnectionResources::Conversation
+
+        # @api private
+        def initialize: (socket: untyped, url: URI::Generic) -> void
+        def each:
+          -> Enumerator[OpenAI::Models::Realtime::connection_server_event, self]
+          | {
+            (OpenAI::Models::Realtime::connection_server_event event) -> void
+          } -> self
+        def receive: -> OpenAI::Models::Realtime::connection_server_event?
+        def receive_raw: -> String?
+        def parse_event: (String data) -> OpenAI::Models::Realtime::connection_server_event
+        def send_event: (OpenAI::Models::Realtime::connection_client_event event) -> nil
+        def send_raw: (String data) -> nil
+        def close: (?code: Integer, ?reason: String) -> nil
+        # @api private
+        def abort: -> nil
+        def closed?: -> bool
+      end
+    end
+  end
+end
