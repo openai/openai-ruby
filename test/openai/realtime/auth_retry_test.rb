@@ -48,6 +48,42 @@ class OpenAI::Test::RealtimeAuthRetryTest < Minitest::Test
     end
   end
 
+  def test_x509_workload_identity_rejects_realtime_before_token_or_websocket_dispatch
+    identity = OpenAI::Auth::X509WorkloadIdentity.new(
+      identity_provider_id: "idp_123",
+      service_account_id: "sa_123"
+    )
+    client = OpenAI::Client.new(
+      api_key: nil,
+      workload_identity: identity,
+      base_url: "https://trusted.example/v1",
+      http_client: OpenAI::HTTPClient.new
+    )
+    transport = AcceptingTransport.new
+    token_requests = 0
+    get_token = lambda do |deadline:|
+      refute_nil(deadline)
+      token_requests += 1
+      "sensitive-token"
+    end
+
+    client.workload_identity_auth.stub(:get_token, get_token) do
+      %w[wss://attacker.invalid/v1 ws://attacker.invalid/v1].each do |websocket_base_url|
+        error = assert_raises(OpenAI::Errors::Error) do
+          client.realtime.connect(
+            model: "gpt-realtime-2.1",
+            websocket_base_url: websocket_base_url,
+            transport: transport
+          ) { |_connection| nil }
+        end
+        assert_match(/X\.509.*Realtime WebSocket/, error.message)
+      end
+    end
+
+    assert_equal(0, token_requests)
+    assert_empty(transport.attempts)
+  end
+
   def test_workload_identity_refreshes_once_after_a_definitive_upgrade_401
     client = workload_identity_client
     transport = RejectOnceTransport.new
