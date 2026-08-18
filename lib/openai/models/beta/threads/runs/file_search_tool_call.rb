@@ -41,15 +41,21 @@ module OpenAI
               #   The ranking options for the file search.
               #
               #   @return [OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions, nil]
-              optional :ranking_options,
-                       -> { OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions }
+              optional(
+                :ranking_options,
+                -> { OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions }
+              )
 
               # @!attribute results
               #   The results of the file search.
               #
               #   @return [Array<OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result>, nil]
-              optional :results,
-                       -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result] }
+              optional(
+                :results,
+                -> {
+                  OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result]
+                }
+              )
 
               # @!method initialize(ranking_options: nil, results: nil)
               #   For now, this is always going to be an empty object.
@@ -65,8 +71,10 @@ module OpenAI
                 #   ranker.
                 #
                 #   @return [Symbol, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker]
-                required :ranker,
-                         enum: -> { OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker }
+                required(
+                  :ranker,
+                  enum: -> { OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker }
+                )
 
                 # @!attribute score_threshold
                 #   The score threshold for the file search. All values must be a floating point
@@ -126,8 +134,14 @@ module OpenAI
                 #   requested via the include query parameter.
                 #
                 #   @return [Array<OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content>, nil]
-                optional :content,
-                         -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content] }
+                optional(
+                  :content,
+                  -> {
+                    OpenAI::Internal::Type::ArrayOf[
+                      OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content
+                    ]
+                  }
+                )
 
                 # @!method initialize(file_id:, file_name:, score:, content: nil)
                 #   Some parameter documentations has been truncated, see
@@ -155,8 +169,10 @@ module OpenAI
                   #   The type of the content.
                   #
                   #   @return [Symbol, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type, nil]
-                  optional :type,
-                           enum: -> { OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type }
+                  optional(
+                    :type,
+                    enum: -> { OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type }
+                  )
 
                   # @!method initialize(text: nil, type: nil)
                   #   @param text [String] The text content of the file.

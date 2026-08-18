@@ -9,8 +9,10 @@ module OpenAI
           #   The content of the message in array of text and/or images.
           #
           #   @return [Array<OpenAI::Models::Beta::Threads::ImageFileDeltaBlock, OpenAI::Models::Beta::Threads::TextDeltaBlock, OpenAI::Models::Beta::Threads::RefusalDeltaBlock, OpenAI::Models::Beta::Threads::ImageURLDeltaBlock>, nil]
-          optional :content,
-                   -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::MessageContentDelta] }
+          optional(
+            :content,
+            -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::MessageContentDelta] }
+          )
 
           # @!attribute role
           #   The entity that produced the message. One of `user` or `assistant`.

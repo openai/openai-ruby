@@ -196,17 +196,21 @@ module OpenAI
             #   A list of message content tokens with log probability information.
             #
             #   @return [Array<OpenAI::Models::Chat::ChatCompletionTokenLogprob>, nil]
-            required :content,
-                     -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletionTokenLogprob] },
-                     nil?: true
+            required(
+              :content,
+              -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletionTokenLogprob] },
+              nil?: true
+            )
 
             # @!attribute refusal
             #   A list of message refusal tokens with log probability information.
             #
             #   @return [Array<OpenAI::Models::Chat::ChatCompletionTokenLogprob>, nil]
-            required :refusal,
-                     -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletionTokenLogprob] },
-                     nil?: true
+            required(
+              :refusal,
+              -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletionTokenLogprob] },
+              nil?: true
+            )
 
             # @!method initialize(content:, refusal:)
             #   Log probability information for the choice.
@@ -264,8 +268,14 @@ module OpenAI
               #   A list of moderation results.
               #
               #   @return [Array<OpenAI::Models::Chat::ChatCompletion::Moderation::Input::ModerationResults::Result>]
-              required :results,
-                       -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletion::Moderation::Input::ModerationResults::Result] }
+              required(
+                :results,
+                -> {
+                  OpenAI::Internal::Type::ArrayOf[
+                    OpenAI::Chat::ChatCompletion::Moderation::Input::ModerationResults::Result
+                  ]
+                }
+              )
 
               # @!attribute type
               #   The object type, which is always `moderation_results`.
@@ -294,12 +304,16 @@ module OpenAI
                 #   Which modalities of input are reflected by the score for each category.
                 #
                 #   @return [Hash{Symbol=>Array<Symbol, OpenAI::Models::Chat::ChatCompletion::Moderation::Input::ModerationResults::Result::CategoryAppliedInputType>}]
-                required :category_applied_input_types,
-                         -> do
-                           OpenAI::Internal::Type::HashOf[
-                             OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Chat::ChatCompletion::Moderation::Input::ModerationResults::Result::CategoryAppliedInputType]
-                           ]
-                         end
+                required(
+                  :category_applied_input_types,
+                  -> do
+                    OpenAI::Internal::Type::HashOf[
+                      OpenAI::Internal::Type::ArrayOf[
+                        enum: OpenAI::Chat::ChatCompletion::Moderation::Input::ModerationResults::Result::CategoryAppliedInputType
+                      ]
+                    ]
+                  end
+                )
 
                 # @!attribute category_scores
                 #   A dictionary of moderation categories to scores.
@@ -415,8 +429,14 @@ module OpenAI
               #   A list of moderation results.
               #
               #   @return [Array<OpenAI::Models::Chat::ChatCompletion::Moderation::Output::ModerationResults::Result>]
-              required :results,
-                       -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletion::Moderation::Output::ModerationResults::Result] }
+              required(
+                :results,
+                -> {
+                  OpenAI::Internal::Type::ArrayOf[
+                    OpenAI::Chat::ChatCompletion::Moderation::Output::ModerationResults::Result
+                  ]
+                }
+              )
 
               # @!attribute type
               #   The object type, which is always `moderation_results`.
@@ -445,14 +465,16 @@ module OpenAI
                 #   Which modalities of input are reflected by the score for each category.
                 #
                 #   @return [Hash{Symbol=>Array<Symbol, OpenAI::Models::Chat::ChatCompletion::Moderation::Output::ModerationResults::Result::CategoryAppliedInputType>}]
-                required :category_applied_input_types,
-                         -> do
-                           OpenAI::Internal::Type::HashOf[
-                             OpenAI::Internal::Type::ArrayOf[
-                               enum: OpenAI::Chat::ChatCompletion::Moderation::Output::ModerationResults::Result::CategoryAppliedInputType
-                             ]
-                           ]
-                         end
+                required(
+                  :category_applied_input_types,
+                  -> do
+                    OpenAI::Internal::Type::HashOf[
+                      OpenAI::Internal::Type::ArrayOf[
+                        enum: OpenAI::Chat::ChatCompletion::Moderation::Output::ModerationResults::Result::CategoryAppliedInputType
+                      ]
+                    ]
+                  end
+                )
 
                 # @!attribute category_scores
                 #   A dictionary of moderation categories to scores.

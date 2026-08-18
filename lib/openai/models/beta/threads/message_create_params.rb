@@ -35,11 +35,13 @@ module OpenAI
           #   A list of files attached to the message, and the tools they should be added to.
           #
           #   @return [Array<OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment>, nil]
-          optional :attachments,
-                   -> {
-                     OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::Threads::MessageCreateParams::Attachment]
-                   },
-                   nil?: true
+          optional(
+            :attachments,
+            -> {
+              OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::Threads::MessageCreateParams::Attachment]
+            },
+            nil?: true
+          )
 
           # @!attribute metadata
           #   Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -82,8 +84,9 @@ module OpenAI
             #   @return [Array(String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>)]
 
             # @type [OpenAI::Internal::Type::Converter]
-            MessageContentPartParamArray =
-              OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Beta::Threads::MessageContentPartParam }]
+            MessageContentPartParamArray = OpenAI::Internal::Type::ArrayOf[
+              union: -> { OpenAI::Beta::Threads::MessageContentPartParam }
+            ]
           end
 
           # The role of the entity that is creating the message. Allowed values include:
@@ -113,8 +116,12 @@ module OpenAI
             #   The tools to add this file to.
             #
             #   @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::Tool::FileSearch>, nil]
-            optional :tools,
-                     -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::MessageCreateParams::Attachment::Tool] }
+            optional(
+              :tools,
+              -> {
+                OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::MessageCreateParams::Attachment::Tool]
+              }
+            )
 
             # @!method initialize(file_id: nil, tools: nil)
             #   @param file_id [String] The ID of the file to attach to the message.

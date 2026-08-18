@@ -9,8 +9,10 @@ module OpenAI
           #   A list of items
           #
           #   @return [Array<OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem, OpenAI::Models::Beta::ChatKit::ChatKitThreadAssistantMessageItem, OpenAI::Models::Beta::ChatKit::ChatKitWidgetItem, OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitClientToolCall, OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTask, OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup>]
-          required :data,
-                   -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data] }
+          required(
+            :data,
+            -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data] }
+          )
 
           # @!attribute first_id
           #   The ID of the first item in the list.
@@ -65,8 +67,10 @@ module OpenAI
             variant :"chatkit.widget", -> { OpenAI::Beta::ChatKit::ChatKitWidgetItem }
 
             # Record of a client side tool invocation initiated by the assistant.
-            variant :"chatkit.client_tool_call",
-                    -> { OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitClientToolCall }
+            variant(
+              :"chatkit.client_tool_call",
+              -> { OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitClientToolCall }
+            )
 
             # Task emitted by the workflow to show progress and status updates.
             variant :"chatkit.task", -> { OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTask }
@@ -122,8 +126,10 @@ module OpenAI
               #   Execution status for the tool call.
               #
               #   @return [Symbol, OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitClientToolCall::Status]
-              required :status,
-                       enum: -> { OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitClientToolCall::Status }
+              required(
+                :status,
+                enum: -> { OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitClientToolCall::Status }
+              )
 
               # @!attribute thread_id
               #   Identifier of the parent thread.
@@ -213,8 +219,10 @@ module OpenAI
               #   Subtype for the task.
               #
               #   @return [Symbol, OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTask::TaskType]
-              required :task_type,
-                       enum: -> { OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTask::TaskType }
+              required(
+                :task_type,
+                enum: -> { OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTask::TaskType }
+              )
 
               # @!attribute thread_id
               #   Identifier of the parent thread.
@@ -284,8 +292,14 @@ module OpenAI
               #   Tasks included in the group.
               #
               #   @return [Array<OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task>]
-              required :tasks,
-                       -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task] }
+              required(
+                :tasks,
+                -> {
+                  OpenAI::Internal::Type::ArrayOf[
+                    OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task
+                  ]
+                }
+              )
 
               # @!attribute thread_id
               #   Identifier of the parent thread.
@@ -331,8 +345,10 @@ module OpenAI
                 #   Subtype for the grouped task.
                 #
                 #   @return [Symbol, OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task::Type]
-                required :type,
-                         enum: -> { OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task::Type }
+                required(
+                  :type,
+                  enum: -> { OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task::Type }
+                )
 
                 # @!method initialize(heading:, summary:, type:)
                 #   Some parameter documentations has been truncated, see

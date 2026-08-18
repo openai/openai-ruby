@@ -44,10 +44,12 @@ module OpenAI
         #   The execution context that produced this tool call.
         #
         #   @return [OpenAI::Models::Beta::BetaResponseFunctionToolCall::Caller::Direct, OpenAI::Models::Beta::BetaResponseFunctionToolCall::Caller::Program, nil]
-        optional :caller_,
-                 union: -> { OpenAI::Beta::BetaResponseFunctionToolCall::Caller },
-                 api_name: :caller,
-                 nil?: true
+        optional(
+          :caller_,
+          union: -> { OpenAI::Beta::BetaResponseFunctionToolCall::Caller },
+          api_name: :caller,
+          nil?: true
+        )
 
         # @!attribute namespace
         #   The namespace of the function to run.

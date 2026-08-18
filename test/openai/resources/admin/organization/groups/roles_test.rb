@@ -12,10 +12,10 @@ class OpenAI::Test::Resources::Admin::Organization::Groups::RolesTest < OpenAI::
 
     assert_pattern do
       response => {
-        group: OpenAI::Models::Admin::Organization::Groups::RoleCreateResponse::Group,
-        object: Symbol,
-        role: OpenAI::Admin::Organization::Role
-      }
+          group: OpenAI::Models::Admin::Organization::Groups::RoleCreateResponse::Group,
+          object: Symbol,
+          role: OpenAI::Admin::Organization::Role
+        }
     end
   end
 
@@ -28,19 +28,21 @@ class OpenAI::Test::Resources::Admin::Organization::Groups::RolesTest < OpenAI::
 
     assert_pattern do
       response => {
-        id: String,
-        assignment_sources: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::Groups::RoleRetrieveResponse::AssignmentSource]) | nil,
-        created_at: Integer | nil,
-        created_by: String | nil,
-        created_by_user_obj: ^(OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]) | nil,
-        description: String | nil,
-        metadata: ^(OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]) | nil,
-        name: String,
-        permissions: ^(OpenAI::Internal::Type::ArrayOf[String]),
-        predefined_role: OpenAI::Internal::Type::Boolean,
-        resource_type: String,
-        updated_at: Integer | nil
-      }
+          id: String,
+          assignment_sources: ^(OpenAI::Internal::Type::ArrayOf[
+            OpenAI::Models::Admin::Organization::Groups::RoleRetrieveResponse::AssignmentSource
+          ]) | nil,
+          created_at: Integer | nil,
+          created_by: String | nil,
+          created_by_user_obj: ^(OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]) | nil,
+          description: String | nil,
+          metadata: ^(OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]) | nil,
+          name: String,
+          permissions: ^(OpenAI::Internal::Type::ArrayOf[String]),
+          predefined_role: OpenAI::Internal::Type::Boolean,
+          resource_type: String,
+          updated_at: Integer | nil
+        }
     end
   end
 
@@ -60,19 +62,21 @@ class OpenAI::Test::Resources::Admin::Organization::Groups::RolesTest < OpenAI::
 
     assert_pattern do
       row => {
-        id: String,
-        assignment_sources: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::Groups::RoleListResponse::AssignmentSource]) | nil,
-        created_at: Integer | nil,
-        created_by: String | nil,
-        created_by_user_obj: ^(OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]) | nil,
-        description: String | nil,
-        metadata: ^(OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]) | nil,
-        name: String,
-        permissions: ^(OpenAI::Internal::Type::ArrayOf[String]),
-        predefined_role: OpenAI::Internal::Type::Boolean,
-        resource_type: String,
-        updated_at: Integer | nil
-      }
+          id: String,
+          assignment_sources: ^(OpenAI::Internal::Type::ArrayOf[
+            OpenAI::Models::Admin::Organization::Groups::RoleListResponse::AssignmentSource
+          ]) | nil,
+          created_at: Integer | nil,
+          created_by: String | nil,
+          created_by_user_obj: ^(OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]) | nil,
+          description: String | nil,
+          metadata: ^(OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]) | nil,
+          name: String,
+          permissions: ^(OpenAI::Internal::Type::ArrayOf[String]),
+          predefined_role: OpenAI::Internal::Type::Boolean,
+          resource_type: String,
+          updated_at: Integer | nil
+        }
     end
   end
 
@@ -85,9 +89,9 @@ class OpenAI::Test::Resources::Admin::Organization::Groups::RolesTest < OpenAI::
 
     assert_pattern do
       response => {
-        deleted: OpenAI::Internal::Type::Boolean,
-        object: String
-      }
+          deleted: OpenAI::Internal::Type::Boolean,
+          object: String
+        }
     end
   end
 end

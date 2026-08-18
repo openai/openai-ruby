@@ -22,8 +22,10 @@ module OpenAI
             # @!attribute certificate_details
             #
             #   @return [OpenAI::Models::Admin::Organization::Projects::CertificateActivateResponse::CertificateDetails]
-            required :certificate_details,
-                     -> { OpenAI::Models::Admin::Organization::Projects::CertificateActivateResponse::CertificateDetails }
+            required(
+              :certificate_details,
+              -> { OpenAI::Models::Admin::Organization::Projects::CertificateActivateResponse::CertificateDetails }
+            )
 
             # @!attribute created_at
             #   The Unix timestamp (in seconds) of when the certificate was uploaded.

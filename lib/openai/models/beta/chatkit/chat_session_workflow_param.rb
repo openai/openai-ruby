@@ -16,8 +16,12 @@ module OpenAI
           #   values must be primitive types, and the map defaults to an empty object.
           #
           #   @return [Hash{Symbol=>String, Boolean, Float}, nil]
-          optional :state_variables,
-                   -> { OpenAI::Internal::Type::HashOf[union: OpenAI::Beta::ChatKit::ChatSessionWorkflowParam::StateVariable] }
+          optional(
+            :state_variables,
+            -> {
+              OpenAI::Internal::Type::HashOf[union: OpenAI::Beta::ChatKit::ChatSessionWorkflowParam::StateVariable]
+            }
+          )
 
           # @!attribute tracing
           #   Optional tracing overrides for the workflow invocation. When omitted, tracing is

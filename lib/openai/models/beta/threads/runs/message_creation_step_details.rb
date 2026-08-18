@@ -9,8 +9,10 @@ module OpenAI
             # @!attribute message_creation
             #
             #   @return [OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails::MessageCreation]
-            required :message_creation,
-                     -> { OpenAI::Beta::Threads::Runs::MessageCreationStepDetails::MessageCreation }
+            required(
+              :message_creation,
+              -> { OpenAI::Beta::Threads::Runs::MessageCreationStepDetails::MessageCreation }
+            )
 
             # @!attribute type
             #   Always `message_creation`.

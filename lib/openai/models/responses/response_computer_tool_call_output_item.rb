@@ -40,8 +40,14 @@ module OpenAI
         #   developer.
         #
         #   @return [Array<OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck>, nil]
-        optional :acknowledged_safety_checks,
-                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck] }
+        optional(
+          :acknowledged_safety_checks,
+          -> {
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck
+            ]
+          }
+        )
 
         # @!attribute created_by
         #   The identifier of the actor that created the item.

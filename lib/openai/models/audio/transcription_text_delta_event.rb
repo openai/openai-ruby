@@ -22,8 +22,10 @@ module OpenAI
         #   with the `include[]` parameter set to `logprobs`.
         #
         #   @return [Array<OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob>, nil]
-        optional :logprobs,
-                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob] }
+        optional(
+          :logprobs,
+          -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob] }
+        )
 
         # @!attribute segment_id
         #   Identifier of the diarized segment that this delta belongs to. Only present when

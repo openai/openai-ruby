@@ -47,8 +47,10 @@ module OpenAI
           #   combination of them.
           #
           #   @return [Array<Symbol, OpenAI::Models::Admin::Organization::UsageCompletionsParams::GroupBy>, nil]
-          optional :group_by,
-                   -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::UsageCompletionsParams::GroupBy] }
+          optional(
+            :group_by,
+            -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::UsageCompletionsParams::GroupBy] }
+          )
 
           # @!attribute limit
           #   Specifies the number of buckets to return.

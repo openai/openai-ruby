@@ -53,10 +53,10 @@ module OpenAI
         # @see OpenAI::Models::VectorStores::FileBatchRetrieveParams
         def retrieve(batch_id, params)
           parsed, options = OpenAI::VectorStores::FileBatchRetrieveParams.dump_request(params)
-          vector_store_id =
-            parsed.delete(:vector_store_id) do
-              raise ArgumentError.new("missing required path argument #{_1}")
-            end
+          vector_store_id = parsed.delete(:vector_store_id) do
+            raise ArgumentError.new("missing required path argument #{_1}")
+          end
+
           @client.request(
             method: :get,
             path: ["vector_stores/%1$s/file_batches/%2$s", vector_store_id, batch_id],
@@ -82,10 +82,10 @@ module OpenAI
         # @see OpenAI::Models::VectorStores::FileBatchCancelParams
         def cancel(batch_id, params)
           parsed, options = OpenAI::VectorStores::FileBatchCancelParams.dump_request(params)
-          vector_store_id =
-            parsed.delete(:vector_store_id) do
-              raise ArgumentError.new("missing required path argument #{_1}")
-            end
+          vector_store_id = parsed.delete(:vector_store_id) do
+            raise ArgumentError.new("missing required path argument #{_1}")
+          end
+
           @client.request(
             method: :post,
             path: ["vector_stores/%1$s/file_batches/%2$s/cancel", vector_store_id, batch_id],
@@ -123,10 +123,10 @@ module OpenAI
         # @see OpenAI::Models::VectorStores::FileBatchListFilesParams
         def list_files(batch_id, params)
           parsed, options = OpenAI::VectorStores::FileBatchListFilesParams.dump_request(params)
-          vector_store_id =
-            parsed.delete(:vector_store_id) do
-              raise ArgumentError.new("missing required path argument #{_1}")
-            end
+          vector_store_id = parsed.delete(:vector_store_id) do
+            raise ArgumentError.new("missing required path argument #{_1}")
+          end
+
           query = OpenAI::Internal::Util.encode_query_params(parsed)
           @client.request(
             method: :get,

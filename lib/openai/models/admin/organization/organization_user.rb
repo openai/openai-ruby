@@ -142,8 +142,10 @@ module OpenAI
             # @!attribute data
             #
             #   @return [Array<OpenAI::Models::Admin::Organization::OrganizationUser::Projects::Data>]
-            required :data,
-                     -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Admin::Organization::OrganizationUser::Projects::Data] }
+            required(
+              :data,
+              -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Admin::Organization::OrganizationUser::Projects::Data] }
+            )
 
             # @!attribute object
             #

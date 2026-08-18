@@ -8,8 +8,10 @@ module OpenAI
         #   The annotations of the text output.
         #
         #   @return [Array<OpenAI::Models::Beta::BetaResponseOutputText::Annotation::FileCitation, OpenAI::Models::Beta::BetaResponseOutputText::Annotation::URLCitation, OpenAI::Models::Beta::BetaResponseOutputText::Annotation::ContainerFileCitation, OpenAI::Models::Beta::BetaResponseOutputText::Annotation::FilePath>]
-        required :annotations,
-                 -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::BetaResponseOutputText::Annotation] }
+        required(
+          :annotations,
+          -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::BetaResponseOutputText::Annotation] }
+        )
 
         # @!attribute text
         #   The text output from the model.
@@ -52,8 +54,10 @@ module OpenAI
           variant :url_citation, -> { OpenAI::Beta::BetaResponseOutputText::Annotation::URLCitation }
 
           # A citation for a container file used to generate a model response.
-          variant :container_file_citation,
-                  -> { OpenAI::Beta::BetaResponseOutputText::Annotation::ContainerFileCitation }
+          variant(
+            :container_file_citation,
+            -> { OpenAI::Beta::BetaResponseOutputText::Annotation::ContainerFileCitation }
+          )
 
           # A path to a file.
           variant :file_path, -> { OpenAI::Beta::BetaResponseOutputText::Annotation::FilePath }
@@ -249,8 +253,10 @@ module OpenAI
           # @!attribute top_logprobs
           #
           #   @return [Array<OpenAI::Models::Beta::BetaResponseOutputText::Logprob::TopLogprob>]
-          required :top_logprobs,
-                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponseOutputText::Logprob::TopLogprob] }
+          required(
+            :top_logprobs,
+            -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponseOutputText::Logprob::TopLogprob] }
+          )
 
           # @!method initialize(token:, bytes:, logprob:, top_logprobs:)
           #   The log probability of a token.

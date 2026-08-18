@@ -54,10 +54,10 @@ module OpenAI
         # @see OpenAI::Models::Skills::VersionRetrieveParams
         def retrieve(version, params)
           parsed, options = OpenAI::Skills::VersionRetrieveParams.dump_request(params)
-          skill_id =
-            parsed.delete(:skill_id) do
-              raise ArgumentError.new("missing required path argument #{_1}")
-            end
+          skill_id = parsed.delete(:skill_id) do
+            raise ArgumentError.new("missing required path argument #{_1}")
+          end
+
           @client.request(
             method: :get,
             path: ["skills/%1$s/versions/%2$s", skill_id, version],
@@ -113,10 +113,10 @@ module OpenAI
         # @see OpenAI::Models::Skills::VersionDeleteParams
         def delete(version, params)
           parsed, options = OpenAI::Skills::VersionDeleteParams.dump_request(params)
-          skill_id =
-            parsed.delete(:skill_id) do
-              raise ArgumentError.new("missing required path argument #{_1}")
-            end
+          skill_id = parsed.delete(:skill_id) do
+            raise ArgumentError.new("missing required path argument #{_1}")
+          end
+
           @client.request(
             method: :delete,
             path: ["skills/%1$s/versions/%2$s", skill_id, version],

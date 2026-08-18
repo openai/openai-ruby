@@ -12,10 +12,10 @@ class OpenAI::Test::Resources::Realtime::ClientSecretsTest < OpenAI::Test::Resou
 
     assert_pattern do
       response => {
-        expires_at: Integer,
-        session: OpenAI::Models::Realtime::ClientSecretCreateResponse::Session,
-        value: String
-      }
+          expires_at: Integer,
+          session: OpenAI::Models::Realtime::ClientSecretCreateResponse::Session,
+          value: String
+        }
     end
   end
 end

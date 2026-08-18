@@ -21,8 +21,10 @@ module OpenAI
           #   Ordered content elements supplied by the user.
           #
           #   @return [Array<OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem::Content::InputText, OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem::Content::QuotedText>]
-          required :content,
-                   -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::Content] }
+          required(
+            :content,
+            -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::Content] }
+          )
 
           # @!attribute created_at
           #   Unix timestamp (in seconds) for when the item was created.
@@ -34,9 +36,11 @@ module OpenAI
           #   Inference overrides applied to the message. Defaults to null when unset.
           #
           #   @return [OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions, nil]
-          required :inference_options,
-                   -> { OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions },
-                   nil?: true
+          required(
+            :inference_options,
+            -> { OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions },
+            nil?: true
+          )
 
           # @!attribute object
           #   Type discriminator that is always `chatkit.thread_item`.
@@ -145,9 +149,11 @@ module OpenAI
             #   Preferred tool to invoke. Defaults to null when ChatKit should auto-select.
             #
             #   @return [OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions::ToolChoice, nil]
-            required :tool_choice,
-                     -> { OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions::ToolChoice },
-                     nil?: true
+            required(
+              :tool_choice,
+              -> { OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions::ToolChoice },
+              nil?: true
+            )
 
             # @!method initialize(model:, tool_choice:)
             #   Some parameter documentations has been truncated, see

@@ -41,8 +41,10 @@ module OpenAI
         #   transcription.
         #
         #   @return [Array<Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Include>, nil]
-        optional :include,
-                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeSessionCreateResponse::Include] }
+        optional(
+          :include,
+          -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeSessionCreateResponse::Include] }
+        )
 
         # @!attribute instructions
         #   The default system instructions (i.e. system message) prepended to model calls.
@@ -66,8 +68,10 @@ module OpenAI
         #   `inf` for the maximum available tokens for a given model. Defaults to `inf`.
         #
         #   @return [Integer, Symbol, :inf, nil]
-        optional :max_output_tokens,
-                 union: -> { OpenAI::Realtime::RealtimeSessionCreateResponse::MaxOutputTokens }
+        optional(
+          :max_output_tokens,
+          union: -> { OpenAI::Realtime::RealtimeSessionCreateResponse::MaxOutputTokens }
+        )
 
         # @!attribute model
         #   The Realtime model used for this session.
@@ -82,8 +86,10 @@ module OpenAI
         #   request both `text` and `audio` at the same time.
         #
         #   @return [Array<Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::OutputModality>, nil]
-        optional :output_modalities,
-                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeSessionCreateResponse::OutputModality] }
+        optional(
+          :output_modalities,
+          -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeSessionCreateResponse::OutputModality] }
+        )
 
         # @!attribute prompt
         #   Reference to a prompt template and its variables.
@@ -109,8 +115,10 @@ module OpenAI
         #   Tools available to the model.
         #
         #   @return [Array<OpenAI::Models::Realtime::RealtimeFunctionTool, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool>, nil]
-        optional :tools,
-                 -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Realtime::RealtimeSessionCreateResponse::Tool] }
+        optional(
+          :tools,
+          -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Realtime::RealtimeSessionCreateResponse::Tool] }
+        )
 
         # @!attribute tracing
         #   Realtime API can write session traces to the
@@ -219,8 +227,10 @@ module OpenAI
             #   perception of the input audio.
             #
             #   @return [OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction, nil]
-            optional :noise_reduction,
-                     -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction }
+            optional(
+              :noise_reduction,
+              -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction }
+            )
 
             # @!attribute transcription
             #
@@ -246,11 +256,13 @@ module OpenAI
             #   `null`; VAD is not supported.
             #
             #   @return [OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::ServerVad, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad, nil]
-            optional :turn_detection,
-                     union: -> {
-                       OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection
-                     },
-                     nil?: true
+            optional(
+              :turn_detection,
+              union: -> {
+                OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection
+              },
+              nil?: true
+            )
 
             # @!method initialize(format_: nil, noise_reduction: nil, transcription: nil, turn_detection: nil)
             #   Some parameter documentations has been truncated, see
@@ -313,12 +325,16 @@ module OpenAI
               discriminator :type
 
               # Server-side voice activity detection (VAD) which flips on when user speech is detected and off after a period of silence.
-              variant :server_vad,
-                      -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::ServerVad }
+              variant(
+                :server_vad,
+                -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::ServerVad }
+              )
 
               # Server-side semantic turn detection which uses a model to determine when the user has finished speaking.
-              variant :semantic_vad,
-                      -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad }
+              variant(
+                :semantic_vad,
+                -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad }
+              )
 
               class ServerVad < OpenAI::Internal::Type::BaseModel
                 # @!attribute type
@@ -434,8 +450,12 @@ module OpenAI
                 #   and `high` have max timeouts of 8s, 4s, and 2s respectively.
                 #
                 #   @return [Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad::Eagerness, nil]
-                optional :eagerness,
-                         enum: -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad::Eagerness }
+                optional(
+                  :eagerness,
+                  enum: -> {
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad::Eagerness
+                  }
+                )
 
                 # @!attribute interrupt_response
                 #   Whether or not to automatically interrupt any ongoing response with output to
@@ -536,31 +556,47 @@ module OpenAI
 
               variant String
 
-              variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::ALLOY }
+              variant(
+                const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::ALLOY }
+              )
 
               variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::ASH }
 
-              variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::BALLAD }
+              variant(
+                const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::BALLAD }
+              )
 
-              variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::CORAL }
+              variant(
+                const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::CORAL }
+              )
 
               variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::ECHO }
 
               variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::SAGE }
 
-              variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::SHIMMER }
+              variant(
+                const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::SHIMMER }
+              )
 
-              variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::VERSE }
+              variant(
+                const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::VERSE }
+              )
 
-              variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::MARIN }
+              variant(
+                const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::MARIN }
+              )
 
-              variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::CEDAR }
+              variant(
+                const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::CEDAR }
+              )
 
               # @!method self.variants
               #   @return [Array(String, Symbol)]
 
               define_sorbet_constant!(:Variants) do
-                T.type_alias { T.any(String, OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::TaggedSymbol) }
+                T.type_alias {
+                  T.any(String, OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::TaggedSymbol)
+                }
               end
 
               # @!group
@@ -628,29 +664,55 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_4O_REALTIME_PREVIEW }
 
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_4O_REALTIME_PREVIEW_2024_10_01 }
+          variant(
+            const: -> {
+              OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_4O_REALTIME_PREVIEW_2024_10_01
+            }
+          )
 
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_4O_REALTIME_PREVIEW_2024_12_17 }
+          variant(
+            const: -> {
+              OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_4O_REALTIME_PREVIEW_2024_12_17
+            }
+          )
 
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_4O_REALTIME_PREVIEW_2025_06_03 }
+          variant(
+            const: -> {
+              OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_4O_REALTIME_PREVIEW_2025_06_03
+            }
+          )
 
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_4O_MINI_REALTIME_PREVIEW }
+          variant(
+            const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_4O_MINI_REALTIME_PREVIEW }
+          )
 
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_4O_MINI_REALTIME_PREVIEW_2024_12_17 }
+          variant(
+            const: -> {
+              OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_4O_MINI_REALTIME_PREVIEW_2024_12_17
+            }
+          )
 
           variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_REALTIME_MINI }
 
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_REALTIME_MINI_2025_10_06 }
+          variant(
+            const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_REALTIME_MINI_2025_10_06 }
+          )
 
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_REALTIME_MINI_2025_12_15 }
+          variant(
+            const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_REALTIME_MINI_2025_12_15 }
+          )
 
           variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_AUDIO_1_5 }
 
           variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_AUDIO_MINI }
 
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_AUDIO_MINI_2025_10_06 }
+          variant(
+            const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_AUDIO_MINI_2025_10_06 }
+          )
 
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_AUDIO_MINI_2025_12_15 }
+          variant(
+            const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_AUDIO_MINI_2025_12_15 }
+          )
 
           # @!method self.variants
           #   @return [Array(String, Symbol)]
@@ -750,21 +812,27 @@ module OpenAI
             #   The tool invocation context(s).
             #
             #   @return [Array<Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedCaller>, nil]
-            optional :allowed_callers,
-                     -> {
-                       OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedCaller]
-                     },
-                     nil?: true
+            optional(
+              :allowed_callers,
+              -> {
+                OpenAI::Internal::Type::ArrayOf[
+                  enum: OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedCaller
+                ]
+              },
+              nil?: true
+            )
 
             # @!attribute allowed_tools
             #   List of allowed tool names or a filter object.
             #
             #   @return [Array<String>, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedTools::McpToolFilter, nil]
-            optional :allowed_tools,
-                     union: -> {
-                       OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedTools
-                     },
-                     nil?: true
+            optional(
+              :allowed_tools,
+              union: -> {
+                OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedTools
+              },
+              nil?: true
+            )
 
             # @!attribute authorization
             #   An OAuth access token that can be used with a remote MCP server, either with a
@@ -792,8 +860,10 @@ module OpenAI
             #   - SharePoint: `connector_sharepoint`
             #
             #   @return [Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::ConnectorID, nil]
-            optional :connector_id,
-                     enum: -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::ConnectorID }
+            optional(
+              :connector_id,
+              enum: -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::ConnectorID }
+            )
 
             # @!attribute defer_loading
             #   Whether this MCP tool is deferred and discovered via tool search.
@@ -812,11 +882,13 @@ module OpenAI
             #   Specify which of the MCP server's tools require approval.
             #
             #   @return [OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter, Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalSetting, nil]
-            optional :require_approval,
-                     union: -> {
-                       OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval
-                     },
-                     nil?: true
+            optional(
+              :require_approval,
+              union: -> {
+                OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval
+              },
+              nil?: true
+            )
 
             # @!attribute server_description
             #   Optional description of the MCP server, used to provide more context.
@@ -888,10 +960,16 @@ module OpenAI
               extend OpenAI::Internal::Type::Union
 
               # A string array of allowed tool names
-              variant -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedTools::StringArray }
+              variant(
+                -> {
+                  OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedTools::StringArray
+                }
+              )
 
               # A filter object to specify which tools are allowed.
-              variant -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedTools::McpToolFilter }
+              variant(
+                -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedTools::McpToolFilter }
+              )
 
               class McpToolFilter < OpenAI::Internal::Type::BaseModel
                 # @!attribute read_only
@@ -970,27 +1048,43 @@ module OpenAI
               # Specify which of the MCP server's tools require approval. Can be
               # `always`, `never`, or a filter object associated with tools
               # that require approval.
-              variant -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter }
+              variant(
+                -> {
+                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter
+                }
+              )
 
               # Specify a single approval policy for all tools. One of `always` or
               # `never`. When set to `always`, all tools will require approval. When
               # set to `never`, all tools will not require approval.
-              variant enum: -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalSetting }
+              variant(
+                enum: -> {
+                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalSetting
+                }
+              )
 
               class McpToolApprovalFilter < OpenAI::Internal::Type::BaseModel
                 # @!attribute always
                 #   A filter object to specify which tools are allowed.
                 #
                 #   @return [OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Always, nil]
-                optional :always,
-                         -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Always }
+                optional(
+                  :always,
+                  -> {
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Always
+                  }
+                )
 
                 # @!attribute never
                 #   A filter object to specify which tools are allowed.
                 #
                 #   @return [OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Never, nil]
-                optional :never,
-                         -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Never }
+                optional(
+                  :never,
+                  -> {
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Never
+                  }
+                )
 
                 # @!method initialize(always: nil, never: nil)
                 #   Some parameter documentations has been truncated, see

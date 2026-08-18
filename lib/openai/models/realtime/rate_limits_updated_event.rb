@@ -14,8 +14,10 @@ module OpenAI
         #   List of rate limit information.
         #
         #   @return [Array<OpenAI::Models::Realtime::RateLimitsUpdatedEvent::RateLimit>]
-        required :rate_limits,
-                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Realtime::RateLimitsUpdatedEvent::RateLimit] }
+        required(
+          :rate_limits,
+          -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Realtime::RateLimitsUpdatedEvent::RateLimit] }
+        )
 
         # @!attribute type
         #   The event type, must be `rate_limits.updated`.

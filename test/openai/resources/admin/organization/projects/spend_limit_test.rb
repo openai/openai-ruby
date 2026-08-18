@@ -12,23 +12,22 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::SpendLimitTest < O
 
     assert_pattern do
       response => {
-        currency: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Currency,
-        enforcement: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Enforcement,
-        interval: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Interval,
-        object: Symbol,
-        threshold_amount: Integer
-      }
+          currency: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Currency,
+          enforcement: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Enforcement,
+          interval: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Interval,
+          object: Symbol,
+          threshold_amount: Integer
+        }
     end
   end
 
   def test_update_required_params
-    response =
-      @openai.admin.organization.projects.spend_limit.update(
-        "proj_123",
-        currency: :USD,
-        interval: :month,
-        threshold_amount: 1
-      )
+    response = @openai.admin.organization.projects.spend_limit.update(
+      "proj_123",
+      currency: :USD,
+      interval: :month,
+      threshold_amount: 1
+    )
 
     assert_pattern do
       response => OpenAI::Admin::Organization::Projects::ProjectSpendLimit
@@ -36,12 +35,12 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::SpendLimitTest < O
 
     assert_pattern do
       response => {
-        currency: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Currency,
-        enforcement: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Enforcement,
-        interval: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Interval,
-        object: Symbol,
-        threshold_amount: Integer
-      }
+          currency: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Currency,
+          enforcement: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Enforcement,
+          interval: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Interval,
+          object: Symbol,
+          threshold_amount: Integer
+        }
     end
   end
 
@@ -54,9 +53,9 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::SpendLimitTest < O
 
     assert_pattern do
       response => {
-        deleted: OpenAI::Internal::Type::Boolean,
-        object: Symbol
-      }
+          deleted: OpenAI::Internal::Type::Boolean,
+          object: Symbol
+        }
     end
   end
 end

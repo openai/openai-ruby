@@ -39,8 +39,10 @@ module OpenAI
           #   `project_id`, `user_id`, `api_key_id`, `model` or any combination of them.
           #
           #   @return [Array<Symbol, OpenAI::Models::Admin::Organization::UsageModerationsParams::GroupBy>, nil]
-          optional :group_by,
-                   -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::UsageModerationsParams::GroupBy] }
+          optional(
+            :group_by,
+            -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::UsageModerationsParams::GroupBy] }
+          )
 
           # @!attribute limit
           #   Specifies the number of buckets to return.

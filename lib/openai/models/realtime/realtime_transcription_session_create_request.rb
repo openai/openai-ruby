@@ -24,8 +24,12 @@ module OpenAI
         #   transcription.
         #
         #   @return [Array<Symbol, OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::Include>, nil]
-        optional :include,
-                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::Include] }
+        optional(
+          :include,
+          -> {
+            OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest::Include]
+          }
+        )
 
         # @!method initialize(audio: nil, include: nil, type: :transcription)
         #   Some parameter documentations has been truncated, see

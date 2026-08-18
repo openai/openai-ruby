@@ -31,15 +31,19 @@ module OpenAI
         #
         # Transcript deltas are append-only text fragments. Clients should not insert
         # unconditional spaces between deltas.
-        variant :"session.input_transcript.delta",
-                -> { OpenAI::Realtime::RealtimeTranslationInputTranscriptDeltaEvent }
+        variant(
+          :"session.input_transcript.delta",
+          -> { OpenAI::Realtime::RealtimeTranslationInputTranscriptDeltaEvent }
+        )
 
         # Returned when translated transcript text is available.
         #
         # Transcript deltas are append-only text fragments. Clients should not insert
         # unconditional spaces between deltas.
-        variant :"session.output_transcript.delta",
-                -> { OpenAI::Realtime::RealtimeTranslationOutputTranscriptDeltaEvent }
+        variant(
+          :"session.output_transcript.delta",
+          -> { OpenAI::Realtime::RealtimeTranslationOutputTranscriptDeltaEvent }
+        )
 
         # Returned when translated output audio is available. Output audio deltas are
         # 200 ms frames of PCM16 audio.

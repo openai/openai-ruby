@@ -52,8 +52,10 @@ module OpenAI
           #   [audit log object](https://platform.openai.com/docs/api-reference/audit-logs/object).
           #
           #   @return [Array<Symbol, OpenAI::Models::Admin::Organization::AuditLogListParams::EventType>, nil]
-          optional :event_types,
-                   -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::AuditLogListParams::EventType] }
+          optional(
+            :event_types,
+            -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::AuditLogListParams::EventType] }
+          )
 
           # @!attribute limit
           #   A limit on the number of objects to be returned. Limit can range between 1 and

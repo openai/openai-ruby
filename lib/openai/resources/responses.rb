@@ -99,6 +99,7 @@ module OpenAI
           message = "Please use `#stream_raw` for the streaming use case."
           raise ArgumentError.new(message)
         end
+
         @client.request(
           method: :post,
           path: "responses",
@@ -199,6 +200,7 @@ module OpenAI
           message = "Please use `#create` for the non-streaming use case."
           raise ArgumentError.new(message)
         end
+
         parsed.store(:stream, true)
         @client.request(
           method: :post,
@@ -241,6 +243,7 @@ module OpenAI
           message = "Please use `#retrieve_streaming` for the streaming use case."
           raise ArgumentError.new(message)
         end
+
         @client.request(
           method: :get,
           path: ["responses/%1$s", response_id],
@@ -280,6 +283,7 @@ module OpenAI
           message = "Please use `#retrieve` for the non-streaming use case."
           raise ArgumentError.new(message)
         end
+
         parsed.store(:stream, true)
         @client.request(
           method: :get,

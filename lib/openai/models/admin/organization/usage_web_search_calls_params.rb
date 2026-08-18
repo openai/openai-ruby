@@ -32,8 +32,14 @@ module OpenAI
           #   Return only web search usage for these context levels.
           #
           #   @return [Array<Symbol, OpenAI::Models::Admin::Organization::UsageWebSearchCallsParams::ContextLevel>, nil]
-          optional :context_levels,
-                   -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::UsageWebSearchCallsParams::ContextLevel] }
+          optional(
+            :context_levels,
+            -> {
+              OpenAI::Internal::Type::ArrayOf[
+                enum: OpenAI::Admin::Organization::UsageWebSearchCallsParams::ContextLevel
+              ]
+            }
+          )
 
           # @!attribute end_time
           #   End time (Unix seconds) of the query time range, exclusive.
@@ -47,8 +53,12 @@ module OpenAI
           #   combination of them.
           #
           #   @return [Array<Symbol, OpenAI::Models::Admin::Organization::UsageWebSearchCallsParams::GroupBy>, nil]
-          optional :group_by,
-                   -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::UsageWebSearchCallsParams::GroupBy] }
+          optional(
+            :group_by,
+            -> {
+              OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::UsageWebSearchCallsParams::GroupBy]
+            }
+          )
 
           # @!attribute limit
           #   Specifies the number of buckets to return.

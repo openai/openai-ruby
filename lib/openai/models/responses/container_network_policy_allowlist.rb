@@ -20,8 +20,10 @@ module OpenAI
         #   Optional domain-scoped secrets for allowlisted domains.
         #
         #   @return [Array<OpenAI::Models::Responses::ContainerNetworkPolicyDomainSecret>, nil]
-        optional :domain_secrets,
-                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ContainerNetworkPolicyDomainSecret] }
+        optional(
+          :domain_secrets,
+          -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ContainerNetworkPolicyDomainSecret] }
+        )
 
         # @!method initialize(allowed_domains:, domain_secrets: nil, type: :allowlist)
         #   @param allowed_domains [Array<String>] A list of allowed domains when type is `allowlist`.

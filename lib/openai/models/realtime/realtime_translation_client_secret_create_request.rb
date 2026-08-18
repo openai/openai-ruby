@@ -18,8 +18,10 @@ module OpenAI
         #   to create multiple sessions until it expires.
         #
         #   @return [OpenAI::Models::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter, nil]
-        optional :expires_after,
-                 -> { OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter }
+        optional(
+          :expires_after,
+          -> { OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter }
+        )
 
         # @!method initialize(session:, expires_after: nil)
         #   Some parameter documentations has been truncated, see
@@ -40,8 +42,10 @@ module OpenAI
           #   timestamp. Only `created_at` is currently supported.
           #
           #   @return [Symbol, OpenAI::Models::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter::Anchor, nil]
-          optional :anchor,
-                   enum: -> { OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter::Anchor }
+          optional(
+            :anchor,
+            enum: -> { OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter::Anchor }
+          )
 
           # @!attribute seconds
           #   The number of seconds from the anchor point to the expiration. Select a value

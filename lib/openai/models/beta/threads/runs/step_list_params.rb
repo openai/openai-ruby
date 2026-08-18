@@ -48,8 +48,10 @@ module OpenAI
             #   for more information.
             #
             #   @return [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>, nil]
-            optional :include,
-                     -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::Threads::Runs::RunStepInclude] }
+            optional(
+              :include,
+              -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::Threads::Runs::RunStepInclude] }
+            )
 
             # @!attribute limit
             #   A limit on the number of objects to be returned. Limit can range between 1 and

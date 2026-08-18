@@ -185,10 +185,10 @@ module OpenAI
             @service_accounts = OpenAI::Resources::Admin::Organization::Projects::ServiceAccounts.new(client: client)
             @api_keys = OpenAI::Resources::Admin::Organization::Projects::APIKeys.new(client: client)
             @rate_limits = OpenAI::Resources::Admin::Organization::Projects::RateLimits.new(client: client)
-            @model_permissions =
-              OpenAI::Resources::Admin::Organization::Projects::ModelPermissions.new(client: client)
-            @hosted_tool_permissions =
-              OpenAI::Resources::Admin::Organization::Projects::HostedToolPermissions.new(client: client)
+            @model_permissions = OpenAI::Resources::Admin::Organization::Projects::ModelPermissions.new(client: client)
+            @hosted_tool_permissions = OpenAI::Resources::Admin::Organization::Projects::HostedToolPermissions.new(
+              client: client
+            )
             @groups = OpenAI::Resources::Admin::Organization::Projects::Groups.new(client: client)
             @roles = OpenAI::Resources::Admin::Organization::Projects::Roles.new(client: client)
             @data_retention = OpenAI::Resources::Admin::Organization::Projects::DataRetention.new(client: client)

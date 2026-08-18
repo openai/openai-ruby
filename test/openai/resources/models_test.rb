@@ -12,12 +12,12 @@ class OpenAI::Test::Resources::ModelsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        created: Integer,
-        object: Symbol,
-        owned_by: String,
-        shutdown_date: Date | nil
-      }
+          id: String,
+          created: Integer,
+          object: Symbol,
+          owned_by: String,
+          shutdown_date: Date | nil
+        }
     end
   end
 
@@ -37,12 +37,12 @@ class OpenAI::Test::Resources::ModelsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       row => {
-        id: String,
-        created: Integer,
-        object: Symbol,
-        owned_by: String,
-        shutdown_date: Date | nil
-      }
+          id: String,
+          created: Integer,
+          object: Symbol,
+          owned_by: String,
+          shutdown_date: Date | nil
+        }
     end
   end
 
@@ -55,10 +55,10 @@ class OpenAI::Test::Resources::ModelsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        deleted: OpenAI::Internal::Type::Boolean,
-        object: String
-      }
+          id: String,
+          deleted: OpenAI::Internal::Type::Boolean,
+          object: String
+        }
     end
   end
 end

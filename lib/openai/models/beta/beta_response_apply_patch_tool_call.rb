@@ -46,10 +46,12 @@ module OpenAI
         #   The execution context that produced this tool call.
         #
         #   @return [OpenAI::Models::Beta::BetaResponseApplyPatchToolCall::Caller::Direct, OpenAI::Models::Beta::BetaResponseApplyPatchToolCall::Caller::Program, nil]
-        optional :caller_,
-                 union: -> { OpenAI::Beta::BetaResponseApplyPatchToolCall::Caller },
-                 api_name: :caller,
-                 nil?: true
+        optional(
+          :caller_,
+          union: -> { OpenAI::Beta::BetaResponseApplyPatchToolCall::Caller },
+          api_name: :caller,
+          nil?: true
+        )
 
         # @!attribute created_by
         #   The ID of the entity that created this tool call.

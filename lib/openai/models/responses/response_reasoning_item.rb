@@ -14,8 +14,10 @@ module OpenAI
         #   Reasoning summary content.
         #
         #   @return [Array<OpenAI::Models::Responses::ResponseReasoningItem::Summary>]
-        required :summary,
-                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseReasoningItem::Summary] }
+        required(
+          :summary,
+          -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseReasoningItem::Summary] }
+        )
 
         # @!attribute type
         #   The type of the object. Always `reasoning`.
@@ -27,8 +29,10 @@ module OpenAI
         #   Reasoning text content.
         #
         #   @return [Array<OpenAI::Models::Responses::ResponseReasoningItem::Content>, nil]
-        optional :content,
-                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseReasoningItem::Content] }
+        optional(
+          :content,
+          -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseReasoningItem::Content] }
+        )
 
         # @!attribute encrypted_content
         #   The encrypted content of the reasoning item. This is populated by default for

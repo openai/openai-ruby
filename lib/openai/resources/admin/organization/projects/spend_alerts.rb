@@ -52,10 +52,10 @@ module OpenAI
             # @see OpenAI::Models::Admin::Organization::Projects::SpendAlertRetrieveParams
             def retrieve(alert_id, params)
               parsed, options = OpenAI::Admin::Organization::Projects::SpendAlertRetrieveParams.dump_request(params)
-              project_id =
-                parsed.delete(:project_id) do
-                  raise ArgumentError.new("missing required path argument #{_1}")
-                end
+              project_id = parsed.delete(:project_id) do
+                raise ArgumentError.new("missing required path argument #{_1}")
+              end
+
               @client.request(
                 method: :get,
                 path: ["organization/projects/%1$s/spend_alerts/%2$s", project_id, alert_id],
@@ -88,10 +88,10 @@ module OpenAI
             # @see OpenAI::Models::Admin::Organization::Projects::SpendAlertUpdateParams
             def update(alert_id, params)
               parsed, options = OpenAI::Admin::Organization::Projects::SpendAlertUpdateParams.dump_request(params)
-              project_id =
-                parsed.delete(:project_id) do
-                  raise ArgumentError.new("missing required path argument #{_1}")
-                end
+              project_id = parsed.delete(:project_id) do
+                raise ArgumentError.new("missing required path argument #{_1}")
+              end
+
               @client.request(
                 method: :post,
                 path: ["organization/projects/%1$s/spend_alerts/%2$s", project_id, alert_id],
@@ -154,10 +154,10 @@ module OpenAI
             # @see OpenAI::Models::Admin::Organization::Projects::SpendAlertDeleteParams
             def delete(alert_id, params)
               parsed, options = OpenAI::Admin::Organization::Projects::SpendAlertDeleteParams.dump_request(params)
-              project_id =
-                parsed.delete(:project_id) do
-                  raise ArgumentError.new("missing required path argument #{_1}")
-                end
+              project_id = parsed.delete(:project_id) do
+                raise ArgumentError.new("missing required path argument #{_1}")
+              end
+
               @client.request(
                 method: :delete,
                 path: ["organization/projects/%1$s/spend_alerts/%2$s", project_id, alert_id],

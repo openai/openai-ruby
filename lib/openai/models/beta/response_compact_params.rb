@@ -60,11 +60,13 @@ module OpenAI
         #   for current details.
         #
         #   @return [OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions, nil]
-        optional :prompt_cache_options,
-                 -> {
-                   OpenAI::Beta::ResponseCompactParams::PromptCacheOptions
-                 },
-                 nil?: true
+        optional(
+          :prompt_cache_options,
+          -> {
+            OpenAI::Beta::ResponseCompactParams::PromptCacheOptions
+          },
+          nil?: true
+        )
 
         # @!attribute prompt_cache_retention
         #   @deprecated
@@ -72,9 +74,11 @@ module OpenAI
         #   How long to retain a prompt cache entry created by this request.
         #
         #   @return [Symbol, OpenAI::Models::Beta::ResponseCompactParams::PromptCacheRetention, nil]
-        optional :prompt_cache_retention,
-                 enum: -> { OpenAI::Beta::ResponseCompactParams::PromptCacheRetention },
-                 nil?: true
+        optional(
+          :prompt_cache_retention,
+          enum: -> { OpenAI::Beta::ResponseCompactParams::PromptCacheRetention },
+          nil?: true
+        )
 
         # @!attribute service_tier
         #   Specifies the processing type used for serving the request. - If set to 'auto',
@@ -243,7 +247,9 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Beta::ResponseCompactParams::Model::GPT_4O_MINI_AUDIO_PREVIEW }
 
-          variant const: -> { OpenAI::Models::Beta::ResponseCompactParams::Model::GPT_4O_MINI_AUDIO_PREVIEW_2024_12_17 }
+          variant(
+            const: -> { OpenAI::Models::Beta::ResponseCompactParams::Model::GPT_4O_MINI_AUDIO_PREVIEW_2024_12_17 }
+          )
 
           variant const: -> { OpenAI::Models::Beta::ResponseCompactParams::Model::GPT_4O_SEARCH_PREVIEW }
 
@@ -251,7 +257,9 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Beta::ResponseCompactParams::Model::GPT_4O_SEARCH_PREVIEW_2025_03_11 }
 
-          variant const: -> { OpenAI::Models::Beta::ResponseCompactParams::Model::GPT_4O_MINI_SEARCH_PREVIEW_2025_03_11 }
+          variant(
+            const: -> { OpenAI::Models::Beta::ResponseCompactParams::Model::GPT_4O_MINI_SEARCH_PREVIEW_2025_03_11 }
+          )
 
           variant const: -> { OpenAI::Models::Beta::ResponseCompactParams::Model::CHATGPT_4O_LATEST }
 
@@ -468,8 +476,9 @@ module OpenAI
           #   @return [Array(String, Array<OpenAI::Models::Beta::BetaEasyInputMessage, OpenAI::Models::Beta::BetaResponseInputItem::Message, OpenAI::Models::Beta::BetaResponseOutputMessage, OpenAI::Models::Beta::BetaResponseFileSearchToolCall, OpenAI::Models::Beta::BetaResponseComputerToolCall, OpenAI::Models::Beta::BetaResponseInputItem::ComputerCallOutput, OpenAI::Models::Beta::BetaResponseFunctionWebSearch, OpenAI::Models::Beta::BetaResponseFunctionToolCall, OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::AgentMessage, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCall, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ToolSearchCall, OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam, OpenAI::Models::Beta::BetaResponseInputItem::AdditionalTools, OpenAI::Models::Beta::BetaResponseReasoningItem, OpenAI::Models::Beta::BetaResponseCompactionItemParam, OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall, OpenAI::Models::Beta::BetaResponseCodeInterpreterToolCall, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCall, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ShellCall, OpenAI::Models::Beta::BetaResponseInputItem::ShellCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::McpListTools, OpenAI::Models::Beta::BetaResponseInputItem::McpApprovalRequest, OpenAI::Models::Beta::BetaResponseInputItem::McpApprovalResponse, OpenAI::Models::Beta::BetaResponseInputItem::McpCall, OpenAI::Models::Beta::BetaResponseCustomToolCallOutput, OpenAI::Models::Beta::BetaResponseCustomToolCall, OpenAI::Models::Beta::BetaResponseInputItem::CompactionTrigger, OpenAI::Models::Beta::BetaResponseInputItem::ItemReference, OpenAI::Models::Beta::BetaResponseInputItem::Program, OpenAI::Models::Beta::BetaResponseInputItem::ProgramOutput>)]
 
           # @type [OpenAI::Internal::Type::Converter]
-          BetaResponseInputItemArray =
-            OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Beta::BetaResponseInputItem }]
+          BetaResponseInputItemArray = OpenAI::Internal::Type::ArrayOf[
+            union: -> { OpenAI::Beta::BetaResponseInputItem }
+          ]
         end
 
         class PromptCacheOptions < OpenAI::Internal::Type::BaseModel

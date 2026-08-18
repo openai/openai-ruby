@@ -23,14 +23,14 @@ module OpenAI
           # @see OpenAI::Models::Evals::Runs::OutputItemRetrieveParams
           def retrieve(output_item_id, params)
             parsed, options = OpenAI::Evals::Runs::OutputItemRetrieveParams.dump_request(params)
-            eval_id =
-              parsed.delete(:eval_id) do
-                raise ArgumentError.new("missing required path argument #{_1}")
-              end
-            run_id =
-              parsed.delete(:run_id) do
-                raise ArgumentError.new("missing required path argument #{_1}")
-              end
+            eval_id = parsed.delete(:eval_id) do
+              raise ArgumentError.new("missing required path argument #{_1}")
+            end
+
+            run_id = parsed.delete(:run_id) do
+              raise ArgumentError.new("missing required path argument #{_1}")
+            end
+
             @client.request(
               method: :get,
               path: ["evals/%1$s/runs/%2$s/output_items/%3$s", eval_id, run_id, output_item_id],
@@ -66,10 +66,10 @@ module OpenAI
           # @see OpenAI::Models::Evals::Runs::OutputItemListParams
           def list(run_id, params)
             parsed, options = OpenAI::Evals::Runs::OutputItemListParams.dump_request(params)
-            eval_id =
-              parsed.delete(:eval_id) do
-                raise ArgumentError.new("missing required path argument #{_1}")
-              end
+            eval_id = parsed.delete(:eval_id) do
+              raise ArgumentError.new("missing required path argument #{_1}")
+            end
+
             query = OpenAI::Internal::Util.encode_query_params(parsed)
             @client.request(
               method: :get,

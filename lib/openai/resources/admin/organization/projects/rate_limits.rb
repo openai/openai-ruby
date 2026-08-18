@@ -28,8 +28,9 @@ module OpenAI
             #
             # @see OpenAI::Models::Admin::Organization::Projects::RateLimitListRateLimitsParams
             def list_rate_limits(project_id, params = {})
-              parsed, options =
-                OpenAI::Admin::Organization::Projects::RateLimitListRateLimitsParams.dump_request(params)
+              parsed, options = OpenAI::Admin::Organization::Projects::RateLimitListRateLimitsParams.dump_request(
+                params
+              )
               query = OpenAI::Internal::Util.encode_query_params(parsed)
               @client.request(
                 method: :get,
@@ -72,12 +73,13 @@ module OpenAI
             #
             # @see OpenAI::Models::Admin::Organization::Projects::RateLimitUpdateRateLimitParams
             def update_rate_limit(rate_limit_id, params)
-              parsed, options =
-                OpenAI::Admin::Organization::Projects::RateLimitUpdateRateLimitParams.dump_request(params)
-              project_id =
-                parsed.delete(:project_id) do
-                  raise ArgumentError.new("missing required path argument #{_1}")
-                end
+              parsed, options = OpenAI::Admin::Organization::Projects::RateLimitUpdateRateLimitParams.dump_request(
+                params
+              )
+              project_id = parsed.delete(:project_id) do
+                raise ArgumentError.new("missing required path argument #{_1}")
+              end
+
               @client.request(
                 method: :post,
                 path: ["organization/projects/%1$s/rate_limits/%2$s", project_id, rate_limit_id],

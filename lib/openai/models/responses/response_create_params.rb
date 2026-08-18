@@ -21,11 +21,13 @@ module OpenAI
         #   Context management configuration for this request.
         #
         #   @return [Array<OpenAI::Models::Responses::ResponseCreateParams::ContextManagement>, nil]
-        optional :context_management,
-                 -> {
-                   OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseCreateParams::ContextManagement]
-                 },
-                 nil?: true
+        optional(
+          :context_management,
+          -> {
+            OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseCreateParams::ContextManagement]
+          },
+          nil?: true
+        )
 
         # @!attribute conversation
         #   The conversation that this response belongs to. Items from this conversation are
@@ -34,11 +36,13 @@ module OpenAI
         #   response completes.
         #
         #   @return [String, OpenAI::Models::Responses::ResponseConversationParam, nil]
-        optional :conversation,
-                 union: -> {
-                   OpenAI::Responses::ResponseCreateParams::Conversation
-                 },
-                 nil?: true
+        optional(
+          :conversation,
+          union: -> {
+            OpenAI::Responses::ResponseCreateParams::Conversation
+          },
+          nil?: true
+        )
 
         # @!attribute include
         #   Specify additional output data to include in the model response. Currently
@@ -61,9 +65,11 @@ module OpenAI
         #     in the zero data retention program).
         #
         #   @return [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>, nil]
-        optional :include,
-                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Responses::ResponseIncludable] },
-                 nil?: true
+        optional(
+          :include,
+          -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Responses::ResponseIncludable] },
+          nil?: true
+        )
 
         # @!attribute input
         #   Text, image, or file inputs to the model, used to generate a response.
@@ -199,9 +205,11 @@ module OpenAI
         #     `prompt_cache_retention` is not specified.
         #
         #   @return [Symbol, OpenAI::Models::Responses::ResponseCreateParams::PromptCacheRetention, nil]
-        optional :prompt_cache_retention,
-                 enum: -> { OpenAI::Responses::ResponseCreateParams::PromptCacheRetention },
-                 nil?: true
+        optional(
+          :prompt_cache_retention,
+          enum: -> { OpenAI::Responses::ResponseCreateParams::PromptCacheRetention },
+          nil?: true
+        )
 
         # @!attribute reasoning
         #   **gpt-5 and o-series models only**
@@ -515,21 +523,25 @@ module OpenAI
             #   The moderation policy for the response input.
             #
             #   @return [OpenAI::Models::Responses::ResponseCreateParams::Moderation::Policy::Input, nil]
-            optional :input,
-                     -> {
-                       OpenAI::Responses::ResponseCreateParams::Moderation::Policy::Input
-                     },
-                     nil?: true
+            optional(
+              :input,
+              -> {
+                OpenAI::Responses::ResponseCreateParams::Moderation::Policy::Input
+              },
+              nil?: true
+            )
 
             # @!attribute output
             #   The moderation policy for the response output.
             #
             #   @return [OpenAI::Models::Responses::ResponseCreateParams::Moderation::Policy::Output, nil]
-            optional :output,
-                     -> {
-                       OpenAI::Responses::ResponseCreateParams::Moderation::Policy::Output
-                     },
-                     nil?: true
+            optional(
+              :output,
+              -> {
+                OpenAI::Responses::ResponseCreateParams::Moderation::Policy::Output
+              },
+              nil?: true
+            )
 
             # @!method initialize(input: nil, output: nil)
             #   The policy to apply to moderated response input and output.

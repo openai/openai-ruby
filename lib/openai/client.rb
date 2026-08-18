@@ -199,7 +199,9 @@ module OpenAI
       on_retry: nil
     )
       base_url = OpenAI::Internal::ClientOptions.resolve_data_residency(
-        data_residency, base_url: base_url, provider: defined?(provider) ? provider : nil
+        data_residency,
+        base_url: base_url,
+        provider: defined?(provider) ? provider : nil
       )
       base_url = ENV["OPENAI_BASE_URL"] if base_url.equal?(OpenAI::Internal::OMIT)
       base_url ||= "https://api.openai.com/v1"
@@ -217,6 +219,7 @@ module OpenAI
             parsed[line[0...colon].strip] = line[(colon + 1)..].strip
           end
         end
+
         headers = parsed.merge(headers)
       end
 

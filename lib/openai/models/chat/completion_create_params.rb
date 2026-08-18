@@ -19,8 +19,10 @@ module OpenAI
         #   [audio](https://platform.openai.com/docs/guides/audio).
         #
         #   @return [Array<OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam, OpenAI::Models::Chat::ChatCompletionSystemMessageParam, OpenAI::Models::Chat::ChatCompletionUserMessageParam, OpenAI::Models::Chat::ChatCompletionAssistantMessageParam, OpenAI::Models::Chat::ChatCompletionToolMessageParam, OpenAI::Models::Chat::ChatCompletionFunctionMessageParam>]
-        required :messages,
-                 -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Chat::ChatCompletionMessageParam] }
+        required(
+          :messages,
+          -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Chat::ChatCompletionMessageParam] }
+        )
 
         # @!attribute model
         #   Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
@@ -77,8 +79,10 @@ module OpenAI
         #   A list of functions the model may generate JSON inputs for.
         #
         #   @return [Array<OpenAI::Models::Chat::CompletionCreateParams::Function>, nil]
-        optional :functions,
-                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::CompletionCreateParams::Function] }
+        optional(
+          :functions,
+          -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::CompletionCreateParams::Function] }
+        )
 
         # @!attribute logit_bias
         #   Modify the likelihood of specified tokens appearing in the completion.
@@ -147,9 +151,11 @@ module OpenAI
         #   `["text", "audio"]`
         #
         #   @return [Array<Symbol, OpenAI::Models::Chat::CompletionCreateParams::Modality>, nil]
-        optional :modalities,
-                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Chat::CompletionCreateParams::Modality] },
-                 nil?: true
+        optional(
+          :modalities,
+          -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Chat::CompletionCreateParams::Modality] },
+          nil?: true
+        )
 
         # @!attribute moderation
         #   Configuration for running moderation on the request input and generated output.
@@ -232,9 +238,11 @@ module OpenAI
         #     `prompt_cache_retention` is not specified.
         #
         #   @return [Symbol, OpenAI::Models::Chat::CompletionCreateParams::PromptCacheRetention, nil]
-        optional :prompt_cache_retention,
-                 enum: -> { OpenAI::Chat::CompletionCreateParams::PromptCacheRetention },
-                 nil?: true
+        optional(
+          :prompt_cache_retention,
+          enum: -> { OpenAI::Chat::CompletionCreateParams::PromptCacheRetention },
+          nil?: true
+        )
 
         # @!attribute reasoning_effort
         #   Constrains effort on reasoning for reasoning models. Currently supported values
@@ -633,21 +641,25 @@ module OpenAI
             #   The moderation policy for the response input.
             #
             #   @return [OpenAI::Models::Chat::CompletionCreateParams::Moderation::Policy::Input, nil]
-            optional :input,
-                     -> {
-                       OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Input
-                     },
-                     nil?: true
+            optional(
+              :input,
+              -> {
+                OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Input
+              },
+              nil?: true
+            )
 
             # @!attribute output
             #   The moderation policy for the response output.
             #
             #   @return [OpenAI::Models::Chat::CompletionCreateParams::Moderation::Policy::Output, nil]
-            optional :output,
-                     -> {
-                       OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Output
-                     },
-                     nil?: true
+            optional(
+              :output,
+              -> {
+                OpenAI::Chat::CompletionCreateParams::Moderation::Policy::Output
+              },
+              nil?: true
+            )
 
             # @!method initialize(input: nil, output: nil)
             #   The policy to apply to moderated response input and output.
@@ -912,16 +924,20 @@ module OpenAI
           #   search. One of `low`, `medium`, or `high`. `medium` is the default.
           #
           #   @return [Symbol, OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize, nil]
-          optional :search_context_size,
-                   enum: -> { OpenAI::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize }
+          optional(
+            :search_context_size,
+            enum: -> { OpenAI::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize }
+          )
 
           # @!attribute user_location
           #   Approximate location parameters for the search.
           #
           #   @return [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation, nil]
-          optional :user_location,
-                   -> { OpenAI::Chat::CompletionCreateParams::WebSearchOptions::UserLocation },
-                   nil?: true
+          optional(
+            :user_location,
+            -> { OpenAI::Chat::CompletionCreateParams::WebSearchOptions::UserLocation },
+            nil?: true
+          )
 
           # @!method initialize(search_context_size: nil, user_location: nil)
           #   Some parameter documentations has been truncated, see
@@ -957,8 +973,10 @@ module OpenAI
             #   Approximate location parameters for the search.
             #
             #   @return [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate]
-            required :approximate,
-                     -> { OpenAI::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate }
+            required(
+              :approximate,
+              -> { OpenAI::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate }
+            )
 
             # @!attribute type
             #   The type of location approximation. Always `approximate`.

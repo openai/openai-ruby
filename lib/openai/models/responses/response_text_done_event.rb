@@ -20,8 +20,10 @@ module OpenAI
         #   The log probabilities of the tokens in the delta.
         #
         #   @return [Array<OpenAI::Models::Responses::ResponseTextDoneEvent::Logprob>]
-        required :logprobs,
-                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseTextDoneEvent::Logprob] }
+        required(
+          :logprobs,
+          -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseTextDoneEvent::Logprob] }
+        )
 
         # @!attribute output_index
         #   The index of the output item that the text content is finalized.
@@ -84,8 +86,10 @@ module OpenAI
           #   The log probabilities of up to 20 of the most likely tokens.
           #
           #   @return [Array<OpenAI::Models::Responses::ResponseTextDoneEvent::Logprob::TopLogprob>, nil]
-          optional :top_logprobs,
-                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseTextDoneEvent::Logprob::TopLogprob] }
+          optional(
+            :top_logprobs,
+            -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseTextDoneEvent::Logprob::TopLogprob] }
+          )
 
           # @!method initialize(token:, logprob:, top_logprobs: nil)
           #   Some parameter documentations has been truncated, see

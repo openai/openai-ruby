@@ -41,8 +41,10 @@ module OpenAI
             #   The type of user.
             #
             #   @return [Symbol, OpenAI::Models::Admin::Organization::Groups::UserRetrieveResponse::UserType]
-            required :user_type,
-                     enum: -> { OpenAI::Models::Admin::Organization::Groups::UserRetrieveResponse::UserType }
+            required(
+              :user_type,
+              enum: -> { OpenAI::Models::Admin::Organization::Groups::UserRetrieveResponse::UserType }
+            )
 
             # @!method initialize(id:, email:, is_service_account:, name:, picture:, user_type:)
             #   Details about a user returned from an organization group membership lookup.

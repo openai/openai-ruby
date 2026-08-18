@@ -12,16 +12,16 @@ class OpenAI::Test::Resources::Admin::Organization::InvitesTest < OpenAI::Test::
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        email: String,
-        object: Symbol,
-        projects: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Admin::Organization::Invite::Project]),
-        role: OpenAI::Admin::Organization::Invite::Role,
-        status: OpenAI::Admin::Organization::Invite::Status,
-        accepted_at: Integer | nil,
-        expires_at: Integer | nil
-      }
+          id: String,
+          created_at: Integer,
+          email: String,
+          object: Symbol,
+          projects: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Admin::Organization::Invite::Project]),
+          role: OpenAI::Admin::Organization::Invite::Role,
+          status: OpenAI::Admin::Organization::Invite::Status,
+          accepted_at: Integer | nil,
+          expires_at: Integer | nil
+        }
     end
   end
 
@@ -34,16 +34,16 @@ class OpenAI::Test::Resources::Admin::Organization::InvitesTest < OpenAI::Test::
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        email: String,
-        object: Symbol,
-        projects: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Admin::Organization::Invite::Project]),
-        role: OpenAI::Admin::Organization::Invite::Role,
-        status: OpenAI::Admin::Organization::Invite::Status,
-        accepted_at: Integer | nil,
-        expires_at: Integer | nil
-      }
+          id: String,
+          created_at: Integer,
+          email: String,
+          object: Symbol,
+          projects: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Admin::Organization::Invite::Project]),
+          role: OpenAI::Admin::Organization::Invite::Role,
+          status: OpenAI::Admin::Organization::Invite::Status,
+          accepted_at: Integer | nil,
+          expires_at: Integer | nil
+        }
     end
   end
 
@@ -63,16 +63,16 @@ class OpenAI::Test::Resources::Admin::Organization::InvitesTest < OpenAI::Test::
 
     assert_pattern do
       row => {
-        id: String,
-        created_at: Integer,
-        email: String,
-        object: Symbol,
-        projects: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Admin::Organization::Invite::Project]),
-        role: OpenAI::Admin::Organization::Invite::Role,
-        status: OpenAI::Admin::Organization::Invite::Status,
-        accepted_at: Integer | nil,
-        expires_at: Integer | nil
-      }
+          id: String,
+          created_at: Integer,
+          email: String,
+          object: Symbol,
+          projects: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Admin::Organization::Invite::Project]),
+          role: OpenAI::Admin::Organization::Invite::Role,
+          status: OpenAI::Admin::Organization::Invite::Status,
+          accepted_at: Integer | nil,
+          expires_at: Integer | nil
+        }
     end
   end
 
@@ -85,10 +85,10 @@ class OpenAI::Test::Resources::Admin::Organization::InvitesTest < OpenAI::Test::
 
     assert_pattern do
       response => {
-        id: String,
-        deleted: OpenAI::Internal::Type::Boolean,
-        object: Symbol
-      }
+          id: String,
+          deleted: OpenAI::Internal::Type::Boolean,
+          object: Symbol
+        }
     end
   end
 end

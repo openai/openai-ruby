@@ -8,8 +8,10 @@ module OpenAI
         #   The content of the message.
         #
         #   @return [Array<OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::Content>]
-        required :content,
-                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Realtime::RealtimeConversationItemSystemMessage::Content] }
+        required(
+          :content,
+          -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Realtime::RealtimeConversationItemSystemMessage::Content] }
+        )
 
         # @!attribute role
         #   The role of the message sender. Always `system`.

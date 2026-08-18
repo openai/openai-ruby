@@ -20,8 +20,10 @@ module OpenAI
         #   The pending safety checks for the computer call.
         #
         #   @return [Array<OpenAI::Models::Beta::BetaResponseComputerToolCall::PendingSafetyCheck>]
-        required :pending_safety_checks,
-                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponseComputerToolCall::PendingSafetyCheck] }
+        required(
+          :pending_safety_checks,
+          -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponseComputerToolCall::PendingSafetyCheck] }
+        )
 
         # @!attribute status
         #   The status of the item. One of `in_progress`, `completed`, or `incomplete`.

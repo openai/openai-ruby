@@ -46,8 +46,10 @@ module OpenAI
           # @!attribute betas
           #
           #   @return [Array<Symbol, OpenAI::Models::Beta::Responses::InputItemListParams::Beta>, nil]
-          optional :betas,
-                   -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::Responses::InputItemListParams::Beta] }
+          optional(
+            :betas,
+            -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::Responses::InputItemListParams::Beta] }
+          )
 
           # @!method initialize(response_id:, after: nil, include: nil, limit: nil, order: nil, betas: nil, request_options: {})
           #   Some parameter documentations has been truncated, see

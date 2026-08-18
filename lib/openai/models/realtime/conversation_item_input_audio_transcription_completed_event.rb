@@ -39,8 +39,10 @@ module OpenAI
         #   model's pricing rather than the realtime model's pricing.
         #
         #   @return [OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens, OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageDuration]
-        required :usage,
-                 union: -> { OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage }
+        required(
+          :usage,
+          union: -> { OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage }
+        )
 
         # @!attribute languages
         #   The languages detected in the audio. Returned by `gpt-transcribe`. An empty
@@ -53,9 +55,11 @@ module OpenAI
         #   The log probabilities of the transcription.
         #
         #   @return [Array<OpenAI::Models::Realtime::LogProbProperties>, nil]
-        optional :logprobs,
-                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Realtime::LogProbProperties] },
-                 nil?: true
+        optional(
+          :logprobs,
+          -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Realtime::LogProbProperties] },
+          nil?: true
+        )
 
         # @!method initialize(content_index:, event_id:, item_id:, transcript:, usage:, languages: nil, logprobs: nil, type: :"conversation.item.input_audio_transcription.completed")
         #   Some parameter documentations has been truncated, see
@@ -97,10 +101,18 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           # Usage statistics for models billed by token usage.
-          variant -> { OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens }
+          variant(
+            -> {
+              OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens
+            }
+          )
 
           # Usage statistics for models billed by audio input duration.
-          variant -> { OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageDuration }
+          variant(
+            -> {
+              OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageDuration
+            }
+          )
 
           class TranscriptTextUsageTokens < OpenAI::Internal::Type::BaseModel
             # @!attribute input_tokens
@@ -131,8 +143,12 @@ module OpenAI
             #   Details about the input tokens billed for this request.
             #
             #   @return [OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails, nil]
-            optional :input_token_details,
-                     -> { OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails }
+            optional(
+              :input_token_details,
+              -> {
+                OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails
+              }
+            )
 
             # @!method initialize(input_tokens:, output_tokens:, total_tokens:, input_token_details: nil, type: :tokens)
             #   Usage statistics for models billed by token usage.

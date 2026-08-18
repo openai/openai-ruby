@@ -9,8 +9,12 @@ module OpenAI
           # @!attribute data
           #
           #   @return [Array<OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse::Data>]
-          required :data,
-                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse::Data] }
+          required(
+            :data,
+            -> {
+              OpenAI::Internal::Type::ArrayOf[OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse::Data]
+            }
+          )
 
           # @!attribute has_more
           #

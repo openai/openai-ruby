@@ -41,8 +41,12 @@ module OpenAI
         #     transcription.
         #
         #   @return [Array<Symbol, OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateResponse::Include>, nil]
-        optional :include,
-                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeTranscriptionSessionCreateResponse::Include] }
+        optional(
+          :include,
+          -> {
+            OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeTranscriptionSessionCreateResponse::Include]
+          }
+        )
 
         # @!method initialize(id:, object:, audio: nil, expires_at: nil, include: nil, type: :transcription)
         #   Some parameter documentations has been truncated, see
@@ -87,8 +91,10 @@ module OpenAI
             #   Configuration for input audio noise reduction.
             #
             #   @return [OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateResponse::Audio::Input::NoiseReduction, nil]
-            optional :noise_reduction,
-                     -> { OpenAI::Realtime::RealtimeTranscriptionSessionCreateResponse::Audio::Input::NoiseReduction }
+            optional(
+              :noise_reduction,
+              -> { OpenAI::Realtime::RealtimeTranscriptionSessionCreateResponse::Audio::Input::NoiseReduction }
+            )
 
             # @!attribute transcription
             #
@@ -102,11 +108,13 @@ module OpenAI
             #   must be `null`; VAD is not supported.
             #
             #   @return [OpenAI::Models::Realtime::RealtimeTranscriptionSessionTurnDetection, nil]
-            optional :turn_detection,
-                     -> {
-                       OpenAI::Realtime::RealtimeTranscriptionSessionTurnDetection
-                     },
-                     nil?: true
+            optional(
+              :turn_detection,
+              -> {
+                OpenAI::Realtime::RealtimeTranscriptionSessionTurnDetection
+              },
+              nil?: true
+            )
 
             # @!method initialize(format_: nil, noise_reduction: nil, transcription: nil, turn_detection: nil)
             #   Some parameter documentations has been truncated, see

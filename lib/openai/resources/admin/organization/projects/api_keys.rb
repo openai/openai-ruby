@@ -21,10 +21,10 @@ module OpenAI
             # @see OpenAI::Models::Admin::Organization::Projects::APIKeyRetrieveParams
             def retrieve(api_key_id, params)
               parsed, options = OpenAI::Admin::Organization::Projects::APIKeyRetrieveParams.dump_request(params)
-              project_id =
-                parsed.delete(:project_id) do
-                  raise ArgumentError.new("missing required path argument #{_1}")
-                end
+              project_id = parsed.delete(:project_id) do
+                raise ArgumentError.new("missing required path argument #{_1}")
+              end
+
               @client.request(
                 method: :get,
                 path: ["organization/projects/%1$s/api_keys/%2$s", project_id, api_key_id],
@@ -87,10 +87,10 @@ module OpenAI
             # @see OpenAI::Models::Admin::Organization::Projects::APIKeyDeleteParams
             def delete(api_key_id, params)
               parsed, options = OpenAI::Admin::Organization::Projects::APIKeyDeleteParams.dump_request(params)
-              project_id =
-                parsed.delete(:project_id) do
-                  raise ArgumentError.new("missing required path argument #{_1}")
-                end
+              project_id = parsed.delete(:project_id) do
+                raise ArgumentError.new("missing required path argument #{_1}")
+              end
+
               @client.request(
                 method: :delete,
                 path: ["organization/projects/%1$s/api_keys/%2$s", project_id, api_key_id],

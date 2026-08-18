@@ -23,8 +23,10 @@ module OpenAI
         #   transcription.
         #
         #   @return [Array<Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Include>, nil]
-        optional :include,
-                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeSessionCreateRequest::Include] }
+        optional(
+          :include,
+          -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeSessionCreateRequest::Include] }
+        )
 
         # @!attribute instructions
         #   The default system instructions (i.e. system message) prepended to model calls.
@@ -63,8 +65,10 @@ module OpenAI
         #   request both `text` and `audio` at the same time.
         #
         #   @return [Array<Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateRequest::OutputModality>, nil]
-        optional :output_modalities,
-                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeSessionCreateRequest::OutputModality] }
+        optional(
+          :output_modalities,
+          -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeSessionCreateRequest::OutputModality] }
+        )
 
         # @!attribute parallel_tool_calls
         #   Whether the model may call multiple tools in parallel. Only supported by
@@ -215,29 +219,55 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_4O_REALTIME_PREVIEW }
 
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_4O_REALTIME_PREVIEW_2024_10_01 }
+          variant(
+            const: -> {
+              OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_4O_REALTIME_PREVIEW_2024_10_01
+            }
+          )
 
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_4O_REALTIME_PREVIEW_2024_12_17 }
+          variant(
+            const: -> {
+              OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_4O_REALTIME_PREVIEW_2024_12_17
+            }
+          )
 
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_4O_REALTIME_PREVIEW_2025_06_03 }
+          variant(
+            const: -> {
+              OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_4O_REALTIME_PREVIEW_2025_06_03
+            }
+          )
 
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_4O_MINI_REALTIME_PREVIEW }
+          variant(
+            const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_4O_MINI_REALTIME_PREVIEW }
+          )
 
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_4O_MINI_REALTIME_PREVIEW_2024_12_17 }
+          variant(
+            const: -> {
+              OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_4O_MINI_REALTIME_PREVIEW_2024_12_17
+            }
+          )
 
           variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_REALTIME_MINI }
 
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_REALTIME_MINI_2025_10_06 }
+          variant(
+            const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_REALTIME_MINI_2025_10_06 }
+          )
 
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_REALTIME_MINI_2025_12_15 }
+          variant(
+            const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_REALTIME_MINI_2025_12_15 }
+          )
 
           variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_AUDIO_1_5 }
 
           variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_AUDIO_MINI }
 
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_AUDIO_MINI_2025_10_06 }
+          variant(
+            const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_AUDIO_MINI_2025_10_06 }
+          )
 
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_AUDIO_MINI_2025_12_15 }
+          variant(
+            const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateRequest::Model::GPT_AUDIO_MINI_2025_12_15 }
+          )
 
           # @!method self.variants
           #   @return [Array(String, Symbol)]

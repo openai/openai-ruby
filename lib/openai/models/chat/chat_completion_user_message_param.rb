@@ -52,8 +52,9 @@ module OpenAI
           #   @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File>)]
 
           # @type [OpenAI::Internal::Type::Converter]
-          ChatCompletionContentPartArray =
-            OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Chat::ChatCompletionContentPart }]
+          ChatCompletionContentPartArray = OpenAI::Internal::Type::ArrayOf[
+            union: -> { OpenAI::Chat::ChatCompletionContentPart }
+          ]
         end
       end
     end

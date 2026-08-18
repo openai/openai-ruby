@@ -21,11 +21,13 @@ module OpenAI
         #   Context management configuration for this request.
         #
         #   @return [Array<OpenAI::Models::Beta::ResponseCreateParams::ContextManagement>, nil]
-        optional :context_management,
-                 -> {
-                   OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::ResponseCreateParams::ContextManagement]
-                 },
-                 nil?: true
+        optional(
+          :context_management,
+          -> {
+            OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::ResponseCreateParams::ContextManagement]
+          },
+          nil?: true
+        )
 
         # @!attribute conversation
         #   The conversation that this response belongs to. Items from this conversation are
@@ -57,9 +59,11 @@ module OpenAI
         #     in the zero data retention program).
         #
         #   @return [Array<Symbol, OpenAI::Models::Beta::BetaResponseIncludable>, nil]
-        optional :include,
-                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::BetaResponseIncludable] },
-                 nil?: true
+        optional(
+          :include,
+          -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::BetaResponseIncludable] },
+          nil?: true
+        )
 
         # @!attribute input
         #   Text, image, or file inputs to the model, used to generate a response.
@@ -201,9 +205,11 @@ module OpenAI
         #     `prompt_cache_retention` is not specified.
         #
         #   @return [Symbol, OpenAI::Models::Beta::ResponseCreateParams::PromptCacheRetention, nil]
-        optional :prompt_cache_retention,
-                 enum: -> { OpenAI::Beta::ResponseCreateParams::PromptCacheRetention },
-                 nil?: true
+        optional(
+          :prompt_cache_retention,
+          enum: -> { OpenAI::Beta::ResponseCreateParams::PromptCacheRetention },
+          nil?: true
+        )
 
         # @!attribute reasoning
         #   **gpt-5 and o-series models only**
@@ -622,7 +628,9 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Beta::ResponseCreateParams::Model::GPT_4O_SEARCH_PREVIEW_2025_03_11 }
 
-          variant const: -> { OpenAI::Models::Beta::ResponseCreateParams::Model::GPT_4O_MINI_SEARCH_PREVIEW_2025_03_11 }
+          variant(
+            const: -> { OpenAI::Models::Beta::ResponseCreateParams::Model::GPT_4O_MINI_SEARCH_PREVIEW_2025_03_11 }
+          )
 
           variant const: -> { OpenAI::Models::Beta::ResponseCreateParams::Model::CHATGPT_4O_LATEST }
 
@@ -861,11 +869,13 @@ module OpenAI
             #   The moderation policy for the response output.
             #
             #   @return [OpenAI::Models::Beta::ResponseCreateParams::Moderation::Policy::Output, nil]
-            optional :output,
-                     -> {
-                       OpenAI::Beta::ResponseCreateParams::Moderation::Policy::Output
-                     },
-                     nil?: true
+            optional(
+              :output,
+              -> {
+                OpenAI::Beta::ResponseCreateParams::Moderation::Policy::Output
+              },
+              nil?: true
+            )
 
             # @!method initialize(input: nil, output: nil)
             #   The policy to apply to moderated response input and output.
@@ -1087,9 +1097,11 @@ module OpenAI
           #   `concise`, or `detailed`.
           #
           #   @return [Symbol, OpenAI::Models::Beta::ResponseCreateParams::Reasoning::GenerateSummary, nil]
-          optional :generate_summary,
-                   enum: -> { OpenAI::Beta::ResponseCreateParams::Reasoning::GenerateSummary },
-                   nil?: true
+          optional(
+            :generate_summary,
+            enum: -> { OpenAI::Beta::ResponseCreateParams::Reasoning::GenerateSummary },
+            nil?: true
+          )
 
           # @!attribute mode
           #   Controls the reasoning execution mode for the request.

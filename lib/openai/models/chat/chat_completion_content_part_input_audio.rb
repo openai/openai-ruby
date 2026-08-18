@@ -21,8 +21,10 @@ module OpenAI
         #   token block.
         #
         #   @return [OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::PromptCacheBreakpoint, nil]
-        optional :prompt_cache_breakpoint,
-                 -> { OpenAI::Chat::ChatCompletionContentPartInputAudio::PromptCacheBreakpoint }
+        optional(
+          :prompt_cache_breakpoint,
+          -> { OpenAI::Chat::ChatCompletionContentPartInputAudio::PromptCacheBreakpoint }
+        )
 
         # @!method initialize(input_audio:, prompt_cache_breakpoint: nil, type: :input_audio)
         #   Some parameter documentations has been truncated, see
@@ -48,9 +50,11 @@ module OpenAI
           #   The format of the encoded audio data. Currently supports "wav" and "mp3".
           #
           #   @return [Symbol, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format]
-          required :format_,
-                   enum: -> { OpenAI::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format },
-                   api_name: :format
+          required(
+            :format_,
+            enum: -> { OpenAI::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format },
+            api_name: :format
+          )
 
           # @!method initialize(data:, format_:)
           #   Some parameter documentations has been truncated, see

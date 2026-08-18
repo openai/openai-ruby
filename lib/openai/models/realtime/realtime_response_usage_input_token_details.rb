@@ -20,8 +20,10 @@ module OpenAI
         #   Details about the cached tokens used as input for the Response.
         #
         #   @return [OpenAI::Models::Realtime::RealtimeResponseUsageInputTokenDetails::CachedTokensDetails, nil]
-        optional :cached_tokens_details,
-                 -> { OpenAI::Realtime::RealtimeResponseUsageInputTokenDetails::CachedTokensDetails }
+        optional(
+          :cached_tokens_details,
+          -> { OpenAI::Realtime::RealtimeResponseUsageInputTokenDetails::CachedTokensDetails }
+        )
 
         # @!attribute image_tokens
         #   The number of image tokens used as input for the Response.

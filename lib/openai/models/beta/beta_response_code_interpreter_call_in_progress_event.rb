@@ -33,11 +33,13 @@ module OpenAI
         #   The agent that owns this multi-agent streaming event.
         #
         #   @return [OpenAI::Models::Beta::BetaResponseCodeInterpreterCallInProgressEvent::Agent, nil]
-        optional :agent,
-                 -> {
-                   OpenAI::Beta::BetaResponseCodeInterpreterCallInProgressEvent::Agent
-                 },
-                 nil?: true
+        optional(
+          :agent,
+          -> {
+            OpenAI::Beta::BetaResponseCodeInterpreterCallInProgressEvent::Agent
+          },
+          nil?: true
+        )
 
         # @!method initialize(item_id:, output_index:, sequence_number:, agent: nil, type: :"response.code_interpreter_call.in_progress")
         #   Some parameter documentations has been truncated, see

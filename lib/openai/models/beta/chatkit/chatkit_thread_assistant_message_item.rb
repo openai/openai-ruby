@@ -15,8 +15,10 @@ module OpenAI
           #   Ordered assistant response segments.
           #
           #   @return [Array<OpenAI::Models::Beta::ChatKit::ChatKitResponseOutputText>]
-          required :content,
-                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::ChatKit::ChatKitResponseOutputText] }
+          required(
+            :content,
+            -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::ChatKit::ChatKitResponseOutputText] }
+          )
 
           # @!attribute created_at
           #   Unix timestamp (in seconds) for when the item was created.

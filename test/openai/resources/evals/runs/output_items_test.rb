@@ -4,8 +4,7 @@ require_relative "../../../test_helper"
 
 class OpenAI::Test::Resources::Evals::Runs::OutputItemsTest < OpenAI::Test::ResourceTest
   def test_retrieve_required_params
-    response =
-      @openai.evals.runs.output_items.retrieve("output_item_id", eval_id: "eval_id", run_id: "run_id")
+    response = @openai.evals.runs.output_items.retrieve("output_item_id", eval_id: "eval_id", run_id: "run_id")
 
     assert_pattern do
       response => OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse
@@ -13,17 +12,17 @@ class OpenAI::Test::Resources::Evals::Runs::OutputItemsTest < OpenAI::Test::Reso
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        datasource_item: ^(OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]),
-        datasource_item_id: Integer,
-        eval_id: String,
-        object: Symbol,
-        results: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Result]),
-        run_id: String,
-        sample: OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample,
-        status: String
-      }
+          id: String,
+          created_at: Integer,
+          datasource_item: ^(OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]),
+          datasource_item_id: Integer,
+          eval_id: String,
+          object: Symbol,
+          results: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Result]),
+          run_id: String,
+          sample: OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample,
+          status: String
+        }
     end
   end
 
@@ -43,17 +42,17 @@ class OpenAI::Test::Resources::Evals::Runs::OutputItemsTest < OpenAI::Test::Reso
 
     assert_pattern do
       row => {
-        id: String,
-        created_at: Integer,
-        datasource_item: ^(OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]),
-        datasource_item_id: Integer,
-        eval_id: String,
-        object: Symbol,
-        results: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Evals::Runs::OutputItemListResponse::Result]),
-        run_id: String,
-        sample: OpenAI::Models::Evals::Runs::OutputItemListResponse::Sample,
-        status: String
-      }
+          id: String,
+          created_at: Integer,
+          datasource_item: ^(OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]),
+          datasource_item_id: Integer,
+          eval_id: String,
+          object: Symbol,
+          results: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Evals::Runs::OutputItemListResponse::Result]),
+          run_id: String,
+          sample: OpenAI::Models::Evals::Runs::OutputItemListResponse::Sample,
+          status: String
+        }
     end
   end
 end

@@ -29,8 +29,10 @@ module OpenAI
         # Keep appending silence while the session is active. If a client stops sending
         # audio and later resumes, model time treats the resumed audio as contiguous with
         # the previous audio rather than as a real-world pause.
-        variant :"session.input_audio_buffer.append",
-                -> { OpenAI::Realtime::RealtimeTranslationInputAudioBufferAppendEvent }
+        variant(
+          :"session.input_audio_buffer.append",
+          -> { OpenAI::Realtime::RealtimeTranslationInputAudioBufferAppendEvent }
+        )
 
         # Gracefully close the realtime translation session. The server flushes pending
         # input audio and emits any remaining translated output before closing the

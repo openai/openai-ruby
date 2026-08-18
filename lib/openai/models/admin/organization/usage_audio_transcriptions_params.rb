@@ -26,8 +26,10 @@ module OpenAI
           #   supported, default to `1d`.
           #
           #   @return [Symbol, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsParams::BucketWidth, nil]
-          optional :bucket_width,
-                   enum: -> { OpenAI::Admin::Organization::UsageAudioTranscriptionsParams::BucketWidth }
+          optional(
+            :bucket_width,
+            enum: -> { OpenAI::Admin::Organization::UsageAudioTranscriptionsParams::BucketWidth }
+          )
 
           # @!attribute end_time
           #   End time (Unix seconds) of the query time range, exclusive.
@@ -40,8 +42,14 @@ module OpenAI
           #   `project_id`, `user_id`, `api_key_id`, `model` or any combination of them.
           #
           #   @return [Array<Symbol, OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsParams::GroupBy>, nil]
-          optional :group_by,
-                   -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::UsageAudioTranscriptionsParams::GroupBy] }
+          optional(
+            :group_by,
+            -> {
+              OpenAI::Internal::Type::ArrayOf[
+                enum: OpenAI::Admin::Organization::UsageAudioTranscriptionsParams::GroupBy
+              ]
+            }
+          )
 
           # @!attribute limit
           #   Specifies the number of buckets to return.

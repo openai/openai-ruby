@@ -22,6 +22,7 @@ module OpenAI
           unless base_url.equal?(OpenAI::Internal::OMIT)
             raise ArgumentError, "`data_residency` and `base_url` are mutually exclusive"
           end
+
           unless provider.nil?
             raise ArgumentError, "`data_residency` cannot be combined with `provider`"
           end
@@ -29,7 +30,7 @@ module OpenAI
           url = DATA_RESIDENCY_URLS[data_residency.to_s] if data_residency.is_a?(String) || data_residency.is_a?(Symbol)
           return url unless url.nil?
 
-          raise ArgumentError, "`data_residency` must be one of: #{DATA_RESIDENCY_URLS.keys.join(', ')}"
+          raise ArgumentError, "`data_residency` must be one of: #{DATA_RESIDENCY_URLS.keys.join(", ")}"
         end
       end
     end

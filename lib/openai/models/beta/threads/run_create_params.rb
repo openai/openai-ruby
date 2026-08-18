@@ -34,8 +34,10 @@ module OpenAI
           #   for more information.
           #
           #   @return [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>, nil]
-          optional :include,
-                   -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::Threads::Runs::RunStepInclude] }
+          optional(
+            :include,
+            -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::Threads::Runs::RunStepInclude] }
+          )
 
           # @!attribute additional_instructions
           #   Appends additional instructions at the end of the instructions for the run. This
@@ -49,11 +51,13 @@ module OpenAI
           #   Adds additional messages to the thread before creating the run.
           #
           #   @return [Array<OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage>, nil]
-          optional :additional_messages,
-                   -> {
-                     OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage]
-                   },
-                   nil?: true
+          optional(
+            :additional_messages,
+            -> {
+              OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage]
+            },
+            nil?: true
+          )
 
           # @!attribute instructions
           #   Overrides the
@@ -172,11 +176,13 @@ module OpenAI
           #   modifying the behavior on a per-run basis.
           #
           #   @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>, nil]
-          optional :tools,
-                   -> {
-                     OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AssistantTool]
-                   },
-                   nil?: true
+          optional(
+            :tools,
+            -> {
+              OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AssistantTool]
+            },
+            nil?: true
+          )
 
           # @!attribute top_p
           #   An alternative to sampling with temperature, called nucleus sampling, where the
@@ -193,9 +199,11 @@ module OpenAI
           #   control the initial context window of the run.
           #
           #   @return [OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy, nil]
-          optional :truncation_strategy,
-                   -> { OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy },
-                   nil?: true
+          optional(
+            :truncation_strategy,
+            -> { OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy },
+            nil?: true
+          )
 
           # @!method initialize(thread_id:, assistant_id:, include: nil, additional_instructions: nil, additional_messages: nil, instructions: nil, max_completion_tokens: nil, max_prompt_tokens: nil, metadata: nil, model: nil, parallel_tool_calls: nil, reasoning_effort: nil, response_format: nil, temperature: nil, tool_choice: nil, tools: nil, top_p: nil, truncation_strategy: nil, request_options: {})
           #   Some parameter documentations has been truncated, see
@@ -261,11 +269,13 @@ module OpenAI
             #   A list of files attached to the message, and the tools they should be added to.
             #
             #   @return [Array<OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment>, nil]
-            optional :attachments,
-                     -> {
-                       OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment]
-                     },
-                     nil?: true
+            optional(
+              :attachments,
+              -> {
+                OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment]
+              },
+              nil?: true
+            )
 
             # @!attribute metadata
             #   Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -301,14 +311,19 @@ module OpenAI
               variant String
 
               # An array of content parts with a defined type, each can be of type `text` or images can be passed with `image_url` or `image_file`. Image types are only supported on [Vision-compatible models](https://platform.openai.com/docs/models).
-              variant -> { OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Content::MessageContentPartParamArray }
+              variant(
+                -> {
+                  OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Content::MessageContentPartParamArray
+                }
+              )
 
               # @!method self.variants
               #   @return [Array(String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>)]
 
               # @type [OpenAI::Internal::Type::Converter]
-              MessageContentPartParamArray =
-                OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Beta::Threads::MessageContentPartParam }]
+              MessageContentPartParamArray = OpenAI::Internal::Type::ArrayOf[
+                union: -> { OpenAI::Beta::Threads::MessageContentPartParam }
+              ]
             end
 
             # The role of the entity that is creating the message. Allowed values include:
@@ -340,8 +355,14 @@ module OpenAI
               #   The tools to add this file to.
               #
               #   @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch>, nil]
-              optional :tools,
-                       -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool] }
+              optional(
+                :tools,
+                -> {
+                  OpenAI::Internal::Type::ArrayOf[
+                    union: OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool
+                  ]
+                }
+              )
 
               # @!method initialize(file_id: nil, tools: nil)
               #   @param file_id [String] The ID of the file to attach to the message.
@@ -355,8 +376,10 @@ module OpenAI
 
                 variant :code_interpreter, -> { OpenAI::Beta::CodeInterpreterTool }
 
-                variant :file_search,
-                        -> { OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch }
+                variant(
+                  :file_search,
+                  -> { OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch }
+                )
 
                 class FileSearch < OpenAI::Internal::Type::BaseModel
                   # @!attribute type

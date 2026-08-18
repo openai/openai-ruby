@@ -15,11 +15,13 @@ module OpenAI
         #   `image_url` parts. Otherwise, null.
         #
         #   @return [Array<OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage>, nil]
-        optional :content_parts,
-                 -> {
-                   OpenAI::Internal::Type::ArrayOf[union: OpenAI::Chat::ChatCompletionStoreMessage::ContentPart]
-                 },
-                 nil?: true
+        optional(
+          :content_parts,
+          -> {
+            OpenAI::Internal::Type::ArrayOf[union: OpenAI::Chat::ChatCompletionStoreMessage::ContentPart]
+          },
+          nil?: true
+        )
 
         # @!method initialize(content:, refusal:, id:, annotations: nil, audio: nil, function_call: nil, tool_calls: nil, content_parts: nil, role: :assistant)
         #   Some parameter documentations has been truncated, see

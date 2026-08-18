@@ -57,10 +57,10 @@ module OpenAI
         # @see OpenAI::Models::Containers::FileRetrieveParams
         def retrieve(file_id, params)
           parsed, options = OpenAI::Containers::FileRetrieveParams.dump_request(params)
-          container_id =
-            parsed.delete(:container_id) do
-              raise ArgumentError.new("missing required path argument #{_1}")
-            end
+          container_id = parsed.delete(:container_id) do
+            raise ArgumentError.new("missing required path argument #{_1}")
+          end
+
           @client.request(
             method: :get,
             path: ["containers/%1$s/files/%2$s", container_id, file_id],
@@ -117,10 +117,10 @@ module OpenAI
         # @see OpenAI::Models::Containers::FileDeleteParams
         def delete(file_id, params)
           parsed, options = OpenAI::Containers::FileDeleteParams.dump_request(params)
-          container_id =
-            parsed.delete(:container_id) do
-              raise ArgumentError.new("missing required path argument #{_1}")
-            end
+          container_id = parsed.delete(:container_id) do
+            raise ArgumentError.new("missing required path argument #{_1}")
+          end
+
           @client.request(
             method: :delete,
             path: ["containers/%1$s/files/%2$s", container_id, file_id],

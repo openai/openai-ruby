@@ -14,11 +14,13 @@ module OpenAI
         #   The tool invocation context(s).
         #
         #   @return [Array<Symbol, OpenAI::Models::Beta::BetaFunctionShellTool::AllowedCaller>, nil]
-        optional :allowed_callers,
-                 -> {
-                   OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::BetaFunctionShellTool::AllowedCaller]
-                 },
-                 nil?: true
+        optional(
+          :allowed_callers,
+          -> {
+            OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::BetaFunctionShellTool::AllowedCaller]
+          },
+          nil?: true
+        )
 
         # @!attribute environment
         #

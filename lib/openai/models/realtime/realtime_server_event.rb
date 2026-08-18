@@ -38,22 +38,30 @@ module OpenAI
         # separate process run on a separate ASR (Automatic Speech Recognition) model.
         # The transcript may diverge somewhat from the model's interpretation, and
         # should be treated as a rough guide.
-        variant :"conversation.item.input_audio_transcription.completed",
-                -> { OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent }
+        variant(
+          :"conversation.item.input_audio_transcription.completed",
+          -> { OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent }
+        )
 
         # Returned when the text value of an input audio transcription content part is updated with incremental transcription results.
-        variant :"conversation.item.input_audio_transcription.delta",
-                -> { OpenAI::Realtime::ConversationItemInputAudioTranscriptionDeltaEvent }
+        variant(
+          :"conversation.item.input_audio_transcription.delta",
+          -> { OpenAI::Realtime::ConversationItemInputAudioTranscriptionDeltaEvent }
+        )
 
         # Returned when input audio transcription is configured, and a transcription
         # request for a user message failed. These events are separate from other
         # `error` events so that the client can identify the related Item.
-        variant :"conversation.item.input_audio_transcription.failed",
-                -> { OpenAI::Realtime::ConversationItemInputAudioTranscriptionFailedEvent }
+        variant(
+          :"conversation.item.input_audio_transcription.failed",
+          -> { OpenAI::Realtime::ConversationItemInputAudioTranscriptionFailedEvent }
+        )
 
         # Returned when a conversation item is retrieved with `conversation.item.retrieve`. This is provided as a way to fetch the server's representation of an item, for example to get access to the post-processed audio data after noise cancellation and VAD. It includes the full content of the Item, including audio data.
-        variant :"conversation.item.retrieved",
-                -> { OpenAI::Realtime::RealtimeServerEvent::ConversationItemRetrieved }
+        variant(
+          :"conversation.item.retrieved",
+          -> { OpenAI::Realtime::RealtimeServerEvent::ConversationItemRetrieved }
+        )
 
         # Returned when an earlier assistant audio message item is truncated by the
         # client with a `conversation.item.truncate` event. This event is used to
@@ -82,8 +90,10 @@ module OpenAI
         # represents a telephone keypad press (0–9, *, #, A–D). The `event` property
         # is the keypad that the user press. The `received_at` is the UTC Unix Timestamp
         # that the server received the event.
-        variant :"input_audio_buffer.dtmf_event_received",
-                -> { OpenAI::Realtime::InputAudioBufferDtmfEventReceivedEvent }
+        variant(
+          :"input_audio_buffer.dtmf_event_received",
+          -> { OpenAI::Realtime::InputAudioBufferDtmfEventReceivedEvent }
+        )
 
         # Sent by the server when in `server_vad` mode to indicate that speech has been
         # detected in the audio buffer. This can happen any time audio is added to the
@@ -116,14 +126,18 @@ module OpenAI
         variant :"response.output_audio.done", -> { OpenAI::Realtime::ResponseAudioDoneEvent }
 
         # Returned when the model-generated transcription of audio output is updated.
-        variant :"response.output_audio_transcript.delta",
-                -> { OpenAI::Realtime::ResponseAudioTranscriptDeltaEvent }
+        variant(
+          :"response.output_audio_transcript.delta",
+          -> { OpenAI::Realtime::ResponseAudioTranscriptDeltaEvent }
+        )
 
         # Returned when the model-generated transcription of audio output is done
         # streaming. Also emitted when a Response is interrupted, incomplete, or
         # cancelled.
-        variant :"response.output_audio_transcript.done",
-                -> { OpenAI::Realtime::ResponseAudioTranscriptDoneEvent }
+        variant(
+          :"response.output_audio_transcript.done",
+          -> { OpenAI::Realtime::ResponseAudioTranscriptDoneEvent }
+        )
 
         # Returned when a new content part is added to an assistant message item during
         # response generation.
@@ -149,13 +163,17 @@ module OpenAI
         variant :"response.done", -> { OpenAI::Realtime::ResponseDoneEvent }
 
         # Returned when the model-generated function call arguments are updated.
-        variant :"response.function_call_arguments.delta",
-                -> { OpenAI::Realtime::ResponseFunctionCallArgumentsDeltaEvent }
+        variant(
+          :"response.function_call_arguments.delta",
+          -> { OpenAI::Realtime::ResponseFunctionCallArgumentsDeltaEvent }
+        )
 
         # Returned when the model-generated function call arguments are done streaming.
         # Also emitted when a Response is interrupted, incomplete, or cancelled.
-        variant :"response.function_call_arguments.done",
-                -> { OpenAI::Realtime::ResponseFunctionCallArgumentsDoneEvent }
+        variant(
+          :"response.function_call_arguments.done",
+          -> { OpenAI::Realtime::ResponseFunctionCallArgumentsDoneEvent }
+        )
 
         # Returned when a new Item is created during Response generation.
         variant :"response.output_item.added", -> { OpenAI::Realtime::ResponseOutputItemAddedEvent }
@@ -184,23 +202,29 @@ module OpenAI
         # emitted after an audio content part has been added (`response.content_part.added`)
         # to the response.
         # [Learn more](https://platform.openai.com/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
-        variant :"output_audio_buffer.started",
-                -> { OpenAI::Realtime::RealtimeServerEvent::OutputAudioBufferStarted }
+        variant(
+          :"output_audio_buffer.started",
+          -> { OpenAI::Realtime::RealtimeServerEvent::OutputAudioBufferStarted }
+        )
 
         # **WebRTC/SIP Only:** Emitted when the output audio buffer has been completely drained on the server,
         # and no more audio is forthcoming. This event is emitted after the full response
         # data has been sent to the client (`response.done`).
         # [Learn more](https://platform.openai.com/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
-        variant :"output_audio_buffer.stopped",
-                -> { OpenAI::Realtime::RealtimeServerEvent::OutputAudioBufferStopped }
+        variant(
+          :"output_audio_buffer.stopped",
+          -> { OpenAI::Realtime::RealtimeServerEvent::OutputAudioBufferStopped }
+        )
 
         # **WebRTC/SIP Only:** Emitted when the output audio buffer is cleared. This happens either in VAD
         # mode when the user has interrupted (`input_audio_buffer.speech_started`),
         # or when the client has emitted the `output_audio_buffer.clear` event to manually
         # cut off the current audio response.
         # [Learn more](https://platform.openai.com/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
-        variant :"output_audio_buffer.cleared",
-                -> { OpenAI::Realtime::RealtimeServerEvent::OutputAudioBufferCleared }
+        variant(
+          :"output_audio_buffer.cleared",
+          -> { OpenAI::Realtime::RealtimeServerEvent::OutputAudioBufferCleared }
+        )
 
         # Sent by the server when an Item is added to the default Conversation. This can happen in several cases:
         # - When the client sends a `conversation.item.create` event.
@@ -231,8 +255,10 @@ module OpenAI
         variant :"input_audio_buffer.timeout_triggered", -> { OpenAI::Realtime::InputAudioBufferTimeoutTriggered }
 
         # Returned when an input audio transcription segment is identified for an item.
-        variant :"conversation.item.input_audio_transcription.segment",
-                -> { OpenAI::Realtime::ConversationItemInputAudioTranscriptionSegment }
+        variant(
+          :"conversation.item.input_audio_transcription.segment",
+          -> { OpenAI::Realtime::ConversationItemInputAudioTranscriptionSegment }
+        )
 
         # Returned when listing MCP tools is in progress for an item.
         variant :"mcp_list_tools.in_progress", -> { OpenAI::Realtime::McpListToolsInProgress }

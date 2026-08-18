@@ -65,11 +65,13 @@ module OpenAI
             #   The tool invocation context(s).
             #
             #   @return [Array<Symbol, OpenAI::Models::Responses::NamespaceTool::Tool::Function::AllowedCaller>, nil]
-            optional :allowed_callers,
-                     -> {
-                       OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Responses::NamespaceTool::Tool::Function::AllowedCaller]
-                     },
-                     nil?: true
+            optional(
+              :allowed_callers,
+              -> {
+                OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Responses::NamespaceTool::Tool::Function::AllowedCaller]
+              },
+              nil?: true
+            )
 
             # @!attribute defer_loading
             #   Whether this function should be deferred and discovered via tool search.
@@ -87,9 +89,11 @@ module OpenAI
             #   function tool. This does not describe content-array outputs.
             #
             #   @return [Hash{Symbol=>Object}, nil]
-            optional :output_schema,
-                     OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown],
-                     nil?: true
+            optional(
+              :output_schema,
+              OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown],
+              nil?: true
+            )
 
             # @!attribute parameters
             #

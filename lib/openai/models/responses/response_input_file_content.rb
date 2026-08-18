@@ -50,9 +50,11 @@ module OpenAI
         #   token block.
         #
         #   @return [OpenAI::Models::Responses::ResponseInputFileContent::PromptCacheBreakpoint, nil]
-        optional :prompt_cache_breakpoint,
-                 -> { OpenAI::Responses::ResponseInputFileContent::PromptCacheBreakpoint },
-                 nil?: true
+        optional(
+          :prompt_cache_breakpoint,
+          -> { OpenAI::Responses::ResponseInputFileContent::PromptCacheBreakpoint },
+          nil?: true
+        )
 
         # @!method initialize(detail: nil, file_data: nil, file_id: nil, file_url: nil, filename: nil, prompt_cache_breakpoint: nil, type: :input_file)
         #   Some parameter documentations has been truncated, see

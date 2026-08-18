@@ -4,10 +4,9 @@ module OpenAI
   # ActiveSupport 6 implements Class#subclasses using ==, which invokes BaseModel's
   # structural equality before all model aliases are loaded.
   base_model = OpenAI::Internal::Type::BaseModel
-  subclasses =
-    ObjectSpace.each_object(base_model.singleton_class).select do |candidate|
-      !candidate.singleton_class? && candidate.superclass.equal?(base_model)
-    end
+  subclasses = ObjectSpace.each_object(base_model.singleton_class).select do |candidate|
+    !candidate.singleton_class? && candidate.superclass.equal?(base_model)
+  end
 
   [base_model, *subclasses].each do |cls|
     cls.define_sorbet_constant!(:OrHash) { T.type_alias { T.any(cls, OpenAI::Internal::AnyHash) } }
@@ -37,15 +36,16 @@ module OpenAI
     end
   end
 
-  OpenAI::Internal::Util.walk_namespaces(OpenAI::Models)
-                        .lazy
-                        .grep(OpenAI::Internal::Type::Union)
-                        .each do |mod|
-    const = :Variants
-    next if mod.sorbet_constant_defined?(const)
+  OpenAI::Internal::Util
+    .walk_namespaces(OpenAI::Models)
+    .lazy
+    .grep(OpenAI::Internal::Type::Union)
+    .each do |mod|
+      const = :Variants
+      next if mod.sorbet_constant_defined?(const)
 
-    mod.define_sorbet_constant!(const) { T.type_alias { mod.to_sorbet_type } }
-  end
+      mod.define_sorbet_constant!(const) { T.type_alias { mod.to_sorbet_type } }
+    end
 
   Admin = OpenAI::Models::Admin
 

@@ -117,11 +117,13 @@ module OpenAI
         #   A list of integrations to enable for this fine-tuning job.
         #
         #   @return [Array<OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject>, nil]
-        optional :integrations,
-                 -> {
-                   OpenAI::Internal::Type::ArrayOf[OpenAI::FineTuning::FineTuningJobWandbIntegrationObject]
-                 },
-                 nil?: true
+        optional(
+          :integrations,
+          -> {
+            OpenAI::Internal::Type::ArrayOf[OpenAI::FineTuning::FineTuningJobWandbIntegrationObject]
+          },
+          nil?: true
+        )
 
         # @!attribute metadata
         #   Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -227,17 +229,21 @@ module OpenAI
           #   parameters are updated less frequently, but with lower variance.
           #
           #   @return [Symbol, :auto, Integer, nil]
-          optional :batch_size,
-                   union: -> { OpenAI::FineTuning::FineTuningJob::Hyperparameters::BatchSize },
-                   nil?: true
+          optional(
+            :batch_size,
+            union: -> { OpenAI::FineTuning::FineTuningJob::Hyperparameters::BatchSize },
+            nil?: true
+          )
 
           # @!attribute learning_rate_multiplier
           #   Scaling factor for the learning rate. A smaller learning rate may be useful to
           #   avoid overfitting.
           #
           #   @return [Symbol, :auto, Float, nil]
-          optional :learning_rate_multiplier,
-                   union: -> { OpenAI::FineTuning::FineTuningJob::Hyperparameters::LearningRateMultiplier }
+          optional(
+            :learning_rate_multiplier,
+            union: -> { OpenAI::FineTuning::FineTuningJob::Hyperparameters::LearningRateMultiplier }
+          )
 
           # @!attribute n_epochs
           #   The number of epochs to train the model for. An epoch refers to one full cycle

@@ -12,16 +12,20 @@ module OpenAI
       #   characters, booleans, or numbers.
       #
       #   @return [Hash{Symbol=>String, Float, Boolean}, nil]
-      required :attributes,
-               -> { OpenAI::Internal::Type::HashOf[union: OpenAI::Models::VectorStoreSearchResponse::Attribute] },
-               nil?: true
+      required(
+        :attributes,
+        -> { OpenAI::Internal::Type::HashOf[union: OpenAI::Models::VectorStoreSearchResponse::Attribute] },
+        nil?: true
+      )
 
       # @!attribute content
       #   Content chunks from the file.
       #
       #   @return [Array<OpenAI::Models::VectorStoreSearchResponse::Content>]
-      required :content,
-               -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::VectorStoreSearchResponse::Content] }
+      required(
+        :content,
+        -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::VectorStoreSearchResponse::Content] }
+      )
 
       # @!attribute file_id
       #   The ID of the vector store file.

@@ -261,11 +261,15 @@ module OpenAI
           #   developer.
           #
           #   @return [Array<OpenAI::Models::Beta::BetaResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck>, nil]
-          optional :acknowledged_safety_checks,
-                   -> {
-                     OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck]
-                   },
-                   nil?: true
+          optional(
+            :acknowledged_safety_checks,
+            -> {
+              OpenAI::Internal::Type::ArrayOf[
+                OpenAI::Beta::BetaResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck
+              ]
+            },
+            nil?: true
+          )
 
           # @!attribute agent
           #   The agent that produced this item.
@@ -278,11 +282,13 @@ module OpenAI
           #   `incomplete`. Populated when input items are returned via API.
           #
           #   @return [Symbol, OpenAI::Models::Beta::BetaResponseInputItem::ComputerCallOutput::Status, nil]
-          optional :status,
-                   enum: -> {
-                     OpenAI::Beta::BetaResponseInputItem::ComputerCallOutput::Status
-                   },
-                   nil?: true
+          optional(
+            :status,
+            enum: -> {
+              OpenAI::Beta::BetaResponseInputItem::ComputerCallOutput::Status
+            },
+            nil?: true
+          )
 
           # @!method initialize(call_id:, output:, id: nil, acknowledged_safety_checks: nil, agent: nil, status: nil, type: :computer_call_output)
           #   Some parameter documentations has been truncated, see
@@ -400,10 +406,12 @@ module OpenAI
           #   The execution context that produced this tool call.
           #
           #   @return [OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput::Caller::Direct, OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput::Caller::Program, nil]
-          optional :caller_,
-                   union: -> { OpenAI::Beta::BetaResponseInputItem::FunctionCallOutput::Caller },
-                   api_name: :caller,
-                   nil?: true
+          optional(
+            :caller_,
+            union: -> { OpenAI::Beta::BetaResponseInputItem::FunctionCallOutput::Caller },
+            api_name: :caller,
+            nil?: true
+          )
 
           # @!attribute name
           #   The name of the tool that produced the output.
@@ -422,11 +430,13 @@ module OpenAI
           #   Populated when items are returned via API.
           #
           #   @return [Symbol, OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput::Status, nil]
-          optional :status,
-                   enum: -> {
-                     OpenAI::Beta::BetaResponseInputItem::FunctionCallOutput::Status
-                   },
-                   nil?: true
+          optional(
+            :status,
+            enum: -> {
+              OpenAI::Beta::BetaResponseInputItem::FunctionCallOutput::Status
+            },
+            nil?: true
+          )
 
           # @!method initialize(call_id:, output:, id: nil, agent: nil, caller_: nil, name: nil, namespace: nil, status: nil, type: :function_call_output)
           #   Some parameter documentations has been truncated, see
@@ -556,8 +566,10 @@ module OpenAI
           #   Plaintext, image, or encrypted content sent between agents.
           #
           #   @return [Array<OpenAI::Models::Beta::BetaResponseInputTextContent, OpenAI::Models::Beta::BetaResponseInputImageContent, OpenAI::Models::Beta::BetaResponseInputItem::AgentMessage::Content::EncryptedContent>]
-          required :content,
-                   -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::BetaResponseInputItem::AgentMessage::Content] }
+          required(
+            :content,
+            -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::BetaResponseInputItem::AgentMessage::Content] }
+          )
 
           # @!attribute recipient
           #   The destination agent identity.
@@ -611,8 +623,10 @@ module OpenAI
             variant :input_image, -> { OpenAI::Beta::BetaResponseInputImageContent }
 
             # Opaque encrypted content that Responses API decrypts inside trusted model execution.
-            variant :encrypted_content,
-                    -> { OpenAI::Beta::BetaResponseInputItem::AgentMessage::Content::EncryptedContent }
+            variant(
+              :encrypted_content,
+              -> { OpenAI::Beta::BetaResponseInputItem::AgentMessage::Content::EncryptedContent }
+            )
 
             class EncryptedContent < OpenAI::Internal::Type::BaseModel
               # @!attribute encrypted_content
@@ -754,8 +768,10 @@ module OpenAI
           #   Text output returned by the multi-agent action.
           #
           #   @return [Array<OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output>]
-          required :output,
-                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output] }
+          required(
+            :output,
+            -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output] }
+          )
 
           # @!attribute type
           #   The item type. Always `multi_agent_call_output`.
@@ -822,8 +838,14 @@ module OpenAI
             #   Citations associated with the text content.
             #
             #   @return [Array<OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::FileCitation, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::URLCitation, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::ContainerFileCitation>, nil]
-            optional :annotations,
-                     -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation] }
+            optional(
+              :annotations,
+              -> {
+                OpenAI::Internal::Type::ArrayOf[
+                  union: OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation
+                ]
+              }
+            )
 
             # @!method initialize(text:, annotations: nil, type: :output_text)
             #   @param text [String] The text content.
@@ -837,14 +859,22 @@ module OpenAI
 
               discriminator :type
 
-              variant :file_citation,
-                      -> { OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::FileCitation }
+              variant(
+                :file_citation,
+                -> { OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::FileCitation }
+              )
 
-              variant :url_citation,
-                      -> { OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::URLCitation }
+              variant(
+                :url_citation,
+                -> { OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::URLCitation }
+              )
 
-              variant :container_file_citation,
-                      -> { OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::ContainerFileCitation }
+              variant(
+                :container_file_citation,
+                -> {
+                  OpenAI::Beta::BetaResponseInputItem::MultiAgentCallOutput::Output::Annotation::ContainerFileCitation
+                }
+              )
 
               class FileCitation < OpenAI::Internal::Type::BaseModel
                 # @!attribute file_id
@@ -1036,11 +1066,13 @@ module OpenAI
           #   The status of the tool search call.
           #
           #   @return [Symbol, OpenAI::Models::Beta::BetaResponseInputItem::ToolSearchCall::Status, nil]
-          optional :status,
-                   enum: -> {
-                     OpenAI::Beta::BetaResponseInputItem::ToolSearchCall::Status
-                   },
-                   nil?: true
+          optional(
+            :status,
+            enum: -> {
+              OpenAI::Beta::BetaResponseInputItem::ToolSearchCall::Status
+            },
+            nil?: true
+          )
 
           # @!method initialize(arguments:, id: nil, agent: nil, call_id: nil, execution: nil, status: nil, type: :tool_search_call)
           #   @param arguments [Object] The arguments supplied to the tool search call.
@@ -1401,9 +1433,11 @@ module OpenAI
           #   The status of the item. One of `in_progress`, `completed`, or `incomplete`.
           #
           #   @return [Symbol, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCallOutput::Status, nil]
-          optional :status,
-                   enum: -> { OpenAI::Beta::BetaResponseInputItem::LocalShellCallOutput::Status },
-                   nil?: true
+          optional(
+            :status,
+            enum: -> { OpenAI::Beta::BetaResponseInputItem::LocalShellCallOutput::Status },
+            nil?: true
+          )
 
           # @!method initialize(id:, output:, agent: nil, status: nil, type: :local_shell_call_output)
           #   Some parameter documentations has been truncated, see
@@ -1487,18 +1521,22 @@ module OpenAI
           #   The execution context that produced this tool call.
           #
           #   @return [OpenAI::Models::Beta::BetaResponseInputItem::ShellCall::Caller::Direct, OpenAI::Models::Beta::BetaResponseInputItem::ShellCall::Caller::Program, nil]
-          optional :caller_,
-                   union: -> { OpenAI::Beta::BetaResponseInputItem::ShellCall::Caller },
-                   api_name: :caller,
-                   nil?: true
+          optional(
+            :caller_,
+            union: -> { OpenAI::Beta::BetaResponseInputItem::ShellCall::Caller },
+            api_name: :caller,
+            nil?: true
+          )
 
           # @!attribute environment
           #   The environment to execute the shell commands in.
           #
           #   @return [OpenAI::Models::Beta::BetaLocalEnvironment, OpenAI::Models::Beta::BetaContainerReference, nil]
-          optional :environment,
-                   union: -> { OpenAI::Beta::BetaResponseInputItem::ShellCall::Environment },
-                   nil?: true
+          optional(
+            :environment,
+            union: -> { OpenAI::Beta::BetaResponseInputItem::ShellCall::Environment },
+            nil?: true
+          )
 
           # @!attribute status
           #   The status of the shell call. One of `in_progress`, `completed`, or
@@ -1668,8 +1706,10 @@ module OpenAI
           #   outcomes.
           #
           #   @return [Array<OpenAI::Models::Beta::BetaResponseFunctionShellCallOutputContent>]
-          required :output,
-                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponseFunctionShellCallOutputContent] }
+          required(
+            :output,
+            -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponseFunctionShellCallOutputContent] }
+          )
 
           # @!attribute type
           #   The type of the item. Always `shell_call_output`.
@@ -1694,10 +1734,12 @@ module OpenAI
           #   The execution context that produced this tool call.
           #
           #   @return [OpenAI::Models::Beta::BetaResponseInputItem::ShellCallOutput::Caller::Direct, OpenAI::Models::Beta::BetaResponseInputItem::ShellCallOutput::Caller::Program, nil]
-          optional :caller_,
-                   union: -> { OpenAI::Beta::BetaResponseInputItem::ShellCallOutput::Caller },
-                   api_name: :caller,
-                   nil?: true
+          optional(
+            :caller_,
+            union: -> { OpenAI::Beta::BetaResponseInputItem::ShellCallOutput::Caller },
+            api_name: :caller,
+            nil?: true
+          )
 
           # @!attribute max_output_length
           #   The maximum number of UTF-8 characters captured for this shell call's combined
@@ -1710,11 +1752,13 @@ module OpenAI
           #   The status of the shell call output.
           #
           #   @return [Symbol, OpenAI::Models::Beta::BetaResponseInputItem::ShellCallOutput::Status, nil]
-          optional :status,
-                   enum: -> {
-                     OpenAI::Beta::BetaResponseInputItem::ShellCallOutput::Status
-                   },
-                   nil?: true
+          optional(
+            :status,
+            enum: -> {
+              OpenAI::Beta::BetaResponseInputItem::ShellCallOutput::Status
+            },
+            nil?: true
+          )
 
           # @!method initialize(call_id:, output:, id: nil, agent: nil, caller_: nil, max_output_length: nil, status: nil, type: :shell_call_output)
           #   Some parameter documentations has been truncated, see
@@ -1856,10 +1900,12 @@ module OpenAI
           #   The execution context that produced this tool call.
           #
           #   @return [OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall::Caller::Direct, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall::Caller::Program, nil]
-          optional :caller_,
-                   union: -> { OpenAI::Beta::BetaResponseInputItem::ApplyPatchCall::Caller },
-                   api_name: :caller,
-                   nil?: true
+          optional(
+            :caller_,
+            union: -> { OpenAI::Beta::BetaResponseInputItem::ApplyPatchCall::Caller },
+            api_name: :caller,
+            nil?: true
+          )
 
           # @!method initialize(call_id:, operation:, status:, id: nil, agent: nil, caller_: nil, type: :apply_patch_call)
           #   Some parameter documentations has been truncated, see
@@ -2093,10 +2139,12 @@ module OpenAI
           #   The execution context that produced this tool call.
           #
           #   @return [OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCallOutput::Caller::Direct, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCallOutput::Caller::Program, nil]
-          optional :caller_,
-                   union: -> { OpenAI::Beta::BetaResponseInputItem::ApplyPatchCallOutput::Caller },
-                   api_name: :caller,
-                   nil?: true
+          optional(
+            :caller_,
+            union: -> { OpenAI::Beta::BetaResponseInputItem::ApplyPatchCallOutput::Caller },
+            api_name: :caller,
+            nil?: true
+          )
 
           # @!attribute output
           #   Optional human-readable log text from the apply patch tool (e.g., patch results
@@ -2217,8 +2265,10 @@ module OpenAI
           #   The tools available on the server.
           #
           #   @return [Array<OpenAI::Models::Beta::BetaResponseInputItem::McpListTools::Tool>]
-          required :tools,
-                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponseInputItem::McpListTools::Tool] }
+          required(
+            :tools,
+            -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponseInputItem::McpListTools::Tool] }
+          )
 
           # @!attribute type
           #   The type of the item. Always `mcp_list_tools`.

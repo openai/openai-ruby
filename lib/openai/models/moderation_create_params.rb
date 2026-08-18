@@ -54,8 +54,9 @@ module OpenAI
         StringArray = OpenAI::Internal::Type::ArrayOf[String]
 
         # @type [OpenAI::Internal::Type::Converter]
-        ModerationMultiModalInputArray =
-          OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::ModerationMultiModalInput }]
+        ModerationMultiModalInputArray = OpenAI::Internal::Type::ArrayOf[
+          union: -> { OpenAI::ModerationMultiModalInput }
+        ]
       end
 
       # The content moderation model you would like to use. Learn more in

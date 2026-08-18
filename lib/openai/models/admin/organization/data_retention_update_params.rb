@@ -13,8 +13,10 @@ module OpenAI
           #   The desired organization data retention type.
           #
           #   @return [Symbol, OpenAI::Models::Admin::Organization::DataRetentionUpdateParams::RetentionType]
-          required :retention_type,
-                   enum: -> { OpenAI::Admin::Organization::DataRetentionUpdateParams::RetentionType }
+          required(
+            :retention_type,
+            enum: -> { OpenAI::Admin::Organization::DataRetentionUpdateParams::RetentionType }
+          )
 
           # @!method initialize(retention_type:, request_options: {})
           #   @param retention_type [Symbol, OpenAI::Models::Admin::Organization::DataRetentionUpdateParams::RetentionType] The desired organization data retention type.

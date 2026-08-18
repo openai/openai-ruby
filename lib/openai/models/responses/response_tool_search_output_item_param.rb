@@ -38,11 +38,13 @@ module OpenAI
         #   The status of the tool search output.
         #
         #   @return [Symbol, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam::Status, nil]
-        optional :status,
-                 enum: -> {
-                   OpenAI::Responses::ResponseToolSearchOutputItemParam::Status
-                 },
-                 nil?: true
+        optional(
+          :status,
+          enum: -> {
+            OpenAI::Responses::ResponseToolSearchOutputItemParam::Status
+          },
+          nil?: true
+        )
 
         # @!method initialize(tools:, id: nil, call_id: nil, execution: nil, status: nil, type: :tool_search_output)
         #   @param tools [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::ComputerUsePreviewTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ProgrammaticToolCalling, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::FunctionShellTool, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::NamespaceTool, OpenAI::Models::Responses::ToolSearchTool, OpenAI::Models::Responses::ApplyPatchTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool>] The loaded tool definitions returned by the tool search output.

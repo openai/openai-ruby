@@ -41,7 +41,7 @@ module OpenAI
         if webhook_secret.nil? || webhook_secret.strip.empty?
           message = [
             "The webhook secret must either be set using the env var, OPENAI_WEBHOOK_SECRET,",
-            "or passed to this function",
+            "or passed to this function"
           ].join(" ")
           raise ArgumentError, message
         end
@@ -74,6 +74,7 @@ module OpenAI
         if now - timestamp_seconds > tolerance
           raise OpenAI::Errors::InvalidWebhookSignatureError, "Webhook timestamp is too old"
         end
+
         if timestamp_seconds > now + tolerance
           raise OpenAI::Errors::InvalidWebhookSignatureError, "Webhook timestamp is too new"
         end
@@ -81,10 +82,12 @@ module OpenAI
         signatures = signature_header.split.map do |part|
           part.start_with?("v1,") ? part[3..] : part
         end
+
         decoded_secret = webhook_secret
         if webhook_secret.start_with?("whsec_")
           decoded_secret = Base64.strict_decode64(webhook_secret.delete_prefix("whsec_"))
         end
+
         raise ArgumentError, "The webhook secret must not be empty" if decoded_secret.empty?
 
         signed_payload = "#{webhook_id}.#{timestamp_header}.#{payload}"
@@ -95,9 +98,12 @@ module OpenAI
           signature.bytesize == expected_signature.bytesize &&
             OpenSSL.secure_compare(expected_signature, signature)
         end
+
         unless verified
-          raise OpenAI::Errors::InvalidWebhookSignatureError,
-                "The given webhook signature does not match the expected signature"
+          raise(
+            OpenAI::Errors::InvalidWebhookSignatureError,
+            "The given webhook signature does not match the expected signature"
+          )
         end
       end
 

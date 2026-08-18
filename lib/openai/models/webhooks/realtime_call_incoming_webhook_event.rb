@@ -65,8 +65,10 @@ module OpenAI
           #   Headers from the SIP Invite.
           #
           #   @return [Array<OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipHeader>]
-          required :sip_headers,
-                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipHeader] }
+          required(
+            :sip_headers,
+            -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipHeader] }
+          )
 
           # @!method initialize(call_id:, sip_headers:)
           #   Some parameter documentations has been truncated, see
