@@ -14,7 +14,12 @@ module OpenAI
       query: ::Hash[String, String],
       ?websocket_base_url: String?,
       ?options: OpenAI::request_opts?
-    ) { (OpenAI::Internal::Transport::BaseClient::request_input request) -> top } -> top
+    ) {
+      (
+        OpenAI::Internal::Transport::BaseClient::request_input request,
+        ^() -> void mark_handshake_completed
+      ) -> top
+    } -> top
   end
 
   module Errors
@@ -40,7 +45,6 @@ module OpenAI
       # @api private
       def initialize: (
         data: String,
-        ?message: String?,
         ?cause: StandardError?
       ) -> void
     end

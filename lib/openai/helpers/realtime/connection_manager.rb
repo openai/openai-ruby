@@ -61,13 +61,14 @@ module OpenAI
           query: {"model" => @model},
           websocket_base_url: @websocket_base_url,
           options: @request_options
-        ) do |request|
+        ) do |request, mark_handshake_completed|
           transport.open(
             url: request.fetch(:url),
             headers: request.fetch(:headers),
             timeout: request.fetch(:timeout),
             **@transport_options
           ) do |socket|
+            mark_handshake_completed.call
             connection = OpenAI::Realtime::Connection.new(socket: socket, url: request.fetch(:url))
             begin
               yield(connection)

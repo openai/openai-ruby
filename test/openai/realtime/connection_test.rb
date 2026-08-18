@@ -352,6 +352,64 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
     assert_includes(incomplete.cause.message, "required fields")
   end
 
+  def test_protocol_errors_keep_customer_payloads_out_of_the_public_message
+    customer_text = "private customer text"
+    data = JSON.generate(
+      type: "response.output_text.delta",
+      event_id: "event_1",
+      response_id: "response_1",
+      item_id: "item_1",
+      output_index: 0,
+      content_index: 0,
+      delta: {text: customer_text}
+    )
+
+    error = assert_raises(OpenAI::Errors::RealtimeProtocolError) do
+      client.realtime.connect(
+        model: "gpt-realtime-2.1",
+        transport: FakeTransport.new(FakeSocket.new(data)),
+        &:receive
+      )
+    end
+
+    assert_equal("Invalid Realtime WebSocket event.", error.message)
+    assert_equal(data, error.data)
+    assert_instance_of(ArgumentError, error.cause)
+    assert_includes(error.data, customer_text)
+    refute_includes(error.message, customer_text)
+  end
+
+  def test_connect_rejects_nonzero_max_retries_before_opening_the_transport
+    transport = FakeTransport.new(FakeSocket.new)
+
+    error = assert_raises(ArgumentError) do
+      client.realtime.connect(
+        model: "gpt-realtime-2.1",
+        request_options: {max_retries: 1},
+        transport: transport
+      ) { |_connection| nil }
+    end
+
+    assert_equal(
+      "`request_options[:max_retries]` is not supported for Realtime WebSocket connections; " \
+      "use 0 or omit it",
+      error.message
+    )
+    assert_nil(transport.open_args)
+  end
+
+  def test_connect_allows_zero_max_retries
+    transport = FakeTransport.new(FakeSocket.new)
+
+    client.realtime.connect(
+      model: "gpt-realtime-2.1",
+      request_options: {max_retries: 0},
+      transport: transport
+    ) { |_connection| nil }
+
+    refute_nil(transport.open_args)
+  end
+
   def test_each_is_enumerable_and_returns_the_connection
     transport = FakeTransport.new(FakeSocket.new(text_delta("hello"), nil))
 

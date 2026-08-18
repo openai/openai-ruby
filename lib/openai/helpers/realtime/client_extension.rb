@@ -28,6 +28,8 @@ module OpenAI
 
         # Yield an authenticated WebSocket request, refreshing a rejected workload
         # identity token exactly once after a definitive upgrade 401.
+        # The caller marks the handshake complete as soon as the transport yields
+        # a socket, before running application code; only pre-yield failures may retry.
         #
         # @api private
         def with_realtime_connection_request(path:, query:, websocket_base_url: nil, options: nil)
@@ -37,8 +39,11 @@ module OpenAI
             websocket_base_url: websocket_base_url,
             options: options
           )
-          yield(request)
+          handshake_completed = false
+          mark_handshake_completed = -> { handshake_completed = true }
+          yield(request, mark_handshake_completed)
         rescue OpenAI::Errors::RealtimeConnectionError => e
+          raise if handshake_completed
           raise unless e.http_status == 401 && @workload_identity_auth
 
           @workload_identity_auth.invalidate_token
@@ -49,7 +54,7 @@ module OpenAI
             options: options,
             deadline: deadline
           )
-          yield(refreshed)
+          yield(refreshed, mark_handshake_completed)
         end
 
         private def build_realtime_connection_request(
@@ -73,6 +78,13 @@ module OpenAI
 
           opts = options.to_h
           OpenAI::RequestOptions.validate!(opts)
+          max_retries = opts[:max_retries]
+          unless max_retries.nil? || max_retries == 0
+            message =
+              "`request_options[:max_retries]` is not supported for Realtime WebSocket " \
+              "connections; use 0 or omit it"
+            raise ArgumentError, message
+          end
           request = build_request(
             {
               method: :get,

@@ -9,6 +9,8 @@ class OpenAI::Test::RealtimeAuthRetryTest < Minitest::Test
       @closed = true
       [code, reason]
     end
+
+    def abort = @closed = true
   end
 
   class RejectOnceTransport
@@ -96,6 +98,41 @@ class OpenAI::Test::RealtimeAuthRetryTest < Minitest::Test
     assert_equal(1, deadlines.uniq.length)
     assert_equal(1, invalidations)
     assert_equal(2, transport.attempts.length)
+  end
+
+  def test_workload_identity_does_not_replay_the_application_block_after_a_401_error
+    client = workload_identity_client
+    transport = AcceptingTransport.new
+    application_error = OpenAI::Errors::RealtimeConnectionError.new(
+      url: URI("wss://example.com/v1/realtime"),
+      message: "application authorization failed",
+      http_status: 401
+    )
+    block_runs = 0
+    invalidations = 0
+    token_requests = 0
+
+    error = assert_raises(OpenAI::Errors::RealtimeConnectionError) do
+      get_token = lambda do |deadline:|
+        refute_nil(deadline)
+        token_requests += 1
+        "fresh-token"
+      end
+      client.workload_identity_auth.stub(:get_token, get_token) do
+        client.workload_identity_auth.stub(:invalidate_token, -> { invalidations += 1 }) do
+          client.realtime.connect(model: "gpt-realtime-2.1", transport: transport) do |_connection|
+            block_runs += 1
+            raise application_error
+          end
+        end
+      end
+    end
+
+    assert_same(application_error, error)
+    assert_equal(1, block_runs)
+    assert_equal(1, transport.attempts.length)
+    assert_equal(1, token_requests)
+    assert_equal(0, invalidations)
   end
 
   def test_workload_identity_authentication_reduces_the_handshake_timeout

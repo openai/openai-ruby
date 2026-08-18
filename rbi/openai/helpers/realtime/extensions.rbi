@@ -21,7 +21,14 @@ module OpenAI
         query: T::Hash[String, String],
         websocket_base_url: T.nilable(String),
         options: T.nilable(OpenAI::RequestOptions::OrHash),
-        block: T.proc.params(request: OpenAI::Internal::Transport::BaseClient::RequestInput).returns(T.untyped)
+        block:
+          T
+            .proc
+            .params(
+              request: OpenAI::Internal::Transport::BaseClient::RequestInput,
+              mark_handshake_completed: T.proc.void
+            )
+            .returns(T.untyped)
       ).returns(T.untyped)
     end
     def with_realtime_connection_request(path:, query:, websocket_base_url: nil, options: nil, &block)
@@ -66,11 +73,10 @@ module OpenAI
       sig do
         params(
           data: String,
-          message: T.nilable(String),
           cause: T.nilable(StandardError)
         ).returns(T.attached_class)
       end
-      def self.new(data:, message: nil, cause: nil)
+      def self.new(data:, cause: nil)
       end
     end
   end

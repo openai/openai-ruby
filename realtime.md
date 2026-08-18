@@ -108,11 +108,16 @@ an idle-session deadline after the connection is established.
 
 ## Authentication and endpoint routing
 
-Realtime connections reuse normal SDK authentication and request options. API
-keys, Azure API keys, workload identity, organization/project headers, custom
-headers, and request query parameters are prepared through the same client
-request boundary as HTTP calls. A workload-identity token rejected with a
-definitive upgrade `401` is invalidated and retried exactly once.
+Realtime connections reuse normal SDK authentication and routing-related
+request options. API keys, Azure API keys, workload identity,
+organization/project headers, `extra_headers`, `extra_query`, and `timeout` are
+prepared through the same client request boundary as HTTP calls. HTTP body and
+idempotency options do not apply to a WebSocket handshake. HTTP retry policy
+also does not apply: a nonzero `request_options[:max_retries]` is rejected;
+omit it or pass `0`. A workload-identity token rejected with a definitive
+upgrade `401` is invalidated and retried exactly once before the connection is
+yielded. Exceptions from the application block never trigger a reconnect or
+block replay.
 
 The WebSocket URL normally derives from `base_url`. A gateway that has a
 different WebSocket origin can set a separate, validated endpoint:

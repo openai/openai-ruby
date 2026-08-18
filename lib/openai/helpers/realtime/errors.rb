@@ -42,13 +42,11 @@ module OpenAI
       # @api private
       #
       # @param data [String]
-      # @param message [String, nil]
       # @param cause [StandardError, nil]
-      def initialize(data:, message: nil, cause: nil)
+      def initialize(data:, cause: nil)
         @data = data
         @cause = cause
-        detail = cause && !cause.message.empty? ? ": #{cause.message}" : "."
-        super(message || "Invalid Realtime WebSocket event#{detail}")
+        super("Invalid Realtime WebSocket event.")
       end
     end
   end
