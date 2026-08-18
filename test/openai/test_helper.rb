@@ -11,10 +11,8 @@ require "singleton"
 
 require "async"
 require "minitest/autorun"
-require "minitest/focus"
 require "minitest/hooks/test"
 require "minitest/proveit"
-require "minitest/rg"
 require "webmock"
 
 require_relative "../../lib/openai"
@@ -65,7 +63,6 @@ end
 class Minitest::Test
   include Minitest::Hooks
 
-  make_my_diffs_pretty!
   parallelize_me!
   prove_it!
 end

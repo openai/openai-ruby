@@ -115,14 +115,10 @@ GEM
     logger (1.7.0)
     metrics (0.15.0)
     minitest (5.27.0)
-    minitest-focus (1.4.0)
-      minitest (>= 4, < 6)
     minitest-hooks (1.5.2)
       minitest (> 5.3)
     minitest-proveit (1.0.0)
       minitest (> 5, < 7)
-    minitest-rg (5.3.0)
-      minitest (~> 5.0)
     mutex_m (0.3.0)
     openssl (4.0.2)
     parallel (1.27.0)
@@ -231,10 +227,8 @@ DEPENDENCIES
   async-websocket
   aws-sdk-core (~> 3)
   minitest (~> 5.27)
-  minitest-focus
   minitest-hooks
   minitest-proveit
-  minitest-rg
   openai!
   rake
   rbs
