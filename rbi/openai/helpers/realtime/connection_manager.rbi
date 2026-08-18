@@ -8,7 +8,7 @@ module OpenAI
         sig do
           params(
             client: OpenAI::Client,
-            model: String,
+            query: T::Hash[String, String],
             websocket_base_url: T.nilable(String),
             transport: T.untyped,
             request_options: T.nilable(OpenAI::RequestOptions::OrHash),
@@ -17,7 +17,7 @@ module OpenAI
         end
         def self.new(
           client:,
-          model:,
+          query:,
           websocket_base_url:,
           transport:,
           request_options:,

@@ -16,6 +16,13 @@ module OpenAI
           def cancel: (?response_id: String?, ?event_id: String?) -> nil
         end
 
+        class InputAudioBuffer < Base
+          def append: (audio: String, ?event_id: String?) -> nil
+          def append_bytes: (String bytes, ?event_id: String?) -> nil
+          def commit: (?event_id: String?) -> nil
+          def clear: (?event_id: String?) -> nil
+        end
+
         class Conversation < Base
           # @api private
           def initialize: (OpenAI::Realtime::Connection connection) -> void

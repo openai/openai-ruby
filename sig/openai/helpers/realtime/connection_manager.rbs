@@ -5,7 +5,7 @@ module OpenAI
         # @api private
         def initialize: (
           client: OpenAI::Client,
-          model: String,
+          query: ::Hash[String, String],
           websocket_base_url: String?,
           transport: untyped,
           request_options: OpenAI::request_opts?,
