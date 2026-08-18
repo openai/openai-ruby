@@ -93,6 +93,52 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
     assert_predicate(socket, :closed?)
   end
 
+  def test_connect_transcription_uses_the_dedicated_handshake_intent
+    socket = FakeSocket.new
+    transport = FakeTransport.new(socket)
+
+    result = client.realtime.connect_transcription(transport: transport) do |connection|
+      assert_instance_of(OpenAI::Realtime::Connection, connection)
+      :block_result
+    end
+
+    assert_equal(:block_result, result)
+    assert_equal(
+      "wss://example.com/v1/realtime?intent=transcription",
+      transport.open_args.fetch(:url).to_s
+    )
+    assert_predicate(socket, :closed?)
+  end
+
+  def test_connect_transcription_requires_a_block
+    error = assert_raises(ArgumentError) do
+      client.realtime.connect_transcription
+    end
+
+    assert_equal("A block is required to open a Realtime WebSocket.", error.message)
+  end
+
+  def test_connection_manager_snapshots_handshake_query_strings
+    model = +"gpt-realtime-2.1"
+    transport = FakeTransport.new(FakeSocket.new)
+    manager = OpenAI::Realtime::ConnectionManager.new(
+      client: client,
+      query: {"model" => model},
+      websocket_base_url: nil,
+      transport: transport,
+      request_options: nil,
+      transport_options: {}
+    )
+
+    model.replace("attacker-controlled-model")
+    manager.open { |_connection| nil }
+
+    assert_equal(
+      "wss://example.com/v1/realtime?model=gpt-realtime-2.1",
+      transport.open_args.fetch(:url).to_s
+    )
+  end
+
   def test_proxy_authorization_never_reaches_the_origin_handshake
     socket = FakeSocket.new
     transport = FakeTransport.new(socket)
@@ -279,6 +325,82 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
     refute(events.fetch(0).fetch(:session).key?(:event_id))
     assert_equal("Hello", events.fetch(1).dig(:item, :content, 0, :text))
     assert_equal("Be concise", events.fetch(2).dig(:response, :instructions))
+  end
+
+  def test_input_audio_buffer_helper_encodes_bytes_and_preserves_base64_input
+    socket = FakeSocket.new
+    transport = FakeTransport.new(socket)
+
+    client.realtime.connect_transcription(transport: transport) do |connection|
+      connection.input_audio_buffer.append(audio: "YWxyZWFkeS1lbmNvZGVk", event_id: "encoded_1")
+      connection.input_audio_buffer.append_bytes("\x00\xFF".b, event_id: "bytes_1")
+      connection.input_audio_buffer.commit(event_id: "commit_1")
+      connection.input_audio_buffer.clear(event_id: "clear_1")
+    end
+
+    events = socket.writes.map { JSON.parse(_1, symbolize_names: true) }
+    assert_equal(
+      [
+        :"input_audio_buffer.append",
+        :"input_audio_buffer.append",
+        :"input_audio_buffer.commit",
+        :"input_audio_buffer.clear"
+      ],
+      events.map { _1.fetch(:type).to_sym }
+    )
+    assert_equal("YWxyZWFkeS1lbmNvZGVk", events.fetch(0).fetch(:audio))
+    assert_equal("AP8=", events.fetch(1).fetch(:audio))
+    assert_equal(%w[encoded_1 bytes_1 commit_1 clear_1], events.map { _1.fetch(:event_id) })
+  end
+
+  def test_transcription_session_and_events_use_generated_types
+    socket = FakeSocket.new(
+      JSON.generate(
+        type: "conversation.item.input_audio_transcription.delta",
+        event_id: "event_delta",
+        item_id: "item_1",
+        content_index: 0,
+        delta: "Hello"
+      ),
+      JSON.generate(
+        type: "conversation.item.input_audio_transcription.completed",
+        event_id: "event_completed",
+        item_id: "item_1",
+        content_index: 0,
+        transcript: "Hello from Ruby.",
+        usage: {type: "tokens", input_tokens: 1, output_tokens: 1, total_tokens: 2}
+      )
+    )
+    transport = FakeTransport.new(socket)
+
+    events = client.realtime.connect_transcription(transport: transport) do |connection|
+      connection.session.update(
+        type: :transcription,
+        audio: {
+          input: {
+            format: {type: :"audio/pcm", rate: 24_000},
+            transcription: {model: :"gpt-live-transcribe"},
+            turn_detection: nil
+          }
+        }
+      )
+      [connection.receive, connection.receive]
+    end
+
+    session_event = JSON.parse(socket.writes.fetch(0), symbolize_names: true)
+    assert_equal(
+      "wss://example.com/v1/realtime?intent=transcription",
+      transport.open_args.fetch(:url).to_s
+    )
+    assert_equal(:transcription, session_event.dig(:session, :type).to_sym)
+    assert_equal(24_000, session_event.dig(:session, :audio, :input, :format, :rate))
+    assert_instance_of(OpenAI::Realtime::ConversationItemInputAudioTranscriptionDeltaEvent, events.fetch(0))
+    assert_instance_of(
+      OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent,
+      events.fetch(1)
+    )
+    assert_equal("item_1", events.fetch(0).item_id)
+    assert_equal("item_1", events.fetch(1).item_id)
   end
 
   def test_send_event_validates_the_generated_client_event_union

@@ -36,6 +36,9 @@ module OpenAI
         sig { returns(OpenAI::Realtime::ConnectionResources::Conversation) }
         attr_reader :conversation
 
+        sig { returns(OpenAI::Realtime::ConnectionResources::InputAudioBuffer) }
+        attr_reader :input_audio_buffer
+
         # @api private
         sig { params(socket: T.untyped, url: URI::Generic).returns(T.attached_class) }
         def self.new(socket:, url:)

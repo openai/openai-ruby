@@ -11,7 +11,7 @@ module OpenAI
             translate_names: bool,
             strictness: bool,
             exactness: { yes: Integer, no: Integer, maybe: Integer },
-            error: Class,
+            error: StandardError?,
             branched: Integer
           }
 
@@ -65,6 +65,12 @@ module OpenAI
           top value,
           ?state: OpenAI::Internal::Type::Converter::coerce_state
         ) -> top
+
+        def self.coerce_with_error: (
+          OpenAI::Internal::Type::Converter::input target,
+          top value,
+          state: OpenAI::Internal::Type::Converter::coerce_state
+        ) -> [top, StandardError?]
 
         def self.dump: (
           OpenAI::Internal::Type::Converter::input target,

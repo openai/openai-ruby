@@ -59,6 +59,13 @@ module OpenAI
         ?transport: untyped?,
         ?transport_options: ::Hash[Symbol, untyped]
       ) { (OpenAI::Realtime::Connection connection) -> top } -> top
+
+      def connect_transcription: (
+        ?websocket_base_url: String?,
+        ?request_options: OpenAI::request_opts?,
+        ?transport: untyped?,
+        ?transport_options: ::Hash[Symbol, untyped]
+      ) { (OpenAI::Realtime::Connection connection) -> top } -> top
     end
   end
 end

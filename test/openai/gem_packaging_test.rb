@@ -21,6 +21,7 @@ class OpenAI::Test::GemPackagingTest < Minitest::Test
       package = Gem::Package.new(gem_file)
 
       assert_empty(relative_links - package.contents, "README links are missing from the built gem")
+      assert_includes(package.contents, "examples/realtime/websocket_transcription.rb")
       assert_includes(package.contents, "examples/realtime/websocket_text.rb")
 
       linked_guides = relative_links.select { File.extname(_1) == ".md" }

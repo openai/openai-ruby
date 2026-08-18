@@ -15,6 +15,9 @@ module OpenAI
       # @return [OpenAI::Realtime::ConnectionResources::Conversation]
       attr_reader :conversation
 
+      # @return [OpenAI::Realtime::ConnectionResources::InputAudioBuffer]
+      attr_reader :input_audio_buffer
+
       # @api private
       def initialize(socket:, url:)
         @socket = socket
@@ -24,6 +27,7 @@ module OpenAI
         @session = OpenAI::Realtime::ConnectionResources::Session.new(self)
         @response = OpenAI::Realtime::ConnectionResources::Response.new(self)
         @conversation = OpenAI::Realtime::ConnectionResources::Conversation.new(self)
+        @input_audio_buffer = OpenAI::Realtime::ConnectionResources::InputAudioBuffer.new(self)
       end
 
       # @return [URI::Generic]

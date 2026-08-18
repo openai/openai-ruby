@@ -1,9 +1,9 @@
 # Realtime WebSockets
 
 The Ruby SDK provides a typed, block-scoped WebSocket client for server-side
-Realtime text sessions. The first phase deliberately stays at one cohesive
-boundary: authenticated WebSocket connection setup, protocol event validation,
-and deterministic connection cleanup.
+Realtime text sessions and committed-turn transcription. The implementation
+stays at one cohesive boundary: authenticated WebSocket connection setup,
+protocol event validation, deterministic cleanup, and synchronous event flow.
 
 ## Installation
 
@@ -64,12 +64,64 @@ internally:
 - `conversation.items.create(type:, role:, content:, ...)`
 - `conversation.items.retrieve(item_id:)` and `delete(item_id:)`
 - `response.create(...)` and `response.cancel(...)`
+- `input_audio_buffer.append(audio:)`, `append_bytes(bytes)`, `commit`, and
+  `clear`
 
 For lower-level protocol work, `send_event` accepts a generated client-event
 shape, while `receive`, `each`, and `parse_event` return generated server-event
 types. Invalid client events raise `ArgumentError` with a generic public
 message; the converter error remains available through `cause` for explicit
 inspection. `send_raw` and `receive_raw` are text-frame escape hatches.
+
+## Transcribe one committed audio turn
+
+Use `connect_transcription` for the dedicated transcription handshake. Select
+the model in a `type: :transcription` session update, append 24 kHz mono PCM16
+audio, and explicitly commit the buffered turn:
+
+```ruby
+File.open("speech.pcm", "rb") do |input|
+  client.realtime.connect_transcription do |connection|
+    connection.session.update(
+      type: :transcription,
+      audio: {
+        input: {
+          format: {type: :"audio/pcm", rate: 24_000},
+          transcription: {model: "gpt-transcribe"},
+          turn_detection: nil
+        }
+      }
+    )
+
+    while (chunk = input.read(9_600))
+      connection.input_audio_buffer.append_bytes(chunk)
+    end
+    connection.input_audio_buffer.commit
+
+    committed_item_id = nil
+    connection.each do |event|
+      case event
+      when OpenAI::Realtime::InputAudioBufferCommittedEvent
+        committed_item_id = event.item_id
+      when OpenAI::Realtime::ConversationItemInputAudioTranscriptionDeltaEvent
+        print(event.delta) if event.item_id == committed_item_id
+      when OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent
+        break if event.item_id == committed_item_id
+      when OpenAI::Realtime::ConversationItemInputAudioTranscriptionFailedEvent,
+           OpenAI::Realtime::RealtimeErrorEvent
+        raise "Realtime transcription failed."
+      end
+    end
+  end
+end
+```
+
+Correlate delta and completed events by `item_id`; completion ordering across
+different input turns is not guaranteed. The runnable
+[`websocket_transcription.rb`](examples/realtime/websocket_transcription.rb)
+example additionally rejects empty input and requires a matching non-empty
+completion. It defaults to `gpt-transcribe`, which is intended for committed
+turns over WebSockets.
 
 ## Event compatibility
 
@@ -197,10 +249,10 @@ handshake.
 
 ## Current scope
 
-This phase does not add WebRTC/SDP lifecycle helpers, SIP or sideband helpers,
-transcription or translation connections, audio/file/microphone flows, image
-input, function calling helpers, or MCP helpers. Existing generated HTTP
-resources remain generated-code-owned. New convenience APIs and examples for
-those workflows have different media, ownership, security, and lifecycle
-contracts and should be reviewed as separate follow-ups after the core
-WebSocket boundary is stable.
+This phase does not add continuous microphone capture, concurrent live
+captioning, response-audio playback, WebRTC/SDP lifecycle helpers, SIP or
+sideband helpers, translation connections, image input, function calling
+helpers, or MCP helpers. Existing generated HTTP resources remain
+generated-code-owned. New convenience APIs and examples for those workflows
+have different media, ownership, security, and lifecycle contracts and should
+be reviewed as separate follow-ups.

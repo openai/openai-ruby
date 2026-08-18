@@ -27,6 +27,24 @@ module OpenAI
           end
         end
 
+        class InputAudioBuffer < Base
+          sig { params(audio: String, event_id: T.nilable(String)).void }
+          def append(audio:, event_id: nil)
+          end
+
+          sig { params(bytes: String, event_id: T.nilable(String)).void }
+          def append_bytes(bytes, event_id: nil)
+          end
+
+          sig { params(event_id: T.nilable(String)).void }
+          def commit(event_id: nil)
+          end
+
+          sig { params(event_id: T.nilable(String)).void }
+          def clear(event_id: nil)
+          end
+        end
+
         class Conversation < Base
           # @api private
           sig { params(connection: OpenAI::Realtime::Connection).returns(T.attached_class) }
