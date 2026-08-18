@@ -23,7 +23,11 @@ Gem::Specification.new do |s|
     "SECURITY.md",
     "CHANGELOG.md",
     ".ignore"
-  ] + ["examples/mtls_custom_http_client.rb", "examples/realtime/README.md"]
+  ] + [
+    "examples/mtls_custom_http_client.rb",
+    "examples/realtime/README.md",
+    "examples/realtime/websocket_text.rb"
+  ]
   s.extra_rdoc_files = [
     "README.md",
     "VERSIONING.md",

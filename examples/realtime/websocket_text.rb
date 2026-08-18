@@ -36,7 +36,7 @@ module OpenAI
               completed = true
               break
             when OpenAI::Realtime::RealtimeErrorEvent
-              raise "Realtime API error: #{event.error.message}"
+              raise "Realtime API error."
             end
           end
           raise "Realtime connection closed before response.done" unless completed

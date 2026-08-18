@@ -109,6 +109,27 @@ class OpenAI::Test::RealtimeWebSocketTextExampleTest < Minitest::Test
     assert_equal("Realtime response completed without text output", empty_error.message)
   end
 
+  def test_example_keeps_server_error_details_out_of_the_exception_message
+    customer_text = "private prompt echoed by the service"
+    event = OpenAI::Realtime::RealtimeErrorEvent.new(
+      event_id: "event_error",
+      error: OpenAI::Realtime::RealtimeError.new(
+        message: customer_text,
+        type: "invalid_request_error"
+      )
+    )
+
+    error = assert_raises(RuntimeError) do
+      OpenAI::Examples::Realtime::WebSocketText.stream_response(
+        RecordingConnection.new([event]),
+        output: StringIO.new
+      )
+    end
+
+    assert_equal("Realtime API error.", error.message)
+    refute_includes(error.message, customer_text)
+  end
+
   private def completed_response
     OpenAI::Realtime::ResponseDoneEvent.new(
       event_id: "event_done",

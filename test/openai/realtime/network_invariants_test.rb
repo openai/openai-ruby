@@ -17,6 +17,7 @@ class OpenAI::Test::RealtimeNetworkInvariantsTest < Minitest::Test
 
   def test_protocol_http1_traces_redact_handshake_credentials_but_wire_receives_them
     wire_headers = nil
+    wire_target = nil
     Traces::Backend::Capture.spans.clear
     handler = lambda do |connection|
       connection.write(Protocol::WebSocket::TextMessage.generate(type: "session.created"))
@@ -26,9 +27,15 @@ class OpenAI::Test::RealtimeNetworkInvariantsTest < Minitest::Test
     with_server(handler, wrap: lambda { |websocket|
       lambda do |request|
         wire_headers = request.headers.to_h
+        wire_target = request.path
         websocket.call(request)
       end
     }) do |url|
+      url.query = URI.encode_www_form(
+        access_token: "query-access-secret",
+        "X-Amz-Signature" => "query-signature-secret",
+        safe: "visible"
+      )
       transport = OpenAI::Realtime::Transports::AsyncWebSocket.new
       transport.open(
         url: url,
@@ -50,6 +57,15 @@ class OpenAI::Test::RealtimeNetworkInvariantsTest < Minitest::Test
     assert_equal("[REDACTED]", traced.fetch("api-key"))
     refute(traced.key?("proxy-authorization"))
     assert_equal("visible", traced.fetch("x-observable"))
+    assert_includes(wire_target, "query-access-secret")
+    assert_includes(wire_target, "query-signature-secret")
+    traced_target = traced_request_target(method: "GET")
+    [traced_target.to_s, traced_target.inspect, JSON.generate(target: traced_target)].each do |rendered|
+      assert_includes(rendered, "safe=visible")
+      assert_includes(rendered, "%5BREDACTED%5D")
+      refute_includes(rendered, "query-access-secret")
+      refute_includes(rendered, "query-signature-secret")
+    end
   end
 
   def test_binary_encoded_json_is_sent_as_a_text_frame
@@ -295,12 +311,20 @@ class OpenAI::Test::RealtimeNetworkInvariantsTest < Minitest::Test
   end
 
   private def traced_request_headers(method:)
+    traced_request(method: method).attributes.fetch(:headers)
+  end
+
+  private def traced_request_target(method:)
+    traced_request(method: method).attributes.fetch(:target)
+  end
+
+  private def traced_request(method:)
     span = Traces::Backend::Capture.spans.reverse.find do |candidate|
       candidate.name == "protocol.http1.connection.write_request" &&
         candidate.attributes[:method] == method
     end
     refute_nil(span)
-    span.attributes.fetch(:headers)
+    span
   end
 
   private def read_http_headers(io)

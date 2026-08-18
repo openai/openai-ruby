@@ -51,7 +51,7 @@ client.realtime.connect(model: "gpt-realtime-2.1") do |connection|
       end
       break
     when OpenAI::Realtime::RealtimeErrorEvent
-      raise event.error.message
+      raise "Realtime API error."
     end
   end
 end

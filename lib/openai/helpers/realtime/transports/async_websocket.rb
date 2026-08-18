@@ -33,6 +33,23 @@ module OpenAI
         end
         private_constant :TraceSafeHeaderFields
 
+        # Protocol::HTTP1 writes String subclasses from their underlying bytes but
+        # tracing renders them through the ordinary object interfaces. Keep the
+        # real request target for the wire while exposing only its sanitized form
+        # to trace backends and serializers.
+        class TraceSafeRequestTarget < String
+          def initialize(target, trace_target:)
+            super(target)
+            @trace_target = trace_target.freeze
+          end
+
+          def to_s = @trace_target
+          def inspect = @trace_target.inspect
+          def as_json = @trace_target
+          def to_json(...) = @trace_target.to_json(...)
+        end
+        private_constant :TraceSafeRequestTarget
+
         module TraceSafeHeaders
           def header(&block)
             return super(&block) if block
@@ -186,8 +203,12 @@ module OpenAI
 
         private def negotiate(client, endpoint, headers:, timeout:)
           safe_headers = trace_safe_headers(headers)
+          safe_target = TraceSafeRequestTarget.new(
+            endpoint.path,
+            trace_target: OpenAI::Internal::Logging.safe_path(endpoint.url)
+          )
           operation = lambda do
-            client.connect(authority(endpoint.url), endpoint.path, headers: safe_headers)
+            client.connect(authority(endpoint.url), safe_target, headers: safe_headers)
           end
           return operation.call if timeout.nil?
 
